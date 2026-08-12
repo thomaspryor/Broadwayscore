@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T20:53:44.616Z",
+  "timestamp": "2026-08-12T21:43:02.775Z",
   "stats": {
-    "totalReviews": 42116,
-    "alreadyFlagged": 18292,
+    "totalReviews": 42117,
+    "alreadyFlagged": 18293,
     "dateGuardCatches": 137,
     "directorMismatch": 963,
-    "tvFilmSignals": 1188,
-    "londonSignals": 860,
+    "tvFilmSignals": 1187,
+    "londonSignals": 863,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3556
+    "noPublishDate": 3554
   },
   "findings": [
     {
@@ -6185,25 +6185,6 @@
       "score": 79,
       "publishDate": "2026-08-04",
       "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "telegraph--tim-robey.json",
-      "score": 17,
-      "publishDate": "2026-08-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -33899,6 +33880,19 @@
     },
     {
       "showId": "cats-west-end-2026",
+      "file": "musical-theatre-review--ron-cohen.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
       "file": "seatplan--stuart-james.json",
       "score": 89,
       "publishDate": "2026-08-07T07:46:52-04:00",
@@ -34764,6 +34758,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "everything-theatre--mary-pollard.json",
+      "score": 60,
+      "publishDate": "2026-08-12",
+      "url": "https://everything-theatre.co.uk/2026/08/review-death-note-the-musical-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "londontheatre1--john-groves.json",
       "score": 97,
       "publishDate": "2026-08-12",
@@ -34829,6 +34837,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "score": 17,
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },

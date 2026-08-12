@@ -141,9 +141,42 @@ async function getIssue(identifier) {
 // Open (non-completed, non-canceled) issues for a team, priority-agnostic
 // ordering left to the caller (linear-dispatch.js's sortIssuesByPriority) —
 // this only fetches. Defaults to TEAM_KEY so callers rarely need to pass one.
+// Cursor-paginated like listIssues() above: the workspace holds 200+ issues,
+// so a single first:100 page silently truncates.
 async function listOpenIssues(teamKey = TEAM_KEY) {
-  const data = await graphql(linearDispatch.buildOpenIssuesQuery(), { teamKey });
-  return (data.issues && data.issues.nodes) || [];
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await graphql(linearDispatch.buildOpenIssuesQuery(), { teamKey, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    issues.push(...(nodes || []));
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return issues;
+}
+
+// Cross-system alert dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341):
+// does an OPEN issue in this team already carry `term` (the alert's
+// conditionKey) in its title or body? Fetches the team's open issues WITH
+// description (buildOpenIssuesWithDescriptionsQuery — listOpenIssues above
+// omits it, since --list never renders it) and matches client-side via
+// linear-dispatch.js's pure findOpenIssueForTerm — see that function's header
+// for why this doesn't lean on Linear's filter DSL to do the matching.
+// Returns the matching issue or null. Cursor-paginated (1-3+ round trips at
+// the current 200+ issue count, early-exits on first match); called at most
+// once per alert (not in a loop), so this is never a hot path.
+async function searchIssues(term, teamKey = TEAM_KEY) {
+  let after = null;
+  for (;;) {
+    const data = await graphql(linearDispatch.buildOpenIssuesWithDescriptionsQuery(), { teamKey, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    const match = linearDispatch.findOpenIssueForTerm(nodes || [], term);
+    if (match) return match;
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return null;
 }
 
 // Post a comment on an issue (used by linear-next.js to record "Dispatched to
@@ -216,6 +249,7 @@ module.exports = {
   listIssues,
   getIssue,
   listOpenIssues,
+  searchIssues,
   createComment,
   updateIssue,
   archiveIssue,

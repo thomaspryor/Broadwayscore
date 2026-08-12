@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url);
 // instead of the fs remap below — used by the git-checkout-wipe tests, which
 // need the ledger and the (fake) git-tracked ledger to be genuinely different
 // files so one can be wiped without touching the other.
-function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } = {}) {
+function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, linearSearchIssuesImpl } = {}) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-test-'));
   const priorLedgerEnv = process.env.ALERT_LEDGER_PATH;
   // Default to a per-load temp ledger. Loading bare used to resolve to the
@@ -33,12 +33,14 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } 
   else delete process.env.ALERT_LEDGER_PATH;
   const modulePath = require.resolve('./owner-alert-router.js');
   const discordNotifyPath = require.resolve('./discord-notify.js');
+  const linearClientPath = require.resolve('./linear-client.js');
   const childProcessPath = require.resolve('node:child_process');
 
   delete require.cache[modulePath];
   delete require.cache[discordNotifyPath];
+  delete require.cache[linearClientPath];
 
-  const calls = { execFileSync: [], sendAlert: [] };
+  const calls = { execFileSync: [], sendAlert: [], linearSearchIssues: [] };
 
   // Stub node:child_process.execFileSync so card dispatch never shells out.
   const realChildProcess = require(childProcessPath);
@@ -58,6 +60,24 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } 
       sendAlert: async (opts) => {
         calls.sendAlert.push(opts);
         return sendAlertImpl ? sendAlertImpl(opts) : true;
+      },
+    },
+  };
+
+  // Stub linear-client's searchIssues (Phase 0 rail 2) so the router's
+  // cross-system dedupe never makes a real GraphQL call in a test — default
+  // is "no match found" (findLinearDuplicate treats a real Linear outage the
+  // same way, via its own try/catch, but a test must never depend on network
+  // or LINEAR_API_KEY being set on the machine running it).
+  require.cache[linearClientPath] = {
+    id: linearClientPath,
+    filename: linearClientPath,
+    loaded: true,
+    exports: {
+      searchIssues: async (term) => {
+        calls.linearSearchIssues.push(term);
+        if (linearSearchIssuesImpl) return linearSearchIssuesImpl(term);
+        return null;
       },
     },
   };
@@ -108,6 +128,7 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } 
     fs.mkdirSync = realMkdirSync;
     realChildProcess.execFileSync = originalExecFileSync;
     delete require.cache[discordNotifyPath];
+    delete require.cache[linearClientPath];
     delete require.cache[modulePath];
     if (priorLedgerEnv === undefined) delete process.env.ALERT_LEDGER_PATH;
     else process.env.ALERT_LEDGER_PATH = priorLedgerEnv;
@@ -116,6 +137,183 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } 
 
   return { router, calls, restore, attemptsPath, tmpDir, trackedLedgerPath: path.join(tmpDir, 'tracked-alert-ledger.json') };
 }
+
+// ── Rail 2: cross-system Linear dedupe (Phase 0, plan 2026-08-12, task #1341) ─
+// findLinearDuplicate() gates dispatchCard()'s Notion filing on an OPEN
+// Linear issue that already tracks the same conditionKey. See
+// scripts/lib/linear-client.js's searchIssues (the only place that talks to
+// Linear's GraphQL API) and scripts/lib/linear-dispatch.js's
+// findOpenIssueForTerm (the pure match, tested separately in
+// tests/unit/linear-next.test.mjs).
+
+test('routeAlert: disposition=auto skips filing when Linear already tracks the conditionKey — no card, action:silent, identifier surfaced', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-777', title: 'Already tracked' }),
+  });
+  const origLog = console.log;
+  const logs = [];
+  console.log = (...a) => { logs.push(a.join(' ')); origLog(...a); };
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:linear-dup',
+      title: 'Test alert',
+      description: 'Something needs attention.',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'silent');
+    assert.equal(result.cardId, null);
+    assert.equal(result.linearIdentifier, 'BRO-777');
+    assert.equal(calls.execFileSync.length, 0, 'must never file a Notion card once Linear already tracks it');
+    assert.ok(logs.some(l => /conditionKey test:linear-dup already tracked as BRO-777 — not double-filing/.test(l)));
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:linear-dup'].status, 'open');
+    assert.equal(ledger.conditions['test:linear-dup'].cardId, null);
+    assert.equal(ledger.conditions['test:linear-dup'].linearIdentifier, 'BRO-777');
+  } finally {
+    console.log = origLog;
+    restore();
+  }
+});
+
+test('routeAlert: a Linear-deduped condition still gets ledger-cooldown protection — the 2nd call never re-queries Linear', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-778', title: 'Already tracked' }),
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(calls.linearSearchIssues.length, 1, 'the 2nd call must be caught by the top-of-function ledger cooldown, not re-hit Linear');
+    assert.equal(calls.execFileSync.length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: rail-2 dedupe preserves a previously-filed open card\'s cardId — a Linear match means "no NEW tracker", not "the old card vanished"', async () => {
+  let searchCalls = 0;
+  const { router, restore } = loadRouterWithFakes({
+    // 1st call: no Linear match → files the Notion card. 2nd call (cooldown
+    // expired via cooldownHours:0): Linear now tracks it → rail-2 short-circuit.
+    linearSearchIssuesImpl: async () => (++searchCalls === 1 ? null : { identifier: 'BRO-780', title: 'Now tracked' }),
+  });
+  try {
+    const first = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    assert.equal(first.cardId, 'fake-card-id');
+    const second = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    assert.equal(second.action, 'silent');
+    assert.equal(second.cardId, 'fake-card-id', 'rail-2 must not clobber the real open card reference with null');
+    assert.equal(second.linearIdentifier, 'BRO-780');
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:cardid-preserved'].cardId, 'fake-card-id');
+    assert.equal(ledger.conditions['test:cardid-preserved'].linearIdentifier, 'BRO-780');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: the cooldown short-circuit carries linearIdentifier on every silent refire — digest consumers stay truthful past the first call', async () => {
+  const { router, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-779', title: 'Already tracked' }),
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
+    const second = await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(second.action, 'silent');
+    assert.equal(second.linearIdentifier, 'BRO-779', 'the 2nd+ silent call must surface WHERE the tracker lives, not just that it exists');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a Linear API failure FAILS OPEN — files the card as before, logs the fallback, never suppresses the alert', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => { throw new Error('LINEAR_API_KEY not set in .env or environment'); },
+  });
+  const origError = console.error;
+  const errors = [];
+  console.error = (...a) => { errors.push(a.join(' ')); origError(...a); };
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:linear-outage',
+      title: 'Test alert',
+      description: 'Something needs attention.',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'auto');
+    assert.equal(result.cardId, 'fake-card-id', 'the card must still be filed — a Linear outage must never suppress a real alert');
+    assert.equal(calls.execFileSync.length, 1);
+    assert.ok(errors.some(e => /Linear dedupe check failed.*failing open/.test(e)));
+  } finally {
+    console.error = origError;
+    restore();
+  }
+});
+
+test('routeAlert: disposition=digest and disposition=human never query Linear (only "auto" files a new tracker)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:linear-digest', title: 't', description: 'd', disposition: 'digest' });
+    await router.routeAlert({
+      conditionKey: 'alert-router:deadman', title: 't', description: 'd', disposition: 'human',
+    });
+    assert.equal(calls.linearSearchIssues.length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test("routeAlert: a filed card's notes embed a greppable [conditionKey:...] marker for future dedupe matching", async () => {
+  const { router, restore } = loadRouterWithFakes({
+    execFileSyncImpl: (cmd, args) => {
+      const notesIdx = args.indexOf('--notes');
+      const notes = args[notesIdx + 1];
+      assert.match(notes, /\[conditionKey:test:marker-check\]/);
+      return JSON.stringify({ id: 'fake-card-id' });
+    },
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:marker-check', title: 't', description: 'd', disposition: 'auto' });
+  } finally {
+    restore();
+  }
+});
+
+test('findLinearDuplicate: matched:true + identifier when searchIssuesFn resolves an issue', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.findLinearDuplicate('any-key', {
+      searchIssuesFn: async () => ({ identifier: 'BRO-1', title: 'x' }),
+    });
+    assert.deepEqual(result, { matched: true, identifier: 'BRO-1' });
+  } finally {
+    restore();
+  }
+});
+
+test('findLinearDuplicate: matched:false when searchIssuesFn resolves null', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.findLinearDuplicate('any-key', { searchIssuesFn: async () => null });
+    assert.deepEqual(result, { matched: false, identifier: null });
+  } finally {
+    restore();
+  }
+});
+
+test('findLinearDuplicate: fails open (matched:false) and surfaces the real error when searchIssuesFn throws', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.findLinearDuplicate('any-key', {
+      searchIssuesFn: async () => { throw new Error('network down'); },
+    });
+    assert.equal(result.matched, false);
+    assert.equal(result.identifier, null);
+    assert.match(result.error, /network down/);
+  } finally {
+    restore();
+  }
+});
 
 test('routeAlert: new incident with disposition=auto dispatches exactly one card', async () => {
   const { router, calls, restore } = loadRouterWithFakes();

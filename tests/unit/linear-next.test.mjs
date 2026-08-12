@@ -13,6 +13,8 @@ import {
   MAC_ONLY_LABEL,
   buildIssueQuery,
   buildOpenIssuesQuery,
+  buildOpenIssuesWithDescriptionsQuery,
+  findOpenIssueForTerm,
   buildCommentMutation,
   priorityRank,
   priorityLabel,
@@ -48,12 +50,17 @@ test('buildIssueQuery: parameterized on $id, fetches the fields the dispatcher n
   assert.doesNotMatch(q, /issueCreate/);
 });
 
-test('buildOpenIssuesQuery: parameterized on $teamKey, excludes completed/canceled', () => {
+test('buildOpenIssuesQuery: parameterized on $teamKey, excludes completed/canceled, cursor-paginated', () => {
   const q = buildOpenIssuesQuery();
   assert.match(q, /\$teamKey: String!/);
   assert.match(q, /team: \{ key: \{ eq: \$teamKey \} \}/);
   assert.match(q, /"completed", "canceled"/);
   assert.match(q, /orderBy: updatedAt/);
+  // 200+ issue workspace: a single first:100 page silently truncates — the
+  // query must expose the cursor machinery linear-client.js's loop consumes.
+  assert.match(q, /\$after: String/);
+  assert.match(q, /after: \$after/);
+  assert.match(q, /pageInfo \{ hasNextPage endCursor \}/);
 });
 
 test('buildCommentMutation: parameterized on $issueId/$body, uses commentCreate', () => {
@@ -61,6 +68,57 @@ test('buildCommentMutation: parameterized on $issueId/$body, uses commentCreate'
   assert.match(m, /\$issueId: String!/);
   assert.match(m, /\$body: String!/);
   assert.match(m, /commentCreate\(input: \{ issueId: \$issueId, body: \$body \}\)/);
+});
+
+// ── Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341) ──────
+
+test('buildOpenIssuesWithDescriptionsQuery: parameterized on $teamKey, excludes completed/canceled, fetches description, cursor-paginated', () => {
+  const q = buildOpenIssuesWithDescriptionsQuery();
+  assert.match(q, /\$teamKey: String!/);
+  assert.match(q, /team: \{ key: \{ eq: \$teamKey \} \}/);
+  assert.match(q, /"completed", "canceled"/);
+  assert.match(q, /description/);
+  // Dedupe must see EVERY open issue: missing a page-2 match means filing the
+  // exact duplicate tracker rail 2 exists to prevent.
+  assert.match(q, /\$after: String/);
+  assert.match(q, /after: \$after/);
+  assert.match(q, /pageInfo \{ hasNextPage endCursor \}/);
+  // Never a raw issueCreate/api.linear.app literal — same chokepoint rule
+  // as buildIssueQuery's test above.
+  assert.doesNotMatch(q, /issueCreate/);
+});
+
+test('findOpenIssueForTerm: matches on title', () => {
+  const issues = [{ identifier: 'BRO-1', title: 'Cookies expiration alert', description: '' }];
+  const match = findOpenIssueForTerm(issues, 'Cookies expiration');
+  assert.equal(match.identifier, 'BRO-1');
+});
+
+test('findOpenIssueForTerm: matches on description (e.g. the conditionKey embedded in a filed card body)', () => {
+  const issues = [{ identifier: 'BRO-2', title: 'Some other title', description: 'blah blah [conditionKey:health-check:Cookies: expiration] blah' }];
+  const match = findOpenIssueForTerm(issues, 'health-check:Cookies: expiration');
+  assert.equal(match.identifier, 'BRO-2');
+});
+
+test('findOpenIssueForTerm: null when no issue matches', () => {
+  const issues = [{ identifier: 'BRO-3', title: 'Unrelated', description: 'nothing here' }];
+  assert.equal(findOpenIssueForTerm(issues, 'health-check:Cookies: expiration'), null);
+});
+
+test('findOpenIssueForTerm: first match wins over a later one', () => {
+  const issues = [
+    { identifier: 'BRO-4', title: 'x', description: '[conditionKey:test:dup]' },
+    { identifier: 'BRO-5', title: 'x', description: '[conditionKey:test:dup]' },
+  ];
+  assert.equal(findOpenIssueForTerm(issues, 'test:dup').identifier, 'BRO-4');
+});
+
+test('findOpenIssueForTerm: tolerates null/missing fields and an empty term/issues list', () => {
+  assert.equal(findOpenIssueForTerm([null, { identifier: 'BRO-6' }], 'x'), null);
+  assert.equal(findOpenIssueForTerm([], 'x'), null);
+  assert.equal(findOpenIssueForTerm(null, 'x'), null);
+  assert.equal(findOpenIssueForTerm([{ identifier: 'BRO-7', title: 'x' }], ''), null);
+  assert.equal(findOpenIssueForTerm([{ identifier: 'BRO-7', title: 'x' }], null), null);
 });
 
 // ── priority ────────────────────────────────────────────────────────────

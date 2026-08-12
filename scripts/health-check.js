@@ -3516,7 +3516,12 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         const dispatch = dispatchedCards[r.name];
         const instruction = dispatch
           ? (dispatch.action === 'silent'
-              ? `${entry.humanAction} — already dispatched to the Action Queue (still open).`
+              // Rail 2 (task #1341): a Linear-deduped condition never filed a
+              // Notion card — say where the tracker actually lives, or the
+              // owner goes hunting for an Action Queue card that doesn't exist.
+              ? (dispatch.linearIdentifier
+                  ? `${entry.humanAction} — already tracked as ${dispatch.linearIdentifier} in Linear (still open).`
+                  : `${entry.humanAction} — already dispatched to the Action Queue (still open).`)
               : dispatch.dispatchOk === false
                 // Surface the REAL captured error, not a guess — this exact
                 // line used to hardcode "Check logs / NOTION_API_KEY", which
