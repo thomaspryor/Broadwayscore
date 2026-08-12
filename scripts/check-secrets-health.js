@@ -11,6 +11,7 @@
  *   3. Gemini API key (list models)
  *   4. OpenRouter API key (check key info + remaining credits)
  *   5. ScrapingBee API key (usage endpoint)
+ *   5b. ScrapingDog API key (account endpoint, credits via evaluateScrapingdogCredits)
  *   6. Bright Data zone status ($BRIGHTDATA_ZONE / web_unlocker2 active/disabled)
  *   7. Private repo PAT (API call to private repo)
  *   7. Vercel token (get user info)
@@ -184,6 +185,7 @@ async function checkOpenRouter() {
 }
 
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
+const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 
 async function checkScrapingBee() {
   const key = process.env.SCRAPINGBEE_API_KEY;
@@ -216,6 +218,41 @@ async function checkScrapingBee() {
   }
   if (res.status === 401 || res.status === 403) return { name: 'ScrapingBee', status: 'fail', message: 'Key invalid' };
   return { name: 'ScrapingBee', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkScrapingDog() {
+  const key = process.env.SCRAPINGDOG_API_KEY;
+  if (!key) return { name: 'ScrapingDog', status: 'skip', message: 'Key not set' };
+
+  const res = await httpsGet(`https://api.scrapingdog.com/account?api_key=${key}`);
+
+  let acct;
+  try {
+    acct = JSON.parse(res.body);
+  } catch {
+    return { name: 'ScrapingDog', status: 'warn', message: `Unparseable response (status ${res.status})` };
+  }
+
+  // ScrapingDog does NOT use 401/403 for an invalid/revoked key — verified
+  // live 2026-08-11: a bad key returns HTTP 500 with {success:false,
+  // message:"Internal error"}. That shape (no requestLimit field) is exactly
+  // what fell through to a soft 'warn' in health-check.js's daily check
+  // before this fix — check `success` explicitly so it hard-fails here.
+  // Message hedges the cause (ship-check adversarial review) — a 500 could
+  // also be a vendor-side outage, not only a bad key. Still 'fail' either
+  // way: a false-positive alert here is far cheaper than the silent miss
+  // this card exists to fix, and a weekly cron rarely lands mid-outage twice.
+  if (acct && acct.success === false) {
+    return { name: 'ScrapingDog', status: 'fail', message: `Account check failed (invalid/revoked key or vendor issue): ${acct.message || 'unknown error'}` };
+  }
+  if (res.status === 401 || res.status === 403) return { name: 'ScrapingDog', status: 'fail', message: 'Key invalid or revoked' };
+  if (res.status !== 200) return { name: 'ScrapingDog', status: 'warn', message: `Unexpected status ${res.status}` };
+
+  // Pure decision lives in scripts/lib/scrapingdog-ack.js (§15 extraction) so
+  // the burn-projection ack downgrade is unit-testable; this call site only
+  // fetches. Its 'error' maps to this file's 'fail' naming.
+  const { status, message } = evaluateScrapingdogCredits(acct);
+  return { name: 'ScrapingDog', status: status === 'error' ? 'fail' : status, message };
 }
 
 async function createNewBrightDataZone(token, oldZoneName) {
@@ -503,6 +540,7 @@ async function main() {
     checkGemini,
     checkOpenRouter,
     checkScrapingBee,
+    checkScrapingDog,
     checkBrightData,
     checkPrivateRepoPAT,
     checkDispatchPAT,
