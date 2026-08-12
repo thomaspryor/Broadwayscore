@@ -1341,6 +1341,11 @@ on:
       - 'scripts/lib/direct-provider-detector.js'
       - 'scripts/lib/direct-provider-detector.test.mjs'
       - 'scripts/config/direct-provider-calls-allowlist.json'
+      # Task #5/#66: regression guard against direct ScrapingBee premium_proxy=true
+      # calls creeping back in. Colocated test runs via the scripts/lib/*.test.mjs
+      # glob; without these path entries a solo edit triggers ZERO CI.
+      - 'scripts/lib/premium-proxy-removal.js'
+      - 'scripts/lib/premium-proxy-removal.test.mjs'
       # Sitemap shard URL resolver (robots.txt parser) — colocated test runs in the
       # scripts/lib step, but the job only fires when a push-path matches; without
       # these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
