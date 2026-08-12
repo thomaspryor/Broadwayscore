@@ -80,6 +80,9 @@ if [ -d "$CORE_DATA_DIR/.git" ]; then
   # a `git fetch`/`reset --hard` can transiently fail on lock contention
   # (index.lock from a concurrent session) rather than a real divergence.
   # Capture stderr instead of swallowing it so a genuine failure is diagnosable.
+  # Backoff kept short (1s+2s=3s total) because callers like check-data-health.js
+  # run this whole script under a 60s execSync timeout — a long retry sleep would
+  # eat that budget and get killed before ever printing the diagnostic below.
   UPDATE_OK=0
   UPDATE_ERR=""
   for attempt in 1 2 3; do
@@ -88,8 +91,8 @@ if [ -d "$CORE_DATA_DIR/.git" ]; then
       break
     fi
     if [ "$attempt" -lt 3 ]; then
-      echo "  Attempt $attempt failed, retrying in $((attempt * 2))s..."
-      sleep "$((attempt * 2))"
+      echo "  Attempt $attempt failed, retrying in ${attempt}s..."
+      sleep "$attempt"
     fi
   done
   if [ "$UPDATE_OK" -ne 1 ]; then
