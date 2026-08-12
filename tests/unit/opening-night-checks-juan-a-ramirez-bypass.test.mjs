@@ -103,4 +103,23 @@ describe('opening-night audit gate — juan-a-ramirez bypass class', () => {
       assert.equal(result.severity, 'error', `${name} expected severity=error, got ${result.severity}: ${result.message}`);
     });
   }
+
+  // BRO-219: these 4 checks used to detect the bypass class and stop — no
+  // details.remediation, so nothing ever told the owner beyond a checklist
+  // exit code. All four now self-declare a kind:'alert' remediation (content
+  // contamination needs human judgment, not an auto-fix), matching the
+  // opening-night-remediation.js contract collectRemediations() enforces.
+  for (const { name, mod } of CHECK_MODULES) {
+    it(`${name} self-declares an alert remediation`, async () => {
+      const result = await mod.run(SHOW, context);
+      const remediation = result.details && result.details.remediation;
+      assert.ok(remediation, `${name} result.details.remediation is missing`);
+      assert.equal(remediation.kind, 'alert');
+      assert.ok(remediation.key, `${name} remediation.key is missing`);
+      assert.ok(remediation.conditionKey, `${name} remediation.conditionKey is missing`);
+      assert.ok(remediation.title, `${name} remediation.title is missing`);
+      assert.equal(remediation.description, result.message);
+      assert.equal(remediation.severity, result.severity);
+    });
+  }
 });

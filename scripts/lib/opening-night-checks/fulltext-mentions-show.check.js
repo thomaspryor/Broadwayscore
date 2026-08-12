@@ -105,25 +105,60 @@ function run(show, context) {
 
   if (violations.length === 0) {
     // Only short-review warnings — surface as warning, not error.
+    const warnMessage = shortWarnings.map(v =>
+      `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED with fullText too short to assess title mention (${v.haystackLength} chars — paywall stub?): ${v.url}`
+    ).join('\n');
     return {
       ok: false,
       severity: 'warning',
-      message: shortWarnings.map(v =>
-        `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED with fullText too short to assess title mention (${v.haystackLength} chars — paywall stub?): ${v.url}`
-      ).join('\n'),
-      details: { shortWarnings, showId: show.id, showTitle: show.title },
+      message: warnMessage,
+      details: {
+        shortWarnings,
+        showId: show.id,
+        showTitle: show.title,
+        // Self-declared remediation (task #389 pattern, extended for BRO-219).
+        remediation: {
+          kind: 'alert',
+          key: `fulltext-mentions-show-short:${show.id}`,
+          conditionKey: `opening-night-fulltext-mentions-show-short-${show.id}`,
+          title: `Shipped review too short to verify on ${show.title || show.id}`,
+          description: warnMessage,
+          severity: 'warning',
+          reason: `${shortWarnings.length} shipped review(s) too short to assess title mention`,
+        },
+      },
     };
   }
+
+  const message = violations.map(v =>
+    `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED but fullText never mentions '${show.title}' (${v.haystackLength} chars${v.textIssuesFlag ? ', textIssues flag set' : ''}): ${v.url}`
+  ).concat(shortWarnings.map(v =>
+    `⚠️  ${v.outletId}/${v.criticName} (${v.filename}) also too short to assess (${v.haystackLength} chars): ${v.url}`
+  )).join('\n');
 
   return {
     ok: false,
     severity: 'error',
-    message: violations.map(v =>
-      `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED but fullText never mentions '${show.title}' (${v.haystackLength} chars${v.textIssuesFlag ? ', textIssues flag set' : ''}): ${v.url}`
-    ).concat(shortWarnings.map(v =>
-      `⚠️  ${v.outletId}/${v.criticName} (${v.filename}) also too short to assess (${v.haystackLength} chars): ${v.url}`
-    )).join('\n'),
-    details: { violations, shortWarnings, showId: show.id, showTitle: show.title },
+    message,
+    details: {
+      violations,
+      shortWarnings,
+      showId: show.id,
+      showTitle: show.title,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: this is the EBT-content-as-Schmig contamination
+      // class — a heuristic cannot decide whether to re-fetch, exclude, or
+      // reattribute a mismatched review, that needs a human.
+      remediation: {
+        kind: 'alert',
+        key: `fulltext-mentions-show:${show.id}`,
+        conditionKey: `opening-night-fulltext-mentions-show-${show.id}`,
+        title: `Content mismatch on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${violations.length} shipped review(s) never mention the show title`,
+      },
+    },
   };
 }
 

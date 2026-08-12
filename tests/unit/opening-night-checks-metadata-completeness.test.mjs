@@ -58,6 +58,10 @@ describe('placeholder-synopsis check', () => {
     const result = placeholderSynopsisCheck.run(show, makeContext());
     assert.equal(result.ok, false);
     assert.equal(result.severity, 'warning');
+    // BRO-219: self-declared alert remediation — see opening-night-remediation.js
+    assert.equal(result.details.remediation.kind, 'alert');
+    assert.equal(result.details.remediation.key, `placeholder-synopsis:${show.id}`);
+    assert.equal(result.details.remediation.description, result.message);
   });
 
   it('real synopsis over min length → ok', () => {
@@ -120,6 +124,10 @@ describe('revival-unverified check', () => {
     assert.equal(result.ok, false);
     assert.equal(result.severity, 'warning');
     assert.match(result.message, /isRevival is not true/);
+    // BRO-219: self-declared alert remediation — see opening-night-remediation.js
+    assert.equal(result.details.remediation.kind, 'alert');
+    assert.equal(result.details.remediation.key, `revival-unverified:${show.id}`);
+    assert.equal(result.details.remediation.description, result.message);
   });
 
   it('isRevival already true → ok', () => {
