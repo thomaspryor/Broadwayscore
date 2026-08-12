@@ -31,5 +31,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-12T11:46:33.275Z"
+  },
+  {
+    "conditionKey": "arm-yield:outlet:theatermania",
+    "title": "TheaterMania (reviews collected) has stopped updating (3 days)",
+    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-09, 3 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 25 productive day(s) / 57 item(s) between 2026-07-11 and 2026-08-09.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-12T13:57:47.057Z"
   }
 ]
