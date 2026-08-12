@@ -28,6 +28,16 @@
 // known-safe tiers fails closed on anything unrecognized, including a
 // currently-safe tier wrapped in a "[1m]" (or any other bracketed) suffix.
 //
+// SUFFIX SHAPE IS DELIBERATELY NARROW (ship-check finding, ready-code
+// review): a first draft allowed any `[\w.-]*` after the tier name, which
+// let non-bracket expensive-context encodings slip through unrejected
+// (e.g. "sonnet-1m", "opus-turbo") — exactly the class of gap the
+// allowlist is supposed to close. Every real model id observed in this
+// codebase (scripts/lib/models.js, autonomous-budget.js) uses ONLY
+// hyphen-separated digit groups after the tier ("claude-sonnet-5",
+// "claude-haiku-4-5-20251001"), so the suffix is restricted to that shape.
+// Anything else — letters, brackets, words — fails closed.
+//
 // NO AUTO-RATCHET: `intendedDefault` (the value to restore TO on a
 // violation) is read from a small state file and only ever written by a
 // human/deliberate edit — never updated automatically from an observed
@@ -44,7 +54,7 @@ const crypto = require('crypto');
 
 const DEFAULT_FALLBACK_MODEL = 'opusplan';
 
-const SAFE_MODEL_RE = /^(?:claude-)?(?:sonnet|opus|haiku|opusplan)[\w.-]*$/i;
+const SAFE_MODEL_RE = /^(?:claude-)?(?:sonnet|opus|haiku|opusplan)(?:-\d+)*$/i;
 
 function isDisallowedModelDefault(value) {
   if (typeof value !== 'string') return false;
@@ -92,20 +102,40 @@ if (require.main === module) {
 
   if (sub !== 'apply' || !opts.settings) {
     process.stderr.write(
-      'usage: model-drift-guard.js apply --settings=<path> [--session-id=<id>] [--state=<path>] [--audit=<path>]\n'
+      'usage: model-drift-guard.js apply --settings=<path> [--session-id=<id>] [--state=<path>] [--audit=<path>] [--home=<path>]\n'
     );
     process.exit(0);
   }
 
   const settingsPath = opts.settings;
   const sessionId = opts['session-id'] || 'unknown';
-  const home = process.env.HOME || path.dirname(path.dirname(settingsPath));
-  // --state/--audit overrides exist so this can be exercised end-to-end
-  // against a scratch settings.json without touching the real
-  // ~/.claude/model-drift-guard-state.json or audit log (see
-  // tests/unit/model-default-guard.test.mjs's CLI-integration cases).
+  // --home overrides where "canonical" points (defaults to the real HOME) so
+  // this can be exercised end-to-end against a scratch fixture — e.g.
+  // <tmp>/.claude/settings.json — without touching the real
+  // ~/.claude/settings.json, model-drift-guard-state.json, or audit log (see
+  // tests/unit/model-default-guard.test.mjs's CLI-integration cases). Setting
+  // HOME itself isn't an option here: the harness's worktree guard refuses
+  // Bash commands that redefine HOME (it can't verify the effect on git), so
+  // this flag is the only legitimate override path, not a convenience.
+  const home = opts.home || process.env.HOME || path.dirname(path.dirname(settingsPath));
   const stateFile = opts.state || path.join(home, '.claude', 'model-drift-guard-state.json');
   const auditFile = opts.audit || path.join(home, '.claude', 'audit-config-changes.jsonl');
+
+  // Defense in depth (ship-check finding — adversarial review): the calling
+  // hook is expected to gate on source==="user_settings" before ever
+  // invoking `apply`, but this CLI must not blindly trust an arbitrary
+  // --settings path handed to it — a bug in that gating (or a future caller)
+  // could otherwise point this at a PROJECT .claude/settings.json or any
+  // other file that happens to be named settings.json. Refuse to mutate
+  // anything but the one canonical global settings file.
+  const canonicalSettingsPath = path.join(home, '.claude', 'settings.json');
+  if (path.resolve(settingsPath) !== canonicalSettingsPath) {
+    process.stderr.write(
+      `model-drift-guard: refusing — ${settingsPath} is not the canonical global settings.json ` +
+        `(expected ${canonicalSettingsPath})\n`
+    );
+    process.exit(0);
+  }
 
   try {
     if (!fs.existsSync(settingsPath)) process.exit(0);
@@ -123,10 +153,10 @@ if (require.main === module) {
       // safe restore target (card #1352 requirement) — the owner can edit
       // this file directly to change it; the guard never rewrites it itself.
       try {
-        fs.writeFileSync(
-          stateFile,
-          JSON.stringify({ intendedDefault: DEFAULT_FALLBACK_MODEL }, null, 2) + '\n'
-        );
+        const tmpState = `${stateFile}.tmp-${process.pid}`;
+        fs.mkdirSync(path.dirname(stateFile), { recursive: true });
+        fs.writeFileSync(tmpState, JSON.stringify({ intendedDefault: DEFAULT_FALLBACK_MODEL }, null, 2) + '\n');
+        fs.renameSync(tmpState, stateFile);
       } catch {
         // non-fatal — falls through to the DEFAULT_FALLBACK_MODEL constant
       }
@@ -136,10 +166,15 @@ if (require.main === module) {
     if (!decision.block) process.exit(0);
 
     // Optimistic concurrency: ~20 sessions can be writing settings.json at
-    // once (card #1352 review, correctness blocker #1). Re-check the file
-    // is still exactly what we read before mutating it — if another
-    // process wrote in the meantime, skip this round rather than clobbering
-    // it; that write's own ConfigChange firing will re-evaluate.
+    // once (card #1352 review, correctness blocker #1). This NARROWS the
+    // race, it does not close it — there's still a TOCTOU gap between this
+    // recheck and the renameSync below (no cross-platform flock available;
+    // the rest of this codebase's config-mutating hooks accept the same
+    // window, e.g. config-change-notify.sh's own state-file write). Given
+    // ConfigChange firings are rare (only on an actual settings.json edit,
+    // not a hot path) and the fallback is simply "the next firing
+    // re-evaluates", the residual risk is accepted rather than adding a
+    // lock file with its own stale-lock failure modes.
     const rawNow = fs.readFileSync(settingsPath, 'utf8');
     const hashNow = crypto.createHash('sha256').update(rawNow).digest('hex');
     if (hashNow !== hashBefore) process.exit(0);
@@ -169,7 +204,26 @@ if (require.main === module) {
     process.exit(2);
   } catch (e) {
     // Fail open on any infra problem (bad JSON, permissions, etc.) — only a
-    // confirmed, successfully-reverted violation should ever exit 2.
+    // confirmed, successfully-reverted violation should ever exit 2. But
+    // exit-0 output is silently discarded by the ConfigChange event (see
+    // config-change-notify.sh's header comment) — without this, a bug in
+    // this script could make the guard a permanent silent no-op with zero
+    // signal anywhere (ship-check finding). Best-effort record it so it's at
+    // least discoverable in the shared audit log even though nothing blocks.
+    try {
+      fs.appendFileSync(
+        auditFile,
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          session_id: sessionId,
+          event: 'model_drift_guard_error',
+          error: e.message,
+          file_path: settingsPath,
+        }) + '\n'
+      );
+    } catch {
+      // truly best-effort — never let audit logging itself throw
+    }
     process.stderr.write(`model-drift-guard: skipped (${e.message})\n`);
     process.exit(0);
   }
