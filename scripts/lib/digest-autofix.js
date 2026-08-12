@@ -226,6 +226,12 @@ function fileCard(title, notes, { log = () => {} } = {}) {
     execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', title,
       '--priority', 'P1', '--status', 'Not started',
       '--notes', notes,
+      // task #1310: filing and dispatching are deliberately separate steps
+      // here (see header comment above) — this call only ever files. The
+      // caller's own syncTasks() + dispatchDetached() (below) is the real
+      // dispatch; --park states that split so the card never reads as
+      // already-in-progress in the gap between the two.
+      '--park', 'Auto-filed by digest-autofix; runAutofix syncs the task mirror and dispatches separately in the same pass.',
     ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
     log(`[digest-autofix] filed card: ${title}`);
     return true;
