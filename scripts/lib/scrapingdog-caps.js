@@ -50,6 +50,27 @@ const { isNextUtcDay } = require('./provider-spend-core');
  */
 const DEFAULT_DAILY_CREDIT_CEILING = 45000;
 
+/**
+ * Per-show reservation carved OUT of the daily ceiling for bulk (non-exempt)
+ * callers whenever a show is in its opening window (#1330, the SD half of
+ * #1315's BD fix — the same flat-ceiling starvation gap: countShowsInOpeningWindow
+ * was already computed in check-sd-breaker.js for alert-severity labeling, but
+ * never fed into the ceiling itself, so a routine sweep could exhaust the same
+ * day's SD credits an opening-window show's review-day scraping needed).
+ *
+ * No observed-incident number exists yet for SD the way BD had (554 unlocker
+ * calls billed 2026-08-02) — SD's per-request cost varies by tier (1 credit
+ * standard, 5 render, 10 premium; SERP calls bill 5*attempts, url-discovery.js)
+ * so a request-count reserve doesn't translate directly into a credit reserve.
+ * Sized proportionally to BD's own reserve-to-ceiling ratio instead (250 /
+ * 3,500 ≈ 7.1% of BD's per-zone daily ceiling) applied to SD's daily ceiling —
+ * the same "throttle bulk sweeps well before the real breaker trips" intent,
+ * scaled to SD's larger credit-denominated budget. Recalibrate alongside
+ * DEFAULT_PER_SHOW in opening-night-budget.js once a real opening-window SD
+ * credit figure is observed (memory/opening-night-budget-tuning.md).
+ */
+const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS = 3000;
+
 const DEFAULT_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'sd-circuit-breaker.json');
 const STATE_CACHE_MS = 60_000;
 
@@ -72,6 +93,11 @@ function resolveExemptScripts(env = process.env) {
   const raw = (env.SD_EXEMPT_SCRIPTS || '').trim();
   if (!raw) return DEFAULT_EXEMPT_SCRIPTS.slice();
   return raw.split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+/** Opening-window per-show credit reserve: SD_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS, else the default. */
+function resolveOpeningWindowReservePerShowCredits(env = process.env) {
+  return _posInt(env.SD_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS, DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS);
 }
 
 // ---------- pure decision functions ------------------------------------------
@@ -272,9 +298,11 @@ function _resetForTests() {
 
 module.exports = {
   DEFAULT_DAILY_CREDIT_CEILING,
+  DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS,
   DEFAULT_STATE_PATH,
   resolveDailyCreditCeiling,
   resolveExemptScripts,
+  resolveOpeningWindowReservePerShowCredits,
   shouldTripBreaker,
   computeTodayCredits,
   isBreakerActive,

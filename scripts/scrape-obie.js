@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { writePrecursorJson, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const PAGE = 'Obie_Award';
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
@@ -111,10 +112,21 @@ async function main() {
 
   const tables = Array.from(doc.querySelectorAll('table.wikitable'));
   for (const t of tables) {
-    const headers = Array.from(t.querySelectorAll('tr')[0]?.querySelectorAll('th, td') || [])
-      .map((c) => (c.textContent || '').trim().toLowerCase());
-    if (!headers.includes('year') || !headers.some((h) => h.includes('recipient'))) continue;
+    const headerCells = Array.from(t.querySelectorAll('tr')[0]?.querySelectorAll('th, td') || [])
+      .map((c) => (c.textContent || '').trim());
 
+    // Identify AND schema-guard this table in one call (task #1331) — a prior
+    // version derived minCells from indices found in this same headerCells
+    // array, which is tautological (can never fail). Fixed expectedHeaders
+    // here actually gates on the labels this table must carry.
+    try {
+      assertTableSchema([headerCells], { minCells: 2, expectedHeaders: ['Year', 'Recipient'] });
+    } catch (err) {
+      if (err instanceof TableSchemaError) continue; // not the table we want
+      throw err;
+    }
+
+    const headers = headerCells.map((c) => c.toLowerCase());
     const yearIdx = headers.indexOf('year');
     const recIdx = headers.findIndex((h) => h.includes('recipient'));
 

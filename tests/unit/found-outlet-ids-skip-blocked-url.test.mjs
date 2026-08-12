@@ -45,6 +45,14 @@ writeFile('playbill-scored.json', {
   url: 'https://playbill.com/production/some-show',
   llmScore: { score: 72 },
 });
+// Included: blocked-domain URL scored only via originalScore/aggregatorStars — the exact
+// gap that corrupted 16 real show-score/timeout/thestage reviews when a narrower
+// llmScore/assignedScore-only check was used (#1328 fixup).
+writeFile('show-score-aggregator-scored.json', {
+  outletId: 'show-score',
+  url: 'https://www.show-score.com/off-broadway-shows/some-show',
+  originalScore: '91/100',
+});
 // Included: normal kept review with a real score, non-blocked URL.
 writeFile('nyt-brantley.json', {
   outletId: 'nyt',
@@ -74,6 +82,11 @@ describe('getFoundOutletIds — unscored + isBlockedReviewUrl', () => {
     assert.equal(found.has('playbill'), true, 'a real score must not be masked by the URL-domain check');
   });
 
+  test('a file scored only via originalScore/aggregatorStars still counts as found', () => {
+    const found = getFoundOutletIds(TEST_SHOW_ID);
+    assert.equal(found.has('show-score'), true, 'originalScore-only scoring must not be treated as unscored');
+  });
+
   test('a normal scored review with a non-blocked URL still counts as found', () => {
     const found = getFoundOutletIds(TEST_SHOW_ID);
     assert.equal(found.has('nyt'), true);
@@ -86,6 +99,6 @@ describe('getFoundOutletIds — unscored + isBlockedReviewUrl', () => {
 
   test('net: only real (or url-less) files count as found', () => {
     const found = getFoundOutletIds(TEST_SHOW_ID);
-    assert.deepEqual([...found].sort(), ['nyt', 'playbill', 'vulture']);
+    assert.deepEqual([...found].sort(), ['nyt', 'playbill', 'show-score', 'vulture']);
   });
 });

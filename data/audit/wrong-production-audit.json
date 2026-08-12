@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T18:41:09.674Z",
+  "timestamp": "2026-08-12T19:12:23.723Z",
   "stats": {
-    "totalReviews": 42113,
-    "alreadyFlagged": 18281,
+    "totalReviews": 42115,
+    "alreadyFlagged": 18283,
     "dateGuardCatches": 138,
     "directorMismatch": 963,
-    "tvFilmSignals": 1187,
-    "londonSignals": 857,
+    "tvFilmSignals": 1189,
+    "londonSignals": 860,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3561
+    "noPublishDate": 3557
   },
   "findings": [
     {
@@ -6102,6 +6102,25 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 86,
+      "publishDate": "2026-08-12",
+      "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "london-theatre--unknown.json",
       "publishDate": "2026-06-10",
       "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
@@ -6166,6 +6185,25 @@
       "score": 79,
       "publishDate": "2026-08-04",
       "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "score": 17,
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34762,6 +34800,20 @@
       "score": 79,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "seatplan--unknown.json",
+      "score": 89,
+      "publishDate": "2026-08-12",
+      "url": "https://seatplan.com/london/news/death-note-the-musical-review-barbican-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
