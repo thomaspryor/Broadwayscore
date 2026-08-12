@@ -179,6 +179,22 @@ test('assessCanaryRow: yesterday never filed at all (digest itself skipped it) -
   assert.match(r.message, /FAILED at stage "not-filed"/);
 });
 
+test('REGRESSION: yesterday reached job-done but was never resolved (no canary-pass/fail recorded) -> WARN, not ERROR', () => {
+  // The job genuinely finished — runAutofixCanary's own resolution step just
+  // never got to record a verdict (e.g. a persistent local git-fetch or
+  // task-load failure on this machine). Treating this as a confirmed
+  // pipeline FAILURE would be a false alarm over local infra trouble, not
+  // the dispatch pipeline itself.
+  const canaryLedger = [{ event: 'card-filed', date: YESTERDAY, taskId: '920', ts: at(20) }];
+  const shared = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '920', jobId: 'job-20', ts: at(19) },
+    { event: dispatchLedger.JOB_EVENTS.DONE, taskId: '920', jobId: 'job-20', ts: at(18) },
+  ];
+  const r = assessCanaryRow({ canaryLedgerEntries: canaryLedger, dispatchLedgerEntries: shared, now: new Date(NOW) });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /not yet confirmed/);
+});
+
 // ── assessThroughputRow: dispatched/passed/net with teeth ──────────────────
 
 function entriesForDaysAgo(event, daysAgoList) {
@@ -214,10 +230,10 @@ test('REGRESSION: both ledgers missing (null) is NEVER scored pass — closes th
   assert.match(r.message, /not measurable/);
 });
 
-test('assessThroughputRow: one ledger present-but-empty and the other null still measures from the present one', () => {
+test('REGRESSION: one ledger readable + healthy but the other null (unreadable) is capped at warn, never pass — partial visibility must not read as confirmed health', () => {
   const digest = [...entriesForDaysAgo('auto-dispatch', [0, 1, 2]), ...entriesForDaysAgo('card-pass', [0, 1])];
   const r = assessThroughputRow({ digestLedgerEntries: digest, backlogLedgerEntries: null, now: new Date(NOW) });
-  assert.equal(r.status, 'pass');
+  assert.equal(r.status, 'warn');
   assert.match(r.message, /backlog-drain ledger unreadable/);
 });
 

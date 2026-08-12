@@ -1,0 +1,226 @@
+'use strict';
+
+/**
+ * dispatch-attempts — pure fold of dispatch-ledger.jsonl rows into one record
+ * per dispatch ATTEMPT, each classified dead / unverified / alive.
+ *
+ * Extracted from dispatch-health.js (card #1233) the moment a second
+ * consumer needed the attempts themselves rather than the dead-rate digest
+ * built on top of them — exactly the split dispatch-health.js's own header
+ * comment called for ("Split it if a second consumer ever needs the
+ * attempts without the rate"). dispatch-ledger.js's dead-attempt cap
+ * (classifyDeadAttemptsForTask) is that second consumer: it needs to know
+ * INFRA vs SUBSTANTIVE per attempt, not a windowed rate. Both
+ * dispatch-health.js and dispatch-ledger.js require this leaf module; this
+ * module requires neither of them, and never will — it exists specifically
+ * so dispatch-ledger.js (25 requirers, the foundational ledger) never has to
+ * reach up into its own narrower digest consumer to get this.
+ *
+ * Zero I/O, zero dependencies — same "leaf util" shape as this file's own
+ * existing predicates (isLatestDispatchDead, detectLauncherOutage,
+ * looksLikeRestart in dispatch-ledger.js) which take nothing but fs/path.
+ *
+ * ── How a dead attempt appears in the ledger ──────────────────────────────
+ * Each `launch` row is one dispatch ATTEMPT — the denominator. There are THREE
+ * end states, and none of them is simply "count the `dead` rows":
+ *
+ *  1. CONFIRMED DEAD, injection never ran. dispatch-ledger's
+ *     failedLaunchEntries() writes a `dead` row IMMEDIATELY followed by a
+ *     `launch` row with `unverified: true` for the SAME attempt (observed
+ *     1-2ms apart). The attempt is already present exactly once as a launch
+ *     that self-identifies as dead — counting the `dead` row too would
+ *     double-count it.
+ *  2. CONFIRMED DEAD, discovered later. bsc-prune's deadBreadcrumbs: the
+ *     launch was a normal, verified `launch` row, and a `dead` row is appended
+ *     minutes-to-hours later when the sweep finds the workspace idle and
+ *     never-booted. That death must be attributed BACK to the earlier launch.
+ *  3. UNVERIFIED. failedLaunchEntries({deadConfirmed:false}) — the #705
+ *     slow-boot case: verification gave up while the wrapper process was STILL
+ *     RUNNING, so the ledger deliberately writes NO `dead` row ("recording a
+ *     dead breadcrumb for it would be a lie with teeth"). The launch is
+ *     unverified with no pair. On the real ledger 7 of 53 unverified launches
+ *     are this shape. They are NOT counted as deaths (that would inflate the
+ *     rate with sessions that very likely booted fine) and NOT counted as
+ *     healthy either — they get their own bucket, because silently calling an
+ *     unknown outcome "healthy" is the vacuous-gate class this repo keeps
+ *     paying for (#1063/#1069/#1075).
+ *
+ * On the real ledger as of 2026-08-10: 452 launch rows, 53 unverified, 67
+ * `dead` rows — 46 shape-1 pairs, 21 shape-2 breadcrumbs, 7 shape-3.
+ *
+ * workspaceRef pairing is LAST-MATCH-AT-OR-BEFORE, never first-match: cmux
+ * recycles refs (144 of 452 launch rows reuse one — workspace:247 was launched
+ * 2026-07-23 and again 2026-08-01), and first-match would hang a fresh death
+ * on a month-old attempt. Same rule dispatch-ledger.js's launchByRef already
+ * follows for card #960.
+ */
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+// A shape-1 `dead` row and its unverified `launch` row are two separate
+// appendLedgerEntry() calls, observed 1-2ms apart. Generous slack (a
+// concurrent writer can interleave rows between them) but far below the
+// minutes-to-hours lag of a shape-2 breadcrumb, which must NOT be mistaken
+// for a pair.
+const PAIR_WINDOW_MS = 5000;
+
+// The lane this card is about: cmux tabs, where the terminal surface fails to
+// render. `headless:` launches are the job lane — a different failure
+// mechanism entirely (PID/lease, reconciled by bsc-reconcile.js), so folding
+// them into the paging rate would dilute exactly the signal being measured.
+// They stay visible in byLane.
+const CMUX_LANE = 'workspace';
+
+// Any workspaceRef without a "prefix:" shape (the real ledger has
+// "live-session-manual"). Bucketed rather than dropped so byLane always
+// accounts for every launch.
+const OTHER_LANE = 'other';
+
+function laneOf(workspaceRef) {
+  const ref = String(workspaceRef || '');
+  const i = ref.indexOf(':');
+  return i > 0 ? ref.slice(0, i) : OTHER_LANE;
+}
+
+function tsOf(entry) {
+  const t = Date.parse(entry && entry.ts);
+  return Number.isFinite(t) ? t : null;
+}
+
+/**
+ * Fold ledger rows into one record per dispatch ATTEMPT, each classified dead
+ * / unverified / alive. See the header for the three shapes.
+ *
+ * @param {object[]} entries raw dispatch-ledger.jsonl rows
+ * @returns {{attempts: Array<{ts:number, tsIso:string, taskId:string|null,
+ *            workspaceRef:string|null, lane:string, model:string|null,
+ *            dead:boolean, unverified:boolean, deadReason:string|null}>,
+ *           unattributedDeadCount:number}}
+ *   unattributedDeadCount = `dead` rows whose launch is not in `entries` at
+ *   all (rotated/truncated ledger). Surfaced rather than silently dropped OR
+ *   folded into the rate — either would be a lie about the denominator.
+ */
+function foldAttempts(entries) {
+  // Sort by ts with an index tiebreak so out-of-order appends from concurrent
+  // writers can't reorder a shape-1 pair relative to an unrelated attempt.
+  // Rows with no parseable ts are dropped — they can't be windowed, and a
+  // launch that can't be dated can't honestly join a rate.
+  const rows = (Array.isArray(entries) ? entries : [])
+    .filter((e) => e && typeof e === 'object' && tsOf(e) !== null)
+    .map((e, i) => ({ e, i, t: tsOf(e) }))
+    .sort((a, b) => (a.t - b.t) || (a.i - b.i))
+    .map((x) => x.e);
+
+  const attempts = [];
+  const idxByRef = new Map(); // workspaceRef -> attempt indices, in ts order
+
+  for (const e of rows) {
+    if (e.event !== 'launch') continue;
+    const ref = e.workspaceRef || null;
+    const isUnverified = e.unverified === true;
+    const idx = attempts.push({
+      ts: tsOf(e),
+      tsIso: e.ts,
+      taskId: e.taskId != null ? String(e.taskId) : null,
+      workspaceRef: ref,
+      lane: laneOf(ref),
+      model: e.model || null,
+      // Promoted to `dead` below iff a `dead` row claims this attempt. An
+      // unverified launch with no such row is shape 3 and stays unverified.
+      dead: false,
+      unverified: isUnverified,
+      deadReason: null,
+    }) - 1;
+    if (ref) {
+      if (!idxByRef.has(ref)) idxByRef.set(ref, []);
+      idxByRef.get(ref).push(idx);
+    }
+  }
+
+  let unattributedDeadCount = 0;
+
+  for (const e of rows) {
+    if (e.event !== 'dead') continue;
+    const ref = e.workspaceRef || null;
+    const deadTs = tsOf(e);
+    const candidates = ref ? (idxByRef.get(ref) || []) : [];
+    if (candidates.length === 0) { unattributedDeadCount++; continue; }
+
+    // Shape 1 — this death's OWN unverified launch, written ~1ms LATER (so a
+    // plain ts<=deadTs search would skip past it onto an older, unrelated
+    // attempt on the recycled ref). Claim the nearest unclaimed unverified
+    // attempt inside the pair window.
+    const pairIdx = candidates.find((i) => attempts[i].unverified
+      && !attempts[i].dead
+      && Math.abs(attempts[i].ts - deadTs) <= PAIR_WINDOW_MS);
+    if (pairIdx !== undefined) {
+      attempts[pairIdx].dead = true;
+      attempts[pairIdx].deadReason = e.failureReason || 'launch never verified';
+      continue;
+    }
+
+    // Shape 2 — a breadcrumb for an earlier, verified launch. Last match at
+    // or before the death (card #960: never first-match on a recycled ref).
+    let target;
+    for (let k = candidates.length - 1; k >= 0; k--) {
+      if (attempts[candidates[k]].ts <= deadTs) { target = candidates[k]; break; }
+    }
+    if (target === undefined) { unattributedDeadCount++; continue; }
+    if (!attempts[target].dead) {
+      attempts[target].dead = true;
+      attempts[target].deadReason = e.failureReason || 'workspace found dead by sweep';
+    }
+  }
+
+  // `remapped` (ship-check finding): after a cmux restart, dispatch-ledger
+  // rewrites a live dispatch onto a NEW ref and journals
+  // {event:'remapped', workspaceRef:<old>, newRef:<new>}. The same real
+  // dispatch therefore owns two launch rows — and the old one is typically
+  // unverified:true, because verification is what gave up when cmux
+  // restarted. Counting both inflates the denominator AND manufactures a
+  // phantom "unverified" attempt out of a dispatch that in fact continued
+  // fine. Only 3 remaps exist in the ledger today, but the error is silent
+  // and grows with any restart storm. dispatch-ledger.js already treats
+  // 'remapped' as terminal for the old ref (TERMINAL_LAUNCH_EVENTS) — this
+  // applies the same rule to the rate.
+  const superseded = new Set();
+  for (const e of rows) {
+    if (e.event !== 'remapped' || !e.workspaceRef) continue;
+    const remapTs = tsOf(e);
+    const candidates = idxByRef.get(e.workspaceRef) || [];
+    for (let k = candidates.length - 1; k >= 0; k--) {
+      const idx = candidates[k];
+      if (attempts[idx].ts > remapTs) continue;
+      // A CONFIRMED-DEAD attempt is never superseded (adversarial review of
+      // the first cut of this fix, which had exactly this bug). The restart
+      // sweep in dispatch-ledger.js remaps a ref regardless of whether its
+      // occupant already died, so on the real ledger task #925's only launch
+      // — workspace:99, paired `dead` row 1ms later, "command injection never
+      // ran" — was erased by a remap NINE HOURS later, removing a real death
+      // from both `dead` and `deadTaskIds`. Superseding is for "this dispatch
+      // continued under a new ref", which a corpse by definition did not do.
+      if (!attempts[idx].dead) superseded.add(idx);
+      break;
+    }
+  }
+
+  return {
+    attempts: attempts.filter((_, i) => !superseded.has(i)),
+    unattributedDeadCount,
+    // The attempts themselves, not a bare count: callers that scope figures
+    // to a window (dispatch-health.js's computeDeadRate) need the objects,
+    // not a lifetime total that silently stops reconciling as remaps
+    // accumulate (same review that found the bug above).
+    supersededAttempts: [...superseded].map((i) => attempts[i]),
+  };
+}
+
+module.exports = {
+  foldAttempts,
+  laneOf,
+  tsOf,
+  CMUX_LANE,
+  OTHER_LANE,
+  PAIR_WINDOW_MS,
+  DAY_MS,
+};
