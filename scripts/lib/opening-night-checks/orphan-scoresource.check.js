@@ -48,10 +48,12 @@ function run(show, context) {
     .map(r => `  - ${r.outletId || 'unknown'} / ${r.criticName || 'Unknown'} (score=${r.assignedScore ?? 'null'})`)
     .join('\n');
 
+  const message = `${orphans.length} review(s) have scoreSource=null but look scorable — likely syndicate/dedup orphans:\n${top}${orphans.length > 5 ? `\n  ... and ${orphans.length - 5} more` : ''}`;
+
   return {
     ok: false,
     severity,
-    message: `${orphans.length} review(s) have scoreSource=null but look scorable — likely syndicate/dedup orphans:\n${top}${orphans.length > 5 ? `\n  ... and ${orphans.length - 5} more` : ''}`,
+    message,
     details: {
       orphanCount: orphans.length,
       totalReviews: reviews.length,
@@ -61,6 +63,19 @@ function run(show, context) {
         url: r.url,
         assignedScore: r.assignedScore ?? null,
       })),
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: re-running rebuild is not guaranteed to resolve
+      // a syndication orphan (the losing file may need manual reassignment),
+      // so a heuristic re-dispatch would just loop without fixing anything.
+      remediation: {
+        kind: 'alert',
+        key: `orphan-scoresource:${show.id}`,
+        conditionKey: `opening-night-orphan-scoresource-${show.id}`,
+        title: `Orphaned scoreSource on ${show.title || show.id}`,
+        description: message,
+        severity,
+        reason: `${orphans.length} review(s) with scoreSource=null despite looking scorable`,
+      },
     },
   };
 }

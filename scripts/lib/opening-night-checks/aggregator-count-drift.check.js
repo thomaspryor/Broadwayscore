@@ -83,6 +83,21 @@ function run(show, context) {
     message: `Aggregator count-drift detected — ${aggSummary}. Re-run discovery or flag for human review.`,
     details: {
       records: [...byAgg.values()].map(r => ({ aggregator: r.details?.aggregator, delta: r.details?.delta, url: r.details?.url })),
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // gather-reviews.yml is the same discovery workflow the check's own
+      // message points at ("Re-run discovery") — safe to re-dispatch because
+      // gather-reviews.js dedupes against existing review-text files.
+      remediation: {
+        kind: 'workflow',
+        key: `aggregator-count-drift:${show.id}`,
+        workflow: 'gather-reviews.yml',
+        // gather-reviews.yml's workflow_dispatch input is `opening_night`
+        // (boolean) — verified against .github/workflows/gather-reviews.yml.
+        // A wrong/unknown input name makes the GitHub API reject the dispatch
+        // outright (422), so this must match the workflow's actual schema.
+        inputs: { shows: show.id, opening_night: true },
+        reason: `count-drift delta ${worst.delta} — ${aggSummary}`,
+      },
     },
   };
 }

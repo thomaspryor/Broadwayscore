@@ -67,13 +67,31 @@ function run(show, context) {
   const shippedMismatches = mismatches.filter(m => m.shipped);
   const severity = shippedMismatches.length > 0 ? 'error' : 'warning';
 
+  const message = mismatches.map(m =>
+    `[${m.shipped ? 'SHIPPED' : 'excluded'}] ${m.filename}: bwwRoundupUrl points to different show — ${m.bwwRoundupUrl}`
+  ).join('\n');
+
   return {
     ok: false,
     severity,
-    message: mismatches.map(m =>
-      `[${m.shipped ? 'SHIPPED' : 'excluded'}] ${m.filename}: bwwRoundupUrl points to different show — ${m.bwwRoundupUrl}`
-    ).join('\n'),
-    details: { mismatches, acceptSlugs, showId: show.id },
+    message,
+    details: {
+      mismatches,
+      acceptSlugs,
+      showId: show.id,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: cross-show attribution needs a human to confirm
+      // before either excluding the review or correcting the roundup URL.
+      remediation: {
+        kind: 'alert',
+        key: `roundup-url-mismatch:${show.id}`,
+        conditionKey: `opening-night-roundup-url-mismatch-${show.id}`,
+        title: `Roundup URL cross-show mismatch on ${show.title || show.id}`,
+        description: message,
+        severity,
+        reason: `${mismatches.length} bwwRoundupUrl value(s) point to a different show`,
+      },
+    },
   };
 }
 

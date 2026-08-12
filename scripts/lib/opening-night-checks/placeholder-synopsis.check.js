@@ -28,11 +28,27 @@ function run(show, context) {
       ? `too thin (${text.length} chars, min ${MIN_SYNOPSIS_LENGTH})`
       : 'matches a known placeholder phrase';
 
+  const message = `synopsis for ${show.id} is ${reason} — write a specific 2-3 sentence synopsis from the show's press materials`;
+
   return {
     ok: false,
     severity: 'warning',
-    message: `synopsis for ${show.id} is ${reason} — write a specific 2-3 sentence synopsis from the show's press materials`,
-    details: { showId: show.id, synopsis: show.synopsis || null, reason },
+    message,
+    details: {
+      showId: show.id,
+      synopsis: show.synopsis || null,
+      reason,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      remediation: {
+        kind: 'alert',
+        key: `placeholder-synopsis:${show.id}`,
+        conditionKey: `opening-night-placeholder-synopsis-${show.id}`,
+        title: `Placeholder synopsis on ${show.title || show.id}`,
+        description: message,
+        severity: 'warning',
+        reason: `synopsis is ${reason}`,
+      },
+    },
   };
 }
 

@@ -102,25 +102,62 @@ function run(show, context) {
 
   if (violations.length === 0) {
     // Only missing-date warnings — surface as warning, not error.
+    const warnMessage = missingDateWarnings.map(v =>
+      `${v.outletId}/${v.criticName} SHIPPED with no publishDate — cannot confirm post-opening: ${v.url}`
+    ).join('\n');
     return {
       ok: false,
       severity: 'warning',
-      message: missingDateWarnings.map(v =>
-        `${v.outletId}/${v.criticName} SHIPPED with no publishDate — cannot confirm post-opening: ${v.url}`
-      ).join('\n'),
-      details: { missingDateWarnings, showId: show.id },
+      message: warnMessage,
+      details: {
+        missingDateWarnings,
+        showId: show.id,
+        // Self-declared remediation (task #389 pattern, extended for BRO-219).
+        remediation: {
+          kind: 'alert',
+          key: `publish-date-pre-opening-missing:${show.id}`,
+          // Colon (not hyphen) before the state segment: show IDs never
+          // contain colons, so this can't collide with the main variant's
+          // conditionKey below for a differently-named show (Codex review).
+          conditionKey: `opening-night-publish-date-pre-opening:missing:${show.id}`,
+          title: `Shipped review missing publishDate on ${show.title || show.id}`,
+          description: warnMessage,
+          severity: 'warning',
+          reason: `${missingDateWarnings.length} shipped review(s) with no publishDate`,
+        },
+      },
     };
   }
+
+  const message = violations.map(v =>
+    `${v.outletId}/${v.criticName} SHIPPED with publishDate ${v.publishDate} (${v.daysBeforeOpening}d before openingDate ${v.openingDate}): ${v.url}`
+  ).concat(missingDateWarnings.map(v =>
+    `⚠️  ${v.outletId}/${v.criticName} also missing publishDate: ${v.url}`
+  )).join('\n');
 
   return {
     ok: false,
     severity: 'error',
-    message: violations.map(v =>
-      `${v.outletId}/${v.criticName} SHIPPED with publishDate ${v.publishDate} (${v.daysBeforeOpening}d before openingDate ${v.openingDate}): ${v.url}`
-    ).concat(missingDateWarnings.map(v =>
-      `⚠️  ${v.outletId}/${v.criticName} also missing publishDate: ${v.url}`
-    )).join('\n'),
-    details: { violations, missingDateWarnings, showId: show.id, graceDaysBeforeOpening: GRACE_DAYS_BEFORE_OPENING },
+    message,
+    details: {
+      violations,
+      missingDateWarnings,
+      showId: show.id,
+      graceDaysBeforeOpening: GRACE_DAYS_BEFORE_OPENING,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: a pre-opening publishDate could be a legitimate
+      // early T1 review or an anticipatory post — a heuristic cannot tell
+      // which, so a human decides whether to exclude or manually clear it.
+      remediation: {
+        kind: 'alert',
+        key: `publish-date-pre-opening:${show.id}`,
+        conditionKey: `opening-night-publish-date-pre-opening:${show.id}`,
+        title: `Pre-opening publishDate on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${violations.length} shipped review(s) published >${GRACE_DAYS_BEFORE_OPENING}d before opening`,
+      },
+    },
   };
 }
 
