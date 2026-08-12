@@ -2249,6 +2249,14 @@ on:
       - 'scripts/lib/tr-wrongshow-guard.js'
       - 'scripts/lib/tr-wrongshow-guard.test.mjs'
       - 'scripts/extract-theatre-record.js'
+      # Linear migration Day 1 (card #1283): resumable importer from the local
+      # task mirror into Linear team BRO. Curation rules are pure + colocated
+      # tested (scripts/lib/*.test.mjs glob); path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/linear-import.js'
+      - 'scripts/lib/linear-client.js'
+      - 'scripts/lib/linear-import-rules.js'
+      - 'scripts/lib/linear-import-rules.test.mjs'
   pull_request:
     branches: [main]
   schedule:
