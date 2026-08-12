@@ -346,3 +346,15 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
 });
+
+// Regression (2026-08-12): getTeam() returns states as a GraphQL connection
+// ({nodes:[...]}), and pickStateForMode crashed on it (.find is not a
+// function) — linear-brain.js create was broken on every invocation since
+// it shipped. Normalization must accept both shapes.
+test('pickStateForMode accepts both bare-array and {nodes} connection shapes', async () => {
+  const { pickStateForMode } = await import('../../scripts/lib/linear-issue-create.js').then(m => m.default || m);
+  const states = [ { id: 's1', name: 'Backlog', type: 'backlog' }, { id: 's2', name: 'Todo', type: 'unstarted' } ];
+  assert.equal(pickStateForMode(states, 'dispatch').id, 's2');
+  assert.equal(pickStateForMode({ nodes: states }, 'dispatch').id, 's2');
+  assert.equal(pickStateForMode({ nodes: states }, 'park').id, 's1');
+});
