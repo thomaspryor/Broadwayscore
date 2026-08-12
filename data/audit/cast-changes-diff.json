@@ -1,877 +1,105 @@
 {
-  "timestamp": "2026-08-08T09:30:21.210Z",
+  "timestamp": "2026-08-12T09:55:24.421Z",
   "summary": {
-    "eventsAdded": 7,
+    "eventsAdded": 9,
     "eventsUpgraded": 0,
-    "eventsCleaned": 101,
-    "showsCleaned": 0,
-    "totalChanges": 108,
+    "eventsCleaned": 1,
+    "showsCleaned": 3,
+    "totalChanges": 13,
     "errors": 0
   },
   "changes": [
     {
-      "showId": "just-in-time-2025",
+      "showId": "six-2021",
       "changeType": "applied-departure",
       "eventType": "departure",
-      "name": "Sadie Dickerson",
-      "role": "Sandra Dee",
-      "date": "2026-04-19"
+      "name": "Kirstin Maldonado",
+      "role": "Anne Boleyn",
+      "date": "2026-08-09"
     },
     {
-      "showId": "just-in-time-2025",
-      "changeType": "applied-departure",
+      "showId": "ragtime-2025",
+      "changeType": "added",
       "eventType": "departure",
-      "name": "Jonathan Groff",
-      "role": "Bobby Darin",
-      "date": "2025-01-01"
+      "name": "Shaina Taub",
+      "role": "Emma Goldman",
+      "source": "playbill-cast"
     },
     {
-      "showId": "just-in-time-2025",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Isa Briones",
+      "showId": "the-outsiders-2024",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Barton Cowperthwaite",
       "role": "Unknown",
-      "date": "2026-07-01"
-    },
-    {
-      "showId": "just-in-time-2025",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Isa Briones",
-      "role": "Connie Francis",
-      "date": "2026-05-29"
-    },
-    {
-      "showId": "just-in-time-2025",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Olivia Holt",
-      "role": "Connie Francis",
-      "date": "2026-05-30"
-    },
-    {
-      "showId": "just-in-time-2025",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Matthew Morrison",
-      "role": "Bobby Darin",
-      "date": "2026-04-01"
-    },
-    {
-      "showId": "just-in-time-2025",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Michele Pawk",
-      "role": "Polly",
-      "date": "2026-03-29"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Aisha Jackson",
-      "role": "Daisy Buchanan",
-      "date": "2026-02-01"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Reeve Carney",
-      "role": "Jay Gatsby",
-      "date": "2026-07-26"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Eva Noblezada",
-      "role": "Daisy Buchanan",
-      "date": "2026-07-26"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Senzel Ahmady",
-      "role": "Daisy Buchanan",
-      "date": "2026-07-27"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Ryan McCartan",
-      "role": "Jay Gatsby",
-      "date": "2026-07-27"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "China Anne McClain",
-      "role": "Daisy Buchanan",
-      "date": "2026-08-03"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Ryan McCartan",
-      "role": "Jay Gatsby",
-      "date": "2025-11-09"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "Jay Gatsby",
-      "role": "Jay Gatsby",
-      "date": "2025-11-09"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Jeremy Jordan",
-      "role": "Jay Gatsby",
-      "date": "2026-03-07"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Samantha Pauly",
-      "role": "Jordan Baker",
-      "date": "2026-07-26"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "Samantha Pauly",
-      "role": "Jordan Baker",
-      "date": "2026-07-26"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Sara Chase",
-      "role": "Myrtle Wilson",
-      "date": "2025-03-30"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "John Zdrojeski",
-      "role": "Tom Buchanan",
-      "date": "2025-03-30"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Noah J. Ricketts",
-      "role": "Nick Carraway",
-      "date": "2025-03-30"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "Noah J. Ricketts",
-      "role": "Nick Carraway",
-      "date": "2025-02-12"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Jeremy Jordan",
-      "role": "Jay Gatsby",
-      "date": "2025-11-10"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-absence",
-      "eventType": "absence",
-      "name": "Eva Noblezada",
-      "role": "Daisy Buchanan",
-      "date": "2026-02-05"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "TBA",
-      "role": "Daisy Buchanan",
-      "date": "2026-02-05"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Nik Walker",
-      "role": "Billy Flynn",
-      "date": "2026-06-21"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Mark Ballas",
-      "role": "Billy Flynn",
-      "date": "2026-07-20"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Matteo Lane",
-      "role": "Billy Flynn",
-      "date": "2026-07-19"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Eddie Cooper",
-      "role": "Amos Hart",
-      "date": "2026-07-20"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Red Concepción",
-      "role": "Amos Hart",
-      "date": "2026-07-19"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Derek Hough",
-      "role": "Emcee/Opening Monologue",
-      "date": "2026-07-20"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Rachel Schur",
-      "role": "Roxie Hart",
-      "date": "2026-06-14"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Matteo Lane",
-      "role": "Billy Flynn",
-      "date": "2026-06-22"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Rachel Schur",
-      "role": "Roxie Hart",
-      "date": "2026-05-04"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Mark Ballas",
-      "role": "Billy Flynn",
-      "date": "2026-05-03"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Whitney Leavitt",
-      "role": "Roxie Hart",
-      "date": "2026-05-03"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Erika Jayne",
-      "role": "Roxie Hart",
-      "date": "2025-02-23"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Nakiya Peterkin",
-      "role": "Matron \"Mama\" Morton",
-      "date": "2025-02-23"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Robyn Hurder",
-      "role": "Velma Kelly",
-      "date": "2025-12-15"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Whitney Leavitt",
-      "role": "Roxie Hart",
-      "date": "2026-02-02"
-    },
-    {
-      "showId": "chicago-1996",
-      "changeType": "cleaned-absence",
-      "eventType": "absence",
-      "name": "Mark Ballas",
-      "role": "Billy Flynn",
-      "date": "2026-04-19"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "SIX",
-      "role": "Production",
-      "date": "2025-06-27"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Dylan Mulvaney",
-      "role": "Anne Boleyn",
-      "date": "2026-02-16"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Najah Hetsberger",
-      "role": "Catherine of Aragon",
-      "date": "2026-02-15"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Gianna Yanelli",
-      "role": "Anne Boleyn",
-      "date": "2026-02-15"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Krystal Hernandez",
-      "role": "Anna of Cleves",
-      "date": "2026-02-15"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Kay Sibal",
-      "role": "Katherine Howard",
-      "date": "2026-02-15"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Taylor Marie Daniel",
-      "role": "Catherine Parr",
-      "date": "2026-02-15"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "TBA",
-      "role": "Jane Seymour",
-      "date": "2026-02-16"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Jasmine Forsberg",
-      "role": "Queen",
-      "date": "2026-02-16"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Brittney Mack",
-      "role": "Queen",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Andrea Macasaet",
-      "role": "Queen",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Samantha Pauly",
-      "role": "Queen",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Bre Jackson",
-      "role": "Catherine of Aragon",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Brennyn Lark",
-      "role": "Catherine Parr",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Keri René Fuller",
-      "role": "Jane Seymour",
-      "date": "2022-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Zoe Jensen",
-      "role": "Catherine of Aragon",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Leandra Ellis-Gaston",
-      "role": "Anne Boleyn",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Bella Coppola",
-      "role": "Jane Seymour",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Nasia Thomas",
-      "role": "Anna of Cleves",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Hailee Kaleem Wright",
-      "role": "Katherine Howard",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Taylor Iman Jones",
-      "role": "Catherine Parr",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "six-2021",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Holli' Conway",
-      "role": "Alternate",
-      "date": "2023-12-04"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Tony Macht",
-      "role": "Mary's Husband's Assistant",
-      "date": "2025-09-28"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Meg Stalter",
-      "role": "Mary Todd Lincoln",
-      "date": "2026-08-03"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Maya Rudolph",
-      "role": "Mary Todd Lincoln",
-      "date": "2026-07-05"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Cheyenne Jackson",
-      "role": "Mary's Teacher",
-      "date": "2026-07-05"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Bianca Leigh",
-      "role": "Mary's Chaperone",
-      "date": "2026-04-28"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "cleaned-expired-arrival",
-      "eventType": "arrival",
-      "name": "Cheyenne Jackson",
-      "role": "Mary's Teacher",
-      "date": "2026-04-28"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "John Cameron Mitchell",
-      "role": "Mary",
-      "date": "2026-04-26"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "John-Andrew Morrison",
-      "role": "Mary's Husband",
-      "date": "2026-04-26"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Jenn Harris",
-      "role": "Mary's Chaperone",
-      "date": "2026-04-26"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Conrad Ricamora",
-      "role": "Mary's Husband",
-      "date": "2025-08-02"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Bianca Leigh",
-      "role": "Mary's Chaperone",
-      "date": "2025-08-02"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "James Scully",
-      "role": "Mary's Teacher",
-      "date": "2025-08-02"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Tituss Burgess",
-      "role": "Mary",
-      "date": "2025-08-02"
-    },
-    {
-      "showId": "the-rocky-horror-show-2026",
-      "changeType": "cleaned-note",
-      "eventType": "note",
-      "name": "The Rocky Horror Show",
-      "role": "Production",
-      "date": "2026-06-13"
-    },
-    {
-      "showId": "the-rocky-horror-show-2026",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Valentina",
-      "role": "Columbia",
-      "date": "2026-07-21"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Jessie Shelton",
-      "role": "Fate",
-      "date": "2026-07-19"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Kay Trinidad",
-      "role": "Fate",
-      "date": "2026-07-19"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Kelly Belarmino",
-      "role": "Fate",
-      "date": "2026-07-21"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "KC Dela Cruz",
-      "role": "Fate",
-      "date": "2026-07-21"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "skipped-duplicate-arrival",
-      "eventType": "arrival",
-      "name": "Khori Michelle Petinaud",
-      "role": "Fate",
-      "date": "2026-07-21"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Jewelle Blackman",
-      "role": "Fate",
-      "date": "2026-07-19"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Joshua Colley",
-      "role": "Orpheus",
-      "date": "2026-05-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Morgan Dudley",
-      "role": "Eurydice",
-      "date": "2026-03-01"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Kurt Elling",
-      "role": "Hermes",
-      "date": "2026-03-01"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Allison Russell",
-      "role": "Persephone",
-      "date": "2026-03-01"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Paulo Szot",
-      "role": "Hades",
-      "date": "2026-03-01"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Jack Wolfe",
-      "role": "Orpheus",
-      "date": "2026-03-01"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Joshua Colley",
-      "role": "Orpheus",
-      "date": "2026-03-03"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Ali Louis Bourzgui",
-      "role": "Orpheus",
-      "date": "2025-08-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Phillip Boykin",
-      "role": "Hades",
-      "date": "2025-08-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Daniel Breaker",
-      "role": "Hermes",
-      "date": "2025-08-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Lana Gordon",
-      "role": "Persephone",
-      "date": "2025-08-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-departure",
-      "eventType": "departure",
-      "name": "Myra Molloy",
-      "role": "Eurydice",
-      "date": "2025-08-31"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Morgan Dudley",
-      "role": "Eurydice",
-      "date": "2025-09-02"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Kurt Elling",
-      "role": "Hermes",
-      "date": "2025-09-02"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Paulo Szot",
-      "role": "Hades",
-      "date": "2025-09-02"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "applied-arrival",
-      "eventType": "arrival",
-      "name": "Jack Wolfe",
-      "role": "Orpheus",
-      "date": "2025-09-02"
-    },
-    {
-      "showId": "hadestown-2019",
-      "changeType": "cleaned-absence",
-      "eventType": "absence",
-      "name": "Jack Wolfe",
-      "role": "Orpheus",
-      "date": "2025-09-09"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "added",
-      "eventType": "departure",
-      "name": "Jeremy Jordan",
-      "role": "Jay Gatsby",
       "source": "playbill-cast"
     },
     {
-      "showId": "hadestown-2019",
+      "showId": "and-juliet-2022",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Joshua Colley",
-      "role": "Orpheus",
+      "name": "Liam Pearce",
+      "role": "Romeo",
       "source": "playbill-cast"
     },
     {
-      "showId": "hadestown-2019",
+      "showId": "and-juliet-2022",
       "changeType": "added",
-      "eventType": "departure",
-      "name": "Morgan Dudley",
-      "role": "Eurydice",
+      "eventType": "arrival",
+      "name": "Ben Jackson Walker",
+      "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "hadestown-2019",
+      "showId": "six-2021",
       "changeType": "added",
-      "eventType": "departure",
-      "name": "Kurt Elling",
-      "role": "Hermes",
+      "eventType": "arrival",
+      "name": "Kirstin Maldonado",
+      "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "hadestown-2019",
+      "showId": "moulin-rouge-2019",
       "changeType": "added",
-      "eventType": "departure",
-      "name": "Paulo Szot",
-      "role": "Hades",
+      "eventType": "arrival",
+      "name": "AK Naderer",
+      "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "hadestown-2019",
+      "showId": "aladdin-2014",
       "changeType": "added",
-      "eventType": "departure",
-      "name": "Jack Wolfe",
-      "role": "Orpheus",
+      "eventType": "arrival",
+      "name": "Michael Everett",
+      "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "chicago-1996",
+      "showId": "wicked-2003",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Yeman Brown",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-lion-king-1997",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Rachel Schur",
-      "role": "Roxie Hart",
+      "name": "Daniel Harder",
+      "role": "Unknown",
       "source": "playbill-cast"
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "changeType": "removed-closed"
     }
   ],
   "stats": {
@@ -881,10 +109,10 @@
     "redditSearches": 0,
     "redditPostsAnalyzed": 0,
     "officialSitesChecked": 0,
-    "eventsAdded": 7,
+    "eventsAdded": 9,
     "eventsUpgraded": 0,
-    "eventsCleaned": 101,
-    "showsCleaned": 0,
+    "eventsCleaned": 1,
+    "showsCleaned": 3,
     "errors": []
   }
 }
