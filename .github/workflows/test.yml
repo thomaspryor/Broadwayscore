@@ -4449,6 +4449,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
           SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}

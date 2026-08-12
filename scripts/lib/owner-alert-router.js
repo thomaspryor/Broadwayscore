@@ -282,7 +282,7 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
     '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); the Linear-side drain/auditor picks it up on its next pass.`,
   ];
   try {
-    // 15s: a single Linear issueCreate call. Callers that dispatch many
+    // 15s: a single Linear issue-creation call. Callers that dispatch many
     // conditions in a loop (e.g. health-check.js) cap total dispatches per
     // run separately — this timeout only bounds one call's worst case.
     const out = execFileSync('node', args, { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
