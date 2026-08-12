@@ -1,31 +1,11 @@
 {
-  "generatedAt": "2026-08-12T11:46:33.270Z",
+  "generatedAt": "2026-08-12T12:32:56.658Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 147,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "pride-west-end-2026",
-      "title": "Pride",
-      "openingDate": "2026-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: timeout-london"
-        }
-      ],
-      "missingFromProd": [
-        "timeout-london"
-      ],
-      "localCount": 21,
-      "deployedCount": 20
-    }
-  ]
+  "clean": 148,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
