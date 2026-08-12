@@ -361,7 +361,16 @@ function isAncestor(repoRoot, maybeAncestor, ref) {
 // behaviour, in the blocking direction).
 function ancestorSet(repoRoot, ref) {
   try {
-    const out = git(repoRoot, ['rev-list', ref]);
+    // Resolve to a single commit FIRST. `merge-base --is-ancestor X <ref>`
+    // requires a commit-ish, but `git rev-list` also accepts revision-SET
+    // syntax (`--all`, `A..B`, `^X`), so handing it an unvalidated caller ref
+    // could silently build a set that answers a different question. Pinning to
+    // one SHA keeps the two forms answering the same question for every input
+    // (adversarial review, 2026-08-12: queryPushAllowed's `ref` is a public
+    // parameter, not only the validated merge sources).
+    const sha = git(repoRoot, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]).trim();
+    if (!sha) return null;
+    const out = git(repoRoot, ['rev-list', sha]);
     return new Set(out.split('\n').filter(Boolean));
   } catch {
     return null;
@@ -715,15 +724,26 @@ function classifySegment(rawTokens) {
     // `git merge` in the same compound command (`git checkout main && git
     // merge X`) — the shape the documented flow uses, and the one the repo's
     // CURRENT branch cannot reveal at hook time.
+    //
+    // Two forms look like a branch switch and are not (adversarial review,
+    // 2026-08-12) — both would have produced FALSE BLOCKS, the failure
+    // direction that wedges sessions:
+    //   `git checkout main -- some/file`  restores a path FROM main; the
+    //       checked-out branch never changes.
+    //   `git checkout --detach main`      lands on a detached HEAD, so a
+    //       following merge does not touch the main branch ref at all.
+    if (rest.includes('--')) return null;                       // path restore
+    if (rest.includes('--detach') || rest.includes('-d')) return null;  // detached HEAD
     for (let j = 0; j < rest.length; j++) {
       const t = rest[j];
-      if (t === '--') break;
       if (t === '-b' || t === '-B' || t === '-c' || t === '-C') { j += 1; continue; }
       if (t.startsWith('-')) continue;
       return { kind: 'checkout', branch: t };
     }
     return null;
   }
+
+  if (sub === 'commit') return { kind: 'commit' };
 
   if (sub !== 'merge') return null;   // `git pull` is deliberately not here
 
@@ -760,10 +780,22 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
   } catch (e) {
     return notMerge(`tokenizer threw (${e.message}) — fail open`);
   }
-  for (const tokens of segments) {
-    if (tokens.length === 0) continue;
-    const seg = classifySegment(tokens);
+  const classified = segments.filter(t => t.length).map(classifySegment);
+
+  // `git commit … && git checkout main && git merge X`: at hook time the commit
+  // has not happened, so the branch tip does NOT yet contain the work that will
+  // land. Evaluate the working tree too. pre-push-review-gate.sh:212-214 already
+  // does exactly this for its own compound case; the merge gate was missing it
+  // (adversarial review, 2026-08-12). Scanned across ALL segments because the
+  // commit can sit either side of the merge. Cheap in practice: data-daemon
+  // churn lives in data/, which GATED_PATH_RE does not cover, so this rarely
+  // adds lines that were not going to be reviewed anyway.
+  const commitsFirst = classified.some(s => s && s.kind === 'commit');
+  const withWorktree = (sources) => (commitsFirst ? [...sources, 'WORKTREE'] : sources);
+
+  for (const seg of classified) {
     if (!seg) continue;
+    if (seg.kind === 'commit') continue;
     if (seg.kind === 'checkout') { destination = seg.branch; continue; }
     if (seg.kind === 'merge-control') return notMerge('git merge --abort/--continue/--quit carries no source ref');
     if (seg.kind === 'wrapper') {
@@ -775,7 +807,7 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
       // The wrapper itself refuses this ("nothing to integrate", :56).
       if (branch === defaultBranch) return notMerge(`merge wrapper source is ${defaultBranch} — the wrapper refuses this`);
       return {
-        isMerge: true, targetsMain: true, sources: [branch], via: 'wrapper',
+        isMerge: true, targetsMain: true, sources: withWorktree([branch]), via: 'wrapper',
         destination: defaultBranch, reason: `${MERGE_WRAPPER_BASENAME} integrates ${branch} into ${defaultBranch}`,
       };
     }
@@ -788,7 +820,7 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
         };
       }
       return {
-        isMerge: true, targetsMain: true, sources: seg.sources, via: 'git-merge', destination,
+        isMerge: true, targetsMain: true, sources: withWorktree(seg.sources), via: 'git-merge', destination,
         reason: `git merge into ${defaultBranch}`,
       };
     }
@@ -816,12 +848,17 @@ export function queryMergeAllowed({ repoRoot, ledgerRoot = null, sources = [] })
     return { allowed: true, reason: `could not resolve ledger root (${e.message}) — fail open`, evaluated };
   }
   for (const src of sources) {
-    // An unresolvable ref is a parse/infra failure, never a violation.
-    try {
-      git(repoRoot, ['rev-parse', '--verify', '--quiet', `${src}^{commit}`]);
-    } catch {
-      evaluated.push({ ref: src, allowed: true, reason: 'ref does not resolve — fail open' });
-      continue;
+    // 'WORKTREE' is the working-tree sentinel (see diffRangeArgs), not a rev —
+    // `git rev-parse WORKTREE` fails, so it must skip the resolve check or the
+    // compound `git commit … && git merge …` case would always fail open.
+    if (src !== 'WORKTREE') {
+      // An unresolvable ref is a parse/infra failure, never a violation.
+      try {
+        git(repoRoot, ['rev-parse', '--verify', '--quiet', `${src}^{commit}`]);
+      } catch {
+        evaluated.push({ ref: src, allowed: true, reason: 'ref does not resolve — fail open' });
+        continue;
+      }
     }
     let verdict;
     try {

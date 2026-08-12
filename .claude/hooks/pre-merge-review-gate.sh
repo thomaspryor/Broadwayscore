@@ -19,15 +19,8 @@
 #     (:203). Its command string contains no `git merge` token and matches no
 #     PUSH_INGRESS_RE pattern (the name has no "push" in it), so today it reaches
 #     shared main completely ungated.
-#   * DEFERS (exit 0) whenever the command also carries a push ingress.
-#     pre-push-review-gate.sh:187-211 already awk-parses the merge source out of
-#     `git merge X && git push origin main` and gates on the identical
-#     queryPushAllowed. Letting both gates fire on one command is not merely
-#     redundant — queryOverrideActiveForPush's consume marker is one-shot per
-#     (sessionId, markerNs), so whichever gate consumed it first would starve
-#     the other into blocking a merge the user had explicitly overridden. That
-#     is a FALSE BLOCK on the primary documented flow, which is strictly worse
-#     than a missed block: it wedges every session sharing the checkout.
+#   * fires even when the command ALSO pushes — see the long note below the
+#     cross-repo guards for why deferring there was a P0.
 #   * never touches `git pull`, `git merge --abort/--continue/--quit`, or merges
 #     into any branch other than main.
 #
@@ -105,12 +98,24 @@ GATE="$CANONICAL_ROOT/scripts/lib/review-gate.mjs"
 [ ! -f "$SCAN" ] && exit 0
 [ ! -f "$GATE" ] && exit 0
 
-# ── Defer to the push gate on compound merge+push (see SCOPE above) ──────────
-# Reuses the canonical push-ingress definition rather than a second regex, so
-# the two gates cannot disagree about which one owns a given command.
-PUSH_RESULT=$(node "$SCAN" --query=push-ingress --command="$command" 2>/dev/null)
-IS_PUSH=$(echo "$PUSH_RESULT" | jq -r '.isPush // false' 2>/dev/null)
-[ "$IS_PUSH" = "true" ] && exit 0
+# NOTE: this gate deliberately does NOT defer to the push gate when the command
+# also pushes. An earlier revision did (exit 0 on any push-ingress match) to
+# avoid double-firing; adversarial review found that opened a hole in which
+# NEITHER gate evaluated the merge, and it opened it on the exact command
+# CLAUDE.md mandates. Verified 2026-08-12:
+#   git checkout main && git merge <branch> && bash scripts/lib/push-with-retry.sh
+#   1. transcript-scan push-ingress → isPush:true, so the merge gate deferred.
+#   2. pre-push-review-gate.sh's REFSPECS awk looks for a literal bare `push`
+#      token; the wrapper's only token is `scripts/lib/push-with-retry.sh`, so
+#      REFSPECS came back EMPTY.
+#   3. With REFSPECS empty that gate falls back to the CURRENT branch
+#      (pre-push-review-gate.sh:161) — a worktree branch, not main — and exits 0
+#      BEFORE reaching its merge-token block at :187.
+#   4. The merge source was 380 unreviewed gated lines.
+# Both gates now fire, which is safe because each consumes its OWN one-shot
+# override marker namespace (review-gate vs merge-gate below), so neither can
+# starve the other into a false block — that starvation was the only real cost
+# of double-firing.
 
 # ── Cross-repo guards (same shape as pre-push-review-gate.sh:97-130) ─────────
 # `(` in the prefix class: `(cd repo && git merge x)` subshells must hit the

@@ -100,6 +100,22 @@ test('parse: `git switch main && git merge X` is equivalent to checkout', () => 
   assert.equal(r.targetsMain, true);
 });
 
+test('parse: `git checkout main -- <path>` is a path restore, NOT a branch switch', () => {
+  // Adversarial review 2026-08-12: this reads as "checkout main" to a naive
+  // parser but never changes the checked-out branch, so treating it as a merge
+  // into main is a FALSE BLOCK — the failure direction that wedges sessions.
+  const r = parseMergeIngress('git checkout main -- scripts/lib/foo.js && git merge feat',
+    { currentBranch: 'worktree-x' });
+  assert.equal(r.targetsMain, false);
+  assert.equal(r.destination, 'worktree-x', 'destination must stay the real current branch');
+});
+
+test('parse: `git checkout --detach main` does not target the main BRANCH', () => {
+  // Detached HEAD: a following merge does not move the main ref at all.
+  const r = parseMergeIngress('git checkout --detach main && git merge feat', { currentBranch: 'worktree-x' });
+  assert.equal(r.targetsMain, false);
+});
+
 test('parse: checkout to a NON-main branch retargets away from main', () => {
   const r = parseMergeIngress('git checkout staging && git merge feat', { currentBranch: 'main' });
   assert.equal(r.targetsMain, false);
@@ -196,6 +212,38 @@ test('parse: absolute-path wrapper invocation is recognised', () => {
 test('parse: wrapper invoked with main as source is not gated (the wrapper refuses it)', () => {
   const r = parseMergeIngress('scripts/merge-worktree-to-main.sh', { currentBranch: 'main' });
   assert.equal(r.isMerge, false);
+});
+
+test('parse: a compound commit+merge also evaluates the WORKING TREE', () => {
+  // At hook time the commit has not run, so the branch tip does not yet carry
+  // the work. pre-push-review-gate.sh:212-214 adds WORKTREE for its own
+  // compound case; the merge gate must too, or `git commit -am x && git
+  // checkout main && git merge feat` merges unreviewed uncommitted code.
+  const r = parseMergeIngress('git commit -am "wip" && git checkout main && git merge feat',
+    { currentBranch: 'feat' });
+  assert.equal(r.targetsMain, true);
+  assert.deepEqual(r.sources, ['feat', 'WORKTREE']);
+});
+
+test('parse: no commit in the command means no WORKTREE source', () => {
+  const r = parseMergeIngress('git checkout main && git merge feat', { currentBranch: 'feat' });
+  assert.deepEqual(r.sources, ['feat']);
+});
+
+test('parse: a merge that ALSO pushes is still gated (the deferral hole)', () => {
+  // The gate used to exit 0 whenever the command carried a push ingress, to
+  // avoid double-firing with pre-push-review-gate.sh. Verified 2026-08-12 that
+  // this left `git checkout main && git merge X && bash
+  // scripts/lib/push-with-retry.sh` — the flow CLAUDE.md MANDATES — evaluated
+  // by NEITHER gate: the push gate's refspec awk finds no bare `push` token in
+  // the wrapper, so it falls back to the current branch (a worktree branch) and
+  // exits before its own merge-token block. Parsing must stay independent of
+  // whether a push is present.
+  const r = parseMergeIngress(
+    'git checkout main && git merge worktree-x --no-edit && bash scripts/lib/push-with-retry.sh',
+    { currentBranch: 'worktree-x' });
+  assert.equal(r.targetsMain, true);
+  assert.deepEqual(r.sources, ['worktree-x']);
 });
 
 // ── the decision: queryMergeAllowed / queryMergeGate ────────────────────────
