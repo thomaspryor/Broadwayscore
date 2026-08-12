@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T12:38:37.204Z",
+  "timestamp": "2026-08-12T14:15:45.627Z",
   "stats": {
     "totalReviews": 42093,
-    "alreadyFlagged": 18328,
+    "alreadyFlagged": 18329,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
     "tvFilmSignals": 1185,
-    "londonSignals": 848,
+    "londonSignals": 850,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3540
+    "noPublishDate": 3539
   },
   "findings": [
     {
@@ -34638,6 +34638,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "stanservice--molly-wilson.json",
       "score": 87,
       "publishDate": "2026-08-09",
@@ -41148,6 +41161,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "whatsonstage--editorial-staff.json",
+      "score": null,
+      "publishDate": "2026-06-25",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
