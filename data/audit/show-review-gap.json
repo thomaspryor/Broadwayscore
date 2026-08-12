@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-12T04:09:33.402Z",
+  "generatedAt": "2026-08-12T06:22:56.903Z",
   "windowDays": 1095,
-  "targets": 33,
-  "auditedThisRun": 26,
-  "carriedForward": 200,
+  "targets": 29,
+  "auditedThisRun": 25,
+  "carriedForward": 201,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 176,
-    "totalMissing": 1088,
+    "withGap": 175,
+    "totalMissing": 1084,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1190,
+    "totalFlaggedMisses": 1186,
     "totalRecoverable": 25,
     "totalRecovered": 6
   },
@@ -1622,11 +1622,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 319,
+        "count": 317,
         "byReason": {
           "non-review-host": 15,
-          "aggregator-internal-nav": 223,
           "not-http-url": 78,
+          "aggregator-internal-nav": 221,
           "non-review-path": 3
         }
       },
@@ -1703,7 +1703,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -4166,7 +4166,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188560/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168746/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4236,7 +4236,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
@@ -4382,7 +4382,7 @@
         "https://theartsdesk.com/theatre/avenue-q-shaftesbury-theatre-review-we-need-puppet-sex-now-and-rest"
       ],
       "dirFiles": 58,
-      "dirClean": 30,
+      "dirClean": 31,
       "inReviewsJson": 30,
       "missing": [],
       "dirOnly": [
@@ -4420,6 +4420,10 @@
         },
         {
           "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "radiotimes.com",
           "count": 1
         },
         {
@@ -4469,7 +4473,7 @@
         {
           "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
           "host": "reviewsgate.co.uk",
-          "knownOutletId": null,
+          "knownOutletId": "reviewsgate",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -4562,8 +4566,8 @@
         "count": 89,
         "byReason": {
           "non-review-host": 19,
-          "aggregator-internal-nav": 50,
-          "not-http-url": 20
+          "not-http-url": 20,
+          "aggregator-internal-nav": 50
         }
       },
       "dedupedVariants": [
@@ -4593,8 +4597,8 @@
             "url": "https://www.thereviewshub.com/avenue-q-shaftesbury-theatre-london/"
           },
           {
-            "outletId": "reviewsgate.co.uk",
-            "outlet": "reviewsgate.co.uk",
+            "outletId": "reviewsgate",
+            "outlet": "reviewsgate",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre"
@@ -4760,7 +4764,7 @@
           },
           {
             "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
-            "outletId": "reviewsgate.co.uk",
+            "outletId": "reviewsgate",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -4797,7 +4801,7 @@
         "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "barcelona-west-end-2024",
@@ -6092,11 +6096,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1760,
+        "count": 1759,
         "byReason": {
-          "not-http-url": 355,
           "non-review-host": 123,
-          "aggregator-internal-nav": 1267,
+          "not-http-url": 355,
+          "aggregator-internal-nav": 1266,
           "non-review-path": 15
         }
       },
@@ -7573,7 +7577,7 @@
         "liveCount": 6,
         "candidateCount": 74
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -8807,7 +8811,7 @@
       ],
       "dirFiles": 38,
       "dirClean": 24,
-      "inReviewsJson": 25,
+      "inReviewsJson": 24,
       "missing": [
         {
           "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
@@ -9010,11 +9014,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 384,
+        "count": 385,
         "byReason": {
           "non-review-host": 34,
-          "aggregator-internal-nav": 308,
           "not-http-url": 39,
+          "aggregator-internal-nav": 309,
           "non-review-path": 3
         }
       },
@@ -9231,7 +9235,7 @@
         "liveCount": 12,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -18125,173 +18129,13 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
-        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-        "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-        "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-        "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-        "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-        "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
-        "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
-        "https://www.timeout.com/london/theatre/death-note-the-musical",
-        "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
-      ],
-      "dirFiles": 16,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
-          "host": "londonbornandbred.co.uk",
-          "knownOutletId": "londonbornandbred",
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--julianna-barnaby.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-          "host": "barbican.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "barbican--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-box-office--stuart-king.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/death-note-review"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -18325,288 +18169,26 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 28,
-        "byReason": {
-          "non-review-host": 27,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168409/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
-          "host": "londonbornandbred.co.uk",
-          "outletId": "londonbornandbred",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review"
-          },
-          {
-            "outletId": "londonbornandbred",
-            "outlet": "londonbornandbred",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
-          },
-          {
-            "outletId": "barbican.org.uk",
-            "outlet": "barbican.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/death-note-the-musical"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-            "outletId": "rhombusrota.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-            "outletId": "musical-theatre-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
-            "outletId": "londonbornandbred",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-            "outletId": "barbican.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
-            "outletId": "london-box-office",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
-          }
-        ],
-        "liveCount": 3,
-        "candidateCount": 13
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -19654,26 +19236,26 @@
         "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
         "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
         "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
-        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
         "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
         "https://www.westendtheatre.com/352331/news/dinosaur-world-live-to-play-the-troubadour-wembley-park-theatre-in-london/",
+        "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
         "https://playstosee.com/reviews/dinosaur-world-live/",
-        "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
-        "https://londontopia.net/london-events/dinosaur-world-live/"
+        "https://londontopia.net/london-events/dinosaur-world-live/",
+        "https://ourlittleescapades.com/dinosaur-world-live-show-review/"
       ],
       "dirFiles": 13,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
-          "host": "kensingtonmums.co.uk",
+          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+          "host": "troubadourtheatres.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
-          "host": "troubadourtheatres.com",
+          "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+          "host": "suburban-mum.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -19684,14 +19266,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
-          "host": "ourlittleescapades.com",
+          "url": "https://londontopia.net/london-events/dinosaur-world-live/",
+          "host": "londontopia.net",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://londontopia.net/london-events/dinosaur-world-live/",
-          "host": "londontopia.net",
+          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+          "host": "ourlittleescapades.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -19804,8 +19386,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -19815,7 +19397,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -19835,28 +19417,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 26,
         "byReason": {
-          "non-review-host": 23,
-          "non-review-path": 2,
           "ticketing-listing": 1,
-          "ticketing-reseller": 1
+          "non-review-host": 23,
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
-          "host": "kensingtonmums.co.uk",
-          "outletId": "kensingtonmums",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
         {
           "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
           "host": "troubadourtheatres.com",
@@ -19867,13 +19436,13 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188099/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168735/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
-          "url": "https://playstosee.com/reviews/dinosaur-world-live/",
-          "host": "playstosee.com",
-          "outletId": "plays-to-see",
-          "provisional": false,
+          "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+          "host": "suburban-mum.com",
+          "outletId": "suburban-mum",
+          "provisional": true,
           "ok": false,
           "noop": true,
           "conflict": false,
@@ -19882,10 +19451,10 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
-          "host": "ourlittleescapades.com",
-          "outletId": "ourlittleescapades",
-          "provisional": true,
+          "url": "https://playstosee.com/reviews/dinosaur-world-live/",
+          "host": "playstosee.com",
+          "outletId": "plays-to-see",
+          "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
@@ -19903,7 +19472,19 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188100/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168735/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+        },
+        {
+          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+          "host": "ourlittleescapades.com",
+          "outletId": "ourlittleescapades",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
       "ingestSkippedByCap": [],
@@ -19911,18 +19492,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "kensingtonmums.co.uk",
-            "outlet": "kensingtonmums.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/"
-          },
-          {
             "outletId": "troubadourtheatres.com",
             "outlet": "troubadourtheatres.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr"
+          },
+          {
+            "outletId": "suburban-mum.com",
+            "outlet": "suburban-mum.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/"
           },
           {
             "outletId": "plays-to-see",
@@ -19932,18 +19513,18 @@
             "url": "https://playstosee.com/reviews/dinosaur-world-live/"
           },
           {
-            "outletId": "ourlittleescapades.com",
-            "outlet": "ourlittleescapades.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/"
-          },
-          {
             "outletId": "londontopia.net",
             "outlet": "londontopia.net",
             "critic": "Unknown",
             "stars": null,
             "url": "https://londontopia.net/london-events/dinosaur-world-live/"
+          },
+          {
+            "outletId": "ourlittleescapades.com",
+            "outlet": "ourlittleescapades.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/"
           },
           {
             "outletId": "wembleypark.com",
@@ -19987,18 +19568,18 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
-            "outletId": "kensingtonmums.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T02:58:42.803Z"
-          },
-          {
             "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
             "outletId": "troubadourtheatres.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "outletId": "suburban-mum.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://playstosee.com/reviews/dinosaur-world-live/",
@@ -20008,15 +19589,15 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
-            "outletId": "ourlittleescapades.com",
+            "url": "https://londontopia.net/london-events/dinosaur-world-live/",
+            "outletId": "londontopia.net",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T15:45:54.405Z"
           },
           {
-            "url": "https://londontopia.net/london-events/dinosaur-world-live/",
-            "outletId": "londontopia.net",
+            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+            "outletId": "ourlittleescapades.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T15:45:54.405Z"
@@ -20039,7 +19620,7 @@
         "liveCount": 4,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -37700,7 +37281,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -37731,11 +37312,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 35,
         "byReason": {
-          "non-review-host": 30,
-          "non-review-path": 3,
-          "ticketing-listing": 4
+          "ticketing-listing": 1,
+          "non-review-host": 31,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
@@ -37750,7 +37331,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188654/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168861/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
@@ -37852,7 +37433,7 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -44962,9 +44543,9 @@
         "https://www.newyorktheatreguide.com/theatre-news/news/how-two-broadway-musicals-embrace-immersive-designs",
         "https://www.newyorktheatreguide.com/theatre-news/news/our-favorite-jonathan-groff-theatre-roles"
       ],
-      "dirFiles": 39,
+      "dirFiles": 38,
       "dirClean": 33,
-      "inReviewsJson": 33,
+      "inReviewsJson": 32,
       "missing": [],
       "dirOnly": [
         {
@@ -45037,8 +44618,8 @@
         "count": 389,
         "byReason": {
           "non-review-host": 37,
-          "aggregator-internal-nav": 304,
           "not-http-url": 45,
+          "aggregator-internal-nav": 304,
           "non-review-path": 3
         }
       },
@@ -45217,7 +44798,7 @@
         "liveCount": 22,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "kenrex-off-broadway-2026",
@@ -49335,7 +48916,7 @@
       ],
       "dirFiles": 51,
       "dirClean": 36,
-      "inReviewsJson": 34,
+      "inReviewsJson": 33,
       "missing": [
         {
           "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
@@ -49461,8 +49042,8 @@
         "count": 390,
         "byReason": {
           "non-review-host": 40,
-          "aggregator-internal-nav": 299,
           "not-http-url": 48,
+          "aggregator-internal-nav": 299,
           "non-review-path": 3
         }
       },
@@ -49478,7 +49059,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188713/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168891/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
@@ -49490,7 +49071,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188714/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168891/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -49706,7 +49287,7 @@
         "liveCount": 21,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "mexodus-off-broadway-2026",
@@ -54963,12 +54544,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 905,
+        "count": 906,
         "byReason": {
-          "roundup-page": 1,
           "non-review-host": 91,
-          "aggregator-internal-nav": 692,
+          "roundup-page": 1,
           "not-http-url": 115,
+          "aggregator-internal-nav": 693,
           "non-review-path": 6
         }
       },
@@ -55735,7 +55316,7 @@
         "liveCount": 27,
         "candidateCount": 52
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -59474,7 +59055,7 @@
       ],
       "dirFiles": 52,
       "dirClean": 9,
-      "inReviewsJson": 17,
+      "inReviewsJson": 14,
       "missing": [],
       "dirOnly": [
         {
@@ -59656,8 +59237,8 @@
         "count": 378,
         "byReason": {
           "non-review-host": 35,
-          "aggregator-internal-nav": 301,
           "not-http-url": 39,
+          "aggregator-internal-nav": 301,
           "non-review-path": 3
         }
       },
@@ -59824,7 +59405,7 @@
         "liveCount": 5,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -59864,7 +59445,7 @@
       ],
       "dirFiles": 46,
       "dirClean": 30,
-      "inReviewsJson": 30,
+      "inReviewsJson": 29,
       "missing": [],
       "dirOnly": [
         {
@@ -59972,8 +59553,8 @@
         "count": 405,
         "byReason": {
           "non-review-host": 41,
-          "aggregator-internal-nav": 308,
           "not-http-url": 53,
+          "aggregator-internal-nav": 308,
           "non-review-path": 3
         }
       },
@@ -60156,7 +59737,7 @@
         "liveCount": 19,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -63691,7 +63272,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -65295,8 +64876,8 @@
         "count": 879,
         "byReason": {
           "non-review-host": 80,
-          "aggregator-internal-nav": 607,
           "not-http-url": 186,
+          "aggregator-internal-nav": 607,
           "non-review-path": 6
         }
       },
@@ -65322,7 +64903,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188566/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168768/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -65550,7 +65131,7 @@
         "liveCount": 23,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -65944,7 +65525,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
@@ -76792,7 +76373,7 @@
       ],
       "dirFiles": 57,
       "dirClean": 38,
-      "inReviewsJson": 34,
+      "inReviewsJson": 33,
       "missing": [
         {
           "url": "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
@@ -77076,8 +76657,8 @@
         "count": 774,
         "byReason": {
           "non-review-host": 72,
-          "aggregator-internal-nav": 604,
           "not-http-url": 92,
+          "aggregator-internal-nav": 604,
           "non-review-path": 6
         }
       },
@@ -77474,7 +77055,7 @@
         "liveCount": 21,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -78793,21 +78374,21 @@
         "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
         "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
         "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
         "https://www.timeout.com/london/theatre/tao-of-glass-review",
-        "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
         "https://www.london-unattached.com/tao-of-glass-soho-place/",
         "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
         "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
         "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
         "https://www.thenerve.news/p/review-theatre-tao-of-glass-soho-place-phelim-mcdermott-philip-glass-dorian-lynskey",
         "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
         "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-        "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
-        "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
-        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
         "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html"
+        "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
+        "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/",
+        "https://www.londontheatre1.com/reviews/tao-of-glass-sohoplace/"
       ],
       "dirFiles": 45,
       "dirClean": 27,
@@ -78822,11 +78403,15 @@
       ],
       "dirOnly": [
         {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "ft.com",
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
+          "host": "liamodell.com",
           "count": 1
         },
         {
@@ -78838,6 +78423,10 @@
           "count": 1
         },
         {
+          "host": "playstosee.com",
+          "count": 1
+        },
+        {
           "host": "telegraph.co.uk",
           "count": 1
         },
@@ -78846,11 +78435,7 @@
           "count": 1
         },
         {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
+          "host": "theupcoming.co.uk",
           "count": 1
         }
       ],
@@ -78869,6 +78454,24 @@
               "file": "bachtrack--unknown.json",
               "flag": "emptyBody",
               "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--richard-morrison-chief-culture-writer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
             }
           ],
           "serpCensus": true
@@ -78910,9 +78513,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
+          "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -78920,9 +78523,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "times-uk--richard-morrison-chief-culture-writer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+              "file": "broadwayworld--franco-milazzo.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
             }
           ],
           "serpCensus": true
@@ -78993,7 +78596,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -79003,7 +78606,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -79023,20 +78626,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
-        "count": 14,
+        "count": 13,
         "byReason": {
-          "ticketing-listing": 2,
-          "non-review-host": 12
+          "ticketing-listing": 1,
+          "non-review-host": 11,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -79051,7 +78655,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~187745/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168649/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -79073,6 +78677,13 @@
             "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
           },
           {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+          },
+          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
@@ -79087,11 +78698,11 @@
             "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
           },
           {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+            "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
           }
         ],
         "suppressedMissing": [],
@@ -79127,12 +78738,6 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T00:22:10.633Z"
-          },
-          {
             "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
             "outletId": "london-unattached.com",
             "state": "live",
@@ -79151,28 +78756,16 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
+            "url": "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T15:48:01.636Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T22:22:02.507Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T00:22:10.633Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
@@ -79181,10 +78774,22 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
-            "outletId": "standard.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-04T15:48:01.636Z"
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/tao-of-glass-sohoplace/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://www.thenerve.news/p/review-theatre-tao-of-glass-soho-place-phelim-mcdermott-philip-glass-dorian-lynskey",
@@ -79201,6 +78806,13 @@
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T22:23:50.667Z"
+          },
+          {
             "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -79215,17 +78827,17 @@
             "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
-            "outletId": "times-uk",
+            "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
+            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T22:23:50.667Z"
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           }
         ],
-        "liveCount": 15,
+        "liveCount": 14,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-11T12:44:28.700Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -79985,30 +79597,31 @@
         "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
         "http://theartsdesk.com/dance/car-man-sadlers-wells-review-dark-gutsy-raunchy-unsympathetic-noir-core",
         "https://www.thereviewshub.com/the-car-man-sadlers-wells-london/",
-        "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+        "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
         "https://www.timeout.com/london/dance/the-car-man-review",
+        "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
         "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
         "https://northantsleicsrutland.muddystilettos.co.uk/things-to-do/arts-culture-things-to-do/review-matthew-bournes-the-car-man-at-curve-leicester/",
         "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
+        "https://www.timeout.com/london/dance/the-car-man",
         "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
         "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
         "https://theartsdispatch.substack.com/p/the-car-man-review-sadlers-wells",
         "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
         "https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/",
-        "https://www.timeout.com/london/dance/the-car-man",
-        "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+        "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
         "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
-        "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
         "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
+        "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
         "https://www.broadwayworld.com/westend/article/Review-THE-CAR-MAN-Sadlers-Wells-20260803",
         "https://www.theguardian.com/stage/2026/aug/05/im-every-woman-the-chaka-khan-musical-review-queen-of-funk",
         "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd",
         "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
         "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html"
       ],
-      "dirFiles": 69,
-      "dirClean": 30,
-      "inReviewsJson": 26,
+      "dirFiles": 70,
+      "dirClean": 31,
+      "inReviewsJson": 27,
       "missing": [
         {
           "url": "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
@@ -80025,12 +79638,6 @@
         {
           "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
           "host": "thestateofthearts.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
-          "host": "reviewsgate.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -80087,31 +79694,9 @@
         {
           "host": "seeingdance.com",
           "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": true,
-          "recoverableFile": "london-theatre--anya-ryan.json",
-          "recoverableOutletId": "london-theatre",
-          "recoverableCritic": "Anya Ryan",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--anya-ryan.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
           "host": "eastmidlandstheatre.com",
@@ -80144,6 +79729,24 @@
               "file": "westendtheatre--luke-dillon.json",
               "flag": "clean",
               "urlInDir": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
             }
           ],
           "serpCensus": true
@@ -80185,9 +79788,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
+          "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
+          "host": "reviewsgate.co.uk",
+          "knownOutletId": "reviewsgate",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -80195,9 +79798,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
+              "file": "reviewsgate--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london"
             }
           ],
           "serpCensus": true
@@ -80336,8 +79939,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -80346,7 +79949,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -80357,7 +79960,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -80367,7 +79970,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -80383,14 +79986,14 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 25,
+        "resultCount": 26,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 14,
         "byReason": {
-          "non-review-host": 15,
-          "ticketing-listing": 2
+          "ticketing-listing": 1,
+          "non-review-host": 13
         }
       },
       "dedupedVariants": [],
@@ -80405,7 +80008,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188040/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168691/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
@@ -80417,7 +80020,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188040/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168692/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
@@ -80430,32 +80033,33 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
-          "host": "reviewsgate.co.uk",
-          "outletId": "reviewsgate",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "domain-mismatch",
-          "unclassified": false,
-          "reason": "the-car-man-west-end-2026: https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london was rejected because the resolved outlet's registered domain doesn't match the URL host — add the host to that outlet's domainAliases in data/outlet-registry.json, or pass the correct --outlet."
         }
       ],
       "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-          "host": "londontheatre.co.uk",
-          "file": "london-theatre--anya-ryan.json",
+          "url": "https://www.jonathanbaz.com/2026/08/the-car-man-review.html?m=0",
+          "host": "jonathanbaz.com",
+          "file": "jonathan-baz--unknown.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "spawnSync node ETIMEDOUT",
-          "recoveryCount": 0
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+          "host": "thestage.co.uk",
+          "file": "thestage--dave-fargnoli.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~168695/day) projects exhaustion in ~16d, before the 22d-out renewal — still u",
+          "recoveryCount": 1,
+          "uncited": true
         }
       ],
       "censusVerdict": {
@@ -80483,20 +80087,6 @@
             "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/"
           },
           {
-            "outletId": "reviewsgate.co.uk",
-            "outlet": "reviewsgate.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells"
-          },
-          {
             "outletId": "east-midlands-theatre",
             "outlet": "east-midlands-theatre",
             "critic": "Unknown",
@@ -80509,6 +80099,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
           },
           {
             "outletId": "muddystilettos.co.uk",
@@ -80525,11 +80122,11 @@
             "url": "https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/"
           },
           {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
+            "outletId": "reviewsgate",
+            "outlet": "reviewsgate",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london"
           },
           {
             "outletId": "guardian",
@@ -80562,6 +80159,12 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
+            "url": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/the-car-man-lyceum-theatre-sheffield/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -80586,20 +80189,26 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
-            "outletId": "westminsterextra.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T12:47:34.277Z"
-          },
-          {
             "url": "https://www.timeout.com/london/dance/the-car-man-review",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-10T12:47:34.277Z"
           },
           {
+            "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+            "outletId": "westminsterextra.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T12:47:34.277Z"
+          },
+          {
             "url": "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
             "outletId": "quayslife.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/dance/the-car-man",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
@@ -80622,10 +80231,10 @@
             "firstSeenAt": "2026-08-10T12:47:34.277Z"
           },
           {
-            "url": "https://www.timeout.com/london/dance/the-car-man",
-            "outletId": "timeout.com",
+            "url": "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
+            "outletId": "thestage.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
@@ -80673,20 +80282,6 @@
             "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
-            "outletId": "reviewsgate.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T12:47:34.277Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
             "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
             "outletId": "east-midlands-theatre",
             "state": "GAP",
@@ -80696,6 +80291,13 @@
           {
             "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
             "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+            "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
@@ -80715,11 +80317,11 @@
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
           },
           {
-            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
-            "outletId": "bachtrack",
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
+            "outletId": "reviewsgate",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+            "firstSeenAt": "2026-08-10T12:47:34.277Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/aug/05/im-every-woman-the-chaka-khan-musical-review-queen-of-funk",
@@ -80743,10 +80345,10 @@
             "firstSeenAt": "2026-08-05T22:12:01.770Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 26
+        "liveCount": 15,
+        "candidateCount": 27
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -81423,18 +81025,18 @@
         "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
         "https://www.westendtheatre.com/301598/news/roald-dahls-the-enormous-crocodile-to-tour-the-uk-in-2026/",
         "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
-        "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-        "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
         "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+        "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
+        "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
         "https://lyric.co.uk/shows/the-enormous-crocodile/",
         "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre",
         "https://www.latheatrix.com/post/review-family-fun-with-the-enormous-crocodile-at-kirk-douglas-theatre",
         "https://theschooltrip.co.uk/ideas/the-enormous-crocodile-the-musical-lyric-hammersmith-london/",
         "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-        "https://www.roalddahl.com/stage/the-enormous-crocodile",
         "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
         "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
-        "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+        "http://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+        "https://www.roalddahl.com/stage/the-enormous-crocodile",
         "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical"
       ],
       "dirFiles": 33,
@@ -81466,7 +81068,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+          "url": "http://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
           "host": "letsgowiththechildren.co.uk",
           "knownOutletId": null,
           "serpCensus": true
@@ -81618,24 +81220,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.roalddahl.com/stage/the-enormous-crocodile",
-          "host": "roalddahl.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "roalddahl--roald-dahl.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.roalddahl.com/stage/the-enormous-crocodile"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
           "host": "pleasemindtheblog.wordpress.com",
           "knownOutletId": null,
@@ -81649,6 +81233,24 @@
               "file": "pleasemindtheblog--debbie.json",
               "flag": "wrongProduction",
               "urlInDir": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.roalddahl.com/stage/the-enormous-crocodile",
+          "host": "roalddahl.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "roalddahl--roald-dahl.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.roalddahl.com/stage/the-enormous-crocodile"
             }
           ],
           "serpCensus": true
@@ -81724,7 +81326,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -81734,7 +81336,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -81756,9 +81358,8 @@
       "candidatesRejected": {
         "count": 21,
         "byReason": {
-          "non-review-host": 19,
-          "non-review-path": 1,
-          "ticketing-listing": 1
+          "non-review-host": 20,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -81797,7 +81398,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188033/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168662/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
@@ -81812,7 +81413,7 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+          "url": "http://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
           "host": "letsgowiththechildren.co.uk",
           "outletId": "letsgowiththechildren",
           "provisional": true,
@@ -81821,7 +81422,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188033/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168662/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [
@@ -81867,7 +81468,7 @@
             "outlet": "letsgowiththechildren.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/"
+            "url": "http://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/"
           },
           {
             "outletId": "theatrereviewsnorth.com",
@@ -81919,18 +81520,18 @@
             "url": "https://lyric.co.uk/shows/the-enormous-crocodile/"
           },
           {
-            "outletId": "roalddahl.com",
-            "outlet": "roalddahl.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.roalddahl.com/stage/the-enormous-crocodile"
-          },
-          {
             "outletId": "pleasemindtheblog.wordpress.com",
             "outlet": "pleasemindtheblog.wordpress.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/"
+          },
+          {
+            "outletId": "roalddahl.com",
+            "outlet": "roalddahl.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.roalddahl.com/stage/the-enormous-crocodile"
           }
         ],
         "suppressedMissing": [],
@@ -81942,14 +81543,14 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-            "outletId": "timeout.com",
+            "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
-            "outletId": "theguardian.com",
+            "url": "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
@@ -81994,11 +81595,11 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+            "url": "http://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
             "outletId": "letsgowiththechildren.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T02:58:42.803Z"
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
@@ -82050,24 +81651,24 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.roalddahl.com/stage/the-enormous-crocodile",
-            "outletId": "roalddahl.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T15:45:54.405Z"
-          },
-          {
             "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
             "outletId": "pleasemindtheblog.wordpress.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
+            "url": "https://www.roalddahl.com/stage/the-enormous-crocodile",
+            "outletId": "roalddahl.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T15:45:54.405Z"
           }
         ],
         "liveCount": 5,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "the-family-album-regional-2026",
@@ -82774,11 +82375,12 @@
         "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway",
         "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
         "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
+        "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
-        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024"
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
+        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
       ],
       "aggregatorListedUrls": [
         "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
@@ -82820,6 +82422,11 @@
         "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
         "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
         "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
+        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+        "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
+        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
         "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
         "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
         "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
@@ -82839,15 +82446,11 @@
         "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
         "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
         "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
-        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
-        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review"
+        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
       ],
       "dirFiles": 82,
       "dirClean": 39,
-      "inReviewsJson": 39,
+      "inReviewsJson": 38,
       "missing": [
         {
           "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
@@ -83180,6 +82783,44 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -83390,44 +83031,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -83437,11 +83040,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1839,
+        "count": 2046,
         "byReason": {
-          "non-review-host": 142,
-          "aggregator-internal-nav": 1346,
-          "not-http-url": 336,
+          "non-review-host": 161,
+          "roundup-page": 2,
+          "not-http-url": 341,
+          "aggregator-internal-nav": 1527,
           "non-review-path": 15
         }
       },
@@ -83456,6 +83060,10 @@
           "publishDate": "2023-10-26"
         },
         {
+          "url": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
+          "publishDate": "2023-06-30"
+        },
+        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
           "publishDate": "2026-02-11"
         },
@@ -83464,12 +83072,12 @@
           "publishDate": "2025-04-24"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
-          "publishDate": "2023-06-27"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
           "publishDate": "2023-10-24"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
+          "publishDate": "2023-06-27"
         }
       ],
       "weIngestBlocked": [
@@ -83655,6 +83263,20 @@
             "url": "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/"
           },
           {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
+          },
+          {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
             "critic": "Unknown",
@@ -83730,20 +83352,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
-          },
-          {
-            "outletId": "dailybeast",
-            "outlet": "dailybeast",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
           }
         ],
         "suppressedMissing": [],
@@ -83905,6 +83513,24 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
             "outletId": "nypost.com",
             "state": "live",
@@ -83919,18 +83545,6 @@
           {
             "url": "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
             "outletId": "statesman.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
-            "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -84068,6 +83682,20 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -84143,26 +83771,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-            "outletId": "dailybeast",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
         "liveCount": 25,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -85579,8 +85193,8 @@
         "count": 384,
         "byReason": {
           "non-review-host": 35,
-          "aggregator-internal-nav": 299,
           "not-http-url": 47,
+          "aggregator-internal-nav": 299,
           "non-review-path": 3
         }
       },
@@ -85847,7 +85461,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "the-karate-kid-the-musical-west-end-2026",
@@ -91929,7 +91543,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -91980,14 +91594,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 336,
+        "count": 338,
         "byReason": {
+          "non-review-host": 40,
+          "roundup-page": 4,
           "not-http-url": 67,
-          "non-review-host": 35,
-          "aggregator-internal-nav": 225,
+          "aggregator-internal-nav": 222,
           "non-review-path": 3,
-          "roundup-page": 3,
-          "merch-store": 3
+          "merch-store": 2
         }
       },
       "dedupedVariants": [],
@@ -92002,7 +91616,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188025/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168654/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-vessel",
@@ -92100,7 +91714,7 @@
         "liveCount": 5,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -97114,14 +96728,14 @@
         "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html",
         "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
         "https://www.timeout.com/newyork/theater/twelfth-night",
-        "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
         "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
+        "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
         "https://www.londontheatre1.com/reviews/twelfth-night-theatre-on-kew/",
+        "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
         "https://www.dailyinfo.co.uk/events/293689/twelfth-night-or-what-you-will",
-        "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
-        "https://www.intermissionmagazine.ca/reviews/twelfth-night-high-park/",
         "https://slotkinletter.com/2026/08/review-twelfth-night-5",
-        "https://heretothereproductions.co.uk/twelfth-night/",
+        "https://www.intermissionmagazine.ca/reviews/twelfth-night-high-park/",
+        "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
         "https://thespyinthestalls.com/2026/08/twelfth-night-8/",
         "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
         "https://www.thestar.com/entertainment/stage/canadian-stage-twelfth-night-high-park-review/article_8435ad32-374e-432b-9efb-d155dc18fb48.html",
@@ -97129,15 +96743,16 @@
         "https://shakespeareaustralia.com.au/productions/twelfth-night",
         "https://www.thestage.co.uk/reviews/twelfth-night-review-kew-gardens-london-shakespeare",
         "https://onin.london/twelfth-night-at-kew-gardens-review/",
+        "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803",
         "https://www.adventuresintheatreland.com/post/twelfth-night-kew-gardens",
         "https://www.theatrebookings.com/play/twelfth-night",
         "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company",
         "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562",
-        "https://www.lsbo.co.uk/play/twelfth-night",
         "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112",
-        "https://westendwilma.com/review-twelfth-night-national-theatre/",
-        "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
         "https://eventslist.co.uk/london/events/twelfth-night-theatre-on-kew-2026-07-25",
+        "https://www.britishtheatre.com/posts/review-twelfth-night-national-theatre",
+        "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+        "https://timeandleisure.co.uk/event/twelfth-night-kew-gardens/",
         "https://www.theartsdesk.com/theatre/twelfth-night-rsc-barbican-review-intelligent-inventive-and-genuinely-funny",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html",
         "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
@@ -97145,8 +96760,8 @@
         "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7"
       ],
       "dirFiles": 61,
-      "dirClean": 10,
-      "inReviewsJson": 13,
+      "dirClean": 9,
+      "inReviewsJson": 10,
       "missing": [
         {
           "url": "https://cititour.com/NYC_Broadway/Twelfth-Night/1320",
@@ -97275,12 +96890,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://heretothereproductions.co.uk/twelfth-night/",
-          "host": "heretothereproductions.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
           "host": "nextmag.ca",
           "knownOutletId": "next-magazine",
@@ -97299,14 +96908,20 @@
           "serpCensus": true
         },
         {
-          "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
+          "url": "https://www.britishtheatre.com/posts/review-twelfth-night-national-theatre",
+          "host": "britishtheatre.com",
+          "knownOutletId": "british-theatre",
           "serpCensus": true
         },
         {
           "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
           "host": "acrossthearts.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://timeandleisure.co.uk/event/twelfth-night-kew-gardens/",
+          "host": "timeandleisure.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -97798,6 +97413,24 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--abby-korb.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
           "host": "thereviewshub.com",
           "knownOutletId": "thereviewshub",
@@ -97826,9 +97459,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
+          "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -97836,16 +97469,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwayworld--abby-korb.json",
+              "file": "frontmezzjunkies--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
+              "urlInDir": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/"
             }
           ],
           "serpCensus": true
         },
         {
-          "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
-          "host": "ipswich24.co.uk",
+          "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5",
+          "host": "slotkinletter.com",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -97854,9 +97487,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "ipswich24--unknown.json",
+              "file": "slotkinletter--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/"
+              "urlInDir": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
             }
           ],
           "serpCensus": true
@@ -97880,8 +97513,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5",
-          "host": "slotkinletter.com",
+          "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
+          "host": "ipswich24.co.uk",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -97890,9 +97523,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "slotkinletter--unknown.json",
+              "file": "ipswich24--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
+              "urlInDir": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/"
             }
           ],
           "serpCensus": true
@@ -97929,6 +97562,24 @@
               "file": "timeout-london--unknown.json",
               "flag": "nonReview",
               "urlInDir": "https://www.timeout.com/london/theatre/twelfth-night-65"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--abby-korb.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
             }
           ],
           "serpCensus": true
@@ -97983,24 +97634,6 @@
               "file": "british-theatre--dave-jennings.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.lsbo.co.uk/play/twelfth-night",
-          "host": "lsbo.co.uk",
-          "knownOutletId": "lsbo",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lsbo--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lsbo.co.uk/play/twelfth-night"
             }
           ],
           "serpCensus": true
@@ -98101,6 +97734,29 @@
           ],
           "weRefStars": 3,
           "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": true,
+          "recoverableFile": "times-uk--unknown.json",
+          "recoverableOutletId": "times-uk",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-twelfth-night-kh6rtnz36"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
         }
       ],
       "citedNoUrl": [],
@@ -98138,11 +97794,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 6,
-        "corroborated": 3,
+        "corroborated": 2,
         "perSource": {
           "theatre-reviews": {
             "cited": 6,
-            "corroborated": 3
+            "corroborated": 2
           }
         }
       },
@@ -98188,7 +97844,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -98204,18 +97860,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 24,
+        "resultCount": 25,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1234,
+        "count": 1233,
         "byReason": {
-          "not-http-url": 183,
-          "non-review-host": 115,
-          "aggregator-internal-nav": 915,
-          "non-review-path": 9,
-          "roundup-page": 10,
           "ticketing-listing": 1,
+          "non-review-host": 116,
+          "roundup-page": 10,
+          "not-http-url": 183,
+          "aggregator-internal-nav": 913,
+          "non-review-path": 9,
           "ticketing-reseller": 1
         }
       },
@@ -98358,18 +98014,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://heretothereproductions.co.uk/twelfth-night/",
-          "host": "heretothereproductions.co.uk",
-          "outletId": "heretothereproductions",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188070/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
-        },
-        {
           "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
           "host": "nextmag.ca",
           "outletId": "next-magazine",
@@ -98379,7 +98023,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188072/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168723/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://shakespeareaustralia.com.au/productions/twelfth-night",
@@ -98391,7 +98035,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188072/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168723/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112",
@@ -98403,12 +98047,12 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~188080/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~168724/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         },
         {
-          "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
+          "url": "https://www.britishtheatre.com/posts/review-twelfth-night-national-theatre",
+          "host": "britishtheatre.com",
+          "outletId": "british-theatre",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -98416,13 +98060,25 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+          "host": "acrossthearts.co.uk",
+          "outletId": "acrossthearts",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~168724/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
-          "host": "acrossthearts.co.uk",
-          "outletId": "acrossthearts"
+          "url": "https://timeandleisure.co.uk/event/twelfth-night-kew-gardens/",
+          "host": "timeandleisure.co.uk",
+          "outletId": "timeandleisure"
         }
       ],
       "recoveryResults": [],
@@ -98431,6 +98087,11 @@
           "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
           "host": "whatsonstage.com",
           "file": "whatsonstage--unknown.json"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
+          "host": "thetimes.com",
+          "file": "times-uk--unknown.json"
         }
       ],
       "censusVerdict": {
@@ -98563,13 +98224,6 @@
             "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/"
           },
           {
-            "outletId": "heretothereproductions.co.uk",
-            "outlet": "heretothereproductions.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://heretothereproductions.co.uk/twelfth-night/"
-          },
-          {
             "outletId": "next-magazine",
             "outlet": "next-magazine",
             "critic": "Unknown",
@@ -98591,11 +98245,11 @@
             "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112"
           },
           {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://westendwilma.com/review-twelfth-night-national-theatre/"
+            "url": "https://www.britishtheatre.com/posts/review-twelfth-night-national-theatre"
           },
           {
             "outletId": "acrossthearts.co.uk",
@@ -98603,6 +98257,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/"
+          },
+          {
+            "outletId": "timeandleisure.co.uk",
+            "outlet": "timeandleisure.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://timeandleisure.co.uk/event/twelfth-night-kew-gardens/"
           },
           {
             "outletId": "one-minute-critic",
@@ -98766,13 +98427,6 @@
             "url": "https://www.timeout.com/newyork/theater/twelfth-night"
           },
           {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
-          },
-          {
             "outletId": "broadwayworld",
             "outlet": "broadwayworld",
             "critic": "Unknown",
@@ -98780,11 +98434,25 @@
             "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
           },
           {
-            "outletId": "ipswich24.co.uk",
-            "outlet": "ipswich24.co.uk",
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/"
+            "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/"
+          },
+          {
+            "outletId": "slotkinletter.com",
+            "outlet": "slotkinletter.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
           },
           {
             "outletId": "intermissionmagazine.ca",
@@ -98794,11 +98462,11 @@
             "url": "https://www.intermissionmagazine.ca/reviews/twelfth-night-high-park/"
           },
           {
-            "outletId": "slotkinletter.com",
-            "outlet": "slotkinletter.com",
+            "outletId": "ipswich24.co.uk",
+            "outlet": "ipswich24.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
+            "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/"
           },
           {
             "outletId": "toronto-star",
@@ -98813,6 +98481,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/twelfth-night-65"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803"
           },
           {
             "outletId": "theatrebookings.com",
@@ -98834,13 +98509,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562"
-          },
-          {
-            "outletId": "lsbo",
-            "outlet": "lsbo",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.lsbo.co.uk/play/twelfth-night"
           },
           {
             "outletId": "eventslist.co.uk",
@@ -98869,6 +98537,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7"
           }
         ],
         "suppressedMissing": [
@@ -98927,12 +98602,6 @@
           {
             "url": "https://www.theartsdesk.com/theatre/twelfth-night-rsc-barbican-review-intelligent-inventive-and-genuinely-funny",
             "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
-            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
@@ -99063,13 +98732,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://heretothereproductions.co.uk/twelfth-night/",
-            "outletId": "heretothereproductions.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T15:45:54.405Z"
-          },
-          {
             "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
             "outletId": "next-magazine",
             "state": "GAP",
@@ -99091,11 +98753,11 @@
             "firstSeenAt": "2026-08-09T22:22:02.507Z"
           },
           {
-            "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-            "outletId": "west-end-wilma",
+            "url": "https://www.britishtheatre.com/posts/review-twelfth-night-national-theatre",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T02:55:25.695Z"
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
@@ -99103,6 +98765,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://timeandleisure.co.uk/event/twelfth-night-kew-gardens/",
+            "outletId": "timeandleisure.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
@@ -99280,13 +98949,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
-            "outletId": "thereviewshub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
             "outletId": "broadwayworld",
             "state": "GAP",
@@ -99294,11 +98956,25 @@
             "firstSeenAt": "2026-08-11T02:58:42.803Z"
           },
           {
-            "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
-            "outletId": "ipswich24.co.uk",
+            "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
+            "outletId": "thereviewshub",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T12:47:34.277Z"
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
+          },
+          {
+            "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5",
+            "outletId": "slotkinletter.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
             "url": "https://www.intermissionmagazine.ca/reviews/twelfth-night-high-park/",
@@ -99308,11 +98984,11 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5",
-            "outletId": "slotkinletter.com",
+            "url": "https://www.ipswich24.co.uk/2026/07/27/review-twelfth-night-red-rose-chain-theatre-in-the-forest/",
+            "outletId": "ipswich24.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+            "firstSeenAt": "2026-08-10T12:47:34.277Z"
           },
           {
             "url": "https://www.thestar.com/entertainment/stage/canadian-stage-twelfth-night-high-park-review/article_8435ad32-374e-432b-9efb-d155dc18fb48.html",
@@ -99327,6 +99003,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T06:22:56.903Z"
           },
           {
             "url": "https://www.theatrebookings.com/play/twelfth-night",
@@ -99348,13 +99031,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T02:58:42.803Z"
-          },
-          {
-            "url": "https://www.lsbo.co.uk/play/twelfth-night",
-            "outletId": "lsbo",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T22:22:02.507Z"
           },
           {
             "url": "https://eventslist.co.uk/london/events/twelfth-night-theatre-on-kew-2026-07-25",
@@ -99383,12 +99059,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
           }
         ],
-        "liveCount": 8,
-        "candidateCount": 58
+        "liveCount": 7,
+        "candidateCount": 57
       },
-      "computedAt": "2026-08-11T15:45:54.405Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -99508,11 +99191,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 663,
+        "count": 664,
         "byReason": {
           "non-review-host": 53,
-          "aggregator-internal-nav": 518,
           "not-http-url": 86,
+          "aggregator-internal-nav": 519,
           "non-review-path": 6
         }
       },
@@ -99678,7 +99361,7 @@
         "liveCount": 16,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-11T17:54:37.462Z"
+      "computedAt": "2026-08-12T06:22:56.903Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-12T05:40:33.052Z",
+    "generatedAt": "2026-08-12T07:06:31.852Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,14 +9,14 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 4,
-    "exemptCount": 28,
+    "exemptCount": 26,
     "coveredCount": 29,
-    "highChurnTracked": 61
+    "highChurnTracked": 59
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 91
+      "churn": 93
     },
     {
       "path": "data/audit/remediation-log.jsonl",
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 35
+      "churn": 36
     },
     {
       "path": ".github/workflows/test.yml",
@@ -34,23 +34,23 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 211
+      "churn": 210
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 211
+      "churn": 210
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 211
+      "churn": 210
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 206
+      "churn": 207
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 120
+      "churn": 118
     },
     {
       "path": "public/data/shows/cats-west-end-2026.json",
@@ -70,26 +70,26 @@
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
-      "churn": 71
+      "churn": 70
     },
     {
       "path": "data/audit/bd-circuit-breaker.json",
-      "churn": 61
-    },
-    {
-      "path": "data/commercial-rss-state.json",
-      "churn": 61
-    },
-    {
-      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
       "churn": 59
     },
     {
-      "path": "data/audit/t1-outlet-breaker.json",
-      "churn": 54
+      "path": "data/commercial-rss-state.json",
+      "churn": 59
+    },
+    {
+      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
+      "churn": 58
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 56
+    },
+    {
+      "path": "data/audit/t1-outlet-breaker.json",
       "churn": 54
     },
     {
@@ -106,11 +106,11 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/the-car-man-west-end-2026.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
@@ -121,94 +121,86 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/the-pass-off-broadway-2026.json",
-      "churn": 36
+      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "churn": 37
     },
     {
-      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 36
+      "path": "public/data/shows/the-pass-off-broadway-2026.json",
+      "churn": 35
+    },
+    {
+      "path": "data/show-score-urls.json",
+      "churn": 33
     },
     {
       "path": "public/data/shows/the-devil-wears-prada-west-end-2024.json",
       "churn": 33
-    },
-    {
-      "path": "data/show-score-urls.json",
-      "churn": 32
-    },
-    {
-      "path": "public/data/shows/isla-off-broadway-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/matilda-the-musical-theatre-row-off-broadway-2026.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 998,
+      "churn": 1020,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 963,
+      "churn": 984,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 662,
+      "churn": 667,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 626,
+      "churn": 632,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 268,
+      "churn": 269,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 268,
+      "churn": 269,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 268,
+      "churn": 269,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 258,
+      "churn": 260,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 251,
+      "churn": 250,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-cats-west-end-2026.json",
-      "churn": 209,
+      "churn": 208,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 209,
+      "churn": 208,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 168,
+      "churn": 167,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 119,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
@@ -267,17 +259,17 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 41,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gap-audit-checkpoint.json",
       "churn": 41,
       "mergeAttr": "ours"
     },
@@ -288,7 +280,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 37,
+      "churn": 35,
       "mergeAttr": "ours"
     }
   ]

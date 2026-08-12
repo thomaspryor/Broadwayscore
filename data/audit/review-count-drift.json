@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-11T06:45:01.516Z",
+  "generatedAt": "2026-08-12T07:05:46.870Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-08-11T06:40:45.844Z",
-    "reviewsJsonAgeHours": 0.1,
+    "reviewsJsonLastUpdated": "2026-08-12T07:02:47.324Z",
+    "reviewsJsonAgeHours": 0,
     "freshnessBreach": false,
     "showsScanned": 7,
-    "filesScanned": 229,
+    "filesScanned": 204,
     "showsOverThreshold": 0,
     "orphanReviews": 0
   },
@@ -19,32 +19,32 @@
   "perShow": [
     {
       "showDir": "cats-west-end-2026",
-      "actual": 31,
-      "scanned": 99,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "actual": 29,
+      "scanned": 100,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "everything-theatre--unknown.json",
+          "outletId": "everything-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-09",
+          "url": "https://everything-theatre.co.uk/2026/08/review-cats-regents-park-open-air-theatre/"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "death-note-the-musical-west-end-2026",
       "actual": 3,
-      "scanned": 15,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "im-every-woman-off-west-end-2026",
-      "actual": 30,
-      "scanned": 37,
+      "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-comedy-about-spies-west-end-2026",
-      "actual": 34,
-      "scanned": 58,
+      "actual": 38,
+      "scanned": 62,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
