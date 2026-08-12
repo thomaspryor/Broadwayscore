@@ -94,7 +94,16 @@ function isSkippedByValidator(data) {
 
 /**
  * True when the review's URL is an aggregator listing page while its outletId claims a
- * real outlet. Mirrors the aggregator_url_mismatch check in validate-review-texts.js.
+ * real outlet. Canonical for validate-review-texts.js's aggregator_url_mismatch check.
+ *
+ * CARVE-OUT (task #1194): a real-outlet file carrying a score sourced FROM the roundup
+ * (aggregatorStars or originalScore) is a legitimate star-stub, not contamination — the
+ * aggregator URL is the only URL that ever existed for it. This is the same carve-out
+ * shouldSkipAggregatorUrlWrite() already applies at write time (the 2026-06-21 12-WET
+ * false-positive incident referenced in aggregator-domains.js). Without it, arming
+ * westendtheatre.com in AGGREGATOR_DOMAINS would turn ~60+ legitimate WET star-stubs
+ * into aggregator_url_mismatch errors. Only an unscored real-outlet URL on an
+ * aggregator domain — nothing worth preserving, just a wrong URL — stays a mismatch.
  *
  * Fails CLOSED on a malformed URL: an unparseable URL is not a mismatch we can prove,
  * and other validator checks already cover invalid URLs. Never throws.
@@ -111,7 +120,9 @@ function hasAggregatorUrlMismatch(data) {
     return false;
   }
   const outletId = resolveOutletId(data.outletId);
-  return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(outletId);
+  if (!AGGREGATOR_DOMAINS.has(hostname) || AGGREGATOR_OUTLET_IDS.has(outletId)) return false;
+  const hasScore = data.originalScore != null || data.aggregatorStars != null;
+  return !hasScore;
 }
 
 /**

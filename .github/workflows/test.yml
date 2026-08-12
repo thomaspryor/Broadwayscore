@@ -665,6 +665,12 @@ on:
       - 'scripts/.aggregator-url-latent.json'
       - 'scripts/lib/aggregator-url-latent.js'
       - 'scripts/validate-review-texts.js'
+      # TLD parity fence (task #1194): asserts AGGREGATOR_DOMAINS carries the TLD the
+      # corpus actually uses per aggregator outlet, and that a scored real-outlet
+      # star-stub on an aggregator domain is NOT aggregator_url_mismatch while an
+      # unscored one IS. Colocated test runs in the lib-test glob; path-listed so a
+      # solo edit triggers CI.
+      - 'scripts/lib/aggregator-domain-tld-parity.test.mjs'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -3607,6 +3613,18 @@ jobs:
         # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
         if: always()
         run: node scripts/audit-autoclear-vs-ensemble.js --strict
+
+      - name: Run aggregator-domain TLD parity corpus scan (needs review-texts)
+        # Same corpus-missing trap as explainExclusion above: the scripts/lib/*.test.mjs
+        # glob runs in the unit-tests job, which never checks out data/review-texts, so
+        # this file's live-corpus layer (Part 2) always t.skip()'d there — the only
+        # thing CI ever actually verified was the static snapshot table (Part 1), not a
+        # real fence against a NEW aggregator TLD drift (task #1194 ship-check finding).
+        # Re-running it HERE with REQUIRE_REVIEW_CORPUS=1 makes the live scan real.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
 
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the

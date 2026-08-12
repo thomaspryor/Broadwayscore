@@ -35,18 +35,15 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { shouldBlockReviewTextsGate, HEALABLE_CHECKS } = require('./lib/review-texts-gate');
-// Aggregator domain/outlet sets are the single source of truth in lib/aggregator-domains.js,
-// shared with the ingest-side guard in gather-reviews.js so the validator and the writer
-// agree by construction. See that file for the contamination-class rationale.
-const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
-const { isSkippedByValidator } = require('./lib/aggregator-url-latent');
+// aggregator_url_mismatch is decided by the CANONICAL predicate in
+// lib/aggregator-url-latent.js — audit-aggregator-url-latent.js ratchets the latent
+// population that predicate hides, so a second copy here would drift from the ratchet
+// it's supposed to agree with by construction (task #1002, task #1194).
+const { isSkippedByValidator, hasAggregatorUrlMismatch } = require('./lib/aggregator-url-latent');
 
 // Startup assertion — prevent silent no-ops if import breaks
 if (!AGGREGATOR_SCORE_SOURCES || AGGREGATOR_SCORE_SOURCES.size === 0) {
   throw new Error('AGGREGATOR_SCORE_SOURCES failed to load from review-normalization.js');
-}
-if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_IDS || AGGREGATOR_OUTLET_IDS.size === 0) {
-  throw new Error('AGGREGATOR_DOMAINS/AGGREGATOR_OUTLET_IDS failed to load from aggregator-domains.js');
 }
 
 // Parse command line arguments
@@ -262,18 +259,20 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     });
   }
 
-  // 5b: URL points to aggregator domain but outletId is a different outlet
-  if (data.url) {
+  // 5b: URL points to aggregator domain but outletId is a different outlet, and there's
+  // no score to preserve (see hasAggregatorUrlMismatch for the star-stub carve-out).
+  if (data.url && hasAggregatorUrlMismatch(data)) {
+    let hostname;
     try {
-      const hostname = new URL(data.url).hostname.replace(/^www\./, '');
-      if (AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(outletId)) {
-        errors.push({
-          file: relativePath,
-          check: 'aggregator_url_mismatch',
-          message: `URL domain "${hostname}" is an aggregator but outletId is "${data.outletId}" — review URL should point to the outlet's own page`
-        });
-      }
+      hostname = new URL(data.url).hostname.replace(/^www\./, '');
     } catch { /* invalid URL — other checks catch this */ }
+    if (hostname) {
+      errors.push({
+        file: relativePath,
+        check: 'aggregator_url_mismatch',
+        message: `URL domain "${hostname}" is an aggregator but outletId is "${data.outletId}" — review URL should point to the outlet's own page`
+      });
+    }
   }
 
   return { errors, warnings };
