@@ -44,7 +44,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isNonReviewDemotedByFreshCV, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -3005,8 +3005,14 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Skip non-reviews (profiles, interviews, previews, features, news articles)
-      if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
+      // Skip non-reviews (profiles, interviews, previews, features, news articles).
+      // isNonReviewDemotedByFreshCV (#1255): a stale isNonReview flag (mostly
+      // gemini classify-non-reviews.js) can be outranked by a LATER, high-
+      // confidence contentVerification pass that affirms articleType='review'
+      // — this inline check is the actual scoring-corpus enforcement (it does
+      // NOT delegate to isIncludableForRebuild), so the demotion has to be
+      // applied here too, not just in review-guards.js/is-scoreable.js.
+      if ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) || data.nonReviewFlag === true || data.nonReviewContent === true) {
         logExclusion("skippedNonReview", showId, file, data);
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
