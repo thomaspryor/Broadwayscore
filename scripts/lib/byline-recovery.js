@@ -116,20 +116,27 @@ function recoverBylineForEntry(entry, siblings) {
  * giant-2026/wsj is a live example, confirmed 2026-08-12. The full-name check
  * above still requires an exact all-tokens match as the default bar; this
  * fallback accepts an honorific immediately followed by the name's last
- * token, which is specific enough not to weaken the gate-3 contamination
- * protection (the "Christopher vs Charles Isherwood" hallucination test below
- * has no honorific in its body text and still correctly rejects).
+ * token. Surname-only verification is inherently weaker than full-name
+ * verification (it can't tell "Charles Isherwood" from a hallucinated
+ * "Christopher Isherwood" sharing the same surname) — the caller MUST pass
+ * `allowHonorific: false` whenever a same-show record shows the surname
+ * paired with a DIFFERENT first name, so the fallback never overrides that
+ * exact ambiguity (see recoverBylinesForShow's surname-collision check,
+ * adversarial review finding, card #190).
  *
  * @param {string} name
  * @param {string} text
+ * @param {{allowHonorific?: boolean}} [opts] — allowHonorific (default true)
  * @returns {boolean}
  */
-function nameCorroboratedBy(name, text) {
+function nameCorroboratedBy(name, text, opts) {
   if (!name || !text || typeof text !== 'string') return false;
   const hay = foldDiacritics(text).toLowerCase();
   const tokens = foldDiacritics(name).split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
   if (!tokens.length) return false; // nothing substantive to match on
   if (tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay))) return true;
+  const allowHonorific = !opts || opts.allowHonorific !== false;
+  if (!allowHonorific) return false;
   const lastToken = tokens[tokens.length - 1];
   return new RegExp(`\\b(mr|ms|mx|mrs)\\.?\\s+${lastToken}\\b`, 'i').test(hay);
 }
@@ -161,6 +168,16 @@ function nameCorroboratedBy(name, text) {
  *      This kills the single-outlet mis-extraction path a lone mangled file
  *      would otherwise slip through gate 3 (a hallucinated "Christopher
  *      Isherwood" byline is rejected because the WSJ body names Charles).
+ *      The honorific-only fallback (nameCorroboratedBy's second branch)
+ *      verifies SURNAME only, so it is refused whenever a same-show record
+ *      shows that surname under a DIFFERENT first name (surnameNames below)
+ *      — this defeats the documented Christopher/Charles pattern where a
+ *      competing spelling exists somewhere in the data. It does NOT defend
+ *      against a wholly novel single-source hallucination with zero
+ *      competing spelling anywhere in the show; closing that fully would
+ *      require cross-checking a critic registry, which is out of scope here
+ *      (adversarial review finding, card #190 — documented, not silently
+ *      dropped).
  *
  * Gates 2-4 err toward skipping: a missed recovery just leaves "Unknown"
  * (the scored review is preserved), whereas a false accept either prints a
@@ -182,11 +199,23 @@ function recoverBylinesForShow(records, opts) {
   // recognized as the same critic for the contamination gate below — without
   // this an accented/unaccented spelling split across outlets would dodge it.
   const nameOutlets = new Map();
+  // surname(folded) -> set of distinct full plausible names sharing it, from
+  // EVERY record in the show (adversarial review finding, card #190): gate 4's
+  // honorific fallback only verifies a SURNAME against body text, which is not
+  // enough to distinguish "Charles Isherwood" from a hallucinated "Christopher
+  // Isherwood" — if the surname maps to 2+ distinct names anywhere in this
+  // show, the ambiguity is real and the honorific fallback must be refused for
+  // that surname (full-name match still applies, unaffected).
+  const surnameNames = new Map();
   for (const r of list) {
     if (!isPlausiblePersonName(r.criticName)) continue;
     const key = foldDiacritics(r.criticName).trim().toLowerCase();
     if (!nameOutlets.has(key)) nameOutlets.set(key, new Set());
     nameOutlets.get(key).add(r.outletId);
+    const nameTokens = key.split(/\s+/);
+    const surnameKey = nameTokens[nameTokens.length - 1];
+    if (!surnameNames.has(surnameKey)) surnameNames.set(surnameKey, new Set());
+    surnameNames.get(surnameKey).add(key);
   }
 
   // Group by (outletId, canonical URL).
@@ -218,7 +247,12 @@ function recoverBylinesForShow(records, opts) {
     const outlets = nameOutlets.get(foldDiacritics(name).trim().toLowerCase());
     if (outlets && outlets.size > 1) continue;
     // Gate 4: body corroboration in the Unknown's OR a sibling's fullText.
-    const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText));
+    // allowHonorific is refused when this surname has 2+ distinct full-name
+    // spellings anywhere in the show — see surnameNames above.
+    const nameFold = foldDiacritics(name).trim().toLowerCase();
+    const surnameKey = nameFold.split(/\s+/).pop();
+    const allowHonorific = (surnameNames.get(surnameKey)?.size || 0) <= 1;
+    const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText, { allowHonorific }));
     if (!corroborated) continue;
     for (const u of unknowns) out.push({ file: u.file, recoveredName: name });
   }
@@ -256,20 +290,37 @@ function recoverBylinesForShow(records, opts) {
 function recoverDisplayBylinesForShow(records) {
   const list = Array.isArray(records) ? records : [];
   const recovered = recoverBylinesForShow(list, { requireCleanSource: false });
-  return recovered.filter((rec) => {
+  const foldKey = (n) => foldDiacritics(n || '').trim().toLowerCase();
+  // Tracks (outletId, foldedName, url) already accepted in THIS pass — catches
+  // two different Unknown files independently recovering to the same critic at
+  // the same outlet from different URLs, which the against-`list` check below
+  // cannot see (neither file's ORIGINAL criticName is the recovered name, so
+  // they never collide against each other's raw records — adversarial review
+  // finding, card #190).
+  const acceptedInPass = [];
+  const out = [];
+  for (const rec of recovered) {
     const src = list.find((r) => r.file === rec.file);
-    if (!src) return true;
+    if (!src) { out.push(rec); continue; }
     const srcUrl = canonicalReviewUrl(src.url);
-    const recoveredKey = rec.recoveredName.trim().toLowerCase();
-    const collides = list.some((r) =>
+    const recoveredKey = foldKey(rec.recoveredName);
+    const collidesWithExisting = list.some((r) =>
       r.file !== rec.file &&
       r.outletId === src.outletId &&
       !r.flagged &&
-      (r.criticName || '').trim().toLowerCase() === recoveredKey &&
+      foldKey(r.criticName) === recoveredKey &&
       canonicalReviewUrl(r.url) !== srcUrl
     );
-    return !collides;
-  });
+    const collidesWithPass = acceptedInPass.some((a) =>
+      a.outletId === src.outletId &&
+      a.nameKey === recoveredKey &&
+      a.url !== srcUrl
+    );
+    if (collidesWithExisting || collidesWithPass) continue;
+    acceptedInPass.push({ outletId: src.outletId, nameKey: recoveredKey, url: srcUrl });
+    out.push(rec);
+  }
+  return out;
 }
 
 module.exports = {

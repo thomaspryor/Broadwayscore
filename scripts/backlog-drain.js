@@ -15,6 +15,7 @@
  *      own --headless path (a detached subprocess, never a copy of its
  *      dispatch/verify-gate/duplicate-guard logic — see the header note on
  *      why this is a subprocess rather than a require()'d main() call).
+const { gitSafeJobId } = require('./lib/bsc-runner.js'); // job branches use the SANITIZED id (linear: ids carry a git-illegal colon)
  *   4. Always recomputes and writes the digest metric snapshot
  *      (data/audit/backlog-drain-metric.json), registered in
  *      scripts/lib/digest-snapshots.js so send-morning-digest.js renders it.
@@ -239,7 +240,7 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
 function countStrandedCommits(jobId) {
   if (!jobId) return 0;
   try {
-    const out = execFileSync('git', ['-C', REPO, 'rev-list', '--count', `job/${jobId}`, '--not', 'origin/main', 'main'],
+    const out = execFileSync('git', ['-C', REPO, 'rev-list', '--count', `job/${gitSafeJobId(jobId)}`, '--not', 'origin/main', 'main'],
       { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' });
     return parseInt(String(out).trim(), 10) || 0;
   } catch {
@@ -271,7 +272,7 @@ function jobBranchLanded(jobId) {
   if (!jobId) return false;
   for (const ref of ['origin/main', 'main']) {
     try {
-      execFileSync('git', ['-C', REPO, 'merge-base', '--is-ancestor', `job/${jobId}`, ref],
+      execFileSync('git', ['-C', REPO, 'merge-base', '--is-ancestor', `job/${gitSafeJobId(jobId)}`, ref],
         { stdio: ['ignore', 'ignore', 'ignore'] });
       return true;
     } catch { /* not an ancestor of this ref — try the next */ }
