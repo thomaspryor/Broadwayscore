@@ -258,10 +258,56 @@ function hasLiveLedgerEntry(taskId, entries) {
   return true;
 }
 
+// Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
+// alert router's cross-system dedupe needs `description` on top of what
+// buildOpenIssuesQuery() above fetches — kept as its own query (not an added
+// field on the shared one) so a --list regression can never be caused by a
+// change that only rail 2 needed, and vice versa.
+function buildOpenIssuesWithDescriptionsQuery() {
+  return `query($teamKey: String!) {
+    issues(
+      first: 100
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
+    ) {
+      nodes {
+        identifier
+        title
+        description
+        url
+        state { name type }
+      }
+    }
+  }`;
+}
+
+// Pure match for linear-client.js's searchIssues(): does any OPEN issue's
+// title or description already contain this literal term (the alert's
+// conditionKey)? owner-alert-router.js's dispatchCard() embeds the raw
+// conditionKey in every card/issue it files — in the "## Acceptance
+// criteria" line (`Condition "<key>" no longer fires...`) that has always
+// been there, and now also in a dedicated `[conditionKey:<key>]` marker (see
+// buildCardNotes) — so a plain substring check catches both the historical
+// and the new form without needing to special-case either. First match wins,
+// same "first match is enough" contract as findUnresolvedDispatchComment
+// above. Client-side (not a Linear-side `contains` filter) so this never
+// depends on the exact shape of Linear's filter DSL doing the right thing
+// for a body-text search.
+function findOpenIssueForTerm(issues, term) {
+  if (!term || !Array.isArray(issues)) return null;
+  for (const issue of issues) {
+    if (!issue) continue;
+    if (issue.title && issue.title.includes(term)) return issue;
+    if (issue.description && issue.description.includes(term)) return issue;
+  }
+  return null;
+}
+
 module.exports = {
   MAC_ONLY_LABEL,
   buildIssueQuery,
   buildOpenIssuesQuery,
+  buildOpenIssuesWithDescriptionsQuery,
+  findOpenIssueForTerm,
   buildCommentMutation,
   priorityRank,
   priorityLabel,
