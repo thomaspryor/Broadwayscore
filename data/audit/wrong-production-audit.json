@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T22:52:30.265Z",
+  "timestamp": "2026-08-12T23:31:29.914Z",
   "stats": {
     "totalReviews": 42119,
-    "alreadyFlagged": 18293,
-    "dateGuardCatches": 137,
-    "directorMismatch": 963,
+    "alreadyFlagged": 18291,
+    "dateGuardCatches": 140,
+    "directorMismatch": 964,
     "tvFilmSignals": 1187,
-    "londonSignals": 863,
+    "londonSignals": 864,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3553
+    "noPublishDate": 3552
   },
   "findings": [
     {
@@ -4779,6 +4779,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 59,
+      "publishDate": "2026-08-11",
+      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -37307,6 +37326,48 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "broadwayworld--christiana-rose.json",
+      "score": 81,
+      "publishDate": "2025-08-04",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 360d before show (2025-08-04 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "everything-theatre--chris-elwell.json",
+      "score": 74,
+      "publishDate": "2025-08-05",
+      "url": "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "west-end-best-friend--anna-nichols.json",
+      "score": 85,
+      "publishDate": "2025-08-04",
+      "url": "https://www.westendbestfriend.co.uk/news/review-horrible-histories-barmy-britain-apollo-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 360d before show (2025-08-04 vs 2026-07-30)"
         }
       ]
     },
