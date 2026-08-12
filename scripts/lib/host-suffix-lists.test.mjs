@@ -169,6 +169,42 @@ test('ALL THREE agree on mirror-prefixed hosts (ship-check regression)', () => {
   }
 });
 
+test('a two-label mirror host keeps its identity (ship-check 2026-08-12)', () => {
+  // stripCosmeticPrefixes used to eat the identity label when nothing but a
+  // single-label TLD remained: 'amp.com' -> 'com'. That is the generic-slug
+  // collision the module exists to prevent, and provisionalOutletIdFromHost
+  // returned null, which ingest-review-from-url.js turns into a dropped review.
+  for (const host of ['amp.com', 'm.com', 'mobile.com']) {
+    const identity = host.split('.')[0];
+    assert.equal(stripCosmeticPrefixes(host), host, `${host} must not be stripped`);
+    assert.equal(normalizeHostSlug(host), identity, `normalizeHostSlug(${host})`);
+    assert.equal(provisionalOutletIdFromHost(host), identity, `provisionalOutletIdFromHost(${host})`);
+  }
+});
+
+test('the Blogger mirror rule only matches a real public suffix', () => {
+  // The tail after '.blogspot.' must be a public suffix. An unanchored
+  // /\.(blogspot\.[a-z.]{2,})$/ swallowed 'blogspot.example.com', so every
+  // <x>.blogspot.example.com became its own outlet identity and lookups
+  // against example.com missed (ship-check 2026-08-12).
+  assert.equal(platformSuffixOf('showshowdown.blogspot.co.id'), 'blogspot.co.id');
+  assert.equal(platformSuffixOf('someblog.blogspot.com'), 'blogspot.com');
+  assert.equal(platformSuffixOf('foo.blogspot.example.com'), null);
+  assert.equal(registrableHost('foo.blogspot.example.com'), 'example.com');
+});
+
+test('provisionalOutletIdFromHost and normalizeHostSlug agree on sectioned platform hosts', () => {
+  // The module header uses this very host as its worked example, but the two
+  // functions disagreed on it: parts[0] gave 'theater', the detector gave
+  // 'jerryportwood' (ship-check 2026-08-12).
+  for (const host of ['theater.jerryportwood.substack.com', 'news.someblog.wordpress.com']) {
+    const minted = String(provisionalOutletIdFromHost(host) || '').replace(/[^a-z0-9]/g, '');
+    assert.equal(minted, normalizeHostSlug(host), `mint vs slug on ${host}`);
+  }
+  // The ordinary two-label platform host is unchanged.
+  assert.equal(provisionalOutletIdFromHost('1minutecritic.substack.com'), '1minutecritic');
+});
+
 test('normalizeHostSlug never returns an empty slug for a parseable host', () => {
   for (const h of ['.blogspot.co.id', 'example.com.', 'substack.com', 'co.uk', 'm.co.uk']) {
     assert.notEqual(normalizeHostSlug(h), '', `${h} normalized to empty`);
@@ -189,10 +225,25 @@ test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
     const code = src
       .replace(/\/\*[\s\S]*?\*\//g, '')        // block comments
       .replace(/(^|[^:])\/\/.*$/gm, '$1');     // line AND trailing inline comments
-    for (const suffix of ['substack.com', 'wordpress.com', 'co.uk', 'com.au']) {
+    // Match the fork's SHAPE, not any single domain literal. Two constraints
+    // pull against each other here (both found by ship-check 2026-08-12):
+    //   - the fork this replaced was a REGEX (`/\.(co\.uk|com\.au|…)/i`), so
+    //     the escaped `co\.uk` form has to count or the realistic re-fork
+    //     passes green;
+    //   - but non-review-url-patterns.js legitimately hardcodes individual
+    //     outlet hosts (`/^improbable\.co\.uk$/`), so flagging any single
+    //     occurrence is a false positive that would block honest edits.
+    // A re-forked LIST names several suffixes together; a legitimate host
+    // constant names one. So: fail only when 3+ DISTINCT shared suffixes
+    // appear close together.
+    const WINDOW = 400;
+    const known = [...PLATFORM_HOST_SUFFIXES, ...MULTIPART_PUBLIC_SUFFIXES];
+    for (let i = 0; i < code.length; i += WINDOW / 2) {
+      const chunk = code.slice(i, i + WINDOW);
+      const hits = known.filter((s) => chunk.includes(s) || chunk.includes(s.replace(/\./g, '\\.')));
       assert.ok(
-        !code.includes(suffix),
-        `${file} declares the literal "${suffix}" in code — use host-suffix-lists.js instead`,
+        hits.length < 3,
+        `${file} groups ${hits.length} shared suffixes together (${hits.slice(0, 4).join(', ')}) — that is a re-forked list; use host-suffix-lists.js instead`,
       );
     }
     assert.ok(

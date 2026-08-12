@@ -220,8 +220,17 @@ function provisionalOutletIdFromHost(host) {
   let label;
   const platform = platformSuffixOf(h);
   if (platform && parts.length >= 3) {
-    // pub.<platform> -> the publication subdomain
-    label = parts[0];
+    // <...>.<pub>.<platform> -> the label IMMEDIATELY BEFORE the platform
+    // suffix, not parts[0]. On a platform host with a section subdomain the
+    // two differ, and taking parts[0] made this function disagree with
+    // normalizeHostSlug on the module's own worked example:
+    // 'theater.jerryportwood.substack.com' minted outletId 'theater' while
+    // the domain-move detector reasoned about 'jerryportwood' — the exact
+    // registration/detection split this shared module exists to close
+    // (ship-check 2026-08-12). 'theater'/'news' also collide as provisional
+    // ids across unrelated publications.
+    const withoutPlatform = h.slice(0, -(platform.length + 1)).split('.').filter(Boolean);
+    label = withoutPlatform[withoutPlatform.length - 1];
   } else if (multipartSuffixOf(h) && parts.length >= 3) {
     // <label>.co.uk -> the label before the 2-part suffix
     label = parts[parts.length - 3];

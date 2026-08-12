@@ -88,9 +88,15 @@ const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
 function isBareSuffix(host) {
   const h = cleanHost(host);
   if (!h) return true;
+  // Fewer than two labels cannot be "identity + suffix" — it IS the suffix.
+  // Without this, stripping a mirror prefix off a two-label host ate the
+  // identity: 'amp.com' normalized to 'com' and 'm.com' minted null, which
+  // ingest-review-from-url.js turns into a dropped review (ship-check
+  // 2026-08-12, confirmed by direct execution).
+  if (h.split('.').filter(Boolean).length < 2) return true;
   if (PLATFORM_HOST_SUFFIXES.includes(h)) return true;
   if (MULTIPART_PUBLIC_SUFFIXES.includes(h)) return true;
-  return /^blogspot\.[a-z.]{2,}$/.test(h);
+  return isBloggerMirror(h);
 }
 
 /**
@@ -136,14 +142,35 @@ function stripCosmeticPrefixes(host) {
  * @param {string} host
  * @returns {string|null} the matched suffix (e.g. 'substack.com'), or null
  */
+/**
+ * Is this host exactly a Blogger country mirror (`blogspot.<public-suffix>`)?
+ *
+ * The tail must be a REAL public suffix — a single-label TLD, or a member of
+ * MULTIPART_PUBLIC_SUFFIXES. An earlier `/^blogspot\.[a-z.]{2,}$/` accepted any
+ * tail, so 'foo.blogspot.example.com' was treated as a platform host and
+ * registrableHost returned the whole host instead of 'example.com', giving
+ * every `<x>.blogspot.example.com` its own outlet identity (ship-check
+ * 2026-08-12, confirmed by direct execution).
+ */
+function isBloggerMirror(host) {
+  const h = cleanHost(host);
+  if (!h.startsWith('blogspot.')) return false;
+  const tail = h.slice('blogspot.'.length);
+  if (!tail) return false;
+  if (MULTIPART_PUBLIC_SUFFIXES.includes(tail)) return true;
+  return /^[a-z]{2,}$/.test(tail); // plain single-label TLD
+}
+
 function platformSuffixOf(host) {
   const h = cleanHost(host);
   if (!h) return null;
   const listed = PLATFORM_HOST_SUFFIXES.find((p) => h.endsWith('.' + p));
   if (listed) return listed;
-  // Blogger country mirrors: <pub>.blogspot.<anything>
-  const mirror = h.match(/\.(blogspot\.[a-z.]{2,})$/);
-  return mirror ? mirror[1] : null;
+  // Blogger country mirrors: <pub>.blogspot.<public-suffix>
+  const dot = h.indexOf('.blogspot.');
+  if (dot === -1) return null;
+  const tail = h.slice(dot + 1);
+  return isBloggerMirror(tail) ? tail : null;
 }
 
 /**
