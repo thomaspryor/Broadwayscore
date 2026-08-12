@@ -120,21 +120,30 @@ function selectOpeningNightShows(shows, opts = {}) {
  * two silently drift (a lesson the shared selectOpeningNightShows predicate
  * above already encodes for the orchestrator/monitor pair).
  *
- * Used ONLY for alert severity by both callers — the actual provider
- * carve-out is enforced elsewhere (brightdata-caps.js / scrapingdog-caps.js).
- * lookbackDays 3 (not the selection default 21) because the question is "is a
- * poller hammering this provider for a show tonight", not "did a show open
- * this month".
+ * Used for alert severity by both callers (default options — lookbackDays 3,
+ * the selection default lookAheadHours 6) — the actual provider carve-out is
+ * enforced elsewhere (brightdata-caps.js / scrapingdog-caps.js). lookbackDays
+ * 3 because that question is "is a poller hammering this provider for a show
+ * tonight", not "did a show open this month".
+ *
+ * `opts` lets other callers ask a related but DIFFERENT window question on the
+ * same predicate rather than forking a new one — e.g. task #1315's budget
+ * reservation, which needs [today-1, today+3] (protect a show's BD budget for
+ * the ~3 days its late-arriving reviews trickle in), not the severity
+ * question's narrower tonight-focused window. Passing `{lookbackDays: 1,
+ * lookAheadHours: 72}` answers that without a second show-selection helper.
  *
  * @param {string} showsPath - absolute path to data/shows.json
+ * @param {object} [opts] - override selectOpeningNightShows options (merged
+ *                          over the {lookbackDays: 3} default)
  * @returns {number}
  */
-function countShowsInOpeningWindow(showsPath) {
+function countShowsInOpeningWindow(showsPath, opts = {}) {
   try {
     const fs = require('fs');
     const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
     const list = Array.isArray(shows) ? shows : shows.shows || [];
-    return selectOpeningNightShows(list, { lookbackDays: 3 }).length;
+    return selectOpeningNightShows(list, { lookbackDays: 3, ...opts }).length;
   } catch {
     // Unknown → treated as "no active window" for severity only. A missing
     // shows.json must never change whether a breaker trips.
