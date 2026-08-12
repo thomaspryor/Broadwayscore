@@ -116,9 +116,11 @@ const STANDING_RULES = [
   `silently inherits the interactive default (the expensive Fable/Mythos tier — 9 Fable workspaces burned in one ` +
   `night, 2026-07-13). Default to sonnet for mechanical/bounded work, opus for architecture or adversarial ` +
   `debugging — bsc-next.js's own resolveModel() already applies this judgment when you omit --model.`,
-  `3. CARD EVERY DISCOVERY. Any new bug, gap, or follow-up you find gets a Notion card immediately: ` +
-  `\`node scripts/notion-brain.js create "Title" --priority P... --category ... --notes "..."\`. Don't hold it in ` +
-  `your own context as a mental TODO — this session is disposable, the card is not.`,
+  `3. CARD EVERY DISCOVERY, AND DECIDE ITS DISPOSITION. Any new bug, gap, or follow-up you find gets a Notion card ` +
+  `immediately, with --dispatch (work it now via bsc-next) or --park "<reason>" (state why it waits) — neither is ` +
+  `optional, notion-brain.js create rejects a card with no disposition (task #1310): ` +
+  `\`node scripts/notion-brain.js create "Title" --priority P... --category ... --notes "..." --park "<reason>"\`. ` +
+  `Don't hold it in your own context as a mental TODO — this session is disposable, the card is not.`,
   `4. CONVERSE WITH THE OWNER. You're the single point of conversation — report state changes concisely. Reserve ` +
   `questions for genuine owner decisions (money, product direction, irreversible actions), formatted as: ` +
   `"DECISION NEEDED: <plain-English stakes>. My recommendation: X because Y. Default: doing X unless you say otherwise."`,

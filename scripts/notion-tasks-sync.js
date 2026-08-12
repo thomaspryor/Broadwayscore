@@ -456,4 +456,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };

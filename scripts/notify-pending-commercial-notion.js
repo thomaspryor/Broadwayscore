@@ -150,6 +150,9 @@ function notifyOne(item) {
     '--category', 'Pipeline',
     '--tags', `commercial,pending-review,${stableKey}`,
     '--notes', notes,
+    // task #1310: awaiting owner manual review, not an autonomous dispatch
+    // target — parked with a stated reason instead of a bare default.
+    '--park', `Auto-filed by notify-pending-commercial-notion for pending commercial data review (${stableKey}); awaiting owner's manual look.`,
   ]);
   if (create.status !== 0) {
     console.error(`  ✗ ${item.slug}: create failed — ${create.stderr.slice(0, 200)}`);

@@ -234,6 +234,11 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
     '--category', category || 'Infra',
     '--tags', resolvedTags,
     '--notes', notes,
+    // task #1310: no default disposition. An alert-filed card isn't being
+    // worked the instant it's created — the Action Queue poller (cardAction
+    // above) or the P0/P1 auto-dispatch rule picks it up next pass — so this
+    // is a park, not a dispatch. State the reason on the card itself.
+    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); the Action Queue poller / P0-P1 auto-dispatch rule picks it up on its next pass.`,
   ];
   try {
     // 15s: a single Notion page-create call. Callers that dispatch many
