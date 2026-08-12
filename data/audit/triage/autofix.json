@@ -1,7 +1,7 @@
 {
   "system": "autofix",
   "status": "warn",
-  "lastChecked": "2026-08-11T07:57:53.045Z",
+  "lastChecked": "2026-08-12T08:06:35.811Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,6 +10,16 @@
       "name": "Autofix: jobs actually succeeding",
       "status": "warn",
       "message": "Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. It is untracked, so CI never sees it — this row cannot judge the loop from this environment."
+    },
+    {
+      "name": "Autofix: daily canary (dispatch pipeline proof)",
+      "status": "warn",
+      "message": "Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here."
+    },
+    {
+      "name": "Autofix: throughput (dispatched/passed, daily)",
+      "status": "warn",
+      "message": "Autofix throughput is not measurable from this environment — both data/audit/digest-autofix-ledger.jsonl and data/audit/backlog-drain-ledger.jsonl are gitignored/per-machine and absent here."
     }
   ]
 }
