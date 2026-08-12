@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T15:57:57.621Z",
+  "timestamp": "2026-08-12T16:20:52.791Z",
   "stats": {
-    "totalReviews": 42107,
+    "totalReviews": 42108,
     "alreadyFlagged": 18323,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
-    "tvFilmSignals": 1186,
-    "londonSignals": 852,
+    "tvFilmSignals": 1187,
+    "londonSignals": 855,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3550
+    "noPublishDate": 3547
   },
   "findings": [
     {
@@ -6074,7 +6074,22 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 98,
+      "publishDate": "2026-08-12",
+      "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 97,
       "publishDate": "2026-08-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
       "findings": [
@@ -34626,6 +34641,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "attitude--jamie-tabberer.json",
+      "score": 91,
       "publishDate": "2026-08-12",
       "url": "https://www.attitude.co.uk/culture/death-note-at-the-barbican-london-review-531265/",
       "findings": [
@@ -34665,8 +34681,23 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "city-am--anna-moloney.json",
+      "score": 57,
       "publishDate": "2026-08-12",
       "url": "https://www.cityam.com/death-note-the-musical-review-a-high-shine-high-school-take-on-the-trolley-problem/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "londontheatre1--john-groves.json",
+      "score": 97,
+      "publishDate": "2026-08-12",
+      "url": "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -34691,10 +34722,38 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "stagedtheatre--karen-jemison.json",
+      "score": 79,
+      "publishDate": "2026-08-12",
+      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/death-note-the-musical-review-barbican-theatre?srsltid=AfmBOop53zV40bAwneNS8jjvy5vb6BZOvWvviyo3ygrloOti14-tT58r",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "stanservice--molly-wilson.json",
       "score": 87,
       "publishDate": "2026-08-09",
       "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "times-uk--kate-maltby.json",
+      "score": 83,
+      "publishDate": "2026-08-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
