@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift } = require('./lib/review-count-probe');
+const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift, isLiveRcMissingField } = require('./lib/review-count-probe');
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
@@ -226,11 +226,23 @@ async function main() {
       live: live.rc,
     });
 
-    const fingerprint = makeFingerprint(local.included, agg, localJsonCount, live.rc);
+    // task #242: a 200 with no rc field is a real drift signal ONLY when the
+    // locally-generated artifact carries rc — then the live page is stale or
+    // malformed. Shows whose generator legitimately omits rc (pre-score shows:
+    // verified 2026-08-11, e.g. as-you-like-it-globe has rv:[] and no rc both
+    // locally and live) must not flag. Transport failures (http/timeout/
+    // network) keep the old skip behavior.
+    const liveRcMissing = isLiveRcMissingField(live) && localJson != null && localJson.rc != null;
+    const effectiveDrift = liveRcMissing ? Math.max(drift.drift, THRESHOLD + 1) : drift.drift;
+
+    const fingerprint = makeFingerprint(local.included, agg, localJsonCount, liveRcMissing ? 'rc-missing' : live.rc);
 
     // Check allowlist before shouldAlert so suppressed shows don't consume grace slots
     const allowEntry = allowlist[showId];
-    const suppressed  = allowEntry && drift.drift <= allowEntry.maxDrift;
+    // Suppress on effectiveDrift, not raw drift: an allowlist entry excusing an
+    // unrelated count mismatch must not swallow the rc-missing escalation
+    // (raw drift is 0 in exactly that case — second-opinion blocker, task #242).
+    const suppressed  = allowEntry && effectiveDrift <= allowEntry.maxDrift;
 
     // Grace: if the ONLY drift is between stage 3 (local per-show JSON) and stage 4 (live),
     // and the per-show JSON was written in the last GRACE_MINUTES, it's deploy lag — suppress.
@@ -239,7 +251,7 @@ async function main() {
     const ageMin = perShowJsonAgeMinutes(showId);
     const inGrace = only34Drift && ageMin != null && ageMin < GRACE_MINUTES;
 
-    const alert = (suppressed || inGrace) ? false : shouldAlert(showId, fingerprint, drift.drift, state);
+    const alert = (suppressed || inGrace) ? false : shouldAlert(showId, fingerprint, effectiveDrift, state);
     updateState(state, showId, fingerprint, alert);
 
     if (alert) anyAlert = true;
@@ -256,7 +268,9 @@ async function main() {
       localJsonRc: localJson ? localJson.rc : null,
       live: live.rc,
       liveErr: live.err,
+      liveRcMissing,
       drift: drift.drift,
+      effectiveDrift,
       threshold: THRESHOLD,
       graceMinutes: GRACE_MINUTES,
       inGrace,
@@ -275,8 +289,8 @@ async function main() {
     const header = ['Show', 'Opening', 'Local', 'Agg', 'LocalJSON', 'Live', 'Drift', 'Status'].join('\t');
     console.log(header);
     for (const r of results) {
-      const status = r.alert ? 'ALERT' : r.suppressed ? 'suppressed' : r.inGrace ? 'grace' : r.drift > THRESHOLD ? 'watch' : 'ok';
-      const liveFmt = r.live != null ? String(r.live) : `err(${r.liveErr})`;
+      const status = r.alert ? 'ALERT' : r.suppressed ? 'suppressed' : r.inGrace ? 'grace' : r.effectiveDrift > THRESHOLD ? 'watch' : 'ok';
+      const liveFmt = r.live != null ? String(r.live) : r.liveRcMissing ? 'RC-MISSING' : `err(${r.liveErr})`;
       const localJsonFmt = r.localJson != null ? String(r.localJson) : 'n/a';
       console.log([r.showId, r.openingDate || '?', r.local, r.aggregate, localJsonFmt, liveFmt, r.drift, status].join('\t'));
     }
@@ -286,21 +300,21 @@ async function main() {
     console.log('\n' + header);
     console.log('─'.repeat(90));
     for (const r of results) {
-      const alertMark = r.alert ? '🔴 YES' : r.suppressed ? '⏭  suppressed' : r.inGrace ? '⏳ grace-34' : r.drift > THRESHOLD ? '⏳ grace' : '✅ ok';
-      const liveFmt = r.live != null ? String(r.live) : `err(${r.liveErr})`;
+      const alertMark = r.alert ? '🔴 YES' : r.suppressed ? '⏭  suppressed' : r.inGrace ? '⏳ grace-34' : r.effectiveDrift > THRESHOLD ? '⏳ grace' : '✅ ok';
+      const liveFmt = r.live != null ? String(r.live) : r.liveRcMissing ? 'RC-MISSING' : `err(${r.liveErr})`;
       const localJsonFmt = r.localJson != null ? String(r.localJson) : 'n/a';
       console.log([r.showId, r.openingDate || '?', r.local, r.aggregate, localJsonFmt, liveFmt, r.drift, alertMark].join('\t'));
     }
     console.log();
 
-    const driftShows = results.filter(r => r.drift > THRESHOLD);
+    const driftShows = results.filter(r => r.effectiveDrift > THRESHOLD);
     if (driftShows.length === 0) {
       console.log(`✅ All ${results.length} show(s) within threshold (≤${THRESHOLD}).`);
     } else {
       console.log(`⚠️  ${driftShows.length}/${results.length} show(s) above drift threshold (>${THRESHOLD}):`);
       for (const r of driftShows) {
-        const stages = `local=${r.local}, agg=${r.aggregate}, localJson=${r.localJson ?? 'n/a'}, live=${r.live ?? 'n/a'}`;
-        console.log(`   ${r.showId}: ${stages}, drift=${r.drift}${r.inGrace ? ' (in 3↔4 grace)' : ''}`);
+        const stages = `local=${r.local}, agg=${r.aggregate}, localJson=${r.localJson ?? 'n/a'}, live=${r.liveRcMissing ? 'RC-MISSING (page served without rc)' : r.live ?? 'n/a'}`;
+        console.log(`   ${r.showId}: ${stages}, drift=${r.drift}${r.liveRcMissing ? ` (escalated to ${r.effectiveDrift}: live page lost its review count)` : ''}${r.inGrace ? ' (in 3↔4 grace)' : ''}`);
         console.log(`   Fix: node scripts/verify-review-recovery.js --show=${r.showId} --production`);
       }
     }
