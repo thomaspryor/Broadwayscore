@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-11T23:33:58.965Z",
+  "timestamp": "2026-08-12T00:04:44.451Z",
   "stats": {
-    "totalReviews": 42058,
-    "alreadyFlagged": 18315,
+    "totalReviews": 42063,
+    "alreadyFlagged": 18318,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
     "tvFilmSignals": 1181,
-    "londonSignals": 845,
+    "londonSignals": 846,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3537
@@ -39602,6 +39602,20 @@
       "score": 98,
       "publishDate": "October 20th, 2022",
       "url": "https://www.londontheatre.co.uk/reviews/my-neighbour-totoro-review-barbican-rsc-studio-ghibli",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 96,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/barbican-encore-season-for-my-neighbour-totoro/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
