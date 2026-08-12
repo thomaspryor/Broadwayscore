@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-12T16:45:56.032Z",
+  "generatedAt": "2026-08-12T17:43:24.277Z",
   "windowDays": 1095,
-  "targets": 19,
-  "auditedThisRun": 19,
-  "carriedForward": 207,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 225,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 176,
-    "totalMissing": 1098,
+    "totalMissing": 1100,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1208,
+    "totalFlaggedMisses": 1211,
     "totalRecoverable": 29,
-    "totalRecovered": 11
+    "totalRecovered": 9
   },
   "results": [
     {
@@ -19320,22 +19320,50 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-        "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+        "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+        "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+        "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+        "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+        "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+        "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+        "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+        "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+        "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
         "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812"
       ],
       "dirFiles": 32,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [],
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+          "host": "londonbornandbred.co.uk",
+          "knownOutletId": "londonbornandbred",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
-          "host": "monstagigz.com",
+          "host": "attitude.co.uk",
           "count": 1
         },
         {
-          "host": "musicaltheatrereview.com",
+          "host": "cityam.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
           "count": 1
         },
         {
@@ -19343,33 +19371,82 @@
           "count": 1
         },
         {
-          "host": "stanservice.substack.com",
+          "host": "stagedtheatre.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "recoverable": true,
-          "recoverableFile": "times-uk--kate-maltby.json",
-          "recoverableOutletId": "times-uk",
-          "recoverableCritic": "Kate Maltby",
+          "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "times-uk--kate-maltby.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc"
+              "file": "london-theatre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
             }
           ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+          "host": "barbican.org.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "barbican--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+            }
           ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre"
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "recoverable": true,
+          "recoverableFile": "theatreandtonic--unknown.json",
+          "recoverableOutletId": "theatreandtonic",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreandtonic--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican"
+            }
+          ],
+          "serpCensus": true
         },
         {
           "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
@@ -19430,32 +19507,120 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 4,
-        "corroborated": 2,
+        "corroborated": 3,
         "perSource": {
           "westendtheatre": {
             "cited": 4,
-            "corroborated": 2
+            "corroborated": 3
           }
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Death Note: The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Death Note: The Musical\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Death Note: The Musical\" review barbican",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 24,
+        "byReason": {
+          "non-review-host": 14,
+          "ticketing-listing": 1,
+          "not-http-url": 9
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-          "host": "thetimes.com",
-          "file": "times-uk--kate-maltby.json",
+          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "file": "theatreandtonic--unknown.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
-          "starFallback": true,
+          "starFallback": false,
           "reason": null,
           "recoveryCount": 0
         },
@@ -19471,33 +19636,9 @@
           "recoveryCount": 0
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
-          "host": "allthatdazzles.co.uk",
-          "file": "all-that-dazzles-uk--daz-gale.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "https://www.attitude.co.uk/culture/death-note-at-the-barbican-london-review-531265/",
-          "host": "attitude.co.uk",
-          "file": "attitude--jamie-tabberer.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "https://www.cityam.com/death-note-the-musical-review-a-high-shine-high-school-take-on-the-trolley-problem/",
-          "host": "cityam.com",
-          "file": "city-am--anna-moloney.json",
+          "url": "https://www.londontheatredirect.com/news/death-note-barbican-review",
+          "host": "londontheatredirect.com",
+          "file": "londontheatredirect--hay-brunsdon.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
@@ -19511,11 +19652,46 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc"
+            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show"
+          },
+          {
+            "outletId": "londonbornandbred",
+            "outlet": "londonbornandbred",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle"
+          },
+          {
+            "outletId": "barbican.org.uk",
+            "outlet": "barbican.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican"
           },
           {
             "outletId": "thestage",
@@ -19528,8 +19704,44 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
             "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
             "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+            "outletId": "stanservice.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
@@ -19540,11 +19752,46 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-            "outletId": "times-uk",
+            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+            "outletId": "artsdesk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+            "outletId": "londonbornandbred",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+            "outletId": "barbican.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T17:43:24.277Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
@@ -19554,10 +19801,10 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 4
+        "liveCount": 7,
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-12T15:52:14.208Z"
+      "computedAt": "2026-08-12T17:43:24.277Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
