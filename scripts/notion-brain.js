@@ -630,7 +630,15 @@ async function createCard(args) {
   console.error(`__NOTION_CARD_ID__=${page.id}`);
 
   if (disposition.mode === 'dispatch') {
-    dispatchCreatedCard({ pageId: page.id, title });
+    if (args['no-spawn']) {
+      // Escape hatch for the self-tracking case: a session that's already
+      // actively running the work (e.g. its own CLAUDE.md §6 session card)
+      // is dispatched by definition — running the pull -> bsc-next chain
+      // here would spawn a REDUNDANT second workspace on the same work.
+      console.error(`DISPATCHED (self, no spawn): "${title}" — session already actively working this`);
+    } else {
+      dispatchCreatedCard({ pageId: page.id, title });
+    }
   } else {
     console.error(`PARKED: "${title}" — ${disposition.reason}`);
   }
