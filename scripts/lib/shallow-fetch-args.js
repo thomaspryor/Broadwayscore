@@ -104,7 +104,41 @@ function shallowFetchArgs(opts = {}) {
   return [`--shallow-since=@${since}`];
 }
 
-module.exports = { shallowFetchArgs, DEFAULT_SLACK_SEC, DEFAULT_FALLBACK_DEPTH };
+/**
+ * shallowFetchArgs() takes the two facts (is this clone shallow, how old is its
+ * oldest commit) as inputs so it stays pure and testable. Every caller that
+ * wants to fetch from a REAL checkout then has to derive those two facts by
+ * shelling out to git, and that derivation was being copy-pasted
+ * (autofix-canary.js's markerExistsOnOriginMain had one copy). This is that
+ * derivation, once.
+ *
+ * Fails open: any git error returns [] (treat as a complete clone, no extra
+ * flags), which is the same fallback each inline copy already used — a missing
+ * depth bound is a slow fetch, while a wrong one can lose ancestry.
+ *
+ * @param {object} a
+ * @param {string} a.repoRoot   a git checkout
+ * @param {number} [a.timeoutMs] per-git-command timeout (default 10s)
+ * @returns {string[]} args to splice into `git fetch <args> origin <ref>`
+ */
+function repoDepthArgs({ repoRoot, timeoutMs = 10000 }) {
+  const { execFileSync } = require('child_process');
+  const git = (args) =>
+    execFileSync('git', args, { cwd: repoRoot, encoding: 'utf8', timeout: timeoutMs }).trim();
+  try {
+    const isShallow = git(['rev-parse', '--is-shallow-repository']) === 'true';
+    let oldestCommitEpoch = 0;
+    if (isShallow) {
+      const sha = git(['rev-list', 'HEAD']).split('\n').pop();
+      oldestCommitEpoch = Number(git(['log', '-1', '--format=%ct', sha]));
+    }
+    return shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  } catch {
+    return [];
+  }
+}
+
+module.exports = { shallowFetchArgs, repoDepthArgs, DEFAULT_SLACK_SEC, DEFAULT_FALLBACK_DEPTH };
 
 // CLI: emit the args space-separated so bash can read them into an array.
 // None of the emitted args can contain whitespace, so word-splitting is safe.

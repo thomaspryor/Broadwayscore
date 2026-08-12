@@ -82,6 +82,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { repoDepthArgs } = require('./shallow-fetch-args.js');
 
 const HOOK_REL_PATH = '.claude/hooks/infra-plan-review-gate.sh';
 const SETTINGS_REL_PATH = '.claude/settings.json';
@@ -166,25 +167,42 @@ function checkHookFileExists({ hookPath }) {
 function checkScopeLibOnOrigin({ repoRoot }) {
   if (!repoRoot) return { ok: false, detail: 'no repoRoot given' };
   // A checkout without an origin/main remote-tracking ref cannot answer this
-  // question either way. actions/checkout defaults to fetch-depth: 1, and on a
+  // question as-is. actions/checkout defaults to fetch-depth: 1, and on a
   // pull_request event it fetches only refs/pull/<n>/merge — so origin/main is
   // absent and `git cat-file origin/main:<path>` exits non-zero for a reason
   // that has nothing to do with the file. Reporting that as a FAILURE made
   // every PR's Unit Tests job red regardless of its diff (observed on PR #573,
   // run 31563016374, while the same test passed on push-to-main runs of the
-  // same commit range). Absence of the ref is inconclusive, not a violation.
-  const hasOriginMain = spawnSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
-    cwd: repoRoot,
-    encoding: 'utf8',
-    timeout: 15000,
-  });
-  if (hasOriginMain.status !== 0) {
-    return {
-      ok: true,
-      inconclusive: true,
-      detail:
-        'no origin/main ref in this checkout (shallow / PR-merge-ref clone) — cannot verify, not treating as a violation',
-    };
+  // same commit range).
+  //
+  // Fetch the ref rather than giving up: this check exists to catch a silently
+  // broken safety gate, so "we couldn't look" is a hole, not an answer. Same
+  // shape as autofix-canary.js's markerExistsOnOriginMain — depth-bounded, so
+  // a shallow CI clone pulls the delta and not the whole ~2.1 GB history
+  // (task #466 class). Only if the fetch ITSELF fails (offline, no remote) do
+  // we fall back to inconclusive.
+  const hasOriginMain = () =>
+    spawnSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
+      cwd: repoRoot,
+      encoding: 'utf8',
+      timeout: 15000,
+    }).status === 0;
+  if (!hasOriginMain()) {
+    const depthArgs = repoDepthArgs({ repoRoot });
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    spawnSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], {
+      cwd: repoRoot,
+      encoding: 'utf8',
+      timeout: 30000,
+    });
+    if (!hasOriginMain()) {
+      return {
+        ok: true,
+        inconclusive: true,
+        detail:
+          'no origin/main ref in this checkout and `git fetch origin main` could not create one (offline / no remote) — cannot verify, not treating as a violation',
+      };
+    }
   }
   const r = spawnSync('git', ['cat-file', '-e', `origin/main:${SCOPE_LIB_REPO_PATH}`], {
     cwd: repoRoot,

@@ -250,18 +250,75 @@ test(
   }
 );
 
-// A checkout with NO origin/main ref (what actions/checkout produces on a
-// pull_request event: fetch-depth 1 of refs/pull/<n>/merge) must come back
-// inconclusive, not failed. Reporting it as a violation turned every PR's Unit
-// Tests job red no matter what the PR changed — PR #573, run 31563016374.
-test('(a) a checkout with no origin/main ref is inconclusive, not a violation', () => {
+// ── checkScopeLibOnOrigin against real throwaway repos ─────────────────────
+//
+// A checkout with NO origin/main ref is what actions/checkout produces on a
+// pull_request event (fetch-depth 1 of refs/pull/<n>/merge). Treating that as
+// a violation turned every PR's Unit Tests job red no matter what the PR
+// changed — PR #573, run 31563016374. But "inconclusive" is only the right
+// answer when the ref genuinely cannot be obtained: this check exists to catch
+// a silently-broken safety gate, so it fetches first and only gives up if the
+// fetch fails. These three tests pin all three outcomes.
+
+const { spawnSync: gitSpawn } = await import('node:child_process');
+const git = (cwd, ...args) => gitSpawn('git', args, { cwd, encoding: 'utf8' });
+
+// A bare repo standing in for `origin`, with SCOPE_LIB_REPO_PATH present or
+// absent on its main branch, plus a clone that has NOT fetched it yet.
+function makeOriginAndClone({ withScopeLib }) {
+  const root = makeTmpDir();
+  const origin = path.join(root, 'origin.git');
+  const seed = path.join(root, 'seed');
+  const clone = path.join(root, 'clone');
+  gitSpawn('git', ['init', '-q', '--bare', '-b', 'main', origin], { encoding: 'utf8' });
+  gitSpawn('git', ['init', '-q', '-b', 'main', seed], { encoding: 'utf8' });
+  git(seed, 'config', 'user.email', 'test@example.com');
+  git(seed, 'config', 'user.name', 'test');
+  if (withScopeLib) {
+    fs.mkdirSync(path.join(seed, 'scripts', 'lib'), { recursive: true });
+    fs.writeFileSync(path.join(seed, 'scripts', 'lib', 'infra-review-scope.js'), '// stub\n');
+  } else {
+    fs.writeFileSync(path.join(seed, 'README.md'), 'no scope lib here\n');
+  }
+  git(seed, 'add', '-A');
+  git(seed, 'commit', '-qm', 'seed');
+  git(seed, 'remote', 'add', 'origin', origin);
+  git(seed, 'push', '-q', 'origin', 'main');
+  // --no-checkout + no fetch of main: mirrors a CI checkout that has the
+  // objects for its own ref but no origin/main remote-tracking ref.
+  gitSpawn('git', ['init', '-q', '-b', 'main', clone], { encoding: 'utf8' });
+  git(clone, 'remote', 'add', 'origin', origin);
+  return { root, clone };
+}
+
+test('(a) no origin/main ref, but it can be fetched: the check answers for real (ok)', () => {
+  const { root, clone } = makeOriginAndClone({ withScopeLib: true });
+  assert.equal(git(clone, 'rev-parse', '--verify', '--quiet', 'origin/main').status !== 0, true);
+  const r = checkScopeLibOnOrigin({ repoRoot: clone });
+  assert.equal(r.ok, true, r.detail);
+  assert.notEqual(r.inconclusive, true, `should have fetched and answered, not punted: ${r.detail}`);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// The check must still FAIL loudly when origin/main is reachable and the scope
+// lib is genuinely missing from it — otherwise the fetch-first change would
+// have converted a real violation into a shrug.
+test('(a) origin/main reachable but scope lib genuinely absent: ok=false, not inconclusive', () => {
+  const { root, clone } = makeOriginAndClone({ withScopeLib: false });
+  const r = checkScopeLibOnOrigin({ repoRoot: clone });
+  assert.equal(r.ok, false, r.detail);
+  assert.notEqual(r.inconclusive, true, r.detail);
+  assert.match(r.detail, /missing on origin\/main/);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('(a) no origin/main and no reachable remote: inconclusive, not a violation', () => {
   const fakeRepo = makeTmpDir();
-  const { spawnSync } = require('node:child_process');
-  spawnSync('git', ['init', '-q'], { cwd: fakeRepo });
+  gitSpawn('git', ['init', '-q'], { cwd: fakeRepo, encoding: 'utf8' });
   const r = checkScopeLibOnOrigin({ repoRoot: fakeRepo });
   assert.equal(r.ok, true, r.detail);
   assert.equal(r.inconclusive, true, r.detail);
-  assert.match(r.detail, /no origin\/main ref/);
+  assert.match(r.detail, /could not create one/);
   fs.rmSync(fakeRepo, { recursive: true, force: true });
 });
 
