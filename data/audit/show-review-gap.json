@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-12T19:54:19.094Z",
+  "generatedAt": "2026-08-12T21:37:11.248Z",
   "windowDays": 1095,
-  "targets": 22,
-  "auditedThisRun": 22,
-  "carriedForward": 204,
+  "targets": 16,
+  "auditedThisRun": 16,
+  "carriedForward": 210,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 176,
-    "totalMissing": 1067,
-    "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1163,
-    "totalRecoverable": 31,
-    "totalRecovered": 7
+    "withGap": 174,
+    "totalMissing": 1062,
+    "totalCitedNoUrl": 2,
+    "totalFlaggedMisses": 1162,
+    "totalRecoverable": 29,
+    "totalRecovered": 6
   },
   "results": [
     {
@@ -10517,24 +10517,24 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
       ],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
         "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
         "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
+        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
         "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
+        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
         "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
         "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
+        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+        "https://www.offoffonline.com/offoffonline/2026/7/27/broad-strokes",
         "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
         "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
         "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
-        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
         "https://www.newyorktheatreguide.com/show/46802-cat-cohen-broad-strokes",
         "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
         "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/"
@@ -10550,10 +10550,6 @@
         },
         {
           "host": "nypost.com",
-          "count": 1
-        },
-        {
-          "host": "offoffonline.com",
           "count": 1
         }
       ],
@@ -10577,24 +10573,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
-          "host": "vanityfair.com",
-          "knownOutletId": "vanityfair",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vanityfair--kase-wickman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
           "host": "show-score.com",
           "knownOutletId": null,
@@ -10608,6 +10586,24 @@
               "file": "show-score--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vanityfair--kase-wickman.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
             }
           ],
           "serpCensus": true
@@ -10644,8 +10640,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -10654,7 +10650,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 2,
             "error": null
           },
@@ -10664,8 +10660,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -10674,8 +10670,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -10685,7 +10681,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -10695,24 +10691,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 404,
+        "count": 318,
         "byReason": {
+          "aggregator-internal-nav": 221,
+          "not-http-url": 60,
+          "non-review-host": 29,
           "roundup-page": 2,
-          "non-review-host": 54,
-          "aggregator-internal-nav": 262,
-          "venue-production-page": 1,
-          "not-http-url": 80,
           "non-review-path": 3,
+          "venue-production-page": 1,
           "ticketing-reseller": 2
         }
       },
@@ -10728,18 +10724,18 @@
             "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway"
           },
           {
-            "outletId": "vanityfair",
-            "outlet": "vanityfair",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-          },
-          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
+          },
+          {
+            "outletId": "vanityfair",
+            "outlet": "vanityfair",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
           },
           {
             "outletId": "variety",
@@ -10752,38 +10748,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:13:06.915Z"
-          },
-          {
-            "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:13:06.915Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:13:06.915Z"
-          },
-          {
             "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
             "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:13:06.915Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:13:06.915Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:13:06.915Z"
           },
@@ -10794,8 +10760,26 @@
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
             "url": "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
             "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
+            "url": "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:13:06.915Z"
           },
@@ -10810,6 +10794,24 @@
             "outletId": "exeuntnyc.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
+            "url": "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:13:06.915Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/7/27/broad-strokes",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           },
           {
             "url": "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
@@ -10837,18 +10839,18 @@
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
           },
           {
-            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
-            "outletId": "vanityfair",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T23:23:45.175Z"
-          },
-          {
             "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
             "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-05T23:53:17.243Z"
+          },
+          {
+            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+            "outletId": "vanityfair",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T23:23:45.175Z"
           },
           {
             "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
@@ -10858,10 +10860,10 @@
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 15
+        "liveCount": 12,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -18833,13 +18835,17 @@
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
         "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
       ],
-      "dirFiles": 38,
-      "dirClean": 20,
-      "inReviewsJson": 19,
+      "dirFiles": 40,
+      "dirClean": 23,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
           "count": 1
         },
         {
@@ -18894,40 +18900,6 @@
           ]
         },
         {
-          "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
-          "host": "thetheatreflyer.co.uk",
-          "knownOutletId": null,
-          "recoverable": true,
-          "recoverableFile": "thetheatreflyer-co-uk--emma-knott.json",
-          "recoverableOutletId": "thetheatreflyer-co-uk",
-          "recoverableCritic": "Emma Knott",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thetheatreflyer-co-uk--emma-knott.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026"
-            }
-          ]
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": true,
-          "recoverableFile": "west-end-best-friend--oli-burgin.json",
-          "recoverableOutletId": "west-end-best-friend",
-          "recoverableCritic": "Oli Burgin",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--oli-burgin.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre"
-            }
-          ]
-        },
-        {
           "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
           "host": "barbican.org.uk",
           "knownOutletId": null,
@@ -18945,9 +18917,19 @@
           ]
         }
       ],
-      "citedNoUrl": [],
+      "citedNoUrl": [
+        {
+          "outletId": "your-experience-matters",
+          "outletName": "Your experience matters",
+          "stars": null,
+          "source": "lbo-roundup",
+          "sourceArticleUrl": "https://www.londonboxoffice.co.uk/news/post/death-note-review",
+          "priorRun": false,
+          "hasExcludedFiles": false
+        }
+      ],
       "weReference": {
-        "rowCount": 4,
+        "rowCount": 5,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -18965,8 +18947,8 @@
           },
           "lbo-roundup": {
             "found": true,
-            "rows": 0,
-            "emptyParse": true,
+            "rows": 1,
+            "emptyParse": false,
             "error": null,
             "fetchErrors": 0
           },
@@ -18979,7 +18961,7 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 4,
+        "currentRunRows": 5,
         "corroborated": 4,
         "perSource": {
           "westendtheatre": {
@@ -18993,38 +18975,16 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 90,
+        "count": 91,
         "byReason": {
+          "aggregator-internal-nav": 50,
           "not-http-url": 20,
-          "aggregator-internal-nav": 49,
           "non-review-host": 19,
           "roundup-page": 2
         }
       },
       "dedupedVariants": [],
       "recoveryResults": [
-        {
-          "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
-          "host": "thetheatreflyer.co.uk",
-          "file": "thetheatreflyer-co-uk--emma-knott.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~173653/day) projects exhaustion in ~15d, before the 22d-out renewal — still u",
-          "recoveryCount": 1
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
-          "host": "westendbestfriend.co.uk",
-          "file": "west-end-best-friend--oli-burgin.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        },
         {
           "url": "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
           "host": "radiotimes.com",
@@ -19034,7 +18994,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -19049,25 +19009,18 @@
             "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle"
           },
           {
-            "outletId": "thetheatreflyer.co.uk",
-            "outlet": "thetheatreflyer.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026"
-          },
-          {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre"
-          },
-          {
             "outletId": "barbican.org.uk",
             "outlet": "barbican.org.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+          },
+          {
+            "outletId": "your-experience-matters",
+            "outlet": "Your experience matters",
+            "critic": "Unknown",
+            "stars": null,
+            "url": ""
           }
         ],
         "suppressedMissing": [],
@@ -19127,10 +19080,22 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
+            "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
+            "outletId": "thetheatreflyer.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
@@ -19146,31 +19111,24 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
-            "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
-            "outletId": "thetheatreflyer.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
-            "outletId": "west-end-best-friend",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
             "outletId": "barbican.org.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "",
+            "outletId": "your-experience-matters",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 15
+        "liveCount": 13,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -23234,7 +23192,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "elephant-shoes-regional-2026",
@@ -34663,19 +34621,18 @@
         "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
         "https://www.talkinbroadway.com/page/ob/07_10_25.html",
-        "https://www.theaterscene.net/musicals/offbway/heathers-the-musical/victor-gluck/"
+        "https://www.theaterscene.net/musicals/offbway/heathers-the-musical/victor-gluck/",
+        "https://lavocedinewyork.com/en/new-york/2025/07/11/everything-old-is-delightfully-new-again-in-heathers-the-musical/",
+        "https://www.offoffonline.com/offoffonline/2025/7/9/heathers-the-musical",
+        "https://www.interestedbystander.com/2025/06/theater-reviews-catching-up-with.html"
       ],
-      "dirFiles": 60,
+      "dirFiles": 61,
       "dirClean": 19,
       "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
           "host": "aaroninnyc.com",
-          "count": 1
-        },
-        {
-          "host": "lavocedinewyork.com",
           "count": 1
         },
         {
@@ -35046,6 +35003,40 @@
               "urlInDir": "https://www.talkinbroadway.com/page/ob/07_10_25.html"
             }
           ]
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2025/7/9/heathers-the-musical",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--jessica-taghap.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2025/7/9/heathers-the-musical"
+            }
+          ]
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/06/theater-reviews-catching-up-with.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.interestedbystander.com/2025/06/theater-reviews-catching-up-with.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -35055,11 +35046,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 670,
+        "count": 667,
         "byReason": {
-          "non-review-host": 54,
-          "aggregator-internal-nav": 526,
+          "aggregator-internal-nav": 523,
           "not-http-url": 84,
+          "non-review-host": 54,
           "non-review-path": 6
         }
       },
@@ -35205,6 +35196,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/07_10_25.html"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2025/7/9/heathers-the-musical"
+          },
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2025/06/theater-reviews-catching-up-with.html"
           }
         ],
         "suppressedMissing": [],
@@ -35310,6 +35315,12 @@
             "outletId": "theaterscene.net",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://lavocedinewyork.com/en/new-york/2025/07/11/everything-old-is-delightfully-new-again-in-heathers-the-musical/",
+            "outletId": "lavocedinewyork.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           },
           {
             "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
@@ -35443,12 +35454,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/7/9/heathers-the-musical",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2025/06/theater-reviews-catching-up-with.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           }
         ],
-        "liveCount": 15,
-        "candidateCount": 33
+        "liveCount": 16,
+        "candidateCount": 36
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
@@ -38717,14 +38742,14 @@
         "https://www.theaterscene.net/plays/offbway-plays/hungry-women/victor-gluck/",
         "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
         "https://pagesonstages.com/2026/07/25/hungry-women/",
-        "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+        "https://www.newyorktheatreguide.com/show/47348-hungry-women",
         "https://www.sohoplayhouse.com/see-a-show/hungry-women",
         "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
-        "https://www.newyorktheatreguide.com/show/47348-hungry-women",
         "https://www.show-score.com/off-broadway-shows/hungry-women",
         "https://www.melissamaney.com/hungry-women",
-        "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
+        "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
         "https://donyc.com/events/2026/8/9/hungry-women-tickets",
+        "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
         "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/"
       ],
       "dirFiles": 14,
@@ -38740,24 +38765,6 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--emily-wyrwa.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
           "host": "broadwaypodcastnetwork.com",
@@ -38790,6 +38797,24 @@
               "file": "show-score--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.show-score.com/off-broadway-shows/hungry-women"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
             }
           ],
           "serpCensus": true
@@ -38844,7 +38869,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           },
@@ -38854,8 +38879,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -38864,7 +38889,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 1,
             "error": null
           },
@@ -38875,7 +38900,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -38884,8 +38909,8 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -38895,13 +38920,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 20,
         "byReason": {
+          "aggregator-internal-nav": 4,
+          "non-review-host": 10,
           "roundup-page": 3,
-          "non-review-host": 18,
-          "aggregator-internal-nav": 3,
-          "venue-production-page": 1,
-          "non-review-path": 1
+          "non-review-path": 1,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -38916,7 +38941,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~170577/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~174067/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -38931,13 +38956,6 @@
             "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets"
           },
           {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
-          },
-          {
             "outletId": "broadwaypodcastnetwork",
             "outlet": "broadwaypodcastnetwork",
             "critic": "Unknown",
@@ -38950,6 +38968,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/hungry-women"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
           },
           {
             "outletId": "this-week-in-new-york",
@@ -38999,16 +39024,16 @@
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
           },
           {
-            "url": "https://www.sohoplayhouse.com/see-a-show/hungry-women",
-            "outletId": "sohoplayhouse.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/show/47348-hungry-women",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/hungry-women",
+            "outletId": "sohoplayhouse.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
           },
           {
             "url": "https://www.melissamaney.com/hungry-women",
@@ -39024,13 +39049,6 @@
             "firstSeenAt": "2026-08-12T08:23:16.992Z"
           },
           {
-            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T16:42:46.829Z"
-          },
-          {
             "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
             "outletId": "broadwaypodcastnetwork",
             "state": "GAP",
@@ -39043,6 +39061,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T18:43:14.820Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
@@ -39062,7 +39087,7 @@
         "liveCount": 7,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "iceboy-regional-2026",
@@ -39097,7 +39122,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "im-almost-there-off-broadway-2026",
@@ -46384,7 +46409,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "la-sonnambula-off-broadway-2025",
@@ -46745,7 +46770,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
@@ -48386,7 +48411,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -53910,9 +53935,9 @@
       "candidatesRejected": {
         "count": 299,
         "byReason": {
-          "non-review-host": 15,
           "aggregator-internal-nav": 221,
           "not-http-url": 60,
+          "non-review-host": 15,
           "non-review-path": 3
         }
       },
@@ -53956,7 +53981,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -63138,7 +63163,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "porgy-and-bess-off-broadway-2025",
@@ -78696,80 +78721,14 @@
       "openingDate": "2025-11-17",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-25TH-ANNUAL-PUTNAM-COUNTY-SPELLING-BEE-Returns-Off-Broadway-20251117"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-        "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review-charming",
-        "https://exeuntnyc.com/reviews/review-the-25th-annual-putnam-county-spelling-bee-at-new-world-stages/",
-        "https://1minutecritic.com/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-        "https://culturesauce.com/2025/11/17/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-        "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-        "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html"
-      ],
-      "dirFiles": 19,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
       "missing": [],
-      "dirOnly": [
-        {
-          "host": "aaroninnyc.com",
-          "count": 1
-        },
-        {
-          "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--roma-torre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/"
-            }
-          ]
-        }
-      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -78777,84 +78736,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 319,
-        "byReason": {
-          "non-review-host": 19,
-          "aggregator-internal-nav": 223,
-          "not-http-url": 74,
-          "non-review-path": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "dailybeast",
-            "outlet": "dailybeast",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review-charming",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-the-25th-annual-putnam-county-spelling-bee-at-new-world-stages/",
-            "outletId": "exeuntnyc.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://1minutecritic.com/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://culturesauce.com/2025/11/17/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-            "outletId": "dailybeast",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          }
-        ],
-        "liveCount": 5,
-        "candidateCount": 7
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -86391,178 +86285,13 @@
       "openingDate": "2026-07-14",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-        "https://newyorktheater.me/2022/07/27/oresteia-review/",
-        "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-        "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-        "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-        "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-        "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-        "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/"
-      ],
-      "dirFiles": 47,
-      "dirClean": 26,
-      "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "liamodell.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "london-unattached.com",
-          "count": 1
-        },
-        {
-          "host": "modishmale.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 2
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrevibe.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
-          "count": 2
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
-          "count": 1
-        }
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -86571,197 +86300,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 120,
-        "byReason": {
-          "roundup-page": 10,
-          "non-review-host": 20,
-          "aggregator-internal-nav": 86,
-          "not-http-url": 4
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-robert-ickes-oresteia-off-broadway",
-          "publishDate": "2022-07-29"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/"
-          },
-          {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2022/07/27/oresteia-review/"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html"
-          },
-          {
-            "outletId": "observer",
-            "outlet": "observer",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/"
-          },
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html"
-          },
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/"
-          }
-        ],
-        "suppressedMissing": [
-          {
-            "outletId": "wsj",
-            "outlet": "wsj",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859"
-          }
-        ],
-        "candidates": [
-          {
-            "url": "http://nystagereview.com/2022/07/27/oresteia-the-aeschylus-classic-trilogy-modern-dressed-up-for-today/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2022/07/27/oresteia-review/",
-            "outletId": "nyt-theater",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/oresteia-at-park-avenue-armory-review",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://observer.com/2022/07/review-robert-ickes-oresteia-skillfully-brings-greek-tragedy-to-todays-crises/",
-            "outletId": "observer",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://www.vulture.com/2022/07/theater-review-robert-ickes-production-of-oresteia.html",
-            "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/oresteia-review-park-avenue-armory-robert-icke-luke-treadaway-kirsty-rider-angus-wright-alxis-rae-forlenza-anastasia-hille-hara-yannas-tia-bannon-michael-abubakar-11659044859",
-            "outletId": "wsj",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          },
-          {
-            "url": "https://www.thewrap.com/oresteia-off-broadway-robert-icke-theater-review/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:11:40.231Z"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "the-outsiders-2024",
@@ -86819,9 +86370,15 @@
         "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
         "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html",
         "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php",
+        "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html",
+        "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
         "https://www.broadwayworld.com/article/Review-THE-OUTSIDERS-at-The-Fisher-Theatre-20260307",
         "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-        "https://www.timeout.com/newyork/theater/the-outsiders-broadway-musical-review"
+        "https://www.timeout.com/newyork/theater/the-outsiders-broadway-musical-review",
+        "https://www.talkinbroadway.com/page/world/TheOutsiders.html",
+        "http://www.theaterscene.net/musicals/broadway/the-outsiders-a-new-musical/joseph-pisano/",
+        "https://pagesonstages.wordpress.com/2024/03/18/the-outsiders/",
+        "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html"
       ],
       "dirFiles": 56,
       "dirClean": 35,
@@ -86830,6 +86387,20 @@
         {
           "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
           "host": "dailynebraskan.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+          "host": "aroundthetownchicago.com",
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
@@ -86863,15 +86434,7 @@
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
-          "count": 2
-        },
-        {
           "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
           "count": 1
         }
       ],
@@ -87101,6 +86664,23 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -87110,15 +86690,23 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1135,
+        "count": 1130,
         "byReason": {
+          "aggregator-internal-nav": 800,
+          "not-http-url": 230,
           "non-review-host": 91,
-          "aggregator-internal-nav": 806,
-          "not-http-url": 229,
           "non-review-path": 9
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://pagesonstages.wordpress.com/2024/03/18/the-outsiders/",
+          "host": "pagesonstages.wordpress.com",
+          "matchedUrl": "http://pagesonstages.com/2024/03/18/the-outsiders/",
+          "outletId": "pages-on-stages",
+          "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
+        }
+      ],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-musical-adaptation-of-the-outsiders",
@@ -87137,6 +86725,18 @@
         {
           "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
           "host": "dailynebraskan.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html",
+          "host": "thestar.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+          "host": "aroundthetownchicago.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -87164,6 +86764,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html"
+          },
+          {
+            "outletId": "toronto-star",
+            "outlet": "toronto-star",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html"
+          },
+          {
+            "outletId": "aroundthetownchicago.com",
+            "outlet": "aroundthetownchicago.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/"
           },
           {
             "outletId": "broadwayworld",
@@ -87262,6 +86876,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php"
+          },
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html"
           }
         ],
         "suppressedMissing": [],
@@ -87447,11 +87068,43 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.talkinbroadway.com/page/world/TheOutsiders.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/broadway/the-outsiders-a-new-musical/joseph-pisano/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
+            "url": "https://pagesonstages.wordpress.com/2024/03/18/the-outsiders/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
             "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
             "outletId": "dailynebraskan.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html",
+            "outletId": "toronto-star",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           },
           {
             "url": "https://www.broadwayworld.com/article/Review-THE-OUTSIDERS-at-The-Fisher-Theatre-20260307",
@@ -87550,12 +87203,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           }
         ],
-        "liveCount": 25,
-        "candidateCount": 40
+        "liveCount": 28,
+        "candidateCount": 46
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "the-pass-off-broadway-2026",
@@ -89316,13 +88976,21 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJ1Z5F",
         "https://www.talkinbroadway.com/page/ob/07_27_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/",
-        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
-        "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/"
+        "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
+        "https://newyorktheater.me/2026/08/01/the-saviors/",
+        "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
+        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc"
       ],
       "dirFiles": 30,
       "dirClean": 20,
       "inReviewsJson": 20,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
       "dirOnly": [
         {
           "host": "acsntn.substack.com",
@@ -89330,10 +88998,6 @@
         },
         {
           "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheater.me",
           "count": 1
         },
         {
@@ -89421,8 +89085,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 8,
+            "accepted": 2,
             "error": null
           },
           {
@@ -89431,8 +89095,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 8,
+            "accepted": 0,
             "error": null
           },
           {
@@ -89441,7 +89105,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -89451,7 +89115,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -89462,7 +89126,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -89472,30 +89136,52 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 417,
+        "count": 411,
         "byReason": {
-          "roundup-page": 3,
-          "non-review-host": 59,
-          "aggregator-internal-nav": 270,
-          "not-http-url": 81,
+          "aggregator-internal-nav": 269,
+          "not-http-url": 89,
+          "non-review-host": 47,
+          "roundup-page": 2,
           "non-review-path": 3,
           "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~174067/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html"
+          },
           {
             "outletId": "nysr",
             "outlet": "nysr",
@@ -89587,16 +89273,29 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
+            "url": "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/08/01/the-saviors/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
+          },
+          {
             "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
             "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
-            "url": "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+            "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T21:37:11.248Z"
           },
           {
             "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
@@ -89620,10 +89319,10 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 16
+        "liveCount": 14,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -89837,7 +89536,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",

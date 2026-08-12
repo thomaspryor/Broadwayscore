@@ -221,6 +221,19 @@ function buildCardNotes(row) {
 // below) call this per-row, then ONE syncTasks() at the end — deliberately
 // NOT folded into a single fileCardAndSync helper, since batching the sync
 // after N creates (not N syncs) is the whole point of that shape.
+//
+// Phase 0 rail 2 (plan 2026-08-12, task #1341) deliberately does NOT wire the
+// owner-alert-router.js Linear dedupe (findLinearDuplicate) in here. It would
+// need to `await` before this call, and runAutofix()/fileCard() are
+// synchronous top to bottom — 1 production call site (send-morning-digest.js)
+// but 9 synchronous call sites in this file's own test suite
+// (digest-autofix.test.mjs) would all need converting to async alongside it.
+// That's a real refactor of a critical-tier dispatch file, not the "cheap to
+// reach" case the rail's plan explicitly carved out — left for a follow-up
+// rather than rushed in here. Health-check-sourced rows rarely share a
+// conditionKey with a hand-filed Linear issue in practice (they're filed by
+// name, not conditionKey, prior to this rail), so the exposure this leaves
+// open is narrow.
 function fileCard(title, notes, { log = () => {} } = {}) {
   try {
     execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', title,

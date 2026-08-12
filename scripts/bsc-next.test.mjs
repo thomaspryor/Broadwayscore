@@ -623,6 +623,110 @@ test('staleOutcomeGuard: --force / --allow-unverifiable / --dry-run / --print-pr
   }
 });
 
+// ── Single-dispatch-side guard (Phase 0 rail 1, plan 2026-08-12, task #1341) ─
+const { linearMirrorGuard, loadLinearMirrorMapping } = require('./bsc-next.js');
+
+test('linearMirrorGuard: refuses a task with a live (non-archived) Linear counterpart, naming the identifier and the linear-next.js command', () => {
+  const mapping = { '1341': { linearId: 'uuid-1', identifier: 'BRO-500', title: 'x', project: 'Infrastructure' } };
+  const refusal = linearMirrorGuard({ id: '1341' }, mapping, {});
+  assert.match(refusal, /#1341/);
+  assert.match(refusal, /BRO-500/);
+  assert.match(refusal, /node scripts\/linear-next\.js --id BRO-500/);
+});
+
+test('linearMirrorGuard: silent when the task is not in the mapping at all', () => {
+  assert.equal(linearMirrorGuard({ id: '999' }, {}, {}), null);
+  assert.equal(linearMirrorGuard({ id: '999' }, { '1341': { identifier: 'BRO-500' } }, {}), null);
+});
+
+test('linearMirrorGuard: silent for a mapping entry retired to Archive (notion_done/noise/idle-stale — not live work on the other side)', () => {
+  const retired = { '10': { linearId: 'uuid-2', identifier: 'BRO-11', title: 'x', project: 'Archive', retiredReason: 'notion_done' } };
+  assert.equal(linearMirrorGuard({ id: '10' }, retired, {}), null);
+});
+
+test('linearMirrorGuard: silent for a mapping entry parked in Archive project even without an explicit retiredReason (belt-and-suspenders)', () => {
+  const archived = { '10': { linearId: 'uuid-2', identifier: 'BRO-11', title: 'x', project: 'Archive' } };
+  assert.equal(linearMirrorGuard({ id: '10' }, archived, {}), null);
+});
+
+test('linearMirrorGuard: silent for a mapping entry missing its identifier (defensive — should never happen in practice)', () => {
+  const broken = { '1341': { linearId: 'uuid-1', project: 'Infrastructure' } };
+  assert.equal(linearMirrorGuard({ id: '1341' }, broken, {}), null);
+});
+
+test('linearMirrorGuard: --force / --dry-run / --print-prompt all bypass', () => {
+  const mapping = { '1341': { linearId: 'uuid-1', identifier: 'BRO-500', title: 'x', project: 'Infrastructure' } };
+  for (const flag of ['force', 'dry-run', 'print-prompt']) {
+    assert.equal(linearMirrorGuard({ id: '1341' }, mapping, { [flag]: true }), null, `${flag} must bypass`);
+  }
+});
+
+test('loadLinearMirrorMapping: reads a real JSON file', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'linear-mapping-test-'));
+  const mappingPath = path2.join(tmp, 'mapping.json');
+  fs2.writeFileSync(mappingPath, JSON.stringify({ '1341': { identifier: 'BRO-500' } }));
+  try {
+    const mapping = loadLinearMirrorMapping(mappingPath);
+    assert.equal(mapping['1341'].identifier, 'BRO-500');
+  } finally {
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('loadLinearMirrorMapping: missing/corrupt file fails open to {} (never blocks dispatch on a read error)', () => {
+  assert.deepEqual(loadLinearMirrorMapping('/nonexistent/path/mapping.json'), {});
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'linear-mapping-corrupt-'));
+  const mappingPath = path2.join(tmp, 'mapping.json');
+  fs2.writeFileSync(mappingPath, 'not valid json{{{');
+  try {
+    assert.deepEqual(loadLinearMirrorMapping(mappingPath), {});
+  } finally {
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('main(): a task mapped to a live Linear issue is refused before launching anything, even with --headless', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-linear-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1341.json'), JSON.stringify({
+    id: '1341', subject: 'A task now tracked on Linear', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '1341'], {
+      loadTasks: () => loadTasks(dir),
+      loadLinearMirrorMapping: () => ({ '1341': { linearId: 'x', identifier: 'BRO-500', title: 'y', project: 'Infrastructure' } }),
+      launchCmux: () => { throw new Error('launchCmux must never be called once the Linear guard refuses'); },
+      fetchCard: () => null,
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /BRO-500/.test(e)), `expected a BRO-500 refusal, got: ${errors.join(' | ')}`);
+});
+
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────
 const os = require('os');
 const path = require('path');

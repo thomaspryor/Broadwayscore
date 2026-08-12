@@ -94,7 +94,10 @@ async function listIssues(teamId) {
       `query($teamId: String!, $after: String) {
         team(id: $teamId) {
           issues(first: 100, after: $after) {
-            nodes { id identifier title url project { name } state { name } }
+            nodes {
+              id identifier title url project { name } state { name type }
+              completedAt canceledAt
+            }
             pageInfo { hasNextPage endCursor }
           }
         }
@@ -110,6 +113,13 @@ async function listIssues(teamId) {
         url: n.url,
         project: n.project ? n.project.name : null,
         state: n.state ? n.state.name : null,
+        // stateType/completedAt/canceledAt: added for the issue-cap monitor
+        // (BRO-285) to classify archive candidates without a second query —
+        // additive fields, existing callers (scripts/linear-import.js) only
+        // read id/identifier/title/url/project/state and are unaffected.
+        stateType: n.state ? n.state.type : null,
+        completedAt: n.completedAt || null,
+        canceledAt: n.canceledAt || null,
       });
     }
     if (!pageInfo.hasNextPage) break;
@@ -131,9 +141,42 @@ async function getIssue(identifier) {
 // Open (non-completed, non-canceled) issues for a team, priority-agnostic
 // ordering left to the caller (linear-dispatch.js's sortIssuesByPriority) —
 // this only fetches. Defaults to TEAM_KEY so callers rarely need to pass one.
+// Cursor-paginated like listIssues() above: the workspace holds 200+ issues,
+// so a single first:100 page silently truncates.
 async function listOpenIssues(teamKey = TEAM_KEY) {
-  const data = await graphql(linearDispatch.buildOpenIssuesQuery(), { teamKey });
-  return (data.issues && data.issues.nodes) || [];
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await graphql(linearDispatch.buildOpenIssuesQuery(), { teamKey, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    issues.push(...(nodes || []));
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return issues;
+}
+
+// Cross-system alert dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341):
+// does an OPEN issue in this team already carry `term` (the alert's
+// conditionKey) in its title or body? Fetches the team's open issues WITH
+// description (buildOpenIssuesWithDescriptionsQuery — listOpenIssues above
+// omits it, since --list never renders it) and matches client-side via
+// linear-dispatch.js's pure findOpenIssueForTerm — see that function's header
+// for why this doesn't lean on Linear's filter DSL to do the matching.
+// Returns the matching issue or null. Cursor-paginated (1-3+ round trips at
+// the current 200+ issue count, early-exits on first match); called at most
+// once per alert (not in a loop), so this is never a hot path.
+async function searchIssues(term, teamKey = TEAM_KEY) {
+  let after = null;
+  for (;;) {
+    const data = await graphql(linearDispatch.buildOpenIssuesWithDescriptionsQuery(), { teamKey, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    const match = linearDispatch.findOpenIssueForTerm(nodes || [], term);
+    if (match) return match;
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return null;
 }
 
 // Post a comment on an issue (used by linear-next.js to record "Dispatched to
@@ -143,6 +186,22 @@ async function createComment(issueId, body) {
   const data = await graphql(linearDispatch.buildCommentMutation(), { issueId, body });
   if (!data.commentCreate.success) throw new Error(`commentCreate failed for issue ${issueId}`);
   return data.commentCreate;
+}
+
+// Archive a Done/Canceled issue so it stops counting against the free-tier
+// 250-unarchived-issue cap (BRO-285). Archiving is reversible in Linear's UI
+// (unarchive), unlike delete, so this carries a lower bar than updateIssue's
+// board-reprojection mutations — callers still keep their own audit trail
+// (see scripts/linear-archive-done.js) before calling this.
+async function archiveIssue(id) {
+  const data = await graphql(
+    `mutation($id: String!) {
+      issueArchive(id: $id) { success }
+    }`,
+    { id }
+  );
+  if (!data.issueArchive || !data.issueArchive.success) throw new Error(`issueArchive failed for ${id}`);
+  return data.issueArchive;
 }
 
 async function updateIssue(id, input) {
@@ -190,8 +249,10 @@ module.exports = {
   listIssues,
   getIssue,
   listOpenIssues,
+  searchIssues,
   createComment,
   updateIssue,
+  archiveIssue,
   listProjects,
   createProject,
   createIssue,
