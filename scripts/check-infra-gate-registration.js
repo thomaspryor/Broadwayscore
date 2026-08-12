@@ -34,7 +34,13 @@ async function main() {
 
   console.log(`[infra-gate-registration] ok=${result.ok}`);
   for (const [name, check] of Object.entries(result.checks)) {
-    console.log(`[infra-gate-registration]   ${check.ok ? 'PASS' : 'FAIL'} ${name}: ${check.detail}`);
+    // Three states, not two. A check that could not answer must not print PASS
+    // — that is how a green log starts meaning "we didn't look" instead of "we
+    // checked", which is the exact vacuous-gate failure this script exists to
+    // catch. Same idiom as coverage-adversarial-probe.js's 'inconclusive'
+    // verdict, which is deliberately not folded into 'clean'.
+    const label = !check.ok ? 'FAIL' : check.inconclusive ? 'UNVERIFIED' : 'PASS';
+    console.log(`[infra-gate-registration]   ${label} ${name}: ${check.detail}`);
   }
 
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
