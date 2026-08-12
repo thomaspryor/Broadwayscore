@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-12T16:32:23.156Z",
+  "generatedAt": "2026-08-12T18:59:54.982Z",
   "summary": {
-    "total": 3,
-    "high": 3,
+    "total": 4,
+    "high": 4,
     "medium": 0,
     "low": 0
   },
@@ -86,6 +86,33 @@
       ],
       "suggestedWinner": "a-dolls-house-2023",
       "reason": "publishDate 2023-03-13 is 4 days from a-dolls-house-2023 opening (2023-03-09)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.nytimes.com/2019/10/17/theater/little-shop-of-horrors-review-jonathan-groff-feeds-the-beast.html",
+      "normalizedUrl": "https://nytimes.com/2019/10/17/theater/little-shop-of-horrors-review-jonathan-groff-feeds-the-beast.html",
+      "candidates": [
+        {
+          "showId": "little-shop-of-horrors-2019",
+          "file": "nytimes--ben-brantley.json",
+          "publishDate": "October 18th, 2019",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "little-shop-of-horrors-off-broadway-2019",
+          "file": "nytimes--ben-brantley.json",
+          "publishDate": "October 18th, 2019",
+          "openingDate": "2019-09-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "little-shop-of-horrors-off-broadway-2019",
+      "reason": "publishDate October 18th, 2019 is 31 days from little-shop-of-horrors-off-broadway-2019 opening (2019-09-17)",
       "confidence": "high"
     }
   ]
