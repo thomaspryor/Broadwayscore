@@ -76,10 +76,29 @@ CORE_DATA_DIR="$HOME/broadway-scorecard-data"
 
 if [ -d "$CORE_DATA_DIR/.git" ]; then
   echo "Updating existing core-data clone at $CORE_DATA_DIR..."
-  (cd "$CORE_DATA_DIR" && git fetch origin main --depth 1 && git reset --hard origin/main) >/dev/null 2>&1 || {
-    echo "ERROR: Failed to update existing $CORE_DATA_DIR — delete it and re-run."
+  # Retry with backoff: this clone is shared across parallel local sessions, so
+  # a `git fetch`/`reset --hard` can transiently fail on lock contention
+  # (index.lock from a concurrent session) rather than a real divergence.
+  # Capture stderr instead of swallowing it so a genuine failure is diagnosable.
+  UPDATE_OK=0
+  UPDATE_ERR=""
+  for attempt in 1 2 3; do
+    UPDATE_ERR="$(cd "$CORE_DATA_DIR" && { git fetch origin main --depth 1 && git reset --hard origin/main; } 2>&1)"
+    if [ $? -eq 0 ]; then
+      UPDATE_OK=1
+      break
+    fi
+    if [ "$attempt" -lt 3 ]; then
+      echo "  Attempt $attempt failed, retrying in $((attempt * 2))s..."
+      sleep "$((attempt * 2))"
+    fi
+  done
+  if [ "$UPDATE_OK" -ne 1 ]; then
+    echo "ERROR: Failed to update existing $CORE_DATA_DIR after 3 attempts:"
+    echo "$UPDATE_ERR" | sed 's/^/    /'
+    echo "Delete it and re-run if this isn't transient lock contention."
     exit 1
-  }
+  fi
 else
   echo "Cloning broadway-scorecard-data to $CORE_DATA_DIR..."
   if [ "$AUTH_METHOD" = "gh" ]; then
