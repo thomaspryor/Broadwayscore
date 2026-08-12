@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-12T15:52:14.208Z",
+  "generatedAt": "2026-08-12T16:45:56.032Z",
   "windowDays": 1095,
-  "targets": 7,
-  "auditedThisRun": 7,
-  "carriedForward": 219,
+  "targets": 19,
+  "auditedThisRun": 19,
+  "carriedForward": 207,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 176,
-    "totalMissing": 1106,
+    "totalMissing": 1098,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1210,
+    "totalFlaggedMisses": 1208,
     "totalRecoverable": 29,
     "totalRecovered": 11
   },
@@ -4271,7 +4271,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -17945,9 +17945,9 @@
       "candidatesRejected": {
         "count": 393,
         "byReason": {
-          "aggregator-internal-nav": 307,
           "not-http-url": 49,
           "non-review-host": 34,
+          "aggregator-internal-nav": 307,
           "non-review-path": 3
         }
       },
@@ -18212,7 +18212,7 @@
         "liveCount": 8,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -31523,7 +31523,9 @@
         "https://www.standard.co.uk/culture/theatre/hadestown-lyric-shaftesbury-avenue-review-anais-mitchell-b1140682.html",
         "https://www.timeout.com/london/theatre/hadestown-review-1",
         "https://www.telegraph.co.uk/theatre/what-to-see/hadestown-lyric-theatre-review/",
-        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
+        "https://theatreweekly.com/review-hadestown-at-the-lyric-theatre/",
+        "https://theartsdesk.com/theatre/hadestown-lyric-theatre-review-soul-stirring-musical-gloriously-revamps-classical-myths"
       ],
       "dirFiles": 117,
       "dirClean": 21,
@@ -31994,10 +31996,6 @@
       ],
       "dirOnly": [
         {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
           "host": "britishtheatre.com",
           "count": 1
         },
@@ -32031,10 +32029,6 @@
         },
         {
           "host": "shystrangemanic.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
           "count": 1
         }
       ],
@@ -32836,13 +32830,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1837,
+        "count": 1835,
         "byReason": {
-          "aggregator-internal-nav": 1235,
           "not-http-url": 457,
           "non-review-host": 128,
-          "roundup-page": 1,
+          "aggregator-internal-nav": 1233,
           "non-review-path": 15,
+          "roundup-page": 1,
           "unparseable-url": 1
         }
       },
@@ -34094,6 +34088,18 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://theatreweekly.com/review-hadestown-at-the-lyric-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/hadestown-lyric-theatre-review-soul-stirring-musical-gloriously-revamps-classical-myths",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://bleeckerstreetmedia.com/hadestown-the-musical",
             "outletId": "bleeckerstreetmedia.com",
             "state": "GAP",
@@ -34829,10 +34835,10 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           }
         ],
-        "liveCount": 8,
-        "candidateCount": 104
+        "liveCount": 10,
+        "candidateCount": 106
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -42737,24 +42743,12 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-nbcs-jesus-christ-superstar-live-in-concert-starring-john-legend",
-        "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
         "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
         "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110"
       ],
       "aggregatorListedUrls": [
-        "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-        "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/",
-        "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-        "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-        "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-        "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-        "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-        "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
-        "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-        "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
         "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
         "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
         "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
@@ -42809,34 +42803,6 @@
       "dirClean": 34,
       "inReviewsJson": 29,
       "missing": [
-        {
-          "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-          "host": "npr.org",
-          "knownOutletId": "npr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
           "host": "thewrap.com",
@@ -43234,120 +43200,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--dino-ray-ramos.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--melissa-rose-bernardo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/cynthia-erivo-cast-jesus-christ-superstar-musical-11681479?srsltid=AfmBOoqVFZ6HQoqJqChg6BPrg6O2enDUuzdqseFxMOEHXaOf2PzufywE"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--charles-isherwood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?adxnnl=1&adxnnlx=1332468908-ZvjkZ2cfy1NLdSrRcXuqYg"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--maureen-ryan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
           "host": "variety.com",
           "knownOutletId": "variety",
@@ -43507,25 +43359,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1520,
+        "count": 1298,
         "byReason": {
-          "aggregator-internal-nav": 1067,
-          "not-http-url": 339,
-          "non-review-host": 101,
+          "not-http-url": 331,
+          "non-review-host": 62,
+          "aggregator-internal-nav": 892,
           "non-review-path": 12,
           "unparseable-url": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-did-critics-think-of-nbcs-jesus-christ-superstar-live-in-concert-starring-john-legend",
-          "publishDate": "2018-04-02"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
-          "publishDate": "2018-04-30"
-        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
           "publishDate": "2025-08-04"
@@ -43544,30 +43388,6 @@
         }
       ],
       "weIngestBlocked": [
-        {
-          "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-          "host": "npr.org",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-          "host": "suntimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
         {
           "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
           "host": "thewrap.com",
@@ -43814,34 +43634,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "latimes",
-            "outlet": "latimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html"
-          },
-          {
-            "outletId": "npr",
-            "outlet": "npr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story"
-          },
-          {
-            "outletId": "suntimes",
-            "outlet": "suntimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/"
-          },
-          {
-            "outletId": "chicagotribune",
-            "outlet": "chicagotribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html"
-          },
           {
             "outletId": "thewrap",
             "outlet": "thewrap",
@@ -44123,48 +43915,6 @@
             "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago"
           },
           {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/"
-          },
-          {
-            "outletId": "ew",
-            "outlet": "ew",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
-          },
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/"
-          },
-          {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
@@ -44227,34 +43977,6 @@
             "url": "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
             "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-            "outletId": "latimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-            "outletId": "npr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-            "outletId": "suntimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-            "outletId": "chicagotribune",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
@@ -44538,48 +44260,6 @@
             "firstSeenAt": "2026-08-11T12:44:28.700Z"
           },
           {
-            "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/",
-            "outletId": "ew",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-            "outletId": "hollywood-reporter",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-            "outletId": "newsday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
-            "outletId": "variety",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
             "outletId": "variety",
             "state": "GAP",
@@ -44637,9 +44317,9 @@
           }
         ],
         "liveCount": 1,
-        "candidateCount": 52
+        "candidateCount": 49
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "joe-turners-come-and-gone-2026",
@@ -55104,11 +54784,15 @@
         "https://www.timeout.com/london/theatre/my-neighbour-totoro-review",
         "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
         "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
-        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
+        "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
+        "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
+        "https://theartsdesk.com/theatre/my-neighbour-totoro-barbican-review-dazzling-stage-adaptation-japanese-classic",
+        "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html"
       ],
       "dirFiles": 53,
-      "dirClean": 13,
-      "inReviewsJson": 17,
+      "dirClean": 12,
+      "inReviewsJson": 16,
       "missing": [
         {
           "url": "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
@@ -55120,24 +54804,8 @@
       ],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
           "host": "londonboxoffice.co.uk",
           "count": 2
-        },
-        {
-          "host": "musicaltheatrereview.com",
-          "count": 1
         },
         {
           "host": "morningstaronline.co.uk",
@@ -55187,6 +54855,23 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--theo-bosanquet.json",
+              "flag": "clean",
+              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -55196,11 +54881,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 120,
+        "count": 119,
         "byReason": {
-          "aggregator-internal-nav": 87,
           "not-http-url": 4,
           "non-review-host": 19,
+          "aggregator-internal-nav": 86,
           "roundup-page": 10
         }
       },
@@ -55244,6 +54929,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/my-neighbour-totoro-review"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html"
           }
         ],
         "suppressedMissing": [],
@@ -55285,6 +54977,24 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/my-neighbour-totoro-barbican-review-dazzling-stage-adaptation-japanese-classic",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
             "outletId": "barbican.org.uk",
             "state": "GAP",
@@ -55304,12 +55014,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 5,
-        "candidateCount": 8
+        "liveCount": 8,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -59057,7 +58774,8 @@
         "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
         "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
         "https://www.thetimes.com/culture/theatre-dance/article/oh-mary-review-west-end-6f6nt9v9f",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html"
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+        "https://theartsdesk.com/theatre/oh-mary-trafalgar-theatre-review-uproarious-farce"
       ],
       "dirFiles": 89,
       "dirClean": 28,
@@ -59107,10 +58825,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
         {
           "host": "dailymail.co.uk",
           "count": 1
@@ -59879,13 +59593,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 906,
+        "count": 897,
         "byReason": {
-          "aggregator-internal-nav": 693,
           "not-http-url": 115,
           "non-review-host": 91,
-          "roundup-page": 1,
-          "non-review-path": 6
+          "aggregator-internal-nav": 684,
+          "non-review-path": 6,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [
@@ -60412,6 +60126,12 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://theartsdesk.com/theatre/oh-mary-trafalgar-theatre-review-uproarious-farce",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
             "outletId": "cititour",
             "state": "GAP",
@@ -60699,10 +60419,10 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           }
         ],
-        "liveCount": 24,
-        "candidateCount": 54
+        "liveCount": 25,
+        "candidateCount": 55
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -64544,7 +64264,8 @@
         "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
         "https://www.shinyshiny.tv/2025/11/review-paddington-the-musical.html",
         "https://southlondon.co.uk/lifestyle/review-paddington-the-musical-at-the-savoy-theatre/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html"
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
+        "https://www.standard.co.uk/culture/theatre/paddington-the-musical-london-victoria-hamilton-barritt-savoy-theatre-b1258790.html"
       ],
       "dirFiles": 43,
       "dirClean": 23,
@@ -64651,9 +64372,9 @@
       "candidatesRejected": {
         "count": 294,
         "byReason": {
-          "aggregator-internal-nav": 225,
           "not-http-url": 51,
           "non-review-host": 15,
+          "aggregator-internal-nav": 225,
           "non-review-path": 3
         }
       },
@@ -64790,6 +64511,12 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://www.standard.co.uk/culture/theatre/paddington-the-musical-london-victoria-hamilton-barritt-savoy-theatre-b1258790.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/",
             "outletId": "city-am",
             "state": "GAP",
@@ -64814,7 +64541,7 @@
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -65966,7 +65693,7 @@
         "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/",
         "https://www.seattletimes.com/entertainment/theater/review-austens-pride-at-seattles-5th-ave-will-likely-satisfy-some-pride-and-prejudice-fans-but-needs-rethinking/"
       ],
-      "dirFiles": 60,
+      "dirFiles": 61,
       "dirClean": 19,
       "inReviewsJson": 20,
       "missing": [
@@ -66208,13 +65935,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 476,
+        "count": 470,
         "byReason": {
-          "aggregator-internal-nav": 373,
           "not-http-url": 43,
           "non-review-host": 55,
-          "roundup-page": 2,
-          "non-review-path": 3
+          "aggregator-internal-nav": 367,
+          "non-review-path": 3,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [
@@ -66430,7 +66157,7 @@
         "liveCount": 5,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "ragtime-2025",
@@ -71508,10 +71235,7 @@
       "status": "open",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420",
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-        "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706"
+        "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon"
       ],
       "aggregatorListedUrls": [
         "https://www.avclub.com/apple-tv-plus-schmigadoon-offers-grand-musical-number-1847233449",
@@ -71529,38 +71253,23 @@
         "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/",
         "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-seen-it-11626371130",
         "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
-        "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
-        "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
-        "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-musicals-de236228",
-        "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
-        "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/schmigadoon-broadway-review",
-        "https://nystagereview.com/2026/04/20/schmigadoon-talents-bustin-out-all-over/",
-        "https://www.theguardian.com/stage/2026/apr/20/schmigadoon-broadway-review",
-        "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/",
-        "https://www.thewrap.com/creative-content/reviews/schmigadoon-broadway-review-lorne-michaels-apple-tv-revival/",
-        "https://deadline.com/2026/04/schmigadoon-broadway-review-1236864610/",
+        "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
+        "https://www.vulture.com/article/theater-review-schmigadoon-broadway-chase-brightman.html",
         "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
-        "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
+        "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
         "https://nypost.com/2026/04/20/entertainment/schmigadoon-review-tired-parody-of-broadways-golden-age-is-been-there-doon-that/",
         "https://ew.com/schmigadoon-review-broadway-adaptation-11954517",
-        "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
-        "https://www.amny.com/entertainment/review-schmigadoon-broadway-joke-wears-thin/",
+        "https://www.theatermania.com/news/review-schmigadoon-is-a-real-nice-clambake-im-mighty-glad-i-came_1833573/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=XDBXNM",
+        "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-schmigadoon-at-the-nederlander-theatre-through-sunday-september-6-2026/",
+        "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
+        "https://theaterlife.com/the-fear-of-13-schmigadoon/",
+        "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
+        "https://pagesonstages.com/2026/04/25/schmigadoon/",
         "https://1minutecritic.com/schmigadoon-broadway-review/",
-        "https://www.vulture.com/article/theater-review-schmigadoon-broadway-chase-brightman.html",
-        "https://thecontending.com/schmigadoon-schmigafun/",
-        "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
-        "https://people.com/schmigadoon-broadway-review-11953679",
-        "https://www.avclub.com/schmigadoon-broadway-musical-reaction",
-        "https://www.purewow.com/entertainment/schmigadoon-broadway-review",
-        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-        "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-        "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
-        "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-        "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-        "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-        "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-        "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/"
+        "https://lavocedinewyork.com/en/new-york/2026/05/01/schmigadoon-wears-its-heart-on-its-sleeve-and-keeps-its-tongue-in-its-cheek/"
       ],
       "dirFiles": 83,
       "dirClean": 43,
@@ -71572,39 +71281,23 @@
           "knownOutletId": "tv-line",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-          "host": "mashable.com",
-          "knownOutletId": "mashable",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
         {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
           "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
           "count": 1
         },
         {
@@ -71616,19 +71309,23 @@
           "count": 1
         },
         {
-          "host": "lavocedinewyork.com",
-          "count": 1
-        },
-        {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
           "host": "nysun.com",
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "people.com",
+          "count": 1
+        },
+        {
+          "host": "purewow.com",
           "count": 1
         },
         {
@@ -71637,6 +71334,10 @@
         },
         {
           "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "thecontending.com",
           "count": 1
         },
         {
@@ -71652,19 +71353,19 @@
           "count": 1
         },
         {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
           "host": "theaterpizzazz.com",
           "count": 1
         },
         {
-          "host": "theatermania.com",
+          "host": "theatrely.com",
+          "count": 2
+        },
+        {
+          "host": "thewrap.com",
           "count": 1
         },
         {
-          "host": "theatrereviews.com",
+          "host": "washingtonpost.com",
           "count": 1
         }
       ],
@@ -71846,23 +71547,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/"
-            }
-          ]
-        },
-        {
           "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -71880,9 +71564,9 @@
           ]
         },
         {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
+          "url": "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -71890,13 +71574,11 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/"
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -71906,13 +71588,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1067,
+        "count": 120,
         "byReason": {
-          "aggregator-internal-nav": 745,
-          "not-http-url": 239,
-          "non-review-host": 64,
-          "roundup-page": 10,
-          "non-review-path": 9
+          "not-http-url": 4,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 87,
+          "roundup-page": 10
         }
       },
       "dedupedVariants": [],
@@ -71920,44 +71601,12 @@
         {
           "url": "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
           "publishDate": "2021-07-06"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-          "publishDate": "2025-02-03"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706",
-          "publishDate": "2021-07-06"
         }
       ],
       "weIngestBlocked": [
         {
           "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
           "host": "tvline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-          "host": "mashable.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -71973,34 +71622,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/"
-          },
-          {
-            "outletId": "maryland-theatre-guide",
-            "outlet": "maryland-theatre-guide",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/"
-          },
-          {
-            "outletId": "entertainmentdaily.co.uk",
-            "outlet": "entertainmentdaily.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/"
-          },
-          {
-            "outletId": "mashable",
-            "outlet": "mashable",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus"
-          },
-          {
-            "outletId": "cnet.com",
-            "outlet": "cnet.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/"
           },
           {
             "outletId": "av-club",
@@ -72066,13 +71687,6 @@
             "url": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html"
           },
           {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/"
-          },
-          {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
             "critic": "Unknown",
@@ -72080,11 +71694,11 @@
             "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/"
           },
           {
-            "outletId": "washpost",
-            "outlet": "washpost",
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/"
+            "url": "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/"
           }
         ],
         "suppressedMissing": [],
@@ -72120,68 +71734,26 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-musicals-de236228",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/schmigadoon-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://nystagereview.com/2026/04/20/schmigadoon-talents-bustin-out-all-over/",
-            "outletId": "nystagereview.com",
+            "url": "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/apr/20/schmigadoon-broadway-review",
-            "outletId": "theguardian.com",
+            "url": "https://www.vulture.com/article/theater-review-schmigadoon-broadway-chase-brightman.html",
+            "outletId": "vulture.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+            "firstSeenAt": "2026-08-07T08:57:29.253Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/reviews/schmigadoon-broadway-review-lorne-michaels-apple-tv-revival/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://deadline.com/2026/04/schmigadoon-broadway-review-1236864610/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
+            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -72198,16 +71770,46 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
-            "outletId": "cititour.com",
+            "url": "https://www.theatermania.com/news/review-schmigadoon-is-a-real-nice-clambake-im-mighty-glad-i-came_1833573/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=XDBXNM",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-schmigadoon-at-the-nederlander-theatre-through-sunday-september-6-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.amny.com/entertainment/review-schmigadoon-broadway-joke-wears-thin/",
-            "outletId": "amny.com",
+            "url": "https://theaterlife.com/the-fear-of-13-schmigadoon/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/04/25/schmigadoon/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           },
           {
             "url": "https://1minutecritic.com/schmigadoon-broadway-review/",
@@ -72216,90 +71818,14 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-schmigadoon-broadway-chase-brightman.html",
-            "outletId": "vulture.com",
+            "url": "https://lavocedinewyork.com/en/new-york/2026/05/01/schmigadoon-wears-its-heart-on-its-sleeve-and-keeps-its-tongue-in-its-cheek/",
+            "outletId": "lavocedinewyork.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T08:57:29.253Z"
-          },
-          {
-            "url": "https://thecontending.com/schmigadoon-schmigafun/",
-            "outletId": "thecontending.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
-            "outletId": "newyorker.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://people.com/schmigadoon-broadway-review-11953679",
-            "outletId": "people.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.avclub.com/schmigadoon-broadway-musical-reaction",
-            "outletId": "avclub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.purewow.com/entertainment/schmigadoon-broadway-review",
-            "outletId": "purewow.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T08:57:29.253Z"
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           },
           {
             "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
             "outletId": "tv-line",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-            "outletId": "maryland-theatre-guide",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-            "outletId": "entertainmentdaily.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-            "outletId": "mashable",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T08:57:29.253Z"
-          },
-          {
-            "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-            "outletId": "cnet.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
@@ -72368,13 +71894,6 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
             "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -72382,17 +71901,17 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-            "outletId": "washpost",
+            "url": "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/",
+            "outletId": "theater-scene",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 24,
-        "candidateCount": 41
+        "liveCount": 18,
+        "candidateCount": 30
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
@@ -72640,18 +72159,14 @@
       "openingDate": "2026-07-16",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-shifters-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/shifters-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
+        "https://nystagereview.com/2026/07/15/shifters-love-and-romance-profoundly-revisited/",
         "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
         "https://newyorktheater.me/2026/07/15/shifters-review/",
-        "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
-        "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
-        "https://nystagereview.com/2026/07/15/shifters-love-and-romance-profoundly-revisited/",
-        "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
+        "https://culturesauce.com/shifters-off-broadway-review/",
         "https://theaterscene.com/reviews/shifters/",
         "https://www.offoffonline.com/offoffonline/2026/7/14/shifters"
       ],
@@ -72675,7 +72190,15 @@
           "count": 1
         },
         {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
           "host": "theknockturnal.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         },
         {
@@ -72684,6 +72207,23 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--unknown.json",
+              "flag": "clean",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR"
+            }
+          ]
+        },
         {
           "url": "https://culturesauce.com/shifters-off-broadway-review/",
           "host": "culturesauce.com",
@@ -72705,23 +72245,6 @@
               "urlInDir": "https://culturesauce.com/shifters-off-broadway-review/"
             }
           ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--unknown.json",
-              "flag": "clean",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -72731,12 +72254,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 91,
-        "byReason": {
-          "aggregator-internal-nav": 50,
-          "not-http-url": 20,
-          "non-review-host": 21
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "ingestResults": [
@@ -72750,7 +72269,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168462/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~172975/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -72765,43 +72284,25 @@
             "url": "https://theaterscene.com/reviews/shifters/"
           },
           {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturesauce.com/shifters-off-broadway-review/"
-          },
-          {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR"
+          },
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/shifters-off-broadway-review/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
-            "outletId": "exeuntnyc.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/07/15/shifters-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
-            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -72812,8 +72313,14 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/",
-            "outletId": "theatermania.com",
+            "url": "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/07/15/shifters-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -72831,24 +72338,24 @@
             "firstSeenAt": "2026-08-10T11:06:44.430Z"
           },
           {
-            "url": "https://culturesauce.com/shifters-off-broadway-review/",
-            "outletId": "culturesauce",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
             "outletId": "lighting-and-sound-america",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://culturesauce.com/shifters-off-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 10
+        "liveCount": 5,
+        "candidateCount": 8
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -82728,7 +82235,10 @@
         "https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904",
         "https://theartsdesk.com/theatre/devil-wears-prada-dominion-theatre-review-efficient-rarely-inspired",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/devil-wears-prada-musical-vanessa-williams-b2658819.html",
-        "https://theatreweekly.com/review-the-devil-wears-prada-at-the-dominion-theatre-london/"
+        "https://theatreweekly.com/review-the-devil-wears-prada-at-the-dominion-theatre-london/",
+        "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo",
+        "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
+        "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
       ],
       "dirFiles": 53,
       "dirClean": 24,
@@ -82797,14 +82307,6 @@
         {
           "host": "radiotimes.com",
           "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -82864,6 +82366,45 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--miriam-sallon.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
+            },
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "clean",
+              "urlInDir": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--martin-robinson.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -82873,11 +82414,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 405,
+        "count": 402,
         "byReason": {
-          "aggregator-internal-nav": 303,
           "not-http-url": 65,
           "non-review-host": 34,
+          "aggregator-internal-nav": 300,
           "non-review-path": 3
         }
       },
@@ -82945,6 +82486,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2022/08/08/theater/the-devil-wears-prada-review.html"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
           }
         ],
         "suppressedMissing": [],
@@ -83004,6 +82559,12 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-devil-wears-prada-musical-chicago-review-20220808-y6nxcuksa5byvp25obrbonuiza-story.html",
             "outletId": "chicagotribune",
             "state": "GAP",
@@ -83037,12 +82598,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 9,
-        "candidateCount": 14
+        "liveCount": 10,
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -83717,8 +83292,7 @@
         "https://makaylahoppe.com/2026/08/01/the-family-album/",
         "https://www.sandiegoreader.com/events/2026/aug/23/the-family-album/",
         "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-        "https://thewordsd.news/the-family-album/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-7-29-26-7pm/7860260/"
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
       ],
       "dirFiles": 9,
       "dirClean": 4,
@@ -83751,25 +83325,7 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://thewordsd.news/the-family-album/",
-          "host": "thewordsd.news",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewordsd--cesar-a.json",
-              "flag": "clean",
-              "urlInDir": "https://thewordsd.news/the-family-album/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-7-29-26-7pm/7860260/",
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
           "host": "tickpick.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -83800,7 +83356,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 7,
             "accepted": 4,
             "error": null
           },
@@ -83810,7 +83366,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 7,
             "accepted": 1,
             "error": null
           },
@@ -83820,7 +83376,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -83830,7 +83386,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -83840,7 +83396,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -83850,24 +83406,24 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 8,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 43,
+        "count": 30,
         "byReason": {
-          "aggregator-internal-nav": 6,
-          "non-review-host": 31,
-          "non-review-path": 2,
-          "venue-production-page": 1,
-          "ticketing-reseller": 3
+          "non-review-host": 20,
+          "aggregator-internal-nav": 4,
+          "non-review-path": 3,
+          "ticketing-reseller": 2,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -83882,7 +83438,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168447/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~172975/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.sandiegoreader.com/events/2026/aug/23/the-family-album/",
@@ -83894,7 +83450,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168447/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~172975/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
@@ -83906,7 +83462,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168447/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~172975/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -83935,18 +83491,11 @@
             "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/"
           },
           {
-            "outletId": "thewordsd.news",
-            "outlet": "thewordsd.news",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thewordsd.news/the-family-album/"
-          },
-          {
             "outletId": "tickpick.com",
             "outlet": "tickpick.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-7-29-26-7pm/7860260/"
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
           }
         ],
         "suppressedMissing": [],
@@ -83991,24 +83540,17 @@
             "firstSeenAt": "2026-08-11T12:44:28.700Z"
           },
           {
-            "url": "https://thewordsd.news/the-family-album/",
-            "outletId": "thewordsd.news",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T08:57:29.253Z"
-          },
-          {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-7-29-26-7pm/7860260/",
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
             "outletId": "tickpick.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T04:09:33.402Z"
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
         "liveCount": 3,
-        "candidateCount": 8
+        "candidateCount": 7
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-fear-of-13-2026",
@@ -85844,7 +85386,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-guilty-west-end-2026",
@@ -85914,7 +85456,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -88036,40 +87578,42 @@
       "status": "open",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-LOST-BOYS-Arrives-on-Broadway-20260426"
       ],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/lost-boys-broadway-review/",
-        "https://www.amny.com/news/review-musical-adaptation-of-the-lost-boys/",
-        "https://cititour.com/NYC_Broadway/The-Lost-Boys/1378",
-        "https://www.chicagotribune.com/2026/04/26/review-lost-boys-broadway/",
-        "https://davidcote1.substack.com/p/how-the-lost-boys-breaks-the-vampire",
-        "https://culturesauce.com/2026/04/26/the-lost-boys-broadway-review/",
-        "https://deadline.com/2026/04/lost-boys-broadway-review-1236870020/",
-        "https://ew.com/the-lost-boys-musical-review-singing-vampires-bite-into-broadway-11958889",
-        "https://gizmodo.com/the-lost-boys-broadway-musical-is-everything-this-fan-wanted-and-more-2000750965",
-        "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
-        "https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/",
         "https://www.nytimes.com/2026/04/26/theater/the-lost-boys-review.html",
+        "https://www.timeout.com/newyork/news/broadway-review-the-lost-boys-a-musical-that-goes-for-blood-042726",
+        "https://1minutecritic.com/lost-boys-broadway-review/",
         "https://nystagereview.com/2026/04/26/the-lost-boys-vampire-musical-lacks-bite/",
         "https://nystagereview.com/2026/04/26/the-lost-boys-bite-but-not-enough-blood/",
-        "https://people.com/the-lost-boys-broadway-review-11958855",
-        "https://www.slantmagazine.com/theater/the-lost-boys-broadway-review/",
-        "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
-        "https://www.theatrely.com/post/the-lost-boys-is-one-bloody-good-time-review",
-        "https://www.timeout.com/newyork/news/broadway-review-the-lost-boys-a-musical-that-goes-for-blood-042726",
-        "https://www.truehollywoodtalk.com/the-lost-boys-musical-takes-flight-on-broadway/",
+        "https://davidcote1.substack.com/p/how-the-lost-boys-breaks-the-vampire",
+        "https://www.amny.com/news/review-musical-adaptation-of-the-lost-boys/",
         "https://variety.com/2026/legit/reviews/lost-boys-broadway-review-musical-teen-vampire-movie-spectacular-effects-1236730779/",
+        "https://culturesauce.com/2026/04/26/the-lost-boys-broadway-review/",
+        "https://www.slantmagazine.com/theater/the-lost-boys-broadway-review/",
+        "https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/",
         "https://www.thewrap.com/creative-content/theater/the-lost-boys-broadway-review/",
+        "https://www.theatrely.com/post/the-lost-boys-is-one-bloody-good-time-review",
+        "https://deadline.com/2026/04/lost-boys-broadway-review-1236870020/",
         "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/",
+        "https://cititour.com/NYC_Broadway/The-Lost-Boys/1378",
         "https://www.vulture.com/article/theater-review-lost-boys-broadway-musical.html",
+        "https://ew.com/the-lost-boys-musical-review-singing-vampires-bite-into-broadway-11958889",
+        "https://people.com/the-lost-boys-broadway-review-11958855",
+        "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
         "https://exeuntnyc.com/reviews/review-the-lost-boys-the-musical-at-the-palace-theatre/",
         "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
         "https://www.latimes.com/entertainment-arts/story/2026-05-01/broadway-musicals-cats-jellicle-ball-lost-boys-titanique",
         "https://mashable.com/article/the-lost-boys-a-new-musical-broadway-review",
         "https://www.purewow.com/entertainment/the-lost-boys-broadway-review",
-        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/"
+        "https://gizmodo.com/the-lost-boys-broadway-musical-is-everything-this-fan-wanted-and-more-2000750965",
+        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
+        "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4J89Y8",
+        "https://www.theaterscene.net/musicals/broadway/the-lost-boys/samuel-l-leiter/",
+        "https://www.theatrereviews.com/broadway-review-the-lost-boys-at-the-palace-theatre-currently-on/",
+        "https://newyorktheater.me/2026/05/03/the-lost-boys-broadway-review/",
+        "https://pagesonstages.com/2026/04/27/the-lost-boys/"
       ],
       "dirFiles": 57,
       "dirClean": 42,
@@ -88081,23 +87625,15 @@
           "count": 1
         },
         {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
           "host": "theguardian.com",
           "count": 1
         },
         {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
           "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
           "count": 1
         },
         {
@@ -88113,7 +87649,7 @@
           "count": 1
         },
         {
-          "host": "theaterscene.net",
+          "host": "truehollywoodtalk.com",
           "count": 1
         },
         {
@@ -88142,6 +87678,23 @@
               "urlInDir": "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/"
             }
           ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/broadway-review-the-lost-boys-at-the-palace-theatre-currently-on/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/broadway-review-the-lost-boys-at-the-palace-theatre-currently-on/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -88151,11 +87704,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 433,
+        "count": 343,
         "byReason": {
-          "aggregator-internal-nav": 272,
-          "not-http-url": 120,
-          "non-review-host": 38,
+          "not-http-url": 100,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 221,
           "non-review-path": 3
         }
       },
@@ -88169,79 +87722,32 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/broadway-review-the-lost-boys-at-the-palace-theatre-currently-on/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/lost-boys-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.amny.com/news/review-musical-adaptation-of-the-lost-boys/",
-            "outletId": "amny.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/The-Lost-Boys/1378",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.chicagotribune.com/2026/04/26/review-lost-boys-broadway/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://davidcote1.substack.com/p/how-the-lost-boys-breaks-the-vampire",
-            "outletId": "davidcote1.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/04/26/the-lost-boys-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://deadline.com/2026/04/lost-boys-broadway-review-1236870020/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://ew.com/the-lost-boys-musical-review-singing-vampires-bite-into-broadway-11958889",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://gizmodo.com/the-lost-boys-broadway-musical-is-everything-this-fan-wanted-and-more-2000750965",
-            "outletId": "gizmodo.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
             "url": "https://www.nytimes.com/2026/04/26/theater/the-lost-boys-review.html",
             "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/news/broadway-review-the-lost-boys-a-musical-that-goes-for-blood-042726",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://1minutecritic.com/lost-boys-broadway-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -88258,38 +87764,14 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://people.com/the-lost-boys-broadway-review-11958855",
-            "outletId": "people.com",
+            "url": "https://davidcote1.substack.com/p/how-the-lost-boys-breaks-the-vampire",
+            "outletId": "davidcote1.substack.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.slantmagazine.com/theater/the-lost-boys-broadway-review/",
-            "outletId": "slantmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/the-lost-boys-is-one-bloody-good-time-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-the-lost-boys-a-musical-that-goes-for-blood-042726",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.truehollywoodtalk.com/the-lost-boys-musical-takes-flight-on-broadway/",
-            "outletId": "truehollywoodtalk.com",
+            "url": "https://www.amny.com/news/review-musical-adaptation-of-the-lost-boys/",
+            "outletId": "amny.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -88300,8 +87782,44 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://culturesauce.com/2026/04/26/the-lost-boys-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.slantmagazine.com/theater/the-lost-boys-broadway-review/",
+            "outletId": "slantmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://nypost.com/2026/04/26/entertainment/the-lost-boys-review-vampire-show-is-best-new-musical-on-broadway/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
             "url": "https://www.thewrap.com/creative-content/theater/the-lost-boys-broadway-review/",
             "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/the-lost-boys-is-one-bloody-good-time-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://deadline.com/2026/04/lost-boys-broadway-review-1236870020/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Lost-Boys/1378",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -88310,6 +87828,24 @@
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T07:12:02.219Z"
+          },
+          {
+            "url": "https://ew.com/the-lost-boys-musical-review-singing-vampires-bite-into-broadway-11958889",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://people.com/the-lost-boys-broadway-review-11958855",
+            "outletId": "people.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
             "url": "https://exeuntnyc.com/reviews/review-the-lost-boys-the-musical-at-the-palace-theatre/",
@@ -88342,10 +87878,46 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://gizmodo.com/the-lost-boys-broadway-musical-is-everything-this-fan-wanted-and-more-2000750965",
+            "outletId": "gizmodo.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
             "url": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
             "outletId": "washingtonpost.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4J89Y8",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/the-lost-boys/samuel-l-leiter/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/05/03/the-lost-boys-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/04/27/the-lost-boys/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           },
           {
             "url": "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/",
@@ -88353,12 +87925,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-the-lost-boys-at-the-palace-theatre-currently-on/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 28,
-        "candidateCount": 29
+        "liveCount": 30,
+        "candidateCount": 32
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-maids-off-broadway-2026",
@@ -92462,7 +92041,12 @@
         "https://w42st.com/post/michael-musto-reviews-titanique-smigadoon-rocky-horror-show/",
         "https://thecontending.com/the-rocky-horror-show-luke-evans-astounds-in-campy-queer-tastic-revival/",
         "https://www.vulture.com/article/theater-review-rocky-horror-broadway-pinkleton-revival.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TEJ634"
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TEJ634",
+        "https://www.talkinbroadway.com/page/world/TheRockyHorrorShow.html",
+        "https://www.theaterscene.net/musicals/broadway/the-rocky-horror-show/joseph-pisano/",
+        "https://www.theatrereviews.com/broadway-review-the-rocky-horror-show-at-studio-54-currently-on/",
+        "https://theaterscene.com/reviews/the-rocky-horror-show/",
+        "https://pagesonstages.com/2026/04/23/rocky-horror-show/"
       ],
       "dirFiles": 51,
       "dirClean": 32,
@@ -92482,23 +92066,7 @@
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
           "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
           "count": 1
         }
       ],
@@ -92538,7 +92106,7 @@
             {
               "file": "ew--dalton-ross.json",
               "flag": "wrongShow",
-              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoo2QmoIay7jq5afah4AqK6MDZkRU6UB_4fTUxQoJ4x02dgdkm-n"
+              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOooMV7ykJlhD0Ek5efowiKB6MkET_Xq5HPWWq8JJz55IOCNkKimI"
             }
           ]
         },
@@ -92558,6 +92126,23 @@
               "urlInDir": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B"
             }
           ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/broadway-review-the-rocky-horror-show-at-studio-54-currently-on/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--joseph-verlezza.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/broadway-review-the-rocky-horror-show-at-studio-54-currently-on/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -92567,11 +92152,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 399,
+        "count": 398,
         "byReason": {
-          "aggregator-internal-nav": 273,
           "not-http-url": 84,
           "non-review-host": 39,
+          "aggregator-internal-nav": 272,
           "non-review-path": 3
         }
       },
@@ -92599,6 +92184,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/broadway-review-the-rocky-horror-show-at-studio-54-currently-on/"
           }
         ],
         "suppressedMissing": [],
@@ -92748,6 +92340,30 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://www.talkinbroadway.com/page/world/TheRockyHorrorShow.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/the-rocky-horror-show/joseph-pisano/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/the-rocky-horror-show/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/04/23/rocky-horror-show/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is",
             "outletId": "cote-notices",
             "state": "GAP",
@@ -92767,12 +92383,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-the-rocky-horror-show-at-studio-54-currently-on/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 23,
-        "candidateCount": 26
+        "liveCount": 27,
+        "candidateCount": 31
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-saviors-off-broadway-2026",
@@ -93141,7 +92764,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -94540,7 +94163,15 @@
         "https://1minutecritic.com/titanique-broadway-review/",
         "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/",
         "https://www.nydailynews.com/2026/04/12/broadway-review-titanique-affectionately-parodies-1997-move-and-celine-dion/",
-        "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
+        "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BDWI6G",
+        "https://www.talkinbroadway.com/page/world/Titanique.html",
+        "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-titanique-at-the-st-james-theatre-through-sunday-july-12-2026/",
+        "https://theaterlife.com/titanique/",
+        "https://theaterscene.com/reviews/titanique/",
+        "https://pagesonstages.com/2026/04/12/titanique/",
+        "https://lavocedinewyork.com/en/new-york/2026/04/23/titanique-delivers-an-over-the-top-sendup-of-two-cultural-icons/"
       ],
       "dirFiles": 59,
       "dirClean": 29,
@@ -94554,35 +94185,7 @@
       ],
       "dirOnly": [
         {
-          "host": "lavocedinewyork.com",
-          "count": 1
-        },
-        {
           "host": "latimes.com",
-          "count": 1
-        },
-        {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
           "count": 1
         },
         {
@@ -94722,6 +94325,23 @@
               "urlInDir": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
             }
           ]
+        },
+        {
+          "url": "https://theaterscene.com/reviews/titanique/",
+          "host": "theaterscene.com",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--deirdre-donovan.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theaterscene.com/reviews/titanique/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -94733,11 +94353,11 @@
       "candidatesRejected": {
         "count": 767,
         "byReason": {
-          "aggregator-internal-nav": 529,
           "not-http-url": 169,
           "non-review-host": 53,
-          "roundup-page": 10,
-          "non-review-path": 6
+          "aggregator-internal-nav": 529,
+          "non-review-path": 6,
+          "roundup-page": 10
         }
       },
       "dedupedVariants": [],
@@ -94762,7 +94382,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~168442/day) projects exhaustion in ~16d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~172975/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -94817,6 +94437,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterscene.com/reviews/titanique/"
           }
         ],
         "suppressedMissing": [
@@ -94968,6 +94595,48 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BDWI6G",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/Titanique.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-titanique-at-the-st-james-theatre-through-sunday-july-12-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://theaterlife.com/titanique/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/04/12/titanique/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
+            "url": "https://lavocedinewyork.com/en/new-york/2026/04/23/titanique-delivers-an-over-the-top-sendup-of-two-cultural-icons/",
+            "outletId": "lavocedinewyork.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
+          },
+          {
             "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
             "outletId": "yahoo.com",
             "state": "GAP",
@@ -95022,12 +94691,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/titanique/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T16:45:56.032Z"
           }
         ],
-        "liveCount": 19,
-        "candidateCount": 26
+        "liveCount": 26,
+        "candidateCount": 34
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -98384,7 +98060,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T04:09:33.402Z"
+      "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",

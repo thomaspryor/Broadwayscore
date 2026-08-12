@@ -1,36 +1,11 @@
 {
-  "generatedAt": "2026-08-12T15:52:22.385Z",
+  "generatedAt": "2026-08-12T16:46:04.566Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 147,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-08-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.4 vs local 78.18 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [
-        "broadwayworld"
-      ],
-      "localCount": 6,
-      "deployedCount": 5
-    }
-  ]
+  "clean": 148,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

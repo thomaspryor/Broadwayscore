@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T15:52:14.971Z",
+  "generatedAt": "2026-08-12T16:45:56.787Z",
   "windowDays": 45,
   "showsScanned": 58,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 482.67734444444443,
+      "fileAgeHours": 483.5722930555556,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 441.9802875
+      "nonTerminalAgeHours": 442.8752363888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 173.12053444444444,
+      "fileAgeHours": 174.01548305555556,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 172.48247138888888
+      "nonTerminalAgeHours": 173.3774202777778
     }
   ],
   "contradictions": []
