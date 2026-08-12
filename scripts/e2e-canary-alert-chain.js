@@ -9,16 +9,17 @@
  * the wrong path. Unit tests (owner-alert-router.test.mjs) can't catch this
  * class of bug because they deliberately stub execFileSync/sendAlert. This
  * script does NOT stub anything: it routes two synthetic alerts through the
- * REAL owner-alert-router → notion-brain.js CLI → Notion API path, verifies
- * the resulting card actually exists via a real `get`, exercises the ledger
- * dedup guard for real, then cleans up after itself.
+ * REAL owner-alert-router → linear-brain.js CLI → Linear API path (BRO-286
+ * repoint, 2026-08-12 — this used to be the notion-brain/Notion chain),
+ * verifies the resulting issue actually exists via a real getIssue,
+ * exercises the ledger dedup guard for real, then archives its issues.
  *
  * On any failure: try routeAlert(disposition='human') first — that path
  * calls sendAlert() (Resend) directly and never shells out to
- * notion-brain.js, so it stays reachable even when the exact thing this
- * canary checks (the notion-brain shell-out) is what's broken. If even that
+ * linear-brain.js, so it stays reachable even when the exact thing this
+ * canary checks (the issue-filing shell-out) is what's broken. If even that
  * throws, exit nonzero so the workflow's own `notify-failure` step — which
- * depends on neither owner-alert-router.js nor notion-brain.js — still
+ * depends on neither owner-alert-router.js nor linear-brain.js — still
  * fires as the last-resort backstop.
  *
  * DEV/CI GUARD (added after a local test-fire paged the owner at midnight,
@@ -69,9 +70,17 @@ async function testFullChain() {
   // BRO-286: the tracker is a Linear issue — linearIdentifier is the proof
   // of filing (cardId is always null on this path).
   if (result.action !== 'auto' || !result.dispatchOk || !result.linearIdentifier) {
+    // action='silent' with an identifier means the rail-2 dedupe matched an
+    // EXISTING open issue carrying this canary's conditionKey — almost always
+    // a leaked issue from a prior run whose archive step failed, not a broken
+    // dispatch chain. Name that so the page doesn't send triage down the
+    // wrong path (verify-pass finding, 2026-08-12).
+    const leakHint = (result.action === 'silent' && result.linearIdentifier)
+      ? ` HINT: dedupe matched open issue ${result.linearIdentifier} — likely a leaked canary issue from a failed cleanup; archive it and rerun.`
+      : '';
     throw new Error(
       `full-chain dispatch failed — action=${result.action} dispatchOk=${result.dispatchOk} ` +
-      `linearIdentifier=${result.linearIdentifier} underlyingError=${result.dispatchError || '(none captured)'}`
+      `linearIdentifier=${result.linearIdentifier} underlyingError=${result.dispatchError || '(none captured)'}${leakHint}`
     );
   }
 
