@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T19:59:33.196Z",
+  "timestamp": "2026-08-12T20:05:47.540Z",
   "stats": {
     "totalReviews": 42116,
     "alreadyFlagged": 18284,
     "dateGuardCatches": 138,
     "directorMismatch": 963,
     "tvFilmSignals": 1188,
-    "londonSignals": 859,
+    "londonSignals": 860,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3560
+    "noPublishDate": 3559
   },
   "findings": [
     {
@@ -34857,6 +34857,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "west-end-best-friend--oli-burgin.json",
+      "score": 79,
+      "publishDate": "2026-08-12",
+      "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
