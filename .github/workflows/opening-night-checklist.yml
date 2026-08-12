@@ -64,6 +64,20 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # BRO-234: 8 checks in scripts/lib/opening-night-checks/ read
+      # context.reviewTextsRoot (data/review-texts/), and without this step
+      # the directory never existed in this job's checkout. Most of them
+      # (fs.existsSync guard) treat a missing directory as a silent PASS —
+      # blind in CI, always green regardless of actual review-text state.
+      # Two (bww-rr-count-mismatch, dtli-count-mismatch) go the other way:
+      # dirExists gates findExistingReviewFile(), so with no directory every
+      # aggregator-listed review reads as "missing" and gets queued for stub
+      # remediation — a false-positive flood, not a silent pass.
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       # W2.1 (task #1073): this used to be raw actions/setup-node@v5 with no
       # install step at all — node_modules never existed on this job's runner,
       # so any script this workflow runs that transitively requires a
