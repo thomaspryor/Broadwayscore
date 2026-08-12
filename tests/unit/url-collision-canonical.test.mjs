@@ -56,6 +56,49 @@ test('without the breadcrumb, genuine duplicates still flag (no regression)', ()
   assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000), _duplicateOfCleared: null }, { fullText: body(2900) }), true);
 });
 
+// --- byline/anchor quality (card #1340): when both bodies are substantive,
+// the length check alone can't tell the siblings apart — a named/anchored new
+// write must not still get buried under an Unknown/unanchored collider (the
+// Death Note WhatsOnStage pattern task #1338 retro-healed after the fact) ---
+
+const ANCHORED = { score: 85, band: { floor: 71, ceiling: 90, fraction: 0.8 } };
+const UNANCHORED = { score: 91 };
+
+test('named+anchored new write beats an Unknown+unanchored collider, both substantive', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+test('named-only new write (no band) still beats an Unknown+unanchored collider', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood' },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+test('anchored-only new write (Unknown byline) still beats an Unknown+unanchored collider', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+test('quality check does not flip when the collider is itself named — legitimate direction stands', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Alex Wood' }
+  ), true);
+});
+
+test('quality check does not fire for a flagged new write (clean-source gate)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED, wrongProduction: true },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), true);
+});
+
 // --- shouldMarkPostCorrectionDuplicate: the urlCorrectedFrom branch that used
 // to be a blanket skip (the-enormous-crocodile london-theatre--unknown weekly
 // oscillation, 2026-08-01) ---
