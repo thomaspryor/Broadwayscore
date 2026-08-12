@@ -686,9 +686,19 @@ function classifySegment(rawTokens) {
   // `bash scripts/merge-worktree-to-main.sh …`, `env FOO=1 bash …`
   while (toks.length > 1 && SCRIPT_INTERPRETERS.has(basename(toks[0]))) {
     toks = withoutEnvPrefix(toks.slice(1));
-    // `bash -c '<payload>'`: the payload is a quoted sub-script this shallow
-    // parser will not read. Bail (fail open) rather than guess at it.
-    if (toks.length && toks[0].startsWith('-')) return null;
+    // Skip the interpreter's own flags so `bash -x scripts/merge-…sh` still
+    // reaches the script name. Bailing on ANY leading flag (the first cut)
+    // meant `bash -x <wrapper>` silently escaped the gate — QA review,
+    // 2026-08-12.
+    //
+    // `-c` is the one that must still bail: its payload is a quoted sub-script
+    // this shallow parser cannot read, so guessing would be worse than failing
+    // open. Short-flag clusters are checked for `c` too (`bash -xc '…'`).
+    while (toks.length > 1 && toks[0].startsWith('-')) {
+      const flag = toks[0];
+      if (flag === '-c' || (/^-[a-zA-Z]+$/.test(flag) && flag.includes('c'))) return null;
+      toks = toks.slice(1);
+    }
   }
   if (toks.length === 0) return null;
 
