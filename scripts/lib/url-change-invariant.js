@@ -163,11 +163,18 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
  *   Used by gather-reviews' replacement branch to honor its aggregator-signal
  *   contract (computeReplacementPreserve AGGREGATOR_FIELDS: show-keyed roundup
  *   data, independent of the file's URL).
+ * @param {boolean} [opts.force] - Skip the urlCanonicallyChanged() gate and
+ *   clear regardless. For callers (maybeUpgradeUrl) that already decided the
+ *   OLD content is bad and are about to refetch — a cosmetic-only URL swap
+ *   (tracking params, protocol, trailing slash, AMP suffix) still means the
+ *   file's wrongProduction/contentVerification verdict was about content
+ *   that's being discarded, even though normalizeUrl() calls the two URLs
+ *   the same article (#483).
  * @returns {{ changed: boolean, cleared: string[] }}
  */
-function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFields = null } = {}) {
+function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFields = null, force = false } = {}) {
   if (!existing || !merged) return { changed: false, cleared: [] };
-  if (!urlCanonicallyChanged(existing.url, merged.url)) {
+  if (!force && !urlCanonicallyChanged(existing.url, merged.url)) {
     return { changed: false, cleared: [] };
   }
 
