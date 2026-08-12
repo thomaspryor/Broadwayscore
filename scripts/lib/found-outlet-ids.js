@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
+const { isBlockedReviewUrl } = require('./domain-filters');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 
@@ -19,6 +20,12 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts'
 // radius (dry-run measured 1 newly-unblocked cell corpus-wide). Outside the
 // window / for T3+ outlets, the historical skip conditions apply unchanged.
 const DISCOVERY_UNBLOCK_WINDOW_DAYS = 45;
+
+// A file with no llmScore/assignedScore/humanReviewScore was never actually
+// scored by a human or the LLM ensemble.
+function isScoredReviewFile(data) {
+  return !!(data.llmScore || data.assignedScore != null || data.humanReviewScore != null);
+}
 
 function isInDiscoveryUnblockWindow(show, nowMs = Date.now()) {
   if (!show) return false;
@@ -57,6 +64,13 @@ function getFoundOutletIds(showId, ctx) {
       // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
       // Skip confirmed non-reviews (interviews, news, previews) — same reason
       if (data.wrongProduction || data.wrongShow || data.rejectionReason === 'not_a_review') continue;
+      // #1328: isScoreable() filters isBlockedReviewUrl URLs (aggregator/listing/
+      // ticket/social domain) out before the LLM ensemble ever runs, so these files
+      // sit unscored AND unclassified forever — no rejectionReason ever gets written.
+      // The URL itself proves the outlet's real review was never actually collected,
+      // so treat it the same as rejectionReason='not_a_review': don't let it mask
+      // the outlet slot from SERP/gap rediscovery.
+      if (data.url && !isScoredReviewFile(data) && isBlockedReviewUrl(data.url)) continue;
       // S1-T5: in-window T1/T2 — reopen discovery for a rejected non-review
       // (garbage / invalid tier / CV interview-feature-preview-news) so its
       // outlet slot doesn't read as "found". !isScored preserves the scored-
