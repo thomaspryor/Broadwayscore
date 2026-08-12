@@ -13,7 +13,7 @@ import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
-const { assertTableSchema } = require('./lib/table-schema-assertion');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -208,7 +208,14 @@ async function backfillHistory(): Promise<void> {
               return Array.from(first.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '');
             });
           }
-          assertTableSchema([headerCells], TABLE_SCHEMA);
+          try {
+            assertTableSchema([headerCells], TABLE_SCHEMA);
+          } catch (err) {
+            if (err instanceof TableSchemaError) {
+              console.error(`::error::backfill-grosses-history: ${err.message}`);
+            }
+            throw err;
+          }
 
           // Extract data from the table
           const rowData = await page.$$eval('table tbody tr', (rows) => {

@@ -388,7 +388,7 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
       assertTableSchema([allHeaderCells], { minCells: 1 });
     } catch (err) {
       if (err instanceof TableSchemaError) {
-        console.log(`   ⚠️  ${err.message}`);
+        console.error(`::error::scrape-tony-awards: ${err.message}`);
         return [];
       }
       throw err;
