@@ -90,7 +90,13 @@ function loadGrosses(): GrossesData {
 function parseAllTimeHtml(html: string): ScrapedRow[] {
   const $ = cheerio.load(html);
 
-  const headerCells = $('table thead th').map((_i, el) => $(el).text().trim()).get();
+  // Prefer <thead><th> (confirmed present live 2026-08-12), but fall back to
+  // the first <tr>'s cells so a proxied-HTML variant without a <thead>
+  // wrapper doesn't false-positive a schema failure on a working page.
+  let headerCells = $('table thead th').map((_i, el) => $(el).text().trim()).get();
+  if (headerCells.length === 0) {
+    headerCells = $('table tr').first().find('th, td').map((_i, el) => $(el).text().trim()).get();
+  }
   try {
     assertTableSchema([headerCells], TABLE_SCHEMA);
   } catch (err) {
@@ -154,7 +160,15 @@ async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
 
   // Header schema check BEFORE processing rows — if BWW shifted columns again,
   // every row would otherwise silently fail the length guard below.
-  const headerCells = await page.$$eval('table thead th', ths => ths.map(th => th.textContent?.trim() || ''));
+  // Same thead-with-fallback strategy as parseAllTimeHtml() above.
+  let headerCells = await page.$$eval('table thead th', ths => ths.map(th => th.textContent?.trim() || ''));
+  if (headerCells.length === 0) {
+    headerCells = await page.$$eval('table tr', rows => {
+      const first = rows[0];
+      if (!first) return [];
+      return Array.from(first.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '');
+    });
+  }
   try {
     assertTableSchema([headerCells], TABLE_SCHEMA);
   } catch (err) {
