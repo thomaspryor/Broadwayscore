@@ -13,10 +13,16 @@ import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const PLAYBILL_URL = 'https://playbill.com/grosses';
+
+// Verified live 2026-08-12: <thead><th> = Show / This Week Gross / Diff $ /
+// Avg Ticket / Seats Sold / Perfs / % Cap / Diff % cap. Rows below read
+// cells[0], [1], [3], [4], [5], [6] (task #1331 — same column-drift class as #118).
+const TABLE_SCHEMA = { minCells: 7, expectedHeaders: ['Show', 'This Week Gross', 'Avg Ticket', 'Seats Sold', 'Perfs', '% Cap'] };
 
 interface HistoryEntry {
   gross: number | null;
@@ -190,6 +196,26 @@ async function backfillHistory(): Promise<void> {
 
           // Wait for the grosses table to appear (JS-rendered)
           await page.waitForSelector('table tbody tr', { timeout: 20000 });
+
+          // Header schema check BEFORE processing rows — if Playbill shifted
+          // columns, every row would otherwise silently fail downstream instead
+          // of failing loud (task #1331).
+          let headerCells = await page.$$eval('table thead th', ths => ths.map(th => th.textContent?.trim() || ''));
+          if (headerCells.length === 0) {
+            headerCells = await page.$$eval('table tr', rows => {
+              const first = rows[0];
+              if (!first) return [];
+              return Array.from(first.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '');
+            });
+          }
+          try {
+            assertTableSchema([headerCells], TABLE_SCHEMA);
+          } catch (err) {
+            if (err instanceof TableSchemaError) {
+              console.error(`::error::backfill-grosses-history: ${err.message}`);
+            }
+            throw err;
+          }
 
           // Extract data from the table
           const rowData = await page.$$eval('table tbody tr', (rows) => {
