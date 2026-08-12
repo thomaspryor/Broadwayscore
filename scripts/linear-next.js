@@ -152,7 +152,8 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
   } catch (e) { console.error(`[linear-next] WARN could not post dispatch comment on ${issue.identifier}: ${e.message}`); }
   try {
     const team = await linear.getTeam();
-    const started = (team.states || []).find((s) => s.type === 'started');
+    const stateList = Array.isArray(team.states) ? team.states : (team.states && team.states.nodes) || []; // getTeam() returns the GraphQL {nodes} connection shape (same class as linear-issue-create's 2026-08-12 fix)
+    const started = stateList.find((s) => s.type === 'started');
     if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linear.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
     await linear.updateIssue(issue.id, { stateId: started.id });
   } catch (e) { console.error(`[linear-next] WARN could not move ${issue.identifier} to In Progress: ${e.message}`); }
