@@ -1,38 +1,18 @@
 {
-  "generatedAt": "2026-08-11T07:58:23.245Z",
+  "generatedAt": "2026-08-12T08:06:55.263Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "7b4b168562d7a8514d541cd42a933ddb83b6d969",
-  "state": "RED",
-  "consecutiveFailures": 41,
-  "redSince": "2026-08-09T23:39:28Z",
-  "redForHours": 32.31534583333333,
+  "latestRunHeadSha": "c2572242d2ea1e143d49a16ed0ccbbe4cdc73384",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-09T23:31:44Z",
-  "latestFailedRunId": "31467850649",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31467850649",
-  "decidedRuns": 87,
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/review-guards.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 2 - contentTier=invalid + fresh wrongProductionAutoCleared → includable"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "lastSuccessAt": "2026-08-12T07:26:23Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 81,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
