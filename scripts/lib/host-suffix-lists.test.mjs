@@ -182,6 +182,27 @@ test('a two-label mirror host keeps its identity (ship-check 2026-08-12)', () =>
   }
 });
 
+test('Blogger country mirrors beyond MULTIPART_PUBLIC_SUFFIXES still resolve', () => {
+  // Round-2 regression: narrowing the tail to "single-label TLD or a
+  // MULTIPART member" dropped ~14 real Blogger mirrors (blogspot.com.es,
+  // .co.il, .com.ar, .com.tr, ...), so 'foo.blogspot.com.es' minted the
+  // outletId 'com' — WORSE than the unanchored regex it replaced. The tail is
+  // now accepted on ccTLD SHAPE (<=4-char label + 2-char ccTLD) instead of
+  // enumeration.
+  for (const host of ['foo.blogspot.com.es', 'foo.blogspot.co.il', 'foo.blogspot.com.ar', 'foo.blogspot.com.tr']) {
+    assert.equal(provisionalOutletIdFromHost(host), 'foo', `mint ${host}`);
+    assert.equal(normalizeHostSlug(host), 'foo', `slug ${host}`);
+  }
+});
+
+test('a host with two blogspot labels resolves against the LAST one', () => {
+  // indexOf picked the first '.blogspot.', leaving the platform's own name as
+  // the identity: 'a.blogspot.b.blogspot.co.uk' resolved to 'blogspot'.
+  assert.equal(platformSuffixOf('a.blogspot.b.blogspot.co.uk'), 'blogspot.co.uk');
+  assert.equal(provisionalOutletIdFromHost('a.blogspot.b.blogspot.co.uk'), 'b');
+  assert.equal(normalizeHostSlug('a.blogspot.b.blogspot.co.uk'), 'b');
+});
+
 test('the Blogger mirror rule only matches a real public suffix', () => {
   // The tail after '.blogspot.' must be a public suffix. An unanchored
   // /\.(blogspot\.[a-z.]{2,})$/ swallowed 'blogspot.example.com', so every
@@ -236,14 +257,37 @@ test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
     // A re-forked LIST names several suffixes together; a legitimate host
     // constant names one. So: fail only when 3+ DISTINCT shared suffixes
     // appear close together.
-    const WINDOW = 400;
-    const known = [...PLATFORM_HOST_SUFFIXES, ...MULTIPART_PUBLIC_SUFFIXES];
-    for (let i = 0; i < code.length; i += WINDOW / 2) {
-      const chunk = code.slice(i, i + WINDOW);
-      const hits = known.filter((s) => chunk.includes(s) || chunk.includes(s.replace(/\./g, '\\.')));
+    // Anchor each window ON a hit rather than sliding a fixed grid: a grid of
+    // WINDOW with step WINDOW/2 only guarantees a WINDOW/2 span, so a list
+    // written one-entry-per-line with comments (the shape of the real block in
+    // host-suffix-lists.js) straddles a boundary and evades (ship-check round
+    // 2, 2026-08-12).
+    const RADIUS = 200;
+    const forms = (s) => [s, s.replace(/\./g, '\\.')];
+    const occurrences = [];
+    for (const suffix of [...PLATFORM_HOST_SUFFIXES, ...MULTIPART_PUBLIC_SUFFIXES]) {
+      for (const form of forms(suffix)) {
+        let at = code.indexOf(form);
+        while (at !== -1) {
+          occurrences.push({ suffix, at, platform: PLATFORM_HOST_SUFFIXES.includes(suffix) });
+          at = code.indexOf(form, at + 1);
+        }
+      }
+    }
+    for (const { at } of occurrences) {
+      const near = occurrences.filter((o) => Math.abs(o.at - at) <= RADIUS);
+      const distinct = new Set(near.map((o) => o.suffix));
+      // A PLATFORM suffix ('substack.com') never appears as a legitimate
+      // single-outlet host constant in these files, so two of them together is
+      // already a fork — and the drift this module documents began as exactly a
+      // partial platform list. Multi-part public suffixes DO appear legitimately
+      // (non-review-url-patterns.js hardcodes /^improbable\.co\.uk$/ and peers),
+      // so those need 3 before it is a list rather than a coincidence.
+      const platformHits = new Set(near.filter((o) => o.platform).map((o) => o.suffix));
+      const limit = platformHits.size >= 2 ? 2 : 3;
       assert.ok(
-        hits.length < 3,
-        `${file} groups ${hits.length} shared suffixes together (${hits.slice(0, 4).join(', ')}) — that is a re-forked list; use host-suffix-lists.js instead`,
+        distinct.size < limit,
+        `${file} groups ${distinct.size} shared suffixes within ${RADIUS} chars (${[...distinct].slice(0, 4).join(', ')}) — that is a re-forked list; use host-suffix-lists.js instead`,
       );
     }
     assert.ok(

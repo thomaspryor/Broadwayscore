@@ -157,8 +157,18 @@ function isBloggerMirror(host) {
   if (!h.startsWith('blogspot.')) return false;
   const tail = h.slice('blogspot.'.length);
   if (!tail) return false;
-  if (MULTIPART_PUBLIC_SUFFIXES.includes(tail)) return true;
-  return /^[a-z]{2,}$/.test(tail); // plain single-label TLD
+  const labels = tail.split('.');
+  // One label = a plain TLD ('blogspot.com').
+  if (labels.length === 1) return /^[a-z]{2,}$/.test(labels[0]);
+  // Two labels = a country mirror, IF the last is a 2-letter ccTLD:
+  // blogspot.com.es / .co.il / .com.ar / .com.tr ... Blogger runs ~14 of
+  // these beyond MULTIPART_PUBLIC_SUFFIXES' 12 entries, so enumerating was
+  // WORSE than the unanchored regex it replaced — 'foo.blogspot.com.es'
+  // minted the outletId 'com' (ship-check round 2, 2026-08-12). The ccTLD
+  // shape is what separates a real mirror from 'blogspot.example.com',
+  // whose last label 'com' is 3 chars and is correctly rejected.
+  if (labels.length === 2) return /^[a-z]{2,4}$/.test(labels[0]) && /^[a-z]{2}$/.test(labels[1]);
+  return false;
 }
 
 function platformSuffixOf(host) {
@@ -166,8 +176,11 @@ function platformSuffixOf(host) {
   if (!h) return null;
   const listed = PLATFORM_HOST_SUFFIXES.find((p) => h.endsWith('.' + p));
   if (listed) return listed;
-  // Blogger country mirrors: <pub>.blogspot.<public-suffix>
-  const dot = h.indexOf('.blogspot.');
+  // Blogger country mirrors: <pub>.blogspot.<public-suffix>. lastIndexOf, not
+  // indexOf — on 'a.blogspot.b.blogspot.co.uk' the FIRST occurrence resolves
+  // against the wrong tail and the whole host falls through to a 'blogspot'
+  // identity (ship-check round 2, 2026-08-12).
+  const dot = h.lastIndexOf('.blogspot.');
   if (dot === -1) return null;
   const tail = h.slice(dot + 1);
   return isBloggerMirror(tail) ? tail : null;
