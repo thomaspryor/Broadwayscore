@@ -188,6 +188,19 @@ test('parse: `-c` inside a short-flag cluster still bails (fail open)', () => {
   assert.equal(r.isMerge, false, 'a -c payload must never be guessed at');
 });
 
+test('parse: UNQUOTED `bash -c git merge feat` must not read as a real merge', () => {
+  // The quoted `-xc '…'` case above passes even WITHOUT the -c guard, because
+  // the quoted payload stays one opaque token. This unquoted form is the one
+  // that actually needs the guard: it tokenizes into 5 separate tokens, so
+  // dropping -c handling would classify it as a literal `git merge feat` and
+  // FALSE BLOCK — while bash would really just run `git` with no args
+  // (`merge`/`feat` become $0/$1). False blocks wedge every session sharing
+  // the checkout, so this path is pinned explicitly (review, 2026-08-12).
+  const r = parseMergeIngress('bash -c git merge feat', { currentBranch: 'main' });
+  assert.equal(r.isMerge, false);
+  assert.deepEqual(r.sources, []);
+});
+
 // ── parseMergeIngress: the wrapper script, the REAL call site ───────────────
 
 test('parse: merge-worktree-to-main.sh with an explicit branch targets main', () => {
