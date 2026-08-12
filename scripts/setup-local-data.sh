@@ -83,8 +83,7 @@ if [ -d "$CORE_DATA_DIR/.git" ]; then
   UPDATE_OK=0
   UPDATE_ERR=""
   for attempt in 1 2 3; do
-    UPDATE_ERR="$(cd "$CORE_DATA_DIR" && { git fetch origin main --depth 1 && git reset --hard origin/main; } 2>&1)"
-    if [ $? -eq 0 ]; then
+    if UPDATE_ERR="$(cd "$CORE_DATA_DIR" && { git fetch origin main --depth 1 && git reset --hard origin/main; } 2>&1)"; then
       UPDATE_OK=1
       break
     fi
@@ -95,7 +94,7 @@ if [ -d "$CORE_DATA_DIR/.git" ]; then
   done
   if [ "$UPDATE_OK" -ne 1 ]; then
     echo "ERROR: Failed to update existing $CORE_DATA_DIR after 3 attempts:"
-    echo "$UPDATE_ERR" | sed 's/^/    /'
+    echo "    ${UPDATE_ERR//$'\n'/$'\n    '}"
     echo "Delete it and re-run if this isn't transient lock contention."
     exit 1
   fi
