@@ -31,9 +31,11 @@ const {
 // measured against Date.now(), so a literal like '2026-08-04' is "fresh" the
 // day it is written and silently ages out a week later — turning a passing
 // test into a calendar-triggered CI failure with no code change. That is
-// exactly what held main red from 2026-08-11: two tests below expired and
-// every subsequent push (2189 commits in 7 days, 90% of them bot data
-// commits) re-reported the same failure.
+// exactly what held main red from 2026-08-11: two tests below expired, and
+// because work lands directly on main from many parallel sessions
+// (~25 test.yml runs/day), every subsequent code push re-reported the same
+// two failures — 160 red runs out of 200 from one expiry.
+// scripts/audit-time-bomb-tests.js exists to catch this class in advance.
 const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
 
 describe('isLikelyWrongProduction', () => {
