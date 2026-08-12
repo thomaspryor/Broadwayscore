@@ -2331,6 +2331,17 @@ on:
       - 'scripts/linear-next.js'
       - 'scripts/lib/linear-dispatch.js'
       - 'scripts/lib/dispatch-guards.js'
+      # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
+      # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
+      # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are
+      # colocated-tested (tests/unit/linear-cap.test.mjs, registered in
+      # tests/unit-test-manifest.txt — tests/** already globbed above); the two
+      # CLI scripts + the policy lib need explicit listing so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist). No schedule/cron
+      # wired yet — a follow-up session wires it after this lands.
+      - 'scripts/lib/linear-cap-policy.js'
+      - 'scripts/check-linear-cap.js'
+      - 'scripts/linear-archive-done.js'
   pull_request:
     branches: [main]
   schedule:
