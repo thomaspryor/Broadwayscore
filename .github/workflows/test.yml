@@ -14,6 +14,11 @@ on:
       # its unit test is in tests/unit-test-manifest.txt (tests/** is globbed
       # above) but a solo edit to the lib needs this listing to trigger CI.
       - 'scripts/lib/supabase-schema-expectations.js'
+      # Column-count brittleness guard (task #118) used by scrape-alltime.ts
+      # and scrape-grosses.ts: its unit test is in tests/unit-test-manifest.txt
+      # (tests/** is globbed above) but a solo edit to the lib needs this
+      # listing to trigger CI.
+      - 'scripts/lib/table-schema-assertion.js'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
@@ -665,6 +670,12 @@ on:
       - 'scripts/.aggregator-url-latent.json'
       - 'scripts/lib/aggregator-url-latent.js'
       - 'scripts/validate-review-texts.js'
+      # TLD parity fence (task #1194): asserts AGGREGATOR_DOMAINS carries the TLD the
+      # corpus actually uses per aggregator outlet, and that a scored real-outlet
+      # star-stub on an aggregator domain is NOT aggregator_url_mismatch while an
+      # unscored one IS. Colocated test runs in the lib-test glob; path-listed so a
+      # solo edit triggers CI.
+      - 'scripts/lib/aggregator-domain-tld-parity.test.mjs'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -759,6 +770,14 @@ on:
       # 2026-07-09; its test runs in the line-1767 batch.
       - 'scripts/lib/review-normalization.js'
       - 'tests/unit/review-normalization.test.js'
+      # URL-change invariant (#483) — maybeUpgradeUrl's force:true escape fix.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/lib/url-change-invariant.js'
+      - 'scripts/lib/url-change-invariant.test.mjs'
+      - 'scripts/lib/stale-flag-after-url-correction.js'
+      - 'scripts/lib/stale-flag-after-url-correction.test.mjs'
+      - 'scripts/audit-stale-flag-after-url-correction.js'
       # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
       # until 2026-07-10; its test runs in the line-1715 batch.
       - 'scripts/lib/content-verifier.js'
@@ -2291,6 +2310,19 @@ on:
       - 'scripts/lib/linear-issue-create.test.mjs'
       - 'scripts/linear-brain.js'
       - 'scripts/audit-linear-issuecreate-chokepoint.js'
+      # Linear-issue dispatcher (task #1303): fetches a Linear issue and
+      # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
+      # headless launch primitives. dispatch-guards.js (task #1303 plan
+      # review) is the 6 shared pre-launch guard/gate predicates extracted
+      # OUT of bsc-next.js so both dispatchers share one set of refusals —
+      # both bsc-next.js and linear-next.js require it, so a solo edit here
+      # must trigger CI regardless of which caller is untouched. Colocated
+      # tests/unit/linear-next.test.mjs is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); these
+      # scripts/ files need explicit listing (feedback_test_yml_push_path_allowlist).
+      - 'scripts/linear-next.js'
+      - 'scripts/lib/linear-dispatch.js'
+      - 'scripts/lib/dispatch-guards.js'
   pull_request:
     branches: [main]
   schedule:
@@ -3614,6 +3646,18 @@ jobs:
         if: always()
         run: node scripts/audit-autoclear-vs-ensemble.js --strict
 
+      - name: Run aggregator-domain TLD parity corpus scan (needs review-texts)
+        # Same corpus-missing trap as explainExclusion above: the scripts/lib/*.test.mjs
+        # glob runs in the unit-tests job, which never checks out data/review-texts, so
+        # this file's live-corpus layer (Part 2) always t.skip()'d there — the only
+        # thing CI ever actually verified was the static snapshot table (Part 1), not a
+        # real fence against a NEW aggregator TLD drift (task #1194 ship-check finding).
+        # Re-running it HERE with REQUIRE_REVIEW_CORPUS=1 makes the live scan real.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
+
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the
         # scripts/lib/*.test.mjs glob in the unit-tests job never has
@@ -3724,6 +3768,23 @@ jobs:
         # not resurrect what --fix removed — that contract is pinned by
         # tests/unit/self-contradictory-clear.test.mjs, not assumed.
         # Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
+
+      - name: Audit stale flag after URL correction
+        if: always()
+        run: node scripts/audit-stale-flag-after-url-correction.js --gate
+        # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
+        # _urlChangedClear URL-correction breadcrumb with an empty body — the
+        # 112-file class from 2026-07-26, caused by maybeUpgradeUrl's write
+        # path (scripts/lib/review-normalization.js) not clearing the flag
+        # family when the "upgrade" url normalized equal to the old one
+        # (tracking params/protocol/AMP suffix), so the flag-clearing
+        # invariant (scripts/lib/url-change-invariant.js) never fired even
+        # though the body was wiped and needsRefetch was set. Forward fix:
+        # maybeUpgradeUrl now runs applyUrlChangeInvariant(..., {force: true}).
+        # Backlog (157 files, drifted since the original 112-file remediation)
+        # drained 2026-08-12 via `--fix`; blocking (`--gate`, no baseline) from
+        # day one since the corpus is genuinely clean. Detector: scripts/lib/
+        # stale-flag-after-url-correction.js.
 
       - name: Audit cast contamination
         if: always()

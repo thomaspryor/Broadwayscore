@@ -20,6 +20,18 @@ const require = createRequire(import.meta.url);
 // data/audit/scraper-spend-ledger.jsonl (see scraper-sb-latch.test.mjs).
 process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(os.tmpdir(), `scraper-spend-ledger-test-${process.pid}.jsonl`);
 
+// Isolate from the REAL ScrapingDog daily circuit breaker (card #1252):
+// fetchWithScrapingdog() calls consultScrapingdog() with no env override, so
+// it reads process.env / the real data/audit/sd-circuit-breaker.json. When the
+// live account trips its daily ceiling (frequent per the BSC Daily "Credits:
+// ScrapingDog" alerts), every assertion in this file failed with 0 HTTP calls
+// made — the mock never got exercised because the breaker short-circuited
+// fetchWithScrapingdog before it reached https.get. This test exercises the
+// stealth-mode escalation logic, not the breaker, so disable it here the same
+// way brightdata-caps.test.mjs isolates BD's breaker via BD_BREAKER_STATE_PATH
+// (task #1312).
+process.env.SD_CAPS_DISABLED = '1';
+
 const STEALTH_400_BODY = JSON.stringify({
   message: "Oops! Something went wrong. You won't be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.",
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow, nameCorroboratedBy } = require('./byline-recovery.js');
+const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow, recoverDisplayBylinesForShow, nameCorroboratedBy } = require('./byline-recovery.js');
 
 test('isPlausiblePersonName accepts real two/three-token bylines', () => {
   for (const n of ['Charles Isherwood', 'Ben Brantley', 'Andrzej Lukowski', 'Alexis Soloski', 'J. Kelly Nestruck']) {
@@ -87,6 +87,19 @@ test('recoverBylinesForShow REFUSES to name from a flagged sibling (would merge-
   assert.deepEqual(out, [], 'the only same-URL named sibling is flagged → skip, keep the scored review');
 });
 
+test('recoverDisplayBylinesForShow recovers from a flagged-only sibling — the real giant-2026/wsj shape (card #190)', () => {
+  // Same input as the REFUSES test above, but through the display-only path:
+  // this is safe here specifically because the caller (rebuild-all-reviews.js)
+  // never writes the name back to wsj--unknown.json, so there is no name+URL
+  // collision for a dedup pass to collapse. Body only ever says "Mr. Isherwood"
+  // (WSJ house style) — exercises the honorific corroboration fallback too.
+  const out = recoverDisplayBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: "Mr. Isherwood is the Journal's critic.", flagged: false },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: "Mr. Isherwood is the Journal's critic.", flagged: true },
+  ]);
+  assert.deepEqual(out, [{ file: 'wsj--unknown.json', recoveredName: 'Charles Isherwood' }]);
+});
+
 test('recoverBylinesForShow still recovers when a CLEAN sibling carries the name alongside a flagged one', () => {
   const out = recoverBylinesForShow([
     { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood.', flagged: false },
@@ -126,4 +139,14 @@ test('nameCorroboratedBy requires every substantive token to appear as a word', 
   assert.equal(nameCorroboratedBy('Charles Isherwood', 'isherwood is great'), false, 'first name missing');
   assert.equal(nameCorroboratedBy('J. Kelly Nestruck', 'reviewed by j. kelly nestruck'), true, 'short "J." token is not required');
   assert.equal(nameCorroboratedBy('Charles Isherwood', ''), false);
+});
+
+test('nameCorroboratedBy accepts an honorific + surname byline (WSJ house style)', () => {
+  // giant-2026/wsj (card #190): the body only ever says "Mr. Isherwood", never
+  // the first name, so the strict all-tokens check above would never fire.
+  assert.equal(nameCorroboratedBy('Charles Isherwood', "Mr. Isherwood is the Journal's theater critic"), true);
+  assert.equal(nameCorroboratedBy('Charles Isherwood', 'Ms. Isherwood declined to comment'), true, 'honorific gender need not match — surname is the signal');
+  // still rejects a hallucinated name with no honorific-surname pairing in the body
+  assert.equal(nameCorroboratedBy('Christopher Isherwood', 'By Charles Isherwood. The play works.'), false);
+  assert.equal(nameCorroboratedBy('Charles Isherwood', 'isherwood is great'), false, 'surname alone with no honorific still rejected');
 });

@@ -1706,6 +1706,12 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // Reject invalid replacement URLs (relative paths, profile pages)
   if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
   if (isProfileUrl(newUrl)) return false;
+  // Manual URL decisions win — mirrors review-write-guard.js's own
+  // locked/urlVerified/urlManualOverride check. Without this, a manually
+  // verified URL could get silently swapped here.
+  if (existingData._locked === true || existingData.urlVerified === true || existingData.urlManualOverride === true) {
+    return false;
+  }
   // Only upgrade if current content is bad
   const badContent = !existingData.fullText
     || (existingData.contentTier && existingData.contentTier !== 'complete')
@@ -1720,13 +1726,37 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     return false; // candidate URL is about a different show — refuse the swap
   }
 
+  // Snapshot BEFORE mutation so the invariant below can tell which fields
+  // provably rode along from the old-URL record (#483: wrongProduction/
+  // wrongShow/contentVerification survived this upgrade because nothing
+  // cleared them — this function only ever wiped the body fields directly,
+  // which the shared invariant never saw).
+  const before = { ...existingData };
+
   existingData.urlCorrectedFrom = existingData.url;
   existingData.urlCorrectedReason = `Replaced with ${source} URL — original had bad/missing content`;
   existingData.url = newUrl;
-  existingData.fullText = null;
-  existingData.textStatus = null;
-  existingData.contentTier = null;
   existingData.needsRefetch = true;
+
+  // Old-URL-derived state (fullText/contentTier/wrongProduction/wrongShow/
+  // contentVerification/…) describes content we just decided was bad and are
+  // discarding — none of it must survive onto the file that's about to be
+  // refetched. Delegating the actual clearing to applyUrlChangeInvariant
+  // (rather than hand-rolling a field list here) is what keeps this in sync
+  // with URL_DERIVED_FIELDS as that set grows — a hardcoded subset is exactly
+  // how wrongProduction/contentVerification went stale in the first place.
+  // force:true because this "upgrade" is often a cosmetic URL swap (tracking
+  // params, protocol, AMP suffix) that normalizeUrl() treats as the SAME
+  // canonical article, so the invariant's own urlCanonicallyChanged() gate
+  // would otherwise never fire here (#483 — the actual escape path:
+  // badContent already means the old verdict is void regardless of whether
+  // the URLs normalize equal).
+  const { applyUrlChangeInvariant } = require('./url-change-invariant');
+  applyUrlChangeInvariant(before, existingData, {
+    fileLabel: existingData.outletId || source || '?',
+    force: true,
+  });
+
   return true;
 }
 
