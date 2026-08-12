@@ -2274,6 +2274,17 @@ on:
       - 'scripts/lib/linear-client.js'
       - 'scripts/lib/linear-import-rules.js'
       - 'scripts/lib/linear-import-rules.test.mjs'
+      # Card/issue creation disposition gate (task #1310): resolveDisposition is
+      # the shared pure gate notion-brain.js create and linear-brain.js create
+      # both go through — no card files without deciding --dispatch or --park.
+      # Colocated tests/unit/card-creation-disposition.test.mjs is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); the lib
+      # + the new Linear chokepoint/CLI/CI-gate files need explicit listing.
+      - 'scripts/lib/card-disposition.js'
+      - 'scripts/lib/linear-issue-create.js'
+      - 'scripts/lib/linear-issue-create.test.mjs'
+      - 'scripts/linear-brain.js'
+      - 'scripts/audit-linear-issuecreate-chokepoint.js'
   pull_request:
     branches: [main]
   schedule:
@@ -2448,6 +2459,15 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — Linear issueCreate chokepoint (task #1310)
+        # Blocking: a shared chokepoint nobody is forced to use changes
+        # nothing (8 Linear issues filed via a hand-rolled issueCreate call,
+        # 2026-08-12, zero dispatched). Fails if anything outside
+        # scripts/lib/linear-client.js / scripts/lib/linear-issue-create.js /
+        # scripts/linear-import.js references issueCreate or api.linear.app
+        # directly. Add a genuinely-exempt file to ALLOWLIST in the script.
+        run: node scripts/audit-linear-issuecreate-chokepoint.js
 
       - name: Audit — gate corpus-guard coverage
         # Task #1069. Blocking, unlike the advisory audits around it: every

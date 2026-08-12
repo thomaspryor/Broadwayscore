@@ -1192,6 +1192,10 @@ async function fileNotionCards(deduped, existingTitles, respondingCount) {
         '--status', 'Not started', '--priority', f.severity === 'high' ? 'P1 Next' : 'P2 Later',
         '--category', 'Product', '--type', 'Fix', '--tags', 'ugc,ux-audit',
         '--notes', notes,
+        // task #1310: nightly walkthrough filing isn't itself a dispatch —
+        // no cmux/bsc-next on this runner either, same as plan-refusal-
+        // escalation. State the reason on the card.
+        '--park', 'Auto-filed by the nightly UX walkthrough (CI, no cmux/bsc-next here); the priority auto-dispatch loop picks it up on its next pull.',
       ], { encoding: 'utf8' });
       filed.push(title);
       console.error(`[ux-walkthrough] filed: ${title}`);

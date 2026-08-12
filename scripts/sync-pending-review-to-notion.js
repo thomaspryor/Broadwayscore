@@ -356,6 +356,11 @@ function main() {
       '--type', 'Data Quality',
       '--tags', `commercial,${TAG}`,
       '--notes', notes,
+      // task #1310: this is a standing owner-review-status card (N shows
+      // awaiting manual commercial review), never autonomously worked by a
+      // bsc-next session — --no-spawn keeps the explicit 'In progress'
+      // status without triggering a redundant/nonsensical dispatch.
+      '--dispatch', '--no-spawn',
     ]);
     if (create.status !== 0) {
       console.error(`FATAL: failed to create card: ${create.stderr.slice(0, 500)}`);
