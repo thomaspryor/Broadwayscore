@@ -38,13 +38,17 @@
 //      (bash/sh/zsh/dash) and its second token is a readable file, that
 //      file's content is scanned the same way, one level deep.
 //
-// Escape hatch: prefix the command with CMUX_LAUNCH_UNSAFE_OK=1 for a
-// deliberate attended launch where permission prompts are WANTED (e.g.
-// testing permission-prompt behavior). This is a conscious, spelled-out act
-// naming the exact hazard — unlike the incident, which was an omission
-// (the launching session never thought about permission mode at all) — so it
-// does not reopen the "thoughtless" failure mode this guard exists to close.
-// Mirrors the CMUX_CLOSE_OK=1 pattern in ~/.claude/hooks/cmux-destructive-guard.sh.
+// NO ESCAPE HATCH (unlike CMUX_CLOSE_OK=1 in cmux-destructive-guard.sh, which
+// exists because closing/restoring a workspace is SOMETIMES legitimate with
+// owner approval). Verified empirically 2026-08-12: PreToolUse hooks
+// (worktree-enforce.sh, this guard's own siblings) fire identically for a
+// session launched WITH --dangerously-skip-permissions — bypass mode disables
+// interactive permission PROMPTS, not the fleet's hook-based guardrails. So
+// there is no scenario where omitting the flag buys real supervision; a
+// bypass escape token would just be a second way to make the exact mistake
+// this guard exists to close mechanically impossible. Owner directive on the
+// card: "the guard should HARD-BLOCK any claude launch missing
+// --dangerously-skip-permissions, with no exception path."
 //
 // Pure function — no fs access except through the injectable `readFile` used
 // for the one-level wrapper-file recursion (defaults to a real, bounded,
@@ -53,7 +57,6 @@
 
 'use strict';
 
-const BYPASS_TOKEN = 'CMUX_LAUNCH_UNSAFE_OK=1';
 const SAFE_SHELLS = new Set(['bash', 'sh', 'zsh', 'dash']);
 const MAX_WRAPPER_READ_BYTES = 16 * 1024;
 const MAX_WRAPPER_DEPTH = 2;
@@ -152,7 +155,6 @@ function findUnsafeClaudeInvocation(str, depth, readFile) {
  */
 function evaluateCmuxLaunch(bashCommand, opts = {}) {
   const cmd = bashCommand || '';
-  if (cmd.includes(BYPASS_TOKEN)) return { block: false, reason: null, bypassed: true };
   if (!/(^|[^a-z0-9-])new-workspace([^a-z0-9-]|$)/i.test(cmd)) return { block: false, reason: null };
 
   const commandValue = extractFlagValue(cmd, '--command');
@@ -169,15 +171,12 @@ function evaluateCmuxLaunch(bashCommand, opts = {}) {
       `Every other session in the fleet runs bypass (peers arrive tagged from-mode="bypass"); without it the ` +
       `launched session stalls on a permission prompt every few tool calls and inbound cross-session messages ` +
       `queued to it EXPIRE UNDELIVERED (2 lost in one hour, 2026-08-12). ` +
-      `Use the canonical launcher instead: ${CANONICAL_HINT} ` +
-      `Deliberately want an attended launch WITH permission prompts (e.g. testing permission-prompt behavior)? ` +
-      `Prefix the command with ${BYPASS_TOKEN}.`,
+      `Use the canonical launcher instead: ${CANONICAL_HINT}`,
   };
 }
 
 module.exports = {
   evaluateCmuxLaunch,
-  BYPASS_TOKEN,
   extractFlagValue,
   splitSegments,
   segmentTokens,
@@ -194,9 +193,6 @@ if (require.main === module) {
   if (result.block) {
     process.stderr.write(result.reason + '\n');
     process.exit(2);
-  }
-  if (result.bypassed) {
-    process.stderr.write(`[cmux-launch-guard] ${BYPASS_TOKEN} present — skipping check.\n`);
   }
   process.exit(0);
 }
