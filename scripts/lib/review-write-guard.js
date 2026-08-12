@@ -40,6 +40,7 @@ const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
 const { validateTemporalAttribution } = require('./temporal-byline-guard');
 const { wouldFormDuplicateCycle: _wouldFormDuplicateCycleN } = require('./duplicate-cycle');
+const { shouldFlipDuplicateDirection } = require('./duplicate-direction-heal');
 
 // Lazy-loaded, memoized once per process — safeWriteReview is called
 // thousands of times per rebuild run and shows.json rarely changes mid-run.
@@ -1265,22 +1266,37 @@ function getEffectiveProtectedFields(existingData) {
  */
 /**
  * Decide whether a URL-collision should mark the NEW file as duplicateOf the
- * collider. Returns false — i.e. keep the new file PRIMARY — only when (a) the
- * new file carries a _duplicateOfCleared breadcrumb from a prior reviewed
- * clear, or (b) the new file carries a substantive review body and the
- * collider is a materially thinner (empty/stub) same-URL sibling. Otherwise
- * defer to the collider (historical behavior: the first same-URL file wins).
+ * collider. Returns false — i.e. keep the new file PRIMARY — when (a) the new
+ * file carries a _duplicateOfCleared breadcrumb from a prior reviewed clear,
+ * (b) the new file carries a substantive review body and the collider is a
+ * materially thinner (empty/stub) same-URL sibling, or (c) both bodies are
+ * substantive but the new file is provably higher quality (named byline or
+ * anchored-scorer band) than an Unknown/unanchored collider. Otherwise defer
+ * to the collider (historical behavior: the first same-URL file wins).
  *
- * Why: checkUrlCollision returns the first same-URL sibling in readdir order,
- * regardless of which holds the real review. Blindly marking the new file a
- * duplicate buries a real review under an empty byline-explosion stub and
- * re-forms the cluster on every write (much-ado Sarah Crompton re-dupped to an
- * empty alun-hood, 2026-07-05). A body is the only per-file signal that a review
- * actually exists, so the file with the body must stay primary.
+ * Why (a)/(b): checkUrlCollision returns the first same-URL sibling in
+ * readdir order, regardless of which holds the real review. Blindly marking
+ * the new file a duplicate buries a real review under an empty
+ * byline-explosion stub and re-forms the cluster on every write (much-ado
+ * Sarah Crompton re-dupped to an empty alun-hood, 2026-07-05). A body is the
+ * only per-file signal that a review actually exists, so the file with the
+ * body must stay primary.
+ *
+ * Why (c): the body-length check alone can't tell two substantive same-URL
+ * files apart, so a named/anchored new write can still get buried under an
+ * Unknown/unanchored collider that merely happened to exist first — the same
+ * pattern task #1338 retro-healed 26 pre-existing pairs of (Death Note
+ * WhatsOnStage: named+anchored Alun Hood review vs an Unknown-byline review,
+ * both with full text). Reuses shouldFlipDuplicateDirection from
+ * duplicate-direction-heal.js so write-time and the post-hoc retro-heal audit
+ * can never disagree about which side should be canonical. Role mapping:
+ * `newData` plays the "loser" role (about to be subordinated via duplicateOf
+ * if this function returns true) and `colliderData` plays the "winner" role
+ * (what it would point to) — see the call below.
  *
  * Pure (no I/O) for tests/unit/url-collision-canonical.test.mjs.
- * @param {{fullText?:string}} newData
- * @param {{fullText?:string}|null} colliderData
+ * @param {{fullText?:string,criticName?:string,llmScore?:object}} newData
+ * @param {{fullText?:string,criticName?:string,llmScore?:object}|null} colliderData
  * @returns {boolean} true → mark new file duplicate; false → keep new file primary
  */
 /**
@@ -1330,6 +1346,16 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // New file has a real body AND the collider is (near-)empty → new file is the
   // canonical; do not mark it duplicate.
   if (newLen >= SUBSTANTIVE_BODY_CHARS && colLen < NEAR_EMPTY_BODY_CHARS) return false;
+  // Both bodies substantive — the length check can't resolve it. Fall back to
+  // the same named/anchored-beats-Unknown quality signal the retro-heal audit
+  // uses: newData is the would-be "loser" (about to point duplicateOf at
+  // colliderData, the would-be "winner"); if newData is provably better, keep
+  // it primary instead. Gated on BOTH bodies clearing the substance floor —
+  // without this, a short named/anchored stub could out-rank a genuinely
+  // substantive Unknown-byline collider, inverting the "below the substance
+  // floor, don't claim canonical" rule this function enforces everywhere else.
+  if (newLen >= SUBSTANTIVE_BODY_CHARS && colLen >= SUBSTANTIVE_BODY_CHARS
+      && shouldFlipDuplicateDirection(newData, colliderData)) return false;
   return true;
 }
 
