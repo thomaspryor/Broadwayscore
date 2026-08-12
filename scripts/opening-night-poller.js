@@ -58,6 +58,7 @@ const { discoverLboRoundupHtml } = require('./lib/lbo-roundup-discover');
 const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
+const { isInOpeningWindow } = require('./lib/opening-window-backoff');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   checkSerpBurstAllowed,
@@ -87,7 +88,8 @@ const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledg
  *   3 no-ops → next run 30 min out
  *   5 no-ops → next run 60 min out
  *   8+ no-ops → next run 120 min out
- * Aggressive-window carve-out: first 6h after opening we always poll.
+ * Aggressive-window carve-out: [openingDate-1d, openingDate+3d] we always poll
+ * (widened by card #1314 — see scripts/lib/opening-window-backoff.js).
  * On any successful discovery, reset the counter.
  */
 function loadBackoffState(showId) {
@@ -110,11 +112,10 @@ function computeNextBackoffDelayMs(consecutiveNoOp) {
   return 0;
 }
 
-function isInAggressiveWindow(show) {
-  if (!show.openingDate) return true;
-  const hoursSinceOpening = (Date.now() - new Date(show.openingDate).getTime()) / 3600000;
-  return hoursSinceOpening >= 0 && hoursSinceOpening < 6;
-}
+// Predicate extracted to scripts/lib/opening-window-backoff.js (card #1314) —
+// widened from [openingDate, openingDate+6h) to [openingDate-1d, openingDate+3d]
+// so quiet-preview backoff can't suppress cadence into the actual review drop.
+const isInAggressiveWindow = (show) => isInOpeningWindow(show);
 
 /**
  * Daily ledger for the WE SERP burst (see scripts/lib/serp-burst-caps.js). Provides a
@@ -1460,7 +1461,8 @@ async function pollCycle() {
   console.log(`Market: ${market}`);
 
   // Balusters postmortem CLASS 7 — backoff guard. Skip cycle if still in cooldown,
-  // unless we're in the first 6h after opening (aggressive window always runs).
+  // unless we're in the opening window (#1314: [openingDate-1d, openingDate+3d]),
+  // which always runs regardless of backoff.
   // FORCE_SERP also bypasses the gate for manual dispatches that explicitly want to retry.
   const backoff = loadBackoffState(SHOW_ID);
   if (!FORCE_SERP && !isInAggressiveWindow(show) && backoff.nextRunAfter && Date.now() < backoff.nextRunAfter) {

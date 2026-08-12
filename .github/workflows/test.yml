@@ -964,6 +964,12 @@ on:
       - 'scripts/config/domain-tier-skip.json'
       - 'scripts/confirm-sd-empty-authoritative.js'
       - 'scripts/opening-night-poller.js'
+      # Opening-window backoff carve-out (#1314): widened from openingDate+6h
+      # to [openingDate-1d, openingDate+3d] so quiet-preview no-op backoff
+      # can't suppress cadence into the actual review drop. Colocated test
+      # is registered in tests/unit-test-manifest.txt; path-listed here so a
+      # solo lib edit still triggers CI.
+      - 'scripts/lib/opening-window-backoff.js'
       # SERP provider-chain ordering + SB-SERP skip (invisible-burn fix 2026-07).
       # Colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (allow-list gate).
