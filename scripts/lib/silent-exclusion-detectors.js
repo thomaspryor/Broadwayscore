@@ -32,6 +32,8 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { registrableHost } = require('./non-review-url-patterns');
 
 // ── (b) missing contentTier ─────────────────────────────────────────────
 
@@ -153,26 +155,21 @@ function scanMissingContentTier(reviewTextsDir, showsById) {
 
 // ── (a) outlet domain moves ─────────────────────────────────────────────
 
-// Hosting platforms whose TLD carries no outlet identity — the real identity
-// lives in the subdomain (jerryportwood.substack.com, not "substack"). Strip
-// these BEFORE the generic single-label TLD strip below, or the subdomain
-// would be discarded instead of the platform suffix.
-const PLATFORM_SUFFIXES = /\.(substack\.com|wordpress\.com|medium\.com|blogspot\.com|wixsite\.com|squarespace\.com|ghost\.io)$/i;
-
-// Two-label TLDs that a single-label strip would mishandle (.co.uk → "co",
-// wrong; must strip both labels). ship-check finding (ship-check round 2,
-// ORIGINAL list only covered UK/AU/NZ): any OTHER real two-label ccTLD fell
-// through to the generic single-label strip, which removes only the last
-// label and leaves the second-to-last as "identity" — confirmed by direct
-// execution: 'guardian.co.za' normalized to 'co', 'example.com.br' to 'com'.
-// Both clear MIN_SLUG_LENGTH=3, so two unrelated outlets on an unlisted
-// .com.xx-style ccTLD would collide on the generic slug 'com'/'co' and get
-// falsely flagged as domain-moves of each other — the exact false-positive
-// class this comparison was redesigned to eliminate (task #1228). Aligned
-// with outlet-canonicalize.js's PROVISIONAL_MULTIPART_SUFFIXES list (same
-// source of truth for "which ccTLDs are two-label"), plus co.id (already a
-// live registry outlet, show-showdown / blogspot.co.id).
-const TWO_LABEL_TLDS = /\.(co\.uk|com\.au|org\.uk|co\.nz|org\.au|me\.uk|ac\.uk|gov\.uk|net\.au|co\.za|com\.br|co\.id)$/i;
+// Which suffix a host sits on comes from host-suffix-lists.js — the SHARED
+// source of truth, also used by outlet-canonicalize.js's
+// provisionalOutletIdFromHost. These were two forked literal lists until task
+// #1188's cleanup, and they had already drifted: this side lacked tumblr.com,
+// canonicalize lacked co.id. A host whose identity label is derived one way at
+// registration and another way here is a silent exclusion — the registry mints
+// outletId A while this detector reasons about slug B, so a genuine domain move
+// is never recognized. Do not reintroduce a local list; the colocated test
+// fails on forked literals.
+//
+// A two-label public suffix that a single-label strip would mishandle (.co.uk →
+// "co") is the reason this classification matters at all: the generic strip
+// leaves 'co'/'com', which clears MIN_SLUG_LENGTH, so two unrelated outlets on
+// an unlisted .com.xx ccTLD would collide on that generic slug and be flagged as
+// domain-moves of each other — the false-positive class task #1228 closed.
 
 // Below this, a domain-slug match is too generic to be "probable". Lower
 // than the old alias-based floor (was 4, with a separate 3-char carve-out
@@ -204,12 +201,14 @@ const MIN_SLUG_LENGTH = 3;
  */
 function normalizeHostSlug(host) {
   if (!host) return '';
-  let h = String(host).toLowerCase().trim();
-  h = h.replace(/^www\./, '');
-  if (PLATFORM_SUFFIXES.test(h)) {
-    h = h.replace(PLATFORM_SUFFIXES, '');
-  } else if (TWO_LABEL_TLDS.test(h)) {
-    h = h.replace(TWO_LABEL_TLDS, '');
+  let h = stripCosmeticPrefixes(host);
+  if (!h) return '';
+  const platform = platformSuffixOf(h);
+  const multipart = platform ? null : multipartSuffixOf(h);
+  if (platform) {
+    h = h.slice(0, -(platform.length + 1)); // drop '.<platform>'
+  } else if (multipart) {
+    h = h.slice(0, -(multipart.length + 1));
   } else {
     h = h.replace(/\.[a-z]{2,}$/i, ''); // remaining single-label TLD (.com, .org, .net, ...)
   }
@@ -244,10 +243,9 @@ function normalizeHostSlug(host) {
  *
  * Known non-blocking follow-ups (ship-check, not fixed here — advisory
  * detector already validated against the real corpus):
- *   - PLATFORM_SUFFIXES/TWO_LABEL_TLDS partially duplicate
- *     outlet-canonicalize.js's PROVISIONAL_BLOG_PLATFORMS/
- *     PROVISIONAL_MULTIPART_SUFFIXES (missing tumblr.com, .gov.uk, etc.) —
- *     worth unifying if either list needs to grow again.
+ *   - (CLOSED) the suffix lists used to be forked here and in
+ *     outlet-canonicalize.js (and a third time in non-review-url-patterns.js).
+ *     All three now read host-suffix-lists.js.
  *   - A future alternative worth evaluating: review-file-writer.js already
  *     computes an exact domain-mismatch CONFLICT signal at ingest time
  *     (classified by ingest-skip-classify.js); a persisted census of THOSE
@@ -298,14 +296,23 @@ function findProbableDomainMoves(outlets, unknownHosts) {
       ...(outlet.domains || []),
       ...(outlet.alternateDomains || []),
     ]) {
-      if (h) allKnownHosts.add(String(h).toLowerCase());
+      // Normalize to the SAME shape the census producer writes. Census hosts
+      // are hostOf(url) = registrableHost(hostname), and getKnownDomainMap()
+      // keys by registrableHost(d) — but 20 live registry domains are stored
+      // un-normalized ('www.newyorktheaterguide.com', 'amp.theguardian.com',
+      // 'theater.nytimes.com', ...). Comparing raw strings let a registered
+      // outlet slip past this pre-filter and get re-reported as a "probable
+      // move" — the false positive this set was added to kill (ship-check
+      // 2026-08-12).
+      if (h) allKnownHosts.add(registrableHost(String(h).toLowerCase()));
     }
   }
 
   for (const entry of unknownHosts) {
     const host = entry && entry.host;
     if (!host) continue;
-    if (allKnownHosts.has(host.toLowerCase())) continue; // already registered SOMEWHERE — not a move
+    // Compare in registrable form on BOTH sides (see the set-build comment).
+    if (allKnownHosts.has(registrableHost(host.toLowerCase()))) continue; // already registered SOMEWHERE — not a move
     const slug = normalizeHostSlug(host);
     if (slug.length < MIN_SLUG_LENGTH) continue;
     for (const [outletId, outlet] of Object.entries(outlets)) {

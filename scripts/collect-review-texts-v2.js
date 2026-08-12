@@ -18,6 +18,7 @@ const { extractScore } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { fetchPage } = require('./lib/scraper');
 
 // Configuration
 const CONFIG = {
@@ -231,25 +232,16 @@ async function fetchWithPlaywright(browser, url, review) {
   }
 }
 
-// Method 2: ScrapingBee fallback
+// Method 2: shared fetchPage() fallback (Scrapingdog premium → Bright Data →
+// ScrapingBee → Playwright). premium:true routes through Scrapingdog's ~$0.90/1k
+// premium tier and Bright Data's $1.50/1k before ever reaching ScrapingBee —
+// a direct SB premium_proxy=true call costs $2.48/1k, more than Bright Data
+// (task #5).
 async function fetchWithScrapingBee(url) {
-  if (!CONFIG.scrapingBeeKey) {
-    throw new Error('No ScrapingBee API key configured');
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${CONFIG.scrapingBeeKey}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true`;
-
-  const response = await fetch(apiUrl);
-  if (!response.ok) {
-    throw new Error(`ScrapingBee error: ${response.status}`);
-  }
-
-  const html = await response.text();
-
-  // Extract text from HTML
+  const result = await fetchPage(url, { renderJs: true, premium: true });
+  const html = result.content;
   const text = extractTextFromHtml(html);
-
-  return { html, text, method: 'scrapingbee' };
+  return { html, text, method: result.source };
 }
 
 // Method 3: Archive.org fallback

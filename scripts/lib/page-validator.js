@@ -142,16 +142,28 @@ function parseYesNo(response) {
 async function llmValidatePageMatch(headingText, showTitle, options = {}) {
   const yearHint = options.openingYear ? ` The show opened in ${options.openingYear}.` : '';
   const isOpera = options.productionType === 'opera';
+  // Audience-ratings aggregators (Show Score, etc.) are not literally
+  // "reviews" — their own headings say "Reviews and Tickets" / "About the
+  // Show". With thinkingBudget:0 (required so Gemini 2.5 Flash doesn't burn
+  // the output budget on hidden reasoning — see feedback_gemini_thinking_token_budget),
+  // the model takes "review roundup" literally and rejects genuinely correct
+  // pages (confirmed: Hamilton/Wicked Show Score pages rejected 100% of the
+  // time). Broaden the page-type framing for these callers.
+  const isAudienceAggregator = options.pageType === 'audience-aggregator';
   // BWW opera reviews carry the composer in the heading ("Kaija Saariaho's
   // INNOCENCE — An Opera About a Killing Spree"), and the default "Broadway/
   // West End show" framing pushes Gemini to NO on otherwise-correct pages.
   // Switch the production frame for opera so cast/composer/festival context
   // doesn't bias the answer.
   const productionFrame = isOpera ? 'opera production' : 'Broadway/West End show';
+  const pageKind = isAudienceAggregator
+    ? 'a critic review, review roundup, audience ratings, or ticketing/info page'
+    : 'a THEATER review or review roundup';
+  const audienceAggregatorHint = isAudienceAggregator ? `, "Reviews and Tickets"/"About the Show"` : '';
   const titleNote = isOpera
     ? `\nThe title "${showTitle}" should appear in the headings. Opera reviews commonly include the COMPOSER name (e.g., "Puccini's TOSCA", "Saariaho's INNOCENCE") and house name (Met Opera, Lyric Opera, etc.) — that's normal and counts as a match. Reject only if the page is about a clearly DIFFERENT production (different festival venue from a different year, different opera title) or a recording/film.`
-    : `\nThe show title "${showTitle}" should appear in the page headings. Headings may include additional context like cast names, dates, or "Review Roundup" — that's normal.\nAnswer NO if: the page is about a movie, book, TV show, or concert (not a stage production), OR about a genuinely DIFFERENT show (e.g., "Blood/Love" vs "Bloody Bloody Andrew Jackson").`;
-  const prompt = `Is this page a THEATER review or review roundup for the ${productionFrame} titled "${showTitle}"?${yearHint}${titleNote}\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
+    : `\nThe show title "${showTitle}" should appear in the page headings. Headings may include additional context like cast names, dates, "Review Roundup"${audienceAggregatorHint} — that's normal.\nAnswer NO if: the page is about a movie, book, TV show, or concert (not a stage production), OR about a genuinely DIFFERENT show (e.g., "Blood/Love" vs "Bloody Bloody Andrew Jackson").`;
+  const prompt = `Is this page ${pageKind} for the ${productionFrame} titled "${showTitle}"?${yearHint}${titleNote}\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
 
   // Try Gemini first (cheapest)
   try {
@@ -220,6 +232,7 @@ function extractYearFromUrl(url) {
  * @param {boolean} [options.skipLlm] - Skip LLM tiebreaker (for testing)
  * @param {number} [options.openingYear] - Show's opening year for year-mismatch detection
  * @param {string} [options.pageUrl] - URL of the fetched page for URL-based date extraction
+ * @param {string} [options.pageType] - 'audience-aggregator' broadens the LLM's page-type framing beyond "review" (e.g. Show Score ratings pages)
  * @returns {Promise<{ valid: boolean, confidence: number, reason: string, provider?: string }>}
  */
 async function validatePageMatchesShow(html, showTitle, options = {}) {
@@ -299,7 +312,7 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
 
   // Low confidence or borderline — try LLM tiebreaker
   if (!options.skipLlm) {
-    const llmResult = await llmValidatePageMatch(headingText, showTitle, { openingYear: options.openingYear, productionType: options.productionType });
+    const llmResult = await llmValidatePageMatch(headingText, showTitle, { openingYear: options.openingYear, productionType: options.productionType, pageType: options.pageType });
 
     // Log every LLM decision for debugging
     console.log(`  [LLM-VALIDATE] "${showTitle}" | headings: "${headingText.substring(0, 60)}" | result: ${llmResult.match} | provider: ${llmResult.provider} | word-confidence: ${match.confidence}`);

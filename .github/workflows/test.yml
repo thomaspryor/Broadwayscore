@@ -136,6 +136,14 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      # Shared host-suffix source of truth: which dot-label of a hostname is the
+      # outlet identity. provisionalOutletIdFromHost (registration),
+      # normalizeHostSlug (domain-move detection) and registrableHost (review-gap
+      # audit) must agree, or an outlet registers under one slug while another
+      # stage reasons about a different one and a real move is never recognized.
+      # All three forked these lists and had already drifted.
+      - 'scripts/lib/host-suffix-lists.js'
+      - 'scripts/lib/host-suffix-lists.test.mjs'
       # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
       # raw-wrote over already-flagged review files, so ~155 excluded historical
       # DTLI excerpts re-entered reviews.json on every review-refresh and were
@@ -1059,6 +1067,8 @@ on:
       - 'scripts/lib/ingest-skip-classify.test.mjs'
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      - 'scripts/lib/host-suffix-lists.js'
+      - 'scripts/lib/host-suffix-lists.test.mjs'
       - 'scripts/lib/newsletter-preflight.js'
       - 'scripts/lib/newsletter-preflight.test.mjs'
       - 'scripts/newsletter/pre-send-check.mjs'
@@ -1341,6 +1351,11 @@ on:
       - 'scripts/lib/direct-provider-detector.js'
       - 'scripts/lib/direct-provider-detector.test.mjs'
       - 'scripts/config/direct-provider-calls-allowlist.json'
+      # Task #5/#66: regression guard against direct ScrapingBee premium_proxy=true
+      # calls creeping back in. Colocated test runs via the scripts/lib/*.test.mjs
+      # glob; without these path entries a solo edit triggers ZERO CI.
+      - 'scripts/lib/premium-proxy-removal.js'
+      - 'scripts/lib/premium-proxy-removal.test.mjs'
       # Sitemap shard URL resolver (robots.txt parser) — colocated test runs in the
       # scripts/lib step, but the job only fires when a push-path matches; without
       # these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
@@ -2244,6 +2259,14 @@ on:
       - 'scripts/lib/tr-wrongshow-guard.js'
       - 'scripts/lib/tr-wrongshow-guard.test.mjs'
       - 'scripts/extract-theatre-record.js'
+      # Linear migration Day 1 (card #1283): resumable importer from the local
+      # task mirror into Linear team BRO. Curation rules are pure + colocated
+      # tested (scripts/lib/*.test.mjs glob); path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/linear-import.js'
+      - 'scripts/lib/linear-client.js'
+      - 'scripts/lib/linear-import-rules.js'
+      - 'scripts/lib/linear-import-rules.test.mjs'
   pull_request:
     branches: [main]
   schedule:

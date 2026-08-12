@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04",
+  "generatedAt": "2026-08-12",
   "files": {
     "scripts/backfill-cast-web.js": {
       "providers": [
@@ -7,30 +7,12 @@
       ],
       "cronReachable": true
     },
-    "scripts/batch-commercial-research.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/collect-review-texts-v2.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": false
-    },
     "scripts/collect-review-texts.js": {
       "providers": [
         "scrapingbee",
         "brightdata"
       ],
       "cronReachable": true
-    },
-    "scripts/discover-historical-shows.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": false
     },
     "scripts/fetch-all-image-formats.js": {
       "providers": [
@@ -50,31 +32,7 @@
       ],
       "cronReachable": true
     },
-    "scripts/lib/ibdb-cast.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/lib/ibdb-dates.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
     "scripts/recollect-for-scores.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/scrape-alltime.ts": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": false
-    },
-    "scripts/scrape-broadway-com-audience.js": {
       "providers": [
         "scrapingbee"
       ],
@@ -85,18 +43,6 @@
         "scrapingbee"
       ],
       "cronReachable": true
-    },
-    "scripts/scrape-cast-changes.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/scrape-grosses.ts": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": false
     },
     "scripts/scrape-lbo-audience.js": {
       "providers": [
@@ -126,25 +72,6 @@
     "scripts/scrape-seatplan-audience.js": {
       "providers": [
         "brightdata"
-      ],
-      "cronReachable": true
-    },
-    "scripts/scrape-show-score-audience.js": {
-      "providers": [
-        "scrapingbee",
-        "brightdata"
-      ],
-      "cronReachable": true
-    },
-    "scripts/sweep-we-aggregators.js": {
-      "providers": [
-        "scrapingbee"
-      ],
-      "cronReachable": true
-    },
-    "scripts/update-commercial-data.js": {
-      "providers": [
-        "scrapingbee"
       ],
       "cronReachable": true
     },

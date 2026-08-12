@@ -8,8 +8,8 @@
  * IBDB has separate "1st Preview" and "Opening Date" fields, unlike
  * Broadway.org which only has an ambiguous "Begins:" field.
  *
- * Uses Google SERP to find IBDB production URLs, then ScrapingBee
- * with premium proxy to extract dates from production pages.
+ * Uses Google SERP to find IBDB production URLs, then the shared
+ * fetchPage() fallback chain to extract dates from production pages.
  */
 
 const { JSDOM } = require('jsdom');
@@ -97,34 +97,16 @@ async function extractDatesFromIBDBPage(url) {
 
   let content = null;
 
-  // Try ScrapingBee with premium proxy (works reliably based on testing)
+  // ibdb.com is a free Playwright-first public site in scraper.js — no
+  // anti-bot, so fetchPage() handles it without ever needing ScrapingBee's
+  // premium_proxy=true (10cr, $2.48/1k, more than Bright Data's $1.50/1k
+  // fallback tier fetchPage() also tries before ScrapingBee) (task #5).
   try {
-    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
-    if (scrapingBeeKey) {
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?` +
-        `api_key=${scrapingBeeKey}` +
-        `&url=${encodeURIComponent(url)}` +
-        `&premium_proxy=true` +
-        `&render_js=true`;
-
-      const resp = await fetch(apiUrl);
-      if (resp.ok) {
-        content = await resp.text();
-      }
-    }
+    const pageResult = await fetchPage(url);
+    content = pageResult.content;
   } catch (e) {
-    console.log(`  ⚠️  ScrapingBee page fetch failed: ${e.message}`);
-  }
-
-  // Fallback: shared scraper
-  if (!content) {
-    try {
-      const pageResult = await fetchPage(url);
-      content = pageResult.content;
-    } catch (e) {
-      console.log(`  ⚠️  Scraper fallback failed: ${e.message}`);
-      return result;
-    }
+    console.log(`  ⚠️  Scraper fetch failed: ${e.message}`);
+    return result;
   }
 
   if (!content) return result;

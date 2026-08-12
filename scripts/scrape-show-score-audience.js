@@ -3,7 +3,7 @@
  * Scrape Show Score audience data and update audience-buzz.json
  *
  * Uses a fallback chain to fetch Show Score pages and extract audience scores:
- * 1. ScrapingBee (primary — render_js + premium_proxy for SPA content)
+ * 1. ScrapingBee (primary — render_js for SPA content, wait=3000 for hydration)
  * 2. Playwright (fallback — native JS rendering, no API credits needed)
  * 3. Bright Data Web Unlocker (last resort — may not render JS fully)
  *
@@ -27,6 +27,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
+const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -146,6 +147,15 @@ function sleep(ms) {
 /**
  * Fetch URL through ScrapingBee (single attempt).
  * Returns HTML string or throws on failure. Returns null if no API key.
+ *
+ * Kept as a direct ScrapingBee call rather than routed through fetchPage()
+ * (task #5) — Show Score is a React SPA and this endpoint depends on SB's
+ * `wait=3000` param to let scores hydrate before the HTML is captured;
+ * fetchPage()'s Scrapingdog/Bright Data tiers have no equivalent settle-time
+ * option, so routing through them risked silently capturing pre-hydration
+ * HTML and under-counting audience scores. premium_proxy=true (10cr,
+ * $2.48/1k) is dropped — render_js=true (5cr, ~$0.12/1k) is the cheapest
+ * tier that still gets the wait param, well under Bright Data's $1.50/1k.
  */
 function fetchViaScrapingBeeSingle(url) {
   return new Promise((resolve, reject) => {
@@ -154,7 +164,7 @@ function fetchViaScrapingBeeSingle(url) {
       return;
     }
 
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
 
     https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
@@ -245,15 +255,25 @@ function fetchViaBrightData(url) {
 
 /**
  * Fetch URL with fallback chain and retry logic.
- * Chain: ScrapingBee (premium) → Playwright → Bright Data
+ * Chain: ScrapingBee (render_js + wait) → Playwright → Bright Data
  * Returns HTML string or throws if all methods fail.
  */
 async function fetchWithFallback(url, retries = 2) {
-  // Try ScrapingBee first (with retries) — best for Show Score (render_js + premium_proxy)
+  // Try ScrapingBee first (with retries) — best for Show Score (render_js + wait for hydration)
   if (SCRAPINGBEE_KEY) {
     for (let attempt = 1; attempt <= retries + 1; attempt++) {
       try {
         const html = await fetchViaScrapingBeeSingle(url);
+        // Challenge/interstitial pages return HTTP 200 with plausible-looking
+        // HTML — dropping premium_proxy (task #66) makes hitting one more
+        // likely than before, and unlike fetchPage()'s tiers this direct call
+        // had no check, so a block page could be accepted as real content and
+        // wipe a valid cached URL downstream. Treat it as a miss and fall
+        // through to Playwright/Bright Data instead of returning it.
+        if (html && isChallengeOrGarbage(html)) {
+          if (verbose) console.log('  ScrapingBee returned challenge/garbage, falling through...');
+          break;
+        }
         if (html) return html;
         break; // null = no key, skip retries
       } catch (error) {
@@ -518,11 +538,18 @@ async function discoverShowScoreUrl(show) {
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchWithFallback(url, 0); // No retries during discovery
+      // isValidShowScorePage already requires a JSON-LD titlesMatch() pass
+      // (the page's own declared show name) before returning true — a
+      // deterministic, more reliable signal than the LLM heading tiebreaker,
+      // which was rejecting genuinely correct pages (see page-validator.js).
+      // Still run validatePageMatchesShow with skipLlm — titlesMatch() alone
+      // has no year-mismatch or short-title-partial-match guard, so a
+      // same-title-different-year revival, or a listing-page JSON-LD name
+      // that loosely contains the show title, wouldn't otherwise be caught.
       if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
-        // Additional heading-based validation with LLM tiebreaker
-        const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
         if (!pageValidation.valid) {
-          console.log(`  ✗ Page validator rejected: ${pageValidation.reason}`);
+          if (verbose) console.log(`  ✗ Page validator rejected (deterministic): ${pageValidation.reason}`);
           continue;
         }
         console.log(`  ✓ Discovered: ${url}`);
@@ -794,14 +821,23 @@ async function processShow(show) {
       return null;
     }
 
-    // Additional heading-based validation with LLM tiebreaker
-    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    // Deterministic checks (year-mismatch, short-title partial-match guard —
+    // titlesMatch() above has no year logic, so a same-title different-year
+    // revival wouldn't otherwise be caught). skipLlm avoids the flaky LLM
+    // heading tiebreaker (see page-validator.js), which was rejecting
+    // genuinely correct pages.
+    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
     if (!pageValidation.valid) {
-      console.log(`  SKIP: Page validator rejected — ${pageValidation.reason}`);
-      console.log(`  Removing bad cached URL for ${show.id}`);
-      if (urlData.shows) delete urlData.shows[show.id];
-      if (!dryRun) saveUrlCache();
-      return null;
+      // No JSON-LD to fall back on — give the LLM tiebreaker a shot rather
+      // than rejecting on word-match alone.
+      const llmValidation = jsonLdName ? null : await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator' });
+      if (!llmValidation || !llmValidation.valid) {
+        console.log(`  SKIP: Page validator rejected — ${(llmValidation || pageValidation).reason}`);
+        console.log(`  Removing bad cached URL for ${show.id}`);
+        if (urlData.shows) delete urlData.shows[show.id];
+        if (!dryRun) saveUrlCache();
+        return null;
+      }
     }
 
     const data = extractAudienceData(html, show.id);

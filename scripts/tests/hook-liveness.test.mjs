@@ -1,3 +1,7 @@
+// timebomb-audit-exempt: checkGuardHeartbeat (infra-gate-registration-check.js:656)
+//   derives heartbeat age from fs.statSync(...).mtimeMs vs Date.now().
+//   audit-time-bomb-tests.js shifts the PROCESS clock but not the FILESYSTEM, so
+//   the heartbeat always reads as stale under a shifted run. Not a real time bomb.
 // scripts/tests/hook-liveness.test.mjs
 //
 // Acceptance test for task #1104: the hook-liveness check watched exactly

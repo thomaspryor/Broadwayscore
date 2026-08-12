@@ -37,6 +37,7 @@ const { extractReviews: extractStageReviews } = require('./scrape-thestage-round
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { preflightCredits } = require('./lib/credit-preflight');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+const { fetchPage } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -243,7 +244,13 @@ function curlJson(url) {
 
 /**
  * Fetch rendered HTML via ScrapingBee (bypasses CleanTalk, Cloudflare, etc.)
- * Costs 5 credits per request with render_js=true.
+ * Costs 5 credits per request with render_js=true — kept as a direct
+ * ScrapingBee call rather than routed through fetchPage() (task #5)
+ * because these are UK-only West End aggregators (WET/TS/Stagedoor/etc.)
+ * geo-pinned via country_code=gb, which fetchPage()'s Scrapingdog/Bright
+ * Data tiers have no equivalent for. premium_proxy=true (10cr, $2.48/1k)
+ * is dropped — render_js=true alone (5cr, ~$0.12/1k) is already cheaper
+ * than Bright Data's $1.50/1k and was the tier actually doing the work.
  */
 async function scrapingBeeRender(url) {
   if (!SB_KEY) return null;
@@ -254,7 +261,6 @@ async function scrapingBeeRender(url) {
         api_key: SB_KEY,
         url,
         render_js: 'true',
-        premium_proxy: 'true',
         country_code: 'gb',
       },
       timeout: 30000,
