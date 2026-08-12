@@ -144,12 +144,20 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 // bsc-prune.js journals the matching 'dead' breadcrumb once a launch's
 // workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
 const dispatchLedger = require('./lib/dispatch-ledger.js');
-const { evaluateVerifiability } = require('./lib/verify-gate.js');
-const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./lib/headless-dispatchability.js');
-// Stale-outcome guard (task #1272, the #383 class): RECHECK-AFTER is a
-// legitimate, structured "revisit me" signal (CLAUDE.md Session Discipline),
-// distinct from the silent staleness this guard exists to catch.
-const { parseRecheckAfterFromCard } = require('./lib/recheck-stamp.js');
+// Pre-launch guard/gate predicates (task #1303 plan review, 2026-08-12):
+// findLiveWorkspaceForTask/deadDispatchGuard/checkDeadDispatch/parkedGuard/
+// staleOutcomeGuard/notionIdOf, plus evaluateVerifiability and
+// classifyHeadlessDispatchability re-exported for a single require() line,
+// were extracted verbatim into scripts/lib/dispatch-guards.js so
+// linear-next.js (the Linear-issue dispatcher) shares the exact same six
+// guards instead of forking them. This file's own module.exports below is
+// unchanged — every name still resolves to the same behavior, now sourced
+// from the shared lib. See dispatch-guards.js's header for the full rationale.
+const {
+  findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
+  checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
+  HEADLESS_BLOCKERS,
+} = require('./lib/dispatch-guards.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
 // (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
@@ -203,128 +211,12 @@ function completedLaunchGuard(task, opts) {
     `If you really want to relaunch it, re-run with --force.`;
 }
 
-// Duplicate-dispatch guard: a live (non-✅) workspace whose title matches this
-// task's launch title means a session is already on it — launching another
-// splits the work (near-miss 2026-07-13: task #46 dispatched while
-// workspace:37 was still open on it). Titles get activity-glyph prefixes in
-// list output and may be truncated, so compare glyph-stripped prefixes.
-function findLiveWorkspaceForTask(task, workspaces, isDone) {
-  // titleMatchesSubject (dispatch-ledger.js) strips cmux's own activity-glyph
-  // prefix (spinner/✳/etc — also eats the 🤖 auto-dispatch emoji, since it
-  // isn't a letter/digit), THEN strips the "<Project>·" naming prefix (scope
-  // add, card #168), so a live auto-dispatched workspace still matches its
-  // raw task subject. Shared with the park-guard's renumber rematch (task
-  // #883) so both guards agree on the same >=20-char bar — a drift between
-  // them would make one see a match the other doesn't.
-  return workspaces.find(w => !isDone(w.title) && dispatchLedger.titleMatchesSubject(w.title, task.subject)) || null;
-}
-
-// Refuse a blind re-dispatch once a task has died DEAD_ATTEMPT_LIMIT times
-// without ever being verified alive again (task #334: task #297 got a 3rd
-// dead cmux workspace opened onto it with zero visibility into the 2 that
-// already died). --force / --dry-run / --print-prompt bypass it, matching
-// completedLaunchGuard's carve-outs.
-function deadDispatchGuard(task, ledgerEntries, opts) {
-  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries);
-  if (!cap.blocked) return null;
-  if (cap.reason === 'infra') {
-    const refs = cap.infra.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
-    return `task #${task.id}'s cmux launch has failed to even start ${cap.infra.length}x in a row (dead workspaces: ${refs}) — ` +
-      `every one of those is 'terminal surface never rendered', not a task failure. That many in a row with zero ` +
-      `successful boots suggests cmux itself is wedged right now, not bad luck on this card. Bring cmux to the ` +
-      `foreground (or restart it) before dispatching anything else. Re-run with --force to try again anyway.`;
-  }
-  const refs = cap.substantive.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
-  return `task #${task.id} has died ${cap.substantive.length}x already without finishing (dead workspaces: ${refs}). ` +
-    `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
-    `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
-    `handling — see task #289). Re-run with --force to dispatch anyway.`;
-}
-
-// Owner-close park (task #578). The duplicate-dispatch guard only fires while
-// a matching workspace is STILL LISTED, so closing a tab used to hand the card
-// straight back to the dispatcher — 17 launches in one day, 187 launch refs
-// against 26 live workspaces (owner report 2026-08-02). bsc-prune records a
-// 'vanished' breadcrumb for a tab that left the listing; this refuses to
-// reopen it. Same signature/shape as deadDispatchGuard above: pure, returns a
-// refusal string or null, and main() owns the exit.
-//
-// --force IS the unpark (its launch entry clears the park — see
-// dispatchLedger.parkedTasks), so this can never become a state whose only
-// escape is a flag nobody remembers.
-function parkedGuard(task, ledgerEntries, opts) {
-  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const parked = dispatchLedger.parkedTasks(ledgerEntries).get(String(task.id));
-  if (!parked) return null;
-  return `[bsc-next] task #${task.id} is parked: its workspace (${parked.workspaceRef}) was closed on ` +
-    `${String(parked.ts || '').slice(0, 10)} without being marked done. Closing a tab means "stop working ` +
-    `this card", so nothing re-dispatches it on its own.\n` +
-    `  To resume it: node scripts/bsc-next.js --id ${task.id} --force`;
-}
-
-// Stale-outcome guard (task #1272, the #383 class): a card whose Notion
-// Outcome PROPERTY already records completed work, with no acceptance
-// criteria to verify a NEW attempt against, is DONE-BUT-NEVER-CLOSED —
-// dispatching it redoes finished work instead of closing the card. Outcome
-// is a separate Notion property from Notes (notion-brain.js: `outcome:
-// getRichTextValue(p.Outcome)`), so this fires even when card.notes itself
-// is truncated/unavailable — unlike the verify-gate block in main(), which
-// only REFUSES when the full card (specifically .notes) is in hand. That gap
-// is exactly what let #383 slip through as an "unarmed" WARN instead of a
-// refusal: its Outcome was filled, but nothing downstream of the WARN branch
-// ever looks at card.outcome. A RECHECK-AFTER stamp (CLAUDE.md Session
-// Discipline) is a legitimate, structured "revisit me" signal, not silent
-// staleness, and is exempted. --force / --allow-unverifiable bypass it,
-// matching the sibling guards' and the verify-gate's own override
-// conventions.
-function staleOutcomeGuard(task, card, opts) {
-  if (opts.force || opts['allow-unverifiable'] || opts['dry-run'] || opts['print-prompt']) return null;
-  const outcome = card && String(card.outcome || '').trim();
-  if (!outcome) return null;
-  if (evaluateVerifiability((card && card.notes) || '').armed) return null;
-  if (parseRecheckAfterFromCard(card)) return null;
-  const pid = notionIdOf(task);
-  return `[bsc-next] REFUSING to dispatch #${task.id}: its Notion card already has a filled Outcome (recorded ` +
-    `completed work) and no acceptance criteria to verify a new attempt against. This looks like the #383 class ` +
-    `(done-but-never-closed), not a fresh dispatch.\n` +
-    `  Fix one of:\n` +
-    `    1. Close the card as Done if the recorded Outcome is sufficient: node scripts/notion-brain.js update ${pid} --status Done\n` +
-    `    2. Add a backticked safe-form command to the card's "## Acceptance criteria" stating what's still missing.\n` +
-    `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
-}
-
-// Pure composition of the self-heal + refusal check (no I/O — main() does the
-// actual ledger append and process.exit). Split out so the burst scenario
-// that motivated task #334 is directly unit-testable: waiting for a 'dead'
-// breadcrumb that only bsc-prune.js writes (typically once/day) would let a
-// same-SESSION burst of redispatches sail through, since no sweep runs
-// between dispatch #2 dying and dispatch #3 launching (ship-check adversarial
-// finding, 2026-07-22). Here bsc-next.js computes idle-and-unmarked itself,
-// from the live cmux list, using the SAME predicate bsc-prune.js uses —
-// dispatch #3 then sees dispatch #1 and #2's now-idle workspaces as fresh
-// 'dead' breadcrumbs without needing a sweep in between.
-//
-// Card #564: claudeAliveInFn alone is the same single-signal trust that #559
-// proved has a real false-negative mode (verified live, 2026-07-26: a
-// workspace had claudeAliveIn() === false while visibly still running with an
-// active Claude Code session). A false "idle" verdict here means a still-live
-// workspace gets treated as a dead breadcrumb, self-healing deadDispatchGuard
-// into green-lighting a SECOND dispatch onto a task someone is already
-// working on. Same fix shape as #559's pruneDone: require the independent
-// terminal-surface signal (surfaceAliveFn) to ALSO say not-alive before a
-// workspace counts as idle-and-dead.
-function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, surfaceAliveFn, opts) {
-  const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveFn).dead);
-  const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
-  const refusal = deadDispatchGuard(task, ledgerEntries.concat(freshDead), opts);
-  return { freshDead, refusal };
-}
-
-function notionIdOf(task) {
-  const m = /\[notion:([a-f0-9-]+)\]/i.exec(task.description || '');
-  return m ? m[1] : null;
-}
+// findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
+// checkDeadDispatch, notionIdOf now live in scripts/lib/dispatch-guards.js
+// (task #1303 plan review) — required above alongside evaluateVerifiability/
+// classifyHeadlessDispatchability, unchanged behavior, so linear-next.js can
+// share them instead of forking. See that file's header for the full
+// rationale and the six guards' individual docs.
 
 function buildSeed(task, card, project, model) {
   const url = (card && card.url) || ((task.description || '').match(/https?:\/\/\S+/) || [''])[0];
