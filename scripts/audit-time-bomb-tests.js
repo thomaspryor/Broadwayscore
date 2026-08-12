@@ -117,20 +117,32 @@ function readManifest() {
     .filter((l) => l && !l.startsWith('#'));
 }
 
-/** Files carrying the in-file exemption marker, as manifest-relative paths. */
+/**
+ * Files carrying the in-file exemption marker, keyed by manifest-relative path.
+ *
+ * The marker must appear on a genuine comment line (`//` or a `*` continuation
+ * inside a block comment). Matching the bare substring anywhere would let a
+ * fixture string, a doc example, or a test asserting ON this marker exempt its
+ * whole file by accident.
+ */
 function readExemptFiles(files) {
   const exempt = new Map();
   for (const rel of files) {
-    const full = path.join(REPO_ROOT, rel);
     let src;
     try {
-      src = fs.readFileSync(full, 'utf8');
-    } catch {
+      src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+    } catch (err) {
+      // A manifest entry we cannot read is a real problem elsewhere (the
+      // manifest-integrity test covers existence); say so rather than silently
+      // treating the file as un-exempt.
+      console.error(`  warning: could not read ${rel} for exemption marker (${err.code || err.message})`);
       continue;
     }
-    const line = src.split('\n').find((l) => l.includes(EXEMPT_MARKER));
+    const line = src
+      .split('\n')
+      .find((l) => /^\s*(\/\/|\*)/.test(l) && l.includes(EXEMPT_MARKER));
     if (line) {
-      exempt.set(path.basename(rel), line.slice(line.indexOf(EXEMPT_MARKER) + EXEMPT_MARKER.length).trim());
+      exempt.set(rel, line.slice(line.indexOf(EXEMPT_MARKER) + EXEMPT_MARKER.length).trim());
     }
   }
   return exempt;
@@ -141,7 +153,7 @@ function readExemptFiles(files) {
  *
  * node:test's TAP reporter prints `not ok <n> - <name>` per failure, followed by
  * a YAML block whose `location:` gives the absolute file path. Failures are
- * keyed `<basename>::<name>` so identical titles in different files stay
+ * keyed `<repo-relative path>::<name>` so identical titles in different files stay
  * distinct. Parent-suite `not ok` lines inherit the same location as their
  * child, which is fine — they name the right file either way.
  */
@@ -172,6 +184,7 @@ function runSuite(files, shiftDays) {
   const totals = { tests: null, fail: null };
   let pending = null;
   let sawTap = false;
+  let unlocated = 0;
 
   for (const line of (res.stdout || '').split('\n')) {
     const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
@@ -183,14 +196,23 @@ function runSuite(files, shiftDays) {
     if (pending) {
       const loc = /^\s*location:\s*'(.+?)'\s*$/.exec(line);
       if (loc) {
-        const file = path.basename(String(loc[1]).split(':')[0]);
+        // Repo-RELATIVE path, not basename: tests/a/foo.test.mjs and
+        // tests/b/foo.test.mjs are different files and must not share a key,
+        // which is the whole point of scoping failures by file.
+        const abs = String(loc[1]).replace(/:\d+:\d+$/, '');
+        const file = path.relative(REPO_ROOT, abs) || abs;
         failures.set(`${file}::${pending}`, { file, name: pending });
         pending = null;
         continue;
       }
-      // Next failure started before we saw a location — record unscoped.
+      // Next failure started before we saw a location. Fall back to a
+      // name-only key: it must match across the two runs to cancel correctly,
+      // so it cannot be made unique per occurrence. That means two unlocated
+      // failures sharing a title DO collapse — hence the count is surfaced
+      // below rather than hidden.
       if (/^\s*not ok |^\s*ok \d+ /.test(line)) {
         failures.set(`?::${pending}`, { file: '?', name: pending });
+        unlocated++;
         pending = null;
       }
     }
@@ -203,9 +225,12 @@ function runSuite(files, shiftDays) {
     const f = /^# fail (\d+)$/.exec(line);
     if (f) totals.fail = Number(f[1]);
   }
-  if (pending) failures.set(`?::${pending}`, { file: '?', name: pending });
+  if (pending) {
+    failures.set(`?::${pending}`, { file: '?', name: pending });
+    unlocated++;
+  }
 
-  return { failures, totals, status: res.status, sawTap };
+  return { failures, totals, status: res.status, sawTap, unlocated };
 }
 
 function main() {
@@ -236,6 +261,12 @@ function main() {
   const problems = [];
   if (!base.sawTap) problems.push('baseline run produced no TAP output at all');
   if (!shifted.sawTap) problems.push('shifted run produced no TAP output at all');
+  // status === null means killed by a signal (OOM, timeout). A plain non-zero
+  // exit is EXPECTED here — node --test exits 1 whenever any test fails, and
+  // this repo's suite is not currently green — so only the signal case is a
+  // reliable "the run was destroyed" signal.
+  if (base.status === null) problems.push('baseline run was killed by a signal (OOM/timeout?)');
+  if (shifted.status === null) problems.push('shifted run was killed by a signal (OOM/timeout?)');
   if (base.totals.tests == null) problems.push('baseline run never printed a "# tests" total');
   if (shifted.totals.tests == null) problems.push('shifted run never printed a "# tests" total');
   if (
@@ -273,8 +304,8 @@ function main() {
         {
           shiftDays: opts.days,
           filesChecked: files.length,
-          baseline: { tests: base.totals.tests, fail: base.totals.fail },
-          shifted: { tests: shifted.totals.tests, fail: shifted.totals.fail },
+          baseline: { tests: base.totals.tests, fail: base.totals.fail, unlocatedFailures: base.unlocated },
+          shifted: { tests: shifted.totals.tests, fail: shifted.totals.fail, unlocatedFailures: shifted.unlocated },
           exempted,
           timeBombs: bombs,
         },
@@ -289,6 +320,12 @@ function main() {
         (exempted.length ? `   (${exempted.length} exempted)` : '') +
         '\n'
     );
+    if (shifted.unlocated || base.unlocated) {
+      console.log(
+        `  note: ${base.unlocated} baseline / ${shifted.unlocated} shifted failure(s) had no location: line,\n` +
+          '        so they are matched by test NAME only — same-titled ones collapse and could mask a finding.\n'
+      );
+    }
     if (bombs.length === 0) {
       console.log(`PASS — no test changes outcome when the clock moves +${opts.days}d.`);
     } else {
