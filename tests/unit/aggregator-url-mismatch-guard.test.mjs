@@ -83,8 +83,12 @@ describe('isAggregatorUrlMismatch — pure predicate', () => {
 describe('lockstep — validator and writer share the same canonical sets', () => {
   test('the validator imports AGGREGATOR_DOMAINS/OUTLET_IDS from the shared lib', () => {
     const src = fs.readFileSync(path.join(REPO, 'scripts', 'validate-review-texts.js'), 'utf8');
-    assert.match(src, /require\(['"]\.\/lib\/aggregator-domains['"]\)/,
-      'validate-review-texts.js must import the shared sets, not redefine them');
+    // Task #1194 (2026-08-12) moved the validator onto hasAggregatorUrlMismatch()
+    // in lib/aggregator-url-latent.js — a thin indirection that itself imports
+    // AGGREGATOR_DOMAINS/AGGREGATOR_OUTLET_IDS from lib/aggregator-domains, so the
+    // "don't redefine the sets" intent still holds. Accept either import path.
+    assert.match(src, /require\(['"]\.\/lib\/aggregator-(domains|url-latent)['"]\)/,
+      'validate-review-texts.js must import the shared sets (directly or via aggregator-url-latent), not redefine them');
   });
 
   test('gather-reviews.js wires the guard into createReviewFile (source + value aware)', () => {
