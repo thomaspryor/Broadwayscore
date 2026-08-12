@@ -49,7 +49,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const { fileCard, syncTasks, dispatchDetached } = require('./digest-autofix.js');
-const { shallowFetchArgs } = require('./shallow-fetch-args.js');
+const { repoDepthArgs } = require('./shallow-fetch-args.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const CANARY_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
@@ -334,16 +334,12 @@ function markerExistsOnOriginMain(dateStr, log = () => {}) {
   // main` pulls the WHOLE ~2.1 GB / 165k-commit repo instead of the small
   // delta and stalls until timeout. Same helper acceptance-check-core.js
   // uses for the identical reason.
-  let depthArgs = [];
-  try {
-    const isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim() === 'true';
-    let oldestCommitEpoch = 0;
-    if (isShallow) {
-      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim().split('\n').pop();
-      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim());
-    }
-    depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
-  } catch { /* fail open — treat as a complete clone, no extra flags */ }
+  // repoDepthArgs() is this derivation extracted verbatim — it fails open to []
+  // the same way this inline copy did. infra-gate-registration-check.js needs
+  // the identical "fetch origin/main from a possibly-shallow checkout" step, so
+  // it lives in shallow-fetch-args.js next to the pure function it feeds rather
+  // than being pasted a third time.
+  const depthArgs = repoDepthArgs({ repoRoot: REPO });
   try {
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
     execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: REPO, timeout: 30000, stdio: 'pipe' });
