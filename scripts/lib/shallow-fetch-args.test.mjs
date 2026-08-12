@@ -120,42 +120,54 @@ function makeRepoWithTwoCommits() {
   return { root, origin };
 }
 
+// try/finally, not a trailing rmSync: when one of these assertions fails —
+// which is the entire point of the test existing — a trailing cleanup never
+// runs, so every failed local run leaves another two-repo fixture in os.tmpdir().
 test('repoDepthArgs on a SHALLOW clone returns a --shallow-since bound (the branch that never had coverage)', () => {
   const { root, origin } = makeRepoWithTwoCommits();
-  const shallow = path.join(root, 'shallow');
-  execFileSync('git', ['clone', '-q', '--depth=1', `file://${origin}`, shallow]);
-  assert.equal(
-    execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: shallow, encoding: 'utf8' }).trim(),
-    'true',
-    'fixture precondition: the clone must actually be shallow'
-  );
+  try {
+    const shallow = path.join(root, 'shallow');
+    execFileSync('git', ['clone', '-q', '--depth=1', `file://${origin}`, shallow]);
+    assert.equal(
+      execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: shallow, encoding: 'utf8' }).trim(),
+      'true',
+      'fixture precondition: the clone must actually be shallow'
+    );
 
-  const args = repoDepthArgs({ repoRoot: shallow });
-  assert.equal(args.length, 1, `expected exactly one bound arg, got ${JSON.stringify(args)}`);
-  assert.match(args[0], /^--shallow-since=@\d+$/, args[0]);
-  // The bound must be derived from the clone's own oldest commit, not a
-  // constant — an unanchored bound is what task #466 was about.
-  const epoch = Number(args[0].replace('--shallow-since=@', ''));
-  const oldest = Number(
-    execFileSync('git', ['log', '-1', '--format=%ct', 'HEAD'], { cwd: shallow, encoding: 'utf8' }).trim()
-  );
-  assert.ok(
-    epoch <= oldest && epoch > oldest - 86_400,
-    `bound ${epoch} should sit just below the boundary commit ${oldest}`
-  );
-  fs.rmSync(root, { recursive: true, force: true });
+    const args = repoDepthArgs({ repoRoot: shallow });
+    assert.equal(args.length, 1, `expected exactly one bound arg, got ${JSON.stringify(args)}`);
+    assert.match(args[0], /^--shallow-since=@\d+$/, args[0]);
+    // The bound must be derived from the clone's own oldest commit, not a
+    // constant — an unanchored bound is what task #466 was about.
+    const epoch = Number(args[0].replace('--shallow-since=@', ''));
+    const oldest = Number(
+      execFileSync('git', ['log', '-1', '--format=%ct', 'HEAD'], { cwd: shallow, encoding: 'utf8' }).trim()
+    );
+    assert.ok(
+      epoch <= oldest && epoch > oldest - 86_400,
+      `bound ${epoch} should sit just below the boundary commit ${oldest}`
+    );
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test('repoDepthArgs on a COMPLETE clone returns no bound (never shallow-ify a full checkout)', () => {
   const { root, origin } = makeRepoWithTwoCommits();
-  const full = path.join(root, 'full');
-  execFileSync('git', ['clone', '-q', `file://${origin}`, full]);
-  assert.deepEqual(repoDepthArgs({ repoRoot: full }), []);
-  fs.rmSync(root, { recursive: true, force: true });
+  try {
+    const full = path.join(root, 'full');
+    execFileSync('git', ['clone', '-q', `file://${origin}`, full]);
+    assert.deepEqual(repoDepthArgs({ repoRoot: full }), []);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test('repoDepthArgs fails open to [] when the path is not a git repo', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'repo-depth-args-nogit-'));
-  assert.deepEqual(repoDepthArgs({ repoRoot: tmp }), []);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  try {
+    assert.deepEqual(repoDepthArgs({ repoRoot: tmp }), []);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
