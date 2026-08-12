@@ -123,12 +123,13 @@ test('mergeWithArchive: no archive/ directory — returns liveTasks unchanged', 
 test('archiveCompletedTasks: re-verifies status at move time, not just at scan time (race-guard code path)', () => {
   // Direct test of the re-check line rather than a scan/move race, which
   // needs a live TaskUpdate racing the archiver to reproduce — not
-  // reproducible from a unit test. A task that is NOT completed/in_progress
-  // (e.g. reopened to pending) must never be archived, full stop;
-  // selectArchivable already guarantees the scan phase agrees, so this pins
-  // the move-phase guard as an independent line of defense.
+  // reproducible from a unit test. A task whose status is outside the three
+  // archivable statuses (completed/in_progress/pending — e.g. some future
+  // or unrecognized status) must never be archived, full stop; selectArchivable
+  // already guarantees the scan phase agrees, so this pins the move-phase
+  // guard as an independent line of defense.
   const dir = mkTmp();
-  writeTask(dir, 1, { status: 'pending' }, 1000);
+  writeTask(dir, 1, { status: 'someOtherStatus' }, 1000);
   fs.mkdirSync(path.join(dir, 'archive'));
   const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
   assert.deepEqual(result.archived, []);
@@ -170,6 +171,83 @@ test('archiveCompletedTasks: move-time recheck uses fresh fs.statSync, not the s
       calls += 1;
       if (calls === 2) { // second stat = the move-time recheck
         const fresh = new Date(NOW); // task was just touched — no longer stale
+        fs.utimesSync(livePath, fresh, fresh);
+      }
+    }
+    return origStat(p, ...rest);
+  };
+  try {
+    const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+    assert.deepEqual(result.archived, []);
+    assert.deepEqual(result.skipped.map((s) => s.id), ['1']);
+    assert.equal(fs.existsSync(livePath), true);
+  } finally {
+    fs.statSync = origStat;
+  }
+});
+
+test('selectArchivable: picks pending tasks untouched longer than pendingMaxAgeMs (card #1351)', () => {
+  const tasks = [
+    { id: '1', status: 'pending', subject: 'Old pending card', mtimeMs: NOW - 40 * 24 * HOUR }, // >30d
+    { id: '2', status: 'pending', subject: 'Recent pending card', mtimeMs: NOW - 5 * 24 * HOUR }, // fresh
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0 }), ['1']);
+});
+
+test('selectArchivable: pendingMaxAgeMs: Infinity disables the pending population entirely', () => {
+  const tasks = [
+    { id: '1', status: 'pending', subject: 'Old pending card', mtimeMs: NOW - 10_000 * HOUR },
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0, pendingMaxAgeMs: Infinity }), []);
+});
+
+test('selectArchivable: ages out "BSC Daily:" pending tasks on the shorter bscDailyMaxAgeMs clock', () => {
+  const tasks = [
+    { id: '1', status: 'pending', subject: 'BSC Daily: 2026-08-01 digest', mtimeMs: NOW - 10 * 24 * HOUR }, // >7d, <30d
+    { id: '2', status: 'pending', subject: 'BSC Daily: 2026-08-10 digest', mtimeMs: NOW - 2 * 24 * HOUR }, // <7d, stays
+    { id: '3', status: 'pending', subject: 'Not a digest card', mtimeMs: NOW - 10 * 24 * HOUR }, // ordinary pending, <30d, stays
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0 }), ['1']);
+});
+
+test('selectArchivable: bscDailyMaxAgeMs: Infinity disables the BSC-Daily population entirely', () => {
+  const tasks = [
+    { id: '1', status: 'pending', subject: 'BSC Daily: ancient digest', mtimeMs: NOW - 10_000 * HOUR },
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0, bscDailyMaxAgeMs: Infinity }), []);
+});
+
+test('selectArchivable: pending populations still respect the keepTopN frontier', () => {
+  const tasks = [
+    { id: '10', status: 'pending', subject: 'Old pending card', mtimeMs: NOW - 1000 * HOUR },
+    { id: '11', status: 'pending', subject: 'BSC Daily: old digest', mtimeMs: NOW - 1000 * HOUR },
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 1 }), ['10']);
+});
+
+test('archiveCompletedTasks: archives a stale pending task and a stale BSC Daily card end-to-end', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'pending', subject: 'Old pending card' }, 40 * 24);
+  writeTask(dir, 2, { status: 'pending', subject: 'BSC Daily: old digest' }, 10 * 24);
+  writeTask(dir, 3, { status: 'pending', subject: 'Recent pending card' }, 1);
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, ['1', '2']);
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), false);
+  assert.equal(fs.existsSync(path.join(dir, '2.json')), false);
+  assert.equal(fs.existsSync(path.join(dir, '3.json')), true);
+});
+
+test('archiveCompletedTasks: pending move-time recheck skips a task touched again since scan', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'pending', subject: 'Old pending card' }, 40 * 24);
+  const livePath = path.join(dir, '1.json');
+  const origStat = fs.statSync;
+  let calls = 0;
+  fs.statSync = (p, ...rest) => {
+    if (p === livePath) {
+      calls += 1;
+      if (calls === 2) { // second stat = the move-time recheck (first is the scan in loadTasksWithMtime)
+        const fresh = new Date(NOW);
         fs.utimesSync(livePath, fresh, fresh);
       }
     }
