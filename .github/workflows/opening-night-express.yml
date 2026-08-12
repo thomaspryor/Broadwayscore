@@ -8,7 +8,12 @@ name: Opening Night Express
 # The existing opening-night-orchestrator.yml will be paused for the duration.
 # When Express completes, the orchestrator resumes on its next cron.
 #
-# DISCARD PLAN: Delete this file. No other files are modified. Existing pipeline is unchanged.
+# AUTO-FIRE (task #1349): update-show-status.yml's daily transition check dispatches
+# this workflow automatically for every real previews->open show, and reroutes its
+# gather-reviews.yml/collect-review-texts.yml dispatches + retires its
+# opening-night-poller.yml auto-dispatch for those shows to avoid double-processing
+# the same review data. Reverting Express now means undoing those too — it is no
+# longer a drop-in-delete file. Kill switch: `gh variable set EXPRESS_AUTOFIRE_DISABLED --body true`.
 #
 # Usage:
 #   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway
@@ -62,9 +67,18 @@ permissions:
   contents: write
   actions: write
 
-# One Express run per show at a time. cancel-in-progress:false queues instead of cancels.
+# GLOBAL group (not per-show): auto-fire (task #1349) can dispatch Express for
+# several shows opening the same day. ORCHESTRATOR_PAUSED below is a single
+# repo-variable lease, not per-show — if two Express runs were ever active at
+# once, whichever finishes first would clear the lease while the other is still
+# mid-run, un-suppressing the orchestrator/poller for it. A global queue makes
+# that impossible: only one Express run is ever in flight, so the lease is
+# never held by two runs at the same time. Trade-off: a second show's Express
+# run waits (up to the 90-min timeout) for the first to finish rather than
+# running in parallel — accepted, since correctness beats speed here.
+# cancel-in-progress:false queues instead of cancelling a run that's mid-write.
 concurrency:
-  group: opening-night-express-${{ inputs.show_id }}
+  group: opening-night-express
   cancel-in-progress: false
 
 jobs:

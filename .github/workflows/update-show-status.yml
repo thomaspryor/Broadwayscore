@@ -749,6 +749,26 @@ jobs:
           echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
           echo "Combined shows for data pipelines: $all_slugs"
 
+          # Shows Opening Night Express now owns end-to-end (gather->collect->score->
+          # rebuild->push->deploy, inline in one job — see opening-night-express.yml)
+          # are true previews/upcoming/announced->open transitions this run, i.e.
+          # $opened_slugs. Excluding them here is what stops gather-reviews.yml /
+          # collect-review-texts.yml from redundantly re-processing the same show
+          # Express is already handling — that double-processing is exactly the
+          # "concurrent-CI data race" (issue #9) Express was built to eliminate.
+          # new_slugs-only entries (shows discovered already open/closed — bulk
+          # backfill, not a live opening-night event) still need the legacy chain.
+          legacy_gather_targets=""
+          for slug in $(echo "$all_slugs" | tr ',' '\n'); do
+            [ -z "$slug" ] && continue
+            case ",$opened_slugs," in
+              *",$slug,"*) continue ;;
+            esac
+            [ -n "$legacy_gather_targets" ] && legacy_gather_targets="$legacy_gather_targets,$slug" || legacy_gather_targets="$slug"
+          done
+          echo "legacy_gather_targets=$legacy_gather_targets" >> $GITHUB_OUTPUT
+          echo "Legacy gather/collect targets (excludes Express-owned shows): $legacy_gather_targets"
+
           # Also output newly discovered preview shows (for Reddit — discussions start at previews)
           preview_slugs=""
           for slug in $(echo "$new_slugs" | tr ',' '\n' | sort -u); do
@@ -790,7 +810,12 @@ jobs:
           echo "Shows for cast backfill (incl previews): $all_cast_slugs"
 
       - name: Trigger data agent workflow
-        if: steps.filter.outputs.opened_shows != ''
+        # legacy_gather_targets excludes true previews->open transitions (opened_slugs)
+        # — those now run through opening-night-express.yml instead, which calls this
+        # same gather-reviews.js script inline. Dispatching this workflow for those
+        # shows too would re-run the same discovery concurrently with Express against
+        # the same review-texts files (the exact race Express exists to eliminate).
+        if: steps.filter.outputs.legacy_gather_targets != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -802,7 +827,7 @@ jobs:
                 workflow_id: 'gather-reviews.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  shows: '${{ steps.filter.outputs.legacy_gather_targets }}',
                   max_tier: '3',
                   // This fires the moment a show flips to 'open' — it IS the
                   // first opening-night discovery pass, so it must be exempt
@@ -1175,12 +1200,15 @@ jobs:
             }
 
       - name: Trigger review text collection for opened shows
-        if: steps.filter.outputs.opened_shows != ''
+        # legacy_gather_targets excludes true previews->open transitions (opened_slugs)
+        # — see the same note on "Trigger data agent workflow" above. Express's inline
+        # "Collect review texts" step does this same job for those shows.
+        if: steps.filter.outputs.legacy_gather_targets != ''
         uses: actions/github-script@v7
         with:
           script: |
             // Trigger full text collection for each newly opened show
-            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
+            const slugs = '${{ steps.filter.outputs.legacy_gather_targets }}'.split(',').filter(Boolean);
             for (const slug of slugs) {
               try {
                 await github.rest.actions.createWorkflowDispatch({
@@ -1223,23 +1251,54 @@ jobs:
               console.log('Deep Research trigger failed:', e.message);
             }
 
-      - name: Trigger Opening Night Poller for opened shows
-        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
+      # Opening Night Poller's auto-dispatch was retired here (task #1349) when
+      # Opening Night Express started auto-firing on the same signal below.
+      # Poller's ENTIRE automated purpose (per its own header comment: "NO CRON —
+      # only dispatched by update-show-status.yml when a show transitions to
+      # open") is now superseded by Express, which runs the same discovery
+      # (scripts/gather-reviews.js) plus collect+score+rebuild+push+deploy inline
+      # in one job. Auto-dispatching both was found to be UNSAFE, not just
+      # redundant: Express's own "cancel competing orchestrator/poller runs" step
+      # only cancels poller's run — it can't recall the downstream workflows
+      # poller's job may have already dispatched in the few seconds before that
+      # cancellation lands, so the two pipelines could still write review data
+      # for the same show concurrently (the exact race Express exists to
+      # eliminate). Poller remains available for manual/targeted
+      # `gh workflow run opening-night-poller.yml -f show_id=...` use.
+
+      - name: Trigger Opening Night Express for opened shows
+        # Kill switch independent of reverting this file: gh variable set EXPRESS_AUTOFIRE_DISABLED --body true
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED != 'true'
         uses: actions/github-script@v7
         with:
           script: |
-            // Dispatch the opening night poller to discover reviews for newly opened shows
-            try {
-              await github.rest.actions.createWorkflowDispatch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'opening-night-poller.yml',
-                ref: 'main',
-                inputs: {}
-              });
-              console.log('Triggered Opening Night Poller for opened shows');
-            } catch (e) {
-              console.log('Opening Night Poller trigger failed:', e.message);
+            // One dispatch per true previews->open transition this run. Express's
+            // own concurrency group (opening-night-express, global — see
+            // opening-night-express.yml) queues these instead of running them
+            // concurrently, so a multi-show opening night can't have two Express
+            // runs racing on the shared ORCHESTRATOR_PAUSED lease at once.
+            const shows = require('./data/shows.json').shows;
+            const slugs = '${{ needs.update-shows.outputs.opened_slugs }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              const show = shows.find(s => s.id === slug || s.slug === slug);
+              const category = show?.category || 'broadway';
+              const market = (category === 'west-end' || category === 'off-west-end') ? 'west-end' : 'broadway';
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'opening-night-express.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_id: slug,
+                    market
+                  }
+                });
+                console.log(`Triggered Opening Night Express for: ${slug} (market=${market})`);
+                if (slugs.length > 1) await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Opening Night Express trigger failed for ${slug}:`, e.message);
+              }
             }
 
       - name: Trigger Opening Night Broadcast (preview to owner)
