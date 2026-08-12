@@ -262,32 +262,41 @@ test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
     // written one-entry-per-line with comments (the shape of the real block in
     // host-suffix-lists.js) straddles a boundary and evades (ship-check round
     // 2, 2026-08-12).
-    const RADIUS = 200;
-    const forms = (s) => [s, s.replace(/\./g, '\\.')];
-    const occurrences = [];
+    // Count only BARE occurrences — a suffix that is NOT the tail of a longer
+    // hostname. This is what separates a re-forked list from a legitimate
+    // single-outlet constant, and it removes both weaknesses the round-3 review
+    // proved by simulation:
+    //   - `/^improbable\.co\.uk$/` and `nationaltheatre\.org\.uk` are preceded
+    //     by a domain label, so they no longer count at all. Before this, the
+    //     real co.uk/org.uk pair in non-review-url-patterns.js sat 131 chars
+    //     apart with headroom of exactly ONE — a single honest addition of a
+    //     third UK/AU outlet host would have failed the build with the wrong
+    //     diagnosis ("that is a re-forked list").
+    //   - because legitimate hosts no longer contribute, the radius can widen
+    //     and the threshold drop to 2, which closes the "spread the entries
+    //     >200 chars apart" evasion.
+    // A fork's entries are bare by construction: `'co.uk',` in an array, or
+    // `(co\.uk|com\.au|` in a regex alternation.
+    const RADIUS = 600;
+    const bare = [];
     for (const suffix of [...PLATFORM_HOST_SUFFIXES, ...MULTIPART_PUBLIC_SUFFIXES]) {
-      for (const form of forms(suffix)) {
+      for (const form of [suffix, suffix.replace(/\./g, '\\.')]) {
         let at = code.indexOf(form);
         while (at !== -1) {
-          occurrences.push({ suffix, at, platform: PLATFORM_HOST_SUFFIXES.includes(suffix) });
+          // Preceded by "<label-char>." — allowing the regex-escaped "e\." form,
+          // which needs 3 chars of lookback, not 2 — means this is the tail of a
+          // real hostname (improbable\.co\.uk), not a list entry ('co.uk').
+          const before = code.slice(Math.max(0, at - 3), at);
+          if (!/[a-z0-9-]\\?\.$/.test(before)) bare.push({ suffix, at });
           at = code.indexOf(form, at + 1);
         }
       }
     }
-    for (const { at } of occurrences) {
-      const near = occurrences.filter((o) => Math.abs(o.at - at) <= RADIUS);
-      const distinct = new Set(near.map((o) => o.suffix));
-      // A PLATFORM suffix ('substack.com') never appears as a legitimate
-      // single-outlet host constant in these files, so two of them together is
-      // already a fork — and the drift this module documents began as exactly a
-      // partial platform list. Multi-part public suffixes DO appear legitimately
-      // (non-review-url-patterns.js hardcodes /^improbable\.co\.uk$/ and peers),
-      // so those need 3 before it is a list rather than a coincidence.
-      const platformHits = new Set(near.filter((o) => o.platform).map((o) => o.suffix));
-      const limit = platformHits.size >= 2 ? 2 : 3;
+    for (const { at } of bare) {
+      const distinct = new Set(bare.filter((o) => Math.abs(o.at - at) <= RADIUS).map((o) => o.suffix));
       assert.ok(
-        distinct.size < limit,
-        `${file} groups ${distinct.size} shared suffixes within ${RADIUS} chars (${[...distinct].slice(0, 4).join(', ')}) — that is a re-forked list; use host-suffix-lists.js instead`,
+        distinct.size < 2,
+        `${file} declares ${distinct.size} shared suffixes as bare literals within ${RADIUS} chars (${[...distinct].slice(0, 4).join(', ')}) — that is a re-forked list; use host-suffix-lists.js instead`,
       );
     }
     assert.ok(
