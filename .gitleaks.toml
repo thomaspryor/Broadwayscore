@@ -42,6 +42,11 @@ regexes = [
   '''phc_[A-Za-z0-9]{40,}''',
   # IndexNow site verification key — public by design, also served at /<key>.txt on the site
   '''c98817f2581efaac8a239e3dbed189ba''',
+  # CMUX_LAUNCH_UNSAFE_OK=1 (scripts/lib/cmux-launch-guard.js) is a hardcoded escape-hatch
+  # TOKEN NAME, not a secret — the VAR=value shape trips generic-api-key on entropy alone.
+  # Same pattern as CMUX_CLOSE_OK=1 in ~/.claude/hooks/cmux-destructive-guard.sh (outside
+  # this repo, so it never needed an allowlist entry).
+  '''CMUX_LAUNCH_UNSAFE_OK=1''',
   # Dead BUFFER_TOKEN. Hardcoded in scripts/social-infographics/schedule-buffer.js from
   # 2026-03-28 and live in this public repo until 2026-07-26, when it was revoked in
   # Buffer and replaced with an env var. Verified dead: mcp.buffer.com returns
