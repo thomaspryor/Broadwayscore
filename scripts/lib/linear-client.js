@@ -136,6 +136,21 @@ async function listOpenIssues(teamKey = TEAM_KEY) {
   return (data.issues && data.issues.nodes) || [];
 }
 
+// Cross-system alert dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341):
+// does an OPEN issue in this team already carry `term` (the alert's
+// conditionKey) in its title or body? Fetches the team's open issues WITH
+// description (buildOpenIssuesWithDescriptionsQuery — listOpenIssues above
+// omits it, since --list never renders it) and matches client-side via
+// linear-dispatch.js's pure findOpenIssueForTerm — see that function's header
+// for why this doesn't lean on Linear's filter DSL to do the matching.
+// Returns the matching issue or null. Called at most once per alert (not in
+// a loop), so the extra round trip this costs is never a hot path.
+async function searchIssues(term, teamKey = TEAM_KEY) {
+  const data = await graphql(linearDispatch.buildOpenIssuesWithDescriptionsQuery(), { teamKey });
+  const issues = (data.issues && data.issues.nodes) || [];
+  return linearDispatch.findOpenIssueForTerm(issues, term);
+}
+
 // Post a comment on an issue (used by linear-next.js to record "Dispatched to
 // <ref> at <ts>" on the issue itself, so double-dispatch is visible on the
 // board without cross-referencing the local dispatch ledger).
@@ -190,6 +205,7 @@ module.exports = {
   listIssues,
   getIssue,
   listOpenIssues,
+  searchIssues,
   createComment,
   updateIssue,
   listProjects,

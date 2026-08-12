@@ -68,6 +68,10 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { sendAlert } = require('./discord-notify');
 const { isPageWorthy } = require('./page-worthy-alerts');
+// Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
+// findLinearDuplicate() below. Every Linear GraphQL call stays inside
+// linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
+const linearClient = require('./linear-client');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 // Git-tracked ledger — CI only. Every job that routes an alert stages and
@@ -182,6 +186,12 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
   if (fieldLines) parts.push(fieldLines);
   parts.push(`\n## Suggested approach\n${hint || 'Investigate the condition and fix the root cause.'}`);
   parts.push(`\n## Acceptance criteria\nCondition "${conditionKey}" no longer fires on the next check. If it recurs, this card (or a fresh one) will re-open automatically — do not close this as "won't fix" without noting why.`);
+  // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12): an unambiguous,
+  // greppable anchor for the cross-system dedupe (findLinearDuplicate below)
+  // — the prose "Condition "<key>"..." line above already contains the raw
+  // conditionKey too, so this is belt-and-suspenders for a future consumer
+  // that wants an exact marker rather than a prose substring.
+  parts.push(`\n[conditionKey:${conditionKey}]`);
   let notes = parts.join('\n');
   if (notes.length < MIN_NOTES_LENGTH) {
     notes += `\n\nFiled automatically by owner-alert-router.js (conditionKey: ${conditionKey}).`;
@@ -215,6 +225,30 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
     fs.writeFileSync(ATTEMPTS_LOG_PATH, kept.join('\n') + '\n');
   } catch (err) {
     console.error(`[alert-router] failed to write attempt log (non-fatal): ${err.message}`);
+  }
+}
+
+// Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341): before
+// dispatchCard() files a NEW Notion card, check whether an OPEN Linear issue
+// already tracks this conditionKey — linear-import.js already migrated most
+// of the historical backlog (including prior auto-filed alert cards, which
+// carry conditionKey verbatim in their body), so filing a second tracker for
+// an already-tracked incident is a real cross-system double-file, not a
+// theoretical one.
+//
+// FAILS OPEN, always: a Linear API error (missing LINEAR_API_KEY, network,
+// rate limit, schema drift) must never suppress a real alert — any failure
+// here is logged and treated as "no match found", so dispatchCard() runs
+// exactly as it did before this rail existed. `searchIssuesFn` is an
+// injectable seam (tests stub linear-client.js's export) — production always
+// resolves to the real linearClient.searchIssues.
+async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues } = {}) {
+  try {
+    const match = await searchIssuesFn(conditionKey);
+    return { matched: !!match, identifier: match ? match.identifier : null };
+  } catch (err) {
+    console.error(`[alert-router] Linear dedupe check failed for "${conditionKey}" (failing open — filing as before): ${err.message}`);
+    return { matched: false, identifier: null, error: err.message };
   }
 }
 
@@ -445,6 +479,36 @@ async function routeAlert(opts) {
     console.log(`[alert-router] disposition 'human' requested for "${conditionKey}" ("${title}") is not on the page-worthy allowlist — routed to the morning digest instead. Add it to scripts/lib/page-worthy-alerts.js if this should page immediately.`);
   }
 
+  // Rail 2 cross-system dedupe (Phase 0, plan 2026-08-12, task #1341): 'auto'
+  // is the only disposition that actually creates a NEW tracker (dispatchCard
+  // files a Notion card) — checked here, after the disposition is resolved,
+  // so a 'human' request downgraded to 'digest' never triggers a Linear round
+  // trip it doesn't need. Short-circuits with the SAME { action: 'silent',
+  // conditionKey, cardId } shape the ledger-cooldown check above returns, plus
+  // linearIdentifier (additive — existing callers reading .action/.cardId/
+  // .conditionKey see no change). The ledger write here means a SUBSEQUENT
+  // call within cooldownHours hits the ledger-cooldown short-circuit above
+  // instead of re-querying Linear every time.
+  if (effectiveDisposition === 'auto') {
+    const linearDup = await findLinearDuplicate(conditionKey);
+    if (linearDup.matched) {
+      console.log(`[alert-router] conditionKey ${conditionKey} already tracked as ${linearDup.identifier} — not double-filing`);
+      ledger.conditions[conditionKey] = {
+        status: 'open',
+        disposition: effectiveDisposition,
+        title,
+        firstSeen: existing?.firstSeen || now,
+        lastSeen: now,
+        lastNotifiedAt: now,
+        notifyCount: (existing?.notifyCount || 0) + 1,
+        cardId: null,
+        linearIdentifier: linearDup.identifier,
+      };
+      persistLedger(ledger);
+      return { action: 'silent', conditionKey, cardId: null, linearIdentifier: linearDup.identifier };
+    }
+  }
+
   // New incident: first time, or reoccurred after resolveCondition() /
   // cooldown expiry. Dispatch per effective disposition.
   const result = { action: effectiveDisposition, conditionKey };
@@ -540,6 +604,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 
 module.exports = {
   routeAlert,
+  findLinearDuplicate,
   isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,
   deleteCondition,
