@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow, recoverDisplayBylinesForShow, nameCorroboratedBy } = require('./byline-recovery.js');
+const { isPlausiblePersonName, pickRecoveredName, recoverBylineForEntry, recoverBylinesForShow, recoverDisplayBylinesForShow, nameCorroboratedBy, resolveCriticName } = require('./byline-recovery.js');
 
 test('isPlausiblePersonName accepts real two/three-token bylines', () => {
   for (const n of ['Charles Isherwood', 'Ben Brantley', 'Andrzej Lukowski', 'Alexis Soloski', 'J. Kelly Nestruck']) {
@@ -191,4 +191,13 @@ test('recoverDisplayBylinesForShow catches a same-outlet-different-URL collision
     { file: 'wsj--charles-isherwood-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
   ]);
   assert.equal(out.length, 1, 'only the first-processed recovery is kept; the second is held back as a same-name/same-outlet collision');
+});
+
+test('resolveCriticName prefers the recovered name only when the normalized byline is missing or Unknown (#190)', () => {
+  assert.deepEqual(resolveCriticName('Unknown', 'Charles Isherwood'), { name: 'Charles Isherwood', recovered: true });
+  assert.deepEqual(resolveCriticName('', 'Charles Isherwood'), { name: 'Charles Isherwood', recovered: true });
+  assert.deepEqual(resolveCriticName(null, 'Charles Isherwood'), { name: 'Charles Isherwood', recovered: true });
+  assert.deepEqual(resolveCriticName('Ben Brantley', 'Charles Isherwood'), { name: 'Ben Brantley', recovered: false }, 'a real byline is never overridden by a sibling recovery');
+  assert.deepEqual(resolveCriticName('Unknown', undefined), { name: 'Unknown', recovered: false }, 'no recovery available keeps the literal "Unknown" string, matching prior behavior');
+  assert.deepEqual(resolveCriticName(null, null), { name: null, recovered: false });
 });
