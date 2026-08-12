@@ -351,6 +351,11 @@ jobs:
           TR_EMAIL: ${{ secrets.TR_EMAIL }}
           TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
           TR_SHOW_FILTER: ${{ inputs.tr_show_filter }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -z "$TR_EMAIL" ] || [ -z "$TR_PASSWORD" ]; then
             echo "TR credentials not configured — skipping Theatre Record extraction"

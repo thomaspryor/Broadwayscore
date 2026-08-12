@@ -578,6 +578,51 @@ test('parkedGuard: a later launch clears the park (force IS the unpark)', () => 
   assert.equal(parkedGuard({ id: '42' }, entries, {}), null);
 });
 
+// ── Stale-outcome guard (task #1272, the #383 class) ────────────────────────
+const { staleOutcomeGuard } = require('./bsc-next.js');
+const OUTCOME_TASK = { id: '383', subject: 'Pull design and UX inspo from TodayTix predictions site', description: '[notion:369637c5-416f-8183-8dca-e32d05c59dcc] P0 Now' };
+
+test('staleOutcomeGuard: refuses a card with a filled Outcome and no acceptance criteria', () => {
+  const refusal = staleOutcomeGuard(OUTCOME_TASK, { outcome: 'FINDINGS.md written, 12 screenshots.', notes: 'Pull design inspo from TodayTix.' }, {});
+  assert.match(refusal, /#383/);
+  assert.match(refusal, /#383 class/);
+  assert.match(refusal, /--status Done/);
+  assert.match(refusal, /369637c5-416f-8183-8dca-e32d05c59dcc/, 'must name the actual notion id, not a placeholder');
+});
+
+test('staleOutcomeGuard: silent when Outcome is empty', () => {
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, { outcome: '', notes: 'no criteria here' }, {}), null);
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, { outcome: '   ', notes: 'whitespace-only outcome' }, {}), null);
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, null, {}), null);
+});
+
+test('staleOutcomeGuard: silent when the card has real acceptance criteria (a fresh, verifiable re-attempt)', () => {
+  const card = { outcome: 'Shipped in a prior pass.', notes: '## Acceptance criteria\n`node --test scripts/lib/foo.test.mjs`' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: silent when the card declares VERIFY: owner-judgment', () => {
+  const card = { outcome: 'Shipped in a prior pass.', notes: 'VERIFY: owner-judgment — only the owner can judge this.' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: silent on a RECHECK-AFTER-stamped card (legitimate scheduled recheck, not silent staleness)', () => {
+  const card = { outcome: 'RECHECK-AFTER: 2026-08-20\nDeployed; verifying it holds after a day of traffic.', notes: 'no acceptance criteria' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: fires even when notes are unavailable — the exact #383 gap (Outcome is a separate property from Notes)', () => {
+  const refusal = staleOutcomeGuard(OUTCOME_TASK, { outcome: 'FINDINGS.md written, 12 screenshots.', notes: '' }, {});
+  assert.match(refusal, /REFUSING/);
+});
+
+test('staleOutcomeGuard: --force / --allow-unverifiable / --dry-run / --print-prompt all bypass', () => {
+  const card = { outcome: 'FINDINGS.md written.', notes: '' };
+  for (const flag of ['force', 'allow-unverifiable', 'dry-run', 'print-prompt']) {
+    assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, { [flag]: true }), null, `${flag} must bypass`);
+  }
+});
+
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────
 const os = require('os');
 const path = require('path');

@@ -1481,6 +1481,87 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
 }
 
 /**
+ * Demote a stale isNonReview flag when a NEWER, high-confidence
+ * contentVerification pass affirms the article IS a review — the Telegraph
+ * class (task #1255, Notion 3b9637c5). isNonReview is set almost entirely by
+ * classify-non-reviews.js's gemini classifier (memory/feedback_llm_verifier_
+ * hallucinates.md documents gemini as the unreliable one of the ensemble) or,
+ * on a corpus subset, by rebuild-all-reviews.js's own CV-promotion pre-pass
+ * reading an OLDER contentVerification snapshot. Either way, a LATER full-text
+ * CV pass (usually claude-haiku/openai from collect-review-texts.js) can rule
+ * articleType='review' at high confidence on a re-fetch, but the one-
+ * directional flag never gets re-examined and the review stays silently
+ * excluded forever.
+ *
+ * Unlike isStaleCvPromotedWrongProduction above, this is NOT a self-heal
+ * mutation gated by caller-computed cvIsStale — it's a pure read-time
+ * reclassification: it changes only the includability verdict, never writes
+ * isNonReview back to disk, so no PROTECTED_FIELDS / CLEAR_BREADCRUMBS entry
+ * is needed — nothing new is written that a push-time restore could
+ * resurrect.
+ *
+ * PROVENANCE SPLITS INTO TWO FAMILIES, handled differently (ship-check
+ * finding, 2026-08-11):
+ *   - Classifier-set (gemini, most of the corpus hits): classify-non-
+ *     reviews.js stamps classifiedAt, so freshness is provable — a CV newer
+ *     than classifiedAt (or a flag with literally no classifiedAt at all,
+ *     i.e. zero provenance either way) demotes on recency+confidence alone.
+ *   - CV-promoted (isNonReviewReason starts "CV-promoted (not a review):",
+ *     rebuild-all-reviews.js ~line 1769/1870): the promotion code never
+ *     stamps a timestamp, so there is no classifiedAt to compare — but
+ *     unlike the classifier case this ISN'T "no provenance," it's "provenance
+ *     is CV itself," and contentVerification is a single overwritable field:
+ *     the CURRENT block may be a later, unrelated re-verify with no relation
+ *     to the one that justified the promotion. Treating "no classifiedAt" as
+ *     a default win here would let one CV pass silently overrule a different
+ *     CV pass with zero corroboration — the exact CV-vs-CV disagreement
+ *     isStaleCvPromotedWrongProduction requires hasHighConfidenceLlmScore to
+ *     guard against (its docstring's Titus/misfiled-Hamlet case, ~line 1420).
+ *     This family therefore requires that same independent corroboration.
+ *
+ * Additional freshness check: the CV must not be stale against the file's
+ * own current text (cv.verifiedAt >= data.textFetchedAt, when textFetchedAt
+ * is known) — otherwise the CV verdict describes text that has since been
+ * replaced.
+ *
+ * @param {object} data - Review-text JSON
+ * @returns {boolean} true when the isNonReview flag should be ignored
+ */
+function isNonReviewDemotedByFreshCV(data) {
+  if (!data || data.isNonReview !== true) return false;
+  const cv = data.contentVerification;
+  if (!cv) return false;
+  if (cv.articleType !== 'review') return false;
+  if (cv.isValid === false) return false;
+  if (cv.wrongArticle === true) return false;
+  const cvConfidence = cv.articleTypeConfidence || cv.confidence;
+  if (cvConfidence !== 'high') return false;
+  if (!cv.verifiedAt) return false;
+  const cvTime = Date.parse(cv.verifiedAt);
+  if (Number.isNaN(cvTime)) return false;
+
+  if (data.textFetchedAt) {
+    const fetchedAt = Date.parse(data.textFetchedAt);
+    if (!Number.isNaN(fetchedAt) && fetchedAt > cvTime) return false;
+  }
+
+  const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
+    && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
+  if (isCvPromotedProvenance) {
+    // No classifiedAt exists for this family — require independent
+    // corroboration instead of trusting recency we can't prove.
+    return hasHighConfidenceLlmScore(data);
+  }
+
+  if (data.classifiedAt) {
+    const flagTime = Date.parse(data.classifiedAt);
+    if (!Number.isNaN(flagTime) && flagTime >= cvTime) return false;
+  }
+
+  return true;
+}
+
+/**
  * Detect a stale suspectedMisattribution flag — a flag that the current
  * critic-registry would no longer set on this file.
  *
@@ -2716,7 +2797,7 @@ function explainExclusion(data, show, filePath) {
   // memory/feedback_includability_predicates_must_be_canonical.md.
   if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
   if (
-    data.isNonReview === true ||
+    (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
     data.nonReviewContent === true
@@ -3487,6 +3568,7 @@ module.exports = {
   isLikelyStaleWrongShow,
   isLikelyStaleWrongProduction,
   isStaleCvPromotedWrongProduction,
+  isNonReviewDemotedByFreshCV,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
