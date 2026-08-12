@@ -1,3 +1,7 @@
+// timebomb-audit-exempt: serp-cache.js builds on ttl-cache.js, whose freshness
+//   check is Date.now() - stat.mtimeMs. audit-time-bomb-tests.js shifts the
+//   PROCESS clock but not the FILESYSTEM, so every cached entry reads as expired
+//   under a shifted run. Not a real time bomb — see tests/unit/ttl-cache.test.mjs.
 /**
  * Tests for scripts/lib/serp-cache.js and the weekly-bucket / preferSpeed
  * cache-write logic in scripts/lib/url-discovery.js::_serpWithChain.
