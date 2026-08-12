@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T19:00:42.198Z",
+  "generatedAt": "2026-08-12T19:54:20.850Z",
   "windowDays": 45,
   "showsScanned": 58,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 485.81824,
+      "fileAgeHours": 486.7120341666667,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 445.1211836111111
+      "nonTerminalAgeHours": 446.0152538888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,30 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 176.26143027777778,
+      "fileAgeHours": 177.15522444444446,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 175.6233675
+      "nonTerminalAgeHours": 176.5174377777778
+    },
+    {
+      "showId": "twelfth-night-off-west-end-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-08-01",
+      "file": "times-uk--unknown.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-the-globe-ntlv2z3pn",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=twelfth-night-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-the-globe-ntlv2z3pn --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-08-12T19:54:20.850Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
