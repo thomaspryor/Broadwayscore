@@ -61,7 +61,7 @@ function countAggregate(showId, reviewsDoc) {
  * The per-show JSON uses the `rc` field (verified 2026-04-16).
  *
  * @param {string} showId
- * @returns {Promise<{ rc: number|null, err: string|null }>}
+ * @returns {Promise<{ rc: number|null, err: string|null, errKind: 'http'|'timeout'|'network'|'missing-field'|null }>}
  */
 async function fetchLiveRc(showId) {
   const url = `https://broadwayscorecard.com/data/shows/${showId}.json`;
@@ -74,15 +74,35 @@ async function fetchLiveRc(showId) {
     });
     clearTimeout(timer);
     if (!res.ok) {
-      return { rc: null, err: `HTTP ${res.status}` };
+      return { rc: null, err: `HTTP ${res.status}`, errKind: 'http' };
     }
     const json = await res.json();
-    const rc = typeof json.rc === 'number' ? json.rc : null;
-    return { rc, err: rc == null ? 'field rc not found in response' : null };
+    return classifyLiveRcPayload(json);
   } catch (err) {
     clearTimeout(timer);
-    return { rc: null, err: err.name === 'AbortError' ? 'timeout (8s)' : String(err) };
+    return err.name === 'AbortError'
+      ? { rc: null, err: 'timeout (8s)', errKind: 'timeout' }
+      : { rc: null, err: String(err), errKind: 'network' };
   }
+}
+
+/**
+ * Classify a successfully-fetched live show JSON. A 200 response whose body
+ * lacks a numeric `rc` is NOT "can't compare" — the deployed artifact itself
+ * is malformed/stale (the site is serving a show without its review count),
+ * which is precisely the drift symptom the detector exists to catch. Callers
+ * distinguish it from transport errors via errKind === 'missing-field'.
+ */
+function classifyLiveRcPayload(json) {
+  const rc = json && typeof json.rc === 'number' ? json.rc : null;
+  return rc == null
+    ? { rc: null, err: 'field rc not found in response', errKind: 'missing-field' }
+    : { rc, err: null, errKind: null };
+}
+
+/** True when the live page was served (HTTP 200) but carries no review count. */
+function isLiveRcMissingField(live) {
+  return !!live && live.errKind === 'missing-field';
 }
 
 /**
@@ -134,4 +154,6 @@ module.exports = {
   fetchLiveRc,
   countLocalPerShowJson,
   computeDrift,
+  classifyLiveRcPayload,
+  isLiveRcMissingField,
 };
