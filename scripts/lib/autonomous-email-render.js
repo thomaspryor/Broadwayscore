@@ -282,11 +282,18 @@ function renderHealthScoreboard(health) {
 // them"). rows come from digest-autofix's annotated plan; health rows the plan
 // didn't cover (shouldn't happen) degrade to a bare plain-English line.
 const AUTOFIX_STATE_LABEL = {
-  'dispatched': ['\u{1f527}', 'a fix session is working on it now'],
-  'in-progress': ['\u{1f527}', 'a fix session is already working on it'],
-  'queued': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
-  'card-filed': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
-  'card-failed': ['\u26a0\ufe0f', 'could not be queued automatically \u2014 will retry tomorrow'],
+  // BRO-286 honesty (settles the task #1311/#1220 class): 'dispatched' means
+  // a launch was ATTEMPTED \u2014 the spawn is detached and its journal entry
+  // lands after this email renders, so the truthful claim is "launched,
+  // verified tomorrow", never "being fixed, nothing for you to do". The
+  // next-day verification is real: attempt-memory folds the dispatch
+  // ledger's job outcome into card-pass/card-fail, and the throughput +
+  // canary rows surface a dead pipeline.
+  'dispatched': ['\u{1f527}', 'fix session launched \u2014 tomorrow\u2019s digest verifies it actually ran'],
+  'in-progress': ['\u{1f527}', 'a live fix session is on it (liveness-checked this run)'],
+  'queued': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
+  'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
+  'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
   // Attempt-memory (task #843): same fixed content failed twice unchanged —
   // never redispatched blind, needs a human look at the card itself.
@@ -314,15 +321,22 @@ function renderAutofixBlock(autofixRows) {
   rows = [...seen.values()];
   const lines = rows.map(r => {
     const [icon, label] = AUTOFIX_STATE_LABEL[r.state] || ['\u23f3', 'queued'];
-    const ref = r.taskId ? ` <span style="color:#bbb;">(#${esc(String(r.taskId))})</span>` : '';
+    // Linear-tracked rows ('linear:BRO-287') render the board identifier the
+    // owner can actually find ('BRO-287'); legacy numeric ids keep '#N'.
+    const rawId = r.taskId ? String(r.taskId) : null;
+    const displayId = rawId ? (rawId.startsWith('linear:') ? rawId.slice(7) : `#${rawId}`) : null;
+    const ref = displayId ? ` <span style="color:#bbb;">(${esc(displayId)})</span>` : '';
     const attemptNote = r.state === 'dispatched' && r.attempt > 1 ? ` \u2014 attempt ${r.attempt}${r.model ? ` (${esc(r.model)})` : ''}` : '';
     return `<div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">${icon} ${esc(plainHealthLine(r.name))}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">${esc(label)}${attemptNote}</div>
     </div>`;
   }).join('');
+  // Header claims exactly what is proven: trackers exist (identifiers shown)
+  // and launches were attempted; whether they RAN is verified by tomorrow's
+  // throughput/canary rows \u2014 never "nothing for you to do" on faith (#1311).
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Being fixed automatically \u2014 nothing for you to do</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Automation queue \u2014 filed and launched; tomorrow\u2019s digest verifies each one ran</div>
     ${lines}
   </div>`;
 }

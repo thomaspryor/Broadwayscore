@@ -29,8 +29,14 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
+  node scripts/linear-brain.js find "search term"
 
-  --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+  create: --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+  find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
+          title or body contains the term, or null. Sync-callable dedup seam
+          for digest-autofix's fileCard (BRO-286) — filing the same
+          persistent health row daily would otherwise mint one duplicate
+          issue per day and reset attempt-memory each time.
 `;
 
 function parseArgs(argv) {
@@ -60,6 +66,25 @@ async function main() {
   }
   const args = parseArgs(argv);
   const command = args._positional[0];
+
+  if (command === 'find') {
+    const term = args._positional[1];
+    if (!term) {
+      console.error('Usage: linear-brain find "search term"');
+      process.exit(1);
+    }
+    // Read-only: linear-client.searchIssues walks the team's open issues
+    // (cursor-paginated) and returns the first title/body substring match.
+    const linearClient = require('./lib/linear-client');
+    try {
+      const match = await linearClient.searchIssues(term);
+      console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url }, null, 2) : 'null');
+    } catch (err) {
+      console.error(`\n❌ ${err.message}\n`);
+      process.exit(2);
+    }
+    return;
+  }
 
   if (command !== 'create') {
     console.error(USAGE);
