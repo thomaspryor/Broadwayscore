@@ -35,6 +35,7 @@ const RT = process.env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-rev
 
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasValidScore } = require('./lib/review-guards');
 
 function main() {
   console.log(`=== Classify Unscored Blocked-URL Files ===`);
@@ -67,8 +68,12 @@ function main() {
 
       // Gate: only unscored + unclassified files with a URL isBlockedReviewUrl
       // flags. Anything already scored or already flagged (by the ensemble, a
-      // human, or a prior run of this script) is left untouched.
-      const isScored = !!(data.llmScore || data.assignedScore != null);
+      // human, or a prior run of this script) is left untouched. hasValidScore
+      // is the CANONICAL score-presence check (review-guards.js) — checking
+      // only llmScore/assignedScore missed originalScore/aggregatorStars and
+      // corrupted 16 real show-score/timeout/thestage reviews on the first
+      // corpus run (#1328 fixup, caught by a parallel session).
+      const isScored = hasValidScore(data);
       const isClassified = !!data.rejectedAt || !!data.rejectionReason
         || data.wrongProduction === true || data.wrongShow === true;
       if (isScored || isClassified) continue;

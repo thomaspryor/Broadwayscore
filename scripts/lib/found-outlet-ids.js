@@ -21,10 +21,14 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts'
 // window / for T3+ outlets, the historical skip conditions apply unchanged.
 const DISCOVERY_UNBLOCK_WINDOW_DAYS = 45;
 
-// A file with no llmScore/assignedScore/humanReviewScore was never actually
-// scored by a human or the LLM ensemble.
+// Canonical "has a real score" check — mirrors rebuild-helpers.js:getBestScore's
+// priority list (human -> adjudicated -> originalScore -> llmScore -> assignedScore
+// -> aggregatorStars). A narrower check here (e.g. llmScore/assignedScore only)
+// misses aggregator-star-scored reviews (originalScore/aggregatorStars) and would
+// treat a genuinely scored review as unscored (#1328 fixup — a classify script using
+// this narrower check corrupted 16 real show-score/timeout/thestage reviews).
 function isScoredReviewFile(data) {
-  return !!(data.llmScore || data.assignedScore != null || data.humanReviewScore != null);
+  return require('./review-guards').hasValidScore(data);
 }
 
 function isInDiscoveryUnblockWindow(show, nowMs = Date.now()) {
