@@ -279,7 +279,7 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
     // task #1310: no default disposition. An alert-filed issue isn't being
     // worked the instant it's created — the Phase-2 drain/auditor picks
     // parked issues up on its next pass — so this is a park, not a dispatch.
-    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); the Linear-side drain/auditor picks it up on its next pass.`,
+    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); parked for triage. The Linear-side drain (Phase 2 follow-up, in build) will dispatch machine-verifiable parked issues; until it ships these surface via the digest.`,
   ];
   try {
     // 15s: a single Linear issue-creation call. Callers that dispatch many

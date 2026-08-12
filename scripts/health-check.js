@@ -3530,10 +3530,11 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
                 // "Cannot find module '@notionhq/client'").
                 ? `${entry.humanAction} — tracker filing failed, will retry next run. Error: ${(dispatch.dispatchError || '(no error captured)').slice(0, 200)}`
                 // BRO-286 honesty: name the filed issue; never claim
-                // hands-free work without a journaled dispatch.
+                // hands-free work without a journaled dispatch (the parked-
+                // issue drain is a Phase 2 follow-up still in build).
                 : (dispatch.linearIdentifier
-                    ? `${entry.humanAction} — filed as ${dispatch.linearIdentifier} in Linear; the automation queue works it from there.`
-                    : `${entry.humanAction} — tracker filed; the automation queue works it from there.`))
+                    ? `${entry.humanAction} — filed as ${dispatch.linearIdentifier} in Linear for triage.`
+                    : `${entry.humanAction} — tracker filed in Linear for triage.`))
           : entry
             ? (entry.humanAction || entry.humanFallback || r.message)
             : r.message;

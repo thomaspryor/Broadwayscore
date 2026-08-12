@@ -241,6 +241,26 @@ function buildCardNotes(row) {
 // `linear:BRO-287`, REPLACING the old file→syncTasks→matchOpenTask numeric-
 // task resolution dance (there is no Notion mirror card to resolve anymore).
 function fileCard(title, notes, { log = () => {} } = {}) {
+  // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
+  // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
+  // planAutofix) can't see Linear issues — without this check the same row
+  // mints one duplicate issue per day, each fresh identifier resetting
+  // attempt-memory (park/opus-escalation never trigger) and pressuring the
+  // 250-issue cap. Matching the existing OPEN issue by exact title keeps the
+  // row's taskId stable across days, so checkPark/priorAttempts keep
+  // working. Fail-open: a find error just means we file (worst case one
+  // duplicate, same as a transient Linear outage).
+  try {
+    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title],
+      { cwd: REPO, encoding: 'utf8', timeout: 30000 });
+    const fm = found.match(/"identifier":\s*"([A-Z]+-\d+)"/);
+    if (fm) {
+      log(`[digest-autofix] row already tracked as ${fm[1]} — reattaching instead of filing a duplicate`);
+      return { ok: true, identifier: fm[1], existing: true };
+    }
+  } catch (err) {
+    log(`[digest-autofix] WARN Linear dedup lookup failed (filing anyway): ${String(err.message).slice(0, 120)}`);
+  }
   try {
     const out = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'create', title,
       // Linear priority 2 = High (scale: 1 Urgent / 2 High / 3 Medium / 4

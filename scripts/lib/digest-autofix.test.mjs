@@ -394,14 +394,29 @@ function withChildProcessStubs({ execFileSyncImpl, spawnImpl }, fn) {
 
 const LINEAR_BRAIN_OUT = JSON.stringify({ id: 'uuid-x', identifier: 'BRO-123', title: 't' }, null, 2) + '\nPARKED: BRO-123';
 
-test('fileCard: files via linear-brain.js create --park and returns {ok, identifier} (BRO-286)', () => {
-  withChildProcessStubs({ execFileSyncImpl: () => LINEAR_BRAIN_OUT }, (calls, mod) => {
+test('fileCard: dedups via linear-brain find, then files via create --park, returning {ok, identifier} (BRO-286)', () => {
+  // No existing issue → find returns null → create files BRO-123.
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => (argv.includes('find') ? 'null' : LINEAR_BRAIN_OUT) }, (calls, mod) => {
     const res = mod.fileCard('Canary title', 'notes body', { log: () => {} });
     assert.deepEqual(res, { ok: true, identifier: 'BRO-123' });
-    const argv = calls.execFileSync[0][1];
+    assert.equal(calls.execFileSync.length, 2, 'find then create');
+    const findArgv = calls.execFileSync[0][1];
+    assert.ok(String(findArgv[0]).endsWith('linear-brain.js') && findArgv.includes('find'));
+    const argv = calls.execFileSync[1][1];
     assert.ok(String(argv[0]).endsWith('linear-brain.js'), `expected linear-brain.js, got ${argv[0]}`);
     assert.ok(argv.includes('--park'), 'digest-autofix filings are parked; dispatchDetached is the real dispatch');
     assert.ok(!String(argv[0]).includes('notion-brain'), 'must not file Notion cards anymore');
+  });
+});
+
+test('fileCard: reattaches to an EXISTING open issue instead of filing a daily duplicate (BRO-286 merge-review P0)', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-77', title: 'Cron failed: X', url: 'u' }, null, 2);
+    throw new Error('create must NOT be called when an open issue already matches');
+  } }, (calls, mod) => {
+    const res = mod.fileCard('Cron failed: X', 'notes', { log: () => {} });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-77', existing: true });
+    assert.equal(calls.execFileSync.length, 1, 'find only — no create');
   });
 });
 
