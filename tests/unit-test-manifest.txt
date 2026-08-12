@@ -184,6 +184,7 @@ tests/unit/domain-tier-skip.test.mjs
 tests/unit/dtli-slug-discover.test.mjs
 tests/unit/duplicate-cycle.test.mjs
 tests/unit/duplicate-dispatch-guard.test.mjs
+tests/unit/duplicate-flag-inheritance.test.mjs
 tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
@@ -199,6 +200,7 @@ tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
 tests/unit/flagged-recovery.test.mjs
+tests/unit/found-outlet-ids-skip-not-a-review.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
 tests/unit/gather-reviews-collision.test.mjs
@@ -239,6 +241,7 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/live-rc-missing-drift.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
@@ -263,6 +266,7 @@ tests/unit/multi-show-splitter.test.mjs
 tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
+tests/unit/nonreview-cv-precedence.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
 tests/unit/nytheater-openings.test.mjs

@@ -603,8 +603,9 @@ function zombieHarness({ tasks, entries = [], workspaces = [], cards = {}, state
   const flips = [];
   const cardCorrections = [];
   const reports = [];
+  const outcomeParkMarks = [];
   return {
-    flips, cardCorrections, reports, statePath,
+    flips, cardCorrections, reports, outcomeParkMarks, statePath,
     deps: {
       loadTasksFn: () => tasks,
       tasksDir: dir,
@@ -614,6 +615,7 @@ function zombieHarness({ tasks, entries = [], workspaces = [], cards = {}, state
       fetchCardFn: (nid) => cards[nid] || null,
       flipFn: (task) => flips.push(String(task.id)),
       correctCardFn: (nid) => { cardCorrections.push(nid); return true; },
+      markOutcomeParkedFn: (task) => outcomeParkMarks.push(String(task.id)),
       reportFn: (l) => reports.push(l),
       nowFn: () => T1184_NOW,
       statePath,
@@ -665,4 +667,75 @@ test('zombie sweep: dry-run reports but never flips or stamps state', () => {
   assert.equal(r.flipped.length, 1, 'dry-run still REPORTS the would-be flip');
   assert.deepEqual(h.flips, [], 'no local write');
   assert.ok(!fs.existsSync(h.statePath), 'dry-run must not stamp the cadence state');
+});
+
+// ── Outcome-filled card: park, don't reopen (task #1272, the #383 class) ────
+test('zombie sweep: a card with a filled Outcome is parked (Paused), never flipped to pending/Not-started', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9)],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'FINDINGS.md written, 12 screenshots.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, [], 'must never locally flip a done-but-unclosed card back to pending');
+  assert.deepEqual(h.cardCorrections, [nid], 'still corrects the Notion card (to Paused, not Not started)');
+  assert.deepEqual(r.flipped, [], 'not counted as a flip');
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: outcome-filled card parks with status Paused (not Not started) and a distinct note', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const statuses = [];
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = (id, note, status) => { statuses.push({ id, note, status }); return true; };
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(statuses.length, 1);
+  assert.equal(statuses[0].status, 'Paused');
+  assert.match(statuses[0].note, /#1272/);
+});
+
+test('zombie sweep: outcome-filled card reports zombie-outcome-needs-review, not zombie-flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.ok(h.reports.some(r => r.kind === 'zombie-outcome-needs-review' && r.taskId === '9'));
+  assert.ok(!h.reports.some(r => r.kind === 'zombie-flip'));
+});
+
+test('zombie sweep: dry-run on an outcome-filled card reports but never calls correctCardFn', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  const r = sweepUntrackedInProgress({ dryRun: true, deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.deepEqual(h.flips, []);
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: a successful park stamps the local idempotency marker (ship-check Codex finding — otherwise re-parks forever)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, ['9']);
+});
+
+test('zombie sweep: a card already carrying the outcome-park marker is skipped entirely (idempotent — no re-fetch, no re-report)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9, { description: '[outcome-park 2026-08-01] parked — Notion card set to Paused.\n\n' + zTask(9).description })],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.equal(r.checked, 0, 'must not even fetch the card for an already-parked task');
+});
+
+test('zombie sweep: a failed Notion park is reported honestly and never stamps the local marker (retried next sweep)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = () => false; // Notion write failed
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, [], 'no local marker on a failed park — must retry, not silently give up');
+  assert.ok(h.reports.some(rep => rep.kind === 'zombie-outcome-park-failed' && rep.taskId === '9'));
+  assert.deepEqual(r.flipped, []);
 });
