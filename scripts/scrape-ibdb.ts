@@ -10,10 +10,16 @@
 import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const IBDB_STATS_URL = 'https://www.ibdb.com/statistics/';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
+// Loose floor matching the existing per-row `cells.length >= 2` filter below —
+// this only guards against the page dropping HTML tables entirely (e.g. a
+// switch to a JS grid), not column-count drift within a still-present table
+// (task #1331).
+const TABLE_SCHEMA = { minCells: 2 };
 
 interface ShowData {
   slug: string;
@@ -103,6 +109,24 @@ async function scrapeIBDB(): Promise<void> {
 
     // IBDB shows might need individual page visits for complete stats
     // For now, let's try to get data from the statistics overview
+
+    // Schema guard BEFORE row extraction (task #1331): if IBDB's statistics
+    // page stops using HTML tables entirely (e.g. a JS grid), this fails loud
+    // instead of silently reporting "Found 0 entries" like the BWW incident.
+    const headerRows = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('table')).map(table => {
+        const headerRow = table.querySelector('thead tr') || table.querySelector('tr');
+        return headerRow ? Array.from(headerRow.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '') : [];
+      });
+    });
+    try {
+      assertTableSchema(headerRows, TABLE_SCHEMA);
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.error(`::error::scrape-ibdb: ${err.message}`);
+      }
+      throw err;
+    }
 
     // Map to store all-time stats by normalized show title
     const allTimeStats = new Map<string, {
