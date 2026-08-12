@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
@@ -119,11 +122,35 @@ test('Rule B still fires on risky work with no --help check anywhere', () => {
 // audit-fetchpage-cleanup.js (Rule B) as blocking violations on a tree where
 // both files are clean — reproduced on two byte-identical checkouts of
 // a058762fb37 (one with node_modules: exit 0; one without: exit 1, same two
-// files). main() now refuses to emit findings it cannot trust. This test is
-// the regression guard for the dependency itself: if acorn is ever dropped
-// from package.json, THIS fails with a readable reason instead of Lint
-// Workflows going red against two innocent files.
-test('the precise tokenizer is available in this repo (acorn is a real dependency)', () => {
+// files). main() now refuses to emit findings it cannot trust.
+//
+// TWO tests, because the obvious single one is unfalsifiable HERE. Worktrees
+// live at .claude/worktrees/<name>/ — nested INSIDE the main repo — and node
+// resolution walks up parent directories, so a worktree with no node_modules
+// of its own still resolves acorn from /Users/<user>/Broadwayscore/node_modules.
+// Since CLAUDE.md requires every code edit to happen in a worktree, a runtime
+// probe alone can never fail in the place this repo does its work, and would
+// have read as a passing guard while guarding nothing (second-opinion finding,
+// 2026-08-12).
+//
+// (a) runtime: the tokenizer path is live wherever this suite runs.
+test('the precise tokenizer resolves at runtime', () => {
   const status = tokenizerStatus();
   assert.equal(status.ok, true, status.detail);
+});
+
+// (b) declaration: acorn is a REAL declared dependency, so `npm ci` installs it
+// in CI and in a fresh clone. This is the falsifiable half — parent-directory
+// node_modules cannot mask a missing package.json entry, so deleting acorn from
+// dependencies fails here with a readable reason instead of turning Lint
+// Workflows red against two innocent files.
+test('acorn is declared in package.json, not just ambiently resolvable', () => {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+  const declared = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+  assert.ok(
+    declared.acorn,
+    'acorn is missing from package.json — `npm ci` will not install it, so the help-flag audit ' +
+      'degrades to its naive scanner in CI and reports clean files as blocking violations'
+  );
 });
