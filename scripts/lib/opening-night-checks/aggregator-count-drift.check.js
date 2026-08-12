@@ -91,7 +91,11 @@ function run(show, context) {
         kind: 'workflow',
         key: `aggregator-count-drift:${show.id}`,
         workflow: 'gather-reviews.yml',
-        inputs: { shows: show.id, opening_night_chain: 'true' },
+        // gather-reviews.yml's workflow_dispatch input is `opening_night`
+        // (boolean) — verified against .github/workflows/gather-reviews.yml.
+        // A wrong/unknown input name makes the GitHub API reject the dispatch
+        // outright (422), so this must match the workflow's actual schema.
+        inputs: { shows: show.id, opening_night: true },
         reason: `count-drift delta ${worst.delta} — ${aggSummary}`,
       },
     },

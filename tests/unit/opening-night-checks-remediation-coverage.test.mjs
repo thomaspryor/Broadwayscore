@@ -195,7 +195,19 @@ describe('aggregator-count-drift check', () => {
     assert.equal(remediation.kind, 'workflow');
     assert.equal(remediation.key, `aggregator-count-drift:${show.id}`);
     assert.equal(remediation.workflow, 'gather-reviews.yml');
-    assert.deepEqual(remediation.inputs, { shows: show.id, opening_night_chain: 'true' });
+    assert.deepEqual(remediation.inputs, { shows: show.id, opening_night: true });
+
+    // Cross-check against the workflow's ACTUAL declared inputs — a typo'd
+    // or renamed input name here makes GitHub's API reject the dispatch
+    // outright (422 "Unexpected inputs provided"), which is silent from the
+    // checklist's point of view (dispatchWorkflow just logs 'failed').
+    const yaml = require('yaml');
+    const workflowPath = path.join(__dirname, '..', '..', '.github', 'workflows', remediation.workflow);
+    const workflowDoc = yaml.parse(fs.readFileSync(workflowPath, 'utf8'));
+    const declaredInputs = new Set(Object.keys(workflowDoc.on.workflow_dispatch.inputs || {}));
+    for (const key of Object.keys(remediation.inputs)) {
+      assert.ok(declaredInputs.has(key), `${remediation.workflow} has no workflow_dispatch input named '${key}' (declared: ${[...declaredInputs].join(', ')})`);
+    }
   });
 
   it('no exclusion records for the show → ok, no remediation', () => {
