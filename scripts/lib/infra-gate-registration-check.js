@@ -161,10 +161,31 @@ function checkHookFileExists({ hookPath }) {
 /**
  * @param {object} a
  * @param {string} a.repoRoot  a checkout of the Broadwayscore repo (any branch — this reads origin/main directly)
- * @returns {{ok: boolean, detail: string}}
+ * @returns {{ok: boolean, inconclusive?: boolean, detail: string}}
  */
 function checkScopeLibOnOrigin({ repoRoot }) {
   if (!repoRoot) return { ok: false, detail: 'no repoRoot given' };
+  // A checkout without an origin/main remote-tracking ref cannot answer this
+  // question either way. actions/checkout defaults to fetch-depth: 1, and on a
+  // pull_request event it fetches only refs/pull/<n>/merge — so origin/main is
+  // absent and `git cat-file origin/main:<path>` exits non-zero for a reason
+  // that has nothing to do with the file. Reporting that as a FAILURE made
+  // every PR's Unit Tests job red regardless of its diff (observed on PR #573,
+  // run 31563016374, while the same test passed on push-to-main runs of the
+  // same commit range). Absence of the ref is inconclusive, not a violation.
+  const hasOriginMain = spawnSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    timeout: 15000,
+  });
+  if (hasOriginMain.status !== 0) {
+    return {
+      ok: true,
+      inconclusive: true,
+      detail:
+        'no origin/main ref in this checkout (shallow / PR-merge-ref clone) — cannot verify, not treating as a violation',
+    };
+  }
   const r = spawnSync('git', ['cat-file', '-e', `origin/main:${SCOPE_LIB_REPO_PATH}`], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -294,12 +315,19 @@ function runInfraGateRegistrationCheck({ homeDir = process.env.HOME, repoRoot, s
   };
 
   const failed = Object.entries(checks).filter(([, r]) => !r.ok);
+  const inconclusive = Object.entries(checks).filter(([, r]) => r.ok && r.inconclusive);
   const ok = failed.length === 0;
+  // Never let an inconclusive check be reported as a verified one — that is how
+  // a green summary starts meaning "we didn't look" instead of "we checked".
+  const caveat = inconclusive.length
+    ? ` (unverified — ${inconclusive.map(([k, r]) => `${k}: ${r.detail}`).join(' | ')})`
+    : '';
   return {
     ok,
+    inconclusive: inconclusive.map(([k]) => k),
     checks,
     summary: ok
-      ? 'infra-review gate registered, hook present, scope lib on origin/main, synthetic block confirmed'
+      ? `infra-review gate registered, hook present, scope lib on origin/main, synthetic block confirmed${caveat}`
       : `infra-review gate check FAILED — ${failed.map(([k, r]) => `${k}: ${r.detail}`).join(' | ')}`,
   };
 }

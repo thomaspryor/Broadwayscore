@@ -250,6 +250,21 @@ test(
   }
 );
 
+// A checkout with NO origin/main ref (what actions/checkout produces on a
+// pull_request event: fetch-depth 1 of refs/pull/<n>/merge) must come back
+// inconclusive, not failed. Reporting it as a violation turned every PR's Unit
+// Tests job red no matter what the PR changed — PR #573, run 31563016374.
+test('(a) a checkout with no origin/main ref is inconclusive, not a violation', () => {
+  const fakeRepo = makeTmpDir();
+  const { spawnSync } = require('node:child_process');
+  spawnSync('git', ['init', '-q'], { cwd: fakeRepo });
+  const r = checkScopeLibOnOrigin({ repoRoot: fakeRepo });
+  assert.equal(r.ok, true, r.detail);
+  assert.equal(r.inconclusive, true, r.detail);
+  assert.match(r.detail, /no origin\/main ref/);
+  fs.rmSync(fakeRepo, { recursive: true, force: true });
+});
+
 test(
   '(b) scripts/lib/infra-review-scope.js is present on origin/main',
   { skip: !fs.existsSync(path.join(REPO_ROOT, '.git')) && 'not a git checkout' },
