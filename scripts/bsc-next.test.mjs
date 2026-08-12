@@ -136,6 +136,11 @@ test('completedLaunchGuard blocks launching a completed task without --force', (
   assert.equal(completedLaunchGuard(TASKS[1], {}), null);                  // non-completed unaffected
 });
 
+test('completedLaunchGuard: silent on a completed task carrying a RECHECK-AFTER stamp (task #1355)', () => {
+  const recheckTask = { ...TASKS[2], description: 'Verifying the fix held.\nRECHECK-AFTER: 2026-08-20' };
+  assert.equal(completedLaunchGuard(recheckTask, {}), null);
+});
+
 // Task #334: task #297 got a 3rd cmux workspace dispatched onto it with zero
 // visibility into the 2 that had already died silently (killed at the #289
 // >30min timeout, never ran the Stop hook's ✅ self-mark). deadDispatchGuard

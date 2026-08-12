@@ -63,7 +63,7 @@ const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
-const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 
 // scripts/linear-import.js's Notion-mirror <-> Linear-issue join (Phase 0
 // rail 1, plan 2026-08-12). Default path only — linearMirrorGuard() itself
@@ -149,12 +149,45 @@ function parkedGuard(task, ledgerEntries, opts, cliName = 'scripts/bsc-next.js')
 // staleness, and is exempted. --force / --allow-unverifiable bypass it,
 // matching the sibling guards' and the verify-gate's own override
 // conventions.
+//
+// Native-task extension (task #1355): a native task (TaskCreate, no Notion
+// mirror — card is null) has no Outcome property to read, so the check
+// above was a total no-op for it even when task.status is already
+// 'completed' — the exact same #383 class (done-but-never-closed), just
+// spelled with a status field instead of a filled Outcome. task.status ===
+// 'completed' is that native equivalent: a recorded statement the work is
+// done. Gated strictly on `card == null` (not on outcome-emptiness) — a
+// live Notion card with a blank Outcome is normal for an in-progress card
+// and must never trip this; only the truly card-less native path does.
+// RECHECK-AFTER keeps its exemption, read from task.description (the only
+// text a native task carries) via the same parseRecheckAfter used on
+// card fields. The 'armed' exemption deliberately does NOT extend to
+// task.description: notion-tasks-sync truncates it to 400 chars (see
+// bsc-next.js's fullCardInHand comment), so a verify command living past
+// that cut would non-deterministically arm/disarm on truncation — unlike
+// RECHECK-AFTER's short single-line stamp, which reliably survives.
+function isNativeTaskDoneWithoutCard(task, card) {
+  return card == null && !!task && task.status === 'completed';
+}
+
 function staleOutcomeGuard(task, card, opts) {
   if (opts.force || opts['allow-unverifiable'] || opts['dry-run'] || opts['print-prompt']) return null;
   const outcome = card && String(card.outcome || '').trim();
-  if (!outcome) return null;
-  if (evaluateVerifiability((card && card.notes) || '').armed) return null;
+  const nativeCompleted = isNativeTaskDoneWithoutCard(task, card);
+  if (!outcome && !nativeCompleted) return null;
+  if (outcome && evaluateVerifiability((card && card.notes) || '').armed) return null;
   if (parseRecheckAfterFromCard(card)) return null;
+  if (nativeCompleted && parseRecheckAfter(task.description) != null) return null;
+  if (nativeCompleted) {
+    return `REFUSING to dispatch #${task.id}: this native task is already marked completed (no Notion ` +
+      `card backing it) — that status IS the recorded statement that the work is done, with no acceptance ` +
+      `criteria to verify a new attempt against. This looks like the #383 class (done-but-never-closed), ` +
+      `not a fresh dispatch.\n` +
+      `  Fix one of:\n` +
+      `    1. Leave it completed — there's nothing to dispatch.\n` +
+      `    2. Add "RECHECK-AFTER: YYYY-MM-DD" to the task description if this needs a scheduled revisit.\n` +
+      `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
+  }
   const pid = notionIdOf(task);
   return `REFUSING to dispatch #${task.id}: its card already has a filled Outcome (recorded ` +
     `completed work) and no acceptance criteria to verify a new attempt against. This looks like the #383 class ` +
@@ -260,6 +293,7 @@ module.exports = {
   deadDispatchGuard,
   parkedGuard,
   staleOutcomeGuard,
+  isNativeTaskDoneWithoutCard,
   checkDeadDispatch,
   notionIdOf,
   loadLinearMirrorMapping,
