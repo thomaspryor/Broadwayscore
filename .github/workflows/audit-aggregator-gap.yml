@@ -232,6 +232,7 @@ jobs:
           # without this key (ship-check finding: every backstop dispatch
           # would silently fail without it).
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
 
       # T1 coverage ledger (S2-T3). This job is the SINGLE WRITER of

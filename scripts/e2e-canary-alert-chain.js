@@ -28,12 +28,7 @@
  * everything else prints the would-be alert to console and still exits 1,
  * so a local run still fails loudly without paging anyone.
  */
-const { execFileSync } = require('child_process');
-const path = require('path');
 const { routeAlert, resolveCondition, deleteCondition } = require('./lib/owner-alert-router.js');
-
-const REPO_ROOT = path.join(__dirname, '..');
-const NOTION_BRAIN = path.join(__dirname, 'notion-brain.js');
 const IS_LIVE = process.env.GITHUB_ACTIONS === 'true' || process.env.CI === 'true' || process.argv.includes('--live');
 
 // Fixed (not date-suffixed) conditionKeys — deleteCondition() clears them at
@@ -44,21 +39,17 @@ const MAIN_KEY = 'e2e-canary:main';
 const DEDUP_KEY = 'e2e-canary:dedup';
 const FAILURE_KEY = 'e2e-canary:chain-broken';
 
-function getCardViaCli(pageId) {
-  const out = execFileSync('node', [NOTION_BRAIN, 'get', pageId], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-    timeout: 15000,
-  });
-  return JSON.parse(out);
+// BRO-286: the chain now files LINEAR issues — read-back and cleanup go
+// through linear-client (getIssue by identifier; archiveIssue by UUID).
+const linearClient = require('./lib/linear-client.js');
+
+async function getIssueByIdentifier(identifier) {
+  return linearClient.getIssue(identifier);
 }
 
-function archiveCardViaCli(pageId) {
-  execFileSync('node', [NOTION_BRAIN, 'archive', pageId], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-    timeout: 15000,
-  });
+async function archiveIssueByIdentifier(identifier) {
+  const issue = await linearClient.getIssue(identifier);
+  if (issue) await linearClient.archiveIssue(issue.id);
 }
 
 async function testFullChain() {
@@ -68,29 +59,31 @@ async function testFullChain() {
     title,
     description:
       'Synthetic alert from scripts/e2e-canary-alert-chain.js — verifies the ' +
-      'disposition=auto path actually files and reads back a real Notion card. ' +
+      'disposition=auto path actually files and reads back a real Linear issue. ' +
       'Safe to ignore; auto-archived at the end of the run.',
     severity: 'error',
     disposition: 'auto',
     cardAction: 'Investigate',
   });
 
-  if (result.action !== 'auto' || !result.dispatchOk || !result.cardId) {
+  // BRO-286: the tracker is a Linear issue — linearIdentifier is the proof
+  // of filing (cardId is always null on this path).
+  if (result.action !== 'auto' || !result.dispatchOk || !result.linearIdentifier) {
     throw new Error(
       `full-chain dispatch failed — action=${result.action} dispatchOk=${result.dispatchOk} ` +
-      `cardId=${result.cardId} underlyingError=${result.dispatchError || '(none captured)'}`
+      `linearIdentifier=${result.linearIdentifier} underlyingError=${result.dispatchError || '(none captured)'}`
     );
   }
 
-  const card = getCardViaCli(result.cardId);
-  if (!card || card.id !== result.cardId) {
-    throw new Error(`card verification failed — get(${result.cardId}) did not return a matching card`);
+  const issue = await getIssueByIdentifier(result.linearIdentifier);
+  if (!issue || issue.identifier !== result.linearIdentifier) {
+    throw new Error(`issue verification failed — getIssue(${result.linearIdentifier}) did not return a matching issue`);
   }
-  if (card.name !== title) {
-    throw new Error(`card verification failed — title mismatch: wrote "${title}", read back "${card.name}"`);
+  if (issue.title !== title) {
+    throw new Error(`issue verification failed — title mismatch: wrote "${title}", read back "${issue.title}"`);
   }
 
-  return result.cardId;
+  return result.linearIdentifier;
 }
 
 async function testDedup() {
@@ -105,25 +98,25 @@ async function testDedup() {
     severity: 'error',
     disposition: 'auto',
   });
-  if (first.action !== 'auto' || !first.dispatchOk || !first.cardId) {
+  if (first.action !== 'auto' || !first.dispatchOk || !first.linearIdentifier) {
     throw new Error(`dedup test: first call did not dispatch cleanly — ${JSON.stringify(first)}`);
   }
 
   const second = await routeAlert({
     conditionKey: DEDUP_KEY,
     title,
-    description: 'second fire — should be silent (no new card)',
+    description: 'second fire — should be silent (no new issue)',
     severity: 'error',
     disposition: 'auto',
   });
-  if (second.action !== 'silent' || second.cardId !== first.cardId) {
+  if (second.action !== 'silent' || second.linearIdentifier !== first.linearIdentifier) {
     throw new Error(
-      `dedup test: expected a silent re-fire reusing cardId=${first.cardId}, ` +
-      `got action=${second.action} cardId=${second.cardId}`
+      `dedup test: expected a silent re-fire reusing linearIdentifier=${first.linearIdentifier}, ` +
+      `got action=${second.action} linearIdentifier=${second.linearIdentifier}`
     );
   }
 
-  return first.cardId;
+  return first.linearIdentifier;
 }
 
 function resetLedgerState() {
@@ -136,15 +129,15 @@ function resetLedgerState() {
   }
 }
 
-async function cleanup(cardIds) {
+async function cleanup(issueIdentifiers) {
   resetLedgerState();
-  for (const id of cardIds) {
+  for (const id of issueIdentifiers) {
     if (!id) continue;
     try {
-      archiveCardViaCli(id);
-      console.log(`[e2e-canary] archived card ${id}`);
+      await archiveIssueByIdentifier(id);
+      console.log(`[e2e-canary] archived issue ${id}`);
     } catch (err) {
-      console.error(`[e2e-canary] warning: failed to archive card ${id} — ${err.message}`);
+      console.error(`[e2e-canary] warning: failed to archive issue ${id} — ${err.message}`);
     }
   }
 }

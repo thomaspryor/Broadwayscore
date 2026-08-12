@@ -48,7 +48,9 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, l
   realChildProcess.execFileSync = (...args) => {
     calls.execFileSync.push(args);
     if (execFileSyncImpl) return execFileSyncImpl(...args);
-    return JSON.stringify({ id: 'fake-card-id' });
+    // Default stub mimics linear-brain.js create output (BRO-286): issue JSON
+    // (the `.identifier` field is what dispatchCard parses) + the human line.
+    return JSON.stringify({ id: 'uuid-opaque', identifier: 'BRO-999', title: 'stub' }, null, 2) + '\nPARKED: BRO-999';
   };
 
   // Stub discord-notify's sendAlert so the human path never calls Resend.
@@ -190,23 +192,24 @@ test('routeAlert: a Linear-deduped condition still gets ledger-cooldown protecti
   }
 });
 
-test('routeAlert: rail-2 dedupe preserves a previously-filed open card\'s cardId — a Linear match means "no NEW tracker", not "the old card vanished"', async () => {
+test('routeAlert: rail-2 dedupe keeps the tracker reference — a Linear match means "no NEW tracker", and the ledger carries the matched identifier', async () => {
   let searchCalls = 0;
   const { router, restore } = loadRouterWithFakes({
-    // 1st call: no Linear match → files the Notion card. 2nd call (cooldown
-    // expired via cooldownHours:0): Linear now tracks it → rail-2 short-circuit.
-    linearSearchIssuesImpl: async () => (++searchCalls === 1 ? null : { identifier: 'BRO-780', title: 'Now tracked' }),
+    // 1st call: no Linear match → FILES a Linear issue (BRO-999, the default
+    // stub, BRO-286). 2nd call (cooldown expired via cooldownHours:0): the
+    // dedupe now matches (in production it would match the very issue the
+    // 1st call filed) → rail-2 short-circuit, no second filing.
+    linearSearchIssuesImpl: async () => (++searchCalls === 1 ? null : { identifier: 'BRO-999', title: 'Now tracked' }),
   });
   try {
     const first = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
-    assert.equal(first.cardId, 'fake-card-id');
+    assert.equal(first.linearIdentifier, 'BRO-999', 'filing must surface the created issue identifier');
+    assert.equal(first.cardId, null, 'no Notion card exists on the Linear path');
     const second = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
     assert.equal(second.action, 'silent');
-    assert.equal(second.cardId, 'fake-card-id', 'rail-2 must not clobber the real open card reference with null');
-    assert.equal(second.linearIdentifier, 'BRO-780');
+    assert.equal(second.linearIdentifier, 'BRO-999');
     const ledger = router.loadLedger();
-    assert.equal(ledger.conditions['test:cardid-preserved'].cardId, 'fake-card-id');
-    assert.equal(ledger.conditions['test:cardid-preserved'].linearIdentifier, 'BRO-780');
+    assert.equal(ledger.conditions['test:cardid-preserved'].linearIdentifier, 'BRO-999');
   } finally {
     restore();
   }
@@ -241,7 +244,7 @@ test('routeAlert: a Linear API failure FAILS OPEN — files the card as before, 
       disposition: 'auto',
     });
     assert.equal(result.action, 'auto');
-    assert.equal(result.cardId, 'fake-card-id', 'the card must still be filed — a Linear outage must never suppress a real alert');
+    assert.equal(result.linearIdentifier, 'BRO-999', 'the issue must still be filed — a Linear DEDUPE outage must never suppress the filing attempt');
     assert.equal(calls.execFileSync.length, 1);
     assert.ok(errors.some(e => /Linear dedupe check failed.*failing open/.test(e)));
   } finally {
@@ -325,13 +328,21 @@ test('routeAlert: new incident with disposition=auto dispatches exactly one card
       disposition: 'auto',
     });
     assert.equal(result.action, 'auto');
-    assert.equal(result.cardId, 'fake-card-id');
+    assert.equal(result.linearIdentifier, 'BRO-999');
+    assert.equal(result.cardId, null, 'Linear path files no Notion card (BRO-286)');
     assert.equal(calls.execFileSync.length, 1);
+    // The filed CLI must be the Linear chokepoint wrapper, parked, with the
+    // conditionKey embedded in the notes it passes.
+    const argv = calls.execFileSync[0][1];
+    assert.ok(String(argv[0]).endsWith('linear-brain.js'), `expected linear-brain.js, got ${argv[0]}`);
+    assert.ok(argv.includes('--park'), 'alert filings are parked, never auto-dispatched');
+    assert.match(argv[argv.indexOf('--notes') + 1], /\[conditionKey:test:new-incident\]/);
     assert.equal(calls.sendAlert.length, 0);
 
     const ledger = router.loadLedger();
     assert.equal(ledger.conditions['test:new-incident'].status, 'open');
     assert.equal(ledger.conditions['test:new-incident'].notifyCount, 1);
+    assert.equal(ledger.conditions['test:new-incident'].linearIdentifier, 'BRO-999');
   } finally {
     restore();
   }

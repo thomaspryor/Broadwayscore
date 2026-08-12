@@ -210,20 +210,31 @@ function extractLsaBody(html) {
  * than a DOM guess since it's the site's own structured data. Verified
  * against 2 live reviews (Hungry Women 4098 chars, Blackout Songs 3900+
  * chars) — both matched cleanly with zero related-article bleed.
+ *
+ * Scoped like extractPublishDate's JSON-LD step (this file already hit the
+ * "grabbed a different embedded article" bug once for dates — see the
+ * canonical-URL comment below): only consider Article-type entities
+ * (isArticleType/ARTICLE_LD_TYPES, declared later in this file but hoisted),
+ * and only trust the result when exactly ONE such entity carries a body —
+ * a page with a related-post Article block alongside the real one returns
+ * null here rather than guessing which is which.
  */
 function extractLaVoceBody(html) {
+  const candidates = [];
   for (const m of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
     let parsed;
     try { parsed = JSON.parse(m[1].trim()); } catch { continue; }
     const list = Array.isArray(parsed) ? parsed : [parsed];
     for (const entity of list) {
-      if (entity && typeof entity.articleBody === 'string' && entity.articleBody.length >= 300) {
-        const text = stripHtml(entity.articleBody);
-        if (text.length >= 300) return text;
+      if (entity && isArticleType(entity['@type']) && typeof entity.articleBody === 'string'
+        && entity.articleBody.length >= 300) {
+        candidates.push(entity.articleBody);
       }
     }
   }
-  return null;
+  if (candidates.length !== 1) return null;
+  const text = stripHtml(candidates[0]);
+  return text.length >= 300 ? text : null;
 }
 
 // L&SA signs every review with a trailing "--David Barbour" sign-off. Its
@@ -460,10 +471,12 @@ function extractArticleText(html, hostname) {
   }
 
   // La Voce di New York: no stable DOM wrapper across templates; pull the
-  // JSON-LD articleBody instead (see extractLaVoceBody above).
+  // JSON-LD articleBody instead (see extractLaVoceBody above). Returns null
+  // explicitly on failure — same reasoning as Stage/Times below: falling
+  // through to the generic <article>/<main> patterns risks saving page
+  // chrome or a related-post card as a plausible 300+ char "body".
   if (host.includes('lavocedinewyork.com')) {
-    const laVoceText = extractLaVoceBody(html);
-    if (laVoceText && laVoceText.length >= 300) return laVoceText;
+    return extractLaVoceBody(html);
   }
 
   // The Stage: requires subscriber auth; body lives in <p> across multiple

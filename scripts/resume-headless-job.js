@@ -47,6 +47,11 @@ async function main(argv = process.argv.slice(2)) {
   const r = await runJob({
     taskId, subject: `resume #${taskId}`, isolate: false, cwd,
     resumeSessionId: sessionId, prompt: RESUME_PROMPT, model: model || undefined,
+    // A resumed Linear job answers to the LINEAR dispatcher's kill switch,
+    // not bsc-next's — same per-dispatcher rule as the original spawn
+    // (BRO-286): LINEAR_NEXT_DISABLED=1 must stop Linear resumes, and the
+    // morning-digest plist's BSC_RUNNER_DISABLED=1 must not.
+    killSwitchEnv: String(taskId).startsWith('linear:') ? 'LINEAR_NEXT_DISABLED' : 'BSC_RUNNER_DISABLED',
   });
   console.log(`[resume-headless-job] task #${taskId} resume ${r.ok ? 'DONE' : `FAILED (${r.stage})`} (job ${r.jobId}${r.logFile ? `, log ${r.logFile}` : ''})`);
   process.exit(r.ok ? 0 : 1);
