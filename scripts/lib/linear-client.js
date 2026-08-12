@@ -5,6 +5,13 @@
  */
 
 const { readEnvKeys } = require('./load-env');
+// Query/mutation TEXT for the dispatcher's calls (getIssue/listOpenIssues/
+// createComment below) lives in linear-dispatch.js as pure, no-I/O builder
+// functions — so linear-next.js's tests can require() the exact strings this
+// file sends over the wire instead of a second, drifting copy (CLAUDE.md rule
+// 15: "never copies"). No cycle: linear-dispatch.js has zero requires back
+// into this file.
+const linearDispatch = require('./linear-dispatch');
 
 const API_URL = 'https://api.linear.app/graphql';
 const TEAM_KEY = 'BRO';
@@ -111,6 +118,33 @@ async function listIssues(teamId) {
   return issues;
 }
 
+// Single-issue fetch by human-readable identifier (e.g. "BRO-123") — Linear's
+// `issue(id:)` field accepts either the UUID or the identifier directly, no
+// team/number filter needed. Used by linear-next.js (task #1303) to seed a
+// dispatch; returns null when the identifier doesn't resolve, same "caller
+// checks for null" contract as this file's other read helpers.
+async function getIssue(identifier) {
+  const data = await graphql(linearDispatch.buildIssueQuery(), { id: identifier });
+  return data.issue || null;
+}
+
+// Open (non-completed, non-canceled) issues for a team, priority-agnostic
+// ordering left to the caller (linear-dispatch.js's sortIssuesByPriority) —
+// this only fetches. Defaults to TEAM_KEY so callers rarely need to pass one.
+async function listOpenIssues(teamKey = TEAM_KEY) {
+  const data = await graphql(linearDispatch.buildOpenIssuesQuery(), { teamKey });
+  return (data.issues && data.issues.nodes) || [];
+}
+
+// Post a comment on an issue (used by linear-next.js to record "Dispatched to
+// <ref> at <ts>" on the issue itself, so double-dispatch is visible on the
+// board without cross-referencing the local dispatch ledger).
+async function createComment(issueId, body) {
+  const data = await graphql(linearDispatch.buildCommentMutation(), { issueId, body });
+  if (!data.commentCreate.success) throw new Error(`commentCreate failed for issue ${issueId}`);
+  return data.commentCreate;
+}
+
 async function updateIssue(id, input) {
   const data = await graphql(
     `mutation($id: String!, $input: IssueUpdateInput!) {
@@ -154,6 +188,9 @@ module.exports = {
   getTeam,
   listAllIssueTitles,
   listIssues,
+  getIssue,
+  listOpenIssues,
+  createComment,
   updateIssue,
   listProjects,
   createProject,

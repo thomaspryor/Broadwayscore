@@ -110,6 +110,16 @@ function recoverBylineForEntry(entry, siblings) {
  * appear is a mis-extraction (e.g. a "Christopher Isherwood" file sitting on a
  * "Charles Isherwood" article) and must not be propagated.
  *
+ * Fallback: some outlets (WSJ house style) only ever spell out the critic's
+ * FIRST name in the standalone byline line, then refer to them by honorific +
+ * surname in the body ("Mr. Isherwood is the Journal's theater critic") —
+ * giant-2026/wsj is a live example, confirmed 2026-08-12. The full-name check
+ * above still requires an exact all-tokens match as the default bar; this
+ * fallback accepts an honorific immediately followed by the name's last
+ * token, which is specific enough not to weaken the gate-3 contamination
+ * protection (the "Christopher vs Charles Isherwood" hallucination test below
+ * has no honorific in its body text and still correctly rejects).
+ *
  * @param {string} name
  * @param {string} text
  * @returns {boolean}
@@ -119,7 +129,9 @@ function nameCorroboratedBy(name, text) {
   const hay = foldDiacritics(text).toLowerCase();
   const tokens = foldDiacritics(name).split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
   if (!tokens.length) return false; // nothing substantive to match on
-  return tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay));
+  if (tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay))) return true;
+  const lastToken = tokens[tokens.length - 1];
+  return new RegExp(`\\b(mr|ms|mx|mrs)\\.?\\s+${lastToken}\\b`, 'i').test(hay);
 }
 
 /**
@@ -155,9 +167,14 @@ function nameCorroboratedBy(name, text) {
  * WRONG critic or drops a scored review.
  *
  * @param {Array<{file:string, outletId:string, url?:string, criticName?:string, fullText?:string, flagged?:boolean}>} records
+ * @param {{requireCleanSource?: boolean}} [opts] — requireCleanSource (default
+ *   true) enforces gate 2. Pass false only from a caller that displays the
+ *   recovered name without ever writing it back to the source file — see
+ *   recoverDisplayBylinesForShow below for why that makes gate 2 moot.
  * @returns {Array<{file:string, recoveredName:string}>}
  */
-function recoverBylinesForShow(records) {
+function recoverBylinesForShow(records, opts) {
+  const requireCleanSource = !opts || opts.requireCleanSource !== false;
   const list = Array.isArray(records) ? records : [];
 
   // name(folded+lowercased) -> set of outletIds that carry it as a plausible
@@ -192,9 +209,10 @@ function recoverBylinesForShow(records) {
     if (!unknowns.length || unknowns.length === group.length) continue;
     const named = group.filter((r) => !unknowns.includes(r));
     // Gate 2: only CLEAN (unflagged) siblings may supply a name — a flagged
-    // same-URL twin would merge-drop the scored review.
-    const cleanNamed = named.filter((r) => !r.flagged);
-    const name = pickRecoveredName(cleanNamed.map((r) => r.criticName || ''));
+    // same-URL twin would merge-drop the scored review. Skippable by callers
+    // that never write the name back to disk (see opts above).
+    const nameSource = requireCleanSource ? named.filter((r) => !r.flagged) : named;
+    const name = pickRecoveredName(nameSource.map((r) => r.criticName || ''));
     if (!name) continue;
     // Gate 3: cross-outlet contamination guard.
     const outlets = nameOutlets.get(foldDiacritics(name).trim().toLowerCase());
@@ -207,10 +225,58 @@ function recoverBylinesForShow(records) {
   return out;
 }
 
+/**
+ * Display-only variant of recoverBylinesForShow (card #190). Skips gate 2
+ * (clean-source): the on-disk hazard gate 2 guards against — a rebuild
+ * rename/dedup helper collapsing an Unknown file onto a same-name/same-URL
+ * flagged twin and dropping the scored review (the 2026-07-14 giant-2026/wsj
+ * incident, card #27) — can only happen when the recovered name is WRITTEN
+ * onto the Unknown file on disk. This function's caller (rebuild-all-reviews.js)
+ * only substitutes the name into the in-memory reviews.json record it emits;
+ * the source JSON file's criticName stays "Unknown" forever, so there is no
+ * name+URL collision for any dedup pass to ever see. Gates 1 (URL agreement),
+ * 3 (cross-outlet contamination), and 4 (body corroboration) still apply.
+ *
+ * Gate 5 (adversarial review, card #190): rebuild-all-reviews.js's own
+ * POST-PROCESSING passes collapse any two reviews sharing (show, outlet,
+ * criticName) at reviews.json-emission time, keeping only the later
+ * publishDate — that is how the pipeline already treats "same critic, same
+ * outlet" as a true duplicate. Display-only recovery is immune to the
+ * ON-DISK rename hazard above, but if the recovered name happens to match a
+ * DIFFERENT already-named, unflagged (likely-scored) record at the same
+ * outlet with a DIFFERENT URL, applying it would manufacture a fresh
+ * same-name collision for that later pass to silently resolve — dropping a
+ * live, distinct review instead of the excluded twin. Skip the recovery in
+ * that case; leaving "Unknown" keeps both reviews (same "gates err toward
+ * skipping" philosophy as gates 1-4).
+ *
+ * @param {Array<{file:string, outletId:string, url?:string, criticName?:string, fullText?:string, flagged?:boolean}>} records
+ * @returns {Array<{file:string, recoveredName:string}>}
+ */
+function recoverDisplayBylinesForShow(records) {
+  const list = Array.isArray(records) ? records : [];
+  const recovered = recoverBylinesForShow(list, { requireCleanSource: false });
+  return recovered.filter((rec) => {
+    const src = list.find((r) => r.file === rec.file);
+    if (!src) return true;
+    const srcUrl = canonicalReviewUrl(src.url);
+    const recoveredKey = rec.recoveredName.trim().toLowerCase();
+    const collides = list.some((r) =>
+      r.file !== rec.file &&
+      r.outletId === src.outletId &&
+      !r.flagged &&
+      (r.criticName || '').trim().toLowerCase() === recoveredKey &&
+      canonicalReviewUrl(r.url) !== srcUrl
+    );
+    return !collides;
+  });
+}
+
 module.exports = {
   isPlausiblePersonName,
   pickRecoveredName,
   recoverBylineForEntry,
   recoverBylinesForShow,
+  recoverDisplayBylinesForShow,
   nameCorroboratedBy,
 };

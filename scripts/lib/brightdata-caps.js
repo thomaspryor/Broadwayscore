@@ -56,6 +56,29 @@ const path = require('path');
 const DEFAULT_DAILY_REQ_CEILING = 3500;
 
 /**
+ * Per-zone, per-show reservation (S2-T7 follow-up, task #1315): the request
+ * count carved OUT of EACH zone's daily ceiling for bulk (non-exempt) callers
+ * whenever a show is in its opening window, so a routine sweep can't push the
+ * real breaker past the point where it starts starving the day's opening.
+ *
+ * Deliberately the same 250 opening-night-budget.js's own DEFAULT_PER_SHOW
+ * .brightdata uses, but kept as an independent literal rather than a shared
+ * import — same "known, accepted cost of the split" tradeoff
+ * scrapingdog-caps.js documents for its own two sizing constants: this file
+ * is the low-level per-request chokepoint (required by scraper.js on every
+ * BD call) and must not pull in opening-night-budget.js's higher-level
+ * pre-flight estimator (https/provider-billing requires) just to read one
+ * number. Re-tuning either constant should consider the other.
+ *
+ * NOT numerically equivalent, though: this reserve applies PER ZONE (unlocker
+ * + SERP each keep their own 250/show), while opening-night-budget.js's
+ * reserve floors a single COMBINED-across-both-zones number — that split
+ * predates this task (its dailyCap has always summed both zones; this file's
+ * ceiling has always been per-zone) and isn't something to paper over here.
+ */
+const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW = 250;
+
+/**
  * Callers exempt from the breaker + bulk budget. Matched on the basename of
  * process.argv[1]. Deliberately minimal (plan: "start allowlist minimal") —
  * these are the scripts that do live opening-night review discovery, where a
@@ -127,6 +150,11 @@ function resolveExemptScripts(env = process.env) {
   return raw.split(',').map((s) => s.trim()).filter(Boolean);
 }
 
+/** Opening-window per-show reserve: BD_OPENING_WINDOW_RESERVE_PER_SHOW, else the default. */
+function resolveOpeningWindowReservePerShow(env = process.env) {
+  return _posInt(env.BD_OPENING_WINDOW_RESERVE_PER_SHOW, DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW);
+}
+
 // ---------- pure decision functions ------------------------------------------
 
 /**
@@ -150,6 +178,30 @@ function shouldTripBreaker({ billedReqs, ceiling }) {
     return { tripped: true, reason: `billed ${billedReqs} >= ceiling ${ceiling}` };
   }
   return { tripped: false, reason: `billed ${billedReqs} < ceiling ${ceiling}` };
+}
+
+/**
+ * Ceiling the bulk (non-exempt) breaker check should use when N shows are in
+ * their opening window (task #1315). Carves `openingWindowShows *
+ * reservePerShow` OUT of the ceiling so a routine sweep trips the breaker
+ * before it can eat into the pool an opening-window show needs — exempt
+ * callers never consult the breaker at all (see consultBrightData below), so
+ * this only throttles the callers that were starving them.
+ *
+ * Absolute per-show reserve, not a flat percentage: a flat cut is
+ * over-restrictive for one show and under-reserves for a large cohort, and
+ * the per-show figure already exists (opening-night-budget.js's own
+ * DEFAULT_PER_SHOW.brightdata estimate) — this mirrors it rather than
+ * inventing a second sizing scheme.
+ *
+ * @param {{ceiling: number, openingWindowShows: number, reservePerShow?: number}} params
+ * @returns {number} the ceiling to feed into shouldTripBreaker
+ */
+function effectiveCeilingForOpeningWindow({ ceiling, openingWindowShows, reservePerShow = DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW }) {
+  if (!Number.isFinite(ceiling) || ceiling <= 0) return ceiling;
+  if (!Number.isFinite(openingWindowShows) || openingWindowShows <= 0) return ceiling;
+  if (!Number.isFinite(reservePerShow) || reservePerShow <= 0) return ceiling;
+  return Math.max(0, ceiling - openingWindowShows * reservePerShow);
 }
 
 /**
@@ -361,11 +413,14 @@ function _resetForTests() {
 module.exports = {
   DEFAULT_DAILY_REQ_CEILING,
   DEFAULT_EXEMPT_SCRIPTS,
+  DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW,
   resolveDailyCeiling,
   resolvePerRunBudget,
   resolveExemptPerRunBudget,
   resolveExemptScripts,
+  resolveOpeningWindowReservePerShow,
   shouldTripBreaker,
+  effectiveCeilingForOpeningWindow,
   isExemptCaller,
   checkPerRunBudget,
   isBreakerActiveForZone,

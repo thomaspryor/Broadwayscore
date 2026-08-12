@@ -14,6 +14,11 @@ on:
       # its unit test is in tests/unit-test-manifest.txt (tests/** is globbed
       # above) but a solo edit to the lib needs this listing to trigger CI.
       - 'scripts/lib/supabase-schema-expectations.js'
+      # Column-count brittleness guard (task #118) used by scrape-alltime.ts
+      # and scrape-grosses.ts: its unit test is in tests/unit-test-manifest.txt
+      # (tests/** is globbed above) but a solo edit to the lib needs this
+      # listing to trigger CI.
+      - 'scripts/lib/table-schema-assertion.js'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
@@ -2297,6 +2302,19 @@ on:
       - 'scripts/lib/linear-issue-create.test.mjs'
       - 'scripts/linear-brain.js'
       - 'scripts/audit-linear-issuecreate-chokepoint.js'
+      # Linear-issue dispatcher (task #1303): fetches a Linear issue and
+      # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
+      # headless launch primitives. dispatch-guards.js (task #1303 plan
+      # review) is the 6 shared pre-launch guard/gate predicates extracted
+      # OUT of bsc-next.js so both dispatchers share one set of refusals —
+      # both bsc-next.js and linear-next.js require it, so a solo edit here
+      # must trigger CI regardless of which caller is untouched. Colocated
+      # tests/unit/linear-next.test.mjs is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); these
+      # scripts/ files need explicit listing (feedback_test_yml_push_path_allowlist).
+      - 'scripts/linear-next.js'
+      - 'scripts/lib/linear-dispatch.js'
+      - 'scripts/lib/dispatch-guards.js'
   pull_request:
     branches: [main]
   schedule:
