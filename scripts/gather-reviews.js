@@ -3122,8 +3122,9 @@ function createReviewFile(showId, reviewData, options = {}) {
   // aggregator_url_mismatch ERROR class validate-review-texts.js flags. serp-discovery
   // kept recreating it and held main red for 2 days (one instance deleted 2026-06-15,
   // 3d54cb4797). shouldSkipAggregatorUrlWrite is value-first + source-aware: it blocks
-  // ONLY contentless, non-aggregator-source writes (serp-discovery), never an
-  // aggregator-source write or one carrying a real star/score.
+  // contentless, non-aggregator-source writes (serp-discovery), any write with a
+  // real star/score, AND (task #1337) an aggregator-source write that carries
+  // NEITHER a score NOR extracted text — source alone is no longer sufficient.
   if (shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId)) {
     console.log(`    ✗ Skipping ${filename}: aggregator-domain URL (${reviewData.url}) for non-aggregator outlet "${normalizedOutletId}" (source=${reviewData.source || 'none'}, no score) — would create an aggregator_url_mismatch contamination file`);
     return 'aggregatorUrlMismatch';

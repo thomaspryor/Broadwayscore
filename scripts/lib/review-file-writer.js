@@ -45,6 +45,7 @@ const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = requ
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
 const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore } = require('./aggregator-domains');
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -384,17 +385,29 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // reviews and the newest held main red. Hoisting the SAME predicate to the shared
   // chokepoint is what makes the fix cover every caller rather than the two we
   // happened to read. shouldSkipAggregatorUrlWrite is deliberately narrow: it lets
-  // aggregator-SOURCE writes through (they legitimately carry the roundup URL) and
-  // lets any write carrying a real star/score through (star-stubs).
+  // any write carrying a real star/score through (star-stubs), and (as of task
+  // #1337, see below) an aggregator-SOURCE write ONLY when it also carries a
+  // score or extracted text — not on the source label alone.
   //
   // Verified against the full 42,252-file corpus before landing: it matches exactly
   // the 5 contaminated files and zero legitimate ones.
-  if (shouldSkipAggregatorUrlWrite(
-    { source: input.source, url: input.url, originalScore: fields.originalScore, aggregatorStars: fields.aggregatorStars },
-    outletId,
-  )) {
-    console.warn(`  ⚠️  Skipping aggregator-URL write: outletId "${outletId}" with aggregator URL ${input.url} (roundup page, not this outlet's review)`);
-    return { action: 'skipped', reason: 'aggregator-url-mismatch' };
+  //
+  // Task #1337: the source-only exemption inside shouldSkipAggregatorUrlWrite now
+  // also requires extracted text (or a score) before trusting an aggregator-source
+  // label — an aggregator-source write with neither was passing this guard, only to
+  // be flagged post-hoc as aggregator_url_mismatch by validate-review-texts.js. This
+  // caller must therefore pass the text-signal fields through, not just source/url/
+  // score, or the new gate always sees "no text" and the fix is a no-op here.
+  {
+    const aggregatorTextSignal = { fullText: input.fullText || fields.fullText, excerpt: input.excerpt || fields.excerpt, text: input.text || fields.text };
+    for (const f of EXCERPT_FIELDS) aggregatorTextSignal[f] = input[f] || fields[f];
+    if (shouldSkipAggregatorUrlWrite(
+      { source: input.source, url: input.url, originalScore: fields.originalScore, aggregatorStars: fields.aggregatorStars, ...aggregatorTextSignal },
+      outletId,
+    )) {
+      console.warn(`  ⚠️  Skipping aggregator-URL write: outletId "${outletId}" with aggregator URL ${input.url} (roundup page, not this outlet's review)`);
+      return { action: 'skipped', reason: 'aggregator-url-mismatch' };
+    }
   }
 
   // --- Guard: tour/regional review contamination (task #1150, 2026-08-09) ---
@@ -444,16 +457,19 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // aggregator scrapers can populate per-source excerpt variants instead of
     // the generic fullText/excerpt/text fields. Treat any of them as "has text"
     // so the guard doesn't drop legit aggregator-extracted reviews.
+    //
+    // Sourced from the canonical EXCERPT_FIELDS list (excerpt-fields.js), not a
+    // second hand-rolled subset: this used to hardcode only 6 of the 10 canonical
+    // fields (missing westEndTheatreExcerpt/theatreReviewsExcerpt/theStageExcerpt/
+    // playbillVerdictExcerpt), so a write with ONLY one of those 4 could pass the
+    // aggregator-URL guard above (which does use the full list) only to be
+    // rejected here as an "empty stub" — a silent, field-name-dependent trap
+    // (Codex adversarial finding, #1337 ship-check).
     const hasText = !!(
       input.fullText || fields.fullText ||
       input.excerpt || fields.excerpt ||
       input.text || fields.text ||
-      input.bwwExcerpt || fields.bwwExcerpt ||
-      input.dtliExcerpt || fields.dtliExcerpt ||
-      input.showScoreExcerpt || fields.showScoreExcerpt ||
-      input.nycTheatreExcerpt || fields.nycTheatreExcerpt ||
-      input.stagedoorExcerpt || fields.stagedoorExcerpt ||
-      input.lboRoundupExcerpt || fields.lboRoundupExcerpt
+      EXCERPT_FIELDS.some((f) => input[f] || fields[f])
     );
     if (!outletKnown && !hasText) {
       console.warn(`  ⚠️  Skipping empty stub for unregistered outlet "${outletId}" (showId=${showId}, url=${input.url || 'null'})`);
