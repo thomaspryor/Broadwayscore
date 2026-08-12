@@ -31,8 +31,9 @@
  */
 
 const { JSDOM } = require('jsdom');
-const { slugify, levenshteinDistance } = require('./deduplication');
-const { normalizeTitle, canonicalVenue } = require('./title-match');
+const { slugify, levenshteinDistance, aliasCanonical } = require('./deduplication');
+const { normalizeTitle } = require('./title-match');
+const { normalizeVenueName } = require('./venue-classification');
 
 // Aggregator-infrastructure URLs that land in the unmatched audit but are not
 // shows (site nav, legal, feeds). Matched against the article slug.
@@ -556,6 +557,76 @@ function collisionSlugSet(shows) {
 }
 
 /**
+ * Off-broadway/regional shows only — every candidate this pipeline discovers
+ * is one of these two categories (classifyVenueMarket never assigns anything
+ * else), so this is the correct universe for an "already known" check BEFORE
+ * an article's venue is known (pre-fetch skip, audit-file pruning). Excluding
+ * Broadway/West End shows closes the cross-market half of the blind spot
+ * described below even though venue itself still can't be checked at these
+ * two call sites.
+ */
+function obRegionalShows(shows) {
+  return (Array.isArray(shows) ? shows : []).filter(
+    (s) => s && (s.category === 'off-broadway' || s.category === 'regional')
+  );
+}
+
+/**
+ * Venue equality for findKnownObShow — deliberately NOT title-match.js's
+ * canonicalVenue(). That function's fallback for a venue outside the curated
+ * VENUE_ALIASES table is just the lowercased FIRST WORD (title-match.js
+ * canonicalVenue, ~line 250), so two unrelated theatres that both start with
+ * "The" collapse to the same key. Fine for canonicalVenue's original callers
+ * (fuzzy duplicate-detection candidates a human reviews); unsafe here — a
+ * false venue MATCH is the one thing standing between a title collision and
+ * a silent reject/prune, so it would quietly reintroduce the exact bug this
+ * file's venue-scoping exists to prevent (ship-check finding, task #1246,
+ * 2026-08-11: verified canonicalVenue("The Duke on 42nd Street") ===
+ * canonicalVenue("The Public Theater")).
+ *
+ * Reuses two already-shipped, separately-tested helpers instead of adding a
+ * third normalization scheme: aliasCanonical() (deduplication.js) requires a
+ * REAL VENUE_ALIASES hit on both sides — no lossy fallback — and
+ * normalizeVenueName() (venue-classification.js) is an exact (punctuation/
+ * whitespace/Theatre-vs-Theater insensitive) full-string comparison for
+ * venues the alias table doesn't cover.
+ */
+function venuesMatch(a, b) {
+  if (!a || !b) return false;
+  const aliasA = aliasCanonical(a);
+  const aliasB = aliasCanonical(b);
+  if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
+  const normA = normalizeVenueName(a);
+  return normA !== '' && normA === normalizeVenueName(b);
+}
+
+/**
+ * The full venue-scoped "already known" check: title AND venue must both
+ * match an off-broadway/regional show, never title alone — a bare title
+ * match against the full 2,800+ show catalog collides with any unrelated
+ * same-named show in any market or decade (ship-check P0, task #101,
+ * 2026-08-11: a title-only prune dropped a brand-new "Hamlet" candidate
+ * because an unrelated 2009 "Hamlet" shared its slug). Only usable once an
+ * article's venue is known — i.e. AFTER fetch (classifyCandidate).
+ *
+ * @param {string} title
+ * @param {string} venue
+ * @param {Array} shows
+ * @returns {{id:string}|null}
+ */
+function findKnownObShow(title, venue, shows) {
+  if (!title || !venue) return null;
+  const normalized = normalizeTitle(title);
+  for (const s of obRegionalShows(shows)) {
+    if (!s.title) continue;
+    if (venuesMatch(venue, s.venue) && normalizeTitle(s.title) === normalized) {
+      return { id: s.id };
+    }
+  }
+  return null;
+}
+
+/**
  * Prune an unmatched-audit array (the *-unmatched.json the PV + BWW landing
  * scrapers write) of entries that no longer belong:
  *   - infrastructure slugs (site nav / legal / feeds) — never a show, so they
@@ -564,15 +635,25 @@ function collisionSlugSet(shows) {
  *     shows.json — the show was matched or manually promoted since the entry
  *     was logged.
  *
- * The "already in shows" gate is DELIBERATELY the SAME exact-slug membership
- * (`slugCollidesWith(referenceTitle(source, entry), existingSlugs)`) that
- * extract-aggregator-candidates.js uses pre-fetch. Using the live token-set
- * matchers (matchSlugToShow / matchTitleToShow) here would be LOOSER than that
- * gate and could silently delete a genuinely new candidate that merely shares
- * title tokens with an existing/closed namesake (e.g. a new "Hamlet at BAM"
- * vs an old "hamlet-2009") before extract ever fetches it — a lost discovery.
- * Baking the exact gate in (rather than a caller-supplied predicate) keeps
- * prune and extract provably in agreement.
+ * TITLE-ONLY, deliberately: the raw unmatched-audit record ({url, slug,
+ * title?}) has no venue — the article hasn't been fetched yet, and this
+ * function never fetches (it runs inline in the scraper, before any HTML is
+ * available). findKnownObShow() can't be used here for that reason.
+ *
+ * Callers MUST pass a MARKET-SCOPED existingSlugs (built from
+ * `collisionSlugSet(obRegionalShows(shows))`, not the full catalog) — this is
+ * the mitigation for the venue gap: it closes the cross-market half of the
+ * blind spot (a new OB show can no longer collide with an old closed
+ * Broadway/West End namesake) but NOT the within-OB/regional cross-venue
+ * half (P1 task #1246, 2026-08-11, follow-up to the P0 above). That residual
+ * risk is accepted here because pruning only controls audit-file growth /
+ * re-fetch cost, not correctness — a wrongly-pruned genuinely-new show still
+ * gets a second chance the moment extract-aggregator-candidates.js fetches
+ * and venue-scopes it via findKnownObShow() (classifyCandidate) BEFORE this
+ * function's next run prunes it again. A same-run ordering gap can still
+ * lose that window (see extract-aggregator-candidates.js's pre-fetch gate for
+ * the analogous tradeoff); closing it fully would require fetching here,
+ * which defeats this function's purpose (cheap, network-free pruning).
  *
  * The scrapers route a now-matched article to their `matched` bucket, never
  * back into `unmatched`, so a pruned entry does NOT come back next run. Pruning
@@ -582,7 +663,7 @@ function collisionSlugSet(shows) {
  * @param {Array} entries  the merged unmatched-audit records
  * @param {object} opts
  * @param {'playbill-verdict'|'bww-roundup'} opts.source  picks the referenceTitle strategy
- * @param {Set<string>} opts.existingSlugs  slugs already in shows.json
+ * @param {Set<string>} opts.existingSlugs  MARKET-SCOPED slugs already in shows.json (off-broadway/regional only)
  * @returns {{kept: Array, pruned: number}}
  */
 function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
@@ -625,8 +706,9 @@ function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
  * production that merely shares a title with an unrelated closed show
  * anywhere in the catalog ("Hamlet", "The Seagull", ...) — silently erasing
  * exactly the discovery signal this task exists to surface. Requiring
- * canonicalVenue(candidate.venue) === canonicalVenue(existing.venue) too
- * means a title collision alone is never enough to delete.
+ * venuesMatch(candidate.venue, existing.venue) too means a title collision
+ * alone is never enough to delete (see venuesMatch's header for why that's
+ * NOT the same as title-match.js's looser canonicalVenue()).
  *
  * Deliberately exact (normalized-title + venue) match only — not the fuller
  * jaccard/subtitle-variant match promote-ob-venue-candidates.js's
@@ -642,20 +724,12 @@ function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
  * @returns {{kept: Array, pruned: Array}}
  */
 function pruneStagedCandidates(staged, shows) {
-  const existing = [];
-  for (const s of Array.isArray(shows) ? shows : []) {
-    if (!s || (s.category !== 'off-broadway' && s.category !== 'regional')) continue;
-    if (!s.title) continue;
-    existing.push({ id: s.id, venueKey: canonicalVenue(s.venue), normalized: normalizeTitle(s.title) });
-  }
   const kept = [];
   const pruned = [];
   for (const c of Array.isArray(staged) ? staged : []) {
     if (!c || typeof c !== 'object') continue;
     if (!c.title) { kept.push(c); continue; }
-    const venueKey = canonicalVenue(c.venue);
-    const normalized = normalizeTitle(c.title);
-    const match = existing.find(e => e.venueKey === venueKey && e.normalized === normalized);
+    const match = findKnownObShow(c.title, c.venue, shows);
     if (match) {
       pruned.push({ ...c, matchedShowId: match.id });
     } else {
@@ -686,7 +760,10 @@ function referenceTitle(source, record) {
  * @param {'playbill-verdict'|'bww-roundup'} args.source
  * @param {object} args.record  the raw audit entry {url, slug, title?, reason?, firstSeen?}
  * @param {string|null} args.html  fetched article HTML (null if fetch skipped/failed)
- * @param {Set<string>} args.existingSlugs  slugs already in shows.json
+ * @param {Array} args.shows  shows.json shows array — venue is known by this
+ *   point (fields.venue, checked above), so the slug-collision guard below can
+ *   be fully venue-scoped via findKnownObShow, unlike the pre-fetch gates that
+ *   only have a title to go on.
  * @returns {{status:'accept', candidate:object} | {status:'reject', reason:string, detail?:string}}
  */
 // Broadway-feeder regional theatres (the "out-of-market but Broadway-bound"
@@ -755,7 +832,7 @@ function classifyVenueMarket(venue) {
   return feederVenueCity(venue) ? 'regional' : 'off-broadway';
 }
 
-function classifyCandidate({ source, record, html, existingSlugs }) {
+function classifyCandidate({ source, record, html, shows }) {
   const slug = record.slug || '';
   if (isInfrastructureSlug(slug) || isInfrastructureSlug(record.url || '')) {
     return { status: 'reject', reason: 'infrastructure' };
@@ -804,9 +881,15 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
     return { status: 'reject', reason: 'no-date' };
   }
 
-  // Guard against a slug collision overwriting an existing show.
-  if (slugCollidesWith(fields.title, existingSlugs)) {
-    return { status: 'reject', reason: 'slug-collision', detail: slugify(fields.title) };
+  // Guard against a slug collision overwriting an existing show. Venue-scoped
+  // (title AND venue must both match) — fields.venue is known here, so unlike
+  // the pre-fetch gates this can use the full check (P1 task #1246,
+  // 2026-08-11): a title-only guard here would reject a brand-new same-named
+  // show at a different venue, exactly the P0 findKnownObShow's header
+  // describes.
+  const knownMatch = findKnownObShow(fields.title, fields.venue, shows);
+  if (knownMatch) {
+    return { status: 'reject', reason: 'slug-collision', detail: `${slugify(fields.title)} @ ${knownMatch.id}` };
   }
 
   // Shape matches a venue-listing-discover staging entry. The promoter recomputes
@@ -869,6 +952,9 @@ module.exports = {
   classifyTitleDelta,
   slugCollidesWith,
   collisionSlugSet,
+  obRegionalShows,
+  venuesMatch,
+  findKnownObShow,
   pruneUnmatchedAudit,
   pruneStagedCandidates,
   referenceTitle,

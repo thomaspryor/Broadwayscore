@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-11T23:27:40.968Z",
+  "timestamp": "2026-08-12T01:42:14.792Z",
   "stats": {
-    "totalReviews": 42058,
-    "alreadyFlagged": 18315,
+    "totalReviews": 42071,
+    "alreadyFlagged": 18319,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
-    "tvFilmSignals": 1181,
-    "londonSignals": 845,
+    "tvFilmSignals": 1185,
+    "londonSignals": 846,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3537
+    "noPublishDate": 3538
   },
   "findings": [
     {
@@ -1888,8 +1888,22 @@
     },
     {
       "showId": "barcelona-west-end-2024",
+      "file": "guardian--chris-wiegand.json",
+      "score": 39,
+      "publishDate": "2024-10-31",
+      "url": "https://www.theguardian.com/stage/2024/oct/31/barcelona-review-duke-of-yorks-london-lily-collins-alvaro-morte",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 95,
+      "score": 99,
       "publishDate": "2024-10-31",
       "url": "https://inews.co.uk/culture/arts/lily-collins-barcelona-review-3354734?srsltid=AfmBOoryeRFmjwleJM0WPXh-1cvMFp2Kluo063ENK28cNp1fWUPSwwX-",
       "findings": [
@@ -1903,7 +1917,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "independent--annabel-nugent.json",
-      "score": 44,
+      "score": 39,
       "publishDate": "2024-10-31",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/barcelona-lily-collins-alvaro-morte-b2638352.html",
       "findings": [
@@ -1930,10 +1944,52 @@
     },
     {
       "showId": "barcelona-west-end-2024",
-      "file": "telegraph--claire-allfree.json",
-      "score": 71,
+      "file": "standard--nick-curtis.json",
+      "score": 58,
       "publishDate": "2024-10-31",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/barcelona-review-lily-collins-alvaro-morte-duke-of-yorks-theatre-b1191215.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "telegraph--claire-allfree.json",
+      "score": 58,
+      "publishDate": "2024-10-31",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/barcelona-duke-of-yorks-theatre-review-lily-collins/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "thestage--tom-wicker.json",
+      "score": 43,
+      "publishDate": "2024-10-31",
+      "url": "https://www.thestage.co.uk/reviews/barcelona-review-duke-of-yorks-theatre-london-lily-collins-emily-in-paris-alvaro-morte-bess-wohl-lynette-linton",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 39,
+      "publishDate": "2024-10-31",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/barcelona-lily-collins-review-alvaro-morte-london-fv28x65zn",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -1945,7 +2001,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2024-10-30",
       "url": "https://www.whatsonstage.com/news/barcelona-west-end-review-lily-collins-and-alvaro-morte-are-revelatory-in-enigmatic-drama_1647506/",
       "findings": [
@@ -39602,6 +39658,20 @@
       "score": 98,
       "publishDate": "October 20th, 2022",
       "url": "https://www.londontheatre.co.uk/reviews/my-neighbour-totoro-review-barbican-rsc-studio-ghibli",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 96,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/barbican-encore-season-for-my-neighbour-totoro/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

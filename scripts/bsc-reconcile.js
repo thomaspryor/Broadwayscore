@@ -291,9 +291,18 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     // stealing cmux focus (wakeFn) and spamming the digest for no gain. It
     // genuinely needs a human (or --force) now; surface that once per tick,
     // not retry it.
-    if (ledger.deadAttemptsForTask(task.id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
-      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs investigation or --force, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: count only SUBSTANTIVE deaths toward the recurrence cap
+      // — a task whose only failures are cmux's terminal surface never
+      // rendering isn't the thing that needs investigating.
+      const cap = ledger.dispatchCapDecision(task.id, entries);
+      if (cap.blocked) {
+        const detail = cap.reason === 'infra'
+          ? `#${task.id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs investigation or --force, not another automatic retry`
+          : `#${task.id} has already died ${cap.substantive.length}x — needs investigation or --force, not another automatic retry`;
+        reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       reportFn({ kind: 'task-redispatch-throttled', taskId: task.id, detail: `#${task.id} deferred — this tick's redispatch budget (${MAX_REDISPATCH_PER_TICK}) is spent; will retry next tick` });
@@ -394,12 +403,19 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
       reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
       continue;
     }
-    if (ledger.deadAttemptsForTask(id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
-      // Marker stamped: this verdict is stable, so surface it once per stall,
-      // not every 5-minute tick.
-      appendLedgerFn({ event: STALL_EVENT, taskId: id });
-      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs a human look, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: same substantive-only cap as the redispatch guard above.
+      const cap = ledger.dispatchCapDecision(id, entries);
+      if (cap.blocked) {
+        // Marker stamped: this verdict is stable, so surface it once per
+        // stall, not every 5-minute tick.
+        appendLedgerFn({ event: STALL_EVENT, taskId: id });
+        const detail = cap.reason === 'infra'
+          ? `#${id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs a human look, not another automatic retry`
+          : `#${id} already died ${cap.substantive.length}+ times — needs a human look, not another automatic retry`;
+        reportFn({ kind: 'task-stall-blocked', taskId: id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       // NO marker on throttle: the budget is per-tick, so the next tick must
@@ -446,6 +462,12 @@ const UNTRACKED_SWEEP_INTERVAL_MS = 6 * 3600 * 1000;   // Notion fetches cost qu
 const UNTRACKED_IDLE_MS = 48 * 3600 * 1000;            // same bar as the health check's "orphaned in-progress" row
 const MAX_UNTRACKED_FLIPS_PER_SWEEP = 10;              // 72-at-once reads as a board wipe (plan-review user-impact finding)
 const UNTRACKED_MARKER = '[zombie-sweep ';
+// Distinct from UNTRACKED_MARKER (task #1272, ship-check Codex finding): the
+// outcome-park branch below never flips local status, so without its own
+// idempotency stamp the sweep would re-fetch, re-park, and re-report the
+// SAME card every idle window forever — an ever-growing Outcome history and
+// a recurring digest nag, not a one-time correction.
+const OUTCOME_PARK_MARKER = '[outcome-park ';
 
 function notionIdOfTask(task) {
   if (task && task.metadata && task.metadata.notionCard) return String(task.metadata.notionCard);
@@ -477,9 +499,19 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
       t.description = note + (t.description || '');
       fs.writeFileSync(file, JSON.stringify(t, null, 2));
     },
-    correctCardFn = (notionId, note) => {
+    // Stamps OUTCOME_PARK_MARKER without touching status/owner — the park
+    // only ever changes the NOTION side, so this exists purely to make the
+    // sweep idempotent (same check-then-act shape as flipFn above).
+    markOutcomeParkedFn = (task, note) => {
+      const file = path.join(tasksDir, `${task.id}.json`);
+      const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+      if (t.status !== 'in_progress') return;
+      t.description = note + (t.description || '');
+      fs.writeFileSync(file, JSON.stringify(t, null, 2));
+    },
+    correctCardFn = (notionId, note, status = 'Not started') => {
       const r = spawnSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'update', notionId,
-        '--status', 'Not started', '--outcome', note], { encoding: 'utf8', timeout: 60_000 });
+        '--status', status, '--outcome', note], { encoding: 'utf8', timeout: 60_000 });
       return r.status === 0;
     },
     reportFn = report,
@@ -510,6 +542,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (trackedIds.has(id)) continue;                       // ledger-tracked — the other sweeps own it
     if (task.metadata && task.metadata.recheckAfter) continue; // RECHECK-AFTER parked by process rule, not stuck
     if (String(task.description || '').includes(UNTRACKED_MARKER)) continue; // already swept once — idempotent
+    if (String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue; // already parked — idempotent
     const lease = readLeaseFn(id);
     if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
     const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
@@ -523,6 +556,42 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!Number.isFinite(idleMs) || idleMs < UNTRACKED_IDLE_MS) continue;   // recently touched — someone may be on it
 
     const days = Math.round(idleMs / 86400e3);
+
+    // Outcome already filled (task #1272, the #383 class): this card records
+    // COMPLETED work, so flipping it to Not started makes it re-eligible for
+    // dispatch and just redoes finished work (card #383: reopened by this
+    // exact branch on 2026-07-24, redispatched 2026-08-11). Park it in
+    // Notion instead (status Paused, same convention as bsc-prune's
+    // tab-close park) for a human yes/no. The LOCAL task is deliberately
+    // left in_progress — it keeps surfacing in the daily "stuck work:
+    // orphaned in-progress cards" digest row (#801) instead of silently
+    // re-entering the auto-dispatch pool; bsc-next.js's staleOutcomeGuard is
+    // the actual dispatch-time backstop regardless of local status.
+    if (String(card.outcome || '').trim()) {
+      skipped.push({ id, why: 'has-completed-outcome' });
+      reportFn({ kind: 'zombie-outcome-needs-review', taskId: id, detail: `in_progress task #${id} "${task.subject}" sat In progress ${days}d with no live session, but its Notion card already has a filled Outcome — parking for human review instead of auto-reopening (task #1272, the #383 class).` });
+      if (dryRun) continue;
+      let parked = false;
+      try {
+        parked = correctCardFn(notionId, `Auto-parked ${new Date().toISOString().slice(0, 10)} by bsc-reconcile zombie sweep: card sat In progress ${days}d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272). Resume dispatch with \`node scripts/bsc-next.js --id ${id} --force\` once reviewed.`, 'Paused');
+      } catch (e) {
+        reportFn({ kind: 'zombie-outcome-park-failed', taskId: id, detail: `card correction threw for #${id}: ${e.message}` });
+        continue;
+      }
+      // ship-check Codex finding: correctCardFn returning false (a failed
+      // Notion write) was previously indistinguishable from success — the
+      // digest said "parked" while the card stayed In progress. Only stamp
+      // the local idempotency marker on a CONFIRMED write, so a failed park
+      // is retried on the next sweep instead of being silently abandoned.
+      if (!parked) {
+        reportFn({ kind: 'zombie-outcome-park-failed', taskId: id, detail: `Notion update to Paused failed for #${id} — card status unchanged, will retry next sweep` });
+        continue;
+      }
+      const parkNote = `${OUTCOME_PARK_MARKER}${new Date().toISOString().slice(0, 10)}] parked — Notion card set to Paused, needs a human yes/no on the recorded Outcome (task #1272).\n\n`;
+      try { markOutcomeParkedFn(task, parkNote); } catch (e) { reportFn({ kind: 'zombie-outcome-park-marker-failed', taskId: id, detail: `local marker write failed: ${e.message}` }); }
+      continue;
+    }
+
     reportFn({ kind: 'zombie-flip', taskId: id, detail: `in_progress task #${id} "${task.subject}" — no ledger history, no live lease/tab, card idle ${days}d → flipped back to pending` });
     if (dryRun) { flipped.push(id); continue; }
     const note = `${UNTRACKED_MARKER}${new Date().toISOString().slice(0, 10)}] reopened — sat In progress ${days}d with no live session, workspace, or dispatch record (owning session likely died; task #1184 S2). Re-eligible for dispatch.\n\n`;

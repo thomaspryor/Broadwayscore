@@ -1136,6 +1136,40 @@ function checkQuality() {
       };
     }),
 
+    // Outlet invalid-content-rate monitor (card #1244, generalizing #100):
+    // same broken-extractor failure mode as the stub check above, but for
+    // extractions that DID return something — just not real article text
+    // (cookie wall, 404-as-200, boilerplate; isGarbageContent() in
+    // content-quality.js). 'invalid' is 23x larger corpus-wide than 'stub'
+    // and includes outlets that are chronically near-100% invalid
+    // (paywalled/bot-blocked, not newly broken) — computeOutletInvalidRates()
+    // additionally requires the recent rate to SPIKE over the outlet's own
+    // pre-window baseline so those don't cry wolf every day. It also excludes
+    // wrongProduction/wrongShow-reasoned 'invalid' records by default (card
+    // #1266) — that's a different classifyContentTier() code path (extractor
+    // is fine, wrong show matched) with its own FP sweep (tasks #24/#243), not
+    // an extractor-health signal. Same advisory `this-week` warn via the
+    // /^Quality:/ playbook route, never writes.
+    runCheck('Quality: outlet invalid-content rate', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { collectReviewRecords, computeOutletInvalidRates } = require('./audit-outlet-stub-rate.js');
+      const records = collectReviewRecords(rtDir);
+      const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records);
+      if (flaggedOutletIds.length === 0) {
+        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: `No broken-extractor signature in ${outlets.length} outlet(s), ${records.length} review(s)` };
+      }
+      const worst = outlets.find((o) => o.outletId === flaggedOutletIds[0]);
+      return {
+        name: 'Quality: outlet invalid-content rate',
+        status: 'warn',
+        message: `${flaggedOutletIds.length} outlet(s) show a broken-extractor signature (worst: ${worst.outletId} — ${worst.recentInvalidCount}/${worst.recentTotal} recent invalid, ${(worst.recentInvalidRate * 100).toFixed(0)}% vs ${(worst.baselineInvalidRate * 100).toFixed(0)}% baseline)`,
+        hint: 'Run `node scripts/audit-outlet-stub-rate.js` — wrongProduction/wrongShow-reasoned records are excluded from this check (see tasks #24/#243 for that FP sweep), so a flag here should be a genuine article-extractor.js regression. Spot-check contentTierReason on the flagged files to confirm before diving in.',
+      };
+    }),
+
     // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
     // check-affiliate-health.js runs earlier in the same data-health-check.yml
     // job and writes this snapshot; this line is (a) the digest surface for
