@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-10",
+  "lastUpdated": "2026-08-12",
   "shows": {
     "just-in-time-2025": {
       "currentCast": [
@@ -1200,6 +1200,15 @@
           "sourceUrl": "https://playbill.com/production/wicked-broadway-gershwin-theatre-2003",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "arrival",
+          "name": "Yeman Brown",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/wicked-broadway-gershwin-theatre-2003",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
@@ -1230,11 +1239,6 @@
           "name": "Dylan Mulvaney",
           "role": "Queen",
           "since": "2026-02-16"
-        },
-        {
-          "name": "Kirstin Maldonado",
-          "role": "Anne Boleyn",
-          "since": "2026-06-01"
         },
         {
           "name": "Adrianna Hicks",
@@ -1289,16 +1293,6 @@
           "date": "2026-08-17",
           "endDate": "2027-02-14",
           "note": "Broadway debut; taking over from Kirstin Maldonado",
-          "sourceUrl": "https://playbill.com/article/chloe-tucker-caine-and-stephanie-jae-park-to-join-six-on-broadway",
-          "sourceType": "playbill",
-          "addedDate": "2026-07-11"
-        },
-        {
-          "type": "departure",
-          "name": "Kirstin Maldonado",
-          "role": "Anne Boleyn",
-          "date": "2026-08-09",
-          "note": "Final performance August 9; replaced by Chloe Tucker Caine",
           "sourceUrl": "https://playbill.com/article/chloe-tucker-caine-and-stephanie-jae-park-to-join-six-on-broadway",
           "sourceType": "playbill",
           "addedDate": "2026-07-11"
@@ -1445,9 +1439,28 @@
           "sourceUrl": "https://playbill.com/article/original-queens-natalie-paris-and-aimie-atkinson-to-join-six-on-broadway",
           "sourceType": "playbill",
           "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Kirstin Maldonado",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/six-the-musicallena-horne-theatre-2021-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
-      "history": []
+      "history": [
+        {
+          "name": "Kirstin Maldonado",
+          "role": "Anne Boleyn",
+          "since": "2026-06-01",
+          "until": "2026-08-09",
+          "note": "Final performance August 9; replaced by Chloe Tucker Caine",
+          "sourceUrl": "https://playbill.com/article/chloe-tucker-caine-and-stephanie-jae-park-to-join-six-on-broadway",
+          "sourceType": "playbill"
+        }
+      ]
     },
     "oh-mary-2024": {
       "currentCast": [
@@ -1940,6 +1953,15 @@
           "sourceUrl": "https://playbill.com/production/the-outsiders-broadway-bernard-b-jacobs-theatre-2024",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "arrival",
+          "name": "Barton Cowperthwaite",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/the-outsiders-broadway-bernard-b-jacobs-theatre-2024",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
@@ -2173,8 +2195,8 @@
           "type": "closure",
           "name": "The Rocky Horror Show",
           "role": "Production",
-          "date": "2027-01-13",
-          "note": "Production closes 2027-01-13 (date reconciled to broadway.com-audited closingDate).",
+          "date": "2027-01-15",
+          "note": "Production closes 2027-01-15 (date reconciled to broadway.com-audited closingDate).",
           "sourceUrl": "https://playbill.com/article/meet-rocky-horror-shows-broadway-creatures-of-the-night",
           "sourceType": "playbill",
           "addedDate": "2026-01-28"
@@ -2686,512 +2708,6 @@
       ],
       "history": []
     },
-    "death-of-a-salesman-2026": {
-      "currentCast": [
-        {
-          "name": "Nathan Lane",
-          "role": "Willy Loman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Laurie Metcalf",
-          "role": "Linda Loman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Christopher Abbott",
-          "role": "Biff Loman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Ben Ahlers",
-          "role": "Happy Loman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "K. Todd Freeman",
-          "role": "Charley",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Jonathan Cake",
-          "role": "Ben Loman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "John Drea",
-          "role": "Howard Wagner",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Michael Benjamin Washington",
-          "role": "Bernard",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Tasha Lawrence",
-          "role": "The Woman",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Jake Silbermann",
-          "role": "Stanley",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Joaquin Consuelos",
-          "role": "Young Biff",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Jake Termine",
-          "role": "Young Happy",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Karl Green",
-          "role": "Young Bernard",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Katherine Romans",
-          "role": "Miss Forsythe",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Mary Neely",
-          "role": "Letta",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Jack Falahee",
-          "role": "Company",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Aidan Cazeau",
-          "role": "Ensemble",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Charlie Niccolini",
-          "role": "Ensemble",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Alexis Bronkovic",
-          "role": "Ensemble",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Erik Kilpatrick",
-          "role": "Ensemble",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Brendan Donaldson",
-          "role": "Ensemble",
-          "since": "2026-03-06"
-        },
-        {
-          "name": "Ron Eldard",
-          "role": "Biff",
-          "since": "1999-01-22"
-        }
-      ],
-      "upcoming": [
-        {
-          "type": "closure",
-          "name": "Death of a Salesman",
-          "role": "Production",
-          "date": "2026-08-09",
-          "note": "Limited engagement at Winter Garden Theatre, closing August 9, 2026.",
-          "sourceUrl": "https://playbill.com/article/the-cast-of-death-of-a-salesman-celebrated-its-opening-at-katzs-delicatessen",
-          "sourceType": "playbill",
-          "addedDate": "2026-06-17"
-        },
-        {
-          "type": "departure",
-          "name": "Jack Falahee",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Aidan Cazeau",
-          "role": "Ensemble",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Charlie Niccolini",
-          "role": "Ensemble",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Alexis Bronkovic",
-          "role": "Ensemble",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Erik Kilpatrick",
-          "role": "Ensemble",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Brendan Donaldson",
-          "role": "Ensemble",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Ron Eldard",
-          "role": "Biff",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/death-of-a-salesman-broadway-winter-garden-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        }
-      ],
-      "history": []
-    },
-    "cats-the-jellicle-ball-2026": {
-      "currentCast": [
-        {
-          "name": "Leiomy Maldonado",
-          "role": "Mavacity",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Kya Azeen",
-          "role": "Etcetera",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Bryson Battle",
-          "role": "Jellylorum",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Ken Ard",
-          "role": "DJ Griddlebone",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Sherrod T. Brown",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Bryce Farris",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Phumzile Sojola",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Kendall Grayson Stroud",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "B. Noel Thomas",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Kalyn West",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Donté Nadir Wilder",
-          "role": "Company",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Leiomy",
-          "role": "Macavity",
-          "since": "2026-03-01"
-        },
-        {
-          "name": "Chasity Moore",
-          "role": "Grizabella",
-          "since": "2026-03-01"
-        },
-        {
-          "name": "André De Shields",
-          "role": "Old Deuteronomy",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Junior LaBeija",
-          "role": "Gus",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Sydney James Harcourt",
-          "role": "Rum Tum Tugger",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Jonathan Burke",
-          "role": "Mungojerrie",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Baby Byrne",
-          "role": "Victoria",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Dava Huesca",
-          "role": "Rumpleteazer",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Dudney Joseph Jr.",
-          "role": "Munkustrap",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Primo Thee Ballerino",
-          "role": "Tumblebrutus",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Xavier Reyes",
-          "role": "Jennyanydots",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Nora Schell",
-          "role": "Bustopher Jones",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Bebé Nicole Simpson",
-          "role": "Demeter",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Emma Sofia",
-          "role": "Cassandra and Skimbleshanks",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Garnet Williams",
-          "role": "Bombalurina",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Teddy Wilson Jr.",
-          "role": "Sillabub",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Junior LeBeija",
-          "role": "Gus",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Bebe Nicole Simpson",
-          "role": "Demeter",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Teddy Wilson, Jr.",
-          "role": "Sillabub",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Robert \"Silk\" Mason",
-          "role": "Magical Mister Mistoffelees",
-          "since": "2026-03-18"
-        },
-        {
-          "name": "Tara Lashan Clinkscales",
-          "role": "Company",
-          "since": "2026-03-18"
-        }
-      ],
-      "upcoming": [
-        {
-          "type": "departure",
-          "name": "Leiomy Maldonado",
-          "role": "Mavacity",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Sherrod T. Brown",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Bryce Farris",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Kendall Grayson Stroud",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "B. Noel Thomas",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Donté Nadir Wilder",
-          "role": "Company",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Leiomy",
-          "role": "Macavity",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Chasity Moore",
-          "role": "Grizabella",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Bebé Nicole Simpson",
-          "role": "Demeter",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Junior LeBeija",
-          "role": "Gus",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "arrival",
-          "name": "Ernest Mingo",
-          "role": "Unknown",
-          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "arrival",
-          "name": "“Tempress” Chasity Moore",
-          "role": "Unknown",
-          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
-          "sourceUrl": "https://playbill.com/production/cats-the-jellicle-ball-broadway-broadhurst-theatre-2026",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        }
-      ],
-      "history": []
-    },
-    "every-brilliant-thing-2026": {
-      "currentCast": [
-        {
-          "name": "Tracee Ellis Ross",
-          "role": "Narrator/Protagonist",
-          "since": "2026-07-07"
-        }
-      ],
-      "upcoming": [
-        {
-          "type": "closure",
-          "name": "Every Brilliant Thing",
-          "role": "Production",
-          "date": "2026-08-09",
-          "note": "Concludes extended run with Tracee Ellis Ross' final performance",
-          "sourceUrl": "https://playbill.com/article/tracee-ellis-ross-begins-broadway-debut-in-every-brilliant-thing-july-7",
-          "sourceType": "playbill",
-          "addedDate": "2026-05-18"
-        }
-      ],
-      "history": [
-        {
-          "name": "Daniel Radcliffe",
-          "role": "Narrator/Protagonist",
-          "since": "2026-02-21",
-          "until": "2026-05-24",
-          "note": "Original star; final bow May 24, Tony nominee for the role. Succeeded by Mariska Hargitay.",
-          "sourceUrl": "https://playbill.com/article/mariska-hargitay-makes-broadway-debut-in-every-brilliant-thing-beginning-may-26",
-          "sourceType": "playbill"
-        },
-        {
-          "name": "Mariska Hargitay",
-          "role": "Narrator/Protagonist",
-          "since": "2026-05-26",
-          "until": "2026-07-05",
-          "note": "Broadway debut; limited engagement succeeding Daniel Radcliffe.",
-          "sourceUrl": "https://playbill.com/article/mariska-hargitay-makes-broadway-debut-in-every-brilliant-thing-beginning-may-26",
-          "sourceType": "playbill"
-        }
-      ]
-    },
     "ragtime-2025": {
       "currentCast": [
         {
@@ -3529,6 +3045,15 @@
           "sourceUrl": "https://playbill.com/production/ragtime-broadway-vivian-beaumont-theater-2025",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-05"
+        },
+        {
+          "type": "departure",
+          "name": "Shaina Taub",
+          "role": "Emma Goldman",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/ragtime-broadway-vivian-beaumont-theater-2025",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": [
@@ -4162,10 +3687,6 @@
           "date": "2026-08-04",
           "endDate": "2026-08-22",
           "dates": [
-            "2026-08-08",
-            "2026-08-09",
-            "2026-08-10",
-            "2026-08-11",
             "2026-08-12",
             "2026-08-13",
             "2026-08-14",
@@ -4500,6 +4021,24 @@
           "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Liam Pearce",
+          "role": "Romeo",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
+        },
+        {
+          "type": "arrival",
+          "name": "Ben Jackson Walker",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
@@ -5090,6 +4629,15 @@
           "sourceUrl": "https://playbill.com/production/moulin-rouge-the-musical-hirschfeld-theatre-2019-2020",
           "sourceType": "playbill-cast",
           "addedDate": "2026-07-28"
+        },
+        {
+          "type": "arrival",
+          "name": "AK Naderer",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/moulin-rouge-the-musical-hirschfeld-theatre-2019-2020",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
@@ -6354,6 +5902,15 @@
           "sourceUrl": "https://playbill.com/production/aladdin-new-amsterdam-theatre-vault-0000014037",
           "sourceType": "playbill-cast",
           "addedDate": "2026-07-25"
+        },
+        {
+          "type": "arrival",
+          "name": "Michael Everett",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/aladdin-new-amsterdam-theatre-vault-0000014037",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
@@ -6853,6 +6410,15 @@
           "sourceUrl": "https://playbill.com/production/the-lion-king-new-amsterdam-theatre-vault-0000008729",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Daniel Harder",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/the-lion-king-new-amsterdam-theatre-vault-0000008729",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-12"
         }
       ],
       "history": []
