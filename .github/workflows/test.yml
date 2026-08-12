@@ -14,6 +14,11 @@ on:
       # its unit test is in tests/unit-test-manifest.txt (tests/** is globbed
       # above) but a solo edit to the lib needs this listing to trigger CI.
       - 'scripts/lib/supabase-schema-expectations.js'
+      # Column-count brittleness guard (task #118) used by scrape-alltime.ts
+      # and scrape-grosses.ts: its unit test is in tests/unit-test-manifest.txt
+      # (tests/** is globbed above) but a solo edit to the lib needs this
+      # listing to trigger CI.
+      - 'scripts/lib/table-schema-assertion.js'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'

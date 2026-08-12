@@ -24,10 +24,14 @@ const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/sh
 // and this script's bare Playwright fallback both fail identically when BWW
 // throttles/blocks the GitHub Actions IP range.
 const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
+
+// Verified live 2026-08-12: <thead><th> = Show / Gross / Avg. Tix / Seats Sold / Total Perf.
+const TABLE_SCHEMA = { minCells: 5, expectedHeaders: ['Show', 'Gross', 'Avg. Tix', 'Seats Sold', 'Total Perf'] };
 
 interface AllTimeStats {
   gross: number | null;
@@ -85,6 +89,24 @@ function loadGrosses(): GrossesData {
 // Mirrors the Playwright $$eval extraction in scrapePage() below.
 function parseAllTimeHtml(html: string): ScrapedRow[] {
   const $ = cheerio.load(html);
+
+  // Prefer <thead><th> (confirmed present live 2026-08-12), but fall back to
+  // the first <tr>'s cells so a proxied-HTML variant without a <thead>
+  // wrapper doesn't false-positive a schema failure on a working page.
+  let headerCells = $('table thead th').map((_i, el) => $(el).text().trim()).get();
+  if (headerCells.length === 0) {
+    headerCells = $('table tr').first().find('th, td').map((_i, el) => $(el).text().trim()).get();
+  }
+  try {
+    assertTableSchema([headerCells], TABLE_SCHEMA);
+  } catch (err) {
+    if (err instanceof TableSchemaError) {
+      console.error(`::error::scrape-alltime: ${err.message}`);
+      return [];
+    }
+    throw err;
+  }
+
   const rows: ScrapedRow[] = [];
 
   $('table tr').each((_i, rowEl) => {
@@ -134,6 +156,27 @@ async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
     await page.waitForSelector('table tr td', { timeout: 15000 });
   } catch {
     console.log('  Warning: Table may not have loaded fully');
+  }
+
+  // Header schema check BEFORE processing rows — if BWW shifted columns again,
+  // every row would otherwise silently fail the length guard below.
+  // Same thead-with-fallback strategy as parseAllTimeHtml() above.
+  let headerCells = await page.$$eval('table thead th', ths => ths.map(th => th.textContent?.trim() || ''));
+  if (headerCells.length === 0) {
+    headerCells = await page.$$eval('table tr', rows => {
+      const first = rows[0];
+      if (!first) return [];
+      return Array.from(first.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '');
+    });
+  }
+  try {
+    assertTableSchema([headerCells], TABLE_SCHEMA);
+  } catch (err) {
+    if (err instanceof TableSchemaError) {
+      console.error(`::error::scrape-alltime: ${err.message}`);
+      return [];
+    }
+    throw err;
   }
 
   // Extract cumulative data from table
