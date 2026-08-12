@@ -11,7 +11,6 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import {
   evaluateCmuxLaunch,
-  BYPASS_TOKEN,
   firstTokenBasename,
   splitSegments,
 } from '../../scripts/lib/cmux-launch-guard.js';
@@ -59,13 +58,6 @@ describe('cmux-launch-guard: evaluateCmuxLaunch', () => {
     }
   });
 
-  test('bypass token skips the check', () => {
-    const cmd = 'CMUX_LAUNCH_UNSAFE_OK=1 cmux new-workspace --command "claude --model sonnet seed" --focus true';
-    const r = evaluateCmuxLaunch(cmd);
-    assert.strictEqual(r.block, false);
-    assert.strictEqual(r.bypassed, true);
-  });
-
   test('env-var-prefixed claude invocation without the flag still blocks', () => {
     const cmd = 'cmux new-workspace --command "ANTHROPIC_API_KEY=x claude --model sonnet seed" --focus true';
     assert.strictEqual(evaluateCmuxLaunch(cmd).block, true);
@@ -95,8 +87,14 @@ describe('cmux-launch-guard: evaluateCmuxLaunch', () => {
     assert.strictEqual(r.block, false);
   });
 
-  test('BYPASS_TOKEN constant matches documented escape hatch', () => {
-    assert.strictEqual(BYPASS_TOKEN, 'CMUX_LAUNCH_UNSAFE_OK=1');
+  test('no escape hatch — a bypass-shaped env var prefix does not skip the check', () => {
+    // 2026-08-12: verified empirically that PreToolUse hooks fire identically
+    // under --dangerously-skip-permissions (worktree-enforce.sh blocked a
+    // scratch write from this very session while running bypass). Bypass
+    // mode disables permission PROMPTS, not hook guardrails — so there is no
+    // legitimate reason to ever omit the flag, and this guard has no escape.
+    const cmd = 'CMUX_LAUNCH_UNSAFE_OK=1 cmux new-workspace --command "claude --model sonnet seed" --focus true';
+    assert.strictEqual(evaluateCmuxLaunch(cmd).block, true);
   });
 });
 

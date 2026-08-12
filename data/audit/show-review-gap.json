@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-12T12:32:47.904Z",
+  "generatedAt": "2026-08-12T14:20:51.359Z",
   "windowDays": 1095,
-  "targets": 4,
-  "auditedThisRun": 4,
-  "carriedForward": 222,
+  "targets": 16,
+  "auditedThisRun": 16,
+  "carriedForward": 210,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 176,
-    "totalMissing": 1082,
+    "totalMissing": 1083,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1189,
+    "totalFlaggedMisses": 1188,
     "totalRecoverable": 25,
     "totalRecovered": 6
   },
@@ -3088,7 +3088,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -3123,7 +3123,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -9746,9 +9746,9 @@
       "candidatesRejected": {
         "count": 278,
         "byReason": {
+          "not-http-url": 41,
           "non-review-host": 15,
           "aggregator-internal-nav": 219,
-          "not-http-url": 41,
           "non-review-path": 3
         }
       },
@@ -9853,7 +9853,7 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "camping-off-broadway-2026",
@@ -16306,7 +16306,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "clara-sex-love-and-classical-off-broadway-2026",
@@ -17622,7 +17622,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "death-becomes-her-2024",
@@ -18129,20 +18129,89 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "aggregatorListedUrls": [
+        "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+        "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+        "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+        "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812"
+      ],
+      "dirFiles": 19,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "rhombusrota.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stanservice.substack.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/news/death-note-the-musical-to-return-in-reimagined-production-at-barbican"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 4,
         "sources": {
           "westendtheatre": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 4,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -18169,7 +18238,15 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 4,
+        "corroborated": 1,
+        "perSource": {
+          "westendtheatre": {
+            "cited": 2,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": false,
@@ -18180,15 +18257,92 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~172784/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 4
       },
-      "computedAt": "2026-08-12T12:32:47.904Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -19646,23 +19800,16 @@
         "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washington.html",
         "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center",
         "https://www.newyorktheatreguide.com/show/47049-disruption",
-        "https://twi-ny.com/2026/08/02/disruption-andrew-stein-signature-center/",
-        "https://stageandstreetnyc.com/broadway/off-broadway/disruption/",
-        "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-at-signature-theatre-new-york-ny-sat-aug-15-8172158"
+        "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-16-26-2pm/8172187/",
+        "https://www.boxofficeticketsales.com/8172216/disruption-tickets-sat-9-12-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre"
       ],
-      "dirFiles": 33,
-      "dirClean": 16,
-      "inReviewsJson": 14,
+      "dirFiles": 35,
+      "dirClean": 17,
+      "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://twi-ny.com/2026/08/02/disruption-andrew-stein-signature-center/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "serpCensus": true
-        },
-        {
-          "url": "https://stageandstreetnyc.com/broadway/off-broadway/disruption/",
-          "host": "stageandstreetnyc.com",
+          "url": "https://www.boxofficeticketsales.com/8172216/disruption-tickets-sat-9-12-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre",
+          "host": "boxofficeticketsales.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -19681,7 +19828,15 @@
           "count": 1
         },
         {
+          "host": "scorebig.com",
+          "count": 1
+        },
+        {
           "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
           "count": 1
         }
       ],
@@ -19700,6 +19855,24 @@
               "file": "show-score--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-16-26-2pm/8172187/",
+          "host": "tickpick.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tickpick--tickpick.json",
+              "flag": "clean",
+              "urlInDir": "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-19-26-7pm/8172172/"
             }
           ],
           "serpCensus": true
@@ -19738,7 +19911,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -19749,7 +19922,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -19765,18 +19938,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
         "count": 427,
         "byReason": {
-          "roundup-page": 6,
-          "non-review-host": 46,
-          "aggregator-internal-nav": 270,
           "not-http-url": 94,
-          "non-review-path": 5,
-          "merch-store": 1,
+          "non-review-host": 47,
+          "aggregator-internal-nav": 270,
+          "non-review-path": 3,
+          "roundup-page": 8,
           "ticketing-reseller": 4,
           "feature-not-review": 1
         }
@@ -19784,28 +19956,16 @@
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://twi-ny.com/2026/08/02/disruption-andrew-stein-signature-center/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://stageandstreetnyc.com/broadway/off-broadway/disruption/",
-          "host": "stageandstreetnyc.com",
-          "outletId": "stageandstreetnyc",
+          "url": "https://www.boxofficeticketsales.com/8172216/disruption-tickets-sat-9-12-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre",
+          "host": "boxofficeticketsales.com",
+          "outletId": "boxofficeticketsales",
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "⚠️  Scrapingdog pace (~172800/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -19813,18 +19973,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "this-week-in-new-york",
-            "outlet": "this-week-in-new-york",
+            "outletId": "boxofficeticketsales.com",
+            "outlet": "boxofficeticketsales.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://twi-ny.com/2026/08/02/disruption-andrew-stein-signature-center/"
-          },
-          {
-            "outletId": "stageandstreetnyc.com",
-            "outlet": "stageandstreetnyc.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stageandstreetnyc.com/broadway/off-broadway/disruption/"
+            "url": "https://www.boxofficeticketsales.com/8172216/disruption-tickets-sat-9-12-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre"
           },
           {
             "outletId": "show-score.com",
@@ -19832,6 +19985,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center"
+          },
+          {
+            "outletId": "tickpick.com",
+            "outlet": "tickpick.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-16-26-2pm/8172187/"
           }
         ],
         "suppressedMissing": [],
@@ -19909,24 +20069,11 @@
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
           },
           {
-            "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-at-signature-theatre-new-york-ny-sat-aug-15-8172158",
-            "outletId": "scorebig.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T11:35:17.621Z"
-          },
-          {
-            "url": "https://twi-ny.com/2026/08/02/disruption-andrew-stein-signature-center/",
-            "outletId": "this-week-in-new-york",
+            "url": "https://www.boxofficeticketsales.com/8172216/disruption-tickets-sat-9-12-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre",
+            "outletId": "boxofficeticketsales.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T00:59:38.238Z"
-          },
-          {
-            "url": "https://stageandstreetnyc.com/broadway/off-broadway/disruption/",
-            "outletId": "stageandstreetnyc.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T00:59:38.238Z"
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center",
@@ -19934,12 +20081,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T21:19:14.182Z"
+          },
+          {
+            "url": "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-16-26-2pm/8172187/",
+            "outletId": "tickpick.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 14
+        "liveCount": 10,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "dog-day-afternoon-2026",
@@ -33535,9 +33689,9 @@
       "candidatesRejected": {
         "count": 381,
         "byReason": {
+          "not-http-url": 82,
           "non-review-host": 34,
           "aggregator-internal-nav": 262,
-          "not-http-url": 82,
           "non-review-path": 3
         }
       },
@@ -33602,7 +33756,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
@@ -47698,7 +47852,6 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.allthatdazzles.co.uk/post/review-love-s-labour-s-lost-shakespeare-s-globe",
-        "https://marquee.tv/videos/loves-labour-lost-shakespeares-globe-theatre",
         "https://www.theguardian.com/stage/2026/jul/30/loves-labours-lost-review-shakespeares-globe-london",
         "https://www.whatsonstage.com/news/loves-labours-lost-at-shakespeares-globe-review_1728330/",
         "https://www.telegraph.co.uk/theatre/what-to-see/loves-labours-lost-review-shakespeares-globe/",
@@ -47734,26 +47887,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://marquee.tv/videos/loves-labour-lost-shakespeares-globe-theatre",
-          "host": "marquee.tv",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "marquee--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://marquee.tv/videos/loves-labour-lost-shakespeares-globe-theatre"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 13,
@@ -47812,7 +47946,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -47822,7 +47956,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -47842,7 +47976,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -47853,7 +47987,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -47869,29 +48003,20 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
-          "roundup-page": 1,
           "non-review-host": 27,
           "ticketing-listing": 4
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "marquee.tv",
-            "outlet": "marquee.tv",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://marquee.tv/videos/loves-labour-lost-shakespeares-globe-theatre"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -47947,19 +48072,12 @@
             "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-10T11:06:44.430Z"
-          },
-          {
-            "url": "https://marquee.tv/videos/loves-labour-lost-shakespeares-globe-theatre",
-            "outletId": "marquee.tv",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T11:06:44.430Z"
           }
         ],
         "liveCount": 9,
-        "candidateCount": 10
+        "candidateCount": 9
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -50063,11 +50181,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 387,
+        "count": 384,
         "byReason": {
-          "non-review-host": 34,
-          "aggregator-internal-nav": 266,
           "not-http-url": 83,
+          "non-review-host": 34,
+          "aggregator-internal-nav": 263,
           "non-review-path": 4
         }
       },
@@ -50153,7 +50271,7 @@
         "liveCount": 12,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -69992,7 +70110,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -79730,7 +79848,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "the-car-man-west-end-2026",
@@ -84105,9 +84223,9 @@
       "candidatesRejected": {
         "count": 278,
         "byReason": {
+          "not-http-url": 42,
           "non-review-host": 15,
           "aggregator-internal-nav": 218,
-          "not-http-url": 42,
           "non-review-path": 3
         }
       },
@@ -84163,7 +84281,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -89219,8 +89337,7 @@
         "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review",
         "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
         "https://1minutecritic.substack.com/p/pass-la-mama-review-2026",
-        "http://www.theaterscene.net/plays/offbway-plays/the-pass/tony-marinelli/",
-        "https://www.newyorktheatreguide.com/theatre-news/interviews/amid-global-soccer-mania-the-pass-off-broadway-explores-the-dark-side-of-the-beautiful-game"
+        "http://www.theaterscene.net/plays/offbway-plays/the-pass/tony-marinelli/"
       ],
       "dirFiles": 10,
       "dirClean": 7,
@@ -89239,24 +89356,6 @@
       "flaggedMisses": [
         {
           "url": "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.newyorktheatreguide.com/show/47271-the-pass"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/theatre-news/interviews/amid-global-soccer-mania-the-pass-off-broadway-explores-the-dark-side-of-the-beautiful-game",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
           "recoverable": false,
@@ -89298,7 +89397,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -89334,17 +89433,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 330,
+        "count": 332,
         "byReason": {
-          "roundup-page": 4,
-          "non-review-host": 32,
-          "aggregator-internal-nav": 223,
           "not-http-url": 67,
+          "non-review-host": 34,
+          "aggregator-internal-nav": 223,
           "non-review-path": 3,
+          "roundup-page": 3,
+          "merch-store": 1,
           "ticketing-reseller": 1
         }
       },
@@ -89366,13 +89466,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/theatre-news/interviews/amid-global-soccer-mania-the-pass-off-broadway-explores-the-dark-side-of-the-beautiful-game"
           }
         ],
         "suppressedMissing": [],
@@ -89419,19 +89512,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T11:35:17.621Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/theatre-news/interviews/amid-global-soccer-mania-the-pass-off-broadway-explores-the-dark-side-of-the-beautiful-game",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T11:35:17.621Z"
           }
         ],
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
@@ -102009,8 +102095,7 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse",
-        "https://www.show-score.com/off-broadway-shows/we-ve-been-here-before-a-one-woman-musical"
+        "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -102032,24 +102117,6 @@
               "file": "theatrely--emily-wyrwa.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/we-ve-been-here-before-a-one-woman-musical",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "show-score--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.show-score.com/off-broadway-shows/we-ve-been-here-before-a-one-woman-musical"
             }
           ],
           "serpCensus": true
@@ -102099,7 +102166,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -102115,16 +102182,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
         "count": 31,
         "byReason": {
           "non-review-host": 21,
-          "venue-production-page": 1,
-          "aggregator-internal-nav": 8,
-          "non-review-path": 1
+          "aggregator-internal-nav": 6,
+          "non-review-path": 3,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -102137,13 +102204,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/we-ve-been-here-before-a-one-woman-musical"
           }
         ],
         "suppressedMissing": [],
@@ -102154,19 +102214,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T11:35:17.621Z"
-          },
-          {
-            "url": "https://www.show-score.com/off-broadway-shows/we-ve-been-here-before-a-one-woman-musical",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T11:35:17.621Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 1
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -102201,7 +102254,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
