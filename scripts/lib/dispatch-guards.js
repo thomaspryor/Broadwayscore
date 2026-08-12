@@ -57,11 +57,18 @@
 
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+
+// scripts/linear-import.js's Notion-mirror <-> Linear-issue join (Phase 0
+// rail 1, plan 2026-08-12). Default path only — linearMirrorGuard() itself
+// takes the parsed mapping as a plain object, so tests never touch this path.
+const LINEAR_MAPPING_PATH = path.join(__dirname, '..', '..', 'data', 'linear-import-mapping.json');
 
 // Duplicate-dispatch guard: a live (non-✅) workspace whose title matches this
 // task's launch title means a session is already on it — launching another
@@ -193,6 +200,61 @@ function notionIdOf(task) {
   return m ? m[1] : null;
 }
 
+// Reads the import mapping linear-import.js maintains (data/linear-import-
+// mapping.json, keyed by mirror task id — see that file's saveMapping()).
+// Missing/corrupt file degrades to {} (fail OPEN — a task never gets falsely
+// blocked because the mapping couldn't be read), matching every other
+// missing-data case in this file.
+function loadLinearMirrorMapping(mappingPath = LINEAR_MAPPING_PATH) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(mappingPath, 'utf8'));
+    return (parsed && typeof parsed === 'object') ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+// Single-dispatch-side guard (Phase 0 rail 1, plan 2026-08-12, task #1341):
+// a task linear-import.js has already mapped to a LIVE Linear issue must be
+// worked from Linear, not re-dispatched from the Notion-mirror side — the two
+// dispatchers (bsc-next.js / linear-next.js) share no lock, so a live overlap
+// window is a real double-dispatch, not a theoretical one.
+//
+// WHY THIS READS data/linear-import-mapping.json AND NOT A FIELD ON THE
+// MIRROR TASK ITSELF: notion-tasks-sync.js's cmdPull update path (see its
+// `for (const { card, taskId } of plan.toUpdate)` loop) rebuilds each mirror
+// task from the live Notion card on every pull and carries over ONLY
+// `existing.blocks`/`existing.blockedBy` from the file being replaced —
+//   const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
+// Any other field written directly onto a mirror task JSON (e.g. a `linear:
+// {...}` marker) would be silently dropped the next time notion-tasks-sync.js
+// pull runs, which happens on essentially every dispatch loop iteration. The
+// import mapping file is untouched by that sync — the more robust join.
+//
+// A mapping entry counts as a LIVE Linear counterpart only when it carries an
+// identifier AND was not retired to Archive at import time (`retiredReason`
+// set, or `project === 'Archive'`, cover the same case — see
+// linear-import.js's classifyTask/runReconcile: a task already Done/noise/
+// idle-stale in Notion gets parked in Linear's Archive project instead of a
+// live workstream one, and is not "live work on the other side" for this
+// guard's purposes).
+//
+// Known gap: the mapping is keyed by the mirror's OWN numeric task id, which
+// notion-tasks-sync.js keeps stable per Notion card (readMap/writeMap, keyed
+// on card.id) except in the rare case a task file was clobbered/reused by a
+// live session (cmdPull's doCreate fallback reallocates a fresh id then).
+// If that happens, this guard fails OPEN (dispatches) rather than blocking on
+// a mapping key that no longer matches — same fail-open direction as every
+// other guard in this file's missing-data case.
+function linearMirrorGuard(task, mapping, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const entry = mapping && mapping[String(task.id)];
+  if (!entry || !entry.identifier) return null;
+  if (entry.retiredReason || entry.project === 'Archive') return null; // parked, not live work
+  return `task #${task.id} already has a live Linear counterpart (${entry.identifier}) — dispatching it from Notion risks two sessions working the same card. Use the Linear-side dispatcher instead:\n` +
+    `  node scripts/linear-next.js --id ${entry.identifier}`;
+}
+
 module.exports = {
   findLiveWorkspaceForTask,
   deadDispatchGuard,
@@ -200,6 +262,9 @@ module.exports = {
   staleOutcomeGuard,
   checkDeadDispatch,
   notionIdOf,
+  loadLinearMirrorMapping,
+  linearMirrorGuard,
+  LINEAR_MAPPING_PATH,
   // Re-exported so both dispatchers have a single require() for all six
   // guards, per this file's header. Owning modules (verify-gate.js /
   // headless-dispatchability.js) are unchanged — this is a re-export, not a
