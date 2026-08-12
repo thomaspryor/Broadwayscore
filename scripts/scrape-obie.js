@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { writePrecursorJson, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const PAGE = 'Obie_Award';
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
@@ -111,12 +112,25 @@ async function main() {
 
   const tables = Array.from(doc.querySelectorAll('table.wikitable'));
   for (const t of tables) {
-    const headers = Array.from(t.querySelectorAll('tr')[0]?.querySelectorAll('th, td') || [])
-      .map((c) => (c.textContent || '').trim().toLowerCase());
+    const headerCells = Array.from(t.querySelectorAll('tr')[0]?.querySelectorAll('th, td') || [])
+      .map((c) => (c.textContent || '').trim());
+    const headers = headerCells.map((c) => c.toLowerCase());
     if (!headers.includes('year') || !headers.some((h) => h.includes('recipient'))) continue;
 
     const yearIdx = headers.indexOf('year');
     const recIdx = headers.findIndex((h) => h.includes('recipient'));
+
+    // Found the right table by header content — assert its column count hasn't
+    // drifted before trusting cells[yearIdx]/[recIdx] below (task #1331).
+    try {
+      assertTableSchema([headerCells], { minCells: Math.max(yearIdx, recIdx) + 1 });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.error(`::error::scrape-obie: ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
 
     for (const row of t.querySelectorAll('tr')) {
       const cells = Array.from(row.querySelectorAll('td'));
