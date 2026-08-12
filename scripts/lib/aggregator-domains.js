@@ -119,6 +119,22 @@ function isAggregatorReviewSource(source) {
 }
 
 /**
+ * True when a review carries a score sourced FROM an aggregator roundup
+ * (originalScore or aggregatorStars) — the signal that makes a real-outlet file
+ * on an aggregator-domain URL a legitimate star-stub rather than contamination.
+ * Canonical for THREE call sites that must never drift apart (the class
+ * aggregator-url-latent.js's docstring warns about): shouldSkipAggregatorUrlWrite
+ * below, hasAggregatorUrlMismatch (aggregator-url-latent.js, the validator-time
+ * check), and the write-time refusal in review-file-writer.js.
+ *
+ * @param {object} reviewData - {originalScore, aggregatorStars, ...}
+ */
+function hasPreservableAggregatorScore(reviewData) {
+  if (!reviewData) return false;
+  return reviewData.originalScore != null || reviewData.aggregatorStars != null;
+}
+
+/**
  * Should createReviewFile REFUSE to write this review because it would create an
  * aggregator_url_mismatch contamination file?
  *
@@ -135,8 +151,7 @@ function isAggregatorReviewSource(source) {
 function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
   if (!reviewData) return false;
   if (isAggregatorReviewSource(reviewData.source)) return false;
-  const hasScore = reviewData.originalScore != null || reviewData.aggregatorStars != null;
-  if (hasScore) return false;
+  if (hasPreservableAggregatorScore(reviewData)) return false;
   return isAggregatorUrlMismatch(reviewData.url, normalizedOutletId);
 }
 
@@ -237,4 +252,5 @@ module.exports = {
   SHARED_DOMAIN_OUTLETS,
   hostnameOf,
   isAggregatorUrlMismatch,
+  hasPreservableAggregatorScore,
 };
