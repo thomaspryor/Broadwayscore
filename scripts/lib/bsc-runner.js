@@ -94,9 +94,18 @@ function releaseLease(taskId, jobId = null) {
 }
 
 // Per-job worktree: deterministic path, branch from origin/main, kept if dirty.
+// jobId is sanitized for the git ref and path: namespaced task ids like
+// `linear:BRO-284` (linear-next.js's ledgerTaskId) contain a colon, which git
+// rejects in ref names — the 2026-08-12 canary died at `worktree add -b
+// job/linear:BRO-284-…` with worktree-error. Ledger identity keeps the colon;
+// only the ref/path component is renamed.
+function gitSafeJobId(jobId) {
+  return String(jobId).replace(/[^A-Za-z0-9._-]/g, '-');
+}
 function provisionJobWorktree(jobId) {
-  const wtPath = path.join(REPO, '.claude', 'worktrees', `job-${jobId}`);
-  execFileSync('git', ['-C', REPO, 'worktree', 'add', wtPath, '-b', `job/${jobId}`, 'origin/main'], { stdio: 'pipe' });
+  const safe = gitSafeJobId(jobId);
+  const wtPath = path.join(REPO, '.claude', 'worktrees', `job-${safe}`);
+  execFileSync('git', ['-C', REPO, 'worktree', 'add', wtPath, '-b', `job/${safe}`, 'origin/main'], { stdio: 'pipe' });
   return wtPath;
 }
 
@@ -106,7 +115,7 @@ function teardownJobWorktree(wtPath, jobId) {
     const ahead = execFileSync('git', ['-C', wtPath, 'rev-list', '--count', 'origin/main..HEAD'], { encoding: 'utf8' }).trim();
     if (dirty || ahead !== '0') return false; // work present — keep for review/merge
     execFileSync('git', ['-C', REPO, 'worktree', 'remove', '--force', wtPath], { stdio: 'pipe' });
-    try { execFileSync('git', ['-C', REPO, 'branch', '-D', `job/${jobId}`], { stdio: 'pipe' }); } catch { /* branch may be gone */ }
+    try { execFileSync('git', ['-C', REPO, 'branch', '-D', `job/${gitSafeJobId(jobId)}`], { stdio: 'pipe' }); } catch { /* branch may be gone */ }
     return true;
   } catch { return false; }
 }
