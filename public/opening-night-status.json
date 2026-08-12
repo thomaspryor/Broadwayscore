@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T10:10:21.045Z",
+  "generatedAt": "2026-08-12T10:28:01.638Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,25 @@
       "status": "open",
       "slug": "death-note-the-musical-west-end",
       "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 70,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 75.77,
+      "liveScore": 76,
+      "scoreDrift": 0.23000000000000398,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 3,
-      "positive": 2,
+      "positive": 3,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -118,6 +118,18 @@
           "t2": 0,
           "t3": 3,
           "p": 2,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-12T10:28:01.638Z",
+          "rc": 4,
+          "s": 75.77,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 3,
           "m": 0,
           "n": 1,
           "bc": "waiting"
