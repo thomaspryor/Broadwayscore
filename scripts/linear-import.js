@@ -41,6 +41,14 @@ const {
   isIdleArchive,
 } = require('./lib/linear-import-rules');
 const linear = require('./lib/linear-client');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `linear-import.js — Day 1 of the Linear migration: additive, resumable import of the local task mirror into Linear team BRO.
+
+Usage:
+  node scripts/linear-import.js [--dry-run] [--reconcile] [--apply] [--refresh-snapshot]
+  node scripts/linear-import.js --help, -h    print this usage and exit
+`;
 
 const REPO_ROOT = path.join(__dirname, '..');
 const MIRROR_DIR =
@@ -347,6 +355,7 @@ async function runReconcile({ classified, mapping, apply }) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
   const wantReconcile = process.argv.includes('--reconcile');
   const apply = process.argv.includes('--apply');
