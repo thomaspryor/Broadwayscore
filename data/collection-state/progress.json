@@ -186,7 +186,17 @@
     "hungry-women-off-broadway-2026/new-york-sun--unknown.json",
     "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
     "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json"
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "isla-off-broadway-2026/show-score--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -233,7 +243,7 @@
     ]
   },
   "startTime": "2026-08-12T10:50:31.531Z",
-  "lastProcessed": "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
   "log": [
     {
       "t": "2026-08-12T12:06:14.612Z",
@@ -243,6 +253,17 @@
     },
     {
       "t": "2026-08-12T12:06:15.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-12T13:00:45.686Z",
+      "event": "bb-session",
+      "session": "e11bd4d7",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-12T13:00:46.802Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
