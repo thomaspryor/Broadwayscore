@@ -7,7 +7,14 @@
 # hours. Moved here (non-blocking) 2026-06-21: writes data/audit/corpus-drift.json,
 # surfaced in the daily digest by scripts/health-check.js. The catastrophe FLOOR
 # (a genuine quality collapse) stays blocking in test.yml via
-# `audit-text-quality.js --gate`. READ-ONLY: never triggers rebuild or scraping.
+# `audit-text-quality.js --gate`. Never triggers rebuild or scraping.
+# NOT read-only as of 2026-08-13: the first step self-heals data/cast-changes.json
+# (audit-cast-changes.js --write, no scrape — it derives purely from shows.json +
+# the existing file) and commits it [skip ci], because this DAILY monitor kept
+# re-flagging staleness that update-cast-changes.yml's Wed/Sat scrape had not
+# caught up to. That makes the cast-changes drift number mean "what could not be
+# auto-healed", which is the number worth alerting on. A lost update against a
+# concurrent writer is self-correcting: the next run re-derives the same state.
 name: Check Corpus Drift
 
 on:

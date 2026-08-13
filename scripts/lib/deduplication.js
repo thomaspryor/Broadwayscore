@@ -647,6 +647,18 @@ function filterDuplicates(candidateShows, existingShows) {
  *   (2026-07-14: Seven Guitars/LCT vs 1996, An American Daughter/Signature
  *   vs 1997, You're a Good Man Charlie Brown/City Center vs 1999, and
  *   A View from the Bridge/La MaMa vs 2015 the next day).
+ * - the candidate carries an `unconfirmedStartDate` that begins AFTER the
+ *   twin's run already ended (see startsAfterClosedTwin). This is the
+ *   far-future-season case: discover-new-shows.js quarantines a TodayTix
+ *   startDate more than 120 days out rather than trusting it as
+ *   previewsStartDate, so a legitimately early-announced subscription season
+ *   arrives here with openingDate AND previewsStartDate both null. Before
+ *   this carve-out the guard swallowed the entire 2027 Encores! season:
+ *   "You're a Good Man, Charlie Brown" (City Center, Feb 3-14 2027) was
+ *   blocked on every daily run by the 92NY production that closed
+ *   2026-03-29 — inside the 18-month window, so the long-closed carve-out
+ *   above never applied (2026-08-12). A show that starts after another
+ *   finished is definitionally not that show.
  */
 const TWIN_LONG_CLOSED_MONTHS = 18;
 
@@ -660,6 +672,32 @@ function isLongClosedTwin(show) {
   return (Date.now() - refMs) > TWIN_LONG_CLOSED_MONTHS * 30.44 * 24 * 60 * 60 * 1000;
 }
 
+// True when the candidate's quarantined start date falls after the twin's run
+// has already finished — positive evidence of a separate production even
+// though openingDate is null.
+//
+// Deliberately requires the twin to be CLOSED with a real end date. An `open`
+// or `upcoming` twin is never cleared this way, which is what keeps the
+// original Globe protection and the long-running-show protection intact: a
+// candidate whose date is "after Hamilton opened in 2015" is still Hamilton.
+// Residual risk, accepted knowingly (adversarial review 2026-08-12): the
+// quarantined date is by definition not corroborated, so in principle a bogus
+// far-future date could clear a twin that IS the same production. In practice a
+// recycled TodayTix id never reaches here — discover-new-shows.js:1936 dedups on
+// todaytixId before this guard runs, and checkForDuplicate (with its venue
+// logic) runs before it too. This is the last-resort net, not the first. Every
+// bypass is logged rather than silent so a bad one is findable in the run log.
+function startsAfterClosedTwin(candidate, twin) {
+  const candMs = Date.parse(candidate.unconfirmedStartDate || '');
+  if (!Number.isFinite(candMs)) return false;
+  if (twin.status !== 'closed') return false;
+  const twinEndMs = Date.parse(twin.closingDate || twin.openingDate || '');
+  if (!Number.isFinite(twinEndMs)) return false; // undatable twin — stay conservative
+  if (candMs <= twinEndMs) return false;
+  console.log(`  ↳ twin guard bypassed for "${candidate.title}": unconfirmed start ${candidate.unconfirmedStartDate} is after ${twin.id} closed ${twin.closingDate || twin.openingDate} — treating as a separate production`);
+  return true;
+}
+
 function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
   if (candidate.openingDate) return null;
   const candTitleLower = (candidate.title || '').toLowerCase().trim();
@@ -670,7 +708,8 @@ function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
     (s.title || '').toLowerCase().trim() === candTitleLower &&
     s.category &&
     getMarketPool(s.category) === candPool &&
-    !isLongClosedTwin(s)
+    !isLongClosedTwin(s) &&
+    !startsAfterClosedTwin(candidate, s)
   ) || null;
 }
 
