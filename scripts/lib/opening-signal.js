@@ -191,6 +191,91 @@ function chooseOpeningDateBackfill(show, dates, isDateReached) {
 }
 
 /**
+ * Flags that mean a discovered review file is not press coverage of THIS run.
+ * The discovery layer is dirtier than reviews.json — it still holds
+ * wrong-production and non-review entries the rebuild would drop — so the
+ * discovery-tier signal below has to do the filtering reviews.json got for free.
+ */
+function isCleanDiscoveredReview(review) {
+  if (!review || typeof review !== 'object') return false;
+  // Mirrors the exclusion set in scripts/lib/date-plausibility.js:35 — the
+  // established "this record's date is not trustworthy" list. isRoundupArticle
+  // matters most here: a BWW/Playbill roundup is filed WITH a url and a
+  // publishDate, and it is the single most likely thing to be sitting in the
+  // folder of a show whose reviews just dropped.
+  if (review.wrongProduction || review.wrongShow || review.wrongUrl) return false;
+  if (review.isNonReview || review.isNotReview || review.isRoundupArticle) return false;
+  if (review.rejectionReason || review.duplicateOf || review.fabricatedEntry) return false;
+  return Boolean(review.url);
+}
+
+/**
+ * Review publish dates from the DISCOVERY layer (data/review-texts/{showId}/),
+ * as opposed to countByShow()'s reviews.json (the collected + scored layer).
+ *
+ * Why both layers exist as signals
+ * --------------------------------
+ * openSignalFromReviews reads reviews.json, which only contains reviews we
+ * successfully fetched AND scored. That makes it useless for the exact failure
+ * it was built to catch, because the two are circular: a null openingDate sinks
+ * a show to the bottom of the collection queue, nothing gets collected, nothing
+ * reaches reviews.json, the open-signal sees zero reviews, openingDate stays
+ * null. The Winter's Tale sat in that loop through its own opening night on
+ * 2026-08-12 with a dated New York Times review already on disk.
+ *
+ * Discovery breaks the loop: knowing a critic PUBLISHED is proof the show
+ * opened, and we know that the moment we find the URL — one full stage before we
+ * fetch the body. Aggregators make this near-certain: Playbill's Verdict and a
+ * BWW Review Roundup only exist for a show once its reviews are out.
+ *
+ * @param files array of parsed review-text JSON objects for one show
+ * @param show the show record (previewsStartDate gates out stale prior-run dates)
+ * @returns {string[]} YYYY-MM-DD dates, cleaned
+ */
+function datesFromDiscoveredReviews(files, show) {
+  const out = [];
+  for (const review of files || []) {
+    if (!isCleanDiscoveredReview(review)) continue;
+    const d = review.publishDate || review.date;
+    if (typeof d !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(d)) continue;
+    const day = d.slice(0, 10);
+    // A date before previews began cannot be press coverage of this run — it is
+    // a prior production's review that landed in the folder (the 2023 Globe
+    // reviews sitting in the-winters-tale-off-broadway-2026 are exactly this).
+    if (show && show.previewsStartDate && day < show.previewsStartDate) continue;
+    out.push(day);
+  }
+  return out;
+}
+
+/**
+ * Open-signal derived from discovered (not yet collected) reviews.
+ *
+ * Same guards and same return shape as openSignalFromReviews — pre-open status
+ * only, press night must be reached, press night must not predate previews — so
+ * callers can treat the two interchangeably. It is strictly a fallback: when
+ * reviews.json already carries the show, that stronger signal wins.
+ *
+ * @returns {{date: string, source: string}|null}
+ */
+function openSignalFromDiscovery(show, discoveredFiles, isDateReached) {
+  if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
+  // previewsStartDate is REQUIRED here, unlike openSignalFromReviews.
+  // That sibling reads reviews.json, which the rebuild has already scrubbed of
+  // prior-production entries. The discovery layer has not been scrubbed: it is
+  // where the 2023 Shakespeare's Globe reviews live inside the 2026 Winter's
+  // Tale folder. previewsStartDate is the only thing separating this run's
+  // press coverage from a previous production's, so without it we cannot tell
+  // them apart and must not guess — a wrong date here is published verbatim as
+  // "Opened {date}" and drives opening-night automation.
+  if (!show.previewsStartDate) return null;
+  const pressNight = estimatePressNight(datesFromDiscoveredReviews(discoveredFiles, show));
+  if (!pressNight || !isDateReached(pressNight)) return null;
+  if (pressNight < show.previewsStartDate) return null;
+  return { date: pressNight, source: 'discovery-open-signal' };
+}
+
+/**
  * Find every stuck show. `countMap` is the output of countByShow().
  *
  * A show is stuck when EITHER signal fires:
@@ -241,6 +326,9 @@ module.exports = {
   estimatePressNight,
   isStuckInPreviews,
   openSignalFromReviews,
+  isCleanDiscoveredReview,
+  datesFromDiscoveredReviews,
+  openSignalFromDiscovery,
   chooseOpeningDateBackfill,
   findStuckPreviews,
 };

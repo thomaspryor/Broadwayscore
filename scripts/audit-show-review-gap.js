@@ -53,6 +53,7 @@ const { execSync, execFileSync } = require('child_process');
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
 const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const {
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
@@ -635,11 +636,19 @@ function isCoveredFile(d, show) {
 // automated — see the deferral note on the recovery loop in main().
 
 function isShowEligible(show) {
-  if (!show.openingDate) return false;
+  // Recency falls back openingDate → previewsStartDate. This used to be a bare
+  // `if (!show.openingDate) return false`, which made this audit — the one whose
+  // entire job is catching "Playbill Verdict lists 9 reviews, we have 3" —
+  // structurally blind to every show still in previews. On 2026-08-12 The
+  // Winter's Tale and An American Daughter both had a live BWW roundup and a
+  // Playbill Verdict article, 11 and 9 discovered review URLs, zero collected
+  // text, and this audit never looked at either of them.
+  const recencyDate = showRecencyKey(show);
+  if (recencyDate === NO_DATE_SENTINEL) return false;
   // --include-closed: also audit closed shows (one-time back-catalogue backfill).
   // Without it, only currently open/previews shows are checked (the default cron).
   if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
-  const opened = new Date(show.openingDate);
+  const opened = new Date(recencyDate);
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
   // Eligible if opened within window OR in pre-opening (<=3 days from now)
