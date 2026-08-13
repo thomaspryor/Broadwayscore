@@ -47,7 +47,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
   for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
 }
 const { classifyShow } = require('./lib/classify-show');
-const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
+const { scrapePlaybillOBData, scrapePlaybillBroadwayData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -88,6 +88,14 @@ const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 
 // Broadway.org shows page
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
+
+/** Merge key for cross-source dedupe: case/punctuation/article-insensitive. */
+function normaliseForMerge(title) {
+  return String(title || '')
+    .toLowerCase()
+    .replace(/^(the|a|an)\s+/, '')
+    .replace(/[^a-z0-9]+/g, '');
+}
 
 // Non-theater content patterns — shared across all markets (Broadway, OB, West End)
 const NON_THEATER_PATTERNS = [
@@ -464,6 +472,47 @@ async function fetchShowsFromPlaybillOB() {
     };
   });
   return transformed.filter(Boolean);
+}
+
+/**
+ * Broadway shows from Playbill's announced-schedule article.
+ *
+ * WHY THIS EXISTS (2026-08-13): Broadway discovery ran off TodayTix, with
+ * Broadway.org wired only as a `length === 0` fallback that therefore never
+ * fired. TodayTix lists shows that are ON SALE. A show that is announced,
+ * cast, and theatre-booked but not yet ticketed was structurally invisible to
+ * the entire pipeline — not late, never. Wanted, Much Ado About Nothing, Mix
+ * and Master, The Full Monty and Three Days of Rain were all missing from the
+ * 2026-27 season for exactly this reason.
+ *
+ * Playbill maintains the announced schedule as the canonical heads-up, the
+ * same role its Off-Broadway article already plays for OB discovery.
+ */
+async function fetchShowsFromPlaybillBroadway() {
+  const { entries } = await scrapePlaybillBroadwayData();
+  if (!entries.length) {
+    console.log('Playbill Broadway: 0 entries (source unavailable or layout changed)');
+    return [];
+  }
+  const transformed = entries.map(e => {
+    const venue = sanitizeVenueForWrite(e.venue);
+    // Unlike the OB path, a missing venue is NOT a reason to drop the show:
+    // Playbill lists genuinely theatre-less announcements (Three Days of Rain)
+    // and dropping them recreates the very gap this source exists to close.
+    return {
+      title: e.title,
+      venue: venue || null,
+      slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: e.opening || null,
+      previewsStartDate: e.firstPreview || null,
+      closingDate: null,
+      category: 'broadway',
+      description: '',
+      source: 'playbill-broadway',
+    };
+  });
+  console.log(`Playbill Broadway: ${transformed.length} candidates`);
+  return transformed;
 }
 
 // TodayTix London API - location=2 for London West End
@@ -1740,16 +1789,33 @@ async function discoverShows() {
     discoveredShows = [];
   }
 
+  // Playbill's announced schedule is a UNION source, not a fallback. TodayTix
+  // only knows about shows that are on sale, so announced-but-unticketed shows
+  // never appeared at all (owner, 2026-08-13). Merged by normalised title so a
+  // show listed by both sources is not proposed twice.
+  try {
+    const playbillBway = await fetchShowsFromPlaybillBroadway();
+    const seen = new Set(discoveredShows.map(s2 => normaliseForMerge(s2.title)));
+    const additions = playbillBway.filter(s2 => !seen.has(normaliseForMerge(s2.title)));
+    if (additions.length) {
+      console.log(`Playbill Broadway added ${additions.length} show(s) TodayTix did not list: ${additions.map(a => a.title).join(', ')}`);
+    }
+    discoveredShows.push(...additions);
+  } catch (e) {
+    // Never let this source take the run down — TodayTix results still stand.
+    console.warn(`WARNING: Playbill Broadway source failed (${e.message}) — continuing with TodayTix results`);
+  }
+
   if (discoveredShows.length === 0) {
     try {
       discoveredShows = await fetchShowsFromBroadwayOrg();
       console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
       if (discoveredShows.length === 0) {
-        console.error('ERROR: Both TodayTix API and Broadway.org returned 0 shows.');
+        console.error('ERROR: TodayTix, Playbill Broadway and Broadway.org all returned 0 shows.');
         process.exitCode = 1;
       }
     } catch (e) {
-      console.error('ERROR: Both sources failed. TodayTix API and Broadway.org:', e.message);
+      console.error('ERROR: All Broadway sources failed:', e.message);
       process.exitCode = 1;
       return { newShows: [], count: 0 };
     }
