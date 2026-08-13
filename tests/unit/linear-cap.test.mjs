@@ -116,12 +116,29 @@ test('isCapEnforced: an active paid subscription lifts the cap', () => {
   assert.equal(isCapEnforced({ type: 'business' }), false);
 });
 
-test('isCapEnforced: a CANCELED subscription re-arms the cap', () => {
-  // Linear keeps a truthy PaidSubscription row after cancellation until the
-  // period ends. A bare truthiness test would disable the guard exactly when
-  // the workspace is about to fall back to free tier.
-  assert.equal(isCapEnforced({ type: 'basic_yearly_10', canceledAt: '2026-09-01T00:00:00Z' }), true);
-  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: '2026-09-01T00:00:00Z' }), true);
+// canceledAt = when cancel was CLICKED (past). cancelAt = when the paid period
+// ENDS (future). The plan is still paid until cancelAt, so only a LAPSED period
+// re-arms the cap. Conflating the two would restart the daily false alert the
+// moment cancel is clicked and keep it firing for up to a year while paid.
+const CAP_NOW = Date.parse('2026-08-13T00:00:00Z');
+
+test('isCapEnforced: cancel scheduled in the FUTURE keeps the cap lifted', () => {
+  assert.equal(isCapEnforced(
+    { type: 'basic_yearly_10', canceledAt: '2026-08-12T00:00:00Z', cancelAt: '2027-08-12T00:00:00Z' },
+    CAP_NOW), false);
+});
+
+test('isCapEnforced: a LAPSED paid period re-arms the cap', () => {
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: '2026-08-01T00:00:00Z' }, CAP_NOW), true);
+});
+
+test('isCapEnforced: cancel requested with no end date re-arms (conservative)', () => {
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', canceledAt: '2026-08-12T00:00:00Z' }, CAP_NOW), true);
+});
+
+test('isCapEnforced: an unparseable cancelAt falls back to the canceledAt signal', () => {
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: 'not-a-date' }, CAP_NOW), false);
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: 'not-a-date', canceledAt: 'x' }, CAP_NOW), true);
 });
 
 test('isCapEnforced: unrecognised shapes fail safe (cap stays armed)', () => {

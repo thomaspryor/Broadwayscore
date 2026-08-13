@@ -37,15 +37,29 @@ function isOverCapThreshold(count, threshold = WARN_THRESHOLD) {
 // 7:30 digest asking a question he has already answered (owner upgraded to
 // basic_yearly_10 on 2026-08-12). Callers pass organization.subscription
 // through; null/undefined means free tier and the cap still applies.
-// A canceled-but-lingering subscription record stays a truthy object (Linear's
-// PaidSubscription carries canceledAt/cancelAt and the row survives until the
-// period ends), so a bare truthiness test would disable the cap guard exactly
-// when the workspace is about to fall back to the free tier. Re-arm on any
-// cancellation signal, and on a shape we don't recognise.
-function isCapEnforced(subscription) {
+// A canceled-but-lingering subscription record stays a truthy object, so a bare
+// truthiness test would disable the cap guard exactly when the workspace is
+// about to fall back to the free tier.
+//
+// But the two cancellation fields mean different things and must not be
+// conflated: Linear sets `canceledAt` when cancel is CLICKED (past) and
+// `cancelAt` to when the paid period actually ENDS (future). The plan stays
+// paid until `cancelAt`. Treating either as "re-arm now" would restart the
+// >=200 false alert the moment cancel is clicked and keep it firing daily for
+// up to a full year while the workspace is still on a paid plan — the exact
+// noise this predicate exists to remove.
+//
+// So: the cap is enforced once the paid period has lapsed, not when cancel was
+// requested. `now` is injected (same contract as isArchivableIssue) so this
+// stays pure. A cancellation with no end date is unknowable, so it re-arms —
+// the conservative direction, since hitting the hard cap jams issue creation.
+function isCapEnforced(subscription, now = Date.now()) {
   if (!subscription || typeof subscription !== 'object') return true;
-  if (subscription.canceledAt || subscription.cancelAt) return true;
   if (!subscription.type) return true;
+  const endsAt = subscription.cancelAt ? Date.parse(subscription.cancelAt) : null;
+  if (Number.isFinite(endsAt)) return endsAt <= now;
+  // Cancel requested but no end date exposed — can't tell when it lapses.
+  if (subscription.canceledAt) return true;
   return false;
 }
 
