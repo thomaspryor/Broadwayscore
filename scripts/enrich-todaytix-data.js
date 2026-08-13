@@ -283,6 +283,20 @@ async function main() {
     }
 
     if (changes.length > 0) {
+      // Single source of truth for "did anything actually change". The save
+      // gate below used to enumerate individual counters, so a newly-added
+      // field was computed, applied in memory, and then silently dropped
+      // because its counter wasn't in that list — which is exactly what
+      // happened to the start-date backfill on its first live run
+      // (2026-08-13): 57 date writes, "No changes needed", nothing saved.
+      // Counting mutations here instead means the next field added to
+      // enrichShow persists without anyone remembering to edit the gate.
+      //
+      // Skip-only records (e.g. the past-placeholder guard) push a `changes`
+      // line for visibility but mutate nothing, so they must not count.
+      if (changes.some(c => !c.startsWith('skipped'))) {
+        stats.mutated = (stats.mutated || 0) + 1;
+      }
       console.log(`  ${show.id}: ${changes.join(', ')}`);
     }
   }
@@ -332,9 +346,15 @@ async function main() {
   console.log(`todaytixUrl set: ${stats.todaytixUrlSet}`);
   console.log(`synopsis set: ${stats.synopsisSet}`);
   console.log(`ticketLinks set: ${stats.ticketLinksSet || 0}`);
+  console.log(`previewsStartDate set: ${stats.previewsStartDateSet || 0}`);
+  console.log(`unconfirmedStartDate set: ${stats.unconfirmedStartDateSet || 0}`);
+  console.log(`unconfirmedStartDate cleared: ${stats.unconfirmedStartDateCleared || 0}`);
+  console.log(`start date skipped — past placeholder: ${stats.pastPlaceholderSkipped || 0}`);
+  console.log(`start date skipped — title mismatch: ${stats.dateSkippedTitleMismatch || 0}`);
+  console.log(`Shows mutated: ${stats.mutated || 0}`);
   console.log(`Unmatched TodayTix shows: ${stats.skipped}`);
 
-  if (!DRY_RUN && (stats.todaytixIdSet > 0 || stats.todaytixUrlSet > 0 || stats.synopsisSet > 0 || (stats.ticketLinksSet || 0) > 0)) {
+  if (!DRY_RUN && (stats.mutated || 0) > 0) {
     saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
