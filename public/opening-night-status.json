@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T16:10:28.018Z",
+  "generatedAt": "2026-08-13T17:12:19.829Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -541,28 +541,27 @@
       "status": "open",
       "slug": "the-winters-tale-off-broadway",
       "thumbnail": "/images/shows/the-winters-tale-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 75.74,
+      "siteScore": 75.91,
       "liveScore": 76,
-      "scoreDrift": 0.2600000000000051,
+      "scoreDrift": 0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 2,
-      "t2": 2,
+      "t2": 3,
       "t3": 4,
-      "positive": 5,
+      "positive": 6,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:2/3",
-          "T2:2/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -926,6 +925,18 @@
           "m": 3,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T17:12:19.829Z",
+          "rc": 9,
+          "s": 75.91,
+          "t1": 2,
+          "t2": 3,
+          "t3": 4,
+          "p": 6,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1252,27 +1263,25 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 46.76,
-      "liveScore": 47,
-      "scoreDrift": 0.240000000000002,
+      "siteScore": 47.64,
+      "liveScore": 48,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 0,
       "t2": 6,
-      "t3": 5,
+      "t3": 6,
       "positive": 0,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 8,
       "readiness": {
         "ready": false,
         "reasons": [
-          "11/12 total",
-          "T1:0/3",
-          "hi-conf:7/8"
+          "T1:0/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1638,6 +1647,18 @@
           "t3": 5,
           "p": 0,
           "m": 3,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T17:12:19.829Z",
+          "rc": 12,
+          "s": 47.64,
+          "t1": 0,
+          "t2": 6,
+          "t3": 6,
+          "p": 0,
+          "m": 4,
           "n": 8,
           "bc": "waiting"
         }
