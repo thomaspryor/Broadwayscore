@@ -146,6 +146,48 @@
         "route": "missing-show",
         "note": "Handled by the missing-show route — future identical requests dispatch themselves."
       }
+    },
+    {
+      "key": "missing-show:the apple boys:2026-08-13T20:36:10.076149+00:00",
+      "kind": "missing-show",
+      "title": "The Apple Boys",
+      "market": "regional",
+      "showId": null,
+      "reviewCountAtRequest": null,
+      "workflow": "add-requested-show.yml",
+      "issueNumber": 576,
+      "submissionId": "2026-08-13T20:36:10.076149+00:00",
+      "requestedShowField": "The Apple Boys (Regional)/ Starstruck (Regional)",
+      "requestedMessage": "Please add both The Apple Boys and Starstruck to the Recent Tryouts subsections under the Pre-Broadway section, they both had their out of towns at Bucks County Playhouse in New Hope.",
+      "requestedAt": "2026-08-13T21:14:17.050Z",
+      "status": "open",
+      "satisfiedAt": null,
+      "systematicFix": {
+        "routed": true,
+        "route": "missing-show",
+        "note": "Handled by the missing-show route — future identical requests dispatch themselves."
+      }
+    },
+    {
+      "key": "missing-show:starstruck:2026-08-13T20:36:10.076149+00:00",
+      "kind": "missing-show",
+      "title": "Starstruck",
+      "market": "regional",
+      "showId": null,
+      "reviewCountAtRequest": null,
+      "workflow": "add-requested-show.yml",
+      "issueNumber": 576,
+      "submissionId": "2026-08-13T20:36:10.076149+00:00",
+      "requestedShowField": "The Apple Boys (Regional)/ Starstruck (Regional)",
+      "requestedMessage": "Please add both The Apple Boys and Starstruck to the Recent Tryouts subsections under the Pre-Broadway section, they both had their out of towns at Bucks County Playhouse in New Hope.",
+      "requestedAt": "2026-08-13T21:14:17.051Z",
+      "status": "open",
+      "satisfiedAt": null,
+      "systematicFix": {
+        "routed": true,
+        "route": "missing-show",
+        "note": "Handled by the missing-show route — future identical requests dispatch themselves."
+      }
     }
   ]
 }
