@@ -77,6 +77,46 @@ describe('input-builder — market label derivation from category', () => {
     );
   });
 
+  test('UK regional venue emits "(Regional (UK, outside London))" not US — card #1405', () => {
+    // Card #1405: the RSC Stratford world premiere was announced to the ensemble
+    // as "Regional (US, outside New York)". The review text says England in its
+    // first paragraph, so both legs answered wrong_production and 3 clean T1/T2
+    // reviews scored zero.
+    const input = buildScoringInput(baseReview({
+      showId: 'game-of-thrones-the-mad-king-regional-2026',
+      showTitle: 'Game of Thrones: The Mad King',
+      category: 'regional',
+      venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon',
+    }));
+    assert.ok(
+      input.context.includes('(Regional (UK, outside London))'),
+      `expected UK regional label in context, got:\n${input.context}`
+    );
+    assert.ok(
+      !input.context.includes('US theater outside New York'),
+      `regional note must not call an RSC production a US theater, got:\n${input.context}`
+    );
+    assert.ok(
+      input.context.includes('UK theatre outside London'),
+      `expected UK regional prompt note, got:\n${input.context}`
+    );
+  });
+
+  test('US regional venue keeps the US label — card #1405 must not flip everyone', () => {
+    const input = buildScoringInput(baseReview({
+      category: 'regional',
+      venue: 'La Jolla Playhouse, La Jolla, CA',
+    }));
+    assert.ok(
+      input.context.includes('(Regional (US, outside New York))'),
+      `expected US regional label in context, got:\n${input.context}`
+    );
+    assert.ok(
+      input.context.includes('US theater outside New York'),
+      `expected US regional prompt note, got:\n${input.context}`
+    );
+  });
+
   test('missing category falls through to "(Broadway)" default — documented behavior', () => {
     // This is the failure mode: when ensemble-scorer didn't pass category, every
     // review got "(Broadway)". The fix is upstream (pass category correctly), but
