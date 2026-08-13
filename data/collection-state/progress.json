@@ -24,7 +24,14 @@
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "the-winters-tale-off-broadway-2026/vulture--sara-holdren.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/culturesauce--unknown.json",
+    "the-winters-tale-off-broadway-2026/the-recs--carl-sullivan.json",
+    "death-note-the-musical-west-end-2026/telegraph--tim-robey.json",
+    "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
+    "cats-west-end-2026/north-west-end--michelle-knight.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -151,7 +158,49 @@
     "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
     "macbeth-off-broadway-2026/abc-news--peter-travers.json",
     "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
-    "macbeth-off-broadway-2026/newsday--linda-winer.json"
+    "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/telegraph--dominic-cavendish.json",
+    "abigails-party-west-end-2026/thestage--paul-vale.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "the-winters-tale-off-broadway-2026/nytg--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "how-the-other-half-loves-west-end-2026/london-box-office--stuart-king.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--unknown.json",
+    "cats-west-end-2026/nytg--kyle-turner.json",
+    "cats-west-end-2026/variety--alison-herman.json",
+    "cats-west-end-2026/variety--frank-rizzo.json",
+    "cats-west-end-2026/vulture--jackson-mchenry.json",
+    "cats-west-end-2026/deadline--greg-evans.json",
+    "cats-west-end-2026/ew--shania-russell.json",
+    "cats-west-end-2026/musical-theatre-review--unknown.json",
+    "cats-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cats-west-end-2026/nypost--johnny-oleksinski.json",
+    "cats-west-end-2026/nypost--kyle-smith.json",
+    "cats-west-end-2026/theatermania--zachary-stewart.json",
+    "cats-west-end-2026/cititour--unknown.json",
+    "cats-west-end-2026/theatrely--joey-sims.json",
+    "cats-west-end-2026/ap--mark-kennedy.json",
+    "cats-west-end-2026/chicagotribune--chris-jones.json",
+    "cats-west-end-2026/culturesauce--thom-geier.json",
+    "cats-west-end-2026/curtainup--elyse-sommer.json",
+    "cats-west-end-2026/frontmezzjunkies--steven-ross.json",
+    "cats-west-end-2026/huffpost--david-finkle.json",
+    "cats-west-end-2026/nbcny--robert-kahn.json",
+    "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
+    "cats-west-end-2026/nysr--michael-sommers.json",
+    "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cats-west-end-2026/slantmagazine--dan-rubins.json",
+    "cats-west-end-2026/times-uk--carol-midgley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -169,22 +218,30 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "medea-off-broadway-2026/timeout--adam-feldman.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "the-winters-tale-off-broadway-2026/culturesauce--unknown.json",
+      "the-winters-tale-off-broadway-2026/the-recs--carl-sullivan.json",
+      "cats-west-end-2026/north-west-end--michelle-knight.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
+    ],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+      "death-note-the-musical-west-end-2026/telegraph--tim-robey.json"
     ],
     "brightdata": [
+      "the-winters-tale-off-broadway-2026/vulture--sara-holdren.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
       "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ],
     "archiveToday": [],
@@ -195,25 +252,36 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
     ]
   },
-  "startTime": "2026-08-13T11:01:46.603Z",
-  "lastProcessed": "macbeth-off-broadway-2026/newsday--linda-winer.json",
+  "startTime": "2026-08-13T10:02:52.317Z",
+  "lastProcessed": "cats-west-end-2026/times-uk--carol-midgley.json",
   "log": [
     {
       "t": "2026-08-13T11:02:55.862Z",
       "event": "bb-session",
-      "session": "f17671d3",
+      "session": "252138b9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-13T11:39:04.064Z",
+      "event": "bb-session",
+      "session": "3ccc8d27",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-13T11:02:56.392Z",
+      "t": "2026-08-13T11:39:05.183Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-13T11:30:52.592Z",
+      "t": "2026-08-13T11:39:29.294Z",
       "event": "bb-session",
-      "session": "898593ab",
-      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+      "session": "4d186ccc",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-13T11:39:30.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

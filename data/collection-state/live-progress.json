@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-08-13T11:34:37.238Z",
-  "processed": 25,
-  "failed": 125,
-  "successRate": "16.7%",
+  "updatedAt": "2026-08-13T11:48:59.100Z",
+  "processed": 31,
+  "failed": 169,
+  "successRate": "15.5%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 20,
     "amp": 0,
     "browserbase": 2,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 5,
-    "brightdata": 1,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 4
   },
@@ -18,19 +18,30 @@
     {
       "t": "2026-08-13T11:02:55.862Z",
       "event": "bb-session",
-      "session": "f17671d3",
+      "session": "252138b9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-13T11:39:04.064Z",
+      "event": "bb-session",
+      "session": "3ccc8d27",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-13T11:02:56.392Z",
+      "t": "2026-08-13T11:39:05.183Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-13T11:30:52.592Z",
+      "t": "2026-08-13T11:39:29.294Z",
       "event": "bb-session",
-      "session": "898593ab",
-      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+      "session": "4d186ccc",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-13T11:39:30.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
