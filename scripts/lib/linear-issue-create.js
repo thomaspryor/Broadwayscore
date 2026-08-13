@@ -24,7 +24,7 @@
 
 const linear = require('./linear-client');
 const { resolveDisposition } = require('./card-disposition');
-const { checkIntake, recordCreated } = require('./intake-breaker');
+const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
 
 const USAGE_LIMIT_MESSAGE =
   'Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the ' +
@@ -103,11 +103,20 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // here because this is the one chokepoint every scripted filer goes through;
   // issues the owner files in the Linear app never reach this code and are
   // deliberately unaffected.
+  // OBSERVE-ONLY: warns, never throws. Codex review established that a refusal
+  // here makes owner-alert-router LOSE the alert outright — it catches the
+  // failure, returns {ok:false}, and neither queues a digest row nor sends a
+  // fallback (owner-alert-router.js:284-305, :535-561). Silently eating alerts is
+  // worse than an over-long list. ENFORCE flips to true only once that drop path
+  // has a fallback; see intake-breaker.js's header.
   const breaker = checkIntake();
   if (!breaker.allow) {
-    const err = new Error(breaker.reason);
-    err.intakeBreaker = breaker;
-    throw err;
+    console.warn(`[intake-breaker] ${breaker.reason}`);
+    if (ENFORCE) {
+      const err = new Error(breaker.reason);
+      err.intakeBreaker = breaker;
+      throw err;
+    }
   }
 
   const team = await linear.getTeam();

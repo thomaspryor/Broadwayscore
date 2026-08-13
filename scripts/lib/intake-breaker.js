@@ -30,9 +30,25 @@
  * file every session appends to is a merge-conflict generator), so "absent" is
  * a completely normal state in a fresh worktree.
  *
- * Escape hatch: INTAKE_BREAKER_DISABLED=1 bypasses it entirely, and the refusal
- * message says so, because a breaker with no documented override gets worked
- * around by deleting it.
+ * OBSERVE-ONLY IN THIS VERSION — it never blocks a create. Codex review found
+ * that a refusal at this chokepoint makes owner-alert-router LOSE the alert:
+ * its execFileSync failure is caught and returned as {ok:false}
+ * (owner-alert-router.js:284-305), and routeAlert then neither queues a digest
+ * row nor sends a human fallback (:535-561) — it just leaves the ledger for a
+ * future retry that may never come. A guard that silently eats alerts is
+ * strictly worse than no guard, especially in a system whose central complaint
+ * is that work disappears.
+ *
+ * So this ships as the measurement plus a loud warning, which is the part that
+ * was actually missing (nothing anywhere counted creation). Turning the refusal
+ * on is a follow-up gated on ONE prerequisite: owner-alert-router must queue a
+ * digest row or send a fallback when filing fails, instead of dropping. Once
+ * that exists, flip `enforce` on and the tests for the refusal path already
+ * exist below.
+ *
+ * Escape hatch for when it does enforce: INTAKE_BREAKER_DISABLED=1, named in the
+ * message, because a breaker with no documented override gets worked around by
+ * deleting it.
  */
 
 'use strict';
@@ -51,6 +67,10 @@ const DISABLE_ENV = 'INTAKE_BREAKER_DISABLED';
 // a runaway loop, which produces hundreds.
 const DEFAULT_DAILY_CAP = 60;
 
+// Observe-only until owner-alert-router stops dropping alerts whose filing
+// fails — see the header. Flipping this to true is the entire arming step.
+const ENFORCE = false;
+
 /**
  * Pure decision. Injected counts/now so the test exercises the real predicate.
  *
@@ -67,7 +87,7 @@ function evaluateIntake({ createdToday, cap = DEFAULT_DAILY_CAP, disabled = fals
   return {
     allow: false,
     createdToday: n,
-    reason: `intake breaker: ${n} issues already created today (cap ${cap}). `
+    reason: `intake breaker: ${n} issues already created today in ${POLICY_TZ} (cap ${cap}). `
       + 'This is a storm guard, not a queue limit — normal days are ~34. Something is '
       + 'probably filing in a loop. Check what created the most recent entries in '
       + 'data/audit/intake-ledger.jsonl before filing more. '
@@ -75,9 +95,20 @@ function evaluateIntake({ createdToday, cap = DEFAULT_DAILY_CAP, disabled = fals
   };
 }
 
-/** YYYY-MM-DD in UTC — matches how the ledgers in data/audit already key days. */
+// America/New_York, NOT UTC. Codex review caught a real false-refusal path in
+// the UTC version: 60 issues filed after 20:00 ET land on the FOLLOWING UTC
+// date, so they could suppress filing after local midnight while attributing
+// yesterday's intake to today. The owner's day, the 7:30 digest, and other daily
+// audits (e.g. audit-opening-night-coverage.js) are all ET, so ET is the policy
+// timezone here too. Intl handles DST, which a fixed offset would not.
+const POLICY_TZ = 'America/New_York';
+const DAY_FMT = new Intl.DateTimeFormat('en-CA', {
+  timeZone: POLICY_TZ, year: 'numeric', month: '2-digit', day: '2-digit',
+});
+
+/** YYYY-MM-DD in the policy timezone (ET), DST-correct. */
 function dayKey(now) {
-  return new Date(now).toISOString().slice(0, 10);
+  return DAY_FMT.format(new Date(now));
 }
 
 /**
@@ -91,9 +122,12 @@ function countCreatedToday(now, ledgerPath = LEDGER_PATH) {
   let n = 0;
   for (const line of raw.split('\n')) {
     if (!line.trim()) continue;
-    // Substring test before JSON.parse: this runs on every single create and the
-    // ledger grows all day. Cheap reject first, parse only same-day candidates.
-    if (!line.includes(key)) continue;
+    // NO substring prefilter. An earlier version cheaply rejected lines that did
+    // not contain the day key, which was correct only while the key was UTC. The
+    // key is now ET but `ts` is stored as a UTC ISO string, so an entry written
+    // at 22:00 ET carries tomorrow's UTC date in its text — the prefilter would
+    // have silently UNDERCOUNTED every evening entry, which is the worst kind of
+    // bug in a counter whose whole job is noticing a spike. Always parse.
     try { if (dayKey(Date.parse(JSON.parse(line).ts)) === key) n += 1; } catch { /* skip malformed */ }
   }
   return n;
@@ -121,5 +155,5 @@ function checkIntake(now = Date.now(), ledgerPath = LEDGER_PATH) {
 
 module.exports = {
   evaluateIntake, countCreatedToday, recordCreated, checkIntake, dayKey,
-  DEFAULT_DAILY_CAP, LEDGER_PATH, DISABLE_ENV,
+  DEFAULT_DAILY_CAP, LEDGER_PATH, DISABLE_ENV, POLICY_TZ, ENFORCE,
 };
