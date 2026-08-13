@@ -27,7 +27,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
-const { parseErrorLines, evaluateCommitDecision } = require('./lib/validation-setdiff');
+const { parseErrorLines, evaluateCommitDecision, evaluatePerShowCommitDecision } = require('./lib/validation-setdiff');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -383,9 +383,18 @@ async function main() {
       console.log(`ℹ️  ${baselineErrors.length} pre-existing validation error(s) — will not block this run's commit unless it introduces NEW ones.`);
     }
 
+    // Snapshot each touched show before mutating it, so a per-show partial
+    // block (see below) can revert just that show without re-deriving IBDB
+    // data or re-running the whole batch.
+    const preChangeSnapshots = new Map();
+    const candidateIds = [];
+
     for (const c of changes) {
       const showRecord = data.shows.find(s => s.slug === c.slug);
       if (!showRecord) continue;
+
+      preChangeSnapshots.set(showRecord.id, JSON.parse(JSON.stringify(showRecord)));
+      candidateIds.push(showRecord.id);
 
       for (const ch of c.changes) {
         if (ch.field === 'creativeTeam') {
@@ -423,7 +432,34 @@ async function main() {
     console.log('Running data validation...');
     const { output: postOutput, exitCode: postExitCode } = runValidateCapture();
     const postErrors = parseErrorLines(postOutput);
-    const { shouldCommit, newErrors, reason } = evaluateCommitDecision({ preErrors: baselineErrors, postErrors, postExitCode });
+    let { shouldCommit, newErrors, blockedIds, reason } = evaluatePerShowCommitDecision({ preErrors: baselineErrors, postErrors, postExitCode, candidateIds });
+
+    // Partial block: revert just the implicated show(s) in-memory, re-save,
+    // and re-validate to CONFIRM the revert actually cleared their errors
+    // before trusting the attribution (task #1426 — one show's stale
+    // awards.json data must not silently discard 10 other shows' writes).
+    if (shouldCommit && blockedIds.size > 0) {
+      console.log(`ℹ️  ${blockedIds.size} show(s) held back — new validation error attributed to: ${[...blockedIds].join(', ')}`);
+      for (const id of blockedIds) {
+        const idx = data.shows.findIndex(s => s.id === id);
+        if (idx !== -1 && preChangeSnapshots.has(id)) {
+          data.shows[idx] = preChangeSnapshots.get(id);
+          updated--;
+        }
+      }
+      saveShows(data);
+      const { output: reverifyOutput, exitCode: reverifyExitCode } = runValidateCapture();
+      const reverifyErrors = parseErrorLines(reverifyOutput);
+      const reverifyDecision = evaluateCommitDecision({ preErrors: baselineErrors, postErrors: reverifyErrors, postExitCode: reverifyExitCode });
+      if (!reverifyDecision.shouldCommit) {
+        console.error(`❌ Revert of held-back show(s) did not clear the new error(s) — attribution was wrong. Blocking the full commit.`);
+        reverifyDecision.newErrors.forEach((e, i) => console.error(`   ${i + 1}. ${e}`));
+        process.exit(1);
+      }
+      console.log(`✅ Reverted show(s) confirmed clean; committing the remaining ${updated} show(s).`);
+      reason = `${reason} (revert re-verified clean)`;
+    }
+
     if (shouldCommit) {
       console.log(`✅ Validation passed (${reason})`);
       if (postErrors.length > 0) {

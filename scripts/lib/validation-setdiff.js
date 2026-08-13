@@ -64,9 +64,85 @@ function evaluateCommitDecision({ preErrors, postErrors, postExitCode }) {
   };
 }
 
+const QUOTED_TOKEN_RE = /"([^"]+)"/g;
+
+function extractQuotedTokens(text) {
+  const out = [];
+  let m;
+  QUOTED_TOKEN_RE.lastIndex = 0;
+  while ((m = QUOTED_TOKEN_RE.exec(text)) !== null) out.push(m[1]);
+  return out;
+}
+
+// Attribute each new validation error to one of the show IDs a batch write
+// touched (validate-data.js quotes the show ID in nearly every per-show
+// error, e.g. `awards.json: "galileo-2026" tony.season=...`). Returns which
+// candidate IDs are implicated, and whether EVERY new error could be pinned
+// to a candidate.
+//
+// allAttributed=false means at least one new error names something outside
+// this batch's candidateIds (or names nothing at all) — its cause is
+// untraceable from here, so the caller should fall back to blocking the
+// whole batch rather than guess it's unrelated.
+function attributeNewErrorsToShowIds(newErrors, candidateIds) {
+  const candidateSet = new Set(candidateIds);
+  const blockedIds = new Set();
+  let allAttributed = true;
+  for (const err of newErrors) {
+    const tokens = extractQuotedTokens(err);
+    const hit = tokens.find((t) => candidateSet.has(t));
+    if (hit) {
+      blockedIds.add(hit);
+    } else {
+      allAttributed = false;
+    }
+  }
+  return { blockedIds, allAttributed };
+}
+
+// Per-show commit decision: card #1426 found that enrich-ibdb-dates.js's
+// weekly run collected valid openingDate values for 11 shows, but 3 of them
+// (galileo-2026, inter-alia-2026, paranormal-activity-2026) had a stale
+// awards.json tony.season placeholder that the NOW-real openingDate made
+// inconsistent — a genuinely new validation error. evaluateCommitDecision's
+// all-or-nothing gate then discarded ALL 11 shows' writes, including 8 with
+// zero problems of their own, and the sentinel it left behind blocked that
+// week's push entirely.
+//
+// This partitions instead: candidateIds are the show IDs a batch touched.
+// Shows whose ID isn't named by any new error commit; shows named by a new
+// error are held back for a human/future run. If any new error can't be
+// attributed to a candidate at all, this falls back to the original
+// shouldCommit=false-for-everything behavior — an error with an untraceable
+// cause is not safe to write past.
+function evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode, candidateIds }) {
+  const base = evaluateCommitDecision({ preErrors, postErrors, postExitCode });
+  if (base.shouldCommit) {
+    return { ...base, blockedIds: new Set() };
+  }
+  // The postExitCode crash-safety branch (no parseable error lines at all)
+  // has nothing to attribute — always blocks everything, same as before.
+  if (base.newErrors.length === 0) {
+    return { ...base, blockedIds: new Set() };
+  }
+  const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(base.newErrors, candidateIds);
+  if (!allAttributed) {
+    return { ...base, blockedIds: new Set() };
+  }
+  const committableCount = candidateIds.length - blockedIds.size;
+  return {
+    shouldCommit: committableCount > 0,
+    newErrors: base.newErrors,
+    blockedIds,
+    reason: `${blockedIds.size} of ${candidateIds.length} show(s) held back (new validation error attributed to them); ${committableCount} committed.`,
+  };
+}
+
 module.exports = {
   parseErrorLines,
   computeNewErrors,
   shouldCommitDespiteValidationErrors,
   evaluateCommitDecision,
+  attributeNewErrorsToShowIds,
+  evaluatePerShowCommitDecision,
 };

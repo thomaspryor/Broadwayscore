@@ -1,14 +1,35 @@
 {
-  "generatedAt": "2026-08-04T22:07:53.999Z",
+  "generatedAt": "2026-08-13T23:50:03.330Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "the-full-monty-2027"
   },
   "counts": {
-    "total": 0,
-    "match": 0,
+    "total": 1,
+    "match": 1,
     "mismatch": 0,
     "unresolved": 0
   },
-  "results": []
+  "results": [
+    {
+      "id": "the-full-monty-2027",
+      "title": "The Full Monty",
+      "venue": "Todd Haimes Theatre",
+      "result": "match",
+      "playbillUrl": "https://playbill.com/production/the-full-monty-broadway-todd-haimes-theatre-2027",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "The Full Monty",
+          "market": "Broadway",
+          "venue": "Todd Haimes Theatre",
+          "year": 2027
+        },
+        "dates": {
+          "firstPreview": "2027-04-03",
+          "openingDate": "2027-04-25",
+          "closingDate": null
+        }
+      },
+      "mismatches": []
+    }
+  ]
 }
