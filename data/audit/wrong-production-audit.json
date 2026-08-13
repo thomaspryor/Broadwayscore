@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T10:10:34.934Z",
+  "timestamp": "2026-08-13T10:42:09.308Z",
   "stats": {
-    "totalReviews": 42132,
-    "alreadyFlagged": 18306,
+    "totalReviews": 42145,
+    "alreadyFlagged": 18309,
     "dateGuardCatches": 141,
     "directorMismatch": 965,
     "tvFilmSignals": 1190,
-    "londonSignals": 868,
+    "londonSignals": 869,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3543
+    "noPublishDate": 3542
   },
   "findings": [
     {
@@ -37442,6 +37442,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 87,
       "publishDate": "2026-08-12",
       "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
       "findings": [
@@ -37455,6 +37456,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 87,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -37467,7 +37469,21 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "whatsonstage--aliya-al-hassan.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
       "file": "whatsonstage--unknown.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
       "findings": [
