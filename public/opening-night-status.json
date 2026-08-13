@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T17:12:19.829Z",
+  "generatedAt": "2026-08-13T18:20:34.344Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1263,22 +1263,23 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 47.64,
+      "siteScore": 47.99,
       "liveScore": 48,
-      "scoreDrift": 0.35999999999999943,
+      "scoreDrift": 0.00999999999999801,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 11,
       "t1": 0,
-      "t2": 6,
+      "t2": 5,
       "t3": 6,
       "positive": 0,
       "mixed": 4,
-      "negative": 8,
+      "negative": 7,
       "readiness": {
         "ready": false,
         "reasons": [
+          "11/12 total",
           "T1:0/3"
         ],
         "highConfidence": 8,
@@ -1366,6 +1367,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -1660,6 +1665,18 @@
           "p": 0,
           "m": 4,
           "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T18:20:34.344Z",
+          "rc": 11,
+          "s": 47.99,
+          "t1": 0,
+          "t2": 5,
+          "t3": 6,
+          "p": 0,
+          "m": 4,
+          "n": 7,
           "bc": "waiting"
         }
       ]
