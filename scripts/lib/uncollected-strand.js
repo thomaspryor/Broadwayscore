@@ -106,8 +106,10 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     usable,
     discovered,
     // The catastrophic shape: a live show the site shows no critics for at all,
-    // while we hold several of its review URLs on disk.
-    totalBlackout: usable === 0 && discovered >= 3,
+    // while we hold its review URLs on disk. Threshold 2, not 3 — an
+    // Off-Broadway show can have its whole press slate be two outlets, and a
+    // blackout is a blackout at that size too.
+    totalBlackout: usable === 0 && discovered >= 2,
   };
 }
 

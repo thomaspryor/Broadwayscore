@@ -198,7 +198,13 @@ function chooseOpeningDateBackfill(show, dates, isDateReached) {
  */
 function isCleanDiscoveredReview(review) {
   if (!review || typeof review !== 'object') return false;
-  if (review.wrongProduction || review.wrongShow || review.isNonReview) return false;
+  // Mirrors the exclusion set in scripts/lib/date-plausibility.js:35 — the
+  // established "this record's date is not trustworthy" list. isRoundupArticle
+  // matters most here: a BWW/Playbill roundup is filed WITH a url and a
+  // publishDate, and it is the single most likely thing to be sitting in the
+  // folder of a show whose reviews just dropped.
+  if (review.wrongProduction || review.wrongShow || review.wrongUrl) return false;
+  if (review.isNonReview || review.isNotReview || review.isRoundupArticle) return false;
   if (review.rejectionReason || review.duplicateOf || review.fabricatedEntry) return false;
   return Boolean(review.url);
 }
@@ -254,9 +260,18 @@ function datesFromDiscoveredReviews(files, show) {
  */
 function openSignalFromDiscovery(show, discoveredFiles, isDateReached) {
   if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
+  // previewsStartDate is REQUIRED here, unlike openSignalFromReviews.
+  // That sibling reads reviews.json, which the rebuild has already scrubbed of
+  // prior-production entries. The discovery layer has not been scrubbed: it is
+  // where the 2023 Shakespeare's Globe reviews live inside the 2026 Winter's
+  // Tale folder. previewsStartDate is the only thing separating this run's
+  // press coverage from a previous production's, so without it we cannot tell
+  // them apart and must not guess — a wrong date here is published verbatim as
+  // "Opened {date}" and drives opening-night automation.
+  if (!show.previewsStartDate) return null;
   const pressNight = estimatePressNight(datesFromDiscoveredReviews(discoveredFiles, show));
   if (!pressNight || !isDateReached(pressNight)) return null;
-  if (show.previewsStartDate && pressNight < show.previewsStartDate) return null;
+  if (pressNight < show.previewsStartDate) return null;
   return { date: pressNight, source: 'discovery-open-signal' };
 }
 

@@ -5806,7 +5806,7 @@ function findReviewsToProcess() {
   }
 
   // Sort: open/preview shows first (unless CLOSED_SHOW_MODE),
-  // then newest shows first (by openingDate desc),
+  // then newest shows first (by recencyDate desc),
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';

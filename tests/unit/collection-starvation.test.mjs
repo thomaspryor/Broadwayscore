@@ -168,3 +168,42 @@ test('discovery open-signal only applies to pre-open shows', () => {
   const files = [{ url: 'https://x/y', publishDate: '2026-08-12' }];
   assert.equal(openSignalFromDiscovery(CATS, files, () => true), null, 'already open');
 });
+
+// --- ship-check findings, 2026-08-13 ---
+
+test('discovery open-signal refuses to guess when previewsStartDate is missing', () => {
+  // Without previewsStartDate there is nothing separating this run's press
+  // coverage from a prior production's, and the discovery layer holds both.
+  // Guessing here writes a wrong user-visible "Opened {date}".
+  const noPreviews = { ...WINTERS_TALE, previewsStartDate: null };
+  const files = [{ url: 'https://x/y', publishDate: '2023-02-25' }];
+  assert.equal(openSignalFromDiscovery(noPreviews, files, () => true), null);
+});
+
+test('a roundup article never becomes press night', () => {
+  // BWW/Playbill roundups carry a url and a publishDate and are exactly what
+  // lands in a show's folder the day its reviews drop.
+  const files = [
+    { url: 'https://www.broadwayworld.com/article/Review-Roundup-X', publishDate: '2026-08-12', isRoundupArticle: true },
+    { url: 'https://x/news', publishDate: '2026-08-12', isNotReview: true },
+    { url: 'https://x/bad', publishDate: '2026-08-12', wrongUrl: true },
+  ];
+  assert.deepEqual(datesFromDiscoveredReviews(files, WINTERS_TALE), []);
+  assert.equal(openSignalFromDiscovery(WINTERS_TALE, files, () => true), null);
+});
+
+test('two discovered URLs with nothing collected is already a blackout', () => {
+  // An Off-Broadway press slate can be two outlets; requiring 3 would let a
+  // real blackout through.
+  const nowMs = Date.parse('2026-08-13T02:00:00Z');
+  const twoUrls = [
+    { file: 'a.json', review: { url: 'https://a/1', publishDate: '2026-08-12' } },
+    { file: 'b.json', review: { url: 'https://b/1', publishDate: '2026-08-12' } },
+  ];
+  assert.equal(assessShow(WINTERS_TALE, twoUrls, { nowMs }).totalBlackout, true);
+  assert.equal(
+    assessShow(WINTERS_TALE, twoUrls.slice(0, 1), { nowMs }).totalBlackout,
+    false,
+    'a single discovered URL is not yet evidence of a blackout'
+  );
+});
