@@ -80,6 +80,19 @@ function findChecklistGateLine(lines) {
   return -1;
 }
 
+// The root checkout — install must come AFTER this, not just before
+// checklist_gate, or a future edit could hoist the setup-node step above
+// checkout (repo files wouldn't exist yet) while still satisfying the
+// install-before-gate check below.
+function findCheckoutLine(lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const stripped = lines[i].trim();
+    if (stripped.startsWith('#')) continue;
+    if (/^uses:\s*actions\/checkout@/.test(stripped)) return i;
+  }
+  return -1;
+}
+
 function main() {
   const raw = fs.readFileSync(WORKFLOW_PATH, 'utf8');
   const lines = raw.split('\n');
@@ -96,6 +109,15 @@ function main() {
     process.exit(1);
   }
 
+  const checkoutLine = findCheckoutLine(lines);
+  if (checkoutLine !== -1 && installLine < checkoutLine) {
+    console.error(
+      `assert-broadcast-step-order: node install (line ${installLine + 1}) runs BEFORE checkout (line ${checkoutLine + 1}) — ` +
+      'the repo would not be checked out yet when npm ci runs. Move the setup-node step back after the checkout steps.'
+    );
+    process.exit(1);
+  }
+
   if (installLine > gateLine) {
     console.error(
       `assert-broadcast-step-order: node install (line ${installLine + 1}) runs AFTER checklist_gate (line ${gateLine + 1}) — ` +
@@ -105,7 +127,7 @@ function main() {
     process.exit(1);
   }
 
-  console.log(`OK: node install (line ${installLine + 1}) runs before checklist_gate (line ${gateLine + 1}).`);
+  console.log(`OK: node install (line ${installLine + 1}) runs after checkout (line ${checkoutLine + 1}) and before checklist_gate (line ${gateLine + 1}).`);
 }
 
 main();
