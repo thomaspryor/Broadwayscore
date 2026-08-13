@@ -464,13 +464,13 @@ test('renderHealthDigestBlock: escalated URGENT snapshot shows the consecutive-d
   });
   assert.match(html, /1 error, 0 warnings/);
   assert.match(html, /day 4 of consecutive errors/);
-  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('Automation queue'));
 });
 test('renderHealthDigestBlock v3: never renders a button, even when rows carry stale fixUrls', () => {
   const health = { errors: [{ name: 'A', message: 'x', fixUrl: 'https://broadwayscorecard.com/api/autonomous-action?action=dispatch' }], warns: [], queued: [] };
   const html = renderHealthDigestBlock(health);
   assert.ok(!/Fix this/.test(html), 'stale fixUrl on a row must not resurrect the button');
-  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('Automation queue'));
 });
 test('renderHealthDigestBlock: an error with no fixUrl renders with no Fix-this link (backward compatible)', () => {
   const html = renderHealthDigestBlock({
@@ -806,6 +806,29 @@ test('v3: renderHealthDigestBlock renders NO buttons and reports every row in th
     { name: 'B drifting', state: 'queued', taskId: null },
   ]);
   assert.ok(!/Fix this/.test(html), 'no Fix-this buttons in Digest v3');
-  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('Automation queue'));
   assert.ok(html.includes('#42'));
+});
+
+// BRO-286 replaced the autofix block's header: "Being fixed automatically —
+// nothing for you to do" claimed a fix was underway on faith, which is exactly
+// the lie tasks #1311/#1220 were filed against (the launch is detached, so
+// whether it RAN is only knowable next day). Three assertions in this suite
+// still pinned the retired phrasing and went red on main when the header
+// changed. Assert the block by its stable name AND assert the retired claim
+// never comes back, so a future prose edit can't quietly restore it.
+test('autofix block never claims a fix is underway on faith (#1311/#1220 regression guard)', () => {
+  const health = { errors: [{ name: 'A broke', message: 'x' }], warns: [], queued: [] };
+  for (const rows of [
+    null,
+    [{ name: 'A broke', state: 'dispatched', taskId: 'linear:BRO-42' }],
+    [{ name: 'A broke', state: 'queued', taskId: null }],
+  ]) {
+    const html = renderHealthDigestBlock(health, rows);
+    assert.ok(html.includes('Automation queue'), 'autofix block must render');
+    assert.ok(!/Being fixed automatically/.test(html),
+      'retired header restored — it asserts a fix is running before anything proves it ran');
+    assert.ok(!/nothing for you to do/i.test(html),
+      'retired "nothing for you to do" claim restored');
+  }
 });
