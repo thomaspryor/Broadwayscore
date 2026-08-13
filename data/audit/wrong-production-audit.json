@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T14:31:19.455Z",
+  "timestamp": "2026-08-13T16:10:22.736Z",
   "stats": {
-    "totalReviews": 42181,
+    "totalReviews": 42185,
     "alreadyFlagged": 18295,
     "dateGuardCatches": 143,
     "directorMismatch": 966,
     "tvFilmSignals": 1190,
-    "londonSignals": 873,
+    "londonSignals": 875,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3558
+    "noPublishDate": 3562
   },
   "findings": [
     {
@@ -37480,6 +37480,19 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
       "file": "british-theatre--unknown.json",
       "score": 71,
       "publishDate": "2026-08-13",
@@ -37540,6 +37553,19 @@
       "score": 76,
       "publishDate": null,
       "url": "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-07-09",
+      "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
