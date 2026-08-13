@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-13T09:48:30.722Z",
+  "timestamp": "2026-08-13T10:10:34.934Z",
   "stats": {
-    "totalReviews": 42128,
+    "totalReviews": 42132,
     "alreadyFlagged": 18306,
     "dateGuardCatches": 141,
     "directorMismatch": 965,
     "tvFilmSignals": 1190,
-    "londonSignals": 865,
+    "londonSignals": 868,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
     "noPublishDate": 3543
@@ -22792,6 +22792,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 84,
       "publishDate": "2024-10-28",
       "url": "https://www.londonboxoffice.co.uk/news/post/stories-tap-dance-sensation-review",
       "findings": [
@@ -37435,6 +37436,45 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
