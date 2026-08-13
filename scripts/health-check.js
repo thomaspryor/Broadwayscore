@@ -2976,6 +2976,37 @@ function reverseDiscoveryBacklogResults(report) {
   }];
 }
 
+// Daily-digest surfacing for uncollected-live-review strands (data/audit/
+// uncollected-live-reviews.json, written hourly by
+// audit-uncollected-live-reviews.js — card #1408). That script's own --alert
+// flag already pages the totalBlackout case in real time via
+// routeAlert(disposition:'auto'); this is the digest-only backstop for
+// ordinary strands (a live show still has some coverage, just not every
+// discovered URL fetched yet) so the backlog stays visible daily instead of
+// silent between hourly runs. 'error' when any show is a total blackout — a
+// live show with zero usable critic reviews on site at all, the exact shape
+// that let The Winter's Tale and An American Daughter reach opening night
+// uncollected on 2026-08-12 — else 'warn' for ordinary strands.
+function uncollectedStrandResults(report) {
+  if (!report || !Array.isArray(report.findings) || report.findings.length === 0) return [];
+  const blackouts = Array.isArray(report.blackoutShows) ? report.blackoutShows : [];
+  const first = report.findings[0];
+  if (blackouts.length > 0) {
+    return [{
+      name: 'Data: live show with zero critic reviews on site',
+      status: 'error',
+      message: `${blackouts.length} live show(s) have discovered review URL(s) but NOTHING collected. First: ${blackouts[0]}`,
+      hint: 'data/audit/uncollected-live-reviews.json has the per-outlet list. Recover: gh workflow run opening-night-express.yml -f show_id=<id> -f market=<market>.',
+    }];
+  }
+  return [{
+    name: 'Data: uncollected live review strands',
+    status: 'warn',
+    message: `${report.strandedFiles} discovered review URL(s) across ${report.findings.length} live show(s) were never fetched. First: ${first.showId} (${first.stranded.length} stranded)`,
+    hint: 'data/audit/uncollected-live-reviews.json has the per-outlet list. Recover: gh workflow run opening-night-express.yml -f show_id=<id> -f market=<market>.',
+  }];
+}
+
 // Daily-digest surfacing for T1/T2 silent review gaps (data/audit/
 // t1-silent-gaps.json, written hourly by audit-t1-silent-gaps.js). Real-time
 // CRITICAL email only fires for gaps on near-opening shows; everything else
@@ -4057,6 +4088,10 @@ async function main() {
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
+    try {
+      const strandReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/uncollected-live-reviews.json'), 'utf8'));
+      allResults.push(...uncollectedStrandResults(strandReport));
+    } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
@@ -4181,4 +4216,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
