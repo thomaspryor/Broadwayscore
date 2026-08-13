@@ -1,36 +1,11 @@
 {
-  "generatedAt": "2026-08-13T00:55:40.280Z",
+  "generatedAt": "2026-08-13T04:13:52.943Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 148,
-  "clean": 147,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: this-week-in-new-york"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.36 vs local 72.9 (Δ0.46)"
-        }
-      ],
-      "missingFromProd": [
-        "this-week-in-new-york"
-      ],
-      "localCount": 7,
-      "deployedCount": 6
-    }
-  ]
+  "checked": 149,
+  "clean": 149,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

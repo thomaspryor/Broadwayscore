@@ -1,20 +1,139 @@
 {
-  "generatedAt": "2026-08-13T00:55:31.345Z",
+  "generatedAt": "2026-08-13T04:13:42.713Z",
   "windowDays": 1095,
-  "targets": 13,
-  "auditedThisRun": 13,
-  "carriedForward": 213,
+  "targets": 87,
+  "auditedThisRun": 26,
+  "carriedForward": 221,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 171,
-    "totalMissing": 1040,
+    "withGap": 174,
+    "totalMissing": 1059,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1158,
+    "totalFlaggedMisses": 1171,
     "totalRecoverable": 32,
-    "totalRecovered": 6
+    "totalRecovered": 7
   },
   "results": [
+    {
+      "showId": "10-things-i-hate-about-you-on-broadway-2024",
+      "title": "10 Things I Hate About You on Broadway",
+      "openingDate": null,
+      "status": "announced",
+      "category": "broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "360-allstars-off-west-end-2026",
+      "title": "360 ALLSTARS",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/360-allstars-review-peacock-theatre-london",
+          "host": "thestage.co.uk",
+          "file": "thestage--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "58th-street-off-west-end-2026",
+      "title": "58th Street",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
       "title": "A Life in Four Seasons",
@@ -397,6 +516,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T00:55:31.345Z"
+    },
+    {
+      "showId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
+      "title": "A Midsummer Night's Dream - Unicorn",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
@@ -4277,7 +4431,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T00:55:31.345Z"
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -4846,6 +5000,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-10T14:22:04.271Z"
+    },
+    {
+      "showId": "beauty-freak-off-broadway-2026",
+      "title": "Beauty Freak",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "becky-shaw-2026",
@@ -18566,31 +18755,37 @@
         "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
         "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
+        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+        "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+        "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
+        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+        "https://www.londontheatredirect.com/news/death-note-barbican-review/amp"
       ],
-      "dirFiles": 39,
-      "dirClean": 23,
-      "inReviewsJson": 22,
-      "missing": [],
-      "dirOnly": [
+      "dirFiles": 41,
+      "dirClean": 24,
+      "inReviewsJson": 23,
+      "missing": [
         {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
+          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
+          "host": "playbill.com",
+          "knownOutletId": "playbill",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
         {
           "host": "everything-theatre.co.uk",
           "count": 1
         },
         {
-          "host": "theguardian.com",
+          "host": "flickermagazine.art",
           "count": 1
         },
         {
           "host": "monstagigz.com",
-          "count": 1
-        },
-        {
-          "host": "musicaltheatrereview.com",
           "count": 1
         },
         {
@@ -18603,10 +18798,6 @@
         },
         {
           "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "stanservice.substack.com",
           "count": 1
         },
         {
@@ -18630,7 +18821,8 @@
               "flag": "clean",
               "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
             }
-          ]
+          ],
+          "serpCensus": true
         },
         {
           "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
@@ -18647,7 +18839,26 @@
               "flag": "clean",
               "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
             }
-          ]
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -18694,22 +18905,116 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Death Note: The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Death Note: The Musical\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Death Note: The Musical\" review barbican",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 16,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 90,
+        "count": 109,
         "byReason": {
+          "aggregator-internal-nav": 50,
+          "not-http-url": 20,
+          "non-review-host": 36,
           "roundup-page": 2,
-          "non-review-host": 19,
-          "aggregator-internal-nav": 49,
-          "not-http-url": 20
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
+          "host": "playbill.com",
+          "outletId": "playbill",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155647/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+          "host": "thestage.co.uk",
+          "file": "thestage--ghenet-pinderhughes-randall.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "playbill",
+            "outlet": "playbill",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london"
+          },
           {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
@@ -18723,6 +19028,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+          },
+          {
+            "outletId": "bestoftheatre.co.uk",
+            "outlet": "bestoftheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
           }
         ],
         "suppressedMissing": [],
@@ -18806,6 +19118,43 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+            "outletId": "stanservice.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/death-note-barbican-review/amp",
+            "outletId": "londontheatredirect.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
+            "outletId": "playbill",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -18818,12 +19167,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+            "outletId": "bestoftheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 15
+        "liveCount": 17,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-12T23:25:24.492Z"
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -30493,6 +30849,41 @@
       "computedAt": "2026-08-08T11:19:34.086Z"
     },
     {
+      "showId": "graham100-the-centennial-celebration-off-broadway-2026",
+      "title": "Graham100: The Centennial Celebration",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "grangeville-off-broadway-2026",
       "title": "GRANGEVILLE",
       "openingDate": "2025-02-24",
@@ -34164,6 +34555,418 @@
       "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
+      "showId": "harry-connick-jr-off-broadway-2026",
+      "title": "Harry Connick Jr.",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-broadways-harry-connick-jra-celebration-of-cole-porter",
+        "https://playbill.com/article/read-reviews-for-the-world-premiere-of-the-sting-starring-harry-connick-jr",
+        "https://www.broadwayworld.com/article/Review-Roundup-Harry-Connick-Jr-Brings-A-CELEBRATION-OF-COLE-PORTER-To-Broadway-20191216"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/broadway/broadway-review-harry-connick-jr-s-strange-elaborate-cole-porter-tribute/",
+        "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic",
+        "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/",
+        "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/",
+        "http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/",
+        "https://www.nytimes.com/2019/12/15/theater/harry-connick-jr-cole-porter-review.html",
+        "https://www.vulture.com/2019/12/harry-connick-jr-finds-the-tick-tick-tick-of-cole-porter.html",
+        "https://amny.com/entertainment/the-sting-review-harry-connick-jr-1.17945481",
+        "http://nydailynews.com/entertainment/theater-arts/sting-review-harry-connick-jr-leads-musical-paper-mill-article-1.3923654",
+        "http://nj.com/entertainment/index.ssf/2018/04/the_sting_harry_connick_jr_papermill_playhouse_thr.html",
+        "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
+        "https://nytimes.com/2018/04/09/theater/the-sting-review-harry-connick-jr-paper-mill-playhouse.html",
+        "https://thewrap.com/sting-theater-review-harry-connick-jr-aims-go-ragtime-riches/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.amny.com/broadway/broadway-review-harry-connick-jr-s-strange-elaborate-cole-porter-tribute/",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/12/15/theater/harry-connick-jr-cole-porter-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.vulture.com/2019/12/harry-connick-jr-finds-the-tick-tick-tick-of-cole-porter.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://amny.com/entertainment/the-sting-review-harry-connick-jr-1.17945481",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://nydailynews.com/entertainment/theater-arts/sting-review-harry-connick-jr-leads-musical-paper-mill-article-1.3923654",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://nj.com/entertainment/index.ssf/2018/04/the_sting_harry_connick_jr_papermill_playhouse_thr.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom"
+        },
+        {
+          "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
+          "host": "northjersey.com",
+          "knownOutletId": "northjerseycom"
+        },
+        {
+          "url": "https://nytimes.com/2018/04/09/theater/the-sting-review-harry-connick-jr-paper-mill-playhouse.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://thewrap.com/sting-theater-review-harry-connick-jr-aims-go-ragtime-riches/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 493,
+        "byReason": {
+          "aggregator-internal-nav": 382,
+          "not-http-url": 53,
+          "non-review-host": 55,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.amny.com/broadway/broadway-review-harry-connick-jr-s-strange-elaborate-cole-porter-tribute/",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155675/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "harry-connick-jr-off-broadway-2026: http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/ is already owned by harry-connick-jr-off-broadway — one of the two is contaminated. Inspect data/review-texts/harry-connick-jr-off-broadway/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "harry-connick-jr-off-broadway-2026: http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/ is already owned by harry-connick-jr-off-broadway — one of the two is contaminated. Inspect data/review-texts/harry-connick-jr-off-broadway/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.nytimes.com/2019/12/15/theater/harry-connick-jr-cole-porter-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.vulture.com/2019/12/harry-connick-jr-finds-the-tick-tick-tick-of-cole-porter.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "https://amny.com/entertainment/the-sting-review-harry-connick-jr-1.17945481",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "http://nydailynews.com/entertainment/theater-arts/sting-review-harry-connick-jr-leads-musical-paper-mill-article-1.3923654",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews"
+        },
+        {
+          "url": "http://nj.com/entertainment/index.ssf/2018/04/the_sting_harry_connick_jr_papermill_playhouse_thr.html",
+          "host": "nj.com",
+          "outletId": "njcom"
+        },
+        {
+          "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
+          "host": "northjersey.com",
+          "outletId": "northjerseycom"
+        },
+        {
+          "url": "https://nytimes.com/2018/04/09/theater/the-sting-review-harry-connick-jr-paper-mill-playhouse.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://thewrap.com/sting-theater-review-harry-connick-jr-aims-go-ragtime-riches/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/broadway/broadway-review-harry-connick-jr-s-strange-elaborate-cole-porter-tribute/"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2019/12/15/theater/harry-connick-jr-cole-porter-review.html"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/2019/12/harry-connick-jr-finds-the-tick-tick-tick-of-cole-porter.html"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://amny.com/entertainment/the-sting-review-harry-connick-jr-1.17945481"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nydailynews.com/entertainment/theater-arts/sting-review-harry-connick-jr-leads-musical-paper-mill-article-1.3923654"
+          },
+          {
+            "outletId": "njcom",
+            "outlet": "njcom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nj.com/entertainment/index.ssf/2018/04/the_sting_harry_connick_jr_papermill_playhouse_thr.html"
+          },
+          {
+            "outletId": "northjerseycom",
+            "outlet": "northjerseycom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nytimes.com/2018/04/09/theater/the-sting-review-harry-connick-jr-paper-mill-playhouse.html"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thewrap.com/sting-theater-review-harry-connick-jr-aims-go-ragtime-riches/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.amny.com/broadway/broadway-review-harry-connick-jr-s-strange-elaborate-cole-porter-tribute/",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic",
+            "outletId": "dailybeast",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/",
+            "outletId": "deadline",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-celebrating-cole-porter-with-brass-and-multimedia/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/12/15/theater/harry-connick-jr-cole-porter-review.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/12/harry-connick-jr-finds-the-tick-tick-tick-of-cole-porter.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://amny.com/entertainment/the-sting-review-harry-connick-jr-1.17945481",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://nydailynews.com/entertainment/theater-arts/sting-review-harry-connick-jr-leads-musical-paper-mill-article-1.3923654",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://nj.com/entertainment/index.ssf/2018/04/the_sting_harry_connick_jr_papermill_playhouse_thr.html",
+            "outletId": "njcom",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
+            "outletId": "northjerseycom",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://nytimes.com/2018/04/09/theater/the-sting-review-harry-connick-jr-paper-mill-playhouse.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://thewrap.com/sting-theater-review-harry-connick-jr-aims-go-ragtime-riches/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "title": "Heated Rivalry: The Unauthorized Musical Parody",
       "openingDate": "2026-05-12",
@@ -37147,6 +37950,41 @@
         "candidateCount": 6
       },
       "computedAt": "2026-08-12T19:54:19.094Z"
+    },
+    {
+      "showId": "hot-mess-a-new-musical-off-west-end-2026",
+      "title": "Hot Mess: A New Musical",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -40463,64 +41301,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 20,
-        "byReason": {
-          "not-http-url": 9,
-          "non-review-host": 9,
-          "venue-production-page": 1,
-          "roundup-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -40531,7 +41317,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T22:34:23.403Z"
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -44155,6 +44941,41 @@
       "computedAt": "2026-08-07T23:26:20.886Z"
     },
     {
+      "showId": "joy-guidry-off-broadway-2026",
+      "title": "Joy Guidry",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "juno-and-the-paycock-west-end-2024",
       "title": "Juno and the Paycock",
       "openingDate": "2024-10-03",
@@ -45544,6 +46365,41 @@
       "computedAt": "2026-08-12T21:37:11.248Z"
     },
     {
+      "showId": "lander-23-off-west-end-2026",
+      "title": "Lander 23",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "title": "Les Liaisons Dangereuses",
       "openingDate": "2026-04-01",
@@ -46470,6 +47326,41 @@
         "candidateCount": 9
       },
       "computedAt": "2026-08-09T22:22:02.507Z"
+    },
+    {
+      "showId": "let-the-good-times-roll-2026",
+      "title": "Let the Good Times Roll",
+      "openingDate": null,
+      "status": "announced",
+      "category": "broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
@@ -48155,74 +49046,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Marlise\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Marlise\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Marlise\" review players",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Marlise The Players Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Marlise The Players Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Marlise The Players Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 41,
-        "byReason": {
-          "non-review-host": 31,
-          "aggregator-internal-nav": 7,
-          "venue-production-page": 1,
-          "non-review-path": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -48233,7 +49062,42 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T00:55:31.345Z"
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
+      "title": "MÁS SABE EL SAULO POR VIEJO...",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -49043,6 +49907,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "meow-meow-off-broadway-2026",
+      "title": "Meow Meow",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "mexodus-off-broadway-2026",
       "title": "Mexodus",
       "openingDate": "2026-03-10",
@@ -49705,6 +50604,185 @@
         "candidateCount": 12
       },
       "computedAt": "2026-08-12T14:20:51.359Z"
+    },
+    {
+      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+      "title": "Midnight In The Garden Of Good And Evil",
+      "openingDate": null,
+      "status": "announced",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-critics-are-weighing-in-on-new-jason-robert-brown-taylor-mac-musical-midnight-in-the-garden-of-good-and-evil",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-MIDNIGHT-IN-THE-GARDEN-OF-GOOD-AND-EVIL-at-Goodman-Theatre-20240709"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/2024/07/09/review-midnight-in-the-garden-of-good-and-evil-at-the-goodman-theatre-is-gutsy-but-needs-a-conflict-worthy-of-its-star/",
+        "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+        "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
+        "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/"
+      ],
+      "dirFiles": 3,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.chicagotribune.com/2024/07/09/review-midnight-in-the-garden-of-good-and-evil-at-the-goodman-theatre-is-gutsy-but-needs-a-conflict-worthy-of-its-star/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
+          "host": "suntimes.com",
+          "knownOutletId": "suntimes"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--steven-oxman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/"
+            }
+          ]
+        },
+        {
+          "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
+          "host": "splashmags.com",
+          "knownOutletId": "splash-magazines",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "splash-magazine--jessie-bond.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/#gsc.tab=0"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 369,
+        "byReason": {
+          "aggregator-internal-nav": 290,
+          "not-http-url": 42,
+          "non-review-host": 34,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.chicagotribune.com/2024/07/09/review-midnight-in-the-garden-of-good-and-evil-at-the-goodman-theatre-is-gutsy-but-needs-a-conflict-worthy-of-its-star/",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
+          "host": "suntimes.com",
+          "outletId": "suntimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chicagotribune.com/2024/07/09/review-midnight-in-the-garden-of-good-and-evil-at-the-goodman-theatre-is-gutsy-but-needs-a-conflict-worthy-of-its-star/"
+          },
+          {
+            "outletId": "suntimes",
+            "outlet": "suntimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/"
+          },
+          {
+            "outletId": "splash-magazines",
+            "outlet": "splash-magazines",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.chicagotribune.com/2024/07/09/review-midnight-in-the-garden-of-good-and-evil-at-the-goodman-theatre-is-gutsy-but-needs-a-conflict-worthy-of-its-star/",
+            "outletId": "chicagotribune",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
+            "outletId": "suntimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
+            "outletId": "splash-magazines",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -53504,6 +54582,41 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-03T12:09:29.406Z"
+    },
+    {
+      "showId": "noda-map-320f-west-end-2026",
+      "title": "NODA MAP – 320°F",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
@@ -63610,6 +64723,473 @@
       "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
+      "showId": "private-lives-2025",
+      "title": "Private Lives",
+      "openingDate": null,
+      "status": "announced",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-PRIVATE-LIVES-Updating-Live-20111117",
+        "https://www.broadwayworld.com/article/Review-Roundup-PRIVATE-LIVES-in-Toronto-20110927"
+      ],
+      "aggregatorListedUrls": [
+        "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
+        "http://www.hollywoodreporter.com/review/private-lives-theater-review-263111",
+        "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1",
+        "http://www.huffingtonpost.com/huff-wires/20111117/us-theater-review-private-lives/",
+        "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064",
+        "http://www.bloomberg.com/news/2011-11-18/kim-cattrall-slinks-through-private-lives-lewd-silence-jeremy-gerard.html",
+        "http://www.newsday.com/entertainment/theater/cattrall-isn-t-samantha-in-private-lives-1.3326791",
+        "http://newyork.timeout.com/arts-culture/theater/2243007/review-private-lives",
+        "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html",
+        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story",
+        "http://arts.nationalpost.com/2011/09/26/theatre-review-the-low-fidelity-of-private-lives/",
+        "http://www.toronto.com/article/699320--review-private-lives-is-sexy-stylish-and-smart",
+        "http://www.blogto.com/theatre/2011/09/private_lives_delivers_big_on_chemistry_and_passion/"
+      ],
+      "dirFiles": 22,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://arts.nationalpost.com/2011/09/26/theatre-review-the-low-fidelity-of-private-lives/",
+          "host": "nationalpost.com",
+          "knownOutletId": "the-national-post"
+        },
+        {
+          "url": "http://www.toronto.com/article/699320--review-private-lives-is-sexy-stylish-and-smart",
+          "host": "toronto.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.blogto.com/theatre/2011/09/private_lives_delivers_big_on_chemistry_and_passion/",
+          "host": "blogto.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/private-lives-theater-review-263111",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/private-lives-theater-review-263111"
+            }
+          ]
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "usatoday--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1"
+            }
+          ]
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20111117/us-theater-review-private-lives/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ap--mark-kennedy.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.huffingtonpost.com/huff-wires/20111117/us-theater-review-private-lives/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064"
+            }
+          ]
+        },
+        {
+          "url": "http://www.bloomberg.com/news/2011-11-18/kim-cattrall-slinks-through-private-lives-lewd-silence-jeremy-gerard.html",
+          "host": "bloomberg.com",
+          "knownOutletId": "bloomberg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bloomberg--jeremy-gerard.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.bloomberg.com/news/2011-11-18/kim-cattrall-slinks-through-private-lives-lewd-silence-jeremy-gerard.html"
+            }
+          ]
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/cattrall-isn-t-samantha-in-private-lives-1.3326791",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/cattrall-isn-t-samantha-in-private-lives-1.3326791"
+            }
+          ]
+        },
+        {
+          "url": "http://newyork.timeout.com/arts-culture/theater/2243007/review-private-lives",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://newyork.timeout.com/arts-culture/theater/2243007/review-private-lives"
+            }
+          ]
+        },
+        {
+          "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html",
+          "host": "nymag.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--scott-brown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html"
+            }
+          ]
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "backstage--erik-haagensen.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 564,
+        "byReason": {
+          "aggregator-internal-nav": 450,
+          "not-http-url": 78,
+          "non-review-host": 30,
+          "non-review-path": 6
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "http://arts.nationalpost.com/2011/09/26/theatre-review-the-low-fidelity-of-private-lives/",
+          "host": "nationalpost.com",
+          "outletId": "the-national-post",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.toronto.com/article/699320--review-private-lives-is-sexy-stylish-and-smart",
+          "host": "toronto.com",
+          "outletId": "toronto",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155657/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "http://www.blogto.com/theatre/2011/09/private_lives_delivers_big_on_chemistry_and_passion/",
+          "host": "blogto.com",
+          "outletId": "blogto",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155657/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "the-national-post",
+            "outlet": "the-national-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://arts.nationalpost.com/2011/09/26/theatre-review-the-low-fidelity-of-private-lives/"
+          },
+          {
+            "outletId": "toronto.com",
+            "outlet": "toronto.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.toronto.com/article/699320--review-private-lives-is-sexy-stylish-and-smart"
+          },
+          {
+            "outletId": "blogto.com",
+            "outlet": "blogto.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.blogto.com/theatre/2011/09/private_lives_delivers_big_on_chemistry_and_passion/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/private-lives-theater-review-263111"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/huff-wires/20111117/us-theater-review-private-lives/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064"
+          },
+          {
+            "outletId": "bloomberg",
+            "outlet": "bloomberg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.bloomberg.com/news/2011-11-18/kim-cattrall-slinks-through-private-lives-lewd-silence-jeremy-gerard.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/cattrall-isn-t-samantha-in-private-lives-1.3326791"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://newyork.timeout.com/arts-culture/theater/2243007/review-private-lives"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html"
+          },
+          {
+            "outletId": "backstage",
+            "outlet": "backstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://arts.nationalpost.com/2011/09/26/theatre-review-the-low-fidelity-of-private-lives/",
+            "outletId": "the-national-post",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.toronto.com/article/699320--review-private-lives-is-sexy-stylish-and-smart",
+            "outletId": "toronto.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.blogto.com/theatre/2011/09/private_lives_delivers_big_on_chemistry_and_passion/",
+            "outletId": "blogto.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/private-lives-theater-review-263111",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1",
+            "outletId": "usatoday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/huff-wires/20111117/us-theater-review-private-lives/",
+            "outletId": "huffpost",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.bloomberg.com/news/2011-11-18/kim-cattrall-slinks-through-private-lives-lewd-silence-jeremy-gerard.html",
+            "outletId": "bloomberg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/cattrall-isn-t-samantha-in-private-lives-1.3326791",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://newyork.timeout.com/arts-culture/theater/2243007/review-private-lives",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          },
+          {
+            "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story",
+            "outletId": "backstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T04:13:42.713Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "ragtime-2025",
       "title": "Ragtime",
       "openingDate": "2025-10-16",
@@ -64449,6 +66029,41 @@
         "candidateCount": 21
       },
       "computedAt": "2026-08-03T14:32:50.764Z"
+    },
+    {
+      "showId": "return-of-the-godz-west-end-2026",
+      "title": "Return of The GODZ",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "ride-the-cyclone-off-west-end-2026",
@@ -72486,6 +74101,41 @@
       "computedAt": "2026-08-07T21:40:26.604Z"
     },
     {
+      "showId": "stephane-wrembels-django-a-gogo-off-broadway-2026",
+      "title": "Stéphane Wrembel's Django a Gogo",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
       "showId": "stereophonic-off-broadway-2023",
       "title": "Stereophonic",
       "openingDate": "2023-10-17",
@@ -76915,6 +78565,41 @@
         "candidateCount": 12
       },
       "computedAt": "2026-08-03T16:48:58.521Z"
+    },
+    {
+      "showId": "tango-after-dark-west-end-2026",
+      "title": "Tango After Dark",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "tao-of-glass-west-end-2026",
@@ -81404,7 +83089,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T00:55:31.345Z"
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -83948,6 +85633,55 @@
         "candidateCount": 32
       },
       "computedAt": "2026-08-12T16:45:56.032Z"
+    },
+    {
+      "showId": "the-magicians-table-off-west-end-2026",
+      "title": "The Magicians Table",
+      "openingDate": null,
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-magician-s-table-the-vaults",
+          "host": "allthatdazzles.co.uk",
+          "file": "all-that-dazzles-uk--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "the-maids-off-broadway-2026",
@@ -99506,6 +101240,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-12T14:20:51.359Z"
+    },
+    {
+      "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
+      "title": "Whodunnit [Unrehearsed] 4",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
