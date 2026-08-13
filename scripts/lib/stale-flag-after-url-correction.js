@@ -33,10 +33,32 @@ function _hasManualClear(data) {
  * @returns {string[]} matching flags — 'wrongProduction' and/or 'wrongShow'
  *   (both, if the record carries both stale flags); empty if no match.
  */
+/**
+ * A record whose URL was corrected but whose body has not been refetched yet.
+ *
+ * Its `publishDate` still belongs to the OLD article, so it is NOT evidence
+ * about which production the (new) URL covers. Any date-window guard that
+ * treats it as evidence will re-derive an exclusion flag from stale data —
+ * which is precisely the drain→rebuild→re-flag loop that kept the #483 gate
+ * red: a human cleared 157 flags in review-texts 773ebb7189d and the very
+ * next Rebuild Reviews (Fast) run (a4246421ff0, ~4h later) re-added
+ * `wrongProduction: true` to the same files with a "Date guard:" note.
+ *
+ * Exported so producers skip the same state the detector matches — the two
+ * must agree by construction, not by a comment asking them to.
+ *
+ * @param {object} data - a parsed review-text record
+ * @returns {boolean}
+ */
+function isAwaitingUrlCorrectionRefetch(data) {
+  if (!data || typeof data !== 'object') return false;
+  if (!data._urlChangedClear || typeof data._urlChangedClear !== 'object') return false;
+  return !data.fullText; // body present — refetch already landed
+}
+
 function detectStaleFlagAfterUrlCorrection(data) {
   if (!data || typeof data !== 'object') return [];
-  if (!data._urlChangedClear || typeof data._urlChangedClear !== 'object') return [];
-  if (data.fullText) return []; // body present — not stuck waiting on refetch
+  if (!isAwaitingUrlCorrectionRefetch(data)) return [];
   if (_hasManualClear(data)) return [];
 
   const flags = [];
@@ -93,4 +115,8 @@ function remediateStaleFlagAfterUrlCorrection(data) {
   return cleared;
 }
 
-module.exports = { detectStaleFlagAfterUrlCorrection, remediateStaleFlagAfterUrlCorrection };
+module.exports = {
+  detectStaleFlagAfterUrlCorrection,
+  remediateStaleFlagAfterUrlCorrection,
+  isAwaitingUrlCorrectionRefetch,
+};

@@ -20,6 +20,7 @@ const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/r
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
+const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -82,6 +83,7 @@ function run() {
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
   let priorRunSkipped = 0, datelessRevivalFlagged = 0;
   let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
+  let awaitingRefetchSkipped = 0;
   const flaggedDetails = [];
   const heldDetails = [];
 
@@ -104,6 +106,17 @@ function run() {
       // Skip already-flagged
       if (data.wrongProduction || data.wrongShow || data.wrongProductionManualClear || data.allowEarlyDate) {
         skipped++;
+        continue;
+      }
+
+      // Skip records whose URL was corrected but whose body hasn't been
+      // refetched yet: publishDate still describes the OLD article, so the
+      // date window below would be judging evidence that no longer belongs to
+      // this record. Flagging here re-creates exactly what the #483 gate
+      // clears, so drain and re-flag chase each other forever (a drain of 157
+      // files on 2026-08-12 was undone by the next rebuild ~4h later).
+      if (isAwaitingUrlCorrectionRefetch(data)) {
+        awaitingRefetchSkipped++;
         continue;
       }
 
@@ -244,6 +257,7 @@ function run() {
   console.log(`OK (within window):    ${ok}`);
   console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);
+  console.log(`Awaiting URL refetch:  ${awaitingRefetchSkipped}`);
   console.log(`No publishDate:        ${noDate}`);
   console.log(`${DRY_RUN ? 'Would hold' : 'Held'} (dateless revival): ${datelessRevivalFlagged}`);
   console.log(`No show date window:   ${noWindow}`);
