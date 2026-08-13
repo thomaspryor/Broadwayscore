@@ -169,6 +169,9 @@ const {
 const { extractCiRedTarget } = require('./lib/ci-red-dispatch-heuristic.js');
 const { appendClaim } = require('./lib/ci-red-claims.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
+// RECHECK-AFTER exemption for completedLaunchGuard below (task #1355):
+// zero-dependency leaf, same one dispatch-guards.js's staleOutcomeGuard uses.
+const { parseRecheckAfter } = require('./lib/recheck-stamp.js');
 
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
@@ -205,8 +208,18 @@ function pickTask(tasks, opts, dir) {
 // --id deliberately reaches completed tasks (pickTask keeps that reach for
 // inspection via --dry-run), but LAUNCHING on one is almost always a typo'd
 // task # relaunching finished work. Require --force to actually launch.
+//
+// RECHECK-AFTER exemption (task #1355): this is the FIRST completed-task
+// check main() runs — staleOutcomeGuard's own native-completed branch
+// (dispatch-guards.js) never gets a chance to apply its RECHECK-AFTER
+// exemption, because this guard already refused and exited by the time
+// staleOutcomeGuard would run. Without this, a completed native task
+// carrying a legitimate "RECHECK-AFTER: YYYY-MM-DD" scheduled-revisit stamp
+// (CLAUDE.md Session Discipline) in its description would be refused here
+// unconditionally, defeating the exemption dispatch-guards.js grants it.
 function completedLaunchGuard(task, opts) {
   if (task.status !== 'completed' || opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  if (parseRecheckAfter(task.description) != null) return null;
   return `task #${task.id} is already completed (${task.subject}). ` +
     `If you really want to relaunch it, re-run with --force.`;
 }
