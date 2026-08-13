@@ -1,44 +1,11 @@
 {
-  "generatedAt": "2026-08-13T14:25:05.819Z",
+  "generatedAt": "2026-08-13T15:59:10.299Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 152,
-  "clean": 150,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-winters-tale-off-broadway-2026",
-      "title": "The Winter's Tale",
-      "openingDate": "2026-08-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.74 vs local 74.27 (Δ1.47)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 8
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.1 vs local 73.34 (Δ0.76)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    }
-  ]
+  "clean": 152,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
