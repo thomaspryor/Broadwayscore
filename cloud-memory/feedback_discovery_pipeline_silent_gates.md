@@ -29,3 +29,21 @@ When a show has missing reviews that are trivially Googleable, the scrapers are 
 The publication stage fails even when collection succeeds. Two files can exist for one URL: an `--unknown` file that IS scored (submit-review-form / poller path) and a named-byline twin that is NOT (theatre-record path, arrives later). Rebuild's tie-break prefers the real criticName (#190/#1321) without checking scored-ness, picks the unscored file, and the review then fails the scored-entry requirement and disappears from reviews.json entirely — worse than either input alone. Symptom on opening night: 20+ review-texts files, 17 `isIncludableForRebuild()===true`, but only 2 entries in reviews.json and a composite built from 2 reviews on prod.
 Diagnose with, per file: `isIncludableForRebuild(d)`, `hasValidScore(d)` (scripts/lib/review-guards.js) and `isScoreable(d, show, path)` (scripts/llm-scoring/is-scoreable.ts). The signature is `INCL + hasValidScore=false` on a named file whose `--unknown` twin has `assignedScore`. Both twins scoreable-and-unscored means the batch scorer simply hasn't reached them — check whether an `llm-ensemble-score.yml` run is already in flight (concurrency group `scoring-reviews` serializes, so dispatching another only queues) before dispatching a `show_id`-scoped run.
 Tonight's workaround = score both twins so dedup picks a scored file either way. Real fix = task #1406 (scored-ness must dominate byline quality; ideally MERGE the named byline onto the scored record, which also closes #27).
+
+## Gate: CI step ordering turns a fail-closed gate into a permanent block (2026-08-13)
+
+`opening-night-broadcast.yml` has a single job. Its checklist gate (`id: checklist_gate`, ~line 318)
+runs `node scripts/opening-night-checklist.js` — but `actions/setup-node` + `npm ci` don't appear
+until ~line 556. No `node_modules` at gate time, so `require('cheerio')` inside
+`scripts/lib/page-validator.js` throws MODULE_NOT_FOUND, the checklist reports `-1 checklist error(s)`,
+and the gate (correctly fail-closed since the earlier silent-pass bug) blocks the broadcast.
+
+Evidence: run 31698766434, show how-the-other-half-loves-west-end-2026, which had 13 scored reviews live.
+cheerio is a real prod dependency — the package was never missing, only the install step ordering.
+
+**Generalisation:** a gate that fails closed on crash is only safe if the crash surface is small.
+When auditing a blocked pipeline, distinguish "gate found a problem" from "gate could not run" —
+`-1` / negative sentinel counts and MODULE_NOT_FOUND in a gate log mean the second.
+Check that every workflow running repo scripts installs deps BEFORE the first script step, not just
+before the step that happens to have needed them when the workflow was written.
+Card: 3bb637c5-416f-8172-93ce-ec312113add0.
