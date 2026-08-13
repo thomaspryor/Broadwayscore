@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-13T13:31:55.679Z",
+  "generatedAt": "2026-08-13T14:25:33.109Z",
   "summary": {
-    "total": 4,
-    "high": 3,
-    "medium": 1,
-    "low": 0
+    "total": 14,
+    "high": 11,
+    "medium": 2,
+    "low": 1
   },
   "collisions": [
     {
@@ -113,6 +113,285 @@
       ],
       "suggestedWinner": "an-american-daughter-off-broadway-2026",
       "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.broadwaynews.com/2023/03/23/review-andrew-lloyd-webbers-bad-cinderella-is-an-uninspired-derivative-of-the-famous-tale/",
+      "normalizedUrl": "https://broadwaynews.com/2023/03/23/review-andrew-lloyd-webbers-bad-cinderella-is-an-uninspired-derivative-of-the-famous-tale",
+      "candidates": [
+        {
+          "showId": "bad-cinderella-2023",
+          "file": "broadwaynews--brittani-samuel.json",
+          "publishDate": "March 23, 2023",
+          "openingDate": "2023-03-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwaynews"
+        },
+        {
+          "showId": "cinderella-west-end-2026",
+          "file": "broadwaynews--brittani-samuel.json",
+          "publishDate": "2023-03-24",
+          "openingDate": "2026-12-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwaynews"
+        }
+      ],
+      "suggestedWinner": "bad-cinderella-2023",
+      "reason": "publishDate March 23, 2023 is 0 days from bad-cinderella-2023 opening (2023-03-23); next closest is 1364 days from cinderella-west-end-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://theatreweekly.com/review-evita-at-the-london-palladium/",
+      "normalizedUrl": "https://theatreweekly.com/review-evita-at-the-london-palladium",
+      "candidates": [
+        {
+          "showId": "evita-2026",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2025-07-01",
+          "openingDate": "2027-03-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theatre-weekly"
+        },
+        {
+          "showId": "evita-west-end-2025",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2025-07-01",
+          "openingDate": "2025-07-01",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatre-weekly"
+        }
+      ],
+      "suggestedWinner": "evita-west-end-2025",
+      "reason": "publishDate 2025-07-01 is 0 days from evita-west-end-2025 opening (2025-07-01); next closest is 632 days from evita-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
+      "normalizedUrl": "https://thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
+      "candidates": [
+        {
+          "showId": "evita-2026",
+          "file": "thestage--sam-marlowe.json",
+          "publishDate": null,
+          "openingDate": "2027-03-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "evita-west-end-2025",
+          "file": "thestage--sam-marlowe.json",
+          "publishDate": "2025-07-02",
+          "openingDate": "2025-07-01",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "evita-west-end-2025",
+      "reason": "publishDate 2025-07-02 is 1 days from evita-west-end-2025 opening (2025-07-01)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655",
+      "normalizedUrl": "https://wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655",
+      "candidates": [
+        {
+          "showId": "funny-girl-2002",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": "October 3rd, 2022",
+          "openingDate": "2002-09-23",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wsj"
+        },
+        {
+          "showId": "funny-girl-2022",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": null,
+          "openingDate": "2022-04-24",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "wsj"
+        }
+      ],
+      "suggestedWinner": "funny-girl-2022",
+      "reason": "publishDate October 3rd, 2022 is 7315+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.thereviewshub.com/heathers-the-musical-the-arts-at-marble-arch-london/",
+      "normalizedUrl": "https://thereviewshub.com/heathers-the-musical-the-arts-at-marble-arch-london",
+      "candidates": [
+        {
+          "showId": "heathers-the-musical-off-broadway-2025",
+          "file": "thereviewshub--clare-doyle.json",
+          "publishDate": null,
+          "openingDate": "2025-06-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "thereviewshub"
+        },
+        {
+          "showId": "heathers-the-musical-off-west-end-2026",
+          "file": "thereviewshub--clare-doyle.json",
+          "publishDate": "2026-07-14",
+          "openingDate": "2026-07-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thereviewshub"
+        }
+      ],
+      "suggestedWinner": "heathers-the-musical-off-west-end-2026",
+      "reason": "publishDate 2026-07-14 is 0 days from heathers-the-musical-off-west-end-2026 opening (2026-07-14)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch",
+      "normalizedUrl": "https://westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch",
+      "candidates": [
+        {
+          "showId": "heathers-the-musical-off-broadway-2025",
+          "file": "west-end-best-friend--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-06-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "west-end-best-friend"
+        },
+        {
+          "showId": "heathers-the-musical-off-west-end-2026",
+          "file": "west-end-best-friend--cara-brazier.json",
+          "publishDate": "2026-07-14",
+          "openingDate": "2026-07-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "west-end-best-friend"
+        }
+      ],
+      "suggestedWinner": "heathers-the-musical-off-west-end-2026",
+      "reason": "publishDate 2026-07-14 is 0 days from heathers-the-musical-off-west-end-2026 opening (2026-07-14)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
+      "normalizedUrl": "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer",
+      "candidates": [
+        {
+          "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+          "file": "nysr--roma-torre.json",
+          "publishDate": "2026-07-29",
+          "openingDate": "2026-07-28",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nysr"
+        },
+        {
+          "showId": "les-miserables-west-end-2021",
+          "file": "nysr--unknown.json",
+          "publishDate": null,
+          "openingDate": "1985-12-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nysr"
+        }
+      ],
+      "suggestedWinner": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "reason": "publishDate 2026-07-29 is 1 days from les-miserables-arena-concert-spectacular-off-broadway-2026 opening (2026-07-28)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.nytimes.com/2019/10/17/theater/little-shop-of-horrors-review-jonathan-groff-feeds-the-beast.html",
+      "normalizedUrl": "https://nytimes.com/2019/10/17/theater/little-shop-of-horrors-review-jonathan-groff-feeds-the-beast.html",
+      "candidates": [
+        {
+          "showId": "little-shop-of-horrors-2019",
+          "file": "nytimes--ben-brantley.json",
+          "publishDate": "October 18th, 2019",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "little-shop-of-horrors-off-broadway-2019",
+          "file": "nytimes--ben-brantley.json",
+          "publishDate": "October 18th, 2019",
+          "openingDate": "2019-09-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "little-shop-of-horrors-off-broadway-2019",
+      "reason": "publishDate October 18th, 2019 is 31 days from little-shop-of-horrors-off-broadway-2019 opening (2019-09-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-kate-dillon-macbeth-theater-review-1235137293/",
+      "normalizedUrl": "https://hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-kate-dillon-macbeth-theater-review-1235137293",
+      "candidates": [
+        {
+          "showId": "macbeth-2022",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "publishDate": "April 29, 2022",
+          "openingDate": "2022-04-28",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "showId": "macbeth-off-broadway-2026",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "publishDate": "2022-04-29",
+          "openingDate": "2026-09-22",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "hollywood-reporter"
+        }
+      ],
+      "suggestedWinner": "macbeth-2022",
+      "reason": "publishDate April 29, 2022 is 1 days from macbeth-2022 opening (2022-04-28); next closest is 1607 days from macbeth-off-broadway-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/",
+      "normalizedUrl": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796",
+      "candidates": [
+        {
+          "showId": "the-outsiders-2024",
+          "file": "variety--aramide-tinubu.json",
+          "publishDate": "April 12, 2024",
+          "openingDate": "2024-04-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "variety"
+        },
+        {
+          "showId": "the-outsiders-2024",
+          "file": "variety--maya-phillips.json",
+          "publishDate": "April 11, 2024",
+          "openingDate": "2024-04-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "variety"
+        },
+        {
+          "showId": "the-outsiders-world-premiere-regional-2023",
+          "file": "variety--unknown.json",
+          "publishDate": null,
+          "openingDate": "2023-03-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        }
+      ],
+      "suggestedWinner": "the-outsiders-2024",
+      "reason": "publishDate April 11, 2024 is 0 days from the-outsiders-2024 but also 1 days from the-outsiders-2024",
       "confidence": "medium"
     }
   ]
