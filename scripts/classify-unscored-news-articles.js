@@ -28,7 +28,25 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `classify-unscored-news-articles.js — stamp rejectionReason='not_a_review'
+on unscored, unclassified outlet NEWS articles (task #1323). Never deletes files.
+
+Usage:
+  node scripts/classify-unscored-news-articles.js [--show=SLUG] [--dry-run]
+
+  --show=SLUG   limit to one show directory
+  --dry-run     report what would change, write nothing
+  --help, -h    print this and exit
+`;
+
 const args = process.argv.slice(2);
+if (hasHelpFlag(args)) {
+  console.log(USAGE);
+  process.exit(0);
+}
+
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 
