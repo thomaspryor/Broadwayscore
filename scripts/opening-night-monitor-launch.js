@@ -57,7 +57,8 @@ require('./lib/load-env.js').loadEnv(REPO);
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const {
-  activeWindows, nightKey, launchDecision, computeWindow,
+  activeWindows, nightKey, launchDecision, computeWindow, carryForwardNightState,
+  MAX_ATTEMPTS_PER_NIGHT,
   claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
 const { runMonitorPass } = require('./lib/opening-night-monitor.js');
@@ -124,14 +125,60 @@ function monitorCandidates(shows, now) {
   // orchestrator's — without it, the deliberately-broader monitor would be
   // NARROWER than the CLI on the evidence-anchored arm (QA finding).
   const { loadReviewEvidence } = require('./lib/review-evidence.js');
+  const evidence = loadReviewEvidence();
   const selected = selectOpeningNightShows(shows, {
     market: '', now, includeUntrusted: true, ignoreStatus: true,
-    evidence: loadReviewEvidence(),
+    evidence,
   });
-  return activeWindows(selected, now);
+  // The SAME evidence must reach activeWindows, not just the selection above.
+  // A show can be correctly selected on the evidence arm and then dropped by
+  // computeWindow for having no openingDate — which is precisely how
+  // how-the-other-half-loves-west-end-2026 went unmonitored for 19h on
+  // 2026-08-12 while its reviews were already published.
+  return activeWindows(selected, now, { evidence });
 }
 
 function nightStatePath(key) { return path.join(MON_DIR, `night-state-${key}.json`); }
+
+// ── Did this pass actually do anything? ──────────────────────────────────
+// Two consumers, deliberately different strictness:
+//   - the alert path asks "was this worth waking the owner over?" and must be
+//     GENEROUS (a false page is the bug being fixed);
+//   - the no-progress brake asks "is another $5 pass worth it?" and must be
+//     HONEST about real output.
+// Both are answered by the same probe, so they can never drift apart.
+//
+// Why not the session-state file alone: monitor-v2.md puts the state write in
+// step 5 (Verify + record), AFTER census/diff/fix. A pass SIGTERM'd at the
+// 15-min cap mid-fix will have committed a real review recovery and written no
+// state — pass 3 on 2026-08-12 committed a London Box Office recovery exactly
+// that way. Counting only the state file would score the pipeline's most
+// productive passes as idle and stop the night while it was working.
+function statFingerprint(p) {
+  try { const s = fs.statSync(p); return `${s.mtimeMs}:${s.size}`; } catch { return null; }
+}
+
+// Commits touching core data since the pass started. Local git, no network.
+function commitsSince(sinceIso) {
+  try {
+    const r = spawnSync('git', ['log', '--oneline', `--since=${sinceIso}`, '--', 'data/review-texts', 'data/shows.json', 'data/reviews.json'],
+      { cwd: REPO, encoding: 'utf8', timeout: 20000 });
+    if (r.status !== 0) return 0;
+    return r.stdout.split('\n').filter(Boolean).length;
+  } catch { return 0; }
+}
+
+// Scored-review count for the window's shows — the RE-ARM signal. Without it a
+// no-progress stop would be permanent for the night, so a T1 landing at 02:00
+// would never be picked up, and the long tail is the monitor's whole purpose.
+function reviewCountFor(showIds) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'reviews.json'), 'utf8'));
+    const all = Array.isArray(raw) ? raw : (raw.reviews || []);
+    const set = new Set(showIds);
+    return all.filter(r => set.has(r.showId)).length;
+  } catch { return null; }
+}
 
 // GC night/session state files >14 days old — one+ accumulates per opening
 // night in a git-tracked dir and nothing else cleans them (ship-check P2).
@@ -147,8 +194,22 @@ function gcStateFiles(now = Date.now()) {
   }
 }
 function readNightState(key) {
-  try { return { attempts: 0, consecutiveFailures: 0, usdTonight: 0, ...JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')) }; }
-  catch { return { attempts: 0, consecutiveFailures: 0, usdTonight: 0 }; }
+  try { return { attempts: 0, consecutiveFailures: 0, noProgressPasses: 0, usdTonight: 0, ...JSON.parse(fs.readFileSync(nightStatePath(key), 'utf8')) }; }
+  catch { return { attempts: 0, consecutiveFailures: 0, noProgressPasses: 0, usdTonight: 0 }; }
+}
+
+/** Every other night-state on disk, for the carry-forward merge. */
+function readAllNightStates(exceptKey) {
+  const out = [];
+  let files;
+  try { files = fs.readdirSync(MON_DIR); } catch { return out; }
+  for (const f of files) {
+    const m = /^night-state-(.+)\.json$/.exec(f);
+    if (!m || m[1] === exceptKey) continue;
+    try { out.push({ key: m[1], state: JSON.parse(fs.readFileSync(path.join(MON_DIR, f), 'utf8')) }); }
+    catch { /* a corrupt sibling must never stop tonight's launch */ }
+  }
+  return out;
 }
 function writeNightState(key, state) {
   fs.mkdirSync(MON_DIR, { recursive: true });
@@ -258,13 +319,20 @@ function preflightAuth() {
   return { ok: false, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
-function buildSeed(windows, { attempt, rehearsal, key }) {
+function buildSeed(windows, { attempt, rehearsal, key, now = new Date() }) {
   const template = fs.readFileSync(SEED_TEMPLATE, 'utf8');
   const showIds = windows.map(w => w.showId).join(', ');
   const windowEnd = new Date(Math.max(...windows.map(w => w.windowEnd.getTime()))).toISOString();
+  // The pass's own hard deadline, as an absolute instant. Telling it "you get
+  // one bounded pass" in prose did not stop pass 4 on 2026-08-12 from dying
+  // inside a background task called "Poll for scoring run completion" — a wait
+  // it could not have finished. An instant is checkable; an adjective is not.
+  const deadline = new Date(now.getTime() + HEADLESS_MAX_WALL_MIN * 60 * 1000).toISOString();
   return template
     .replaceAll('{{SHOW_IDS}}', showIds)
     .replaceAll('{{WINDOW_END}}', windowEnd)
+    .replaceAll('{{DEADLINE_UTC}}', deadline)
+    .replaceAll('{{WALL_MIN}}', String(HEADLESS_MAX_WALL_MIN))
     .replaceAll('{{ATTEMPT}}', String(attempt))
     .replaceAll('{{NIGHT_KEY}}', key)
     .replaceAll('{{STATE_FILE}}', path.join(MON_DIR, `session-state-${key}.json`))
@@ -309,7 +377,28 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const key = nightKey(windows) || (windows[0] && `on-monitor-forced-${windows[0].showId}`);
+  const windowShows = windows.map(w => w.showId);
   let nightState = key ? readNightState(key) : { attempts: 0, consecutiveFailures: 0 };
+  if (key) {
+    // The night key is the window's ANCHOR date, and an evidence anchor can be
+    // superseded mid-window by the real openingDate landing — the key flips and
+    // a virgin state would reset BOTH brakes (usdTonight and the attempt count),
+    // letting one night spend twice its cap and re-fire a settled escalation.
+    // Merge forward from any prior state covering these same shows.
+    const carried = carryForwardNightState(readAllNightStates(key), windowShows, nightState);
+    if (carried.carriedFrom) {
+      log(`carried night state forward from ${carried.carriedFrom} (anchor date changed mid-window): $${carried.usdTonight.toFixed(2)} spent, ${carried.attempts} attempts, ${carried.noProgressPasses} no-progress`);
+    }
+    nightState = carried;
+  }
+  // A new review landing RE-ARMS the no-progress brake: the long tail (a T1 at
+  // 02:00) is the whole reason the monitor runs for 31h, so a stop must never
+  // be permanent while real work is still arriving.
+  const reviewCount = reviewCountFor(windowShows);
+  if (reviewCount !== null && nightState.lastReviewCount !== undefined && reviewCount !== nightState.lastReviewCount) {
+    log(`review count changed (${nightState.lastReviewCount} → ${reviewCount}) — re-arming the no-progress brake`);
+    nightState = { ...nightState, noProgressPasses: 0 };
+  }
   const meta = lockMeta();
   const state = {
     windows,
@@ -326,6 +415,7 @@ async function main(argv = process.argv.slice(2)) {
     // diverge the way a sleeping-between-passes interactive session could.
     claudeAlive: false,
     attemptsTonight: nightState.consecutiveFailures,
+    noProgressPasses: nightState.noProgressPasses || 0,
   };
   let decision = launchDecision(state);
   // External spend brake (see NIGHTLY_USD_CAP comment above) — evaluated
@@ -411,7 +501,7 @@ async function main(argv = process.argv.slice(2)) {
 
   const attemptNum = nightState.attempts + 1;
   const rehearsal = !!opts.rehearsal;
-  const seed = buildSeed(windows, { attempt: attemptNum, rehearsal, key });
+  const seed = buildSeed(windows, { attempt: attemptNum, rehearsal, key, now });
 
   // meta.json + heartbeat are written BEFORE the blocking pass starts, not
   // after it resolves: a headless pass runs up to HEADLESS_MAX_WALL_MIN
@@ -426,6 +516,11 @@ async function main(argv = process.argv.slice(2)) {
   }, null, 2));
   fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString(), seededByLauncher: true }));
   writeNightState(key, { ...nightState, attempts: attemptNum, lastLaunchAt: now.toISOString() });
+
+  // Progress baseline, captured BEFORE the pass so the after-comparison is
+  // honest even if the pass is SIGTERM'd mid-work.
+  const stateFileBefore = statFingerprint(path.join(MON_DIR, `session-state-${key}.json`));
+  const passStartedAt = now.toISOString();
 
   log(`starting headless pass ${attemptNum} (model ${MODEL}, cap ${HEADLESS_MAX_WALL_MIN}min) for ${windows.map(w => w.showId).join(', ')}`);
   const result = await runMonitorPass({
@@ -482,9 +577,21 @@ async function main(argv = process.argv.slice(2)) {
 
   const usdTonight = Math.round(((nightState.usdTonight || 0) + (result.usd || 0)) * 100) / 100;
 
+  // Did this pass change anything? Two independent proofs, either sufficient.
+  const commits = commitsSince(passStartedAt);
+  const stateWritten = statFingerprint(path.join(MON_DIR, `session-state-${key}.json`)) !== stateFileBefore;
+  const advancedState = stateWritten || commits > 0;
+  const noProgressPasses = advancedState ? 0 : (nightState.noProgressPasses || 0) + 1;
+  const progressNote = `state-write=${stateWritten}, data-commits=${commits}`;
+  const countAfter = reviewCountFor(windowShows);
+
   if (!result.ok) {
     const consecutiveFailures = (nightState.consecutiveFailures || 0) + 1;
-    writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures, usdTonight, lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() } });
+    writeNightState(key, {
+      ...nightState, attempts: attemptNum, consecutiveFailures, usdTonight, noProgressPasses,
+      shows: windowShows, lastReviewCount: countAfter === null ? nightState.lastReviewCount : countAfter,
+      lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() },
+    });
     // A failed pass still spent money and is exactly what the escalation
     // email points the owner at this ledger to investigate — a failure that
     // never lands here would be invisible in the one place meant to explain it.
@@ -494,16 +601,44 @@ async function main(argv = process.argv.slice(2)) {
       attempt: attemptNum, model: MODEL, rehearsal, kind: 'on-monitor',
       stage: result.stage, wallMin: Math.round(result.wallMin * 10) / 10, usd: result.usd,
     });
+    // Alert severity is about the OWNER's inbox, not about the exit code.
+    //
+    // The bug this replaces (2026-08-12, how-the-other-half-loves): every
+    // !result.ok routed severity:error/disposition:human, so a pass killed by
+    // the 15-min wall clock emailed "[CRITICAL] … FAILED" on attempt 1 — while
+    // its own body said "next tick retries", and while the pass had in fact
+    // committed a real review recovery. Two independent reasons that is not a
+    // page:
+    //   1. it produced work (advancedState), or
+    //   2. the automatic retry hasn't been given a chance to fail yet.
+    // A genuine credential outage is unaffected: preflightAuth() above fires
+    // on-monitor-auth-failed on the FIRST tick, before an attempt is consumed,
+    // and that alert is page-worthy in its own right.
+    const retriesExhausted = consecutiveFailures >= MAX_ATTEMPTS_PER_NIGHT;
+    const pageOwner = retriesExhausted && !advancedState;
     await alert({
       conditionKey: `on-monitor-launch-failed-${key}`,
-      title: `Opening-night monitor pass FAILED for ${windows.map(w => w.showId).join(', ')}`,
-      description: `runMonitorPass: ${result.stage} — ${result.error}. Pass ${attemptNum}, ${consecutiveFailures} consecutive failure(s); next tick retries.`,
-      severity: 'error', disposition: 'human', cooldownHours: 3,
+      title: pageOwner
+        ? `Opening-night monitor: ${consecutiveFailures} consecutive passes failed with no progress for ${windows.map(w => w.showId).join(', ')}`
+        : `Opening-night monitor pass did not complete for ${windows.map(w => w.showId).join(', ')}`,
+      description: `runMonitorPass: ${result.stage} — ${result.error}. Pass ${attemptNum}, ${consecutiveFailures} consecutive failure(s); ${progressNote}. `
+        + (advancedState
+          ? 'The pass DID advance state before it ended, so this is progress cut short, not a stalled monitor — next tick continues from it.'
+          : retriesExhausted
+            ? 'No pass has advanced state across the retry limit — the monitor is not making progress on its own.'
+            : 'Next tick retries automatically; escalates only if the retries also make no progress.'),
+      severity: pageOwner ? 'error' : 'info',
+      disposition: pageOwner ? 'human' : 'digest',
+      cooldownHours: 3,
     });
     return 1;
   }
 
-  writeNightState(key, { ...nightState, attempts: attemptNum, consecutiveFailures: 0, usdTonight, lastLaunchAt: now.toISOString() });
+  writeNightState(key, {
+    ...nightState, attempts: attemptNum, consecutiveFailures: 0, usdTonight, noProgressPasses,
+    shows: windowShows, lastReviewCount: countAfter === null ? nightState.lastReviewCount : countAfter,
+    lastLaunchAt: now.toISOString(),
+  });
   // dispatch-ledger requires {event, taskId}; taskId carries the night key.
   dispatchLedger.appendEntry({
     event: 'launch', taskId: key,

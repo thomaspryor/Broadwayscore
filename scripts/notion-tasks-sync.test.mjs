@@ -132,7 +132,11 @@ test('isMirrorableCard excludes "BSC Daily:"-titled cards, includes everything e
   assert.equal(isMirrorableCard({ name: 'BSC Daily: Stuck pipeline items' }), false);
   assert.equal(isMirrorableCard({ name: 'BSC Daily: 2026-08-01 digest' }), false);
   assert.equal(isMirrorableCard({ name: 'Fix scoring bug' }), true);
-  assert.equal(isMirrorableCard({ name: 'Fix: BSC Daily: legacy fix-this card' }), true, 'prefix must be anchored — only a literal leading "BSC Daily:" is excluded');
+  // The pre-BRO-286 "Fix this" digest button's legacy title family (2 live
+  // files at the time this was found: 834.json, 1166.json) shares the same
+  // self-heal re-minting exposure — must be excluded too.
+  assert.equal(isMirrorableCard({ name: 'Fix: BSC Daily: legacy fix-this card' }), false);
+  assert.equal(isMirrorableCard({ name: 'A card that mentions Fix: BSC Daily: mid-sentence' }), true, 'prefix must be anchored, not a substring match');
   assert.equal(isMirrorableCard({ name: undefined }), true);
   assert.equal(isMirrorableCard({}), true);
 });
