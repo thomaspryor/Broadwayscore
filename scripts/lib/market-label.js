@@ -64,20 +64,35 @@ const MARKET_LABEL_REGIONAL_UK = 'Regional (UK, outside London)';
  * so a venue added there is picked up here with no second edit.
  */
 let _ukRegionalVenues = null;
+let _ukRegionalVenuesWarned = false;
 function ukRegionalVenueMatches() {
-  if (_ukRegionalVenues === null) {
-    try {
-      // eslint-disable-next-line global-require
-      const rows = require('../../data/uk-regional-venues.json');
-      _ukRegionalVenues = Array.isArray(rows)
-        ? rows.map((r) => String((r && r.match) || '').trim().toLowerCase()).filter(Boolean)
-        : [];
-    } catch (_) {
-      // Missing/unreadable table must not throw inside a prompt builder — fall
-      // back to the US wording, which is the pre-#1405 behaviour.
-      _ukRegionalVenues = [];
+  if (_ukRegionalVenues !== null) return _ukRegionalVenues;
+  let rows;
+  try {
+    // eslint-disable-next-line global-require
+    rows = require('../../data/uk-regional-venues.json');
+  } catch (err) {
+    // A missing or malformed table must not throw inside a prompt builder, but
+    // it must not be cached either: caching [] on one transient read error
+    // would freeze every UK regional show back to the US wording for the rest
+    // of the process, silently reintroducing the exact bug this file fixes.
+    // Return the empty fallback WITHOUT memoizing, so the next call retries.
+    if (!_ukRegionalVenuesWarned) {
+      _ukRegionalVenuesWarned = true;
+      console.warn(`[market-label] uk-regional-venues.json unreadable (${err.message}) — UK regional shows will be labelled US until it loads`);
     }
+    return [];
   }
+  if (!Array.isArray(rows)) {
+    if (!_ukRegionalVenuesWarned) {
+      _ukRegionalVenuesWarned = true;
+      console.warn('[market-label] uk-regional-venues.json is not an array — UK regional shows will be labelled US');
+    }
+    return [];
+  }
+  _ukRegionalVenues = rows
+    .map((r) => String((r && r.match) || '').trim().toLowerCase())
+    .filter(Boolean);
   return _ukRegionalVenues;
 }
 
@@ -88,8 +103,12 @@ function ukRegionalVenueMatches() {
  * @returns {boolean}
  */
 function isUkRegionalVenue(venue) {
-  if (!venue) return false;
-  const v = String(venue).trim().toLowerCase();
+  // Strings only, deliberately. String(['Royal Shakespeare Theatre']) is
+  // 'Royal Shakespeare Theatre', so a coercing version would silently match an
+  // array — and getMarketLabel's optional 2nd param makes `arr.map(getMarketLabel)`
+  // a live footgun (no such caller today; verified by grep, kept impossible here).
+  if (typeof venue !== 'string') return false;
+  const v = venue.trim().toLowerCase();
   if (!v) return false;
   return ukRegionalVenueMatches().some((m) => v.includes(m));
 }

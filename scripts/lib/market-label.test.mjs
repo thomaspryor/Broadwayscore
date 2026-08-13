@@ -89,8 +89,24 @@ test('isUkRegionalVenue matches the shared table case-insensitively', () => {
   assert.equal(isUkRegionalVenue('Chichester Festival Theatre'), true);
   assert.equal(isUkRegionalVenue('La Jolla Playhouse'), false);
   assert.equal(isUkRegionalVenue(''), false);
+  assert.equal(isUkRegionalVenue('   '), false);
   assert.equal(isUkRegionalVenue(undefined), false);
   assert.equal(isUkRegionalVenue(null), false);
+});
+
+test('isUkRegionalVenue rejects non-strings instead of coercing them', () => {
+  // String(['Royal Shakespeare Theatre']) === 'Royal Shakespeare Theatre', so a
+  // coercing implementation matches an ARRAY. getMarketLabel's optional 2nd
+  // param means `arr.map(getMarketLabel)` would pass the index as venue; both
+  // must be inert.
+  assert.equal(isUkRegionalVenue(['Royal Shakespeare Theatre']), false);
+  assert.equal(isUkRegionalVenue({ name: 'Royal Shakespeare Theatre' }), false);
+  assert.equal(isUkRegionalVenue(0), false);
+  assert.equal(isUkRegionalVenue(1), false);
+  assert.equal(isUkRegionalVenue(true), false);
+  // The map() footgun specifically: index 0/1/2 must never flip the label.
+  assert.equal(['regional', 'regional', 'regional'].map(getMarketLabel).join('|'),
+    [getMarketLabel('regional'), getMarketLabel('regional'), getMarketLabel('regional')].join('|'));
 });
 
 test('regional prompt note names the right country for a UK house — card #1405', () => {
