@@ -66,7 +66,8 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "the-winters-tale-off-broadway-2026/off-off-online--unknown.json",
     "the-winters-tale-off-broadway-2026/playbill--unknown.json",
-    "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json"
+    "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json",
+    "an-american-daughter-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -471,7 +472,16 @@
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json"
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "an-american-daughter-off-broadway-2026/forward--unknown.json",
+    "an-american-daughter-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -517,7 +527,8 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-winters-tale-off-broadway-2026/off-off-online--unknown.json",
       "the-winters-tale-off-broadway-2026/playbill--unknown.json",
-      "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json"
+      "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json",
+      "an-american-daughter-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -562,7 +573,7 @@
     ]
   },
   "startTime": "2026-08-13T10:02:52.317Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-08-13T10:27:39.359Z",
@@ -600,6 +611,17 @@
     },
     {
       "t": "2026-08-13T13:13:48.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-13T13:14:06.916Z",
+      "event": "bb-session",
+      "session": "5c9452a8",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-13T13:14:07.794Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
