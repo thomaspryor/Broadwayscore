@@ -9,5 +9,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-13T08:07:27.522Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026",
+    "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"anansi-the-spider-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T08:46:36.407Z"
   }
 ]
