@@ -98,14 +98,35 @@ function loadJson(p, dflt) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return dflt; }
 }
 
+// Substitute clock, matching audit-opening-night-coverage.js's
+// `show.openingDate || show.previewsStartDate` pattern.
+//
+// openingDate here is an AGE WINDOW, not an eligibility flag — but `if
+// (!s.openingDate) return false` turned it into one, so a show whose
+// openingDate hasn't been written yet was excluded from the very audit meant to
+// catch its missing T1 reviews. That is the same self-exclusion that let
+// how-the-other-half-loves-west-end-2026 go unmonitored on 2026-08-12 (task
+// #1409). A show with reviews already published is exactly the one this audit
+// should be looking at hardest.
+function clockDateFor(show, evidence) {
+  if (show.openingDate && !Number.isNaN(Date.parse(show.openingDate))) return show.openingDate;
+  if (show.previewsStartDate && !Number.isNaN(Date.parse(show.previewsStartDate))) return show.previewsStartDate;
+  const e = evidence && evidence[show.id];
+  if (e && e.latest && !Number.isNaN(Date.parse(e.latest))) return e.latest;
+  return null;
+}
+
 function windowShows() {
   const raw = loadJson(path.join(ROOT, 'data', 'shows.json'), {});
   const shows = Array.isArray(raw) ? raw : raw.shows || [];
   if (ONLY_SHOW) return shows.filter((s) => s.id === ONLY_SHOW);
   const now = Date.now();
+  let evidence = {};
+  try { evidence = require('./lib/review-evidence.js').loadReviewEvidence(); } catch { /* absent evidence = old behavior */ }
   return shows.filter((s) => {
-    if (!s.openingDate) return false;
-    const t = Date.parse(s.openingDate);
+    const clock = clockDateFor(s, evidence);
+    if (!clock) return false;
+    const t = Date.parse(clock);
     if (Number.isNaN(t)) return false;
     const ageDays = (now - t) / 86400000;
     return ageDays >= MIN_AGE_DAYS && ageDays <= WINDOW_DAYS;

@@ -87,6 +87,13 @@ const HEARTBEAT_STALE_MIN = 90;
 // outside it). 3 matches dispatch-ledger's DEAD_ATTEMPT_LIMIT convention.
 const MAX_ATTEMPTS_PER_NIGHT = 3;
 
+// Consecutive no-change passes before the night stops relaunching. 3 x ~20-min
+// ticks = ~45-60 min of provable silence for ~$15, versus the ~$135 an
+// untouched window costs after the show is already covered. Deliberately the
+// same number as MAX_ATTEMPTS_PER_NIGHT: both answer "how many times do we
+// retry something that isn't working before we stop paying for it".
+const MAX_NO_PROGRESS_PASSES = 3;
+
 // LOCK_META (meta.json) is written only AFTER launchCmuxSession() returns —
 // up to verifyTimeoutSec(90) x 2 attempts + lateAdoptSec(60) = ~240s of real
 // launch time, plus overhead. A concurrent tick that sees the lock with no
@@ -135,20 +142,95 @@ function nextDay(dateStr) {
   return d.toISOString().slice(0, 10);
 }
 
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** The stored openingDate if it's a usable YYYY-MM-DD, else null. */
+function storedAnchor(show) {
+  return show.openingDate && DATE_RE.test(show.openingDate) ? show.openingDate : null;
+}
+
+/**
+ * Fallback anchor from review evidence, for the show whose openingDate hasn't
+ * been written yet.
+ *
+ * Root cause this exists for (how-the-other-half-loves-west-end-2026,
+ * 2026-08-12): press night was Aug 12, reviews published Aug 12, but
+ * `openingDate` stayed null until a later pipeline pass back-derived it from
+ * those same reviews (`openingDateSource: review-derived-press-night`). The
+ * window is computed from openingDate alone, so computeWindow returned null on
+ * every launchd tick and the monitor opened 19 hours late — after the coverage
+ * it exists to babysit had already landed. The evidence was there the whole
+ * time: hasFreshEvidence() was true at 2026-08-12T16:00Z, the exact instant the
+ * window should have opened. The launcher already loads it
+ * (opening-night-monitor-launch.js, loadReviewEvidence for selection); it was
+ * simply discarded one frame later, here.
+ *
+ * EARLIEST fresh item, not `.latest`: a roundup tail publishes for days after
+ * press night, so `.latest` would re-anchor late every day — reintroducing the
+ * same lateness it's meant to cure.
+ *
+ * Two clamps keep the anchor from sliding (a 6-day-old item must not anchor a
+ * window 6 days in the past, then jump forward as it ages out and silently
+ * re-key the night):
+ *   - never before previewsStartDate — nothing published earlier can be a
+ *     review of this production;
+ *   - never more than ANCHOR_MAX_AGE_DAYS behind `now`.
+ * A show whose evidence only survives outside those bounds gets no window,
+ * which is the pre-existing behavior, not a regression.
+ */
+const ANCHOR_MAX_AGE_DAYS = 2;
+
+function evidenceAnchor(show, evidence, now) {
+  if (!evidence) return null;
+  const e = evidence[show.id];
+  if (!e || !Array.isArray(e.items) || !e.items.length) return null;
+
+  const n = now instanceof Date ? now : new Date(now);
+  const floorMs = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() - ANCHOR_MAX_AGE_DAYS);
+  const previews = show.previewsStartDate && DATE_RE.test(show.previewsStartDate)
+    ? Date.parse(`${show.previewsStartDate}T00:00:00Z`) : null;
+
+  let earliest = null;
+  for (const it of e.items) {
+    const d = it && typeof it.date === 'string' ? it.date.slice(0, 10) : null;
+    if (!d || !DATE_RE.test(d)) continue;
+    const ts = Date.parse(`${d}T00:00:00Z`);
+    if (!Number.isFinite(ts)) continue;
+    if (ts < floorMs) continue;                       // too old to anchor
+    if (previews !== null && ts < previews) continue; // predates this production
+    if (ts > n.getTime() + 2 * 3600 * 1000) continue; // future-dated (matches hasFreshEvidence)
+    if (earliest === null || ts < earliest.ts) earliest = { ts, d };
+  }
+  return earliest && earliest.d;
+}
+
 /**
  * The monitor window for one show, or null if it isn't a press-night-market
- * show with a real openingDate. Window: openingDate 17:00 local-market time
- * → openingDate+1 23:59 local-market time.
+ * show with a usable anchor date. Window: anchor 17:00 local-market time
+ * → anchor+1 23:59 local-market time.
+ *
+ * The anchor is the stored openingDate when there is one, and review evidence
+ * otherwise (see evidenceAnchor). `openingDate` on the returned window is the
+ * ANCHOR, not necessarily show.openingDate — nightKey() and the activeWindows()
+ * sort both read it and both need a real date string. `anchor` says which
+ * source won, so a caller can tell a confirmed press night from an inferred one.
+ *
+ * @param {object} show
+ * @param {object} [opts] { evidence: loadReviewEvidence() result, now: Date }
  */
-function computeWindow(show) {
+function computeWindow(show, { evidence = null, now = new Date() } = {}) {
   const tz = MARKET_TZ[show.category];
-  if (!tz || !show.openingDate || !/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate)) return null;
+  if (!tz) return null;
+  const stored = storedAnchor(show);
+  const anchorDate = stored || evidenceAnchor(show, evidence, now);
+  if (!anchorDate) return null;
   return {
     showId: show.id,
     market: show.category,
-    openingDate: show.openingDate,
-    windowStart: utcFromZoned(show.openingDate, WINDOW_START_HOUR_LOCAL, 0, tz),
-    windowEnd: utcFromZoned(nextDay(show.openingDate), 23, 59, tz),
+    openingDate: anchorDate,
+    anchor: stored ? 'openingDate' : 'evidence',
+    windowStart: utcFromZoned(anchorDate, WINDOW_START_HOUR_LOCAL, 0, tz),
+    windowEnd: utcFromZoned(nextDay(anchorDate), 23, 59, tz),
   };
 }
 
@@ -159,9 +241,9 @@ function computeWindow(show) {
  * already-selected show objects from opening-night-selection.js with
  * {includeUntrusted: true, ignoreStatus: true}, or the raw shows array).
  */
-function activeWindows(shows, now = new Date()) {
+function activeWindows(shows, now = new Date(), { evidence = null } = {}) {
   return shows
-    .map(computeWindow)
+    .map(s => computeWindow(s, { evidence, now }))
     .filter(Boolean)
     .filter(w => w.windowStart <= now && now <= w.windowEnd)
     .sort((a, b) => a.openingDate.localeCompare(b.openingDate) || a.showId.localeCompare(b.showId));
@@ -176,6 +258,52 @@ function activeWindows(shows, now = new Date()) {
  */
 function nightKey(windows) {
   return windows.length ? `on-monitor-${windows[0].openingDate}` : null;
+}
+
+/**
+ * Carry spend/attempt state across a mid-window night-key change.
+ *
+ * nightKey is derived from the window's anchor date, and an evidence anchor can
+ * be superseded by the real openingDate landing mid-window (exactly the
+ * back-derived-press-night case this file's evidence fallback exists for). If
+ * the two dates differ the key flips, a fresh {attempts:0, usdTonight:0} state
+ * is created, and BOTH brakes reset — NIGHTLY_USD_CAP and
+ * MAX_ATTEMPTS_PER_NIGHT — so one night could spend twice its cap and re-fire
+ * an escalation the owner already answered. The fix is to merge forward from
+ * any prior state covering the same shows.
+ *
+ * Pure: the caller supplies the prior states and persists the result.
+ *
+ * @param {Array<{key:string, state:object}>} priorStates  all known night states
+ * @param {string[]} shows  showIds in the current window
+ * @param {object} current  state already loaded for the current key
+ */
+function carryForwardNightState(priorStates, shows, current = {}) {
+  const showSet = new Set(shows);
+  const merged = {
+    attempts: current.attempts || 0,
+    consecutiveFailures: current.consecutiveFailures || 0,
+    noProgressPasses: current.noProgressPasses || 0,
+    usdTonight: current.usdTonight || 0,
+    escalated: Boolean(current.escalated),
+  };
+  let carriedFrom = null;
+  for (const { key, state } of priorStates || []) {
+    if (!state || !Array.isArray(state.shows)) continue;
+    if (!state.shows.some(id => showSet.has(id))) continue;
+    // Spend ACCUMULATES (it was really billed); the retry counters take the max
+    // (they measure "how many times has this night tried", not a sum across
+    // bookkeeping identities); escalated is sticky so a resolved escalation
+    // never re-pages.
+    merged.usdTonight = Math.round((merged.usdTonight + (state.usdTonight || 0)) * 100) / 100;
+    merged.attempts = Math.max(merged.attempts, state.attempts || 0);
+    merged.consecutiveFailures = Math.max(merged.consecutiveFailures, state.consecutiveFailures || 0);
+    merged.noProgressPasses = Math.max(merged.noProgressPasses, state.noProgressPasses || 0);
+    merged.escalated = merged.escalated || Boolean(state.escalated);
+    carriedFrom = key;
+  }
+  if (carriedFrom) merged.carriedFrom = carriedFrom;
+  return merged;
 }
 
 /**
@@ -197,9 +325,25 @@ function nightKey(windows) {
  *                                         unknown callers get the pre-#568 behavior)
  * @returns {{action: 'skip'|'launch'|'reclaim-and-launch'|'escalate', reason: string}}
  */
-function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true }) {
+function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true, noProgressPasses = 0 }) {
   if (killSwitch) return { action: 'skip', reason: 'kill switch active' };
   if (!windows.length) return { action: 'skip', reason: 'no show in its opening-night window' };
+  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
+  // of opus passes; nothing stopped a *finished* show from burning the rest of
+  // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
+  // show had ~27 more $5 passes queued). Counting passes that produced neither
+  // a session-state write nor a git commit is the market-agnostic version of
+  // "there is nothing left to do" — it needs no census (the aggregator archive
+  // is CI-populated and absent from the launchd checkout, so a census-based
+  // stop would silently never fire here) and it degrades correctly whether the
+  // show is complete or the pipeline is wedged.
+  //
+  // The counter RE-ARMS on new reviews (see launcher), so the long tail — a T1
+  // dropping at 02:00 — still wakes the monitor. Without that this stop would
+  // defeat the monitor's entire reason to exist.
+  if (noProgressPasses >= MAX_NO_PROGRESS_PASSES) {
+    return { action: 'escalate', reason: `${noProgressPasses} consecutive passes made no change (no state write, no commits) — nothing left to do this window` };
+  }
   if (lockExists) {
     // Heartbeat freshness OUTRANKS the process probe: a session sleeping
     // between census passes (ScheduleWakeup pacing) has no running claude
@@ -239,6 +383,8 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
 
 module.exports = {
   MARKET_TZ, WINDOW_START_HOUR_LOCAL, HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
+  MAX_NO_PROGRESS_PASSES, ANCHOR_MAX_AGE_DAYS,
   tzOffsetMinutes, utcFromZoned, nextDay, computeWindow, activeWindows, nightKey, launchDecision,
+  carryForwardNightState, evidenceAnchor,
   claimLockGeneration, isLockGenerationOwner, lockGenerationPath,
 };
