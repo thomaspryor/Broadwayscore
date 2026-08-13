@@ -171,6 +171,18 @@ function buildFromAddress(market) {
   return `${siteNameForMarket(market)} <updates@broadwayscorecard.com>`;
 }
 
+// Reply-To for every audience-facing send. `updates@` is a Resend-verified
+// SENDER only — the domain's MX points at ImprovMX and `updates@` is not one of
+// its forwarding aliases, so a subscriber hitting Reply gets a bounce and the
+// owner never sees the message (cloud-memory/project_email_infrastructure.md).
+// `hi@` is an ImprovMX alias forwarding to the owner's Gmail, and is set up
+// there as a "Send mail as" identity, so replies land in the inbox AND can be
+// answered from the same address.
+const REPLY_TO_EMAIL = 'hi@broadwayscorecard.com';
+function buildReplyToAddress() {
+  return REPLY_TO_EMAIL;
+}
+
 // Canonical NEWSLETTER_EDITION parser for the weekly-newsletter scripts
 // (generate.mjs, send-test.mjs, create-broadcast-draft.mjs). Throws on any
 // unknown value instead of degrading: 'westend', 'West-End' or 'off-west-end'
@@ -939,6 +951,8 @@ module.exports = {
   buildUnsubscribeUrl,
   siteNameForMarket,
   buildFromAddress,
+  buildReplyToAddress,
+  REPLY_TO_EMAIL,
   resolveNewsletterEdition,
   buildFooterHtml,
   buildBroadcastFooterHtml,

@@ -22,7 +22,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl, buildFromAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
@@ -32,6 +32,9 @@ const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.c
 // exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).
 const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos/unknown editions
 const FROM_EMAIL = buildFromAddress(EDITION);
+// Same Reply-To as the real broadcast so the test email is a faithful preview
+// of what subscribers get (including where a reply would land).
+const REPLY_TO = buildReplyToAddress();
 const SLUG = process.env.NEWSLETTER_SLUG || 'A-2026-05-18';
 // Match generate.mjs's output resolution: env override > iCloud path > repo-local.
 const OUT_DIR = process.env.NEWSLETTER_OUT_DIR
@@ -81,6 +84,7 @@ const ALLOW_SEND = process.env.CI === 'true'
 if (!ALLOW_SEND) {
   console.log('[DRY RUN] Would send to:', RECIPIENT);
   console.log('[DRY RUN] From:', FROM_EMAIL);
+  console.log('[DRY RUN] Reply-To:', REPLY_TO);
   console.log('[DRY RUN] Subject:', subject);
   console.log('[DRY RUN] Set NEWSLETTER_SEND=1 or pass --force to actually send.');
   process.exit(0);
@@ -88,6 +92,7 @@ if (!ALLOW_SEND) {
 
 const body = {
   from: FROM_EMAIL,
+  reply_to: REPLY_TO,
   to: [RECIPIENT],
   subject,
   html,

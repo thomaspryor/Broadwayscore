@@ -218,12 +218,15 @@ jobs:
           if (!email || !resendKey) { console.log('No email or Resend key'); process.exit(0); }
 
           // Build email using the template
-          const { buildFeedbackThankYouEmail } = require('./scripts/lib/email-templates.js');
+          const { buildFeedbackThankYouEmail, buildReplyToAddress } = require('./scripts/lib/email-templates.js');
           const type = action === 'fixed' ? 'fixed' : 'acknowledged';
           const { subject, html } = buildFeedbackThankYouEmail(type, diag.submitterName, diag.submitterShow);
 
           const data = JSON.stringify({
             from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+            // `updates@` sends but never receives — replies to this thank-you
+            // would bounce without a Reply-To that reaches the owner's inbox.
+            reply_to: buildReplyToAddress(),
             to: [email],
             subject,
             html,
