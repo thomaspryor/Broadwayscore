@@ -296,7 +296,7 @@ test('a slow-boot launch is journaled unverified but NOT dead (card #705)', () =
   assert.deepEqual(failedLaunchEntries(args).map(e => e.event), ['dead', 'launch']);
 });
 
-test('a failed launch never attributes attempt 1\'s closed workspace to attempt 2', () => {
+test('a retry verdict never closes the workspace or drops its attribution (owner decision 2026-08-13, Option A)', () => {
   const raw = fs.readFileSync(new URL('./cmux-launch.js', import.meta.url), 'utf8');
   // Strip comments before asserting — the fix's own comment quotes the removed
   // pattern to explain it, and a naive whole-file scan would match that.
@@ -308,8 +308,12 @@ test('a failed launch never attributes attempt 1\'s closed workspace to attempt 
   // is the entire point of the fix, so the carry-forward must stay gone.
   assert.doesNotMatch(src, /lastWs\s*=\s*ws\s*\|\|\s*lastWs/);
   assert.match(src, /survivingWs\s*=\s*ws\s*\|\|\s*null/);
-  // And the ref must be dropped the moment attempt 1's workspace is closed.
-  assert.match(src, /closeWorkspace\(ws\.ref\)[\s\S]{0,200}survivingWs\s*=\s*null/);
+  // dispatch fix afb00813dac (owner-approved Option A, 2026-08-13): the old
+  // 'retry' branch closed attempt 1's workspace on an unreliable
+  // injection-never-ran verdict, which was destroying LIVE sessions. It now
+  // keeps the workspace and stops relaunching instead — closeWorkspace must
+  // never reappear in this file.
+  assert.doesNotMatch(src, /closeWorkspace\(ws\.ref\)/);
 });
 
 test('bsc-next dispatches with the long verify window + late-adopt grace, and journals failures', () => {
