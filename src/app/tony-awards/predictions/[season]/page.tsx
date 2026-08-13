@@ -3,7 +3,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { BlendedTrioDisplay } from '@/components/show-cards';
+import { BlendedTrioDisplay, ShowListCard } from '@/components/show-cards';
+import { createShowSerializer } from '@/lib/serialize-show';
+import { groupShowsByTonyShape } from '@/lib/tony-season-groups';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
@@ -102,12 +104,25 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // 10-things-2024 are still sitting in shows.json with 2022/2024 preview dates and
   // would otherwise render as fresh 2026-27 announcements. No previewsStartDate at all
   // is fine: that's a genuinely undated future announcement (Dreamgirls, Purple Rain).
-  const announcedNoDate = isCurrent
+  // Shows with previews scheduled INSIDE the season window but no openingDate yet.
+  // These are unambiguously this season's shows — Paranormal Activity starts previews
+  // 2026-08-14 — and listing them as "no date" was wrong. getEligibleShows can't see
+  // them (it keys off openingDate), and openingDate is null because our Broadway date
+  // source (IBDB) is currently returning a bot challenge, so the enrichment that would
+  // fill it in is failing. Surface them with the date we DO have, labelled as previews.
+  // See tony-nominees-premature, 2026-08-11.
+  const previewsThisSeason = isCurrent
     ? allShows
         .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
-        // Upper bound too: a dateless announcement whose previews start AFTER this
-        // season's window belongs to next season, not this one.
-        .filter(s => !s.previewsStartDate || (s.previewsStartDate >= season.start && s.previewsStartDate <= season.end))
+        .filter(s => s.previewsStartDate && s.previewsStartDate >= season.start && s.previewsStartDate <= season.end)
+        .sort((a, b) => (a.previewsStartDate ?? '').localeCompare(b.previewsStartDate ?? ''))
+    : [];
+
+  // Truly undated: no openingDate AND no previewsStartDate. Announced, nothing scheduled.
+  // (Shows with a LAPSED preview date are stale/abandoned announcements — excluded.)
+  const announcedNoDate = isCurrent
+    ? allShows
+        .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate && !s.previewsStartDate)
         .sort((a, b) => a.title.localeCompare(b.title))
     : [];
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
@@ -182,6 +197,30 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         ).values()
       ).sort((a, b) => (a.openingDate ?? '').localeCompare(b.openingDate ?? ''))
     : [];
+
+  // Render every season list on ShowListCard — the same component the homepage,
+  // /off-broadway and /west-end use (CLAUDE.md rule 4). The bespoke two-column
+  // thumbnail rows these sections used to carry had no score slot at ALL, so a
+  // show with a real critic score (Celebrity Autobiography, 68.95) rendered
+  // blank while the section copy promised "scores appear once each one opens".
+  //
+  // Serialize from the full ComputedShow rather than the SerializedTonyShow in
+  // `openingThisSeason`: that shape carries no id / type / isRevival and no
+  // per-tier review counts, and ScoreBadge needs the tier counts to decide
+  // whether a score is publishable at all.
+  const serializeCard = createShowSerializer();
+  const showBySlug = new Map(allShows.map(s => [s.slug, s]));
+  const openingThisSeasonCards = openingThisSeason
+    .map(s => showBySlug.get(s.slug))
+    .filter((s): s is NonNullable<typeof s> => s != null)
+    .map(s => serializeCard(s));
+  // Grouped musical/play and new/revival, the shape the Tony show-level
+  // categories take. Grouping is on facts we store (type, isRevival), NOT on
+  // Tony eligibility — that's an Administration Committee ruling nobody has made
+  // yet, which is what the disclaimer below the heading still says.
+  const seasonGroups = groupShowsByTonyShape(openingThisSeasonCards);
+  const previewsThisSeasonCards = previewsThisSeason.map(s => serializeCard(s));
+  const announcedNoDateCards = announcedNoDate.map(s => serializeCard(s));
 
   // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
   // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
@@ -706,41 +745,43 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         {openingThisSeason.length > 0 && (
           <section className="mb-10">
             <h2 className="text-lg font-bold text-white mb-1">This season&apos;s Broadway shows</h2>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm text-gray-400 mb-6">
               {openingThisSeason.length} show{openingThisSeason.length !== 1 ? 's' : ''} with a
-              confirmed {season.label} opening date. Scores appear once each one opens and reviews land.
+              confirmed {season.label} opening date, grouped the way the Tony show categories are.
+              Eligibility itself is not yet determined — the Tony Administration Committee rules on
+              that, and it hasn&apos;t. Scores appear once each show opens and reviews land.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {openingThisSeason.map(show => (
-                <Link
-                  key={show.slug}
-                  href={`/show/${show.slug}`}
-                  className="flex items-center gap-3 p-2.5 rounded-lg bg-surface-raised border border-white/5 hover:bg-white/[0.03] transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-md overflow-hidden bg-surface-overlay flex-shrink-0">
-                    {show.thumbnailPath ? (
-                      <img
-                        src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
-                        alt={show.title}
-                        className="w-full h-full object-cover"
-                        width={40}
-                        height={40}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-white truncate">{show.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{show.venue || 'Venue TBA'}</p>
-                  </div>
-                  {show.openingDate && (
-                    <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0 tabular-nums">
-                      {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  )}
-                </Link>
+            {seasonGroups.map(group => (
+              <div key={group.key} className="mb-8 last:mb-0">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
+                  {group.title}
+                  <span className="ml-2 text-gray-600 tabular-nums">{group.shows.length}</span>
+                </h3>
+                <div className="space-y-3" role="list" aria-label={group.title}>
+                  {group.shows.map((show, i) => (
+                    <ShowListCard key={show.id} show={show} index={i} scoreMode="critics" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* Previews scheduled this season, opening night not announced/ingested yet. */}
+        {previewsThisSeason.length > 0 && !nominationsAnnounced && (
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-white mb-1">In previews this season</h2>
+            <p className="text-sm text-gray-400 mb-4">
+              {previewsThisSeason.length} more {previewsThisSeason.length === 1 ? 'show is' : 'shows are'} scheduled
+              to begin performances in the {season.label} season. Opening night sets Tony eligibility, and
+              we don&apos;t have a confirmed one for these yet.
+            </p>
+            {/* Not grouped by Tony shape: with no opening night these can't be
+                placed in a season, let alone a category, so a "New Musicals"
+                heading would imply a placement we explicitly don't have. */}
+            <div className="space-y-3" role="list" aria-label="In previews this season">
+              {previewsThisSeasonCards.map((show, i) => (
+                <ShowListCard key={show.id} show={show} index={i} scoreMode="critics" />
               ))}
             </div>
           </section>
@@ -760,32 +801,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               These have been announced without a confirmed opening night. Tony eligibility runs
               off opening date, so they can&apos;t be placed in a category yet.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {announcedNoDate.map(show => (
-                <Link
-                  key={show.id}
-                  href={`/show/${show.slug}`}
-                  className="flex items-center gap-3 p-2.5 rounded-lg bg-surface-raised border border-white/5 hover:bg-white/[0.03] transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-md overflow-hidden bg-surface-overlay flex-shrink-0">
-                    {show.images?.thumbnail ? (
-                      <img
-                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                        alt={show.title}
-                        className="w-full h-full object-cover"
-                        width={40}
-                        height={40}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{show.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{show.venue || 'Venue TBA'}</p>
-                  </div>
-                </Link>
+            <div className="space-y-3" role="list" aria-label="Announced, no opening night yet">
+              {announcedNoDateCards.map((show, i) => (
+                <ShowListCard key={show.id} show={show} index={i} scoreMode="critics" />
               ))}
             </div>
           </section>
