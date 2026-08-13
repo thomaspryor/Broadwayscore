@@ -7,7 +7,7 @@
 
 const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS, OUTLET_STAR_AUTHORITATIVE, extractScore } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
-const { decodeHtmlEntities } = require('./text-cleaning');
+const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
@@ -915,6 +915,96 @@ function extractDateFromUrl(url) {
   return null;
 }
 
+/**
+ * Applies the two score-unlocking normalizations rebuild-all-reviews.js's main
+ * loop performs on every file (aggregator-sourced originalScore→aggregatorStars
+ * migration, garbageFullText→fullText recovery) — WITHOUT writing back to disk.
+ * Mutates and returns `data` in place; the caller decides whether/how to persist.
+ *
+ * Single source of truth for both:
+ *  - the dedup-priority sort prepass (rebuild-all-reviews.js's sortMeta build),
+ *    which reads each file once, before the main loop's own pass
+ *  - the main loop, which additionally writes the migrated fields back to disk
+ *
+ * Without this shared step, a file whose only path to a score is one of these
+ * two migrations would sort as unscored in the prepass (computed against the
+ * raw, pre-migration parse) even though it WILL score once the main loop's own
+ * copy of this same migration runs on it moments later — reintroducing the
+ * exact silent-drop failure mode task #1406 fixed for compareFilesForDedupPriority,
+ * just gated on a different trigger (adversarial ship-check finding).
+ *
+ * @param {object} data - parsed review-text JSON (mutated in place)
+ * @returns {{aggregatorMigrated: boolean, garbageRecovered: boolean}} which
+ *   migrations actually fired, so a caller that also writes back to disk
+ *   (rebuild-all-reviews.js's main loop) knows whether to persist + count it.
+ */
+function applyScoreRelevantMigrations(data) {
+  const result = { aggregatorMigrated: false, garbageRecovered: false };
+  if (!data) return result;
+  if (data.originalScore && data.scoreSource && AGGREGATOR_SOURCES_SET.has(data.scoreSource)) {
+    if (!data.aggregatorStars) data.aggregatorStars = data.originalScore;
+    data.originalScore = null;
+    if (data.originalScoreNormalized != null) data.originalScoreNormalized = null;
+    if (data.originalScoreSource && AGGREGATOR_SOURCES_SET.has(data.originalScoreSource)) data.originalScoreSource = null;
+    result.aggregatorMigrated = true;
+  }
+  const isErrorPage = data.garbageReason &&
+    (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
+  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
+    const cleaned = cleanText(data.garbageFullText);
+    if (cleaned && cleaned.length > 200) {
+      data.fullText = cleaned;
+      data.fullTextRecoveredFrom = 'garbageFullText';
+      result.garbageRecovered = true;
+    }
+  }
+  return result;
+}
+
+/**
+ * Comparator deciding which of two same-show review-text files wins when the
+ * rebuild's dedup collapses them (same outlet+critic, same URL, or same
+ * content fingerprint) — first-in-sort-order file survives, the other is
+ * skipped as a duplicate.
+ *
+ * `hasScore` is checked BEFORE `isUnknown` so a scored review is never
+ * dropped in favor of an unscored named sibling at the same URL: task #1406
+ * (how-the-other-half-loves-west-end-2026, 2026-08-13) found the prior
+ * unknown-first ordering let an unscored named file (e.g.
+ * guardian--mark-lawson.json, no assignedScore) win the dedup pick over its
+ * scored "Unknown" twin (guardian--unknown.json, assignedScore 87) sharing
+ * the same URL — silently dropping the only scoreable copy of the review.
+ * Scored-but-Unknown files now survive dedup, and rebuild-all-reviews.js's
+ * existing byline-recovery pass (scripts/lib/byline-recovery.js, added for
+ * task #190/#1321) backfills the display name from the losing named sibling
+ * afterward — so neither the score nor the byline is sacrificed for the
+ * other.
+ *
+ * Priority (lower sorts first / wins): non-duplicate > scored > named (not
+ * Unknown/unnamed) > non-outlet-as-critic > content-verified > ensemble-
+ * scored > alphabetical by filename.
+ *
+ * Pure — no I/O. All flags are pre-computed by the caller from the file's
+ * parsed JSON (see rebuild-all-reviews.js's sortMeta build; `hasScore` there
+ * comes from the same getBestScore() core logic that determines scoreability
+ * downstream, not a looser proxy, so a file that sorts as "scored" here is
+ * guaranteed to actually produce a score later).
+ *
+ * @param {{file:string, isDupe?:boolean, hasScore?:boolean, isUnknown?:boolean, isOutletAsCritic?:boolean, isVerified?:boolean, hasEnsemble?:boolean}} a
+ * @param {object} b - same shape as `a`
+ * @returns {number}
+ */
+function compareFilesForDedupPriority(a, b) {
+  const rank = (v) => (v ? 1 : 0);
+  if (rank(a.isDupe) !== rank(b.isDupe)) return rank(a.isDupe) - rank(b.isDupe);
+  if (rank(a.hasScore) !== rank(b.hasScore)) return rank(b.hasScore) - rank(a.hasScore);
+  if (rank(a.isUnknown) !== rank(b.isUnknown)) return rank(a.isUnknown) - rank(b.isUnknown);
+  if (rank(a.isOutletAsCritic) !== rank(b.isOutletAsCritic)) return rank(a.isOutletAsCritic) - rank(b.isOutletAsCritic);
+  if (rank(a.isVerified) !== rank(b.isVerified)) return rank(a.isVerified) - rank(b.isVerified);
+  if (rank(a.hasEnsemble) !== rank(b.hasEnsemble)) return rank(a.hasEnsemble) - rank(b.hasEnsemble);
+  return String(a.file).localeCompare(String(b.file));
+}
+
 module.exports = {
   isUnambiguousRatingString,
   // Text cleaning
@@ -933,6 +1023,9 @@ module.exports = {
   getBestScore,
   // URL date extraction
   extractDateFromUrl,
+  // Dedup tiebreaking
+  compareFilesForDedupPriority,
+  applyScoreRelevantMigrations,
   // Re-export from score-extractors for convenience
   scoreToBucket,
   scoreToThumb,
