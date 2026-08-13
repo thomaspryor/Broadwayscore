@@ -134,11 +134,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-13T16:23:53.786Z",
+      "lastSeen": "2026-08-13T23:04:45.987Z",
       "lastNotifiedAt": "2026-08-13T16:23:53.786Z",
       "notifyCount": 28,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -768,71 +769,72 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-13T16:23:53.490Z",
+      "lastSeen": "2026-08-13T23:04:45.986Z",
       "lastNotifiedAt": "2026-08-13T16:23:53.490Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Anansi the Spider",
       "firstSeen": "2026-08-13T00:01:58.198Z",
-      "lastSeen": "2026-08-13T22:06:15.159Z",
+      "lastSeen": "2026-08-13T23:05:58.390Z",
       "lastNotifiedAt": "2026-08-13T00:01:58.198Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
       "firstSeen": "2026-08-13T08:46:36.407Z",
-      "lastSeen": "2026-08-13T22:06:15.155Z",
+      "lastSeen": "2026-08-13T23:05:58.386Z",
       "lastNotifiedAt": "2026-08-13T08:46:36.407Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on How the Other Half Loves",
       "firstSeen": "2026-08-13T10:30:56.123Z",
-      "lastSeen": "2026-08-13T22:06:15.166Z",
+      "lastSeen": "2026-08-13T23:05:58.392Z",
       "lastNotifiedAt": "2026-08-13T10:30:56.123Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-stale-upcoming-tag-marlise-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Marlise",
       "firstSeen": "2026-08-13T10:30:57.283Z",
-      "lastSeen": "2026-08-13T22:06:15.166Z",
+      "lastSeen": "2026-08-13T23:05:58.392Z",
       "lastNotifiedAt": "2026-08-13T10:30:57.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-stale-upcoming-tag-the-winters-tale-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on The Winter's Tale",
       "firstSeen": "2026-08-13T10:30:58.333Z",
-      "lastSeen": "2026-08-13T22:06:15.190Z",
+      "lastSeen": "2026-08-13T23:05:58.393Z",
       "lastNotifiedAt": "2026-08-13T10:30:58.333Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "broadcast-gate:checklist:how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -852,12 +854,12 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on How the Other Half Loves",
       "firstSeen": "2026-08-13T14:02:56.999Z",
-      "lastSeen": "2026-08-13T22:06:15.162Z",
+      "lastSeen": "2026-08-13T23:05:58.391Z",
       "lastNotifiedAt": "2026-08-13T14:02:56.999Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-fulltext-mentions-show:the-winters-tale-off-broadway-2026": {
       "status": "open",
@@ -876,12 +878,12 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T18:11:58.892Z",
-      "lastSeen": "2026-08-13T22:06:15.190Z",
+      "lastSeen": "2026-08-13T23:05:58.393Z",
       "lastNotifiedAt": "2026-08-13T18:11:58.892Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "feedback-outcomes:2026-08-13T20:36:10.076149+00:00": {
       "status": "open",
