@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-10T13:36:43.184Z",
-    "completedAt": "2026-08-10T13:36:47.194Z",
-    "totalReviews": 42276,
-    "processed": 0,
-    "skipped": 42274,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3866,
-      "output": 116,
-      "total": 11409
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-10T14:33:33.386Z",
     "completedAt": "2026-08-10T14:36:53.934Z",
     "totalReviews": 42313,
@@ -685937,5 +685917,25 @@
       "total": 13161
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-13T20:10:24.298Z",
+    "completedAt": "2026-08-13T20:10:30.669Z",
+    "totalReviews": 44,
+    "processed": 1,
+    "skipped": 42,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 7301,
+      "output": 365,
+      "total": 16787
+    },
+    "errorDetails": [
+      {
+        "showId": "death-note-the-musical-west-end-2026",
+        "outletId": "telegraph",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
