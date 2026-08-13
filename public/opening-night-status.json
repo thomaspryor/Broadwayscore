@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T12:56:20.023Z",
+  "generatedAt": "2026-08-13T13:44:08.869Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,23 +392,23 @@
       "status": "open",
       "slug": "how-the-other-half-loves-west-end",
       "thumbnail": "/images/shows/how-the-other-half-loves-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.6,
-      "liveScore": 79,
-      "scoreDrift": 0.4000000000000057,
+      "siteScore": 78.13,
+      "liveScore": 78,
+      "scoreDrift": -0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 7,
-      "t2": 5,
+      "t2": 6,
       "t3": 2,
       "positive": 12,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -502,6 +502,18 @@
           "t3": 2,
           "p": 12,
           "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T13:44:08.869Z",
+          "rc": 15,
+          "s": 78.13,
+          "t1": 7,
+          "t2": 6,
+          "t3": 2,
+          "p": 12,
+          "m": 2,
           "n": 1,
           "bc": "waiting"
         }
@@ -644,6 +656,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -899,25 +915,23 @@
       "status": "open",
       "slug": "death-note-the-musical-west-end",
       "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": 75.68,
-      "liveScore": 76,
-      "scoreDrift": 0.3199999999999932,
+      "siteScore": 73.22,
+      "liveScore": 73,
+      "scoreDrift": -0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
-      "t1": 4,
-      "t2": 5,
+      "total": 25,
+      "t1": 5,
+      "t2": 6,
       "t3": 14,
-      "positive": 18,
+      "positive": 19,
       "mixed": 3,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -927,7 +941,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1189,6 +1203,18 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T13:44:08.869Z",
+          "rc": 25,
+          "s": 73.22,
+          "t1": 5,
+          "t2": 6,
+          "t3": 14,
+          "p": 19,
+          "m": 3,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -1202,27 +1228,27 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 43.16,
-      "liveScore": 43,
-      "scoreDrift": -0.1599999999999966,
+      "siteScore": 46.76,
+      "liveScore": 47,
+      "scoreDrift": 0.240000000000002,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 11,
       "t1": 0,
-      "t2": 5,
-      "t3": 4,
+      "t2": 6,
+      "t3": 5,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 3,
       "negative": 8,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "11/12 total",
           "T1:0/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1576,6 +1602,18 @@
           "t3": 4,
           "p": 0,
           "m": 1,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T13:44:08.869Z",
+          "rc": 11,
+          "s": 46.76,
+          "t1": 0,
+          "t2": 6,
+          "t3": 5,
+          "p": 0,
+          "m": 3,
           "n": 8,
           "bc": "waiting"
         }

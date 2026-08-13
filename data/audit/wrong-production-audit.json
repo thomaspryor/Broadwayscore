@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T12:56:13.514Z",
+  "timestamp": "2026-08-13T13:44:02.289Z",
   "stats": {
     "totalReviews": 42181,
-    "alreadyFlagged": 18311,
+    "alreadyFlagged": 18312,
     "dateGuardCatches": 141,
     "directorMismatch": 966,
     "tvFilmSignals": 1190,
-    "londonSignals": 872,
+    "londonSignals": 873,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3559
+    "noPublishDate": 3554
   },
   "findings": [
     {
@@ -1254,6 +1254,7 @@
     {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "nysr--unknown.json",
+      "score": 45,
       "publishDate": "2026-08-11",
       "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
       "findings": [
@@ -34943,6 +34944,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "standard--unknown.json",
+      "score": 39,
       "publishDate": "2026-08-13",
       "url": "https://standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
       "findings": [
@@ -37468,6 +37470,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "british-theatre--unknown.json",
+      "score": 71,
       "publishDate": "2026-08-13",
       "url": "https://www.britishtheatreguide.info/reviews/how-the-other-h-old-vic-theatre-25823",
       "findings": [
@@ -37495,6 +37498,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 78,
       "publishDate": "2026-08-12",
       "url": "https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review",
       "findings": [
@@ -37511,6 +37515,19 @@
       "score": 87,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
