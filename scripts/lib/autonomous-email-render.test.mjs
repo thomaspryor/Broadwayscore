@@ -830,5 +830,13 @@ test('autofix block never claims a fix is underway on faith (#1311/#1220 regress
       'retired header restored — it asserts a fix is running before anything proves it ran');
     assert.ok(!/nothing for you to do/i.test(html),
       'retired "nothing for you to do" claim restored');
+    // Codex review (2026-08-12): asserting only the block NAME lets a future
+    // edit drop the honest half of the header and still pass. Pin the clause
+    // that carries the actual honesty contract — the claim is bounded to
+    // "launched", with verification deferred to the next day's digest.
+    assert.match(html, /filed and launched/,
+      'header lost the "filed and launched" bound — it must not claim more than a launch');
+    assert.match(html, /tomorrow’s digest verifies/,
+      'header lost the deferred-verification clause, which is what makes the claim honest');
   }
 });
