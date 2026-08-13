@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-12T23:25:25.291Z",
+  "generatedAt": "2026-08-13T00:55:32.097Z",
   "windowDays": 45,
-  "showsScanned": 58,
+  "showsScanned": 55,
   "gaps": [
     {
       "showId": "cats-west-end-2026",
@@ -21,24 +21,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-12T21:37:12.012Z",
-      "nonTerminalAgeHours": 1.803688611111111
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "title": "Horrible Histories: Barmy Britain - The Best Bits",
-      "openingDate": "2026-08-03",
-      "file": "broadwayworld--christiana-rose.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "firstSeen": "2026-08-08T18:49:47.680Z",
-      "fileAgeHours": 100.59375361111111,
-      "gapSeenAt": "2026-08-12T23:25:25.291Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.3055791666666665
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -53,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 490.23021166666666,
+      "fileAgeHours": 491.7321036111111,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 449.5331541666667
+      "nonTerminalAgeHours": 451.0350447222222
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,9 +53,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 180.67340055555556,
+      "fileAgeHours": 182.17529194444444,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 180.03533805555554
+      "nonTerminalAgeHours": 181.53722861111112
     }
   ],
   "contradictions": []
