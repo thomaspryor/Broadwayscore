@@ -816,14 +816,21 @@ const REGIONAL_FEEDER_VENUES = [
   // cross-validation can never confirm a UK production, so it silently never
   // promoted. "City" has no state suffix (UK, not US) — feederVenueCity()
   // and buildRegionalShowEntry just concatenate venue+city either way.
-  // "RSC" alone is intentionally excluded (too short, collides with other
-  // acronym usage in article prose the way bare "A.R.T." would). Swan
-  // Theatre/The Other Place are RSC's other Stratford stages but are too
-  // generic a name to allowlist bare (same rationale as "Owen Theatre" etc
-  // above) — only the flagship hall is matched until a real BWW/PV article
-  // is seen using the stage name instead of the company name.
-  { re: /\broyal shakespeare (?:company|theatre|theater)\b/i, city: 'Stratford-upon-Avon', domain: 'rsc.org.uk' },
-  { re: /\bchichester festival theatre\b/i, city: 'Chichester', domain: 'cft.org.uk' },
+  // Sourced from data/uk-regional-venues.json (word-bounded here) so
+  // src/lib/market-utils.ts's getMarketCountry/getMarketCurrency — which
+  // needs the same UK-vs-US regional signal to stop defaulting every
+  // regional show to $ — reads the identical list instead of a hand-kept
+  // duplicate that can drift. "RSC" alone is intentionally excluded from the
+  // JSON (too short, collides with other acronym usage the way bare "A.R.T."
+  // would). Swan Theatre/The Other Place are RSC's other Stratford stages
+  // but are too generic a name to allowlist bare (same rationale as "Owen
+  // Theatre" etc above) — only the flagship hall is matched until a real
+  // BWW/PV article is seen using the stage name instead of the company name.
+  ...require('../../data/uk-regional-venues.json').map(({ match, city, domain }) => ({
+    re: new RegExp(`\\b${match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i'),
+    city,
+    domain,
+  })),
 ];
 
 // Dash-joined city names from the table above, for stripping a leading

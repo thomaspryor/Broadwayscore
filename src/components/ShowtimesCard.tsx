@@ -24,6 +24,7 @@ interface ShowtimesCardProps {
   showId?: string;
   showSlug?: string;
   market?: string;
+  venue?: string;
 }
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -60,7 +61,7 @@ function getTodayIndex(mondayStr: string, now: Date): number {
   return -1;
 }
 
-export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, todaytixShowtimes, showName, showId, showSlug, market }: ShowtimesCardProps) {
+export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, todaytixShowtimes, showName, showId, showSlug, market, venue }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
 
@@ -114,7 +115,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
   }
 
   // Button text: "Get Tickets from $X" / "£X" when price available, else "Get Tickets on {Platform}"
-  const currencySymbol = getCurrencySymbol(market);
+  const currencySymbol = getCurrencySymbol(market, venue);
   const buttonText = primaryLink?.priceFrom
     ? `Get Tickets from ${currencySymbol}${primaryLink.priceFrom}`
     : hasTicketLink

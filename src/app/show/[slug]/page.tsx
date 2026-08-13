@@ -749,6 +749,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 showSlug={show.slug}
                 showStatus={show.status}
                 showCategory={show.category}
+                showVenue={show.venue}
                 showScore={show.criticScore?.score ?? null}
                 ticketLinks={sortedTicketLinks}
                 officialUrl={show.officialUrl}
@@ -777,7 +778,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
                 >
                   <TicketIcon />
-                  {lotteryRush.lottery ? (lotteryRush.lottery.price ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : 'Lottery Tickets') : lotteryRush.rush ? (lotteryRush.rush.price ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Rush Tickets') : 'Discount Tickets'}
+                  {lotteryRush.lottery ? (lotteryRush.lottery.price ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.lottery.price} Lottery` : 'Lottery Tickets') : lotteryRush.rush ? (lotteryRush.rush.price ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.rush.price} Rush` : 'Rush Tickets') : 'Discount Tickets'}
                 </a>
               )}
             </div>
