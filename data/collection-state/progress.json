@@ -63,7 +63,10 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-winters-tale-off-broadway-2026/off-off-online--unknown.json",
+    "the-winters-tale-off-broadway-2026/playbill--unknown.json",
+    "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -461,7 +464,14 @@
     "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
     "the-winters-tale-off-broadway-2026/nytg--unknown.json",
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
-    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json"
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -504,7 +514,10 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-winters-tale-off-broadway-2026/off-off-online--unknown.json",
+      "the-winters-tale-off-broadway-2026/playbill--unknown.json",
+      "the-winters-tale-off-broadway-2026/stageandcinema--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -549,7 +562,7 @@
     ]
   },
   "startTime": "2026-08-13T10:02:52.317Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-08-13T10:27:39.359Z",
@@ -578,6 +591,17 @@
       "t": "2026-08-13T11:39:30.295Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-13T13:13:47.261Z",
+      "event": "bb-session",
+      "session": "52366b50",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-13T13:13:48.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
