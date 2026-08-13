@@ -832,6 +832,13 @@ on:
       - 'scripts/lib/json-write-guard.test.mjs'
       - 'scripts/lib/commercial-write-guard.js'
       - 'scripts/lib/audience-buzz-write-guard.js'
+      # theatr-coverage.json flag builder (BRO-303, 2026-08-13): excludes
+      # London-market shows from the candidate pool since Theatr's catalog is
+      # Broadway/Off-Broadway only. Colocated test runs in tests/unit glob
+      # (already listed above) but the lib source + the scraper that wires it
+      # in need explicit listing (no scripts/lib/** broad glob).
+      - 'scripts/lib/theatr-coverage-audit.js'
+      - 'scripts/scrape-theatr-audience.js'
       # Write-routing lint shared by CI (Lint Workflows job) + local pre-push
       # hook. Without these paths an edit to the lint or its allowlists pushes
       # with ZERO CI (silent-gate class, feedback_test_yml_push_path_allowlist).

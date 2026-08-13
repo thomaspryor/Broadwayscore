@@ -20,7 +20,7 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { countByShow, isStuckInPreviews, openSignalFromReviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -38,6 +38,29 @@ Usage:
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
+const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+
+/**
+ * Read a show's DISCOVERED review files (data/review-texts/{showId}/).
+ *
+ * Only called for shows that reached Check 2d without a signal — a handful of
+ * pre-open shows per run — so the directory read is not a hot path. Returns []
+ * when the show has no directory, which simply raises no discovery signal.
+ */
+function loadDiscoveredReviews(showId) {
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue;
+    try {
+      out.push(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')));
+    } catch {
+      // Unparseable files are the contamination audit's problem, not ours.
+    }
+  }
+  return out;
+}
 const OUTLET_REGISTRY_FILE = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 const URLS_FILE = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'show-score');
@@ -741,9 +764,22 @@ async function updateShowStatuses() {
       //    no longer sit in previews forever. Decoupled by design: "open" is a
       //    status fact a dated review proves; the score stays gated until the
       //    threshold — the honest "Now Playing, reviews pending" state.
+      //  - discovery-open-signal: >=1 clean DISCOVERED review dated on/after
+      //    previews start. Last resort, and the one that breaks the deadlock:
+      //    the two signals above both read reviews.json, which only holds
+      //    reviews we already collected — but a null openingDate is exactly
+      //    what sinks a show to the bottom of the collection queue, so nothing
+      //    is ever collected, reviews.json stays empty, and the backstop that
+      //    would have set openingDate can never fire. The Winter's Tale went
+      //    through its own opening night inside that loop on 2026-08-12 with a
+      //    dated NYT review already sitting on disk, uncollected. Knowing a
+      //    critic published is proof enough, and we know it a stage earlier.
       const scoreThreshold = isStuckInPreviews(show, entry);
       const openSignal = scoreThreshold ? null : openSignalFromReviews(show, entry, isDateReached);
-      if (scoreThreshold || openSignal) {
+      const discoverySignal = (scoreThreshold || openSignal)
+        ? null
+        : openSignalFromDiscovery(show, loadDiscoveredReviews(show.id), isDateReached);
+      if (scoreThreshold || openSignal || discoverySignal) {
         const from = show.status;
         const reviewCount = entry ? entry.count : 0;
         changes.status = { from, to: 'open' };
@@ -756,9 +792,13 @@ async function updateShowStatuses() {
         // self-heal on their own weekly schedules, and avoiding a wrong broadcast
         // (email about a weeks-old "opening") is the higher priority (CLAUDE.md §17).
         changes.reviewDriven = true;
-        changes.note = scoreThreshold
-          ? `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`
-          : `open-signal: ${reviewCount} review(s) dated on/after previews start — demonstrably opened (below score gate; reviews pending)`;
+        if (scoreThreshold) {
+          changes.note = `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`;
+        } else if (openSignal) {
+          changes.note = `open-signal: ${reviewCount} review(s) dated on/after previews start — demonstrably opened (below score gate; reviews pending)`;
+        } else {
+          changes.note = `discovery-open-signal: critic review published ${discoverySignal.date} but not yet collected — demonstrably opened (score pending collection)`;
+        }
         if (!dryRun) show.status = 'open';
         // Backfill a missing openingDate from the review cluster (press night).
         // Only when the estimate is in the past — a future/today date would let
@@ -767,12 +807,23 @@ async function updateShowStatuses() {
         // openingDate is shown verbatim as "Opened {date}"); we leave it null —
         // an already-tolerated state for open shows — and log it for manual fill.
         if (!show.openingDate) {
-          const backfill = chooseOpeningDateBackfill(show, entry.dates, isDateReached);
+          // Discovery-signalled shows have no reviews.json entry at all, so the
+          // press-night cluster has to come from the signal that actually fired.
+          const backfillDates = discoverySignal
+            ? [discoverySignal.date]
+            : (entry ? entry.dates : []);
+          const backfill = chooseOpeningDateBackfill(show, backfillDates, isDateReached);
           if (backfill) {
+            // Stamp discovery-derived dates distinctly. They rest on a review
+            // we have NOT fetched, so they are the weakest of the three
+            // sources — and a distinct openingDateSource is what makes them
+            // findable if this ever has to be rolled back or re-derived:
+            //   jq '.[]|select(.openingDateSource=="discovery-open-signal")'
+            const source = discoverySignal ? 'discovery-open-signal' : backfill.source;
             changes.openingDate = { from: 'null', to: backfill.date };
             if (!dryRun) {
               show.openingDate = backfill.date;
-              show.openingDateSource = backfill.source;
+              show.openingDateSource = source;
             }
           } else {
             console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from ${openingDateSourceHint(show.category)}`);

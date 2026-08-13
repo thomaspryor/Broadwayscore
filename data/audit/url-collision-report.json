@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-13T00:46:08.215Z",
+  "generatedAt": "2026-08-13T13:31:55.679Z",
   "summary": {
-    "total": 3,
+    "total": 4,
     "high": 3,
-    "medium": 0,
+    "medium": 1,
     "low": 0
   },
   "collisions": [
@@ -87,6 +87,33 @@
       "suggestedWinner": "a-dolls-house-2023",
       "reason": "publishDate 2023-03-13 is 4 days from a-dolls-house-2023 opening (2023-03-09)",
       "confidence": "high"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "an-american-daughter-off-broadway-2026",
+          "file": "lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json",
+          "publishDate": null,
+          "openingDate": "2026-08-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "the-winters-tale-off-broadway-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-08-12",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "an-american-daughter-off-broadway-2026",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
     }
   ]
 }

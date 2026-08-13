@@ -3,10 +3,11 @@
 // production classification fails here.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyTrapped } = require('../audit-archived-in-progress.js');
+const { classifyTrapped, dispatchedTaskIds } = require('../audit-archived-in-progress.js');
 
 const NOW = Date.UTC(2026, 7, 13, 2, 0, 0);
 const DAY = 24 * 60 * 60 * 1000;
@@ -62,4 +63,22 @@ test('classifyTrapped: survives missing mtime and missing subject without throwi
 test('classifyTrapped: null/garbage input is empty, never a crash', () => {
   assert.deepEqual(classifyTrapped(null, new Set(), NOW).trapped, []);
   assert.deepEqual(classifyTrapped([null, undefined], new Set(), NOW).trapped, []);
+});
+
+test('dispatchedTaskIds: returns null (not an empty Set) when the ledger is unreadable', () => {
+  // The ledger is gitignored, so it is ABSENT in every git worktree. Returning
+  // an empty Set there made this audit report "86 never started, 0 started" —
+  // a confidently wrong answer; the real split is 59/27. Absent input must be
+  // distinguishable from "the answer is zero" so main() can refuse.
+  assert.equal(dispatchedTaskIds('/nonexistent/repo/root/for/this/test'), null);
+});
+
+test('dispatchedTaskIds: a real ledger yields a non-empty Set of string ids', () => {
+  // Guards the other direction: a null-vs-Set mixup that always refused would
+  // be just as broken as one that always answered zero.
+  const ids = dispatchedTaskIds(path.join(import.meta.dirname, '..', '..'));
+  if (ids === null) return; // running in a worktree — the refusal path is covered above
+  assert.ok(ids instanceof Set);
+  assert.ok(ids.size > 0, 'a present ledger must produce at least one launched id');
+  for (const id of ids) { assert.equal(typeof id, 'string'); break; }
 });

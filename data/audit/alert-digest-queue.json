@@ -1,134 +1,79 @@
 [
   {
     "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: brightdata $4.63 > $2.5 (1440 serp + 1645 unlocker reqs); scrapingdog 64406 credits > 45000",
-    "description": "Day 2026-08-11. 2026-08-11 · Browserbase: $2.9 (29 sessions) · 2026-08-11 · Bright Data: $4.63 (1440 serp / 1645 unlocker) · ScrapingBee: 29983 credits (166757 this cycle) · ScrapingDog: 64406 credits (1363171 this cycle) · Browserbase attribution: 17% attributed — top: collect-review-texts.js 2, scrape-stagedoor-critics.js 1, scrape-thestage-roundups.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 32% attributed — top: opening-night-poller.js 652, audit-show-review-gap.js 282, ingest-review-from-url.js 35, enrich-stubhub-prices.js 9, collect-review-texts.js 2 · ScrapingBee attribution: 1% attributed — top: audit-show-review-gap.js 126, opening-night-poller.js 105, ingest-review-from-url.js 28, enrich-stubhub-prices.js 6, auto-fix-show-data.js 2 · ScrapingDog attribution: 8% attributed — top: audit-show-review-gap.js 1671, collect-review-texts.js 1329, opening-night-poller.js 1098, recover-explicit-ratings.js 373, ingest-review-from-url.js 176. Verification streak reset to 0.",
+    "title": "Scraping spend over budget: brightdata $9.75 > $2.5 (3908 serp + 2591 unlocker reqs); scrapingdog 50159 credits > 45000",
+    "description": "Day 2026-08-12. 2026-08-12 · Browserbase: $2.8 (28 sessions) · 2026-08-12 · Bright Data: $9.75 (3908 serp / 2591 unlocker) · ScrapingBee: 33122 credits (199879 this cycle) · ScrapingDog: 50159 credits (1413330 this cycle) · Browserbase attribution: 25% attributed — top: test-caller 6, bww-rr-discover.js 1 · Bright Data attribution: 23% attributed — top: opening-night-poller.js 770, audit-show-review-gap.js 492, collect-review-texts.js 103, ingest-review-from-url.js 101, enrich-stubhub-prices.js 15 · ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 502, opening-night-poller.js 113, ingest-review-from-url.js 61, extract-theatre-record.js 15, enrich-stubhub-prices.js 11 · ScrapingDog attribution: 7% attributed — top: opening-night-poller.js 1275, audit-show-review-gap.js 1019, collect-review-texts.js 562, ingest-review-from-url.js 178, recover-explicit-ratings.js 175. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-12T08:06:45.397Z"
+    "queuedAt": "2026-08-13T08:07:27.522Z"
   },
   {
-    "conditionKey": "opening-night-remediation-exhausted-t1-missing:death-note-the-musical-west-end-2026",
-    "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
-    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"death-note-the-musical-west-end-2026\"}",
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026",
+    "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"anansi-the-spider-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-12T08:41:26.348Z"
+    "queuedAt": "2026-08-13T08:46:36.407Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 29932/27000 credits",
+    "description": "Scrapingdog billed 29932 credits today against a ceiling of 27000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (500), audit-show-review-gap.js (393), collect-review-texts.js (325).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T09:59:37.018Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026",
+    "title": "Stale 'upcoming' tag on How the Other Half Loves",
+    "description": "how-the-other-half-loves-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=how-the-other-half-loves-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:56.123Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-marlise-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Marlise",
+    "description": "marlise-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=marlise-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:57.283Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-winters-tale-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on The Winter's Tale",
+    "description": "the-winters-tale-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-winters-tale-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:58.333Z"
   },
   {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/148 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPride: missing-from-prod",
+    "description": "2/152 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nscore-drift: 2\nTrainspotting the musical: missing-from-prod+score-drift\nHow the Other Half Loves: score-drift",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-12T11:46:33.275Z"
-  },
-  {
-    "conditionKey": "arm-yield:outlet:theatermania",
-    "title": "TheaterMania (reviews collected) has stopped updating (3 days)",
-    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-09, 3 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 25 productive day(s) / 57 item(s) between 2026-07-11 and 2026-08-09.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T13:57:47.057Z"
-  },
-  {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 45133/45000 credits",
-    "description": "Scrapingdog billed 45133 credits today against a ceiling of 45000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n1 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (1012), audit-show-review-gap.js (930), collect-review-texts.js (470).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T14:11:05.654Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31607693368",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-12T15:00:21.002Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2304/2250 reqs)",
-    "description": "Zone web_unlocker2 billed 2304 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n2 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (617), audit-show-review-gap.js (374), collect-review-texts.js (103).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T18:43:27.705Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (3783/2250 reqs)",
-    "description": "Zone serp_api1 billed 3783 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n2 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (617), audit-show-review-gap.js (374), collect-review-texts.js (103).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T18:43:27.740Z"
-  },
-  {
-    "conditionKey": "opening-night-fulltext-mentions-show:short:death-note-the-musical-west-end-2026",
-    "title": "Shipped review too short to verify on Death Note: The Musical",
-    "description": "thestage/Tom Wicker (thestage--tom-wicker.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T23:05:09.374Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:death-note-the-musical-west-end-2026",
-    "title": "Pre-opening publishDate on Death Note: The Musical",
-    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-03 (8d before openingDate 2026-08-11): https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/\nrhombus-rota/Mark SHIPPED with publishDate 2026-08-04 (7d before openingDate 2026-08-11): https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/\n⚠️  musical-theatre-review/Admin also missing publishDate: https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/\n⚠️  thestage/Tom Wicker also missing publishDate: https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london\n⚠️  thetheatreflyer-co-uk/Emma Knott also missing publishDate: https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-12T23:05:09.375Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026",
-    "title": "Placeholder synopsis on Anansi the Spider",
-    "description": "synopsis for anansi-the-spider-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-13T00:01:58.198Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 80% (403/504)\noff-broadway: 45.6% (152/333)\nwest-end: 69.1% (407/589)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (501h)\nA Midsummer Night's Dream - Globe — telegraph (501h)\nA Midsummer Night's Dream — financialtimes (501h)\nA Midsummer Night's Dream — observer (501h)\nA Midsummer Night's Dream — standard (501h)\n… 221 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (501h)\nThe Book of Mormon — usatoday (501h)\nBuena Vista Social Club — broadwaynews (501h)\nHeathers The Musical — dailybeast (501h)\nHeathers The Musical — ew (501h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-13T00:55:36.630Z"
+    "queuedAt": "2026-08-13T12:49:59.774Z"
   }
 ]

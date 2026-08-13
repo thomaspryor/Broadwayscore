@@ -1,36 +1,51 @@
 {
-  "generatedAt": "2026-08-13T00:55:40.280Z",
+  "generatedAt": "2026-08-13T12:49:59.767Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 148,
-  "clean": 147,
-  "defective": 1,
+  "checked": 152,
+  "clean": 150,
+  "defective": 2,
   "byType": {
     "missing-from-prod": 1,
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "title": "Trainspotting the musical",
+      "openingDate": "2026-07-22",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: this-week-in-new-york"
+          "detail": "1 scored outlet(s) absent from the deployed payload: telegraph"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.36 vs local 72.9 (Δ0.46)"
+          "detail": "deployed cs 35.42 vs local 35.55 (Δ0.13)"
         }
       ],
       "missingFromProd": [
-        "this-week-in-new-york"
+        "telegraph"
       ],
-      "localCount": 7,
-      "deployedCount": 6
+      "localCount": 33,
+      "deployedCount": 32
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "title": "How the Other Half Loves",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.22 vs local 78.78 (Δ0.56)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13
     }
   ]
 }

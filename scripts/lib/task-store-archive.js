@@ -54,55 +54,66 @@ const DEFAULT_PENDING_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days untouche
 const DEFAULT_BSC_DAILY_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days — card #1351, digest regenerates these daily
 const BSC_DAILY_TITLE_RE = /^BSC Daily:/;
 // Arms the reclaim WRITE pass (see archiveCompletedTasks for why it is off by
-// default). Removing in_progress from archival is unconditional — that half is
-// subtractive and always safe.
-const RECLAIM_ENV = 'TASK_RECLAIM_ENABLED';
-
 /**
  * Pure selection: which tasks are safe + eligible to archive.
  *
- * Three independent populations are eligible, unioned:
+ * Four independent populations are eligible, unioned:
  *   1. completed tasks older than maxAgeMs (the original S1 #854 lever).
- *   2. pending tasks untouched for longer than pendingMaxAgeMs (card
+ *   2. in_progress tasks untouched for longer than staleInProgressMs — the
+ *      dispatching session died or was abandoned without ever flipping
+ *      status (card #955 hunt item 1). `owner` is NOT used as a signal:
+ *      empirically most in_progress tasks never get an owner set (102/107 on
+ *      2026-08-03), so absence of owner is not evidence of staleness.
+ *   3. pending tasks untouched for longer than pendingMaxAgeMs (card
  *      #1351) — pending tasks previously never aged out at all, so the
  *      live directory only ever grew.
- *   3. pending tasks whose subject starts with "BSC Daily:" (the morning
+ *   4. pending tasks whose subject starts with "BSC Daily:" (the morning
  *      digest's auto-generated alert-card family) untouched for longer than
- *      bscDailyMaxAgeMs — a much shorter clock than population 2, since the
+ *      bscDailyMaxAgeMs — a much shorter clock than population 3, since the
  *      digest regenerates a fresh card daily regardless of whether the
  *      prior one archived (card #1351).
  *
- * NOT a population any more: stale `in_progress`. Card #955 hunt item 1 had
- * this function archive in_progress orphans directly, and that created a
- * two-timer DEADLOCK measured on 2026-08-12 (86 of 146 in_progress records
- * were already inside it):
+ * THE DEADLOCK, and why population 2 stays but is RELABELLED on the way in.
+ * Measured 2026-08-12: 86 of 875 archived tasks sat in archive/ with status
+ * still `in_progress`, unreachable forever. Mechanism:
  *   - this archiver moved an in_progress task to archive/ after 7d untouched,
- *     while its status still said in_progress;
- *   - the only thing that would ever flip it back to pending is
- *     sweepUntrackedInProgress (bsc-reconcile.js), which reads the LIVE dir
- *     only — bscNext.loadTasks is live-dir-only by deliberate design (see the
- *     card #854 docstring at bsc-next.js:84-95).
- * So any task that survived 7 days in_progress became PERMANENTLY
- * in_progress: unreachable by the sweep, invisible to --list/actionable(),
- * dispatchable only by explicit --id. Of 15 sampled, 14 had zero
- * dispatch-ledger entries — they never actually started. That is un-started
- * work wearing a finished-work label, so filing it away was always the wrong
- * verb. selectReclaimableInProgress below returns it to `pending` in the LIVE
- * dir instead, and the pending populations above then age it out on their own
- * clock if nobody picks it up. The live directory still stays bounded; the
- * task just stops lying about its state on the way there.
+ *     with its status untouched;
+ *   - the only thing that flips such a task back to pending is
+ *     sweepUntrackedInProgress (bsc-reconcile.js:478-610), which reads the
+ *     LIVE dir only — bscNext.loadTasks is live-dir-only by deliberate design
+ *     (card #854 docstring, bsc-next.js:84-95).
+ * So surviving 7 days in_progress made a task PERMANENTLY in_progress:
+ * invisible to --list/actionable(), dispatchable only by explicit --id.
+ *
+ * The fix is to stop the ARCHIVED COPY from lying, not to stop archiving.
+ * archiveCompletedTasks writes the archive copy with status 'pending' (and
+ * owner cleared) for this population, and never rewrites the live file — the
+ * live file is only unlinked, exactly as before. That matters: an earlier
+ * version of this fix flipped LIVE files to pending instead, which
+ * reimplemented sweepUntrackedInProgress's flip while dropping every one of
+ * its guards (live-lease check, cmux-tab match, Notion idle check, the
+ * has-completed-Outcome park that exists because reopening a finished card
+ * redid finished work twice, and a 10-flip-per-sweep cap). Keying a LIVE flip
+ * on task-file mtime alone is unsafe — bsc-next.js:807 documents that a
+ * genuinely alive session doing long batch work does not write to its task
+ * file, and bsc-prune.js:258-269 re-dispatches a pending task whose tab looks
+ * dead. Relabelling only the archived copy needs none of those guards, because
+ * nothing in the live pool changes and no dispatcher can pick an archived task
+ * up. Returning archived work to the pool is a separate, deliberate act.
  *
  * @param {Array<{id: string, status: string, mtimeMs: number, subject?: string}>} tasks
  * @param {object} opts
  * @param {number} opts.now - Date.now()-equivalent, injected for testability
  * @param {number} [opts.maxAgeMs]
  * @param {number} [opts.keepTopN]
+ * @param {number} [opts.staleInProgressMs] - set to Infinity to disable population 2
  * @param {number} [opts.pendingMaxAgeMs] - set to Infinity to disable this population
  * @param {number} [opts.bscDailyMaxAgeMs] - set to Infinity to disable this population
  * @returns {string[]} ids selected for archival, ascending
  */
 function selectArchivable(tasks, {
   now, maxAgeMs = DEFAULT_MAX_AGE_MS, keepTopN = DEFAULT_KEEP_TOP_N,
+  staleInProgressMs = DEFAULT_STALE_IN_PROGRESS_MS,
   pendingMaxAgeMs = DEFAULT_PENDING_MAX_AGE_MS,
   bscDailyMaxAgeMs = DEFAULT_BSC_DAILY_MAX_AGE_MS,
 }) {
@@ -112,9 +123,7 @@ function selectArchivable(tasks, {
     if (frontier.has(t.id)) return false;
     if (typeof t.mtimeMs !== 'number') return false;
     if (t.status === 'completed') return now - t.mtimeMs > maxAgeMs;
-    // in_progress is deliberately absent — see the docstring's deadlock note.
-    // It is reclaimed to pending by selectReclaimableInProgress, never archived
-    // while still claiming to be in progress.
+    if (t.status === 'in_progress') return now - t.mtimeMs > staleInProgressMs;
     if (t.status === 'pending') {
       const isBscDaily = typeof t.subject === 'string' && BSC_DAILY_TITLE_RE.test(t.subject);
       return now - t.mtimeMs > (isBscDaily ? bscDailyMaxAgeMs : pendingMaxAgeMs);
@@ -128,38 +137,44 @@ function selectArchivable(tasks, {
 }
 
 /**
- * Pure selection: which in_progress tasks are stale enough to reclaim to
- * `pending`. This is the other half of the deadlock fix documented on
- * selectArchivable — the population that used to be archived-while-in_progress.
+ * Pure: the archive copy to write for a task being filed away.
  *
- * Same two guards as archival, for the same reasons:
- *   - keepTopN frontier: the newest N ids are never touched, so a burst of
- *     freshly-dispatched work can't be reclaimed out from under live sessions
- *     even if their mtime looks old for an unrelated reason.
- *   - mtime age only. `owner` is NOT a signal: empirically most in_progress
- *     tasks never get an owner set (102/107 on 2026-08-03), so absence of
- *     owner is not evidence of staleness.
+ * For every status but `in_progress` this is the task verbatim — archival has
+ * always been a byte-for-byte move and stays one. For `in_progress` it returns
+ * a relabelled copy: status 'pending', owner cleared, plus breadcrumbs saying a
+ * timer did it. That single substitution is the whole deadlock fix (see
+ * selectArchivable): the archived record stops claiming work is underway when
+ * the claiming session is long gone, so anything that later reads archive/
+ * (mergeWithArchive, the recovery audit, a future sweep) sees the truth.
  *
- * @param {Array<{id: string, status: string, mtimeMs: number}>} tasks
+ * `owner` is cleared to match sweepUntrackedInProgress's flipFn, which nulls it
+ * for the same reason: a non-in_progress task still naming a vanished session
+ * as owner misreports who holds it.
+ *
+ * Pure and exported so the test asserts the real substitution, and so callers
+ * can preview it without writing anything.
+ *
+ * @param {object} task - parsed task JSON as found on disk
  * @param {object} opts
- * @param {number} opts.now - Date.now()-equivalent, injected for testability
- * @param {number} [opts.keepTopN]
- * @param {number} [opts.staleInProgressMs] - set to Infinity to disable reclaim
- * @returns {string[]} ids to reclaim, ascending
+ * @param {number} opts.now - Date.now()-equivalent
+ * @param {number} [opts.idleMs] - how long it had been untouched, for the reason string
+ * @returns {{ task: object, relabelled: boolean }}
  */
-function selectReclaimableInProgress(tasks, {
-  now, keepTopN = DEFAULT_KEEP_TOP_N,
-  staleInProgressMs = DEFAULT_STALE_IN_PROGRESS_MS,
-}) {
-  const byIdDesc = [...tasks].sort((a, b) => parseInt(b.id, 10) - parseInt(a.id, 10));
-  const frontier = new Set(byIdDesc.slice(0, keepTopN).map((t) => t.id));
-  return tasks
-    .filter((t) => t.status === 'in_progress'
-      && !frontier.has(t.id)
-      && typeof t.mtimeMs === 'number'
-      && now - t.mtimeMs > staleInProgressMs)
-    .map((t) => t.id)
-    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+function archiveCopyFor(task, { now, idleMs = null } = {}) {
+  if (!task || task.status !== 'in_progress') return { task, relabelled: false };
+  const days = typeof idleMs === 'number' ? Math.floor(idleMs / (24 * 60 * 60 * 1000)) : null;
+  return {
+    relabelled: true,
+    task: {
+      ...task,
+      status: 'pending',
+      owner: null,
+      archivedFromInProgressAt: new Date(now).toISOString(),
+      archivedFromInProgressReason: days == null
+        ? 'archived while in_progress with no activity — the claiming session died without flipping status'
+        : `no activity for ${days}d while in_progress — the claiming session died without flipping status`,
+    },
+  };
 }
 
 /** Load every `<id>.json` in dir with its parsed content + mtime. Skips unparseable files. */
@@ -235,74 +250,9 @@ function archiveCompletedTasks(dir, opts = {}) {
 
     const archived = [];
     const skipped = [];
-    const reclaimed = [];
+    const relabelled = [];
     let bytesFreed = 0;
 
-    // Reclaim pass FIRST, and inside the same lock: a stale in_progress task
-    // goes back to `pending` in the live dir rather than being archived while
-    // still claiming to be in progress (the two-timer deadlock — see
-    // selectArchivable's docstring).
-    //
-    // DEFAULT OFF (RECLAIM_ENV). Removing in_progress from the archive
-    // population is purely subtractive — it stops the trapped population from
-    // GROWING and cannot surprise any consumer. Writing status:'pending' onto
-    // ~61 live tasks is not subtractive, and the Codex review of this change
-    // named two consumer effects that need their own review first:
-    //   - bsc-prune.js:260-269 treats a PENDING task whose auto-tab died as
-    //     "never booted" and redispatches it headlessly, while leaving
-    //     in_progress to reconcile. A bulk reclaim could therefore trigger a
-    //     wave of unattended dispatches — a spend consequence, and both files
-    //     are the critical dispatch tier under CLAUDE.md §18.
-    //   - notion-tasks-sync.js:65-72/107-119 maps a Notion "In progress" card
-    //     to in_progress and mergeStatus preserves it, so a later card update
-    //     re-sticks a reclaimed task. Reclaim is not durable until that
-    //     interaction is handled.
-    // So the mechanism lands tested and reviewable, and arming it is a separate
-    // decision: set TASK_RECLAIM_ENABLED=1.
-    const reclaimEnabled = opts.reclaimEnabled ?? process.env[RECLAIM_ENV] === '1';
-    for (const id of reclaimEnabled ? selectReclaimableInProgress(tasks, { ...opts, now }) : []) {
-      const livePath = path.join(dir, `${id}.json`);
-      // COMPARE-AND-MERGE, not read-then-clobber (Codex P0). The archive path
-      // only ever READS then unlinks, so it could never lose a concurrent
-      // write; this reclaim WRITES, and the archiver's lock serializes archiver
-      // runs against each other only (see acquireLock below) — never against
-      // TaskCreate/TaskUpdate, which other sessions run constantly. Reading
-      // the file a second time here and building the flip from THAT content
-      // means a concurrent update landing between the scan and now survives:
-      // we change exactly one field on top of whatever is currently on disk.
-      let fresh, freshStat;
-      try {
-        fresh = JSON.parse(fs.readFileSync(livePath, 'utf8'));
-        freshStat = fs.statSync(livePath);
-      } catch { skipped.push({ id, reason: 'live file vanished before reclaim' }); continue; }
-      if (fresh.status !== 'in_progress') { skipped.push({ id, reason: `status changed to ${fresh.status} before reclaim` }); continue; }
-      const staleMs = opts.staleInProgressMs ?? DEFAULT_STALE_IN_PROGRESS_MS;
-      if (now - freshStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
-      const next = {
-        ...fresh,
-        status: 'pending',
-        // Breadcrumbs, not a silent flip: whatever reads this next needs to
-        // know it was reclaimed by a timer rather than genuinely re-queued by
-        // a human or a dispatcher.
-        inProgressReclaimedAt: new Date(now).toISOString(),
-        inProgressReclaimReason: `no activity for ${Math.floor((now - freshStat.mtimeMs) / (24 * 60 * 60 * 1000))}d while in_progress — the claiming session died without flipping status`,
-      };
-      const tmp = `${livePath}.tmp-${crypto.randomBytes(4).toString('hex')}`;
-      fs.writeFileSync(tmp, `${JSON.stringify(next, null, 2)}\n`);
-      // Final mtime CAS: if anything wrote between our re-read and here, drop
-      // this task rather than clobber. Residual window is the same one every
-      // writer in this store already has; the difference is we no longer
-      // reintroduce fields we read seconds earlier.
-      let stillSame = false;
-      try { stillSame = fs.statSync(livePath).mtimeMs === freshStat.mtimeMs; } catch { stillSame = false; }
-      if (!stillSame) {
-        try { fs.unlinkSync(tmp); } catch { /* tmp already gone */ }
-        skipped.push({ id, reason: 'live file changed mid-reclaim — left untouched rather than clobbered' });
-        continue;
-      }
-      fs.renameSync(tmp, livePath);
-      reclaimed.push(id);
-    }
     for (const id of ids) {
       const livePath = path.join(dir, `${id}.json`);
       const archivePath = path.join(archiveDir, `${id}.json`);
@@ -328,18 +278,28 @@ function archiveCompletedTasks(dir, opts = {}) {
         if (now - liveStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'pending task touched again since scan — no longer stale' }); continue; }
       }
 
+      // THE DEADLOCK FIX: for the in_progress population the archive copy is
+      // relabelled to pending (owner cleared) so the filed record stops
+      // claiming work is underway. Every other status is still archived
+      // byte-for-byte. The LIVE file is never rewritten — only unlinked below,
+      // exactly as before — which is why this needs none of
+      // sweepUntrackedInProgress's live-flip guards.
+      const idleMs = liveStat ? now - liveStat.mtimeMs : null;
+      const { task: archiveTask, relabelled: wasRelabelled } = archiveCopyFor(parsed, { now, idleMs });
+      const body = wasRelabelled ? `${JSON.stringify(archiveTask, null, 2)}\n` : raw;
       const tmp = `${archivePath}.tmp-${crypto.randomBytes(4).toString('hex')}`;
-      fs.writeFileSync(tmp, raw);
+      fs.writeFileSync(tmp, body);
       fs.renameSync(tmp, archivePath);
       const readBack = fs.readFileSync(archivePath, 'utf8');
-      if (readBack !== raw) { skipped.push({ id, reason: 'archive read-back mismatch — live copy kept' }); continue; }
+      if (readBack !== body) { skipped.push({ id, reason: 'archive read-back mismatch — live copy kept' }); continue; }
+      if (wasRelabelled) relabelled.push(id);
 
       const sizeBefore = fs.statSync(livePath).size;
       fs.unlinkSync(livePath);
       bytesFreed += sizeBefore;
       archived.push(id);
     }
-    return { archived, reclaimed, skipped, bytesFreed };
+    return { archived, relabelled, skipped, bytesFreed };
   } finally {
     release();
   }
@@ -376,7 +336,7 @@ function mergeWithArchive(dir, liveTasks) {
 
 module.exports = {
   selectArchivable,
-  selectReclaimableInProgress,
+  archiveCopyFor,
   loadTasksWithMtime,
   archiveCompletedTasks,
   readArchivedTask,

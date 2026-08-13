@@ -111,6 +111,11 @@ const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
+const {
+  NO_DATE_SENTINEL,
+  buildShowRecencyMap,
+  compareReviewPriority,
+} = require('./lib/collection-priority');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
 // Do NOT check raw HTML (10% FP from NYT page chrome). URL match only.
@@ -5501,15 +5506,20 @@ function findReviewsToProcess() {
     return reviews;
   }
 
-  // Load show statuses + opening dates so we can prioritize recent shows
+  // Load show statuses + recency dates so we can prioritize recent shows.
+  // Recency falls back openingDate → previewsStartDate: a show still in
+  // previews has no openingDate, and keying it on the 1900 sentinel sorted it
+  // behind all ~2,800 dated shows, so with max_reviews=300 its reviews were
+  // never collected at all. See scripts/lib/collection-priority.js.
   const openShowIds = new Set();
-  const showOpeningDates = new Map(); // showId → openingDate string
+  const showOpeningDates = new Map(); // showId → recency key (YYYY-MM-DD)
   try {
     const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-    (showsData.shows || showsData).forEach(s => {
+    const allShows = showsData.shows || showsData;
+    allShows.forEach(s => {
       if (s.status === 'open' || s.status === 'previews') openShowIds.add(s.id);
-      if (s.openingDate) showOpeningDates.set(s.id, s.openingDate);
     });
+    for (const [id, key] of buildShowRecencyMap(allShows)) showOpeningDates.set(id, key);
     console.log(`  Prioritizing ${openShowIds.size} open/preview shows`);
   } catch (e) {
     console.log('  ⚠ Could not load shows.json for prioritization');
@@ -5782,7 +5792,7 @@ function findReviewsToProcess() {
           publishDate,
           showNotMentioned: data.showNotMentioned || false,
           isOpenShow: openShowIds.has(showId),
-          openingDate: showOpeningDates.get(showId) || '1900-01-01',
+          recencyDate: showOpeningDates.get(showId) || NO_DATE_SENTINEL,
           incompleteReason: data.incompleteReason || null,
           fabricatedEntry: data.fabricatedEntry || false,
           fetchAttempts: fileAttempts,
@@ -5796,23 +5806,11 @@ function findReviewsToProcess() {
   }
 
   // Sort: open/preview shows first (unless CLOSED_SHOW_MODE),
-  // then newest shows first (by openingDate desc),
+  // then newest shows first (by recencyDate desc),
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
-  reviews.sort((a, b) => {
-    if (!closedShowMode) {
-      if (a.isOpenShow !== b.isOpenShow) return a.isOpenShow ? -1 : 1;
-    }
-    // Newest shows first (descending openingDate) — so a show that opened
-    // last night gets collected before a show that opened 3 years ago
-    if (a.openingDate !== b.openingDate) return b.openingDate.localeCompare(a.openingDate);
-    // Never-attempted reviews before previously-attempted ones
-    const aAttempted = a.fetchAttempts > 0 ? 1 : 0;
-    const bAttempted = b.fetchAttempts > 0 ? 1 : 0;
-    if (aAttempted !== bAttempted) return aAttempted - bAttempted;
-    return a.priority - b.priority;
-  });
+  reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
 
   // Log sort stats
   const neverAttempted = reviews.filter(r => r.fetchAttempts === 0).length;
