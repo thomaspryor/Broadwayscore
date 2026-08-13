@@ -32,6 +32,15 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
 
+// Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
+// (scripts/lib/digest-autofix.js's old matchOpenTask, before that module
+// repointed to Linear) filed cards titled "Fix: BSC Daily: <name>" — a
+// cousin of the plain "BSC Daily:" family, same legacy-and-never-closed
+// shape, same self-heal re-minting exposure, just not covered by
+// BSC_DAILY_TITLE_RE's anchored prefix. 2 live files in the corpus at the
+// time this was found (834.json, 1166.json).
+const FIX_BSC_DAILY_TITLE_RE = /^Fix: BSC Daily:/;
+
 // Mirror-description format version. Bump whenever mapCardToTask starts
 // emitting something a previously-synced task is missing — planPull uses it to
 // force a one-time rewrite of every existing mirror, which is the ONLY way a
@@ -166,7 +175,8 @@ function planPull(cards, existingMap) {
 // a larger change than this fix warrants; revisit if a real false-positive
 // title collision is ever observed.
 function isMirrorableCard(card) {
-  return !BSC_DAILY_TITLE_RE.test((card && card.name) || '');
+  const name = (card && card.name) || '';
+  return !BSC_DAILY_TITLE_RE.test(name) && !FIX_BSC_DAILY_TITLE_RE.test(name);
 }
 
 // Card #1351: decide which "unchanged" cards (status/fmt already match — see
