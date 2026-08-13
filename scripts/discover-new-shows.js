@@ -2054,11 +2054,18 @@ async function discoverShows() {
     // died on `youre-a-good-man-charlie-brown-off-broadway` (held by the March
     // 2026 92NY run).
     //
-    // Disambiguate with the year instead. Suffix the NEW show — the existing
-    // entry keeps its bare slug and therefore its live URL. That matches the
-    // convention already in shows.json, where the current production holds the
-    // bare slug and earlier ones carry a year (death-of-a-salesman /
-    // death-of-a-salesman-2022 / -2012 / -1999).
+    // Disambiguate with the year instead. Suffix the NEW show, so the existing
+    // entry keeps its bare slug and its live URL.
+    //
+    // Note this is the SAFE choice, not the ideal one. shows.json's convention
+    // is the opposite: the CURRENT production holds the bare slug and earlier
+    // ones carry a year (death-of-a-salesman / -2022 / -2012 / -1999). Honouring
+    // that here would mean renaming an existing row's slug and adding a
+    // redirect, i.e. changing a live URL from inside the daily discovery cron —
+    // too blunt for this path. So the bare slug can end up pointing at a closed
+    // predecessor until someone re-canonicalizes it deliberately (carried as its
+    // own card; adversarial review 2026-08-12). A year-suffixed page that exists
+    // still beats the show being dropped entirely, which is what happened before.
     let slug = marketSlug;
     if (existingSlugs.has(slug)) {
       const yearScoped = `${marketSlug}-${idYear}`;

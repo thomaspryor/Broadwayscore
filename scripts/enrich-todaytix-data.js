@@ -205,7 +205,30 @@ async function main() {
     // Only fills genuine holes: never overwrites an existing openingDate or
     // previewsStartDate, both of which can come from higher-trust sources
     // (IBDB, ShowScore press night, manual correction).
-    if (!show.openingDate && !show.previewsStartDate && tt.startDate) {
+    //
+    // Titles must still agree. Pass 0 (directIdMatch) treats a stored
+    // todaytixId as authoritative with NO title comparison — deliberately, so
+    // a legit show with odd TodayTix tags still enriches. That was safe when
+    // this function only wrote ids/urls/an empty synopsis, but a DATE is
+    // different: if TodayTix has recycled that id onto an unrelated
+    // production, writing its start date would hand the status pipeline a
+    // date from the wrong show and could promote our row to previews on it
+    // (adversarial review, 2026-08-12). directIdMatch already excludes closed
+    // rows for this reason; this closes the announced/upcoming half.
+    // Prefix containment, not equality: our own titles carry disambiguation
+    // suffixes TodayTix doesn't ("The Cherry Orchard (Park Avenue Armory)" vs
+    // "The Cherry Orchard", "Berlin_2027" vs "Berlin"), and TodayTix sometimes
+    // carries a subtitle we don't. Strict equality rejected both of those as
+    // recycled ids on the first run. A genuinely recycled id gives a title that
+    // shares no prefix at all.
+    const ttTitle = slugify(tt.displayName || tt.name || '');
+    const ourTitle = slugify(show.title || '');
+    const titlesAgree = !!ttTitle && !!ourTitle
+      && (ttTitle.startsWith(ourTitle) || ourTitle.startsWith(ttTitle));
+    if (!show.openingDate && !show.previewsStartDate && tt.startDate && !titlesAgree) {
+      stats.dateSkippedTitleMismatch = (stats.dateSkippedTitleMismatch || 0) + 1;
+      changes.push(`skipped start date — TodayTix title "${tt.displayName || tt.name}" no longer matches (possible recycled id ${tt.id})`);
+    } else if (!show.openingDate && !show.previewsStartDate && tt.startDate) {
       const classified = classifyTodayTixStartDate(tt.startDate, show.title, { quiet: true });
       // A date already in the PAST on a show we hold no date for at all is a
       // TodayTix placeholder, not a discovery. Real past starts get dated by
@@ -215,8 +238,16 @@ async function main() {
       // startDate 2026-01-01 — the only past date in the 36-show backfill).
       // classifyTodayTixStartDate itself must keep trusting past dates: for a
       // genuinely running show being discovered, that date is correct.
+      //
+      // Today counts as "not future" too. update-show-status.yml computes
+      // status BEFORE this enrichment step runs, so a date written here that
+      // equals today would promote the show only on tomorrow's run — the
+      // opening-night dispatch for today would already have been decided
+      // against an undated row (adversarial review, 2026-08-12). Requiring a
+      // strictly future date keeps this writer out of the same-day path
+      // entirely instead of half-entering it.
       const startsInPast = classified.previewsStartDate
-        && classified.previewsStartDate < new Date().toISOString().slice(0, 10);
+        && classified.previewsStartDate <= new Date().toISOString().slice(0, 10);
       if (startsInPast) {
         stats.pastPlaceholderSkipped = (stats.pastPlaceholderSkipped || 0) + 1;
         changes.push(`skipped past TodayTix startDate ${classified.previewsStartDate} (placeholder)`);
