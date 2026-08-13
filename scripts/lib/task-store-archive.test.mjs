@@ -7,7 +7,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  selectArchivable, loadTasksWithMtime, archiveCompletedTasks, readArchivedTask, mergeWithArchive,
+  selectArchivable, selectReclaimableInProgress, loadTasksWithMtime, archiveCompletedTasks,
+  readArchivedTask, mergeWithArchive,
 } = require('./task-store-archive.js');
 
 const HOUR = 60 * 60 * 1000;
@@ -136,28 +137,48 @@ test('archiveCompletedTasks: re-verifies status at move time, not just at scan t
   assert.equal(fs.existsSync(path.join(dir, '1.json')), true);
 });
 
-test('selectArchivable: picks in_progress tasks untouched longer than staleInProgressMs (card #955)', () => {
+// The in_progress population moved OUT of selectArchivable and into
+// selectReclaimableInProgress. Card #955 originally archived these directly;
+// that created the two-timer deadlock measured 2026-08-12 (86 of 146
+// in_progress records permanently stuck, because the only thing that would
+// flip them back — sweepUntrackedInProgress — reads the live dir only). These
+// tests now assert the inverse property: archival must NEVER claim an
+// in_progress task, at any age.
+test('selectArchivable: NEVER archives an in_progress task, however stale (deadlock guard)', () => {
+  const tasks = [
+    { id: '1', status: 'in_progress', mtimeMs: NOW - 200 * HOUR }, // >7d
+    { id: '2', status: 'in_progress', mtimeMs: NOW - 10_000 * HOUR }, // absurdly stale
+    { id: '3', status: 'pending', mtimeMs: NOW - 200 * HOUR }, // pending: not stale enough (30d bar)
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0 }), []);
+});
+
+test('selectReclaimableInProgress: picks in_progress tasks untouched longer than staleInProgressMs', () => {
   const tasks = [
     { id: '1', status: 'in_progress', mtimeMs: NOW - 200 * HOUR }, // >7d
     { id: '2', status: 'in_progress', mtimeMs: NOW - 10 * HOUR }, // recent, active
-    { id: '3', status: 'pending', mtimeMs: NOW - 200 * HOUR }, // never archived regardless of age
+    { id: '3', status: 'pending', mtimeMs: NOW - 200 * HOUR }, // wrong status
+    { id: '4', status: 'completed', mtimeMs: NOW - 200 * HOUR }, // wrong status
   ];
-  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0 }), ['1']);
+  assert.deepEqual(selectReclaimableInProgress(tasks, { now: NOW, keepTopN: 0 }), ['1']);
 });
 
-test('selectArchivable: staleInProgressMs: Infinity disables the in_progress population entirely', () => {
-  const tasks = [
-    { id: '1', status: 'in_progress', mtimeMs: NOW - 10_000 * HOUR },
-  ];
-  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0, staleInProgressMs: Infinity }), []);
+test('selectReclaimableInProgress: staleInProgressMs: Infinity disables reclaim entirely', () => {
+  const tasks = [{ id: '1', status: 'in_progress', mtimeMs: NOW - 10_000 * HOUR }];
+  assert.deepEqual(selectReclaimableInProgress(tasks, { now: NOW, keepTopN: 0, staleInProgressMs: Infinity }), []);
 });
 
-test('selectArchivable: in_progress orphans still respect keepTopN frontier', () => {
+test('selectReclaimableInProgress: respects the keepTopN frontier', () => {
   const tasks = [
     { id: '10', status: 'in_progress', mtimeMs: NOW - 1000 * HOUR },
     { id: '11', status: 'in_progress', mtimeMs: NOW - 1000 * HOUR },
   ];
-  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 1 }), ['10']);
+  assert.deepEqual(selectReclaimableInProgress(tasks, { now: NOW, keepTopN: 1 }), ['10']);
+});
+
+test('selectReclaimableInProgress: ignores tasks with no usable mtime', () => {
+  const tasks = [{ id: '1', status: 'in_progress' }, { id: '2', status: 'in_progress', mtimeMs: null }];
+  assert.deepEqual(selectReclaimableInProgress(tasks, { now: NOW, keepTopN: 0 }), []);
 });
 
 test('archiveCompletedTasks: move-time recheck uses fresh fs.statSync, not the scan snapshot (race guard)', () => {
@@ -263,14 +284,35 @@ test('archiveCompletedTasks: pending move-time recheck skips a task touched agai
   }
 });
 
-test('archiveCompletedTasks: archives a stale in_progress orphan end-to-end', () => {
+test('archiveCompletedTasks: RECLAIMS a stale in_progress orphan to pending end-to-end, never archives it', () => {
   const dir = mkTmp();
   writeTask(dir, 1, { status: 'in_progress', subject: 'dead session claim' }, 200);
-  writeTask(dir, 2, { status: 'in_progress' }, 1); // fresh, must stay live
+  writeTask(dir, 2, { status: 'in_progress' }, 1); // fresh, must stay in_progress
   const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
-  assert.deepEqual(result.archived, ['1']);
-  assert.equal(fs.existsSync(path.join(dir, '1.json')), false);
-  assert.equal(fs.existsSync(path.join(dir, '2.json')), true);
-  const archived = JSON.parse(fs.readFileSync(path.join(dir, 'archive', '1.json'), 'utf8'));
-  assert.equal(archived.subject, 'dead session claim');
+  assert.deepEqual(result.archived, [], 'an in_progress task must never be archived');
+  assert.deepEqual(result.reclaimed, ['1']);
+  // Stays LIVE — that is the whole point. Archiving it while in_progress is
+  // what made 86 tasks permanently unreachable (see the module docstring).
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), true);
+  assert.equal(fs.existsSync(path.join(dir, 'archive', '1.json')), false);
+  const reclaimed = JSON.parse(fs.readFileSync(path.join(dir, '1.json'), 'utf8'));
+  assert.equal(reclaimed.status, 'pending');
+  assert.equal(reclaimed.subject, 'dead session claim', 'reclaim must not lose any other field');
+  assert.ok(reclaimed.inProgressReclaimedAt, 'reclaim must leave a breadcrumb, not flip silently');
+  assert.match(reclaimed.inProgressReclaimReason, /no activity for \d+d while in_progress/);
+  // The fresh one is untouched in both status and content.
+  const fresh = JSON.parse(fs.readFileSync(path.join(dir, '2.json'), 'utf8'));
+  assert.equal(fresh.status, 'in_progress');
+  assert.equal(fresh.inProgressReclaimedAt, undefined);
+});
+
+test('archiveCompletedTasks: a reclaimed task is NOT archived in the same run (gets a full cycle back in the pool)', () => {
+  const dir = mkTmp();
+  // Old enough to blow past BOTH the 7d in_progress bar and the 30d pending
+  // bar, so only run-ordering keeps it out of the archive this pass.
+  writeTask(dir, 1, { status: 'in_progress', subject: 'ancient claim' }, 24 * 90);
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.reclaimed, ['1']);
+  assert.deepEqual(result.archived, [], 'reclaim-then-archive in one pass would defeat the fix');
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), true);
 });
