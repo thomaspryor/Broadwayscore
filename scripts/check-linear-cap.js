@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
  * check-linear-cap.js — warns before the workspace hits Linear's free-tier
- * 250-unarchived-issue hard cap (BRO-285). Exits 1 (with the count) once
+ * 250-unarchived-issue hard cap (BRO-285). The cap is FREE-tier ONLY, so on a
+ * paid plan this exits 0 without warning (isCapEnforced). On the free tier it
+ * exits 1 (with the count) once
  * unarchived issues reach WARN_THRESHOLD, so an alert/cron can fire
  * scripts/linear-archive-done.js before new-issue creation starts throwing
  * USAGE_LIMIT_EXCEEDED (scripts/lib/linear-issue-create.js).
@@ -38,7 +40,7 @@ async function main() {
   // transient Linear failure can never silently disable the cap guard.
   let subscription = null;
   try {
-    const org = await linear.graphql('query{ organization{ subscription{ type } } }', {});
+    const org = await linear.graphql('query{ organization{ subscription{ type canceledAt cancelAt } } }', {});
     subscription = org && org.organization ? org.organization.subscription : null;
   } catch (err) {
     console.error(`check-linear-cap: subscription lookup failed (${err.message}) — assuming free tier`);

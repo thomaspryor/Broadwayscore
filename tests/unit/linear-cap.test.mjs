@@ -3,6 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isCapEnforced, isArchivableIssue } =
@@ -127,4 +128,20 @@ test('isCapEnforced: unrecognised shapes fail safe (cap stays armed)', () => {
   assert.equal(isCapEnforced({}), true);
   assert.equal(isCapEnforced('paid'), true);
   assert.equal(isCapEnforced(42), true);
+});
+
+// The predicate's inputs must actually be FETCHED. isCapEnforced re-arms on
+// canceledAt/cancelAt, but a query selecting only `type` can never supply them
+// — that silently makes the branch dead code and leaves the cap guard disabled
+// straight through a cancellation. Asserting on hand-built objects passes
+// either way, so assert the selection set at the source instead. (This is the
+// exact bug the review caught after the first fix shipped.)
+test('check-linear-cap queries every field isCapEnforced reads', () => {
+  const src = readFileSync(new URL('../../scripts/check-linear-cap.js', import.meta.url), 'utf8');
+  const m = src.match(/organization\{\s*subscription\{([^}]*)\}/);
+  assert.ok(m, 'could not find the organization.subscription selection set');
+  for (const field of ['type', 'canceledAt', 'cancelAt']) {
+    assert.ok(new RegExp(`\\b${field}\\b`).test(m[1]),
+      `subscription selection set is missing "${field}" — isCapEnforced reads it`);
+  }
 });
