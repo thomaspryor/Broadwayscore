@@ -74,6 +74,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
+const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1287,6 +1288,7 @@ const crossShowFingerprints = new Map();
   let datelessRevivalFlagged = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
+  let awaitingRefetchSkipped = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
@@ -1398,6 +1400,19 @@ const crossShowFingerprints = new Map();
         }
 
         if (d.wrongProduction || d.wrongShow) continue;
+
+        // Records mid-URL-correction are NOT evidence: the body has not been
+        // refetched, so publishDate still describes the OLD article. Both
+        // guards below derive a flag from that date, which re-creates exactly
+        // what audit-stale-flag-after-url-correction.js --gate clears — the
+        // drain→rebuild→re-flag loop.
+        //
+        // scripts/flag-wrong-production-by-date.js got this skip on 2026-08-13
+        // and the gate STILL came back red hours later, because this file
+        // carries its own inline copy of the same decision (notes
+        // `Pre-opening guard:` / `Dateless revival guard:`). Same predicate,
+        // imported — not re-implemented — so the two cannot drift apart again.
+        if (isAwaitingUrlCorrectionRefetch(d)) { awaitingRefetchSkipped++; continue; }
         // routedFromShowId: already rerouted — publish date reflects the original show's era
         if (d.routedFromShowId) continue;
         // allowEarlyDate bypasses all date-based flagging
@@ -1481,6 +1496,9 @@ const crossShowFingerprints = new Map();
   }
   if (preOpenFlagged > 0) {
     console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
+  }
+  if (awaitingRefetchSkipped > 0) {
+    console.log(`Pre-opening guard: skipped ${awaitingRefetchSkipped} reviews awaiting URL-correction refetch (publishDate describes the old article)\n`);
   }
   if (preOpenHeld > 0) {
     console.log(`Pre-opening guard: HELD ${preOpenHeld} reviews (current-run corroboration contradicts date — human review needed)\n`);

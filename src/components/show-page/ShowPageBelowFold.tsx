@@ -265,6 +265,7 @@ export default function ShowPageBelowFold({
           showId={show.id}
           showSlug={show.slug}
           market={show.category}
+          venue={show.venue}
         />
       )}
 
@@ -309,7 +310,7 @@ export default function ShowPageBelowFold({
           const today = new Date();
           if (today < previewsStart) return null;
         }
-        return <LotteryRushCard data={lotteryRush} showId={show.id} showName={show.title} showStatus={show.status} showCategory={show.category} />;
+        return <LotteryRushCard data={lotteryRush} showId={show.id} showName={show.title} showStatus={show.status} showCategory={show.category} showVenue={show.venue} />;
       })()}
 
       {/* Cast Updates */}

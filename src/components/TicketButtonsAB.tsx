@@ -39,6 +39,7 @@ interface TicketButtonsABProps {
   showSlug: string;
   showStatus: string;
   showCategory?: string;
+  showVenue?: string;
   showScore: number | null;
   ticketLinks: TicketLinkData[];
   officialUrl?: string;
@@ -81,7 +82,7 @@ interface TicketButtonsABProps {
  *      wait for the stat-sig verdict.
  */
 export default function TicketButtonsAB({
-  showName, showId, showSlug, showStatus, showCategory, showScore,
+  showName, showId, showSlug, showStatus, showCategory, showVenue, showScore,
   ticketLinks, officialUrl, pageType, maxButtons = 4,
   buttonClassName = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0",
   splitVariant = false,
@@ -202,7 +203,7 @@ export default function TicketButtonsAB({
       abVariant={abVariantStr}
       className={className}
     >
-      {link.priceFrom ? `Get Tickets from ${getCurrencySymbol(showCategory)}${link.priceFrom}` : `Get Tickets on ${link.platform}`}
+      {link.priceFrom ? `Get Tickets from ${getCurrencySymbol(showCategory, showVenue)}${link.priceFrom}` : `Get Tickets on ${link.platform}`}
       {withArrow && <span aria-hidden="true">→</span>}
     </TicketLink>
   );
