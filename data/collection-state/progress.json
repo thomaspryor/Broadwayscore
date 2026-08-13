@@ -1,14 +1,17 @@
 {
   "processed": [
-    "the-winters-tale-off-broadway-2026/nytg--unknown.json",
+    "how-the-other-half-loves-west-end-2026/timeout-london--unknown.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/broadwayworld--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
     "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
     "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "how-the-other-half-loves-west-end-2026/theatreandtonic--unknown.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
@@ -16,47 +19,68 @@
     "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
     "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
     "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
-    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "an-american-daughter-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
+    "an-american-daughter-off-broadway-2026/one-minute-critic--unknown.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+    "an-american-daughter-off-broadway-2026/theater-life--unknown.json",
+    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/telegraph--tim-robey.json",
+    "death-note-the-musical-west-end-2026/telegraph--unknown.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
+    "death-note-the-musical-west-end-2026/thestage--tom-wicker.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-winters-tale-off-broadway-2026/nytg--unknown.json"
+      "how-the-other-half-loves-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
+    ],
     "scrapingbee": [
-      "the-winters-tale-off-broadway-2026/broadwayworld--unknown.json"
+      "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
-      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-08-13T18:06:47.788Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+  "startTime": "2026-08-13T19:40:44.256Z",
+  "lastProcessed": "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
   "log": [
     {
-      "t": "2026-08-13T18:07:31.997Z",
+      "t": "2026-08-13T19:41:11.151Z",
       "event": "bb-session",
-      "session": "5ff7579e",
+      "session": "01253837",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-13T18:07:32.443Z",
+      "t": "2026-08-13T19:41:11.615Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-13T18:07:53.714Z",
+      "t": "2026-08-13T19:41:35.599Z",
       "event": "bb-session",
-      "session": "0e5686cb",
+      "session": "da902830",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-13T18:07:54.162Z",
+      "t": "2026-08-13T19:41:36.090Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
