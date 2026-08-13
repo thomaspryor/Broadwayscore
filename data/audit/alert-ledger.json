@@ -223,36 +223,36 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-13T22:43:57.628Z",
+      "lastSeen": "2026-08-13T23:42:24.724Z",
       "lastNotifiedAt": "2026-08-13T06:23:47.449Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-13T22:43:57.700Z",
+      "lastSeen": "2026-08-13T23:42:24.780Z",
       "lastNotifiedAt": "2026-08-13T21:44:54.462Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-13T16:56:16.251Z",
+      "lastSeen": "2026-08-13T23:42:24.657Z",
       "lastNotifiedAt": "2026-08-13T12:49:59.774Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -388,12 +388,12 @@
       "requestedDisposition": "human",
       "title": "Review-gap audit refused to write — 14.3% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-13T22:43:46.533Z",
+      "lastSeen": "2026-08-13T23:42:09.655Z",
       "lastNotifiedAt": "2026-08-13T17:55:34.590Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -896,6 +896,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "uncollected-blackout:matilda-the-musical-theatre-row-off-broadway-2026": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
+      "firstSeen": "2026-08-13T23:42:15.236Z",
+      "lastSeen": "2026-08-13T23:42:15.236Z",
+      "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-328"
     }
   }
 }
