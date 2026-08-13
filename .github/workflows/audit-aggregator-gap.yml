@@ -235,6 +235,33 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
 
+      # Date-independent backstop for a live show sitting on a discovered
+      # review URL we never fetched (card #1408). Every OTHER coverage check
+      # in this job keys off a show's opening window; this one reads no date
+      # field at all, so it cannot go blind the way the null-openingDate bug
+      # let The Winter's Tale and An American Daughter reach opening night
+      # uncollected on 2026-08-12 (11 and 9 discovered URLs, 0 collected).
+      # --alert pages ONLY the totalBlackout case (a live show with ZERO
+      # usable critic reviews) via routeAlert(disposition:'auto') — same
+      # urgent-vs-backlog split as the T1/T2 sweep above. Ordinary strands
+      # (a show that still has other coverage) stay advisory: they surface
+      # once daily via health-check.js's uncollectedStrandResults reading
+      # this step's own data/audit/uncollected-live-reviews.json.
+      # Kill switch: repo variable UNCOLLECTED_STRAND_AUDIT_DISABLED=true.
+      - name: Uncollected-review strand guard
+        if: ${{ always() && vars.UNCOLLECTED_STRAND_AUDIT_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # routeAlert's disposition='auto' path shells to notion-brain.js to
+          # file the Action Queue card for a blackout finding — same
+          # requirement as the T1/T2 sweep step above.
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-uncollected-live-reviews.js --alert
+
       # T1 coverage ledger (S2-T3). This job is the SINGLE WRITER of
       # data/audit/t1-coverage-ledger.json — the deterministic serializer + the
       # commit-on-change guard below mean an unchanged corpus produces no commit.
@@ -363,7 +390,7 @@ jobs:
           # those rows never reach the public repo and are lost every run,
           # which is why attributedPct read near-zero for BD's SERP zone
           # (Sprint 3, card 3b1637c5).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then
