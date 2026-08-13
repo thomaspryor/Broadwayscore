@@ -87,7 +87,7 @@ const TOP_CRITICS = new Set([
  *   equally (forced T1, no off-market multiplier) since Met opera coverage doesn't
  *   follow theater's NYT-dominant tier hierarchy — Operawire, Parterre, NYCR are
  *   first-class voices.
- * @returns {{ s: number, rc: number, t1: number } | null}
+ * @returns {{ s: number, rc: number, t1: number, t2: number } | null}
  */
 function computeCriticScore(showReviews, outletRegistry = {}, showCategory, showType) {
   const isOpera = showType === 'opera';
@@ -125,6 +125,7 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
   let weightedSum = 0;
   let totalWeight = 0;
   let tier1Count = 0;
+  let tier2Count = 0;
   let scoredCount = 0;
 
   for (const review of dedupedReviews) {
@@ -200,6 +201,7 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
     totalWeight += tierWeight * confidenceWeight * outletShare;
 
     if (tier === 1) tier1Count++;
+    if (tier === 2) tier2Count++;
   }
 
   if (totalWeight === 0) return null;
@@ -211,6 +213,7 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
     s: weightedScore,
     rc: scoredCount,
     t1: tier1Count,
+    t2: tier2Count,
   };
 }
 

@@ -1,3 +1,5 @@
+import fs from 'fs';
+import crypto from 'crypto';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -45,6 +47,8 @@ export default function OffBroadwayPage() {
   }
 
   const shows = getOffBroadwayShows();
+  const archiveFile = fs.readFileSync(process.cwd() + '/public/data/off-broadway-archive.json');
+  const archiveHash = crypto.createHash('md5').update(archiveFile).digest('hex').slice(0, 8);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -178,6 +182,7 @@ export default function OffBroadwayPage() {
       <Suspense>
         <OffBroadwayPageClient
           shows={serializedShows}
+          archiveHash={archiveHash}
           startingSoonShows={startingSoonShows}
           justOpenedShows={justOpenedShows}
           totalShows={activeShows.length}

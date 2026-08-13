@@ -49,3 +49,4 @@ node scripts/generate-blog-reviews-for-scoring.js
 node scripts/generate-review-og-images.js
 node scripts/generate-mobile-data.js
 node scripts/generate-homepage-archive.js
+node scripts/generate-off-broadway-archive.js

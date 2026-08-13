@@ -42,6 +42,8 @@ export interface OffBroadwayShow {
 
 interface OffBroadwayPageClientProps {
   shows: OffBroadwayShow[];
+  /** Cache-busting hash for off-broadway-archive.json (lazy-loaded closed shows). */
+  archiveHash?: string;
   totalShows: number;
   totalReviews: number;
   /** Open-show counts for the market pills */
@@ -131,7 +133,7 @@ function FeaturedRow({ title, shows, minShows = 4, href }: { title: string; show
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -203,10 +205,55 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
     window.history.replaceState({}, '', '/off-broadway');
   }, []);
 
+  // Archive shows (closed OB shows) — lazy-loaded on demand when the user
+  // filters to all/closed or searches. Mirrors HomePageClient's archive
+  // pattern: this page only ever receives open/previews shows as props, so
+  // without this, closed OB shows are unreachable from Status:All/Closed and
+  // from search — even at the URL, the show existed and was findable via the
+  // header search, but not from this page's own search box (#1425).
+  const [archiveShows, setArchiveShows] = useState<OffBroadwayShow[] | null>(null);
+  const archiveFetchedRef = useRef(false);
+
+  const fetchArchive = useCallback(async () => {
+    if (archiveFetchedRef.current) return;
+    archiveFetchedRef.current = true;
+    try {
+      const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
+      const res = await fetch(`/data/off-broadway-archive.json${cacheBust}`);
+      const data: OffBroadwayShow[] = await res.json();
+      setArchiveShows(data);
+    } catch (e) {
+      console.error('Failed to load Off-Broadway archive shows:', e);
+      archiveFetchedRef.current = false; // allow retry
+    }
+  }, [archiveHash]);
+
+  const allShows = useMemo(() => {
+    if (archiveShows) {
+      const ids = new Set(shows.map(s => s.id));
+      return [...shows, ...archiveShows.filter(s => !ids.has(s.id))];
+    }
+    return shows;
+  }, [shows, archiveShows]);
+
+  // Trigger archive fetch when the user needs closed shows or searches
+  useEffect(() => {
+    if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery) {
+      fetchArchive();
+    }
+  }, [statusFilter, searchQuery, fetchArchive]);
+
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<OffBroadwayShow> | null>(null);
-  const fuseDataRef = useRef(shows);
-  fuseDataRef.current = shows;
+  const fuseDataRef = useRef(allShows);
+  fuseDataRef.current = allShows;
+
+  // Invalidate Fuse index when the archive loads so search includes closed shows
+  useEffect(() => {
+    if (archiveShows) {
+      fuseRef.current = null;
+    }
+  }, [archiveShows]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -242,7 +289,12 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       }
     }).catch(() => { /* Fuse load failed — fallback to unfiltered results */ });
     return () => { cancelled = true; };
-  }, [searchQuery, getFuse]);
+    // archiveShows is a dependency (not just fuseDataRef) so a deep link that
+    // lands with `q` already set re-searches once the archive lands — without
+    // it, this effect's single initial run can search a Fuse index built
+    // before the archive merged in, and nothing re-triggers it since fuseRef
+    // invalidation alone doesn't change this effect's inputs.
+  }, [searchQuery, getFuse, archiveShows]);
 
   // Featured rows
   const topRecentShows = useMemo(() => {
@@ -288,7 +340,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       return fuseResults;
     }
 
-    let result = shows.filter(show => {
+    let result = allShows.filter(show => {
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
@@ -343,7 +395,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
     });
 
     return result;
-  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
   const panelSingleGroups = useMemo(
     () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
