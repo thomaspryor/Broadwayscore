@@ -30,6 +30,16 @@ const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
+const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
+
+// Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
+// (scripts/lib/digest-autofix.js's old matchOpenTask, before that module
+// repointed to Linear) filed cards titled "Fix: BSC Daily: <name>" — a
+// cousin of the plain "BSC Daily:" family, same legacy-and-never-closed
+// shape, same self-heal re-minting exposure, just not covered by
+// BSC_DAILY_TITLE_RE's anchored prefix. 2 live files in the corpus at the
+// time this was found (834.json, 1166.json).
+const FIX_BSC_DAILY_TITLE_RE = /^Fix: BSC Daily:/;
 
 // Mirror-description format version. Bump whenever mapCardToTask starts
 // emitting something a previously-synced task is missing — planPull uses it to
@@ -143,6 +153,32 @@ function planPull(cards, existingMap) {
   return plan;
 }
 
+// Card #1410: "BSC Daily:"-titled cards are the morning digest's own alert
+// family. As of the BRO-286 Phase 2 migration (2026-08-12) both producers
+// (owner-alert-router.js's dispatchCard, digest-autofix.js's fileCard) file
+// these to Linear, not Notion — no code path creates a NEW Notion card with
+// this title prefix anymore. Excluding them from the pull entirely (rather
+// than mirroring-then-archiving) is what actually stops planSelfHeal from
+// re-minting a fresh id every time an archived one's live file goes away:
+// a card that never enters `cards`/`cardsById` never reaches toCreate,
+// toUpdate, or the self-heal loop, independent of whatever the archiver does
+// to already-mirrored live files.
+//
+// KNOWN LIMITATION (ship-check adversarial review, card #1410): this is a
+// title match, not a provenance marker — a human who happened to name a real
+// card "BSC Daily: ..." via notion-brain.js would silently never get it
+// mirrored/dispatched. Accepted: this exact title prefix has only ever been
+// used by the digest's own auto-filed alert family (never a human-authored
+// title), and the archiver's BSC_DAILY_TITLE_RE population (card #1351) already
+// made the same title-based bet for aging these cards out. A provenance-based
+// exclusion (e.g. a marker embedded by the filer) would be more robust but is
+// a larger change than this fix warrants; revisit if a real false-positive
+// title collision is ever observed.
+function isMirrorableCard(card) {
+  const name = (card && card.name) || '';
+  return !BSC_DAILY_TITLE_RE.test(name) && !FIX_BSC_DAILY_TITLE_RE.test(name);
+}
+
 // Card #1351: decide which "unchanged" cards (status/fmt already match — see
 // planPull above) still need recreating because their live mirror file
 // vanished independently of any Notion change — task-store-archive.js's new
@@ -199,18 +235,31 @@ function writeMap(dir, map) {
   fs.renameSync(tmp, mapPath(dir)); // atomic
 }
 
-// Next id to assign. Prefer the highwatermark; fall back to (max existing id)+1
-// so we never collide with tasks created by a live session.
+// Highest <id>.json found directly under `d` (non-recursive) — shared by
+// nextId's maxFile scan and allocateFreeId's collision check, both of which
+// must agree on live+archive to stay consistent with each other.
+function maxIdInDir(d) {
+  let max = 0;
+  try {
+    for (const f of fs.readdirSync(d)) {
+      const m = /^(\d+)\.json$/.exec(f);
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    }
+  } catch {}
+  return max;
+}
+
+// Next id to assign. Prefer the highwatermark; fall back to (max existing id
+// across live AND archive/)+1 so we never collide with tasks created by a
+// live session OR shadow an already-archived task's id. Card #1410: the
+// archive/-blind version of this scan was always a latent gap (a lost
+// .highwatermark falls back to this scan per the catch{} below), and grows
+// materially more exposed now that DEFAULT_KEEP_TOP_N=1 moves far more tasks
+// into archive/ than before.
 function nextId(dir) {
   let hwm = 0;
   try { hwm = parseInt(fs.readFileSync(hwmPath(dir), 'utf8'), 10) || 0; } catch {}
-  let maxFile = 0;
-  try {
-    for (const f of fs.readdirSync(dir)) {
-      const m = /^(\d+)\.json$/.exec(f);
-      if (m) maxFile = Math.max(maxFile, parseInt(m[1], 10));
-    }
-  } catch {}
+  const maxFile = Math.max(maxIdInDir(dir), maxIdInDir(path.join(dir, 'archive')));
   return Math.max(hwm, maxFile + 1);
 }
 function writeTask(dir, task) {
@@ -264,11 +313,15 @@ function taskBelongsTo(dir, taskId, pageId, { liveOnly = false } = {}) {
   const t = liveOnly ? readLiveTask(dir, taskId) : readTask(dir, taskId);
   return !!(t && typeof t.description === 'string' && t.description.includes(notionMarker(pageId)));
 }
-// Lowest id >= startId whose file does not already exist, so we never clobber a
-// task a live session created in the shared list.
+// Lowest id >= startId whose file does not already exist in the live dir OR
+// archive/, so we never clobber a task a live session created in the shared
+// list, and never mint an id that shadows an already-archived task (card
+// #1410 — a collision there would silently orphan the archived record:
+// mergeWithArchive's live-wins-on-collision rule means the archive copy
+// becomes unreachable by id forever once a different live task takes it).
 function allocateFreeId(dir, startId) {
   let id = startId;
-  while (fs.existsSync(path.join(dir, `${id}.json`))) id++;
+  while (fs.existsSync(path.join(dir, `${id}.json`)) || fs.existsSync(path.join(dir, 'archive', `${id}.json`))) id++;
   return id;
 }
 
@@ -375,7 +428,13 @@ function cmdPull(args) {
   const release = dry ? (() => {}) : acquireLock(dir);
   if (!release) { console.error('[sync] another pull holds the lock; skipping'); return { skipped: true }; }
   try {
-    const cards = fetchCards(statuses, priorities, limit).slice(0, limit);
+    // isMirrorableCard filters BEFORE cardsById is built (card #1410) — a
+    // "BSC Daily:" card must never enter toCreate/toUpdate/self-heal, not
+    // just get skipped later, or planSelfHeal would still re-mint it. It also
+    // filters BEFORE slice(0, limit) (ship-check adversarial finding): the
+    // reverse order would let a page of legacy BSC-Daily results consume the
+    // batch's limit budget and starve real cards below the cutoff.
+    const cards = fetchCards(statuses, priorities, limit).filter(isMirrorableCard).slice(0, limit);
     const cardsById = new Map(cards.map((c) => [c.id, c]));
     const map = readMap(dir);
     const plan = planPull(cards, map);
@@ -513,4 +572,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, planSelfHeal, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };

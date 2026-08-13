@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   selectArchivable, archiveCopyFor, loadTasksWithMtime, archiveCompletedTasks,
-  readArchivedTask, mergeWithArchive,
+  readArchivedTask, mergeWithArchive, DEFAULT_KEEP_TOP_N,
 } = require('./task-store-archive.js');
 
 const HOUR = 60 * 60 * 1000;
@@ -45,6 +45,22 @@ test('selectArchivable: never selects any of the top keepTopN ids present, regar
     { id: '12', status: 'completed', mtimeMs: NOW - 1000 * HOUR },
   ];
   assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 2 }), ['10']);
+});
+
+// Card #1410: every OTHER frontier test above passes keepTopN explicitly, so
+// the real DEFAULT_KEEP_TOP_N constant itself had zero coverage — a
+// regression back to 50 (or any value that reopens frontier shadowing) would
+// pass every existing test. Pin the production default directly: even when
+// every task is old/eligible, the current max id must never be selected.
+test('selectArchivable: DEFAULT_KEEP_TOP_N (no explicit keepTopN) never selects the current max id', () => {
+  const tasks = [
+    { id: '10', status: 'completed', mtimeMs: NOW - 1000 * HOUR },
+    { id: '11', status: 'completed', mtimeMs: NOW - 1000 * HOUR },
+    { id: '12', status: 'completed', mtimeMs: NOW - 1000 * HOUR },
+  ];
+  const archived = selectArchivable(tasks, { now: NOW }); // no keepTopN — real default
+  assert.ok(!archived.includes('12'), 'the current max id must never be archived under the production default');
+  assert.equal(DEFAULT_KEEP_TOP_N, 1, 'this test assumes the documented minimum — update it if the constant changes');
 });
 
 test('selectArchivable: id order in input does not affect the frontier computation', () => {
@@ -286,8 +302,6 @@ test('archiveCompletedTasks: pending move-time recheck skips a task touched agai
   }
 });
 
-// The reclaim WRITE pass is default-off (see archiveCompletedTasks). Tests that
-// exercise it pass reclaimEnabled explicitly so they don't depend on ambient env.
 test('archiveCompletedTasks: archives a stale in_progress orphan with the copy RELABELLED to pending', () => {
   const dir = mkTmp();
   writeTask(dir, 1, { status: 'in_progress', subject: 'dead session claim', owner: { session: 'gone' } }, 200);

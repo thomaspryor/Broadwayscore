@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { MIRROR_FMT, mapStatus, mapCardToTask, planPull, planSelfHeal, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
+const { MIRROR_FMT, mapStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, allocateFreeId, nextId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
 
@@ -98,6 +98,47 @@ test('allocateFreeId skips ids a live session already occupies', () => {
   assert.equal(allocateFreeId(dir, 3), 5); // 3 and 4 taken → 5
   assert.equal(allocateFreeId(dir, 1), 1); // 1 free
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Card #1410: a freshly minted id must never land on an already-archived
+// task's id — that would permanently orphan the archived record (a
+// different live task now "owns" the id, and mergeWithArchive's
+// live-wins-on-collision rule hides the archived content forever).
+test('allocateFreeId also skips ids present in archive/', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '5.json'), JSON.stringify({ id: '5', status: 'completed' }));
+  assert.equal(allocateFreeId(dir, 5), 6, 'id 5 is taken by an archived task, not just a live one');
+  assert.equal(allocateFreeId(dir, 1), 1); // unaffected when free
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('nextId considers archive/ maxFile too, not just the live dir', () => {
+  const dir = tmpDir();
+  writeTask(dir, mapCardToTask({ id: 'x', name: 'live task' }, 3));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '20.json'), JSON.stringify({ id: '20', status: 'completed' }));
+  // No .highwatermark written — nextId must fall back to the max across BOTH
+  // dirs (20), not just the live dir's max (3), or it would hand out ids
+  // that collide with already-archived tasks.
+  assert.equal(nextId(dir), 21);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Card #1410: producers of "BSC Daily:"-titled Notion cards moved to Linear
+// (BRO-286 Phase 2) — these must never re-enter the mirror, or archiving
+// them just causes planSelfHeal to re-mint a fresh id on the next pull.
+test('isMirrorableCard excludes "BSC Daily:"-titled cards, includes everything else', () => {
+  assert.equal(isMirrorableCard({ name: 'BSC Daily: Stuck pipeline items' }), false);
+  assert.equal(isMirrorableCard({ name: 'BSC Daily: 2026-08-01 digest' }), false);
+  assert.equal(isMirrorableCard({ name: 'Fix scoring bug' }), true);
+  // The pre-BRO-286 "Fix this" digest button's legacy title family (2 live
+  // files at the time this was found: 834.json, 1166.json) shares the same
+  // self-heal re-minting exposure — must be excluded too.
+  assert.equal(isMirrorableCard({ name: 'Fix: BSC Daily: legacy fix-this card' }), false);
+  assert.equal(isMirrorableCard({ name: 'A card that mentions Fix: BSC Daily: mid-sentence' }), true, 'prefix must be anchored, not a substring match');
+  assert.equal(isMirrorableCard({ name: undefined }), true);
+  assert.equal(isMirrorableCard({}), true);
 });
 
 test('taskBelongsTo proves ownership via the [notion:<pageId>] marker', () => {

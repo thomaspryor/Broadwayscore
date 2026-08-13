@@ -541,6 +541,13 @@ on:
       - 'scripts/lib/opening-night-selection.test.mjs'
       - 'scripts/lib/opening-night-windows.js'
       - 'scripts/lib/opening-night-windows.test.mjs'
+      # 2026-08-12 (how-the-other-half-loves): the window is derived from
+      # openingDate, which that show only got AFTER its reviews published, so
+      # the monitor opened 19h late; and every capped pass paged the owner as
+      # CRITICAL. Evidence-anchored window + alert/no-progress regressions.
+      - 'scripts/lib/opening-night-evidence-window.test.mjs'
+      - 'scripts/lib/review-evidence.js'
+      - 'scripts/opening-night-prompts/monitor-v2.md'
       - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/cmux-launch.test.mjs'
       # Card #705: the launch wait/retry decision (pure state machine) — a

@@ -14,9 +14,23 @@
  * prevent reuse. Removing a file that WAS the live directory's max id is
  * therefore unsafe. selectArchivable() guards this by refusing to select
  * any of the `keepTopN` highest-id files present, regardless of age or
- * status — old completed/stale-in_progress tasks (the only archive
- * candidates) are always far below the current id frontier in practice, so
- * this costs nothing.
+ * status.
+ *
+ * DEFAULT_KEEP_TOP_N=50 was never load-bearing at that value (card #1410
+ * proof): the frontier Set (lines below) is built from the byId-descending
+ * slice of the CURRENT scan, so at any keepTopN>=1 the single highest-id
+ * live file is always excluded from every archival run — the maxFile scan
+ * nextId() depends on therefore returns the same answer regardless of how
+ * low keepTopN is, as long as it stays >=1. highwatermark only ever moves
+ * forward (writeHwm takes Math.max). 50 was originally justified by "archive
+ * candidates are always far below the frontier in practice" — true only
+ * while completed/stale-in_progress were the sole populations; card #1351
+ * added pending-task archival, including the "BSC Daily:" digest family,
+ * which land AT the frontier by construction (freshly created every day) and
+ * were therefore permanently unarchivable under 50. Lowered to 1 (the
+ * minimum the invariant above actually requires) so pending/BSC-Daily
+ * archival works without reopening the id-collision hole 50 existed to
+ * close.
  *
  * Task JSON carries no completion timestamp (checked: real corpus has
  * none), so "completed >24h ago" is judged off the file's own mtime — the
@@ -48,12 +62,11 @@ const path = require('path');
 const crypto = require('crypto');
 
 const DEFAULT_MAX_AGE_MS = 24 * 60 * 60 * 1000; // tightened from 48h — card #955, hunt item 1
-const DEFAULT_KEEP_TOP_N = 50; // safety margin — see module docstring
+const DEFAULT_KEEP_TOP_N = 1; // minimum the id-collision invariant requires — card #1410, see module docstring
 const DEFAULT_STALE_IN_PROGRESS_MS = 7 * 24 * 60 * 60 * 1000; // 7 days untouched
 const DEFAULT_PENDING_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days untouched — card #1351
 const DEFAULT_BSC_DAILY_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days — card #1351, digest regenerates these daily
 const BSC_DAILY_TITLE_RE = /^BSC Daily:/;
-// Arms the reclaim WRITE pass (see archiveCompletedTasks for why it is off by
 /**
  * Pure selection: which tasks are safe + eligible to archive.
  *
