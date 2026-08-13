@@ -110,14 +110,14 @@
     "queuedAt": "2026-08-13T17:16:25.525Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2093/2000 reqs)",
-    "description": "Zone web_unlocker2 billed 2093 requests today against a ceiling of 2000.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: audit-show-review-gap.js (639), opening-night-poller.js (451), fetch-show-images-auto.js (292).",
-    "severity": "critical",
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 14.3% of shows changed coverage state",
+    "description": "review-gap blast radius 14.3% (6/42 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: how-the-other-half-loves-west-end-2026, im-every-woman-off-west-end-2026, midnight-in-the-garden-of-good-and-evil-2024, now-you-see-me-live-west-end-2026, private-lives-2025, sinatra-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-13T17:47:22.905Z"
+    "queuedAt": "2026-08-13T17:55:34.590Z"
   }
 ]
