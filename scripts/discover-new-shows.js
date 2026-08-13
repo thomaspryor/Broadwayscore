@@ -25,6 +25,7 @@ const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
+const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const { getTheaterAddress } = require('./lib/venue-addresses');
@@ -180,20 +181,12 @@ function isOneNightShow(show) {
 // (Nov 2022 listed vs Apr 2022 actual, 7 months off) to break the pre-opening
 // guard and exclude valid reviews.
 //
-// Rule: if the startDate is more than 120 days in the future, it's almost
-// certainly wrong — genuine Broadway shows rarely list tickets 4+ months
-// before previews start. Drop the date; IBDB or manual enrichment fills in.
-const TODAYTIX_RECYCLING_THRESHOLD_MS = 120 * 86400000;
+// The trust window and the quarantine field now live in
+// scripts/lib/todaytix-dates.js, shared with enrich-todaytix-data.js so
+// existing shows get the same treatment new ones do. See that file for why the
+// date is quarantined rather than dropped (the 2027 Encores! cascade).
 function sanitizeTodayTixDate(startDate, showTitle) {
-  if (!startDate) return null;
-  const parsed = new Date(startDate);
-  if (isNaN(parsed.getTime())) return null;
-  const diffMs = parsed - new Date();
-  if (diffMs > TODAYTIX_RECYCLING_THRESHOLD_MS) {
-    console.warn(`  ⚠ TodayTix startDate for "${showTitle}" is ${Math.round(diffMs / 86400000)}d in the future — suspected ID recycling, dropping date`);
-    return null;
-  }
-  return startDate;
+  return classifyTodayTixStartDate(startDate, showTitle).previewsStartDate;
 }
 
 function isNonTheaterContent(show) {
@@ -333,7 +326,7 @@ async function fetchShowsFromTodayTix() {
     // TodayTix startDate = first preview, NOT opening night. Treat as
     // previewsStartDate; IBDB enrichment (runs later in update-show-status.yml)
     // fills in the real openingDate.
-    const previewsStart = sanitizeTodayTixDate(show.startDate, title);
+    const bwayStart = classifyTodayTixStartDate(show.startDate, title);
 
     // Same leak as the OB loop below: TodayTix's venue field can be a
     // placeholder/blob, not just missing (card #1060, Broadway/WE sibling
@@ -350,11 +343,12 @@ async function fetchShowsFromTodayTix() {
       venue: bwayVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
-      previewsStartDate: previewsStart,
+      previewsStartDate: bwayStart.previewsStartDate,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      ...unconfirmedStartFlags(bwayStart.unconfirmedStartDate),
       // provisional + discoverySource when rescued by the Broadway-house fallback
       ...bwayFallbackFlags(show),
     });
@@ -365,7 +359,7 @@ async function fetchShowsFromTodayTix() {
     if (!title || title.length < 3 || seen.has(title)) continue;
     seen.add(title);
 
-    const previewsStart = sanitizeTodayTixDate(show.startDate, title);
+    const obStart = classifyTodayTixStartDate(show.startDate, title);
 
     // TodayTix's own venue field can be a neighbourhood blob ("Soho/Tribeca")
     // rather than a real venue name — that's how jest-to-impress-off-broadway
@@ -383,12 +377,13 @@ async function fetchShowsFromTodayTix() {
       venue: obVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
-      previewsStartDate: previewsStart,
+      previewsStartDate: obStart.previewsStartDate,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: 'off-broadway',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      ...unconfirmedStartFlags(obStart.unconfirmedStartDate),
       // provisional + discoverySource when rescued by the venue-name fallback
       ...obFallbackFlags(show),
     });
@@ -557,17 +552,19 @@ async function fetchShowsFromTodayTixLondon() {
 
     // TodayTix startDate is first preview for WE shows, NOT press night.
     // Treat as previewsStartDate; openingDate set later by ShowScore or enrichment.
+    const weStart = classifyTodayTixStartDate(show.startDate, title);
     showsList.push({
       title,
       venue: weVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
-      previewsStartDate: sanitizeTodayTixDate(show.startDate, title),
+      previewsStartDate: weStart.previewsStartDate,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      ...unconfirmedStartFlags(weStart.unconfirmedStartDate),
     });
   }
 
@@ -2016,12 +2013,25 @@ async function discoverShows() {
       }
     }
 
-    // Use opening year for ID if available, otherwise current year
-    const idYear = openingDate ? openingDate.split('-')[0] : new Date().getFullYear();
+    // Use the production's own year for the ID. Order matters: openingDate,
+    // then previewsStartDate, then the quarantined unconfirmedStartDate, and
+    // only then fall back to "now".
+    //
+    // The `new Date().getFullYear()` fallback is the third link in the
+    // 2027-Encores! chain (2026-08-12). A season announced 6-10 months out
+    // reaches here with openingDate null (see classifyTodayTixStartDate), so
+    // every 2027 show was minted as `<slug>-off-broadway-2026`. That is both
+    // wrong on its face and self-blocking: "You're a Good Man, Charlie Brown"
+    // (Feb 2027) generated the SAME id as the 92NY production that ran in
+    // March 2026, so the ID-collision guard below dropped it even after the
+    // twin guard was taught to let it through. A date we don't trust enough
+    // to gate reviews on is still plenty good enough to name a row.
+    const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
+      || String(new Date().getFullYear());
     const baseSlug = slugify(show.title);
 
     // Market-aware slug and ID generation
-    const slug = show.category === 'west-end' ? `${baseSlug}-west-end`
+    const marketSlug = show.category === 'west-end' ? `${baseSlug}-west-end`
                : show.category === 'off-west-end' ? `${baseSlug}-off-west-end`
                : show.category === 'off-broadway' ? `${baseSlug}-off-broadway`
                : baseSlug;
@@ -2030,14 +2040,41 @@ async function discoverShows() {
                  : show.category === 'off-broadway' ? `${baseSlug}-off-broadway-${idYear}`
                  : `${baseSlug}-${idYear}`;
 
-    // Guard: skip if generated ID or slug collides with existing DB or batch
+    // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
       skippedDuplicates.push({ title: show.title, reason: `ID collision: ${showId} already exists`, existingId: showId });
       continue;
     }
+
+    // The market slug carries NO year, so it fits exactly one production per
+    // title per market — forever. Every later production of the same title
+    // was dropped here as a "Slug collision" rather than disambiguated, which
+    // is the fourth and last link in the 2027-Encores! chain: "You're a Good
+    // Man, Charlie Brown" cleared the twin guard and the ID guard and still
+    // died on `youre-a-good-man-charlie-brown-off-broadway` (held by the March
+    // 2026 92NY run).
+    //
+    // Disambiguate with the year instead. Suffix the NEW show, so the existing
+    // entry keeps its bare slug and its live URL.
+    //
+    // Note this is the SAFE choice, not the ideal one. shows.json's convention
+    // is the opposite: the CURRENT production holds the bare slug and earlier
+    // ones carry a year (death-of-a-salesman / -2022 / -2012 / -1999). Honouring
+    // that here would mean renaming an existing row's slug and adding a
+    // redirect, i.e. changing a live URL from inside the daily discovery cron —
+    // too blunt for this path. So the bare slug can end up pointing at a closed
+    // predecessor until someone re-canonicalizes it deliberately (carried as its
+    // own card; adversarial review 2026-08-12). A year-suffixed page that exists
+    // still beats the show being dropped entirely, which is what happened before.
+    let slug = marketSlug;
     if (existingSlugs.has(slug)) {
-      skippedDuplicates.push({ title: show.title, reason: `Slug collision: ${slug} already exists`, existingId: slug });
-      continue;
+      const yearScoped = `${marketSlug}-${idYear}`;
+      if (existingSlugs.has(yearScoped)) {
+        skippedDuplicates.push({ title: show.title, reason: `Slug collision: ${slug} and ${yearScoped} both already exist`, existingId: yearScoped });
+        continue;
+      }
+      console.log(`  ↳ "${show.title}": slug "${marketSlug}" taken by an earlier production → using "${yearScoped}"`);
+      slug = yearScoped;
     }
 
     // Track to prevent intra-batch slug/ID collisions
