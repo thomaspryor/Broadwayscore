@@ -56,19 +56,42 @@ export function getMarketMinReviews(category?: string): number {
   }
 }
 
-/** Country code for a market category. */
-export function getMarketCountry(category?: string): 'US' | 'GB' {
-  return isLondonMarket(category) ? 'GB' : 'US';
+// A `category: 'regional'` show can be a US Broadway-feeder (A.R.T., Goodman,
+// La Jolla — the original 13 entries) OR a UK West End-feeder (RSC Stratford,
+// Chichester Festival Theatre — added for card #1405, Game of Thrones: The
+// Mad King). The category alone can't tell them apart, so country/currency
+// defaulted every regional show to 'US'/$ until now — silently wrong for any
+// UK one. Matches by substring against `show.venue`; kept as bare city names
+// (not full regex) so this stays a cheap client-safe lookup with no data
+// import — extend alongside scripts/lib/aggregator-candidate-extract.js's
+// REGIONAL_FEEDER_VENUES when a new UK feeder venue is added there.
+const UK_REGIONAL_VENUE_CITIES = [
+  'stratford-upon-avon',
+  'chichester',
+];
+
+function isUkRegionalVenue(category?: string, venue?: string): boolean {
+  if (category !== 'regional' || !venue) return false;
+  const v = venue.toLowerCase();
+  return UK_REGIONAL_VENUE_CITIES.some((city) => v.includes(city));
 }
 
-/** Currency for a market category. */
-export function getMarketCurrency(category?: string): 'USD' | 'GBP' {
-  return isLondonMarket(category) ? 'GBP' : 'USD';
+/** Country code for a market category. `venue` disambiguates UK-regional shows. */
+export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' {
+  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GB';
+  return 'US';
 }
 
-/** Currency symbol for a market category. */
-export function getCurrencySymbol(category?: string): string {
-  return isLondonMarket(category) ? '£' : '$';
+/** Currency for a market category. `venue` disambiguates UK-regional shows. */
+export function getMarketCurrency(category?: string, venue?: string): 'USD' | 'GBP' {
+  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GBP';
+  return 'USD';
+}
+
+/** Currency symbol for a market category. `venue` disambiguates UK-regional shows. */
+export function getCurrencySymbol(category?: string, venue?: string): string {
+  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return '£';
+  return '$';
 }
 
 /** Human-readable market label for a category. */

@@ -530,6 +530,108 @@ test('Closed twin with no dates at all → still a twin (conservative)', () => {
   assertEqual(twin?.id, undatable.id, 'undatable closed show → conservative, still twin');
 });
 
+// ---------- regression: far-future announced season (2026-08-12 incident) ----------
+// The whole 2027 Encores! season went missing/hollow. discover-new-shows.js
+// quarantines a TodayTix startDate >120d out as `unconfirmedStartDate` rather
+// than trusting it as previewsStartDate, so an early-announced subscription
+// season reaches this guard with openingDate AND previewsStartDate both null.
+// "You're a Good Man, Charlie Brown" (City Center, Feb 3-14 2027) was blocked
+// on every daily run by the 92NY production that closed 2026-03-29 — only ~5
+// months earlier, so the 18-month long-closed carve-out never applied.
+
+const charlieBrown92NY = {
+  id: 'youre-a-good-man-charlie-brown-off-broadway-2026',
+  title: "You're A Good Man, Charlie Brown",
+  venue: '92NY Buttenwieser Hall',
+  category: 'off-broadway',
+  status: 'closed',
+  openingDate: '2026-03-14',
+  closingDate: '2026-03-29',
+};
+
+test('Far-future season: quarantined start after a recently-closed twin → guard skipped (show is added)', () => {
+  const candidate = {
+    title: "You're A Good Man, Charlie Brown",
+    venue: 'New York City Center',
+    category: 'off-broadway',
+    openingDate: null,
+    previewsStartDate: null,
+    unconfirmedStartDate: '2027-02-03',
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [charlieBrown92NY]);
+  assertEqual(twin, null, 'starts 10 months after the twin closed → separate production');
+});
+
+test('Far-future season: same candidate WITHOUT the quarantined date → still blocked', () => {
+  // Proves the carve-out is doing the work, not some unrelated field.
+  const candidate = {
+    title: "You're A Good Man, Charlie Brown",
+    venue: 'New York City Center',
+    category: 'off-broadway',
+    openingDate: null,
+    previewsStartDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [charlieBrown92NY]);
+  assertEqual(twin?.id, charlieBrown92NY.id, 'no date evidence at all → conservative, still twin');
+});
+
+test('Far-future season: quarantined start BEFORE the twin closed → still a twin', () => {
+  const candidate = {
+    title: "You're A Good Man, Charlie Brown",
+    venue: 'New York City Center',
+    category: 'off-broadway',
+    openingDate: null,
+    unconfirmedStartDate: '2026-03-20', // inside the 92NY run
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [charlieBrown92NY]);
+  assertEqual(twin?.id, charlieBrown92NY.id, 'overlaps the twin run → same production');
+});
+
+test('Far-future season: quarantined start does NOT clear an OPEN twin (Globe/long-runner protection)', () => {
+  const hamiltonBw = {
+    id: 'hamilton-2015',
+    title: 'Hamilton',
+    venue: 'Richard Rodgers Theatre',
+    category: 'broadway',
+    status: 'open',
+    openingDate: '2015-08-06',
+    closingDate: null,
+  };
+  const candidate = {
+    title: 'Hamilton',
+    venue: 'Richard Rodgers',
+    category: 'broadway',
+    openingDate: null,
+    unconfirmedStartDate: '2027-03-01',
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [hamiltonBw]);
+  assertEqual(twin?.id, hamiltonBw.id, 'open twin is never cleared by a quarantined date');
+});
+
+test('Far-future season: quarantined start does NOT clear an UPCOMING twin (the Globe shape itself)', () => {
+  const candidate = {
+    title: 'Mother Courage and Her Children - Globe',
+    venue: 'Globe Theatre',
+    category: 'off-west-end',
+    openingDate: null,
+    unconfirmedStartDate: '2027-01-01',
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [motherCourageGlobe]);
+  assertEqual(twin?.id, motherCourageGlobe.id, 'upcoming twin is never cleared by a quarantined date');
+});
+
+test('Far-future season: garbage quarantined date is ignored (falls back to blocking)', () => {
+  const candidate = {
+    title: "You're A Good Man, Charlie Brown",
+    venue: 'New York City Center',
+    category: 'off-broadway',
+    openingDate: null,
+    unconfirmedStartDate: 'not-a-date',
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [charlieBrown92NY]);
+  assertEqual(twin?.id, charlieBrown92NY.id, 'unparseable date → no evidence → still twin');
+});
+
 // ---------- regression: isSubtitleVariantOf (2026-08-04/05 incident) ----------
 //
 // promote-ob-venue-candidates.js and promote-ob-historical.js each maintained

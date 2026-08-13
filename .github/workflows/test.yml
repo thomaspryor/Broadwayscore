@@ -942,6 +942,15 @@ on:
       # (WE 2026 "The Truth" dup class — feedback_dedup_genre_suffix.md).
       - 'scripts/lib/deduplication.js'
       - 'scripts/test-deduplication.js'
+      # TodayTix start-date trust window: decides previewsStartDate vs the
+      # quarantined unconfirmedStartDate, and feeds the same-title twin guard,
+      # the show-id year and the slug year. Getting it wrong silently loses whole
+      # announced seasons — the 2027 Encores! slate went missing this way
+      # (2026-08-12). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
+      # glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/todaytix-dates.js'
+      - 'scripts/lib/todaytix-dates.test.mjs'
+      - 'scripts/enrich-todaytix-data.js'
       # Announced→upcoming/previews/open promotion decision (update-show-status
       # Check 2e). Solo edits must run its unit test (dolly incident 2026-07-14).
       - 'scripts/lib/announced-promotion.js'

@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
@@ -758,9 +759,14 @@ async function main() {
     }
   } else {
     targetShows = shows.filter(s => {
-      if (s.status !== 'open') return false;
-      if (!s.openingDate) return false;
-      return s.openingDate >= cutoffStr;
+      // Recency falls back openingDate -> previewsStartDate (scripts/lib/collection-priority.js) —
+      // this used to be a bare `if (!s.openingDate) return false`, the same class of bug fixed in
+      // audit-show-review-gap.js: a live show stuck in previews with a null openingDate (The
+      // Winter's Tale, An American Daughter, 2026-08-12) never entered this audit's population.
+      if (!['open', 'previews'].includes(s.status)) return false;
+      const recencyDate = showRecencyKey(s);
+      if (recencyDate === NO_DATE_SENTINEL) return false;
+      return recencyDate >= cutoffStr;
     });
   }
 

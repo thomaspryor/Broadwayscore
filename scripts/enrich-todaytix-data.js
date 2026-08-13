@@ -17,6 +17,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
+const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/todaytix-dates');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
@@ -188,6 +189,90 @@ async function main() {
       changes.push('ticketLinks');
     }
 
+    // Start-date backfill for shows already in the DB.
+    //
+    // discover-new-shows.js only sets dates when it CREATES a show, and its
+    // todaytixId dedup means an existing entry is never revisited. So a show
+    // that was discovered while its start date was still outside the trust
+    // window kept null dates forever — which is why the two 2027 Encores!
+    // entries that did land (hallelujah-baby, kiss-of-the-spider-woman) sat
+    // dateless from April to August 2026 and never appeared on /off-broadway
+    // (that page needs status open/previews; the "Starting Soon" shelf needs a
+    // parseable date). This runs daily, so the same show promotes from
+    // unconfirmedStartDate to previewsStartDate by itself once it comes inside
+    // the window — no separate promotion pass.
+    //
+    // Only fills genuine holes: never overwrites an existing openingDate or
+    // previewsStartDate, both of which can come from higher-trust sources
+    // (IBDB, ShowScore press night, manual correction).
+    //
+    // Titles must still agree. Pass 0 (directIdMatch) treats a stored
+    // todaytixId as authoritative with NO title comparison — deliberately, so
+    // a legit show with odd TodayTix tags still enriches. That was safe when
+    // this function only wrote ids/urls/an empty synopsis, but a DATE is
+    // different: if TodayTix has recycled that id onto an unrelated
+    // production, writing its start date would hand the status pipeline a
+    // date from the wrong show and could promote our row to previews on it
+    // (adversarial review, 2026-08-12). directIdMatch already excludes closed
+    // rows for this reason; this closes the announced/upcoming half.
+    // Prefix containment, not equality: our own titles carry disambiguation
+    // suffixes TodayTix doesn't ("The Cherry Orchard (Park Avenue Armory)" vs
+    // "The Cherry Orchard", "Berlin_2027" vs "Berlin"), and TodayTix sometimes
+    // carries a subtitle we don't. Strict equality rejected both of those as
+    // recycled ids on the first run. A genuinely recycled id gives a title that
+    // shares no prefix at all.
+    const ttTitle = slugify(tt.displayName || tt.name || '');
+    const ourTitle = slugify(show.title || '');
+    const titlesAgree = !!ttTitle && !!ourTitle
+      && (ttTitle.startsWith(ourTitle) || ourTitle.startsWith(ttTitle));
+    if (!show.openingDate && !show.previewsStartDate && tt.startDate && !titlesAgree) {
+      stats.dateSkippedTitleMismatch = (stats.dateSkippedTitleMismatch || 0) + 1;
+      changes.push(`skipped start date — TodayTix title "${tt.displayName || tt.name}" no longer matches (possible recycled id ${tt.id})`);
+    } else if (!show.openingDate && !show.previewsStartDate && tt.startDate) {
+      const classified = classifyTodayTixStartDate(tt.startDate, show.title, { quiet: true });
+      // A date already in the PAST on a show we hold no date for at all is a
+      // TodayTix placeholder, not a discovery. Real past starts get dated by
+      // the status/closing pipeline long before this. Backfilling one would
+      // invent a start date and hand the status logic a show that "already
+      // began" (dreamgirls-2026: venue "TBA", status announced, TodayTix
+      // startDate 2026-01-01 — the only past date in the 36-show backfill).
+      // classifyTodayTixStartDate itself must keep trusting past dates: for a
+      // genuinely running show being discovered, that date is correct.
+      //
+      // Today counts as "not future" too. update-show-status.yml computes
+      // status BEFORE this enrichment step runs, so a date written here that
+      // equals today would promote the show only on tomorrow's run — the
+      // opening-night dispatch for today would already have been decided
+      // against an undated row (adversarial review, 2026-08-12). Requiring a
+      // strictly future date keeps this writer out of the same-day path
+      // entirely instead of half-entering it.
+      const startsInPast = classified.previewsStartDate
+        && classified.previewsStartDate <= new Date().toISOString().slice(0, 10);
+      if (startsInPast) {
+        stats.pastPlaceholderSkipped = (stats.pastPlaceholderSkipped || 0) + 1;
+        changes.push(`skipped past TodayTix startDate ${classified.previewsStartDate} (placeholder)`);
+      } else if (classified.previewsStartDate) {
+        if (!DRY_RUN) show.previewsStartDate = classified.previewsStartDate;
+        stats.previewsStartDateSet = (stats.previewsStartDateSet || 0) + 1;
+        changes.push(`previewsStartDate=${classified.previewsStartDate}`);
+      } else if (classified.unconfirmedStartDate) {
+        // Same writer shape discover-new-shows.js uses, so the two paths can't
+        // drift (second-opinion review flagged the asymmetry).
+        const flags = unconfirmedStartFlags(classified.unconfirmedStartDate);
+        if (flags.unconfirmedStartDate && show.unconfirmedStartDate !== flags.unconfirmedStartDate) {
+          if (!DRY_RUN) Object.assign(show, flags);
+          stats.unconfirmedStartDateSet = (stats.unconfirmedStartDateSet || 0) + 1;
+          changes.push(`unconfirmedStartDate=${flags.unconfirmedStartDate}`);
+        }
+      }
+    } else if (show.unconfirmedStartDate && (show.openingDate || show.previewsStartDate)) {
+      // A trusted date arrived from elsewhere — the quarantine is now stale and
+      // would keep claiming a start date that a better source has superseded.
+      if (!DRY_RUN) delete show.unconfirmedStartDate;
+      stats.unconfirmedStartDateCleared = (stats.unconfirmedStartDateCleared || 0) + 1;
+      changes.push('unconfirmedStartDate cleared (trusted date present)');
+    }
+
     if ((!show.synopsis || show.synopsis === '') && tt.description) {
       const synopsis = stripHtml(tt.description).substring(0, 500);
       if (synopsis.length > 20) {
@@ -198,6 +283,20 @@ async function main() {
     }
 
     if (changes.length > 0) {
+      // Single source of truth for "did anything actually change". The save
+      // gate below used to enumerate individual counters, so a newly-added
+      // field was computed, applied in memory, and then silently dropped
+      // because its counter wasn't in that list — which is exactly what
+      // happened to the start-date backfill on its first live run
+      // (2026-08-13): 57 date writes, "No changes needed", nothing saved.
+      // Counting mutations here instead means the next field added to
+      // enrichShow persists without anyone remembering to edit the gate.
+      //
+      // Skip-only records (e.g. the past-placeholder guard) push a `changes`
+      // line for visibility but mutate nothing, so they must not count.
+      if (changes.some(c => !c.startsWith('skipped'))) {
+        stats.mutated = (stats.mutated || 0) + 1;
+      }
       console.log(`  ${show.id}: ${changes.join(', ')}`);
     }
   }
@@ -247,9 +346,15 @@ async function main() {
   console.log(`todaytixUrl set: ${stats.todaytixUrlSet}`);
   console.log(`synopsis set: ${stats.synopsisSet}`);
   console.log(`ticketLinks set: ${stats.ticketLinksSet || 0}`);
+  console.log(`previewsStartDate set: ${stats.previewsStartDateSet || 0}`);
+  console.log(`unconfirmedStartDate set: ${stats.unconfirmedStartDateSet || 0}`);
+  console.log(`unconfirmedStartDate cleared: ${stats.unconfirmedStartDateCleared || 0}`);
+  console.log(`start date skipped — past placeholder: ${stats.pastPlaceholderSkipped || 0}`);
+  console.log(`start date skipped — title mismatch: ${stats.dateSkippedTitleMismatch || 0}`);
+  console.log(`Shows mutated: ${stats.mutated || 0}`);
   console.log(`Unmatched TodayTix shows: ${stats.skipped}`);
 
-  if (!DRY_RUN && (stats.todaytixIdSet > 0 || stats.todaytixUrlSet > 0 || stats.synopsisSet > 0 || (stats.ticketLinksSet || 0) > 0)) {
+  if (!DRY_RUN && (stats.mutated || 0) > 0) {
     saveShows(showsData);
     console.log(`\nshows.json updated.`);
   } else if (DRY_RUN) {
