@@ -1351,7 +1351,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
  * Handles dedup against existing files.
  */
 function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
-  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false, allowRegional = false } = options;
   let created = 0;
   let skipped = 0;
   let rejected = 0;
@@ -1417,7 +1417,7 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
       continue;
     }
 
-    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, allowOpera, fromPostOpening: true });
+    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional, fromPostOpening: true });
     if (result === true) {
       created++;
       knownUrls.add(review.url);
@@ -1454,9 +1454,17 @@ async function pollCycle() {
     process.exit(1);
   }
 
-  const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
+  const market = isLondonMarket(show.category) ? 'west-end' : (show.category === 'regional' ? 'regional' : 'broadway');
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
+  // Regional Broadway/West-End feeder tryouts (RSC Stratford, A.R.T., etc) —
+  // isNotBroadway() rejects "world premiere" language unless allowRegional is
+  // set, and a regional tryout's own roundup coverage says exactly that. Both
+  // createReviewFile() call sites below must carry this or every regional
+  // show's reviews silently vanish as "non-Broadway" (found investigating
+  // card #1405 — Game of Thrones: The Mad King discovered the BWW roundup,
+  // paired 8 thumbs, then wrote zero review files).
+  const isRegional = show.category === 'regional';
   console.log(`Title: ${show.title}`);
   console.log(`Market: ${market}`);
 
@@ -1769,7 +1777,7 @@ async function pollCycle() {
     SHOW_ID,
     allDiscovered,
     knownUrls,
-    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }
+    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }
   );
 
   // ── Aggregator thumb enrichment pass ──
