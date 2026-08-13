@@ -222,24 +222,24 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-13T17:55:43.231Z",
+      "lastSeen": "2026-08-13T18:52:08.690Z",
       "lastNotifiedAt": "2026-08-13T06:23:47.449Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-13T17:55:43.306Z",
+      "lastSeen": "2026-08-13T18:52:08.757Z",
       "lastNotifiedAt": "2026-08-13T00:55:36.630Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 21
+      "silentRefires": 23
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -387,11 +387,12 @@
       "requestedDisposition": "human",
       "title": "Review-gap audit refused to write — 14.3% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-13T17:55:34.590Z",
+      "lastSeen": "2026-08-13T18:52:00.189Z",
       "lastNotifiedAt": "2026-08-13T17:55:34.590Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -778,60 +779,60 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Anansi the Spider",
       "firstSeen": "2026-08-13T00:01:58.198Z",
-      "lastSeen": "2026-08-13T17:16:22.735Z",
+      "lastSeen": "2026-08-13T18:11:56.527Z",
       "lastNotifiedAt": "2026-08-13T00:01:58.198Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
       "firstSeen": "2026-08-13T08:46:36.407Z",
-      "lastSeen": "2026-08-13T17:16:22.733Z",
+      "lastSeen": "2026-08-13T18:11:56.526Z",
       "lastNotifiedAt": "2026-08-13T08:46:36.407Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on How the Other Half Loves",
       "firstSeen": "2026-08-13T10:30:56.123Z",
-      "lastSeen": "2026-08-13T17:16:24.282Z",
+      "lastSeen": "2026-08-13T18:11:56.529Z",
       "lastNotifiedAt": "2026-08-13T10:30:56.123Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-stale-upcoming-tag-marlise-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Marlise",
       "firstSeen": "2026-08-13T10:30:57.283Z",
-      "lastSeen": "2026-08-13T17:16:24.283Z",
+      "lastSeen": "2026-08-13T18:11:58.890Z",
       "lastNotifiedAt": "2026-08-13T10:30:57.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-stale-upcoming-tag-the-winters-tale-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on The Winter's Tale",
       "firstSeen": "2026-08-13T10:30:58.333Z",
-      "lastSeen": "2026-08-13T17:16:25.526Z",
+      "lastSeen": "2026-08-13T18:11:58.891Z",
       "lastNotifiedAt": "2026-08-13T10:30:58.333Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "broadcast-gate:checklist:how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -851,20 +852,32 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on How the Other Half Loves",
       "firstSeen": "2026-08-13T14:02:56.999Z",
-      "lastSeen": "2026-08-13T17:16:24.281Z",
+      "lastSeen": "2026-08-13T18:11:56.528Z",
       "lastNotifiedAt": "2026-08-13T14:02:56.999Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-fulltext-mentions-show:the-winters-tale-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Content mismatch on The Winter's Tale",
       "firstSeen": "2026-08-13T17:16:25.525Z",
-      "lastSeen": "2026-08-13T17:16:25.525Z",
+      "lastSeen": "2026-08-13T18:11:58.891Z",
       "lastNotifiedAt": "2026-08-13T17:16:25.525Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-remediation-exhausted-t1-missing:the-winters-tale-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on the-winters-tale-off-broadway-2026",
+      "firstSeen": "2026-08-13T18:11:58.892Z",
+      "lastSeen": "2026-08-13T18:11:58.892Z",
+      "lastNotifiedAt": "2026-08-13T18:11:58.892Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
