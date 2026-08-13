@@ -915,6 +915,50 @@ function extractDateFromUrl(url) {
   return null;
 }
 
+/**
+ * Comparator deciding which of two same-show review-text files wins when the
+ * rebuild's dedup collapses them (same outlet+critic, same URL, or same
+ * content fingerprint) — first-in-sort-order file survives, the other is
+ * skipped as a duplicate.
+ *
+ * `hasScore` is checked BEFORE `isUnknown` so a scored review is never
+ * dropped in favor of an unscored named sibling at the same URL: task #1406
+ * (how-the-other-half-loves-west-end-2026, 2026-08-13) found the prior
+ * unknown-first ordering let an unscored named file (e.g.
+ * guardian--mark-lawson.json, no assignedScore) win the dedup pick over its
+ * scored "Unknown" twin (guardian--unknown.json, assignedScore 87) sharing
+ * the same URL — silently dropping the only scoreable copy of the review.
+ * Scored-but-Unknown files now survive dedup, and rebuild-all-reviews.js's
+ * existing byline-recovery pass (scripts/lib/byline-recovery.js, added for
+ * task #190/#1321) backfills the display name from the losing named sibling
+ * afterward — so neither the score nor the byline is sacrificed for the
+ * other.
+ *
+ * Priority (lower sorts first / wins): non-duplicate > scored > named (not
+ * Unknown/unnamed) > non-outlet-as-critic > content-verified > ensemble-
+ * scored > alphabetical by filename.
+ *
+ * Pure — no I/O. All flags are pre-computed by the caller from the file's
+ * parsed JSON (see rebuild-all-reviews.js's sortMeta build; `hasScore` there
+ * comes from the same getBestScore() core logic that determines scoreability
+ * downstream, not a looser proxy, so a file that sorts as "scored" here is
+ * guaranteed to actually produce a score later).
+ *
+ * @param {{file:string, isDupe?:boolean, hasScore?:boolean, isUnknown?:boolean, isOutletAsCritic?:boolean, isVerified?:boolean, hasEnsemble?:boolean}} a
+ * @param {object} b - same shape as `a`
+ * @returns {number}
+ */
+function compareFilesForDedupPriority(a, b) {
+  const rank = (v) => (v ? 1 : 0);
+  if (rank(a.isDupe) !== rank(b.isDupe)) return rank(a.isDupe) - rank(b.isDupe);
+  if (rank(a.hasScore) !== rank(b.hasScore)) return rank(b.hasScore) - rank(a.hasScore);
+  if (rank(a.isUnknown) !== rank(b.isUnknown)) return rank(a.isUnknown) - rank(b.isUnknown);
+  if (rank(a.isOutletAsCritic) !== rank(b.isOutletAsCritic)) return rank(a.isOutletAsCritic) - rank(b.isOutletAsCritic);
+  if (rank(a.isVerified) !== rank(b.isVerified)) return rank(a.isVerified) - rank(b.isVerified);
+  if (rank(a.hasEnsemble) !== rank(b.hasEnsemble)) return rank(a.hasEnsemble) - rank(b.hasEnsemble);
+  return String(a.file).localeCompare(String(b.file));
+}
+
 module.exports = {
   isUnambiguousRatingString,
   // Text cleaning
@@ -933,6 +977,8 @@ module.exports = {
   getBestScore,
   // URL date extraction
   extractDateFromUrl,
+  // Dedup tiebreaking
+  compareFilesForDedupPriority,
   // Re-export from score-extractors for convenience
   scoreToBucket,
   scoreToThumb,

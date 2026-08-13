@@ -48,7 +48,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
@@ -1925,12 +1925,22 @@ showDirs.forEach(showId => {
   // which the main filtering loop below would otherwise make invisible to each other.
   const bylineRecoveryRecords = [];
   for (const f of allJsonFiles) {
-    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0 };
+    // isUnknown is filename-derived (not dependent on parse succeeding) so a
+    // corrupt/unparseable file still sorts by its on-disk naming, matching the
+    // pre-#1406 behavior for the parse-failure fallback path below.
+    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
     try {
       const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
+      // Dedup tiebreak (task #1406): does this file carry a score that the
+      // real getBestScore() pipeline would actually use? Calling the core
+      // helper directly (no stats/flagForHumanReview) keeps this side-effect
+      // free — see compareFilesForDedupPriority's doc comment for why this
+      // must match getBestScore's own scoreStatus short-circuit rather than
+      // a looser "has some score field" check.
+      meta.hasScore = _getBestScoreCore(d) !== null ? 1 : 0;
       // Detect outlet-as-critic files (e.g., nydailynews--new-york-daily-news.json)
       // so they sort AFTER real-critic files, ensuring the existing outlet-as-critic
       // dedup mechanism (line ~1873) fires correctly
@@ -1987,18 +1997,12 @@ showDirs.forEach(showId => {
   );
 
   // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
-  // Priority: non-duplicate > non-unknown > non-outlet-as-critic > verified > ensemble-scored > alphabetical
+  // Priority: non-duplicate > scored > named (not Unknown) > non-outlet-as-critic >
+  // verified > ensemble-scored > alphabetical. See compareFilesForDedupPriority's
+  // doc comment (task #1406) for why "scored" outranks "named".
   const files = allJsonFiles.sort((a, b) => {
-    const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
-    const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
-    if (aUnknown !== bUnknown) return aUnknown - bUnknown;
     const am = sortMeta.get(a), bm = sortMeta.get(b);
-    if (am.isDupe !== bm.isDupe) return am.isDupe - bm.isDupe;
-    // Deprioritize outlet-as-critic files so real critics are processed first
-    if (am.isOutletAsCritic !== bm.isOutletAsCritic) return am.isOutletAsCritic - bm.isOutletAsCritic;
-    if (am.isVerified !== bm.isVerified) return am.isVerified - bm.isVerified;
-    if (am.hasEnsemble !== bm.hasEnsemble) return am.hasEnsemble - bm.hasEnsemble;
-    return a.localeCompare(b);
+    return compareFilesForDedupPriority({ file: a, ...am }, { file: b, ...bm });
   });
 
   stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0 };
@@ -3900,7 +3904,8 @@ showDirs.forEach(showId => {
           if (differentPeople && !fuzzySame) {
             stats.allowedMultiCriticUrl = (stats.allowedMultiCriticUrl || 0) + 1;
           } else {
-            // Files are sorted so real critic names come before "unknown" — first wins.
+            // Files are sorted scored-first, then real critic names before "unknown"
+            // (compareFilesForDedupPriority, task #1406) — first wins.
             // Fuzzy-matched typo-duplicates also fall through here.
             if (fuzzySame) {
               stats.skippedFuzzyCriticDuplicate = (stats.skippedFuzzyCriticDuplicate || 0) + 1;
@@ -3915,7 +3920,8 @@ showDirs.forEach(showId => {
         }
 
         // Cross-outlet URL dedup: same URL filed under different outlets (e.g., unknown + nytimes)
-        // Files are sorted so real outlet names come before "unknown" — first wins
+        // Files are sorted scored-first, then real outlet/critic names before "unknown"
+        // (compareFilesForDedupPriority, task #1406) — first wins
         // Also allow through if both have different named critics (same multi-critic logic)
         if (seenUrlsGlobal.has(normalizedUrl)) {
           const globalWinner = seenUrlsGlobal.get(normalizedUrl);
