@@ -31,5 +31,38 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-13T09:59:37.018Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026",
+    "title": "Stale 'upcoming' tag on How the Other Half Loves",
+    "description": "how-the-other-half-loves-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=how-the-other-half-loves-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:56.123Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-marlise-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Marlise",
+    "description": "marlise-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=marlise-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:57.283Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-winters-tale-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on The Winter's Tale",
+    "description": "the-winters-tale-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-winters-tale-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T10:30:58.333Z"
   }
 ]
