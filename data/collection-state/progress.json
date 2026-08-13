@@ -107,7 +107,9 @@
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
-    "christmas-carol-goes-wrong-west-end-2026/broadwayworld--unknown.json"
+    "christmas-carol-goes-wrong-west-end-2026/broadwayworld--unknown.json",
+    "cinderella-west-end-2026/london-box-office--stuart-king.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/theater-scene--darryl-reilly.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
@@ -1550,7 +1552,15 @@
     "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
     "cinderella-west-end-2026/observer--david-cote.json",
     "cinderella-west-end-2026/bloomberg--chris-rovzar.json",
-    "cinderella-west-end-2026/financialtimes--sarah-hemming.json"
+    "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+    "cinderella-west-end-2026/independent--oliver-browning.json",
+    "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+    "cinderella-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cinderella-west-end-2026/standard--the-standard.json",
+    "cinderella-west-end-2026/telegraph--marianka-swain.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1617,12 +1627,15 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json"
+      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+      "cinderella-west-end-2026/london-box-office--stuart-king.json",
+      "a-christmas-carol-the-musical-off-broadway-2026/theater-scene--darryl-reilly.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json",
-      "the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json"
+      "the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json",
+      "data/review-texts/a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
@@ -1681,7 +1694,7 @@
     ]
   },
   "startTime": "2026-08-13T04:58:55.584Z",
-  "lastProcessed": "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+  "lastProcessed": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
   "log": [
     {
       "t": "2026-08-13T05:02:26.325Z",
@@ -1702,6 +1715,17 @@
     },
     {
       "t": "2026-08-13T06:39:44.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-13T09:13:39.751Z",
+      "event": "bb-session",
+      "session": "38f7db45",
+      "url": "http://www.nytimes.com/2009/12/11/arts/11bkids.html?_r=0"
+    },
+    {
+      "t": "2026-08-13T09:13:40.742Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

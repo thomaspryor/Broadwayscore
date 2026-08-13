@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-13T09:13:01.895Z",
-  "processed": 108,
-  "failed": 1441,
-  "successRate": "7.0%",
+  "updatedAt": "2026-08-13T09:15:36.043Z",
+  "processed": 110,
+  "failed": 1449,
+  "successRate": "7.1%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 65,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 8,
     "scrapingbee": 10,
     "brightdata": 6,
     "archiveToday": 0,
     "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-13T05:02:26.325Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-08-13T06:39:44.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-13T09:13:39.751Z",
+      "event": "bb-session",
+      "session": "38f7db45",
+      "url": "http://www.nytimes.com/2009/12/11/arts/11bkids.html?_r=0"
+    },
+    {
+      "t": "2026-08-13T09:13:40.742Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
