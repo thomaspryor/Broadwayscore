@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T08:22:25.074Z",
+  "timestamp": "2026-08-13T08:29:04.208Z",
   "stats": {
-    "totalReviews": 42125,
-    "alreadyFlagged": 18295,
+    "totalReviews": 42127,
+    "alreadyFlagged": 18296,
     "dateGuardCatches": 140,
-    "directorMismatch": 964,
-    "tvFilmSignals": 1189,
-    "londonSignals": 864,
-    "offBroadwaySignals": 482,
+    "directorMismatch": 965,
+    "tvFilmSignals": 1190,
+    "londonSignals": 865,
+    "offBroadwaySignals": 484,
     "yearMismatch": 88,
-    "noPublishDate": 3546
+    "noPublishDate": 3547
   },
   "findings": [
     {
@@ -1248,6 +1248,29 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-08-12",
+      "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from an-american-daughter-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -27366,6 +27389,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "file": "ctvoice--unknown.json",
+      "publishDate": null,
+      "url": "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
