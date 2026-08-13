@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
@@ -48,7 +48,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
@@ -1939,7 +1939,14 @@ showDirs.forEach(showId => {
       // helper directly (no stats/flagForHumanReview) keeps this side-effect
       // free — see compareFilesForDedupPriority's doc comment for why this
       // must match getBestScore's own scoreStatus short-circuit rather than
-      // a looser "has some score field" check.
+      // a looser "has some score field" check. applyScoreRelevantMigrations
+      // mirrors (in-memory only) the aggregator-score + garbageFullText
+      // migrations the main loop below performs and writes to disk — without
+      // it, a file whose only path to a score is one of those migrations
+      // would sort as unscored here even though it WILL score once the main
+      // loop's own copy of this migration runs on it (adversarial ship-check
+      // finding, task #1406 follow-up).
+      applyScoreRelevantMigrations(d);
       meta.hasScore = _getBestScoreCore(d) !== null ? 1 : 0;
       // Detect outlet-as-critic files (e.g., nydailynews--new-york-daily-news.json)
       // so they sort AFTER real-critic files, ensuring the existing outlet-as-critic
@@ -2036,29 +2043,24 @@ showDirs.forEach(showId => {
 
       const data = JSON.parse(rawContent);
 
-      // Auto-migrate aggregator-sourced originalScore → aggregatorStars.
-      // Defense-in-depth for the aggregator-score guard: no matter which extractor
-      // wrote originalScore with a scoreSource in AGGREGATOR_SCORE_SOURCES (show-score-stars,
-      // lbo-star-rating, theatre-reviews-star-rating, etc.), move the value to aggregatorStars
-      // and clear originalScore. Show Score / LBO / TR are aggregators — their "stars" are
-      // their own interpretation and must not be treated as the outlet's published rating.
+      // Auto-migrate aggregator-sourced originalScore → aggregatorStars, and
+      // recover review text from garbageFullText when fullText is missing.
+      // Shared with the sortMeta prepass above (applyScoreRelevantMigrations,
+      // task #1406) so both passes see the identical migrated score/text
+      // state — see that function's doc comment for why a prepass/main-loop
+      // mismatch here silently reintroduces a same-URL-dedup score-drop.
       //
-      // MUST run BEFORE every skip check (wrongProduction, duplicateOf, isNotReview, etc.)
-      // because contaminated files are usually flagged with one of those, which would skip
-      // the migration via early return otherwise. Pure data normalization — runs on every
-      // file regardless of whether it contributes to the final score.
+      // Aggregator migration MUST run BEFORE every skip check (wrongProduction,
+      // duplicateOf, isNotReview, etc.) because contaminated files are usually
+      // flagged with one of those, which would skip the migration via early
+      // return otherwise. Pure data normalization — runs on every file
+      // regardless of whether it contributes to the final score.
       // See memory/feedback_aggregator_score_guard.md.
-      if (data.originalScore && data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource)) {
-        if (!data.aggregatorStars) {
-          data.aggregatorStars = data.originalScore;
-        }
-        data.originalScore = null;
-        if (data.originalScoreNormalized != null) {
-          data.originalScoreNormalized = null;
-        }
-        if (data.originalScoreSource && AGGREGATOR_SCORE_SOURCES.has(data.originalScoreSource)) {
-          data.originalScoreSource = null;
-        }
+      // NEVER recover garbage text from 404/error pages — they contain
+      // content from other reviews (e.g., NYSR 404 pages include star ratings
+      // for unrelated reviews) — handled inside applyScoreRelevantMigrations.
+      const migrationResult = applyScoreRelevantMigrations(data);
+      if (migrationResult.aggregatorMigrated) {
         try {
           safeWriteReview(filePath, data, { force: true });
           stats.migratedAggregatorScore = (stats.migratedAggregatorScore || 0) + 1;
@@ -2066,21 +2068,8 @@ showDirs.forEach(showId => {
           console.warn('  Failed to write back aggregator-score migration:', file, e.message);
         }
       }
-
-      // Recover review text from garbageFullText when fullText is missing
-      // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
-      // but contain valid review text that can be cleaned and promoted
-      // NEVER recover from 404/error pages — they contain content from other reviews
-      // (e.g., NYSR 404 pages include star ratings for unrelated reviews)
-      const isErrorPage = data.garbageReason &&
-        (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
-      if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
-        const cleaned = cleanText(data.garbageFullText);
-        if (cleaned && cleaned.length > 200) {
-          data.fullText = cleaned;
-          data.fullTextRecoveredFrom = 'garbageFullText';
-          stats.recoveredFromGarbage = (stats.recoveredFromGarbage || 0) + 1;
-        }
+      if (migrationResult.garbageRecovered) {
+        stats.recoveredFromGarbage = (stats.recoveredFromGarbage || 0) + 1;
       }
 
       // Clear stale ensembleData: if llmMetadata.model is not an ensemble model,

@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { compareFilesForDedupPriority } = require('../../scripts/lib/rebuild-helpers');
+const { compareFilesForDedupPriority, applyScoreRelevantMigrations, getBestScore } = require('../../scripts/lib/rebuild-helpers');
 const { recoverDisplayBylinesForShow } = require('../../scripts/lib/byline-recovery');
 
 const base = (overrides) => ({
@@ -118,4 +118,50 @@ test('same-URL dedup + byline recovery: exactly one entry survives, carrying BOT
 
   assert.equal(recoveredName, 'Mark Lawson',
     'the surviving entry should recover the named sibling\'s byline');
+});
+
+test('applyScoreRelevantMigrations: a file only scoreable via aggregator-source migration must NOT sort as unscored (adversarial ship-check finding)', () => {
+  // guardian is a KNOWN_STAR_OUTLET (score-extractors.js). Pre-migration this
+  // file's originalScore is tagged with an aggregator scoreSource, so
+  // getBestScore correctly refuses it (aggregator stars aren't the outlet's
+  // own rating) until the migration moves the value to aggregatorStars.
+  const raw = {
+    outletId: 'guardian',
+    originalScore: '4',
+    scoreSource: 'show-score-stars',
+  };
+  assert.equal(getBestScore({ ...raw }), null,
+    'pre-migration, an aggregator-sourced originalScore must not count as a score');
+
+  const migrated = { ...raw };
+  const result = applyScoreRelevantMigrations(migrated);
+  assert.equal(result.aggregatorMigrated, true);
+  assert.equal(migrated.originalScore, null);
+  assert.equal(migrated.aggregatorStars, '4');
+  assert.notEqual(getBestScore(migrated), null,
+    'post-migration, the same file must score via the aggregatorStars-known-star-outlet path — ' +
+    'this is what the sortMeta prepass must see, or it under-counts hasScore for this file shape');
+});
+
+test('applyScoreRelevantMigrations: garbageFullText recovery unlocks fullText without a disk write', () => {
+  const data = {
+    fullText: undefined,
+    garbageFullText: 'A perfectly good review buried under junk. '.repeat(10),
+    garbageReason: 'trailing-newsletter-signup',
+  };
+  const result = applyScoreRelevantMigrations(data);
+  assert.equal(result.garbageRecovered, true);
+  assert.ok(data.fullText && data.fullText.length > 200);
+  assert.equal(data.fullTextRecoveredFrom, 'garbageFullText');
+});
+
+test('applyScoreRelevantMigrations: 404/error-page garbage is never recovered', () => {
+  const data = {
+    fullText: undefined,
+    garbageFullText: 'Some unrelated page content that happens to be long enough. '.repeat(10),
+    garbageReason: 'Error/404 page not found',
+  };
+  const result = applyScoreRelevantMigrations(data);
+  assert.equal(result.garbageRecovered, false);
+  assert.equal(data.fullText, undefined);
 });

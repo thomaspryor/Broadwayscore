@@ -7,7 +7,7 @@
 
 const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS, OUTLET_STAR_AUTHORITATIVE, extractScore } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
-const { decodeHtmlEntities } = require('./text-cleaning');
+const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
@@ -916,6 +916,52 @@ function extractDateFromUrl(url) {
 }
 
 /**
+ * Applies the two score-unlocking normalizations rebuild-all-reviews.js's main
+ * loop performs on every file (aggregator-sourced originalScore→aggregatorStars
+ * migration, garbageFullText→fullText recovery) — WITHOUT writing back to disk.
+ * Mutates and returns `data` in place; the caller decides whether/how to persist.
+ *
+ * Single source of truth for both:
+ *  - the dedup-priority sort prepass (rebuild-all-reviews.js's sortMeta build),
+ *    which reads each file once, before the main loop's own pass
+ *  - the main loop, which additionally writes the migrated fields back to disk
+ *
+ * Without this shared step, a file whose only path to a score is one of these
+ * two migrations would sort as unscored in the prepass (computed against the
+ * raw, pre-migration parse) even though it WILL score once the main loop's own
+ * copy of this same migration runs on it moments later — reintroducing the
+ * exact silent-drop failure mode task #1406 fixed for compareFilesForDedupPriority,
+ * just gated on a different trigger (adversarial ship-check finding).
+ *
+ * @param {object} data - parsed review-text JSON (mutated in place)
+ * @returns {{aggregatorMigrated: boolean, garbageRecovered: boolean}} which
+ *   migrations actually fired, so a caller that also writes back to disk
+ *   (rebuild-all-reviews.js's main loop) knows whether to persist + count it.
+ */
+function applyScoreRelevantMigrations(data) {
+  const result = { aggregatorMigrated: false, garbageRecovered: false };
+  if (!data) return result;
+  if (data.originalScore && data.scoreSource && AGGREGATOR_SOURCES_SET.has(data.scoreSource)) {
+    if (!data.aggregatorStars) data.aggregatorStars = data.originalScore;
+    data.originalScore = null;
+    if (data.originalScoreNormalized != null) data.originalScoreNormalized = null;
+    if (data.originalScoreSource && AGGREGATOR_SOURCES_SET.has(data.originalScoreSource)) data.originalScoreSource = null;
+    result.aggregatorMigrated = true;
+  }
+  const isErrorPage = data.garbageReason &&
+    (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
+  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
+    const cleaned = cleanText(data.garbageFullText);
+    if (cleaned && cleaned.length > 200) {
+      data.fullText = cleaned;
+      data.fullTextRecoveredFrom = 'garbageFullText';
+      result.garbageRecovered = true;
+    }
+  }
+  return result;
+}
+
+/**
  * Comparator deciding which of two same-show review-text files wins when the
  * rebuild's dedup collapses them (same outlet+critic, same URL, or same
  * content fingerprint) — first-in-sort-order file survives, the other is
@@ -979,6 +1025,7 @@ module.exports = {
   extractDateFromUrl,
   // Dedup tiebreaking
   compareFilesForDedupPriority,
+  applyScoreRelevantMigrations,
   // Re-export from score-extractors for convenience
   scoreToBucket,
   scoreToThumb,
