@@ -136,8 +136,11 @@ test('isCapEnforced: cancel requested with no end date re-arms (conservative)', 
   assert.equal(isCapEnforced({ type: 'basic_yearly_10', canceledAt: '2026-08-12T00:00:00Z' }, CAP_NOW), true);
 });
 
-test('isCapEnforced: an unparseable cancelAt falls back to the canceledAt signal', () => {
-  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: 'not-a-date' }, CAP_NOW), false);
+test('isCapEnforced: an unparseable cancelAt fails SAFE (cap armed)', () => {
+  // A cancellation whose end date we cannot read is still a cancellation.
+  // Lifting the cap here would leave the guard silently off through a real
+  // lapse until createIssue starts throwing USAGE_LIMIT_EXCEEDED.
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: 'not-a-date' }, CAP_NOW), true);
   assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: 'not-a-date', canceledAt: 'x' }, CAP_NOW), true);
 });
 

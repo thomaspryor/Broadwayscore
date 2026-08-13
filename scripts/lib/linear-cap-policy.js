@@ -5,8 +5,11 @@
  * the hard cap itself, this file's WARN_THRESHOLD is the earlier trip wire
  * scripts/check-linear-cap.js and scripts/linear-archive-done.js act on.
  *
- * No fetch, no fs, no Date.now() — callers pass `now` in so this stays a pure
- * function CLAUDE.md rule 15 requires tests to require() directly.
+ * No fetch, no fs — callers pass `now` in so this stays a pure function
+ * CLAUDE.md rule 15 requires tests to require() directly. isCapEnforced
+ * defaults `now` to Date.now() for the one-arg call site in
+ * check-linear-cap.js; every test passes `now` explicitly, and the default is
+ * only reached on paths that return before it is read.
  *
  * Scope note: the 250-issue cap is workspace-wide, but every caller counts
  * only team BRO's issues (scripts/lib/linear-client.js's TEAM_KEY) — the same
@@ -56,9 +59,15 @@ function isOverCapThreshold(count, threshold = WARN_THRESHOLD) {
 function isCapEnforced(subscription, now = Date.now()) {
   if (!subscription || typeof subscription !== 'object') return true;
   if (!subscription.type) return true;
-  const endsAt = subscription.cancelAt ? Date.parse(subscription.cancelAt) : null;
-  if (Number.isFinite(endsAt)) return endsAt <= now;
-  // Cancel requested but no end date exposed — can't tell when it lapses.
+  if (subscription.cancelAt) {
+    const endsAt = Date.parse(subscription.cancelAt);
+    // A cancelAt we cannot parse is a cancellation whose end date is unknown —
+    // fail toward the armed cap. Lifting it on garbage would leave the guard
+    // silently off through a real lapse until createIssue starts throwing
+    // USAGE_LIMIT_EXCEEDED, which is the failure this module exists to prevent.
+    return Number.isFinite(endsAt) ? endsAt <= now : true;
+  }
+  // Cancel requested but no end date exposed — same reasoning.
   if (subscription.canceledAt) return true;
   return false;
 }
