@@ -3,7 +3,8 @@
     "death-note-the-musical-west-end-2026/flicker-magazine--unknown.json",
     "death-note-the-musical-west-end-2026/telegraph--unknown.json",
     "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
-    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
@@ -11,7 +12,16 @@
     "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
     "death-note-the-musical-west-end-2026/telegraph--tim-robey.json",
     "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
-    "death-note-the-musical-west-end-2026/thestage--tom-wicker.json"
+    "death-note-the-musical-west-end-2026/thestage--tom-wicker.json",
+    "isla-off-broadway-2026/show-score--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -25,13 +35,26 @@
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
     ],
     "scrapingbee": [
-      "death-note-the-musical-west-end-2026/telegraph--unknown.json"
+      "death-note-the-musical-west-end-2026/telegraph--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-13T00:37:06.538Z",
-  "lastProcessed": "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
-  "log": []
+  "lastProcessed": "disruption-off-broadway-2026/wsj--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-13T01:50:28.282Z",
+      "event": "bb-session",
+      "session": "7cedf2c8",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-13T01:50:29.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
