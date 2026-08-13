@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-13T16:10:22.736Z",
+  "timestamp": "2026-08-13T17:12:13.165Z",
   "stats": {
-    "totalReviews": 42185,
-    "alreadyFlagged": 18295,
-    "dateGuardCatches": 143,
+    "totalReviews": 42187,
+    "alreadyFlagged": 18300,
+    "dateGuardCatches": 142,
     "directorMismatch": 966,
     "tvFilmSignals": 1190,
     "londonSignals": 875,
@@ -1239,7 +1239,7 @@
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
-      "file": "culturesauce--unknown.json",
+      "file": "culturesauce--thom-geier.json",
       "score": 18,
       "publishDate": "2026-08-11",
       "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
@@ -44722,17 +44722,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "file": "londontheatre1--terry-eastham.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
         }
       ]
     },
