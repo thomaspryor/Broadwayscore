@@ -114,12 +114,23 @@ const START_EVENTS = new Set([
   'job-orphaned', 'job-retried', 'watchdog-resurrect', 'watchdog-redispatch',
 ]);
 
-/** Task ids the dispatch ledger shows a real launch attempt for. */
+/**
+ * Task ids the dispatch ledger shows a real launch attempt for.
+ *
+ * Returns `null` — NOT an empty Set — when the ledger is unreadable. That
+ * distinction is load-bearing: `data/audit/dispatch-ledger.jsonl` is gitignored
+ * (.gitignore:312), so it does not exist in a git worktree at all. An empty Set
+ * makes every task look never-started, and this audit reported exactly that
+ * wrong answer ("86 never started, 0 started-then-lost") when first run from a
+ * worktree; the real split from the main checkout is 59/27. Same failure shape
+ * as the health digest going green in CI because its ledgers were missing —
+ * absent input must read as "cannot answer", never as "answer is zero".
+ */
 function dispatchedTaskIds(repoRoot) {
   const ids = new Set();
   const p = path.join(repoRoot, 'data', 'audit', 'dispatch-ledger.jsonl');
   let raw;
-  try { raw = fs.readFileSync(p, 'utf8'); } catch { return ids; }
+  try { raw = fs.readFileSync(p, 'utf8'); } catch { return null; }
   for (const line of raw.split('\n')) {
     if (!line.trim()) continue;
     try {
@@ -140,6 +151,18 @@ function main() {
   const repoRoot = path.join(__dirname, '..');
   const archived = readArchivedWithMtime(dir);
   const dispatched = dispatchedTaskIds(repoRoot);
+  if (dispatched === null) {
+    // Refuse rather than mislead. The never-started/started split is the whole
+    // point of this audit and it is unanswerable without the ledger.
+    const msg = `dispatch-ledger.jsonl not readable at ${path.join(repoRoot, 'data', 'audit', 'dispatch-ledger.jsonl')}\n`
+      + '  It is gitignored, so it does not exist in a git worktree. Re-run from the main checkout\n'
+      + '  (/Users/tompryor/Broadwayscore). Refusing to classify: with no ledger every task would\n'
+      + '  look never-started, which is a wrong answer, not a cautious one.';
+    if (argv.includes('--json')) console.log(JSON.stringify({ error: msg }, null, 2));
+    else console.error(`[audit-archived-in-progress] REFUSED — ${msg}`);
+    process.exitCode = 2;
+    return;
+  }
   const { trapped, neverStarted, startedAndLost } = classifyTrapped(archived, dispatched, Date.now());
 
   if (argv.includes('--json')) {
