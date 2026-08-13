@@ -19,7 +19,9 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json"
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -121,7 +123,15 @@
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
     "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json",
-    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -138,10 +148,14 @@
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
@@ -158,6 +172,13 @@
     ]
   },
   "startTime": "2026-08-13T09:25:14.124Z",
-  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-  "log": []
+  "lastProcessed": "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+  "log": [
+    {
+      "t": "2026-08-13T09:35:58.492Z",
+      "event": "bb-session",
+      "session": "52fe4dbb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    }
+  ]
 }
