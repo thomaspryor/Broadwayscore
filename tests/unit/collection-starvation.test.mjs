@@ -87,6 +87,9 @@ test('strand detector flags a discovered-but-never-fetched review, date-independ
     outlet: 'The New York Times',
     contentTier: 'stub',
     incompleteReason: 'not_attempted',
+    // The real file carried this — it is what proves press night happened and
+    // separates a genuine blackout from a show that simply has not opened.
+    publishDate: '2026-08-12',
     firstSeenAt: '2026-08-12T11:39:49.729Z',
   };
   assert.equal(isNeverAttempted(nyt), true);
@@ -190,6 +193,93 @@ test('a roundup article never becomes press night', () => {
   ];
   assert.deepEqual(datesFromDiscoveredReviews(files, WINTERS_TALE), []);
   assert.equal(openSignalFromDiscovery(WINTERS_TALE, files, () => true), null);
+});
+
+test('a show that has not opened yet is never a blackout', () => {
+  // Abigail's Party, 2026-08-13: previews from 08-12, press night 08-19, and
+  // six dead URLs from earlier revivals of the same Mike Leigh play. Zero
+  // usable reviews is the CORRECT state — it has not been reviewed yet.
+  const abigails = {
+    id: 'abigails-party-west-end-2026',
+    status: 'previews',
+    category: 'west-end',
+    openingDate: '2026-08-19',
+    previewsStartDate: '2026-08-12',
+  };
+  // Dated BEFORE previews began, so this pins the prior-run filter rather than
+  // passing trivially on "no dates present" (the first cut of this test did the
+  // latter and did not exercise the mechanism its comment claimed).
+  const staleLinks = ['thestage', 'timeout-london', 'telegraph', 'times-uk', 'whatsonstage', 'lbo']
+    .map((o) => ({
+      file: `${o}.json`,
+      review: {
+        url: `https://${o}.example/abigails-party-review`,
+        contentTier: 'invalid',
+        incompleteReason: 'wrong_content',
+        publishDate: '2012-04-18',
+      },
+    }));
+  const result = assessShow(abigails, staleLinks, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(result.discovered, 6);
+  assert.equal(result.usable, 0);
+  assert.equal(result.totalBlackout, false, 'unopened show must not raise a blackout alarm');
+  assert.equal(result.stranded.length, 0, 'wrong_content was judged, not stranded');
+});
+
+test('an OPEN show alarms even when every discovered file is dateless', () => {
+  // The over-correction that shipped briefly on 2026-08-13: keying "has it
+  // opened?" on review dates alone. Measured on the live corpus, 95 of 99
+  // not_attempted files carry no parseable date, so this silenced the alarm
+  // everywhere. show.status/openingDate is the stronger, always-present witness.
+  const matilda = {
+    id: 'matilda-the-musical-theatre-row-off-broadway-2026',
+    status: 'open',
+    category: 'off-broadway',
+    openingDate: '2026-08-06',
+    previewsStartDate: '2026-07-20',
+  };
+  const dateless = [
+    { file: 'a.json', review: { url: 'https://a/1', incompleteReason: 'not_attempted' } },
+    { file: 'b.json', review: { url: 'https://b/1', incompleteReason: 'not_attempted' } },
+  ];
+  const r = assessShow(matilda, dateless, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(r.totalBlackout, true, 'an open show past its opening date is opened, dates or no dates');
+});
+
+test('an open show whose real reviews were all wrongly flagged still alarms', () => {
+  // The nastiest shape: wrongProduction flags both CAUSE the blackout and erase
+  // the dated evidence, so review data can never license the alarm. Only the
+  // show record can. Live case on 2026-08-13: matilda-the-musical-theatre-row.
+  const show = { id: 'x', status: 'open', category: 'off-broadway', openingDate: '2026-08-06', previewsStartDate: '2026-07-20' };
+  const flagged = [
+    { file: 'a.json', review: { url: 'https://a/1', publishDate: '2026-08-06', wrongProduction: true } },
+    { file: 'b.json', review: { url: 'https://b/1', publishDate: '2026-08-06', wrongProduction: true } },
+  ];
+  const r = assessShow(show, flagged, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(r.totalBlackout, true);
+});
+
+test('a future review date cannot license the alarm', () => {
+  const show = { id: 'x', status: 'previews', category: 'west-end', openingDate: null, previewsStartDate: '2026-08-12' };
+  const future = [
+    { file: 'a.json', review: { url: 'https://a/1', publishDate: '2027-03-01' } },
+    { file: 'b.json', review: { url: 'https://b/1', publishDate: '2027-03-01' } },
+  ];
+  const r = assessShow(show, future, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(r.totalBlackout, false, 'press night in 2027 has not happened');
+});
+
+test('with no previewsStartDate, prior-production dates are not treated as press night', () => {
+  // datesFromDiscoveredReviews can only filter stale runs when it has the
+  // previews boundary; openSignalFromDiscovery refuses to guess without it and
+  // so must this.
+  const show = { id: 'x', status: 'previews', category: 'off-broadway', openingDate: null, previewsStartDate: null };
+  const ancient = [
+    { file: 'a.json', review: { url: 'https://a/1', publishDate: '2003-05-01' } },
+    { file: 'b.json', review: { url: 'https://b/1', publishDate: '2003-05-01' } },
+  ];
+  const r = assessShow(show, ancient, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(r.totalBlackout, false);
 });
 
 test('two discovered URLs with nothing collected is already a blackout', () => {
