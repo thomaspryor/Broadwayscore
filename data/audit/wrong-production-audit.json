@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T21:51:27.307Z",
+  "timestamp": "2026-08-13T23:32:03.602Z",
   "stats": {
-    "totalReviews": 42194,
+    "totalReviews": 42198,
     "alreadyFlagged": 18304,
     "dateGuardCatches": 142,
     "directorMismatch": 965,
-    "tvFilmSignals": 1191,
-    "londonSignals": 876,
+    "tvFilmSignals": 1192,
+    "londonSignals": 879,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3560
+    "noPublishDate": 3561
   },
   "findings": [
     {
@@ -11969,6 +11969,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "countryandtownhouse--olivia-emily.json",
+      "publishDate": "2026-07-28",
+      "url": "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -37554,6 +37572,20 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "the-theatre-times--aleks-sierz.json",
+      "score": 74,
+      "publishDate": "2026-08-13",
+      "url": "https://thetheatretimes.com/alan-ayckbourns-how-the-other-half-loves-at-the-old-vic-technically-brilliant-if-rather-overlong-and-old-fashioned-west-end-farce/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
       "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 76,
       "publishDate": null,
@@ -37563,6 +37595,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 79,
+      "publishDate": "2026-08-13",
+      "url": "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
