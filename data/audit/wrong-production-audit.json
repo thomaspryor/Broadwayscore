@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-13T18:58:02.350Z",
+  "timestamp": "2026-08-13T21:51:27.307Z",
   "stats": {
-    "totalReviews": 42187,
-    "alreadyFlagged": 18302,
+    "totalReviews": 42194,
+    "alreadyFlagged": 18304,
     "dateGuardCatches": 142,
     "directorMismatch": 965,
-    "tvFilmSignals": 1190,
-    "londonSignals": 875,
+    "tvFilmSignals": 1191,
+    "londonSignals": 876,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
     "noPublishDate": 3560
@@ -6242,6 +6242,25 @@
       "score": 79,
       "publishDate": "2026-08-04",
       "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "telegraph--tim-robey.json",
+      "score": 17,
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34898,6 +34917,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "matineemouse--matinee-mouse.json",
+      "score": 78,
+      "publishDate": "2026-08-12",
+      "url": "https://matineemouse.substack.com/p/death-note-the-musical-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
       "score": 79,
       "publishDate": null,
@@ -34963,20 +34996,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "telegraph--tim-robey.json",
-      "score": 17,
-      "publishDate": "2026-08-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -37549,14 +37568,15 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-07-09",
-      "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
+      "file": "theatreandtonic--unknown.json",
+      "score": 79,
+      "publishDate": "2026-08-13",
+      "url": "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
