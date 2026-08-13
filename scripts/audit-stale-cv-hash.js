@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -40,18 +41,6 @@ function contentHash(text) {
 
 function isExcluded(d) {
   return Boolean(d.wrongShow || d.wrongProduction || d.isNonReview || d.contentTier === 'invalid');
-}
-
-function listShowDirs(root) {
-  let entries;
-  try {
-    entries = fs.readdirSync(root, { withFileTypes: true });
-  } catch {
-    return [];
-  }
-  // Skip symlinks deliberately: a committed absolute-path symlink dangles in CI
-  // and crashes the pipeline (memory: stray-symlink-crashes-pipeline).
-  return entries.filter((e) => e.isDirectory() && !e.isSymbolicLink()).map((e) => e.name);
 }
 
 function audit() {
@@ -67,7 +56,10 @@ function audit() {
   };
   const findings = [];
 
-  for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
+  // listShowDirs() is the canonical walker: it skips dotfiles, stray files, and
+  // dangling symlinks (a committed absolute-path symlink dangles in CI and
+  // crashes the pipeline — memory: stray-symlink-crashes-pipeline).
+  for (const showId of listShowDirs(REVIEW_TEXTS_DIR, { silent: true })) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try {
