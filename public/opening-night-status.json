@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T12:14:51.400Z",
+  "generatedAt": "2026-08-13T12:32:35.980Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,9 +392,9 @@
       "status": "open",
       "slug": "how-the-other-half-loves-west-end",
       "thumbnail": "/images/shows/how-the-other-half-loves-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.78,
-      "liveScore": 79,
-      "scoreDrift": 0.21999999999999886,
+      "siteScore": 78.22,
+      "liveScore": 78,
+      "scoreDrift": -0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -473,6 +473,18 @@
           "t": "2026-08-13T12:14:51.400Z",
           "rc": 13,
           "s": 78.78,
+          "t1": 7,
+          "t2": 4,
+          "t3": 2,
+          "p": 11,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T12:32:35.980Z",
+          "rc": 13,
+          "s": 78.22,
           "t1": 7,
           "t2": 4,
           "t3": 2,
@@ -1182,28 +1194,28 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 42.16,
-      "liveScore": 42,
-      "scoreDrift": -0.1599999999999966,
+      "siteScore": 43.7,
+      "liveScore": 44,
+      "scoreDrift": 0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 0,
-      "t2": 2,
-      "t3": 3,
+      "t2": 4,
+      "t3": 4,
       "positive": 0,
       "mixed": 1,
-      "negative": 4,
+      "negative": 7,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "8/12 total",
           "T1:0/3",
           "T2:2/3",
-          "hi-conf:4/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1542,6 +1554,18 @@
           "p": 0,
           "m": 1,
           "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T12:32:35.980Z",
+          "rc": 8,
+          "s": 43.7,
+          "t1": 0,
+          "t2": 4,
+          "t3": 4,
+          "p": 0,
+          "m": 1,
+          "n": 7,
           "bc": "waiting"
         }
       ]

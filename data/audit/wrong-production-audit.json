@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-13T12:14:46.132Z",
+  "timestamp": "2026-08-13T12:32:30.654Z",
   "stats": {
     "totalReviews": 42176,
-    "alreadyFlagged": 18312,
+    "alreadyFlagged": 18311,
     "dateGuardCatches": 141,
     "directorMismatch": 965,
     "tvFilmSignals": 1190,
-    "londonSignals": 869,
+    "londonSignals": 870,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
     "noPublishDate": 3555
@@ -37436,6 +37436,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2026-08-13",
+      "url": "https://www.britishtheatreguide.info/reviews/how-the-other-h-old-vic-theatre-25823",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
