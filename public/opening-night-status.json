@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T12:32:35.980Z",
+  "generatedAt": "2026-08-13T12:56:20.023Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,17 +392,17 @@
       "status": "open",
       "slug": "how-the-other-half-loves-west-end",
       "thumbnail": "/images/shows/how-the-other-half-loves-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.22,
-      "liveScore": 78,
-      "scoreDrift": -0.21999999999999886,
+      "siteScore": 78.6,
+      "liveScore": 79,
+      "scoreDrift": 0.4000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 7,
-      "t2": 4,
+      "t2": 5,
       "t3": 2,
-      "positive": 11,
+      "positive": 12,
       "mixed": 1,
       "negative": 1,
       "readiness": {
@@ -489,6 +489,18 @@
           "t2": 4,
           "t3": 2,
           "p": 11,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T12:56:20.023Z",
+          "rc": 14,
+          "s": 78.6,
+          "t1": 7,
+          "t2": 5,
+          "t3": 2,
+          "p": 12,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -632,10 +644,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -1194,25 +1202,24 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 43.7,
-      "liveScore": 44,
-      "scoreDrift": 0.29999999999999716,
+      "siteScore": 43.16,
+      "liveScore": 43,
+      "scoreDrift": -0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 4,
       "positive": 0,
       "mixed": 1,
-      "negative": 7,
+      "negative": 8,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:0/3",
-          "T2:2/3",
           "hi-conf:6/8"
         ],
         "highConfidence": 6,
@@ -1331,16 +1338,8 @@
           "isDualMarket": true
         },
         {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "Theatrely",
@@ -1566,6 +1565,18 @@
           "p": 0,
           "m": 1,
           "n": 7,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-13T12:56:20.023Z",
+          "rc": 9,
+          "s": 43.16,
+          "t1": 0,
+          "t2": 5,
+          "t3": 4,
+          "p": 0,
+          "m": 1,
+          "n": 8,
           "bc": "waiting"
         }
       ]

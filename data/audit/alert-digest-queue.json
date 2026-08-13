@@ -64,5 +64,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-13T10:30:58.333Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "2/152 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nscore-drift: 2\nTrainspotting the musical: missing-from-prod+score-drift\nHow the Other Half Loves: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-13T12:49:59.774Z"
   }
 ]

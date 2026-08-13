@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-08-13T11:45:02.547Z",
+  "generatedAt": "2026-08-13T12:49:50.382Z",
   "windowDays": 45,
   "showsScanned": 56,
   "gaps": [
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "file": "independent--alice-saville.json",
-      "outletId": "independent",
-      "tier": 1,
-      "type": "unscored",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=cats-west-end-2026",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-13T10:04:17.541Z",
-      "nonTerminalAgeHours": 1.6791683333333334
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -33,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 502.55722694444444,
+      "fileAgeHours": 503.636725,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 461.8601697222222
+      "nonTerminalAgeHours": 462.9401238888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 193.00041611111112,
+      "fileAgeHours": 194.07991305555555,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 192.3623536111111
+      "nonTerminalAgeHours": 193.44230777777778
     }
   ],
   "contradictions": []

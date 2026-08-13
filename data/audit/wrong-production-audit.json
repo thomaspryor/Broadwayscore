@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T12:32:30.654Z",
+  "timestamp": "2026-08-13T12:56:13.514Z",
   "stats": {
-    "totalReviews": 42176,
+    "totalReviews": 42181,
     "alreadyFlagged": 18311,
     "dateGuardCatches": 141,
-    "directorMismatch": 965,
+    "directorMismatch": 966,
     "tvFilmSignals": 1190,
-    "londonSignals": 870,
+    "londonSignals": 872,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3555
+    "noPublishDate": 3559
   },
   "findings": [
     {
@@ -1248,6 +1248,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "file": "nysr--unknown.json",
+      "publishDate": "2026-08-11",
+      "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from an-american-daughter-1997"
         }
       ]
     },
@@ -34929,6 +34942,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": "2026-08-13",
+      "url": "https://standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "stanservice--molly-wilson.json",
       "score": 87,
       "publishDate": "2026-08-09",
@@ -37458,6 +37484,19 @@
       "score": 87,
       "publishDate": "2026-08-12",
       "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
