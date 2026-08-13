@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isArchivableIssue } =
+const { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isCapEnforced, isArchivableIssue } =
   require('../../scripts/lib/linear-cap-policy.js');
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -99,4 +99,32 @@ test('isArchivableIssue: respects a custom ageHours override', () => {
 
 test('isArchivableIssue: false for a null issue', () => {
   assert.equal(isArchivableIssue(null, NOW), false);
+});
+
+// --- isCapEnforced: the 250 ceiling is a FREE-tier limit only ---------------
+// Owner upgraded to basic_yearly_10 on 2026-08-12; without this predicate the
+// >=200 warn fires forever as a decision row in the daily digest.
+
+test('isCapEnforced: free tier (no subscription) keeps the cap armed', () => {
+  assert.equal(isCapEnforced(null), true);
+  assert.equal(isCapEnforced(undefined), true);
+});
+
+test('isCapEnforced: an active paid subscription lifts the cap', () => {
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10' }), false);
+  assert.equal(isCapEnforced({ type: 'business' }), false);
+});
+
+test('isCapEnforced: a CANCELED subscription re-arms the cap', () => {
+  // Linear keeps a truthy PaidSubscription row after cancellation until the
+  // period ends. A bare truthiness test would disable the guard exactly when
+  // the workspace is about to fall back to free tier.
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', canceledAt: '2026-09-01T00:00:00Z' }), true);
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: '2026-09-01T00:00:00Z' }), true);
+});
+
+test('isCapEnforced: unrecognised shapes fail safe (cap stays armed)', () => {
+  assert.equal(isCapEnforced({}), true);
+  assert.equal(isCapEnforced('paid'), true);
+  assert.equal(isCapEnforced(42), true);
 });
