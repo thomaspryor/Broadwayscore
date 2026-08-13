@@ -17,7 +17,7 @@ function healthWith(errors, warns = []) {
   return { generatedAt: NOW.toISOString(), errors, warns, queued: [] };
 }
 
-test('real assembly path v3: zero buttons; every named row lands in Being-fixed-automatically', () => {
+test('real assembly path v3: zero buttons; every named row lands in the Automation queue', () => {
   const health = healthWith([
     { name: 'Test Suite red', message: 'unit tests failing on main' },
     { name: 'Deploy stuck', message: 'vercel-deploy.yml has not run in 12h' },
@@ -36,7 +36,7 @@ test('real assembly path v3: zero buttons; every named row lands in Being-fixed-
   // Digest v3 (owner mandate 2026-08-02): NO buttons — auto-dispatch replaced
   // them. The report block must exist instead.
   assert.equal(countFixThisButtons(html), 0);
-  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('Automation queue'));
 });
 
 test('real assembly path v3: zero errors, one warning -> reported in the autofix block, no button', () => {
@@ -50,7 +50,7 @@ test('real assembly path v3: zero errors, one warning -> reported in the autofix
   const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
   assert.equal(countFixThisButtons(html), 0);
-  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('Automation queue'));
 });
 
 test('real assembly path v3: no dispatch secret changes nothing — zero buttons either way, invariant passes', () => {
