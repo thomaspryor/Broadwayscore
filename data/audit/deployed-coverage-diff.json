@@ -1,11 +1,51 @@
 {
-  "generatedAt": "2026-08-13T11:45:14.791Z",
+  "generatedAt": "2026-08-13T12:49:59.767Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 152,
-  "clean": 152,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 150,
+  "defective": 2,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "title": "Trainspotting the musical",
+      "openingDate": "2026-07-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: telegraph"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 35.42 vs local 35.55 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [
+        "telegraph"
+      ],
+      "localCount": 33,
+      "deployedCount": 32
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "title": "How the Other Half Loves",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.22 vs local 78.78 (Δ0.56)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13
+    }
+  ]
 }
