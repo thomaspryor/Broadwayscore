@@ -46,6 +46,12 @@ const CONFIRMED_NON_MATCHES = new Set([
   // alert. If theatr ever lists the LONDON production under this same name and we
   // DO want those ratings, remove this entry.
   'theatr|archduke|archduke-west-end-2026',
+  // theatr "The Jonathan Larson Project" (150 ratings, venue: Orpheum Theatre,
+  // NYC) is the earlier Off-Broadway run, not our 2026 West End transfer —
+  // Theatr's catalog only covers Broadway/Off-Broadway (eventCategory is always
+  // 'Broadway' or 'Off & Off-Off Broadway', never a West End category), so this
+  // entry can never be our London show. 2026-08-13 (BRO-303).
+  'theatr|the jonathan larson project|the-jonathan-larson-project-off-west-end-2026',
 ]);
 
 function nonMatchKey(source, sourceName, ourShowId) {

@@ -22,8 +22,9 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { normalizeTitle, titleTokens, jaccard } = require('./lib/title-match');
+const { normalizeTitle } = require('./lib/title-match');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
+const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -540,35 +541,7 @@ async function main() {
   // Tight by design: only full runs (no --show/--shows), only shows opened
   // since 2015 that lack Theatr, fuzzy match ≥0.6.
   if (!showFilter && !showsFilter && !dryRun) {
-    const today = new Date().toISOString().slice(0, 10);
-    const candidates = showsData.shows
-      .filter(s => !audienceBuzz.shows[s.id]?.sources?.theatr)
-      .filter(s => { const o = s.openingDate || s.previewsStartDate; return !o || o >= '2015-01-01'; })
-      .map(s => ({ s, t: titleTokens(s.title), year: parseInt((s.openingDate || '').slice(0, 4)) }));
-
-    const flagged = [];
-    for (const u of unmatched) {
-      const uTokens = titleTokens(u.name || '');
-      if (!uTokens.size) continue;
-      let best = null;
-      for (const c of candidates) {
-        if (!c.t.size) continue;
-        const j = jaccard(uTokens, c.t);
-        if (j < 0.6) continue;
-        if (!best || j > best.j) best = { showId: c.s.id, showTitle: c.s.title, showYear: c.year, j };
-      }
-      if (best) flagged.push({
-        theatrName: u.name,
-        eventCategory: u.eventCategory,
-        watched: u.totalWatchedUsers,
-        ratingsCount: u.totalWatchedUsers,
-        ourShowId: best.showId,
-        ourTitle: best.showTitle,
-        ourYear: best.showYear || null,
-        jaccard: Number(best.j.toFixed(2)),
-      });
-    }
-    flagged.sort((a, b) => (b.watched || 0) - (a.watched || 0));
+    const flagged = buildTheatrCoverageFlags(showsData.shows, audienceBuzz, unmatched);
     const auditDir = path.join(__dirname, '../data/audit');
     if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
     fs.writeFileSync(
