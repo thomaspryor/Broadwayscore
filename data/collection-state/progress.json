@@ -24,7 +24,9 @@
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "the-winters-tale-off-broadway-2026/vulture--sara-holdren.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -151,7 +153,14 @@
     "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
     "macbeth-off-broadway-2026/abc-news--peter-travers.json",
     "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
-    "macbeth-off-broadway-2026/newsday--linda-winer.json"
+    "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/telegraph--dominic-cavendish.json",
+    "abigails-party-west-end-2026/thestage--paul-vale.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "the-winters-tale-off-broadway-2026/nytg--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -187,6 +196,10 @@
     "brightdata": [
       "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ],
+    "brightdata": [
+      "the-winters-tale-off-broadway-2026/vulture--sara-holdren.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": [
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
@@ -195,25 +208,36 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
     ]
   },
-  "startTime": "2026-08-13T11:01:46.603Z",
-  "lastProcessed": "macbeth-off-broadway-2026/newsday--linda-winer.json",
+  "startTime": "2026-08-13T10:02:52.317Z",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-08-13T11:02:55.862Z",
       "event": "bb-session",
-      "session": "f17671d3",
+      "session": "252138b9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-13T11:39:04.064Z",
+      "event": "bb-session",
+      "session": "3ccc8d27",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-13T11:02:56.392Z",
+      "t": "2026-08-13T11:39:05.183Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-13T11:30:52.592Z",
+      "t": "2026-08-13T11:39:29.294Z",
       "event": "bb-session",
-      "session": "898593ab",
-      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+      "session": "4d186ccc",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-13T11:39:30.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
