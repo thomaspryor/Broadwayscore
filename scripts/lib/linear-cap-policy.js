@@ -5,8 +5,13 @@
  * the hard cap itself, this file's WARN_THRESHOLD is the earlier trip wire
  * scripts/check-linear-cap.js and scripts/linear-archive-done.js act on.
  *
- * No fetch, no fs, no Date.now() — callers pass `now` in so this stays a pure
- * function CLAUDE.md rule 15 requires tests to require() directly.
+ * No fetch, no fs — callers pass `now` in so this stays a pure function
+ * CLAUDE.md rule 15 requires tests to require() directly. isArchivableIssue
+ * requires `now`; isCapEnforced DEFAULTS it to Date.now() for the one-arg
+ * production call at check-linear-cap.js:48, which does read it whenever a
+ * cancelAt is present. Tests that exercise a time-dependent path inject `now`;
+ * the shape-only cases (null/non-object/no-type/no-cancel-fields) return
+ * before it matters and call with one argument.
  *
  * Scope note: the 250-issue cap is workspace-wide, but every caller counts
  * only team BRO's issues (scripts/lib/linear-client.js's TEAM_KEY) — the same
@@ -37,15 +42,35 @@ function isOverCapThreshold(count, threshold = WARN_THRESHOLD) {
 // 7:30 digest asking a question he has already answered (owner upgraded to
 // basic_yearly_10 on 2026-08-12). Callers pass organization.subscription
 // through; null/undefined means free tier and the cap still applies.
-// A canceled-but-lingering subscription record stays a truthy object (Linear's
-// PaidSubscription carries canceledAt/cancelAt and the row survives until the
-// period ends), so a bare truthiness test would disable the cap guard exactly
-// when the workspace is about to fall back to the free tier. Re-arm on any
-// cancellation signal, and on a shape we don't recognise.
-function isCapEnforced(subscription) {
+// A canceled-but-lingering subscription record stays a truthy object, so a bare
+// truthiness test would disable the cap guard exactly when the workspace is
+// about to fall back to the free tier.
+//
+// But the two cancellation fields mean different things and must not be
+// conflated: Linear sets `canceledAt` when cancel is CLICKED (past) and
+// `cancelAt` to when the paid period actually ENDS (future). The plan stays
+// paid until `cancelAt`. Treating either as "re-arm now" would restart the
+// >=200 false alert the moment cancel is clicked and keep it firing daily for
+// up to a full year while the workspace is still on a paid plan — the exact
+// noise this predicate exists to remove.
+//
+// So: the cap is enforced once the paid period has lapsed, not when cancel was
+// requested. `now` is injected (same contract as isArchivableIssue) so this
+// stays pure. A cancellation with no end date is unknowable, so it re-arms —
+// the conservative direction, since hitting the hard cap jams issue creation.
+function isCapEnforced(subscription, now = Date.now()) {
   if (!subscription || typeof subscription !== 'object') return true;
-  if (subscription.canceledAt || subscription.cancelAt) return true;
   if (!subscription.type) return true;
+  if (subscription.cancelAt) {
+    const endsAt = Date.parse(subscription.cancelAt);
+    // A cancelAt we cannot parse is a cancellation whose end date is unknown —
+    // fail toward the armed cap. Lifting it on garbage would leave the guard
+    // silently off through a real lapse until createIssue starts throwing
+    // USAGE_LIMIT_EXCEEDED, which is the failure this module exists to prevent.
+    return Number.isFinite(endsAt) ? endsAt <= now : true;
+  }
+  // Cancel requested but no end date exposed — same reasoning.
+  if (subscription.canceledAt) return true;
   return false;
 }
 
