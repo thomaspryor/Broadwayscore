@@ -6,10 +6,12 @@
  * scripts/check-linear-cap.js and scripts/linear-archive-done.js act on.
  *
  * No fetch, no fs — callers pass `now` in so this stays a pure function
- * CLAUDE.md rule 15 requires tests to require() directly. isCapEnforced
- * defaults `now` to Date.now() for the one-arg call site in
- * check-linear-cap.js; every test passes `now` explicitly, and the default is
- * only reached on paths that return before it is read.
+ * CLAUDE.md rule 15 requires tests to require() directly. isArchivableIssue
+ * requires `now`; isCapEnforced DEFAULTS it to Date.now() for the one-arg
+ * production call at check-linear-cap.js:48, which does read it whenever a
+ * cancelAt is present. Tests that exercise a time-dependent path inject `now`;
+ * the shape-only cases (null/non-object/no-type/no-cancel-fields) return
+ * before it matters and call with one argument.
  *
  * Scope note: the 250-issue cap is workspace-wide, but every caller counts
  * only team BRO's issues (scripts/lib/linear-client.js's TEAM_KEY) — the same

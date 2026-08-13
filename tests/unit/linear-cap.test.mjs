@@ -136,6 +136,22 @@ test('isCapEnforced: cancel requested with no end date re-arms (conservative)', 
   assert.equal(isCapEnforced({ type: 'basic_yearly_10', canceledAt: '2026-08-12T00:00:00Z' }, CAP_NOW), true);
 });
 
+test('isCapEnforced: the expiry boundary is inclusive (cancelAt === now is lapsed)', () => {
+  // The single line most likely to regress to `<`. At the exact expiry instant
+  // the paid period has ended, so the cap is armed.
+  const at = new Date(CAP_NOW).toISOString();
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: at }, CAP_NOW), true);
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: at }, CAP_NOW - 1), false);
+});
+
+test('isCapEnforced: an empty-string cancelAt is treated as absent', () => {
+  // '' is falsy, so it falls through to the canceledAt signal rather than
+  // being parsed. Documented so the asymmetry with 'garbage' (which arms the
+  // cap) is deliberate rather than accidental.
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: '' }, CAP_NOW), false);
+  assert.equal(isCapEnforced({ type: 'basic_yearly_10', cancelAt: '', canceledAt: 'x' }, CAP_NOW), true);
+});
+
 test('isCapEnforced: an unparseable cancelAt fails SAFE (cap armed)', () => {
   // A cancellation whose end date we cannot read is still a cancellation.
   // Lifting the cap here would leave the guard silently off through a real
