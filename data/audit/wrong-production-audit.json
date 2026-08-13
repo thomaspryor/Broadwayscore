@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-08-13T06:28:58.194Z",
+  "timestamp": "2026-08-13T06:55:07.249Z",
   "stats": {
     "totalReviews": 42125,
-    "alreadyFlagged": 18296,
+    "alreadyFlagged": 18294,
     "dateGuardCatches": 140,
     "directorMismatch": 964,
-    "tvFilmSignals": 1188,
+    "tvFilmSignals": 1189,
     "londonSignals": 864,
     "offBroadwaySignals": 482,
     "yearMismatch": 88,
@@ -1973,7 +1973,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "telegraph--claire-allfree.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2024-10-31",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/barcelona-duke-of-yorks-theatre-review-lily-collins/",
       "findings": [
@@ -1987,7 +1987,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "thestage--tom-wicker.json",
-      "score": 43,
+      "score": 41,
       "publishDate": "2024-10-31",
       "url": "https://www.thestage.co.uk/reviews/barcelona-review-duke-of-yorks-theatre-london-lily-collins-emily-in-paris-alvaro-morte-bess-wohl-lynette-linton",
       "findings": [
@@ -6136,7 +6136,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "guardian--unknown.json",
-      "score": 86,
+      "score": 80,
       "publishDate": "2026-08-12",
       "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
       "findings": [
@@ -11893,6 +11893,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "west-end-best-friend--anna-nichols.json",
+      "score": 85,
+      "publishDate": "2025-08-04",
+      "url": "https://www.westendbestfriend.co.uk/news/review-horrible-histories-barmy-britain-apollo-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 360d before show (2025-08-04 vs 2026-07-30)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -37368,20 +37387,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
-        }
-      ]
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "file": "west-end-best-friend--anna-nichols.json",
-      "score": 85,
-      "publishDate": "2025-08-04",
-      "url": "https://www.westendbestfriend.co.uk/news/review-horrible-histories-barmy-britain-apollo-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 360d before show (2025-08-04 vs 2026-07-30)"
         }
       ]
     },
