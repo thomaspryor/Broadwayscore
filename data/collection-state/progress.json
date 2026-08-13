@@ -4,7 +4,8 @@
     "death-note-the-musical-west-end-2026/telegraph--unknown.json",
     "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
     "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
@@ -21,13 +22,23 @@
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
     "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
     "disruption-off-broadway-2026/timeout-london--unknown.json",
-    "disruption-off-broadway-2026/wsj--unknown.json"
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json",
+    "disruption-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "death-note-the-musical-west-end-2026/flicker-magazine--unknown.json",
-      "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
+      "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -43,7 +54,7 @@
     "archive": []
   },
   "startTime": "2026-08-13T00:37:06.538Z",
-  "lastProcessed": "disruption-off-broadway-2026/wsj--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
   "log": [
     {
       "t": "2026-08-13T01:50:28.282Z",
@@ -55,6 +66,18 @@
       "t": "2026-08-13T01:50:29.437Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-13T01:52:46.812Z",
+      "event": "bb-session",
+      "session": "144d87cf",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-13T01:52:55.305Z",
+      "event": "bb-session",
+      "session": "4b6b6fd1",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
