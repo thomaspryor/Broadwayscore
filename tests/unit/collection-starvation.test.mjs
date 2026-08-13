@@ -87,6 +87,9 @@ test('strand detector flags a discovered-but-never-fetched review, date-independ
     outlet: 'The New York Times',
     contentTier: 'stub',
     incompleteReason: 'not_attempted',
+    // The real file carried this — it is what proves press night happened and
+    // separates a genuine blackout from a show that simply has not opened.
+    publishDate: '2026-08-12',
     firstSeenAt: '2026-08-12T11:39:49.729Z',
   };
   assert.equal(isNeverAttempted(nyt), true);
@@ -190,6 +193,29 @@ test('a roundup article never becomes press night', () => {
   ];
   assert.deepEqual(datesFromDiscoveredReviews(files, WINTERS_TALE), []);
   assert.equal(openSignalFromDiscovery(WINTERS_TALE, files, () => true), null);
+});
+
+test('a show that has not opened yet is never a blackout', () => {
+  // Abigail's Party, 2026-08-13: previews from 08-12, press night 08-19, and
+  // six dead URLs from earlier revivals of the same Mike Leigh play. Zero
+  // usable reviews is the CORRECT state — it has not been reviewed yet.
+  const abigails = {
+    id: 'abigails-party-west-end-2026',
+    status: 'previews',
+    category: 'west-end',
+    openingDate: '2026-08-19',
+    previewsStartDate: '2026-08-12',
+  };
+  const staleLinks = ['thestage', 'timeout-london', 'telegraph', 'times-uk', 'whatsonstage', 'lbo']
+    .map((o, i) => ({
+      file: `${o}.json`,
+      review: { url: `https://${o}.example/abigails-party-review`, contentTier: 'invalid', incompleteReason: 'wrong_content' },
+    }));
+  const result = assessShow(abigails, staleLinks, { nowMs: Date.parse('2026-08-13T09:00:00Z') });
+  assert.equal(result.discovered, 6);
+  assert.equal(result.usable, 0);
+  assert.equal(result.totalBlackout, false, 'unopened show must not raise a blackout alarm');
+  assert.equal(result.stranded.length, 0, 'wrong_content was judged, not stranded');
 });
 
 test('two discovered URLs with nothing collected is already a blackout', () => {

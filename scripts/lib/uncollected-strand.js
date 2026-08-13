@@ -1,5 +1,7 @@
 'use strict';
 
+const { datesFromDiscoveredReviews } = require('./opening-signal');
+
 /**
  * Date-independent detection of review URLs we discovered and then never fetched.
  *
@@ -84,6 +86,12 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   const stranded = [];
   let usable = 0;
   let discovered = 0;
+  // Evidence the show's press night has actually happened: at least one clean
+  // discovered review carrying a real date on/after previews began.
+  const openedDates = datesFromDiscoveredReviews(
+    (files || []).map(f => f.review),
+    show
+  );
 
   for (const { file, review } of files || []) {
     if (review && review.url) discovered++;
@@ -109,7 +117,16 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     // while we hold its review URLs on disk. Threshold 2, not 3 — an
     // Off-Broadway show can have its whole press slate be two outlets, and a
     // blackout is a blackout at that size too.
-    totalBlackout: usable === 0 && discovered >= 2,
+    //
+    // openedDates is the load-bearing condition, not a refinement. Without it
+    // this fires on every show still in previews, which ALWAYS has zero usable
+    // reviews and often carries stale URLs from an earlier production of the
+    // same title. Abigail's Party tripped exactly that on 2026-08-13: previews
+    // from 08-12, press night 08-19, and six dead links to prior revivals of
+    // the Mike Leigh play. A monitor that cries wolf on every unopened show is
+    // a monitor people learn to ignore — which is the failure that produced
+    // this whole incident.
+    totalBlackout: usable === 0 && discovered >= 2 && openedDates.length > 0,
   };
 }
 
