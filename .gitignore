@@ -310,6 +310,9 @@ tmp/
 # the first time CI and the Mac diverged on it (ship-check finding).
 # bsc-next/bsc-prune dispatch-attempt journal (task #334) — Mac-local
 /data/audit/dispatch-ledger.jsonl
+# Append-only local telemetry for the intake storm breaker. Tracked would mean
+# every session's create conflicts with every other session's on the same lines.
+/data/audit/intake-ledger.jsonl
 # CI-red claim ledger (task #584) — Mac-local, same append-only pattern
 /data/audit/ci-red-claims.jsonl
 # Backlog drain engine (task #654) — Mac-local; both producer

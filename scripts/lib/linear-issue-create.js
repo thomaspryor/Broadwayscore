@@ -24,6 +24,7 @@
 
 const linear = require('./linear-client');
 const { resolveDisposition } = require('./card-disposition');
+const { checkIntake, recordCreated } = require('./intake-breaker');
 
 const USAGE_LIMIT_MESSAGE =
   'Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the ' +
@@ -96,6 +97,19 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     throw err;
   }
 
+  // Storm breaker (flow audit 2026-08-12: real intake 34.3/day vs burn-down
+  // 5.7/day, and NOTHING bounded creation anywhere). Sized above a normal day,
+  // so this is inert in ordinary use and only stops a runaway filer. Checked
+  // here because this is the one chokepoint every scripted filer goes through;
+  // issues the owner files in the Linear app never reach this code and are
+  // deliberately unaffected.
+  const breaker = checkIntake();
+  if (!breaker.allow) {
+    const err = new Error(breaker.reason);
+    err.intakeBreaker = breaker;
+    throw err;
+  }
+
   const team = await linear.getTeam();
   const state = pickStateForMode(team.states, disposition.mode);
 
@@ -120,6 +134,11 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     }
     throw err;
   }
+
+  // Record AFTER the create succeeds, so a failed API call never consumes
+  // breaker budget. recordCreated never throws — telemetry must not turn a
+  // successful create into a reported failure.
+  recordCreated({ identifier: issue?.identifier, title });
 
   return { issue, mode: disposition.mode, stateName: state.name };
 }
