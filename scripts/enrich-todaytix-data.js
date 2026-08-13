@@ -17,6 +17,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
+const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/todaytix-dates');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
@@ -186,6 +187,59 @@ async function main() {
       }
       stats.ticketLinksSet = (stats.ticketLinksSet || 0) + 1;
       changes.push('ticketLinks');
+    }
+
+    // Start-date backfill for shows already in the DB.
+    //
+    // discover-new-shows.js only sets dates when it CREATES a show, and its
+    // todaytixId dedup means an existing entry is never revisited. So a show
+    // that was discovered while its start date was still outside the trust
+    // window kept null dates forever — which is why the two 2027 Encores!
+    // entries that did land (hallelujah-baby, kiss-of-the-spider-woman) sat
+    // dateless from April to August 2026 and never appeared on /off-broadway
+    // (that page needs status open/previews; the "Starting Soon" shelf needs a
+    // parseable date). This runs daily, so the same show promotes from
+    // unconfirmedStartDate to previewsStartDate by itself once it comes inside
+    // the window — no separate promotion pass.
+    //
+    // Only fills genuine holes: never overwrites an existing openingDate or
+    // previewsStartDate, both of which can come from higher-trust sources
+    // (IBDB, ShowScore press night, manual correction).
+    if (!show.openingDate && !show.previewsStartDate && tt.startDate) {
+      const classified = classifyTodayTixStartDate(tt.startDate, show.title, { quiet: true });
+      // A date already in the PAST on a show we hold no date for at all is a
+      // TodayTix placeholder, not a discovery. Real past starts get dated by
+      // the status/closing pipeline long before this. Backfilling one would
+      // invent a start date and hand the status logic a show that "already
+      // began" (dreamgirls-2026: venue "TBA", status announced, TodayTix
+      // startDate 2026-01-01 — the only past date in the 36-show backfill).
+      // classifyTodayTixStartDate itself must keep trusting past dates: for a
+      // genuinely running show being discovered, that date is correct.
+      const startsInPast = classified.previewsStartDate
+        && classified.previewsStartDate < new Date().toISOString().slice(0, 10);
+      if (startsInPast) {
+        stats.pastPlaceholderSkipped = (stats.pastPlaceholderSkipped || 0) + 1;
+        changes.push(`skipped past TodayTix startDate ${classified.previewsStartDate} (placeholder)`);
+      } else if (classified.previewsStartDate) {
+        if (!DRY_RUN) show.previewsStartDate = classified.previewsStartDate;
+        stats.previewsStartDateSet = (stats.previewsStartDateSet || 0) + 1;
+        changes.push(`previewsStartDate=${classified.previewsStartDate}`);
+      } else if (classified.unconfirmedStartDate) {
+        // Same writer shape discover-new-shows.js uses, so the two paths can't
+        // drift (second-opinion review flagged the asymmetry).
+        const flags = unconfirmedStartFlags(classified.unconfirmedStartDate);
+        if (flags.unconfirmedStartDate && show.unconfirmedStartDate !== flags.unconfirmedStartDate) {
+          if (!DRY_RUN) Object.assign(show, flags);
+          stats.unconfirmedStartDateSet = (stats.unconfirmedStartDateSet || 0) + 1;
+          changes.push(`unconfirmedStartDate=${flags.unconfirmedStartDate}`);
+        }
+      }
+    } else if (show.unconfirmedStartDate && (show.openingDate || show.previewsStartDate)) {
+      // A trusted date arrived from elsewhere — the quarantine is now stale and
+      // would keep claiming a start date that a better source has superseded.
+      if (!DRY_RUN) delete show.unconfirmedStartDate;
+      stats.unconfirmedStartDateCleared = (stats.unconfirmedStartDateCleared || 0) + 1;
+      changes.push('unconfirmedStartDate cleared (trusted date present)');
     }
 
     if ((!show.synopsis || show.synopsis === '') && tt.description) {
