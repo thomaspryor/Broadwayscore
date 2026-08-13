@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-13T14:22:57.386Z",
-  "processed": 74,
-  "failed": 976,
-  "successRate": "7.0%",
+  "updatedAt": "2026-08-13T16:26:06.662Z",
+  "processed": 76,
+  "failed": 1074,
+  "successRate": "6.6%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 50,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 7,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-13T10:27:39.359Z",
@@ -64,6 +64,18 @@
       "t": "2026-08-13T13:14:07.794Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-13T16:02:57.528Z",
+      "event": "bb-session",
+      "session": "4c3f349c",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-13T16:03:08.082Z",
+      "event": "bb-session",
+      "session": "59195733",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
