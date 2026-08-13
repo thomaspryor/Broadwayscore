@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-13T12:49:37.936Z",
+  "generatedAt": "2026-08-13T14:24:54.437Z",
   "windowDays": 1095,
-  "targets": 61,
-  "auditedThisRun": 15,
-  "carriedForward": 278,
+  "targets": 59,
+  "auditedThisRun": 6,
+  "carriedForward": 287,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 181,
+    "withGap": 182,
     "totalMissing": 1105,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1188,
+    "totalFlaggedMisses": 1187,
     "totalRecoverable": 37,
     "totalRecovered": 9
   },
@@ -39048,23 +39048,16 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
         "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+        "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
         "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-        "https://www.ticketline.co.uk/event/expired/500712063/horrible-histories-barmy-britain-the-best-bits-14-00-apollo-theatre-2026-08-07-14-00-00",
-        "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
-        "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
-        "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+        "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/"
       ],
       "dirFiles": 9,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
-        {
-          "url": "https://www.ticketline.co.uk/event/expired/500712063/horrible-histories-barmy-britain-the-best-bits-14-00-apollo-theatre-2026-08-07-14-00-00",
-          "host": "ticketline.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
           "host": "birminghamstage.com",
@@ -39074,47 +39067,19 @@
       ],
       "dirOnly": [
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
           "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--s-norman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--christiana-rose.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
           "host": "timeout.com",
@@ -39129,6 +39094,24 @@
               "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--s-norman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
             }
           ],
           "serpCensus": true
@@ -39183,7 +39166,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 8,
             "accepted": 3,
             "error": null
           },
@@ -39193,8 +39176,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -39203,7 +39186,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -39214,7 +39197,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -39224,7 +39207,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -39233,38 +39216,27 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 23,
+        "count": 33,
         "byReason": {
-          "non-review-host": 21,
-          "ticketing-listing": 1,
-          "non-review-path": 1
+          "not-http-url": 8,
+          "non-review-host": 22,
+          "non-review-path": 2,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.ticketline.co.uk/event/expired/500712063/horrible-histories-barmy-britain-the-best-bits-14-00-apollo-theatre-2026-08-07-14-00-00",
-          "host": "ticketline.co.uk",
-          "outletId": "ticketline",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~173687/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
-        },
         {
           "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
           "host": "birminghamstage.com",
@@ -39283,13 +39255,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "ticketline.co.uk",
-            "outlet": "ticketline.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ticketline.co.uk/event/expired/500712063/horrible-histories-barmy-britain-the-best-bits-14-00-apollo-theatre-2026-08-07-14-00-00"
-          },
-          {
             "outletId": "birminghamstage.com",
             "outlet": "birminghamstage.com",
             "critic": "Unknown",
@@ -39297,29 +39262,28 @@
             "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/"
           },
           {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T14:24:54.437Z"
+          },
           {
             "url": "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
             "outletId": "londontheatre1.com",
@@ -39327,29 +39291,8 @@
             "firstSeenAt": "2026-08-10T14:22:04.271Z"
           },
           {
-            "url": "https://www.ticketline.co.uk/event/expired/500712063/horrible-histories-barmy-britain-the-best-bits-14-00-apollo-theatre-2026-08-07-14-00-00",
-            "outletId": "ticketline.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T17:54:37.462Z"
-          },
-          {
             "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
             "outletId": "birminghamstage.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
-            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-10T14:22:04.271Z"
@@ -39360,12 +39303,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 6
+        "liveCount": 2,
+        "candidateCount": 5
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
@@ -39417,9 +39367,9 @@
         "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
         "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html"
       ],
-      "dirFiles": 22,
-      "dirClean": 15,
-      "inReviewsJson": 13,
+      "dirFiles": 23,
+      "dirClean": 17,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
@@ -39432,7 +39382,11 @@
         },
         {
           "host": "theguardian.com",
-          "count": 2
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
         },
         {
           "host": "londontheatre.co.uk",
@@ -39440,6 +39394,14 @@
         },
         {
           "host": "southlondon.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
           "count": 1
         },
         {
@@ -39504,20 +39466,6 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "recoveryResults": [
-        {
-          "url": "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
-          "host": "theatrevibe.co.uk",
-          "file": "theatre-vibe--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~159096/day) projects exhaustion in ~16d, before the 21d-out renewal — still u",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -39563,7 +39511,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -51271,33 +51219,140 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "aggregatorListedUrls": [
+        "https://donyc.com/events/2026/8/6/marlise-tickets"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "missing": [
+        {
+          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+          "host": "donyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Marlise\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Marlise\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Marlise\" review players",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Marlise The Players Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Marlise The Players Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Marlise The Players Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "non-review-host": 20,
+          "aggregator-internal-nav": 8,
+          "non-review-path": 3,
+          "venue-production-page": 3
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~159363/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "donyc.com",
+            "outlet": "donyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+            "outletId": "donyc.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T14:24:54.437Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -65604,7 +65659,7 @@
         "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "pepper-slit-live-in-her-living-room-off-broadway-2026",
@@ -68640,7 +68695,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "roller-rink-at-electric-summer-off-west-end-2026",
@@ -95125,20 +95180,6 @@
         }
       },
       "dedupedVariants": [],
-      "recoveryResults": [
-        {
-          "url": "https://stageandcinema.com/2026/08/11/winters-tale-shakespeare-in-the-park-review/",
-          "host": "stageandcinema.com",
-          "file": "stageandcinema--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~159098/day) projects exhaustion in ~16d, before the 21d-out renewal — still u",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -95147,7 +95188,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-13T14:24:54.437Z"
     },
     {
       "showId": "this-is-rambert-west-end-2026",
