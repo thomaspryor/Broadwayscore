@@ -210,17 +210,29 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // whether a score is publishable at all.
   const serializeCard = createShowSerializer();
   const showBySlug = new Map(allShows.map(s => [s.slug, s]));
-  const openingThisSeasonCards = openingThisSeason
-    .map(s => showBySlug.get(s.slug))
-    .filter((s): s is NonNullable<typeof s> => s != null)
+  // A show whose previews start inside the season window belongs in the same
+  // buckets as everything else: it IS a play or a musical, it IS or isn't a
+  // revival, and it is unambiguously opening this season (owner, 2026-08-13).
+  // Splitting it into a separate "in previews" list implied those facts were
+  // unknown when only the opening DATE is. The card shows its previews date.
+  const openingThisSeasonCards = [
+    ...openingThisSeason
+      .map(s => showBySlug.get(s.slug))
+      .filter((s): s is NonNullable<typeof s> => s != null),
+    ...previewsThisSeason,
+  ]
+    // Sort on the earliest date we actually have, so previews-only shows land
+    // in real chronological position instead of sorting first on an empty string.
+    .sort((a, b) =>
+      (a.openingDate || a.previewsStartDate || '').localeCompare(b.openingDate || b.previewsStartDate || ''))
     .map(s => serializeCard(s));
   // Grouped musical/play and new/revival, the shape the Tony show-level
   // categories take. Grouping is on facts we store (type, isRevival), NOT on
   // Tony eligibility — that's an Administration Committee ruling nobody has made
   // yet, which is what the disclaimer below the heading still says.
   const seasonGroups = groupShowsByTonyShape(openingThisSeasonCards);
-  const previewsThisSeasonCards = previewsThisSeason.map(s => serializeCard(s));
   const announcedNoDateCards = announcedNoDate.map(s => serializeCard(s));
+  const awaitingOpeningNight = previewsThisSeason.length;
 
   // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
   // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
@@ -746,10 +758,12 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <section className="mb-10">
             <h2 className="text-lg font-bold text-white mb-1">This season&apos;s Broadway shows</h2>
             <p className="text-sm text-gray-400 mb-6">
-              {openingThisSeason.length} show{openingThisSeason.length !== 1 ? 's' : ''} with a
-              confirmed {season.label} opening date, grouped the way the Tony show categories are.
-              Eligibility itself is not yet determined — the Tony Administration Committee rules on
-              that, and it hasn&apos;t. Scores appear once each show opens and reviews land.
+              {openingThisSeasonCards.length} show{openingThisSeasonCards.length !== 1 ? 's' : ''} scheduled
+              for the {season.label} season, grouped the way the Tony show categories are.
+              {awaitingOpeningNight > 0 && <> {awaitingOpeningNight} of them {awaitingOpeningNight === 1 ? 'has' : 'have'} a
+              previews date but no announced opening night yet.</>} Eligibility itself is not yet
+              determined — the Tony Administration Committee rules on that, and it hasn&apos;t.
+              Scores appear once each show opens and reviews land.
             </p>
             {seasonGroups.map(group => (
               <div key={group.key} className="mb-8 last:mb-0">
@@ -767,25 +781,11 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </section>
         )}
 
-        {/* Previews scheduled this season, opening night not announced/ingested yet. */}
-        {previewsThisSeason.length > 0 && !nominationsAnnounced && (
-          <section className="mb-10">
-            <h2 className="text-lg font-bold text-white mb-1">In previews this season</h2>
-            <p className="text-sm text-gray-400 mb-4">
-              {previewsThisSeason.length} more {previewsThisSeason.length === 1 ? 'show is' : 'shows are'} scheduled
-              to begin performances in the {season.label} season. Opening night sets Tony eligibility, and
-              we don&apos;t have a confirmed one for these yet.
-            </p>
-            {/* Not grouped by Tony shape: with no opening night these can't be
-                placed in a season, let alone a category, so a "New Musicals"
-                heading would imply a placement we explicitly don't have. */}
-            <div className="space-y-3" role="list" aria-label="In previews this season">
-              {previewsThisSeasonCards.map((show, i) => (
-                <ShowListCard key={show.id} show={show} index={i} scoreMode="critics" />
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Previews-dated shows used to live in their own "In previews this season"
+            section here. They now fold into the grouped season block above: a show
+            with a previews date IS a play or a musical and IS or isn't a revival,
+            and it is unambiguously opening this season — only the opening DATE is
+            unknown, which its card states. Owner, 2026-08-13. */}
 
         {/* Announced with no opening date. Deliberately NOT titled "this season": with no
             date we genuinely cannot place a show in a Tony season window, so claiming these

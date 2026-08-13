@@ -210,9 +210,23 @@ const ShowListCard = memo(function ShowListCard({
       </div>
       <p className="text-sm text-gray-400 mt-2.5 truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
-          <>Opens {formatOpeningDate(show.openingDate)}</>
+          // Show BOTH dates when we have both — a previews start is real,
+          // useful information, not a lesser substitute for opening night.
+          // Guarding on presence also stops the "Opens Jan 1970" that an
+          // unguarded formatOpeningDate(null) printed for every dateless
+          // upcoming show, here and on the homepage (owner, 2026-08-13).
+          <>
+            {show.previewsStartDate && <>Previews {formatOpeningDate(show.previewsStartDate)}</>}
+            {show.previewsStartDate && show.openingDate && ' · '}
+            {show.openingDate && <>Opens {formatOpeningDate(show.openingDate)}</>}
+            {!show.previewsStartDate && !show.openingDate && 'Dates TBA'}
+          </>
         ) : show.status === 'announced' ? (
-          <span className="text-blue-400">{show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</> : 'Announced — dates TBA'}</span>
+          <span className="text-blue-400">
+            {show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</>
+              : show.previewsStartDate ? <>Previews {formatOpeningDate(show.previewsStartDate)}</>
+              : 'Announced — dates TBA'}
+          </span>
         ) : show.status === 'closed' ? (
           <span className="text-orange-400">{(() => {
             if (!show.closingDate) return 'Closed';

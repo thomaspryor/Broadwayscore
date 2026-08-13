@@ -703,6 +703,15 @@ async function main() {
       if (show.category && show.category !== 'broadway') continue;
       if (!show.category && show.id && show.id.includes('-off-broadway-')) continue;
 
+      // No opening date means no Tony season — full stop. Without this guard
+      // `new Date(null).getFullYear()` is 1970, which matches the 24th ceremony,
+      // and epoch is before that ceremony's April cutoff, so every show still
+      // awaiting an announced opening night was written into awards.json as
+      // "shut out at the 1970 Tonys". Eight shows were carrying that claim,
+      // including four 2026-27 productions that have not opened yet
+      // (found 2026-08-13 when the same epoch surfaced as "Opens Jan 1970").
+      if (!show.openingDate) continue;
+
       const openYear = new Date(show.openingDate).getFullYear();
       // Check if show was eligible for a Tony season we scraped
       const eligibleYear = ceremonies.find(c =>
