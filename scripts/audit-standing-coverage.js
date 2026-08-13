@@ -58,6 +58,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { DECAY_DAYS: COVERAGE_EXPECTATION_DECAY_DAYS } = require('./lib/coverage-expectation');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -96,8 +97,14 @@ function computeSeasonWindows(shows, reviews, nowMs) {
   }
   const inWindowIds = new Set();
   for (const s of shows) {
-    if (!s || s.category !== 'broadway' || !s.openingDate) continue;
-    const season = seasons.find((w) => s.openingDate >= w.start && s.openingDate < w.end);
+    if (!s || s.category !== 'broadway') continue;
+    // Recency falls back openingDate -> previewsStartDate (scripts/lib/collection-priority.js) —
+    // this used to be a bare `!s.openingDate` skip, the same class of bug fixed in
+    // audit-show-review-gap.js: a live show stuck in previews with a null openingDate never
+    // entered the season window it should count towards.
+    const recencyDate = showRecencyKey(s);
+    if (recencyDate === NO_DATE_SENTINEL) continue;
+    const season = seasons.find((w) => recencyDate >= w.start && recencyDate < w.end);
     if (!season) continue;
     season.shows.push(s.id);
     inWindowIds.add(s.id);
