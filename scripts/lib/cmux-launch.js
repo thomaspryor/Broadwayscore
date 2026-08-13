@@ -604,14 +604,26 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
     }
     if (outcome.action === 'retry') {
-      // Only reachable when NOTHING of this attempt is running (injection
-      // never ran, or the wrapper died) — the machine never returns 'retry'
-      // while the wrapper lives, which is what stops the duplicate factory.
-      console.error(`[cmux-launch] attempt ${attempt} dead (${outcome.state}) — closing ${ws ? ws.ref : 'nothing'} and retrying`);
-      if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
-      survivingWs = null; // closed above — must never be adopted or journaled
-      sleepSec(2);
-      continue;
+      // DISPROVED 2026-08-13 (owner decision, Option A). The premise this
+      // branch was built on — "only reachable when NOTHING of this attempt is
+      // running" — is false, and the close below was destroying LIVE sessions.
+      //
+      // Reproduced on demand by scripts/probe-cmux-launch.js, twice, in
+      // daylight: a `touch M` payload returned injection-never-ran while the
+      // marker file existed (the command HAD run), and a `touch M; sleep 180`
+      // payload had attempt 1 return injection-never-ran and close the
+      // workspace, after which attempt 2 logged "command is RUNNING (wrapper
+      // process alive)". Same code, same machine, opposite verdicts seconds
+      // apart: the wrapper probe misses wrappers that exist.
+      //
+      // So this verdict cannot justify a destructive action. We keep the
+      // workspace and STOP relaunching. Dropping the retry is not optional —
+      // preserving the workspace while still relaunching is exactly the
+      // duplicate factory the old comment warned about (both tabs boot on the
+      // next foreground). A genuinely-dead tab now lingers until bsc-prune,
+      // which is strictly cheaper than killing a live session's work.
+      console.error(`[cmux-launch] attempt ${attempt} reported ${outcome.state} for ${ws ? ws.ref : 'nothing'} — NOT closing and NOT relaunching (the probe is unreliable; see scripts/probe-cmux-launch.js). Leaving it for late-adopt.`);
+      break;
     }
     break; // 'fail' — keep survivingWs for the caller (and the late-adopt watch)
   }

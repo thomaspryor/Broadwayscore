@@ -41,7 +41,9 @@ const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
 
-const REPO = '/Users/tompryor/Broadwayscore';
+// Overridable so the probe can exercise a worktree's cmux-launch.js — otherwise
+// it would always test main's copy and silently "verify" the wrong code.
+const REPO = process.env.PROBE_REPO || '/Users/tompryor/Broadwayscore';
 const { launchCmuxSession } = require(path.join(REPO, 'scripts/lib/cmux-launch.js'));
 
 const stamp = Date.now();
@@ -61,7 +63,10 @@ const title = `ZZ-probe-${stamp}`;
       focus: true,
       // Replace the claude invocation entirely: we are testing the LAUNCH
       // mechanism, not claude. A bare touch is the cheapest possible payload.
-      commandOverride: `touch ${marker}; sleep 180`,
+      // Fast-exit payload: reliably triggers the injection-never-ran verdict,
+      // which is the branch under test. A long-lived payload sometimes gets
+      // detected on attempt 1 and never exercises it.
+      commandOverride: `touch ${marker}`,
       verifyTimeoutSec: 45,
       skipAuthPreflight: true,
     });
