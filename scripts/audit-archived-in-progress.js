@@ -102,7 +102,19 @@ function readArchivedWithMtime(dir) {
   return out;
 }
 
-/** Task ids that appear anywhere in the dispatch ledger — i.e. really launched. */
+// Events that mean "this task actually got launched". The ledger also carries
+// purely operational rows keyed by taskId — `prune`, `prune-closed`, `vanished`,
+// `remapped`, `stall-sweep-attempted` — and 2,351 of its rows are `prune`
+// alone. Counting those as evidence of a start would mark a never-started task
+// as "started then lost" and route it into the wrong recovery bucket (Codex
+// review, 2026-08-12). Keep this list to events emitted by a dispatcher at or
+// after launch.
+const START_EVENTS = new Set([
+  'launch', 'launch-failed', 'job-spawned', 'job-done', 'job-failed',
+  'job-orphaned', 'job-retried', 'watchdog-resurrect', 'watchdog-redispatch',
+]);
+
+/** Task ids the dispatch ledger shows a real launch attempt for. */
 function dispatchedTaskIds(repoRoot) {
   const ids = new Set();
   const p = path.join(repoRoot, 'data', 'audit', 'dispatch-ledger.jsonl');
@@ -112,7 +124,10 @@ function dispatchedTaskIds(repoRoot) {
     if (!line.trim()) continue;
     try {
       const e = JSON.parse(line);
-      if (e && e.taskId != null) ids.add(String(e.taskId));
+      // String() both sides: ledger taskIds are strings ("1355"), task-store
+      // ids can be numeric, and === across those types would classify every
+      // started task as never-started.
+      if (e && e.taskId != null && START_EVENTS.has(e.event)) ids.add(String(e.taskId));
     } catch { /* skip malformed line */ }
   }
   return ids;
@@ -151,4 +166,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { classifyTrapped, readArchivedWithMtime, dispatchedTaskIds, tasksDir };
+module.exports = { classifyTrapped, readArchivedWithMtime, dispatchedTaskIds, tasksDir, START_EVENTS };

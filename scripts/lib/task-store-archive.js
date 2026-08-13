@@ -53,6 +53,10 @@ const DEFAULT_STALE_IN_PROGRESS_MS = 7 * 24 * 60 * 60 * 1000; // 7 days untouche
 const DEFAULT_PENDING_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days untouched — card #1351
 const DEFAULT_BSC_DAILY_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days — card #1351, digest regenerates these daily
 const BSC_DAILY_TITLE_RE = /^BSC Daily:/;
+// Arms the reclaim WRITE pass (see archiveCompletedTasks for why it is off by
+// default). Removing in_progress from archival is unconditional — that half is
+// subtractive and always safe.
+const RECLAIM_ENV = 'TASK_RECLAIM_ENABLED';
 
 /**
  * Pure selection: which tasks are safe + eligible to archive.
@@ -237,35 +241,65 @@ function archiveCompletedTasks(dir, opts = {}) {
     // Reclaim pass FIRST, and inside the same lock: a stale in_progress task
     // goes back to `pending` in the live dir rather than being archived while
     // still claiming to be in progress (the two-timer deadlock — see
-    // selectArchivable's docstring). Running before archival matters: a task
-    // reclaimed to pending here becomes eligible for the pending populations
-    // only on a LATER run, which is deliberate. It gets at least one full
-    // cycle back in the visible pool before anything can age it out, so the
-    // fix cannot degenerate into "reclaim then immediately archive anyway".
-    for (const id of selectReclaimableInProgress(tasks, { ...opts, now })) {
+    // selectArchivable's docstring).
+    //
+    // DEFAULT OFF (RECLAIM_ENV). Removing in_progress from the archive
+    // population is purely subtractive — it stops the trapped population from
+    // GROWING and cannot surprise any consumer. Writing status:'pending' onto
+    // ~61 live tasks is not subtractive, and the Codex review of this change
+    // named two consumer effects that need their own review first:
+    //   - bsc-prune.js:260-269 treats a PENDING task whose auto-tab died as
+    //     "never booted" and redispatches it headlessly, while leaving
+    //     in_progress to reconcile. A bulk reclaim could therefore trigger a
+    //     wave of unattended dispatches — a spend consequence, and both files
+    //     are the critical dispatch tier under CLAUDE.md §18.
+    //   - notion-tasks-sync.js:65-72/107-119 maps a Notion "In progress" card
+    //     to in_progress and mergeStatus preserves it, so a later card update
+    //     re-sticks a reclaimed task. Reclaim is not durable until that
+    //     interaction is handled.
+    // So the mechanism lands tested and reviewable, and arming it is a separate
+    // decision: set TASK_RECLAIM_ENABLED=1.
+    const reclaimEnabled = opts.reclaimEnabled ?? process.env[RECLAIM_ENV] === '1';
+    for (const id of reclaimEnabled ? selectReclaimableInProgress(tasks, { ...opts, now }) : []) {
       const livePath = path.join(dir, `${id}.json`);
-      let parsed, liveStat;
+      // COMPARE-AND-MERGE, not read-then-clobber (Codex P0). The archive path
+      // only ever READS then unlinks, so it could never lose a concurrent
+      // write; this reclaim WRITES, and the archiver's lock serializes archiver
+      // runs against each other only (see acquireLock below) — never against
+      // TaskCreate/TaskUpdate, which other sessions run constantly. Reading
+      // the file a second time here and building the flip from THAT content
+      // means a concurrent update landing between the scan and now survives:
+      // we change exactly one field on top of whatever is currently on disk.
+      let fresh, freshStat;
       try {
-        parsed = JSON.parse(fs.readFileSync(livePath, 'utf8'));
-        liveStat = fs.statSync(livePath);
+        fresh = JSON.parse(fs.readFileSync(livePath, 'utf8'));
+        freshStat = fs.statSync(livePath);
       } catch { skipped.push({ id, reason: 'live file vanished before reclaim' }); continue; }
-      // Re-verify against the live file, same as the archival move below: a
-      // concurrent TaskUpdate could have changed status or resumed work
-      // between the scan and now.
-      if (parsed.status !== 'in_progress') { skipped.push({ id, reason: `status changed to ${parsed.status} before reclaim` }); continue; }
+      if (fresh.status !== 'in_progress') { skipped.push({ id, reason: `status changed to ${fresh.status} before reclaim` }); continue; }
       const staleMs = opts.staleInProgressMs ?? DEFAULT_STALE_IN_PROGRESS_MS;
-      if (now - liveStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
+      if (now - freshStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
       const next = {
-        ...parsed,
+        ...fresh,
         status: 'pending',
         // Breadcrumbs, not a silent flip: whatever reads this next needs to
         // know it was reclaimed by a timer rather than genuinely re-queued by
         // a human or a dispatcher.
         inProgressReclaimedAt: new Date(now).toISOString(),
-        inProgressReclaimReason: `no activity for ${Math.floor((now - liveStat.mtimeMs) / (24 * 60 * 60 * 1000))}d while in_progress — the claiming session died without flipping status`,
+        inProgressReclaimReason: `no activity for ${Math.floor((now - freshStat.mtimeMs) / (24 * 60 * 60 * 1000))}d while in_progress — the claiming session died without flipping status`,
       };
       const tmp = `${livePath}.tmp-${crypto.randomBytes(4).toString('hex')}`;
       fs.writeFileSync(tmp, `${JSON.stringify(next, null, 2)}\n`);
+      // Final mtime CAS: if anything wrote between our re-read and here, drop
+      // this task rather than clobber. Residual window is the same one every
+      // writer in this store already has; the difference is we no longer
+      // reintroduce fields we read seconds earlier.
+      let stillSame = false;
+      try { stillSame = fs.statSync(livePath).mtimeMs === freshStat.mtimeMs; } catch { stillSame = false; }
+      if (!stillSame) {
+        try { fs.unlinkSync(tmp); } catch { /* tmp already gone */ }
+        skipped.push({ id, reason: 'live file changed mid-reclaim — left untouched rather than clobbered' });
+        continue;
+      }
       fs.renameSync(tmp, livePath);
       reclaimed.push(id);
     }

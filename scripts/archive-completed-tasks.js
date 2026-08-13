@@ -62,7 +62,11 @@ function main() {
     const reclaimIds = selectReclaimableInProgress(tasks, { now: Date.now() });
     console.log(`[archive-completed-tasks] DRY RUN — dir=${dir}`);
     console.log(`  ${ids.length} of ${tasks.length} task(s) would archive (${completedCount} completed, ${stalePendingCount} stale pending, ${bscDailyCount} stale BSC Daily): ${ids.join(', ') || '(none)'}`);
-    console.log(`  ${reclaimIds.length} stale in_progress task(s) would be RECLAIMED to pending (not archived): ${reclaimIds.join(', ') || '(none)'}`);
+    // Say which of the two states this is: the write pass is default-off, so
+    // "would be reclaimed" without that caveat overstates what a real run does.
+    const armed = process.env.TASK_RECLAIM_ENABLED === '1';
+    console.log(`  ${reclaimIds.length} stale in_progress task(s) are reclaim-eligible${armed ? ' and the write pass is ARMED' : ' but the write pass is OFF (set TASK_RECLAIM_ENABLED=1 to arm)'}: ${reclaimIds.join(', ') || '(none)'}`);
+    console.log('  (in_progress tasks are never archived either way — that is the deadlock fix.)');
     return;
   }
 
