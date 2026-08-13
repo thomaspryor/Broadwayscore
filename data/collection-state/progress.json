@@ -22,7 +22,12 @@
     "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
     "the-car-man-west-end-2026/balletcoforum--unknown.json",
     "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
-    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json"
+    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+    "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+    "the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
@@ -150,7 +155,12 @@
     "the-enormous-crocodile-west-end-2026/jadar--unknown.json",
     "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json",
     "the-enormous-crocodile-west-end-2026/theatre-weekly--unknown.json",
-    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json"
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "hungry-women-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/theatermania--unknown.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -166,10 +176,16 @@
       "the-importance-of-being-oscar-off-west-end-2026/british-theatre--keith-mckenna.json",
       "how-the-other-half-loves-west-end-2026/south-london--unknown.json",
       "how-the-other-half-loves-west-end-2026/theatrecat--unknown.json",
-      "the-car-man-west-end-2026/balletcoforum--unknown.json"
+      "the-car-man-west-end-2026/balletcoforum--unknown.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json",
+      "the-winters-tale-off-broadway-2026/nytimes--alexis-soloski.json"
+    ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -177,7 +193,8 @@
       "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json"
     ],
     "scrapingbee": [
-      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -193,7 +210,7 @@
     ]
   },
   "startTime": "2026-08-13T04:58:55.584Z",
-  "lastProcessed": "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
   "log": [
     {
       "t": "2026-08-13T05:02:26.325Z",
@@ -205,6 +222,17 @@
       "t": "2026-08-13T05:02:27.087Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-13T06:39:43.614Z",
+      "event": "bb-session",
+      "session": "64e22bf8",
+      "url": "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-th"
+    },
+    {
+      "t": "2026-08-13T06:39:44.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

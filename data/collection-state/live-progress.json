@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-13T06:37:24.651Z",
-  "processed": 23,
-  "failed": 126,
-  "successRate": "15.4%",
+  "updatedAt": "2026-08-13T06:40:16.375Z",
+  "processed": 28,
+  "failed": 131,
+  "successRate": "17.6%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 4,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-13T05:02:26.325Z",
@@ -25,6 +25,17 @@
       "t": "2026-08-13T05:02:27.087Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-13T06:39:43.614Z",
+      "event": "bb-session",
+      "session": "64e22bf8",
+      "url": "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-th"
+    },
+    {
+      "t": "2026-08-13T06:39:44.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
