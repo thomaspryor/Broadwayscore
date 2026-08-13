@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-13T06:23:39.338Z",
+  "generatedAt": "2026-08-13T08:23:28.238Z",
   "windowDays": 1095,
-  "targets": 79,
-  "auditedThisRun": 33,
-  "carriedForward": 246,
+  "targets": 75,
+  "auditedThisRun": 22,
+  "carriedForward": 271,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 179,
-    "totalMissing": 1091,
+    "withGap": 181,
+    "totalMissing": 1094,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1183,
-    "totalRecoverable": 33,
-    "totalRecovered": 9
+    "totalFlaggedMisses": 1188,
+    "totalRecoverable": 34,
+    "totalRecovered": 11
   },
   "results": [
     {
@@ -3358,6 +3358,340 @@
       "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "title": "An American Daughter",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
+        "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
+        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
+        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+        "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+        "https://theaterlife.com/an-american-daughter-1-2/",
+        "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
+        "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/"
+      ],
+      "dirFiles": 9,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "one-minute-critic--lindsay-b-davis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1minutecritic.com/an-american-daughter-off-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--unknown.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://theaterlife.com/an-american-daughter-1-2/",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-life--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theaterlife.com/an-american-daughter-1-2/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--rachel-graham.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 89,
+        "byReason": {
+          "non-review-host": 21,
+          "aggregator-internal-nav": 48,
+          "not-http-url": 20
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~157227/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/"
+          },
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/"
+          },
+          {
+            "outletId": "theater-life",
+            "outlet": "theater-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterlife.com/an-american-daughter-1-2/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
+            "outletId": "times-square-chronicles",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
+            "outletId": "one-minute-critic",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+            "outletId": "nyt-theater",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://theaterlife.com/an-american-daughter-1-2/",
+            "outletId": "theater-life",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "anansi-the-spider-west-end-2026",
       "title": "Anansi the Spider",
       "openingDate": "2026-08-15",
@@ -3390,7 +3724,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T14:20:51.359Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -4573,7 +4907,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -8182,6 +8516,41 @@
       "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
+      "showId": "big-wheel-at-electric-summer-off-west-end-2026",
+      "title": "Big Wheel At Electric Summer",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "birthright-off-broadway-2026",
       "title": "Birthright",
       "openingDate": "2026-06-24",
@@ -8846,6 +9215,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-12T22:34:23.403Z"
+    },
+    {
+      "showId": "bridget-everett-and-patti-lupone-knockouts-off-broadway-2026",
+      "title": "Bridget Everett & Patti LuPone: Knockouts",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -19376,27 +19780,17 @@
         "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
         "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-        "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-        "https://www.londontheatredirect.com/news/death-note-barbican-review/amp"
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
       ],
       "dirFiles": 41,
       "dirClean": 24,
       "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "knownOutletId": "playbill",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
         {
           "host": "everything-theatre.co.uk",
           "count": 1
@@ -19406,7 +19800,15 @@
           "count": 1
         },
         {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
           "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
           "count": 1
         },
         {
@@ -19419,6 +19821,10 @@
         },
         {
           "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stanservice.substack.com",
           "count": 1
         },
         {
@@ -19442,8 +19848,7 @@
               "flag": "clean",
               "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
@@ -19460,26 +19865,7 @@
               "flag": "clean",
               "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
             }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-            }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -19526,116 +19912,22 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 16,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 109,
+        "count": 91,
         "byReason": {
-          "aggregator-internal-nav": 50,
-          "not-http-url": 20,
-          "non-review-host": 36,
           "roundup-page": 2,
-          "ticketing-listing": 1
+          "non-review-host": 19,
+          "aggregator-internal-nav": 50,
+          "not-http-url": 20
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "outletId": "playbill",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~155647/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
-          "host": "thestage.co.uk",
-          "file": "thestage--ghenet-pinderhughes-randall.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "playbill",
-            "outlet": "playbill",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london"
-          },
           {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
@@ -19649,13 +19941,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
           }
         ],
         "suppressedMissing": [],
@@ -19739,43 +20024,6 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/death-note-barbican-review/amp",
-            "outletId": "londontheatredirect.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-            "outletId": "playbill",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -19788,19 +20036,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T04:13:42.713Z"
           }
         ],
-        "liveCount": 17,
-        "candidateCount": 21
+        "liveCount": 13,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -26536,6 +26777,41 @@
       "computedAt": "2026-08-08T00:13:56.555Z"
     },
     {
+      "showId": "father-time-off-broadway-2026",
+      "title": "Father Time",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "fear-and-wonder-off-broadway-2026",
       "title": "Fear & Wonder",
       "openingDate": "2026-06-08",
@@ -31831,6 +32107,41 @@
       "computedAt": "2026-08-03T16:48:58.521Z"
     },
     {
+      "showId": "grayson-the-musical-a-first-look-off-west-end-2026",
+      "title": "Grayson the Musical: A First Look",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
       "title": "Grown-Up Nights! Jim Henson's Fraggle Rock: Back to the Rock LIVE",
       "openingDate": null,
@@ -35314,6 +35625,41 @@
         "candidateCount": 106
       },
       "computedAt": "2026-08-12T16:45:56.032Z"
+    },
+    {
+      "showId": "hamlet-by-william-shakespeare-off-broadway-2026",
+      "title": "Hamlet by William Shakespeare",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "harry-connick-jr-off-broadway-2026",
@@ -42097,8 +42443,95 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"ISLA\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ISLA\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ISLA WP Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ISLA WP Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ISLA WP Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 22,
+        "byReason": {
+          "roundup-page": 1,
+          "non-review-host": 16,
+          "aggregator-internal-nav": 2,
+          "venue-production-page": 3
+        }
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
+      "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
+      "title": "Jack and the Beanstalk - Theatre on Kew",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
         "ran": false,
-        "reason": "cooldown"
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
         "count": 0,
@@ -42113,7 +42546,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -49503,6 +49936,55 @@
       "computedAt": "2026-08-03T15:54:33.136Z"
     },
     {
+      "showId": "malory-towers-off-west-end-2026",
+      "title": "Malory Towers",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.hamhigh.co.uk/news/26410954.enid-blytons-malory-towers-review-alexandra-palace-theatre/",
+          "host": "hamhigh.co.uk",
+          "file": "hampstead-highgate-express--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "manic-street-creature-west-end-2026",
       "title": "Manic Street Creature",
       "openingDate": "2026-03-10",
@@ -49688,6 +50170,41 @@
         "candidateCount": 7
       },
       "computedAt": "2026-08-07T21:40:26.604Z"
+    },
+    {
+      "showId": "maria-bamford-soundly-unstable-off-broadway-2026",
+      "title": "Maria Bamford: Soundly Unstable",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -50007,33 +50524,135 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://donyc.com/events/2026/8/6/marlise-tickets"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+          "host": "donyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Marlise\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Marlise\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Marlise\" review players",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Marlise The Players Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Marlise The Players Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Marlise The Players Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 39,
+        "byReason": {
+          "non-review-host": 26,
+          "aggregator-internal-nav": 7,
+          "venue-production-page": 3,
+          "non-review-path": 3
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~157110/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "donyc.com",
+            "outlet": "donyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
+            "outletId": "donyc.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-08-13T06:23:39.338Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -64387,6 +65006,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "pepper-slit-live-in-her-living-room-off-broadway-2026",
+      "title": "Pepper Slit: Live In Her Living Room",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "pied-a-terre-off-broadway-2026",
       "title": "Pied à Terre",
       "openingDate": "2026-03-04",
@@ -67386,6 +68040,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-12T19:54:19.094Z"
+    },
+    {
+      "showId": "roller-rink-at-electric-summer-off-west-end-2026",
+      "title": "Roller Rink At Electric Summer",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
@@ -77098,6 +77787,41 @@
       "computedAt": "2026-08-03T10:14:58.194Z"
     },
     {
+      "showId": "steve-burns-alive-off-broadway-2026",
+      "title": "Steve Burns Alive",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
       "showId": "stevie-a-life-in-the-key-of-songs-off-broadway-2026",
       "title": "Stevie: A Life in the Key of Songs",
       "openingDate": null,
@@ -79887,6 +80611,41 @@
         "candidateCount": 12
       },
       "computedAt": "2026-08-03T16:48:58.521Z"
+    },
+    {
+      "showId": "swan-lake-off-broadway-2026",
+      "title": "Swan Lake",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "tango-after-dark-west-end-2026",
@@ -84527,7 +85286,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -90463,18 +91222,29 @@
         "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
         "https://culturesauce.com/the-pass-off-broadway-review/",
         "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
+        "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/",
         "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review",
         "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-        "https://1minutecritic.substack.com/p/pass-la-mama-review-2026",
-        "http://www.theaterscene.net/plays/offbway-plays/the-pass/tony-marinelli/"
+        "https://1minutecritic.substack.com/p/pass-la-mama-review-2026"
       ],
       "dirFiles": 10,
       "dirClean": 7,
       "inReviewsJson": 7,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/",
+          "host": "ctvoice.com",
+          "knownOutletId": "ctvoice",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
           "count": 1
         },
         {
@@ -90526,7 +91296,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -90562,19 +91332,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 332,
+        "count": 329,
         "byReason": {
-          "not-http-url": 67,
+          "roundup-page": 2,
           "non-review-host": 34,
           "aggregator-internal-nav": 223,
-          "non-review-path": 3,
-          "roundup-page": 3,
-          "merch-store": 1,
-          "ticketing-reseller": 1
+          "not-http-url": 67,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [
@@ -90586,9 +91354,31 @@
           "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
         }
       ],
+      "ingestResults": [
+        {
+          "url": "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/",
+          "host": "ctvoice.com",
+          "outletId": "ctvoice",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "ctvoice",
+            "outlet": "ctvoice",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/"
+          },
           {
             "outletId": "nytg",
             "outlet": "nytg",
@@ -90630,10 +91420,11 @@
             "firstSeenAt": "2026-08-11T11:35:17.621Z"
           },
           {
-            "url": "http://www.theaterscene.net/plays/offbway-plays/the-pass/tony-marinelli/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T11:35:17.621Z"
+            "url": "https://ctvoice.com/2026/08/12/off-broadway-review-the-pass/",
+            "outletId": "ctvoice",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review",
@@ -90643,10 +91434,10 @@
             "firstSeenAt": "2026-08-11T11:35:17.621Z"
           }
         ],
-        "liveCount": 6,
+        "liveCount": 5,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-12T14:20:51.359Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
@@ -103574,12 +104365,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 32,
         "byReason": {
-          "non-review-host": 21,
-          "aggregator-internal-nav": 6,
-          "non-review-path": 3,
-          "venue-production-page": 1
+          "non-review-host": 22,
+          "aggregator-internal-nav": 7,
+          "venue-production-page": 1,
+          "non-review-path": 1,
+          "feature-not-review": 1
         }
       },
       "dedupedVariants": [],
@@ -103607,7 +104399,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-12T14:20:51.359Z"
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -104119,6 +104911,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "yes-to-the-unknown-a-night-with-gloria-steinem-off-broadway-2026",
+      "title": "YES TO THE UNKNOWN: A Night with Gloria Steinem",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
       "showId": "youth-in-flames-off-broadway-2026",
