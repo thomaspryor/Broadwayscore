@@ -149,7 +149,21 @@ export default function RootLayout({
             </nav>
           </header>
           <ProGateProvider>
-            <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
+            {/* tabIndex={-1} + scroll-mt-16: the skip link above was a DEAD
+                CONTROL (ux-walkthrough dead-control detector, mobile__diary_grid,
+                card #325). The anchor scrolled to #main-content, but <main> was
+                not focusable, so keyboard focus never moved, and it sat under the
+                64px fixed header (body pt-16 / header h-16), so on short pages the
+                scroll was a no-op too — activating it changed nothing. Making the
+                landmark focusable is the canonical skip-link pattern: focus moves
+                even when there is nothing to scroll. */}
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="min-h-[calc(100vh-200px)] scroll-mt-16 focus:outline-none"
+            >
+              {children}
+            </main>
           </ProGateProvider>
         </UserProviders>
         <footer className="border-t border-white/5 mt-6 sm:mt-8">

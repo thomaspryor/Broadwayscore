@@ -363,11 +363,11 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-12T13:57:47.055Z",
+      "lastSeen": "2026-08-13T13:57:50.484Z",
       "lastNotifiedAt": "2026-08-10T13:50:53.428Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -715,14 +715,15 @@
       "silentRefires": 7
     },
     "arm-yield:outlet:theatermania": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "TheaterMania (reviews collected) has stopped updating (3 days)",
       "firstSeen": "2026-08-12T13:57:47.057Z",
       "lastSeen": "2026-08-12T13:57:47.057Z",
       "lastNotifiedAt": "2026-08-12T13:57:47.057Z",
       "notifyCount": 1,
-      "cardId": null
+      "cardId": null,
+      "resolvedAt": "2026-08-13T13:57:50.493Z"
     },
     "sd-circuit-breaker": {
       "status": "open",
@@ -799,12 +800,12 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on How the Other Half Loves",
       "firstSeen": "2026-08-13T10:30:56.123Z",
-      "lastSeen": "2026-08-13T13:51:37.139Z",
+      "lastSeen": "2026-08-13T14:02:57.000Z",
       "lastNotifiedAt": "2026-08-13T10:30:56.123Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-stale-upcoming-tag-marlise-off-broadway-2026": {
       "status": "open",
@@ -836,12 +837,23 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-08-13T12:11:11.913Z",
-      "lastSeen": "2026-08-13T13:52:45.586Z",
+      "lastSeen": "2026-08-13T14:02:57.091Z",
       "lastNotifiedAt": "2026-08-13T12:11:11.913Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 3
+    },
+    "opening-night-publish-date-pre-opening:missing:how-the-other-half-loves-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on How the Other Half Loves",
+      "firstSeen": "2026-08-13T14:02:56.999Z",
+      "lastSeen": "2026-08-13T14:02:56.999Z",
+      "lastNotifiedAt": "2026-08-13T14:02:56.999Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

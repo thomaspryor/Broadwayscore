@@ -2531,6 +2531,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/audit-workflow-hygiene.js
 
+      - name: Audit — opening-night-broadcast node install runs before checklist_gate
+        # #1407: checklist_gate used to run opening-night-checklist.js before
+        # setup-node/npm ci, so node_modules didn't exist and any script
+        # needing an npm package (cheerio) crashed with MODULE_NOT_FOUND —
+        # the gate then failed closed on that crash, blocking every
+        # broadcast. Keeps the fixed ordering from regressing.
+        run: node scripts/assert-broadcast-step-order.js
+
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
         # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
         # timeout-minutes <= 35 and BD/SB secrets invoking a script whose per-item

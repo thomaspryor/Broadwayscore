@@ -72,6 +72,24 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # #1407: this used to be a raw actions/setup-node@v5 + `npm ci` pair
+      # sitting right before "Sync subscribers" (~line 556), well AFTER
+      # checklist_gate. node_modules didn't exist yet when checklist_gate ran
+      # opening-night-checklist.js, so any script in its require chain
+      # needing an npm package (cheerio, via scripts/lib/page-validator.js <-
+      # scripts/gather-reviews.js <- scripts/opening-night-checklist.js)
+      # crashed with MODULE_NOT_FOUND — and the gate fails closed on a crash
+      # (correct for a real QA failure), so it blocked every broadcast on an
+      # infra bug that had nothing to do with QA. Same bug class as task
+      # #1073 (opening-night-checklist.yml), fixed there the same way:
+      # switch to the shared composite (used by every other workflow in this
+      # repo) and run it right after checkout, before any script that needs
+      # node_modules. Guarded against regressing by
+      # scripts/assert-broadcast-step-order.js (test.yml Lint Workflows).
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
       - name: Check recovery hold marker
         run: |
           if [ -f data/audit/recovery-active.marker ]; then
@@ -552,15 +570,6 @@ jobs:
           fi
           git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
           bash scripts/lib/push-with-retry.sh
-
-      - uses: actions/setup-node@v5
-        if: steps.check.outputs.pending_shows != ''
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        if: steps.check.outputs.pending_shows != ''
-        run: npm ci
 
       - name: Sync subscribers (Formspree → local)
         if: steps.check.outputs.pending_shows != ''

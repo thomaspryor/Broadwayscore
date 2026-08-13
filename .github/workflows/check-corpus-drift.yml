@@ -60,6 +60,27 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Auto-heal cast-changes.json before the drift check
+        # audit-cast-changes.js --write repairs stale closure dates / collapsed
+        # departures / dedupes WITHOUT needing a fresh scrape — it only reads
+        # shows.json (checked out above) + the existing cast-changes.json.
+        # update-cast-changes.yml's full scrape cron runs Wed/Sat only, but
+        # shows.json's closingDate changes daily, so this DAILY monitor kept
+        # flagging the same auto-healable staleness the twice-weekly write
+        # hadn't caught up to yet (task #805/#434). Running --write here closes
+        # that gap for free (no scrape cost, no new secrets).
+        # Non-blocking: a heal failure must not fail a monitoring job.
+        continue-on-error: true
+        run: |
+          node scripts/audit-cast-changes.js --write
+          if git status --porcelain data/cast-changes.json | grep -q .; then
+            git add data/cast-changes.json
+            git commit -m "chore: Auto-heal cast-changes.json (corpus-drift self-heal) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Deepen history for churn-merge-coverage audit
         # audit-churn-merge-coverage.js (run by check-corpus-drift.js) measures
