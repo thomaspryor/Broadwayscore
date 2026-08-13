@@ -701,47 +701,6 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
-  // Awaiting-URL-correction-refetch guard — the ROOT-CAUSE fix for the #483
-  // drain→rebuild→re-flag loop that kept `audit-stale-flag-after-url-correction
-  // --gate` red on main for 24h+ across two sessions.
-  //
-  // A record whose URL was corrected but whose body has not been refetched still
-  // carries the OLD article's publishDate. Every date-derived guard treats that
-  // stale date as evidence and stamps wrongProduction — recreating exactly what
-  // the gate clears. Drain and re-flag then chase each other forever.
-  //
-  // Fixing this per-producer does not work and has now failed twice:
-  //   2026-08-13  fixed scripts/flag-wrong-production-by-date.js  → red again same evening
-  //   2026-08-13  fixed rebuild-all-reviews.js's inline copy      → this guard exists so there is no third round
-  // At least 5 scripts set these flags and none consulted the breadcrumb; a 6th
-  // added next month would reopen it. safeWriteReview is the ENFORCED single
-  // write path (test.yml:2967 "Check scripts route review-texts writes through
-  // safeWriteReview"), so an invariant here binds every producer, present and
-  // future, without any of them having to remember.
-  //
-  // Explicit operator overrides still pass — a human asserting wrongProduction
-  // on a mid-correction record (e.g. the Equus 2019-Trafalgar-URL files) is a
-  // judgement about the CONTENT, not a date-derived inference.
-  // Lazy require: stale-flag-after-url-correction → wrongprod-replacement-preserve
-  // → PROTECTED_FIELDS in THIS module, so a top-level import is a require cycle
-  // that leaves PROTECTED_FIELDS undefined and breaks every review write. Same
-  // reason the google-redirect unwrap above requires ./scraper lazily.
-  const { isAwaitingUrlCorrectionRefetch } = require('./stale-flag-after-url-correction');
-  if (newData && isAwaitingUrlCorrectionRefetch(newData)) {
-    const operatorAsserted = newData.wrongProductionOverride === true ||
-      newData.wrongShowManualClear === true ||
-      newData.humanReviewedWrongProduction === true;
-    if (!operatorAsserted) {
-      for (const flag of ['wrongProduction', 'wrongShow']) {
-        if (newData[flag] === true) {
-          console.warn(`[awaiting-refetch-guard] ${path.basename(filePath)}: dropped ${flag}=true — record is mid-URL-correction, publishDate still describes the old article (not evidence). Re-evaluate after the refetch lands.`);
-          newData = { ...newData, [flag]: false };
-          delete newData[`${flag}Note`];
-        }
-      }
-    }
-  }
-
   // Temporal byline guard — refuse to write attributions to retired/deceased
   // critics for articles dated past their last-active date.
   // (Soft warnings — like Brantley freelance pieces — pass through with a log.)
