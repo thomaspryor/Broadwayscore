@@ -30,7 +30,7 @@ const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  selectArchivable, loadTasksWithMtime, archiveCompletedTasks, BSC_DAILY_TITLE_RE,
+  selectArchivable, selectReclaimableInProgress, loadTasksWithMtime, archiveCompletedTasks, BSC_DAILY_TITLE_RE,
 } = require('./lib/task-store-archive.js');
 
 const USAGE = `archive-completed-tasks — move tasks completed >24h ago, in_progress >7d untouched, pending >30d untouched, or 'BSC Daily:' pending >7d untouched, to archive/.
@@ -57,17 +57,23 @@ function main() {
     const byId = new Map(tasks.map((t) => [t.id, t]));
     const isBscDaily = (t) => typeof t?.subject === 'string' && BSC_DAILY_TITLE_RE.test(t.subject);
     const completedCount = ids.filter((id) => byId.get(id)?.status === 'completed').length;
-    const staleInProgressCount = ids.filter((id) => byId.get(id)?.status === 'in_progress').length;
     const bscDailyCount = ids.filter((id) => byId.get(id)?.status === 'pending' && isBscDaily(byId.get(id))).length;
-    const stalePendingCount = ids.length - completedCount - staleInProgressCount - bscDailyCount;
+    const stalePendingCount = ids.length - completedCount - bscDailyCount;
+    const reclaimIds = selectReclaimableInProgress(tasks, { now: Date.now() });
     console.log(`[archive-completed-tasks] DRY RUN — dir=${dir}`);
-    console.log(`  ${ids.length} of ${tasks.length} task(s) would archive (${completedCount} completed, ${staleInProgressCount} stale in_progress, ${stalePendingCount} stale pending, ${bscDailyCount} stale BSC Daily): ${ids.join(', ') || '(none)'}`);
+    console.log(`  ${ids.length} of ${tasks.length} task(s) would archive (${completedCount} completed, ${stalePendingCount} stale pending, ${bscDailyCount} stale BSC Daily): ${ids.join(', ') || '(none)'}`);
+    // Say which of the two states this is: the write pass is default-off, so
+    // "would be reclaimed" without that caveat overstates what a real run does.
+    const armed = process.env.TASK_RECLAIM_ENABLED === '1';
+    console.log(`  ${reclaimIds.length} stale in_progress task(s) are reclaim-eligible${armed ? ' and the write pass is ARMED' : ' but the write pass is OFF (set TASK_RECLAIM_ENABLED=1 to arm)'}: ${reclaimIds.join(', ') || '(none)'}`);
+    console.log('  (in_progress tasks are never archived either way — that is the deadlock fix.)');
     return;
   }
 
-  const { archived, skipped, bytesFreed } = archiveCompletedTasks(dir, { now: Date.now() });
+  const { archived, reclaimed, skipped, bytesFreed } = archiveCompletedTasks(dir, { now: Date.now() });
   console.log(`[archive-completed-tasks] dir=${dir}`);
   console.log(`  archived: ${archived.length} (${bytesFreed} bytes freed from the live dir)`);
+  console.log(`  reclaimed to pending: ${reclaimed.length}${reclaimed.length ? ` (${reclaimed.join(', ')})` : ''}`);
   if (skipped.length) {
     console.log(`  skipped: ${skipped.length}`);
     for (const s of skipped) console.log(`    #${s.id}: ${s.reason}`);

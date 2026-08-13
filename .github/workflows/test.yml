@@ -1728,6 +1728,12 @@ on:
       - 'scripts/archive-completed-tasks.js'
       - 'scripts/lib/task-store-archive.js'
       - 'scripts/lib/task-store-archive.test.mjs'
+      # Read-only report on the tasks the archiver deadlock trapped inside
+      # archive/ while they still said in_progress (86 of 146 on 2026-08-12).
+      # Colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-archived-in-progress.js'
+      - 'scripts/lib/audit-archived-in-progress.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
