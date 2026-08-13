@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-13T04:13:42.713Z",
+  "generatedAt": "2026-08-13T06:23:39.338Z",
   "windowDays": 1095,
-  "targets": 87,
-  "auditedThisRun": 26,
-  "carriedForward": 221,
+  "targets": 79,
+  "auditedThisRun": 33,
+  "carriedForward": 246,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 174,
-    "totalMissing": 1059,
+    "withGap": 179,
+    "totalMissing": 1091,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1171,
-    "totalRecoverable": 32,
-    "totalRecovered": 7
+    "totalFlaggedMisses": 1183,
+    "totalRecoverable": 33,
+    "totalRecovered": 9
   },
   "results": [
     {
@@ -133,6 +133,113 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "73-seconds-off-broadway-2026",
+      "title": "73 seconds",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
+        "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
+      ],
+      "dirFiles": 3,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--deirdre-donovan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
+            "outletId": "theater-scene",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds",
+            "outletId": "off-off-online",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -4399,6 +4506,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "armory-public-tours-off-broadway-2026",
+      "title": "Armory Public Tours",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "as-you-like-it-globe-west-end-2026",
       "title": "As You Like It - Globe",
       "openingDate": "2026-08-14",
@@ -4967,6 +5109,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "barbarians-v-wales-double-header-off-west-end-2026",
+      "title": "Barbarians v Wales Double Header",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "barcelona-west-end-2024",
       "title": "Barcelona",
       "openingDate": "2024-10-30",
@@ -5000,6 +5177,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-10T14:22:04.271Z"
+    },
+    {
+      "showId": "be-like-blippi-off-west-end-2026",
+      "title": "Be Like Blippi",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "beauty-freak-off-broadway-2026",
@@ -9184,6 +9396,345 @@
         "candidateCount": 11
       },
       "computedAt": "2026-08-03T12:09:29.406Z"
+    },
+    {
+      "showId": "building-the-wall-off-broadway-2026",
+      "title": "Building The Wall",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Robert-Schenkkans-BUILDING-THE-WALL-Opens-Off-Broadway-20170526"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/05/24/theater/building-the-wall-review.html",
+        "https://www.timeout.com/newyork/theater/building-the-wall",
+        "http://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/",
+        "http://www.hollywoodreporter.com/review/building-wall-theater-review-1007238",
+        "http://www.nydailynews.com/entertainment/theater-arts/trump-inspired-building-wall-theater-review-article-1.3193325",
+        "http://www.thewrap.com/building-wall-theater-review-view-post-trump-america-powerful-preposterous/",
+        "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323",
+        "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602",
+        "http://www.theatermania.com/off-broadway/reviews/building-the-wall_81201.html"
+      ],
+      "dirFiles": 8,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://www.thewrap.com/building-wall-theater-review-view-post-trump-america-powerful-preposterous/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2017/05/24/theater/building-the-wall-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2017/05/24/theater/building-the-wall-review.html?_r=0"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/building-the-wall",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/building-the-wall"
+            }
+          ]
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--frank-rizzo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/building-wall-theater-review-1007238",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--frank-scheck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/building-wall-theater-review-1007238"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/trump-inspired-building-wall-theater-review-article-1.3193325",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/trump-inspired-building-wall-theater-review-article-1.3193325"
+            }
+          ]
+        },
+        {
+          "url": "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--terry-teachout.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602"
+            }
+          ]
+        },
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/building-the-wall_81201.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatermania.com/off-broadway/reviews/building-the-wall_81201.html"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 301,
+        "byReason": {
+          "not-http-url": 59,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 224,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "http://www.thewrap.com/building-wall-theater-review-view-post-trump-america-powerful-preposterous/",
+          "host": "thewrap.com",
+          "outletId": "thewrap",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thewrap.com/building-wall-theater-review-view-post-trump-america-powerful-preposterous/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2017/05/24/theater/building-the-wall-review.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/building-the-wall"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/building-wall-theater-review-1007238"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/trump-inspired-building-wall-theater-review-article-1.3193325"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theatermania.com/off-broadway/reviews/building-the-wall_81201.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "http://www.thewrap.com/building-wall-theater-review-view-post-trump-america-powerful-preposterous/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/05/24/theater/building-the-wall-review.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/building-the-wall",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/building-wall-theater-review-1007238",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/trump-inspired-building-wall-theater-review-article-1.3193325",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/building-the-wall_81201.html",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -16918,6 +17469,41 @@
       "computedAt": "2026-08-12T14:20:51.359Z"
     },
     {
+      "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
+      "title": "Clara: Sex, Love and Classical Music",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "clara-sex-love-and-classical-off-broadway-2026",
       "title": "Clara: Sex, Love and Classical",
       "openingDate": "2026-04-22",
@@ -16950,6 +17536,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-08T10:21:02.207Z"
+    },
+    {
+      "showId": "clinamen-off-broadway-2026",
+      "title": "clinamen",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -22037,6 +22658,41 @@
       "computedAt": "2026-08-03T15:54:33.136Z"
     },
     {
+      "showId": "don-quixote-off-broadway-2026",
+      "title": "Don Quixote",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "dracula-west-end-2025",
       "title": "Dracula",
       "openingDate": "2026-02-17",
@@ -26152,6 +26808,76 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-03T15:18:06.180Z"
+    },
+    {
+      "showId": "forest-high-and-the-glitch-in-the-system-a-new-sci-fi-musical-off-broadway-2026",
+      "title": "Forest High and the Glitch in the System - a new Sci-Fi Musical",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "frieze-new-york-off-broadway-2026",
+      "title": "Frieze New York",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -31103,6 +31829,41 @@
         "candidateCount": 14
       },
       "computedAt": "2026-08-03T16:48:58.521Z"
+    },
+    {
+      "showId": "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
+      "title": "Grown-Up Nights! Jim Henson's Fraggle Rock: Back to the Rock LIVE",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -37987,6 +38748,41 @@
       "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "title": "How the Other Half Loves",
+      "openingDate": null,
+      "status": "previews",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
       "title": "Hugo Marchand | Artists at the Center",
       "openingDate": "2026-07-23",
@@ -41904,6 +42700,41 @@
       "computedAt": "2026-08-07T21:40:26.604Z"
     },
     {
+      "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
+      "title": "Jasmine's Demo Show 4: The End",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "jesus-christ-superstar-west-end-2026",
       "title": "Jesus Christ Superstar",
       "openingDate": "2026-07-07",
@@ -45319,6 +46150,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "kavakos-conducts-dvorak-schumann-and-brahms-off-west-end-2026",
+      "title": "Kavakos conducts Dvořák, Schumann & Brahms",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "kenrex-off-broadway-2026",
       "title": "KENREX",
       "openingDate": "2026-04-26",
@@ -47363,6 +48229,41 @@
       "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
+      "showId": "liberace-and-liza-a-tribute-west-end-2026",
+      "title": "Liberace & Liza: A Tribute",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "little-bear-ridge-road-regional-2024",
       "title": "Little Bear Ridge Road",
       "openingDate": "2024-06-24",
@@ -48041,6 +48942,41 @@
       "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
+      "showId": "liv-redpath-and-harry-rylance-off-broadway-2026",
+      "title": "Liv Redpath & Harry Rylance",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "los-soles-truncos-off-broadway-2025",
       "title": "LOS SOLES TRUNCOS",
       "openingDate": "2025-02-20",
@@ -48074,6 +49010,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-12T21:37:11.248Z"
+    },
+    {
+      "showId": "love-and-other-life-sentences-off-broadway-2026",
+      "title": "Love and Other Life Sentences",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -49062,7 +50033,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -49942,6 +50913,41 @@
       "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
+      "showId": "mermaids-and-pirates-west-end-2026",
+      "title": "Mermaids & Pirates",
+      "openingDate": null,
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "mexodus-off-broadway-2026",
       "title": "Mexodus",
       "openingDate": "2026-03-10",
@@ -50783,6 +51789,41 @@
         "candidateCount": 4
       },
       "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "mister-snickers-of-new-york-city-off-broadway-2026",
+      "title": "Mister Snickers of New York City",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -54617,6 +55658,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "noughts-and-crosses-off-west-end-2026",
+      "title": "Noughts and Crosses",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
@@ -59352,6 +60428,41 @@
       "computedAt": "2026-08-12T19:54:19.094Z"
     },
     {
+      "showId": "onegin-off-broadway-2026",
+      "title": "Onegin",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "operation-mincemeat-2025",
       "title": "Operation Mincemeat",
       "openingDate": "2025-03-20",
@@ -63064,6 +64175,41 @@
       "computedAt": "2026-08-12T16:45:56.032Z"
     },
     {
+      "showId": "paranormal-activity-2026",
+      "title": "Paranormal Activity",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "paranormal-activity-west-end-2025",
       "title": "Paranormal Activity",
       "openingDate": "2025-12-14",
@@ -65190,6 +66336,112 @@
       "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
+      "showId": "proximo-off-broadway-2026",
+      "title": "PRÓXIMO",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "race-the-movie-the-play-off-broadway-2026",
+      "title": "Race: The Movie: The Play",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://nypost.com/article/race-the-movie-the-play-show-where-to-buy-tickets-schedule/"
+      ],
+      "dirFiles": 1,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://nypost.com/article/race-the-movie-the-play-show-where-to-buy-tickets-schedule/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--anna-paone.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/article/race-the-movie-the-play-show-where-to-buy-tickets-schedule/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nypost.com/article/race-the-movie-the-play-show-where-to-buy-tickets-schedule/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nypost.com/article/race-the-movie-the-play-show-where-to-buy-tickets-schedule/",
+            "outletId": "nypost",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "ragtime-2025",
       "title": "Ragtime",
       "openingDate": "2025-10-16",
@@ -66064,6 +67316,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "return-to-the-forest-off-west-end-2026",
+      "title": "Return to the Forest",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "ride-the-cyclone-off-west-end-2026",
@@ -75811,6 +77098,41 @@
       "computedAt": "2026-08-03T10:14:58.194Z"
     },
     {
+      "showId": "stevie-a-life-in-the-key-of-songs-off-broadway-2026",
+      "title": "Stevie: A Life in the Key of Songs",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "sting-west-end-2026",
       "title": "Sting",
       "openingDate": "2026-06-23",
@@ -79197,6 +80519,122 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-07T18:44:56.343Z"
+    },
+    {
+      "showId": "that-math-show-off-broadway-2026",
+      "title": "That Math Show",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
+        "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
+      ],
+      "dirFiles": 3,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": true,
+          "recoverableFile": "theater-scene--victor-gluck.json",
+          "recoverableOutletId": "theater-scene",
+          "recoverableCritic": "Victor Gluck",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--deirdre-donovan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
+          "host": "theaterscene.net",
+          "file": "theater-scene--victor-gluck.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show",
+            "outletId": "off-off-online",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -84886,6 +86324,845 @@
         "candidateCount": 2
       },
       "computedAt": "2026-08-07T23:26:20.886Z"
+    },
+    {
+      "showId": "the-last-ship-off-broadway-2026",
+      "title": "The Last Ship",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-SHIP-Opens-on-Broadway-Updating-LIVE-20141026",
+        "https://www.broadwayworld.com/article/Review-Roundup-Sting-In-THE-LAST-SHIP-In-Toronto-20190221",
+        "https://www.broadwayworld.com/article/Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
+        "https://www.broadwayworld.com/article/Review-Roundup-Stings-Broadway-Bound-THE-LAST-SHIP-20140626"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+        "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+        "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+        "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+        "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+        "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
+        "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
+        "http://www.timeout.com/newyork/theater/the-last-ship",
+        "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
+        "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
+        "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
+        "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
+        "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
+        "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
+        "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
+        "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+        "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
+        "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
+        "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
+        "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
+        "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+        "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
+        "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
+        "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
+        "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
+        "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
+        "http://www.timeout.com/chicago/theater/the-last-ship",
+        "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
+        "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
+        "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
+      ],
+      "dirFiles": 1,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "knownOutletId": "latimes"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/the-last-ship",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
+          "host": "olneyenterprise.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star"
+        },
+        {
+          "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
+          "host": "mooneyontheatre.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
+          "host": "tribute.ca",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
+          "host": "theglobeandmail.com",
+          "knownOutletId": "the-globe-and-mail"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
+        },
+        {
+          "url": "http://www.timeout.com/chicago/theater/the-last-ship",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
+          "host": "chicagonow.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1433,
+        "byReason": {
+          "not-http-url": 213,
+          "non-review-host": 75,
+          "aggregator-internal-nav": 1130,
+          "non-review-path": 15
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "outletId": "latimes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155781/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "outletId": "easyreadernews",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~155781/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
+          "outletId": "variety",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/the-last-ship",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
+          "host": "olneyenterprise.com",
+          "outletId": "olneyenterprise"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
+          "host": "usatoday.com",
+          "outletId": "usatoday"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
+          "host": "deadline.com",
+          "outletId": "deadline"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+          "host": "huffingtonpost.com",
+          "outletId": "huffpost"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
+          "host": "thestar.com",
+          "outletId": "toronto-star"
+        },
+        {
+          "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
+          "host": "mooneyontheatre.com",
+          "outletId": "mooneyontheatre"
+        },
+        {
+          "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
+          "host": "tribute.ca",
+          "outletId": "tribute"
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
+          "host": "theglobeandmail.com",
+          "outletId": "the-globe-and-mail"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
+          "host": "usatoday.com",
+          "outletId": "usatoday"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune"
+        },
+        {
+          "url": "http://www.timeout.com/chicago/theater/the-last-ship",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "aroundthetownchicago"
+        },
+        {
+          "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
+          "host": "chicagonow.com",
+          "outletId": "chicagonow"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471"
+          },
+          {
+            "outletId": "easyreadernews.com",
+            "outlet": "easyreadernews.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/the-last-ship"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/"
+          },
+          {
+            "outletId": "olneyenterprise.com",
+            "outlet": "olneyenterprise.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html"
+          },
+          {
+            "outletId": "toronto-star",
+            "outlet": "toronto-star",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html"
+          },
+          {
+            "outletId": "mooneyontheatre.com",
+            "outlet": "mooneyontheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/"
+          },
+          {
+            "outletId": "tribute.ca",
+            "outlet": "tribute.ca",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/"
+          },
+          {
+            "outletId": "the-globe-and-mail",
+            "outlet": "the-globe-and-mail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/"
+          },
+          {
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/chicago/theater/the-last-ship"
+          },
+          {
+            "outletId": "aroundthetownchicago.com",
+            "outlet": "aroundthetownchicago.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/"
+          },
+          {
+            "outletId": "chicagonow.com",
+            "outlet": "chicagonow.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+            "outletId": "latimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+            "outletId": "easyreadernews.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/the-last-ship",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
+            "outletId": "olneyenterprise.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
+            "outletId": "usatoday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
+            "outletId": "deadline",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+            "outletId": "huffpost",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
+            "outletId": "toronto-star",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
+            "outletId": "mooneyontheatre.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
+            "outletId": "tribute.ca",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
+            "outletId": "the-globe-and-mail",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
+            "outletId": "usatoday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
+            "outletId": "chicagotribune",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.timeout.com/chicago/theater/the-last-ship",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
+            "outletId": "chicagonow.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 22
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "the-lonely-few-off-broadway-2024",
@@ -90694,6 +92971,41 @@
       "computedAt": "2026-08-07T21:40:26.604Z"
     },
     {
+      "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
+      "title": "The Very Hungry Caterpillar Interactive Show",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
       "showId": "the-vessel-off-broadway-2026",
       "title": "The Vessel",
       "openingDate": "2026-07-30",
@@ -91429,6 +93741,97 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-12T22:34:23.403Z"
+    },
+    {
+      "showId": "the-winters-tale-off-broadway-2026",
+      "title": "The Winter's Tale",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-WINTERS-TALE-Opens-as-Part-of-Free-Shakespeare-in-the-Park-20260812"
+      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 325,
+        "byReason": {
+          "not-http-url": 87,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 220,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theatermania.com/news/review-a-problem-play-not-this-winters-tale-starring-raul-esparza-and-lily-rabe_1848887/",
+          "host": "theatermania.com",
+          "file": "theatermania--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "this-is-rambert-west-end-2026",
+      "title": "This Is Rambert",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "three-houses-off-broadway-2026",
@@ -101681,6 +104084,41 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-07T18:44:56.343Z"
+    },
+    {
+      "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+      "title": "Yamato, The Drummers of Japan: Hito no Chikara - The Power of Human Strength",
+      "openingDate": null,
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
       "showId": "youth-in-flames-off-broadway-2026",
