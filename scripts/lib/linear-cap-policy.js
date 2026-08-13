@@ -30,6 +30,17 @@ function isOverCapThreshold(count, threshold = WARN_THRESHOLD) {
   return count >= threshold;
 }
 
+// The 250-issue ceiling is a FREE-tier limit; paid plans lift it. Once the
+// workspace carries a subscription, the warn threshold is a false alarm that
+// re-fires every day forever — and because check-linear-cap.js routes it as
+// decision:true, each of those days costs the owner a decision row in the
+// 7:30 digest asking a question he has already answered (owner upgraded to
+// basic_yearly_10 on 2026-08-12). Callers pass organization.subscription
+// through; null/undefined means free tier and the cap still applies.
+function isCapEnforced(subscription) {
+  return !subscription;
+}
+
 // issue: { stateType, completedAt, canceledAt } (the shape linear-client.js's
 // listIssues() returns). closedAt is picked by CURRENT stateType, not by an
 // completedAt-wins fallback — an issue moved Done -> Canceled can carry a
@@ -44,4 +55,4 @@ function isArchivableIssue(issue, now, ageHours = ARCHIVE_AGE_HOURS) {
   return ageMs >= ageHours * 60 * 60 * 1000;
 }
 
-module.exports = { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isArchivableIssue };
+module.exports = { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isCapEnforced, isArchivableIssue };

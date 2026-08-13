@@ -24,13 +24,33 @@
 'use strict';
 
 const linear = require('./lib/linear-client');
-const { WARN_THRESHOLD, isOverCapThreshold } = require('./lib/linear-cap-policy');
+const { WARN_THRESHOLD, isOverCapThreshold, isCapEnforced } = require('./lib/linear-cap-policy');
 
 async function main() {
   const alertMode = process.argv.includes('--alert');
   const team = await linear.getTeam();
   const issues = await linear.listIssues(team.id);
   const count = issues.length;
+
+  // Paid plan => no 250 ceiling => this check has nothing to warn about. Read
+  // the live subscription rather than a hardcoded flag so a downgrade re-arms
+  // the alarm on its own. Fail-open on a query error (treat as free tier) so a
+  // transient Linear failure can never silently disable the cap guard.
+  let subscription = null;
+  try {
+    const org = await linear.graphql('query{ organization{ subscription{ type } } }', {});
+    subscription = org && org.organization ? org.organization.subscription : null;
+  } catch (err) {
+    console.error(`check-linear-cap: subscription lookup failed (${err.message}) — assuming free tier`);
+  }
+  if (!isCapEnforced(subscription)) {
+    if (alertMode) {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      resolveCondition('linear:issue-cap');
+    }
+    console.log(`check-linear-cap: OK — paid plan (${subscription.type}), no issue cap; ${count} unarchived issues.`);
+    return;
+  }
 
   if (isOverCapThreshold(count, WARN_THRESHOLD)) {
     console.error(
