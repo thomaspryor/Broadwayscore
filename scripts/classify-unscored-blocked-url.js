@@ -27,7 +27,26 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `classify-unscored-blocked-url.js — stamp rejectionReason='not_a_review' on
+unscored, unclassified files saved from a URL isBlockedReviewUrl() already treats
+as never-a-direct-review (aggregator/listing, ticket, social, reference).
+
+Usage:
+  node scripts/classify-unscored-blocked-url.js [--show=SLUG] [--dry-run]
+
+  --show=SLUG   limit to one show directory
+  --dry-run     report what would change, write nothing
+  --help, -h    print this and exit
+`;
+
 const args = process.argv.slice(2);
+if (hasHelpFlag(args)) {
+  console.log(USAGE);
+  process.exit(0);
+}
+
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 
