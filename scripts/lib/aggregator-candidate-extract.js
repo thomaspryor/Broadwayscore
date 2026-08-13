@@ -809,6 +809,21 @@ const REGIONAL_FEEDER_VENUES = [
   { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ', domain: 'papermill.org' },
   { re: /\balliance theatre\b|\bcoca-?cola stage\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
   { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA', domain: 'centertheatregroup.org' },
+  // UK feeder venues (added 2026-08-13, card #1405): Game of Thrones: The Mad
+  // King (RSC, world premiere) sat 3 days with reviews-but-no-shows.json-entry
+  // because this table was US-only — classifyVenueMarket() fell through to
+  // 'off-broadway' for the RSC venue, and the OB promoter's Playbill-OB/Lortel
+  // cross-validation can never confirm a UK production, so it silently never
+  // promoted. "City" has no state suffix (UK, not US) — feederVenueCity()
+  // and buildRegionalShowEntry just concatenate venue+city either way.
+  // "RSC" alone is intentionally excluded (too short, collides with other
+  // acronym usage in article prose the way bare "A.R.T." would). Swan
+  // Theatre/The Other Place are RSC's other Stratford stages but are too
+  // generic a name to allowlist bare (same rationale as "Owen Theatre" etc
+  // above) — only the flagship hall is matched until a real BWW/PV article
+  // is seen using the stage name instead of the company name.
+  { re: /\broyal shakespeare (?:company|theatre|theater)\b/i, city: 'Stratford-upon-Avon', domain: 'rsc.org.uk' },
+  { re: /\bchichester festival theatre\b/i, city: 'Chichester', domain: 'cft.org.uk' },
 ];
 
 // Dash-joined city names from the table above, for stripping a leading
