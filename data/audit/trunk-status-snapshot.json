@@ -1,18 +1,37 @@
 {
-  "generatedAt": "2026-08-12T08:06:55.263Z",
+  "generatedAt": "2026-08-13T08:07:39.008Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "c2572242d2ea1e143d49a16ed0ccbbe4cdc73384",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "redSince": null,
-  "redForHours": null,
+  "latestRunHeadSha": "6c38b4258b47c3ec815a8f86e62a16e91f94937e",
+  "state": "RED",
+  "consecutiveFailures": 47,
+  "redSince": "2026-08-12T14:14:28Z",
+  "redForHours": 17.88639111111111,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-12T07:26:23Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 81,
-  "failingJobs": [],
+  "latestFailedRunId": "31678459755",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31678459755",
+  "decidedRuns": 90,
+  "failingJobs": [
+    {
+      "name": "Lint Workflows",
+      "steps": [
+        "Audit — help-flag safety (cousin --help bug class)"
+      ]
+    },
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit stale flag after URL correction"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
   "failingPaths": [],
-  "topFailingJob": null
+  "topFailingJob": "Lint Workflows"
 }
