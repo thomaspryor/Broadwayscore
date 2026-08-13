@@ -177,8 +177,10 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // the old inline ternary ended in a bare `: 'Broadway'`, so regional
     // tryouts were announced to the model as Broadway productions and both
     // ensemble legs correctly rejected them as wrong_production (2026-07-30).
+    // venue is passed so a UK regional house (RSC, Chichester) is not announced
+    // as "Regional (US, outside New York)" — card #1405.
     const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
-      : getMarketLabel(review.category);
+      : getMarketLabel(review.category, review.venue);
     const venueInfo = review.venue ? ` at ${review.venue}` : '';
     contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
     if (!isOpera && isNonMetroMarket(review.category)) {

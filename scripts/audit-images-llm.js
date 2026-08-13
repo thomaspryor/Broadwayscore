@@ -153,7 +153,7 @@ class ImageVerifier {
     await this.rateLimiter.wait();
 
     const market = resolveMarketSlug(showContext.category, showContext.market);
-    const marketLabel = getMarketLabel(market);
+    const marketLabel = getMarketLabel(market, showContext.venue);
     const systemPrompt = buildVerificationPrompt({ market, venue: showContext.venue });
     const userPrompt = `The ${marketLabel} show is: "${showTitle}"${showContext.venue ? ` at ${showContext.venue}` : ''}\n\nIs this image a correct thumbnail for this show?`;
 
