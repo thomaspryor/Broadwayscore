@@ -11,6 +11,7 @@ interface LotteryRushCardProps {
   showName: string;
   showStatus: string;
   showCategory?: string;
+  showVenue?: string;
 }
 
 function TicketIcon() {
@@ -56,8 +57,8 @@ function ExternalLinkIcon() {
 
 
 
-export default function LotteryRushCard({ data, showId, showName, showStatus, showCategory }: LotteryRushCardProps) {
-  const currency = getCurrencySymbol(showCategory);
+export default function LotteryRushCard({ data, showId, showName, showStatus, showCategory, showVenue }: LotteryRushCardProps) {
+  const currency = getCurrencySymbol(showCategory, showVenue);
   // Don't show for closed shows
   if (showStatus === 'closed') return null;
 

@@ -57,23 +57,22 @@ export function getMarketMinReviews(category?: string): number {
 }
 
 // A `category: 'regional'` show can be a US Broadway-feeder (A.R.T., Goodman,
-// La Jolla — the original 13 entries) OR a UK West End-feeder (RSC Stratford,
-// Chichester Festival Theatre — added for card #1405, Game of Thrones: The
-// Mad King). The category alone can't tell them apart, so country/currency
-// defaulted every regional show to 'US'/$ until now — silently wrong for any
-// UK one. Matches by substring against `show.venue`; kept as bare city names
-// (not full regex) so this stays a cheap client-safe lookup with no data
-// import — extend alongside scripts/lib/aggregator-candidate-extract.js's
-// REGIONAL_FEEDER_VENUES when a new UK feeder venue is added there.
-const UK_REGIONAL_VENUE_CITIES = [
-  'stratford-upon-avon',
-  'chichester',
-];
+// La Jolla) OR a UK West End-feeder (RSC Stratford, Chichester Festival
+// Theatre — added for card #1405, Game of Thrones: The Mad King). The
+// category alone can't tell them apart, so country/currency defaulted every
+// regional show to 'US'/$ until now — silently wrong for any UK one.
+// data/uk-regional-venues.json is the SAME list scripts/lib/aggregator-
+// candidate-extract.js's REGIONAL_FEEDER_VENUES draws its UK entries from
+// (via the `match` string, word-bounded there) — one source of truth, so
+// adding a venue there automatically fixes currency/country here too.
+// A plain JSON import is safe in a client bundle: venue-classification.ts's
+// isOffWestEndVenue() already does exactly this with west-end-venues.json.
+import ukRegionalVenues from '../../data/uk-regional-venues.json';
 
 function isUkRegionalVenue(category?: string, venue?: string): boolean {
   if (category !== 'regional' || !venue) return false;
   const v = venue.toLowerCase();
-  return UK_REGIONAL_VENUE_CITIES.some((city) => v.includes(city));
+  return (ukRegionalVenues as { match: string }[]).some((entry) => v.includes(entry.match));
 }
 
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */

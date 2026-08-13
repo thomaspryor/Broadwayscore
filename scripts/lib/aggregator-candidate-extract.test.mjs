@@ -443,6 +443,17 @@ test('regional feeder venues classify as category regional (2026-07-08)', () => 
   assert.equal(classifyVenueMarket('New Art Theatre'), 'off-broadway');
 });
 
+test('UK feeder venues classify as category regional (card #1405, 2026-08-13)', () => {
+  const { classifyVenueMarket, feederVenueCity } = require('./aggregator-candidate-extract.js');
+  assert.equal(classifyVenueMarket('Royal Shakespeare Theatre, Stratford-upon-Avon'), 'regional');
+  assert.equal(classifyVenueMarket('Royal Shakespeare Company'), 'regional');
+  assert.equal(classifyVenueMarket('Chichester Festival Theatre'), 'regional');
+  assert.equal(feederVenueCity('Royal Shakespeare Theatre, Stratford-upon-Avon'), 'Stratford-upon-Avon');
+  assert.equal(feederVenueCity('Chichester Festival Theatre'), 'Chichester');
+  // "RSC" alone is deliberately excluded — too short, same rationale as bare "A.R.T."
+  assert.equal(classifyVenueMarket('RSC'), 'off-broadway');
+});
+
 test('collisionSlugSet: title-derived and suffix-stripped slugs both collide (daily re-fetch loop guard)', () => {
   const { collisionSlugSet, slugCollidesWith } = require('./aggregator-candidate-extract.js');
   const set = collisionSlugSet([

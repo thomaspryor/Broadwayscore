@@ -688,6 +688,7 @@ function Inner({
           showSlug={show.slug}
           showStatus={show.status}
           showCategory={show.category}
+          showVenue={show.venue}
           showScore={score}
           ticketLinks={sortedTicketLinks}
           officialUrl={show.officialUrl}
@@ -705,11 +706,11 @@ function Inner({
                 </svg>
                 {lotteryRush.lottery
                   ? lotteryRush.lottery.price
-                    ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery`
+                    ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.lottery.price} Lottery`
                     : 'Lottery'
                   : lotteryRush.rush
                     ? lotteryRush.rush.price
-                      ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush`
+                      ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.rush.price} Rush`
                       : 'Rush'
                     : 'Discount'}
               </a>
