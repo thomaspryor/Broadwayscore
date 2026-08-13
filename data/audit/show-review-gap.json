@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-13T14:24:54.437Z",
+  "generatedAt": "2026-08-13T15:59:02.152Z",
   "windowDays": 1095,
-  "targets": 59,
-  "auditedThisRun": 6,
-  "carriedForward": 287,
+  "targets": 61,
+  "auditedThisRun": 11,
+  "carriedForward": 282,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 182,
     "totalMissing": 1105,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1187,
+    "totalFlaggedMisses": 1184,
     "totalRecoverable": 37,
     "totalRecovered": 9
   },
@@ -3363,79 +3363,43 @@
       "openingDate": "2026-08-11",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
-        "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-        "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
-        "https://theaterlife.com/an-american-daughter-1-2/",
-        "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-        "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
         "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-        "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-        "https://showriz.com/blogcategoryreviews/2026/7/20/my-own-take-off-broadways-an-american-daughter",
-        "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-        "https://www.viagogo.ca/Theater-Tickets/Theater/An-American-Daughter-Tickets/E-161754710",
-        "https://nyctheatreaddict.com/an-american-daughter/"
+        "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+        "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
+        "https://pagesonstages.com/2026/08/11/an-american-daughter/",
+        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html"
       ],
-      "dirFiles": 10,
-      "dirClean": 5,
-      "inReviewsJson": 5,
+      "dirFiles": 21,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true
+          "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages"
         },
         {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
-        },
-        {
-          "url": "https://showriz.com/blogcategoryreviews/2026/7/20/my-own-take-off-broadways-an-american-daughter",
-          "host": "showriz.com",
-          "knownOutletId": "showriz",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.viagogo.ca/Theater-Tickets/Theater/An-American-Daughter-Tickets/E-161754710",
-          "host": "viagogo.ca",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://nyctheatreaddict.com/an-american-daughter/",
-          "host": "nyctheatreaddict.com",
-          "knownOutletId": "nyc-theatre-addict",
-          "serpCensus": true
+          "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
         }
       ],
       "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "showriz.com",
+          "count": 1
+        },
         {
           "host": "stageandcinema.com",
           "count": 1
@@ -3443,364 +3407,100 @@
         {
           "host": "talkinbroadway.com",
           "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
+          "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "one-minute-critic--lindsay-b-davis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://1minutecritic.com/an-american-daughter-off-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theaterlife.com/an-american-daughter-1-2/",
-          "host": "theaterlife.com",
-          "knownOutletId": "theater-life",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-life--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theaterlife.com/an-american-daughter-1-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--rachel-graham.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"An American Daughter\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"An American Daughter\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"An American Daughter\" review irene",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"An American Daughter\" Wasserstein review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 11,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 115,
-        "byReason": {
-          "aggregator-internal-nav": 54,
-          "not-http-url": 20,
-          "non-review-host": 33,
-          "roundup-page": 4,
-          "ticketing-reseller": 3,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
+          "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
+          "host": "pagesonstages.com",
+          "outletId": "pages-on-stages",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~158684/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://showriz.com/blogcategoryreviews/2026/7/20/my-own-take-off-broadways-an-american-daughter",
-          "host": "showriz.com",
-          "outletId": "showriz",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "⚠️  Scrapingdog pace (~159561/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
         }
       ],
-      "ingestSkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
-          "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg"
-        },
-        {
-          "url": "https://www.viagogo.ca/Theater-Tickets/Theater/An-American-Daughter-Tickets/E-161754710",
-          "host": "viagogo.ca",
-          "outletId": "viagogo"
-        },
-        {
-          "url": "https://nyctheatreaddict.com/an-american-daughter/",
-          "host": "nyctheatreaddict.com",
-          "outletId": "nyc-theatre-addict"
+          "url": "https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway",
+          "host": "playbill.com",
+          "file": "playbill--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~159561/day) projects exhaustion in ~16d, before the 21d-out renewal — still u",
+          "recoveryCount": 2,
+          "uncited": true
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "nytg",
-            "outlet": "nytg",
+            "outletId": "pages-on-stages",
+            "outlet": "pages-on-stages",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review"
+            "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/"
           },
           {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL"
-          },
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/"
-          },
-          {
-            "outletId": "stagebuddy",
-            "outlet": "stagebuddy",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter"
-          },
-          {
-            "outletId": "showriz",
-            "outlet": "showriz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://showriz.com/blogcategoryreviews/2026/7/20/my-own-take-off-broadways-an-american-daughter"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter"
-          },
-          {
-            "outletId": "viagogo.ca",
-            "outlet": "viagogo.ca",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.viagogo.ca/Theater-Tickets/Theater/An-American-Daughter-Tickets/E-161754710"
-          },
-          {
-            "outletId": "nyc-theatre-addict",
-            "outlet": "nyc-theatre-addict",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nyctheatreaddict.com/an-american-daughter/"
-          },
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/"
-          },
-          {
-            "outletId": "theater-life",
-            "outlet": "theater-life",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterlife.com/an-american-daughter-1-2/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
+            "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
+            "outletId": "lightingandsoundamerica.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+            "firstSeenAt": "2026-08-13T11:45:01.801Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T11:45:01.801Z"
           },
           {
             "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
@@ -3809,107 +3509,30 @@
             "firstSeenAt": "2026-08-13T08:23:28.238Z"
           },
           {
-            "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
-            "outletId": "t2conline.com",
+            "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T08:23:28.238Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-            "outletId": "nytg",
+            "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
+            "outletId": "pages-on-stages",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
-            "outletId": "lighting-and-sound-america",
+            "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+            "outletId": "the-interested-bystander",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-            "outletId": "stagebuddy",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://showriz.com/blogcategoryreviews/2026/7/20/my-own-take-off-broadways-an-american-daughter",
-            "outletId": "showriz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://www.viagogo.ca/Theater-Tickets/Theater/An-American-Daughter-Tickets/E-161754710",
-            "outletId": "viagogo.ca",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://nyctheatreaddict.com/an-american-daughter/",
-            "outletId": "nyc-theatre-addict",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
-            "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://theaterlife.com/an-american-daughter-1-2/",
-            "outletId": "theater-life",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 14
+        "liveCount": 4,
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-13T11:45:01.801Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -5127,7 +4750,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T11:45:01.801Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -9633,7 +9256,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -20013,21 +19636,17 @@
         "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
         "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
-        "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-        "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-        "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/"
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
       ],
-      "dirFiles": 41,
-      "dirClean": 24,
-      "inReviewsJson": 23,
+      "dirFiles": 43,
+      "dirClean": 26,
+      "inReviewsJson": 25,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
         {
           "host": "everything-theatre.co.uk",
           "count": 1
@@ -20037,11 +19656,43 @@
           "count": 1
         },
         {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "rhombusrota.co.uk",
+          "count": 1
+        },
+        {
           "host": "seatplan.com",
           "count": 1
         },
         {
           "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stanservice.substack.com",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         }
       ],
@@ -20061,8 +19712,7 @@
               "flag": "clean",
               "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
@@ -20079,26 +19729,7 @@
               "flag": "clean",
               "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
             }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-            }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -20145,74 +19776,16 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 17,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 103,
+        "count": 90,
         "byReason": {
-          "aggregator-internal-nav": 50,
-          "not-http-url": 20,
-          "non-review-host": 29,
-          "roundup-page": 3,
-          "ticketing-listing": 1
+          "roundup-page": 2,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 49,
+          "not-http-url": 20
         }
       },
       "dedupedVariants": [],
@@ -20232,13 +19805,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
           }
         ],
         "suppressedMissing": [],
@@ -20322,48 +19888,6 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-            "outletId": "rhombusrota.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -20376,19 +19900,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T11:45:01.801Z"
           }
         ],
-        "liveCount": 20,
-        "candidateCount": 23
+        "liveCount": 13,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-13T11:45:01.801Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -39360,17 +38877,59 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+        "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
+        "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
         "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+        "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
         "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-        "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
-        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html"
+        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
+        "https://southlondon.co.uk/area/southwark/review-how-the-other-half-loves-at-old-vic/",
+        "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
+        "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
+        "https://theatrecat.com/2026/08/12/how-the-other-half-loves-old-vic-se1/",
+        "https://westendwilma.com/review-how-the-other-half-loves/",
+        "https://www.londonbornandbred.co.uk/post/how-the-other-half-loves-a-review-of-alan-ayckbourn-s-classic-play-at-the-mill-at-sonning",
+        "https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review",
+        "https://peterviney.com/stage/how-the-other-half-loves/",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+        "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn"
       ],
       "dirFiles": 23,
       "dirClean": 17,
       "inReviewsJson": 17,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/how-the-other-half-loves-a-review-of-alan-ayckbourn-s-classic-play-at-the-mill-at-sonning",
+          "host": "londonbornandbred.co.uk",
+          "knownOutletId": "londonbornandbred",
+          "serpCensus": true
+        },
+        {
+          "url": "https://peterviney.com/stage/how-the-other-half-loves/",
+          "host": "peterviney.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "britishtheatreguide.info",
@@ -39378,22 +38937,6 @@
         },
         {
           "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "southlondon.co.uk",
           "count": 1
         },
         {
@@ -39405,15 +38948,30 @@
           "count": 1
         },
         {
-          "host": "theatrecat.com",
-          "count": 1
-        },
-        {
           "host": "thereviewshub.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
+          "host": "monstagigz.com",
+          "knownOutletId": "monstagigz",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "monstagigz--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 7,
@@ -39458,34 +39016,201 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"How the Other Half Loves\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"How the Other Half Loves\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"How the Other Half Loves\" Ayckbourn review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "How the Other Half Loves The Old Vic review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "How the Other Half Loves The Old Vic review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "How the Other Half Loves The Old Vic review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 14,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 14,
+        "byReason": {
+          "roundup-page": 3,
+          "non-review-host": 10,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/how-the-other-half-loves-a-review-of-alan-ayckbourn-s-classic-play-at-the-mill-at-sonning",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://peterviney.com/stage/how-the-other-half-loves/",
+          "host": "peterviney.com",
+          "outletId": "peterviney",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~159589/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1"
+          },
+          {
+            "outletId": "bestoftheatre.co.uk",
+            "outlet": "bestoftheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-how-the-other-half-loves/"
+          },
+          {
+            "outletId": "londonbornandbred",
+            "outlet": "londonbornandbred",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonbornandbred.co.uk/post/how-the-other-half-loves-a-review-of-alan-ayckbourn-s-classic-play-at-the-mill-at-sonning"
+          },
+          {
+            "outletId": "peterviney.com",
+            "outlet": "peterviney.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://peterviney.com/stage/how-the-other-half-loves/"
+          },
+          {
+            "outletId": "monstagigz",
+            "outlet": "monstagigz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-            "outletId": "independent.co.uk",
+            "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
             "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
-            "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
@@ -39496,22 +39221,94 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
+            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+          },
+          {
+            "url": "https://southlondon.co.uk/area/southwark/review-how-the-other-half-loves-at-old-vic/",
+            "outletId": "southlondon.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://theatrecat.com/2026/08/12/how-the-other-half-loves-old-vic-se1/",
+            "outletId": "theatrecat.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
+            "outletId": "bestoftheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-how-the-other-half-loves/",
+            "outletId": "west-end-wilma",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/how-the-other-half-loves-a-review-of-alan-ayckbourn-s-classic-play-at-the-mill-at-sonning",
+            "outletId": "londonbornandbred",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://peterviney.com/stage/how-the-other-half-loves/",
+            "outletId": "peterviney.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
+            "outletId": "monstagigz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 6
+        "liveCount": 11,
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -42828,12 +42625,64 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"ISLA\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ISLA\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ISLA WP Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ISLA WP Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ISLA WP Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "roundup-page": 2,
+          "non-review-host": 16,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -42844,7 +42693,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T11:45:01.801Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -51219,140 +51068,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://donyc.com/events/2026/8/6/marlise-tickets"
-      ],
-      "dirFiles": 1,
-      "dirClean": 1,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
-          "host": "donyc.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        }
-      ],
+      "missing": [],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Marlise\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Marlise\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Marlise\" review players",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Marlise The Players Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Marlise The Players Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Marlise The Players Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 34,
-        "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 8,
-          "non-review-path": 3,
-          "venue-production-page": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
-          "host": "donyc.com",
-          "outletId": "donyc",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159363/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "donyc.com",
-            "outlet": "donyc.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://donyc.com/events/2026/8/6/marlise-tickets",
-            "outletId": "donyc.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T14:24:54.437Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -51880,27 +51622,64 @@
       "openingDate": "2024-11-12",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending",
+        "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+        "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+        "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
+        "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
+        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+        "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
+        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+        "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
         "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
+        "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+        "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
+        "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
+        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
+        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
         "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-        "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
-        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
         "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
-        "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
         "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
+        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+        "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
         "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
-        "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
+        "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
+        "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
+        "https://www.theaterscene.net/musicals/broadway/maybe-happy-ending/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-maybe-happy-ending-at-the-belasco-theatre-currently-on/",
+        "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
+        "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
+        "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
       ],
       "dirFiles": 51,
       "dirClean": 36,
-      "inReviewsJson": 33,
+      "inReviewsJson": 34,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
           "host": "today.com",
           "knownOutletId": null
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
         }
       ],
       "dirOnly": [
@@ -51913,26 +51692,6 @@
           "count": 1
         },
         {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
-          "host": "deadline.com",
-          "count": 1
-        },
-        {
-          "host": "ew.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
           "host": "frontmezzjunkies.com",
           "count": 1
         },
@@ -51941,39 +51700,11 @@
           "count": 1
         },
         {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
           "host": "newyorker.com",
           "count": 1
         },
         {
-          "host": "nypost.com",
-          "count": 1
-        },
-        {
-          "host": "nystagereview.com",
-          "count": 2
-        },
-        {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
           "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "showbiz411.com",
-          "count": 1
-        },
-        {
-          "host": "slantmagazine.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
           "count": 1
         },
         {
@@ -51982,30 +51713,6 @@
         },
         {
           "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        },
-        {
-          "host": "usatoday.com",
           "count": 1
         },
         {
@@ -52064,6 +51771,23 @@
               "urlInDir": "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
             }
           ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -52073,11 +51797,36 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 389,
+        "byReason": {
+          "non-review-host": 40,
+          "aggregator-internal-nav": 298,
+          "not-http-url": 48,
+          "non-review-path": 3
+        }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
+          "host": "pagesonstages.wordpress.com",
+          "matchedUrl": "http://pagesonstages.com/2024/11/12/maybe-happy-ending/",
+          "outletId": "pages-on-stages",
+          "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~159619/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
           "host": "today.com",
@@ -52088,7 +51837,19 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~173695/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~159619/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~159620/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -52096,11 +51857,25 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263"
+          },
+          {
             "outletId": "today.com",
             "outlet": "today.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710"
+          },
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
           },
           {
             "outletId": "nydailynews",
@@ -52122,15 +51897,76 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-            "outletId": "nytimes.com",
+            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
@@ -52139,16 +51975,46 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
+            "outletId": "showbiz411.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
+            "outletId": "slantmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
-            "outletId": "vulture.com",
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
+            "outletId": "usatoday.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
@@ -52163,11 +52029,67 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/maybe-happy-ending/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-maybe-happy-ending-at-the-belasco-theatre-currently-on/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
             "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
             "outletId": "today.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
@@ -52189,12 +52111,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 10
+        "liveCount": 25,
+        "candidateCount": 32
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -61743,28 +61672,41 @@
       "openingDate": "2025-03-20",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-operation-mincemeat-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
-        "https://www.newyorktheatreguide.com/reviews/operation-mincemeat-broadway-review",
-        "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+        "https://www.broadwaynews.com/the-broadway-review-operation-mincemeat-is-a-gleeful-mi5-inspired-romp/",
+        "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
+        "https://cititour.com/NYC_Broadway/Operation-Mincemeat/1287",
+        "https://www.thedailybeast.com/operation-mincemeat-review-seasons-most-surprising-showstopper-lands-on-broadway/",
+        "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
+        "https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/",
+        "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
         "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
+        "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
+        "https://nystagereview.com/2025/03/20/operation-mincemeat-satirical-wartime-musical-successfully-invades-broadway/",
+        "https://nystagereview.com/2025/03/20/operation-mincemeat-a-comical-slice-of-world-war-ii-lore/",
+        "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/operation-mincemeat-broadway-review",
+        "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
+        "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
+        "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
+        "https://www.theatrely.com/post/spinning-a-military-operation-into-musical-comedy-gold-in-operation-mincemeat-review",
+        "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
         "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
         "https://variety.com/2025/legit/reviews/operation-mincemeat-review-broadway-musical-1236343736/",
-        "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
-        "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
+        "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
+        "https://www.thewrap.com/operation-mincemeat-broadway-review/",
         "https://www.newyorktheatreguide.com/theatre-news/interviews/jak-malone-on-being-a-tony-nominee-for-his-broadway-debut-in-operation-mincemeat",
         "https://www.usatoday.com/story/entertainment/music/2025/05/14/operation-mincemeat-broadway-fact-check/82224626007/",
-        "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
-        "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
         "https://www.talkinbroadway.com/page/world/OperationMincemeat.html",
         "https://www.theaterscene.net/musicals/broadway/operation-mincemeat/victor-gluck/",
         "https://www.theatrereviews.com/broadway-review-operation-mincemeat-at-the-john-golden-theatre-through-monday-august-18-2025/",
-        "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
-        "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
         "https://pagesonstages.com/2025/05/10/operation-mincemeat/"
       ],
-      "dirFiles": 46,
+      "dirFiles": 47,
       "dirClean": 30,
       "inReviewsJson": 29,
       "missing": [],
@@ -61774,32 +61716,12 @@
           "count": 1
         },
         {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
           "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
-          "host": "forward.com",
           "count": 1
         },
         {
           "host": "frontmezzjunkies.com",
           "count": 1
-        },
-        {
-          "host": "nystagereview.com",
-          "count": 2
         },
         {
           "host": "slantmagazine.com",
@@ -61812,21 +61734,26 @@
         {
           "host": "theaterlife.com",
           "count": 1
-        },
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        },
-        {
-          "host": "washingtonpost.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/"
+            }
+          ]
+        },
         {
           "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
           "host": "timeout.com",
@@ -61891,15 +61818,25 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 404,
         "byReason": {
-          "aggregator-internal-nav": 1
+          "non-review-host": 41,
+          "aggregator-internal-nav": 307,
+          "not-http-url": 53,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/"
+          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -61925,8 +61862,68 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.broadwaynews.com/the-broadway-review-operation-mincemeat-is-a-gleeful-mi5-inspired-romp/",
+            "outletId": "broadwaynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Operation-Mincemeat/1287",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/operation-mincemeat-review-seasons-most-surprising-showstopper-lands-on-broadway/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/",
+            "outletId": "forward.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+          },
+          {
+            "url": "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/20/operation-mincemeat-satirical-wartime-musical-successfully-invades-broadway/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/20/operation-mincemeat-a-comical-slice-of-world-war-ii-lore/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -61937,10 +61934,28 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
-            "outletId": "vulture.com",
+            "url": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
+            "outletId": "nytimes.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/spinning-a-military-operation-into-musical-comedy-gold-in-operation-mincemeat-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
@@ -61955,32 +61970,20 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
-            "outletId": "observer.com",
+            "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
+            "outletId": "washingtonpost.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
-            "outletId": "nypost.com",
+            "url": "https://www.thewrap.com/operation-mincemeat-broadway-review/",
+            "outletId": "thewrap.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/theatre-news/interviews/jak-malone-on-being-a-tony-nominee-for-his-broadway-debut-in-operation-mincemeat",
             "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
-            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -62003,16 +62006,11 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
-            "url": "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
@@ -62036,10 +62034,10 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 17
+        "liveCount": 22,
+        "candidateCount": 26
       },
-      "computedAt": "2026-08-12T19:54:19.094Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -86015,7 +86013,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T11:45:01.801Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -95167,19 +95165,102 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Winter's Tale\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Winter's Tale\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Winter's Tale\" review delacorte",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Winter's Tale\" Shakespeare review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Winter's Tale Delacorte Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Winter's Tale Delacorte Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Winter's Tale Delacorte Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 325,
+        "count": 343,
         "byReason": {
+          "roundup-page": 1,
+          "non-review-host": 26,
+          "aggregator-internal-nav": 225,
           "not-http-url": 87,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 220,
-          "non-review-path": 3
+          "non-review-path": 3,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-winters-tale-off-broadway-review-lily-rabe-raul-esparza",
+          "host": "newyorktheatreguide.com",
+          "file": "nytg--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~159604/day) projects exhaustion in ~16d, before the 21d-out renewal — still u",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -95188,7 +95269,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-13T15:59:02.152Z"
     },
     {
       "showId": "this-is-rambert-west-end-2026",
