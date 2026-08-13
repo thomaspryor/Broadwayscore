@@ -1,18 +1,69 @@
 {
-  "updatedAt": "2026-08-13T13:26:16.788Z",
-  "processed": 12,
-  "failed": 88,
-  "successRate": "12.0%",
+  "updatedAt": "2026-08-13T13:24:53.070Z",
+  "processed": 72,
+  "failed": 488,
+  "successRate": "12.9%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "browserbase": 2,
+    "directCookies": 6,
+    "scrapingbee": 7,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-13T10:27:39.359Z",
+      "event": "bb-session",
+      "session": "252138b9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-13T11:39:04.064Z",
+      "event": "bb-session",
+      "session": "3ccc8d27",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-13T11:39:05.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-13T11:39:29.294Z",
+      "event": "bb-session",
+      "session": "4d186ccc",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-13T11:39:30.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-13T13:13:47.261Z",
+      "event": "bb-session",
+      "session": "52366b50",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-13T13:13:48.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-13T13:14:06.916Z",
+      "event": "bb-session",
+      "session": "5c9452a8",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-13T13:14:07.794Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
