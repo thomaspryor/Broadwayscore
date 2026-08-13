@@ -151,8 +151,8 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 // TheaterEvent Schema with full details (enhanced)
 export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[], organizerUrl?: string) {
   const isLondon = isLondonMarket(show.category);
-  const country = getMarketCountry(show.category);
-  const currency = getMarketCurrency(show.category);
+  const country = getMarketCountry(show.category, show.venue);
+  const currency = getMarketCurrency(show.category, show.venue);
   // Event spec requires startDate. Fall back to previewsStartDate when openingDate
   // isn't yet announced.
   const startDate = show.openingDate || show.previewsStartDate;
@@ -427,7 +427,7 @@ export function generateItemListSchema(items: {
       event.location = item.venue ? {
         '@type': 'PerformingArtsTheater',
         name: item.venue,
-        address: item.theaterAddress ? toPostalAddress(item.theaterAddress, getMarketCountry(item.category)) : item.venue,
+        address: item.theaterAddress ? toPostalAddress(item.theaterAddress, getMarketCountry(item.category, item.venue)) : item.venue,
       } : {
         '@type': 'PerformingArtsTheater',
         name: item.category === 'opera' ? 'Metropolitan Opera House' : isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
@@ -470,7 +470,7 @@ export function generateItemListSchema(items: {
 
       // Ticket offers (excluding hidden platforms)
       if (item.ticketLinks && item.ticketLinks.length > 0) {
-        const itemCurrency = getMarketCurrency(item.category);
+        const itemCurrency = getMarketCurrency(item.category, item.venue);
         const visibleLinks = getVisibleTicketLinks(item.ticketLinks);
         if (visibleLinks.length > 0) {
           event.offers = visibleLinks.map(link => ({
