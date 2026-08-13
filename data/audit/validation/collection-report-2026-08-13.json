@@ -1,65 +1,68 @@
 {
-  "runDate": "2026-08-13T18:12:17.350Z",
+  "runDate": "2026-08-13T19:51:47.744Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-winters-tale-off-broadway-2026",
+    "showFilter": "death-note-the-musical-west-end-2026,how-the-other-half-loves-west-end-2026,the-winters-tale-off-broadway-2026,an-american-daughter-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 12,
+    "processed": 5,
+    "failed": 31,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "13.9%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 1,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 14,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
-    "tier3_6Attempts": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 4,
+    "tier3Attempts": 6,
+    "tier3Success": 6,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 8,
     "tier4Success": 0,
-    "totalFailed": 12,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 31,
+    "scrapingBeePageCredits": 32,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.4,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 0,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 16,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-winters-tale-off-broadway-2026/nytg--unknown.json",
+    "how-the-other-half-loves-west-end-2026/timeout-london--unknown.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/broadwayworld--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
     "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
     "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "how-the-other-half-loves-west-end-2026/theatreandtonic--unknown.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
@@ -67,32 +70,66 @@
     "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
     "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
     "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
-    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "an-american-daughter-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
+    "an-american-daughter-off-broadway-2026/one-minute-critic--unknown.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+    "an-american-daughter-off-broadway-2026/theater-life--unknown.json",
+    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/telegraph--tim-robey.json",
+    "death-note-the-musical-west-end-2026/telegraph--unknown.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
+    "death-note-the-musical-west-end-2026/thestage--tom-wicker.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-winters-tale-off-broadway-2026/nytg--unknown.json"
+      "how-the-other-half-loves-west-end-2026/timeout-london--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
+    ],
     "scrapingbee": [
-      "the-winters-tale-off-broadway-2026/broadwayworld--unknown.json"
+      "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
-      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "barbican": {
       "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "domain": "barbican.org.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 2,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json",
+      "oldUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-WINTERS-TALE-Opens-as-Part-of-Free-Shakespeare-in-the-Park-20260812",
+      "newUrl": "https://www.broadwayworld.com/philadelphia/article/THE-WINTERS-TALE-to-Open-on-PCS-Theaters-Second-Stage-20260806"
+    }
+  ]
 }
