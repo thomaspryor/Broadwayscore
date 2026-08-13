@@ -363,11 +363,11 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-12T13:57:47.055Z",
+      "lastSeen": "2026-08-13T13:57:50.484Z",
       "lastNotifiedAt": "2026-08-10T13:50:53.428Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -715,14 +715,15 @@
       "silentRefires": 7
     },
     "arm-yield:outlet:theatermania": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "TheaterMania (reviews collected) has stopped updating (3 days)",
       "firstSeen": "2026-08-12T13:57:47.057Z",
       "lastSeen": "2026-08-12T13:57:47.057Z",
       "lastNotifiedAt": "2026-08-12T13:57:47.057Z",
       "notifyCount": 1,
-      "cardId": null
+      "cardId": null,
+      "resolvedAt": "2026-08-13T13:57:50.493Z"
     },
     "sd-circuit-breaker": {
       "status": "open",
