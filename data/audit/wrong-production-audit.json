@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T13:57:37.035Z",
+  "timestamp": "2026-08-13T14:31:19.455Z",
   "stats": {
     "totalReviews": 42181,
-    "alreadyFlagged": 18312,
-    "dateGuardCatches": 141,
+    "alreadyFlagged": 18295,
+    "dateGuardCatches": 143,
     "directorMismatch": 966,
     "tvFilmSignals": 1190,
     "londonSignals": 873,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3554
+    "noPublishDate": 3558
   },
   "findings": [
     {
@@ -17703,6 +17703,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "timeout-london--tom-wicker.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 579d before show (2022-10-16 vs 2024-05-17)"
         }
       ]
     },
@@ -44685,6 +44696,17 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "londontheatre1--terry-eastham.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
         }
       ]
     },
