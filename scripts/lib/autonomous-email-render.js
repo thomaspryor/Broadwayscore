@@ -375,7 +375,7 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
 // "Needs your attention" card.
 const QUEUED_TELEMETRY_BLOCKLIST = [/^T1 Coverage/i, /^Deployed coverage/i];
 
-function renderHealthDigestBlock(health, autofixRows = null) {
+function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOverride = null) {
   if (!health) return '';
   const errors = Array.isArray(health.errors) ? health.errors : [];
   const warns = Array.isArray(health.warns) ? health.warns : [];
@@ -424,7 +424,15 @@ function renderHealthDigestBlock(health, autofixRows = null) {
   }
   const { rows } = selectHealthRows({ errors, warns });
   const plan = autofixRows || rows.map(r => ({ name: r.name, state: 'queued', taskId: null }));
-  return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan, autofixLoopDeadMessage(health))}${queuedHtml}`;
+  // Task #1220/BRO-230 (ship-check adversarial finding): a caller running on
+  // the same machine as the dispatch ledger (send-morning-digest.js) knows
+  // the loop's real state more reliably than this `health` object ever can
+  // (health.errors only carries this signal when health-check.js itself ran
+  // somewhere the ledger is visible, which in steady state is nowhere) — let
+  // that caller's own assessment win so the top summary line and this block
+  // can never contradict each other.
+  const loopDeadMessage = loopDeadMessageOverride || autofixLoopDeadMessage(health);
+  return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan, loopDeadMessage)}${queuedHtml}`;
 }
 
 // Count of health-digest errors+warnings — folded into renderSummaryLine's

@@ -903,3 +903,22 @@ test('renderHealthDigestBlock: threads the fleet-wide dead-loop signal into the 
   assert.doesNotMatch(html, /Automation queue.{0,40}filed and launched/s,
     'the "filed and launched" promise must not survive once the fleet-wide check says otherwise');
 });
+
+// Codex adversarial review (task #1220/BRO-230): health-check.js runs ONLY in
+// GitHub Actions, where digest-autofix-ledger.jsonl is a per-machine file
+// that doesn't exist in the checkout — so health.errors can never carry this
+// check's row in steady state; a caller that reads the ledger LOCALLY (same
+// machine as the dispatch loop) must be able to override the health-derived
+// signal. This locks in that the 3rd param wins even when health.errors says
+// nothing is wrong (the case that will actually occur in production).
+test('renderHealthDigestBlock: explicit loopDeadMessage override wins even when health.errors is silent (local-ledger read beats CI-blind health snapshot)', () => {
+  const health = { errors: [{ name: 'Some other check', message: 'x' }], warns: [], queued: [] };
+  const html = renderHealthDigestBlock(
+    health,
+    [{ name: 'Some other check', state: 'dispatched', taskId: 1 }],
+    'Auto-fix loop is DEAD: 12 job(s) launched, 0 reported back.',
+  );
+  assert.match(html, /auto-fix loop looks DEAD/i);
+  assert.match(html, /12 job\(s\) launched, 0 reported back/);
+  assert.doesNotMatch(html, /Automation queue.{0,40}filed and launched/s);
+});
