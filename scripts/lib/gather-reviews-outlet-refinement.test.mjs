@@ -112,6 +112,27 @@ test('does not interfere with a genuine aggregator alias that already owns its o
   assert.equal(primary.outletId, 'lbo');
 });
 
+test('applies refinement between two DIFFERENT aggregator outlets (exemption branch, not just the no-op branch)', () => {
+  // The prior "genuine aggregator alias" tests above both short-circuit at
+  // outletOwnsUrlDomain() before shouldRefuseAggregatorOutletRefinement() is
+  // ever called, so they don't exercise the guard's "current outlet is
+  // ALSO an aggregator" exemption (AGGREGATOR_OUTLET_IDS.has(normCurrent) ->
+  // refuse=false) — only its no-op-because-domain-owned path. This case
+  // forces that branch: 'dtli' does not own londonboxoffice.co.uk
+  // (outletOwnsUrlDomain is false, so refinement proceeds), and the guard
+  // must still not refuse since 'dtli' itself is an aggregator outlet.
+  const html = reviewItemHtml({
+    outlet: 'DTLI',
+    criticName: 'Aggregator Cross Critic',
+    url: 'https://www.londonboxoffice.co.uk/news/post/some-west-end-show-review',
+    excerpt: LONG_EXCERPT,
+  });
+  const reviews = quiet(() => extractDTLIReviews(html, 'some-west-end-show-2026', 'https://didtheylikeit.com/shows/some-west-end-show/', 'Some West End Show'));
+  const primary = reviews.find((r) => r.criticName === 'Aggregator Cross Critic');
+  assert.ok(primary, 'block-parser review must be present');
+  assert.equal(primary.outletId, 'london-box-office', 'aggregator-to-aggregator refinement must still apply (not refused)');
+});
+
 test('does not overwrite a shared-domain edition label with its sibling outlet', () => {
   // Sunday Telegraph and The Telegraph both resolve to telegraph.co.uk in the
   // registry (a real domain collision — resolveOutletFromUrl arbitrarily picks
@@ -153,10 +174,12 @@ test('does not relabel the outlet from a URL that gets rejected as belonging to 
   assert.equal(reviews[0].outletId, 'associated-press', 'a URL rejected as belonging to another show must not relabel the outlet');
 });
 
-test('fill-if-empty path (no outlet label) is unaffected by the refinement guard', () => {
-  // Sanity check that ordinary block parsing (outletMatch present via
-  // review_image label) still yields a single review with a real outletId
-  // when no cross-domain mismatch exists at all.
+test('ordinary happy path: label already matches the URL-derived outlet, no refinement fires', () => {
+  // NOT a fill-if-empty case — extractDTLIReviews() requires outletMatch to
+  // proceed at all (blocks with no parseable outlet label are skipped
+  // entirely, see the "no outlet match" continue above); it never fills a
+  // missing label. This just confirms the common case (label and URL agree)
+  // passes straight through unaffected by the new refinement guard.
   const html = reviewItemHtml({
     outlet: 'Vulture',
     criticName: 'Sara Holdren',
