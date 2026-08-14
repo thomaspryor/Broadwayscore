@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T12:14:58.567Z",
+  "timestamp": "2026-08-14T12:59:25.045Z",
   "stats": {
-    "totalReviews": 42247,
-    "alreadyFlagged": 18322,
+    "totalReviews": 42248,
+    "alreadyFlagged": 18321,
     "dateGuardCatches": 145,
     "directorMismatch": 965,
     "tvFilmSignals": 1201,
-    "londonSignals": 879,
+    "londonSignals": 881,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3576
+    "noPublishDate": 3574
   },
   "findings": [
     {
@@ -44286,6 +44286,19 @@
     },
     {
       "showId": "tao-of-glass-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/tao-of-glass",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 88,
       "publishDate": "2026-07-31",
@@ -45349,6 +45362,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "afridiziak-theatre-news--elana-joseph.json",
+      "publishDate": "2026-08-13",
+      "url": "https://www.afridiziak.com/reviews/the-comedy-about-spies/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
