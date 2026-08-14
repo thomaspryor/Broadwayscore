@@ -649,6 +649,19 @@ on:
       # so a solo edit to the .sh triggers CI.
       - 'scripts/lib/run-push-audits.sh'
       - 'scripts/lib/run-push-audits.test.mjs'
+      # Post-merge TEST floor (task #1149) + baseline-diff (card #1433): only
+      # scripts/merge-worktree-to-main.sh itself was path-listed above — the
+      # gate module it calls, the module's own colocated test, its bash
+      # fault-injection fixture, and the shared TAP-failure parser it now
+      # requires had ZERO CI trigger of their own (a solo edit pushed with no
+      # CI). Path-listed so a solo edit to any of them triggers CI.
+      - 'scripts/lib/merge-post-merge-test-gate.js'
+      - 'scripts/lib/merge-post-merge-test-gate.test.mjs'
+      - 'scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh'
+      - 'scripts/lib/tap-failure-parser.js'
+      - 'scripts/lib/tap-failure-parser.test.mjs'
+      # acceptance-check-core.js already listed (search below) — card #1433
+      # added an optional `sha` param, reused by the baseline-diff above.
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
       # node --test batch). Path-listed so a solo lib edit triggers CI
