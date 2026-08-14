@@ -74,7 +74,8 @@
     "game-of-thrones-the-mad-king-regional-2026/observer--barbara-ellen.json",
     "game-of-thrones-the-mad-king-regional-2026/broadwayworld--clementine-scott.json",
     "game-of-thrones-the-mad-king-regional-2026/stratford-herald--steve-southerland.json",
-    "shifters-off-broadway-2026/new-york-city-theatre--unknown.json"
+    "shifters-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "schmigadoon-2026/wsj--john-anderson.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -1286,7 +1287,16 @@
     "a-midsummer-nights-dream-globe-west-end-2026/newsday--linda-winer.json",
     "a-midsummer-nights-dream-globe-west-end-2026/andrzej-lukowski--andrzej-lukowski.json",
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/latimes--charles-mcnulty.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1381,11 +1391,12 @@
       "brainiac-live-west-end-2026/theatre-weekly--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "schmigadoon-2026/wsj--john-anderson.json"
     ]
   },
   "startTime": "2026-08-13T18:06:47.788Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+  "lastProcessed": "schmigadoon-2026/latimes--charles-mcnulty.json",
   "log": [
     {
       "t": "2026-08-13T18:07:31.997Z",
@@ -1419,6 +1430,17 @@
       "t": "2026-08-14T02:58:55.494Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-14T05:22:25.795Z",
+      "event": "bb-session",
+      "session": "a7ebd684",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
+    },
+    {
+      "t": "2026-08-14T05:22:26.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
