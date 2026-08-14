@@ -1283,9 +1283,15 @@ const crossShowFingerprints = new Map();
             if (d.wrongProduction || d.wrongProductionManualClear) continue;
             if (!d.url) continue;
             if (shouldSkipWrongProductionAudit(d)) continue; // [GUARD:OB-BW-TRANSFER]
-            if (skipStaleFlagWrite(d)) continue; // [GUARD:OB-BW-TRANSFER-483]
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
+              // [GUARD:OB-BW-TRANSFER-483] INSIDE the URL match, not before it.
+              // Before it, this skipped the shared-URL test itself for every
+              // awaiting-refetch OB record and counted each one as "withheld"
+              // even when no Broadway twin existed — inflating the counter and
+              // widening the behaviour change past the records it is meant to
+              // cover (ship-check finding, 2026-08-14).
+              if (skipStaleFlagWrite(d)) continue;
               d.wrongProduction = true;
               invalidateWrongProductionAutoClear(d);
               d.wrongProductionReason = 'ob-broadway-transfer';
