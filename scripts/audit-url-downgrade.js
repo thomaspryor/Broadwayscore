@@ -111,8 +111,14 @@ function main() {
       }
       // Scope to records that carry a URL-swap breadcrumb — a plain old
       // out-of-window review with no swap history is flag-wrong-production-
-      // by-date.js's job, not this audit's.
-      const swapped = !!(data._urlChangedClear && data._urlChangedClear.to) || !!data.urlCorrectedFrom;
+      // by-date.js's job, not this audit's. Two producers, two breadcrumb
+      // shapes: maybeUpgradeUrl stamps _urlChangedClear/urlCorrectedFrom;
+      // mergeReviews' own url-swap branch (review-normalization.js ~L735)
+      // stamps urlUpdatedFrom instead — ship-check adversarial review
+      // (2026-08-14) found this audit was blind to that second producer.
+      const swapped = !!(data._urlChangedClear && data._urlChangedClear.to)
+        || !!data.urlCorrectedFrom
+        || !!data.urlUpdatedFrom;
       if (!swapped) continue;
 
       const verdict = isUrlSwapRegression({ newUrl: data.url, show, outletId: data.outletId });

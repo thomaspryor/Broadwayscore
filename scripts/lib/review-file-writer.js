@@ -46,6 +46,7 @@ const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = requ
 const { emitStage } = require('./stage-latency');
 const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { isUrlSwapRegression } = require('./url-downgrade-guard');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -960,8 +961,21 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   }
   if (!urlLocked && input.url && !existing.url &&
       !slugLooksLikeDifferentShow(input.url, { showTitle: _getShowTitle(showId) })) {
-    existing.url = input.url;
-    changed = true;
+    // Same regression guard as the upgrade path above (#1416 ship-check
+    // finding): an empty-url record accepted maybeUpgradeUrl's refusal
+    // silently, then fell through to this first-set branch, which only ever
+    // checked the cross-show slug guard — a wrong-production candidate on a
+    // brand-new file bypassed the date-window check entirely.
+    const _show = _getShowById(showId);
+    const _swapVerdict = _show
+      ? isUrlSwapRegression({ newUrl: input.url, show: _show, outletId: existing.outletId })
+      : { regression: false };
+    if (_swapVerdict.regression) {
+      console.warn(`  ⊘ url-downgrade guard: refusing first-set url on ${filepath}: ${_swapVerdict.reason}`);
+    } else {
+      existing.url = input.url;
+      changed = true;
+    }
   }
 
   // Custom merge callback — scraper can mutate existing, return false to abort
