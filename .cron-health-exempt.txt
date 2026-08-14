@@ -12,6 +12,11 @@
 
 adjudicate-review-queue.yml
 aggregator-url-watcher.yml
+# Self-healing image-fetch backstop (card #1456): a stale run means at-worst
+# a slower drain of the imageless-scored-shows backlog, not user-facing
+# staleness worth paging on — its own routeAlert escalation already alerts
+# the owner directly when self-heal isn't landing an image after 3 attempts.
+audit-imageless-scored-shows.yml
 audit-aggregator-coverage.yml
 audit-aggregator-gap.yml
 audit-bww-rr-attributions.yml
