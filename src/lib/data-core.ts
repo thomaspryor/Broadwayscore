@@ -741,38 +741,48 @@ export function getAllTheaterSlugs(): string[] {
  * `allShows`, and `showCount` is left undefined and the UI renders "—".
  * Enrichment (Wikipedia/IBDB/curated tips) tracked as follow-up.
  */
-let _londonTheatersCache: Theater[] | null = null;
-export function getAllLondonTheaters(): Theater[] {
-  if (_londonTheatersCache) return _londonTheatersCache;
+// Placeholder venue strings that should never generate their own venue page
+// (announced shows sometimes list "TBA" as the venue).
+const STUB_THEATER_PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
 
-  // Genre-agnostic: a dance house (Sadler's Wells, Peacock) is a real West End
-  // theatre and must appear in the venue index even when all its current shows
-  // are non-theatrical (which getWestEndShows() now excludes). Venue coverage
-  // must not regress from the genre-routing change.
-  const allShows = getAllLondonShows();
-  const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
+function normalizeVenueName(venue: string): string {
+  return venue.trim().replace(/\s+/g, ' ');
+}
 
-  // Skip placeholder venues — 10 announced shows list "TBA" which would create
-  // a fake /west-end/theater/tba page with 10 "past shows."
-  const PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
+/**
+ * Shared venue-index builder for markets with no curated theaterMetaData
+ * (West End, off-Broadway) — every field beyond name/address/shows stays
+ * undefined; pages render a "coming soon" placeholder instead of curated cards.
+ *
+ * Groups by SLUG rather than raw venue string. Off-Broadway/West End venue
+ * names are freeform data-entry text, not a curated list — near-duplicate
+ * strings (casing, stray whitespace: "SoHo Playhouse" vs "Soho Playhouse")
+ * would otherwise slugify to the same URL and silently strand one variant's
+ * shows behind an unreachable page (found in review before this shipped).
+ */
+function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
+  const theaterMap = new Map<string, { name: string; shows: ComputedShow[]; address?: string }>();
 
-  for (const show of allShows) {
-    if (!show.venue || PLACEHOLDER_VENUES.has(show.venue)) continue;
-    const existing = theaterMap.get(show.venue) || { shows: [], address: show.theaterAddress };
+  for (const show of shows) {
+    if (!show.venue) continue;
+    const name = normalizeVenueName(show.venue);
+    if (!name || name.startsWith('_') || STUB_THEATER_PLACEHOLDER_VENUES.has(name)) continue;
+    const slug = slugify(name);
+    if (!slug) continue;
+    const existing = theaterMap.get(slug) || { name, shows: [], address: show.theaterAddress };
     existing.shows.push(show);
     if (show.theaterAddress) existing.address = show.theaterAddress;
-    theaterMap.set(show.venue, existing);
+    theaterMap.set(slug, existing);
   }
 
-  _londonTheatersCache = Array.from(theaterMap.entries())
-    .filter(([name]) => !name.startsWith('_'))
-    .map(([name, data]) => {
+  return Array.from(theaterMap.entries())
+    .map(([slug, data]) => {
       const currentShow = data.shows.find(
         s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming'
       );
       return {
-        name,
-        slug: slugify(name),
+        name: data.name,
+        slug,
         address: data.address,
         currentShow,
         allShows: data.shows.sort((a, b) => {
@@ -785,7 +795,17 @@ export function getAllLondonTheaters(): Theater[] {
       };
     })
     .sort((a, b) => b.showCount - a.showCount);
+}
 
+let _londonTheatersCache: Theater[] | null = null;
+export function getAllLondonTheaters(): Theater[] {
+  if (_londonTheatersCache) return _londonTheatersCache;
+
+  // Genre-agnostic: a dance house (Sadler's Wells, Peacock) is a real West End
+  // theatre and must appear in the venue index even when all its current shows
+  // are non-theatrical (which getWestEndShows() now excludes). Venue coverage
+  // must not regress from the genre-routing change.
+  _londonTheatersCache = buildStubTheaterIndex(getAllLondonShows());
   return _londonTheatersCache;
 }
 
@@ -801,6 +821,27 @@ export function getLondonTheaterBySlug(slug: string): Theater | undefined {
  */
 export function getAllLondonTheaterSlugs(): string[] {
   return getAllLondonTheaters().map(t => t.slug);
+}
+
+let _offBroadwayTheatersCache: Theater[] | null = null;
+export function getAllOffBroadwayTheaters(): Theater[] {
+  if (_offBroadwayTheatersCache) return _offBroadwayTheatersCache;
+  _offBroadwayTheatersCache = buildStubTheaterIndex(getOffBroadwayShows());
+  return _offBroadwayTheatersCache;
+}
+
+/**
+ * Get a single off-Broadway venue by slug
+ */
+export function getOffBroadwayTheaterBySlug(slug: string): Theater | undefined {
+  return getAllOffBroadwayTheaters().find(t => t.slug === slug);
+}
+
+/**
+ * Get all off-Broadway theater slugs (for static generation)
+ */
+export function getAllOffBroadwayTheaterSlugs(): string[] {
+  return getAllOffBroadwayTheaters().map(t => t.slug);
 }
 
 // ============================================
