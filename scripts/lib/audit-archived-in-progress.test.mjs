@@ -194,3 +194,17 @@ test('the batch caps are the documented values', () => {
   assert.equal(DEFAULT_FIX_LIMIT, 10);
   assert.equal(MAX_UNCONFIRMED_FIX_LIMIT, 25);
 });
+
+test('readLiveTasks normalises id off the filename, matching readArchivedWithMtime', () => {
+  // The two readers disagreeing is the bug: readArchivedWithMtime falls back to
+  // the filename, readLiveTasks used to push the raw JSON. A live file lacking
+  // `id` then indexed as the string "undefined" in the own-id set, so the guard
+  // that closes the B1 burial missed and the task took skip-duplicate-live —
+  // reopening the burial. Latent (0 of 421 live files lack id today).
+  const s = scratch(null);
+  fs.writeFileSync(s.live(77), JSON.stringify({ status: 'pending', subject: 'no id field' }));
+  fs.writeFileSync(s.live(78), JSON.stringify({ id: 78, status: 'pending', subject: 'numeric id' }));
+  const byId = Object.fromEntries(readLiveTasks(s.dir).map((t) => [t.id, t.subject]));
+  assert.equal(byId['77'], 'no id field', 'a file with no id field must still index under its filename id');
+  assert.equal(byId['78'], 'numeric id', 'a numeric id must normalise to a string');
+});

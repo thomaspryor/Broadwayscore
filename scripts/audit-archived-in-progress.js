@@ -178,7 +178,17 @@ function readLiveTasks(dir) {
   try { files = fs.readdirSync(dir); } catch { return []; }
   const out = [];
   for (const f of files.filter((n) => /^\d+\.json$/.test(n))) {
-    try { out.push(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); } catch { /* skip */ }
+    try {
+      const parsed = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      // Normalise id off the FILENAME when the JSON lacks one, exactly as
+      // readArchivedWithMtime does. Without this the own-id guard that closes
+      // the B1 burial (task-reclaim.js: `live.ids.has(id)`) indexes the string
+      // "undefined" for such a file, misses, and the task takes the
+      // skip-duplicate-live branch again — reopening the burial this whole
+      // fix exists to close. 0 of 421 live files lack `id` today, so this is
+      // latent, but the two readers disagreeing is the bug.
+      out.push({ ...parsed, id: String(parsed.id ?? f.replace('.json', '')) });
+    } catch { /* skip */ }
   }
   return out;
 }
