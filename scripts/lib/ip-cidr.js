@@ -54,4 +54,23 @@ function isCoveredByAny(entry, ranges) {
   return ranges.some((r) => cidrContains(r, entry));
 }
 
-module.exports = { ipToInt, parseCidr, cidrContains, isCoveredByAny };
+/**
+ * Partitions blacklist `entries` against GitHub Actions IPv4 `ghRanges` for
+ * check-bd-blacklist.js: `ours` (auto-clear), `unknown` (parseable IPv4, not
+ * GitHub — possible credential leak), `unclassified` (IPv6/junk, fails safe
+ * by keeping it). Pure — no network, no I/O — so it's testable without
+ * mocking the BD/GitHub APIs.
+ */
+function classifyBlacklistEntries(entries, ghRanges) {
+  const ours = [];
+  const unknown = [];
+  const unclassified = [];
+  for (const e of entries) {
+    if (!parseCidr(e)) unclassified.push(e);
+    else if (isCoveredByAny(e, ghRanges)) ours.push(e);
+    else unknown.push(e);
+  }
+  return { ours, unknown, unclassified };
+}
+
+module.exports = { ipToInt, parseCidr, cidrContains, isCoveredByAny, classifyBlacklistEntries };

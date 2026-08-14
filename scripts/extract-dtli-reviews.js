@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -220,11 +220,20 @@ function extractReviewsFromDTLI(content, showId) {
     // aggregator. Same predicate the shared review-file-writer.js chokepoint
     // uses (shouldRefuseAggregatorOutletRefinement) — mirrored here since this
     // script writes via safeWriteReview, not createOrMergeReviewFile.
+    //
+    // #1524: also skip refinement when the DTLI-labeled outlet's own registry
+    // entry already claims the URL's domain (outletOwnsUrlDomain) — shared-
+    // domain editions like Telegraph/Sunday Telegraph both resolve to
+    // telegraph.co.uk, so without this a correctly-labeled "Sunday Telegraph"
+    // review would get relabeled onto its sibling "Telegraph" just because
+    // resolveOutletFromUrl() arbitrarily picks one domain owner. Same guard
+    // gather-reviews.js's own extractDTLIReviews() already applies (task #1506).
     let finalOutletId = outlet.outletId;
     let finalOutletName = outlet.name;
     if (url) {
       const urlResolved = resolveOutletFromUrl(url);
-      if (urlResolved && urlResolved.outletId && urlResolved.outletId !== finalOutletId) {
+      if (urlResolved && urlResolved.outletId && urlResolved.outletId !== finalOutletId
+          && !outletOwnsUrlDomain(finalOutletId, url)) {
         if (shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, finalOutletId)) {
           console.warn(`  ⛔ DTLI outlet refinement refused for ${showId}: URL=${urlResolved.outletId} (${url}) resolves to an aggregator — keeping DTLI label=${finalOutletId}`);
         } else {

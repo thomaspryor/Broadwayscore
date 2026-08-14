@@ -27,7 +27,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
-const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
+const { fetchPage } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 

@@ -158,6 +158,31 @@ test('buildSubject output classifies as the morning-digest scheduled sender', ()
   assert.doesNotMatch(quiet, /\d+ items?/);
 });
 
+// BRO-232 S4: digest truthfulness — the subject splits known/managed
+// (already tracked, day over day) from new/regressing (first sighting)
+// instead of a flat error/warning count that conflates the two.
+test('buildSubject: with autofixRows, splits known/managed vs new/regressing and preserves the urgent/streak flag', () => {
+  const autofixRows = [
+    { state: 'in-progress', wasNew: false },
+    { state: 'queued', wasNew: false },
+    { state: 'dispatched', wasNew: true },
+    { state: 'decision', wasNew: undefined }, // excluded from both buckets
+  ];
+  const s = buildSubject({
+    health: { subject: 'BSC URGENT (day 5): 2 unresolved errors' },
+    autofixRows,
+    now: new Date('2026-07-28T11:30:00Z'),
+  });
+  assert.match(s, /⛔ site health: 2 known\/managed, 1 new\/regressing/);
+  assert.equal(classifySubject(s)?.key, 'morning-digest');
+});
+
+test('buildSubject: autofixRows omitted or empty — behavior is byte-identical to the pre-BRO-232 error/warning count', () => {
+  const health = { subject: 'x', errors: ['a'], warns: [] };
+  assert.match(buildSubject({ health, now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
+  assert.match(buildSubject({ health, autofixRows: [], now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
+});
+
 test('buildHtml never renders loop language; empty day reads calm, not broken', () => {
   const empty = buildHtml({ sections: {}, problemsNote: null, changesHtml: null, now: new Date('2026-07-28T11:30:00Z') });
   assert.match(empty, /Nothing needs your attention this morning/);

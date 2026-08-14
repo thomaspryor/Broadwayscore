@@ -874,6 +874,17 @@ test('autofixLoopDeadMessage: returns the effectiveness message when the loop is
   assert.equal(got, msg);
 });
 
+test('renderAutofixBlock: "Cron failed:" and "Workflow repeat-failure:" for the SAME workflow collapse to one line (BRO-232 S4)', () => {
+  const rows = [
+    { name: 'Cron failed: Test Suite', state: 'dispatched', taskId: 'linear:BRO-500' },
+    { name: 'Workflow repeat-failure: Test Suite', state: 'dispatched', taskId: 'linear:BRO-500' },
+  ];
+  const out = renderAutofixBlock(rows);
+  const occurrences = (out.match(/The automated &quot;Test Suite&quot; job keeps failing|The automated "Test Suite" job keeps failing/g) || []).length;
+  assert.equal(occurrences, 1, 'must render ONE line for the family, not two, since both track the same Linear issue');
+  assert.match(out, /×2/, 'must show the ×2 dup count so the owner knows two checks fired on this one issue');
+});
+
 test('renderAutofixBlock: dead-loop message overrides the "filed and launched" header with an honest warning', () => {
   const rows = [{ name: 'Some issue', state: 'dispatched', taskId: 1 }];
   const normal = renderAutofixBlock(rows);

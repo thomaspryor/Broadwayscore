@@ -31,7 +31,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -2978,6 +2978,20 @@ showDirs.forEach(showId => {
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion === 'london' || urlIsUK) {
+          // Production-continuity exemption (BRO-222): a review whose
+          // publishDate falls inside a declared priorRuns window is coverage
+          // of THAT run, not this one — its market must be judged against the
+          // prior run's own venue, not the current (NYC) show's market. This
+          // guard previously consulted show.priorRuns nowhere at all, which
+          // suppressed a real UK-critic review of a declared Edinburgh Fringe
+          // prior run on a live off-Broadway transfer.
+          const reverseGuardReviewDate = data.publishDate ? parseDate(data.publishDate) : null;
+          const reversePriorRunVerdict = evaluateReverseLondonCrossMarketGuard({
+            outletIsLondon: true,
+            reviewDate: reverseGuardReviewDate,
+            priorRuns: showById[showId] && showById[showId].priorRuns,
+          });
+
           // CV override — symmetric with the forward guard above.
           // [GUARD:CROSS-MARKET-CV-OVERRIDE]
           //
@@ -2998,7 +3012,7 @@ showDirs.forEach(showId => {
               if (cvHost.endsWith('.co.uk') || cvHost.endsWith('.org.uk')) cvSaysCorrect = false;
             } catch (e) { /* malformed URL — leave cvSaysCorrect as-is */ }
           }
-          if (cvSaysCorrect) {
+          if (cvSaysCorrect || !reversePriorRunVerdict.shouldFlag) {
             // skip the flag + skip the exclusion — let downstream pipeline use it
           } else {
             // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk

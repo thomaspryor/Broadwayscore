@@ -30,6 +30,7 @@ const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, validateR
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -49,6 +50,7 @@ const stats = {
   updatedReviews: 0,
   skippedExisting: 0,
   skippedArchived: 0,
+  skippedConflict: 0,
   errors: [],
 };
 
@@ -516,8 +518,18 @@ function saveLBOReview(showId, reviewInfo) {
 
   if (result.action === 'new') stats.newReviews++;
   else if (result.action === 'updated') stats.updatedReviews++;
-  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-  else stats.skippedExisting++;
+  else {
+    // BRO-205: classify the skip reason instead of lumping every conflict
+    // (cross-show-url-owned, no-outlet, suspicious-outlet-id, domain-mismatch,
+    // aggregator-url-mismatch/-refinement-refused) into "already exists".
+    const cls = classifyReason(result.reason);
+    if (cls.kind === 'conflict' || cls.kind === 'unclassified') {
+      stats.skippedConflict++;
+      console.warn(`  ⚠️  ${describeSkip(showId, reviewInfo.url, cls)}`);
+    } else {
+      stats.skippedExisting++;
+    }
+  }
 
   return result.action === 'skipped' ? 'skipped' : result.action;
 }
@@ -865,6 +877,7 @@ async function scrapeLBORoundups() {
   console.log(`New reviews: ${stats.newReviews} (${stats.individualNew || 0} individual)`);
   console.log(`Updated reviews: ${stats.updatedReviews}`);
   console.log(`Skipped (already have excerpt): ${stats.skippedExisting}`);
+  if (stats.skippedConflict) console.log(`⚠️  Skipped (conflict — needs a human, see warnings above): ${stats.skippedConflict}`);
   if (stats.errors.length > 0) {
     console.log(`Errors: ${stats.errors.length}`);
     stats.errors.forEach(e => console.log(`  - ${e}`));

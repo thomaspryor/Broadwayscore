@@ -19,6 +19,7 @@ const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { urlLooksLikeReview } = require('./lib/review-guards');
+const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -399,8 +400,18 @@ function saveReview(review) {
   const updated = result.action === 'updated';
   if (created) console.log(`      Created ${path.basename(result.filepath)}`);
   else if (updated) console.log(`      Updated ${path.basename(result.filepath)} with DTLI data`);
-  else if (result.reason?.startsWith('domain-mismatch')) console.log(`    [SKIP] ${review.outletId}: ${result.reason}`);
-  else console.log(`      Skipped ${review.outletId} (already has DTLI data)`);
+  else {
+    // BRO-205: don't report every conflict skip (cross-show-url-owned,
+    // no-outlet, suspicious-outlet-id, domain-mismatch, aggregator-url-
+    // mismatch/-refinement-refused) as ordinary "already has DTLI data" —
+    // those are dropped reviews that need a human, not a benign no-op.
+    const cls = classifyReason(result.reason);
+    if (cls.kind === 'conflict' || cls.kind === 'unclassified') {
+      console.warn(`  ⚠️  ${describeSkip(review.showId, review.url, cls)}`);
+    } else {
+      console.log(`      Skipped ${review.outletId} (already has DTLI data)`);
+    }
+  }
 
   return { created, updated };
 }

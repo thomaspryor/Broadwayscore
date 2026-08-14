@@ -183,8 +183,49 @@ function httpsRequest(url, options = {}) {
  * be distinguished from a transient failure to skip retrying it).
  */
 async function fetchViaScrapingBee(url, options = {}) {
-  const result = await fetchPage(url, { renderJs: !!options.renderJs });
-  return result.content;
+  if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
+
+  const maxRetries = options.maxRetries ?? 2;  // nullish: allow an explicit 0 (no retries)
+  const renderJs = options.renderJs ? '&render_js=true' : '&render_js=false';
+
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}${renderJs}`;
+      return await new Promise((resolve, reject) => {
+        const req = https.get(apiUrl, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) {
+              resolve(data);
+            } else {
+              const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+              err.statusCode = res.statusCode;
+              reject(err);
+            }
+          });
+        });
+        req.on('error', reject);
+        req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
+      });
+    } catch (e) {
+      lastError = e;
+      // Don't retry on 4xx — the URL doesn't exist or we're forbidden,
+      // retrying just burns the 60-min step budget. Each ~180-show run
+      // tries multiple URL variants per show; missing pages used to cost
+      // 15s each (5s + 10s backoff) for nothing.
+      if (e.statusCode >= 400 && e.statusCode < 500) {
+        throw e;
+      }
+      if (attempt < maxRetries) {
+        const delay = 5000 * (attempt + 1);
+        if (verbose) console.log(`    Retry ${attempt + 1}/${maxRetries} after ${delay / 1000}s: ${e.message}`);
+        await sleep(delay);
+      }
+    }
+  }
+  throw lastError;
 }
 
 /**
