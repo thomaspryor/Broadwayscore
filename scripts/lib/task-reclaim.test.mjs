@@ -93,13 +93,18 @@ test('startedAndLost WITH branch evidence parks — never auto-reclaims (the dat
   assert.deepEqual(rows[0].detail, ['worktree-1416-url-downgrade-guard'], 'the matched branch must be reported so a false positive is visible');
 });
 
-test('startedAndLost with NO surviving branch is reclaimable — a ledger row alone is not work', () => {
+// Superseded by ship-check B3 and replaced by the B3 tests below: this used to
+// assert that a startedAndLost task with no matching branch was reclaimable.
+// Measured on the real corpus, 653 worktree-prefixed branches carry no task id
+// at all, so "no branch matched" means the detector could not answer — and
+// reclaiming on that is the data-loss direction the card forbids.
+test('startedAndLost never reclaims on a branch-detector miss', () => {
   const rows = classify([trapped(1416)], {
     startedIds: new Set(['1416']),
     branchEvidenceOf: () => ({ hasEvidence: false, matches: [] }),
     cardOf: () => ({ lastEditedAt: hAgo(72) }),
   });
-  assert.equal(actionOf(rows, 1416), 'reclaim');
+  assert.notEqual(actionOf(rows, 1416), 'reclaim');
 });
 
 test('neverStarted is never branch-checked at all', () => {
@@ -220,4 +225,59 @@ test('every decision carries the card status the executor gates its Notion write
 
   const noCard = classify([trapped(5, { description: 'no marker' })], {});
   assert.equal(noCard[0].cardStatus, null, 'a task with no card must report null, not a stale value from a previous loop iteration');
+});
+
+// ── ship-check B1: the self-twin burial ────────────────────────────────────
+test('B1: a task that is its OWN live twin resumes the interrupted reclaim, never parks', () => {
+  // The crash window the design tolerates: live copy written, archive unlink
+  // never happened. Parking here would stamp archive/<id>.json to `completed`,
+  // and loadTasksUnioned lets a completed ARCHIVE record beat the live one —
+  // burying the reclaimed task permanently with nothing left to detect it.
+  const live = [{ id: '900', subject: 'Some trapped card subject for #900', description: `[notion:${nid(900)}] P1 Next` }];
+  const rows = classify([trapped(900)], { liveTasks: live, cardOf: () => ({ lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 900), 'resume-interrupted-reclaim');
+  assert.notEqual(actionOf(rows, 900), 'skip-duplicate-live', 'parking a self-twin permanently buries the task this module exists to rescue');
+});
+
+test('B1: a twin with a DIFFERENT id is still a real duplicate', () => {
+  const live = [{ id: '1164', subject: 'unrelated', description: `[notion:${nid(9)}] P1 Next` }];
+  assert.equal(actionOf(classify([trapped(9)], { liveTasks: live }), 9), 'skip-duplicate-live');
+});
+
+// ── ship-check B3: started work parks even with no branch found ────────────
+test('B3: startedAndLost parks even when NO branch matches — absence of evidence is not evidence of absence', () => {
+  const rows = classify([trapped(1416)], {
+    startedIds: new Set(['1416']),
+    branchEvidenceOf: () => ({ hasEvidence: false, matches: [] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+  });
+  assert.equal(actionOf(rows, 1416), 'park-started', '653 worktree branches carry no task id, so a miss cannot license a reclaim');
+  assert.match(rows[0].reason, /cannot prove absence/);
+});
+
+test('B3: branch evidence still enriches the reason when it IS found', () => {
+  const rows = classify([trapped(1416)], {
+    startedIds: new Set(['1416']),
+    branchEvidenceOf: () => ({ hasEvidence: true, matches: ['worktree-1416-x'] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+  });
+  assert.equal(actionOf(rows, 1416), 'park-started');
+  assert.match(rows[0].reason, /may hold real commits/);
+});
+
+// ── other ship-check findings ──────────────────────────────────────────────
+test('a card with no usable lastEditedAt is skipped, not treated as idle', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ status: 'In progress' }) });
+  assert.equal(actionOf(rows, 9), 'skip-card-unavailable', 'sweepUntrackedInProgress skips outright; falling through would flip an unknown-age card');
+});
+
+test('notionMarkerOf reads metadata.notionCard first, matching notionIdOfTask', () => {
+  const { notionMarkerOf } = require('./task-reclaim.js');
+  const t = { description: `[notion:${nid(1)}] P1`, metadata: { notionCard: nid(2).toUpperCase() } };
+  assert.equal(notionMarkerOf(t), nid(2), 'a metadata-only task would otherwise skip every Notion guard');
+});
+
+test('guard precedence: a live lease outranks every other signal, including a twin', () => {
+  const live = [{ id: '1164', subject: 'x', description: `[notion:${nid(9)}] P1` }];
+  assert.equal(actionOf(classify([trapped(9)], { liveTasks: live, leaseAliveOf: () => true }), 9), 'skip-live');
 });

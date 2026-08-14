@@ -59,6 +59,12 @@ const TERMINAL_CARD_STATUSES = new Set(['Done', 'Archived', 'Cancelled']);
 const DEFAULT_IDLE_MS = 48 * 60 * 60 * 1000; // same bar as sweepUntrackedInProgress
 
 function notionMarkerOf(task) {
+  // metadata.notionCard FIRST, matching notionIdOfTask (bsc-reconcile.js:472-477)
+  // which checks it before the description. A task carrying only the metadata
+  // form would otherwise read as marker-less and skip every Notion guard
+  // (ship-check warning). No instances in the corpus today; latent otherwise.
+  const meta = task && task.metadata && task.metadata.notionCard;
+  if (typeof meta === 'string' && meta.trim()) return meta.trim().toLowerCase();
   const m = NOTION_MARKER_RE.exec(String((task && task.description) || ''));
   return m ? m[1].toLowerCase() : null;
 }
@@ -179,13 +185,44 @@ function classifyReclaimable(trapped, ctx = {}) {
 
     const marker = notionMarkerOf(task);
     const twin = (marker && live.byMarker.get(marker)) || live.bySubject.get(normalizeSubject(task.subject));
+
+    // SELF-TWIN (ship-check B1). The reclaim writes the live copy, verifies it,
+    // then unlinks the archive copy. That ordering deliberately tolerates a
+    // crash in between — the task ends up in BOTH directories, which every
+    // union loader already handles. But on the NEXT run the live copy looks
+    // like a "twin" of the archive copy, and parking it would stamp
+    // archive/<id>.json to `completed`. loadTasksUnioned
+    // (audit-dispatch-outcomes.js:53) lets a `completed` ARCHIVE record win over
+    // a live one, so the just-reclaimed pending task would read completed to
+    // the watchdog, drop out of p01Queue forever, and never be flagged again —
+    // it is no longer in_progress, so no audit sees it. That buries precisely
+    // the task this whole module exists to rescue. A twin that IS this task is
+    // not a duplicate; it is an interrupted reclaim, and the fix is to finish
+    // it (drop the archive copy), never to park it.
+    if (twin && String(twin) === id) { push('resume-interrupted-reclaim', 'a previous reclaim wrote the live copy but did not remove the archive copy — finishing it'); continue; }
     if (twin) { push('skip-duplicate-live', `live task #${twin} already represents this card`, twin); continue; }
 
     if (isBscDaily(task)) { push('close-superseded', 'BSC Daily alert card — the digest re-mints these daily and files to Linear, so this copy is superseded'); continue; }
 
+    // STARTED WORK ALWAYS PARKS (ship-check B3). The original rule was "park
+    // only if a branch survives", but branch detection is measurably
+    // unreliable: 653 of this repo's worktree-prefixed branches carry no task
+    // id at all (worktree-add-missing-fix-tests, worktree-agent-a239c96ad3...),
+    // and the dispatch ledger records no branch/worktree field to fall back on
+    // (checked: launch rows carry workspaceRef, never a ref name). So "no
+    // branch found" means "this detector cannot answer", not "no work exists" —
+    // the same distinction dispatchedTaskIds already makes about a missing
+    // ledger in audit-archived-in-progress.js. Reclaiming on an unanswerable
+    // check is the data-loss direction the card explicitly forbids, so a task
+    // with ANY dispatch start event parks. Branch evidence now only enriches
+    // the reason so a human can triage fastest-first.
     if (startedIds.has(id)) {
       const ev = branchEvidenceOf(id);
-      if (ev.hasEvidence) { push('park-started', `dispatched before and a branch/worktree still exists — may hold real commits (${ev.matches.join(', ')})`, ev.matches); continue; }
+      push('park-started', ev.hasEvidence
+        ? `dispatched before and a branch/worktree still exists — may hold real commits (${ev.matches.join(', ')})`
+        : 'dispatched before; no branch matched, but branch detection cannot prove absence — needs a human look before any re-run',
+      ev.matches);
+      continue;
     }
 
     if (!marker) { push('reclaim', 'no Notion card to consult; local record is unambiguously stale'); continue; }
@@ -193,10 +230,14 @@ function classifyReclaimable(trapped, ctx = {}) {
     const card = cardOf(marker);
     if (!card) { push('skip-card-unavailable', 'Notion card could not be fetched — refusing to act blind'); continue; }
     cardStatus = card.status || null;
-    if (card.lastEditedAt) {
-      const idle = now - Date.parse(card.lastEditedAt);
-      if (Number.isFinite(idle) && idle < idleMs) { push('skip-fresh', `card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it`); continue; }
-    }
+    // A card with no usable lastEditedAt is unanswerable, so skip — matching
+    // sweepUntrackedInProgress (bsc-reconcile.js:553), which treats a missing
+    // timestamp as a skip rather than falling through to the flip. The earlier
+    // shape only gated INSIDE the if, so a card lacking the field sailed past
+    // the idle guard entirely (ship-check warning).
+    const idle = card.lastEditedAt ? now - Date.parse(card.lastEditedAt) : NaN;
+    if (!Number.isFinite(idle)) { push('skip-card-unavailable', 'card has no usable lastEditedAt — cannot tell whether anyone is on it'); continue; }
+    if (idle < idleMs) { push('skip-fresh', `card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it`); continue; }
     if (String(card.outcome || '').trim()) { push('park-outcome', 'card already records a completed Outcome — needs a human yes/no, not an automatic reopen'); continue; }
     if (TERMINAL_CARD_STATUSES.has(card.status)) { push('park-outcome', `card status is ${card.status} — finished work, never reclaim`); continue; }
 

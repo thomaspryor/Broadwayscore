@@ -230,6 +230,20 @@ function applyDecision(decision, { liveDir, archiveDir, now, correctCardFn }) {
   // flipFn — the re-read is the last word, never the stale snapshot).
   if (task.status !== 'in_progress') return { id, done: false, why: `no longer trapped (status is now ${task.status})` };
 
+  // Finish an interrupted reclaim (ship-check B1): the live copy already
+  // exists and is correct, only the archive copy lingers. Verify the live copy
+  // really is a reclaimed record before unlinking — if it is not, this id was
+  // reused by something else and dropping the archive copy would lose history.
+  if (decision.action === 'resume-interrupted-reclaim') {
+    let liveTask = null;
+    try { liveTask = JSON.parse(fs.readFileSync(livePath, 'utf8')); } catch { /* handled below */ }
+    if (!liveTask || !liveTask.reclaimedFromArchiveAt) {
+      return { id, done: false, why: 'live copy is not a reclaimed record — refusing to drop the archive copy' };
+    }
+    try { fs.unlinkSync(archivePath); } catch (e) { return { id, done: false, why: `archive unlink failed: ${e.message}` }; }
+    return { id, done: true, action: 'resume-interrupted-reclaim' };
+  }
+
   if (decision.action === 'close-superseded') {
     const body = `${JSON.stringify(supersededTaskShape(task, { now }), null, 2)}\n`;
     if (!writeVerified(archivePath, body)) return { id, done: false, why: 'archive read-back mismatch' };
@@ -301,10 +315,40 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
   for (const t of trapped) {
     try { full.push(JSON.parse(fs.readFileSync(path.join(archiveDir, `${t.id}.json`), 'utf8'))); } catch { /* skip */ }
   }
+  // Liveness guards, wired to the REAL implementations (ship-check B2). These
+  // defaulted to () => false / () => null, so `skip-live` could never fire in
+  // production even though the module documented it as borrowed wholesale from
+  // sweepUntrackedInProgress — a task an interactive session was actively
+  // holding would have been flipped to pending and re-dispatched. The tests
+  // passed only because they inject these, which is exactly the pure-function
+  // vs IO-boundary gap CLAUDE.md warns about.
+  let leaseAliveOf = () => false;
+  let liveTabOf = () => null;
+  try {
+    const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
+    leaseAliveOf = (id) => { const l = readLease(id); return !!(l && pidLooksLikeClaude(l.pid)); };
+  } catch (e) { console.error(`[audit-archived-in-progress] WARN lease guard unavailable (${e.message}) — refusing to run without it`); process.exitCode = 2; return; }
+  try {
+    const cmuxws = require('./lib/cmux-workspaces.js');
+    const ledger = require('./lib/dispatch-ledger.js');
+    const workspaces = cmuxws.listWorkspaces() || [];
+    liveTabOf = (task) => {
+      const w = workspaces.find((ws) => ledger.titleMatchesSubject(ws.title, task.subject));
+      return w ? w.ref : null;
+    };
+  } catch (e) {
+    // cmux being unobservable is the one case where degrading is worse than
+    // stopping: without the tab guard a live session's task can be reclaimed.
+    console.error(`[audit-archived-in-progress] REFUSED — cmux workspace listing failed (${e.message}); cannot prove no live tab holds these tasks.`);
+    process.exitCode = 2; return;
+  }
+
   const decisions = classifyReclaimable(full, {
     liveTasks,
     startedIds,
     branchEvidenceOf: (id) => taskBranchEvidence(id, refs),
+    leaseAliveOf,
+    liveTabOf,
     cardOf: fetchCard,
     now: Date.now(),
   });
@@ -320,28 +364,46 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
   // Every action that WRITES. park-started is deliberately excluded: "a human
   // must look at this branch" is not a terminal state, so those keep reading
   // in_progress and keep being counted as trapped — honestly.
-  const WRITES = new Set(['reclaim', 'close-superseded', 'park-outcome', 'skip-duplicate-live']);
+  const WRITES = new Set(['reclaim', 'close-superseded', 'park-outcome', 'skip-duplicate-live', 'resume-interrupted-reclaim']);
   const actionable = decisions.filter((d) => WRITES.has(d.action));
   const batch = actionable.slice(0, limit);
   console.log(`\n  actionable: ${actionable.length}; acting on ${batch.length} this run (--limit=${limit})`);
   if (dry) { console.log('  DRY RUN — nothing written.'); return; }
   if (!batch.length) return;
 
-  // The lock guards archive/<id>.json against archiveCompletedTasks' rename.
+  const byId = new Map(full.map((t) => [String(t.id), t]));
+
+  // The lock guards archive/<id>.json against archiveCompletedTasks' rename —
+  // and it goes stale after LOCK_STALE_MS (5 min, task-store-archive.js). Notion
+  // writes therefore happen AFTER the lock is released: each is a spawnSync with
+  // a 60s timeout, so doing them inside would provably let another writer steal
+  // the lock mid-batch on any run of more than a few tasks (ship-check warning).
+  // The filesystem phase below is pure-local and fast.
   const release = acquireArchiveLock(dir);
   const results = [];
+  const cardWrites = [];
   try {
     for (const d of batch) {
-      const notionId = (/\[notion:([0-9a-f-]{16,})\]/i.exec(String((full.find((t) => String(t.id) === d.id) || {}).description || '')) || [])[1];
-      results.push(applyDecision({ ...d, notionId }, {
-        liveDir: dir, archiveDir, now: Date.now(),
-        correctCardFn: (nid, note, status) => {
-          const r = spawnSync('node', [path.join(repoRoot, 'scripts', 'notion-brain.js'), 'update', nid, '--status', status, '--outcome', note], { encoding: 'utf8', timeout: NOTION_FETCH_TIMEOUT_MS });
-          return r.status === 0;
-        },
-      }));
+      const notionId = (/\[notion:([0-9a-f-]{16,})\]/i.exec(String((byId.get(d.id) || {}).description || '')) || [])[1];
+      // One task's failure must never abort the batch or hide the summary of
+      // what already moved (ship-check warning: an ENOSPC on task 3 of 25
+      // propagated past the finally and printed nothing at all).
+      try {
+        results.push(applyDecision({ ...d, notionId }, {
+          liveDir: dir, archiveDir, now: Date.now(),
+          correctCardFn: (nid, note, status) => { cardWrites.push({ id: d.id, nid, note, status }); return null; },
+        }));
+      } catch (e) {
+        results.push({ id: d.id, done: false, why: `write threw: ${e.message}` });
+      }
     }
   } finally { release(); }
+
+  for (const w of cardWrites) {
+    const r = spawnSync('node', [path.join(repoRoot, 'scripts', 'notion-brain.js'), 'update', w.nid, '--status', w.status, '--outcome', w.note], { encoding: 'utf8', timeout: NOTION_FETCH_TIMEOUT_MS });
+    const row = results.find((x) => x.id === w.id);
+    if (row) row.cardCorrected = r.status === 0;
+  }
 
   const ok = results.filter((r) => r.done);
   console.log(`\n  applied: ${ok.length}/${batch.length}`);

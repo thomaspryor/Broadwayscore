@@ -1776,6 +1776,11 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-archived-in-progress.js'
       - 'scripts/lib/audit-archived-in-progress.test.mjs'
+      # Card #1402: the --fix half of that recovery. Pure decision logic lives
+      # in task-reclaim.js; its colocated test runs in the lib-test glob.
+      # Path-listed so a solo edit to either triggers CI.
+      - 'scripts/lib/task-reclaim.js'
+      - 'scripts/lib/task-reclaim.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
