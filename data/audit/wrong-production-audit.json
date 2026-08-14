@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-14T20:33:24.069Z",
+  "timestamp": "2026-08-14T21:18:42.673Z",
   "stats": {
     "totalReviews": 42251,
-    "alreadyFlagged": 18321,
-    "dateGuardCatches": 144,
+    "alreadyFlagged": 18320,
+    "dateGuardCatches": 145,
     "directorMismatch": 965,
     "tvFilmSignals": 1202,
     "londonSignals": 880,
@@ -31653,6 +31653,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "a-life-in-four-seasons-west-end-2026",
+      "file": "dance-informa-uk--unknown.json",
+      "publishDate": "2026-05-04",
+      "url": "https://dancemagazine.co.uk/2026/05/dancers-revealed-for-a-life-in-four-seasons-at-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 38d before show (2026-05-04 vs 2026-06-11)"
         }
       ]
     },
