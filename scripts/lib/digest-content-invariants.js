@@ -75,8 +75,11 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   // 2026-07-30).
   // Digest v3 (owner mandate 2026-08-02): the email must NEVER ask. Zero
   // Fix-this buttons — auto-dispatch replaced them — and every named health
-  // row must appear inside the "Being fixed automatically" block with a
-  // status line. Forbidden sections are the telemetry the owner called
+  // row must appear inside the "Automation queue" block with a status line
+  // (renderAutofixBlock's header text; renamed from "Being fixed
+  // automatically" by the BRO-286 honesty fix, task #1220/#1311 class —
+  // keep this comment and the check below in sync with that literal).
+  // Forbidden sections are the telemetry the owner called
   // unintelligible/useless; their headings reappearing is a regression.
   const fixCount = countFixThisButtons(html);
   if (fixCount !== 0) {
@@ -101,8 +104,8 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   const namedRows = health
     ? selectHealthRows({ errors: health.errors, warns: health.warns }).rows.filter((r) => r && r.name)
     : [];
-  if (namedRows.length > 0 && !html.includes('Being fixed automatically')) {
-    violations.push(`health has ${namedRows.length} named issue(s) but no "Being fixed automatically" block — the email is asking or hiding instead of fixing`);
+  if (namedRows.length > 0 && !html.includes('Automation queue')) {
+    violations.push(`health has ${namedRows.length} named issue(s) but no "Automation queue" block — the email is asking or hiding instead of fixing`);
   }
 
   // Every dispatch action URL must be a live, correctly-signed link — a

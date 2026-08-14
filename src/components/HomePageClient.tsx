@@ -418,7 +418,12 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       }
     });
     return () => { cancelled = true; };
-  }, [searchQuery, getFuse]);
+    // archiveShows is a dependency (not just fuseDataRef) so a deep link that
+    // lands with `q` already set re-searches once the archive lands — without
+    // it, this effect's single initial run can search a Fuse index built
+    // before the archive merged in, and nothing re-triggers it since fuseRef
+    // invalidation alone doesn't change this effect's inputs.
+  }, [searchQuery, getFuse, archiveShows]);
 
   // Featured rows are pre-computed server-side — no client-side filtering/sorting needed
   // bestRecentShows is still needed for the inline shelf when skipFirstMusicals is false

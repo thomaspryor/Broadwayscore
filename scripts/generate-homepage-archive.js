@@ -113,7 +113,7 @@ for (const review of reviews) {
 function computeCriticScore(showReviews) {
   const result = _computeRaw(showReviews, outletRegistry, 'broadway');
   if (!result) return null;
-  return { score: result.s, reviewCount: result.rc, tier1Count: result.t1 };
+  return { score: result.s, reviewCount: result.rc, tier1Count: result.t1, tier2Count: result.t2 };
 }
 
 // ===========================================

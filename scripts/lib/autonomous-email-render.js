@@ -277,10 +277,13 @@ function renderHealthScoreboard(health) {
   </div>`;
 }
 
-// "Being fixed automatically" — one line per issue with its auto-fix status.
-// NO buttons, NO asks (owner, 2026-08-02: "Just have a Claude session fix
-// them"). rows come from digest-autofix's annotated plan; health rows the plan
-// didn't cover (shouldn't happen) degrade to a bare plain-English line.
+// "Automation queue" block — one line per issue with its auto-fix status
+// (renamed from "Being fixed automatically" by the BRO-286 honesty fix;
+// scripts/lib/digest-content-invariants.js checks for this exact header
+// text, so keep them in sync on any future rename). NO buttons, NO asks
+// (owner, 2026-08-02: "Just have a Claude session fix them"). rows come from
+// digest-autofix's annotated plan; health rows the plan didn't cover
+// (shouldn't happen) degrade to a bare plain-English line.
 const AUTOFIX_STATE_LABEL = {
   // BRO-286 honesty (settles the task #1311/#1220 class): 'dispatched' means
   // a launch was ATTEMPTED \u2014 the spawn is detached and its journal entry

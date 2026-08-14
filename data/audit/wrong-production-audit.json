@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-13T23:32:03.602Z",
+  "timestamp": "2026-08-14T00:02:05.923Z",
   "stats": {
-    "totalReviews": 42198,
-    "alreadyFlagged": 18304,
+    "totalReviews": 42201,
+    "alreadyFlagged": 18305,
     "dateGuardCatches": 142,
     "directorMismatch": 965,
-    "tvFilmSignals": 1192,
+    "tvFilmSignals": 1194,
     "londonSignals": 879,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3561
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -8944,6 +8944,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-08-09",
+      "url": "https://www.theguardian.com/stage/2026/aug/09/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "publishDate": "2026-08-09",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },

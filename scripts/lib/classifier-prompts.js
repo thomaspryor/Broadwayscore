@@ -57,7 +57,7 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
   // the old chain fell through to 'Broadway' for any unnamed market, which told
   // the classifier a regional tryout was a Broadway opening (2026-07-30).
   const market = (show && show.market) || 'broadway';
-  const marketLabel = getMarketLabel(market);
+  const marketLabel = getMarketLabel(market, show && show.venue);
   const regionalNote = isNonMetroMarket(market)
     ? `\n\n${getRegionalPromptContext(show && show.venue)}`
     : '';
