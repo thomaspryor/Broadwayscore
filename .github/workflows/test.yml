@@ -112,6 +112,11 @@ on:
       # globbed; scripts/lib/*.js needs explicit listing per this repo's
       # convention (no scripts/lib/** broad glob) so a solo edit triggers CI.
       - 'scripts/lib/cmux-launch-guard.js'
+      # BRO-203 generic fallback (unknown-domain extraction). Colocated test
+      # tests/unit/article-extractor-generic-fallback.test.mjs runs via
+      # tests/unit-test-manifest.txt (tests/** already globbed above); this
+      # lib itself needs explicit listing per this repo's convention.
+      - 'scripts/lib/article-extractor.js'
       - 'scripts/lib/title-match.js'
       - 'scripts/lib/rss-discovery.js'
       - 'scripts/lib/omc-discovery.js'
