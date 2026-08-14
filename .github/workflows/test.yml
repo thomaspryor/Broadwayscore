@@ -711,6 +711,13 @@ on:
       # unscored one IS. Colocated test runs in the lib-test glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/lib/aggregator-domain-tld-parity.test.mjs'
+      # Aggregator-outlet byline keep-vs-collapse predicate (BRO-225): separates
+      # dtli/london-box-office/theatre-reviews-limited staff/contributing-critic
+      # content from reviews whose fullText was collapsed from a real outlet.
+      # Colocated *.test.mjs runs in the lib-test glob; path-listed so a solo
+      # edit triggers CI.
+      - 'scripts/lib/aggregator-outlet-byline-audit.js'
+      - 'scripts/lib/aggregator-outlet-byline-audit.test.mjs'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
