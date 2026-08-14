@@ -1,31 +1,11 @@
 {
-  "generatedAt": "2026-08-14T15:47:32.386Z",
+  "generatedAt": "2026-08-14T16:42:26.447Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 154,
-  "clean": 153,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "an-american-daughter-off-broadway-2026",
-      "title": "An American Daughter",
-      "openingDate": "2026-08-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theater-life"
-        }
-      ],
-      "missingFromProd": [
-        "theater-life"
-      ],
-      "localCount": 16,
-      "deployedCount": 15
-    }
-  ]
+  "clean": 154,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
