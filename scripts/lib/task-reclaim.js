@@ -167,6 +167,7 @@ function classifyReclaimable(trapped, ctx = {}) {
     cardOf = () => null,
     now = 0,
     idleMs = DEFAULT_IDLE_MS,
+    forceReclaimIds = new Set(),
   } = ctx;
 
   const live = indexLiveTasks(liveTasks);
@@ -230,7 +231,16 @@ function classifyReclaimable(trapped, ctx = {}) {
     // check is the data-loss direction the card explicitly forbids, so a task
     // with ANY dispatch start event parks. Branch evidence now only enriches
     // the reason so a human can triage fastest-first.
-    if (startedIds.has(id)) {
+    // OWNER OVERRIDE. park-started is the deliberately-unautomatable case: it
+    // needs a human to look at the branch and say whether the work landed.
+    // forceReclaimIds is that answer, carried back in — it names EXACTLY which
+    // ids were checked, so it can never widen into a sweep, and it bypasses
+    // only this guard. Every other guard (live lease, live tab, duplicate,
+    // card Outcome, card idle) still runs, because none of them are the
+    // question the human just answered.
+    const forced = forceReclaimIds.has(id);
+
+    if (startedIds.has(id) && !forced) {
       const ev = branchEvidenceOf(id);
       push('park-started', ev.hasEvidence
         ? `dispatched before and a branch/worktree still exists — may hold real commits (${ev.matches.join(', ')})`
@@ -255,7 +265,9 @@ function classifyReclaimable(trapped, ctx = {}) {
     if (String(card.outcome || '').trim()) { push('park-outcome', 'card already records a completed Outcome — needs a human yes/no, not an automatic reopen'); continue; }
     if (TERMINAL_CARD_STATUSES.has(card.status)) { push('park-outcome', `card status is ${card.status} — finished work, never reclaim`); continue; }
 
-    push('reclaim', 'no live session, no live tab, no duplicate, no branch, card idle and unfinished');
+    push('reclaim', forced
+      ? 'dispatched before, but an owner-directed branch review confirmed its work already landed on main — and every other guard still passed'
+      : 'no live session, no live tab, no duplicate, no branch, card idle and unfinished');
   }
   return out;
 }
