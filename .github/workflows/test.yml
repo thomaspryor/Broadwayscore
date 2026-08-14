@@ -1343,6 +1343,15 @@ on:
       # both directions. Run in the node --test step below.
       - 'scripts/audit-standing-coverage.js'
       - 'scripts/audit-standing-coverage.test.mjs'
+      # Task #1475: off-Broadway venue-complexes.json audit (cousin of the West
+      # End National Theatre bare-form-slug bug, e0a63053ec6). Colocated test
+      # in the tests/unit-test-manifest.txt node --test batch (root-level
+      # scripts/*.test.mjs is not globbed) — path-listed so a solo edit to
+      # the lib, the test, or the data file it guards triggers CI.
+      - 'scripts/lib/venue-complex-audit.js'
+      - 'scripts/audit-venue-complex-slugs.test.mjs'
+      - 'data/venue-complexes.json'
+      - 'data/venue-complexes-west-end.json'
       # SERP review census (#371 — Soundsphere/JonathanBaz class): editor-
       # curated aggregators only see outlets they chose to cite; this runs the
       # same "<title> review" SERP query a human sweep does. Colocated

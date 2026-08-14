@@ -9,6 +9,9 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 import {
   slugify,
@@ -45,6 +48,8 @@ import {
   getRelatedShowsOpen,
   getRelatedShowsClosed,
   getOtherProductions,
+  getAllOffBroadwayComplexes,
+  getOffBroadwayComplexBySlug,
   type ComputedShow,
 } from '../../src/lib/data-core';
 
@@ -961,6 +966,86 @@ describe('getOtherProductions', () => {
         } else {
           assert.ok(catA <= catB, `Markets should be in order: broadway, west-end, off-broadway`);
         }
+      }
+    }
+  });
+});
+
+// ===========================================
+// venue-complex-audit.js drift guard — scripts/lib/venue-complex-audit.js
+// (used by scripts/audit-venue-complex-slugs.test.mjs, task #1475) copies
+// slugify() from this file verbatim because plain `node --test` can't import
+// TS. This test imports the REAL slugify from data-core.ts and the COPY from
+// the scripts/lib module and asserts they agree over every off-Broadway
+// venue string in shows.json — if a future edit to data-core.ts's slugify
+// changes its behavior without updating the copy, this test fails instead
+// of the two implementations silently diverging.
+// ===========================================
+
+describe('venue-complex-audit.js slugify drift guard', () => {
+  test('scripts/lib/venue-complex-audit.js slugify matches data-core.ts slugify on every off-Broadway venue string', () => {
+    const { slugify: copiedSlugify } = require('../../scripts/lib/venue-complex-audit.js');
+    const venues = new Set(
+      getOffBroadwayShows()
+        .map(s => s.venue)
+        .filter((v): v is string => !!v)
+    );
+    for (const venue of Array.from(venues)) {
+      assert.strictEqual(
+        copiedSlugify(venue),
+        slugify(venue),
+        `venue-complex-audit.js slugify("${venue}") diverged from data-core.ts slugify — update the copy at scripts/lib/venue-complex-audit.js`
+      );
+    }
+  });
+});
+
+// ===========================================
+// getAllOffBroadwayComplexes / getOffBroadwayComplexBySlug — aggregate
+// behavior of the venue-complexes.json linkage (task #1475). Uses the real
+// production functions and real data, not a copy — no drift risk. Codex
+// review flagged that linking a sub-venue slug changes live aggregate
+// output (currentShow selection, showCount), not just membership; these
+// tests assert that aggregate output directly rather than just the slug list.
+// ===========================================
+
+describe('getAllOffBroadwayComplexes / getOffBroadwayComplexBySlug — sub-venue aggregation', () => {
+  test('the-public-theater complex includes shows from every linked sub-venue', () => {
+    const complex = getOffBroadwayComplexBySlug('the-public-theater');
+    assert.ok(complex, 'the-public-theater complex should exist');
+    const venues = new Set(complex!.allShows.map(s => s.venue));
+    // At least one show from each of the 3 linked venue-string variants
+    // (bare Delacorte, bare Joe's Pub, "Joe's Pub at The Public Theatre")
+    // must be present in allShows — proves subVenueSlugs linkage actually
+    // pulls the shows in, not just that the slug string is listed.
+    const hasDelacorteOrPub = Array.from(venues).some(
+      v => v && /delacorte|joe'?s pub/i.test(v)
+    );
+    assert.ok(
+      hasDelacorteOrPub,
+      `expected the-public-theater.allShows to include a Delacorte/Joe's Pub venue string, got: ${Array.from(venues).join(' | ')}`
+    );
+  });
+
+  test('lincoln-center-theater complex includes Claire Tow / LCT3 shows', () => {
+    const complex = getOffBroadwayComplexBySlug('lincoln-center-theater');
+    assert.ok(complex, 'lincoln-center-theater complex should exist');
+    const venues = new Set(complex!.allShows.map(s => s.venue));
+    const hasClaireTow = Array.from(venues).some(v => v && /claire tow/i.test(v));
+    assert.ok(
+      hasClaireTow,
+      `expected lincoln-center-theater.allShows to include a Claire Tow venue string, got: ${Array.from(venues).join(' | ')}`
+    );
+  });
+
+  test('every off-Broadway complex currentShow (when set) is actually open/previews/upcoming', () => {
+    const complexes = getAllOffBroadwayComplexes();
+    for (const complex of complexes) {
+      if (complex.currentShow) {
+        assert.ok(
+          ['open', 'previews', 'upcoming'].includes(complex.currentShow.status),
+          `${complex.slug}.currentShow ("${complex.currentShow.title}") has status "${complex.currentShow.status}", expected open/previews/upcoming`
+        );
       }
     }
   });
