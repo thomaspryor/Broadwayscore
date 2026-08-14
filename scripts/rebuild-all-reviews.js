@@ -74,7 +74,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
-const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
+const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -99,6 +99,37 @@ MUST be checked before any of it runs (see task #498 / memory/feedback_local_reb
 // --help/-h checked BEFORE any of the "Main execution" pipeline below —
 // no shows.json/review-texts read, no reviews.json write (cousin of
 // #260/#263/#264/#266, this script's own bug per task #498's evidence).
+//
+// (The --help check itself is below the #483 helper — a function declaration
+// and a zeroed counter, no reads or writes.)
+
+// #483: every guard below that PERSISTS an exclusion flag consults this first.
+// A record mid-URL-correction (breadcrumb present, body not yet refetched)
+// carries nothing that describes its CURRENT url — publishDate, outlet region
+// and contentVerification all still describe the OLD article — so a flag
+// derived from any of them is stale by construction, and re-creates exactly
+// the state audit-stale-flag-after-url-correction.js --gate fails on.
+//
+// This is NOT an inclusion decision: each call site keeps its logExclusion +
+// return untouched, so the review stays out of this rebuild either way. Only
+// the PERSISTENT on-disk flag is withheld, until the refetched body arrives
+// and the guards can judge the real article.
+//
+// Measured 2026-08-14 against a full sandboxed corpus (drain to 0 -> run this
+// script -> re-gate): 34 files came back across six sites. The 2026-08-13 fix
+// (02276ec0b3f) guarded only the two inline date guards at ~line 1415 — the
+// six sites below were never covered, which is why the gate went red again
+// hours after that fix landed.
+let awaitingRefetchFlagSkipped = 0;
+function skipStaleFlagWrite(d) {
+  // shouldWithholdStaleExclusionFlag, NOT the bare isAwaitingUrlCorrectionRefetch:
+  // the bare predicate omits the manual-clear check the gate applies, so keying
+  // on it would withhold flags the gate never objected to.
+  if (!shouldWithholdStaleExclusionFlag(d)) return false;
+  awaitingRefetchFlagSkipped++;
+  return true;
+}
+
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log(USAGE);
   process.exit(0);
@@ -1252,6 +1283,7 @@ const crossShowFingerprints = new Map();
             if (d.wrongProduction || d.wrongProductionManualClear) continue;
             if (!d.url) continue;
             if (shouldSkipWrongProductionAudit(d)) continue; // [GUARD:OB-BW-TRANSFER]
+            if (skipStaleFlagWrite(d)) continue; // [GUARD:OB-BW-TRANSFER-483]
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
               d.wrongProduction = true;
@@ -2830,10 +2862,12 @@ showDirs.forEach(showId => {
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
                 logExclusion("skippedCrossShowUrl", showId, file, data);
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
-                data.wrongProduction = true;
-                invalidateWrongProductionAutoClear(data);
-                data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
-                safeWriteReview(path.join(showDir, file), data);
+                if (!skipStaleFlagWrite(data)) { // [GUARD:CROSS-SHOW-URL-DATED-483]
+                  data.wrongProduction = true;
+                  invalidateWrongProductionAutoClear(data);
+                  data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
+                  safeWriteReview(path.join(showDir, file), data);
+                }
                 return;
               }
             }
@@ -2847,10 +2881,12 @@ showDirs.forEach(showId => {
               console.log(`  [CROSS-SHOW URL] ${showId}/${file}: dateless show loses to ${other.showId} (${other.showYear}) for URL year ${reviewYear}`);
               logExclusion("skippedCrossShowUrl", showId, file, data);
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
-              safeWriteReview(path.join(showDir, file), data);
+              if (!skipStaleFlagWrite(data)) { // [GUARD:CROSS-SHOW-URL-DATELESS-483]
+                data.wrongProduction = true;
+                invalidateWrongProductionAutoClear(data);
+                data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
+                safeWriteReview(path.join(showDir, file), data);
+              }
               return;
             }
           }
@@ -2938,7 +2974,7 @@ showDirs.forEach(showId => {
             // skip the flag + skip the exclusion — let downstream pipeline use it
           } else {
             // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
               // [GUARD:CROSS-MARKET-US-ON-LONDON]
               data.wrongProduction = true;
               invalidateWrongProductionAutoClear(data);
@@ -2994,7 +3030,7 @@ showDirs.forEach(showId => {
             // skip the flag + skip the exclusion — let downstream pipeline use it
           } else {
             // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
               // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
               data.wrongProduction = true;
               invalidateWrongProductionAutoClear(data);
@@ -3024,10 +3060,12 @@ showDirs.forEach(showId => {
             // WE show but URL path contains Broadway production indicators
             if (/[-/](broadway-review|on-broadway|broadway[-/])/.test(urlPath)
                 || /\/(chicago|national-tour)[-/]/.test(urlPath)) {
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
-              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+              if (!skipStaleFlagWrite(data)) { // [GUARD:URL-PATH-CROSS-MARKET-483]
+                data.wrongProduction = true;
+                invalidateWrongProductionAutoClear(data);
+                data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
+                try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+              }
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
@@ -3036,10 +3074,12 @@ showDirs.forEach(showId => {
                      && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
             // Broadway show but URL path contains West End production indicators
             if (/[-/](west-end-review|london-review|london[-/])/.test(urlPath)) {
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
-              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+              if (!skipStaleFlagWrite(data)) { // [GUARD:URL-PATH-CROSS-MARKET-483]
+                data.wrongProduction = true;
+                invalidateWrongProductionAutoClear(data);
+                data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
+                try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+              }
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
@@ -3099,7 +3139,7 @@ showDirs.forEach(showId => {
             logExclusion("skippedPreOpening", showId, file, data);
             stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
             // Also flag the source file for future reference
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
               // [GUARD:DAYS-BEFORE-OPENED]
               data.wrongProduction = true;
               invalidateWrongProductionAutoClear(data);
@@ -5621,4 +5661,9 @@ try {
 } catch (e) { process.stderr.write(`[stage-latency] rebuild emit failed: ${e.message}\n`); }
 
 console.log('\n=== DONE ===');
+if (awaitingRefetchFlagSkipped > 0) {
+  // Visible proof the #483 invariant is live. A silent guard is how the last
+  // three sessions could not tell a working fix from an unexercised one.
+  console.log(`\n#483 invariant: withheld ${awaitingRefetchFlagSkipped} exclusion-flag write(s) on records awaiting URL-correction refetch`);
+}
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);
