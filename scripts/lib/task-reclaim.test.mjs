@@ -281,3 +281,32 @@ test('guard precedence: a live lease outranks every other signal, including a tw
   const live = [{ id: '1164', subject: 'x', description: `[notion:${nid(9)}] P1` }];
   assert.equal(actionOf(classify([trapped(9)], { liveTasks: live, leaseAliveOf: () => true }), 9), 'skip-live');
 });
+
+// ── follow-up review F1: the SHADOWED self-twin ────────────────────────────
+test('F1: own-id wins even when a DIFFERENT live task shadows the twin lookup', () => {
+  // The live dir holds both this task's interrupted-reclaim copy (#9) and a
+  // genuine duplicate (#1164) carrying the same marker. indexLiveTasks is
+  // first-match-wins over an unsorted readdir, so #1164 can win the lookup —
+  // and the old `String(twin) === id` check then read false, parked #9, and
+  // stamped archive/9.json to completed while live/9.json sat at pending.
+  // loadTasksUnioned lets that completed archive record win: the B1 burial.
+  const live = [
+    { id: '1164', subject: 'unrelated', description: `[notion:${nid(9)}] P1 Next` },
+    { id: '9', subject: 'Some trapped card subject for #9', description: `[notion:${nid(9)}] P1 Next`, reclaimedFromArchiveAt: '2026-08-14T00:00:00.000Z' },
+  ];
+  const rows = classify([trapped(9)], { liveTasks: live, cardOf: () => ({ lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 9), 'resume-interrupted-reclaim',
+    'a task already present in the live dir is never a duplicate of something else — it is its own interrupted reclaim');
+});
+
+test('F1: a twin with a different id still parks when this task is NOT live', () => {
+  const live = [{ id: '1164', subject: 'unrelated', description: `[notion:${nid(9)}] P1 Next` }];
+  assert.equal(actionOf(classify([trapped(9)], { liveTasks: live }), 9), 'skip-duplicate-live');
+});
+
+test('F1: indexLiveTasks exposes plain id membership', () => {
+  const { ids } = indexLiveTasks([{ id: '9', subject: 'a' }, { id: 1164, subject: 'b' }]);
+  assert.equal(ids.has('9'), true);
+  assert.equal(ids.has('1164'), true, 'numeric ids must be normalised to strings');
+  assert.equal(ids.has('7'), false);
+});

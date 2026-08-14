@@ -55,6 +55,7 @@ const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
 const {
   classifyReclaimable, reclaimedTaskShape, supersededTaskShape, parkedTaskShape, taskBranchEvidence,
+  notionMarkerOf,
 } = require('./lib/task-reclaim.js');
 const { acquireArchiveLock } = require('./lib/task-store-archive.js');
 
@@ -384,7 +385,12 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
   const cardWrites = [];
   try {
     for (const d of batch) {
-      const notionId = (/\[notion:([0-9a-f-]{16,})\]/i.exec(String((byId.get(d.id) || {}).description || '')) || [])[1];
+      // notionMarkerOf, not a raw description regex (follow-up review F2): a
+      // task carrying only metadata.notionCard classifies WITH a marker (its
+      // card is fetched and every Notion guard applies) but a description-only
+      // regex yields undefined here, so correctCardFn never fires and the card
+      // silently keeps reading In progress after the task was acted on.
+      const notionId = notionMarkerOf(byId.get(d.id));
       // One task's failure must never abort the batch or hide the summary of
       // what already moved (ship-check warning: an ENOSPC on task 3 of 25
       // propagated past the finally and printed nothing at all).
