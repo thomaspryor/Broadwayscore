@@ -323,33 +323,26 @@ function carryForwardNightState(priorStates, shows, current = {}) {
  * @param {boolean} [state.metaExists]     LOCK_META (meta.json) has been written for
  *                                         THIS lock instance; default true (safe:
  *                                         unknown callers get the pre-#568 behavior)
- * @returns {{action: 'skip'|'launch'|'reclaim-and-launch'|'escalate', reason: string}}
+ * @param {boolean} [state.coverageComplete] every T1/T2 outlet found AND
+ *                                         broadcast-ready for every show in
+ *                                         `windows` (card #1413); default
+ *                                         false, so every existing caller
+ *                                         keeps today's behavior unchanged.
+ * @returns {{action: 'skip'|'launch'|'reclaim-and-launch'|'escalate'|'stop', reason: string}}
  */
-function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true, noProgressPasses = 0 }) {
+function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true, noProgressPasses = 0, coverageComplete = false }) {
   if (killSwitch) return { action: 'skip', reason: 'kill switch active' };
   if (!windows.length) return { action: 'skip', reason: 'no show in its opening-night window' };
-  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
-  // of opus passes; nothing stopped a *finished* show from burning the rest of
-  // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
-  // show had ~27 more $5 passes queued). Counting passes that produced neither
-  // a session-state write nor a git commit is the market-agnostic version of
-  // "there is nothing left to do" — it needs no census (the aggregator archive
-  // is CI-populated and absent from the launchd checkout, so a census-based
-  // stop would silently never fire here) and it degrades correctly whether the
-  // show is complete or the pipeline is wedged.
-  //
-  // The counter RE-ARMS on new reviews (see launcher), so the long tail — a T1
-  // dropping at 02:00 — still wakes the monitor. Without that this stop would
-  // defeat the monitor's entire reason to exist.
-  if (noProgressPasses >= MAX_NO_PROGRESS_PASSES) {
-    return { action: 'escalate', reason: `${noProgressPasses} consecutive passes made no change (no state write, no commits) — nothing left to do this window` };
-  }
+  // Live-session gate FIRST, ahead of every terminal decision below (coverage,
+  // no-progress, attempt cap): coverage reads live reviews.json/review-texts a
+  // currently-running pass may be writing RIGHT NOW, so nothing past this
+  // block may fire until we know no session is actually alive. Heartbeat
+  // freshness OUTRANKS the process probe: a session sleeping between census
+  // passes (ScheduleWakeup pacing) has no running claude process but a recent
+  // heartbeat — relaunching onto it is the duplicate-session clobber scenario.
+  // Only stale-heartbeat AND no-process counts as dead.
+  let sessionDead = false;
   if (lockExists) {
-    // Heartbeat freshness OUTRANKS the process probe: a session sleeping
-    // between census passes (ScheduleWakeup pacing) has no running claude
-    // process but a recent heartbeat — relaunching onto it is the duplicate-
-    // session clobber scenario. Only stale-heartbeat AND no-process counts
-    // as dead.
     if (heartbeatAgeMin !== null && heartbeatAgeMin < HEARTBEAT_STALE_MIN) {
       return { action: 'skip', reason: `live session (heartbeat ${Math.round(heartbeatAgeMin)}m ago)` };
     }
@@ -370,6 +363,40 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
     if (!metaExists && lockAgeSec !== null && lockAgeSec < LAUNCH_INFLIGHT_GRACE_SEC) {
       return { action: 'skip', reason: `lock is ${Math.round(lockAgeSec)}s old, no meta.json yet — launch likely still in flight` };
     }
+    sessionDead = true; // stale heartbeat + no process: dead, not live
+  }
+  // Coverage-complete stop (card #1413) — checked before BOTH noProgressPasses
+  // and the attempt/reclaim decisions below. It must outrank noProgressPasses:
+  // a fully-covered show reliably ALSO produces no-progress passes (there's
+  // nothing left to fix), so without this ordering the pre-existing
+  // noProgressPasses branch — which pages severity:error/disposition:human —
+  // would win and CRITICAL-page the owner for what is actually a success, not
+  // a failure (adversarial review finding, 2026-08-14). It must also outrank
+  // the dead-lock reclaim/escalate paths below, or a fully-covered show whose
+  // lock merely looks dead would reclaim-and-launch yet another $5 pass (or
+  // page as a dead-session escalate) instead of stopping.
+  if (coverageComplete) {
+    return { action: 'stop', reason: 'show coverage complete — all T1/T2 outlets present and broadcast-ready; nothing left for the monitor to do this window' };
+  }
+  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
+  // of opus passes; nothing stopped a *finished* show from burning the rest of
+  // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
+  // show had ~27 more $5 passes queued). Counting passes that produced neither
+  // a session-state write nor a git commit is the market-agnostic version of
+  // "there is nothing left to do" — it needs no census (the aggregator archive
+  // is CI-populated and absent from the launchd checkout, so a census-based
+  // stop would silently never fire here) and it degrades correctly whether the
+  // show is complete or the pipeline is wedged. Coverage-complete (above) is
+  // the more DIRECT signal and is checked first; this stays as the backstop
+  // for "stuck, not actually covered" nights coverageComplete can't see.
+  //
+  // The counter RE-ARMS on new reviews (see launcher), so the long tail — a T1
+  // dropping at 02:00 — still wakes the monitor. Without that this stop would
+  // defeat the monitor's entire reason to exist.
+  if (noProgressPasses >= MAX_NO_PROGRESS_PASSES) {
+    return { action: 'escalate', reason: `${noProgressPasses} consecutive passes made no change (no state write, no commits) — nothing left to do this window` };
+  }
+  if (sessionDead) {
     if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
       return { action: 'escalate', reason: `session dead and ${attemptsTonight} attempts already spent tonight` };
     }
@@ -381,9 +408,33 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
   return { action: 'launch', reason: 'show in window, no live session' };
 }
 
+/**
+ * Should a failed monitor pass page the owner (severity:error/disposition:
+ * human), or just log (severity:info/disposition:digest)?
+ *
+ * Extracted from opening-night-monitor-launch.js's main() (shipped
+ * 2026-08-13, commit 86280c864d7) so the decision is directly unit-testable
+ * (CLAUDE.md §15) rather than only reachable by exercising the whole launch
+ * flow. The bug this replaced: every !result.ok routed severity:error before
+ * that fix, so a pass killed by the 15-min wall clock paged "[CRITICAL] …
+ * FAILED" on attempt 1 even when it had just committed a real review
+ * recovery. A page is warranted only when BOTH hold: retries are exhausted
+ * AND the pass produced no observable output (no session-state write, no
+ * data commit) — a pass that advanced state is progress cut short, not a
+ * stalled monitor, and deserves a log line, not the owner's inbox.
+ *
+ * @param {object} args
+ * @param {number} args.consecutiveFailures  failed-pass count for this night, INCLUDING this one
+ * @param {boolean} args.advancedState       did THIS pass write session state or commit core data?
+ * @returns {boolean}
+ */
+function shouldPageForFailedPass({ consecutiveFailures, advancedState }) {
+  return consecutiveFailures >= MAX_ATTEMPTS_PER_NIGHT && !advancedState;
+}
+
 module.exports = {
   MARKET_TZ, WINDOW_START_HOUR_LOCAL, HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
-  MAX_NO_PROGRESS_PASSES, ANCHOR_MAX_AGE_DAYS,
+  MAX_NO_PROGRESS_PASSES, ANCHOR_MAX_AGE_DAYS, shouldPageForFailedPass,
   tzOffsetMinutes, utcFromZoned, nextDay, computeWindow, activeWindows, nightKey, launchDecision,
   carryForwardNightState, evidenceAnchor,
   claimLockGeneration, isLockGenerationOwner, lockGenerationPath,

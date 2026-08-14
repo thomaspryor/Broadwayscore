@@ -555,6 +555,12 @@ on:
       - 'scripts/lib/opening-night-selection.test.mjs'
       - 'scripts/lib/opening-night-windows.js'
       - 'scripts/lib/opening-night-windows.test.mjs'
+      # Card #1413: coverage-complete stop extracted from opening-night-poller.js
+      # so the launcher can check "is this show done?" without requiring that
+      # file's scraper dependency block on every 20-min tick. No colocated test
+      # of its own (isShowCoverageComplete needs real reviews.json/outlet-registry
+      # data, not a fixture) — path-listed so a solo edit still triggers CI.
+      - 'scripts/lib/opening-night-readiness.js'
       # 2026-08-12 (how-the-other-half-loves): the window is derived from
       # openingDate, which that show only got AFTER its reviews published, so
       # the monitor opened 19h late; and every capped pass paged the owner as
