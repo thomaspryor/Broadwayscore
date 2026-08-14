@@ -386,6 +386,155 @@ function run(fp, data) {
   fs.rmSync(scriptsDir, { recursive: true, force: true });
 });
 
+// ── task #1507: push-with-retry.sh is a SEPARATE restore-trigger from the
+// push-review-texts composite action. Its restore_protected_fields() (line
+// ~545) calls the same scripts/lib/restore-protected-fields.js on every
+// rebase/merge, independent of the composite action, and is invoked directly
+// via `bash scripts/lib/push-with-retry.sh` across ~189 workflow call sites.
+
+test('auditRepo: flags a same-job force:true clear restored via bare push-with-retry.sh (no push-review-texts step)', () => {
+  const workflowDir = mkTmpDir('bc-wf-');
+  const scriptsDir = mkTmpDir('bc-scripts-');
+  fs.writeFileSync(path.join(workflowDir, 'fake.yml'), [
+    'jobs:',
+    '  drain:',
+    '    steps:',
+    '      - name: Clear stuck flag',
+    '        run: node scripts/fake-clear.js --fix',
+    '      - name: Commit and push',
+    '        run: |',
+    '          git add -A',
+    '          git commit -m "drain"',
+    '          bash scripts/lib/push-with-retry.sh',
+    '',
+  ].join('\n'));
+  fs.writeFileSync(path.join(scriptsDir, 'fake-clear.js'), `
+function run(fp, data) {
+  delete data.humanReviewScore;
+  safeWriteReview(fp, data, { force: true });
+}
+`);
+  const { gaps } = auditRepo({
+    workflowDir,
+    scriptsDir,
+    protectedFields: ['humanReviewScore'],
+    breadcrumbKeys: new Set(), // nothing registered — must flag
+  });
+  assert.equal(gaps.length, 1);
+  assert.equal(gaps[0].field, 'humanReviewScore');
+  assert.equal(gaps[0].script, 'fake-clear.js');
+  assert.equal(gaps[0].job, 'drain');
+  fs.rmSync(workflowDir, { recursive: true, force: true });
+  fs.rmSync(scriptsDir, { recursive: true, force: true });
+});
+
+test('auditRepo: does NOT flag a push-with-retry.sh-restored clear when a CLEAR_BREADCRUMBS entry is registered', () => {
+  const workflowDir = mkTmpDir('bc-wf-');
+  const scriptsDir = mkTmpDir('bc-scripts-');
+  fs.writeFileSync(path.join(workflowDir, 'fake.yml'), [
+    'jobs:',
+    '  drain:',
+    '    steps:',
+    '      - name: Clear stuck flag',
+    '        run: node scripts/fake-clear.js --fix',
+    '      - name: Commit and push',
+    '        run: bash scripts/lib/push-with-retry.sh 5 main',
+    '',
+  ].join('\n'));
+  fs.writeFileSync(path.join(scriptsDir, 'fake-clear.js'), `
+function run(fp, data) {
+  delete data.humanReviewScore;
+  safeWriteReview(fp, data, { force: true });
+}
+`);
+  const { gaps } = auditRepo({
+    workflowDir,
+    scriptsDir,
+    protectedFields: ['humanReviewScore'],
+    breadcrumbKeys: new Set(['humanReviewScore']),
+  });
+  assert.equal(gaps.length, 0);
+  fs.rmSync(workflowDir, { recursive: true, force: true });
+  fs.rmSync(scriptsDir, { recursive: true, force: true });
+});
+
+test('auditRepo: a comment-only mention of push-with-retry.sh does NOT count as a restore trigger (second-opinion finding, task #1507)', () => {
+  const workflowDir = mkTmpDir('bc-wf-');
+  const scriptsDir = mkTmpDir('bc-scripts-');
+  fs.writeFileSync(path.join(workflowDir, 'fake.yml'), [
+    'jobs:',
+    '  drain:',
+    '    steps:',
+    '      - name: Clear stuck flag',
+    '        run: node scripts/fake-clear.js --fix',
+    '      - name: Commit and push (no real push helper — just a prose comment)',
+    '        run: |',
+    '          # see push-with-retry.sh for the conflict-resolution strategy',
+    '          git add -A',
+    '          git commit -m "drain"',
+    '          git push origin main',
+    '',
+  ].join('\n'));
+  fs.writeFileSync(path.join(scriptsDir, 'fake-clear.js'), `
+function run(fp, data) {
+  delete data.humanReviewScore;
+  safeWriteReview(fp, data, { force: true });
+}
+`);
+  const { gaps, scanned } = auditRepo({
+    workflowDir,
+    scriptsDir,
+    protectedFields: ['humanReviewScore'],
+    breadcrumbKeys: new Set(),
+  });
+  assert.equal(gaps.length, 0);
+  assert.equal(scanned.jobs, 0, 'a bare-substring comment mention must not pull the job into restoring scope');
+  fs.rmSync(workflowDir, { recursive: true, force: true });
+  fs.rmSync(scriptsDir, { recursive: true, force: true });
+});
+
+test('auditRepo against the real repo: vercel-deploy.yml\'s comment-only push-with-retry.sh mention is not a false-positive trigger', () => {
+  const { gaps } = auditRepo({
+    workflowDir: path.join(repoRoot, '.github/workflows'),
+    scriptsDir: path.join(repoRoot, 'scripts'),
+    protectedFields: PROTECTED_FIELDS,
+    breadcrumbKeys: new Set(Object.keys(CLEAR_BREADCRUMBS)),
+  });
+  const fromVercelDeploy = gaps.filter((g) => g.workflow === 'vercel-deploy.yml');
+  assert.equal(fromVercelDeploy.length, 0, `expected no gaps from vercel-deploy.yml's comment-only mention, got: ${JSON.stringify(fromVercelDeploy)}`);
+});
+
+test('auditRepo: a job with NEITHER push-review-texts NOR push-with-retry.sh is still out of scope', () => {
+  const workflowDir = mkTmpDir('bc-wf-');
+  const scriptsDir = mkTmpDir('bc-scripts-');
+  fs.writeFileSync(path.join(workflowDir, 'fake.yml'), [
+    'jobs:',
+    '  standalone:',
+    '    steps:',
+    '      - name: Clear flag, never restored in this job',
+    '        run: node scripts/fake-clear.js',
+    '      - name: Commit only, no push helper at all',
+    '        run: git commit -am "no push"',
+    '',
+  ].join('\n'));
+  fs.writeFileSync(path.join(scriptsDir, 'fake-clear.js'), `
+function run(fp, data) {
+  delete data.humanReviewScore;
+  safeWriteReview(fp, data, { force: true });
+}
+`);
+  const { gaps, scanned } = auditRepo({
+    workflowDir,
+    scriptsDir,
+    protectedFields: ['humanReviewScore'],
+    breadcrumbKeys: new Set(),
+  });
+  assert.equal(gaps.length, 0);
+  assert.equal(scanned.jobs, 0);
+  fs.rmSync(workflowDir, { recursive: true, force: true });
+  fs.rmSync(scriptsDir, { recursive: true, force: true });
+});
+
 test('auditRepo against the real repo: the 3 known scripts are actually reached (co-location detection works)', () => {
   // A gate that never sees these scripts because the job/step co-location
   // logic is broken would ALSO report zero gaps for them — indistinguishable
