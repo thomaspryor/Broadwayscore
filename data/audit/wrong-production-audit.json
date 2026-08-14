@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-14T17:50:22.605Z",
+  "timestamp": "2026-08-14T18:46:48.533Z",
   "stats": {
-    "totalReviews": 42255,
-    "alreadyFlagged": 18321,
+    "totalReviews": 42251,
+    "alreadyFlagged": 18320,
     "dateGuardCatches": 144,
     "directorMismatch": 965,
-    "tvFilmSignals": 1201,
-    "londonSignals": 882,
+    "tvFilmSignals": 1200,
+    "londonSignals": 881,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
     "noPublishDate": 3577
@@ -6168,25 +6168,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": 80,
-      "publishDate": "2026-08-12",
-      "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -35155,7 +35136,7 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "standard--unknown.json",
+      "file": "standard--nick-curtis.json",
       "score": 39,
       "publishDate": "2026-08-13",
       "url": "https://standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
@@ -37682,6 +37663,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
+      "score": 89,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
