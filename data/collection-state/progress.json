@@ -2,7 +2,8 @@
   "processed": [
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
@@ -11,7 +12,16 @@
     "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
     "the-winters-tale-off-broadway-2026/broadwayworld--stephi-wild.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
-    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,7 +30,8 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
@@ -30,7 +41,7 @@
     "archive": []
   },
   "startTime": "2026-08-14T19:24:18.684Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
   "log": [
     {
       "t": "2026-08-14T19:24:44.224Z",
@@ -55,27 +66,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-14T19:29:11.690Z",
+      "t": "2026-08-14T19:29:07.850Z",
       "event": "bb-session",
-      "session": "5d062078",
-      "url": "https://www.ft.com/content/8fb9a7af-1f87-4607-ba09-e94386ad0b56?syn-25a6b1a6=1"
+      "session": "69f259f3",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
     },
     {
-      "t": "2026-08-14T19:29:12.406Z",
+      "t": "2026-08-14T19:29:08.478Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-08-14T19:33:54.699Z",
+      "t": "2026-08-14T19:29:26.227Z",
       "event": "bb-session",
-      "session": "44760bc3",
-      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+      "session": "92912ae6",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
     },
     {
-      "t": "2026-08-14T19:34:03.240Z",
-      "event": "bb-session",
-      "session": "2e39d1dd",
-      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+      "t": "2026-08-14T19:29:26.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
