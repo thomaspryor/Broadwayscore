@@ -135,11 +135,14 @@ export function getAllShows(): ComputedShow[] {
 }
 
 /**
- * Check if a show belongs to Broadway (default category).
- * Shows with no category or category='broadway' are Broadway shows.
+ * Check if a show belongs to Broadway.
+ * Requires an explicit category === 'broadway' — a missing/null category is
+ * NOT Broadway, matching the strict check in getOffBroadwayShows() below.
+ * (A permissive `!show.category` fallback here previously let shows with no
+ * category leak into Broadway-filtered listings; see task #1428.)
  */
-function isBroadwayShow(show: ComputedShow): boolean {
-  return !show.category || show.category === 'broadway';
+export function isBroadwayShow(show: ComputedShow): boolean {
+  return show.category === 'broadway';
 }
 
 /**
@@ -177,11 +180,15 @@ export function getWestEndShows(): ComputedShow[] {
   );
 }
 
+export function isOffBroadwayShow(show: ComputedShow): boolean {
+  return show.category === 'off-broadway';
+}
+
 /**
  * Get all Off-Broadway shows
  */
 export function getOffBroadwayShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'off-broadway');
+  return getAllShows().filter(isOffBroadwayShow);
 }
 
 /**

@@ -14,6 +14,8 @@ import {
   slugify,
   getAllShows,
   getBroadwayShows,
+  isBroadwayShow,
+  isOffBroadwayShow,
   getWestEndShows,
   getOffWestEndShows,
   getOffBroadwayShows,
@@ -117,14 +119,11 @@ describe('getAllShows', () => {
 // ===========================================
 
 describe('getBroadwayShows', () => {
-  test('returns only broadway or uncategorized shows', () => {
+  test('returns only shows with an explicit broadway category', () => {
     const shows = getBroadwayShows();
     assert.ok(shows.length > 0);
     for (const show of shows) {
-      assert.ok(
-        !show.category || show.category === 'broadway',
-        `Show ${show.id} has unexpected category: ${show.category}`
-      );
+      assert.strictEqual(show.category, 'broadway', `Show ${show.id} has unexpected category: ${show.category}`);
     }
   });
 
@@ -132,6 +131,33 @@ describe('getBroadwayShows', () => {
     const shows = getBroadwayShows();
     const wrongCategory = shows.filter(s => s.category === 'west-end' || s.category === 'off-broadway');
     assert.strictEqual(wrongCategory.length, 0);
+  });
+});
+
+describe('isBroadwayShow — filter symmetry (task #1428)', () => {
+  test('a show with a missing category is excluded from Broadway', () => {
+    const show = { id: 'test-no-category' } as ComputedShow;
+    assert.strictEqual(isBroadwayShow(show), false);
+  });
+
+  test('a show with category: null is excluded from Broadway', () => {
+    const show = { id: 'test-null-category', category: null } as unknown as ComputedShow;
+    assert.strictEqual(isBroadwayShow(show), false);
+  });
+
+  test('a show with a missing/null category is excluded from both Broadway and Off-Broadway filters', () => {
+    const noCategoryShow = { id: 'test-no-category' } as ComputedShow;
+    const nullCategoryShow = { id: 'test-null-category', category: null } as unknown as ComputedShow;
+
+    for (const show of [noCategoryShow, nullCategoryShow]) {
+      assert.strictEqual(isBroadwayShow(show), false, `${show.id} should not be treated as Broadway`);
+      assert.strictEqual(isOffBroadwayShow(show), false, `${show.id} should not be treated as Off-Broadway`);
+    }
+  });
+
+  test('a show with category: "broadway" is included', () => {
+    const show = { id: 'test-broadway', category: 'broadway' } as ComputedShow;
+    assert.strictEqual(isBroadwayShow(show), true);
   });
 });
 
