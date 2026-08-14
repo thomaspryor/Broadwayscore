@@ -160,16 +160,40 @@ function httpsJson(method, url, headers, body) {
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
 // enforces it. Never a count ("0 items" reads as broken, owner feedback
 // 2026-07-27); the site-health escalation suffix is the only variable part.
-function buildSubject({ health = null, now = new Date() } = {}) {
+function buildSubject({ health = null, autofixRows = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
-  const errs = health ? (health.errors?.length || 0) : 0;
-  const warns = health ? (health.warns?.length || 0) : 0;
+  // The urgent/⛔ escalation flag is driven by health-check.js's own
+  // consecutiveErrorDays streak logic ("BSC URGENT (day N): ..." in
+  // health.subject) — unchanged by the split below, so the streak counter's
+  // identity (what makes the subject scream vs stay calm) is preserved.
   const urgent = health && /URGENT/.test(health.subject || '');
-  const suffix = errs || warns
-    ? ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`
-    : '';
+  let suffix = '';
+  if (Array.isArray(autofixRows) && autofixRows.length) {
+    // Digest truthfulness (BRO-232 S4): a flat error/warning count conflates
+    // "we've seen this every morning and it's tracked/dispatched" with
+    // "brand-new this run" — the exact conflation the owner flagged. `wasNew`
+    // (set by digest-autofix.js's planAutofix/runAutofix) is the real signal:
+    // false = already covered by a card/dispatch (or explicitly acknowledged),
+    // true = first sighting of this row's family. Decision rows are excluded
+    // from both buckets — they're a genuine judgment call, not a fix status,
+    // and already render in their own "Needs your decision" section.
+    const known = autofixRows.filter(r => r && !r.wasNew && r.state !== 'decision').length;
+    const regressing = autofixRows.filter(r => r && r.wasNew && r.state !== 'decision').length;
+    if (known || regressing) {
+      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${known} known/managed, ${regressing} new/regressing`;
+    }
+  } else {
+    // Fallback (autofixRows unavailable — e.g. autofix failed before compose,
+    // see main()'s WARN autofix failed branch): byte-identical to pre-BRO-232
+    // behavior.
+    const errs = health ? (health.errors?.length || 0) : 0;
+    const warns = health ? (health.warns?.length || 0) : 0;
+    if (errs || warns) {
+      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
+    }
+  }
   return `Morning digest — ${dateLabel}${suffix}`;
 }
 
@@ -332,7 +356,7 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
   return { subject, html };
 }

@@ -76,15 +76,52 @@ const DISPATCH_CAP = 3;
 const ORPHAN_TIMEOUT_H = 3;
 const VALID_MODELS = new Set(['opus', 'sonnet', 'haiku']);
 
+// Canonical row-family key (BRO-232 S4): different checks sometimes name the
+// SAME underlying condition two different ways — health-check.js's own
+// last-run-failure scan emits "Cron failed: X" while its repeat-failure scan
+// emits "Workflow repeat-failure: X" for the identical workflow. Without a
+// shared key, card filing / matchOpenTask / ledger grouping treated them as
+// two unrelated rows, splitting attempt-memory across two cards that could
+// never individually resolve (fixing the workflow clears BOTH names at once).
+const ROW_FAMILY_PREFIXES = [
+  /^Cron failed:\s*/i,
+  /^Workflow repeat-failure:\s*/i,
+];
+
+// Strips ONE matching family prefix, leaving the rest as the display form.
+// Returns the name unchanged when no prefix matches — the common case, byte-
+// identical to today's behavior for the vast majority of rows.
+function familyDisplayName(name) {
+  const s = String(name || '').trim();
+  for (const re of ROW_FAMILY_PREFIXES) {
+    const stripped = s.replace(re, '');
+    if (stripped !== s) return stripped.trim();
+  }
+  return s;
+}
+
+// Match key: family display name, case/whitespace-normalized.
+function rowFamilyKey(name) {
+  return familyDisplayName(name).toLowerCase().replace(/\s+/g, ' ');
+}
+
+const OPEN_TASK_SUBJECT_RE = /^(?:Fix: )?BSC Daily: (.+)$/;
+
 // Which open task (pending/in_progress) already covers this health issue?
-// Subject match is deliberately loose-prefixed: the button endpoint files
-// "BSC Daily: <name>", the email worker files "Fix: BSC Daily: <name>" — both
-// mean "this issue already has an owner-side card"; filing a third helps nobody.
+// Family-key compared (BRO-232 S4), not literal substring: a task filed
+// under one prefix variant ("BSC Daily: Cron failed: X") now also covers a
+// row that arrives under the sibling variant ("Workflow repeat-failure: X")
+// once both compute the same canonical title (see planAutofix below) — this
+// keeps matchOpenTask consistent with fileCard's own title collapse instead
+// of a second row-family-blind copy of the same "already tracked?" check.
 function matchOpenTask(tasks, name) {
-  const needle = `BSC Daily: ${name}`;
-  return (tasks || []).find(t =>
-    t && (t.status === 'pending' || t.status === 'in_progress')
-    && String(t.subject || '').includes(needle)) || null;
+  const wantFamily = rowFamilyKey(name);
+  return (tasks || []).find(t => {
+    if (!t || (t.status !== 'pending' && t.status !== 'in_progress')) return false;
+    const m = OPEN_TASK_SUBJECT_RE.exec(String(t.subject || ''));
+    if (!m) return false;
+    return rowFamilyKey(m[1]) === wantFamily;
+  }) || null;
 }
 
 // Some health rows self-document that they're already tracked, owner-accepted,
@@ -138,7 +175,15 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   return rows.map(r => {
     const rawMessage = String(r.message || '');
     const message = rawMessage.slice(0, 400);
-    const title = `BSC Daily: ${r.name}`;
+    // Family-collapsed (BRO-232 S4): two rows naming the SAME condition two
+    // ways ("Cron failed: X" / "Workflow repeat-failure: X") now compute the
+    // identical title, so fileCard's exact-title Linear dedup — and, for any
+    // residual Notion-mirror task, matchOpenTask below — converge them onto
+    // ONE card instead of filing/tracking a duplicate per name variant. The
+    // raw r.name (never family-collapsed) still drives buildCardNotes' prose
+    // and its check-health-row-absent.js verify command, which must keep
+    // checking the SPECIFIC health-check row that was actually seen.
+    const title = `BSC Daily: ${familyDisplayName(r.name)}`;
     const conditionKey = r.conditionKey || null;
 
     // Decision items (owner-alert-router callers that opted in via
@@ -156,16 +201,27 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     // and silently revert an acknowledged row to needs-card (ship-check P2).
     const acknowledged = !existing && isRowAcknowledged(rawMessage, today);
     if (acknowledged) {
-      return { name: r.name, message, title, state: 'acknowledged', taskId: null, conditionKey, model: null };
+      return { name: r.name, message, title, state: 'acknowledged', taskId: null, conditionKey, model: null, wasNew: false };
     }
+    const state = existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card';
     return {
       name: r.name,
       message,
       title,
-      state: existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card',
+      state,
       taskId: existing ? existing.id : null,
       conditionKey,
       model: r.model || null,
+      // Plan-time guess (BRO-232 S4 digest-subject split, send-morning-
+      // digest.js's buildSubject): true only when NOTHING already tracked
+      // this row's family. runAutofix overrides this for 'needs-card' rows
+      // once it knows the REAL answer from fileCard's live Linear lookup —
+      // matchOpenTask only sees the Notion-mirror task list, which
+      // digest-autofix's own Linear-filed cards never populate post-BRO-286
+      // (no mirror-sync path exists for them), so this default is a fallback
+      // for dry-run/degraded runs where fileCard never executes, not the
+      // final answer for a real send.
+      wasNew: state === 'needs-card',
     };
   });
 }
@@ -480,8 +536,17 @@ function runAutofix({
       row.state = 'card-filed';
       row.taskId = `linear:${filed.identifier}`;
       row.linearIdentifier = filed.identifier;
+      // Overrides planAutofix's plan-time guess with the REAL answer (BRO-232
+      // S4): fileCard's live exact-title Linear lookup is the only place that
+      // actually knows whether this row's family was already tracked —
+      // including a sibling-prefix row from THIS SAME run that filed a fresh
+      // issue a moment earlier (e.g. "Cron failed: X" then "Workflow
+      // repeat-failure: X" both reattaching to one issue). `existing` is only
+      // set true on a dedup hit, so a brand-new issue correctly stays "new".
+      row.wasNew = !filed.existing;
     } else {
       row.state = 'card-failed';
+      row.wasNew = true;
     }
   }
 
@@ -528,7 +593,15 @@ function runAutofix({
     }
     if (!row.taskId) continue; // sync lag — the drain picks it up on its next tick
 
-    const contentHash = computeContentHash({ name: row.title, notes: row.message });
+    // Hash the canonical family title ALONE (BRO-232 S4) — row.message stays
+    // per-variant raw text (different prefixes describing the same condition
+    // carry different detail text), so folding it in here would defeat the
+    // whole point of collapsing family variants onto one taskId: two
+    // variants would still diverge in contentHash and reset each other's
+    // attempt-memory/park state. title is already family-collapsed (see
+    // planAutofix) and stable run over run for the same condition — the same
+    // stability assumption fileCard's own exact-title dedup already relies on.
+    const contentHash = computeContentHash({ name: row.title });
     const park = checkPark(digestLedgerEntries, String(row.taskId), contentHash);
     if (park.parked) {
       row.state = 'parked';
@@ -565,5 +638,5 @@ function runAutofix({
 module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, findMyJob, readJsonlLedger, appendJsonlLedger,
-  fileCard, syncTasks, dispatchDetached,
+  fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
 };
