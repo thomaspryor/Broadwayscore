@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAllOffBroadwayTheaters } from '@/lib/data-core';
+import { getAllOffBroadwayTheaters, getAllOffBroadwayComplexes } from '@/lib/data-core';
 import { generateBreadcrumbSchema } from '@/lib/seo';
 import OffBroadwayTheaterIndexClient from './OffBroadwayTheaterIndexClient';
 
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 
 export default function OffBroadwayTheaterIndexPage() {
   const theaters = getAllOffBroadwayTheaters();
+  const complexes = getAllOffBroadwayComplexes();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -30,8 +31,15 @@ export default function OffBroadwayTheaterIndexPage() {
     { name: 'Theaters', url: `${BASE_URL}/off-broadway/theater` },
   ]);
 
+  // Complexes replace their sub-venues (and their own same-slug entry) in the
+  // index so a user sees one row per recognizable place — "Atlantic Theater
+  // Company", not "Atlantic Theater Company" AND "Atlantic Stage 2" separately.
+  const rolledUpSlugs = new Set(complexes.flatMap(c => [c.slug, ...c.subVenues.map(sv => sv.slug)]));
+  const standaloneTheaters = theaters.filter(t => !rolledUpSlugs.has(t.slug));
+  const rows = [...standaloneTheaters, ...complexes];
+
   // Strip heavy show data — only pass what the client needs
-  const theaterSummaries = theaters.map(t => {
+  const theaterSummaries = rows.map(t => {
     const scoredShows = t.allShows.filter(s => s.criticScore?.score != null);
     const avgScore = scoredShows.length > 0
       ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)

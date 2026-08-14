@@ -34,6 +34,8 @@ import blogReviewsData from '../../data/blog-reviews-for-scoring.json';
 import relatedShowsData from '../../data/related-shows.json';
 // Theater metadata (capacity, tips)
 import theaterMetaData from '../../data/theater-metadata.json';
+// Curated multi-stage venue complexes (e.g. Atlantic Theater Company -> Atlantic Stage 2)
+import venueComplexesData from '../../data/venue-complexes.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -842,6 +844,79 @@ export function getOffBroadwayTheaterBySlug(slug: string): Theater | undefined {
  */
 export function getAllOffBroadwayTheaterSlugs(): string[] {
   return getAllOffBroadwayTheaters().map(t => t.slug);
+}
+
+export interface TheaterComplex extends Theater {
+  subVenues: { name: string; slug: string }[];
+}
+
+type VenueComplexDef = { name: string; subVenueSlugs: string[] };
+const OFF_BROADWAY_COMPLEX_DEFS: Record<string, VenueComplexDef> =
+  (venueComplexesData as { complexes: Record<string, VenueComplexDef> }).complexes;
+
+/**
+ * Curated multi-stage venue complexes (e.g. Atlantic Theater Company houses
+ * Atlantic Stage 2 and the Linda Gross Theater under one recognizable name).
+ * Off-Broadway venue strings are freeform data entry, not a curated list like
+ * Broadway/West End — sub-stages of the same company end up as distinct,
+ * disconnected pages unless explicitly linked here. See data/venue-complexes.json.
+ */
+let _offBroadwayComplexesCache: TheaterComplex[] | null = null;
+export function getAllOffBroadwayComplexes(): TheaterComplex[] {
+  if (_offBroadwayComplexesCache) return _offBroadwayComplexesCache;
+
+  const theaters = getAllOffBroadwayTheaters();
+  const bySlug = new Map(theaters.map(t => [t.slug, t]));
+
+  _offBroadwayComplexesCache = Object.entries(OFF_BROADWAY_COMPLEX_DEFS).map(([complexSlug, def]) => {
+    const subVenues = def.subVenueSlugs
+      .map(slug => bySlug.get(slug))
+      .filter((t): t is Theater => !!t);
+    const ownTheater = bySlug.get(complexSlug);
+
+    const allShows = [...(ownTheater?.allShows ?? []), ...subVenues.flatMap(t => t.allShows)]
+      .sort((a, b) => {
+        if (!a.openingDate && !b.openingDate) return 0;
+        if (!a.openingDate) return 1;
+        if (!b.openingDate) return -1;
+        return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+      });
+    const currentShow = allShows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
+
+    return {
+      name: def.name,
+      slug: complexSlug,
+      address: ownTheater?.address,
+      currentShow,
+      allShows,
+      showCount: allShows.length,
+      subVenues: subVenues.map(t => ({ name: t.name, slug: t.slug })),
+    };
+  });
+
+  return _offBroadwayComplexesCache;
+}
+
+export function getOffBroadwayComplexBySlug(slug: string): TheaterComplex | undefined {
+  return getAllOffBroadwayComplexes().find(c => c.slug === slug);
+}
+
+export function getAllOffBroadwayComplexSlugs(): string[] {
+  return getAllOffBroadwayComplexes().map(c => c.slug);
+}
+
+// Reverse lookup: sub-venue slug -> its parent complex (for "Part of X" links).
+let _offBroadwaySubVenueToComplex: Map<string, { name: string; slug: string }> | null = null;
+export function getOffBroadwayComplexForVenue(venueSlug: string): { name: string; slug: string } | undefined {
+  if (!_offBroadwaySubVenueToComplex) {
+    _offBroadwaySubVenueToComplex = new Map();
+    for (const [complexSlug, def] of Object.entries(OFF_BROADWAY_COMPLEX_DEFS)) {
+      for (const subSlug of def.subVenueSlugs) {
+        _offBroadwaySubVenueToComplex.set(subSlug, { name: def.name, slug: complexSlug });
+      }
+    }
+  }
+  return _offBroadwaySubVenueToComplex.get(venueSlug);
 }
 
 // ============================================
