@@ -65,12 +65,36 @@
  *     fast; it runs for real on the daily schedule tick or any manual/local
  *     invocation (`node scripts/audit-workflow-hygiene.js`).
  *
+ * (g) CORE-DATA-PUSH (task #1442): a `git add` of a specific `data/<file>`
+ *     path — where `<file>` is one of push-core-data's CORE_FILES (read live
+ *     from `.github/actions/push-core-data/action.yml`, never hardcoded here)
+ *     — with no `uses: ./.github/actions/push-core-data` step in the SAME
+ *     job. push-core-data's snapshot-diff logic is anchored to
+ *     /tmp/core-data-snapshot, written by checkout-core-data at the start of
+ *     that job — a private-repo push from a DIFFERENT job can't see the
+ *     write, so this must be job-scoped like rule (d). This is the exact bug
+ *     class fixed in task #1441 (update-tony-awards.yml git-added
+ *     awards.json to the public repo but never pushed it to the private
+ *     data repo, so the scrape silently never persisted). Scope note: only
+ *     explicit `git add data/<file>` is checked, not broad `git add -A`/`.`
+ *     — ingest-urls.yml's `git add -A` inside a `cd data/review-texts`
+ *     subdirectory would be a false positive under a broader match, and the
+ *     narrower signal is the one that actually recurred historically.
+ *     Known gap (mirrors rule (e)'s scope note above): a `git add \` with the
+ *     CORE_FILES path on a shell line-continuation is not detected — the
+ *     matcher requires `git add` and `data/<file>` on the same physical
+ *     line. No live workflow hits this today (checked at introduction,
+ *     task #1442), but the idiom exists elsewhere in this repo
+ *     (opening-night-checklist.yml, weekly-video-reviews.yml), so a future
+ *     core-data write using it would slip past this gate silently.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
  *   # hygiene-push-ok: <reason>            — skip push-with-retry check for this workflow
  *   # hygiene-git-identity-ok: <reason>    — skip git-identity check for this workflow
  *   # hygiene-echo-exitcode-ok: <reason>   — skip pipefail-dead-echo check for this workflow
+ *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -233,6 +257,108 @@ function findMissingGitIdentityCommits(raw) {
         if (/\bgit commit\s+-m\b/.test(textToCheck) && !identityConfigured) {
           violations.push({ job: jobName, lineNum: i + 1, text: line.trim() });
         }
+      }
+    }
+  }
+
+  return violations;
+}
+
+/**
+ * Read push-core-data's live CORE_FILES list straight from its action.yml
+ * (the single `CORE_FILES="..."` assignment in the "Sync core data files to
+ * checkout" step) so this gate never carries its own second copy to drift
+ * out of sync — that drift is exactly what made
+ * scripts/migrate-add-core-data-push.js's hardcoded 9-file list stale (task
+ * #1442).
+ */
+function getCoreFilesFromPushAction() {
+  const actionPath = path.join(__dirname, '..', '.github', 'actions', 'push-core-data', 'action.yml');
+  const raw = fs.readFileSync(actionPath, 'utf8');
+  const match = raw.match(/CORE_FILES="([^"]+)"/);
+  if (!match) {
+    throw new Error(`Could not find CORE_FILES="..." in ${actionPath}`);
+  }
+  return match[1].split(/\s+/).filter(Boolean);
+}
+
+/**
+ * Return job-scoped violations of rule (g): an explicit `git add data/<file>`
+ * for one of `coreFiles`, with no `uses: ./.github/actions/push-core-data`
+ * step anywhere in the same job (see header comment above for why job scope
+ * matters — push-core-data's snapshot diff only sees writes from its own
+ * job's checkout-core-data snapshot).
+ */
+function findCoreFileWritesWithoutPush(raw, coreFiles) {
+  const violations = [];
+  const escaped = coreFiles.map((f) => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const coreFileRe = new RegExp(`\\bdata/(${escaped.join('|')})\\b`);
+
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return violations;
+
+  const jobStarts = [];
+  for (let i = jobsIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '') continue;
+    if (indentOf(line) === 0) break;
+    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
+      jobStarts.push(i);
+    }
+  }
+  jobStarts.push(lines.length);
+
+  for (let j = 0; j < jobStarts.length - 1; j++) {
+    const start = jobStarts[j];
+    const end = jobStarts[j + 1];
+    const jobName = lines[start].trim().replace(/:\s*$/, '');
+
+    let hasPushCoreData = false;
+    const writes = [];
+    let inRunBlock = false;
+    let runIndent = -1;
+
+    for (let i = start; i < end; i++) {
+      const line = lines[i];
+      const stripped = line.trimStart();
+      if (stripped.startsWith('#')) continue;
+
+      if (/uses:\s*\.\/\.github\/actions\/push-core-data\b/.test(line)) {
+        hasPushCoreData = true;
+      }
+
+      let textToCheck = null;
+      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      if (runMatch) {
+        const content = runMatch[1];
+        const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
+        if (isBlockScalar) {
+          inRunBlock = true;
+          runIndent = indentOf(line);
+          continue;
+        }
+        inRunBlock = false;
+        textToCheck = content;
+      } else if (inRunBlock) {
+        if (stripped !== '' && indentOf(line) <= runIndent) {
+          inRunBlock = false;
+        } else {
+          textToCheck = line;
+        }
+      }
+
+      if (textToCheck !== null && !textToCheck.trimStart().startsWith('#')) {
+        const match = textToCheck.match(coreFileRe);
+        if (match && /\bgit\s+add\b/.test(textToCheck)) {
+          writes.push({ lineNum: i + 1, text: line.trim(), coreFile: match[1] });
+        }
+      }
+    }
+
+    if (writes.length > 0 && !hasPushCoreData) {
+      for (const w of writes) {
+        violations.push({ job: jobName, lineNum: w.lineNum, text: w.text, coreFile: w.coreFile });
       }
     }
   }
@@ -471,7 +597,19 @@ async function main() {
     pushRetry: [],
     gitIdentity: [],
     echoExitcode: [],
+    coreDataPush: [],
   };
+
+  // Degrade rule (g) alone on a format change in push-core-data/action.yml
+  // (e.g. CORE_FILES switched to single quotes or split across lines) —
+  // must never crash rules (a)-(f), the same non-fatal posture rule (f)
+  // already has for its own live-API failure mode.
+  let coreFiles = null;
+  try {
+    coreFiles = getCoreFilesFromPushAction();
+  } catch (err) {
+    console.log(`ℹ️  Rule (g) core-data-push check skipped: ${err.message}`);
+  }
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -520,6 +658,14 @@ async function main() {
         violations.echoExitcode.push({ file, hits });
       }
     }
+
+    // ── Rule (g): CORE_FILES write with no push-core-data in the same job ─────
+    if (coreFiles && !raw.includes('hygiene-core-data-push-ok:')) {
+      const hits = findCoreFileWritesWithoutPush(raw, coreFiles);
+      if (hits.length > 0) {
+        violations.coreDataPush.push({ file, hits });
+      }
+    }
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
@@ -549,7 +695,8 @@ async function main() {
     violations.playwright.length +
     violations.pushRetry.length +
     violations.gitIdentity.length +
-    violations.echoExitcode.length;
+    violations.echoExitcode.length +
+    violations.coreDataPush.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -635,10 +782,35 @@ async function main() {
     console.error("Exempt (legitimate): add  # hygiene-echo-exitcode-ok: <reason>  anywhere in the file.\n");
   }
 
+  if (violations.coreDataPush.length) {
+    console.error('── (g) CORE_FILES write with no push-core-data in the same job ───────');
+    console.error('This job `git add`s a data/<file> that push-core-data.CORE_FILES tracks, but');
+    console.error('never calls push-core-data — the write reaches the public repo (if committed');
+    console.error('there) but never the authoritative private data repo, so it silently never');
+    console.error('persists for any other workflow\'s checkout-core-data (task #1441 bug class).\n');
+    for (const { file, hits } of violations.coreDataPush) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      job "${h.job}" line ${h.lineNum} [${h.coreFile}]: ${h.text}`);
+    }
+    console.error('\nFix: add a push-core-data step in the SAME job, after the write:');
+    console.error(`      - name: Push core data to private repo
+        uses: ./.github/actions/push-core-data
+        with:
+          token: \${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: <describe the write>'`);
+    console.error("Exempt (legitimate): add  # hygiene-core-data-push-ok: <reason>  anywhere in the file.\n");
+  }
+
   process.exit(1);
 }
 
-module.exports = { checkNeverRunWorkflowCoverage, NEVER_RUN_MIN_AGE_DAYS, NEVER_RUN_SNAPSHOT_PATH };
+module.exports = {
+  checkNeverRunWorkflowCoverage,
+  NEVER_RUN_MIN_AGE_DAYS,
+  NEVER_RUN_SNAPSHOT_PATH,
+  findCoreFileWritesWithoutPush,
+  getCoreFilesFromPushAction,
+};
 
 if (require.main === module) {
   main().catch((err) => {
