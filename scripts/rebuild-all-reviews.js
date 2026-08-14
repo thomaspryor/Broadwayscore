@@ -2945,6 +2945,8 @@ showDirs.forEach(showId => {
           rawOutlet,
           url: data.url,
           contentVerification: data.contentVerification,
+          reviewDate: data.publishDate ? parseDate(data.publishDate) : null,
+          priorRuns: showById[showId] && showById[showId].priorRuns,
         });
         if (crossMarketVerdict.shouldFlag) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
