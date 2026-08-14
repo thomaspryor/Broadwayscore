@@ -38,15 +38,20 @@ const fs = require('fs');
 const path = require('path');
 const { detectCrossShowUrlMismatch } = require('./lib/cross-show-url');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
-const FIX = process.argv.includes('--fix');
-const JSON_OUT = process.argv.includes('--json');
-const STRICT = process.argv.includes('--strict');
-const maxArg = process.argv.find(a => a.startsWith('--max='));
-const MAX = maxArg ? parseInt(maxArg.split('=')[1], 10) : 0; // strict fails when unhandled > MAX
+const ARGV = process.argv.slice(2);
+const FIX = ARGV.includes('--fix');
+const JSON_OUT = ARGV.includes('--json');
+const STRICT = ARGV.includes('--strict');
+// strict fails when unhandled > MAX. Parsed lazily inside main() rather than at
+// module scope: parseMaxArgOrExit can process.exit(2), and an exit fired while
+// a module is still being required would take down any future importer before
+// it ran a line of its own.
+let MAX;
 
 // A file is already handled if a guard/human has resolved its show membership.
 // Mirrors shouldSkipCrossShowUrlFlag (review-guards.js) plus the exclusion flags
@@ -68,6 +73,8 @@ function isAlreadyHandled(d) {
 }
 
 function main() {
+  // Exit 2 here matches this file's existing "cannot run" convention below.
+  MAX = parseMaxArgOrExit(ARGV, { scriptName: 'audit-cross-show-url' });
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     console.error(`✗ review-texts not found at ${REVIEW_TEXTS_DIR} (worktree without data symlinks?)`);
     process.exit(2);
