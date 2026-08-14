@@ -21,6 +21,7 @@ const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-r
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
+const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { validateShowMentioned } = require('./lib/content-quality');
 
 const args = process.argv.slice(2);
@@ -43,7 +44,33 @@ function normalizeUrl(url) {
   } catch { return null; }
 }
 
+// #483 invariant, enforced at this script's single write helper because its 15
+// flag-setting sites share no other gate (only one of them consults
+// shouldSkipCrossShowUrlFlag). A record mid-URL-correction — breadcrumb
+// present, body not yet refetched — has nothing on it that describes its
+// CURRENT url, so a cross-show collision verdict derived from its date or
+// score signal is stale by construction, and re-creates the state
+// audit-stale-flag-after-url-correction.js --gate fails on.
+//
+// Deliberately narrow, unlike the reverted safeWriteReview attempt
+// (507cf8bc75f / 7a8f8d4d3f3): it only withholds a flag this run is ADDING,
+// by comparing against the on-disk record. It never clears an existing flag,
+// never writes `wrongProduction: false`, and never deletes a note — the three
+// behaviours that made the chokepoint version unsafe.
+let staleFlagWritesWithheld = 0;
 function atomicWriteJSON(filePath, data) {
+  if (shouldWithholdStaleExclusionFlag(data)) {
+    let prior = null;
+    try { prior = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { prior = null; }
+    for (const f of ['wrongProduction', 'wrongShow']) {
+      if (data[f] === true && !(prior && prior[f] === true)) {
+        delete data[f];
+        delete data[`${f}Note`];
+        delete data[`${f}Reason`];
+        staleFlagWritesWithheld++;
+      }
+    }
+  }
   const tmp = filePath + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n');
   fs.renameSync(tmp, filePath);
@@ -980,6 +1007,9 @@ if (APPLY) {
   console.log(`London market skipped:                ${londonMarketSkipped}`);
   console.log(`URL market match skipped:             ${urlMarketMatchSkipped}`);
   console.log(`Total files modified:                  ${totalFixed + showIdMismatchFlagged}`);
+  if (staleFlagWritesWithheld > 0) {
+    console.log(`#483 invariant: withheld ${staleFlagWritesWithheld} new exclusion flag(s) on records awaiting URL-correction refetch`);
+  }
 } else {
   console.log(`\nRun with --apply to auto-fix collisions.`);
 }

@@ -7,6 +7,7 @@ const {
   detectStaleFlagAfterUrlCorrection,
   remediateStaleFlagAfterUrlCorrection,
   isAwaitingUrlCorrectionRefetch,
+  shouldWithholdStaleExclusionFlag,
 } = require('./stale-flag-after-url-correction.js');
 
 // --- producer/detector agreement (the drain→rebuild→re-flag loop) ---------
@@ -148,4 +149,77 @@ test('remediate is a no-op for a non-matching record', () => {
   const cleared = remediateStaleFlagAfterUrlCorrection(data);
   assert.deepEqual(cleared, []);
   assert.equal(data.wrongProduction, true, 'non-matching record must be untouched');
+});
+
+// --- producer predicate must agree with the gate, by construction ----------
+// shouldWithholdStaleExclusionFlag is what PRODUCERS call before persisting a
+// new exclusion flag. It has to match detectStaleFlagAfterUrlCorrection's view
+// exactly, or the two drift: a producer keyed on the bare
+// isAwaitingUrlCorrectionRefetch withholds flags on operator-cleared records
+// the gate never objected to — invisible, because "a flag that was not written"
+// leaves no trace anywhere. That silent divergence is the same class of defect
+// (an override set consulted with inverted meaning) that got the 2026-08-13
+// write-guard attempt reverted.
+
+test('shouldWithholdStaleExclusionFlag: true on a bare awaiting-refetch record', () => {
+  assert.equal(shouldWithholdStaleExclusionFlag({
+    fullText: null,
+    _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
+  }), true);
+});
+
+test('shouldWithholdStaleExclusionFlag: false once the refetched body lands', () => {
+  assert.equal(shouldWithholdStaleExclusionFlag({
+    fullText: 'the refetched article',
+    _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
+  }), false, 'a record with a body is judgeable — producers must be free to flag it');
+});
+
+test('shouldWithholdStaleExclusionFlag: false with no URL-correction breadcrumb', () => {
+  assert.equal(shouldWithholdStaleExclusionFlag({ fullText: null }), false);
+});
+
+for (const marker of [
+  'wrongProductionManualClear',
+  'wrongShowManualClear',
+  'wrongProductionOverride',
+  'urlManualOverride',
+]) {
+  test(`shouldWithholdStaleExclusionFlag: false when the operator marker ${marker} is set`, () => {
+    const data = {
+      fullText: null,
+      _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
+      [marker]: true,
+    };
+    assert.equal(shouldWithholdStaleExclusionFlag(data), false,
+      `${marker} makes the gate ignore this record, so producers must not withhold on it either`);
+  });
+}
+
+test('shouldWithholdStaleExclusionFlag: false when humanReviewedWrongProduction === false', () => {
+  assert.equal(shouldWithholdStaleExclusionFlag({
+    fullText: null,
+    _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
+    humanReviewedWrongProduction: false,
+  }), false);
+});
+
+test('producer predicate and gate agree on every operator-marker record', () => {
+  // The invariant that matters: for any record the producer WITHHOLDS on,
+  // writing the flag anyway would have made the gate match. Equivalently —
+  // withhold === (gate would match once the flag is set).
+  const markers = [null, 'wrongProductionManualClear', 'wrongShowManualClear',
+    'wrongProductionOverride', 'urlManualOverride'];
+  for (const marker of markers) {
+    for (const body of [null, 'a real body']) {
+      const base = { fullText: body, _urlChangedClear: { from: 'a', to: 'b', cleared: [] } };
+      if (marker) base[marker] = true;
+      const withheld = shouldWithholdStaleExclusionFlag(base);
+      const gateWouldMatch =
+        detectStaleFlagAfterUrlCorrection({ ...base, wrongProduction: true }).length > 0;
+      assert.equal(withheld, gateWouldMatch,
+        `disagreement for marker=${marker} body=${body ? 'present' : 'null'}: ` +
+        `producer withhold=${withheld} but gate match=${gateWouldMatch}`);
+    }
+  }
 });
