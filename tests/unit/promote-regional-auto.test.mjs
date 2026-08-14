@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry } =
+const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideOffBroadwayAggregatorPromotion } =
   require('../../scripts/promote-ob-venue-candidates.js');
 const { feederVenueCity, classifyVenueMarket } =
   require('../../scripts/lib/aggregator-candidate-extract.js');
@@ -91,6 +91,32 @@ test('OB buildShowEntry unchanged: still -off-broadway- id, announced, market br
   assert.match(e.id, /-off-broadway-\d{4}$/);
   assert.equal(e.status, 'announced');
   assert.equal(e.market, 'broadway');
+});
+
+// Off-broadway candidates sourced directly from a PV/BWW roundup page
+// (2026-08-13, owner rule: "every single Verdict or Review Roundup article
+// should automatically trigger that show to be on the site if it isn't
+// already"). Mirrors decideRegionalPromotion's reasoning, extended to
+// off-broadway — venue-page-sourced OB candidates are deliberately excluded.
+test('decideOffBroadwayAggregatorPromotion: roundup-sourced OB candidate is confirmed', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'bww-roundup' });
+  assert.equal(r.confirmed, true);
+  assert.equal(r.source, 'aggregator-roundup');
+});
+
+test('decideOffBroadwayAggregatorPromotion: playbill-verdict source also confirms', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'playbill-verdict' });
+  assert.equal(r.confirmed, true);
+});
+
+test('decideOffBroadwayAggregatorPromotion: venue-page source does NOT confirm (still needs Playbill-OB/Lortel)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'venue-page:atlantic-theater' });
+  assert.equal(r.confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: non-off-broadway categories never confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ category: 'regional', source: 'bww-roundup' }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion(null).confirmed, false);
 });
 
 test('stale-roundup guard: a roundup older than 90 days promotes as closed, fresh as open (2026-07-09)', () => {

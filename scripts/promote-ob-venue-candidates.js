@@ -14,6 +14,11 @@
  *
  * Modes:
  *   default                — strict cross-validation; safe for cron
+ *   --regional-only        — daily CI path: auto-promotes regional AND
+ *                            off-broadway candidates sourced directly from a
+ *                            PV/BWW roundup page (no extra fetches needed —
+ *                            the roundup itself is the confirmation). Leaves
+ *                            every other staged candidate untouched.
  *   --admin-promote-all    — bypass cross-validation, promote ALL staged
  *                            candidates. ONE-TIME launch use only.
  *   --admin-force=<title>  — promote a specific title without confirmation
@@ -35,8 +40,68 @@ const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./lib/title-match');
+const { isSubtitleVariantOf, levenshteinDistance } = require('./lib/deduplication');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Cross-source dedup thresholds for findExistingMatch(), below.
+// 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
+// unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
+// keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
+// "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
+const DEDUP_JACCARD_THRESHOLD = 0.80;
+// Small-edit-distance near-miss (2026-08-13, found while adding
+// off-broadway aggregator-roundup auto-promotion): "Rosie O'Donnell's
+// COMMON KNOWLEDGE" (BWW slug, possessive) normalizes to "rosie odonnells
+// common knowledge" vs the already-live show's "Rosie O'Donnell: Common
+// Knowledge" -> "rosie odonnell common knowledge" — ONE character apart,
+// but jaccard on that pair is 0.6 (below the 0.80 gate) because the extra
+// "s" token-set difference is disproportionate on short titles. Same class
+// of near-miss aggregator-candidate-extract.js's classifyTitleDelta()
+// already treats as 'typo' (Levenshtein 1..3) before a candidate is even
+// staged; this is the matching check on the PROMOTION side, which lacked
+// it. Verified live: this candidate would otherwise have minted a second
+// shows.json entry for an already-closed show. Length-gated so short
+// titles ("Cats" vs "Rats", distance 1) don't false-collapse.
+const TYPO_EDIT_DISTANCE_MAX = 3;
+const TYPO_MIN_TITLE_LENGTH = 10;
+
+/**
+ * Does `candidate` ({title, venue}) match an existing show ({id, title,
+ * venue})? Same canonical venue AND (normalized title OR subtitle-stripped
+ * title OR small edit-distance typo OR jaccard ≥ threshold). Returns
+ * { match, reason } or null. Pure — extracted from the promotion loop below
+ * so it's independently testable (CLAUDE.md §15) instead of copied into a
+ * test file.
+ */
+function findExistingMatch(candidate, existingShows) {
+  const venueKey = canonicalVenue(candidate.venue);
+  const cands = (Array.isArray(existingShows) ? existingShows : [])
+    .filter(e => canonicalVenue(e.venue) === venueKey);
+  if (cands.length === 0) return null;
+  const cNorm = normalizeTitle(candidate.title);
+  const cTokens = titleTokens(candidate.title);
+  for (const e of cands) {
+    const eNorm = normalizeTitle(e.title);
+    if (eNorm === cNorm) return { match: e, reason: 'normalized-equal' };
+    if (isSubtitleVariantOf(candidate.title, e.title)) {
+      return { match: e, reason: `subtitle-variant-of: "${e.title}"` };
+    }
+    if (cNorm.length >= TYPO_MIN_TITLE_LENGTH && eNorm.length >= TYPO_MIN_TITLE_LENGTH) {
+      const dist = levenshteinDistance(cNorm, eNorm);
+      if (dist >= 1 && dist <= TYPO_EDIT_DISTANCE_MAX) {
+        return { match: e, reason: `typo-distance=${dist}-of: "${e.title}"` };
+      }
+    }
+    const eTokens = titleTokens(e.title);
+    if (cTokens.size > 0 && eTokens.size > 0) {
+      const sim = jaccard(cTokens, eTokens);
+      if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
+    }
+  }
+  return null;
+}
 
 const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
 
@@ -55,13 +120,17 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const adminPromoteAll = args.includes('--admin-promote-all');
 // --regional-only: the DAILY CI path (scrape-new-aggregators.yml). Considers
-// ONLY category:'regional' candidates — no Playbill-OB/Lortel fetches, no OB
-// promotions (those keep the operator-run path via health-check). Regional
-// candidates validate off the aggregator roundup page itself (user rule
-// 2026-07-08: a PV Verdict / BWW Review Roundup page IS the go-live signal).
+// category:'regional' candidates AND off-broadway candidates sourced directly
+// from a PV/BWW roundup page (owner rule 2026-08-13) — no Playbill-OB/Lortel
+// fetches for either, no venue-page-sourced OB promotions (those keep the
+// operator-run path via health-check). Both classes validate off the
+// aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
+// Review Roundup page IS the go-live signal). Name kept for backward compat
+// with existing CI invocations even though it now covers a second class.
 const regionalOnly = args.includes('--regional-only');
-// --email: send the owner a "went live" notification for promoted regional
-// shows (best-effort — the promotion does NOT depend on delivery).
+// --email: send the owner a "went live" notification for promoted regional /
+// off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
+// on delivery).
 const emailAlerts = args.includes('--email');
 const adminForceArgs = args
   .filter(a => a.startsWith('--admin-force='))
@@ -129,6 +198,34 @@ function decideRegionalPromotion(candidate) {
     return { confirmed: false, reason: `venue "${candidate.venue}" not in the feeder-venue table` };
   }
   return { confirmed: true, reason: 'aggregator roundup page exists (regional feeder venue)', source: 'aggregator-roundup' };
+}
+
+/**
+ * Pure promotion rule for off-broadway candidates sourced DIRECTLY from a
+ * Playbill Verdict article or a BWW Review Roundup (owner rule 2026-08-13,
+ * extending the regional rule above to off-Broadway: "every single Verdict
+ * or Review Roundup article should automatically trigger that show to be on
+ * the site if it isn't already"). Same reasoning as decideRegionalPromotion:
+ * a published roundup means professional critics already reviewed a real
+ * production — a STRONGER signal than the Playbill-OB-schedule / Lortel
+ * cross-validation isCandidateConfirmed() normally requires, so this bypasses
+ * that gate entirely for this narrow source class.
+ *
+ * Deliberately does NOT cover venue-page-sourced off-broadway candidates
+ * (the bulk of ob-venue-candidates.json, e.g. `venue-page:atlantic-theater`)
+ * — those carry no independent confirmation that reviews exist and still
+ * need isCandidateConfirmed's Playbill-OB/Lortel check (or an operator's
+ * --admin-force). Scoping to AGGREGATOR_ROUNDUP_SOURCES is what keeps this
+ * safe to run unattended in CI, same as the regional rule.
+ */
+function decideOffBroadwayAggregatorPromotion(candidate) {
+  if (!candidate || candidate.category !== 'off-broadway') {
+    return { confirmed: false, reason: 'not an off-broadway candidate' };
+  }
+  if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
+    return { confirmed: false, reason: `off-broadway candidate from non-roundup source "${candidate.source}" — needs Playbill-OB/Lortel cross-validation (isCandidateConfirmed) or --admin-force` };
+  }
+  return { confirmed: true, reason: 'aggregator roundup page exists (off-broadway)', source: 'aggregator-roundup' };
 }
 
 /** Show entry for an auto-promoted REGIONAL production. Differs from the OB
@@ -208,69 +305,21 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  // Build a per-venue index of existing OB shows so cross-source dedup can
-  // do TOKEN-SET (jaccard) comparison instead of exact normalized-string.
-  // Exact-string match misses word-order variants:
-  //   "Heated Rivalry: The Unauthorized Musical Parody" (TodayTix)
-  //   "HEATED RIVALRY: THE UNAUTHORIZED PARODY MUSICAL" (Playbill)
-  // → same tokens, different word order, different normalized strings.
-  // The bug: this exact pair shipped a duplicate to production on 2026-05-27.
-  // Fix: jaccard >= DEDUP_JACCARD_THRESHOLD on titleTokens collapses them.
-  const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./lib/title-match');
-  // Subtitle-stripped compare, same venue: title-match's normalizeTitle keeps
-  // colon/dash subtitles as tokens, so jaccard undercounts a base-title-only
-  // listing against a subtitled one ("Ectoplasm" vs "Ectoplasm: Spit and
-  // Vigor" → 0.33; "Bone Wars" vs "Bone Wars: A New Musical" → 0.67 — both
-  // below the 0.80 gate). isSubtitleVariantOf (deduplication.js) strips
-  // everything after a colon/dash/paren and applies the both-subtitled-but-
-  // differ carve-out, which is exactly the collapse this needs. These two
-  // pairs shipped as duplicates to shows.json and blocked a Vercel deploy
-  // until merged by hand (task #1011, 2026-08-04) — this check is the fix
-  // for the class, not just those two shows. Deriving straight from `.title`
-  // (not a cached normalized copy) means there's no separate field to keep in
-  // sync at the feedback-loop push below — the bug that shipped in the first
-  // cut of this fix (26cb6d34ceb) structurally can't recur.
-  const { isSubtitleVariantOf } = require('./lib/deduplication');
-  // 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
-  // unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
-  // keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
-  // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
-  const DEDUP_JACCARD_THRESHOLD = 0.80;
-  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
-  // Include 'regional' alongside 'off-broadway': regional candidates are added
-  // to shows.json manually (runbook), and without them in this index a staged
-  // regional entry never matches → never drops → re-hits validation weekly
-  // forever (Black Swan sat staged 3 weeks after shipping, 2026-07-08).
-  for (const s of showsData.shows.filter(s => s.category === 'off-broadway' || s.category === 'regional')) {
-    const venueKey = canonicalVenue(s.venue);
-    if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
-    existingByVenue.get(venueKey).push({
-      id: s.id, title: s.title,
-      tokens: titleTokens(s.title),
-      normalized: normalizeTitle(s.title),
-    });
-  }
-
-  /** Return the existing show that matches `c` by canonical venue +
-   *  (normalized title OR subtitle-stripped title OR jaccard ≥ threshold). Else null. */
-  function findExistingMatch(c) {
-    const venueKey = canonicalVenue(c.venue);
-    const cands = existingByVenue.get(venueKey) || [];
-    if (cands.length === 0) return null;
-    const cNorm = normalizeTitle(c.title);
-    const cTokens = titleTokens(c.title);
-    for (const e of cands) {
-      if (e.normalized === cNorm) return { match: e, reason: 'normalized-equal' };
-      if (isSubtitleVariantOf(c.title, e.title)) {
-        return { match: e, reason: `subtitle-variant-of: "${e.title}"` };
-      }
-      if (cTokens.size > 0 && e.tokens.size > 0) {
-        const sim = jaccard(cTokens, e.tokens);
-        if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
-      }
-    }
-    return null;
-  }
+  // Existing OB/regional shows, as findExistingMatch() expects. Include
+  // 'regional' alongside 'off-broadway': regional candidates are added to
+  // shows.json manually (runbook), and without them here a staged regional
+  // entry never matches → never drops → re-hits validation weekly forever
+  // (Black Swan sat staged 3 weeks after shipping, 2026-07-08).
+  //
+  // Word-order variants ("Heated Rivalry: The Unauthorized Musical Parody"
+  // vs "...PARODY MUSICAL") shipped a duplicate to production on 2026-05-27;
+  // subtitle-stripped variants ("Ectoplasm" vs "Ectoplasm: Spit and Vigor")
+  // shipped two more duplicates and blocked a Vercel deploy until merged by
+  // hand (task #1011, 2026-08-04). findExistingMatch()'s jaccard/subtitle/
+  // typo-distance checks are the fix for the class.
+  const existingCandidates = showsData.shows
+    .filter(s => s.category === 'off-broadway' || s.category === 'regional')
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue }));
 
   // Fetch cross-validation sources unless --admin-promote-all or
   // --regional-only (regional candidates never use Playbill-OB/Lortel; the
@@ -304,10 +353,14 @@ async function main() {
       continue;
     }
 
-    // --regional-only: non-regional candidates are untouched (stay staged for
-    // the operator-run OB promotion path). Keeps the daily CI blast radius to
-    // exactly the regional feeder-venue class.
-    if (regionalOnly && c.category !== 'regional') {
+    // --regional-only: non-regional candidates are untouched EXCEPT
+    // off-broadway candidates sourced directly from a PV/BWW roundup page
+    // (owner rule 2026-08-13 — see decideOffBroadwayAggregatorPromotion).
+    // Both classes need zero extra fetches to confirm, so both stay cheap
+    // enough for the daily CI path. Venue-page-sourced OB candidates (the
+    // bulk of staging) still wait for the operator-run OB promotion path.
+    const isOBAggregatorRoundup = c.category === 'off-broadway' && AGGREGATOR_ROUNDUP_SOURCES.has(c.source);
+    if (regionalOnly && c.category !== 'regional' && !isOBAggregatorRoundup) {
       remainingStaged.push(c);
       continue;
     }
@@ -316,7 +369,7 @@ async function main() {
     // venue-string variants ("Atlantic Theater Company - Linda Gross" vs
     // "Atlantic Theater"), cross-source same-venue (TNG → Signature Center),
     // AND word-order variants ("Musical Parody" vs "Parody Musical").
-    const existingMatch = findExistingMatch(c);
+    const existingMatch = findExistingMatch(c, existingCandidates);
     if (existingMatch) {
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
@@ -332,6 +385,13 @@ async function main() {
       // a DC/Chicago production, and admin flags are ignored for this class
       // (the OB buildShowEntry would mint a mislabeled entry).
       const r = decideRegionalPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
+    } else if (isOBAggregatorRoundup) {
+      // Off-broadway candidates sourced directly from a PV/BWW roundup page
+      // auto-promote the same way (owner rule 2026-08-13) — checked before
+      // adminPromoteAll/adminForce so this class behaves identically whether
+      // or not those flags are set, same as the regional branch above.
+      const r = decideOffBroadwayAggregatorPromotion(c);
       confirmed = r.confirmed; reason = r.reason; source = r.source || null;
     } else if (adminPromoteAll) {
       confirmed = true; reason = '--admin-promote-all'; source = 'admin';
@@ -366,14 +426,17 @@ async function main() {
     }
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
     existingIds.add(entry.id);
-    // Feed the promotion back into the jaccard dedup index under BOTH venue
-    // spellings (candidate's bare venue and the entry's city-suffixed venue) so
-    // a second candidate for the same show in the SAME run — PV + BWW both
+    // Feed the promotion back into the dedup pool under BOTH venue spellings
+    // (candidate's bare venue and the entry's city-suffixed venue) so a
+    // second candidate for the same show in the SAME run — PV + BWW both
     // roundup one opening, with slight title variants → different slugified
-    // ids — hits findExistingMatch instead of minting a duplicate show.
-    for (const vk of new Set([canonicalVenue(c.venue), canonicalVenue(entry.venue)])) {
-      if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
-      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title) });
+    // ids — hits findExistingMatch instead of minting a duplicate show. Two
+    // entries (one per venue spelling) is fine — findExistingMatch matches on
+    // canonicalVenue(candidate.venue) against each entry's own venue, and
+    // duplicate rows never change the outcome, only which one is returned.
+    existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });
+    if (canonicalVenue(entry.venue) !== canonicalVenue(c.venue)) {
+      existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });
     }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
   }
@@ -452,14 +515,19 @@ async function main() {
   // conditionKey is PER SHOW: routeAlert dedups on conditionKey with a 7-day
   // default cooldown, so a shared key would swallow the second go-live in any
   // week that promotes two shows.
-  const regionalPromoted = promoted.filter(p => p.entry.category === 'regional');
-  if (emailAlerts && regionalPromoted.length > 0) {
+  // Both classes confirmed via 'aggregator-roundup' (regional feeder-venue OR
+  // off-broadway sourced directly from a PV/BWW roundup, 2026-08-13) — same
+  // digest treatment, since the go-live signal and the "reviews ingest
+  // automatically" follow-up are identical for both.
+  const aggregatorRoundupPromoted = promoted.filter(p => p.confirmationSource === 'aggregator-roundup');
+  if (emailAlerts && aggregatorRoundupPromoted.length > 0) {
     const { routeAlert } = require('./lib/owner-alert-router');
-    for (const p of regionalPromoted) {
+    for (const p of aggregatorRoundupPromoted) {
+      const kind = p.entry.category === 'regional' ? 'regional tryout' : 'off-Broadway show';
       try {
         await routeAlert({
           conditionKey: `regional-go-live:${p.entry.id}`,
-          title: `${p.entry.title} @ ${p.entry.venue} — regional tryout live and scoring`,
+          title: `${p.entry.title} @ ${p.entry.venue} — ${kind} live and scoring`,
           severity: 'info',
           disposition: 'digest',
           url: `https://broadwayscorecard.com/show/${p.entry.id}`,
@@ -469,9 +537,9 @@ async function main() {
             'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
             '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/feedback_regional_show_add_runbook.md steps 5-6.',
         });
-        console.log(`Queued regional go-live digest line for ${p.entry.id}.`);
+        console.log(`Queued go-live digest line for ${p.entry.id}.`);
       } catch (e) {
-        console.warn(`::warning::regional go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);
+        console.warn(`::warning::go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);
       }
     }
   }
@@ -497,4 +565,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion };
+module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, findExistingMatch };
