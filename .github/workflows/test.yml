@@ -1678,6 +1678,16 @@ on:
       # listed there — no glob).
       - 'scripts/tests/hook-liveness.test.mjs'
       - 'scripts/check-hook-liveness.js'
+      # BRO-193 — hook-syntax-guard.sh's restore loop now walks a manifest of
+      # its own quarantines instead of globbing "*.sh.broken-*" on disk, so a
+      # human-disabled hook stays disabled. The guarded script lives in the
+      # separate ~/.claude claude-config repo (not this one), so every test in
+      # this file skips in CI and only runs for real on a dev machine via
+      # `node --test scripts/tests/hook-guard-restore.test.mjs` (see the
+      # file's own header) — registration here buys a parse/import tripwire,
+      # not behavioral coverage. Still path-listed so a solo edit to the test
+      # doesn't run ZERO CI.
+      - 'scripts/tests/hook-guard-restore.test.mjs'
       # Infra-review gate digest (card #1095) — turns the gitignored
       # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
       # ledgers into a health-check.js row. health-check.js is already
