@@ -50,3 +50,4 @@ node scripts/generate-review-og-images.js
 node scripts/generate-mobile-data.js
 node scripts/generate-homepage-archive.js
 node scripts/generate-off-broadway-archive.js
+node scripts/generate-off-west-end-archive.js

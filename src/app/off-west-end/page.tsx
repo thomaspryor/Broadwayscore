@@ -1,3 +1,5 @@
+import fs from 'fs';
+import crypto from 'crypto';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -37,6 +39,8 @@ export default function OffWestEndPage() {
   }
 
   const shows = getOffWestEndShows();
+  const archiveFile = fs.readFileSync(process.cwd() + '/public/data/off-west-end-archive.json');
+  const archiveHash = crypto.createHash('md5').update(archiveFile).digest('hex').slice(0, 8);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -75,6 +79,7 @@ export default function OffWestEndPage() {
       <Suspense>
         <OffWestEndPageClient
           shows={serializedShows}
+          archiveHash={archiveHash}
           totalShows={activeShows.length}
           totalReviews={totalReviews}
           marketOpenCounts={{
