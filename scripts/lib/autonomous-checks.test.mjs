@@ -260,17 +260,21 @@ test('runSafeChecks executes a validated card check', () => {
 // public functions — there's no call you can make to observe what it
 // require()d. Unlike the cmux-launch.js/dispatch-ledger incident this audit
 // was triggered by, the regex here doesn't pin a specific code SHAPE (an
-// exact statement form, comment, or ordering) — it enumerates every
-// require() call generically and only fails when one resolves to something
-// outside the builtins allow-list. Reordering, renaming, reformatting, or
-// adding comments in autonomous-checks.js cannot break this test; only
-// actually adding a new dependency can, which is the exact regression it
-// exists to catch.
+// exact statement form or ordering) — it enumerates every require() call
+// argument generically and only fails when one resolves to something outside
+// the builtins allow-list, so reordering, renaming, or reformatting actual
+// require() call sites cannot break it; only adding a real new dependency
+// can. Caveat (found in review): it scans raw text, not an AST, so a
+// `require('...')` substring inside a comment or string literal would also
+// trip it — an acceptable false-positive-toward-safety tradeoff for a file
+// with no such text today, not a guarantee that literally nothing else can
+// touch this test.
 test('autonomous-checks.js requires node built-ins only', () => {
   const src = fs.readFileSync(new URL('./autonomous-checks.js', import.meta.url), 'utf8');
   const requires = [...src.matchAll(/require\(['"]([^'"]+)['"]\)/g)].map(m => m[1]);
   const builtins = new Set(['fs', 'os', 'path', 'child_process', 'crypto', 'util']);
   for (const r of requires) {
-    assert.ok(builtins.has(r), `unexpected non-builtin require: ${r} (the shared runner must stay dependency-free)`);
+    const bare = r.startsWith('node:') ? r.slice(5) : r;
+    assert.ok(builtins.has(bare), `unexpected non-builtin require: ${r} (the shared runner must stay dependency-free)`);
   }
 });
