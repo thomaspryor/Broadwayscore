@@ -1,12 +1,12 @@
 {
-  "asOf": "2026-08-11",
+  "asOf": "2026-08-12",
   "shadow": true,
   "checks": [
     {
       "key": "affiliate:provider-auth:impact",
       "label": "impact API",
-      "verdict": "pass",
-      "reason": "reachable"
+      "verdict": "critical",
+      "reason": "impact fetch failed: This operation was aborted"
     },
     {
       "key": "affiliate:provider-auth:posthog",
@@ -15,54 +15,18 @@
       "reason": "reachable"
     },
     {
-      "key": "affiliate:dead-man",
-      "label": "Dead-man (both click signals)",
-      "verdict": "pass",
-      "reason": "at least one click signal alive"
-    },
-    {
-      "key": "affiliate:conversions-flatline",
-      "label": "Conversions flatline",
-      "verdict": "pass",
-      "reason": "last yield 0d ago, under the 3d threshold"
-    },
-    {
-      "key": "affiliate:zero-conversions",
-      "label": "7-day zero-conversion ceiling",
-      "verdict": "pass",
-      "reason": "14 conversions in trailing 7d"
-    },
-    {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "391/485 = 81% of peak, above the 20% floor"
-    },
-    {
-      "key": "affiliate:impact-click-collapse",
-      "label": "Impact click ingestion",
-      "verdict": "pass",
-      "reason": "693/699 = 99% of peak, above the 20% floor"
-    },
-    {
-      "key": "affiliate:handoff-break",
-      "label": "Click → Impact handoff",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 91% over 3d"
-    },
-    {
-      "key": "affiliate:bot-divergence",
-      "label": "Bot click divergence",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 0.9x over 3d"
+      "reason": "397/485 = 82% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.78%, 0 zero-payout"
+      "reason": "take-rate 2.95%, 0 zero-payout"
     }
   ],
-  "failingCount": 0,
-  "updatedAt": "2026-08-13T08:06:43.292Z"
+  "failingCount": 1,
+  "updatedAt": "2026-08-14T08:03:42.015Z"
 }

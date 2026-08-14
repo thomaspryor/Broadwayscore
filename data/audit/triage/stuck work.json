@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-13T08:07:18.269Z",
+  "lastChecked": "2026-08-14T08:04:13.566Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "13 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (11d, stamp overdue 5d); Scraping v2: T4 was a yield regression — reviews.php is not  (11d, stamp overdue 5d); BSC Daily: SEO: health (10d, stamp overdue 3d) (10 awaiting recheck, earliest due 2026-08-11; 62 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
+      "message": "21 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (12d, stamp overdue 6d); Scraping v2: T4 was a yield regression — reviews.php is not  (12d, stamp overdue 6d); BSC Daily: SEO: health (11d, stamp overdue 4d) (11 awaiting recheck, earliest due 2026-08-12; 63 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "39 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (21d); Trainspotting: only 4 reviews on site + email said 7 (invest (21d); cmux-launch: adopt a late-alive workspace instead of close-a (20d)"
+      "message": "42 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (22d); Trainspotting: only 4 reviews on site + email said 7 (invest (22d); cmux-launch: adopt a late-alive workspace instead of close-a (21d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",

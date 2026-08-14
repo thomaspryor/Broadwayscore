@@ -1,7 +1,7 @@
 {
   "system": "data",
-  "status": "warn",
-  "lastChecked": "2026-08-13T08:07:18.270Z",
+  "status": "error",
+  "lastChecked": "2026-08-14T08:04:13.567Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -12,9 +12,9 @@
       "message": "11 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
-      "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
+      "name": "Data: live show with zero critic reviews on site",
+      "status": "error",
+      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: matilda-the-musical-theatre-row-off-broadway-2026"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
