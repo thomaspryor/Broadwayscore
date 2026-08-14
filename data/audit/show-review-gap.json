@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-14T20:09:31.765Z",
+  "generatedAt": "2026-08-14T22:08:13.391Z",
   "windowDays": 1095,
-  "targets": 0,
-  "auditedThisRun": 0,
-  "carriedForward": 304,
+  "targets": 10,
+  "auditedThisRun": 10,
+  "carriedForward": 294,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 183,
-    "totalMissing": 1026,
+    "withGap": 180,
+    "totalMissing": 1016,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1188,
+    "totalFlaggedMisses": 1176,
     "totalRecoverable": 24,
-    "totalRecovered": 7
+    "totalRecovered": 6
   },
   "results": [
     {
@@ -3363,48 +3363,36 @@
       "openingDate": "2026-08-11",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
-        "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-        "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-        "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
-        "https://theaterlife.com/an-american-daughter-1-2/",
-        "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-        "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
         "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
+        "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+        "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
         "https://pagesonstages.com/2026/08/11/an-american-daughter/",
-        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-        "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-        "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-        "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-        "https://scoop.ai/event/an-american-daughter-irene-diamond-stage-at-signature-theatre-2026-09-05-1eok2chc",
-        "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-        "https://nyctheatreaddict.com/an-american-daughter/"
+        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html"
       ],
-      "dirFiles": 27,
+      "dirFiles": 26,
       "dirClean": 16,
       "inReviewsJson": 16,
-      "missing": [
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
+          "host": "nyctheatreaddict.com",
+          "count": 1
         },
         {
-          "url": "https://scoop.ai/event/an-american-daughter-irene-diamond-stage-at-signature-theatre-2026-09-05-1eok2chc",
-          "host": "scoop.ai",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
         {
           "host": "showriz.com",
           "count": 1
@@ -3418,291 +3406,35 @@
           "count": 1
         },
         {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
           "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--rachel-graham.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-            },
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "clean",
-              "urlInDir": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"An American Daughter\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"An American Daughter\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"An American Daughter\" review irene",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"An American Daughter\" Wasserstein review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 11,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 112,
-        "byReason": {
-          "not-http-url": 20,
-          "aggregator-internal-nav": 54,
-          "non-review-host": 32,
-          "roundup-page": 3,
-          "venue-production-page": 1,
-          "ticketing-reseller": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://scoop.ai/event/an-american-daughter-irene-diamond-stage-at-signature-theatre-2026-09-05-1eok2chc",
-          "host": "scoop.ai",
-          "outletId": "scoop",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "stagebuddy",
-            "outlet": "stagebuddy",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter"
-          },
-          {
-            "outletId": "scoop.ai",
-            "outlet": "scoop.ai",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://scoop.ai/event/an-american-daughter-irene-diamond-stage-at-signature-theatre-2026-09-05-1eok2chc"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html"
-          },
-          {
-            "outletId": "tickpick.com",
-            "outlet": "tickpick.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://1minutecritic.com/an-american-daughter-off-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T08:23:28.238Z"
-          },
-          {
-            "url": "https://theaterlife.com/an-american-daughter-1-2/",
-            "outletId": "theaterlife.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
-            "outletId": "t2conline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
             "outletId": "lightingandsoundamerica.com",
@@ -3716,6 +3448,18 @@
             "firstSeenAt": "2026-08-13T11:45:01.801Z"
           },
           {
+            "url": "https://newyorktheater.me/2026/08/11/an-american-daughter-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
+            "url": "https://culturesauce.com/wendy-wasserstein-american-daughter-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T08:23:28.238Z"
+          },
+          {
             "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
             "outletId": "pagesonstages.com",
             "state": "live",
@@ -3726,66 +3470,12 @@
             "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://nyctheatreaddict.com/an-american-daughter/",
-            "outletId": "nyctheatreaddict.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-            "outletId": "stagebuddy",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://scoop.ai/event/an-american-daughter-irene-diamond-stage-at-signature-theatre-2026-09-05-1eok2chc",
-            "outletId": "scoop.ai",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-            "outletId": "tickpick.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 18
+        "liveCount": 6,
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -3820,7 +3510,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -5399,7 +5089,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-14T19:38:12.402Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -18034,31 +17724,12 @@
         "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
         "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
-        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-        "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-        "https://matineemouse.substack.com/p/death-note-the-musical-review",
-        "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-        "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html"
+        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out"
       ],
       "dirFiles": 48,
       "dirClean": 29,
-      "inReviewsJson": 26,
-      "missing": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "knownOutletId": "playbill",
-          "serpCensus": true
-        }
-      ],
+      "inReviewsJson": 28,
+      "missing": [],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
@@ -18069,7 +17740,15 @@
           "count": 1
         },
         {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
           "host": "flickermagazine.art",
+          "count": 1
+        },
+        {
+          "host": "matineemouse.substack.com",
           "count": 1
         },
         {
@@ -18093,8 +17772,16 @@
           "count": 1
         },
         {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stanservice.substack.com",
+          "count": 1
+        },
+        {
           "host": "telegraph.co.uk",
-          "count": 2
+          "count": 1
         },
         {
           "host": "thereviewshub.com",
@@ -18164,122 +17851,22 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 111,
+        "count": 90,
         "byReason": {
           "not-http-url": 20,
-          "aggregator-internal-nav": 50,
-          "non-review-host": 36,
-          "non-review-path": 1,
-          "roundup-page": 2,
-          "ticketing-listing": 2
+          "non-review-host": 19,
+          "aggregator-internal-nav": 49,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "outletId": "playbill",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/"
-          },
-          {
-            "outletId": "playbill",
-            "outlet": "playbill",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london"
-          },
           {
             "outletId": "barbican.org.uk",
             "outlet": "barbican.org.uk",
@@ -18375,47 +17962,9 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
             "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://matineemouse.substack.com/p/death-note-the-musical-review",
-            "outletId": "matineemouse.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
-            "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-            "outletId": "playbill",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-08-14T17:43:24.013Z"
           },
           {
@@ -18426,10 +17975,10 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 18,
-        "candidateCount": 21
+        "liveCount": 15,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -25067,7 +24616,6 @@
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
         "https://www.broadwayworld.com/article/Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810"
       ],
       "aggregatorListedUrls": [
@@ -25076,51 +24624,12 @@
         "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
         "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
-        "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
-        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
-        "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-        "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-        "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
-        "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-        "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-        "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-        "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-        "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-        "https://www.theartsdesk.com/theatre/game-thrones-mad-king-rsc-stratford-review-tangled-telling-origin-stories",
-        "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-        "https://www.theguardian.com/stage/2026/aug/10/critics-weigh-up-game-of-thrones-the-mad-king-royal-shakespeare-company-george-rr-martin",
-        "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-        "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon"
+        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review"
       ],
       "dirFiles": 17,
       "dirClean": 14,
       "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-          "host": "perspectivemedia.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-          "host": "aol.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -25141,266 +24650,40 @@
         {
           "host": "stratford-herald.com",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--andreas-wiseman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-            }
-          ],
-          "serpCensus": true
         },
         {
-          "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-          "host": "rsc.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "rsc--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
-            }
-          ],
-          "serpCensus": true
+          "host": "theatreandtonic.co.uk",
+          "count": 1
         },
         {
-          "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--andreas-wiseman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-            }
-          ],
-          "serpCensus": true
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Game of Thrones: The Mad King\" review shakespeare",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Game of Thrones: The Mad King\" Cooke review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 15,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 451,
+        "count": 339,
         "byReason": {
-          "not-http-url": 124,
-          "aggregator-internal-nav": 267,
-          "non-review-host": 51,
-          "non-review-path": 3,
-          "roundup-page": 6
+          "not-http-url": 104,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 217,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        },
-        {
-          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-          "host": "perspectivemedia.com",
-          "outletId": "perspectivemedia",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-          "host": "aol.co.uk",
-          "outletId": "aol",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-          "host": "thestage.co.uk",
-          "file": "thestage--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
-          },
-          {
-            "outletId": "perspectivemedia.com",
-            "outlet": "perspectivemedia.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/"
-          },
-          {
-            "outletId": "aol.co.uk",
-            "outlet": "aol.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-          },
-          {
-            "outletId": "rsc.org.uk",
-            "outlet": "rsc.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -25434,107 +24717,16 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
             "url": "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
             "outletId": "winteriscoming.net",
             "state": "live",
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.theartsdesk.com/theatre/game-thrones-mad-king-rsc-stratford-review-tangled-telling-origin-stories",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/10/critics-weigh-up-game-of-thrones-the-mad-king-royal-shakespeare-company-george-rr-martin",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-            "outletId": "perspectivemedia.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-            "outletId": "aol.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-            "outletId": "rsc.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
           }
         ],
-        "liveCount": 9,
-        "candidateCount": 14
+        "liveCount": 6,
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -38668,50 +37860,40 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
-        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-        "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-        "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
-        "https://www.thereviewshub.com/how-the-other-half-loves-old-vic-london/",
-        "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
-        "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
-        "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-        "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-        "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-        "https://thetheatretimes.com/alan-ayckbourns-how-the-other-half-loves-at-the-old-vic-technically-brilliant-if-rather-overlong-and-old-fashioned-west-end-farce/",
-        "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
-        "https://westendwilma.com/review-how-the-other-half-loves/",
-        "https://peterviney.com/stage/how-the-other-half-loves/",
-        "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-        "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn"
+        "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
+        "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
+        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html"
       ],
       "dirFiles": 32,
-      "dirClean": 21,
-      "inReviewsJson": 20,
-      "missing": [
-        {
-          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        },
-        {
-          "url": "https://peterviney.com/stage/how-the-other-half-loves/",
-          "host": "peterviney.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "dirClean": 22,
+      "inReviewsJson": 21,
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
         {
           "host": "britishtheatreguide.info",
           "count": 1
         },
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
           "count": 1
         },
         {
@@ -38727,6 +37909,10 @@
           "count": 1
         },
         {
+          "host": "thetheatretimes.com",
+          "count": 1
+        },
+        {
           "host": "theatrevibe.co.uk",
           "count": 1
         },
@@ -38737,100 +37923,13 @@
         {
           "host": "theatrecat.com",
           "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "monstagigz--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lovelondonloveculture--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/how-the-other-half-loves"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/",
-          "host": "countryandtownhouse.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "countryandtownhouse--olivia-emily.json",
-              "flag": "clean",
-              "urlInDir": "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 7,
@@ -38875,226 +37974,24 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"How the Other Half Loves\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"How the Other Half Loves\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"How the Other Half Loves\" Ayckbourn review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 17,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 12,
-        "byReason": {
-          "non-review-host": 8,
-          "roundup-page": 3,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
-      "dedupedVariants": [
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-          "host": "the-independent.com",
-          "matchedUrl": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-          "outletId": "independent",
-          "reason": "same outlet \"independent\" already held at independent.co.uk; the-independent.com is a registered alias of it"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://peterviney.com/stage/how-the-other-half-loves/",
-          "host": "peterviney.com",
-          "outletId": "peterviney",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149951/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
-          "host": "allthatdazzles.co.uk",
-          "file": "all-that-dazzles-uk--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
+      "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-how-the-other-half-loves/"
-          },
-          {
-            "outletId": "peterviney.com",
-            "outlet": "peterviney.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://peterviney.com/stage/how-the-other-half-loves/"
-          },
-          {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
-          },
-          {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1"
-          },
-          {
-            "outletId": "countryandtownhouse.com",
-            "outlet": "countryandtownhouse.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-            "outletId": "thetimes.com",
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+            "outletId": "independent.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/how-the-other-half-loves-old-vic-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://thetheatretimes.com/alan-ayckbourns-how-the-other-half-loves-at-the-old-vic-technically-brilliant-if-rather-overlong-and-old-fashioned-west-end-farce/",
-            "outletId": "thetheatretimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
@@ -39103,14 +38000,14 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-            "outletId": "the-independent.com",
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+            "outletId": "telegraph.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-            "outletId": "independent.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
@@ -39121,59 +38018,16 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-            "outletId": "west-end-wilma",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://peterviney.com/stage/how-the-other-half-loves/",
-            "outletId": "peterviney.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-            "outletId": "monstagigz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-            "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/",
-            "outletId": "countryandtownhouse.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
+            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 19
+        "liveCount": 6,
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -42424,100 +41278,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-        "https://www.offoffonline.com/offoffonline/2026/8/10/isla"
-      ],
-      "dirFiles": 5,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 23,
-        "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 19,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "complete",
+        "verdict": "no-census-yet",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          },
-          {
-            "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
-            "outletId": "offoffonline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T17:43:24.013Z"
-          }
-        ],
-        "liveCount": 2,
-        "candidateCount": 2
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -49501,7 +48288,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T19:38:12.402Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -85710,7 +84497,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T19:38:12.402Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -94883,82 +93670,15 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Winter's Tale\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Winter's Tale\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Winter's Tale\" review delacorte",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Winter's Tale\" Shakespeare review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 326,
+        "count": 324,
         "byReason": {
-          "not-http-url": 87,
-          "aggregator-internal-nav": 221,
+          "not-http-url": 89,
           "non-review-host": 15,
+          "aggregator-internal-nav": 217,
           "non-review-path": 3
         }
       },
@@ -94971,7 +93691,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T17:43:24.013Z"
+      "computedAt": "2026-08-14T22:08:13.391Z"
     },
     {
       "showId": "this-is-rambert-west-end-2026",
