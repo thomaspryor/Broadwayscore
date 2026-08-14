@@ -363,6 +363,13 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/shallow-fetch-args.js'
       - 'scripts/lib/shallow-fetch-args.test.mjs'
+      # Shallow-aware landing/ancestry check (task #1489): a shallow shared
+      # checkout makes `git merge-base --is-ancestor` silently answer "not
+      # landed" for commits genuinely on main. Colocated *.test.mjs runs in
+      # the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/landing-verify.js'
+      - 'scripts/lib/landing-verify.test.mjs'
       # Unbounded-fetch lint guard (task #420): #466 fixed push-with-retry.sh's
       # own fetch, but 7 scripts hand-rolled the same fetch+rebase+push and so
       # never got that fix. The guard flags any git fetch/pull without a depth
@@ -979,6 +986,14 @@ on:
       - 'scripts/monitor-outlet-recency.js'
       - 'tests/unit/outlet-recency-monitor.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
+      # Same-run correction/follow-up merge (card #1427, GH #567) — folds a
+      # same-submitter, same-show submission arriving within 5 min of an
+      # earlier one into a single submission before categorization, so the
+      # correction reaches the issue instead of being silently discarded.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/feedback-digest-correction-merge.js'
+      - 'scripts/lib/feedback-digest-correction-merge.test.mjs'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
       # Without these, an edit to the normalizer pushes with ZERO CI coverage
