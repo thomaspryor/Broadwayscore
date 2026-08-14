@@ -1499,6 +1499,15 @@ on:
       # solo edit to either file still triggers CI.
       - 'scripts/audit-push-core-data-audit-gap.js'
       - 'scripts/audit-push-core-data-audit-gap.test.mjs'
+      # Same-job breadcrumb coverage guard (BRO-250 / Notion 3b9637c5) —
+      # advisory scan for scripts that force:true-clear a PROTECTED field in a
+      # job that also calls push-review-texts, with no scripts/lib/review-
+      # write-guard.js CLEAR_BREADCRUMBS entry for it. Same bug class fixed
+      # reactively 3 times (#97, #1237, #1259). Test lives in tests/unit/
+      # (registered in tests/unit-test-manifest.txt); path-listed here so a
+      # solo edit to either file still triggers CI.
+      - 'scripts/audit-same-job-breadcrumb-coverage.js'
+      - 'tests/unit/audit-same-job-breadcrumb-coverage.test.mjs'
       # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
       # audit-*.js that walks data/review-texts must call assertCorpusScanned
       # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
@@ -2730,6 +2739,20 @@ jobs:
         # non-blocking — always exits 0 (see script header for why). Exempt a
         # workflow with # hygiene-audit-persist-ok: <reason>.
         run: node scripts/audit-push-core-data-audit-gap.js
+
+      - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
+        # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
+        # PROTECTED_FIELDS field in a job that also calls push-review-texts
+        # LATER, with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
+        # entry for it — the restore step reads committed HEAD (checked out
+        # before the clearing script ran) and resurrects the field it just
+        # cleared. Same bug class fixed reactively 3 times already (#97
+        # staleScoredBeforeOpening, #1237 fullTextWrongAuthor, #1259
+        # stuckRescoreCleared), each caught only by a human noticing symptoms
+        # months later. Heuristic, non-blocking — always exits 0 (see script
+        # header for why). Exempt a workflow with
+        # # breadcrumb-coverage-ok: <reason>.
+        run: node scripts/audit-same-job-breadcrumb-coverage.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
