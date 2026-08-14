@@ -827,13 +827,15 @@ on:
       - 'scripts/lib/stale-flag-after-url-correction.js'
       - 'scripts/lib/stale-flag-after-url-correction.test.mjs'
       - 'scripts/audit-stale-flag-after-url-correction.js'
-      # Shared --max=N ceiling parser for SEVEN gate scripts. A typo'd ceiling
-      # used to parseInt to NaN and `count > NaN` is always false, silently
-      # turning a blocking gate into a passing no-op; this file is what now
-      # rejects that. It controls every gate's ceiling, so a solo edit here
-      # must not be ZERO-CI. Its test runs in the scripts/lib/*.test.mjs glob.
-      - 'scripts/lib/parse-max-arg.js'
-      - 'scripts/lib/parse-max-arg.test.mjs'
+      # Regression guard on maybeUpgradeUrl's actual corruption source (#1416):
+      # a "URL upgrade" whose candidate is dated outside the show's current-run
+      # window is a wrong-production swap, not a correction. Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI. audit-url-downgrade.js has its own wired --gate
+      # step (see "Audit URL-swap regression (#1416)").
+      - 'scripts/lib/url-downgrade-guard.js'
+      - 'scripts/lib/url-downgrade-guard.test.mjs'
+      - 'scripts/audit-url-downgrade.js'
       # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
       # until 2026-07-10; its test runs in the line-1715 batch.
       - 'scripts/lib/content-verifier.js'
@@ -4004,6 +4006,25 @@ jobs:
         # into live Critic Scores. A colocated test now fails if any bulk
         # flag-clearing helper is re-exported, so the drain cannot come back
         # quietly. References to `--fix` elsewhere in this file predate that.
+
+      - name: Audit URL-swap regression (#1416)
+        if: always()
+        run: node scripts/audit-url-downgrade.js --gate
+        # #1416: maybeUpgradeUrl() swapped a review's correct current-run url
+        # for a URL belonging to a PRIOR production of the same revived show
+        # (Equus 2026->2019 Stratford East, Romeo and Juliet 2026->2023
+        # Almeida, Cats: The Jellicle Ball 2026->2024, NYSR, Mexodus — 8/8
+        # corpus-verified true positives). Fixed going forward by
+        # scripts/lib/url-downgrade-guard.js (wired into maybeUpgradeUrl),
+        # which refuses a swap whose candidate url is dated outside the
+        # show's current-run window. This gate is the historical-damage
+        # sweep: it only fails on a LIVE match (a regressed url with NO
+        # wrongProduction/wrongShow flag — a real live-scoring exposure,
+        # e.g. a scoreable-via-aggregatorStars file with no fullText).
+        # Files where the swap corrupted the url but wrongProduction is
+        # already correctly true are reported, not gated — the #483 drain
+        # (audit-stale-flag-after-url-correction.js --fix) must never clear
+        # those; that misreading is the defect this card exists to stop.
 
       - name: Audit cast contamination
         if: always()

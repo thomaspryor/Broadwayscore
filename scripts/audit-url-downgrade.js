@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * Historical URL-swap-regression sweep (#1416, extended for mergeReviews by #1478).
+ * Historical URL-swap-regression sweep (#1416).
  *
- * scripts/lib/url-downgrade-guard.js now refuses maybeUpgradeUrl AND
- * mergeReviews swaps whose candidate URL is dated outside the show's
- * current-run window going forward. This audit finds the DAMAGE ALREADY ON
- * DISK from before that guard existed: files whose CURRENT url is itself the
- * product of a URL swap (a `_urlChangedClear` breadcrumb or the older
- * `urlCorrectedFrom` stamp — both callers write the same breadcrumb shape via
- * applyUrlChangeInvariant, so this scan covers both) and is dated outside the
- * show's window — the exact class verified 8/8 on the corpus (Equus, Romeo
- * and Juliet, Cats: The Jellicle Ball, NYSR, Mexodus: all real-current-url ->
- * prior-production-url swaps).
+ * scripts/lib/url-downgrade-guard.js now refuses maybeUpgradeUrl swaps whose
+ * candidate URL is dated outside the show's current-run window going forward.
+ * This audit finds the DAMAGE ALREADY ON DISK from before that guard existed:
+ * files whose CURRENT url is itself the product of a URL swap (a
+ * `_urlChangedClear` breadcrumb or the older `urlCorrectedFrom` stamp) and is
+ * dated outside the show's window — the exact class verified 8/8 on the
+ * corpus (Equus, Romeo and Juliet, Cats: The Jellicle Ball, NYSR, Mexodus:
+ * all real-current-url -> prior-production-url swaps).
  *
  * Two severities:
  *   - LIVE: no wrongProduction/wrongShow flag on the file, so prior-production
@@ -43,12 +41,11 @@ const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { isUrlSwapRegression } = require('./lib/url-downgrade-guard.js');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
 
-const USAGE = `audit-url-downgrade.js — historical URL-swap-regression sweep (#1416/#1478)
+const USAGE = `audit-url-downgrade.js — historical URL-swap-regression sweep (#1416)
 
 Finds review-texts files whose CURRENT url is itself the product of a
-maybeUpgradeUrl- or mergeReviews-style swap and is dated outside the show's
-current-production window — a wrong-production URL adopted as if it were a
-content upgrade.
+maybeUpgradeUrl-style swap and is dated outside the show's current-production
+window — a wrong-production URL adopted as if it were a content upgrade.
 
 Usage:
   node scripts/audit-url-downgrade.js [--gate] [--json] [--review-texts-dir=PATH] [--shows-path=PATH]
@@ -141,7 +138,7 @@ function main() {
   if (json) {
     console.log(JSON.stringify({ scanned: showDirs.length, count: hits.length, live: live.length, protected: protectedHits.length, hits }, null, 2));
   } else {
-    console.log(`URL-downgrade sweep (#1416/#1478): ${showDirs.length} shows scanned, ${hits.length} regressed url(s) — ${live.length} LIVE (unprotected), ${protectedHits.length} protected.`);
+    console.log(`URL-downgrade sweep (#1416): ${showDirs.length} shows scanned, ${hits.length} regressed url(s) — ${live.length} LIVE (unprotected), ${protectedHits.length} protected.`);
     for (const h of hits) {
       console.log(`  [${h.protected ? 'protected' : 'LIVE'}] ${h.showId}/${h.file} — url dated ${h.urlDate} (${h.issue}, ${h.diffDays}d)`);
     }

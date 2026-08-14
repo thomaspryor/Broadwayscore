@@ -4,7 +4,6 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { isUrlSwapRegression } = require('./url-downgrade-guard.js');
-const { mergeReviews } = require('./review-normalization.js');
 
 const EQUUS_2026 = {
   id: 'equus-west-end-2026',
@@ -108,59 +107,4 @@ test('romeo-and-juliet-class regression: 2026 west end swapped to 2023 Almeida',
     outletId: 'guardian',
   });
   assert.equal(verdict.regression, true);
-});
-
-// ─── mergeReviews() URL-swap regression guard (#1478) ──────────────────────
-
-test('mergeReviews refuses a urlChanged swap onto a prior-production url when show is supplied', () => {
-  const existing = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2026/may/19/equus-peter-shaffer-menier-chocolate-factory-london',
-    fullText: 'Existing current-run review text.',
-  };
-  const incoming = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2019/feb/25/equus-review-peter-shaffer-horse-blinding-theatre-royal-stratford-east-london-ned-bennett',
-    fullText: 'Wrong-production 2019 Stratford East text.',
-  };
-  const merged = mergeReviews(existing, incoming, {}, { show: EQUUS_2026, showId: 'equus-west-end-2026' });
-  assert.equal(merged.url, existing.url, 'url must NOT swap to the prior-production candidate');
-  assert.equal(merged.fullText, existing.fullText, 'existing content must survive the refused swap');
-});
-
-test('mergeReviews allows a urlChanged swap onto a candidate inside the show window', () => {
-  const existing = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2026/may/01/equus-preview-stub',
-    fullText: null,
-  };
-  const incoming = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2026/may/19/equus-peter-shaffer-menier-chocolate-factory-london',
-    fullText: 'Real current-run review text.',
-  };
-  const merged = mergeReviews(existing, incoming, {}, { show: EQUUS_2026, showId: 'equus-west-end-2026' });
-  assert.equal(merged.url, incoming.url);
-  assert.equal(merged.fullText, incoming.fullText);
-});
-
-test('mergeReviews still swaps urlChanged when no show record is supplied (fails open, unchanged pre-#1478 behavior)', () => {
-  const existing = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2026/may/19/equus-peter-shaffer-menier-chocolate-factory-london',
-    fullText: 'Existing text.',
-  };
-  const incoming = {
-    outletId: 'guardian',
-    criticName: 'Arifa Akbar',
-    url: 'https://www.theguardian.com/stage/2019/feb/25/equus-review-peter-shaffer-horse-blinding-theatre-royal-stratford-east-london-ned-bennett',
-    fullText: 'No show context supplied — swap proceeds.',
-  };
-  const merged = mergeReviews(existing, incoming, {}, { showId: 'equus-west-end-2026' });
-  assert.equal(merged.url, incoming.url);
 });

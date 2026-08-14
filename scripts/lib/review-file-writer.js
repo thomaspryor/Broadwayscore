@@ -952,8 +952,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   }
 
   // URL upgrade — pass the show title so the cross-show guard can reject a
-  // candidate URL that belongs to a different show (combined-roundup contamination).
-  if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId) })) {
+  // candidate URL that belongs to a different show (combined-roundup
+  // contamination), and the full show record so the regression guard (#1416)
+  // can reject a candidate dated outside the current run (a prior production).
+  if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId), show: _getShowById(showId) })) {
     changed = true;
   }
   if (!urlLocked && input.url && !existing.url &&

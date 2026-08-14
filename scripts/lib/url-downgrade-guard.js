@@ -1,5 +1,5 @@
 /**
- * URL-swap regression guard (task #1416, reused by #1478 for mergeReviews()).
+ * URL-swap regression guard (task #1416).
  *
  * maybeUpgradeUrl() (review-normalization.js) replaces a review file's url
  * when the current content is bad (missing/truncated fullText) and the
@@ -15,12 +15,6 @@
  * (equus-west-end-2026, romeo-and-juliet, cats-the-jellicle-ball, nysr,
  * mexodus — all real-2026-url → prior-production-url swaps), see
  * ~/Documents/claude-outputs/handoff-483-predicate-narrowing-2026-08-14.md.
- *
- * mergeReviews() (#1478) has the identical exposure: on urlChanged it swaps
- * existing.url -> incoming.url with only a cross-outlet guard, no bad-content
- * precondition and no wrong-production check — a higher-traffic path (called
- * directly from gather-reviews.js's discovery pipeline) than maybeUpgradeUrl's
- * single call site.
  *
  * Fix: before adopting a candidate URL as an "upgrade", check whether the
  * candidate's OWN url-path date (the same url-date fallback

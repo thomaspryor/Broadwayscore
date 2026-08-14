@@ -1743,6 +1743,11 @@ function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
  *   the candidate URL must share a distinctive token with it (or with the
  *   existing URL slug) or the upgrade is refused — this blocks combined-roundup
  *   cross-show swaps (the 2026-06-04 War Horse → Equus contamination).
+ * @param {object} [opts.show] - Full show record (previewDate/previewsStartDate/
+ *   openingDate/closingDate/category/market/priorRuns/tourLegs). When supplied,
+ *   a candidate URL whose own url-path date falls outside the show's
+ *   current-run window is refused (task #1416) — "shares a slug token" only
+ *   rules out a different SHOW, not a prior PRODUCTION of the same show.
  */
 function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl || existingData.url === newUrl) return false;
@@ -1767,6 +1772,20 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // had a bad (cookie-walled) scrape, silently swapping war-horse → equus.
   if (slugLooksLikeDifferentShow(newUrl, { showTitle: opts.showTitle, refUrl: existingData.url })) {
     return false; // candidate URL is about a different show — refuse the swap
+  }
+
+  // Wrong-production regression guard (#1416): same show, but a candidate
+  // dated outside the current run's window (a prior revival's article) is
+  // not an upgrade — 8/8 corpus-verified cases of this exact swap (Equus,
+  // Romeo and Juliet, Cats: The Jellicle Ball, NYSR, Mexodus) discarded a
+  // correct current-run URL for a wrong-production one.
+  if (opts.show) {
+    const { isUrlSwapRegression } = require('./url-downgrade-guard');
+    const verdict = isUrlSwapRegression({ newUrl, show: opts.show, outletId: existingData.outletId });
+    if (verdict.regression) {
+      console.warn(`[maybeUpgradeUrl] refused regressing swap for ${existingData.outletId || source || '?'}: ${verdict.reason}`);
+      return false;
+    }
   }
 
   // Snapshot BEFORE mutation so the invariant below can tell which fields
