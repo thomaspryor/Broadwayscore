@@ -25,7 +25,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
 // ForRebuild is the flag/context filter; hasValidScore is the score-presence
 // half. (Sprint 1 unification — the the deleted scoreable-mirror mirror is deleted.)
-const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards');
+const { isIncludableForRebuild, hasValidScore, isRejectedNonReview } = require('./lib/review-guards');
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
@@ -3592,8 +3592,18 @@ function validateReviewTextQuality(shows) {
         continue; // JSON parse errors caught elsewhere
       }
 
-      // Skip already-flagged reviews
-      if (data.wrongShow || data.wrongProduction || data.wrongUrl || data.duplicateOf || data.isRoundupArticle || data.isNotReview) continue;
+      // Skip already-flagged reviews. isRejectedNonReview() is the CANONICAL
+      // predicate (CLAUDE.md rule 15: includability predicates must be
+      // canonical, not reimplemented) — a bare `rejectionReason === 'not_a_review'`
+      // check would ALSO skip the two carve-outs review-guards.js already knows
+      // about (known-star-outlet JSON-LD scores, independent aggregator-excerpt
+      // scores) where a 'not_a_review' file is still genuinely scoreable and
+      // structural checks like CHECK 1 below should still run on it. Content
+      // isRejectedNonReview() actually excludes (e.g. allegra-west-end-2026/
+      // westend--peter-quilter.json — ticketing-site marketing copy mistakenly
+      // ingested via submit-review-form) is inert and must not trip the
+      // structural garbage-review checks below (#BRO-212).
+      if (data.wrongShow || data.wrongProduction || data.wrongUrl || data.duplicateOf || data.isRoundupArticle || data.isNotReview || isRejectedNonReview(data)) continue;
 
       // CHECK 0: prior/other-production contamination by date. A review whose
       // publishDate predates the show's earliest date by >180 days, is not within
