@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T15:56:03.865Z",
+  "timestamp": "2026-08-14T16:48:45.703Z",
   "stats": {
     "totalReviews": 42254,
-    "alreadyFlagged": 18320,
+    "alreadyFlagged": 18321,
     "dateGuardCatches": 145,
     "directorMismatch": 965,
     "tvFilmSignals": 1201,
-    "londonSignals": 881,
+    "londonSignals": 880,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3577
+    "noPublishDate": 3578
   },
   "findings": [
     {
@@ -42271,20 +42271,6 @@
       "score": 79,
       "publishDate": null,
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15697515/Robert-Ickes-Romeo-Juliet-adaptation-receives-glowing-reviews.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": 61,
-      "publishDate": "2026-03-12",
-      "url": "https://www.theguardian.com/stage/2025/jul/09/noughts-crosses-review-malorie-blackman-racism-regents-park-open-air-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
