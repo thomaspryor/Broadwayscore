@@ -8,7 +8,7 @@ import venueList from '../../data/west-end-venues.json';
 import { normalizeVenueKey } from './stats/venue-match';
 
 // Re-export market utilities for server-side consumers that already import from here
-export { isLondonMarket, isOffMarket, getMarketMinReviews, getMarketCountry, getMarketCurrency, getMarketLabel } from './market-utils';
+export { isLondonMarket, isOffMarket, getMarketMinReviews, getMarketCountry, getMarketCurrency, getMarketLabel, getUkRegionalVenueCity } from './market-utils';
 
 const WEST_END_VENUES = new Set(venueList as string[]);
 

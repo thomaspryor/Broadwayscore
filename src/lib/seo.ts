@@ -1,7 +1,7 @@
 // SEO Utilities - Structured Data Schemas for Rich Search Results
 
 import { ComputedShow } from './engine';
-import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
+import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel, getUkRegionalVenueCity } from './venue-classification';
 import { isOperaShow } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
@@ -424,16 +424,23 @@ export function generateItemListSchema(items: {
       };
 
       // Location (required for TheaterEvent per Google structured data)
+      const itemCountry = getMarketCountry(item.category, item.venue);
+      const ukRegionalCity = getUkRegionalVenueCity(item.category, item.venue);
       event.location = item.venue ? {
         '@type': 'PerformingArtsTheater',
         name: item.venue,
-        address: item.theaterAddress ? toPostalAddress(item.theaterAddress, getMarketCountry(item.category, item.venue)) : item.venue,
+        address: item.theaterAddress
+          ? toPostalAddress(item.theaterAddress, itemCountry)
+          // No theaterAddress: a bare venue name isn't a claim about country, but a UK
+          // regional venue (RSC, Chichester) needs its city/country made explicit —
+          // otherwise it falls through to the New York/US default below (#1437).
+          : ukRegionalCity ? { '@type': 'PostalAddress', addressLocality: ukRegionalCity, addressCountry: itemCountry } : item.venue,
       } : {
         '@type': 'PerformingArtsTheater',
         name: item.category === 'opera' ? 'Metropolitan Opera House' : isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
         address: toPostalAddress(
           isLondonMarket(item.category) ? 'London, England' : 'New York, NY',
-          getMarketCountry(item.category)
+          itemCountry
         ),
       };
 
