@@ -163,5 +163,16 @@
     "decisionPrompt": "Nothing to do — this is a receipt. The request shipped and was checked against the live site.",
     "model": null,
     "queuedAt": "2026-08-14T00:45:55.349Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "21 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-14T06:24:04.141Z"
   }
 ]

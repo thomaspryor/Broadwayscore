@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T04:10:31.818Z",
+  "generatedAt": "2026-08-14T06:23:51.254Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
@@ -21,28 +21,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-13T22:43:47.284Z",
-      "nonTerminalAgeHours": 5.445703888888889
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "file": "thewrap--robert-hofler.json",
-      "outletId": "thewrap",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.thewrap.com/creative-content/theater/andrew-lloyd-webber-cats-the-jellicle-ball-closing-night-broadway/",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.thewrap.com/creative-content/theater/andrew-lloyd-webber-cats-the-jellicle-ball-closing-night-broadway/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-14T04:10:31.818Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 7.667769444444445
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -57,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 518.9814477777778,
+      "fileAgeHours": 521.2040886111112,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 478.28496722222224
+      "nonTerminalAgeHours": 480.5070327777778
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -74,9 +53,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 209.42463583333333,
+      "fileAgeHours": 211.64727666666667,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 208.78715111111111
+      "nonTerminalAgeHours": 211.00921666666667
     }
   ],
   "contradictions": []
