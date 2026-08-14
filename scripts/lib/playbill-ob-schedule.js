@@ -157,11 +157,20 @@ function parsePlaybillOBSchedule(html, { market = 'Off-Broadway' } = {}) {
   // and others parsed to nothing while 18 other shows parsed fine, which is
   // exactly the kind of partial success that never trips an "empty result"
   // alarm (owner, 2026-08-13). Match the anchor, then strip inner tags.
-  const titleRe = /<a[^>]*>\s*(?:<strong>\s*)?([^<]{2,160}?)\s*(?:<\/strong>\s*)?<\/a>/g;
+  // The emphasis is load-bearing and MUST stay in the pattern. Matching a bare
+  // <a> would turn this into an "any link" parser: a linked venue, cast member
+  // or production company inside a show's block would end that show's segment
+  // and then claim the date lines that follow as its own — silently writing a
+  // person's name and someone else's dates into Off-Broadway enrichment, which
+  // shares this parser. So require <strong> on one side or the other, which is
+  // what distinguishes a schedule title from an in-body link, while accepting
+  // either nesting order.
+  const titleRe = /(?:<strong>\s*<a[^>]*>\s*(?:<strong>\s*)?([^<]{2,160}?)\s*(?:<\/strong>\s*)?<\/a>|<a[^>]*>\s*<strong>\s*([^<]{2,160}?)\s*<\/strong>\s*<\/a>)/g;
   const titleMatches = [];
   let tm;
   while ((tm = titleRe.exec(html)) !== null) {
-    titleMatches.push({ title: tm[1].trim(), index: tm.index });
+    // Two alternation branches, so the title is in whichever group matched.
+    titleMatches.push({ title: (tm[1] ?? tm[2] ?? '').trim(), index: tm.index });
   }
   const entries = [];
   for (let i = 0; i < titleMatches.length; i++) {

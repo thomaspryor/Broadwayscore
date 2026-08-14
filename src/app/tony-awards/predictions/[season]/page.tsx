@@ -113,7 +113,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // See tony-nominees-premature, 2026-08-11.
   const previewsThisSeason = isCurrent
     ? allShows
-        .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
+        // 'previews' included: a show that has ALREADY started previews but has
+        // no announced opening night is the exact case this section exists for,
+        // and listing only announced/upcoming silently dropped it.
+        .filter(s => (s.status === 'announced' || s.status === 'upcoming' || s.status === 'previews') && !s.openingDate)
         .filter(s => s.previewsStartDate && s.previewsStartDate >= season.start && s.previewsStartDate <= season.end)
         .sort((a, b) => (a.previewsStartDate ?? '').localeCompare(b.previewsStartDate ?? ''))
     : [];
@@ -758,7 +761,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             CategorySection doesn't render, so before this they were invisible — the page
             showed only "Predictions coming soon" while 9 real dated shows sat hidden.
             No scores or ranking: unopened shows have nothing to rank on. */}
-        {openingThisSeason.length > 0 && (
+        {/* Gate on the CARD list, not on `openingThisSeason`: in an early season
+            whose only entries are previews-dated or dateless announcements, the
+            old gate hid the whole section and the page showed no shows at all. */}
+        {openingThisSeasonCards.length > 0 && (
           <section className="mb-10">
             <h2 className="text-lg font-bold text-white mb-1">This season&apos;s Broadway shows</h2>
             <p className="text-sm text-gray-400 mb-6">

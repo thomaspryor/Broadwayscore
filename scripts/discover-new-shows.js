@@ -489,12 +489,51 @@ async function fetchShowsFromPlaybillOB() {
  * same role its Off-Broadway article already plays for OB discovery.
  */
 async function fetchShowsFromPlaybillBroadway() {
-  const { entries } = await scrapePlaybillBroadwayData();
+  const { entries, html } = await scrapePlaybillBroadwayData();
+  // Same silent-rot guard the Off-Broadway source uses: a full page that parses
+  // to zero entries is a parser break, not an empty schedule, and must not be
+  // swallowed as "source unavailable".
+  checkSilentRot({ entries, html });
   if (!entries.length) {
     console.log('Playbill Broadway: 0 entries (source unavailable or layout changed)');
     return [];
   }
-  const transformed = entries.map(e => {
+  // Cap: a parser regression or a Playbill layout change that starts matching
+  // unrelated links must NOT be able to inject arbitrary "shows" into the
+  // corpus. The Off-Broadway source has the same backstop (OB_VENUE_CAP); a
+  // union source with no cap was a real hole in the first cut of this code.
+  const BROADWAY_SCHEDULE_CAP = 40;
+  if (entries.length > BROADWAY_SCHEDULE_CAP) {
+    console.error(`::error::Playbill Broadway returned ${entries.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Refusing this source for this run.`);
+    return [];
+  }
+
+  // Run the SAME non-theatre gate the rest of the pipeline uses, so this source
+  // cannot smuggle concerts/benefits/screenings past the exclusion rules.
+  //
+  // Deliberately NOT applying isOneNightShow() here: that predicate is the very
+  // filter proven on 2026-08-13 to be swallowing real Broadway runs — Mix and
+  // Master and The Full Monty (both full runs at the Todd Haimes) were in its
+  // "Filtered 60 one-night events" list, as were Warriors and Three Days of
+  // Rain. Applying it would re-drop the exact shows this source exists to
+  // recover. Fixing that predicate is carded separately; until then, the cap
+  // above plus the non-theatre gate are the guards that apply.
+  const gated = entries.filter(e => {
+    const shape = {
+      displayName: e.title,
+      name: e.title,
+      subcategories: [{ name: 'Broadway' }],
+      venue: { name: e.venue || 'TBA' },
+      description: '',
+    };
+    if (typeof isNonTheaterContent === 'function' && isNonTheaterContent(shape)) {
+      console.log(`  [SKIP] "${e.title}" — non-theatre content`);
+      return false;
+    }
+    return true;
+  });
+
+  const transformed = gated.map(e => {
     const venue = sanitizeVenueForWrite(e.venue);
     // Unlike the OB path, a missing venue is NOT a reason to drop the show:
     // Playbill lists genuinely theatre-less announcements (Three Days of Rain)
@@ -1796,7 +1835,14 @@ async function discoverShows() {
   try {
     const playbillBway = await fetchShowsFromPlaybillBroadway();
     const seen = new Set(discoveredShows.map(s2 => normaliseForMerge(s2.title)));
-    const additions = playbillBway.filter(s2 => !seen.has(normaliseForMerge(s2.title)));
+    // Add to `seen` as we go: without this, two rows for the same show WITHIN
+    // the Playbill list both survive and get proposed twice.
+    const additions = playbillBway.filter(s2 => {
+      const key = normaliseForMerge(s2.title);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
     if (additions.length) {
       console.log(`Playbill Broadway added ${additions.length} show(s) TodayTix did not list: ${additions.map(a => a.title).join(', ')}`);
     }
