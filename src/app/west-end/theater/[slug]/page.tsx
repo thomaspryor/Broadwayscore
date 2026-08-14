@@ -1,7 +1,15 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getLondonTheaterBySlug, getAllLondonTheaterSlugs } from '@/lib/data-core';
+import {
+  getLondonTheaterBySlug,
+  getAllLondonTheaterSlugs,
+  getWestEndComplexBySlug,
+  getAllWestEndComplexSlugs,
+  getWestEndComplexForVenue,
+  type TheaterComplex,
+} from '@/lib/data-core';
+import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
@@ -11,15 +19,31 @@ import TheaterDetailClient from '../../../theater/[slug]/TheaterDetailClient';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
-  return getAllLondonTheaterSlugs().map((slug) => ({ slug }));
+  const slugs = new Set([...getAllLondonTheaterSlugs(), ...getAllWestEndComplexSlugs()]);
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+function isComplex(t: Theater | TheaterComplex): t is TheaterComplex {
+  return 'subVenues' in t;
+}
+
+function resolveWestEndVenue(slug: string): {
+  theater: Theater | TheaterComplex | undefined;
+  parentComplex: { name: string; slug: string } | undefined;
+} {
+  const complex = getWestEndComplexBySlug(slug);
+  if (complex) return { theater: complex, parentComplex: undefined };
+  const theater = getLondonTheaterBySlug(slug);
+  if (!theater) return { theater: undefined, parentComplex: undefined };
+  return { theater, parentComplex: getWestEndComplexForVenue(slug) };
+}
+
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const theater = getLondonTheaterBySlug(params.slug);
+  const { theater } = resolveWestEndVenue(params.slug);
   if (!theater) return { title: 'Theatre Not Found' };
 
   const canonicalUrl = `${BASE_URL}/west-end/theater/${params.slug}`;
@@ -48,8 +72,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 export default function LondonTheaterPage({ params }: { params: { slug: string } }) {
-  const theater = getLondonTheaterBySlug(params.slug);
+  const { theater, parentComplex } = resolveWestEndVenue(params.slug);
   if (!theater) notFound();
+
+  const subVenues = isComplex(theater) ? theater.subVenues : [];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -110,6 +136,17 @@ export default function LondonTheaterPage({ params }: { params: { slug: string }
 
         {/* Header */}
         <div className="mb-6">
+          {parentComplex && (
+            <Link
+              href={`/west-end/theater/${parentComplex.slug}`}
+              className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors mb-2"
+            >
+              Part of {parentComplex.name}
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
           <div className="flex items-center gap-3 mb-3">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
@@ -210,6 +247,24 @@ export default function LondonTheaterPage({ params }: { params: { slug: string }
               Venue details for {theater.name} — capacity, accessibility, pre-show dining, and seating tips — are coming soon. We&apos;re enriching all London venues after launch.
             </p>
           </div>
+
+          {/* Sub-venues under this complex */}
+          {subVenues.length > 0 && (
+            <div className="card p-4 mb-4 border border-white/5">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">Also Home To</p>
+              <div className="flex flex-wrap gap-2">
+                {subVenues.map(sv => (
+                  <Link
+                    key={sv.slug}
+                    href={`/west-end/theater/${sv.slug}`}
+                    className="text-sm text-gray-300 hover:text-brand transition-colors px-3 py-1.5 rounded-full bg-surface-overlay border border-white/10"
+                  >
+                    {sv.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Show list with sort/toggle (reuses Broadway component) */}
