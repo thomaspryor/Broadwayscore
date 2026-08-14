@@ -67,7 +67,7 @@ const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWro
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
-const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
+const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
@@ -1773,7 +1773,8 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
 
     {
       const outletName = outletMatch[1].trim();
-      const outletId = slugify(outletName);
+      let outletId = slugify(outletName);
+      let outletDisplayName = outletName;
       const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
       let criticName = 'Unknown';
       if (criticSearchMatch) {
@@ -1808,6 +1809,34 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
         reviewUrl = null;
       }
 
+      // URL is objective ground truth — if the review URL points to a known
+      // outlet's domain and that outlet differs from DTLI's label text, prefer
+      // the URL-derived outlet (DTLI has been observed misattributing outlets,
+      // e.g. theguardian.com URLs labeled "Observer"). Mirrors the fix applied
+      // to scripts/extract-dtli-reviews.js (BRO-226): this refinement must
+      // never rewrite a real outlet's id ONTO an aggregator outlet (e.g. a
+      // broken "read more" link that resolves back to didtheylikeit.com
+      // itself) — shouldRefuseAggregatorOutletRefinement blocks exactly that.
+      // Gated on reviewUrl (post show-title validation, not the raw urlMatch)
+      // so a cross-show/stale link that just got nulled above can't still
+      // relabel the outlet. Also skipped when the current label already
+      // legitimately owns this URL's domain (outletOwnsUrlDomain — shared-
+      // domain editions like Telegraph/Sunday Telegraph, Guardian/Observer)
+      // so a same-domain edition label isn't overwritten by its sibling.
+      if (reviewUrl) {
+        const urlResolved = resolveOutletFromUrl(reviewUrl);
+        if (urlResolved && urlResolved.outletId && urlResolved.outletId !== outletId
+            && !outletOwnsUrlDomain(outletId, reviewUrl)) {
+          if (shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId)) {
+            console.log(`    ⛔ DTLI outlet refinement refused for ${showId}: URL=${urlResolved.outletId} (${reviewUrl}) resolves to an aggregator — keeping DTLI label=${outletId}`);
+          } else {
+            console.log(`    ⚠ DTLI outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${reviewUrl}) vs DTLI label=${outletId}. Preferring URL.`);
+            outletId = urlResolved.outletId;
+            outletDisplayName = getOutletDisplayName(outletId) || outletDisplayName;
+          }
+        }
+      }
+
       // Multi-critic URL collision guard (Proof incident): if this outlet already claimed
       // this URL for a different critic, nullify it here so each critic gets their own
       // correct URL discovered via SERP rather than both scoring the same article.
@@ -1826,7 +1855,7 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
       reviews.push({
         showId,
         outletId,
-        outlet: outletName,
+        outlet: outletDisplayName,
         criticName,
         url: reviewUrl,
         publishDate: normalizePublishDate(date),
@@ -2658,18 +2687,17 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // Build set of "non-local" outlet IDs based on market.
   // For Broadway: non-local = non-NYC outlets (London, regional, etc.)
   // For West End: non-local = non-London outlets (NYC, regional US, etc.)
+  // outletRegionMap (id + lowercased aliases -> region) sourced from the canonical
+  // lib/outlet-region-map.js single source of truth (BRO-254 follow-up: this used
+  // to re-derive its own id->region map inline, the exact duplication shape that
+  // let cross-market-guard.js's copy ship with a missed-alias-lowercasing bug once).
+  const { outletRegionMap: __outletRegionMap } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
   const NON_LOCAL_OUTLET_IDS = new Set();
-  for (const [id, info] of Object.entries(outletRegistry)) {
-    if (!info.region) continue;
+  for (const [key, region] of Object.entries(__outletRegionMap)) {
     const isLocal = isWestEnd
-      ? (info.region === 'london' || info.region === 'national-uk' || info.region === 'national')
-      : (info.region === 'nyc' || info.region === 'national');
-    if (!isLocal) {
-      NON_LOCAL_OUTLET_IDS.add(id);
-      if (info.aliases) {
-        for (const alias of info.aliases) NON_LOCAL_OUTLET_IDS.add(alias.toLowerCase());
-      }
-    }
+      ? (region === 'london' || region === 'national-uk' || region === 'national')
+      : (region === 'nyc' || region === 'national');
+    if (!isLocal) NON_LOCAL_OUTLET_IDS.add(key);
   }
 
   function isNonLocalOutlet(outletId) {

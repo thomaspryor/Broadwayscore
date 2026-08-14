@@ -14,8 +14,12 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   assessAutofixEffectiveness,
+  readLedgerRows,
   MIN_OUTCOMES_TO_JUDGE,
 } = require('./autofix-effectiveness.js');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
 const NOW = Date.parse('2026-08-10T12:00:00.000Z');
 const at = (h) => new Date(NOW - h * 3600 * 1000).toISOString();
@@ -152,5 +156,46 @@ test('survives junk input without throwing', () => {
     const r = assessAutofixEffectiveness(bad, { now: NOW });
     assert.equal(r.status, 'pass');
     assert.equal(r.attempts, 0);
+  }
+});
+
+// readLedgerRows (task #1220/BRO-230): the standalone read+parse helper a
+// caller on the SAME machine as the ledger (send-morning-digest.js) uses to
+// bypass health-check.js's CI-only view of this data.
+test('readLedgerRows: returns null (not []) when the file is absent — "unknown" must never read as "empty and healthy"', () => {
+  const missing = path.join(os.tmpdir(), `no-such-ledger-${process.pid}-${Date.now()}.jsonl`);
+  assert.equal(readLedgerRows(missing), null);
+});
+
+test('readLedgerRows: parses real JSONL, skipping unparseable lines', () => {
+  const tmp = path.join(os.tmpdir(), `ledger-test-${process.pid}.jsonl`);
+  fs.writeFileSync(tmp, [
+    JSON.stringify({ event: 'auto-dispatch', ts: '2026-08-14T10:00:00Z' }),
+    'not json',
+    JSON.stringify({ event: 'card-fail', ts: '2026-08-14T10:05:00Z' }),
+    '',
+  ].join('\n'));
+  try {
+    const rows = readLedgerRows(tmp);
+    assert.equal(rows.length, 2);
+    assert.equal(rows[0].event, 'auto-dispatch');
+    assert.equal(rows[1].event, 'card-fail');
+  } finally {
+    fs.unlinkSync(tmp);
+  }
+});
+
+test('readLedgerRows -> assessAutofixEffectiveness: real dead-fleet ledger on disk reproduces the DEAD verdict', () => {
+  const tmp = path.join(os.tmpdir(), `ledger-dead-${process.pid}.jsonl`);
+  const rows = [];
+  for (let i = 0; i < 5; i++) rows.push({ event: 'auto-dispatch', taskId: `t${i}`, ts: new Date(NOW - i * 3600_000).toISOString() });
+  fs.writeFileSync(tmp, rows.map((r) => JSON.stringify(r)).join('\n'));
+  try {
+    const parsed = readLedgerRows(tmp);
+    const r = assessAutofixEffectiveness(parsed, { now: NOW });
+    assert.equal(r.status, 'error');
+    assert.match(r.message, /DEAD/);
+  } finally {
+    fs.unlinkSync(tmp);
   }
 });

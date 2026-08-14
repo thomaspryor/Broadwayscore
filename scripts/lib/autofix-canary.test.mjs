@@ -12,11 +12,12 @@ const require = createRequire(import.meta.url);
 const {
   canaryDateStr, canaryMarkerRelPath, canaryCardTitle, buildCanaryCardNotes,
   planCanaryDispatch, foldCanaryStage, assessCanaryRow, assessThroughputRow,
-  ZERO_DISPATCH_ERROR_DAYS, ZERO_PASS_ERROR_DAYS,
+  ZERO_DISPATCH_ERROR_DAYS, ZERO_PASS_ERROR_DAYS, isPathAbsentFromTreeError,
 } = require('./autofix-canary.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { execFileSync } = require('node:child_process');
 
 const NOW = Date.parse('2026-08-11T12:00:00.000Z'); // yesterday = 2026-08-10
 const YESTERDAY = '2026-08-10';
@@ -248,4 +249,35 @@ test('assessThroughputRow: survives junk input without throwing', () => {
   for (const bad of ['nope', 42, {}]) {
     assert.doesNotThrow(() => assessThroughputRow({ digestLedgerEntries: bad, backlogLedgerEntries: bad, now: new Date(NOW) }));
   }
+});
+
+// REGRESSION (found chasing #1264's RECHECK, 2026-08-14): markerExistsOnOriginMain
+// used to gate confirmed-absent on `err.status === 1`. Real `git cat-file -e
+// <tree-ish>:<path>` exits 128 for a path missing from the tree, not 1 — so
+// that branch was unreachable and a genuinely-missing marker could never
+// resolve to canary-fail; it logged "could not confirm" forever. BRO-326's
+// 2026-08-13 marker sat >24h past the 3h orphan window still WARNing before
+// this was found. isPathAbsentFromTreeError() matches the stderr text
+// instead of the exit code, so it survives git version differences either way.
+test('isPathAbsentFromTreeError: real git stderr for a path missing from the tree -> true', () => {
+  const err = { status: 128, stderr: Buffer.from("fatal: path 'data/audit/canary-2026-08-13.marker' does not exist in 'origin/main'\n") };
+  assert.equal(isPathAbsentFromTreeError(err), true);
+});
+
+test('isPathAbsentFromTreeError: unrelated git failure (e.g. bad revision, network) -> false, not evidence of absence', () => {
+  assert.equal(isPathAbsentFromTreeError({ status: 128, stderr: Buffer.from("fatal: bad revision 'origin/main'\n") }), false);
+  assert.equal(isPathAbsentFromTreeError({ status: 1, stderr: Buffer.from('') }), false);
+  assert.equal(isPathAbsentFromTreeError(null), false);
+  assert.equal(isPathAbsentFromTreeError({}), false);
+});
+
+test('REGRESSION: isPathAbsentFromTreeError classifies the REAL `git cat-file -e` failure from this repo\'s own git binary — guards against git-version drift, not just today\'s message text', () => {
+  let threw = null;
+  try {
+    execFileSync('git', ['cat-file', '-e', 'HEAD:this/path/definitely-does-not-exist-in-this-repo.marker'], { stdio: 'pipe' });
+  } catch (err) {
+    threw = err;
+  }
+  assert.ok(threw, 'expected git cat-file -e to fail for a nonexistent path');
+  assert.equal(isPathAbsentFromTreeError(threw), true);
 });

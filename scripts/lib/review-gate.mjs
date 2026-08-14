@@ -70,6 +70,15 @@ try {
 } catch (e) {
   process.stderr.write(`review-gate: duplicate-dispatch-guard.js unavailable (${e.code || e.message}) — CI-red claim checks degraded to no-op\n`);
 }
+// Shallow-checkout guard (task #1497, same false-negative class as #1489):
+// degrade to no-op rather than crash if landing-verify.js is missing from a
+// partial/old checkout, same reasoning as the two requires above.
+let libEnsureFullHistory = null;
+try {
+  ({ ensureFullHistory: libEnsureFullHistory } = require('./landing-verify.js'));
+} catch (e) {
+  process.stderr.write(`review-gate: landing-verify.js unavailable (${e.code || e.message}) — shallow-checkout ancestry guard degraded to no-op\n`);
+}
 
 // ── constants (exported for tests) ──────────────────────────────────────────
 
@@ -326,7 +335,27 @@ export function gatedDiffPatchText(repoRoot, base, ref) {
   return gatedPatchChunks(repoRoot, base, ref).join('');
 }
 
+// Shallow-checkout guard (task #1497, same false-negative class as #1489):
+// `git merge-base --is-ancestor` and `git rev-list` BOTH silently omit/deny
+// genuine ancestors past a shallow boundary. This module has two entry
+// points into the git graph — isAncestor()'s merge-base spawn and
+// ancestorSet()'s rev-list — reached from several different exported
+// functions (queryPushAllowed, recordVerdict, the diff-hash/changed-files
+// CLI queries via ownMergeParent) in an order that isn't fixed. Rather than
+// guard every current and future caller individually, guard the two
+// mechanisms themselves, memoized per repoRoot so the (network-touching)
+// unshallow attempt runs at most once per process regardless of how many
+// ancestry checks follow.
+const historyEnsured = new Map(); // repoRoot -> boolean (still shallow?)
+function ensureHistoryOnce(repoRoot) {
+  if (!libEnsureFullHistory) return; // landing-verify.js unavailable — degraded no-op, see require() above
+  if (historyEnsured.has(repoRoot)) return;
+  const { shallow } = libEnsureFullHistory({ cwd: repoRoot, remote: 'origin', log: (m) => process.stderr.write(`review-gate: ${m}\n`) });
+  historyEnsured.set(repoRoot, shallow);
+}
+
 function isAncestor(repoRoot, maybeAncestor, ref) {
+  ensureHistoryOnce(repoRoot);
   try {
     execFileSync('git', ['-C', repoRoot, 'merge-base', '--is-ancestor', maybeAncestor, ref], { encoding: 'utf8' });
     return true;
@@ -360,6 +389,7 @@ function isAncestor(repoRoot, maybeAncestor, ref) {
 // than silently treating every verdict as non-ancestor (which WOULD change
 // behaviour, in the blocking direction).
 function ancestorSet(repoRoot, ref) {
+  ensureHistoryOnce(repoRoot);
   try {
     // Resolve to a single commit FIRST. `merge-base --is-ancestor X <ref>`
     // requires a commit-ish, but `git rev-list` also accepts revision-SET

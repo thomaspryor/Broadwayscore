@@ -134,11 +134,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-14T20:50:08.998Z",
+      "lastSeen": "2026-08-14T21:47:34.685Z",
       "lastNotifiedAt": "2026-08-14T20:50:08.998Z",
       "notifyCount": 31,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -764,17 +765,16 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-14T20:50:08.997Z",
-      "lastNotifiedAt": "2026-08-14T20:07:26.792Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-14T21:47:34.684Z",
+      "lastNotifiedAt": "2026-08-14T21:24:58.369Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-14T20:51:46.067Z"
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -974,6 +974,18 @@
       "firstSeen": "2026-08-14T14:16:52.690Z",
       "lastSeen": "2026-08-14T14:16:52.690Z",
       "lastNotifiedAt": "2026-08-14T14:16:52.690Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "feedback-outcomes:2026-08-14T21:30:51.034710+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "firstSeen": "2026-08-14T21:47:14.234Z",
+      "lastSeen": "2026-08-14T21:47:14.234Z",
+      "lastNotifiedAt": "2026-08-14T21:47:14.234Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

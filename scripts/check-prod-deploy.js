@@ -39,6 +39,7 @@
  */
 
 const { execSync } = require('child_process');
+const { checkLanded } = require('./lib/landing-verify.js');
 
 const PROJECT_ID = 'prj_wmBnDUrCQCwabIAYPbnMiIP3wg15'; // Broadway Scorecard (see vercel-deploy.yml)
 const API = `https://api.vercel.com/v6/deployments?projectId=${PROJECT_ID}&target=production&state=READY&limit=1`;
@@ -87,14 +88,17 @@ async function latestProdDeploy() {
 
 // Is `commit` live — i.e. equal to or an ancestor of the deployed `sha`?
 // Uses local git so it works for any commit-ish (HEAD, a branch, a short sha).
+// Shallow- and error-aware (task #1497, same false-negative class as #1489):
+// a shallow checkout or a transient git error must not silently read as
+// "not live yet" — checkLanded restores full history first and reports
+// UNKNOWN (logged, never silently swallowed) instead of a false NOT_LANDED.
 function isLive(commit, deployedSha) {
   if (!deployedSha) return false;
-  try {
-    execSync(`git merge-base --is-ancestor ${commit} ${deployedSha}`, { stdio: 'ignore' });
-    return true;
-  } catch {
-    return false;
+  const result = checkLanded({ sha: commit, ref: deployedSha, cwd: process.cwd(), log: (m) => console.error(m) });
+  if (result.verdict === 'UNKNOWN') {
+    console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}) — treating as not-yet-live; this may be a false negative, verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
   }
+  return result.landed === true;
 }
 
 function fmtAge(sec) {

@@ -91,6 +91,10 @@ on:
       - 'scripts/audit-serp-census-recall.js'
       - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
+      # Push-retry deadman row (BRO-231/#1221): colocated *.test.mjs runs in
+      # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-retry-deadman.js'
+      - 'scripts/lib/push-retry-deadman.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
@@ -386,6 +390,11 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/ticket-link-discovery.js'
       - 'scripts/lib/ticket-link-discovery.test.mjs'
+      # Same class, lower stakes: this one lives in scripts/tests/ (not globbed)
+      # and is registered in tests/unit-test-manifest-tsx.txt. Its two subjects
+      # (src/lib/ticket-utils.ts, scripts/lib/ticket-link-discovery.js) already
+      # trigger CI, so only an edit to the TEST ITSELF was invisible.
+      - 'scripts/tests/tm-gap-links.test.mjs'
       - 'scripts/enrich-fallback-ticket-links.js'
       - 'scripts/enrich-fallback-ticket-links.test.mjs'
       - 'src/lib/ticket-utils.ts'
@@ -642,6 +651,13 @@ on:
       # of silently discarding the incoming branch's fix. Path-listed so a
       # solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
+      # Task #1511: the push-retry loop's `git merge origin/$DEFAULT_BRANCH
+      # --no-edit` on retry redirected its own stderr/stdout to /dev/null
+      # before die("could not merge remote changes on retry") — zero
+      # information on WHY it failed (conflict vs. dirty tree vs. something
+      # else), unlike the syntax-floor and push-audits die() paths above it.
+      # Path-listed so a solo edit to the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh'
       # Card #835: shared range-scoped push-audit dispatch — extracted from
       # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
       # below) so scripts/merge-worktree-to-main.sh can call the same runner.
@@ -1499,6 +1515,15 @@ on:
       # solo edit to either file still triggers CI.
       - 'scripts/audit-push-core-data-audit-gap.js'
       - 'scripts/audit-push-core-data-audit-gap.test.mjs'
+      # Same-job breadcrumb coverage guard (BRO-250 / Notion 3b9637c5) —
+      # advisory scan for scripts that force:true-clear a PROTECTED field in a
+      # job that also calls push-review-texts, with no scripts/lib/review-
+      # write-guard.js CLEAR_BREADCRUMBS entry for it. Same bug class fixed
+      # reactively 3 times (#97, #1237, #1259). Test lives in tests/unit/
+      # (registered in tests/unit-test-manifest.txt); path-listed here so a
+      # solo edit to either file still triggers CI.
+      - 'scripts/audit-same-job-breadcrumb-coverage.js'
+      - 'tests/unit/audit-same-job-breadcrumb-coverage.test.mjs'
       # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
       # audit-*.js that walks data/review-texts must call assertCorpusScanned
       # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
@@ -1622,6 +1647,19 @@ on:
       - 'scripts/lib/infra-gate-registration-check.js'
       - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
+      # Merge/push review-gate shell e2e (task #1316). Same "scripts/tests/ is
+      # not scripts/lib/" gap, and found the hard way on 2026-08-14: a push to
+      # main whose ONLY change was this test file produced ZERO test.yml runs,
+      # so the fix for the wedge that had been eating whole test batches could
+      # not be verified by the push that made it. The file is in
+      # tests/unit-test-manifest.txt so it RUNS once CI runs; it just never
+      # started CI. The two gate hooks are listed alongside it because this
+      # suite exists to catch regressions in exactly those two scripts — same
+      # hook-with-its-test pairing already used for pre-push-visual-gate.sh
+      # above.
+      - 'scripts/tests/merge-gate-hook.test.mjs'
+      - '.claude/hooks/pre-merge-review-gate.sh'
+      - '.claude/hooks/pre-push-review-gate.sh'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
@@ -2003,6 +2041,13 @@ on:
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/lib/dispatch-outcome.js'
       - 'scripts/tests/dispatch-outcome.test.mjs'
+      # The digest sibling was missed when the pair above was listed: grep for
+      # "dispatch-outcome-digest" across .github/workflows/ returned NOTHING,
+      # so neither the lib nor its test could trigger any workflow. The test is
+      # in tests/unit-test-manifest.txt, so it RUNS once CI runs — it just
+      # never started CI, which is the more dangerous half of the gap.
+      - 'scripts/lib/dispatch-outcome-digest.js'
+      - 'scripts/tests/dispatch-outcome-digest.test.mjs'
       # No-payload reaper (card #856, Session-system overhaul S3) — colocated
       # test runs in the lib-test glob (scripts/lib/*.test.mjs); path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
@@ -2730,6 +2775,20 @@ jobs:
         # non-blocking — always exits 0 (see script header for why). Exempt a
         # workflow with # hygiene-audit-persist-ok: <reason>.
         run: node scripts/audit-push-core-data-audit-gap.js
+
+      - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
+        # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
+        # PROTECTED_FIELDS field in a job that also calls push-review-texts
+        # LATER, with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
+        # entry for it — the restore step reads committed HEAD (checked out
+        # before the clearing script ran) and resurrects the field it just
+        # cleared. Same bug class fixed reactively 3 times already (#97
+        # staleScoredBeforeOpening, #1237 fullTextWrongAuthor, #1259
+        # stuckRescoreCleared), each caught only by a human noticing symptoms
+        # months later. Heuristic, non-blocking — always exits 0 (see script
+        # header for why). Exempt a workflow with
+        # # breadcrumb-coverage-ok: <reason>.
+        run: node scripts/audit-same-job-breadcrumb-coverage.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
@@ -3729,6 +3788,21 @@ jobs:
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+
+      - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
+        # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry
+        # loop's `git merge origin/$DEFAULT_BRANCH --no-edit` on retry
+        # suppressed the merge command's own stderr/stdout before calling
+        # die("could not merge remote changes on retry") — an operator hitting
+        # a real conflict there got zero information on why, unlike the
+        # syntax-floor and push-audits die() paths a few lines above it, which
+        # both capture and print their command's output. Fault-injects a real
+        # conflict onto the retry-merge path specifically (a git shim on PATH
+        # sneaks a conflicting commit onto origin right as the script's first
+        # push fires) and asserts the die() message includes git's own
+        # conflict text, not the old bare message.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
