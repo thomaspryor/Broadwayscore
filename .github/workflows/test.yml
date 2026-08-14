@@ -4159,7 +4159,7 @@ jobs:
 
       - name: Audit self-contradictory clear breadcrumbs
         if: always()
-        run: node scripts/audit-self-contradictory-clears.js --gate --max=780
+        run: node scripts/audit-self-contradictory-clears.js --gate --baseline
         # A review file asserting an exclusion flag AND its own retraction
         # breadcrumb at the same time (wrongProduction + wrongProductionAutoCleared,
         # wrongShow + a contentVerificationPromoted stamp its own CV now refutes,
@@ -4167,22 +4167,32 @@ jobs:
         # this needs no adjudication between two verdicts — the record is invalid
         # on its face.
         #
-        # BASELINE RATCHET, not the target. Measured backlog is 751 (2026-08-05,
-        # after the wrongShow+wrongShowAutoCleared pair was added), all pre-dating
-        # the forward fixes (invalidateWrongProductionAutoClear on every re-flag
-        # writer; wrongArticleManualClear on every attribution clear), so --max=0
-        # would red main on the first push. 780 leaves ~4% headroom because the
-        # rebuild bots mutate this corpus every ~30 min and a hard-equality
-        # baseline flaps main red for non-code reasons
+        # BAND AROUND A COMMITTED BASELINE, not an absolute ceiling
+        # (data/audit/self-contradictory-clears-baseline.json).
+        #
+        # This step used to be `--gate --max=780` against a live count of
+        # ~772-776. The rebuild bots rewrite this corpus every ~30 min, so the
+        # SAME code failed at 20:27 and 20:31 and passed at 20:33 and 20:37 — a
+        # ceiling four records above the live count is a coin flip
         # (memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md).
         #
-        # DRAIN THEN RATCHET: run `node scripts/audit-self-contradictory-clears.js
-        # --fix` from the main checkout (it writes review-texts, so it must commit
-        # to the private repo in the same breath), then lower --max toward 0. The
-        # retraction stamps clearBreadcrumbRetracted so the push-time restore does
-        # not resurrect what --fix removed — that contract is pinned by
-        # tests/unit/self-contradictory-clear.test.mjs, not assumed.
-        # Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
+        # The old comment here prescribed "DRAIN THEN RATCHET" (run --fix, then
+        # lower --max). That was measured on 2026-08-14 and is UNSAFE, so it has
+        # been removed rather than left as standing advice. --fix deletes the
+        # clear breadcrumb but leaves the exclusion flag standing, and
+        # content-quality.js classifies `wrongProduction && !wrongProduction
+        # AutoCleared` as contentTier 'invalid' — so the "drain" EXCLUDES
+        # reviews: 563 of 772 records flip valid -> invalid, 438 of them carrying
+        # a live score signal (NYT, WSJ, The Stage, FT among them), and 0 become
+        # newly included. That is the same failure mode as the deleted
+        # audit-stale-flag-after-url-correction.js --fix remediation, in reverse.
+        #
+        # So the backlog is STRUCTURAL. The gate now asks "is this materially
+        # worse than the number we last agreed to?" — every run prints the delta,
+        # a real new contradiction writer still fails the build once it exceeds
+        # the tolerance, and one bot write no longer reddens main. Re-record with
+        # --record-baseline ONLY to capture a genuine improvement, never to make
+        # a red build pass. Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
 
       - name: Audit stale flag after URL correction
         if: always()
