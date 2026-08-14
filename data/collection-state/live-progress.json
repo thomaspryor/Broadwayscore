@@ -1,63 +1,41 @@
 {
-  "updatedAt": "2026-08-14T20:19:12.646Z",
-  "processed": 66,
-  "failed": 684,
-  "successRate": "8.8%",
+  "updatedAt": "2026-08-14T20:24:06.418Z",
+  "processed": 76,
+  "failed": 874,
+  "successRate": "8.0%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 3,
-    "brightdata": 2,
+    "directCookies": 5,
+    "scrapingbee": 10,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 18
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-08-14T19:24:44.224Z",
+      "t": "2026-08-14T11:19:07.811Z",
       "event": "bb-session",
-      "session": "dfcf8a3e",
+      "session": "ebe29da6",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-14T19:24:44.981Z",
+      "t": "2026-08-14T11:19:08.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-14T19:26:03.936Z",
+      "t": "2026-08-14T20:20:29.700Z",
       "event": "bb-session",
-      "session": "7fa38935",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+      "session": "f6b79a60",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
     },
     {
-      "t": "2026-08-14T19:26:04.635Z",
+      "t": "2026-08-14T20:20:30.204Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-14T19:29:07.850Z",
-      "event": "bb-session",
-      "session": "69f259f3",
-      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
-    },
-    {
-      "t": "2026-08-14T19:29:08.478Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-08-14T19:29:26.227Z",
-      "event": "bb-session",
-      "session": "92912ae6",
-      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
-    },
-    {
-      "t": "2026-08-14T19:29:26.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "newyorker.com"
     }
   ]
 }
