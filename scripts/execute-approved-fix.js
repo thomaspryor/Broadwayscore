@@ -35,6 +35,7 @@ const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,18 +50,10 @@ Usage:
 
 // --- Safety rails ---
 
-const ALLOWED_DATA_FIELDS = {
-  'shows.json': [
-    'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
-    'type', 'isRevival', 'status', 'closingDate', 'openingDate',
-    'previewDate', 'creativeTeam',
-  ],
-  'commercial.json': [
-    'designation', 'capitalization', 'weeklyRunningCost',
-    'capitalizationSource', 'notes', 'recouped', 'recoupmentSource',
-  ],
-  'audience-buzz.json': ['title'],
-};
+// awards.json excluded: executeDataEdit() below has no handler for it.
+const EDITABLE_DATA_FIELDS = pickEditableFields([
+  'shows.json', 'commercial.json', 'audience-buzz.json',
+]);
 
 const ALLOWED_SCRIPTS = [
   'rebuild-all-reviews.js',
@@ -173,10 +166,10 @@ function executeDataEdit(action) {
   const { file, showId, field, oldValue, newValue } = action;
 
   // Validate allowed
-  if (!ALLOWED_DATA_FIELDS[file]) {
+  if (!EDITABLE_DATA_FIELDS[file]) {
     return { ok: false, reason: `File "${file}" not allowed for data-edit` };
   }
-  if (!ALLOWED_DATA_FIELDS[file].includes(field)) {
+  if (!EDITABLE_DATA_FIELDS[file].includes(field)) {
     return { ok: false, reason: `Field "${field}" not allowed in ${file}` };
   }
 

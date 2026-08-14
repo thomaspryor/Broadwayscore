@@ -34,6 +34,23 @@ const {
 } = require('./lib/review-normalization');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
+// ─── Lazy-loaded show record map for mergeReviews' wrong-production URL-swap
+// guard (#1478) ───
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+let _showByIdCache = null;
+function _getShowById(showId) {
+  if (!_showByIdCache) {
+    try {
+      const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
+      _showByIdCache = {};
+      for (const s of shows) if (s.id) _showByIdCache[s.id] = s;
+    } catch {
+      _showByIdCache = {};
+    }
+  }
+  return _showByIdCache[showId] || null;
+}
+
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `cleanup-duplicate-reviews.js — Cleanup Duplicate Reviews (Sprint 2.2).
@@ -190,7 +207,7 @@ function processShow(showId) {
       // Merge all reviews into one
       let mergedReview = group.reviews[0];
       for (let i = 1; i < group.reviews.length; i++) {
-        mergedReview = mergeReviews(mergedReview, group.reviews[i]);
+        mergedReview = mergeReviews(mergedReview, group.reviews[i], {}, { script: 'cleanup-duplicate-reviews', showId, show: _getShowById(showId) });
       }
 
       // Normalize the outlet and critic names in the merged review
@@ -329,7 +346,7 @@ function processFromAudit() {
     // Merge all reviews
     let merged = reviews[0].data;
     for (let i = 1; i < reviews.length; i++) {
-      merged = mergeReviews(merged, reviews[i].data);
+      merged = mergeReviews(merged, reviews[i].data, {}, { script: 'cleanup-duplicate-reviews', showId, show: _getShowById(showId) });
     }
 
     // Select best fullText

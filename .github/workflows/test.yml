@@ -214,6 +214,13 @@ on:
       - 'scripts/lib/plan-refusal-escalation.js'
       - 'scripts/lib/plan-refusal-escalation.test.mjs'
       - 'scripts/execute-approved-fix.js'
+      # Canonical feedback-pipeline field allowlist (card #1482) — shared by
+      # auto-fix-feedback-bug.js, diagnose-feedback-bug.js,
+      # generate-remediation-plan.js, and execute-approved-fix.js. Colocated
+      # test runs via tests/unit-test-manifest.txt (tests/** already globbed
+      # above); path-listed so a solo lib edit triggers CI.
+      - 'scripts/lib/feedback-pipeline-fields.js'
+      - 'scripts/auto-fix-feedback-bug.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/finance-matchers.js'
@@ -763,6 +770,14 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # West End aggregator-listing auto-promotion backstop (task #1466) —
+      # the WE analogue of the two lines above. Shared dedup lib +
+      # discovery/venue-matching lib + promoter + its test. Without these
+      # path entries a solo edit triggers ZERO CI.
+      - 'scripts/lib/candidate-dedup.js'
+      - 'scripts/lib/we-listing-discover.js'
+      - 'scripts/promote-we-aggregator-candidates.js'
+      - 'tests/unit/promote-we-aggregator-auto.test.mjs'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/lib/transfer-detection.js'
       - 'scripts/detect-regional-transfers.js'
@@ -801,9 +816,24 @@ on:
       # so a solo edit triggers CI.
       - 'scripts/lib/url-change-invariant.js'
       - 'scripts/lib/url-change-invariant.test.mjs'
+      # URL-swap regression guard (#1416 maybeUpgradeUrl, #1478 mergeReviews) —
+      # refuses a "URL upgrade" whose candidate is dated outside the show's
+      # current-run window (a prior-production URL masquerading as a content
+      # upgrade). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/url-downgrade-guard.js'
+      - 'scripts/lib/url-downgrade-guard.test.mjs'
+      - 'scripts/audit-url-downgrade.js'
       - 'scripts/lib/stale-flag-after-url-correction.js'
       - 'scripts/lib/stale-flag-after-url-correction.test.mjs'
       - 'scripts/audit-stale-flag-after-url-correction.js'
+      # Shared --max=N ceiling parser for SEVEN gate scripts. A typo'd ceiling
+      # used to parseInt to NaN and `count > NaN` is always false, silently
+      # turning a blocking gate into a passing no-op; this file is what now
+      # rejects that. It controls every gate's ceiling, so a solo edit here
+      # must not be ZERO-CI. Its test runs in the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/parse-max-arg.js'
+      - 'scripts/lib/parse-max-arg.test.mjs'
       # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
       # until 2026-07-10; its test runs in the line-1715 batch.
       - 'scripts/lib/content-verifier.js'
@@ -1313,6 +1343,15 @@ on:
       # both directions. Run in the node --test step below.
       - 'scripts/audit-standing-coverage.js'
       - 'scripts/audit-standing-coverage.test.mjs'
+      # Task #1475: off-Broadway venue-complexes.json audit (cousin of the West
+      # End National Theatre bare-form-slug bug, e0a63053ec6). Colocated test
+      # in the tests/unit-test-manifest.txt node --test batch (root-level
+      # scripts/*.test.mjs is not globbed) — path-listed so a solo edit to
+      # the lib, the test, or the data file it guards triggers CI.
+      - 'scripts/lib/venue-complex-audit.js'
+      - 'scripts/audit-venue-complex-slugs.test.mjs'
+      - 'data/venue-complexes.json'
+      - 'data/venue-complexes-west-end.json'
       # SERP review census (#371 — Soundsphere/JonathanBaz class): editor-
       # curated aggregators only see outlets they chose to cite; this runs the
       # same "<title> review" SERP query a human sweep does. Colocated
@@ -1747,6 +1786,13 @@ on:
       - 'scripts/audit-closing-dates.js'
       - 'scripts/lib/closing-audit-classify.js'
       - 'scripts/lib/closing-audit-classify.test.mjs'
+      # Stale-checkout race guard (rebuild-reviews.yml): pure predicates +
+      # colocated *.test.mjs run in the lib-test glob; path-listed (with the
+      # driver script and workflow, both already covered by other entries in
+      # this list) so a solo edit to just the lib file triggers CI.
+      - 'scripts/lib/rebuild-staleness-guard.js'
+      - 'scripts/lib/rebuild-staleness-guard.test.mjs'
+      - 'scripts/check-rebuild-staleness.js'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'

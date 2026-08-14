@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 // ── Config (mirrors src/config/fantasy.ts) ──────────────────────────
 const SEASON = '2025-2026';
@@ -135,7 +136,7 @@ const TONY_SEASON_END = '2026-04-27';
 // ── Identify eligible shows ─────────────────────────────────────────
 function isEligible(show) {
   if (show._devOnly) return false;
-  const isBW = !show.category || show.category === 'broadway';
+  const isBW = isBroadwayCategory(show);
   const isOB = show.category === 'off-broadway';
   if (!isBW && !isOB) return false;
   if (show.type === 'special') return false;
@@ -209,10 +210,10 @@ const dryRun = process.argv.includes('--dry-run');
 const allShows = Object.values(shows);
 const eligibleShows = allShows.filter(isEligible);
 
-console.error(`Found ${eligibleShows.length} eligible shows (${eligibleShows.filter(s => !s.category || s.category === 'broadway').length} BW, ${eligibleShows.filter(s => s.category === 'off-broadway').length} OB)`);
+console.error(`Found ${eligibleShows.length} eligible shows (${eligibleShows.filter(isBroadwayCategory).length} BW, ${eligibleShows.filter(s => s.category === 'off-broadway').length} OB)`);
 
 // For prototype: limit OB to ~15 notable ones (highest scored, currently running)
-const bwShows = eligibleShows.filter(s => !s.category || s.category === 'broadway');
+const bwShows = eligibleShows.filter(isBroadwayCategory);
 const obShows = eligibleShows.filter(s => s.category === 'off-broadway');
 
 // Select OB shows: top scored ones that are still running, then top closed
@@ -238,7 +239,7 @@ const showsConfig = {};
 for (const show of finalShows) {
   const criticScore = computeCriticScore(show.id);
   const audGrade = getAudienceGrade(show.id);
-  const isBW = !show.category || show.category === 'broadway';
+  const isBW = isBroadwayCategory(show);
 
   // Prices are frozen for the season. Fall back to heuristic only if the
   // snapshot is missing (dev/first-run); log any show that needs a fallback.

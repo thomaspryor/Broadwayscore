@@ -28,6 +28,7 @@ const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-gu
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseErrorLines, evaluateCommitDecision, evaluatePerShowCommitDecision } = require('./lib/validation-setdiff');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -126,7 +127,7 @@ async function main() {
 
   // Skip non-Broadway shows — IBDB only covers Broadway productions
   const preskip = shows.length;
-  shows = shows.filter(s => !s.category || s.category === 'broadway');
+  shows = shows.filter(isBroadwayCategory);
   if (shows.length < preskip) {
     console.log(`Skipped ${preskip - shows.length} non-Broadway shows (IBDB is Broadway-only)`);
   }

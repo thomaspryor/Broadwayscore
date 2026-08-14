@@ -35,6 +35,7 @@ const {
   retractStaleClearBreadcrumb,
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
 
@@ -59,12 +60,20 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SKIP_DIRS = new Set(['_superseded-misattributed']);
 
 function parseArgs(argv) {
-  const args = { gate: false, max: 0, fix: false, show: null, json: false };
+  // --max via the shared parser: the old inline parseInt returned NaN for
+  // `--max=abc`/`--max=`, and `unhandled > NaN` is always false, which would
+  // have silently disabled this gate (test.yml runs it at --max=780).
+  const args = {
+    gate: false,
+    max: parseMaxArgOrExit(argv, { scriptName: 'audit-self-contradictory-clears' }),
+    fix: false,
+    show: null,
+    json: false,
+  };
   for (const a of argv) {
     if (a === '--gate') args.gate = true;
     else if (a === '--fix') args.fix = true;
     else if (a === '--json') args.json = true;
-    else if (a.startsWith('--max=')) args.max = parseInt(a.split('=')[1], 10);
     else if (a.startsWith('--show=')) args.show = a.split('=')[1];
   }
   return args;

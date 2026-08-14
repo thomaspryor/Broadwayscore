@@ -31,6 +31,7 @@ const { buildFixApprovalEmail } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
+const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -230,18 +231,10 @@ If everything looks correct, return {"passed": true, "issues": [], "confidence":
 
 // --- Allowed actions for plans ---
 
-const ALLOWED_DATA_FIELDS = {
-  'shows.json': [
-    'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
-    'type', 'isRevival', 'status', 'closingDate', 'openingDate',
-    'previewDate', 'creativeTeam',
-  ],
-  'commercial.json': [
-    'designation', 'capitalization', 'weeklyRunningCost',
-    'capitalizationSource', 'notes', 'recouped', 'recoupmentSource',
-  ],
-  'audience-buzz.json': ['title'],
-};
+// awards.json excluded: executeApprovedFix has no data-edit handler for it.
+const EDITABLE_DATA_FIELDS = pickEditableFields([
+  'shows.json', 'commercial.json', 'audience-buzz.json',
+]);
 
 const ALLOWED_SCRIPTS = [
   'rebuild-all-reviews.js',
@@ -371,7 +364,7 @@ async function main() {
     }
   }
 
-  const allowedFieldsList = Object.entries(ALLOWED_DATA_FIELDS)
+  const allowedFieldsList = Object.entries(EDITABLE_DATA_FIELDS)
     .map(([file, fields]) => `  ${file}: ${fields.join(', ')}`)
     .join('\n');
 

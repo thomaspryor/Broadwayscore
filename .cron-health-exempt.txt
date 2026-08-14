@@ -79,6 +79,12 @@ opening-night-reviews.yml
 opening-night-stage-alert.yml
 poll-loureviews.yml
 posthog-monday.yml
+# WE aggregator auto-promotion backstop (task #1466): a stale run means at-worst
+# a slower discovery of new West End shows we don't have entries for yet — same
+# digest-only, self-healing shape as OB's regional promotion (which runs
+# unmonitored inside scrape-new-aggregators.yml), not user-facing staleness
+# worth paging on. Failures alert via notify-failure (warning severity).
+promote-we-aggregator.yml
 process-review-formspree.yml
 purge-archives-history.yml
 rebuild-fast.yml

@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -97,8 +98,7 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
 
 function main() {
   const argv = process.argv.slice(2);
-  const maxArg = argv.find((a) => a.startsWith('--max='));
-  const max = maxArg ? parseInt(maxArg.split('=')[1], 10) : 5;
+  const max = parseMaxArgOrExit(argv, { defaultMax: 5, scriptName: 'audit-unknown-outlets' });
   const asJson = argv.includes('--json');
 
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');

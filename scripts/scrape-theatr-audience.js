@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/title-match');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
@@ -266,7 +266,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
       });
       // Prefer same-category matches, fall back to any non-west-end
       const sameCategory = started.filter(s => {
-        if (isBroadway) return !s.category || s.category === 'broadway';
+        if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
       const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => !isLondonMarket(s.category));
@@ -298,7 +298,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
     if (prefixCandidates.length > 0) {
       // Apply same category/recency filtering as exact matches
       const sameCategory = prefixCandidates.filter(s => {
-        if (isBroadway) return !s.category || s.category === 'broadway';
+        if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
       const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => !isLondonMarket(s.category));

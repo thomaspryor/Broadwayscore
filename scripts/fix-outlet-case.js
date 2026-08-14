@@ -14,6 +14,23 @@ const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, mergeReviews, slugify } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+
+// ─── Lazy-loaded show record map for mergeReviews' wrong-production URL-swap
+// guard (#1478) ───
+let _showByIdCache = null;
+function _getShowById(showId) {
+  if (!_showByIdCache) {
+    try {
+      const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
+      _showByIdCache = {};
+      for (const s of shows) if (s.id) _showByIdCache[s.id] = s;
+    } catch {
+      _showByIdCache = {};
+    }
+  }
+  return _showByIdCache[showId] || null;
+}
 
 // Track stats
 let filesFixed = 0;
@@ -51,7 +68,8 @@ function processReviewFile(filepath) {
       const existingContent = fs.readFileSync(newFilepath, 'utf8');
       const existingReview = JSON.parse(existingContent);
 
-      const merged = mergeReviews(existingReview, review);
+      const showId = path.basename(dir);
+      const merged = mergeReviews(existingReview, review, {}, { script: 'fix-outlet-case', showId, show: _getShowById(showId) });
       fs.writeFileSync(newFilepath, JSON.stringify(merged, null, 2));
 
       // Delete the old (uppercase) file
