@@ -38,7 +38,7 @@ const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = 
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
-const { assessAutofixEffectiveness } = require('./lib/autofix-effectiveness');
+const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 // Discord daily reports removed — email digest is the single notification channel.
 
@@ -1962,7 +1962,7 @@ async function checkAlertRouterDeadman(isCI) {
 // zero. This row reads the OUTCOMES the ledger already records (card-pass /
 // card-fail) and is the difference between noticing on day 2 and on day 13.
 function checkAutofixEffectiveness() {
-  const name = 'Autofix: jobs actually succeeding';
+  const name = AUTOFIX_EFFECTIVENESS_CHECK_NAME;
   const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
   let raw;
   try {

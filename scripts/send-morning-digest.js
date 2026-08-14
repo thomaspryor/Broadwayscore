@@ -62,6 +62,7 @@ const {
   renderDailyDigestBlock,
   renderRedditDigestBlock,
   renderNamedDigestBlock,
+  autofixLoopDeadMessage,
 } = require('./lib/autonomous-email-render.js');
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
@@ -195,12 +196,21 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
   const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + (freshnessCount ? 1 : 0) + (stuckCount ? 1 : 0)); // closingSoon intentionally absent — lives in the opening digest
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
+  // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for
+  // automated fix sessions" no matter what — including the 13 straight
+  // mornings (2026-08-10) where the loop was provably dead (logged-out CLI,
+  // every job zero-byte-timing-out). health-check.js's "Autofix: jobs
+  // actually succeeding" row already measures that outcome-blind spot; when
+  // it's tripped, say so here instead of repeating the "being fixed" promise.
+  const loopDeadMsg = autofixLoopDeadMessage(sections.health);
   if (errs) {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   } else {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing needs your attention this morning.</p>`);
   }
-  if (fixing) {
+  if (loopDeadMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+  } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
   if (problemsNote) {

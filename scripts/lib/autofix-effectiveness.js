@@ -42,6 +42,13 @@
  *      written to end.
  */
 
+// Single source of truth for this check's name — health-check.js registers the
+// row under it, and the digest renderer (autonomous-email-render.js) matches
+// against it to decide whether "being fixed automatically" claims are honest
+// (task #1220/BRO-230: those claims rendered unconditionally even when this
+// check already knew the loop was dead).
+const CHECK_NAME = 'Autofix: jobs actually succeeding';
+
 const DEFAULT_WINDOW_DAYS = 7;
 // Below this many recorded outcomes we cannot distinguish "broken" from "quiet".
 const MIN_OUTCOMES_TO_JUDGE = 3;
@@ -152,6 +159,7 @@ function assessAutofixEffectiveness(rows, opts = {}) {
 
 module.exports = {
   assessAutofixEffectiveness,
+  CHECK_NAME,
   MIN_OUTCOMES_TO_JUDGE,
   WARN_BELOW_RATE,
   SILENT_DISPATCH_RATIO,

@@ -19,6 +19,8 @@
 
 'use strict';
 
+const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
+
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -307,7 +309,25 @@ const AUTOFIX_STATE_LABEL = {
   // say "working on it" without proof; this is the honest downgrade.
   'no-live-session': ['\u23f8\ufe0f', 'marked in progress but no live session was found \u2014 worth a look'],
 };
-function renderAutofixBlock(autofixRows) {
+// Loop-wide dead-fleet honesty (task #1220/BRO-230). Every row-level label in
+// AUTOFIX_STATE_LABEL is optimism ABOUT THAT ONE ROW: "dispatched" means a
+// launch was attempted, "in-progress" (post-liveness-gate) means a live
+// session was actually found. Neither says anything about whether launches
+// are completing AT ALL across the fleet — a logged-out CLI dispatches every
+// job "successfully" and every row still reads "fix session launched" while
+// the real fix rate is zero (the 2026-08-10 incident: 13 near-identical
+// digests under this exact banner). health-check.js's "Autofix: jobs
+// actually succeeding" row (scripts/lib/autofix-effectiveness.js) is the one
+// signal that reads OUTCOMES across the whole fleet instead of one row's
+// dispatch attempt; when it lands in health.errors the loop itself is dead,
+// and every per-row "launched"/"queued" claim below needs that context.
+function autofixLoopDeadMessage(health) {
+  const row = (health && Array.isArray(health.errors) ? health.errors : [])
+    .find((e) => e && e.name === AUTOFIX_EFFECTIVENESS_CHECK_NAME);
+  return row ? (row.message || 'Auto-fix loop is DEAD.') : null;
+}
+
+function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
   // 'decision' rows are genuine judgment calls (task #843) — they belong ONLY
   // in the "Needs your attention" card with a button, never here (this block
   // would otherwise mislabel them as an in-flight auto-fix).
@@ -338,8 +358,14 @@ function renderAutofixBlock(autofixRows) {
   // Header claims exactly what is proven: trackers exist (identifiers shown)
   // and launches were attempted; whether they RAN is verified by tomorrow's
   // throughput/canary rows \u2014 never "nothing for you to do" on faith (#1311).
-  return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Automation queue \u2014 filed and launched; tomorrow\u2019s digest verifies each one ran</div>
+  // Task #1220/BRO-230: that promise is only honest when the fleet-wide
+  // effectiveness check hasn't already proven it false. When it has, say so
+  // here instead of repeating "launched" for rows nothing will actually run.
+  const header = loopDeadMessage
+    ? `\u26a0\ufe0f Automation queue \u2014 the auto-fix loop looks DEAD, so these are FILED but likely NOT running: ${esc(loopDeadMessage)}`
+    : 'Automation queue \u2014 filed and launched; tomorrow\u2019s digest verifies each one ran';
+  return `<div style="border:1px solid ${loopDeadMessage ? '#fca5a5' : '#e5e5e5'};background:${loopDeadMessage ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${loopDeadMessage ? 'color:#b91c1c;' : ''}">${header}</div>
     ${lines}
   </div>`;
 }
@@ -398,7 +424,7 @@ function renderHealthDigestBlock(health, autofixRows = null) {
   }
   const { rows } = selectHealthRows({ errors, warns });
   const plan = autofixRows || rows.map(r => ({ name: r.name, state: 'queued', taskId: null }));
-  return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan)}${queuedHtml}`;
+  return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan, autofixLoopDeadMessage(health))}${queuedHtml}`;
 }
 
 // Count of health-digest errors+warnings — folded into renderSummaryLine's
@@ -738,7 +764,7 @@ module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount, selectHealthRows,
-  renderHealthScoreboard, renderAutofixBlock, plainHealthLine,
+  renderHealthScoreboard, renderAutofixBlock, plainHealthLine, autofixLoopDeadMessage,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderParkedCardsBlock,
