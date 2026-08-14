@@ -104,9 +104,19 @@ test('isUkRegionalVenue rejects non-strings instead of coercing them', () => {
   assert.equal(isUkRegionalVenue(0), false);
   assert.equal(isUkRegionalVenue(1), false);
   assert.equal(isUkRegionalVenue(true), false);
-  // The map() footgun specifically: index 0/1/2 must never flip the label.
-  assert.equal(['regional', 'regional', 'regional'].map(getMarketLabel).join('|'),
-    [getMarketLabel('regional'), getMarketLabel('regional'), getMarketLabel('regional')].join('|'));
+  // These two assertions are the ones with teeth. A COERCING implementation
+  // (String(venue).includes(...)) returns the UK label for the array case,
+  // because String(['Royal Shakespeare Theatre']) is the bare venue name — so
+  // this fails against the broken version and passes against the fixed one.
+  const usLabel = getMarketLabel('regional');
+  assert.equal(getMarketLabel('regional', ['Royal Shakespeare Theatre']), usLabel);
+  assert.equal(getMarketLabel('regional', { toString: () => 'Chichester Festival Theatre' }), usLabel);
+
+  // The map() footgun specifically: Array#map passes (value, index, array), so
+  // the 2nd arg is a NUMBER. Asserting against the no-venue label (not against
+  // another map call) is what makes this a regression guard rather than a
+  // tautology — it pins the output to a known-correct value.
+  assert.deepEqual(['regional', 'regional', 'regional'].map(getMarketLabel), [usLabel, usLabel, usLabel]);
 });
 
 test('regional prompt note names the right country for a UK house — card #1405', () => {
