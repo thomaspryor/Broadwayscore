@@ -3592,8 +3592,17 @@ function validateReviewTextQuality(shows) {
         continue; // JSON parse errors caught elsewhere
       }
 
-      // Skip already-flagged reviews
-      if (data.wrongShow || data.wrongProduction || data.wrongUrl || data.duplicateOf || data.isRoundupArticle || data.isNotReview) continue;
+      // Skip already-excluded reviews via the canonical isIncludableForRebuild
+      // predicate (already used elsewhere in this file at lines ~3257/3435) —
+      // NOT a hand-rolled field list, which drifted from the exclusion rules
+      // and let CHECK 1 below fire on already-excluded content (task
+      // discovered 2026-08-14: allegra-west-end-2026/westend--peter-quilter.json
+      // had wrongProduction auto-cleared by a 'registry region' rebuild step,
+      // but was separately re-rejected by ensemble-scoreability-check as
+      // rejectionReason='not_a_review' — a hand-rolled OR-chain of flag names
+      // doesn't know about rejectionReason or its isJsonLdStarNotAReview /
+      // hasIndependentExcerptScore carve-outs; isIncludableForRebuild does).
+      if (!isIncludableForRebuild(data, showById[showDir], path.join(dirPath, file))) continue;
 
       // CHECK 0: prior/other-production contamination by date. A review whose
       // publishDate predates the show's earliest date by >180 days, is not within
