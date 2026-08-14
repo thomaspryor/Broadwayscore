@@ -117,11 +117,30 @@ function main() {
     }
   }
 
+  // A match is NOT evidence that a flag is stale. Two independent 2026-08-14
+  // adjudications agree: a stratified random sample of 20 matching files came
+  // back 20/20 CORRECT / 0 stale, and a separate review of the 8 files matching
+  // the narrowest candidate predicate came back 8/8 CORRECT. The detector's
+  // original premise ("empty fullText => pending refetch => stale flag") is
+  // contradicted by the corpus: most matches already had publishDate cleared,
+  // were already refetched, or were flagged by guards that never read
+  // publishDate at all — and a URL "correction" can swap a correct article for
+  // a different production's, which makes the flag right rather than stale.
+  //
+  // The `--fix` drain that used to sit here was DELETED for that reason, not
+  // merely warned about: clearing these flags re-admits wrong-production
+  // reviews into live Critic Scores (17 current matches carry aggregatorStars
+  // and score without fullText). Draining the backlog on 2026-08-14 did exactly
+  // that and was self-reverted. Do not reintroduce it — a colocated test in
+  // scripts/lib/stale-flag-after-url-correction.test.mjs now fails if any bulk
+  // flag-clearing helper reappears.
   if (gate && hits.length > max) {
     console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature (> max ${max}).`);
-    console.error('DO NOT clear these flags to make this pass — they are usually CORRECT (a URL "correction"');
-    console.error('can swap in a different production\'s article). Run scripts/audit-stale-flag-producers.js to');
-    console.error('find the writer that produced the state; the remedy for the record itself is a refetch.');
+    console.error('DO NOT clear these flags to make this pass — sampling says they are usually');
+    console.error('CORRECT (20/20 and 8/8 in two independent adjudications). Clearing them');
+    console.error('re-admits wrong-production reviews into live Critic Scores.');
+    console.error('Use scripts/audit-stale-flag-producers.js to find the writer that produced');
+    console.error('the state; the remedy for the record itself is a refetch, never a flag-clear.');
     process.exit(1);
   }
 }

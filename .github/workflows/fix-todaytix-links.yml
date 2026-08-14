@@ -32,16 +32,6 @@ jobs:
         id: fix
         run: node scripts/fix-todaytix-links.js
 
-      - name: Commit and push fixes
-        if: always() && steps.fix.outputs.changes_made == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Core data files pushed to private repo by push-core-data action
-          git commit -m "fix: Auto-fix ${{ steps.fix.outputs.summary }} TodayTix links" || exit 0
-          bash scripts/lib/push-with-retry.sh
-
-
       - name: Push core data to private repo
         if: always()
         uses: ./.github/actions/push-core-data

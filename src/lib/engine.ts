@@ -65,7 +65,7 @@ export interface RawShow {
   closingDate: string | null;
   status: string;
   type: string;
-  category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
+  category?: string;  // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
   genre?: string;     // performance type beyond play/musical: dance/magic/comedy/cabaret/concert/circus (see src/lib/genre.ts)
   runtime: string;
   intermissions: number;
@@ -217,7 +217,7 @@ export interface ComputedShow {
   closingDate: string | null;
   status: string;
   type: string;
-  category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
+  category?: string;  // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
   genre?: string;     // performance type beyond play/musical: dance/magic/comedy/cabaret/concert/circus (see src/lib/genre.ts)
   runtime: string;
   intermissions?: number;

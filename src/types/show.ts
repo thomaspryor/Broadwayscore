@@ -43,7 +43,7 @@ export interface ShowMetadata {
   closingDate?: string; // ISO date, if announced/known
   status: ShowStatus;
   type: 'musical' | 'play' | 'special';
-  category?: ShowCategory; // 'broadway' (default), 'off-broadway', or 'west-end'
+  category?: ShowCategory; // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
   priorRuns?: PriorRun[];

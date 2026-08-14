@@ -282,7 +282,7 @@ jobs:
           # never told a regional show went live (same silent-drop class as
           # card #475). Precedent: data-health-check.yml:125, test.yml:2658,
           # opening-night-checklist.yml:96 all stage these.
-          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json
           if ! git diff --staged --quiet; then
             git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
             bash scripts/lib/push-with-retry.sh

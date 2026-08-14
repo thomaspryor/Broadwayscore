@@ -3859,24 +3859,74 @@ jobs:
 
       - name: Audit stale flag after URL correction
         if: always()
-        # --max=15, not 0. NOTE: the corpus is NOT drained — it sits at ~115
-        # (an earlier version of this comment claimed 0, which was false), so
-        # this step is currently RED and the ceiling is not what is holding it
-        # up. Those ~115 are mostly CORRECT flags: a URL "correction" that
-        # swapped in a different production's article leaves a bodyless record
-        # whose exclusion flag is right. Do NOT drain them to go green — doing
-        # exactly that on 2026-08-14 reddened validate-data (59 errors) and the
-        # contamination gate (5 class-A leaks). The real defect is the
-        # URL-downgrade bug (carded); this gate stays as a producer tripwire.
-        # 19 of the 22 scripts that can write these flags still do so unguarded,
-        # and the collector path adds roughly one file every 40 hours. At --max=0 a
-        # single such file blocks EVERY parallel session's merge (the merge
-        # script's post-merge test floor), which is exactly how one review
-        # record gated all code delivery for two days. 15 absorbs the trickle
-        # while still catching a real regression — the 121-file backlog this
-        # gate was built for would fail loudly. Same ratchet as the
-        # self-contradictory-clears gate above; ratchet DOWN as producers are
-        # closed. Root fix (predicate + write chokepoint) is carded.
+        # REPORT-ONLY (continue-on-error) as of 2026-08-14. This step used to
+        # block the build at --max=15. It was demoted because its findings were
+        # measured and its PRECISION IS ZERO on everything we have looked at.
+        #
+        # EVIDENCE (2026-08-14 review of the 115 then-matching files):
+        #   - A stratified random sample of 20 flagged files was adjudicated by
+        #     hand: 20/20 flags were CORRECT (the review really does belong to a
+        #     different production) and 0 were stale. A full eyeball of all 115
+        #     found none identifiably stale.
+        #
+        # THE PREMISE IS FALSE. The gate assumes "URL was corrected + empty
+        # fullText ⇒ publishDate is stale ⇒ the exclusion flag is stale". Every
+        # link in that chain fails on the real corpus:
+        #   - 87/115 list `publishDate` in `_urlChangedClear.cleared` — the old
+        #     date was already DELETED at correction time, so there is no stale
+        #     date left to mislead the flag.
+        #   - Of the 20 flagged files with a parseable date in the CURRENT url,
+        #     18 match the current url's date, 1 is off by one day, 1 is old.
+        #   - 69/115 have `textFetchedAt` LATER than `_urlChangedClear.at` —
+        #     i.e. they were already refetched; nothing is "waiting on refetch".
+        #   - 72/115 have a word count > 0 and 71/115 carry a `textQuality`
+        #     verdict, so the body is not actually absent in the way the
+        #     detector infers.
+        #   - ~29/115 were flagged by guards that never read publishDate at all
+        #     (cross-market, CV-promotion, URL-collision, dedup, OB supersede),
+        #     so a stale date could not have produced those flags either way.
+        #   - The detector's core test is literally `return !data.fullText;`
+        #     (scripts/lib/stale-flag-after-url-correction.js:56). Empty
+        #     fullText overwhelmingly means the URL-change step DELETED the
+        #     body, not that a refetch is pending.
+        #
+        # HARM OF ACTING ON IT: draining these files with `--fix` clears the
+        # exclusion flags and re-admits ~115 WRONG-PRODUCTION reviews into live
+        # Critic Scores. A prior session drained the corpus and then correctly
+        # self-reverted; the "drained to 0" claim that used to sit in this
+        # comment was that reverted drain, not a real clean corpus.
+        #
+        # KEPT, NOT DELETED: the detector may still catch a genuine #483
+        # regression someday, so the sweep still runs and still prints its
+        # findings in the build log. It just no longer gates merges on a signal
+        # with no measured precision. For attribution of which code path wrote
+        # a given flag, use scripts/audit-stale-flag-producers.js.
+        #
+        # TO RE-ARM: narrow the detector so it distinguishes "body deleted by
+        # the URL-change step" from "refetch genuinely pending", measure
+        # precision on a fresh hand-adjudicated sample, and only then restore
+        # `--max` and drop continue-on-error.
+        #
+        # THREE NARROWINGS WERE ALREADY TRIED AND REVIEW-REJECTED on 2026-08-14
+        # (verdicts in .claude/review-verdicts.jsonl). Do not re-attempt these:
+        #   - `textFetchedAt <= _urlChangedClear.at` CANNOT WORK: textFetchedAt
+        #     is itself in URL_DERIVED_FIELDS (url-change-invariant.js:61), so
+        #     it is cleared by the very write that creates the breadcrumb
+        #     (411/609 breadcrumbs list it in `cleared`). The predicate would
+        #     return false on exactly the records the guard exists for.
+        #   - "require publishDate to have SURVIVED the clear" inverts on the
+        #     Dateless-revival guard, whose basis IS the absence of a date, and
+        #     matched 47/59 known-correct flags in measurement.
+        #   - keying on wrongProductionNote string prefixes is stringly-typed
+        #     coupling; the note is written in ~25 places. If a narrowing is
+        #     attempted, key on `wrongProductionProvenance` instead
+        #     (scripts/lib/wrongproduction-provenance.js:29), which exists for
+        #     precisely this and is lint-enforced on new writers.
+        # Any candidate must be validated against a test CAPABLE of failing:
+        # validate-data's [wrong-production-by-date] check returns empty for
+        # dateless records (scripts/lib/date-plausibility.js:39), so scoring a
+        # dateless-only predicate against it is vacuous by construction.
+        continue-on-error: true
         run: node scripts/audit-stale-flag-after-url-correction.js --gate --max=15
         # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
         # _urlChangedClear URL-correction breadcrumb with an empty body — the
@@ -3887,10 +3937,19 @@ jobs:
         # invariant (scripts/lib/url-change-invariant.js) never fired even
         # though the body was wiped and needsRefetch was set. Forward fix:
         # maybeUpgradeUrl now runs applyUrlChangeInvariant(..., {force: true}).
-        # Backlog (157 files, drifted since the original 112-file remediation)
-        # drained 2026-08-12 via `--fix`; blocking (`--gate`, no baseline) from
-        # day one since the corpus is genuinely clean. Detector: scripts/lib/
-        # stale-flag-after-url-correction.js.
+        # The original 112-file class was real. What was never established is
+        # that the detector's signature still SELECTS for it — see the
+        # zero-precision evidence above, which is why this step no longer
+        # blocks. Detector: scripts/lib/stale-flag-after-url-correction.js —
+        # its DETECTION LOGIC is deliberately unchanged (the demotion is a
+        # CI-policy change), but its `--fix` auto-remediation was DELETED on
+        # 2026-08-14 along with remediateStaleFlagAfterUrlCorrection(). Nothing
+        # in CI ever called it, and on the evidence above it only ever cleared
+        # correct flags; 17 of the matches carry aggregatorStars and score
+        # without fullText, so draining them re-admits wrong-production reviews
+        # into live Critic Scores. A colocated test now fails if any bulk
+        # flag-clearing helper is re-exported, so the drain cannot come back
+        # quietly. References to `--fix` elsewhere in this file predate that.
 
       - name: Audit cast contamination
         if: always()

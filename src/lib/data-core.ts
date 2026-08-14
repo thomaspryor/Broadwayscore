@@ -36,6 +36,7 @@ import relatedShowsData from '../../data/related-shows.json';
 import theaterMetaData from '../../data/theater-metadata.json';
 // Curated multi-stage venue complexes (e.g. Atlantic Theater Company -> Atlantic Stage 2)
 import venueComplexesData from '../../data/venue-complexes.json';
+import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -134,11 +135,14 @@ export function getAllShows(): ComputedShow[] {
 }
 
 /**
- * Check if a show belongs to Broadway (default category).
- * Shows with no category or category='broadway' are Broadway shows.
+ * Check if a show belongs to Broadway.
+ * Requires an explicit category === 'broadway' — a missing/null category is
+ * NOT Broadway, matching the strict check in getOffBroadwayShows() below.
+ * (A permissive `!show.category` fallback here previously let shows with no
+ * category leak into Broadway-filtered listings; see task #1428.)
  */
-function isBroadwayShow(show: ComputedShow): boolean {
-  return !show.category || show.category === 'broadway';
+export function isBroadwayShow(show: ComputedShow): boolean {
+  return show.category === 'broadway';
 }
 
 /**
@@ -176,11 +180,15 @@ export function getWestEndShows(): ComputedShow[] {
   );
 }
 
+export function isOffBroadwayShow(show: ComputedShow): boolean {
+  return show.category === 'off-broadway';
+}
+
 /**
  * Get all Off-Broadway shows
  */
 export function getOffBroadwayShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'off-broadway');
+  return getAllShows().filter(isOffBroadwayShow);
 }
 
 /**
@@ -851,24 +859,21 @@ export interface TheaterComplex extends Theater {
 }
 
 type VenueComplexDef = { name: string; subVenueSlugs: string[] };
-const OFF_BROADWAY_COMPLEX_DEFS: Record<string, VenueComplexDef> =
-  (venueComplexesData as { complexes: Record<string, VenueComplexDef> }).complexes;
 
 /**
  * Curated multi-stage venue complexes (e.g. Atlantic Theater Company houses
- * Atlantic Stage 2 and the Linda Gross Theater under one recognizable name).
- * Off-Broadway venue strings are freeform data entry, not a curated list like
- * Broadway/West End — sub-stages of the same company end up as distinct,
- * disconnected pages unless explicitly linked here. See data/venue-complexes.json.
+ * Atlantic Stage 2 and the Linda Gross Theater under one recognizable name;
+ * National Theatre houses the Olivier/Lyttelton/Dorfman). Off-Broadway and
+ * West End venue strings are freeform data entry, not a curated list like
+ * Broadway — sub-stages of the same company end up as distinct, disconnected
+ * pages unless explicitly linked here. Shared by every market's complex
+ * lookup below — see data/venue-complexes.json and
+ * data/venue-complexes-west-end.json for the per-market curated mappings.
  */
-let _offBroadwayComplexesCache: TheaterComplex[] | null = null;
-export function getAllOffBroadwayComplexes(): TheaterComplex[] {
-  if (_offBroadwayComplexesCache) return _offBroadwayComplexesCache;
-
-  const theaters = getAllOffBroadwayTheaters();
+function buildComplexIndex(theaters: Theater[], defs: Record<string, VenueComplexDef>): TheaterComplex[] {
   const bySlug = new Map(theaters.map(t => [t.slug, t]));
 
-  _offBroadwayComplexesCache = Object.entries(OFF_BROADWAY_COMPLEX_DEFS).map(([complexSlug, def]) => {
+  return Object.entries(defs).map(([complexSlug, def]) => {
     const subVenues = def.subVenueSlugs
       .map(slug => bySlug.get(slug))
       .filter((t): t is Theater => !!t);
@@ -883,10 +888,10 @@ export function getAllOffBroadwayComplexes(): TheaterComplex[] {
       });
     const currentShow = allShows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
 
-    // Synthetic complexes (no own raw venue string, e.g. Lincoln Center Theater)
-    // have no ownTheater to source an address from — fall back to the first
-    // sub-venue that has one, rather than shipping every synthetic complex
-    // page with no map link.
+    // Synthetic complexes (no own raw venue string, e.g. Lincoln Center Theater,
+    // Southbank Centre) have no ownTheater to source an address from — fall
+    // back to the first sub-venue that has one, rather than shipping every
+    // synthetic complex page with no map link.
     const address = ownTheater?.address ?? subVenues.find(t => t.address)?.address;
 
     return {
@@ -899,7 +904,27 @@ export function getAllOffBroadwayComplexes(): TheaterComplex[] {
       subVenues: subVenues.map(t => ({ name: t.name, slug: t.slug })),
     };
   });
+}
 
+/** Reverse lookup: sub-venue slug -> its parent complex, for "Part of X" links. */
+function buildComplexReverseLookup(defs: Record<string, VenueComplexDef>): Map<string, { name: string; slug: string }> {
+  const map = new Map<string, { name: string; slug: string }>();
+  for (const [complexSlug, def] of Object.entries(defs)) {
+    for (const subSlug of def.subVenueSlugs) {
+      map.set(subSlug, { name: def.name, slug: complexSlug });
+    }
+  }
+  return map;
+}
+
+const OFF_BROADWAY_COMPLEX_DEFS: Record<string, VenueComplexDef> =
+  (venueComplexesData as { complexes: Record<string, VenueComplexDef> }).complexes;
+
+let _offBroadwayComplexesCache: TheaterComplex[] | null = null;
+export function getAllOffBroadwayComplexes(): TheaterComplex[] {
+  if (!_offBroadwayComplexesCache) {
+    _offBroadwayComplexesCache = buildComplexIndex(getAllOffBroadwayTheaters(), OFF_BROADWAY_COMPLEX_DEFS);
+  }
   return _offBroadwayComplexesCache;
 }
 
@@ -911,18 +936,39 @@ export function getAllOffBroadwayComplexSlugs(): string[] {
   return getAllOffBroadwayComplexes().map(c => c.slug);
 }
 
-// Reverse lookup: sub-venue slug -> its parent complex (for "Part of X" links).
 let _offBroadwaySubVenueToComplex: Map<string, { name: string; slug: string }> | null = null;
 export function getOffBroadwayComplexForVenue(venueSlug: string): { name: string; slug: string } | undefined {
   if (!_offBroadwaySubVenueToComplex) {
-    _offBroadwaySubVenueToComplex = new Map();
-    for (const [complexSlug, def] of Object.entries(OFF_BROADWAY_COMPLEX_DEFS)) {
-      for (const subSlug of def.subVenueSlugs) {
-        _offBroadwaySubVenueToComplex.set(subSlug, { name: def.name, slug: complexSlug });
-      }
-    }
+    _offBroadwaySubVenueToComplex = buildComplexReverseLookup(OFF_BROADWAY_COMPLEX_DEFS);
   }
   return _offBroadwaySubVenueToComplex.get(venueSlug);
+}
+
+const WEST_END_COMPLEX_DEFS: Record<string, VenueComplexDef> =
+  (venueComplexesWestEndData as { complexes: Record<string, VenueComplexDef> }).complexes;
+
+let _westEndComplexesCache: TheaterComplex[] | null = null;
+export function getAllWestEndComplexes(): TheaterComplex[] {
+  if (!_westEndComplexesCache) {
+    _westEndComplexesCache = buildComplexIndex(getAllLondonTheaters(), WEST_END_COMPLEX_DEFS);
+  }
+  return _westEndComplexesCache;
+}
+
+export function getWestEndComplexBySlug(slug: string): TheaterComplex | undefined {
+  return getAllWestEndComplexes().find(c => c.slug === slug);
+}
+
+export function getAllWestEndComplexSlugs(): string[] {
+  return getAllWestEndComplexes().map(c => c.slug);
+}
+
+let _westEndSubVenueToComplex: Map<string, { name: string; slug: string }> | null = null;
+export function getWestEndComplexForVenue(venueSlug: string): { name: string; slug: string } | undefined {
+  if (!_westEndSubVenueToComplex) {
+    _westEndSubVenueToComplex = buildComplexReverseLookup(WEST_END_COMPLEX_DEFS);
+  }
+  return _westEndSubVenueToComplex.get(venueSlug);
 }
 
 // ============================================

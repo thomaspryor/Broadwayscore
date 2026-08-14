@@ -52,11 +52,6 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
-      - name: Configure git
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
       - name: Run playwright backfill
         id: backfill
         env:
@@ -91,20 +86,6 @@ jobs:
       - name: Validate data
         if: always()
         run: node scripts/validate-data.js
-
-      - name: Commit remaining changes
-        if: always() && inputs.dry_run != 'true'
-        run: |
-          # Core data files pushed to private repo by push-core-data action
-          if git diff --cached --quiet; then
-            echo "No uncommitted changes"
-            exit 0
-          fi
-
-          git commit -m "data: Backfill playwright credits (final)"
-
-          bash scripts/lib/push-with-retry.sh
-
 
       - name: Push core data to private repo
         if: always()
