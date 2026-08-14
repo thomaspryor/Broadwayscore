@@ -261,6 +261,23 @@ function hasLiveLedgerEntry(taskId, entries) {
   return true;
 }
 
+// Terminal-state guard (task #1517, BRO-247 incident root cause): a
+// re-dispatch of an issue Linear itself already considers resolved
+// (completed/canceled) is never correct — the incident this closes was
+// exactly that (a Done, archived issue got re-dispatched and only failed at
+// the createComment/updateIssue step with a cryptic "Entity not found"
+// error, task #1510's unarchive-and-retry symptom fix). buildIssueQuery
+// already fetches `state { id name type }` on every getIssue() call; this is
+// the first caller that reads it. Returns a refusal string (caller decides
+// how to report it) or null when dispatch may proceed — same "pure
+// predicate, caller does I/O/exit" shape as the other guards in this file.
+function checkTerminalStateGuard(issue) {
+  const stateType = issue && issue.state && issue.state.type;
+  if (stateType !== 'completed' && stateType !== 'canceled') return null;
+  const stateName = (issue.state && issue.state.name) || stateType;
+  return `${issue.identifier} is already in a terminal state ("${stateName}") — refusing to re-dispatch. Re-run with --force if this is a deliberate re-open.`;
+}
+
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
@@ -323,6 +340,7 @@ module.exports = {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  checkTerminalStateGuard,
   buildLinearSeed,
   buildDispatchComment,
   generateCorrelationId,
