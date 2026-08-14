@@ -27,13 +27,13 @@ const { execFileSync } = require('child_process');
 
 const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
 
-function git(args, cwd) {
+function git(args, cwd, timeoutMs = GIT_NET_TIMEOUT_SEC * 1000) {
   try {
     return execFileSync('git', args, {
       cwd,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
-      timeout: GIT_NET_TIMEOUT_SEC * 1000,
+      timeout: timeoutMs,
     }).trim();
   } catch {
     return null;
@@ -53,12 +53,18 @@ function isShallowRepo(cwd) {
  * report loudly if it's still shallow" behavior isn't reimplemented per site.
  * @returns {{shallow: boolean}} shallow: true if STILL shallow after the attempt
  */
-function ensureFullHistory({ cwd = process.cwd(), remote = 'origin', log = () => {} } = {}) {
+function ensureFullHistory({ cwd = process.cwd(), remote = 'origin', log = () => {}, timeoutMs = null } = {}) {
   if (!isShallowRepo(cwd)) return { shallow: false };
   log(
     `WARNING: local checkout is shallow — 'git merge-base --is-ancestor' can false-negative on commits genuinely present. Attempting 'git fetch --unshallow ${remote}' (task #1489).`
   );
-  git(['fetch', '--unshallow', remote], cwd);
+  // `timeoutMs` lets a LATENCY-BOUNDED caller cap this network fetch below the
+  // 90s GIT_NET_TIMEOUT_SEC default. review-gate.mjs runs inside PreToolUse
+  // hooks that are killed at 20s, so an unbounded-by-their-standards 90s fetch
+  // is not a slow path there — it is a guaranteed kill. Timing out simply lands
+  // on the STILL-shallow branch below, which is an outcome this function
+  // already defines and every caller already handles.
+  git(['fetch', '--unshallow', remote], cwd, timeoutMs || GIT_NET_TIMEOUT_SEC * 1000);
   const stillShallow = isShallowRepo(cwd);
   if (stillShallow) {
     log(

@@ -354,11 +354,43 @@ export function gatedDiffPatchText(repoRoot, base, ref) {
 // mechanisms themselves, memoized per repoRoot so the (network-touching)
 // unshallow attempt runs at most once per process regardless of how many
 // ancestry checks follow.
+// Budget for the shallow-checkout unshallow fetch, in ms.
+//
+// EVERY entry point here runs inside a PreToolUse hook that is SIGKILLed at 20s
+// (scripts/tests/merge-gate-hook.test.mjs's HOOK_TIMEOUT_MS). landing-verify's
+// default network budget is GIT_NET_TIMEOUT_SEC = 90s, so on a shallow checkout
+// this call alone overran the hook's entire ceiling more than four times over —
+// the gate never returned a verdict, the hook was killed, and the test recorded
+// exit 124 for every case after it.
+//
+// Measured 2026-08-14 in a depth-1 clone of this repo: `git fetch --unshallow`
+// ran the full 90s and the repo was STILL shallow afterwards (134k commits,
+// ~2min churn — the same reason the awards job stopped doing full clones, see
+// test.yml). So on a repo this size the fetch does not merely take a while in
+// CI, it does not finish at all: the 90s was pure dead latency for an outcome
+// that was going to be "still shallow" regardless.
+//
+// Timing out lands on ensureFullHistory's STILL-shallow branch, which warns
+// loudly and is a state this module and its callers already handle — so this
+// bound costs nothing that was actually working, and it keeps task #1497's
+// guard (we still ATTEMPT the unshallow on every fresh repoRoot).
+// 5s, not 20s: the hook ceiling is per CALL, but merge-gate-hook.test.mjs makes
+// ~20 hook calls in one file under a 300s file-level ceiling, and each call is a
+// fresh node process that re-pays this (the memo below is per-process). 5s keeps
+// the worst case ~100s across the suite while still being ample for a small repo,
+// where a genuine unshallow completes in well under a second.
+const UNSHALLOW_BUDGET_MS = Number(process.env.REVIEW_GATE_UNSHALLOW_MS || 5000);
+
 const historyEnsured = new Map(); // repoRoot -> boolean (still shallow?)
 function ensureHistoryOnce(repoRoot) {
   if (!libEnsureFullHistory) return; // landing-verify.js unavailable — degraded no-op, see require() above
   if (historyEnsured.has(repoRoot)) return;
-  const { shallow } = libEnsureFullHistory({ cwd: repoRoot, remote: 'origin', log: (m) => process.stderr.write(`review-gate: ${m}\n`) });
+  const { shallow } = libEnsureFullHistory({
+    cwd: repoRoot,
+    remote: 'origin',
+    log: (m) => process.stderr.write(`review-gate: ${m}\n`),
+    timeoutMs: UNSHALLOW_BUDGET_MS,
+  });
   historyEnsured.set(repoRoot, shallow);
 }
 
