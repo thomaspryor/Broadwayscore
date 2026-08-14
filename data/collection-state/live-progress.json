@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-14T12:55:44.499Z",
-  "processed": 62,
-  "failed": 638,
-  "successRate": "8.9%",
+  "updatedAt": "2026-08-14T19:34:54.477Z",
+  "processed": 64,
+  "failed": 686,
+  "successRate": "8.5%",
   "tierBreakdown": {
     "playwright": 37,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 4,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-14T11:19:07.811Z",
@@ -25,6 +25,29 @@
       "t": "2026-08-14T11:19:08.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-14T19:29:11.690Z",
+      "event": "bb-session",
+      "session": "5d062078",
+      "url": "https://www.ft.com/content/8fb9a7af-1f87-4607-ba09-e94386ad0b56?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-08-14T19:29:12.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-08-14T19:33:54.699Z",
+      "event": "bb-session",
+      "session": "44760bc3",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+    },
+    {
+      "t": "2026-08-14T19:34:03.240Z",
+      "event": "bb-session",
+      "session": "2e39d1dd",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
     }
   ]
 }
