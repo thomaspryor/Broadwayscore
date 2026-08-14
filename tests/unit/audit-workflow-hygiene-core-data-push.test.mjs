@@ -6,6 +6,10 @@
  *
  * Pattern: require() the real function; never copy logic into tests
  * (CLAUDE.md rule 15).
+ *
+ * TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the regex-detector under
+ * test never reads data/*.json; "data/awards.json"/"data/shows.json" appear
+ * only as string literals inside synthetic YAML fixtures.
  */
 
 import { test, describe } from 'node:test';
