@@ -6,7 +6,7 @@ import path from 'node:path';
 import {
   utcFromZoned, computeWindow, activeWindows, nightKey, launchDecision,
   HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
-  claimLockGeneration, isLockGenerationOwner,
+  claimLockGeneration, isLockGenerationOwner, shouldPageForFailedPass,
 } from './opening-night-windows.js';
 import { computeClaudeAlive } from './cmux-workspaces.js';
 
@@ -204,6 +204,49 @@ test('decision: attempt cap → escalate, never a 4th Fable session', () => {
   assert.equal(launchDecision({ ...base, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT }).action, 'escalate');
   const dead = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 200, claudeAlive: false, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
   assert.equal(dead.action, 'escalate');
+});
+
+// ── coverage-complete stop (card #1413) ────────────────────────────────────
+
+test('decision: coverage complete + no live session → stop, before spending another attempt', () => {
+  const d = launchDecision({ ...base, coverageComplete: true, attemptsTonight: 0 });
+  assert.equal(d.action, 'stop');
+  assert.match(d.reason, /coverage complete/);
+});
+
+test('decision: coverage complete does NOT default on (every existing caller omits it)', () => {
+  assert.equal(launchDecision(base).action, 'launch');
+});
+
+test('decision: coverage complete beats the attempt cap — stop, not escalate', () => {
+  const d = launchDecision({ ...base, coverageComplete: true, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
+  assert.equal(d.action, 'stop');
+});
+
+test('decision: a LIVE session is never preempted by coverageComplete — the running pass finishes, next tick stops it', () => {
+  const d = launchDecision({ ...base, coverageComplete: true, lockExists: true, heartbeatAgeMin: 5, claudeAlive: false });
+  assert.equal(d.action, 'skip');
+  assert.match(d.reason, /heartbeat/);
+});
+
+test('decision: a DEAD locked session still reclaims even if coverage looks complete — coverage is only checked once no session is live', () => {
+  const d = launchDecision({ ...base, coverageComplete: true, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive: false, attemptsTonight: 0 });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// ── shouldPageForFailedPass (card #1413) ───────────────────────────────────
+
+test('shouldPageForFailedPass: a pass killed by the wall clock that still advanced state never pages, even past the attempt cap', () => {
+  assert.equal(shouldPageForFailedPass({ consecutiveFailures: MAX_ATTEMPTS_PER_NIGHT, advancedState: true }), false);
+  assert.equal(shouldPageForFailedPass({ consecutiveFailures: MAX_ATTEMPTS_PER_NIGHT + 5, advancedState: true }), false);
+});
+
+test('shouldPageForFailedPass: a single failure with no progress does not page yet — retries get a chance first', () => {
+  assert.equal(shouldPageForFailedPass({ consecutiveFailures: 1, advancedState: false }), false);
+});
+
+test('shouldPageForFailedPass: retries exhausted AND no progress → page the owner', () => {
+  assert.equal(shouldPageForFailedPass({ consecutiveFailures: MAX_ATTEMPTS_PER_NIGHT, advancedState: false }), true);
 });
 
 // ── lock generation token (#569 TOCTOU fix) ────────────────────────────────
