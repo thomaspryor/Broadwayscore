@@ -25,6 +25,8 @@ const {
   getJobBlocks,
   findForceTrueClearSites,
   auditRepo,
+  main,
+  ACTION_EXTRA_PROTECTED,
 } = require(path.join(repoRoot, 'scripts/audit-same-job-breadcrumb-coverage.js'));
 const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } =
   require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
@@ -71,6 +73,20 @@ function apply(fp, data) {
   const sites = findForceTrueClearSites(src, new Set(['fullText', 'assignedScore', 'ensembleData']));
   assert.equal(sites.length, 1);
   assert.deepEqual(sites[0].fields.sort(), ['assignedScore', 'ensembleData', 'fullText']);
+});
+
+test('findForceTrueClearSites: handles a first argument containing a comma (adversarial ship-check review, path.join(showDir, file) shape live at 7 rebuild-all-reviews.js call sites)', () => {
+  const src = `
+function apply(fp, data) {
+  data.wrongProduction = false;
+  data.wrongProductionAutoCleared = 'rebuild: reason';
+  delete data.wrongProductionNote;
+  safeWriteReview(path.join(showDir, file), data, { force: true });
+}
+`;
+  const sites = findForceTrueClearSites(src, new Set(['wrongProductionNote']));
+  assert.equal(sites.length, 1, 'must detect the call even though the first argument itself contains a comma');
+  assert.deepEqual(sites[0].fields, ['wrongProductionNote']);
 });
 
 test('findForceTrueClearSites: detects null-assignment clears (strip-stale-single-model-scores.js shape)', () => {
@@ -300,15 +316,24 @@ test('findForceTrueClearSites: exact field match on the real strip-stale-single-
   assert.deepEqual([...fields].sort(), ['assignedScore', 'ensembleData', 'llmMetadata', 'llmScore']);
 });
 
-test('findForceTrueClearSites: correctly resolves 5 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion review flagged)', () => {
+test('findForceTrueClearSites: correctly resolves 11 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion AND adversarial ship-check reviews both flagged)', () => {
   const src = fs.readFileSync(path.join(repoRoot, 'scripts/rebuild-all-reviews.js'), 'utf8');
   const sites = findForceTrueClearSites(src, new Set(PROTECTED_FIELDS));
-  // Exactly 5 call sites carry a protected clear as of this writing; each
-  // one's fields come only from its own immediately-preceding statements.
-  assert.equal(sites.length, 5);
+  // 11 call sites carry a protected clear as of this writing (up from 5 before
+  // the balanced-parens argument parser fix — the adversarial ship-check
+  // review found the prior `[^,]+`-based first-arg regex silently produced
+  // zero matches on `safeWriteReview(path.join(showDir, file), data, {force:
+  // true})`, live at 7 of this file's call sites). Each site's fields must
+  // come only from its own immediately-preceding statements.
+  assert.equal(sites.length, 11);
+  const allowedFields = [
+    'wrongProduction', 'wrongProductionNote', 'wrongProductionReason',
+    'wrongShow', 'wrongShowNote', 'wrongShowReason',
+    'wrongFullText',
+  ];
   for (const s of sites) {
     for (const f of s.fields) {
-      assert.ok(['wrongProductionNote', 'wrongProductionReason', 'wrongFullText'].includes(f),
+      assert.ok(allowedFields.includes(f),
         `unexpected field "${f}" at line ${s.line} — possible cross-attribution from an unrelated call site`);
     }
   }
@@ -374,4 +399,31 @@ test('auditRepo against the real repo: the 3 known scripts are actually reached 
   for (const script of ['audit-stuck-rescore-flags.js', 'strip-stale-single-model-scores.js', 'apply-audit-flags.js']) {
     assert.ok(scanned.scripts.has(script), `expected ${script} to be reached by the same-job scan`);
   }
+});
+
+// ── ACTION_EXTRA_PROTECTED sync check (adversarial ship-check review,
+// 2026-08-14): .github/actions/push-review-texts/action.yml unions its own
+// ACTION_EXTRA field list with PROTECTED_FIELDS before restoring — fields
+// intentionally excluded from PROTECTED_FIELDS because clearFailureFlags()
+// clears them on success, but which the action still restores at push time.
+// Importing only PROTECTED_FIELDS left this script structurally blind to a
+// force:true clear of any of these. Mirrors the "KEEP IN SYNC" convention
+// review-write-guard.js's own PROTECTED_FIELDS comment already documents. ──
+test('ACTION_EXTRA_PROTECTED stays in sync with the real push-review-texts/action.yml ACTION_EXTRA list', () => {
+  const actionSrc = fs.readFileSync(
+    path.join(repoRoot, '.github/actions/push-review-texts/action.yml'), 'utf8');
+  const block = actionSrc.match(/const ACTION_EXTRA = \[([\s\S]*?)\];/);
+  assert.ok(block, 'expected an ACTION_EXTRA array literal in push-review-texts/action.yml');
+  const realFields = [...block[1].matchAll(/'([A-Za-z0-9_]+)'/g)].map((m) => m[1]);
+  assert.ok(realFields.length > 0, 'expected at least one field name in ACTION_EXTRA');
+  assert.deepEqual([...ACTION_EXTRA_PROTECTED].sort(), [...realFields].sort());
+});
+
+// ── main() never throws (adversarial ship-check review, 2026-08-14): the
+// test.yml step has no continue-on-error, so an uncaught exception would
+// actually fail "Lint Workflows" despite every doc comment promising
+// non-blocking. Functional check — calls the REAL main(), not a source-text
+// assertion about whether a try/catch exists. ──
+test('main(): runs to completion without throwing against the real repo', () => {
+  assert.doesNotThrow(() => main());
 });

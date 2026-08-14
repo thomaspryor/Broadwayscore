@@ -53,6 +53,24 @@ const SCRIPT_INVOCATION_RE = /\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g;
 // earlier in a large file like rebuild-all-reviews.js.
 const CLEAR_LOOKBACK_CHARS = 3000;
 
+// KEEP IN SYNC with .github/actions/push-review-texts/action.yml's own
+// ACTION_EXTRA array (adversarial ship-check review, 2026-08-14): fields
+// intentionally excluded from review-write-guard.js's PROTECTED_FIELDS
+// because clearFailureFlags() clears them on a SUCCESS path, but which the
+// push-review-texts action still restores at push time (unions them with
+// PROTECTED_FIELDS before its own restore loop). A force:true clear of one of
+// these with no CLEAR_BREADCRUMBS entry is exactly the same bug class this
+// script exists to catch — importing only PROTECTED_FIELDS made it
+// structurally blind to this set.
+const ACTION_EXTRA_PROTECTED = [
+  'serpRetryCount',
+  'serpDiscoveryAbandoned',
+  'rescoreBlockedReason',
+  'rescoreBlockedAt',
+  'rescoreBlockedTextLength',
+  'rescoreBlockedHadExcerpt',
+];
+
 const indentOf = (line) => line.length - line.replace(/^ +/, '').length;
 
 /** Direct (one-level-deeper) non-blank child lines of the header at `startIdx`. */
@@ -106,6 +124,75 @@ function getJobBlocks(raw) {
 }
 
 /**
+ * Index of the char matching src[openIdx] ('(' → matching ')'), skipping over
+ * '...'/"..."/`...` string literals and //, /* comments so a stray paren
+ * inside a string or comment can't desync the depth count.
+ */
+function findMatchingParen(src, openIdx) {
+  let depth = 0;
+  for (let i = openIdx; i < src.length; i++) {
+    const ch = src[i];
+    if (ch === '/' && src[i + 1] === '/') {
+      const nl = src.indexOf('\n', i);
+      i = nl === -1 ? src.length : nl;
+      continue;
+    }
+    if (ch === '/' && src[i + 1] === '*') {
+      const end = src.indexOf('*/', i + 2);
+      i = end === -1 ? src.length + 1 : end + 1;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      let j = i + 1;
+      while (j < src.length && src[j] !== quote) {
+        if (src[j] === '\\') j++;
+        j++;
+      }
+      i = j;
+      continue;
+    }
+    if (ch === '(') depth++;
+    else if (ch === ')') { depth--; if (depth === 0) return i; }
+  }
+  return -1;
+}
+
+/**
+ * Split a call's argument text on TOP-LEVEL commas only — depth-aware so a
+ * first argument like `path.join(showDir, file)` isn't mistaken for two
+ * arguments (adversarial ship-check review, 2026-08-14: the earlier `[^,]+`
+ * regex for the first argument silently produced zero matches on exactly this
+ * shape, live at 7 of rebuild-all-reviews.js's 16 safeWriteReview(force:true)
+ * call sites).
+ */
+function splitTopLevelArgs(argsText) {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < argsText.length; i++) {
+    const ch = argsText[i];
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      i++;
+      while (i < argsText.length && argsText[i] !== quote) {
+        if (argsText[i] === '\\') i++;
+        i++;
+      }
+      continue;
+    }
+    if (ch === '(' || ch === '[' || ch === '{') depth++;
+    else if (ch === ')' || ch === ']' || ch === '}') depth--;
+    else if (ch === ',' && depth === 0) {
+      parts.push(argsText.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(argsText.slice(start));
+  return parts;
+}
+
+/**
  * Find safeWriteReview(..., {force: true}) call sites in `src`, and for each
  * one, the PROTECTED fields cleared via `delete dataVar.field` or
  * `dataVar.field = <empty value>` in the source immediately preceding the
@@ -131,12 +218,19 @@ function getJobBlocks(raw) {
  * @returns {{ fields: string[], line: number }[]}
  */
 function findForceTrueClearSites(src, protectedFieldsSet) {
-  const callRe = /safeWriteReview\s*\(\s*[^,]+,\s*([A-Za-z_$][\w$]*)\s*,\s*\{[\s\S]{0,200}?\bforce\s*:\s*true\b/g;
+  const callNameRe = /safeWriteReview\s*\(/g;
   const sites = [];
   let lastMatchEnd = 0;
   let m;
-  while ((m = callRe.exec(src)) !== null) {
-    const dataVar = m[1];
+  while ((m = callNameRe.exec(src)) !== null) {
+    const openParenIdx = m.index + m[0].length - 1;
+    const closeParenIdx = findMatchingParen(src, openParenIdx);
+    if (closeParenIdx === -1) continue;
+    const args = splitTopLevelArgs(src.slice(openParenIdx + 1, closeParenIdx));
+    const dataVarMatch = args.length >= 2 && args[1].trim().match(/^([A-Za-z_$][\w$]*)$/);
+    const hasForceTrue = args.length >= 3 && /\bforce\s*:\s*true\b/.test(args[2]);
+    if (!dataVarMatch || !hasForceTrue) { lastMatchEnd = closeParenIdx + 1; continue; }
+    const dataVar = dataVarMatch[1];
     const callIdx = m.index;
     const windowStart = Math.max(lastMatchEnd, callIdx - CLEAR_LOOKBACK_CHARS, 0);
     const window = src.slice(windowStart, callIdx);
@@ -153,7 +247,7 @@ function findForceTrueClearSites(src, protectedFieldsSet) {
       const line = src.slice(0, callIdx).split('\n').length;
       sites.push({ fields, line });
     }
-    lastMatchEnd = m.index + m[0].length;
+    lastMatchEnd = closeParenIdx + 1;
   }
   return sites;
 }
@@ -227,34 +321,42 @@ function auditRepo({ workflowDir, scriptsDir, protectedFields, breadcrumbKeys })
 }
 
 function main() {
-  const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } = require('./lib/review-write-guard');
-  const breadcrumbKeys = new Set(Object.keys(CLEAR_BREADCRUMBS));
+  // Non-blocking is a hard contract (test.yml's step has no continue-on-error
+  // — see header). An uncaught exception here (a review-write-guard.js
+  // require failure, an unanticipated workflow YAML shape) must not fail the
+  // "Lint Workflows" job (adversarial ship-check review, 2026-08-14).
+  try {
+    const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } = require('./lib/review-write-guard');
+    const breadcrumbKeys = new Set(Object.keys(CLEAR_BREADCRUMBS));
 
-  const { gaps, scanned } = auditRepo({
-    workflowDir: WORKFLOW_DIR,
-    scriptsDir: SCRIPTS_DIR,
-    protectedFields: PROTECTED_FIELDS,
-    breadcrumbKeys,
-  });
+    const { gaps, scanned } = auditRepo({
+      workflowDir: WORKFLOW_DIR,
+      scriptsDir: SCRIPTS_DIR,
+      protectedFields: [...PROTECTED_FIELDS, ...ACTION_EXTRA_PROTECTED],
+      breadcrumbKeys,
+    });
 
-  if (gaps.length === 0) {
-    console.log(`✅ Same-job breadcrumb coverage guard: no gaps flagged (${scanned.jobs} push-review-texts job(s), ${scanned.scripts.size} script(s) scanned).`);
-    return;
+    if (gaps.length === 0) {
+      console.log(`✅ Same-job breadcrumb coverage guard: no gaps flagged (${scanned.jobs} push-review-texts job(s), ${scanned.scripts.size} script(s) scanned).`);
+      return;
+    }
+
+    console.log('⚠️  Same-job breadcrumb coverage guard — force:true PROTECTED-field clears with no CLEAR_BREADCRUMBS entry:\n');
+    console.log('These scripts run in a job that also calls push-review-texts LATER — its restore step reads');
+    console.log('committed HEAD (checked out before the script ran) and will resurrect the field it just cleared.');
+    console.log('Same bug class fixed reactively 3 times already (#97, #1237, #1259). See scripts/lib/review-write-guard.js.\n');
+    console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
+    for (const g of gaps) {
+      console.log(`  • ${g.workflow} :: job "${g.job}" → scripts/${g.script}:${g.line} clears "${g.field}" with no CLEAR_BREADCRUMBS entry`);
+    }
+    console.log(`\nFix: register a CLEAR_BREADCRUMBS[field] predicate in scripts/lib/review-write-guard.js (see`);
+    console.log(`staleScoredBeforeOpening / fullTextWrongAuthor / stuckRescoreCleared for the pattern), and make sure`);
+    console.log(`the breadcrumb field(s) it reads are themselves in PROTECTED_FIELDS so they survive a rebase.`);
+    console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
+    // Advisory only — never fails CI (see header).
+  } catch (e) {
+    console.warn(`[audit-same-job-breadcrumb-coverage] non-fatal error: ${e.message} — advisory only, not failing CI.`);
   }
-
-  console.log('⚠️  Same-job breadcrumb coverage guard — force:true PROTECTED-field clears with no CLEAR_BREADCRUMBS entry:\n');
-  console.log('These scripts run in a job that also calls push-review-texts LATER — its restore step reads');
-  console.log('committed HEAD (checked out before the script ran) and will resurrect the field it just cleared.');
-  console.log('Same bug class fixed reactively 3 times already (#97, #1237, #1259). See scripts/lib/review-write-guard.js.\n');
-  console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
-  for (const g of gaps) {
-    console.log(`  • ${g.workflow} :: job "${g.job}" → scripts/${g.script}:${g.line} clears "${g.field}" with no CLEAR_BREADCRUMBS entry`);
-  }
-  console.log(`\nFix: register a CLEAR_BREADCRUMBS[field] predicate in scripts/lib/review-write-guard.js (see`);
-  console.log(`staleScoredBeforeOpening / fullTextWrongAuthor / stuckRescoreCleared for the pattern), and make sure`);
-  console.log(`the breadcrumb field(s) it reads are themselves in PROTECTED_FIELDS so they survive a rebase.`);
-  console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
-  // Advisory only — never fails CI (see header).
 }
 
 if (require.main === module) {
@@ -270,4 +372,5 @@ module.exports = {
   PUSH_REVIEW_TEXTS_RE,
   SCRIPT_INVOCATION_RE,
   ANNOTATION,
+  ACTION_EXTRA_PROTECTED,
 };
