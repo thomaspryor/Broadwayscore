@@ -53,6 +53,10 @@ FAIL=0
 run_audit() {
   local label="$1"
   local script="$2"
+  shift 2
+  # Remaining args ("$@") are passed straight through to `node "$script"` —
+  # e.g. audit-orphan-tests.js's --scope-stdin (card #1488). Existing callers
+  # that pass no extra args are unaffected.
   if [ "$LIST_ONLY" = "1" ]; then
     echo "$label"
     return 0
@@ -63,7 +67,7 @@ run_audit() {
   # corrupting/blanking the error output it prints (same fix as pre-push's
   # original run_audit()).
   local AUDIT_OUT="/tmp/push-audit.$$.$RANDOM.out"
-  if ! node "$script" >"$AUDIT_OUT" 2>&1; then
+  if ! node "$script" "$@" >"$AUDIT_OUT" 2>&1; then
     echo ""
     echo "=== AUDIT BLOCKED: $label failed ==="
     echo ""
@@ -83,7 +87,12 @@ fi
 # Orphan/unregistered test detection.
 if echo "$CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
-  run_audit "orphan-tests" "scripts/audit-orphan-tests.js" || FAIL=1
+  # --scope-stdin (card #1488): only orphans among THIS push's changed files
+  # are blocking; pre-existing orphans elsewhere print informational and
+  # don't fail an unrelated push. CI's own direct calls to
+  # audit-orphan-tests.js (test.yml) never pass this flag, so they keep
+  # doing the full-repo check as the safety net.
+  printf '%s\n' "$CHANGED_FILES" | run_audit "orphan-tests" "scripts/audit-orphan-tests.js" --scope-stdin || FAIL=1
 fi
 
 # Playwright evaluate-click anti-pattern.
