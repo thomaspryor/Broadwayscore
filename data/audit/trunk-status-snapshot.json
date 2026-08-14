@@ -1,27 +1,22 @@
 {
-  "generatedAt": "2026-08-13T08:07:39.008Z",
+  "generatedAt": "2026-08-14T08:04:29.308Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "6c38b4258b47c3ec815a8f86e62a16e91f94937e",
+  "latestRunHeadSha": "9c06d7f7e0a68c31845b8e1befe0c01ba2c96dbb",
   "state": "RED",
-  "consecutiveFailures": 47,
+  "consecutiveFailures": 89,
   "redSince": "2026-08-12T14:14:28Z",
-  "redForHours": 17.88639111111111,
+  "redForHours": 41.83369666666667,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-12T07:26:23Z",
-  "latestFailedRunId": "31678459755",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31678459755",
+  "latestFailedRunId": "31769548660",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31769548660",
   "decidedRuns": 90,
   "failingJobs": [
     {
-      "name": "Lint Workflows",
-      "steps": [
-        "Audit — help-flag safety (cousin --help bug class)"
-      ]
-    },
-    {
       "name": "Data Validation",
       "steps": [
+        "Audit self-contradictory clear breadcrumbs",
         "Audit stale flag after URL correction"
       ]
     },
@@ -32,6 +27,19 @@
       ]
     }
   ],
-  "failingPaths": [],
-  "topFailingJob": "Lint Workflows"
+  "failingPaths": [
+    {
+      "path": "scripts/audit-stale-flag-after-url-correction.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/audit-cast-contamination.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
+  "topFailingJob": "Data Validation"
 }
