@@ -238,7 +238,9 @@ function classifyReclaimable(trapped, ctx = {}) {
     // only this guard. Every other guard (live lease, live tab, duplicate,
     // card Outcome, card idle) still runs, because none of them are the
     // question the human just answered.
-    const forced = forceReclaimIds.has(id);
+    // String-normalised on both sides, matching indexLiveTasks: a caller passing
+    // numeric ids would otherwise silently no-op (review nit).
+    const forced = forceReclaimIds.has(id) || forceReclaimIds.has(Number(id));
 
     if (startedIds.has(id) && !forced) {
       const ev = branchEvidenceOf(id);
@@ -265,7 +267,7 @@ function classifyReclaimable(trapped, ctx = {}) {
     if (String(card.outcome || '').trim()) { push('park-outcome', 'card already records a completed Outcome — needs a human yes/no, not an automatic reopen'); continue; }
     if (TERMINAL_CARD_STATUSES.has(card.status)) { push('park-outcome', `card status is ${card.status} — finished work, never reclaim`); continue; }
 
-    push('reclaim', forced
+    push('reclaim', (forced && startedIds.has(id))
       ? 'dispatched before, but an owner-directed branch review confirmed its work already landed on main — and every other guard still passed'
       : 'no live session, no live tab, no duplicate, no branch, card idle and unfinished');
   }
