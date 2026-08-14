@@ -22,6 +22,7 @@ const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/f
 const { planContentRequestActions } = require('./lib/content-request-routing.js');
 const { buildEntry: buildLedgerEntry, mergeEntries: mergeLedgerEntries } = require('./lib/feedback-request-ledger.js');
 const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
+const { mergeCorrectionSubmissions } = require('./lib/feedback-digest-correction-merge.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -356,7 +357,15 @@ async function main() {
     // AI categorization, thank-you emails, and auto-diagnosis — they land
     // in a dedicated "Needs Review" section in the digest for human triage.
     const spamFlagged = newFiltered.filter(s => s._isSpam);
-    const newSubmissions = newFiltered.filter(s => !s._isSpam);
+    // Same-run corrections/follow-ups (same submitter, same show, within
+    // 5 min of each other) are merged into one submission BEFORE
+    // categorization — every downstream issue body embeds exactly one
+    // submission.message, so an unmerged correction is silently discarded
+    // (card #1427, GH #567: a "wrong outlet" correction sent 3 min after the
+    // original never reached any issue). The same-submitter requirement
+    // keeps two DIFFERENT users' reports about a popular show from being
+    // wrongly collapsed. See scripts/lib/feedback-digest-correction-merge.js.
+    const newSubmissions = mergeCorrectionSubmissions(newFiltered.filter(s => !s._isSpam));
     console.log(`${newSubmissions.length} new inbox submission(s), ${spamFlagged.length} spam-flagged\n`);
 
     // Output for workflow to know if there are submissions (either kind)
@@ -662,12 +671,19 @@ async function main() {
     const summaryPath = path.join(__dirname, '../.feedback-summary.md');
     fs.writeFileSync(summaryPath, summary || '');
 
-    // Mark all processed submissions (inbox + spam-flagged) in tracking
-    // so we don't re-surface the same spam-flagged items every run.
+    // Mark all processed submissions (inbox + spam-flagged) in tracking so
+    // we don't re-surface the same spam-flagged items every run. A merged
+    // correction submission carries the IDs of every original submission it
+    // absorbed (_mergedSubmissionIds) — marking only the primary's ID would
+    // leave the correction looking "unprocessed" and refetch it next run.
     for (const sub of [...submissions, ...spamFlagged]) {
-      const id = submissionId(sub);
-      if (id && !tracking.processedIds.includes(id)) {
-        tracking.processedIds.push(id);
+      const ids = sub._mergedSubmissionIds && sub._mergedSubmissionIds.length
+        ? sub._mergedSubmissionIds
+        : [submissionId(sub)];
+      for (const id of ids) {
+        if (id && !tracking.processedIds.includes(id)) {
+          tracking.processedIds.push(id);
+        }
       }
     }
     saveTracking(tracking);
