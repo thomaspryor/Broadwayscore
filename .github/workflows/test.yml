@@ -91,6 +91,10 @@ on:
       - 'scripts/audit-serp-census-recall.js'
       - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
+      # Push-retry deadman row (BRO-231/#1221): colocated *.test.mjs runs in
+      # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-retry-deadman.js'
+      - 'scripts/lib/push-retry-deadman.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
