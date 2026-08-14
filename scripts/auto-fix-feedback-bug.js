@@ -27,6 +27,7 @@ const commercialWriteGuard = _require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = _require('./lib/cli-help.js');
 const { foldDiacritics } = _require('./lib/title-match.js');
+const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,26 +42,17 @@ Usage:
 
 // --- Safety rails ---
 
-const ALLOWED_FIELDS = {
-  'shows.json': [
-    'venue', 'synopsis', 'runtime', 'intermissions',
-    'ageRecommendation', 'type', 'isRevival',
-  ],
-  'commercial.json': [
-    'designation', 'capitalization', 'weeklyRunningCost',
-    'capitalizationSource', 'notes',
-  ],
-  'audience-buzz.json': [
-    'title',
-  ],
-  // awards.json: only winnerNames appends are auto-fixable (append-winner operation).
-  // Tony co-winners are excluded — they require awards-confirmed-ties.json update.
-  'awards.json': [
-    'winnerNames',
-  ],
-};
+// awards.json: only winnerNames appends are auto-fixable (append-winner operation).
+// Tony co-winners are excluded — they require awards-confirmed-ties.json update.
+// Uses AUTO_FIX_EDITABLE_FIELDS (deliberately narrower than the full
+// FEEDBACK_EDITABLE_FIELDS set) — this script writes unattended, with no
+// human approval step, so it never gets access to show lifecycle fields
+// (status/dates/creativeTeam) or unverifiable financial claims (recouped).
+const EDITABLE_FIELDS = pickEditableFields([
+  'shows.json', 'commercial.json', 'audience-buzz.json', 'awards.json',
+], AUTO_FIX_EDITABLE_FIELDS);
 
-const ALLOWED_FILES = Object.keys(ALLOWED_FIELDS);
+const ALLOWED_FILES = Object.keys(EDITABLE_FIELDS);
 
 // --- Helpers ---
 
@@ -293,7 +285,7 @@ async function main() {
     if (buzz.shows?.[show.id]) currentData.audienceBuzz = buzz.shows[show.id];
   } catch { /* skip */ }
 
-  const allowedFieldsList = Object.entries(ALLOWED_FIELDS)
+  const allowedFieldsList = Object.entries(EDITABLE_FIELDS)
     .map(([file, fields]) => `  ${file}: ${fields.join(', ')}`)
     .join('\n');
 
@@ -380,7 +372,7 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
     }
 
     // Validate field is allowed
-    if (!ALLOWED_FIELDS[change.file].includes(change.field)) {
+    if (!EDITABLE_FIELDS[change.file].includes(change.field)) {
       skipped.push(`${change.file}:${change.field}: not an auto-fixable field`);
       continue;
     }

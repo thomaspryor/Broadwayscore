@@ -456,8 +456,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** ANTHROPIC_API_KEY
 - **Concurrency:** Serialized (queued, not cancelled) to prevent parallel data file conflicts
 - **Auto-fix criteria:** `fixType=data` + `confidence=high` + resolved show ID
-- **Allowed fields:** `shows.json` (venue, synopsis, runtime, intermissions, ageRecommendation, type, isRevival), `commercial.json` (designation, capitalization, weeklyRunningCost, capitalizationSource, notes), `audience-buzz.json` (title)
-- **Protected fields:** id, slug, status, openingDate, closingDate, previewsStartDate, images, tags, cast, creativeTeam, recouped, deepResearch
+- **Allowed fields:** canonical list in `scripts/lib/feedback-pipeline-fields.js` (`FEEDBACK_EDITABLE_FIELDS`, shared with `diagnose-feedback-bug.js`, `generate-remediation-plan.js`, `execute-approved-fix.js` — card #1482 consolidated 4 independent copies)
+- **Protected fields:** id, slug, images, tags, cast, deepResearch (everything else editable per the shared allowlist above)
 - **Safety:** oldValue verification prevents stale-data writes, validate-data.js post-check with git rollback on failure
 - **Outcomes:** `fixed` (closes issue), `not-a-bug` (labels, leaves open), `skipped` (labels needs-manual-review), `error`/`validation-failed` (labels needs-manual-review)
 - **Cost:** ~$0.01-0.03 per fix attempt (one Claude Sonnet call)

@@ -214,6 +214,13 @@ on:
       - 'scripts/lib/plan-refusal-escalation.js'
       - 'scripts/lib/plan-refusal-escalation.test.mjs'
       - 'scripts/execute-approved-fix.js'
+      # Canonical feedback-pipeline field allowlist (card #1482) — shared by
+      # auto-fix-feedback-bug.js, diagnose-feedback-bug.js,
+      # generate-remediation-plan.js, and execute-approved-fix.js. Colocated
+      # test runs via tests/unit-test-manifest.txt (tests/** already globbed
+      # above); path-listed so a solo lib edit triggers CI.
+      - 'scripts/lib/feedback-pipeline-fields.js'
+      - 'scripts/auto-fix-feedback-bug.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/finance-matchers.js'
