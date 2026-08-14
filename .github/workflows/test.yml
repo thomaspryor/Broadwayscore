@@ -379,6 +379,11 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/ticket-link-discovery.js'
       - 'scripts/lib/ticket-link-discovery.test.mjs'
+      # Same class, lower stakes: this one lives in scripts/tests/ (not globbed)
+      # and is registered in tests/unit-test-manifest-tsx.txt. Its two subjects
+      # (src/lib/ticket-utils.ts, scripts/lib/ticket-link-discovery.js) already
+      # trigger CI, so only an edit to the TEST ITSELF was invisible.
+      - 'scripts/tests/tm-gap-links.test.mjs'
       - 'scripts/enrich-fallback-ticket-links.js'
       - 'scripts/enrich-fallback-ticket-links.test.mjs'
       - 'src/lib/ticket-utils.ts'
@@ -1568,6 +1573,19 @@ on:
       - 'scripts/lib/infra-gate-registration-check.js'
       - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
+      # Merge/push review-gate shell e2e (task #1316). Same "scripts/tests/ is
+      # not scripts/lib/" gap, and found the hard way on 2026-08-14: a push to
+      # main whose ONLY change was this test file produced ZERO test.yml runs,
+      # so the fix for the wedge that had been eating whole test batches could
+      # not be verified by the push that made it. The file is in
+      # tests/unit-test-manifest.txt so it RUNS once CI runs; it just never
+      # started CI. The two gate hooks are listed alongside it because this
+      # suite exists to catch regressions in exactly those two scripts — same
+      # hook-with-its-test pairing already used for pre-push-visual-gate.sh
+      # above.
+      - 'scripts/tests/merge-gate-hook.test.mjs'
+      - '.claude/hooks/pre-merge-review-gate.sh'
+      - '.claude/hooks/pre-push-review-gate.sh'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
@@ -1949,6 +1967,13 @@ on:
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/lib/dispatch-outcome.js'
       - 'scripts/tests/dispatch-outcome.test.mjs'
+      # The digest sibling was missed when the pair above was listed: grep for
+      # "dispatch-outcome-digest" across .github/workflows/ returned NOTHING,
+      # so neither the lib nor its test could trigger any workflow. The test is
+      # in tests/unit-test-manifest.txt, so it RUNS once CI runs — it just
+      # never started CI, which is the more dangerous half of the gap.
+      - 'scripts/lib/dispatch-outcome-digest.js'
+      - 'scripts/tests/dispatch-outcome-digest.test.mjs'
       # No-payload reaper (card #856, Session-system overhaul S3) — colocated
       # test runs in the lib-test glob (scripts/lib/*.test.mjs); path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
