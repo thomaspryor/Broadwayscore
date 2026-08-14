@@ -1,7 +1,12 @@
 /**
- * Broadway Venue Address Lookup
+ * Theater Venue Address Lookup
  *
- * Canonical mapping of all 43 Broadway theater venues to their street addresses.
+ * Canonical mapping of theater venues to their street addresses: the 43
+ * Broadway houses, plus known UK regional feeder venues (data/uk-regional-
+ * venues.json — RSC Stratford, Chichester Festival Theatre) so
+ * generateShowSchema's schema.org output can emit a real UK address (and
+ * therefore addressCountry: GB via toPostalAddress in src/lib/seo.ts,
+ * card #1451) instead of falling back to no address at all.
  * Used by discover-new-shows.js (auto-fill on discovery) and backfill scripts.
  *
  * Source of truth for theater addresses. When adding a new venue, add it here first.
@@ -51,6 +56,14 @@ const VENUE_ADDRESSES = {
   'Vivian Beaumont Theater': '150 W 65th St, New York, NY 10023',
   'Walter Kerr Theatre': '219 W 48th St, New York, NY 10036',
   'Winter Garden Theatre': '1634 Broadway, New York, NY 10019',
+
+  // UK regional feeder venues (data/uk-regional-venues.json). Two keys per
+  // venue since show.venue's exact format varies by discovery source — the
+  // bare name, and the "name, city" form already live in shows.json for
+  // game-of-thrones-the-mad-king-regional-2026.
+  'Royal Shakespeare Theatre': 'Royal Shakespeare Theatre, Waterside, Stratford-upon-Avon, Warwickshire CV37 6BB',
+  'Royal Shakespeare Theatre, Stratford-upon-Avon': 'Royal Shakespeare Theatre, Waterside, Stratford-upon-Avon, Warwickshire CV37 6BB',
+  'Chichester Festival Theatre': 'Chichester Festival Theatre, Oaklands Park, Chichester, West Sussex PO19 6AP',
 };
 
 /**
