@@ -92,6 +92,19 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh
 
+      # data/awards.json is dual-tracked: the public-repo commit above feeds
+      # test.yml's staleness gate + vercel-preview's build-trigger path, but
+      # checkout-core-data/push-core-data's private repo
+      # (thomaspryor/broadway-scorecard-data) is what every OTHER workflow
+      # actually reads via checkout-core-data. Without this step the scrape
+      # never reaches that authoritative copy — card #1441.
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update Tony Awards data (private repo sync)'
+
       - name: Create IBDB scraper reminder issue
         if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
         run: |
