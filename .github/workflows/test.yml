@@ -994,6 +994,13 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/feedback-digest-correction-merge.js'
       - 'scripts/lib/feedback-digest-correction-merge.test.mjs'
+      # Card #1498: same correction-merge bug in the separate review-submission
+      # Formspree pipeline (process-review-formspree.js) — reuses the shared
+      # grouping core above via mergeReviewSubmissionCorrections(). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI (no scripts/lib/** broad glob, no scripts/** glob).
+      - 'scripts/lib/review-submission-correction-merge.test.mjs'
+      - 'scripts/process-review-formspree.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
       # Without these, an edit to the normalizer pushes with ZERO CI coverage
