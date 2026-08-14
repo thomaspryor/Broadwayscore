@@ -1,0 +1,191 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const {
+  classifyReclaimable, reclaimedTaskShape, supersededTaskShape,
+  taskBranchEvidence, notionMarkerOf, normalizeSubject, indexLiveTasks,
+} = require('./task-reclaim.js');
+
+const NOW = Date.parse('2026-08-14T12:00:00.000Z');
+const hAgo = (h) => new Date(NOW - h * 3600e3).toISOString();
+const nid = (n) => `aaaa${n}aaa-1111-2222-3333-444444444444`;
+const trapped = (id, over = {}) => ({
+  id: String(id),
+  status: 'in_progress',
+  subject: `Some trapped card subject for #${id}`,
+  description: `[notion:${nid(id)}] P1 Next · In progress · Product\nbody`,
+  ...over,
+});
+const classify = (tasks, ctx = {}) => classifyReclaimable(tasks, { now: NOW, ...ctx });
+const actionOf = (rows, id) => (rows.find((r) => r.id === String(id)) || {}).action;
+
+// ── the happy path ─────────────────────────────────────────────────────────
+test('reclaims an idle, unstarted, unduplicated trapped task', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ status: 'In progress', lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 9), 'reclaim');
+});
+
+// ── C1: the duplicate-live blocker ─────────────────────────────────────────
+test('C1: skips a trapped task whose Notion marker already has a LIVE twin', () => {
+  const live = [{ id: '1164', subject: 'Totally different title', description: `[notion:${nid(9)}] P0 Now · Not started · Data` }];
+  const rows = classify([trapped(9)], { liveTasks: live, cardOf: () => ({ lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 9), 'skip-duplicate-live');
+  assert.equal(rows[0].detail, '1164');
+});
+
+test('C1: skips a MARKER-LESS trapped task whose SUBJECT already has a live twin', () => {
+  const t = trapped(5, { description: 'no marker at all here' });
+  const live = [{ id: '1176', subject: 'some TRAPPED card, subject for #5!', description: 'unrelated' }];
+  const rows = classify([t], { liveTasks: live });
+  assert.equal(actionOf(rows, 5), 'skip-duplicate-live', 'normalized-subject fallback must catch the 5 marker-less tasks');
+});
+
+// ── C2: marker match must scan the WHOLE description, not line 1 ────────────
+test('C2: finds the notion marker even when a zombie-sweep note was prepended', () => {
+  const t = trapped(9, { description: `[zombie-sweep 2026-08-01] reopened — sat In progress 3d.\n\n[notion:${nid(9)}] P1 Next · In progress · Product` });
+  assert.equal(notionMarkerOf(t), nid(9), 'a line-1-anchored match under-counted the live-twin population as 3 instead of 14');
+  const live = [{ id: '1170', subject: 'unrelated', description: `[notion:${nid(9)}] P1 Next` }];
+  assert.equal(actionOf(classify([t], { liveTasks: live }), 9), 'skip-duplicate-live');
+});
+
+// ── W1: breadcrumbs must never displace line 1 ─────────────────────────────
+test('W1: reclaim never prepends to description — line 1 keeps its [notion: anchor', () => {
+  const out = reclaimedTaskShape(trapped(9), { now: NOW });
+  const firstLine = out.description.split('\n')[0];
+  assert.match(firstLine, /^\[notion:/, 'taskPriority anchors ^[notion: on line 1; prepending makes every reclaimed task invisible to p01Queue');
+  assert.match(firstLine, /P1 Next/, 'the priority token taskPriority reads must survive verbatim');
+  assert.equal(out.status, 'pending');
+  assert.equal(out.owner, null);
+  assert.ok(out.reclaimedFromArchiveAt && out.reclaimedFromArchiveReason);
+});
+
+test('W2: the line-1 status segment stops claiming In progress', () => {
+  const out = reclaimedTaskShape(trapped(9), { now: NOW });
+  assert.match(out.description.split('\n')[0], /· Not started ·/);
+  assert.equal(out.description.split('\n')[1], 'body', 'body lines are untouched');
+});
+
+test('reclaim leaves a description with no status segment alone rather than mangling it', () => {
+  const out = reclaimedTaskShape(trapped(9, { description: 'bare description' }), { now: NOW });
+  assert.equal(out.description, 'bare description');
+});
+
+// ── liveness guards (borrowed from sweepUntrackedInProgress) ───────────────
+test('skips a task whose lease is still held by a live claude process', () => {
+  assert.equal(actionOf(classify([trapped(9)], { leaseAliveOf: () => true }), 9), 'skip-live');
+});
+
+test('skips a task with a live cmux tab titled like its subject', () => {
+  const rows = classify([trapped(9)], { liveTabOf: () => 'workspace:42' });
+  assert.equal(actionOf(rows, 9), 'skip-live');
+  assert.equal(rows[0].detail, 'workspace:42');
+});
+
+// ── the neverStarted / startedAndLost split ────────────────────────────────
+test('startedAndLost WITH branch evidence parks — never auto-reclaims (the data-loss case)', () => {
+  const rows = classify([trapped(1416)], {
+    startedIds: new Set(['1416']),
+    branchEvidenceOf: () => ({ hasEvidence: true, matches: ['worktree-1416-url-downgrade-guard'] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+  });
+  assert.equal(actionOf(rows, 1416), 'park-started');
+  assert.deepEqual(rows[0].detail, ['worktree-1416-url-downgrade-guard'], 'the matched branch must be reported so a false positive is visible');
+});
+
+test('startedAndLost with NO surviving branch is reclaimable — a ledger row alone is not work', () => {
+  const rows = classify([trapped(1416)], {
+    startedIds: new Set(['1416']),
+    branchEvidenceOf: () => ({ hasEvidence: false, matches: [] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+  });
+  assert.equal(actionOf(rows, 1416), 'reclaim');
+});
+
+test('neverStarted is never branch-checked at all', () => {
+  let asked = false;
+  classify([trapped(9)], {
+    startedIds: new Set(),
+    branchEvidenceOf: () => { asked = true; return { hasEvidence: true, matches: ['x'] }; },
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+  });
+  assert.equal(asked, false);
+});
+
+// ── taskBranchEvidence ─────────────────────────────────────────────────────
+test('taskBranchEvidence matches every real dispatch naming shape', () => {
+  const sources = {
+    branches: ['worktree-1416-url-downgrade-guard', 'worktree-task-1075-observable', 'task-752-clean', 'remotes/origin/worktree-653-corpus'],
+    worktreePaths: ['/repo/.claude/worktrees/1461-dead-commit-gate'],
+  };
+  for (const id of [1416, 1075, 752, 653, 1461]) {
+    assert.equal(taskBranchEvidence(id, sources).hasEvidence, true, `id ${id} should match`);
+  }
+});
+
+test('taskBranchEvidence does not match a task id that is a PREFIX of a longer id', () => {
+  const r = taskBranchEvidence(146, { branches: ['worktree-1146-wrongshow-autoclear'] });
+  assert.equal(r.hasEvidence, false, 'id 146 must not claim branch worktree-1146-*');
+});
+
+test('taskBranchEvidence returns the matched names, and is inert on a non-numeric id', () => {
+  assert.deepEqual(taskBranchEvidence(752, { branches: ['task-752-clean'] }).matches, ['task-752-clean']);
+  assert.equal(taskBranchEvidence('sweep', { branches: ['task-752-clean'] }).hasEvidence, false);
+});
+
+// ── Notion-derived guards ──────────────────────────────────────────────────
+test('a freshly edited card is left alone', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ lastEditedAt: hAgo(1) }) });
+  assert.equal(actionOf(rows, 9), 'skip-fresh');
+});
+
+test('a card with a filled Outcome parks instead of reopening finished work', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ lastEditedAt: hAgo(72), outcome: 'FINDINGS.md written.' }) });
+  assert.equal(actionOf(rows, 9), 'park-outcome');
+});
+
+test('E-i: a Done card with an EMPTY Outcome still parks, never reclaims', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ status: 'Done', lastEditedAt: hAgo(72), outcome: '' }) });
+  assert.equal(actionOf(rows, 9), 'park-outcome');
+});
+
+test('a failed card fetch refuses to act rather than guessing', () => {
+  assert.equal(actionOf(classify([trapped(9)], { cardOf: () => null }), 9), 'skip-card-unavailable');
+});
+
+test('a marker-less task with no live twin is reclaimed without any Notion call', () => {
+  let asked = false;
+  const rows = classify([trapped(5, { description: 'no marker' })], { cardOf: () => { asked = true; return null; } });
+  assert.equal(actionOf(rows, 5), 'reclaim');
+  assert.equal(asked, false);
+});
+
+// ── BSC-Daily ──────────────────────────────────────────────────────────────
+test('a BSC Daily card is closed as superseded, not returned to the pool', () => {
+  const t = trapped(1360, { subject: 'BSC Daily: Stuck pipeline items' });
+  assert.equal(actionOf(classify([t]), 1360), 'close-superseded');
+  const out = supersededTaskShape(t, { now: NOW });
+  assert.equal(out.status, 'completed');
+  assert.ok(out.reclaimClosedReason.includes('superseded'));
+});
+
+test('a live twin outranks the BSC-Daily close (4 of the 14 twins are BSC Daily)', () => {
+  const t = trapped(1085, { subject: 'BSC Daily: Feedback: 1 of 2 needs you' });
+  const live = [{ id: '1357', subject: 'BSC Daily: Feedback: 1 of 2 needs you', description: 'x' }];
+  assert.equal(actionOf(classify([t], { liveTasks: live }), 1085), 'skip-duplicate-live');
+});
+
+// ── helpers ────────────────────────────────────────────────────────────────
+test('indexLiveTasks keeps the FIRST id per key so results are order-stable', () => {
+  const { bySubject } = indexLiveTasks([{ id: '10', subject: 'Same' }, { id: '20', subject: 'same!' }]);
+  assert.equal(bySubject.get('same'), '10');
+});
+
+test('normalizeSubject collapses punctuation and case', () => {
+  assert.equal(normalizeSubject("P1: Don't — break, this!"), 'p1 don t break this');
+});
+
+test('classifyReclaimable tolerates null/empty input', () => {
+  assert.deepEqual(classifyReclaimable(null, { now: NOW }), []);
+  assert.deepEqual(classifyReclaimable([null], { now: NOW }), []);
+});
