@@ -183,6 +183,20 @@ jobs:
           awards.json re-enriched via enrich-awards-with-precursors.js."
           bash scripts/lib/push-with-retry.sh
 
+      # awards.json is dual-tracked (see update-tony-awards.yml): the public
+      # commit above feeds test.yml's staleness gate + vercel-preview's
+      # build-trigger path, but the private repo
+      # (thomaspryor/broadway-scorecard-data) is what checkout-core-data
+      # actually serves to every other workflow. enrich-awards-with-precursors.js
+      # writes data/awards.json above but nothing pushed that write to the
+      # private repo — card #1441 (same bug, sibling writer).
+      - name: Push core data to private repo
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update awards.json from precursor data (private repo sync)'
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
