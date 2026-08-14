@@ -31,9 +31,8 @@
  */
 
 const { JSDOM } = require('jsdom');
-const { slugify, levenshteinDistance, aliasCanonical } = require('./deduplication');
+const { slugify, levenshteinDistance, venuesMatch } = require('./deduplication');
 const { normalizeTitle } = require('./title-match');
-const { normalizeVenueName } = require('./venue-classification');
 
 // Aggregator-infrastructure URLs that land in the unmatched audit but are not
 // shows (site nav, legal, feeds). Matched against the article slug.
@@ -571,34 +570,11 @@ function obRegionalShows(shows) {
   );
 }
 
-/**
- * Venue equality for findKnownObShow — deliberately NOT title-match.js's
- * canonicalVenue(). That function's fallback for a venue outside the curated
- * VENUE_ALIASES table is just the lowercased FIRST WORD (title-match.js
- * canonicalVenue, ~line 250), so two unrelated theatres that both start with
- * "The" collapse to the same key. Fine for canonicalVenue's original callers
- * (fuzzy duplicate-detection candidates a human reviews); unsafe here — a
- * false venue MATCH is the one thing standing between a title collision and
- * a silent reject/prune, so it would quietly reintroduce the exact bug this
- * file's venue-scoping exists to prevent (ship-check finding, task #1246,
- * 2026-08-11: verified canonicalVenue("The Duke on 42nd Street") ===
- * canonicalVenue("The Public Theater")).
- *
- * Reuses two already-shipped, separately-tested helpers instead of adding a
- * third normalization scheme: aliasCanonical() (deduplication.js) requires a
- * REAL VENUE_ALIASES hit on both sides — no lossy fallback — and
- * normalizeVenueName() (venue-classification.js) is an exact (punctuation/
- * whitespace/Theatre-vs-Theater insensitive) full-string comparison for
- * venues the alias table doesn't cover.
- */
-function venuesMatch(a, b) {
-  if (!a || !b) return false;
-  const aliasA = aliasCanonical(a);
-  const aliasB = aliasCanonical(b);
-  if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
-  const normA = normalizeVenueName(a);
-  return normA !== '' && normA === normalizeVenueName(b);
-}
+// venuesMatch (used by findKnownObShow below) now lives in deduplication.js
+// (BRO-243, 2026-08-14) — generalized so every other automated-decision
+// consumer of title-match.js's lossy canonicalVenue() reuses the same safe
+// primitive instead of each hand-rolling its own copy of this fix. See that
+// file's venuesMatch() docstring for the full rationale (task #1246 origin).
 
 /**
  * The full venue-scoped "already known" check: title AND venue must both

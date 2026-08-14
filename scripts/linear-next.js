@@ -49,7 +49,7 @@
  *   node scripts/linear-next.js --id BRO-123 --tab           force a cmux tab (overrides --headless)
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
- *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency guards
+ *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
@@ -103,7 +103,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --tab            force a cmux tab (overrides --headless)
   node scripts/linear-next.js --list                        list open BRO issues, priority-sorted
   node scripts/linear-next.js --id BRO-123 --model opus     override the resolved model
-  node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency guards
+  node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
@@ -227,6 +227,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.log(`# would launch (${routing.mode} — ${routing.reason}) on: ${identifier} ${issue.title}\n`);
     console.log(seed);
     return;
+  }
+
+  // Terminal-state guard (task #1517, BRO-247 incident root cause): refuse
+  // outright rather than silently self-healing through the archive dance
+  // (task #1510) every time. Checked after --dry-run/--print-prompt (which
+  // stay side-effect-free previews even for a terminal issue — matching
+  // bsc-next.js's completedLaunchGuard, which self-exempts the same two
+  // flags, and this file's own documented "--list/--dry-run still work"
+  // kill-switch contract) but before every other launch gate below — an
+  // already-Done/Canceled issue should never reach the verify/idempotency
+  // gates that assume a live, dispatchable issue.
+  if (!args.force) {
+    const terminalRefusal = ld.checkTerminalStateGuard(issue);
+    if (terminalRefusal) {
+      console.error(`[linear-next] ${terminalRefusal}`);
+      process.exit(1);
+    }
   }
 
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,

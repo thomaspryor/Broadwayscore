@@ -30,6 +30,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildOutletMaps } = require('./lib/outlet-region-map');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DEFAULT_INPUT = path.join(__dirname, '..', 'data', 'west-end-reviews-input.json');
@@ -39,37 +40,15 @@ const outletRegistryPath = path.join(__dirname, '..', 'data', 'outlet-registry.j
 const outletRegistry = fs.existsSync(outletRegistryPath)
   ? JSON.parse(fs.readFileSync(outletRegistryPath, 'utf8'))
   : { outlets: {} };
-const outletRegionMap = {};
-for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
-  const region = info.region || (info.market === 'west-end' ? 'london' : null);
-  if (region) {
-    outletRegionMap[id] = region;
-    if (info.aliases) {
-      for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = region;
-    }
-  }
-}
-// Outlets that genuinely cover BOTH Broadway and West End markets.
-// Derived from `isDualMarket: true` in outlet-registry.json — single source of truth.
-const DUAL_MARKET_OUTLET_IDS = new Set();
-for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
-  if (info.isDualMarket) {
-    DUAL_MARKET_OUTLET_IDS.add(id);
-    if (info.aliases) {
-      for (const alias of info.aliases) DUAL_MARKET_OUTLET_IDS.add(alias.toLowerCase());
-    }
-  }
-}
-// Allow Tier 1/2 outlets — they legitimately review WE shows (cross-market guard targets Tier 3 only)
-const TIER_1_2_OUTLET_IDS = new Set();
-for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
-  if (info.tier === 1 || info.tier === 2) {
-    TIER_1_2_OUTLET_IDS.add(id);
-    if (info.aliases) {
-      for (const alias of info.aliases) TIER_1_2_OUTLET_IDS.add(alias.toLowerCase());
-    }
-  }
-}
+// outletRegionMap: id + lowercased aliases -> region.
+// DUAL_MARKET_OUTLET_IDS: outlets that genuinely cover BOTH Broadway and West End markets
+// (isDualMarket:true in outlet-registry.json).
+// TIER_1_2_OUTLET_IDS: Tier 1/2 outlets, allowed since they legitimately review WE shows
+// (cross-market guard targets Tier 3 only).
+// Single source of truth: lib/outlet-region-map.js (also used by validate-data.js,
+// audit-review-contamination.js, cross-market-guard.js — BRO-254 consolidated this
+// file's independent copy onto it after that copy's alias-casing bug shipped once).
+const { outletRegionMap, dualMarket: DUAL_MARKET_OUTLET_IDS, tier12Outlets: TIER_1_2_OUTLET_IDS } = buildOutletMaps(outletRegistry);
 
 // Parse args
 const args = process.argv.slice(2);

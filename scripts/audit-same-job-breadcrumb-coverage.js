@@ -20,6 +20,13 @@
  * months later; this script is the mechanical check that ties "clears field X
  * in a same-job-as-restore script" to "CLEAR_BREADCRUMBS has an entry for X."
  *
+ * Restore trigger scope (task #1507): a job is "restoring" if it has a
+ * push-review-texts step OR a step invoking `bash scripts/lib/push-with-
+ * retry.sh` — that script's own restore_protected_fields() calls the same
+ * scripts/lib/restore-protected-fields.js on every rebase/merge it performs,
+ * independently of the composite action, and is the generic push helper used
+ * across ~189 workflow call sites.
+ *
  * This is a heuristic, not a parser — false positives AND false negatives are
  * expected (same disclaimer as scripts/audit-run-budget-coverage.js, whose
  * job/step YAML parser this script's is a trimmed copy of — consistent with
@@ -44,6 +51,35 @@ const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const SCRIPTS_DIR = path.join(__dirname);
 const ANNOTATION = 'breadcrumb-coverage-ok';
 const PUSH_REVIEW_TEXTS_RE = /uses:\s*\.\/\.github\/actions\/push-review-texts/;
+// task #1507: scripts/lib/push-with-retry.sh also triggers the same
+// restore-resurrection risk. Its restore_protected_fields() (line ~545)
+// unconditionally invokes restore-protected-fields.js after any rebase/merge
+// it performs — a SEPARATE call path from the push-review-texts composite
+// action's own restore step (action.yml:403). restore-protected-fields.js's
+// main() diffs '*.json' relative to the CWD it's invoked from with no
+// directory scoping (`git diff --name-only <remote-ref>..HEAD -- '*.json'`),
+// so every one of the ~189 workflow call sites that push via `bash
+// scripts/lib/push-with-retry.sh` (not just the review-texts composite
+// action) is equally exposed — no directory-based exclusion applies.
+//
+// Anchored to an actual `bash ... push-with-retry.sh` invocation, NOT a bare
+// substring (ship-check/second-opinion finding, task #1507): dozens of
+// workflows reference "push-with-retry.sh" only in prose comments explaining
+// its conflict-resolution behavior (e.g. vercel-deploy.yml's "push-with-retry
+// lost the race against busy main" comment) — a bare /push-with-retry\.sh/
+// would pull those jobs into "restoring" scope on a comment alone. Every real
+// call site in this repo invokes it as `bash scripts/lib/push-with-retry.sh`
+// (grep-confirmed: zero comment lines combine "bash" with the filename), so
+// requiring "bash" and the filename on the SAME non-comment line eliminates
+// the false-positive class while still matching every real invocation shape
+// (bare, with retry/branch args, with `||` fallback, inside `if`).
+const PUSH_WITH_RETRY_RE = /\bbash\b[^\n]*push-with-retry\.sh/;
+function hasPushWithRetryInvocation(bodyText) {
+  return bodyText.split('\n').some((line) => !/^\s*#/.test(line) && PUSH_WITH_RETRY_RE.test(line));
+}
+function isRestoreTrigger(bodyText) {
+  return PUSH_REVIEW_TEXTS_RE.test(bodyText) || hasPushWithRetryInvocation(bodyText);
+}
 const SCRIPT_INVOCATION_RE = /\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g;
 // How far back a delete/null of a field can be attributed to a given
 // safeWriteReview(..., {force:true}) call. Every real call site found in this
@@ -277,9 +313,12 @@ function auditRepo({ workflowDir, scriptsDir, protectedFields, breadcrumbKeys })
       // LAST occurrence, not first: some jobs call push-review-texts twice
       // (e.g. opening-night-express.yml — once after gather, once after
       // scoring). A clear between the two restores is still at risk from the
-      // SECOND one, so every step before the LAST restore is in scope.
+      // SECOND one, so every step before the LAST restore is in scope. A job
+      // may mix both trigger kinds (e.g. push-review-texts THEN a later bare
+      // push-with-retry.sh commit) — isRestoreTrigger() matches either, so
+      // the last restoring step of EITHER kind sets the boundary.
       let pushIdx = -1;
-      job.steps.forEach((s, i) => { if (PUSH_REVIEW_TEXTS_RE.test(s.bodyText)) pushIdx = i; });
+      job.steps.forEach((s, i) => { if (isRestoreTrigger(s.bodyText)) pushIdx = i; });
       if (pushIdx === -1) continue; // job never restores in-line — not the same-job risk shape
       scanned.jobs++;
 
@@ -337,7 +376,7 @@ function main() {
     });
 
     if (gaps.length === 0) {
-      console.log(`✅ Same-job breadcrumb coverage guard: no gaps flagged (${scanned.jobs} push-review-texts job(s), ${scanned.scripts.size} script(s) scanned).`);
+      console.log(`✅ Same-job breadcrumb coverage guard: no gaps flagged (${scanned.jobs} restoring job(s) [push-review-texts or push-with-retry.sh], ${scanned.scripts.size} script(s) scanned).`);
       return;
     }
 
@@ -370,6 +409,9 @@ module.exports = {
   auditRepo,
   main,
   PUSH_REVIEW_TEXTS_RE,
+  PUSH_WITH_RETRY_RE,
+  hasPushWithRetryInvocation,
+  isRestoreTrigger,
   SCRIPT_INVOCATION_RE,
   ANNOTATION,
   ACTION_EXTRA_PROTECTED,

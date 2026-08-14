@@ -157,7 +157,13 @@ const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard,
+  workBranchCollisionGuard,
 } = require('./lib/dispatch-guards.js');
+// Real I/O half of the card #1281 cross-session collision guard above:
+// shells out to git to build the {name, unlandedCommits} list
+// workBranchCollisionGuard consumes. See its own header for why this stays
+// out of dispatch-guards.js (that file is pure-only by convention).
+const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
 // (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
@@ -697,6 +703,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     appendCiRedClaim: appendCiRedClaimFn = appendClaim,
     loadLinearMirrorMapping: loadLinearMirrorMappingFn = loadLinearMirrorMapping,
+    listWorkBranchStatuses: listWorkBranchStatusesFn = listWorkBranchStatuses,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -824,6 +831,34 @@ function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`[bsc-next] WARNING: task #${task.id} ${why} with in_progress task #${o.card.id} ("${o.card.subject}") — check it isn't already being worked before dispatching a duplicate.`);
     });
   } catch (e) { console.error(`[bsc-next] WARN overlap check failed (continuing): ${e.message}`); }
+
+  // Cross-session worktree/job-branch collision guard (card #1281). Runs
+  // unconditionally — not gated on cmuxAvailableFn() like the cmux duplicate
+  // check further below — because local git state exists independent of
+  // cmux, and both --exec and --headless continue past this point without
+  // their own equivalent check. See dispatch-guards.js's workBranchCollisionGuard
+  // header for the full rationale and the naming-convention gap it can't close.
+  // --dry-run/--print-prompt also skip the git I/O itself (not just the
+  // refusal) — ship-check adversarial review, 2026-08-14: workBranchCollisionGuard
+  // already no-ops for those flags, but the real `git fetch`/`branch`/`cherry`
+  // calls were still running underneath a "dry" preview, breaking its
+  // don't-touch-the-world contract.
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    // Only the git I/O is inside try/catch (fail-open on a git error, same
+    // direction as every sibling guard) — the refusal check and exit sit
+    // outside it so a real refusal can never be accidentally swallowed by
+    // this catch block, matching linearMirrorGuard's call site below.
+    let branchStatuses = null;
+    try {
+      branchStatuses = listWorkBranchStatusesFn(task.id, { repoDir: REPO });
+    } catch (e) {
+      console.error(`[bsc-next] WARN worktree-branch collision check failed (continuing): ${e.message}`);
+    }
+    if (branchStatuses) {
+      const branchErr = workBranchCollisionGuard(task, branchStatuses, args);
+      if (branchErr) { console.error(`[bsc-next] ${branchErr}`); process.exit(1); }
+    }
+  }
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
@@ -1123,4 +1158,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };

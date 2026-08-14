@@ -45,6 +45,30 @@ function isShallowRepo(cwd) {
 }
 
 /**
+ * Shared shallow-guard: if `cwd` is shallow, try once to restore full history
+ * via `git fetch --unshallow`. Factored out of checkLanded() (task #1497) so
+ * bulk callers doing many ancestry checks in one process (e.g.
+ * review-gate.mjs's ancestorSet()) can call this ONCE up front instead of
+ * paying a per-call shallow-detection cost, and so the same "attempt once,
+ * report loudly if it's still shallow" behavior isn't reimplemented per site.
+ * @returns {{shallow: boolean}} shallow: true if STILL shallow after the attempt
+ */
+function ensureFullHistory({ cwd = process.cwd(), remote = 'origin', log = () => {} } = {}) {
+  if (!isShallowRepo(cwd)) return { shallow: false };
+  log(
+    `WARNING: local checkout is shallow — 'git merge-base --is-ancestor' can false-negative on commits genuinely present. Attempting 'git fetch --unshallow ${remote}' (task #1489).`
+  );
+  git(['fetch', '--unshallow', remote], cwd);
+  const stillShallow = isShallowRepo(cwd);
+  if (stillShallow) {
+    log(
+      `WARNING: repo is STILL shallow after 'git fetch --unshallow' — a local ancestry check cannot be trusted. Verify via 'git ls-remote ${remote} <branch>' or the GitHub compare API instead of concluding a commit did not land.`
+    );
+  }
+  return { shallow: stillShallow };
+}
+
+/**
  * Tri-state, not boolean: `git merge-base --is-ancestor` exits 1 SPECIFICALLY
  * for "genuinely not an ancestor" — any other nonzero exit (128 for a
  * missing/invalid object, a timeout, a corrupt ref) is an ERROR, not a
@@ -73,38 +97,36 @@ function isAncestor(sha, ref, cwd) {
  * @param {string} opts.sha - commit to check
  * @param {string} [opts.branch='main']
  * @param {string} [opts.remote='origin']
+ * @param {string} [opts.ref] - explicit target to check ancestry against
+ *   (any commit-ish: a raw SHA, a tag, another branch). Overrides
+ *   `${remote}/${branch}` — for callers comparing two arbitrary commits
+ *   rather than "is this on a remote-tracking branch" (task #1497, e.g.
+ *   check-prod-deploy.js comparing a commit-ish against a deployed SHA, or
+ *   scripts/hooks/pre-push comparing a push's remote_oid against local_oid).
  * @param {string} [opts.cwd=process.cwd()]
  * @param {(msg: string) => void} [opts.log]
  * @returns {{verdict: 'LANDED'|'NOT_LANDED'|'UNKNOWN', landed: boolean|null, shallow: boolean, reason: string|null}}
  *
- * PRECONDITION: reads the LOCAL `<remote>/<branch>` tracking ref as-is — it
- * does not fetch it (except to unshallow, see below). Callers that need a
- * fresh remote-side answer must `git fetch <remote> <branch>` immediately
- * before calling this, same as scripts/merge-worktree-to-main.sh's two call
- * sites do; a stale local ref can read LANDED against a tip the remote has
- * since moved past.
+ * PRECONDITION: reads the LOCAL `<remote>/<branch>` tracking ref (or `ref`,
+ * if given) as-is — it does not fetch it (except to unshallow, see below).
+ * Callers that need a fresh remote-side answer must `git fetch <remote>
+ * <branch>` immediately before calling this, same as
+ * scripts/merge-worktree-to-main.sh's two call sites do; a stale local ref
+ * can read LANDED against a tip the remote has since moved past.
  */
-function checkLanded({ sha, branch = 'main', remote = 'origin', cwd = process.cwd(), log = () => {} } = {}) {
+function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {} } = {}) {
   if (!sha) throw new Error('checkLanded requires sha');
-  const remoteRef = `${remote}/${branch}`;
+  const targetRef = ref || `${remote}/${branch}`;
 
-  if (isShallowRepo(cwd)) {
-    log(
-      `WARNING: local checkout is shallow — 'git merge-base --is-ancestor' can false-negative on commits genuinely on ${remoteRef}. Attempting 'git fetch --unshallow ${remote}' before checking (task #1489).`
-    );
-    git(['fetch', '--unshallow', remote], cwd);
-    if (isShallowRepo(cwd)) {
-      log(
-        `WARNING: repo is STILL shallow after 'git fetch --unshallow' — a local ancestry check cannot be trusted. Reporting UNKNOWN, not NOT_LANDED. Verify via 'git ls-remote ${remote} ${branch}' or the GitHub compare API before concluding this did not land.`
-      );
-      return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: 'unshallow-failed' };
-    }
+  const { shallow } = ensureFullHistory({ cwd, remote, log });
+  if (shallow) {
+    return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: 'unshallow-failed' };
   }
 
-  const landed = isAncestor(sha, remoteRef, cwd);
+  const landed = isAncestor(sha, targetRef, cwd);
   if (landed === null) {
     log(
-      `WARNING: ancestry check for ${sha} against ${remoteRef} errored (not a definitive "not an ancestor" — a timeout, missing ref, or invalid object). Reporting UNKNOWN, not NOT_LANDED.`
+      `WARNING: ancestry check for ${sha} against ${targetRef} errored (not a definitive "not an ancestor" — a timeout, missing ref, or invalid object). Reporting UNKNOWN, not NOT_LANDED.`
     );
     return { verdict: 'UNKNOWN', landed: null, shallow: false, reason: 'ancestor-check-error' };
   }
@@ -121,15 +143,16 @@ function parseArgs(argv) {
 }
 
 function main() {
-  const { sha, branch, remote, cwd } = parseArgs(process.argv.slice(2));
+  const { sha, branch, remote, ref, cwd } = parseArgs(process.argv.slice(2));
   if (!sha) {
-    console.error('usage: landing-verify.js --sha=<sha> [--branch=main] [--remote=origin] [--cwd=.]');
+    console.error('usage: landing-verify.js --sha=<sha> [--branch=main] [--remote=origin] [--ref=<commit-ish>] [--cwd=.]');
     process.exit(2);
   }
   const result = checkLanded({
     sha,
     branch: branch || 'main',
     remote: remote || 'origin',
+    ref: ref || undefined,
     cwd: cwd || process.cwd(),
     log: (m) => console.error(m),
   });
@@ -141,4 +164,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { checkLanded, isShallowRepo, isAncestor };
+module.exports = { checkLanded, isShallowRepo, isAncestor, ensureFullHistory };

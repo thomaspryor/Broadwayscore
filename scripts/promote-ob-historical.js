@@ -11,7 +11,7 @@
  *   status: 'closed'
  *   openingDate: <Playbill firstPreview if no openingDate else openingDate>
  *   closingDate: <Playbill closingDate>
- *   venue: <Playbill venue, normalized via canonicalVenue>
+ *   venue: <Playbill venue, as parsed — no lossy canonicalization>
  *
  * Input: data/audit/venue-date-mismatches.json — only results with
  *   result==='match' AND playbillUrl + parsed.dates present.
@@ -20,8 +20,10 @@
  *   node scripts/promote-ob-historical.js --dry-run   (default)
  *   node scripts/promote-ob-historical.js --apply     (writes shows.json)
  *
- * Skip rule: if normalizeTitle(title)+canonicalVenue(venue) already exists in
- * shows.json, skip (dedup against cross-source entries).
+ * Skip rule: if normalizeTitle(title) matches AND venuesMatch(venue) against
+ * an existing shows.json entry, skip (dedup against cross-source entries).
+ * venuesMatch (deduplication.js), not title-match.js's canonicalVenue() —
+ * see findExactDuplicate below for why (BRO-243).
  */
 
 'use strict';
@@ -31,7 +33,6 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
-const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
 // Cousin fix of scripts/promote-ob-venue-candidates.js (task: subtitle-variant
 // dedup gap, 2026-08-04). title-match.js's normalizeTitle does NOT strip
 // colon/dash subtitles ("Ectoplasm" vs "Ectoplasm: Spit and Vigor" produce
@@ -42,8 +43,11 @@ const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
 // 2026-08-05) strips the subtitle and applies the both-subtitled-but-differ
 // carve-out (Angels in America: Millennium Approaches vs : Perestroika shape)
 // so two genuinely distinct works sharing a base title at the same venue
-// aren't silently collapsed.
-const { isSubtitleVariantOf } = require('./lib/deduplication');
+// aren't silently collapsed. buildVenueTitlePool/findExactDuplicate/
+// findSubtitleDuplicateTitle (extracted BRO-243, shared with
+// promote-historical-we.js — see that file's identical dedup pattern) wrap
+// both of these plus venuesMatch().
+const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -112,45 +116,24 @@ function main() {
   console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
 
   const showsData = loadShows();
-  const existingKeys = new Set(showsData.shows.map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  // canonicalVenue → list of titles at that venue, so isSubtitleVariantOf can
-  // compare each candidate against every existing title at the same venue.
-  // Grouping by venue (not a precomputed subtitle-stripped key) means there's
-  // no cached derived field to keep in sync when a promoted entry is fed back
-  // in below — the class of bug that shipped in promote-ob-venue-candidates.js's
-  // first cut (26cb6d34ceb) structurally can't recur here either.
-  const existingByVenue = new Map();
-  for (const s of showsData.shows) {
-    const vk = canonicalVenue(s.venue);
-    if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
-    existingByVenue.get(vk).push(s.title);
-  }
-
-  function findSubtitleDuplicateTitle(candidateTitle, venueKey) {
-    const titles = existingByVenue.get(venueKey);
-    if (!titles) return null;
-    for (const existingTitle of titles) {
-      if (isSubtitleVariantOf(candidateTitle, existingTitle)) return existingTitle;
-    }
-    return null;
-  }
+  // Live pool of {title, venue} this run checks candidates against — starts
+  // as shows.json and grows as candidates are promoted, so a second
+  // candidate for the same show later in this run still gets caught.
+  const knownShows = buildVenueTitlePool(showsData.shows);
 
   const toPromote = [];
   const skipped = [];
   for (const r of matches) {
     const entry = buildShowEntry(r);
-    const key = `${normalizeTitle(entry.title)}|${canonicalVenue(entry.venue)}`;
-    const venueKey = canonicalVenue(entry.venue);
-    const subtitleDup = findSubtitleDuplicateTitle(entry.title, venueKey);
-    if (existingKeys.has(key)) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
+    const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
+    const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
+    if (exactDup) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
     if (subtitleDup) { skipped.push({ entry, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     toPromote.push(entry);
-    existingKeys.add(key);
-    if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
-    existingByVenue.get(venueKey).push(entry.title);
+    knownShows.push({ title: entry.title, venue: entry.venue });
     existingIds.add(entry.id);
   }
 
