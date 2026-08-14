@@ -197,6 +197,18 @@ restore_stash() {
   fi
 }
 
+# merge_or_die <ref> <die-message> — `git merge <ref> --no-edit`, surfacing
+# git's own combined stdout/stderr in the die() message on failure (task
+# #1511). All three merge call sites in this script used to redirect that
+# output to /dev/null, leaving the operator zero information on WHY a merge
+# failed (real conflict? dirty tree? something else?) — unlike the
+# syntax-floor and push-audits die() calls below, which both capture and
+# print their command's output.
+merge_or_die() {
+  local ref="$1" msg="$2" out
+  out=$(g merge "$ref" --no-edit 2>&1) || { restore_stash; die "$msg:"$'\n'"$out"; }
+}
+
 # --- Ensure main is checked out, then MERGE (never rebase) ---
 g checkout "$DEFAULT_BRANCH" >/dev/null 2>&1 || { restore_stash; die "could not checkout $DEFAULT_BRANCH"; }
 
@@ -212,14 +224,10 @@ g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || log "  ⚠ fetch failed (offl
 # we're about to push differ from what's live, and does that diff parse" —
 # regardless of how many retries it took to get here.
 ORIGIN_BASE_SHA=$(g rev-parse "origin/$DEFAULT_BRANCH" 2>/dev/null || g rev-parse HEAD)
-if ! g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1; then
-  restore_stash; die "merge of origin/$DEFAULT_BRANCH failed — resolve manually"
-fi
+merge_or_die "origin/$DEFAULT_BRANCH" "merge of origin/$DEFAULT_BRANCH failed — resolve manually"
 
 log "merge $BRANCH"
-if ! g merge "$BRANCH" --no-edit >/dev/null 2>&1; then
-  restore_stash; die "merge of $BRANCH failed — resolve manually"
-fi
+merge_or_die "$BRANCH" "merge of $BRANCH failed — resolve manually"
 
 # --- Post-merge JS syntax floor (card 3aa637c5, 2026-07-26 collision incident) ---
 # Two concurrent sessions can each cleanly insert the identical line into a
@@ -394,7 +402,7 @@ else
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"
-    g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1 || { restore_stash; die "could not merge remote changes on retry"; }
+    merge_or_die "origin/$DEFAULT_BRANCH" "could not merge remote changes on retry"
   done
   if [ "$PUSHED" != 1 ]; then
     restore_stash
