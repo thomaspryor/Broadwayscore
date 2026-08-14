@@ -30,6 +30,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { detectStaleFlagAfterUrlCorrection, remediateStaleFlagAfterUrlCorrection } = require('./lib/stale-flag-after-url-correction.js');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-stale-flag-after-url-correction.js — stale flag + URL-correction breadcrumb sweep (#483)
 
@@ -68,8 +69,25 @@ function main() {
   // session's merge — which is how one data record came to gate all code
   // delivery for two days. Default stays 0 so local `--gate` is unchanged;
   // CI passes a ceiling with headroom.
-  const maxArg = argv.find((a) => a.startsWith('--max='));
-  const max = maxArg ? parseInt(maxArg.split('=')[1], 10) : 0;
+  //
+  // DO NOT ratchet this to 0 by draining with --fix until the conflict below
+  // is resolved. As of 2026-08-14 this gate and validate-data.js CHECK 0
+  // [wrong-production-by-date] disagree about ~121 records, and the
+  // date guard is the one that is RIGHT: on every sampled record the
+  // `_urlChangedClear.to` equals the CURRENT url and `publishDate` was
+  // re-derived FOR that url (dateSource `manual-live-page-…`, `url-compact`
+  // parsed from the new slug), so the flag is a correct verdict about the
+  // corrected URL, not a leftover from the old one. `publishDate` appearing in
+  // `_urlChangedClear.cleared` only records that it was cleared at
+  // URL-change time; it was repopulated afterwards. Draining these therefore
+  // un-suppresses genuinely wrong-production reviews — measured: 8 entered
+  // reviews.json, including a 2019 Trafalgar Studios Equus review scoring 97
+  // on equus-west-end-2026 and a 2017 Playhouse Glengarry on the 2026 revival.
+  // These records have no fullText but DO carry aggregatorStars, so "no body"
+  // does not mean "not scoreable". The real fix is to narrow the DETECTOR so it
+  // stops matching records whose publishDate independently corroborates the
+  // flag — not to weaken the date guard.
+  const max = parseMaxArgOrExit(argv, { scriptName: 'audit-stale-flag-after-url-correction' });
   const dirArg = argv.find((a) => a.startsWith('--review-texts-dir='));
   const REVIEW_TEXTS_DIR = dirArg ? dirArg.split('=')[1] : path.join(ROOT, 'data', 'review-texts');
 

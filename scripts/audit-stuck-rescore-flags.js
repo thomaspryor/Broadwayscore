@@ -31,6 +31,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { isStuckRescoreFlag, isScoredButStillQueued } = require('./lib/stuck-rescore-flag');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-stuck-rescore-flags.js — corpus invariant: no review may carry.
 
@@ -42,12 +43,11 @@ const ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 
 function parseArgs(argv) {
-  const maxArg = argv.find((a) => a.startsWith('--max='));
   return {
     fix: argv.includes('--fix'),
     gate: argv.includes('--gate') || argv.includes('--strict'),
     json: argv.includes('--json'),
-    max: maxArg ? parseInt(maxArg.split('=')[1], 10) : 0,
+    max: parseMaxArgOrExit(argv, { scriptName: 'audit-stuck-rescore-flags' }),
   };
 }
 
