@@ -350,6 +350,11 @@ function mergeWithArchive(dir, liveTasks) {
 module.exports = {
   selectArchivable,
   archiveCopyFor,
+  // Exported for the card #1402 reclaim path: it rewrites archive/<id>.json,
+  // the same files archiveCompletedTasks renames into place, so an unlocked
+  // reclaim would race that rename and lose last-writer-wins. Callers must
+  // hold this lock for the whole read-decide-write of any archive entry.
+  acquireArchiveLock,
   loadTasksWithMtime,
   archiveCompletedTasks,
   readArchivedTask,
