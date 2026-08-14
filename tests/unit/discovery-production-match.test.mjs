@@ -181,6 +181,25 @@ test('Gap C: a curated openingDateSource (e.g. press-night inferred from reviews
   assert.equal(computeShowReconciliation(existing, candidate), null, 'curated source must block ALL fields, not just openingDate');
 });
 
+test('Gap C: a title mismatch (e.g. a recycled TodayTix ID pointing at an unrelated show) refuses to patch', () => {
+  const existing = {
+    id: 'some-play-2026',
+    title: 'Some Play',
+    status: 'announced',
+    venue: 'Some Theatre',
+    previewsStartDate: '2026-09-01',
+  };
+  const candidate = {
+    // Same todaytixId, but an unrelated production — this is the ID-recycling
+    // scenario scripts/lib/todaytix-dates.js documents. Nothing here should
+    // resemble "Some Play" the way isMultiProduction's title checks would demand.
+    title: 'A Completely Different Show',
+    venue: 'A Different Theatre Entirely',
+    previewsStartDate: '2027-03-01',
+  };
+  assert.equal(computeShowReconciliation(existing, candidate), null, 'mismatched titles must never patch venue/dates onto an unrelated entry');
+});
+
 test('Gap C: a candidate openingDate with no source is refused (never write an unattributed date)', () => {
   const existing = {
     id: 'some-show-2026',
