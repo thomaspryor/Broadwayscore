@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T16:48:45.703Z",
+  "timestamp": "2026-08-14T17:50:22.605Z",
   "stats": {
-    "totalReviews": 42254,
+    "totalReviews": 42255,
     "alreadyFlagged": 18321,
-    "dateGuardCatches": 145,
+    "dateGuardCatches": 144,
     "directorMismatch": 965,
     "tvFilmSignals": 1201,
-    "londonSignals": 880,
+    "londonSignals": 882,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3578
+    "noPublishDate": 3577
   },
   "findings": [
     {
@@ -6285,20 +6285,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "thestage--tom-wicker.json",
-      "score": 84,
-      "publishDate": "2024-08-21",
-      "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 708d before show (2024-08-21 vs 2026-07-30)"
         }
       ]
     },
@@ -35100,6 +35086,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-08-14",
+      "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "matineemouse--matinee-mouse.json",
       "score": 78,
       "publishDate": "2026-08-12",
@@ -37677,6 +37676,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": "2026-08-14",
+      "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
