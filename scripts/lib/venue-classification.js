@@ -85,13 +85,21 @@ function isLondonMarket(category) {
 }
 
 /**
- * Broadway category predicate — mirrors src/lib/data-core.ts:64 for Node scripts.
+ * Broadway category predicate for Node scripts — deliberately permissive,
+ * unlike src/lib/data-core.ts's isBroadwayShow() (made strict in #1428 for
+ * UI symmetry with getOffBroadwayShows()).
  *
- * CONVENTION: null/undefined category counts as Broadway. ~1700 historical-import
- * shows (pre-2024) have null category because the creator scripts didn't stamp
- * it; the live site treats null as Broadway and this helper keeps scripts
- * consistent. Always use this predicate — never `s.category === 'broadway'`
- * directly, or you'll exclude ~94% of the historical Broadway corpus.
+ * CONVENTION: null/undefined category counts as Broadway. Historically this
+ * mattered a lot — ~1958 pre-2024 historical-import shows had null category
+ * until scripts/backfill-show-category.js stamped them (#1428 follow-up,
+ * 2026-08-13); validate-data.js now hard-fails any open/previews/upcoming/
+ * announced/closed show with a missing category, so in practice every live
+ * show has one. This predicate stays permissive anyway as a defensive
+ * convention for scripts/ (audits, backfills, historical corpus scans) where
+ * treating an unexpected null category as Broadway is the safer failure mode
+ * than silently excluding a real Broadway show — see #1471. Always use this
+ * predicate — never reimplement `!s.category || s.category === 'broadway'`
+ * inline.
  */
 function isBroadwayCategory(show) {
   if (!show) return false;
