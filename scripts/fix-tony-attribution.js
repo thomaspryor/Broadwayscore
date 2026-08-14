@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -153,7 +154,7 @@ const nonBroadwaySkipped = [];
 for (const [showId, awardsEntry] of Object.entries(awards.shows)) {
   if (!awardsEntry.tony) continue;
   const show = showsById.get(showId);
-  if (!show || !show.category || show.category === 'broadway') continue;
+  if (!show || isBroadwayCategory(show)) continue;
   // Surface (don't auto-delete) entries with non-empty wins — they may need
   // human inspection to confirm the data isn't worth preserving on a
   // separate (correct) show ID.

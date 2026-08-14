@@ -67,6 +67,18 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Stale-checkout race guard (P1): a review-texts push landing between
+      # THIS checkout and the "Rebuild reviews.json" step below is invisible
+      # to that step — it exits 0 with a stale checkout and no warning
+      # (rebuild-all-reviews.js has no reason to fail; the files simply
+      # aren't there yet). Recording the checkout-time SHA here lets the
+      # rebuild step detect drift right before it runs. See
+      # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - uses: ./.github/actions/setup-node
 
       - name: Get current review count
@@ -178,6 +190,47 @@ jobs:
             echo "⚠️  Force-write enabled — regression guard overridden"
           fi
 
+          # Stale-checkout race guard, part 2: the pre-rebuild utility steps above
+          # took real wall-clock time since the checkout — re-check review-texts'
+          # upstream tip right before rebuilding. A `git fetch` + `rev-parse` is a
+          # few seconds; this runs on EVERY invocation but only pays for a re-sync
+          # when drift is actually detected (unchanged SHA = zero added cost).
+          #
+          # Explicit destination refspec (+main:refs/remotes/origin/main), not a
+          # bare `git fetch origin main` — the checkout-review-texts composite
+          # action's shallow checkout may not leave a fetch refspec configured
+          # that a later bare fetch would resolve into refs/remotes/origin/main,
+          # in which case the ref update would silently land only in FETCH_HEAD
+          # and the drift check below would never fire.
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            # Record which SHOWS drifted (for the post-rebuild verify step below) —
+            # includes deletions, since a show can still have other scoreable
+            # content worth verifying even if one file was removed upstream.
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            # Then update ONLY files that still EXIST at the new tip (--diff-filter=d
+            # excludes deletions — `git checkout <sha> -- <deleted-path>` errors and
+            # would abort this whole step on an ordinary review-texts deletion, not
+            # just the staleness race this guard targets) from the fresh tip — a
+            # targeted checkout instead of a full rm -rf + re-clone, so the
+            # uncommitted local edits the pre-rebuild utility steps above just made
+            # to OTHER files are not discarded. NUL-delimited (`-z` / `xargs -0`) so
+            # no filename can be mis-split by whitespace or shell glob chars.
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
+            fi
+          fi
+
           # First attempt
           if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
             echo "Rebuild succeeded on first attempt"
@@ -194,6 +247,15 @@ jobs:
 
           # Retry rebuild
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # Stale-checkout race guard, part 3: even with the pre-emptive sync above,
+      # scope this to a bounded assertion rather than trusting the sync alone —
+      # verify every show that drifted during this job actually landed in
+      # reviews.json. NOT continue-on-error: this is the "fail the job loudly"
+      # backstop for the class of bug this guard exists for (see
+      # scripts/check-rebuild-staleness.js header for what it checks and why).
+      - name: Verify no scoreable review vanished during checkout drift
+        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
 
       # NOTE: do NOT overwrite /tmp/core-data-snapshot/ with rebuilt files. Since the
       # 2026-07-12 push-core-data fix (2beb6617c58), the snapshot is the CHECKOUT-TIME

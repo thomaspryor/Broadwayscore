@@ -29,6 +29,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 // ==================== Configuration ====================
 
@@ -52,7 +53,7 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Load shows data for matching
 const allLoadedShows = loadShows();
-const allShows = allLoadedShows.filter(s => !s.category || s.category === 'broadway');
+const allShows = allLoadedShows.filter(isBroadwayCategory);
 const weShows = allLoadedShows.filter(s => s.category === 'west-end' || s.category === 'off-west-end');
 
 // Override map for titles fuzzy matching can't handle

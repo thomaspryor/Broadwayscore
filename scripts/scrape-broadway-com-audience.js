@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { fetchPage } = require('./lib/scraper');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
@@ -345,7 +345,7 @@ function matchBroadwayComToShows(bcShows, ourShows) {
       });
       // Prefer same-category matches, fall back to any non-London
       const sameCategory = started.filter(s => {
-        if (isBroadway) return !s.category || s.category === 'broadway';
+        if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
       const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => !isLondonMarket(s.category));
@@ -376,7 +376,7 @@ function matchBroadwayComToShows(bcShows, ourShows) {
     if (prefixCandidates.length > 0) {
       // Apply same category/recency filtering as exact matches
       const sameCategory = prefixCandidates.filter(s => {
-        if (isBroadway) return !s.category || s.category === 'broadway';
+        if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
       const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => !isLondonMarket(s.category));

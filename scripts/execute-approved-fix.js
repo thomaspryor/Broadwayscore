@@ -53,7 +53,7 @@ const ALLOWED_DATA_FIELDS = {
   'shows.json': [
     'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
     'type', 'isRevival', 'status', 'closingDate', 'openingDate',
-    'previewDate', 'creativeTeam',
+    'previewsStartDate', 'creativeTeam',
   ],
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',

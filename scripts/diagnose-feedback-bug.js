@@ -115,6 +115,9 @@ function loadAllShowData(showName) {
     } catch { /* skip */ }
 
     return matches.map(show => ({
+      // Mirrors loadShowData() above — same ALLOWED_DATA_FIELDS blind-spot fix
+      // (issue #582), since this path (message-text show extraction) is the
+      // one actually exercised when a report has no separate show field.
       show: {
         id: show.id,
         title: show.title,
@@ -123,6 +126,13 @@ function loadAllShowData(showName) {
         venue: show.venue,
         openingDate: show.openingDate,
         closingDate: show.closingDate,
+        synopsis: show.synopsis,
+        runtime: show.runtime,
+        intermissions: show.intermissions,
+        ageRecommendation: show.ageRecommendation,
+        type: show.type,
+        isRevival: show.isRevival,
+        previewsStartDate: show.previewsStartDate,
         creativeTeam: show.creativeTeam || [],
       },
       reviewCount: allReviews.filter(r => r.showId === show.id).length,
@@ -191,6 +201,12 @@ function loadShowData(showName) {
   if (!show) return null;
 
   const result = {
+    // Mirrors ALLOWED_DATA_FIELDS in generate-remediation-plan.js — every field
+    // the pipeline can actually edit must be visible here, or the diagnosis LLM
+    // can't locate (or confirm) the bug and falls back to guessing about fields
+    // that don't exist (issue #582: hallucinated a non-existent review 'summary'
+    // DB field when the real bug was in this show's own synopsis text, which
+    // this snapshot didn't expose).
     show: {
       id: show.id,
       title: show.title,
@@ -199,6 +215,14 @@ function loadShowData(showName) {
       venue: show.venue,
       openingDate: show.openingDate,
       closingDate: show.closingDate,
+      synopsis: show.synopsis,
+      runtime: show.runtime,
+      intermissions: show.intermissions,
+      ageRecommendation: show.ageRecommendation,
+      type: show.type,
+      isRevival: show.isRevival,
+      previewsStartDate: show.previewsStartDate,
+      creativeTeam: show.creativeTeam,
     },
     reviews: [],
     audienceBuzz: null,

@@ -23,6 +23,7 @@
  */
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
+const { isBroadwayCategory } = require('./venue-classification');
 
 const TITLE_JACCARD_THRESHOLD = 0.8; // matches the OB promoter dedup threshold
 
@@ -51,7 +52,7 @@ function detectTransferPairs(shows) {
   const list = Array.isArray(shows) ? shows : [];
   const regionals = list.filter(s => s && s.category === 'regional' && !s.transferredTo);
   // "Broadway" = default-market shows (category absent or 'broadway').
-  const broadway = list.filter(s => s && (!s.category || s.category === 'broadway') && !s.transferOf);
+  const broadway = list.filter(s => s && isBroadwayCategory(s) && !s.transferOf);
 
   const pairs = [];
   for (const r of regionals) {

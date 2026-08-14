@@ -1,5 +1,7 @@
 'use strict';
 
+const { isBroadwayCategory } = require('./venue-classification');
+
 /**
  * commercial-scope.js — canonical scope + designation rules for the
  * commercial-research pipeline (deep-research, batch, backfill, queue
@@ -30,7 +32,7 @@
 function isCommercialScope(show) {
   if (!show || typeof show !== 'object') return false;
   if (show._devOnly) return false;
-  return !show.category || show.category === 'broadway';
+  return isBroadwayCategory(show);
 }
 
 /**

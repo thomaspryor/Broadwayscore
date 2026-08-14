@@ -46,6 +46,7 @@ const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });
 
 const { isOfficialBroadwayTheater } = require('./lib/broadway-theaters');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 // Pre-compute market classification per show (isOfficialBroadwayTheater is expensive — O(n) scan per call).
 // Broadway = venue-based (official Broadway theater AND no overriding category).
@@ -58,7 +59,7 @@ shows.forEach(s => {
   if (s.category === 'west-end') westEndShowIds.add(s.id);
   else if (s.category === 'off-west-end') offWestEndShowIds.add(s.id);
   else if (s.category === 'off-broadway') offBroadwayShowIds.add(s.id);
-  else if (!s.category || s.category === 'broadway') {
+  else if (isBroadwayCategory(s)) {
     if (isOfficialBroadwayTheater(s.venue)) broadwayShowIds.add(s.id);
   }
 });
