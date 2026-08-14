@@ -263,9 +263,28 @@ flush() {
   # and no patch-id work is needed. Only when it says no do we still owe the
   # expensive check, because that is the squash-merge case cherry exists to
   # catch (squashed commits are absent from history but present as patches).
-  local cherry_raw cherry_status unmerged head_sha
+  #
+  # Shallow- and error-aware (task #1497, same false-negative class as #1489):
+  # a raw `merge-base --is-ancestor` on a shallow-truncated shared checkout
+  # can answer "no" for a branch that IS fully merged, which would fall
+  # through to the (safe but slow) cherry check below — not a correctness
+  # bug on its own, but exactly the perf regression this fast path exists to
+  # avoid. Route through landing-verify.js so a shallow checkout self-heals
+  # (fetch --unshallow) before answering. Fall back to the raw check if node
+  # or the lib is unavailable — never silently skip the fast path.
+  local cherry_raw cherry_status unmerged head_sha landed_status
   head_sha=$(git rev-parse "$branch" 2>/dev/null)
-  if [ -n "$head_sha" ] && git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null; then
+  landed_status=1
+  if [ -n "$head_sha" ]; then
+    if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/landing-verify.js" ]; then
+      node "$REPO/scripts/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
+      landed_status=$?
+    else
+      git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null
+      landed_status=$?
+    fi
+  fi
+  if [ -n "$head_sha" ] && [ "$landed_status" = "0" ]; then
     cherry_raw=""      # definitively contained in origin/main
     cherry_status=0
   elif [ -n "$TIMEOUT_BIN" ]; then
