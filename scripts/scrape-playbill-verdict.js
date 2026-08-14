@@ -719,17 +719,6 @@ async function scrapePlaybillVerdict() {
     }
   }
 
-  // Prune sitemap accumulator: an article matched to a show this run (or a
-  // prior run) has done its job — drop it so the accumulator only carries
-  // still-unresolved candidates, mirroring the unmatched-audit prune below.
-  try {
-    const matchedUrls = new Set(matchedArticles.map(a => a.url));
-    const remaining = loadSitemapAccumulator(sitemapAccumulatorPath).filter(a => !matchedUrls.has(a.url));
-    saveSitemapAccumulator(sitemapAccumulatorPath, remaining);
-  } catch (err) {
-    console.error(`  Error pruning sitemap accumulator: ${err.message}`);
-  }
-
   // Dump unmatched articles to audit log for OB discovery pipeline.
   // Append + dedup-by-url so the file accumulates across daily runs.
   try {
@@ -765,6 +754,12 @@ async function scrapePlaybillVerdict() {
   console.log(`Skipped ${stats.skippedOffBroadway} off-Broadway articles\n`);
 
   // Step 3: Fetch each matched article and extract review links
+  // Tracks articles that cleared the fetch + Broadway-market gates below, so
+  // the sitemap accumulator prune (after this loop) only drops candidates
+  // that were actually processed — pruning on tentative match alone would
+  // permanently lose a candidate whose fetch/validation fails on a day it's
+  // already scrolled out of the live sitemap window.
+  const processedArticleUrls = new Set();
   for (const article of matchedArticles) {
     const archivePath = path.join(archiveDir, `${article.showId}.html`);
     // Also check slug-based archive from older runs
@@ -807,6 +802,8 @@ async function scrapePlaybillVerdict() {
       continue;
     }
 
+    processedArticleUrls.add(article.url);
+
     // Extract review links
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
     stats.reviewLinksExtracted += reviewLinks.length;
@@ -832,6 +829,19 @@ async function scrapePlaybillVerdict() {
         console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
       }
     }
+  }
+
+  // Prune sitemap accumulator: only drop candidates that actually cleared
+  // fetch + Broadway-market validation this run (processedArticleUrls) — NOT
+  // every tentative match. A match whose fetch failed or got rejected as
+  // off-market must stay in the accumulator, or a candidate that has already
+  // scrolled out of the live sitemap window is lost for good the moment it
+  // hits a transient failure.
+  try {
+    const remaining = loadSitemapAccumulator(sitemapAccumulatorPath).filter(a => !processedArticleUrls.has(a.url));
+    saveSitemapAccumulator(sitemapAccumulatorPath, remaining);
+  } catch (err) {
+    console.error(`  Error pruning sitemap accumulator: ${err.message}`);
   }
 
   // Step 4: Google fallback for unmatched shows (recent shows only)
