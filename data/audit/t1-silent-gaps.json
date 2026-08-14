@@ -1,8 +1,28 @@
 {
-  "generatedAt": "2026-08-14T18:40:19.673Z",
+  "generatedAt": "2026-08-14T19:38:43.811Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
+    {
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:per-file-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-08-14T19:38:43.811Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 533.4786491666666,
+      "fileAgeHours": 534.4435113888889,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 8.671819444444445
+      "nonTerminalAgeHours": 9.64519138888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,26 +53,30 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 223.9218375,
+      "fileAgeHours": 224.88669944444445,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 8.671819444444445
+      "nonTerminalAgeHours": 9.64519138888889
     },
     {
-      "showId": "an-american-daughter-off-broadway-2026",
-      "title": "An American Daughter",
-      "openingDate": "2026-08-11",
-      "file": "nytimes--laura-collins-hughes.json",
-      "outletId": "nytimes",
-      "tier": 1,
-      "type": "rejected-unscoreable",
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-      "recovery": null,
+      "showId": "the-winters-tale-off-broadway-2026",
+      "title": "The Winter's Tale",
+      "openingDate": "2026-08-12",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+      },
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 18.184874444444443,
-      "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 8.671819444444445
+      "fix": "node scripts/ingest-review-from-url.js --show=the-winters-tale-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/08_12_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-13T11:41:40.084Z",
+      "fileAgeHours": 31.951025555555557,
+      "gapSeenAt": "2026-08-14T19:38:43.811Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
