@@ -98,8 +98,13 @@ export function generateAuthorPersonSchema() {
   };
 }
 
-// Parse address string like "226 W 46th St, New York, NY 10036" into PostalAddress
-function toPostalAddress(address: string, country: string = 'US') {
+// Parse address string like "226 W 46th St, New York, NY 10036" into PostalAddress.
+// country has no default — every caller must resolve it explicitly. A silent
+// 'US' default let generateTheaterSchema assert a country it never checked
+// (caught in review of #1451: the fallback branch below used to return a bare
+// string with no country claim at all; defaulting to 'US' there would have
+// turned "no claim" into a false one for any future non-US theater).
+function toPostalAddress(address: string, country: string) {
   const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
   if (match) {
     return {
@@ -373,7 +378,12 @@ export function generateCriticReviewsSchema(
 }
 
 
-// PerformingArtsTheater Schema - For theater pages
+// PerformingArtsTheater Schema - For theater pages.
+// /theater/[slug] (the only caller) draws theaters exclusively from
+// getAllTheaters() -> getBroadwayShows() (src/lib/data-core.ts), so 'US' is
+// factually correct for every theater this renders today. Hardcoded rather
+// than defaulted so a future non-Broadway theater source has to touch this
+// line instead of silently inheriting an unverified country.
 export function generateTheaterSchema(theater: {
   name: string;
   slug: string;
@@ -381,12 +391,13 @@ export function generateTheaterSchema(theater: {
   currentShow?: { title: string; slug: string };
   pastShows: { title: string; slug: string }[];
 }) {
+  const country = 'US';
   return {
     '@context': 'https://schema.org',
     '@type': 'PerformingArtsTheater',
     name: theater.name,
     url: `${BASE_URL}/theater/${theater.slug}`,
-    ...(theater.address && { address: toPostalAddress(theater.address) }),
+    ...(theater.address && { address: toPostalAddress(theater.address, country) }),
     event: theater.currentShow ? {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
@@ -394,7 +405,7 @@ export function generateTheaterSchema(theater: {
       location: {
         '@type': 'PerformingArtsTheater',
         name: theater.name,
-        ...(theater.address && { address: toPostalAddress(theater.address) }),
+        ...(theater.address && { address: toPostalAddress(theater.address, country) }),
       },
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
