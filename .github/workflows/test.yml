@@ -739,6 +739,11 @@ on:
       - 'scripts/discover-new-shows.js'
       - 'scripts/discover-new-shows.test.mjs'
       - 'scripts/backfill-genre.js'
+      # Stale-entry reconciliation for rediscovered shows (Gap C, card #1446).
+      # Test coverage: tests/unit/discovery-production-match.test.mjs, listed
+      # in tests/unit-test-manifest.txt (tests/** globs push-triggering only,
+      # not execution). This entry needed so a solo lib edit triggers CI.
+      - 'scripts/lib/discovery-reconcile.js'
       # Duplicate-show audit + the title-fragment detector it now also runs
       # (colocated *.test.mjs runs in the lib glob). Without these a solo edit
       # triggers ZERO CI.

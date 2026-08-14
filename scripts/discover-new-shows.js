@@ -25,6 +25,7 @@ const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
+const { computeShowReconciliation } = require('./lib/discovery-reconcile');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
@@ -172,6 +173,13 @@ const NON_THEATER_VENUES = [
 // Only applied to TodayTix ingestion, not IBDB historical data
 function isOneNightShow(show) {
   if (!show.startDate || !show.endDate) return false;
+  // TodayTix returns the literal string "null" (not JSON null) for shows
+  // without confirmed run dates yet — "null" === "null" made every
+  // not-yet-on-sale announced show look like a one-night event and get
+  // filtered before ever reaching the dedup/new-show pipeline (Gap B, card
+  // #1446: Mix and Master, The Full Monty, Warriors, Three Days of Rain were
+  // all real full Broadway/Off-Broadway runs filtered this way).
+  if (show.startDate === 'null' || show.endDate === 'null') return false;
   return show.startDate === show.endDate;
 }
 
@@ -2009,6 +2017,12 @@ async function discoverShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
+  // Gap C (card #1446): shows discovery correctly re-matches to an existing
+  // shows.json entry, but the entry's stale preview/opening date and venue
+  // are never refreshed from the live source. reconciledShows tracks the
+  // patches applied below so the summary/save logic knows there's something
+  // to write even when zero brand-new shows were found this run.
+  const reconciledShows = [];
   const existingSlugs = new Set(data.shows.map(s => s.slug));
   const existingIds = new Set(data.shows.map(s => s.id));
 
@@ -2018,10 +2032,24 @@ async function discoverShows() {
     if (s.todaytixId) existingTodaytixIds.set(s.todaytixId, s);
   }
 
+  // Applies computeShowReconciliation's patch (if any) directly onto the
+  // matched shows.json entry — `existing` is a reference into data.shows, so
+  // this mutation is what saveShows(data) below persists. Always logged (even
+  // in dry-run) so --dry-run output demonstrates the refresh; only mutated
+  // when actually writing.
+  function reconcileMatchedShow(existing, candidate) {
+    const patch = computeShowReconciliation(existing, candidate);
+    if (!patch) return;
+    reconciledShows.push({ id: existing.id, title: existing.title, patch });
+    console.log(`  🔄 "${existing.title}" (${existing.id}): refreshing stale field(s) from live source — ${Object.keys(patch).join(', ')}`);
+    if (!dryRun) Object.assign(existing, patch);
+  }
+
   for (const show of discoveredShows) {
     // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
     if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
       const existing = existingTodaytixIds.get(show.todaytixId);
+      reconcileMatchedShow(existing, show);
       skippedDuplicates.push({
         title: show.title,
         reason: `Same TodayTix ID (${show.todaytixId}) as existing show`,
@@ -2034,6 +2062,7 @@ async function discoverShows() {
     const duplicateCheck = checkForDuplicate(show, data.shows);
 
     if (duplicateCheck.isDuplicate) {
+      if (duplicateCheck.existingShow) reconcileMatchedShow(duplicateCheck.existingShow, show);
       skippedDuplicates.push({
         title: show.title,
         reason: duplicateCheck.reason,
@@ -2289,8 +2318,17 @@ async function discoverShows() {
   }
 
   if (newShows.length === 0) {
-    console.log('✅ No new shows discovered - database is up to date');
-    return { newShows: [], count: 0 };
+    if (reconciledShows.length > 0) {
+      if (!dryRun) {
+        saveShows(data);
+        console.log(`✅ No new shows discovered — refreshed ${reconciledShows.length} stale existing show(s)`);
+      } else {
+        console.log(`✅ No new shows discovered — dry-run would refresh ${reconciledShows.length} stale existing show(s)`);
+      }
+    } else {
+      console.log('✅ No new shows discovered - database is up to date');
+    }
+    return { newShows: [], count: 0, reconciledCount: reconciledShows.length };
   }
 
   console.log(`🎭 Found ${newShows.length} NEW show(s):`);
@@ -2545,7 +2583,7 @@ async function discoverShows() {
     }
 
     saveShows(data);
-    console.log(`✅ Added ${newShows.length} shows to shows.json`);
+    console.log(`✅ Added ${newShows.length} shows to shows.json${reconciledShows.length > 0 ? `, refreshed ${reconciledShows.length} stale existing show(s)` : ''}`);
 
     // Show detection summary
     const revivalsDetected = revivalDetection.filter(d => d.isRevival).length;
@@ -2628,7 +2666,7 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
-  return { newShows, count: newShows.length };
+  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length };
 }
 
 if (require.main === module) {

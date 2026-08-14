@@ -298,6 +298,14 @@ function isMultiProduction(newShow, existing) {
   // e.g., "phantom-west-end-1986" has ID year 1986 but openingDate 2021-07-27.
   const getYear = (show) => {
     if (show.openingDate) return new Date(show.openingDate).getFullYear();
+    // Freshly-discovered candidates never carry openingDate before IBDB
+    // enrichment (TodayTix/Playbill only ever publish a first-preview date) —
+    // fall back to previewsStartDate so a same-venue historical production
+    // isn't silently treated as "no year evidence, assume same show" (Gap A,
+    // card #1446: a 2026 Winter Garden "Much Ado About Nothing" candidate
+    // matched the venue's 1972 production because both openingDate and the
+    // ID-suffix year were absent, and the two productions share a venue).
+    if (show.previewsStartDate) return new Date(show.previewsStartDate).getFullYear();
     const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
     if (idMatch) return parseInt(idMatch[1]);
     return null;
