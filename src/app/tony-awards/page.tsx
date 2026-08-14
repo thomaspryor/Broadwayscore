@@ -18,9 +18,15 @@ import {
 
 const season = getTonySeasonWindow();
 
+// Don't promise "<current year> predictions" before nominations exist — this page is
+// indexable and the current-season predictions page deliberately isn't.
+const hubNominationsAnnounced = hasNominationsBeenAnnounced(season);
+
 export const metadata: Metadata = {
   title: 'Tony Awards — Predictions, Leaderboard & Historical Data',
-  description: `Data-driven Tony Awards analysis: ${season.ceremonyYear} predictions ranked by critic scores, the all-time leaderboard of winners and nominees, and 12 seasons of accuracy data.`,
+  description: hubNominationsAnnounced
+    ? `Data-driven Tony Awards analysis: ${season.ceremonyYear} predictions ranked by critic scores, the all-time leaderboard of winners and nominees, and 12 seasons of accuracy data.`
+    : `Data-driven Tony Awards analysis: the all-time leaderboard of winners and nominees, 12 seasons of prediction accuracy, and every show tracked through the ${season.label} season.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards`,
   },
@@ -150,6 +156,34 @@ export default function TonyAwardsHubPage() {
                 )}
                 <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
                   See full predictions &rarr;
+                </p>
+              </Link>
+              <Link
+                href="/tony-awards/predictions"
+                className="block mt-2 pt-2 border-t border-white/5 text-xs text-gray-400 hover:text-brand transition-colors"
+              >
+                Track record &amp; past seasons &rarr;
+              </Link>
+            </div>
+          ) : featureFlags.tonyPredictions ? (
+            /* Pre-nominations replacement. Gating the predictions teaser on
+               nominationsAnnounced (correctly) removed the hub's only link to the
+               current season for ~9 months a year, leaving a near-empty grid. This
+               keeps the entry point without the prediction framing. */
+            <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
+              <Link href={`/tony-awards/predictions/${season.label}`} className="block">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Season Tracker</h2>
+                  <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <p className="text-sm text-gray-400">
+                  Shows opening this season, tracked as they open. Tony eligibility hasn&apos;t been
+                  ruled on yet and predictions start after nominations.
+                </p>
+                <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
+                  See the season so far &rarr;
                 </p>
               </Link>
               <Link
