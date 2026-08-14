@@ -422,6 +422,44 @@ function evaluateReverseLondonCrossMarketGuard({ outletIsLondon, reviewDate, pri
   return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
 }
 
+/**
+ * URL-path cross-market guard, priorRuns-aware.
+ *
+ * Third sibling of evaluateForwardCrossMarketGuard (#1528, outlet-region-based)
+ * and evaluateReverseLondonCrossMarketGuard (BRO-222, outlet-region-based):
+ * rebuild-all-reviews.js's [GUARD:URL-PATH-CROSS-MARKET] block flags
+ * wrongProduction from the review URL's PATH TEXT instead of the outlet's
+ * region (e.g. '/broadway-review/', '/chicago-', '/national-tour/' on a WE
+ * show; '/west-end-review/', '/london-review/', '/london/' on a Broadway/OB
+ * show) and, same as the other two guards before their fixes, never
+ * consulted show.priorRuns at all — a review whose URL-path legitimately
+ * describes a declared prior run in the OPPOSITE market of the current show
+ * (a Chicago pre-Broadway tryout before a West End transfer; a West End run
+ * before an Off-Broadway transfer) was flagged as cross-market contamination
+ * even though it's valid in-window coverage of that declared run.
+ *
+ * Pure — the caller has already evaluated the URL-path regex and tells this
+ * function which market that path text implies is being reviewed
+ * (oppositeMarket), plus the review's parsed publishDate and show.priorRuns.
+ *
+ * @param {object} args
+ * @param {boolean} args.urlPathImpliesOppositeMarket - the guard's URL-path regex already matched
+ * @param {'us'|'uk'} args.oppositeMarket - market the matched URL-path text implies (US indicators on a WE show → 'us'; London indicators on a Broadway/OB show → 'uk')
+ * @param {Date|string|null} args.reviewDate - parsed/parseable review publish date
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns
+ * @returns {{ shouldFlag: boolean, exemptedByPriorRun: boolean, matchedVenue: string|null }}
+ */
+function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, oppositeMarket, reviewDate, priorRuns }) {
+  if (!urlPathImpliesOppositeMarket) return { shouldFlag: false, exemptedByPriorRun: false, matchedVenue: null };
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const match = findMatchingPriorRun(reviewDate, priorRuns);
+  const venueMatches = match && (oppositeMarket === 'us' ? isUsVenueString(match.venue) : isUkVenueString(match.venue));
+  if (venueMatches) {
+    return { shouldFlag: false, exemptedByPriorRun: true, matchedVenue: match.venue };
+  }
+  return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
+}
+
 module.exports = {
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
@@ -433,4 +471,5 @@ module.exports = {
   isUsVenueString,
   evaluateForwardCrossMarketGuard,
   evaluateReverseLondonCrossMarketGuard,
+  evaluateUrlPathCrossMarketGuard,
 };

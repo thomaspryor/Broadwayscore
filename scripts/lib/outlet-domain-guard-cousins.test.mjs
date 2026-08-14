@@ -11,11 +11,16 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { createReviewFile } = require('../gather-reviews.js');
 const { isCrossOutletUrl } = require('./review-normalization.js');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.join(__dirname, '..', '..');
 
 const REVIEW_TEXTS_DIR = path.join(process.cwd(), 'data', 'review-texts');
 
@@ -145,5 +150,38 @@ test('isCrossOutletUrl allows a sunday-express-labeled URL swap onto express.co.
     isCrossOutletUrl('sunday-express', 'https://www.express.co.uk/entertainment/theatre/some-show-review/'),
     false,
     'shared bare-domain edition label must not be refused as cross-outlet'
+  );
+});
+
+// --- prevention: this exact bug (a new call site using the coarse bare
+// outletOwnsUrlDomain instead of outletOwnsUrlDomainIgnoringPath) has now
+// recurred twice — task #1529 fixed the two DTLI extractors, this task
+// (#1531) fixed the remaining two. Fail CI the next time a new call site
+// reaches for the bare identifier instead of the path-aware wrapper. The
+// word-boundary regex deliberately does not match ...DomainIgnoringPath.
+test('no file outside review-normalization.js imports the bare outletOwnsUrlDomain', () => {
+  const ALLOWLIST = new Set([
+    'scripts/lib/review-normalization.js', // defines it; internal use inside outletOwnsUrlDomainIgnoringPath
+    'tests/unit/review-normalization.test.js', // pins the low-level primitive's own subdomain-matching behavior
+  ]);
+  const tracked = execSync('git ls-files -- "scripts/**/*.js" "tests/**/*.js" "tests/**/*.mjs"', {
+    cwd: REPO_ROOT,
+    encoding: 'utf-8',
+  })
+    .split('\n')
+    .filter(Boolean);
+
+  const offenders = [];
+  const BARE_IDENTIFIER = /\boutletOwnsUrlDomain\b/;
+  for (const rel of tracked) {
+    if (ALLOWLIST.has(rel)) continue;
+    const content = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf-8');
+    if (BARE_IDENTIFIER.test(content)) offenders.push(rel);
+  }
+
+  assert.deepEqual(
+    offenders,
+    [],
+    `${offenders.join(', ')} import(s) the coarse bare outletOwnsUrlDomain — use outletOwnsUrlDomainIgnoringPath instead (task #1531 class of bug)`
   );
 });

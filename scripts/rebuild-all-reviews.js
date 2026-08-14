@@ -31,7 +31,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -3044,10 +3044,22 @@ showDirs.forEach(showId => {
           const urlObj = new URL(data.url);
           const hostname = urlObj.hostname.replace(/^www\./, '');
           const urlPath = urlObj.pathname.toLowerCase();
+          const urlPathGuardReviewDate = data.publishDate ? parseDate(data.publishDate) : null;
+          const urlPathGuardPriorRuns = showById[showId] && showById[showId].priorRuns;
           if (isLondonMarket(showCategory) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
             // WE show but URL path contains Broadway production indicators
-            if (/[-/](broadway-review|on-broadway|broadway[-/])/.test(urlPath)
-                || /\/(chicago|national-tour)[-/]/.test(urlPath)) {
+            const urlPathImpliesBroadway = /[-/](broadway-review|on-broadway|broadway[-/])/.test(urlPath)
+                || /\/(chicago|national-tour)[-/]/.test(urlPath);
+            // priorRuns exemption (card #1532, 3rd cousin of BRO-222/#1528): a review
+            // in-window for a declared US priorRun (e.g. a Chicago tryout before this
+            // West End run) legitimately carries Broadway/tour URL-path text.
+            const urlPathVerdict = evaluateUrlPathCrossMarketGuard({
+              urlPathImpliesOppositeMarket: urlPathImpliesBroadway,
+              oppositeMarket: 'us',
+              reviewDate: urlPathGuardReviewDate,
+              priorRuns: urlPathGuardPriorRuns,
+            });
+            if (urlPathVerdict.shouldFlag) {
               if (!skipStaleFlagWrite(data)) { // [GUARD:URL-PATH-CROSS-MARKET-483]
                 data.wrongProduction = true;
                 invalidateWrongProductionAutoClear(data);
@@ -3061,7 +3073,17 @@ showDirs.forEach(showId => {
           } else if ((showCategory === 'broadway' || showCategory === 'off-broadway')
                      && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
             // Broadway show but URL path contains West End production indicators
-            if (/[-/](west-end-review|london-review|london[-/])/.test(urlPath)) {
+            const urlPathImpliesLondon = /[-/](west-end-review|london-review|london[-/])/.test(urlPath);
+            // priorRuns exemption (card #1532): a review in-window for a declared UK
+            // priorRun (e.g. a West End run before an Off-Broadway transfer)
+            // legitimately carries West-End/London URL-path text.
+            const urlPathVerdict = evaluateUrlPathCrossMarketGuard({
+              urlPathImpliesOppositeMarket: urlPathImpliesLondon,
+              oppositeMarket: 'uk',
+              reviewDate: urlPathGuardReviewDate,
+              priorRuns: urlPathGuardPriorRuns,
+            });
+            if (urlPathVerdict.shouldFlag) {
               if (!skipStaleFlagWrite(data)) { // [GUARD:URL-PATH-CROSS-MARKET-483]
                 data.wrongProduction = true;
                 invalidateWrongProductionAutoClear(data);
