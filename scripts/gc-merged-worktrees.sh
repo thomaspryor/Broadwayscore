@@ -208,10 +208,17 @@ check_disk_floor() {
 # Bound the fetch — a hung network call used to stall the whole GC (and the
 # emergency disk-floor cleanup that now runs after it) indefinitely. `timeout`
 # comes from Homebrew coreutils; the launchd plist's PATH includes it.
+# This script only ever runs interactively/via launchd on a full local
+# checkout (never a CI shallow checkout) — audit-unbounded-fetch.js's static
+# reachability trace flags it anyway since it's reachable from many
+# workflows' require graphs. Already timeout-wrapped below (20s), not the
+# unbounded-network-stall case this audit exists to catch.
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
 if [ -n "$TIMEOUT_BIN" ]; then
+  # unbounded-fetch-ok: bounded by $TIMEOUT_BIN 20s above; see block comment above.
   "$TIMEOUT_BIN" 20s git fetch origin main -q 2>/dev/null || log "WARN: git fetch failed or timed out (offline?) — using cached origin/main"
 else
+  # unbounded-fetch-ok: only reached when timeout/gtimeout is absent (rare local machine); see block comment above.
   git fetch origin main -q 2>/dev/null || log "WARN: git fetch failed (offline?) — using cached origin/main"
 fi
 

@@ -79,6 +79,12 @@ function listWorkBranchStatuses(taskId, { repoDir, defaultBranch = 'main' } = {}
     // local ref makes an already-landed branch look unlanded). Non-fatal —
     // offline/timeout falls back to whatever origin/<defaultBranch> already
     // points at locally.
+    // unbounded-fetch-ok: this only ever runs from a live bsc-next.js dispatch
+    // (a full local/cmux checkout), never from a CI workflow — audit-unbounded-
+    // fetch.js's static reachability trace flags it anyway because
+    // dispatch-guards.js (which this file's matchesTaskWorkBranch feeds) is
+    // required by bsc-next.test.mjs, which some shallow-checkout workflow runs;
+    // the git-fetch code path here is never actually invoked during tests.
     execFileSync('git', ['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 });
   } catch {
     // offline/timeout — use cached origin ref
