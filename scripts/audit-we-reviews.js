@@ -24,6 +24,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { GEMINI_FLASH, GPT4O } = require('./lib/models');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -318,8 +319,7 @@ async function main() {
   if (market === 'west-end') {
     targetShows = showsData.shows.filter(s => s.category === 'west-end');
   } else if (market === 'broadway') {
-    // Broadway shows have no category field, or category === 'broadway'
-    targetShows = showsData.shows.filter(s => !s.category || s.category === 'broadway');
+    targetShows = showsData.shows.filter(isBroadwayCategory);
   } else {
     targetShows = showsData.shows.filter(s => s.category === market);
   }

@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isRelevantPost } = require('./lib/reddit-grosses');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
@@ -248,14 +249,9 @@ function matchShowName(showName, lookup) {
   return null;
 }
 
-function isBroadwayShow(show) {
-  // Broadway shows have no category, or explicitly 'broadway'
-  // Skip west-end, off-broadway, off-west-end
-  const cat = show.category;
-  if (!cat) return true;
-  if (cat === 'broadway') return true;
-  return false;
-}
+// Skip west-end, off-broadway, off-west-end — delegates to the shared
+// scripts/-side predicate rather than reimplementing it (see #1471).
+const isBroadwayShow = isBroadwayCategory;
 
 // ---------------------------------------------------------------------------
 // Main

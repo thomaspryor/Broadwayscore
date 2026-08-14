@@ -12,11 +12,19 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
   VERDICT_CATEGORY_URL,
+  VERDICT_SITEMAP_URL,
   extractArticlesFromCategoryPage,
+  extractArticlesFromSitemap,
+  loadSitemapAccumulator,
+  saveSitemapAccumulator,
+  accumulateSitemapArticles,
   extractReviewLinksFromArticle,
   searchPlaybillVerdict,
 } = require('../../scripts/lib/playbill-verdict-discover.js');
@@ -205,5 +213,94 @@ describe('module surface', () => {
     assert.strictEqual(typeof extractArticlesFromCategoryPage, 'function');
     assert.strictEqual(typeof extractReviewLinksFromArticle, 'function');
     assert.strictEqual(typeof searchPlaybillVerdict, 'function');
+  });
+});
+
+// #1464 — the category page is a single static fetch that never runs the
+// site's scroll-triggered JS, so it only ever sees the ~27-30 articles
+// present on first paint. playbill.com/sitemap.xml is site-wide (articles,
+// productions, venues, galleries all mixed together) so it must be filtered
+// to review-roundup slugs before use.
+describe('extractArticlesFromSitemap — sitemap.xml filtering', () => {
+  const sitemapXml = (locs) => `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${locs.map(([loc, lastmod]) => `<url><loc>${loc}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`).join('\n')}
+</urlset>`;
+
+  it('keeps only /article/ URLs whose slug matches a known Verdict review-wrapper pattern', () => {
+    const xml = sitemapXml([
+      ['https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway', '2026-08-12'],
+      ['https://playbill.com/article/midnight-performance-added-for-julio-torres-marina-at-little-island', '2026-08-14'],
+      ['https://playbill.com/production/an-american-daughter-off-broadway-2026', '2026-08-12'],
+      ['https://playbill.com/venue/some-theatre-new-york-ny', '2023-05-08'],
+    ]);
+    const articles = extractArticlesFromSitemap(xml);
+    assert.strictEqual(articles.length, 1);
+    assert.strictEqual(articles[0].slug, 'read-the-reviews-for-an-american-daughter-off-broadway');
+    assert.strictEqual(articles[0].title, 'An American Daughter');
+    assert.strictEqual(articles[0].publishDate, '2026-08-12');
+  });
+
+  it('matches the reviews-sound-off-on- wrapper (Death Note London)', () => {
+    const xml = sitemapXml([
+      ['https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london', '2026-08-12'],
+    ]);
+    const articles = extractArticlesFromSitemap(xml);
+    assert.strictEqual(articles.length, 1);
+  });
+
+  it('dedupes repeated <loc> entries and returns [] for empty/missing input', () => {
+    const xml = sitemapXml([
+      ['https://playbill.com/article/read-the-reviews-for-the-winters-tale-at-free-shakespeare-in-the-park', '2026-08-12'],
+      ['https://playbill.com/article/read-the-reviews-for-the-winters-tale-at-free-shakespeare-in-the-park', '2026-08-12'],
+    ]);
+    assert.strictEqual(extractArticlesFromSitemap(xml).length, 1);
+    assert.deepStrictEqual(extractArticlesFromSitemap(''), []);
+    assert.deepStrictEqual(extractArticlesFromSitemap(null), []);
+  });
+});
+
+describe('sitemap accumulator — cross-day persistence', () => {
+  const withTmpState = (fn) => {
+    const statePath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pv-sitemap-')), 'seen.json');
+    try { fn(statePath); } finally { fs.rmSync(path.dirname(statePath), { recursive: true, force: true }); }
+  };
+
+  it('loadSitemapAccumulator returns [] when the state file does not exist yet', () => {
+    withTmpState((statePath) => {
+      assert.deepStrictEqual(loadSitemapAccumulator(statePath), []);
+    });
+  });
+
+  it('accumulateSitemapArticles unions across calls, dedupes by URL, and stamps firstSeen once', () => {
+    withTmpState((statePath) => {
+      const first = accumulateSitemapArticles(statePath, [
+        { url: 'https://playbill.com/article/a', title: 'A', slug: 'a' },
+      ]);
+      assert.strictEqual(first.length, 1);
+      const firstSeenA = first[0].firstSeen;
+      assert.strictEqual(typeof firstSeenA, 'string');
+
+      // A comes back again (re-seen in a later sitemap fetch) alongside a new B —
+      // A's firstSeen must not be overwritten, and B must be added.
+      const second = accumulateSitemapArticles(statePath, [
+        { url: 'https://playbill.com/article/a', title: 'A', slug: 'a' },
+        { url: 'https://playbill.com/article/b', title: 'B', slug: 'b' },
+      ]);
+      assert.strictEqual(second.length, 2);
+      assert.strictEqual(second.find(a => a.slug === 'a').firstSeen, firstSeenA);
+
+      // Persisted to disk, not just in-memory.
+      assert.strictEqual(loadSitemapAccumulator(statePath).length, 2);
+    });
+  });
+
+  it('saveSitemapAccumulator/loadSitemapAccumulator round-trip, and a corrupt file degrades to []', () => {
+    withTmpState((statePath) => {
+      saveSitemapAccumulator(statePath, [{ url: 'https://playbill.com/article/x', title: 'X', slug: 'x' }]);
+      assert.strictEqual(loadSitemapAccumulator(statePath).length, 1);
+      fs.writeFileSync(statePath, 'not json');
+      assert.deepStrictEqual(loadSitemapAccumulator(statePath), []);
+    });
   });
 });

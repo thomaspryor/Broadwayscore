@@ -19,6 +19,7 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -219,7 +220,7 @@ async function main() {
 
   const open = shows.filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
-    (s.category || 'broadway') === 'broadway'
+    isBroadwayCategory(s)
   );
 
   console.log(`Open/preview Broadway shows: ${open.length}\n`);

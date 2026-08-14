@@ -1755,6 +1755,13 @@ on:
       - 'scripts/audit-closing-dates.js'
       - 'scripts/lib/closing-audit-classify.js'
       - 'scripts/lib/closing-audit-classify.test.mjs'
+      # Stale-checkout race guard (rebuild-reviews.yml): pure predicates +
+      # colocated *.test.mjs run in the lib-test glob; path-listed (with the
+      # driver script and workflow, both already covered by other entries in
+      # this list) so a solo edit to just the lib file triggers CI.
+      - 'scripts/lib/rebuild-staleness-guard.js'
+      - 'scripts/lib/rebuild-staleness-guard.test.mjs'
+      - 'scripts/check-rebuild-staleness.js'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
@@ -3867,16 +3874,56 @@ jobs:
 
       - name: Audit stale flag after URL correction
         if: always()
-        # --max=15, not 0. Corpus is drained to 0 as of 2026-08-14, but 19 of
-        # the 22 scripts that can write these flags still do so unguarded, and
-        # the collector path adds roughly one file every 40 hours. At --max=0 a
-        # single such file blocks EVERY parallel session's merge (the merge
-        # script's post-merge test floor), which is exactly how one review
-        # record gated all code delivery for two days. 15 absorbs the trickle
-        # while still catching a real regression — the 121-file backlog this
-        # gate was built for would fail loudly. Same ratchet as the
-        # self-contradictory-clears gate above; ratchet DOWN as producers are
-        # closed. Root fix (predicate + write chokepoint) is carded.
+        # REPORT-ONLY (continue-on-error) as of 2026-08-14. This step used to
+        # block the build at --max=15. It was demoted because its findings were
+        # measured and its PRECISION IS ZERO on everything we have looked at.
+        #
+        # EVIDENCE (2026-08-14 review of the 115 then-matching files):
+        #   - A stratified random sample of 20 flagged files was adjudicated by
+        #     hand: 20/20 flags were CORRECT (the review really does belong to a
+        #     different production) and 0 were stale. A full eyeball of all 115
+        #     found none identifiably stale.
+        #
+        # THE PREMISE IS FALSE. The gate assumes "URL was corrected + empty
+        # fullText ⇒ publishDate is stale ⇒ the exclusion flag is stale". Every
+        # link in that chain fails on the real corpus:
+        #   - 87/115 list `publishDate` in `_urlChangedClear.cleared` — the old
+        #     date was already DELETED at correction time, so there is no stale
+        #     date left to mislead the flag.
+        #   - Of the 20 flagged files with a parseable date in the CURRENT url,
+        #     18 match the current url's date, 1 is off by one day, 1 is old.
+        #   - 69/115 have `textFetchedAt` LATER than `_urlChangedClear.at` —
+        #     i.e. they were already refetched; nothing is "waiting on refetch".
+        #   - 72/115 have a word count > 0 and 71/115 carry a `textQuality`
+        #     verdict, so the body is not actually absent in the way the
+        #     detector infers.
+        #   - ~29/115 were flagged by guards that never read publishDate at all
+        #     (cross-market, CV-promotion, URL-collision, dedup, OB supersede),
+        #     so a stale date could not have produced those flags either way.
+        #   - The detector's core test is literally `return !data.fullText;`
+        #     (scripts/lib/stale-flag-after-url-correction.js:56). Empty
+        #     fullText overwhelmingly means the URL-change step DELETED the
+        #     body, not that a refetch is pending.
+        #
+        # HARM OF ACTING ON IT: draining these files with `--fix` clears the
+        # exclusion flags and re-admits ~115 WRONG-PRODUCTION reviews into live
+        # Critic Scores. A prior session drained the corpus and then correctly
+        # self-reverted; the "drained to 0" claim that used to sit in this
+        # comment was that reverted drain, not a real clean corpus.
+        #
+        # KEPT, NOT DELETED: the detector may still catch a genuine #483
+        # regression someday, so the sweep still runs and still prints its
+        # findings in the build log. It just no longer gates merges on a signal
+        # with no measured precision. For attribution of which code path wrote
+        # a given flag, use scripts/audit-stale-flag-producers.js.
+        #
+        # TO RE-ARM: narrow the detector so it distinguishes "body deleted by
+        # the URL-change step" from "refetch genuinely pending" (e.g. require
+        # textFetchedAt <= _urlChangedClear.at, require publishDate to have
+        # SURVIVED the clear, and exclude the flag families that never consult
+        # publishDate), measure precision on a fresh hand-adjudicated sample,
+        # and only then restore `--max` and drop continue-on-error.
+        continue-on-error: true
         run: node scripts/audit-stale-flag-after-url-correction.js --gate --max=15
         # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
         # _urlChangedClear URL-correction breadcrumb with an empty body — the
@@ -3887,10 +3934,12 @@ jobs:
         # invariant (scripts/lib/url-change-invariant.js) never fired even
         # though the body was wiped and needsRefetch was set. Forward fix:
         # maybeUpgradeUrl now runs applyUrlChangeInvariant(..., {force: true}).
-        # Backlog (157 files, drifted since the original 112-file remediation)
-        # drained 2026-08-12 via `--fix`; blocking (`--gate`, no baseline) from
-        # day one since the corpus is genuinely clean. Detector: scripts/lib/
-        # stale-flag-after-url-correction.js.
+        # The original 112-file class was real. What was never established is
+        # that the detector's signature still SELECTS for it — see the
+        # zero-precision evidence above, which is why this step no longer
+        # blocks. Detector: scripts/lib/stale-flag-after-url-correction.js
+        # (left deliberately unchanged; the demotion is a CI-policy change,
+        # not a detection change).
 
       - name: Audit cast contamination
         if: always()

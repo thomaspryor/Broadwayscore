@@ -88,6 +88,21 @@
  *     (opening-night-checklist.yml, weekly-video-reviews.yml), so a future
  *     core-data write using it would slip past this gate silently.
  *
+ * (h) DEAD-COMMIT-STEP (task #1461, generalizes #1460's manual sweep): a job
+ *     that inline `git commit`s on the root checkout and also pushes (bare
+ *     `git push` or `push-with-retry.sh`), but has ZERO `git add` anywhere in
+ *     the job — including via one of the shared helper scripts that perform
+ *     the add internally (`stage-data-changes.sh`, `git-add-existing.sh`,
+ *     `safe-sync-review-texts.sh`, `sync-audit-checkout.sh`). Unlike rule
+ *     (f)'s advisory posture, this one is unambiguous regardless of what the
+ *     commit was meant to capture: a commit step with nothing ever staged is
+ *     permanent dead code — `git commit` exits non-zero on a clean tree, so
+ *     either the step silently no-ops (if guarded with `|| true`/`continue-
+ *     on-error`) or fails every single run. Same job-scoped parsing as rules
+ *     (d)/(g) — a `git add` in a DIFFERENT job doesn't stage anything for
+ *     this job's checkout. Found by hand twice (task #1460's audit gap fix,
+ *     then a 6-workflow cousin sweep) before being generalized here.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -95,6 +110,7 @@
  *   # hygiene-git-identity-ok: <reason>    — skip git-identity check for this workflow
  *   # hygiene-echo-exitcode-ok: <reason>   — skip pipefail-dead-echo check for this workflow
  *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
+ *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -114,6 +130,34 @@ const NEVER_RUN_CONCURRENCY = 8;
 const NOTIFICATION_TRIGGERS = ['schedule:', 'push:', 'workflow_dispatch:', 'workflow_run:', 'pull_request:'];
 
 const indentOf = (line) => line.length - line.replace(/^ +/, '').length;
+
+// Matches a `run:` step line, accepting both the common indented `run: |`/
+// `run: <cmd>` style and the inline `- run: <cmd>` list-item shorthand (used
+// elsewhere in this repo, e.g. .github/workflows/overnight-collect.yml:48).
+// Shared by every rule below that scans `run:` content — a fix to this
+// anchor previously had to be applied in 5 separate near-identical copies
+// (task #1461 fixed only rule (h)'s copy; #1474 unifies the rest).
+const RUN_LINE_RE = /^(?:-\s+)?run\s*:\s*(.*?)\s*$/;
+
+/**
+ * Find job block boundaries under a top-level `jobs:` map (indent-2 keys
+ * directly under `jobs:`). Returns start-line indices with `lines.length`
+ * appended as the final boundary; callers iterate [jobStarts[j], jobStarts[j+1])
+ * as each job's line range.
+ */
+function findJobBoundaries(lines, jobsIdx) {
+  const jobStarts = [];
+  for (let i = jobsIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '') continue;
+    if (indentOf(line) === 0) break;
+    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
+      jobStarts.push(i);
+    }
+  }
+  jobStarts.push(lines.length);
+  return jobStarts;
+}
 
 /** Return true if the workflow's top-level `on:` block contains any of the listed triggers. */
 function hasNotificationTrigger(raw) {
@@ -146,7 +190,7 @@ function runLineMatches(raw, pattern) {
     // Detect start of a `run:` block.
     // `run: |` and `run: >` are block scalars — NOT an inline command.
     // `run: echo foo` is an inline command on the same line.
-    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+    const runMatch = stripped.match(RUN_LINE_RE);
     if (runMatch) {
       const content = runMatch[1];
       const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -195,17 +239,7 @@ function findMissingGitIdentityCommits(raw) {
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return violations;
 
-  // Job blocks are indent-2 keys directly under the top-level `jobs:` map.
-  const jobStarts = [];
-  for (let i = jobsIdx + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.trim() === '') continue;
-    if (indentOf(line) === 0) break;
-    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
-      jobStarts.push(i);
-    }
-  }
-  jobStarts.push(lines.length);
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
 
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -231,7 +265,7 @@ function findMissingGitIdentityCommits(raw) {
       }
 
       let textToCheck = null;
-      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      const runMatch = stripped.match(RUN_LINE_RE);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -298,16 +332,7 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return violations;
 
-  const jobStarts = [];
-  for (let i = jobsIdx + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.trim() === '') continue;
-    if (indentOf(line) === 0) break;
-    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
-      jobStarts.push(i);
-    }
-  }
-  jobStarts.push(lines.length);
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
 
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -329,7 +354,7 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
       }
 
       let textToCheck = null;
-      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      const runMatch = stripped.match(RUN_LINE_RE);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -366,6 +391,101 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
   return violations;
 }
 
+// Shared helper scripts that perform `git add` internally — a job that
+// invokes one of these has staged files even though the literal text
+// "git add" never appears in the job's own YAML lines (see rule (h)).
+// Matched against the full `scripts/lib/<name>` path (not the bare filename)
+// inside actual run content only — a bare filename can appear incidentally in
+// a commit message or step name ("Fixed per stage-data-changes.sh notes"),
+// and matching that would silently defeat the exact dead-commit bug class
+// this rule exists to catch (ship-check finding, task #1461).
+const GIT_ADD_SATISFYING_SCRIPTS = [
+  'stage-data-changes.sh',
+  'git-add-existing.sh',
+  'safe-sync-review-texts.sh',
+  'sync-audit-checkout.sh',
+];
+const GIT_ADD_SATISFYING_SCRIPT_RE = new RegExp(
+  `scripts/lib/(?:${GIT_ADD_SATISFYING_SCRIPTS.map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+);
+
+/**
+ * Return job-scoped violations of rule (h): a job with an inline `git
+ * commit` on the root checkout and a push step (bare `git push` or
+ * `push-with-retry.sh`), but zero `git add` anywhere in the job — see header
+ * comment above for why this is unambiguous dead code and why job scope
+ * matters (same reasoning as rules (d)/(g)).
+ */
+function findDeadCommitSteps(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return violations;
+
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
+
+  for (let j = 0; j < jobStarts.length - 1; j++) {
+    const start = jobStarts[j];
+    const end = jobStarts[j + 1];
+    const jobName = lines[start].trim().replace(/:\s*$/, '');
+
+    let hasGitAdd = false;
+    let hasPush = false;
+    const commitLines = [];
+    let inRunBlock = false;
+    let runIndent = -1;
+
+    for (let i = start; i < end; i++) {
+      const line = lines[i];
+      const stripped = line.trimStart();
+      if (stripped.startsWith('#')) continue;
+
+      let textToCheck = null;
+      const runMatch = stripped.match(RUN_LINE_RE);
+      if (runMatch) {
+        const content = runMatch[1];
+        const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
+        if (isBlockScalar) {
+          inRunBlock = true;
+          runIndent = indentOf(line);
+          continue;
+        }
+        inRunBlock = false;
+        textToCheck = content;
+      } else if (inRunBlock) {
+        if (stripped !== '' && indentOf(line) <= runIndent) {
+          inRunBlock = false;
+        } else {
+          textToCheck = line;
+        }
+      }
+
+      if (textToCheck !== null && !textToCheck.trimStart().startsWith('#')) {
+        if (/\bgit\s+add\b/.test(textToCheck)) {
+          hasGitAdd = true;
+        }
+        if (GIT_ADD_SATISFYING_SCRIPT_RE.test(textToCheck)) {
+          hasGitAdd = true;
+        }
+        if (/\bgit push\b/.test(textToCheck) || /push-with-retry\.sh/.test(textToCheck)) {
+          hasPush = true;
+        }
+        if (/\bgit commit\b/.test(textToCheck)) {
+          commitLines.push({ lineNum: i + 1, text: line.trim() });
+        }
+      }
+    }
+
+    if (commitLines.length > 0 && hasPush && !hasGitAdd) {
+      for (const c of commitLines) {
+        violations.push({ job: jobName, lineNum: c.lineNum, text: c.text });
+      }
+    }
+  }
+
+  return violations;
+}
+
 /**
  * Split a workflow file into its `run:` block-scalar bodies (one entry per
  * step's `run: |`/`run: >` block). Inline `run: <cmd>` steps are single
@@ -387,7 +507,7 @@ function extractRunBlocks(raw) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const stripped = line.trimStart();
-    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+    const runMatch = stripped.match(RUN_LINE_RE);
 
     if (runMatch) {
       const content = runMatch[1];
@@ -598,6 +718,7 @@ async function main() {
     gitIdentity: [],
     echoExitcode: [],
     coreDataPush: [],
+    deadCommit: [],
   };
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
@@ -666,6 +787,14 @@ async function main() {
         violations.coreDataPush.push({ file, hits });
       }
     }
+
+    // ── Rule (h): dead commit step — git commit + push with zero git add ──────
+    if (!raw.includes('hygiene-dead-commit-ok:')) {
+      const hits = findDeadCommitSteps(raw);
+      if (hits.length > 0) {
+        violations.deadCommit.push({ file, hits });
+      }
+    }
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
@@ -696,7 +825,8 @@ async function main() {
     violations.pushRetry.length +
     violations.gitIdentity.length +
     violations.echoExitcode.length +
-    violations.coreDataPush.length;
+    violations.coreDataPush.length +
+    violations.deadCommit.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -801,6 +931,23 @@ async function main() {
     console.error("Exempt (legitimate): add  # hygiene-core-data-push-ok: <reason>  anywhere in the file.\n");
   }
 
+  if (violations.deadCommit.length) {
+    console.error('── (h) Dead commit step — git commit + push with zero git add ────────');
+    console.error('This job runs `git commit` and pushes, but never stages anything in the');
+    console.error('same job — including via stage-data-changes.sh/git-add-existing.sh/');
+    console.error('safe-sync-review-texts.sh/sync-audit-checkout.sh. The commit is permanent');
+    console.error('dead code: it either no-ops on a clean tree or fails every run (task #1461,');
+    console.error('generalizes the #1460 bug class found twice by hand).\n');
+    for (const { file, hits } of violations.deadCommit) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      job "${h.job}" line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: add the missing `git add` (or a step that stages files internally,');
+    console.error('e.g. `bash scripts/lib/stage-data-changes.sh`) before the commit, in the');
+    console.error('SAME job — or remove the dead commit/push steps entirely.');
+    console.error("Exempt (legitimate): add  # hygiene-dead-commit-ok: <reason>  anywhere in the file.\n");
+  }
+
   process.exit(1);
 }
 
@@ -810,6 +957,10 @@ module.exports = {
   NEVER_RUN_SNAPSHOT_PATH,
   findCoreFileWritesWithoutPush,
   getCoreFilesFromPushAction,
+  findDeadCommitSteps,
+  runLineMatches,
+  findMissingGitIdentityCommits,
+  findPipefailDeadExitCodeEcho,
 };
 
 if (require.main === module) {

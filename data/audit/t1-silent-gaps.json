@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T14:19:25.359Z",
+  "generatedAt": "2026-08-14T15:47:19.902Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 529.1302286111111,
+      "fileAgeHours": 530.5953797222222,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 4.3233991666666665
+      "nonTerminalAgeHours": 5.78855
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 219.5734175,
+      "fileAgeHours": 221.03856805555554,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 4.3233991666666665
+      "nonTerminalAgeHours": 5.78855
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 13.836454166666666,
+      "fileAgeHours": 15.301605,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 4.3233991666666665
+      "nonTerminalAgeHours": 5.78855
     }
   ],
   "contradictions": []

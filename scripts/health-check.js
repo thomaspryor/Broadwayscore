@@ -39,6 +39,7 @@ const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { assessAutofixEffectiveness } = require('./lib/autofix-effectiveness');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -521,7 +522,7 @@ function checkSync() {
 
     const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
     // Only check Broadway shows — WE/OB are expected to have gaps
-    const openShows = showList.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
+    const openShows = showList.filter(s => s.status === 'open' && isBroadwayCategory(s));
 
     // Build review lookup by showId from flat reviews array
     const reviewedShowIds = new Set();
@@ -648,7 +649,7 @@ function checkSync() {
     // out of scope for the social pipeline, so its missing files aren't gaps.
     const inScope = showList.filter(s =>
       (s.status === 'open' || s.status === 'previews') &&
-      ((s.category || 'broadway') === 'broadway' || s.category === 'west-end'));
+      (isBroadwayCategory(s) || s.category === 'west-end'));
     const pulseDir = path.join(__dirname, '..', 'public', 'data', 'shows');
 
     const stale = [];
@@ -717,7 +718,7 @@ function checkSync() {
     const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
     const activeShows = showList.filter(s =>
       (s.status === 'open' || s.status === 'previews') &&
-      (!s.category || s.category === 'broadway')
+      isBroadwayCategory(s)
     );
 
     const missing = [];

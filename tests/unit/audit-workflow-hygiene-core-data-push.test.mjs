@@ -105,6 +105,18 @@ describe('findCoreFileWritesWithoutPush', () => {
     assert.deepStrictEqual(violations, []);
   });
 
+  test('flags an inline `- run: git add ...` list-item shorthand (task #1474)', () => {
+    const raw = synthetic(`
+      - run: git add data/shows.json
+      - name: Commit
+        run: |
+          git commit -m "data: update"
+`);
+    const violations = findCoreFileWritesWithoutPush(raw, CORE_FILES);
+    assert.strictEqual(violations.length, 1);
+    assert.strictEqual(violations[0].coreFile, 'shows.json');
+  });
+
   test('push-core-data in a DIFFERENT job does not satisfy the same-job requirement', () => {
     const raw = `
 jobs:

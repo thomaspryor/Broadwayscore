@@ -49,7 +49,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -2339,11 +2339,24 @@ async function discoverShows() {
           match = existingTitleMap.get(normBase);
         }
       }
-      if (match && match.id !== show.id) {
+      // A same-title match in a DIFFERENT market (e.g. a West End production
+      // transferring to Broadway, like Inter Alia 2026) is a transfer, not a
+      // revival — only same-market matches are real revival evidence.
+      // (Inter Alia Broadway shipped isRevival:true 2026-08-14 solely because
+      // the West End "Inter Alia" entry already existed in shows.json.)
+      // Broadway is stored 3 ways in shows.json (absent key / null / 'broadway'
+      // string, per isBroadwayCategory's own doc comment) — compare via that
+      // predicate rather than raw === so a match against a null/'broadway'
+      // legacy entry isn't wrongly treated as cross-market (2026-08-14 review).
+      const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
+      const sameMarket = match && normMarket(match.category) === normMarket(show.category);
+      if (match && match.id !== show.id && sameMarket) {
         isRevival = true;
         detectedType = match.type || detectedType;
         confidence = 'high';
         console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${match.title}" (${match.id})`);
+      } else if (match && match.id !== show.id) {
+        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${match.title}" (${match.category || 'broadway'}, ${match.id}) — treating as transfer`);
       }
     }
 

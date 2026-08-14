@@ -52,7 +52,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
-const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
@@ -1254,7 +1254,7 @@ const crossShowFingerprints = new Map();
   for (const [, group] of showsByTitle) {
     if (group.length < 2) continue;
     const obShows = group.filter(s => s.category === 'off-broadway');
-    const bwShows = group.filter(s => !s.category || s.category === 'broadway');
+    const bwShows = group.filter(isBroadwayCategory);
     if (obShows.length === 0 || bwShows.length === 0) continue;
 
     for (const bw of bwShows) {
