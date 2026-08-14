@@ -44,68 +44,16 @@ const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
-const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./lib/title-match');
-const { isSubtitleVariantOf, levenshteinDistance } = require('./lib/deduplication');
+const { canonicalVenue } = require('./lib/title-match');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-// Cross-source dedup thresholds for findExistingMatch(), below.
-// 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
-// unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
-// keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
-// "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
-const DEDUP_JACCARD_THRESHOLD = 0.80;
-// Small-edit-distance near-miss (2026-08-13, found while adding
-// off-broadway aggregator-roundup auto-promotion): "Rosie O'Donnell's
-// COMMON KNOWLEDGE" (BWW slug, possessive) normalizes to "rosie odonnells
-// common knowledge" vs the already-live show's "Rosie O'Donnell: Common
-// Knowledge" -> "rosie odonnell common knowledge" — ONE character apart,
-// but jaccard on that pair is 0.6 (below the 0.80 gate) because the extra
-// "s" token-set difference is disproportionate on short titles. Same class
-// of near-miss aggregator-candidate-extract.js's classifyTitleDelta()
-// already treats as 'typo' (Levenshtein 1..3) before a candidate is even
-// staged; this is the matching check on the PROMOTION side, which lacked
-// it. Verified live: this candidate would otherwise have minted a second
-// shows.json entry for an already-closed show. Length-gated so short
-// titles ("Cats" vs "Rats", distance 1) don't false-collapse.
-const TYPO_EDIT_DISTANCE_MAX = 3;
-const TYPO_MIN_TITLE_LENGTH = 10;
-
-/**
- * Does `candidate` ({title, venue}) match an existing show ({id, title,
- * venue})? Same canonical venue AND (normalized title OR subtitle-stripped
- * title OR small edit-distance typo OR jaccard ≥ threshold). Returns
- * { match, reason } or null. Pure — extracted from the promotion loop below
- * so it's independently testable (CLAUDE.md §15) instead of copied into a
- * test file.
- */
-function findExistingMatch(candidate, existingShows) {
-  const venueKey = canonicalVenue(candidate.venue);
-  const cands = (Array.isArray(existingShows) ? existingShows : [])
-    .filter(e => canonicalVenue(e.venue) === venueKey);
-  if (cands.length === 0) return null;
-  const cNorm = normalizeTitle(candidate.title);
-  const cTokens = titleTokens(candidate.title);
-  for (const e of cands) {
-    const eNorm = normalizeTitle(e.title);
-    if (eNorm === cNorm) return { match: e, reason: 'normalized-equal' };
-    if (isSubtitleVariantOf(candidate.title, e.title)) {
-      return { match: e, reason: `subtitle-variant-of: "${e.title}"` };
-    }
-    if (cNorm.length >= TYPO_MIN_TITLE_LENGTH && eNorm.length >= TYPO_MIN_TITLE_LENGTH) {
-      const dist = levenshteinDistance(cNorm, eNorm);
-      if (dist >= 1 && dist <= TYPO_EDIT_DISTANCE_MAX) {
-        return { match: e, reason: `typo-distance=${dist}-of: "${e.title}"` };
-      }
-    }
-    const eTokens = titleTokens(e.title);
-    if (cTokens.size > 0 && eTokens.size > 0) {
-      const sim = jaccard(cTokens, eTokens);
-      if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
-    }
-  }
-  return null;
-}
+// Cross-source dedup — extracted to lib/candidate-dedup.js (task #1466) so
+// promote-we-aggregator-candidates.js reuses the exact same venue+title
+// matching (including the typo-distance and jaccard-threshold fixes below)
+// instead of re-deriving it. Re-exported below unchanged so existing callers
+// (tests, this file's own module.exports) keep working.
+const { findExistingMatch } = require('./lib/candidate-dedup');
 
 const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
 
