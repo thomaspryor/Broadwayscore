@@ -70,6 +70,15 @@ test('takes the first SAFE candidate, skipping earlier unsafe ones', () => {
   assert.equal(extract(notes).cmd, 'npx tsc --noEmit');
 });
 
+// BRO-228: `npx tsx --test` must rank alongside `node --test` (specific test
+// command), not fall into the generic tsc/lint bucket — otherwise a card
+// naming both a tsx test and a tsc line non-deterministically picks whichever
+// appears first in the card text instead of the specific test.
+test('prefers npx tsx --test over a generic tsc/lint candidate, regardless of order', () => {
+  const notes = '## Acceptance criteria\n- `npx tsc --noEmit` and `npx tsx --test tests/unit/gate-logic.test.mjs` both pass';
+  assert.equal(extract(notes).cmd, 'npx tsx --test tests/unit/gate-logic.test.mjs');
+});
+
 test('empty/null notes never throw', () => {
   assert.equal(extract(null).cmd, null);
   assert.equal(extract('').cmd, null);

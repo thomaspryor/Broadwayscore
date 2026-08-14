@@ -30,9 +30,21 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // forms are accepted; every file argument must be a relative, traversal-free
 // path under tests/, scripts/, src/, or docs//memory/ (for test -f).
 const SAFE_CHECK_FORMS = [
-  // .test.mjs/.test.js only — matches the documented contract exactly (.ts
-  // test files run via `npx tsx --test`, which is not an allowed form).
+  // .test.mjs/.test.js run via plain `node --test`. A file that imports a TS
+  // module via the `@/` path alias (e.g. `@/lib/gate-logic`) throws
+  // ERR_MODULE_NOT_FOUND here — Node's own ESM resolver doesn't read tsconfig
+  // paths — so such a file needs the `npx tsx --test` form below instead.
+  // .test.ts is still out of scope for BOTH forms — not an allowed form.
   { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
+  // BRO-228: `npx tsx --test` is this repo's own existing idiom for a
+  // TS-alias-importing test (package.json's test:unit script, test.yml's tsx
+  // batch) — reused here rather than inventing a fourth `node --import tsx
+  // --test` shape. Injection surface is identical to the `node --test` form
+  // above: `npx tsx --test` is a fixed three-token prefix with no capture
+  // group, and the same file-path group goes through the same traversal /
+  // pathPrefix / MUTATING_SCRIPT_RE checks below. .test.ts stays unsupported
+  // — this only widens which LOADER a .test.mjs/.js runs under.
+  { re: /^npx tsx --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
   { re: /^npx tsc --noEmit$/ },
   { re: /^npx next lint$/ },
   { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/', 'src/', 'scripts/'] },
@@ -85,7 +97,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), or `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance)';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), or `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
