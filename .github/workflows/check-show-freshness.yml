@@ -94,6 +94,9 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
 
       # Push core data (shows.json etc) to private repo
       - name: Push core data to private repo
