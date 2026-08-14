@@ -2,7 +2,8 @@
 /**
  * Helper invoked by push-with-retry.sh during conflict resolution on
  * data/commercial.json, data/commercial-pending-review.json,
- * data/commercial-research-queue.json, or data/diary-shows.json.
+ * data/commercial-research-queue.json, data/diary-shows.json,
+ * data/social-post-history.json, or data/audit/feedback-request-ledger.json.
  *
  * Usage:
  *   node scripts/lib/merge-commercial-conflict.js <file> <keep_local_flag> <keep_remote_flag>
@@ -32,6 +33,7 @@ if (!file || !keepLocal || !keepRemote) {
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
+const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 
 function readSide(flag) {
   execSync(`git checkout ${flag} -- ${JSON.stringify(file)}`, { stdio: 'pipe' });
@@ -56,6 +58,8 @@ try {
     trailingNewline = false;
   } else if (file.endsWith('social-post-history.json')) {
     mergedResult = mergeSocialPostHistory(localData, remoteData);
+  } else if (file.endsWith('feedback-request-ledger.json')) {
+    mergedResult = mergeFeedbackLedger(localData, remoteData);
   } else {
     mergedResult = mergeCommercialJson(localData, remoteData);
   }

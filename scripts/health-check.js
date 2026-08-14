@@ -38,6 +38,7 @@ const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = 
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
+const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 // Discord daily reports removed — email digest is the single notification channel.
@@ -368,11 +369,14 @@ function checkPushVerification() {
   return PUSH_VERIFY_CHECKS.map(({ file, field, workflow, name, maxDriftH }) =>
     runCheck(`Push verify: ${file}`, () => {
       try {
-        // Get last successful workflow run time
-        const result = execSync(
-          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        // Get last successful workflow run time. Cached: 15 CRITICAL_CRONS
+        // entries + this check all share ONE shared PAT/rate-limit budget
+        // across every concurrently-dispatched session on this Mac — see
+        // scripts/lib/gh-api-cache.js header for why.
+        const result = cachedShell(
+          `push-verify:${workflow}`,
+          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
+        );
         if (!result) {
           return { name: `Push verify: ${file}`, status: 'warn', message: `No successful ${name} runs found` };
         }
@@ -430,12 +434,12 @@ function checkOpeningNightHistoryFreshness() {
   }
   return [runCheck('Push verify: opening-night-history.json', () => {
     try {
-      // Get last successful workflow run time (same gh invocation shape as
-      // checkPushVerification() above).
-      const result = execSync(
-        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
-        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-      ).trim();
+      // Get last successful workflow run time (same gh invocation shape and
+      // shared cache as checkPushVerification() above).
+      const result = cachedShell(
+        'push-verify:opening-night-checklist.yml',
+        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
+      );
       if (!result) {
         return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No successful Opening Night Checklist runs found' };
       }
@@ -1760,10 +1764,14 @@ function checkCronHealth() {
         // reported "Cron failed: cancelled" while the cron was in fact doing its
         // job on the very next run — see task #80, ~75% of Test Suite runs on main
         // cancel this way. Same single API call, five records.
-        const result = execSync(
-          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        // Cached (shared across every concurrently-dispatched session on this
+        // Mac, see scripts/lib/gh-api-cache.js): 15 entries in this array is
+        // 15 gh calls PER health-check.js run, and this runs on every
+        // /ship-check + /wrap-up across ~dozens of dispatches/day.
+        const result = cachedShell(
+          `cron:${workflow}`,
+          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`
+        );
         const runs = result ? JSON.parse(result) : [];
         if (!runs.length) {
           return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
@@ -1826,10 +1834,10 @@ function checkSecretsHealth() {
         // run with a green run still inside the window is a supersession, not a
         // failure. #367 noted the two checks share this logic and must move
         // together — they drifted again, so keep them in step.
-        const result = execSync(
-          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        const result = cachedShell(
+          'cron:check-secrets-health.yml',
+          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`
+        );
         const runs = result ? JSON.parse(result) : [];
         if (!runs.length) {
           return { name: 'Secrets: health', status: 'warn', message: 'No secrets check runs found' };
@@ -2688,25 +2696,43 @@ async function getWorkflowRunSummary() {
     return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true };
   }
 
-  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  // Rate-limit headroom check FIRST (the /rate_limit endpoint itself is free
+  // — see scripts/lib/gh-api-cache.js). This call alone can spend up to 3
+  // pages of quota; when the shared fleet-wide budget is already critically
+  // low, skip it gracefully instead of contributing to the exhaustion.
+  if (hasLowHeadroom()) {
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, skipReason: 'low rate-limit headroom' };
+  }
+
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   const owner = 'thomaspryor';
   const repo = 'Broadwayscore';
 
   try {
-    // Use REST API with per_page=100 (covers most days in 1-2 calls)
-    const results = [];
-    let page = 1;
-    const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
+    // Cached (shared across every concurrently-dispatched session on this
+    // Mac): this is the single most expensive call in health-check.js (up to
+    // 3 paginated requests), and health-check.js runs on every /ship-check +
+    // /wrap-up across dozens of dispatches/day. `since` is intentionally NOT
+    // part of the cache key — it's "last 24h from call time" either way, and
+    // pinning the key lets concurrent callers within the TTL window share
+    // one result instead of each computing a distinct since= and missing.
+    const results = await cachedFetch('workflow-run-summary-24h', async () => {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      // Use REST API with per_page=100 (covers most days in 1-2 calls)
+      const runs = [];
+      let page = 1;
+      const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
 
-    while (page <= maxPages) {
-      const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-      const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
-      if (!response || !response.workflow_runs) break;
-      results.push(...response.workflow_runs);
-      if (response.workflow_runs.length < 100) break;
-      page++;
-    }
+      while (page <= maxPages) {
+        const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
+        const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+        if (!response || !response.workflow_runs) break;
+        runs.push(...response.workflow_runs);
+        if (response.workflow_runs.length < 100) break;
+        page++;
+      }
+      return runs;
+    });
 
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
@@ -2817,7 +2843,9 @@ async function getOpenFeedbackReviewIssues() {
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   try {
     const url = 'https://api.github.com/repos/thomaspryor/Broadwayscore/issues?labels=needs-manual-review&state=open&per_page=100';
-    const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+    // Cached (shared across every concurrently-dispatched session on this Mac).
+    const response = await cachedFetch('needs-manual-review-issues',
+      () => fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' }));
     if (!Array.isArray(response)) return { skipped: true, issues: [] };
     return {
       skipped: false,

@@ -67,8 +67,28 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   # what server-side branch protection allows. See card #208.
   case "$remote_ref" in
   refs/heads/main | refs/heads/master)
-    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ] && \
-       ! git merge-base --is-ancestor "$remote_oid" "$local_oid" 2>/dev/null; then
+    # Shallow- and error-aware (task #1497, same false-negative class as
+    # #1489): a raw `merge-base --is-ancestor` on a shallow-truncated shared
+    # checkout can answer "not an ancestor" for a remote_oid that genuinely
+    # IS an ancestor, which would BLOCK a legitimate fast-forward push here.
+    # Route through landing-verify.js (exit 0=LANDED/ancestor,
+    # 1=NOT_LANDED/not-ancestor, 2=UNKNOWN) so a shallow or errored check
+    # never masquerades as a definitive "not an ancestor" — only exit 1
+    # blocks the push; UNKNOWN fails open (never NOT_LANDED) and lets the
+    # push proceed, same as a shallow checkout landing on this same commit.
+    non_ff=1
+    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+      if command -v node >/dev/null 2>&1 && [ -f "$REPO_ROOT/scripts/lib/landing-verify.js" ]; then
+        node "$REPO_ROOT/scripts/lib/landing-verify.js" --sha="$remote_oid" --ref="$local_oid" --cwd="$REPO_ROOT" >/dev/null 2>&1
+        verify_status=$?
+        [ "$verify_status" != "1" ] && non_ff=0
+      elif git merge-base --is-ancestor "$remote_oid" "$local_oid" 2>/dev/null; then
+        non_ff=0
+      fi
+    else
+      non_ff=0
+    fi
+    if [ "$non_ff" = "1" ]; then
       branch_name="${remote_ref#refs/heads/}"
       echo ""
       echo "=== PRE-PUSH BLOCKED: non-fast-forward push to $branch_name ==="

@@ -12,6 +12,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const AUDIT_DIR = path.join(REPO_ROOT, 'data/audit');
 const audit = JSON.parse(fs.readFileSync(path.join(AUDIT_DIR, 'critic-coverage-audit.json')));
@@ -91,7 +92,7 @@ function pickShow(matches, market, urlYearHint) {
   // Filter by market preference
   const wantBroadway = market === 'us';
   const wantWE = market === 'uk';
-  const broadway = matches.filter(s => s.category === 'broadway' || !s.category);
+  const broadway = matches.filter(s => isBroadwayCategory(s));
   const offBwy = matches.filter(s => s.category === 'off-broadway');
   const we = matches.filter(s => s.category === 'west-end');
   const owe = matches.filter(s => s.category === 'off-west-end');

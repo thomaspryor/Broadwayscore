@@ -37,6 +37,14 @@ function loadRegistry() {
   return _cachedRegistry;
 }
 
+// Keys are FULL registered domain/domainAlias strings (dancemagazine.com,
+// dancemagazine.co.uk) — never a TLD-stripped bare base. That's deliberate:
+// silent-exclusion-detectors.js (task #1254) and review-normalization.js's
+// buildDomainToOutletIndex (BRO-247, PR #573) both added a bare-base fallback
+// key and collided whenever two distinct outlets shared a brand word across
+// TLDs, printing a live warning on every build. Do not "generalize" this
+// function to strip TLDs the same way — see the BRO-247 regression tests in
+// tests/unit/outlet-canonicalize.test.mjs for the pairs that would break.
 function buildDomainMap() {
   if (_cachedDomainMap) return { domainToOutlet: _cachedDomainMap, ambiguous: _cachedAmbiguous };
   const registry = loadRegistry();

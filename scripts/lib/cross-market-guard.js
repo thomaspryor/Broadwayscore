@@ -218,4 +218,109 @@ function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindow
   return { level: 'warning', reason: 'non-London outlet on West End show' };
 }
 
-module.exports = { classifyReverseCrossMarket, classifyCrossMarketContamination, classifyUsOnWeCrossMarket };
+/**
+ * Forward cross-market GUARD: decides whether a review filed under a West
+ * End / Off-West-End show is actually a Broadway leak — a US-market outlet
+ * with no legitimate reason to be reviewing a London production. This is
+ * the rebuild-all-reviews.js flagging decision (sets wrongProduction on the
+ * review file), distinct from classifyUsOnWeCrossMarket() above (a CI
+ * validate-data.js severity classifier that only warns/errors, never writes).
+ *
+ * Extracted from rebuild-all-reviews.js (BRO-254) so the outlet-region
+ * lookup can be unit tested directly against the real outlet-registry.json,
+ * instead of only being exercisable by running the full rebuild.
+ */
+
+/**
+ * outletId -> region (e.g. 'london'), built from the outlet registry.
+ * Registered ids AND their (lowercased) aliases map to the same region.
+ *
+ * Delegates to lib/outlet-region-map.js's buildOutletMaps() — the
+ * pre-existing single source of truth shared by validate-data.js and
+ * audit-review-contamination.js — instead of re-deriving this map, so this
+ * guard can't drift from that implementation (it previously did: this
+ * function used to build its own copy that didn't lowercase alias keys,
+ * the exact bug a 2026-06-15 ship-check already had to fix once upstream).
+ */
+function buildOutletRegionMap(outletRegistry) {
+  return require('./outlet-region-map').buildOutletMaps(outletRegistry).outletRegionMap;
+}
+
+/**
+ * Lowercased set of every registered outlet id + alias. Lets the guard
+ * distinguish "registered but region-less" (US nationals; keep flagging)
+ * from "not in the registry at all" (brand-new outlet; bootstrap
+ * exemption, task #817).
+ */
+function buildRegisteredOutletIds(outletRegistry) {
+  const registeredOutletIds = new Set();
+  for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+    registeredOutletIds.add(id.toLowerCase());
+    if (info.aliases) for (const a of info.aliases) registeredOutletIds.add(String(a).toLowerCase());
+  }
+  return registeredOutletIds;
+}
+
+/**
+ * URL-domain fallback: used when an outlet has no region in the registry,
+ * so unknown UK outlets (blogs, small reviewers) aren't flagged as US.
+ */
+function isUkUrl(url) {
+  if (!url) return false;
+  try {
+    const hostname = new URL(url).hostname || '';
+    return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+      || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * @param {object} params
+ * @param {object} params.outletRegionMap - from buildOutletRegionMap()
+ * @param {Set<string>} params.registeredOutletIds - from buildRegisteredOutletIds()
+ * @param {string} params.canonicalOutlet - normalizeOutletCanonical(rawOutlet)
+ * @param {string} params.rawOutlet - lowercased data.outletId || data.outlet
+ * @param {string} params.url - data.url
+ * @param {object} [params.contentVerification] - data.contentVerification
+ * @returns {{ shouldFlag: boolean, reason: string|null }}
+ */
+function evaluateForwardCrossMarketGuard({
+  outletRegionMap,
+  registeredOutletIds,
+  canonicalOutlet,
+  rawOutlet,
+  url,
+  contentVerification,
+}) {
+  const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
+  if (outletRegion === 'london') return { shouldFlag: false, reason: null };
+  if (isUkUrl(url)) return { shouldFlag: false, reason: null };
+
+  // Don't flag when contentVerification has already affirmatively verified
+  // the production is correct with high confidence. [GUARD:CROSS-MARKET-CV-OVERRIDE]
+  const cv = contentVerification;
+  const cvSaysCorrect = cv && cv.isValid === true
+    && cv.wrongProduction === false && cv.confidence === 'high';
+
+  // Bootstrap exemption for COMPLETELY unregistered outlets (task #817).
+  const outletIsUnregistered = !registeredOutletIds.has(canonicalOutlet)
+    && !registeredOutletIds.has(rawOutlet);
+
+  if (cvSaysCorrect || outletIsUnregistered) {
+    return { shouldFlag: false, reason: null };
+  }
+
+  return { shouldFlag: true, reason: `Cross-market: US outlet "${rawOutlet}" reviewing London show` };
+}
+
+module.exports = {
+  classifyReverseCrossMarket,
+  classifyCrossMarketContamination,
+  classifyUsOnWeCrossMarket,
+  buildOutletRegionMap,
+  buildRegisteredOutletIds,
+  isUkUrl,
+  evaluateForwardCrossMarketGuard,
+};

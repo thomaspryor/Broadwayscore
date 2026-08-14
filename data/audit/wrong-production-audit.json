@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T19:50:58.658Z",
+  "timestamp": "2026-08-14T21:18:42.673Z",
   "stats": {
     "totalReviews": 42251,
     "alreadyFlagged": 18320,
-    "dateGuardCatches": 144,
+    "dateGuardCatches": 145,
     "directorMismatch": 965,
     "tvFilmSignals": 1202,
-    "londonSignals": 881,
+    "londonSignals": 880,
     "offBroadwaySignals": 484,
     "yearMismatch": 88,
-    "noPublishDate": 3577
+    "noPublishDate": 3575
   },
   "findings": [
     {
@@ -31657,6 +31657,19 @@
       ]
     },
     {
+      "showId": "a-life-in-four-seasons-west-end-2026",
+      "file": "dance-informa-uk--unknown.json",
+      "publishDate": "2026-05-04",
+      "url": "https://dancemagazine.co.uk/2026/05/dancers-revealed-for-a-life-in-four-seasons-at-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 38d before show (2026-05-04 vs 2026-06-11)"
+        }
+      ]
+    },
+    {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 62,
@@ -44280,19 +44293,6 @@
       "score": 36,
       "publishDate": "December 6th, 2024",
       "url": "https://twi-ny.com/2024/12/06/the-wrong-kind-of-faith-tammy-faye-on-broadway/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "tao-of-glass-west-end-2026",
-      "file": "bestoftheatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.bestoftheatre.co.uk/tao-of-glass",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

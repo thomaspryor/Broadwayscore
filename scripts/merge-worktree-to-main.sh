@@ -47,6 +47,23 @@ MAIN_DIR=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{print $
 [ -n "$MAIN_DIR" ] && [ -d "$MAIN_DIR" ] || die "could not locate main worktree via 'git worktree list'"
 g() { git -C "$MAIN_DIR" "$@"; }
 
+# is_landed <sha> <ref> — shallow-aware replacement for raw
+# `git merge-base --is-ancestor <sha> <ref>` (task #1489). A shallow shared
+# checkout makes the raw form silently answer "not an ancestor" for commits
+# that genuinely landed once the graph is truncated past them — this wraps
+# scripts/lib/landing-verify.js, which restores full history first (or
+# reports UNKNOWN, never a false NOT_LANDED) instead of trusting a
+# potentially-truncated graph. Exit codes: 0=LANDED 1=NOT_LANDED 2=UNKNOWN.
+# Falls back to the raw check (0/1 only) if node or the lib file is missing.
+is_landed() {
+  local sha="$1" branch="$2"
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/landing-verify.js" ]; then
+    node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$sha" --branch="$branch" --cwd="$MAIN_DIR" >/dev/null 2>&1
+    return $?
+  fi
+  g merge-base --is-ancestor "$sha" "origin/$branch" 2>/dev/null
+}
+
 DEFAULT_BRANCH=$(g symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
 [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
 
@@ -298,22 +315,33 @@ fi
 # the branch intact, same recovery shape as those checks.
 #
 # Kill switch (adversarial-review finding, same pattern as
-# PUSH_SKIP_CONTENT_SURVIVAL_CHECK below): this runs the WHOLE scripts/lib/
-# suite, not just files this branch touched, so a flaky or slow pre-existing
-# test unrelated to the branch's own diff can block ANY merge that happens to
-# touch a scripts/lib file. Without an escape hatch, a false-positive storm
-# here would wedge every session's merges with no way out except editing this
-# script under pressure — MERGE_SKIP_POST_MERGE_TEST_GATE=1 gives an
-# immediate, auditable bypass instead.
+# PUSH_SKIP_CONTENT_SURVIVAL_CHECK below): without an escape hatch, a
+# false-positive storm here would wedge every session's merges with no way
+# out except editing this script under pressure — MERGE_SKIP_POST_MERGE_TEST_GATE=1
+# gives an immediate, auditable bypass of the WHOLE gate instead.
+#
+# Blocks only NEW failures, not pre-existing ones (card #1433). The floor
+# used to block on ANY failing scripts/lib/*.test.mjs test, including ones
+# already red on origin/main before this branch touched anything — 3
+# main-red incidents in 3 days traced to exactly that gap (a branch refused
+# for a stale assertion some OTHER refactor broke). merge-post-merge-test-gate.js
+# now builds a disposable baseline checkout of $ORIGIN_BASE_SHA (the exact
+# origin tip THIS merge pulled in — passed below, not "whatever origin/main
+# drifts to by the time the gate runs") and only blocks on a failure that's
+# NEW since then; a pre-existing failure is reported loudly but does not
+# block. If the baseline checkout itself can't be built, the gate fails safe
+# to the old all-or-nothing behavior. Narrower escape hatch just for that
+# half: MERGE_TEST_GATE_SKIP_BASELINE=1 (forces old behavior without
+# disabling the floor entirely).
 if [ "${MERGE_SKIP_POST_MERGE_TEST_GATE:-}" = "1" ]; then
   log "post-merge test floor: skipped (MERGE_SKIP_POST_MERGE_TEST_GATE=1)"
 else
   CHANGED_FOR_TEST_GATE=$(g diff --name-only "$ORIGIN_BASE_SHA" HEAD 2>/dev/null || true)
   if [ -n "$(echo "$CHANGED_FOR_TEST_GATE" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js" ]; then
     log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
-    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
+    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
       restore_stash
-      die "post-merge test floor failed — the MERGED tree fails a scripts/lib/ colocated test (likely a semantic collision between two branches, see task #1149). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatch for a false positive: MERGE_SKIP_POST_MERGE_TEST_GATE=1 scripts/merge-worktree-to-main.sh)"
+      die "post-merge test floor failed — the MERGED tree has a NEW-since-origin/main scripts/lib/ colocated test failure (likely a semantic collision between two branches, see task #1149/#1433). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
     fi
   fi
 fi
@@ -323,6 +351,7 @@ if [ "${DRY_RUN:-0}" = "1" ]; then
   log "DRY_RUN=1 — skipping push"
 else
   PUSHED=0
+  EVER_UNKNOWN=0
   for attempt in 1 2 3 4 5; do
     OUT=$(g push origin "$DEFAULT_BRANCH" 2>&1)
     # Authoritative success check: is local HEAD now an ancestor of origin? NEVER
@@ -339,16 +368,42 @@ else
       if g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null; then FETCHED=1; break; fi
       sleep 2
     done
-    if [ "$FETCHED" = 1 ] && g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null; then
-      PUSHED=1; break
+    if [ "$FETCHED" = 1 ]; then
+      HEAD_SHA=$(g rev-parse HEAD 2>/dev/null)
+      is_landed "$HEAD_SHA" "$DEFAULT_BRANCH"; LANDED_RC=$?
+      if [ "$LANDED_RC" = 0 ]; then
+        PUSHED=1; break
+      elif [ "$LANDED_RC" = 2 ]; then
+        # UNKNOWN (shallow checkout, could not restore full history) — never
+        # treat this as landed. Fall through to the same retry path as a
+        # plain NOT_LANDED; a few extra retries is the safe failure mode,
+        # unlike wrongly declaring success (task #1489). EVER_UNKNOWN tracks
+        # this across attempts so the terminal failure message below can
+        # tell the user "verification was inconclusive" instead of the
+        # flatly wrong "push failed" — the push itself may well have
+        # succeeded (ship-check finding: a git push whose remote-tracking
+        # ref we simply cannot verify is not the same failure as a rejected
+        # push, and telling the user "failed" when it may be live risks a
+        # bad recovery decision, exactly the class of incident this file
+        # exists to prevent).
+        EVER_UNKNOWN=1
+        log "ancestry check UNKNOWN (shallow checkout) — treating as not-yet-confirmed, retrying"
+      fi
     fi
     if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out" || [ "$FETCHED" = 0 ]; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
-    log "push rejected (attempt $attempt) — merging remote and retrying"
+    log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"
     g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1 || { restore_stash; die "could not merge remote changes on retry"; }
   done
-  [ "$PUSHED" = 1 ] || { restore_stash; die "push failed after retries"; }
+  if [ "$PUSHED" != 1 ]; then
+    restore_stash
+    if [ "$EVER_UNKNOWN" = 1 ]; then
+      die "could not CONFIRM the push landed after retries — ancestry checks stayed UNKNOWN (shallow checkout, unshallow failed). This is NOT proof the push failed: verify manually via 'git ls-remote origin $DEFAULT_BRANCH' or the GitHub compare API before assuming the work is lost or re-pushing/force-pushing (task #1489)."
+    else
+      die "push failed after retries"
+    fi
+  fi
   log "pushed"
 fi
 
@@ -372,8 +427,13 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]
   # HEAD isn't an ancestor of origin's current tip, the tip moved backward
   # under us and the per-file loop cannot be trusted. (card #546, 2026-07-26:
   # this printed ✓✓ for both files while the actual fix content was absent.)
-  g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null \
-    || die "HEAD is not an ancestor of origin/$DEFAULT_BRANCH — origin's tip moved (concurrent session?) since our push; per-file verify would be unreliable"
+  HEAD_SHA=$(g rev-parse HEAD 2>/dev/null)
+  is_landed "$HEAD_SHA" "$DEFAULT_BRANCH"; VERIFY_LANDED_RC=$?
+  case "$VERIFY_LANDED_RC" in
+    0) : ;; # landed — continue to per-file verify below
+    2) die "ancestry check INCONCLUSIVE — local checkout is shallow and could not be restored, so whether HEAD landed on origin/$DEFAULT_BRANCH cannot be determined locally. This is NOT proof the push failed — verify manually via 'git ls-remote origin $DEFAULT_BRANCH' or the GitHub compare API before assuming anything was lost (task #1489)." ;;
+    *) die "HEAD is not an ancestor of origin/$DEFAULT_BRANCH — origin's tip moved (concurrent session?) since our push; per-file verify would be unreliable" ;;
+  esac
 
   # `${arr[@]+"${arr[@]}"}` — NOT a bare `"${arr[@]}"`. Under `set -u` (line 24)
   # bash 3.2, the stock /usr/bin/bash on macOS, treats an empty array expansion

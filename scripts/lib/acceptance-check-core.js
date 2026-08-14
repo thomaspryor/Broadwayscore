@@ -64,10 +64,16 @@ function resolveInstallRoot(repo) {
 /**
  * ONE disposable worktree per run: every card verifies against the same
  * origin/main, so N checkouts would be N copies of one tree.
- * @param {{repo?:string, prefix?:string}} o
+ * @param {{repo?:string, prefix?:string, sha?:string|null}} o - `sha` pins the
+ *   checkout to a caller-supplied commit instead of "origin/main at fetch
+ *   time" (card #1433's merge-post-merge-test-gate.js needs the EXACT origin
+ *   tip a specific merge pulled in, not whatever origin/main has drifted to
+ *   by the time the gate runs — a later concurrent push landing a NEW,
+ *   unfixed regression between those two moments must not read as
+ *   "pre-existing").
  * @returns {{dir:string, wt:string, repo:string}}
  */
-function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
+function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null } = {}) {
   // Depth-bound the fetch when repo is a SHALLOW clone (task #420/#466). This
   // is reachable from shallow-checkout workflows; there an unbounded fetch
   // makes upload-pack send the whole ~2.1 GB / 165k-commit repo instead of the
@@ -98,7 +104,10 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' }
   // the worktree add, a parallel session's push can advance origin/main, and
   // the card would then be judged against a commit that landed after it
   // (Codex ship-check P1). The pinned sha is returned so callers can report it.
-  const sha = execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
+  // A caller-supplied `pinnedSha` skips the rev-parse entirely and checks out
+  // that exact commit instead — the fetch above still runs first so the sha
+  // is guaranteed reachable even if it only just landed on origin.
+  const sha = pinnedSha || execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
   try {
