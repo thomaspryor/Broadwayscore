@@ -85,6 +85,7 @@ tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
+tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-workflow-hygiene-core-data-push.test.mjs
 tests/unit/audit-workflow-hygiene-dead-commit.test.mjs
 tests/unit/audit-workflow-hygiene-run-shorthand.test.mjs
@@ -221,6 +222,7 @@ tests/unit/found-outlet-ids-skip-blocked-url.test.mjs
 tests/unit/found-outlet-ids-skip-not-a-review.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
+tests/unit/gather-reviews-bww-geography.test.mjs
 tests/unit/gather-reviews-collision.test.mjs
 tests/unit/gather-reviews-createreviewfile-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
@@ -260,6 +262,7 @@ tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
 tests/unit/linear-cap.test.mjs
+tests/unit/linear-client-archived-issue.test.mjs
 tests/unit/linear-next.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/live-rc-missing-drift.test.mjs

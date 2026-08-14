@@ -27,6 +27,7 @@ const {
   describeRun,
   pickRunForRequest,
   showUrl,
+  entryNamesReviews,
 } = require('../../scripts/verify-feedback-requests-live.js');
 const { buildAlert, describeOutcome } = require('../../scripts/notify-feedback-outcomes.js');
 
@@ -105,6 +106,46 @@ test('good news never burns an agent session on itself', () => {
 test('with no reviews to name, the report says so instead of implying it listed them', () => {
   const alert = buildLiveAlert([{ ...LIVE_ENTRY, reviews: [] }]);
   assert.match(alert.description, /no individual reviews to name/);
+});
+
+// --- content-fix kinds (task #1440): "Manual Fix Needed" content-error asks
+// get the same live/stuck treatment as missing-show/missing-reviews. Most
+// content-fix types (wrong-critic-name, outlet-rename, new-show-record)
+// legitimately never have reviews to name — the old denylist here was
+// `kind !== 'missing-image'`, which would have wrongly printed the caveat
+// below for every one of them.
+
+test('entryNamesReviews: only missing-reviews and content-fix/single-review can ever name a review', () => {
+  assert.equal(entryNamesReviews({ kind: 'missing-reviews' }), true);
+  assert.equal(entryNamesReviews({ kind: 'content-fix', contentErrorType: 'single-review' }), true);
+  assert.equal(entryNamesReviews({ kind: 'missing-show' }), false);
+  assert.equal(entryNamesReviews({ kind: 'missing-image' }), false);
+  assert.equal(entryNamesReviews({ kind: 'content-fix', contentErrorType: 'wrong-critic-name' }), false);
+  assert.equal(entryNamesReviews({ kind: 'content-fix', contentErrorType: 'outlet-rename' }), false);
+  assert.equal(entryNamesReviews({ kind: 'content-fix', contentErrorType: 'new-show-record' }), false);
+});
+
+test('a fixed wrong-critic-name report never prints the "no readable review rows" caveat', () => {
+  const alert = buildLiveAlert([{
+    entry: { title: 'Some Show', kind: 'content-fix', contentErrorType: 'wrong-critic-name', requestedMessage: 'fix the byline' },
+    showId: 'x',
+    evidence: 'BroadwayWorld review now credited to Pam Kragen',
+    reviews: [],
+    url: 'https://broadwayscorecard.com/show/some-show',
+  }]);
+  assert.doesNotMatch(alert.description, /no readable review rows/);
+  assert.match(alert.description, /now credited to Pam Kragen/);
+});
+
+test('a fixed single-review content-fix with no readable rows still gets the caveat', () => {
+  const alert = buildLiveAlert([{
+    entry: { title: 'Some Show', kind: 'content-fix', contentErrorType: 'single-review', requestedMessage: 'add the missing review' },
+    showId: 'x',
+    evidence: 'Outlet review is now live',
+    reviews: [],
+    url: 'https://broadwayscorecard.com/show/some-show',
+  }]);
+  assert.match(alert.description, /no readable review rows/);
 });
 
 // --- 3. give the stuck one something to click -------------------------------

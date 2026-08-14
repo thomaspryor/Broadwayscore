@@ -28,6 +28,7 @@ const FETCH_TIMEOUT_MS = 15000;
 const STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for']);
 
 const { foldDiacritics } = require('./title-match');
+const { isBroadwayCategory } = require('./venue-classification');
 
 function slugify(text) {
   return foldDiacritics(text || '')
@@ -131,7 +132,7 @@ function scoreSlug(slug, show) {
   let why = [];
 
   // Market suffix match (strong signal when present)
-  const isBroadway = show.category === 'broadway' || !show.category;
+  const isBroadway = isBroadwayCategory(show);
   const isOffBroadway = show.category === 'off-broadway';
   const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
 

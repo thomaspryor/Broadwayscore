@@ -91,6 +91,10 @@ on:
       - 'scripts/audit-serp-census-recall.js'
       - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
+      # Push-retry deadman row (BRO-231/#1221): colocated *.test.mjs runs in
+      # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-retry-deadman.js'
+      - 'scripts/lib/push-retry-deadman.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
@@ -363,6 +367,13 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/shallow-fetch-args.js'
       - 'scripts/lib/shallow-fetch-args.test.mjs'
+      # Shallow-aware landing/ancestry check (task #1489): a shallow shared
+      # checkout makes `git merge-base --is-ancestor` silently answer "not
+      # landed" for commits genuinely on main. Colocated *.test.mjs runs in
+      # the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/landing-verify.js'
+      - 'scripts/lib/landing-verify.test.mjs'
       # Unbounded-fetch lint guard (task #420): #466 fixed push-with-retry.sh's
       # own fetch, but 7 scripts hand-rolled the same fetch+rebase+push and so
       # never got that fix. The guard flags any git fetch/pull without a depth
@@ -553,6 +564,12 @@ on:
       - 'scripts/lib/opening-night-selection.test.mjs'
       - 'scripts/lib/opening-night-windows.js'
       - 'scripts/lib/opening-night-windows.test.mjs'
+      # Card #1413: coverage-complete stop extracted from opening-night-poller.js
+      # so the launcher can check "is this show done?" without requiring that
+      # file's scraper dependency block on every 20-min tick. No colocated test
+      # of its own (isShowCoverageComplete needs real reviews.json/outlet-registry
+      # data, not a fixture) — path-listed so a solo edit still triggers CI.
+      - 'scripts/lib/opening-night-readiness.js'
       # 2026-08-12 (how-the-other-half-loves): the window is derived from
       # openingDate, which that show only got AFTER its reviews published, so
       # the monitor opened 19h late; and every capped pass paged the owner as
@@ -634,6 +651,13 @@ on:
       # of silently discarding the incoming branch's fix. Path-listed so a
       # solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
+      # Task #1511: the push-retry loop's `git merge origin/$DEFAULT_BRANCH
+      # --no-edit` on retry redirected its own stderr/stdout to /dev/null
+      # before die("could not merge remote changes on retry") — zero
+      # information on WHY it failed (conflict vs. dirty tree vs. something
+      # else), unlike the syntax-floor and push-audits die() paths above it.
+      # Path-listed so a solo edit to the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh'
       # Card #835: shared range-scoped push-audit dispatch — extracted from
       # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
       # below) so scripts/merge-worktree-to-main.sh can call the same runner.
@@ -641,6 +665,19 @@ on:
       # so a solo edit to the .sh triggers CI.
       - 'scripts/lib/run-push-audits.sh'
       - 'scripts/lib/run-push-audits.test.mjs'
+      # Post-merge TEST floor (task #1149) + baseline-diff (card #1433): only
+      # scripts/merge-worktree-to-main.sh itself was path-listed above — the
+      # gate module it calls, the module's own colocated test, its bash
+      # fault-injection fixture, and the shared TAP-failure parser it now
+      # requires had ZERO CI trigger of their own (a solo edit pushed with no
+      # CI). Path-listed so a solo edit to any of them triggers CI.
+      - 'scripts/lib/merge-post-merge-test-gate.js'
+      - 'scripts/lib/merge-post-merge-test-gate.test.mjs'
+      - 'scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh'
+      - 'scripts/lib/tap-failure-parser.js'
+      - 'scripts/lib/tap-failure-parser.test.mjs'
+      # acceptance-check-core.js already listed (search below) — card #1433
+      # added an optional `sha` param, reused by the baseline-diff above.
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
       # node --test batch). Path-listed so a solo lib edit triggers CI
@@ -654,6 +691,12 @@ on:
       # solo lib edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/merge-social-post-history.js'
       - 'tests/unit/merge-social-post-history.test.mjs'
+      # feedback-request-ledger.json rebase-race reconciliation (task #1440).
+      # Pure merge fn in scripts/lib/merge-feedback-ledger.js; test lives in
+      # tests/unit/ (in the node --test batch). Path-listed so a solo lib edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/merge-feedback-ledger.js'
+      - 'tests/unit/merge-feedback-ledger.test.mjs'
       # Shared sync-only-changed-files helper for push-aggregator-archive
       # (same P0 revert-risk class as push-core-data's snapshot diff, generalized
       # to a recursive directory instead of a fixed file list). Colocated test
@@ -703,6 +746,13 @@ on:
       # unscored one IS. Colocated test runs in the lib-test glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/lib/aggregator-domain-tld-parity.test.mjs'
+      # Aggregator-outlet byline keep-vs-collapse predicate (BRO-225): separates
+      # dtli/london-box-office/theatre-reviews-limited staff/contributing-critic
+      # content from reviews whose fullText was collapsed from a real outlet.
+      # Colocated *.test.mjs runs in the lib-test glob; path-listed so a solo
+      # edit triggers CI.
+      - 'scripts/lib/aggregator-outlet-byline-audit.js'
+      - 'scripts/lib/aggregator-outlet-byline-audit.test.mjs'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -984,6 +1034,21 @@ on:
       - 'scripts/monitor-outlet-recency.js'
       - 'tests/unit/outlet-recency-monitor.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
+      # Same-run correction/follow-up merge (card #1427, GH #567) — folds a
+      # same-submitter, same-show submission arriving within 5 min of an
+      # earlier one into a single submission before categorization, so the
+      # correction reaches the issue instead of being silently discarded.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/feedback-digest-correction-merge.js'
+      - 'scripts/lib/feedback-digest-correction-merge.test.mjs'
+      # Card #1498: same correction-merge bug in the separate review-submission
+      # Formspree pipeline (process-review-formspree.js) — reuses the shared
+      # grouping core above via mergeReviewSubmissionCorrections(). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI (no scripts/lib/** broad glob, no scripts/** glob).
+      - 'scripts/lib/review-submission-correction-merge.test.mjs'
+      - 'scripts/process-review-formspree.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
       # Without these, an edit to the normalizer pushes with ZERO CI coverage
@@ -1450,6 +1515,15 @@ on:
       # solo edit to either file still triggers CI.
       - 'scripts/audit-push-core-data-audit-gap.js'
       - 'scripts/audit-push-core-data-audit-gap.test.mjs'
+      # Same-job breadcrumb coverage guard (BRO-250 / Notion 3b9637c5) —
+      # advisory scan for scripts that force:true-clear a PROTECTED field in a
+      # job that also calls push-review-texts, with no scripts/lib/review-
+      # write-guard.js CLEAR_BREADCRUMBS entry for it. Same bug class fixed
+      # reactively 3 times (#97, #1237, #1259). Test lives in tests/unit/
+      # (registered in tests/unit-test-manifest.txt); path-listed here so a
+      # solo edit to either file still triggers CI.
+      - 'scripts/audit-same-job-breadcrumb-coverage.js'
+      - 'tests/unit/audit-same-job-breadcrumb-coverage.test.mjs'
       # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
       # audit-*.js that walks data/review-texts must call assertCorpusScanned
       # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
@@ -2702,6 +2776,20 @@ jobs:
         # workflow with # hygiene-audit-persist-ok: <reason>.
         run: node scripts/audit-push-core-data-audit-gap.js
 
+      - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
+        # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
+        # PROTECTED_FIELDS field in a job that also calls push-review-texts
+        # LATER, with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
+        # entry for it — the restore step reads committed HEAD (checked out
+        # before the clearing script ran) and resurrects the field it just
+        # cleared. Same bug class fixed reactively 3 times already (#97
+        # staleScoredBeforeOpening, #1237 fullTextWrongAuthor, #1259
+        # stuckRescoreCleared), each caught only by a human noticing symptoms
+        # months later. Heuristic, non-blocking — always exits 0 (see script
+        # header for why). Exempt a workflow with
+        # # breadcrumb-coverage-ok: <reason>.
+        run: node scripts/audit-same-job-breadcrumb-coverage.js
+
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
         # nothing (8 Linear issues filed via a hand-rolled issueCreate call,
@@ -3700,6 +3788,21 @@ jobs:
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+
+      - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
+        # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry
+        # loop's `git merge origin/$DEFAULT_BRANCH --no-edit` on retry
+        # suppressed the merge command's own stderr/stdout before calling
+        # die("could not merge remote changes on retry") — an operator hitting
+        # a real conflict there got zero information on why, unlike the
+        # syntax-floor and push-audits die() paths a few lines above it, which
+        # both capture and print their command's output. Fault-injects a real
+        # conflict onto the retry-merge path specifically (a git shim on PATH
+        # sneaks a conflicting commit onto origin right as the script's first
+        # push fires) and asserts the die() message includes git's own
+        # conflict text, not the old bare message.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`

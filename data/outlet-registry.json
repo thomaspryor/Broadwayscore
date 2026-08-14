@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-08-11T23:13:41.000Z",
     "version": "2.1.0",
-    "lastChange": "task #1254: domain-move aliases (metro.news, reviewsgate.co.uk, dailymail.com) + register dance-informa-uk (dancemagazine.co.uk false positive, distinct from dance-magazine)"
+    "lastChange": "BRO-254: register westend (westend.com, region: london) — was unregistered and falling through the cross-market guard's US-outlet fallback"
   },
   "outlets": {
     "westendtheatre": {
@@ -17,6 +17,18 @@
         "west end theatre"
       ],
       "domain": "westendtheatre.com",
+      "region": "london",
+      "accessModel": "free",
+      "starScale": 5
+    },
+    "westend": {
+      "displayName": "WestEnd.com",
+      "tier": 3,
+      "aliases": [
+        "westend",
+        "westend.com"
+      ],
+      "domain": "westend.com",
       "region": "london",
       "accessModel": "free",
       "starScale": 5

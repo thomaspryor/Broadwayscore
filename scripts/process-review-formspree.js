@@ -17,9 +17,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
+const { mergeReviewSubmissionCorrections } = require('./lib/feedback-digest-correction-merge.js');
 
 const FORM_ID = 'mpqjawag';
 const TRACKING_FILE = path.join(__dirname, '../data/audit/processed-review-submissions.json');
@@ -106,7 +109,14 @@ function formatIssueBody(sub) {
   const criticName = sub.critic_name || '_No response_';
   const notes = sub.notes || '_No response_';
 
-  return `### Review URL\n${reviewUrl}\n\n### Show Name\n${showName}\n\n### Outlet Name\n${outletName}\n\n### Critic Name\n${criticName}\n\n### Additional Notes\n${notes}\n\n---\n*Submitted via [broadwayscorecard.com/submit-review](https://broadwayscorecard.com/submit-review)*`;
+  // A merged correction thread (card #1498) carries the LATEST submitted
+  // fields, but the original + any intermediate corrections are surfaced
+  // here so a human reviewer can see what changed.
+  const correctionSection = sub._isMergedCorrection
+    ? `\n\n### Correction History\n_This submission was corrected/updated ${sub._mergedSubmissionIds.length - 1} time(s) within 5 minutes of the original — using the latest values above._\n\n${sub._correctionHistory}`
+    : '';
+
+  return `### Review URL\n${reviewUrl}\n\n### Show Name\n${showName}\n\n### Outlet Name\n${outletName}\n\n### Critic Name\n${criticName}\n\n### Additional Notes\n${notes}${correctionSection}\n\n---\n*Submitted via [broadwayscorecard.com/submit-review](https://broadwayscorecard.com/submit-review)*`;
 }
 
 /**
@@ -216,25 +226,41 @@ async function main() {
 
   const tracking = loadTracking();
   const processedSet = new Set(tracking.processedIds);
+  const subId = (sub) => sub._id || sub.id || sub.createdAt;
+
+  // Corrections/follow-ups (same submitter, same show, within 5 min) are
+  // merged into one submission BEFORE issue creation — otherwise a
+  // corrected URL/show name sent minutes after the original creates its own
+  // separate issue while the stale original still gets validated/scraped
+  // as-is (card #1498, same class as #1427). Filter already-processed items
+  // first so a stale prior-run submission can't re-merge with a genuinely
+  // new one.
+  const unprocessed = submissions.filter((sub) => !processedSet.has(subId(sub)));
+  const merged = mergeReviewSubmissionCorrections(unprocessed);
+  const skipped = submissions.length - unprocessed.length;
+  console.log(`${merged.length} new submission(s) to process (${skipped} already processed)\n`);
 
   let created = 0;
-  let skipped = 0;
   let spam = 0;
 
-  for (const sub of submissions) {
-    const subId = sub._id || sub.id || sub.createdAt;
-
-    // Skip already-processed
-    if (processedSet.has(subId)) {
-      skipped++;
-      continue;
-    }
+  for (const sub of merged) {
+    // A merged correction thread carries every original submission's ID —
+    // marking only the latest would leave the earlier one(s) looking
+    // unprocessed and re-issue them on the next run.
+    const ids = sub._mergedSubmissionIds && sub._mergedSubmissionIds.length ? sub._mergedSubmissionIds : [subId(sub)];
+    const markProcessed = () => {
+      for (const id of ids) {
+        if (id && !processedSet.has(id)) {
+          processedSet.add(id);
+          tracking.processedIds.push(id);
+        }
+      }
+    };
 
     // Skip honeypot spam
     if (sub._gotcha) {
       spam++;
-      processedSet.add(subId);
-      tracking.processedIds.push(subId);
+      markProcessed();
       console.log(`  SPAM (honeypot filled) — skipped`);
       continue;
     }
@@ -242,8 +268,7 @@ async function main() {
     // Skip submissions without a review URL
     if (!sub.review_url) {
       console.log(`  Missing review_url — skipped`);
-      processedSet.add(subId);
-      tracking.processedIds.push(subId);
+      markProcessed();
       continue;
     }
 
@@ -275,8 +300,7 @@ async function main() {
       }
     }
 
-    processedSet.add(subId);
-    tracking.processedIds.push(subId);
+    markProcessed();
   }
 
   // Keep tracking list from growing indefinitely (retain last 500)

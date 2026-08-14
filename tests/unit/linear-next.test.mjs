@@ -22,13 +22,14 @@ import {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  checkTerminalStateGuard,
   buildLinearSeed,
   buildDispatchComment,
   generateCorrelationId,
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
 } from '../../scripts/lib/linear-dispatch.js';
-import { parseArgs, ledgerTaskId } from '../../scripts/linear-next.js';
+import { parseArgs, ledgerTaskId, main } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
@@ -203,6 +204,32 @@ test('decideRouting: no mac-only label defers entirely to the --headless flag', 
 test('decideRouting: mac-only label wins regardless of other labels present', () => {
   const issue = { labels: { nodes: [{ name: 'p0' }, { name: 'mac-only' }, { name: 'infra' }] } };
   assert.equal(decideRouting(issue, { headless: true }).mode, 'tab');
+});
+
+// ── terminal-state guard (task #1517, BRO-247 incident root cause) ─────────
+
+test('checkTerminalStateGuard: refuses a completed issue, names the state', () => {
+  const issue = { identifier: 'BRO-247', state: { type: 'completed', name: 'Done' } };
+  const refusal = checkTerminalStateGuard(issue);
+  assert.match(refusal, /BRO-247/);
+  assert.match(refusal, /"Done"/);
+  assert.match(refusal, /--force/);
+});
+
+test('checkTerminalStateGuard: refuses a canceled issue', () => {
+  const issue = { identifier: 'BRO-9', state: { type: 'canceled', name: 'Canceled' } };
+  assert.match(checkTerminalStateGuard(issue), /BRO-9/);
+});
+
+test('checkTerminalStateGuard: null (proceed) for any non-terminal state', () => {
+  assert.equal(checkTerminalStateGuard({ identifier: 'BRO-1', state: { type: 'unstarted', name: 'Todo' } }), null);
+  assert.equal(checkTerminalStateGuard({ identifier: 'BRO-1', state: { type: 'started', name: 'In Progress' } }), null);
+  assert.equal(checkTerminalStateGuard({ identifier: 'BRO-1', state: { type: 'backlog', name: 'Backlog' } }), null);
+});
+
+test('checkTerminalStateGuard: tolerates missing state', () => {
+  assert.equal(checkTerminalStateGuard({ identifier: 'BRO-1' }), null);
+  assert.equal(checkTerminalStateGuard({ identifier: 'BRO-1', state: null }), null);
 });
 
 // ── seed prompt ─────────────────────────────────────────────────────────
@@ -403,6 +430,115 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
   assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
+});
+
+// ── terminal-state dispatch guard, end-to-end (task #1517) ─────────────────
+//
+// Drives main() in-process (no live process.exit path is hit before the
+// guard fires — it's the very first check after "issue not found", ahead of
+// dry-run/kill-switch/verify-gate/idempotency), so a stubbed getIssue is
+// enough; no subprocess needed here (unlike the guard-parity test above,
+// which exercises a later guard whose own try/catch would swallow a thrown
+// process.exit stub).
+
+function makeTerminalIssue(stateType, stateName) {
+  return {
+    id: 'issue-uuid-1517', identifier: 'BRO-1517', title: 'Some terminal issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-1517/some-terminal-issue',
+    priority: 2,
+    state: { id: 'state-1', name: stateName, type: stateType },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): refuses to dispatch a completed issue', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-1517'], {
+      getIssue: async () => makeTerminalIssue('completed', 'Done'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /already in a terminal state \("Done"\)/);
+});
+
+test('main(): refuses to dispatch a canceled issue', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  console.error = () => {};
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-1517'], {
+      getIssue: async () => makeTerminalIssue('canceled', 'Canceled'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+});
+
+test('main(): --force overrides the terminal-state refusal and proceeds to launch', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-1517', '--force'], {
+      getIssue: async () => makeTerminalIssue('completed', 'Done'),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+test('main(): a non-terminal issue is unaffected by the guard (dry-run reaches the seed print)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-1517', '--dry-run'], {
+      getIssue: async () => makeTerminalIssue('unstarted', 'Todo'),
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
+});
+
+// bsc-next.js's own completedLaunchGuard (the Notion-mirror counterpart)
+// self-exempts --dry-run/--print-prompt, and this file's own header/USAGE
+// both document "--list/--dry-run still work" even under the kill switch —
+// --dry-run on a TERMINAL issue must stay a side-effect-free preview, not a
+// refusal, for the exact same reason.
+test('main(): --dry-run on a completed issue still previews (terminal-state guard does not block previews)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-1517', '--dry-run'], {
+      getIssue: async () => makeTerminalIssue('completed', 'Done'),
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
 });
 
 // Regression (2026-08-12): getTeam() returns states as a GraphQL connection

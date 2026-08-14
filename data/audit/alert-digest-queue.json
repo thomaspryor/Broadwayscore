@@ -66,17 +66,6 @@
     "queuedAt": "2026-08-14T15:40:07.376Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31827505814",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-14T18:22:35.301Z"
-  },
-  {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
     "description": "broadway: 77.8% (406/522)\noff-broadway: 46.6% (160/343)\nwest-end: 69.5% (406/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (542h)\nCelebrity Autobiography — nypost (373h)\nCelebrity Autobiography — thewrap (360h)\nCelebrity Autobiography — timeout (360h)\nCelebrity Autobiography — vulture (360h)\n… 220 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (360h)\nAladdin — ew (9h)\nThe Book of Mormon — usatoday (9h)\nBuena Vista Social Club — broadwaynews (9h)\nHeathers The Musical — dailybeast (9h)\n… 17 more circuit-open cell(s)",
@@ -86,5 +75,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-14T18:40:26.991Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31838288991",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-14T20:50:08.999Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-08-14T21:30:51.034710+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hello,\r\nMy name is Benedict, and I’m contacting you from Redhead Digital Agency. We are currently looking for quality websites for content placement and would like to know whether you accept guest posts.\r\n\r\nIf so, please let me know your pricing and link policies.\r\nThank you for your time.\r\n\r\nSincerely,\r\nBenedict Finchley\"",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31843746859",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "queuedAt": "2026-08-14T21:47:14.237Z"
   }
 ]

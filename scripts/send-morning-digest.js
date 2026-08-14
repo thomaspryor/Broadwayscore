@@ -62,7 +62,31 @@ const {
   renderDailyDigestBlock,
   renderRedditDigestBlock,
   renderNamedDigestBlock,
+  autofixLoopDeadMessage,
 } = require('./lib/autonomous-email-render.js');
+const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
+
+// Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
+// NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
+// — health-check.js runs only in GitHub Actions (data-health-check.yml),
+// where data/audit/digest-autofix-ledger.jsonl is a per-machine file that
+// doesn't exist in the checkout, so that check always returns status:'warn'
+// there, never 'error'. This sender runs LOCALLY (launchd, the same machine
+// that writes the ledger) — read it directly here instead of trusting the
+// CI-produced health.errors to ever carry the dead-loop signal.
+const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
+function localLoopDeadMessage() {
+  let rows;
+  try {
+    rows = readLedgerRows(DIGEST_LEDGER_PATH);
+  } catch (err) {
+    console.error(`[digest] WARN could not read local autofix ledger: ${String(err.message).slice(0, 120)}`);
+    return null;
+  }
+  if (rows === null) return null; // ledger absent on this machine this run — unknown, not dead
+  const r = assessAutofixEffectiveness(rows);
+  return r.status === 'error' ? r.message : null;
+}
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
 // digest, get a session dispatched on the issue, no laptop required").
@@ -195,12 +219,24 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
   const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + (freshnessCount ? 1 : 0) + (stuckCount ? 1 : 0)); // closingSoon intentionally absent — lives in the opening digest
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
+  // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for
+  // automated fix sessions" no matter what — including the 13 straight
+  // mornings (2026-08-10) where the loop was provably dead (logged-out CLI,
+  // every job zero-byte-timing-out). health-check.js's "Autofix: jobs
+  // actually succeeding" row already measures that outcome-blind spot; when
+  // it's tripped, say so here instead of repeating the "being fixed" promise.
+  // Local ledger read is authoritative (this machine IS the dispatch host);
+  // fall back to scanning health.errors only for the hypothetical case that
+  // check ever runs somewhere the ledger is actually visible.
+  const loopDeadMsg = localLoopDeadMessage() || autofixLoopDeadMessage(sections.health);
   if (errs) {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   } else {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing needs your attention this morning.</p>`);
   }
-  if (fixing) {
+  if (loopDeadMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+  } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
   if (problemsNote) {
@@ -211,7 +247,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // changed, then scores/Reddit. The opening-night radar left this email
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
-  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health, autofixRows));
+  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health, autofixRows, loopDeadMsg));
   // Data freshness (task #689) — high-severity data gaps (missing poster,
   // missing tickets on open shows) that used to be computed daily and thrown
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
