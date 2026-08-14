@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import {
-  getTonySeasonWindow,
+  getTonySeasonWindowFor,
   getEligibleShows,
   groupIntoCategories,
   type SerializedTonyShow,
@@ -149,9 +149,17 @@ const FEATURED_ACTOR_NOMINEES: Record<string, { name: string; showTitle: string;
   ],
 };
 
+// Beat the Critics is a one-time contest frozen to the 79th ceremony (nominees,
+// critics' picks, and rules dates below are all hardcoded to it). Pin the season
+// explicitly rather than deriving "current" — currentPredictionSeason() rolls
+// forward to the next ceremony year 14 days after this one, which would put a
+// "TONY AWARDS 2027" badge over this page's "2026 Tony Awards have taken place"
+// copy (BRO-242).
+const BEAT_THE_CRITICS_CEREMONY_YEAR = 2026;
+
 export default function BeatTheCriticsPage() {
   const allShows = getBroadwayShows();
-  const season = getTonySeasonWindow();
+  const season = getTonySeasonWindowFor(BEAT_THE_CRITICS_CEREMONY_YEAR);
   const eligible = getEligibleShows(allShows, season);
   const grouped = groupIntoCategories(eligible);
 
