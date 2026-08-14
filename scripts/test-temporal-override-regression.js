@@ -103,7 +103,7 @@ function isEligible(review, show) {
 
 function loadShows() {
   if (!fs.existsSync(SHOWS_FILE)) {
-    throw new Error(`shows.json not found at ${SHOWS_FILE}`);
+    throw new Error(`shows.json not found at ${SHOWS_FILE} — run \`npm run data:check\` (or \`./scripts/setup-local-data.sh\`); worktrees don't inherit the main checkout's data-repo symlinks.`);
   }
   const raw = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   const arr = Array.isArray(raw) ? raw : raw.shows || [];
