@@ -121,30 +121,6 @@ jobs:
         if: inputs.dry_run != true
         run: node scripts/validate-data.js
 
-      - name: Check for changes
-        if: inputs.dry_run != true
-        id: git-check
-        run: |
-          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
-
-      - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != true
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          # Core data files pushed to private repo by push-core-data action
-
-          MODE="${{ inputs.mode || 'current-only' }}"
-          SHOW_MSG=""
-          if [ "$MODE" = "show" ]; then
-            SHOW_MSG=" for ${{ inputs.show }}"
-          fi
-
-          git commit -m "data: Enrich runtimes from Broadway.com${SHOW_MSG}"
-
-          bash scripts/lib/push-with-retry.sh
-
-
       - name: Push core data to private repo
         if: always()
         uses: ./.github/actions/push-core-data

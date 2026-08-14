@@ -225,26 +225,6 @@ jobs:
             echo "Restored from backup due to validation failure"
           fi
 
-      # Always try to commit, even if script had errors (continue-on-error above)
-      - name: Commit and push changes
-        if: always() && steps.freshness.outputs.skip != 'true'
-        run: |
-          # Core data files pushed to private repo by push-core-data action
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: Update Reddit sentiment data
-
-            Automated update from Reddit r/broadway discussions.
-
-            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-            bash scripts/lib/push-with-retry.sh
-            echo "✓ Changes committed and pushed"
-          fi
-
-
       - name: Push core data to private repo
         if: always() && steps.freshness.outputs.skip != 'true'
         uses: ./.github/actions/push-core-data

@@ -65,19 +65,6 @@ jobs:
             echo "week_count=$WEEK_COUNT" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit and push
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          # Core data files pushed to private repo by push-core-data action
-          git commit -m "data: Backfill grosses history (${{ steps.changes.outputs.week_count }} weeks)
-
-          Backfilled weekly box office snapshots from Playbill for WoW/YoY comparisons."
-
-          bash scripts/lib/push-with-retry.sh
-
-
       - name: Push core data to private repo
         if: always()
         uses: ./.github/actions/push-core-data

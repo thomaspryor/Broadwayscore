@@ -130,19 +130,6 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Rediscover Review URLs — Final commit and push"
-      - name: Final commit and push
-        if: always() && inputs.dry_run != 'true'
-        run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          # review-texts now pushed via push-review-texts composite action
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "chore: URL rediscovery complete"
-          bash scripts/lib/push-with-retry.sh 5 HEAD:main
-
       - name: Trigger collection for newly-discovered URLs
         if: always()
         env:
