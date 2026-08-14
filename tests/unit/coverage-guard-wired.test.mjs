@@ -12,6 +12,13 @@
  *    it only runs if a human types it"
  *   "P1: 2 more coverage audits share the null-openingDate blindness just
  *    fixed in audit-show-review-gap"
+ *
+ * Renamed from `_skip-coverage-guard-wired.test.mjs` and registered in
+ * tests/unit-test-manifest.txt (task #1091, 2026-08-14) — the `_skip-` prefix
+ * is scripts/audit-orphan-tests.js's INTENTIONAL-opt-out convention, so this
+ * file never actually ran in CI despite its own docstring's intent. It was a
+ * second live instance of exactly the "guard exists but nothing invokes it"
+ * class the two cards above were written to catch.
  */
 
 import { test } from 'node:test';

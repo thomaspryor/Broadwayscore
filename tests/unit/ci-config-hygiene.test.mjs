@@ -1,5 +1,6 @@
 /**
- * CI-config hygiene guards — two failure classes that reddened main in July 2026:
+ * CI-config hygiene guards — failure classes that reddened main, or silently
+ * de-fanged a gate, in 2026:
  *
  * 1. Fixture-spec dual registration (2026-07-06→09 incident): any E2E spec that
  *    navigates to /test/* fixture pages MUST be in playwright.config.ts
@@ -14,6 +15,20 @@
  *    instantly on Node 22.7+ (ERR_AMBIGUOUS_MODULE_SYNTAX). investigate-alert.yml
  *    failed 21 times before anyone read the log. Detection mirrors node's own
  *    rule: fails CJS compile (vm.Script) AND references require().
+ *
+ * 3. Lint script silently unwired (task #1091, 2026-08-14): commit 6c1d2ef9861
+ *    added a blocking `run: node scripts/lint-committed-pii.js` step to
+ *    lint-workflows. 31 minutes later an unrelated commit (97849bf3f908) pasted
+ *    a different new step over that exact block instead of alongside it — the
+ *    script, its tests, and its push-path allowlist entry all still existed,
+ *    but nothing in any workflow invoked it. The PII gate was silently absent
+ *    from CI for 8 days despite a "Done" tracking card. This guard asserts
+ *    every scripts/lint-*.js has a non-comment `run:` line in test.yml —
+ *    scoped to lint-*.js (not the wider audit-*.js family) because every
+ *    lint-*.js today is directly `run:`-invoked with zero exceptions, so the
+ *    check is zero-false-positive; several audit-*.js scripts are reached
+ *    indirectly (spawned or required by another script) and would need a
+ *    per-file exemption list to avoid false alarms.
  *
  * Run: node --test tests/unit/ci-config-hygiene.test.mjs
  */
@@ -120,5 +135,61 @@ describe('workflow node-heredoc module ambiguity', () => {
   test('sanity: the sweep actually finds node heredocs', () => {
     assert.ok(heredocCount >= 1,
       'no node heredocs detected across workflows — extraction regex is broken, guard is dead');
+  });
+});
+
+describe('lint script wired into a CI run: step', () => {
+  const scriptsDir = join(root, 'scripts');
+  const testYml = readFileSync(join(root, '.github/workflows/test.yml'), 'utf8');
+
+  // Extract only actual `run:` step bodies (single-line `run: cmd` and
+  // multi-line `run: |`/`run: >` blocks), not the whole file — a `name:`
+  // line, a YAML comment, or shell comment inside a run block that merely
+  // MENTIONS a script's filename must not count as invoking it. This guard
+  // exists because a step got silently clobbered once already (task #1091);
+  // a substring match against the raw file would pass just as easily on a
+  // stale `name:` string as a real `run:` line.
+  function extractRunBodies(yaml) {
+    const lines = yaml.split('\n');
+    const bodies = [];
+    for (let i = 0; i < lines.length; i++) {
+      const single = lines[i].match(/^\s*run:\s*(.+)$/);
+      if (single && !/^[|>]/.test(single[1].trim())) {
+        bodies.push(single[1]);
+        continue;
+      }
+      const blockStart = lines[i].match(/^(\s*)run:\s*[|>][-+0-9]*\s*$/);
+      if (blockStart) {
+        const baseIndent = blockStart[1].length;
+        for (let j = i + 1; j < lines.length; j++) {
+          if (lines[j].trim() === '') continue;
+          const indent = lines[j].match(/^(\s*)/)[1].length;
+          if (indent <= baseIndent) break;
+          bodies.push(lines[j]);
+        }
+      }
+    }
+    // Drop shell comment lines (a commented-out invocation inside a run
+    // block is not a real invocation either).
+    return bodies.filter(l => !/^\s*#/.test(l)).join('\n');
+  }
+
+  const runBodies = extractRunBodies(testYml);
+  const lintScripts = readdirSync(scriptsDir).filter(f => /^lint-.*\.js$/.test(f));
+
+  for (const script of lintScripts) {
+    test(`scripts/${script} is invoked by a run: step in test.yml`, () => {
+      assert.ok(runBodies.includes(`node scripts/${script}`),
+        `scripts/${script} exists but no test.yml run: step body actually invokes it — ` +
+        `a script this shape typically also sits in the on.push.paths allowlist, which makes ` +
+        `it LOOK wired (edits trigger a CI run) while the gate itself never executes. See the ` +
+        `task #1091 gotcha above: this exact class already happened once via an accidental ` +
+        `step clobber.`);
+    });
+  }
+
+  test('sanity: the sweep actually finds lint-*.js scripts', () => {
+    assert.ok(lintScripts.length >= 1,
+      'no scripts/lint-*.js files found — naming convention changed, guard is dead');
   });
 });
