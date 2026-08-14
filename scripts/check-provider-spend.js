@@ -146,16 +146,32 @@ async function main() {
     const over = breaches.overspend.length > 0;
     await routeAlert({
       conditionKey: `provider-spend:${over ? 'overspend' : 'unmeasured'}`,
-      title: over
-        ? `Scraping spend over budget: ${breaches.overspend.join('; ')}`
-        : `Scraping spend unmeasurable for: ${breaches.unmeasured.join(', ')}`,
-      description: `Day ${DAY}. ${snapshot.items.map((i) => i.title).join(' · ')}. Verification streak reset to ${streak}.`,
+      // Stable title (BRO-232 S4 — breach detail lives in description/
+      // decisionPrompt): headStandsAlone requires decisionPrompt's clipped
+      // head to name the title verbatim (owner-alert-router.js), so a
+      // per-day-varying provider/amount list in the title would make that
+      // match unreliable. Mirrors check-linear-cap.js's decision:true row.
+      title: over ? 'Scraping spend over budget' : 'Scraping spend unmeasurable',
+      description: over
+        ? `Day ${DAY}. Over budget: ${breaches.overspend.join('; ')}. ${snapshot.items.map((i) => i.title).join(' · ')}. Verification streak reset to ${streak}.`
+        : `Day ${DAY}. Unmeasurable: ${breaches.unmeasured.join(', ')}. ${snapshot.items.map((i) => i.title).join(' · ')}. Verification streak reset to ${streak}.`,
       hint: over
         ? 'Attribute via data/audit/provider-spend-daily.jsonl trend + the Monday cost report top-consumer table; the v2 plan file lists the demand levers.'
         : 'Billing API unreachable — check the provider key/status in check-secrets-health before trusting any green day.',
       severity: over ? 'error' : 'warn',
       disposition: 'digest',
       cooldownHours: 20,
+      // Genuine judgment call (BRO-232 S4, the "credit burn" example from
+      // task #1184's follow-up plan): raise the budget or cut usage is an
+      // owner policy decision, not something a dispatched fix session can
+      // resolve — a "BSC Daily: Scraping spend over budget" P1 card can
+      // never mechanically satisfy its own verify command. The unmeasurable
+      // branch stays a normal auto-fix candidate (its hint is literally
+      // "check the provider key/status" — a real technical investigation).
+      ...(over ? {
+        decision: true,
+        decisionPrompt: `Scraping spend over budget: ${breaches.overspend.join('; ')}. Should I raise the daily budget, or do you want scraping volume cut to stay within it?`,
+      } : {}),
     });
   }
 }

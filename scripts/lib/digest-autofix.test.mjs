@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -128,6 +128,35 @@ test('runAutofix: an "acknowledged" row is left untouched (no card filed, no dis
 
 test('matchOpenTask ignores completed tasks', () => {
   assert.equal(matchOpenTask([{ id: 1, status: 'completed', subject: 'BSC Daily: X' }], 'X'), null);
+});
+
+// ── BRO-232 S4: canonical row-family key ────────────────────────────────────
+
+test('familyDisplayName/rowFamilyKey: strips a known prefix, leaves everything else unchanged', () => {
+  assert.equal(familyDisplayName('Cron failed: Test Suite'), 'Test Suite');
+  assert.equal(familyDisplayName('Workflow repeat-failure: Test Suite'), 'Test Suite');
+  assert.equal(familyDisplayName('Credits: ScrapingDog'), 'Credits: ScrapingDog'); // no matching prefix
+  assert.equal(rowFamilyKey('Cron failed: Test Suite'), rowFamilyKey('Workflow repeat-failure:   Test Suite  '));
+  assert.notEqual(rowFamilyKey('Cron failed: Test Suite'), rowFamilyKey('Cron failed: Other Thing'));
+});
+
+test('planAutofix: title collapses cross-prefix family variants onto ONE canonical BSC Daily title', () => {
+  const health = { errors: [
+    { name: 'Cron failed: Test Suite', message: 'a' },
+    { name: 'Workflow repeat-failure: Test Suite', message: 'b' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan[0].title, 'BSC Daily: Test Suite');
+  assert.equal(plan[1].title, 'BSC Daily: Test Suite');
+  // Raw row name (drives buildCardNotes' prose + the verify command) stays untouched.
+  assert.equal(plan[0].name, 'Cron failed: Test Suite');
+  assert.equal(plan[1].name, 'Workflow repeat-failure: Test Suite');
+});
+
+test('matchOpenTask: cross-prefix family match — a task filed under one prefix variant covers the sibling', () => {
+  const tasks = [{ id: 9, status: 'pending', subject: 'BSC Daily: Test Suite' }];
+  assert.equal(matchOpenTask(tasks, 'Cron failed: Test Suite')?.id, 9);
+  assert.equal(matchOpenTask(tasks, 'Workflow repeat-failure: Test Suite')?.id, 9);
 });
 
 test('runAutofix dry-run: never spawns, caps dispatches at DISPATCH_CAP', () => {
@@ -316,7 +345,8 @@ test('runAutofix: attempt-memory respected — a row that failed twice unchanged
   const ledgerPath = tmpLedgerPath();
   const title = 'BSC Daily: Chronically broken row';
   const message = 'always fails';
-  const contentHash = computeContentHash({ name: title, notes: message });
+  // contentHash keys on title alone (BRO-232 S4) — see runAutofix's own comment.
+  const contentHash = computeContentHash({ name: title });
   // Seed two prior failures for this exact content — attempt-memory's default maxFailures.
   appendRaw(ledgerPath, { event: 'card-fail', cardId: '503', contentHash, note: 'fail 1' });
   appendRaw(ledgerPath, { event: 'card-fail', cardId: '503', contentHash, note: 'fail 2' });
@@ -337,7 +367,8 @@ test('runAutofix: reconciles a prior dispatch into card-pass via the shared disp
   const ledgerPath = tmpLedgerPath();
   const title = 'BSC Daily: Reconciles fine';
   const message = 'm';
-  const contentHash = computeContentHash({ name: title, notes: message });
+  // contentHash keys on title alone (BRO-232 S4) — see runAutofix's own comment.
+  const contentHash = computeContentHash({ name: title });
   const dispatchTs = new Date(Date.now() - 60_000).toISOString();
   appendRaw(ledgerPath, { event: 'auto-dispatch', taskId: '504', contentHash, ts: dispatchTs });
 
@@ -446,6 +477,38 @@ test('runAutofix: a needs-card row is filed to Linear, threaded as linear:BRO-N,
     assert.equal(plan[0].state, 'dispatched');
     assert.equal(dispatchCalls.length, 1);
     assert.equal(dispatchCalls[0][0], 'linear:BRO-123');
+  });
+});
+
+test('runAutofix: two rows from different prefix families (same suffix) converge on ONE Linear issue in the same run, and wasNew reflects the REAL post-file answer (BRO-232 S4)', () => {
+  let created = false;
+  withChildProcessStubs({
+    execFileSyncImpl: (cmd, argv) => {
+      if (argv.includes('find')) {
+        // First find (row 1): nothing filed yet. Second find (row 2): row 1's
+        // own create already landed a matching-title issue — live reattach.
+        return created ? JSON.stringify({ identifier: 'BRO-500', title: 'BSC Daily: Test Suite', url: 'u' }, null, 2) : 'null';
+      }
+      created = true;
+      return JSON.stringify({ id: 'uuid', identifier: 'BRO-500', title: 'BSC Daily: Test Suite' }, null, 2) + '\nPARKED: BRO-500';
+    },
+  }, (calls, mod) => {
+    const health = { errors: [
+      { name: 'Cron failed: Test Suite', message: 'a' },
+      { name: 'Workflow repeat-failure: Test Suite', message: 'b' },
+    ] };
+    const plan = mod.planAutofix({ health, tasks: [] });
+    const dispatchCalls = [];
+    const ledgerPath = path.join(os.tmpdir(), `da-bro232-family-${Date.now()}.jsonl`);
+    const out = mod.runAutofix({
+      plan, dryRun: false, loadTasksFn: () => [],
+      ledgerPath, dispatchLedgerEntriesFn: () => [],
+      dispatchFn: (...args) => dispatchCalls.push(args),
+    });
+    assert.equal(out[0].taskId, 'linear:BRO-500');
+    assert.equal(out[1].taskId, 'linear:BRO-500', 'second variant must reattach to the SAME issue, not file a duplicate');
+    assert.equal(out[0].wasNew, true, 'first sighting of this family files a brand-new issue');
+    assert.equal(out[1].wasNew, false, 'second variant reattaches to an already-tracked issue — must read as known, not new/regressing');
   });
 });
 
