@@ -776,6 +776,30 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # Complete (fetch-depth: 0) checkouts get NO extra flags — bounding them would
   # TRUNCATE a full clone into a shallow one and throw away history the job may
   # still need.
+  # Task #1489 ROOT-CAUSE FIX: the block below (shallow-since bounding) was
+  # designed for CI's DISPOSABLE actions/checkout — one shallow clone per job,
+  # thrown away after. push-with-retry.sh is also called directly (not just
+  # from workflows) by ~20 local scripts against the PERSISTENT shared
+  # checkout, which all worktrees of this repo share one .git object DB with.
+  # If that shared checkout is ever shallow, this block used to just keep
+  # re-bounding it with --shallow-since forever — never restoring full
+  # history — so `git merge-base --is-ancestor` (this script's own verify
+  # step, and scripts/merge-worktree-to-main.sh) would silently report
+  # "not landed" for commits that are genuinely on main once the graph got
+  # truncated past them. Outside CI, try ONE unshallow before falling back to
+  # the same bounded logic CI uses — never leave the shared checkout shallow
+  # if a full fetch can fix it, but never go unbounded if it can't (that is
+  # exactly the >2GB/rc=124 failure task #466 fixed in the first place).
+  if [ -z "${GITHUB_ACTIONS:-}" ] && [ -z "${_unshallow_attempted:-}" ] \
+     && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+    _unshallow_attempted=1
+    echo "  ::warning::local checkout is SHALLOW outside CI — this should never happen on the persistent shared checkout. Attempting 'git fetch --unshallow' once to restore full history (task #1489); if this recurs, something is shallow-fetching the shared checkout directly."
+    git_fetch --unshallow origin 2>/dev/null || true
+    if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+      echo "  ::warning::unshallow did not restore full history (network issue or huge history) — falling back to the same bounded fetch CI uses so this push is never unbounded (task #1489). The shared checkout will STAY shallow until something runs 'git fetch --unshallow origin' successfully — ancestry checks against it are unreliable until then."
+    fi
+  fi
+
   FETCH_DEPTH_ARGS=()
   if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
     # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
