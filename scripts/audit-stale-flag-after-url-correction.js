@@ -134,6 +134,29 @@ function main() {
   // that and was self-reverted. Do not reintroduce it — a colocated test in
   // scripts/lib/stale-flag-after-url-correction.test.mjs now fails if any bulk
   // flag-clearing helper reappears.
+  // Printed on ANY match under --gate, not just above the ceiling. The step is
+  // report-only in CI, so a sub-ceiling run would otherwise say nothing at all
+  // and the next reader would have no warning attached to the finding. (This
+  // banner came from origin/main 405979b5a3c; keep it gated on > 0.)
+  if (gate && hits.length > 0) {
+    console.error('\n' + '='.repeat(72));
+    console.error('WARNING: a match here is NOT evidence that a flag is stale.');
+    console.error('='.repeat(72));
+    console.error('Two independent hand adjudications on 2026-08-14 found 20/20 and 8/8');
+    console.error('matching files CORRECTLY flagged, and 0 stale. A URL "correction" can');
+    console.error('replace a correct article with a different production\'s, which makes the');
+    console.error('exclusion flag right rather than stale.');
+    console.error('');
+    console.error('There is deliberately NO --fix on this script any more: clearing these');
+    console.error('flags re-admits wrong-production reviews into live Critic Scores (17');
+    console.error('matches carry aggregatorStars and score without fullText). Draining the');
+    console.error('backlog on 2026-08-14 did exactly that and was self-reverted.');
+    console.error('');
+    console.error('The remedy for a record is a REFETCH, never a flag-clear. For attribution');
+    console.error('of which code path wrote a flag, use scripts/audit-stale-flag-producers.js.');
+    console.error('='.repeat(72));
+  }
+
   if (gate && hits.length > max) {
     console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature (> max ${max}).`);
     console.error('DO NOT clear these flags to make this pass — sampling says they are usually');

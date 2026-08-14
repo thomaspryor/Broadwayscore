@@ -1,12 +1,18 @@
 /**
- * Pure detector for the #483 corpus signature: a review file that carries an
- * exclusion flag (wrongProduction/wrongShow) describing an OLD article, an
- * `_urlChangedClear` breadcrumb proving a URL correction already happened,
- * an empty body (the correction is still waiting on refetch), and no human
- * override — i.e. the exact state a stale maybeUpgradeUrl escape left behind
- * on 112 corpus files (2026-07-26 sweep). The breadcrumb existing at all
- * means SOME fields were cleared at write time; the flag surviving anyway
- * means the write path that touched this file didn't clear the flag family.
+ * Pure detector for the #483 corpus signature: a review file carrying an
+ * exclusion flag (wrongProduction/wrongShow), an `_urlChangedClear` breadcrumb
+ * proving a URL correction already happened, an empty body, and no human
+ * override — the state a maybeUpgradeUrl escape left on 112 corpus files
+ * (2026-07-26 sweep).
+ *
+ * READ THE SIGNATURE CAREFULLY. It says "some writer produced this state". It
+ * does NOT say "this flag is stale", and an earlier version of this docblock
+ * claiming otherwise was wrong (corrected 2026-08-14). A URL "correction" can
+ * replace a CORRECT article with a different production's, in which case the
+ * surviving flag is right. Two independent hand adjudications found 20/20 and
+ * 8/8 matching files correctly flagged, 0 stale. Details and the specific
+ * counter-example are in isAwaitingUrlCorrectionRefetch's docblock below —
+ * read it before acting on any match.
  *
  * Not scoped to maybeUpgradeUrl specifically — any write chokepoint that
  * clears some URL-derived fields but not wrongProduction/wrongShow produces

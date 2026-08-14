@@ -3890,9 +3890,12 @@ jobs:
         #     fullText overwhelmingly means the URL-change step DELETED the
         #     body, not that a refetch is pending.
         #
-        # HARM OF ACTING ON IT: draining these files with `--fix` clears the
-        # exclusion flags and re-admits ~115 WRONG-PRODUCTION reviews into live
-        # Critic Scores. A prior session drained the corpus and then correctly
+        # HARM OF ACTING ON IT: draining these files clears the exclusion flags
+        # and re-admits ~115 WRONG-PRODUCTION reviews into live Critic Scores.
+        # (The `--fix` drain that used to do this was DELETED on 2026-08-14 —
+        # see the note at the bottom of this step. Any drain would now have to
+        # be hand-rolled, which is exactly the point.)
+        # A prior session drained the corpus and then correctly
         # self-reverted; the "drained to 0" claim that used to sit in this
         # comment was that reverted drain, not a real clean corpus.
         #

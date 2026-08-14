@@ -1440,10 +1440,12 @@ const crossShowFingerprints = new Map();
         if (d.wrongProduction || d.wrongShow) continue;
 
         // Records mid-URL-correction are NOT evidence: the body has not been
-        // refetched, so publishDate still describes the OLD article. Both
-        // guards below derive a flag from that date, which re-creates exactly
-        // what audit-stale-flag-after-url-correction.js --gate clears — the
-        // drain→rebuild→re-flag loop.
+        // refetched, so publishDate may still describe the OLD article. Both
+        // guards below derive a flag from that date, producing exactly the
+        // state audit-stale-flag-after-url-correction.js reports. NOTE: that
+        // sweep never cleared anything, and its `--fix` drain was deleted on
+        // 2026-08-14 — a match there is usually a CORRECT flag, so the loop it
+        // used to close was drain(by hand)→rebuild→re-flag, not gate→re-flag.
         //
         // scripts/flag-wrong-production-by-date.js got this skip on 2026-08-13
         // and the gate STILL came back red hours later, because this file
