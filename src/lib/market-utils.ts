@@ -75,6 +75,13 @@ function isUkRegionalVenue(category?: string, venue?: string): boolean {
   return (ukRegionalVenues as { match: string }[]).some((entry) => v.includes(entry.match));
 }
 
+/** City for a UK-regional venue (e.g. 'Stratford-upon-Avon' for RSC), from data/uk-regional-venues.json. Undefined for non-UK-regional venues. */
+export function getUkRegionalVenueCity(category?: string, venue?: string): string | undefined {
+  if (category !== 'regional' || !venue) return undefined;
+  const v = venue.toLowerCase();
+  return (ukRegionalVenues as { match: string; city: string }[]).find((entry) => v.includes(entry.match))?.city;
+}
+
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */
 export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' {
   if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GB';
