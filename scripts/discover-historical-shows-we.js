@@ -34,7 +34,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { fetchPage } = require('./lib/scraper');
-const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
+const { normalizeTitle } = require('./lib/title-match');
+const { venuesMatch } = require('./lib/deduplication');
 const { validateSeason, getSeasonDates, isDateInSeason } = require('./lib/we-seasons');
 const { isCorroborated } = require('./lib/we-historical-corroboration');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -164,18 +165,23 @@ const SOURCES = {
   olt: fetchOltSource,
 };
 
-function buildExistingKeys(shows) {
-  const set = new Set();
-  for (const s of shows) {
-    if (!s.title || !s.venue) continue;
-    set.add(`${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`);
-  }
-  return set;
+// {title, venue} match via venuesMatch(), not title-match.js's canonicalVenue()
+// equality — canonicalVenue's fallback for a venue outside VENUE_ALIASES is
+// just the lowercased FIRST WORD, so two unrelated venues sharing a leading
+// word ("The X") would collapse and silently drop a genuinely new candidate
+// before any human ever sees it (BRO-243).
+function buildExistingList(shows) {
+  return shows.filter(s => s.title && s.venue).map(s => ({ title: s.title, venue: s.venue }));
+}
+
+function findMatch(list, title, venue) {
+  const norm = normalizeTitle(title);
+  return list.find(s => normalizeTitle(s.title) === norm && venuesMatch(s.venue, venue)) || null;
 }
 
 async function main() {
   const shows = loadShows();
-  const existingKeys = buildExistingKeys(shows);
+  const existingList = buildExistingList(shows);
   const { start, end } = getSeasonDates(seasonArg);
 
   console.log(`Discovering WE productions for season ${seasonArg} (${start.toISOString().slice(0,10)} → ${end.toISOString().slice(0,10)})`);
@@ -189,16 +195,19 @@ async function main() {
     allRecords.push(...rows);
   }
 
-  // Build one candidate per distinct title+venue key across all sources.
-  const byKey = new Map();
+  // Build one candidate per distinct title+venue across all sources. A flat
+  // array + findMatch() scan (not a canonicalVenue-keyed Map) for the same
+  // reason as buildExistingList/findMatch above.
+  const byKey = [];
   for (const r of allRecords) {
-    const key = `${normalizeTitle(r.title)}|${canonicalVenue(r.venue)}`;
-    if (!byKey.has(key)) byKey.set(key, { title: r.title, venue: r.venue, openingDate: r.openingDate });
+    if (!findMatch(byKey, r.title, r.venue)) {
+      byKey.push({ title: r.title, venue: r.venue, openingDate: r.openingDate });
+    }
   }
 
   const candidates = [];
-  for (const [key, base] of byKey) {
-    if (existingKeys.has(key)) {
+  for (const base of byKey) {
+    if (findMatch(existingList, base.title, base.venue)) {
       if (verbose) console.log(`  [in shows.json] ${base.title}`);
       continue;
     }
