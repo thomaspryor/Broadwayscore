@@ -1,53 +1,63 @@
 {
-  "updatedAt": "2026-08-14T19:34:54.477Z",
-  "processed": 64,
-  "failed": 686,
-  "successRate": "8.5%",
+  "updatedAt": "2026-08-14T19:35:14.370Z",
+  "processed": 9,
+  "failed": 26,
+  "successRate": "25.7%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 2,
-    "directCookies": 4,
-    "scrapingbee": 8,
-    "brightdata": 5,
+    "browserbase": 0,
+    "directCookies": 1,
+    "scrapingbee": 3,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-08-14T11:19:07.811Z",
+      "t": "2026-08-14T19:24:44.224Z",
       "event": "bb-session",
-      "session": "ebe29da6",
+      "session": "dfcf8a3e",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-14T11:19:08.683Z",
+      "t": "2026-08-14T19:24:44.981Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-14T19:29:11.690Z",
+      "t": "2026-08-14T19:26:03.936Z",
       "event": "bb-session",
-      "session": "5d062078",
-      "url": "https://www.ft.com/content/8fb9a7af-1f87-4607-ba09-e94386ad0b56?syn-25a6b1a6=1"
+      "session": "7fa38935",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-14T19:29:12.406Z",
+      "t": "2026-08-14T19:26:04.635Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-08-14T19:33:54.699Z",
+      "t": "2026-08-14T19:29:07.850Z",
       "event": "bb-session",
-      "session": "44760bc3",
-      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+      "session": "69f259f3",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
     },
     {
-      "t": "2026-08-14T19:34:03.240Z",
+      "t": "2026-08-14T19:29:08.478Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-14T19:29:26.227Z",
       "event": "bb-session",
-      "session": "2e39d1dd",
-      "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+      "session": "92912ae6",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-14T19:29:26.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
