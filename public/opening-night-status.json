@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T18:46:55.317Z",
+  "generatedAt": "2026-08-14T19:51:05.213Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1085,23 +1085,23 @@
       "status": "open",
       "slug": "the-winters-tale-off-broadway",
       "thumbnail": "/images/shows/the-winters-tale-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 77.68,
+      "siteScore": 78.14,
       "liveScore": 78,
-      "scoreDrift": 0.3199999999999932,
+      "scoreDrift": -0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 2,
-      "t2": 4,
+      "t2": 5,
       "t3": 4,
-      "positive": 7,
+      "positive": 8,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "10/12 total",
+          "11/12 total",
           "T1:2/3",
           "hi-conf:6/8"
         ],
@@ -1490,6 +1490,18 @@
           "t2": 4,
           "t3": 4,
           "p": 7,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-14T19:44:19.379Z",
+          "rc": 11,
+          "s": 78.14,
+          "t1": 2,
+          "t2": 5,
+          "t3": 4,
+          "p": 8,
           "m": 3,
           "n": 0,
           "bc": "waiting"
@@ -1887,9 +1899,9 @@
       "status": "open",
       "slug": "an-american-daughter-off-broadway",
       "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 49.18,
-      "liveScore": 49,
-      "scoreDrift": -0.17999999999999972,
+      "siteScore": 51.64,
+      "liveScore": 52,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1897,9 +1909,9 @@
       "t1": 0,
       "t2": 7,
       "t3": 9,
-      "positive": 0,
+      "positive": 1,
       "mixed": 6,
-      "negative": 10,
+      "negative": 9,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -2364,6 +2376,18 @@
           "p": 0,
           "m": 6,
           "n": 10,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-14T19:44:19.379Z",
+          "rc": 16,
+          "s": 51.64,
+          "t1": 0,
+          "t2": 7,
+          "t3": 9,
+          "p": 1,
+          "m": 6,
+          "n": 9,
           "bc": "waiting"
         }
       ]
