@@ -986,6 +986,14 @@ on:
       - 'scripts/monitor-outlet-recency.js'
       - 'tests/unit/outlet-recency-monitor.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
+      # Same-run correction/follow-up merge (card #1427, GH #567) — folds a
+      # same-submitter, same-show submission arriving within 5 min of an
+      # earlier one into a single submission before categorization, so the
+      # correction reaches the issue instead of being silently discarded.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/feedback-digest-correction-merge.js'
+      - 'scripts/lib/feedback-digest-correction-merge.test.mjs'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
       # Without these, an edit to the normalizer pushes with ZERO CI coverage
