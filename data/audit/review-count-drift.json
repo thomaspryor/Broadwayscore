@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-13T07:09:43.262Z",
+  "generatedAt": "2026-08-14T07:06:42.083Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-08-13T07:01:57.764Z",
-    "reviewsJsonAgeHours": 0.1,
+    "reviewsJsonLastUpdated": "2026-08-14T06:50:10.191Z",
+    "reviewsJsonAgeHours": 0.3,
     "freshnessBreach": false,
-    "showsScanned": 4,
-    "filesScanned": 65,
+    "showsScanned": 9,
+    "filesScanned": 163,
     "showsOverThreshold": 0,
-    "orphanReviews": 0
+    "orphanReviews": 2
   },
   "thresholds": {
     "suppressedPerShow": 3,
@@ -15,12 +15,68 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "orphanReviews": [],
+  "orphanReviews": [
+    {
+      "showId": "the-apple-boys-regional-2025",
+      "count": 4
+    },
+    {
+      "showId": "starstruck-regional-2026",
+      "count": 2
+    }
+  ],
   "perShow": [
     {
+      "showDir": "an-american-daughter-off-broadway-2026",
+      "actual": 13,
+      "scanned": 24,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "death-note-the-musical-west-end-2026",
-      "actual": 23,
-      "scanned": 41,
+      "actual": 26,
+      "scanned": 45,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "game-of-thrones-the-mad-king-regional-2026",
+      "actual": 8,
+      "scanned": 11,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "how-the-other-half-loves-west-end-2026",
+      "actual": 20,
+      "scanned": 30,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "london-theatre--unknown.json",
+          "outletId": "london-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-12",
+          "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic"
+        },
+        {
+          "file": "theatrecat--unknown.json",
+          "outletId": "theatrecat",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-12",
+          "url": "https://theatrecat.com/2026/08/12/how-the-other-half-loves-old-vic-se1/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-winters-tale-off-broadway-2026",
+      "actual": 10,
+      "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
