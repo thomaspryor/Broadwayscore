@@ -58,11 +58,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectOpeningNightShows } = require('./lib/opening-night-selection.js');
 const {
   activeWindows, nightKey, launchDecision, computeWindow, carryForwardNightState,
-  MAX_ATTEMPTS_PER_NIGHT,
+  MAX_ATTEMPTS_PER_NIGHT, shouldPageForFailedPass,
   claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
 const { runMonitorPass } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { isShowCoverageComplete } = require('./lib/opening-night-readiness.js');
 
 const MON_DIR = path.join(REPO, 'data', 'opening-night-monitor');
 const LOCK_DIR = path.join(MON_DIR, 'monitor.lock');
@@ -136,6 +137,26 @@ function monitorCandidates(shows, now) {
   // how-the-other-half-loves-west-end-2026 went unmonitored for 19h on
   // 2026-08-12 while its reviews were already published.
   return activeWindows(selected, now, { evidence });
+}
+
+// Card #1413: has every show in the active window already reached the
+// existing broadcast-readiness bar with no T1/T2 outlet still missing? If so
+// there is nothing left for a $5 opus pass to do — see launchDecision's
+// 'stop' action. A per-show try/catch means one show's readiness check
+// throwing (e.g. a market this show's registry entry doesn't cover) can never
+// block the whole window's coverage evaluation — it degrades to "not
+// complete", the safe direction (one extra pass, not a wrongly-skipped one).
+function isCoverageComplete(windows, shows) {
+  if (!windows.length) return false;
+  const byId = new Map(shows.map(s => [s.id, s]));
+  return windows.every(w => {
+    try {
+      return isShowCoverageComplete(w.showId, w.market, byId.get(w.showId));
+    } catch (e) {
+      log(`coverage check failed for ${w.showId} (${e.message}) — treating as incomplete`);
+      return false;
+    }
+  });
 }
 
 function nightStatePath(key) { return path.join(MON_DIR, `night-state-${key}.json`); }
@@ -416,6 +437,7 @@ async function main(argv = process.argv.slice(2)) {
     claudeAlive: false,
     attemptsTonight: nightState.consecutiveFailures,
     noProgressPasses: nightState.noProgressPasses || 0,
+    coverageComplete: isCoverageComplete(windows, shows),
   };
   let decision = launchDecision(state);
   // External spend brake (see NIGHTLY_USD_CAP comment above) — evaluated
@@ -437,6 +459,29 @@ async function main(argv = process.argv.slice(2)) {
 
   log(`decision: ${decision.action} — ${decision.reason}`);
   if (decision.action === 'skip') return 0;
+
+  if (decision.action === 'stop') {
+    // Unlike 'escalate' (retries exhausted / spend cap — something went
+    // wrong, page the owner), 'stop' is a SUCCESSFUL outcome: the show is
+    // covered, so ending the night is the correct behavior, not a failure.
+    // severity:info/disposition:digest (never error/human) and exit 0 keep
+    // that distinction. Dedup on its OWN `coverageStopped` field, deliberately
+    // NOT `escalated`: coverageComplete is recomputed fresh every tick (a
+    // regressed review can flip it back to false and resume launches), so
+    // reusing `escalated` would let an early benign stop permanently suppress
+    // a LATER genuine escalate alert for the same night key if the show later
+    // exhausts its real attempt/spend caps (adversarial review finding).
+    if (!nightState.coverageStopped) {
+      await alert({
+        conditionKey: `on-monitor-coverage-complete-${key}`,
+        title: `Opening-night monitor: stopping for ${windows.map(w => w.showId).join(', ')} — coverage complete`,
+        description: `${decision.reason} (${nightState.attempts} total passes tonight, $${(nightState.usdTonight || 0).toFixed(2)} spent). Coverage is re-evaluated every tick — if it later regresses (e.g. a review gets flagged and removed) the launcher resumes on its own; this alert fires once and won't repeat while coverage stays complete.`,
+        severity: 'info', disposition: 'digest',
+      });
+      writeNightState(key, { ...nightState, coverageStopped: true });
+    }
+    return 0;
+  }
 
   if (decision.action === 'escalate') {
     if (!nightState.escalated) {
@@ -615,7 +660,7 @@ async function main(argv = process.argv.slice(2)) {
     // on-monitor-auth-failed on the FIRST tick, before an attempt is consumed,
     // and that alert is page-worthy in its own right.
     const retriesExhausted = consecutiveFailures >= MAX_ATTEMPTS_PER_NIGHT;
-    const pageOwner = retriesExhausted && !advancedState;
+    const pageOwner = shouldPageForFailedPass({ consecutiveFailures, advancedState });
     await alert({
       conditionKey: `on-monitor-launch-failed-${key}`,
       title: pageOwner

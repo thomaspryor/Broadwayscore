@@ -179,13 +179,72 @@ async function searchIssues(term, teamKey = TEAM_KEY) {
   return null;
 }
 
+// Every dispatched issue's completion report (linear-dispatch.js:195) hits
+// createComment + updateIssue on an id that may have been archived out from
+// under it — either a race with the cap-management archival (BRO-285) or a
+// re-dispatch of an issue an earlier session already closed and archived.
+// Both mutations then fail with the generic, id-agnostic "Entity not found:
+// Issue" — indistinguishable at that message from a bad/deleted id. Detect
+// it, confirm via a read (archived issues stay readable, just not
+// writable), unarchive, and retry once (task #1510, BRO-247 incident
+// 2026-08-14).
+function isArchivedIssueError(err) {
+  return !!(
+    err &&
+    Array.isArray(err.linearErrors) &&
+    err.linearErrors.some((e) => /Entity not found: Issue/i.test(e && e.message))
+  );
+}
+
+async function getIssueArchivedAt(id) {
+  const data = await graphql(`query($id: String!) { issue(id: $id) { archivedAt } }`, { id });
+  return data.issue ? data.issue.archivedAt : null;
+}
+
+// Named export alongside archiveIssue for symmetry — also used directly by
+// withArchivedIssueRetry below.
+async function issueUnarchive(id) {
+  const data = await graphql(`mutation($id: String!) { issueUnarchive(id: $id) { success } }`, { id });
+  if (!data.issueUnarchive || !data.issueUnarchive.success) throw new Error(`issueUnarchive failed for ${id}`);
+  return data.issueUnarchive;
+}
+
+// Runs `run()` once; on the archived-issue error, confirms archival via a
+// read, unarchives, and retries `run()` exactly once. A "not found" that
+// ISN'T archival (bad id, deleted issue) rethrows the original error
+// unchanged.
+//
+// Deliberately does NOT re-archive afterward. A caller reaching this path is
+// actively touching the issue (posting a report, moving its state) — an
+// initial version of this fix re-archived unconditionally to "restore the
+// prior state," but that silently re-hides an issue a caller had just moved
+// to a non-terminal state (e.g. linear-next.js's dispatch-start updateIssue
+// to "In Progress"), which is a worse bug than the cryptic error this fixes.
+// The BRO-285 archive cron (linear-cap-policy.js's isArchivableIssue) already
+// owns "should this go back to archived" on its own schedule based on actual
+// state/completedAt — that's the right place for that decision, not a guess
+// made here on every retried mutation regardless of what it did.
+async function withArchivedIssueRetry(id, run) {
+  try {
+    return await run();
+  } catch (err) {
+    if (!isArchivedIssueError(err)) throw err;
+    const archivedAt = await getIssueArchivedAt(id);
+    if (!archivedAt) throw err;
+    await issueUnarchive(id);
+    return run();
+  }
+}
+
 // Post a comment on an issue (used by linear-next.js to record "Dispatched to
 // <ref> at <ts>" on the issue itself, so double-dispatch is visible on the
 // board without cross-referencing the local dispatch ledger).
 async function createComment(issueId, body) {
-  const data = await graphql(linearDispatch.buildCommentMutation(), { issueId, body });
-  if (!data.commentCreate.success) throw new Error(`commentCreate failed for issue ${issueId}`);
-  return data.commentCreate;
+  return withArchivedIssueRetry(issueId, async () => {
+    const data = await graphql(linearDispatch.buildCommentMutation(), { issueId, body });
+    if (!data.commentCreate.success) throw new Error(`commentCreate failed for issue ${issueId}`);
+    return data.commentCreate;
+  });
 }
 
 // Archive a Done/Canceled issue so it stops counting against the free-tier
@@ -205,13 +264,15 @@ async function archiveIssue(id) {
 }
 
 async function updateIssue(id, input) {
-  const data = await graphql(
-    `mutation($id: String!, $input: IssueUpdateInput!) {
-      issueUpdate(id: $id, input: $input) { success }
-    }`,
-    { id, input }
-  );
-  if (!data.issueUpdate.success) throw new Error(`issueUpdate failed for ${id}`);
+  return withArchivedIssueRetry(id, async () => {
+    const data = await graphql(
+      `mutation($id: String!, $input: IssueUpdateInput!) {
+        issueUpdate(id: $id, input: $input) { success }
+      }`,
+      { id, input }
+    );
+    if (!data.issueUpdate.success) throw new Error(`issueUpdate failed for ${id}`);
+  });
 }
 
 async function listProjects() {
@@ -253,6 +314,7 @@ module.exports = {
   createComment,
   updateIssue,
   archiveIssue,
+  issueUnarchive,
   listProjects,
   createProject,
   createIssue,

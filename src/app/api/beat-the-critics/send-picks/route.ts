@@ -237,7 +237,7 @@ export async function POST(req: NextRequest) {
         <div style="font-size:13px;font-weight:700;color:#ff1368;margin-bottom:6px;">You're entered — can you beat the critics?</div>
         <div style="font-size:12px;color:#4b5563;margin-bottom:4px;">Ceremony: June 7, 2026 &middot; CBS</div>
         <div style="font-size:12px;color:#4b5563;margin-bottom:6px;">We'll email you after the ceremony with your results.</div>
-        <div style="font-size:12px;font-weight:700;color:#f59e0b;">🎟️ Beat a critic? You're entered in the $100 TodayTix prize draw.</div>
+        <div style="font-size:12px;font-weight:700;color:#f59e0b;">🎟️ Beat a critic? You're entered in the $200 TodayTix prize draw.</div>
         <div style="margin-top:16px;">
           <a href="https://broadwayscorecard.com/beat-the-critics" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#ff1368,#d4106a);color:#ffffff;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">View Your Ballot &rarr;</a>
         </div>

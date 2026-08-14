@@ -244,16 +244,15 @@ const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose fo
 const BWW_ROUNDUP_URL_CLI = (process.argv.find(a => a.startsWith('--bww-roundup-url=')) || '').replace('--bww-roundup-url=', '') || '';
 const TB_REVIEW_URL_CLI = (process.argv.find(a => a.startsWith('--tb-review-url=')) || '').replace('--tb-review-url=', '') || '';
 
-// Readiness thresholds — market-aware (must match send-opening-night-broadcast.js)
-function getThresholds(market) {
-  const isWE = market === 'west-end' || market === 'off-west-end';
-  return {
-    MIN_REVIEWS: isWE ? 8 : 12,
-    MIN_T1_REVIEWS: 3,
-    MIN_T2_REVIEWS: isWE ? 2 : 3,
-    MIN_HIGH_CONFIDENCE: isWE ? 6 : 8,
-  };
-}
+// Readiness thresholds — market-aware (must match send-opening-night-broadcast.js).
+// getThresholds/getMissingT1T2Outlets/checkReadiness moved to
+// ./lib/opening-night-readiness.js (card #1413) so the opening-night monitor
+// launcher — which needs only "is this show's coverage done?" and runs
+// unconditionally every 20 min for up to 31h — doesn't have to require() this
+// whole file's ~45-line scraper/discovery dependency block. Re-exported here
+// (not just re-required at the bottom) so every existing caller of this
+// module keeps working unchanged.
+const { getThresholds, getMissingT1T2Outlets, checkReadiness } = require('./lib/opening-night-readiness');
 
 /**
  * Market-gated + time-tiered polling cadence.
@@ -455,67 +454,6 @@ function getKnownUrls(showId, ctx) {
     } catch {}
   }
   return urls;
-}
-
-/**
- * Get T1/T2 outlets that haven't been found yet for a show.
- * v5 (2026-04-29): use region-aware getTier() so per-region tiers from
- * outlet-tiers.json (e.g. NYT T2 in London, The Stage T1 in London) override
- * the registry's plain `tier` field. Without this, opening-night discovery
- * would treat NYT as T1 for West End shows even though it's effectively T2
- * cross-coverage.
- */
-function getMissingT1T2Outlets(showId, market, show) {
-  const registry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
-  const outlets = registry.outlets || registry;
-  const foundIds = getFoundOutletIds(showId, { show, market });
-
-  const { getTier } = require('./lib/outlet-tiers');
-  // Map market to showCategory for tier lookup
-  const showCategory = isLondonMarket(market) ? 'west-end' : 'broadway';
-
-  const missing = [];
-  for (const [outletId, outlet] of Object.entries(outlets)) {
-    const effectiveTier = getTier(outletId, { showCategory });
-    if (effectiveTier > 2) continue;
-    if (foundIds.has(outletId.toLowerCase())) continue;
-    // Market filter
-    if (isLondonMarket(market) && !outlet.isDualMarket && outlet.region !== 'uk') continue;
-    if (market === 'broadway' && outlet.region === 'uk' && !outlet.isDualMarket) continue;
-    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: effectiveTier, domain: outlet.domain, isDualMarket: !!outlet.isDualMarket });
-  }
-
-  return missing.sort((a, b) => a.tier - b.tier); // T1 first
-}
-
-/**
- * Check readiness for broadcast
- */
-function checkReadiness(showId, market = 'broadway') {
-  const { MIN_REVIEWS, MIN_T1_REVIEWS, MIN_T2_REVIEWS, MIN_HIGH_CONFIDENCE } = getThresholds(market);
-  const reviews = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
-  const registry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
-  const outlets = registry.outlets || registry;
-  const arr = Array.isArray(reviews.reviews || reviews) ? (reviews.reviews || reviews) : Object.values(reviews.reviews || reviews);
-
-  const showRevs = arr.filter(r => r.showId === showId && r.assignedScore > 0);
-  const t1 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 1; }).length;
-  const t2 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 2; }).length;
-  const hiConf = showRevs.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length;
-
-  return {
-    total: showRevs.length,
-    t1,
-    t2,
-    highConfidence: hiConf,
-    ready: showRevs.length >= MIN_REVIEWS && t1 >= MIN_T1_REVIEWS && t2 >= MIN_T2_REVIEWS && hiConf >= MIN_HIGH_CONFIDENCE,
-    reasons: [
-      showRevs.length < MIN_REVIEWS ? `${showRevs.length}/${MIN_REVIEWS} total` : null,
-      t1 < MIN_T1_REVIEWS ? `T1:${t1}/${MIN_T1_REVIEWS}` : null,
-      t2 < MIN_T2_REVIEWS ? `T2:${t2}/${MIN_T2_REVIEWS}` : null,
-      hiConf < MIN_HIGH_CONFIDENCE ? `hi-conf:${hiConf}/${MIN_HIGH_CONFIDENCE}` : null,
-    ].filter(Boolean),
-  };
 }
 
 /**

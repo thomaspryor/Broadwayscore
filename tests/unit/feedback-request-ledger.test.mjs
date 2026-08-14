@@ -165,6 +165,78 @@ test('an unsatisfied request names no reviews — nothing to claim yet', () => {
   assert.deepEqual(evaluateEntry(entry, null).reviews, []);
 });
 
+// ---------------------------------------------------------------------------
+// content-fix kind (task #1440): the "Manual Fix Needed" content-error asks
+// (existing content is WRONG, not missing) get the same live/stuck treatment
+// missing-show/missing-reviews already had. Live payload from the compact
+// {base}/data/shows/{id}.json shape — `o` outlet, `cn` critic name.
+// ---------------------------------------------------------------------------
+
+test('wrong-critic-name: not satisfied until the live byline matches the correction', () => {
+  const entry = buildEntry(
+    { kind: 'content-fix', contentErrorType: 'wrong-critic-name', showId: 'x', expected: { outlet: 'BroadwayWorld', criticName: 'Pam Kragen' } },
+    { submissionId: 's' }
+  );
+  // Still wrong.
+  let res = evaluateEntry(entry, { rv: [{ o: 'BroadwayWorld', cn: 'Wrong Person' }] });
+  assert.equal(res.satisfied, false);
+  assert.match(res.evidence, /still credited to Wrong Person/);
+
+  // Corrected — outlet match is case/whitespace-insensitive.
+  res = evaluateEntry(entry, { rv: [{ o: 'broadwayworld ', cn: 'Pam Kragen' }] });
+  assert.equal(res.satisfied, true);
+  assert.match(res.evidence, /now credited to Pam Kragen/);
+
+  // Outlet not even live yet — distinct evidence, still not satisfied.
+  res = evaluateEntry(entry, { rv: [] });
+  assert.equal(res.satisfied, false);
+  assert.match(res.evidence, /no live review found yet/);
+});
+
+test('outlet-rename: satisfied once a review shows the renamed outlet', () => {
+  const entry = buildEntry(
+    { kind: 'content-fix', contentErrorType: 'outlet-rename', showId: 'x', expected: { newOutletName: 'New York Stage Review' } },
+    { submissionId: 's' }
+  );
+  assert.equal(evaluateEntry(entry, { rv: [{ o: 'NYSR' }] }).satisfied, false);
+  assert.equal(evaluateEntry(entry, { rv: [{ o: 'New York Stage Review' }] }).satisfied, true);
+});
+
+test('single-review content-fix names the review once live, like missing-reviews', () => {
+  const entry = buildEntry(
+    { kind: 'content-fix', contentErrorType: 'single-review', showId: 'x', expected: { outlet: 'San Diego Union-Tribune' } },
+    { submissionId: 's' }
+  );
+  assert.equal(evaluateEntry(entry, { rv: [] }).satisfied, false);
+  const res = evaluateEntry(entry, { rv: [REVIEW] });
+  assert.equal(res.satisfied, true);
+  assert.equal(res.reviews.length, 1);
+  assert.match(res.reviews[0].text, /Pam Kragen/);
+});
+
+test('new-show-record is satisfied the moment the rebuilt record is live, same bar as missing-show', () => {
+  const entry = buildEntry({ kind: 'content-fix', contentErrorType: 'new-show-record', showId: 'x' }, { submissionId: 's' });
+  assert.equal(evaluateEntry(entry, null).satisfied, false);
+  assert.equal(evaluateEntry(entry, LIVE_ONE_REVIEW).satisfied, true);
+});
+
+test('wrong-award-co-winner honestly reports it cannot auto-verify, and never falsely resolves', () => {
+  const entry = buildEntry(
+    { kind: 'content-fix', contentErrorType: 'wrong-award-co-winner', showId: 'x', expected: { ceremony: 'tony', category: 'Best Actor', person: 'Someone' } },
+    { submissionId: 's' }
+  );
+  const res = evaluateEntry(entry, LIVE_ONE_REVIEW);
+  assert.equal(res.satisfied, false, 'awards data is not in this live payload — must not guess satisfied');
+  assert.match(res.evidence, /cannot auto-verify/);
+});
+
+test('a content-fix type with no rule yet never claims satisfied (same guarantee as an unknown kind)', () => {
+  const entry = buildEntry({ kind: 'content-fix', contentErrorType: 'something-new', showId: 'x' }, { submissionId: 's' });
+  const res = evaluateEntry(entry, LIVE_ONE_REVIEW);
+  assert.equal(res.satisfied, false);
+  assert.match(res.evidence, /no live-check rule for content error type/);
+});
+
 test('no owner email address is ever written into this public-repo module', () => {
   // The ledger file this module writes is committed to a PUBLIC repo, and the
   // module itself once carried a derived `+claude` owner alias. Neither the

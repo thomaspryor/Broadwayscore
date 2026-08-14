@@ -38,7 +38,8 @@ const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = 
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
-const { assessAutofixEffectiveness } = require('./lib/autofix-effectiveness');
+const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
+const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 // Discord daily reports removed — email digest is the single notification channel.
 
@@ -368,11 +369,14 @@ function checkPushVerification() {
   return PUSH_VERIFY_CHECKS.map(({ file, field, workflow, name, maxDriftH }) =>
     runCheck(`Push verify: ${file}`, () => {
       try {
-        // Get last successful workflow run time
-        const result = execSync(
-          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        // Get last successful workflow run time. Cached: 15 CRITICAL_CRONS
+        // entries + this check all share ONE shared PAT/rate-limit budget
+        // across every concurrently-dispatched session on this Mac — see
+        // scripts/lib/gh-api-cache.js header for why.
+        const result = cachedShell(
+          `push-verify:${workflow}`,
+          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
+        );
         if (!result) {
           return { name: `Push verify: ${file}`, status: 'warn', message: `No successful ${name} runs found` };
         }
@@ -430,12 +434,12 @@ function checkOpeningNightHistoryFreshness() {
   }
   return [runCheck('Push verify: opening-night-history.json', () => {
     try {
-      // Get last successful workflow run time (same gh invocation shape as
-      // checkPushVerification() above).
-      const result = execSync(
-        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
-        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-      ).trim();
+      // Get last successful workflow run time (same gh invocation shape and
+      // shared cache as checkPushVerification() above).
+      const result = cachedShell(
+        'push-verify:opening-night-checklist.yml',
+        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
+      );
       if (!result) {
         return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No successful Opening Night Checklist runs found' };
       }
@@ -1760,10 +1764,14 @@ function checkCronHealth() {
         // reported "Cron failed: cancelled" while the cron was in fact doing its
         // job on the very next run — see task #80, ~75% of Test Suite runs on main
         // cancel this way. Same single API call, five records.
-        const result = execSync(
-          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        // Cached (shared across every concurrently-dispatched session on this
+        // Mac, see scripts/lib/gh-api-cache.js): 15 entries in this array is
+        // 15 gh calls PER health-check.js run, and this runs on every
+        // /ship-check + /wrap-up across ~dozens of dispatches/day.
+        const result = cachedShell(
+          `cron:${workflow}`,
+          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`
+        );
         const runs = result ? JSON.parse(result) : [];
         if (!runs.length) {
           return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
@@ -1826,10 +1834,10 @@ function checkSecretsHealth() {
         // run with a green run still inside the window is a supersession, not a
         // failure. #367 noted the two checks share this logic and must move
         // together — they drifted again, so keep them in step.
-        const result = execSync(
-          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`,
-          { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
-        ).trim();
+        const result = cachedShell(
+          'cron:check-secrets-health.yml',
+          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`
+        );
         const runs = result ? JSON.parse(result) : [];
         if (!runs.length) {
           return { name: 'Secrets: health', status: 'warn', message: 'No secrets check runs found' };
@@ -1962,7 +1970,7 @@ async function checkAlertRouterDeadman(isCI) {
 // zero. This row reads the OUTCOMES the ledger already records (card-pass /
 // card-fail) and is the difference between noticing on day 2 and on day 13.
 function checkAutofixEffectiveness() {
-  const name = 'Autofix: jobs actually succeeding';
+  const name = AUTOFIX_EFFECTIVENESS_CHECK_NAME;
   const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
   let raw;
   try {
@@ -2059,61 +2067,15 @@ function checkAutofixThroughput() {
 
 // --- Push-retry deadman (task #394) ---
 //
-// scripts/lib/push-with-retry.sh appends a JSONL record to
-// data/audit/push-retry-failures.jsonl whenever it abandons a push — either a
-// no-op-rebase abort or full retry exhaustion. This surfaces that telemetry so a
-// silent-forever push failure (the exact class that stranded the alert-ledger and
-// killed cooldown/dedup across CI) becomes a visible digest row instead of a
-// swallowed `|| echo ::warning`. Non-paging: it's a digest signal, not a critical
-// self-page — the root-cause fix (explicit-destination fetch) is what actually
-// prevents the failure, and a persisted failure record already means SOME run
-// landed a later commit carrying the log, so the state is recoverable.
-//
-// PERSISTENCE CAVEAT: when a failed push is the ONLY write in a CI job, the log
-// dies with the runner and never reaches origin — so this row is a best-effort
-// backstop (it reliably catches local runs and jobs that land a later push), not a
-// guarantee. The definitive protection remains the fix + the ::error:: annotation.
+// Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
+// lives in scripts/lib/push-retry-deadman.js's header. This wrapper reuses
+// readJsonlLedgerOrNull() (above) so this is the third gitignored-ledger check
+// in this file to share the same null-means-absent read path, not a fourth
+// slightly-different variant of it.
 function checkPushRetryDeadman() {
-  const logPath = path.join(__dirname, '..', 'data', 'audit', 'push-retry-failures.jsonl');
-  let raw;
-  try {
-    raw = fs.readFileSync(logPath, 'utf8');
-  } catch {
-    return [{ name: 'Push-retry deadman', status: 'pass', message: 'No push-retry failures recorded (log absent)' }];
-  }
-
-  const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const recent = [];
-  for (const line of raw.split('\n')) {
-    const t = line.trim();
-    if (!t) continue;
-    let rec;
-    try { rec = JSON.parse(t); } catch { continue; }
-    const ts = Date.parse(rec.ts);
-    if (Number.isNaN(ts) || ts < cutoff) continue;
-    recent.push(rec);
-  }
-
-  if (recent.length === 0) {
-    return [{ name: 'Push-retry deadman', status: 'pass', message: 'No push-retry failures in the trailing 7d' }];
-  }
-
-  const noops = recent.filter((r) => String(r.reason || '').startsWith('noop-rebase'));
-  const branches = [...new Set(recent.map((r) => `${r.remote || '?'}:${r.branch || '?'}`))];
-  // A no-op-rebase record is the #394 signature and the more serious signal (a
-  // stale-ref regression); 3+ exhaustions in a week is also worth an error row.
-  const status = noops.length > 0 || recent.length >= 3 ? 'error' : 'warn';
-  const message =
-    `${recent.length} push-retry failure(s) in the last 7d` +
-    (noops.length > 0 ? ` including ${noops.length} NO-OP-rebase abort(s) (task-#394 stale-ref signature)` : '') +
-    ` across ${branches.join(', ')}. Most recent reason: ${recent[recent.length - 1].reason || '?'}.`;
-
-  return [{
-    name: 'Push-retry deadman',
-    status,
-    message,
-    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion means the remote genuinely could not be integrated.',
-  }];
+  const { assessPushRetryDeadman } = require('./lib/push-retry-deadman.js');
+  const logPath = path.join(AUDIT_DIR, 'push-retry-failures.jsonl');
+  return [assessPushRetryDeadman(readJsonlLedgerOrNull(logPath))];
 }
 
 // --- Category I3: Infra-review gate telemetry (task #1095) ---
@@ -2688,25 +2650,43 @@ async function getWorkflowRunSummary() {
     return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true };
   }
 
-  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  // Rate-limit headroom check FIRST (the /rate_limit endpoint itself is free
+  // — see scripts/lib/gh-api-cache.js). This call alone can spend up to 3
+  // pages of quota; when the shared fleet-wide budget is already critically
+  // low, skip it gracefully instead of contributing to the exhaustion.
+  if (hasLowHeadroom()) {
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, skipReason: 'low rate-limit headroom' };
+  }
+
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   const owner = 'thomaspryor';
   const repo = 'Broadwayscore';
 
   try {
-    // Use REST API with per_page=100 (covers most days in 1-2 calls)
-    const results = [];
-    let page = 1;
-    const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
+    // Cached (shared across every concurrently-dispatched session on this
+    // Mac): this is the single most expensive call in health-check.js (up to
+    // 3 paginated requests), and health-check.js runs on every /ship-check +
+    // /wrap-up across dozens of dispatches/day. `since` is intentionally NOT
+    // part of the cache key — it's "last 24h from call time" either way, and
+    // pinning the key lets concurrent callers within the TTL window share
+    // one result instead of each computing a distinct since= and missing.
+    const results = await cachedFetch('workflow-run-summary-24h', async () => {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      // Use REST API with per_page=100 (covers most days in 1-2 calls)
+      const runs = [];
+      let page = 1;
+      const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
 
-    while (page <= maxPages) {
-      const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-      const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
-      if (!response || !response.workflow_runs) break;
-      results.push(...response.workflow_runs);
-      if (response.workflow_runs.length < 100) break;
-      page++;
-    }
+      while (page <= maxPages) {
+        const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
+        const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+        if (!response || !response.workflow_runs) break;
+        runs.push(...response.workflow_runs);
+        if (response.workflow_runs.length < 100) break;
+        page++;
+      }
+      return runs;
+    });
 
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
@@ -2817,7 +2797,9 @@ async function getOpenFeedbackReviewIssues() {
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   try {
     const url = 'https://api.github.com/repos/thomaspryor/Broadwayscore/issues?labels=needs-manual-review&state=open&per_page=100';
-    const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+    // Cached (shared across every concurrently-dispatched session on this Mac).
+    const response = await cachedFetch('needs-manual-review-issues',
+      () => fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' }));
     if (!Array.isArray(response)) return { skipped: true, issues: [] };
     return {
       skipped: false,

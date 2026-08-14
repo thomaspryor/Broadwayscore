@@ -79,6 +79,7 @@
 const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { parseTapOutput } = require('./lib/tap-failure-parser.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const MANIFEST = path.join(REPO_ROOT, 'tests', 'unit-test-manifest.txt');
@@ -149,13 +150,12 @@ function readExemptFiles(files) {
 }
 
 /**
- * Run the suite and return { failures, totals, status, sawTap }.
+ * Run the suite and return { failures, totals, status, sawTap, unlocated }.
  *
- * node:test's TAP reporter prints `not ok <n> - <name>` per failure, followed by
- * a YAML block whose `location:` gives the absolute file path. Failures are
- * keyed `<repo-relative path>::<name>` so identical titles in different files stay
- * distinct. Parent-suite `not ok` lines inherit the same location as their
- * child, which is fine — they name the right file either way.
+ * TAP parsing itself lives in scripts/lib/tap-failure-parser.js (shared with
+ * scripts/lib/merge-post-merge-test-gate.js, card #1433, which needs the
+ * identical before/after failing-set-diff technique) — this function owns
+ * only the spawn (clock-shift env/preload) and result plumbing.
  */
 function runSuite(files, shiftDays) {
   const args = [];
@@ -180,56 +180,7 @@ function runSuite(files, shiftDays) {
     process.exit(2);
   }
 
-  const failures = new Map(); // key -> { file, name }
-  const totals = { tests: null, fail: null };
-  let pending = null;
-  let sawTap = false;
-  let unlocated = 0;
-
-  for (const line of (res.stdout || '').split('\n')) {
-    const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
-    if (notOk) {
-      sawTap = true;
-      pending = notOk[1];
-      continue;
-    }
-    if (pending) {
-      const loc = /^\s*location:\s*'(.+?)'\s*$/.exec(line);
-      if (loc) {
-        // Repo-RELATIVE path, not basename: tests/a/foo.test.mjs and
-        // tests/b/foo.test.mjs are different files and must not share a key,
-        // which is the whole point of scoping failures by file.
-        const abs = String(loc[1]).replace(/:\d+:\d+$/, '');
-        const file = path.relative(REPO_ROOT, abs) || abs;
-        failures.set(`${file}::${pending}`, { file, name: pending });
-        pending = null;
-        continue;
-      }
-      // Next failure started before we saw a location. Fall back to a
-      // name-only key: it must match across the two runs to cancel correctly,
-      // so it cannot be made unique per occurrence. That means two unlocated
-      // failures sharing a title DO collapse — hence the count is surfaced
-      // below rather than hidden.
-      if (/^\s*not ok |^\s*ok \d+ /.test(line)) {
-        failures.set(`?::${pending}`, { file: '?', name: pending });
-        unlocated++;
-        pending = null;
-      }
-    }
-    const t = /^# tests (\d+)$/.exec(line);
-    if (t) {
-      totals.tests = Number(t[1]);
-      sawTap = true;
-      continue;
-    }
-    const f = /^# fail (\d+)$/.exec(line);
-    if (f) totals.fail = Number(f[1]);
-  }
-  if (pending) {
-    failures.set(`?::${pending}`, { file: '?', name: pending });
-    unlocated++;
-  }
-
+  const { failures, totals, sawTap, unlocated } = parseTapOutput(res.stdout || '', REPO_ROOT);
   return { failures, totals, status: res.status, sawTap, unlocated };
 }
 

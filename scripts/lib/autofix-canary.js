@@ -330,6 +330,19 @@ function readJsonlLedger(p) {
 //   connection alone (Codex re-review, task #1225). Callers must treat null
 //   as "still unresolved", same as an in-flight dispatch under the orphan
 //   bound — not as failure evidence.
+/**
+ * Pure classifier for a `git cat-file -e <tree-ish>:<path>` failure: does
+ * this error mean the path is CONFIRMED absent from the tree (as opposed to
+ * a transient/unexpected git or network failure)? Exit code is NOT a
+ * reliable signal here — see the caller's comment — so this matches the
+ * stderr text git actually prints for that case.
+ * @returns {boolean}
+ */
+function isPathAbsentFromTreeError(err) {
+  const stderrText = err && err.stderr ? String(err.stderr) : '';
+  return /does not exist in/.test(stderrText);
+}
+
 function markerExistsOnOriginMain(dateStr, log = () => {}) {
   // Depth-bound the fetch (task #466 class): reachable from ~170 shallow
   // (fetch-depth: 1) CI checkouts, where an unbounded `git fetch origin
@@ -353,7 +366,20 @@ function markerExistsOnOriginMain(dateStr, log = () => {}) {
     execFileSync('git', ['cat-file', '-e', `origin/main:${canaryMarkerRelPath(dateStr)}`], { cwd: REPO, timeout: 10000, stdio: 'pipe' });
     return true;
   } catch (err) {
-    if (err && err.status === 1) return false; // git cat-file -e: object does not exist — confirmed absent
+    // `git cat-file -e <tree-ish>:<path>` for a path absent from that tree
+    // prints "fatal: path '<path>' does not exist in '<tree-ish>'" and exits
+    // 128 on this git version — NOT exit 1 (exit 1 is what older docs/some
+    // git releases document for a missing bare object SHA, which this call
+    // never passes). Checked directly against the actual git binary here:
+    // an existing path exits 0, a missing tree path exits 128, and even an
+    // invalid raw object name exits 128. A status-only check therefore never
+    // matches a genuinely-missing marker, so the confirmed-absent branch was
+    // unreachable and the canary could never self-report a marker-absent
+    // failure (found chasing #1264's RECHECK — BRO-326's 2026-08-13 marker
+    // sat >24h past the orphan window still logging "could not confirm").
+    // Match on the stderr message, not the exit code, so this is portable
+    // across git versions either way.
+    if (isPathAbsentFromTreeError(err)) return false; // confirmed absent from the tree
     log(`[autofix-canary] WARN could not check origin/main for the ${dateStr} marker: ${String(err.message).slice(0, 120)}`);
     return null;
   }
@@ -503,6 +529,7 @@ module.exports = {
   assessCanaryRow,
   assessThroughputRow,
   runAutofixCanary,
+  isPathAbsentFromTreeError,
   readJsonlLedger,
   appendJsonlLedger,
 };
