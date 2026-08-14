@@ -63,6 +63,10 @@ function runGuard(dir, extraEnv = {}) {
       HOOK_SYNTAX_GUARD_STATE: path.join(dir, 'guard.state'),
       HOOK_SYNTAX_GUARD_SETTINGS: path.join(dir, 'settings.json'),
       HOOK_SYNTAX_GUARD_HEARTBEAT: path.join(dir, 'guard.heartbeat'),
+      // Sandboxed so a test run never contends with (or blocks behind) the
+      // real machine's live launchd-scheduled guard, which takes the same
+      // lock dir by default every ~2 minutes.
+      HOOK_SYNTAX_GUARD_LOCK: path.join(dir, 'guard.lock'),
       HOOK_SYNTAX_GUARD_MIN_AGE_SECS: '0',
       HOOK_SYNTAX_GUARD_SETTLE_SECS: '0',
       ...extraEnv,
@@ -172,5 +176,43 @@ test(
     runGuard(dir);
 
     assert.ok(!fs.existsSync(path.join(dir, 'hooks', 'qux.sh')), 'qux.sh must not be restored — settings.json no longer wants it');
+  }
+);
+
+test(
+  'a run finds the lock held and skips cleanly — no heartbeat write, no manifest mutation',
+  { skip },
+  () => {
+    const dir = makeSandbox();
+    writeSettings(dir, 'locked.sh');
+    const brokenPath = path.join(dir, 'hooks', 'locked.sh.broken-20260101-000000');
+    fs.writeFileSync(brokenPath, '#!/bin/bash\necho hi\n');
+    fs.chmodSync(brokenPath, 0o755);
+    fs.writeFileSync(path.join(dir, 'guard.state'), brokenPath + '\n');
+
+    const lockDir = path.join(dir, 'guard.lock');
+    fs.mkdirSync(lockDir); // simulate another tick already in progress
+
+    runGuard(dir);
+
+    assert.ok(!fs.existsSync(path.join(dir, 'hooks', 'locked.sh')), 'a contended run must not restore anything');
+    assert.ok(!fs.existsSync(path.join(dir, 'guard.heartbeat')), 'a contended run must not stamp the heartbeat (it never reached that line)');
+    assert.deepEqual(readState(dir), [brokenPath], 'a contended run must not touch the manifest');
+  }
+);
+
+test(
+  'the lock is released after a normal run — a second run right after succeeds',
+  { skip },
+  () => {
+    const dir = makeSandbox();
+    writeSettings(dir, 'unlock.sh');
+
+    runGuard(dir); // nothing to do, but should acquire+release cleanly
+    assert.ok(fs.existsSync(path.join(dir, 'guard.heartbeat')), 'first run should complete and stamp the heartbeat');
+    assert.ok(!fs.existsSync(path.join(dir, 'guard.lock')), 'lock dir must not leak after a normal run');
+
+    runGuard(dir); // would hang/skip forever if the trap failed to release it
+    assert.ok(fs.existsSync(path.join(dir, 'guard.heartbeat')), 'second run must also complete');
   }
 );
