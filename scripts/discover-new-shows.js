@@ -49,6 +49,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 }
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
+const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -456,6 +457,75 @@ async function fetchShowsFromPlaybillOB() {
       category: 'off-broadway',
       description: '',
       source: 'playbill-ob',
+    };
+  });
+  return transformed.filter(Boolean);
+}
+
+/**
+ * Broadway discovery + openingDate source via Playbill's "Schedule of
+ * Upcoming and Announced Broadway Shows" article (card #1426).
+ *
+ * TodayTix's Broadway feed only ever carries a first-preview date
+ * (openingDate is always null there — IBDB enrichment fills it in later).
+ * IBDB enrichment can fail two ways: (1) a show's stored ibdbUrl points at a
+ * decades-old prior Broadway production of the same title, and the
+ * wrong-production guard correctly refuses to trust it (Awake and Sing!,
+ * The Imaginary Invalid); (2) a batch run's commit gets blocked wholesale by
+ * an unrelated show's pre-existing validation error (see
+ * scripts/lib/validation-setdiff.js attributeErrorsToShowIds). Playbill's
+ * article publishes both dates explicitly per-show and only ever lists the
+ * current production, so it sidesteps both failure modes — and it's how the
+ * 5 shows in card #1426 were found missing from shows.json entirely.
+ */
+async function fetchShowsFromPlaybillBroadway() {
+  console.log('Fetching Broadway shows from Playbill schedule article...');
+  const { entries, html } = await scrapePlaybillBroadwayData();
+  checkBroadwaySilentRot({ entries, html });
+  if (entries.length === 0) {
+    console.log('Playbill Broadway: 0 entries');
+    return [];
+  }
+
+  const VENUE_PLACEHOLDER = 'TBA';
+  const gateShape = entries.map(e => ({
+    displayName: e.title,
+    name: e.title,
+    subcategories: [{ name: 'Broadway' }],
+    venue: { name: e.venue || VENUE_PLACEHOLDER },
+    description: '',
+    startDate: e.firstPreview || null,
+    _entry: e,
+  }));
+
+  const kept = gateShape.filter(c => !isNonTheaterContent(c) && !isOneNightShow(c));
+  const dropped = gateShape.length - kept.length;
+  console.log(`Playbill Broadway: ${gateShape.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
+
+  const transformed = kept.map(c => {
+    const e = c._entry;
+    // No day-level first-preview date yet ("February 2027") — defer to the
+    // next run rather than write a half-confirmed date (same policy as the
+    // venue placeholder guard below).
+    if (!e.firstPreview && e.firstPreviewApprox) {
+      if (verbose) console.log(`  [SKIP] "${e.title}" — only an approximate date published ("${e.firstPreviewApprox}"), deferring to next run`);
+      return null;
+    }
+    const venue = sanitizeVenueForWrite(e.venue);
+    if (!venue) {
+      if (verbose) console.log(`  [SKIP] "${e.title}" — Playbill Broadway venue "${e.venue || ''}" is a placeholder/blob, deferring to next run`);
+      return null;
+    }
+    return {
+      title: titleCaseFromAllCaps(e.title),
+      venue,
+      slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: e.opening || null,
+      openingDateSource: e.opening ? 'playbill' : null,
+      previewsStartDate: e.firstPreview,
+      closingDate: null,
+      description: '',
+      source: 'playbill-broadway',
     };
   });
   return transformed.filter(Boolean);
@@ -1750,6 +1820,26 @@ async function discoverShows() {
       process.exitCode = 1;
       return { newShows: [], count: 0 };
     }
+  }
+  console.log('');
+
+  // Broadway: Playbill schedule article — supplements TodayTix/Broadway.org
+  // with a source that publishes real openingDate values and dedicated venue
+  // pages don't cover a subscription-house-style gap for (card #1426).
+  // Flat-pushed into discoveredShows so the existing checkForDuplicate /
+  // findSameTitleTwinIfNoOpeningDate path adjudicates dups — no custom dedup
+  // layer, same reasoning as the OB block below.
+  const BROADWAY_SCHEDULE_CAP = 30;
+  try {
+    const playbillBroadwayShows = await fetchShowsFromPlaybillBroadway();
+    if (playbillBroadwayShows.length > BROADWAY_SCHEDULE_CAP) {
+      console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Aborting.`);
+      process.exitCode = 1;
+      return { newShows: [], count: 0 };
+    }
+    discoveredShows.push(...playbillBroadwayShows);
+  } catch (e) {
+    console.log(`⚠️  Playbill Broadway schedule failed (${e.message}), continuing with other sources`);
   }
   console.log('');
 

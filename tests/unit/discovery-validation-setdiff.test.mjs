@@ -12,6 +12,8 @@ import {
   computeNewErrors,
   shouldCommitDespiteValidationErrors,
   evaluateCommitDecision,
+  attributeNewErrorsToShowIds,
+  evaluatePerShowCommitDecision,
 } from '../../scripts/lib/validation-setdiff.js';
 
 describe('parseErrorLines', () => {
@@ -149,5 +151,82 @@ describe('evaluateCommitDecision', () => {
     const postErrors = ['peripheral file X is broken'];
     const result = evaluateCommitDecision({ preErrors, postErrors });
     assert.equal(result.shouldCommit, true);
+  });
+});
+
+// Card #1426 root cause: enrich-ibdb-dates.js collected valid openingDate
+// values for 11 shows in one run; a stale awards.json tony.season placeholder
+// on 3 of them (unrelated to the other 8) made evaluateCommitDecision's
+// all-or-nothing gate discard every show's write, not just the 3 broken
+// ones. evaluatePerShowCommitDecision fixes that by attributing each new
+// error to the show ID it names and only holding back those shows.
+describe('attributeNewErrorsToShowIds', () => {
+  test('attributes an error that quotes a candidate show ID', () => {
+    const errors = ['awards.json: "galileo-2026" tony.season=1969-70 but openingDate=2026-12-06 (expected 2026-27). Gap 56y — misattribution.'];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['galileo-2026', 'billy-crystal-860']);
+    assert.equal(allAttributed, true);
+    assert.deepEqual([...blockedIds], ['galileo-2026']);
+  });
+
+  test('multiple errors attribute to multiple distinct candidates', () => {
+    const errors = [
+      'awards.json: "galileo-2026" tony.season=1969-70 but openingDate=2026-12-06 (expected 2026-27). Gap 56y — misattribution.',
+      'awards.json: "inter-alia-2026" tony.season=1969-70 but openingDate=2026-12-01 (expected 2026-27). Gap 56y — misattribution.',
+    ];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['galileo-2026', 'inter-alia-2026', 'billy-crystal-860']);
+    assert.equal(allAttributed, true);
+    assert.deepEqual([...blockedIds].sort(), ['galileo-2026', 'inter-alia-2026']);
+  });
+
+  test('an error naming nothing in candidateIds is unattributed', () => {
+    const errors = ['awards.json: "some-other-show-2026" tony.season=1969-70 but openingDate=2026-12-06 (expected 2026-27). Gap 56y.'];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['galileo-2026']);
+    assert.equal(allAttributed, false);
+    assert.equal(blockedIds.size, 0);
+  });
+
+  test('an error with no quoted token at all is unattributed', () => {
+    const errors = ['CLAUDE.md exceeds the 150-line cap'];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['galileo-2026']);
+    assert.equal(allAttributed, false);
+    assert.equal(blockedIds.size, 0);
+  });
+});
+
+describe('evaluatePerShowCommitDecision', () => {
+  test('reproduces card #1426: 3 of 11 shows blocked, 8 commit', () => {
+    const preErrors = [];
+    const postErrors = [
+      'awards.json: "galileo-2026" tony.season=1969-70 but openingDate=2026-12-06 (expected 2026-27). Gap 56y — misattribution.',
+      'awards.json: "inter-alia-2026" tony.season=1969-70 but openingDate=2026-12-01 (expected 2026-27). Gap 56y — misattribution.',
+      'awards.json: "paranormal-activity-2026" tony.season=1969-70 but openingDate=2026-08-25 (expected 2026-27). Gap 56y — misattribution.',
+    ];
+    const candidateIds = ['galileo-2026', 'inter-alia-2026', 'paranormal-activity-2026', 'dolly-an-original-musical', 'billy-crystal-860', 'evita', 'the-fantasticks', 'gloria', 'paddington-the-musical', 'purple-rain', 'school-girls-or-the-african-mean-girls-play'];
+    const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds });
+    assert.equal(result.shouldCommit, true, 'the 8 unaffected shows must still commit');
+    assert.deepEqual([...result.blockedIds].sort(), ['galileo-2026', 'inter-alia-2026', 'paranormal-activity-2026']);
+  });
+
+  test('falls back to blocking everything when a new error cannot be attributed to any candidate', () => {
+    const preErrors = [];
+    const postErrors = ['CLAUDE.md exceeds the 150-line cap'];
+    const candidateIds = ['galileo-2026', 'inter-alia-2026'];
+    const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds });
+    assert.equal(result.shouldCommit, false, 'untraceable error must fall back to the conservative all-block behavior');
+    assert.equal(result.blockedIds.size, 0);
+  });
+
+  test('clean run (no new errors) commits everything, blockedIds empty', () => {
+    const result = evaluatePerShowCommitDecision({ preErrors: [], postErrors: [], postExitCode: 0, candidateIds: ['galileo-2026'] });
+    assert.equal(result.shouldCommit, true);
+    assert.equal(result.blockedIds.size, 0);
+  });
+
+  test('all candidates blocked leaves nothing to commit', () => {
+    const preErrors = [];
+    const postErrors = ['awards.json: "galileo-2026" tony.season=1969-70 but openingDate=2026-12-06 (expected 2026-27). Gap 56y.'];
+    const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds: ['galileo-2026'] });
+    assert.equal(result.shouldCommit, false, 'nothing survives when every candidate is blocked');
+    assert.deepEqual([...result.blockedIds], ['galileo-2026']);
   });
 });
