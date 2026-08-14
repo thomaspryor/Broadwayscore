@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-08-10T17:45:17.181Z",
-    "completedAt": "2026-08-10T17:45:20.003Z",
-    "totalReviews": 42318,
-    "processed": 0,
-    "skipped": 42316,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3766,
-      "output": 105,
-      "total": 11173
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-08-10T18:05:28.119Z",
-    "completedAt": "2026-08-10T18:05:31.357Z",
-    "totalReviews": 42318,
-    "processed": 0,
-    "skipped": 42316,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3766,
-      "output": 113,
-      "total": 11180
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-10T20:50:00.097Z",
     "completedAt": "2026-08-10T20:50:14.156Z",
     "totalReviews": 42318,
@@ -730195,6 +730155,40 @@
       "input": 6149,
       "output": 327,
       "total": 15043
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-14T06:18:21.653Z",
+    "completedAt": "2026-08-14T06:22:40.374Z",
+    "totalReviews": 42544,
+    "processed": 1,
+    "skipped": 42541,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 7362,
+      "output": 404,
+      "total": 22431
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-14T06:22:51.024Z",
+    "completedAt": "2026-08-14T06:26:30.696Z",
+    "totalReviews": 42544,
+    "processed": 32,
+    "skipped": 42353,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 267485,
+      "output": 12425,
+      "total": 686372
     },
     "errorDetails": []
   }
