@@ -122,14 +122,18 @@ function taskBranchEvidence(taskId, { branches = [], worktreePaths = [] } = {}) 
 function indexLiveTasks(liveTasks) {
   const byMarker = new Map();
   const bySubject = new Map();
+  // Plain id membership, so "is this task ITSELF already live?" can be asked
+  // directly rather than inferred from a first-match-wins twin lookup (F1).
+  const ids = new Set();
   for (const t of liveTasks || []) {
     if (!t) continue;
+    ids.add(String(t.id));
     const m = notionMarkerOf(t);
     if (m && !byMarker.has(m)) byMarker.set(m, String(t.id));
     const s = normalizeSubject(t.subject);
     if (s && !bySubject.has(s)) bySubject.set(s, String(t.id));
   }
-  return { byMarker, bySubject };
+  return { byMarker, bySubject, ids };
 }
 
 /**
@@ -186,6 +190,17 @@ function classifyReclaimable(trapped, ctx = {}) {
     const marker = notionMarkerOf(task);
     const twin = (marker && live.byMarker.get(marker)) || live.bySubject.get(normalizeSubject(task.subject));
 
+    // OWN-ID FIRST (follow-up review F1). The twin lookup is first-match-wins
+    // over an unsorted readdir, so if the live dir holds BOTH this task's
+    // interrupted-reclaim copy AND a genuine duplicate carrying the same
+    // marker, the duplicate can win the lookup — `String(twin) === id` then
+    // reads false, the task parks, and archive/<id>.json is stamped
+    // `completed` while live/<id>.json sits at `pending`. loadTasksUnioned
+    // lets the completed archive record win, which is precisely the B1
+    // burial this module documents. Membership of the live set is the real
+    // question, so ask it directly instead of inferring it from the lookup.
+    if (live.ids.has(id)) { push('resume-interrupted-reclaim', 'a previous reclaim wrote the live copy but did not remove the archive copy — finishing it'); continue; }
+
     // SELF-TWIN (ship-check B1). The reclaim writes the live copy, verifies it,
     // then unlinks the archive copy. That ordering deliberately tolerates a
     // crash in between — the task ends up in BOTH directories, which every
@@ -199,7 +214,6 @@ function classifyReclaimable(trapped, ctx = {}) {
     // the task this whole module exists to rescue. A twin that IS this task is
     // not a duplicate; it is an interrupted reclaim, and the fix is to finish
     // it (drop the archive copy), never to park it.
-    if (twin && String(twin) === id) { push('resume-interrupted-reclaim', 'a previous reclaim wrote the live copy but did not remove the archive copy — finishing it'); continue; }
     if (twin) { push('skip-duplicate-live', `live task #${twin} already represents this card`, twin); continue; }
 
     if (isBscDaily(task)) { push('close-superseded', 'BSC Daily alert card — the digest re-mints these daily and files to Linear, so this copy is superseded'); continue; }
