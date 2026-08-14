@@ -473,8 +473,38 @@ async function processReview(entry) {
   }
 
   if (!DRY_RUN) {
-    data.llmPullQuote = quote;
-    safeWriteReview(filePath, data);
+    // Re-read fresh from disk right before writing instead of persisting the
+    // scan-time `data` snapshot. scanReviewFiles() loads every file into
+    // memory up front, and this entry can then sit through 1-2 LLM round
+    // trips (callLLMWithRetry, possibly a hedge-opener retry) before we get
+    // here — long enough for a concurrent writer (e.g. a rebuild run's stars
+    // backfill step) to land a field on the same file in between. Writing
+    // back the stale in-memory object would silently clobber that field: it
+    // isn't empty (so safeWriteReview's protected-field guard doesn't apply)
+    // and it isn't in PROTECTED_FIELDS anyway (BRO-255 lost-update race —
+    // aggregatorStars clobbered on barcelona-west-end-2024). Re-reading here
+    // shrinks the race window to this synchronous read+write.
+    let current = data;
+    try {
+      current = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch (e) {
+      stats.errors++;
+      if (VERBOSE) console.log(`  Re-read failed before write for ${path.basename(filePath)}: ${e.message}`);
+      return;
+    }
+    // A concurrent run may have already written this same llmPullQuote (or a
+    // human/other extractor set one) since we scanned — don't stomp it.
+    if (current.llmPullQuote && !OVERWRITE) { stats.skipped++; return; }
+    // Re-verify against the fresh body too: fullText is PROTECTED, but if it
+    // legitimately changed since scan time (refetch/heal) the stale quote we
+    // extracted may no longer be a substring of the current text.
+    if (!verifyInText(quote, current.fullText)) {
+      stats.notInText++;
+      if (VERBOSE) console.log(`  NOT IN TEXT (fresh re-check): "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+      return;
+    }
+    current.llmPullQuote = quote;
+    safeWriteReview(filePath, current);
     stats.written++;
   }
 }
