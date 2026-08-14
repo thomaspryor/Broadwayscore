@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-14T18:46:48.533Z",
+  "timestamp": "2026-08-14T19:44:12.730Z",
   "stats": {
     "totalReviews": 42251,
     "alreadyFlagged": 18320,
     "dateGuardCatches": 144,
     "directorMismatch": 965,
-    "tvFilmSignals": 1200,
+    "tvFilmSignals": 1202,
     "londonSignals": 881,
-    "offBroadwaySignals": 483,
+    "offBroadwaySignals": 484,
     "yearMismatch": 88,
     "noPublishDate": 3577
   },
@@ -1248,6 +1248,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 48,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -6254,6 +6273,24 @@
       "showId": "death-note-the-musical-west-end-2026",
       "file": "telegraph--tim-robey.json",
       "score": 17,
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "telegraph--unknown.json",
       "publishDate": "2026-08-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
@@ -35159,19 +35196,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "publishDate": "2026-08-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
