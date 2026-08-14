@@ -135,6 +135,15 @@ const INCLUSION_FILES = [
   // actually added, so the Check-2 generic-idWords bug (2 wrong-show recoveries,
   // task #914 live incident) shipped without tripping this gate.
   'scripts/lib/content-quality.js',
+  // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
+  // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
+  // whether a guard may write an exclusion flag at all — an inclusion decision
+  // by any reading. The file was not watched, so the 2026-08-14 rework of it
+  // (deleting remediateStaleFlagAfterUrlCorrection) and an abandoned attempt to
+  // narrow the detector BOTH ran this gate to "nothing to check" and had to be
+  // validated by hand instead. Watch it: with this entry the same working tree
+  // replays Phase A properly (verified — 42,254 reviews, 0 flips).
+  'scripts/lib/stale-flag-after-url-correction.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but
