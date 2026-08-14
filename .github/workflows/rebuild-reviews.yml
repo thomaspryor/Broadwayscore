@@ -67,6 +67,18 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Stale-checkout race guard (P1): a review-texts push landing between
+      # THIS checkout and the "Rebuild reviews.json" step below is invisible
+      # to that step — it exits 0 with a stale checkout and no warning
+      # (rebuild-all-reviews.js has no reason to fail; the files simply
+      # aren't there yet). Recording the checkout-time SHA here lets the
+      # rebuild step detect drift right before it runs. See
+      # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - uses: ./.github/actions/setup-node
 
       - name: Get current review count
@@ -178,6 +190,36 @@ jobs:
             echo "⚠️  Force-write enabled — regression guard overridden"
           fi
 
+          # Stale-checkout race guard, part 2: the pre-rebuild utility steps above
+          # took real wall-clock time since the checkout — re-check review-texts'
+          # upstream tip right before rebuilding. A `git fetch` + `rev-parse` is a
+          # few seconds; this runs on EVERY invocation but only pays for a re-sync
+          # when drift is actually detected (unchanged SHA = zero added cost).
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            # Record which shows drifted (for the post-rebuild verify step below)
+            # BEFORE pulling them in, then update ONLY those paths from the fresh
+            # tip — a targeted `git checkout <sha> -- <paths>` instead of a full
+            # rm -rf + re-clone, so the uncommitted local edits the pre-rebuild
+            # utility steps above just made to OTHER files are not discarded.
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" > /tmp/stale-checkout-files.txt
+            cut -d/ -f1 /tmp/stale-checkout-files.txt | sort -u > /tmp/stale-checkout-shows.txt
+            # Explicit pathspec only — an empty $() would make `git checkout
+            # <sha> --` take ALL paths, silently discarding the pre-rebuild
+            # utility steps' uncommitted edits repo-wide instead of just the
+            # drifted files.
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              git -C data/review-texts checkout "$CURRENT_SHA" -- $(cat /tmp/stale-checkout-files.txt)
+            fi
+          fi
+
           # First attempt
           if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
             echo "Rebuild succeeded on first attempt"
@@ -194,6 +236,15 @@ jobs:
 
           # Retry rebuild
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # Stale-checkout race guard, part 3: even with the pre-emptive sync above,
+      # scope this to a bounded assertion rather than trusting the sync alone —
+      # verify every show that drifted during this job actually landed in
+      # reviews.json. NOT continue-on-error: this is the "fail the job loudly"
+      # backstop for the class of bug this guard exists for (see
+      # scripts/check-rebuild-staleness.js header for what it checks and why).
+      - name: Verify no scoreable review vanished during checkout drift
+        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
 
       # NOTE: do NOT overwrite /tmp/core-data-snapshot/ with rebuilt files. Since the
       # 2026-07-12 push-core-data fix (2beb6617c58), the snapshot is the CHECKOUT-TIME
