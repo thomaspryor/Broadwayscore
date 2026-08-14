@@ -65,6 +65,19 @@ gitc "$REPO" checkout -q main
 SNEAKY_CLONE="$D/sneaky-clone"
 "$REAL_GIT_BIN" clone -q "$D/origin.git" "$SNEAKY_CLONE"
 gitc "$SNEAKY_CLONE" config user.email s@s; gitc "$SNEAKY_CLONE" config user.name s
+# Force a local `main` tracking origin/main regardless of what branch the
+# clone actually checked out. `git clone` only checks out a branch by
+# resolving the BARE origin's symbolic HEAD ref (set once at `git init
+# --bare` time from `init.defaultBranch`, independent of which branches
+# actually exist) — on a runner whose default differs from this repo's "main"
+# (reproduced on CI: "warning: remote HEAD refers to nonexistent ref, unable
+# to checkout"), the clone lands with NO branch checked out at all. The shim
+# below then tries to commit+push a local "main" that was never created, that
+# push silently no-ops (unchecked exit code — see the shim's push line), the
+# sneaky conflict never lands on origin, and the whole test degrades into
+# "first push just succeeds" — a false PASS-shaped green that actually never
+# exercised the retry-merge conflict path it exists to test.
+gitc "$SNEAKY_CLONE" checkout -q -B main origin/main
 
 # git shim: forwards everything to the real git, except the FIRST
 # `push origin <branch>` call, which first commits a conflicting change to
