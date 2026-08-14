@@ -64,8 +64,39 @@ function main() {
   // session's merge — which is how one data record came to gate all code
   // delivery for two days. Default stays 0 so local `--gate` is unchanged;
   // CI passes a ceiling with headroom.
+  //
+  // DO NOT ratchet this to 0 by draining with --fix until the conflict below
+  // is resolved. As of 2026-08-14 this gate and validate-data.js CHECK 0
+  // [wrong-production-by-date] disagree about ~121 records, and the
+  // date guard is the one that is RIGHT: on every sampled record the
+  // `_urlChangedClear.to` equals the CURRENT url and `publishDate` was
+  // re-derived FOR that url (dateSource `manual-live-page-…`, `url-compact`
+  // parsed from the new slug), so the flag is a correct verdict about the
+  // corrected URL, not a leftover from the old one. `publishDate` appearing in
+  // `_urlChangedClear.cleared` only records that it was cleared at
+  // URL-change time; it was repopulated afterwards. Draining these therefore
+  // un-suppresses genuinely wrong-production reviews — measured: 8 entered
+  // reviews.json, including a 2019 Trafalgar Studios Equus review scoring 97
+  // on equus-west-end-2026 and a 2017 Playhouse Glengarry on the 2026 revival.
+  // These records have no fullText but DO carry aggregatorStars, so "no body"
+  // does not mean "not scoreable". The real fix is to narrow the DETECTOR so it
+  // stops matching records whose publishDate independently corroborates the
+  // flag — not to weaken the date guard.
   const maxArg = argv.find((a) => a.startsWith('--max='));
-  const max = maxArg ? parseInt(maxArg.split('=')[1], 10) : 0;
+  // Reject a non-integer instead of letting parseInt hand back NaN. `--max=abc`
+  // and `--max=` both yielded NaN, and `hits.length > NaN` is ALWAYS false — so
+  // a typo in the workflow silently disabled the gate entirely while still
+  // printing a pass. Fail loud (exit 2, distinct from the exit-1 gate failure)
+  // so a malformed ceiling can never be mistaken for a clean corpus.
+  let max = 0;
+  if (maxArg) {
+    const raw = maxArg.slice('--max='.length);
+    if (!/^\d+$/.test(raw)) {
+      console.error(`FAIL: --max must be a non-negative integer, got "${raw}".`);
+      process.exit(2);
+    }
+    max = Number(raw);
+  }
   const dirArg = argv.find((a) => a.startsWith('--review-texts-dir='));
   const REVIEW_TEXTS_DIR = dirArg ? dirArg.split('=')[1] : path.join(ROOT, 'data', 'review-texts');
 

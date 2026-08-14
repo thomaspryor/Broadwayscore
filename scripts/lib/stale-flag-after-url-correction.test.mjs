@@ -9,6 +9,38 @@ const {
   isAwaitingUrlCorrectionRefetch,
   shouldWithholdStaleExclusionFlag,
 } = require('./stale-flag-after-url-correction.js');
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
+const { fileURLToPath } = require('node:url');
+
+// --- audit CLI: --max must never silently disable the gate ------------------
+// `parseInt('abc', 10)` is NaN, and `hits.length > NaN` is ALWAYS false, so a
+// typo'd ceiling in test.yml turned this blocking gate into a no-op that still
+// printed a pass. Reject non-integers loudly (exit 2, distinct from the exit-1
+// gate failure) so a malformed ceiling can't be mistaken for a clean corpus.
+// The --max parse runs before any corpus read, so a nonexistent dir is fine.
+const AUDIT_SCRIPT = path.join(
+  path.dirname(fileURLToPath(import.meta.url)), '..', 'audit-stale-flag-after-url-correction.js'
+);
+
+function runAudit(args) {
+  return spawnSync(process.execPath, [AUDIT_SCRIPT, ...args], { encoding: 'utf8' });
+}
+
+test('audit --max with a non-integer value exits 2 instead of silently disabling the gate', () => {
+  for (const bad of ['--max=abc', '--max=', '--max=1.5', '--max=-1', '--max=15x']) {
+    const r = runAudit(['--gate', bad, '--review-texts-dir=/nonexistent-corpus-path']);
+    assert.equal(r.status, 2, `${bad} should exit 2, got ${r.status}`);
+    assert.match(r.stderr, /--max must be a non-negative integer/);
+  }
+});
+
+test('audit --max with a valid integer is accepted (not rejected as malformed)', () => {
+  for (const good of ['--max=0', '--max=15', '--max=007']) {
+    const r = runAudit([good, '--review-texts-dir=/nonexistent-corpus-path']);
+    assert.notEqual(r.status, 2, `${good} should not be rejected as malformed`);
+  }
+});
 
 // --- producer/detector agreement (the drain→rebuild→re-flag loop) ---------
 // The #483 gate stayed red for a day because the DRAIN and the RE-FLAGGER were
