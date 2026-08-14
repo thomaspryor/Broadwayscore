@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry } =
+const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry } =
   require('../../scripts/promote-ob-venue-candidates.js');
 const { feederVenueCity, classifyVenueMarket } =
   require('../../scripts/lib/aggregator-candidate-extract.js');
@@ -91,6 +91,112 @@ test('OB buildShowEntry unchanged: still -off-broadway- id, announced, market br
   assert.match(e.id, /-off-broadway-\d{4}$/);
   assert.equal(e.status, 'announced');
   assert.equal(e.market, 'broadway');
+});
+
+// Off-broadway candidates sourced directly from a PV/BWW roundup page
+// (2026-08-13, owner rule: "every single Verdict or Review Roundup article
+// should automatically trigger that show to be on the site if it isn't
+// already"). Mirrors decideRegionalPromotion's reasoning, extended to
+// off-broadway — venue-page-sourced OB candidates are deliberately excluded.
+//
+// Base fixture for the confirming cases: canonical venue + fresh, compatible
+// dates. Ship-check adversarial review (2026-08-14) added the venue +
+// staleness checks below after finding neither was gated in the first cut.
+const OB_ROUNDUP_CANDIDATE = {
+  title: 'A Serious Play', venue: 'Daryl Roth Theatre', slug: 'a-serious-play',
+  source: 'bww-roundup',
+  articlePublishedAt: '2026-08-01T10:00:00-04:00',
+  discoveredAt: '2026-08-01T18:00:00.000Z',
+  category: 'off-broadway',
+};
+
+test('decideOffBroadwayAggregatorPromotion: roundup-sourced OB candidate at a canonical venue with fresh dates is confirmed', () => {
+  const r = decideOffBroadwayAggregatorPromotion(OB_ROUNDUP_CANDIDATE);
+  assert.equal(r.confirmed, true);
+  assert.equal(r.source, 'aggregator-roundup');
+});
+
+test('decideOffBroadwayAggregatorPromotion: playbill-verdict source also confirms', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, source: 'playbill-verdict' });
+  assert.equal(r.confirmed, true);
+});
+
+test('decideOffBroadwayAggregatorPromotion: venue-page source does NOT confirm (still needs Playbill-OB/Lortel)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, source: 'venue-page:atlantic-theater' });
+  assert.equal(r.confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: non-off-broadway categories never confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, category: 'regional' }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion(null).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: unknown/prose-garbled venue does NOT confirm (Codex P0)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: 'Some Random Room Nobody Has Heard Of' });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /not in canonical Off-Broadway venue list/);
+});
+
+test('decideOffBroadwayAggregatorPromotion: null venue does NOT confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: null }).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: venue directory unavailable refuses rather than guessing', () => {
+  const r = decideOffBroadwayAggregatorPromotion(OB_ROUNDUP_CANDIDATE, { venueDirectoryAvailable: () => false });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /directory unavailable/);
+});
+
+test('decideOffBroadwayAggregatorPromotion: missing/unparseable dates do NOT confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, articlePublishedAt: null }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, articlePublishedAt: 'not-a-date' }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, discoveredAt: null }).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: a resurfaced 400+ day-old article does NOT auto-promote as open (Codex P0)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({
+    ...OB_ROUNDUP_CANDIDATE,
+    articlePublishedAt: '2024-01-01T10:00:00-04:00',
+    discoveredAt: '2026-08-01T18:00:00.000Z',
+  });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /stale relative to discoveredAt/);
+});
+
+// buildOffBroadwayAggregatorShowEntry (2026-08-13, second-opinion review
+// finding): buildShowEntry's status:'announced'/openingDate:null defaults
+// permanently hide reviews (engine.ts hideReviews) with no automated path
+// forward for this class, since it deliberately skips the Playbill-OB/Lortel
+// enrichment that would otherwise supply a date. This builder fixes that.
+test('buildOffBroadwayAggregatorShowEntry: status open + real openingDate, unlike buildShowEntry', () => {
+  const candidate = {
+    title: "Rosie O'Donnell's COMMON KNOWLEDGE",
+    venue: 'Daryl Roth Theatre',
+    slug: 'rosie-odonnells-common-knowledge',
+    source: 'bww-roundup',
+    articlePublishedAt: '2026-07-31T09:29:29-04:00',
+    discoveredAt: '2026-08-01T14:59:40.620Z',
+    category: 'off-broadway',
+  };
+  const e = buildOffBroadwayAggregatorShowEntry(candidate);
+  assert.equal(e.status, 'open', 'must NOT be announced — that permanently hides reviews (engine.ts)');
+  assert.equal(e.openingDate, '2026-07-31');
+  assert.equal(e.openingDateSource, 'aggregator-roundup');
+  assert.equal(e.category, 'off-broadway');
+  assert.equal(e.market, 'broadway', "unlike regional, OB stays market:'broadway'");
+  assert.match(e.id, /-off-broadway-\d{4}$/);
+  assert.equal(e.provisional, true);
+  assert.equal(e.discoverySource, 'aggregator-roundup:bww-roundup');
+});
+
+test('buildOffBroadwayAggregatorShowEntry: unparseable date still stays visible (status open, no closed-guess)', () => {
+  const e = buildOffBroadwayAggregatorShowEntry({
+    title: 'A Serious Play', venue: 'MCC Theater', slug: 'a-serious-play', source: 'playbill-verdict',
+    articlePublishedAt: 'not-a-date', discoveredAt: '2026-08-01',
+  });
+  assert.equal(e.openingDate, null);
+  assert.equal(e.status, 'open', 'no staleness-based closed guess for OB — run lengths are not known like regional tryouts');
+  assert.equal(e.openingDateSource, null);
 });
 
 test('stale-roundup guard: a roundup older than 90 days promotes as closed, fresh as open (2026-07-09)', () => {

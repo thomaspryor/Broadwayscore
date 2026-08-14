@@ -2,34 +2,19 @@
 // Regression case: Heated Rivalry: The Unauthorized "Musical Parody"
 // (TodayTix) vs "...PARODY MUSICAL" (Playbill). Different word order,
 // same show. Pre-fix the exact-normalized-string check passed it through
-// as a separate ID; both were promoted to shows.json. This test reproduces
-// the matching logic in isolation.
+// as a separate ID; both were promoted to shows.json.
+//
+// Tests the REAL exported findExistingMatch (CLAUDE.md §15) — this file used
+// to carry a copy of the matching logic; extracted to the script itself
+// 2026-08-13 while adding the typo-distance check below.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('../../scripts/lib/title-match.js');
-
-const DEDUP_JACCARD_THRESHOLD = 0.80;
-
-function findExistingMatch(candidate, existing) {
-  const venueKey = canonicalVenue(candidate.venue);
-  const sameVenue = existing.filter(e => canonicalVenue(e.venue) === venueKey);
-  if (sameVenue.length === 0) return null;
-  const cNorm = normalizeTitle(candidate.title);
-  const cTokens = titleTokens(candidate.title);
-  for (const e of sameVenue) {
-    if (normalizeTitle(e.title) === cNorm) return { match: e, reason: 'normalized-equal' };
-    if (cTokens.size > 0) {
-      const eTokens = titleTokens(e.title);
-      const sim = jaccard(cTokens, eTokens);
-      if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
-    }
-  }
-  return null;
-}
+const { canonicalVenue } = require('../../scripts/lib/title-match.js');
+const { findExistingMatch } = require('../../scripts/promote-ob-venue-candidates.js');
 
 test('jaccard dedup catches the Heated Rivalry word-order regression', () => {
   const existing = [{
@@ -97,6 +82,31 @@ test('different venues with same title do NOT match', () => {
   // canonicalVenue('NYTW') has no alias → falls back to first-word 'new'
   // canonicalVenue('Signature Theatre') → 'signature center'
   // Different keys → no match (intentional — different productions).
+  assert.equal(findExistingMatch(candidate, existing), null);
+});
+
+test('typo-distance dedup catches possessive-vs-colon near-miss (Rosie O\'Donnell, live incident 2026-08-13)', () => {
+  // Live bug found while adding off-broadway aggregator-roundup
+  // auto-promotion: BWW slug-derived "Rosie O'Donnell's COMMON KNOWLEDGE"
+  // normalizes to "rosie odonnells common knowledge" vs the already-live
+  // show's "Rosie O'Donnell: Common Knowledge" -> "rosie odonnell common
+  // knowledge" — 1 character apart, but jaccard on that pair is only 0.6
+  // (below the 0.80 gate). Without the typo-distance check this promoted a
+  // duplicate show for an already-closed production.
+  const existing = [{
+    id: 'rosie-odonnell-common-knowledge-off-broadway-2026',
+    title: "Rosie O'Donnell: Common Knowledge",
+    venue: 'Daryl Roth Theatre',
+  }];
+  const candidate = { title: "Rosie O'Donnell's COMMON KNOWLEDGE", venue: 'Daryl Roth Theatre' };
+  const match = findExistingMatch(candidate, existing);
+  assert.ok(match, 'Expected the possessive/colon variant to match via typo-distance');
+  assert.match(match.reason, /typo-distance=1/);
+});
+
+test('typo-distance dedup does NOT collapse short unrelated titles (length gate)', () => {
+  const existing = [{ id: 'cats-2026', title: 'Cats', venue: 'MCC Theater' }];
+  const candidate = { title: 'Rats', venue: 'MCC Theater' };
   assert.equal(findExistingMatch(candidate, existing), null);
 });
 
