@@ -801,6 +801,14 @@ on:
       # so a solo edit triggers CI.
       - 'scripts/lib/url-change-invariant.js'
       - 'scripts/lib/url-change-invariant.test.mjs'
+      # URL-swap regression guard (#1416 maybeUpgradeUrl, #1478 mergeReviews) —
+      # refuses a "URL upgrade" whose candidate is dated outside the show's
+      # current-run window (a prior-production URL masquerading as a content
+      # upgrade). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/url-downgrade-guard.js'
+      - 'scripts/lib/url-downgrade-guard.test.mjs'
+      - 'scripts/audit-url-downgrade.js'
       - 'scripts/lib/stale-flag-after-url-correction.js'
       - 'scripts/lib/stale-flag-after-url-correction.test.mjs'
       - 'scripts/audit-stale-flag-after-url-correction.js'

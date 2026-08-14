@@ -616,6 +616,13 @@ function areOutletsSame(outlet1, outlet2) {
  * @param {boolean} [options.fromPostOpening] - When true, a placeholder file
  *   (existing.isPreviewPlaceholder === true) will be fully REPLACED by the
  *   incoming review rather than merged. Has no effect on real reviews.
+ * @param {object} [context]
+ * @param {object} [context.show] - Full show record (previewDate/
+ *   previewsStartDate/openingDate/closingDate/category/market/priorRuns/
+ *   tourLegs). When supplied, a urlChanged swap whose candidate URL's own
+ *   url-path date falls outside the show's current-run window is refused
+ *   (task #1478, mirrors maybeUpgradeUrl's #1416 fix) — a prior-production's
+ *   article masquerading as a content upgrade, not a genuine URL correction.
  */
 function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Post-opening discovery replaces preview-period placeholder wholesale.
@@ -643,6 +650,37 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     || incoming.url.includes('undefined') || !/^https?:\/\//i.test(incoming.url));
   const urlChanged = incoming.url && existing.url && !incomingUrlGarbage
     && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
+
+  // Wrong-production regression guard (#1478, mirrors #1416's maybeUpgradeUrl
+  // fix): a urlChanged swap whose candidate is dated outside the show's
+  // current-run window is a prior production's article, not a genuine URL
+  // correction — refuse it the same way maybeUpgradeUrl does. Computed here
+  // (before any field merging) so it can also gate adopting incoming.fullText
+  // below — that text was scraped from the rejected candidate URL, so
+  // refusing the url swap but still taking its fullText would leave the
+  // CORRECT current-run url paired with the WRONG production's content,
+  // undetectable by url-dated audits. Only applies when the caller supplied
+  // a show record; fails open (no-op) otherwise, same as isUrlSwapRegression
+  // itself.
+  let urlSwapRegressed = false;
+  if (urlChanged && context.show) {
+    const { isUrlSwapRegression } = require('./url-downgrade-guard');
+    const verdict = isUrlSwapRegression({ newUrl: incoming.url, show: context.show, outletId: existing.outletId });
+    if (verdict.regression) {
+      urlSwapRegressed = true;
+      console.warn(`[mergeReviews] refused regressing swap for ${existing.outletId || context.file || '?'}: ${verdict.reason}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedUrlSwapRegression',
+        details: {
+          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+          criticName: existing.criticName, urlDate: verdict.urlDate, issue: verdict.issue, diffDays: verdict.diffDays,
+        },
+      });
+    }
+  }
 
   // Cross-outlet guard: an incoming record whose URL the registry maps to a
   // DIFFERENT outlet is another outlet's review — do not merge ANY of it
@@ -673,8 +711,12 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   const merged = { ...existing };
 
-  // Prefer longer/more complete fullText (decode entities on incoming text)
-  if (incoming.fullText) {
+  // Prefer longer/more complete fullText (decode entities on incoming text).
+  // Skipped when the url swap was just refused as a wrong-production
+  // regression — that text was scraped from the rejected candidate URL, so
+  // adopting it here would contaminate the existing (correct) url's record
+  // with the wrong production's content.
+  if (incoming.fullText && !urlSwapRegressed) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -695,9 +737,10 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
     });
   }
+
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange) {
+      && !blockUrlChange && !urlSwapRegressed) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
