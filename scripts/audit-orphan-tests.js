@@ -17,6 +17,18 @@
  * Usage:
  *   node scripts/audit-orphan-tests.js            # exits 1 with a list if orphans found
  *   node scripts/audit-orphan-tests.js --json     # JSON output for CI/scripts
+ *   <changed-files> | node scripts/audit-orphan-tests.js --scope-stdin
+ *                                                  # (card #1488) only orphans whose repo-
+ *                                                  # relative path is in the piped newline-
+ *                                                  # separated list are blocking; other
+ *                                                  # pre-existing orphans print as
+ *                                                  # informational and don't fail the run.
+ *                                                  # Used by scripts/lib/run-push-audits.sh
+ *                                                  # so an unrelated push isn't blocked by
+ *                                                  # someone else's unregistered test. CI's
+ *                                                  # direct calls in test.yml never pass this
+ *                                                  # flag, so the full-repo check there is
+ *                                                  # unchanged.
  *
  * Exempt: files matching tests/unit/_skip-*.test.mjs (intentionally unregistered,
  * e.g., network-dependent tests that can't run in CI).
@@ -26,6 +38,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
@@ -165,6 +178,26 @@ function main() {
     process.exit(0);
   }
   const json = process.argv.includes('--json');
+  // --scope-stdin (card #1488): read repo-relative paths from a newline-
+  // separated stdin stream and only treat orphans within that scope as
+  // blocking. Absent this flag, scope is undefined and every orphan blocks —
+  // byte-for-byte the pre-#1488 behavior, which is what CI's direct calls in
+  // test.yml still get (they never pass this flag).
+  const scopeStdin = process.argv.includes('--scope-stdin');
+  const scope = scopeStdin
+    ? fs.readFileSync(0, 'utf8').split('\n').map(s => s.trim()).filter(Boolean)
+    : undefined;
+  // Known accepted tradeoff (raised in review — Codex): a push that edits
+  // test.yml/a manifest to REMOVE a test's registration, without touching
+  // that test file's own content, downgrades the newly-orphaned test to
+  // informational here instead of blocking. Making test.yml's mere presence
+  // in scope fall back to full blocking was tried and reverted — it defeats
+  // the fix's actual purpose, since test.yml touched for an UNRELATED reason
+  // is exactly the #483/#1478 trigger this card exists to stop blocking.
+  // There's no cheap way to tell "this push removed a registration line"
+  // apart from "this push touched test.yml for any other reason" without a
+  // content diff, so this stays a real, informational-only gap covered by
+  // CI's unscoped full check as the safety net (test.yml:2566/2600).
   const files = listTestFiles();
   const referenced = collectReferencedTests();
   const rawOrphans = files.filter(f => !referenced.has(f.name));
@@ -176,26 +209,37 @@ function main() {
   const exemptNeverCi = rawOrphans
     .filter(f => f.name in EXEMPT_NEVER_CI)
     .map(f => ({ file: f.rel, notion: EXEMPT_NEVER_CI[f.name] }));
+  const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
 
   if (json) {
     console.log(JSON.stringify({
       total: files.length,
       registered: files.length - rawOrphans.length,
       orphans: orphans.map(f => f.rel),
+      blocking: blocking.map(f => f.rel),
+      informational: informational.map(f => f.rel),
       exemptKnownBroken,
       exemptNeverCi,
     }, null, 2));
-  } else if (orphans.length > 0) {
-    console.error(`❌ ${orphans.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
-    for (const f of orphans) console.error(`  ${f.rel}`);
+  } else if (blocking.length > 0) {
+    console.error(`❌ ${blocking.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
+    for (const f of blocking) console.error(`  ${f.rel}`);
+    if (informational.length > 0) {
+      console.error('');
+      console.error(`(${informational.length} more pre-existing orphan(s) elsewhere in the repo, not touched by this push — not blocking:)`);
+      for (const f of informational) console.error(`  ${f.rel}`);
+    }
     console.error('');
     console.error('Fix: add the file to the appropriate `node --test ...` line in .github/workflows/test.yml.');
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Notion card.');
     console.error('Opt-out (intentional): rename to `_skip-${name}.test.mjs`.');
+  } else if (informational.length > 0) {
+    console.log(`✅ ${files.length - informational.length} of ${files.length} unit test files registered in CI — ${informational.length} pre-existing orphan(s) elsewhere in the repo not touched by this push (not blocking):`);
+    for (const f of informational) console.log(`  ${f.rel}`);
   } else {
     console.log(`✅ All ${files.length} unit test files registered in CI (${exemptKnownBroken.length} known-broken exempt, ${exemptNeverCi.length} never-CI exempt)`);
   }
-  process.exit(orphans.length > 0 ? 1 : 0);
+  process.exit(blocking.length > 0 ? 1 : 0);
 }
 
 main();
