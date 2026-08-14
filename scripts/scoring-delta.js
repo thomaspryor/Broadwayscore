@@ -49,6 +49,13 @@ const { earliestShowDate } = require('./lib/date-guard');
 // scoring-logic watchlist — same rationale as earliestShowDate above.
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+// Working-tree copies: pure classification helpers behind
+// shouldAutoClearWrongProductionUkDualMarket's ctx (task #1190) — same
+// rationale as isLondonMarket/isUkOutletUrl above, the predicate itself
+// (baseline vs working) is what's replayed per-side via __priorRunLib.
+const { buildOutletRegionMap } = require('./lib/cross-market-guard');
+const { normalizeOutlet: normalizeOutletCanonical } = require('./lib/review-normalization');
+const { isEvergreenListingUrl } = require('./lib/cross-production-guards');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -78,6 +85,21 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
+
+// Outlet registry — mirrors rebuild-all-reviews.js's outletRegionMap/DUAL_MARKET_OUTLETS
+// setup so shouldAutoClearWrongProductionUkDualMarket's ctx (task #1190) is built the
+// same way here as in the rebuild it's replaying.
+const outletRegistry = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
+const outletRegionMap = buildOutletRegionMap(outletRegistry);
+const DUAL_MARKET_OUTLETS = new Set();
+for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
+  if (info.isDualMarket) {
+    DUAL_MARKET_OUTLETS.add(id);
+    if (info.aliases) {
+      for (const alias of info.aliases) DUAL_MARKET_OUTLETS.add(alias.toLowerCase());
+    }
+  }
+}
 
 // T1 outlets (tier-1 weight in scoring.ts). Hard-coded here to avoid dragging in
 // full outlet-tier map; list is small and stable.
@@ -446,14 +468,11 @@ function decideInclusion(review, show, guards) {
   // predicate change flips this decision exactly like it flips the rebuild's
   // (task #1163 — this replay previously modeled the flags as static/identical
   // on both sides, so it could never surface a regression in the auto-clear logic
-  // itself). NOTE: this covers only the 3 named predicates in
-  // wrong-production-autoclear.js keyed purely off the review + show — it does
-  // NOT cover the priorRuns/tourLegs/URL-year variants (need per-file
-  // provenance not modeled here) OR the UK/dual-market wrongProduction
-  // auto-clear that's inlined directly in rebuild-all-reviews.js:2464-2534
-  // (never extracted to a named, replayable predicate — tracked as its own
-  // follow-up, task #1189, since fixing it touches production rebuild logic
-  // and needs real-data verification per CLAUDE.md rule 12.7).
+  // itself). NOTE: this covers the 4 named predicates in wrong-production-autoclear.js
+  // keyed purely off the review + show (including shouldAutoClearWrongProductionUkDualMarket,
+  // task #1190 — extracted from rebuild-all-reviews.js:2464-2534 by task #1189 but left
+  // out of this replay until now) — it does NOT cover the priorRuns/tourLegs/URL-year
+  // variants (need per-file provenance not modeled here).
   const autoClear = guards.__priorRunLib || {};
 
   let wrongShowCleared = false;
@@ -482,6 +501,59 @@ function decideInclusion(review, show, guards) {
   let wrongProductionCleared = false;
   if (review.wrongProduction === true && typeof autoClear.shouldAutoClearWrongProduction === 'function') {
     wrongProductionCleared = autoClear.shouldAutoClearWrongProduction(review);
+  }
+  // UK/dual-market auto-clear (task #1190) — mirrors rebuild-all-reviews.js:2608-2687's
+  // ctx computation exactly, including its outer short-circuit (isStructuralFlag ||
+  // isDateMismatch skips the whole block there, so isUkUrl/outletIsDualOrUk/etc. are
+  // never computed and the predicate can't fire either).
+  if (!wrongProductionCleared && review.wrongProduction === true && !review.wrongProductionOverride
+      && isLondonMarket(show?.category) && review.url
+      && typeof autoClear.shouldAutoClearWrongProductionUkDualMarket === 'function') {
+    const wpNote = review.wrongProductionNote || '';
+    const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
+      || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
+    let isDateMismatch = false;
+    if (review.publishDate && show?.earliestDate) {
+      const reviewDate = parseDate(review.publishDate);
+      const preWindowDays = guards.__dateGuard?.PRE_WINDOW_DAYS ?? 60;
+      if (reviewDate && !isNaN(reviewDate.getTime())
+          && (new Date(show.earliestDate).getTime() - reviewDate.getTime()) > preWindowDays * 86400000) {
+        isDateMismatch = true;
+      }
+    }
+    if (!isStructuralFlag && !isDateMismatch) {
+      try {
+        // Mirrors rebuild-all-reviews.js:2645-2648's `new URL(data.url)` —
+        // a malformed URL throws there and aborts the whole clear attempt
+        // (predicate never called). isUkOutletUrl() swallows URL-parse
+        // failures internally and returns false, so without this explicit
+        // parse the replay would keep evaluating on a malformed URL where
+        // production would have bailed out — a real divergence caught by
+        // ship-check's adversarial review.
+        new URL(review.url);
+        const rawOutlet = (review.outletId || review.outlet || '').toLowerCase();
+        const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
+        const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(canonicalOutlet)
+          || outletRegionMap[canonicalOutlet] === 'london' || outletRegionMap[rawOutlet] === 'london';
+        const outletIsLondonRegion = outletRegionMap[canonicalOutlet] === 'london'
+          || outletRegionMap[rawOutlet] === 'london';
+        const isUkUrl = isUkOutletUrl(review.url);
+        const cvBlocksClear = typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
+          ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
+          : false;
+        const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(review.url)
+          || isEvergreenListingUrl(review.url);
+        wrongProductionCleared = autoClear.shouldAutoClearWrongProductionUkDualMarket(review, {
+          isLondonMarketShow: isLondonMarket(show?.category),
+          isUkUrl,
+          outletIsDualOrUk,
+          outletIsLondonRegion,
+          isDateMismatch,
+          isShowListingUrl,
+          cvBlocksClear,
+        });
+      } catch {}
+    }
   }
 
   if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
@@ -729,6 +801,12 @@ function main() {
         && (baseline.__priorRunLib?.shouldAutoClearWrongShow?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongShow?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearWrongShowUkUrl?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongShowUkUrl?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearWrongProduction?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProduction?.toString() || '')
+        // shouldAutoClearWrongProductionUkDualMarket (task #1190) + the CV-verdict
+        // predicate it depends on — cvBlocksUkWrongProductionAutoClear was never
+        // in this list even though decideInclusion now calls it, which would have
+        // reopened the exact #1163 blind spot this comparison block exists to close.
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        && (baseline.cvBlocksUkWrongProductionAutoClear?.toString() || '') === (working.cvBlocksUkWrongProductionAutoClear?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
