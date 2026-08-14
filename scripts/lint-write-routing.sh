@@ -41,6 +41,66 @@ read_allowlist() {
   grep -v '^[[:space:]]*#' "$1" | grep -v '^[[:space:]]*$' | awk -F' --' '{print $1}' | tr -d ' '
 }
 
+# ── allowlist membership, done in-process ──────────────────────────────────
+#
+# Every check below used to test membership with
+#   echo "$EXEMPT" | grep -Fxq "$name" && continue
+# once per candidate file. Two forks per file per check — ~600 files x 5
+# checks = ~6,000 subprocesses per `all` run — and, critically, a lookup whose
+# FAILURE IS INDISTINGUISHABLE FROM "not in the list". `set -o pipefail` is on
+# (line 33), so any non-zero from either stage of that pipeline — a grep killed
+# by the runner, a fork that didn't take under memory pressure, a short write —
+# reads as "not exempt". The file is then reported as a write-routing
+# violation with an empty stderr and nothing anywhere saying the lookup itself
+# broke.
+#
+# That is the exact shape of the 2026-08-14 CI flake. Three consecutive runs of
+# scripts/notion-action-poll.test.mjs's `lint-write-routing.sh review-texts
+# exits 0` gate on main:
+#   run 31829014708  ok 703      (11,974 ms)
+#   run 31832656296  ok 703      ( 8,698 ms)
+#   run 31834465040  not ok 703  (12,801 ms) — named recover-login-page-reviews.js
+# `git diff 7caf9ce03bb 8969026ac24 -- scripts/recover-login-page-reviews.js
+# .review-write-guard-exempt.txt scripts/lint-write-routing.sh` is EMPTY, and
+# that file sits on line 105 of the allowlist at all three shas. It is also one
+# of 106 files the review-texts allowlist covers, and exactly one of them was
+# reported — so the allowlist was not mis-parsed wholesale; a single
+# per-file lookup returned the wrong answer. A local probe of that pipeline
+# (20,000 iterations, macOS/bash 5.3) reproduced 0 anomalies, which is why the
+# fix is to remove the failure surface rather than to chase the syscall: a
+# membership test against a fixed in-memory string forks nothing and therefore
+# has nothing left to fail transiently.
+#
+# Bash 3.2-compatible on purpose (no associative arrays): the shebang is
+# /usr/bin/env bash and this script is also invoked by scripts/hooks/pre-push
+# on macOS, where /bin/bash is still 3.2.
+#
+# $1 is the allowlist newline-SENTINEL form (leading and trailing newline) so
+# a substring test is an exact whole-line match; $2 is the basename.
+exempt_has() {
+  [[ "$1" == *$'\n'"$2"$'\n'* ]]
+}
+
+# An allowlist that HAS entry lines but parses to ZERO entries means the parser
+# broke, not that nothing is exempt — and silently proceeding would flag every
+# allowlisted file at once (106 of them for review-texts). Fail loudly and
+# specifically instead, so that failure can never again be mistaken for a
+# genuine write-routing violation.
+#
+# The discriminator is entry LINES, not file size: .shows-json-write-exempt.txt
+# and .audience-buzz-json-write-exempt.txt are fully migrated and now contain
+# nothing but comments, which is a legitimate empty allowlist and must stay
+# green (a `[ -s "$file" ]` test reddened both of them).
+allowlist_parse_ok() {
+  local file="$1" parsed="$2" entry_lines
+  entry_lines=$(grep -cvE '^[[:space:]]*(#|$)' "$file")
+  if [ "${entry_lines:-0}" -gt 0 ] && [ -z "$parsed" ]; then
+    echo "::error::$file has $entry_lines entry line(s) but parsed to zero allowlist entries — the allowlist PARSER is broken; this is not a write-routing violation"
+    return 1
+  fi
+  return 0
+}
+
 check_review_texts() {
   local ALLOWLIST=".review-write-guard-exempt.txt"
   if [ ! -f "$ALLOWLIST" ]; then
@@ -48,13 +108,15 @@ check_review_texts() {
     FAILED=1
     return
   fi
-  local EXEMPT VIOLATIONS="" f name
+  local EXEMPT EXEMPT_NL VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
+  allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
+  EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
   for f in scripts/*.js; do
     name=$(basename "$f")
     # Guard itself is exempt
     [ "$name" = "review-write-guard.js" ] && continue
-    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    exempt_has "$EXEMPT_NL" "$name" && continue
     # Match writeFileSync calls where the first argument resolves to a
     # review-texts path: common variable names, path.join(showDir-ish vars),
     # or path.join('data','review-texts',...) literals. A file counts as a
@@ -85,11 +147,13 @@ check_reviews_json() {
     FAILED=1
     return
   fi
-  local EXEMPT VIOLATIONS="" f name
+  local EXEMPT EXEMPT_NL VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
+  allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
+  EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
   for f in scripts/*.js; do
     name=$(basename "$f")
-    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    exempt_has "$EXEMPT_NL" "$name" && continue
     # (1) references data/reviews.json AND (2) writeFileSync to a known
     # reviews-path constant or literal. outPath deliberately excluded (audit
     # scripts use it for report files).
@@ -116,8 +180,10 @@ check_shows_json() {
     FAILED=1
     return
   fi
-  local EXEMPT VIOLATIONS="" f name
+  local EXEMPT EXEMPT_NL VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
+  allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
+  EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
   # .js is the dominant top-level script extension in this repo, but .mjs
   # and .ts top-level scripts exist too (scripts/lib/*.ts, scripts/*.mjs are
   # test/library files excluded by staying at depth 1) and were found
@@ -125,7 +191,7 @@ check_shows_json() {
   for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
     [ -e "$f" ] || continue
     name=$(basename "$f")
-    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    exempt_has "$EXEMPT_NL" "$name" && continue
     # (1) references data/shows.json AND (2) writeFileSync to a var whose
     # name IS "shows" + path/file/json, word-bounded (case-insensitive —
     # catches SHOWS_PATH, showsFile, SHOWS_JSON_PATH, etc. without needing
@@ -166,12 +232,14 @@ check_commercial_json() {
     FAILED=1
     return
   fi
-  local EXEMPT VIOLATIONS="" f name
+  local EXEMPT EXEMPT_NL VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
+  allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
+  EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
   for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
     [ -e "$f" ] || continue
     name=$(basename "$f")
-    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    exempt_has "$EXEMPT_NL" "$name" && continue
     # Same shape of check as shows-json: (1) references data/commercial.json
     # AND (2) writeFileSync to a var whose name IS "commercial" + path/file/
     # json, word-bounded, case-insensitive, or a literal commercial.json path,
@@ -202,12 +270,14 @@ check_audience_buzz_json() {
     FAILED=1
     return
   fi
-  local EXEMPT VIOLATIONS="" f name
+  local EXEMPT EXEMPT_NL VIOLATIONS="" f name
   EXEMPT=$(read_allowlist "$ALLOWLIST")
+  allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
+  EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
   for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
     [ -e "$f" ] || continue
     name=$(basename "$f")
-    echo "$EXEMPT" | grep -Fxq "$name" && continue
+    exempt_has "$EXEMPT_NL" "$name" && continue
     if grep -qE "['\"][^'\"]*data/audience-buzz\.json['\"]|path\.join\([^)]*['\"]audience-buzz\.json['\"]" "$f" \
       && grep -qEi "fs\.writeFileSync\([^)]*\baudience[-_a-z]*buzz[_a-z]*(path|file|json)\b|fs\.writeFileSync\([^)]*['\"][^'\"]*data/audience-buzz\.json['\"]" "$f" \
       && ! grep -q "audience-buzz-write-guard" "$f"; then
