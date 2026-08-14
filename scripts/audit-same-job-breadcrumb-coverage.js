@@ -61,8 +61,25 @@ const PUSH_REVIEW_TEXTS_RE = /uses:\s*\.\/\.github\/actions\/push-review-texts/;
 // so every one of the ~189 workflow call sites that push via `bash
 // scripts/lib/push-with-retry.sh` (not just the review-texts composite
 // action) is equally exposed — no directory-based exclusion applies.
-const PUSH_WITH_RETRY_RE = /push-with-retry\.sh/;
-const RESTORE_TRIGGER_RE = new RegExp(`${PUSH_REVIEW_TEXTS_RE.source}|${PUSH_WITH_RETRY_RE.source}`);
+//
+// Anchored to an actual `bash ... push-with-retry.sh` invocation, NOT a bare
+// substring (ship-check/second-opinion finding, task #1507): dozens of
+// workflows reference "push-with-retry.sh" only in prose comments explaining
+// its conflict-resolution behavior (e.g. vercel-deploy.yml's "push-with-retry
+// lost the race against busy main" comment) — a bare /push-with-retry\.sh/
+// would pull those jobs into "restoring" scope on a comment alone. Every real
+// call site in this repo invokes it as `bash scripts/lib/push-with-retry.sh`
+// (grep-confirmed: zero comment lines combine "bash" with the filename), so
+// requiring "bash" and the filename on the SAME non-comment line eliminates
+// the false-positive class while still matching every real invocation shape
+// (bare, with retry/branch args, with `||` fallback, inside `if`).
+const PUSH_WITH_RETRY_RE = /\bbash\b[^\n]*push-with-retry\.sh/;
+function hasPushWithRetryInvocation(bodyText) {
+  return bodyText.split('\n').some((line) => !/^\s*#/.test(line) && PUSH_WITH_RETRY_RE.test(line));
+}
+function isRestoreTrigger(bodyText) {
+  return PUSH_REVIEW_TEXTS_RE.test(bodyText) || hasPushWithRetryInvocation(bodyText);
+}
 const SCRIPT_INVOCATION_RE = /\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g;
 // How far back a delete/null of a field can be attributed to a given
 // safeWriteReview(..., {force:true}) call. Every real call site found in this
@@ -298,10 +315,10 @@ function auditRepo({ workflowDir, scriptsDir, protectedFields, breadcrumbKeys })
       // scoring). A clear between the two restores is still at risk from the
       // SECOND one, so every step before the LAST restore is in scope. A job
       // may mix both trigger kinds (e.g. push-review-texts THEN a later bare
-      // push-with-retry.sh commit) — RESTORE_TRIGGER_RE matches either, so
+      // push-with-retry.sh commit) — isRestoreTrigger() matches either, so
       // the last restoring step of EITHER kind sets the boundary.
       let pushIdx = -1;
-      job.steps.forEach((s, i) => { if (RESTORE_TRIGGER_RE.test(s.bodyText)) pushIdx = i; });
+      job.steps.forEach((s, i) => { if (isRestoreTrigger(s.bodyText)) pushIdx = i; });
       if (pushIdx === -1) continue; // job never restores in-line — not the same-job risk shape
       scanned.jobs++;
 
@@ -393,7 +410,8 @@ module.exports = {
   main,
   PUSH_REVIEW_TEXTS_RE,
   PUSH_WITH_RETRY_RE,
-  RESTORE_TRIGGER_RE,
+  hasPushWithRetryInvocation,
+  isRestoreTrigger,
   SCRIPT_INVOCATION_RE,
   ANNOTATION,
   ACTION_EXTRA_PROTECTED,
