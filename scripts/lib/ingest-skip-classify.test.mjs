@@ -15,6 +15,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
 const {
   classifyIngestSkip,
+  classifyReason,
   describeSkip,
   CONFLICT_REASONS,
   EXPECTED_REJECTION_REASONS,
@@ -73,6 +74,56 @@ test('empty/undefined stdout does not throw', () => {
   assert.equal(classifyIngestSkip('').kind, 'unclassified');
   assert.equal(classifyIngestSkip(undefined).kind, 'unclassified');
   assert.equal(classifyIngestSkip(null).kind, 'unclassified');
+});
+
+// ── classifyReason: the raw-result entry point BRO-205 added for the 6
+// scrape-*.js callers that hold `result.reason` directly (never round-trip
+// through a child process's stdout) — same contract as classifyIngestSkip,
+// different input shape, so it needs its own coverage of the same real
+// review-file-writer.js literal shapes.
+test('classifyReason: cross-show-url-owned (machine-readable detail, no space)', () => {
+  const got = classifyReason('cross-show-url-owned:the-car-man-west-end-2026');
+  assert.equal(got.kind, 'conflict');
+  assert.equal(got.reason, 'cross-show-url-owned');
+  assert.equal(got.detail, 'the-car-man-west-end-2026');
+});
+
+test('classifyReason: domain-mismatch prose (space after colon defeats detail capture)', () => {
+  const got = classifyReason("domain-mismatch: URL domain 1minutecritic.substack.com doesn't match outlet one-minute-critic (expected 1minutecritic.com)");
+  assert.equal(got.kind, 'conflict');
+  assert.equal(got.reason, 'domain-mismatch');
+  assert.equal(got.detail, null);
+});
+
+test('classifyReason: plain conflict/expected/benign reasons with no detail', () => {
+  for (const reason of ['no-outlet', 'suspicious-outlet-id', 'aggregator-url-mismatch', 'aggregator-url-refinement-refused']) {
+    assert.equal(classifyReason(reason).kind, 'conflict', reason);
+  }
+  assert.equal(classifyReason('cross-market').kind, 'expected');
+  assert.equal(classifyReason('onMerge-aborted').kind, 'expected');
+  assert.equal(classifyReason('tour-review').kind, 'expected');
+  assert.equal(classifyReason('no-changes').kind, 'benign');
+  assert.equal(classifyReason('junk-outlet').kind, 'benign');
+});
+
+test('classifyReason: unrecognised reason is unclassified, never silently benign', () => {
+  const got = classifyReason('some-future-reason');
+  assert.equal(got.kind, 'unclassified');
+  assert.equal(got.reason, 'some-future-reason');
+});
+
+test('classifyReason: empty/undefined/null does not throw', () => {
+  assert.equal(classifyReason('').kind, 'unclassified');
+  assert.equal(classifyReason(undefined).kind, 'unclassified');
+  assert.equal(classifyReason(null).kind, 'unclassified');
+});
+
+test('classifyReason and classifyIngestSkip agree on every real reason review-file-writer.js emits', () => {
+  for (const reason of [...CONFLICT_REASONS, ...EXPECTED_REJECTION_REASONS, ...BENIGN_REASONS]) {
+    const viaReason = classifyReason(reason);
+    const viaStdout = classifyIngestSkip(`⚠️  Skipped: ${reason}`);
+    assert.equal(viaReason.kind, viaStdout.kind, reason);
+  }
 });
 
 // ── Expected rejections: visible, never residual (ship-check finding C) ──────
