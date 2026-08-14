@@ -763,6 +763,14 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # West End aggregator-listing auto-promotion backstop (task #1466) —
+      # the WE analogue of the two lines above. Shared dedup lib +
+      # discovery/venue-matching lib + promoter + its test. Without these
+      # path entries a solo edit triggers ZERO CI.
+      - 'scripts/lib/candidate-dedup.js'
+      - 'scripts/lib/we-listing-discover.js'
+      - 'scripts/promote-we-aggregator-candidates.js'
+      - 'tests/unit/promote-we-aggregator-auto.test.mjs'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/lib/transfer-detection.js'
       - 'scripts/detect-regional-transfers.js'
