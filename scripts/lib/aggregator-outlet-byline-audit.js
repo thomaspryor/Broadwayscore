@@ -50,7 +50,13 @@ function stripQuotedSpans(text) {
   if (!text) return '';
   return String(text)
     .replace(/[“"][^“”"]{4,}[”"]/g, ' ') // smart or straight double-quoted spans
-    .replace(/[‘][^‘’]{4,}[’]/g, ' '); // smart single-quoted spans (avoid eating contractions — min length 4)
+    .replace(/[‘][^‘’]{4,}[’]/g, ' ') // smart single-quoted spans (min length 4 avoids eating short contractions)
+    // Straight single-quoted spans ('like this') — UK outlets (theatre-reviews-
+    // limited, london-box-office) commonly quote dialogue/lyrics this way, the
+    // same false-positive source stripped above for curly quotes. Requires a
+    // word-boundary on both sides so "don't"/"critic's" contractions — which
+    // have no boundary before their apostrophe — never match as an open quote.
+    .replace(/(?<=^|[\s([])'[^']{4,}?'(?=[\s).,!?;:]|$)/g, ' ');
 }
 
 function stripBoilerplate(text) {
@@ -106,6 +112,14 @@ function wordShingles(text, shingleLen = 16, stride = 4) {
  *   file in the same show directory (any outlet, including other aggregator
  *   files — those are skipped internally).
  * @returns {{classification: 'staff-critic'|'collapsed-duplicate'|'not-applicable', reason: string, duplicateOfOutlet?: string, duplicateOfCritic?: string}}
+ *
+ * IMPORTANT for callers applying a fix on 'collapsed-duplicate': set
+ * `wrongAttribution: true`, NOT `duplicateOf`. safeWriteReview's write guard
+ * (review-write-guard.js) auto-clears any `duplicateOf` pointer whose URL
+ * doesn't match the target file's URL — which is always true here, since the
+ * whole point is an aggregator-domain URL vs. the real outlet's own URL. A
+ * `duplicateOf` fix silently self-heals away on the next write; `wrongAttribution`
+ * is the only exclusion flag that survives the guard for this shape of fix.
  */
 function classifyAggregatorByline(aggregatorReview, siblingReviews) {
   const outletId = aggregatorReview.outletId || aggregatorReview.outlet;

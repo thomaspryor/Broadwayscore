@@ -85,6 +85,25 @@ test('two critics independently quoting the same show dialogue is NOT a collapse
   assert.equal(result.classification, 'staff-critic');
 });
 
+// Same false-positive class as above, but with UK-style straight single
+// quotes instead of curly double quotes ('...' rather than "..." or "..."),
+// which theatre-reviews-limited and london-box-office commonly use for
+// dialogue/lyric quotation. Must be stripped the same way.
+test('two critics independently quoting the same show dialogue in straight single quotes is NOT a collapse', () => {
+  const lbo = {
+    outletId: 'london-box-office',
+    criticName: "Shehrazade Zafar-Arif",
+    fullText: "The show opens with the ensemble declaring 'we are the ones who remember, we are the ones who carry the fire forward into the dark' before the lights drop to black. It's a striking start to an otherwise uneven evening.",
+  };
+  const standard = {
+    outletId: 'standard',
+    criticName: 'Henry Hitchings',
+    fullText: "There's an early highlight when the cast intones 'we are the ones who remember, we are the ones who carry the fire forward into the dark', a line that recurs, with diminishing force, throughout a baggy two hours.",
+  };
+  const result = classifyAggregatorByline(lbo, [standard]);
+  assert.equal(result.classification, 'staff-critic');
+});
+
 test('shared press-release cast list across outlets is NOT a collapse', () => {
   const trl = {
     outletId: 'theatre-reviews-limited',
