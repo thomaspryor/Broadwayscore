@@ -298,22 +298,33 @@ fi
 # the branch intact, same recovery shape as those checks.
 #
 # Kill switch (adversarial-review finding, same pattern as
-# PUSH_SKIP_CONTENT_SURVIVAL_CHECK below): this runs the WHOLE scripts/lib/
-# suite, not just files this branch touched, so a flaky or slow pre-existing
-# test unrelated to the branch's own diff can block ANY merge that happens to
-# touch a scripts/lib file. Without an escape hatch, a false-positive storm
-# here would wedge every session's merges with no way out except editing this
-# script under pressure — MERGE_SKIP_POST_MERGE_TEST_GATE=1 gives an
-# immediate, auditable bypass instead.
+# PUSH_SKIP_CONTENT_SURVIVAL_CHECK below): without an escape hatch, a
+# false-positive storm here would wedge every session's merges with no way
+# out except editing this script under pressure — MERGE_SKIP_POST_MERGE_TEST_GATE=1
+# gives an immediate, auditable bypass of the WHOLE gate instead.
+#
+# Blocks only NEW failures, not pre-existing ones (card #1433). The floor
+# used to block on ANY failing scripts/lib/*.test.mjs test, including ones
+# already red on origin/main before this branch touched anything — 3
+# main-red incidents in 3 days traced to exactly that gap (a branch refused
+# for a stale assertion some OTHER refactor broke). merge-post-merge-test-gate.js
+# now builds a disposable baseline checkout of $ORIGIN_BASE_SHA (the exact
+# origin tip THIS merge pulled in — passed below, not "whatever origin/main
+# drifts to by the time the gate runs") and only blocks on a failure that's
+# NEW since then; a pre-existing failure is reported loudly but does not
+# block. If the baseline checkout itself can't be built, the gate fails safe
+# to the old all-or-nothing behavior. Narrower escape hatch just for that
+# half: MERGE_TEST_GATE_SKIP_BASELINE=1 (forces old behavior without
+# disabling the floor entirely).
 if [ "${MERGE_SKIP_POST_MERGE_TEST_GATE:-}" = "1" ]; then
   log "post-merge test floor: skipped (MERGE_SKIP_POST_MERGE_TEST_GATE=1)"
 else
   CHANGED_FOR_TEST_GATE=$(g diff --name-only "$ORIGIN_BASE_SHA" HEAD 2>/dev/null || true)
   if [ -n "$(echo "$CHANGED_FOR_TEST_GATE" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js" ]; then
     log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
-    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
+    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
       restore_stash
-      die "post-merge test floor failed — the MERGED tree fails a scripts/lib/ colocated test (likely a semantic collision between two branches, see task #1149). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatch for a false positive: MERGE_SKIP_POST_MERGE_TEST_GATE=1 scripts/merge-worktree-to-main.sh)"
+      die "post-merge test floor failed — the MERGED tree has a NEW-since-origin/main scripts/lib/ colocated test failure (likely a semantic collision between two branches, see task #1149/#1433). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
     fi
   fi
 fi
