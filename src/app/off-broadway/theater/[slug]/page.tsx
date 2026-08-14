@@ -1,7 +1,15 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getOffBroadwayTheaterBySlug, getAllOffBroadwayTheaterSlugs } from '@/lib/data-core';
+import {
+  getOffBroadwayTheaterBySlug,
+  getAllOffBroadwayTheaterSlugs,
+  getOffBroadwayComplexBySlug,
+  getAllOffBroadwayComplexSlugs,
+  getOffBroadwayComplexForVenue,
+  type TheaterComplex,
+} from '@/lib/data-core';
+import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
@@ -11,7 +19,25 @@ import TheaterDetailClient from '../../../theater/[slug]/TheaterDetailClient';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
-  return getAllOffBroadwayTheaterSlugs().map((slug) => ({ slug }));
+  const slugs = new Set([...getAllOffBroadwayTheaterSlugs(), ...getAllOffBroadwayComplexSlugs()]);
+  return Array.from(slugs).map((slug) => ({ slug }));
+}
+
+function isComplex(t: Theater | TheaterComplex): t is TheaterComplex {
+  return 'subVenues' in t;
+}
+
+/** Complex pages (e.g. Atlantic Theater Company) take priority over a same-slug venue —
+ * a complex is a superset (its own shows + every sub-venue's shows). */
+function resolveOffBroadwayVenue(slug: string): {
+  theater: Theater | TheaterComplex | undefined;
+  parentComplex: { name: string; slug: string } | undefined;
+} {
+  const complex = getOffBroadwayComplexBySlug(slug);
+  if (complex) return { theater: complex, parentComplex: undefined };
+  const theater = getOffBroadwayTheaterBySlug(slug);
+  if (!theater) return { theater: undefined, parentComplex: undefined };
+  return { theater, parentComplex: getOffBroadwayComplexForVenue(slug) };
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -19,7 +45,7 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const theater = getOffBroadwayTheaterBySlug(params.slug);
+  const { theater } = resolveOffBroadwayVenue(params.slug);
   if (!theater) return { title: 'Theater Not Found' };
 
   const canonicalUrl = `${BASE_URL}/off-broadway/theater/${params.slug}`;
@@ -48,8 +74,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 export default function OffBroadwayTheaterPage({ params }: { params: { slug: string } }) {
-  const theater = getOffBroadwayTheaterBySlug(params.slug);
+  const { theater, parentComplex } = resolveOffBroadwayVenue(params.slug);
   if (!theater) notFound();
+  const subVenues = isComplex(theater) ? theater.subVenues : [];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -110,6 +137,17 @@ export default function OffBroadwayTheaterPage({ params }: { params: { slug: str
 
         {/* Header */}
         <div className="mb-6">
+          {parentComplex && (
+            <Link
+              href={`/off-broadway/theater/${parentComplex.slug}`}
+              className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors mb-2"
+            >
+              Part of {parentComplex.name}
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
           <div className="flex items-center gap-3 mb-3">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
@@ -210,6 +248,24 @@ export default function OffBroadwayTheaterPage({ params }: { params: { slug: str
               Venue details for {theater.name} — capacity, accessibility, and seating tips — are coming soon. We&apos;re enriching all Off-Broadway venues after launch.
             </p>
           </div>
+
+          {/* Sub-venues under this complex */}
+          {subVenues.length > 0 && (
+            <div className="card p-4 mb-4 border border-white/5">
+              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">Also Home To</p>
+              <div className="flex flex-wrap gap-2">
+                {subVenues.map(sv => (
+                  <Link
+                    key={sv.slug}
+                    href={`/off-broadway/theater/${sv.slug}`}
+                    className="text-sm text-gray-300 hover:text-brand transition-colors px-3 py-1.5 rounded-full bg-surface-overlay border border-white/10"
+                  >
+                    {sv.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Show list with sort/toggle (reuses Broadway component) */}
