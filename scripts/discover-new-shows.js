@@ -49,7 +49,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 }
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
-const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot } = require('./lib/playbill-broadway-schedule');
+const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -460,23 +460,6 @@ async function fetchShowsFromPlaybillOB() {
     };
   });
   return transformed.filter(Boolean);
-}
-
-// Playbill's Broadway schedule article renders every title in ALL CAPS.
-// Convert to sentence-style title case ("MUCH ADO ABOUT NOTHING" ->
-// "Much Ado About Nothing") to match shows.json's existing title convention
-// — lowercases minor words (a/an/the/and/...) except the first.
-const TITLE_CASE_MINOR_WORDS = new Set(['a', 'an', 'the', 'and', 'or', 'nor', 'but', 'of', 'in', 'on', 'at', 'for', 'to', 'from', 'with', 'as', 'by']);
-function titleCaseFromAllCaps(title) {
-  if (!title || title !== title.toUpperCase()) return title;
-  return title
-    .toLowerCase()
-    .split(' ')
-    .map((word, i) => {
-      if (i > 0 && TITLE_CASE_MINOR_WORDS.has(word)) return word;
-      return word.replace(/(^|[:!'’-])([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
-    })
-    .join(' ');
 }
 
 /**

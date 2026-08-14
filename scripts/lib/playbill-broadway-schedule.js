@@ -208,10 +208,33 @@ function checkSilentRot({ entries, html }) {
   return 'grace';
 }
 
+// Playbill's Broadway schedule article renders every title in ALL CAPS.
+// Convert to sentence-style title case ("MUCH ADO ABOUT NOTHING" ->
+// "Much Ado About Nothing") to match shows.json's existing title convention
+// — lowercases minor words (a/an/the/and/...) except the first.
+//
+// Word-boundary triggers are deliberately narrow: whitespace, `:`, `!`, `-`.
+// Apostrophes/curly-quotes are NOT boundaries — "COAL MINER'S DAUGHTER" must
+// stay "Coal Miner's Daughter", not "Coal Miner'S Daughter" (the bug an
+// earlier version of this function had before /code-review caught it).
+const TITLE_CASE_MINOR_WORDS = new Set(['a', 'an', 'the', 'and', 'or', 'nor', 'but', 'of', 'in', 'on', 'at', 'for', 'to', 'from', 'with', 'as', 'by']);
+function titleCaseFromAllCaps(title) {
+  if (!title || title !== title.toUpperCase()) return title;
+  return title
+    .toLowerCase()
+    .split(' ')
+    .map((word, i) => {
+      if (i > 0 && TITLE_CASE_MINOR_WORDS.has(word)) return word;
+      return word.replace(/(^|[:!-])([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
+    })
+    .join(' ');
+}
+
 module.exports = {
   PLAYBILL_BROADWAY_URL,
   parsePlaybillBroadwaySchedule,
   scrapePlaybillBroadwayData,
   checkSilentRot,
   parseUSDate,
+  titleCaseFromAllCaps,
 };

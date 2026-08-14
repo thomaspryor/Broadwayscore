@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parsePlaybillBroadwaySchedule, parseUSDate } = require('../../scripts/lib/playbill-broadway-schedule.js');
+const { parsePlaybillBroadwaySchedule, parseUSDate, titleCaseFromAllCaps } = require('../../scripts/lib/playbill-broadway-schedule.js');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE = readFileSync(join(__dirname, '..', 'fixtures', 'broadway-discovery', 'playbill-broadway.html'), 'utf8');
@@ -116,4 +116,30 @@ test('parseUSDate parses full US dates and rejects month-only text', () => {
   assert.equal(parseUSDate('February 2027'), null);
   assert.equal(parseUSDate(''), null);
   assert.equal(parseUSDate(null), null);
+});
+
+test('titleCaseFromAllCaps converts ALL CAPS titles to sentence-style title case', () => {
+  assert.equal(titleCaseFromAllCaps('WANTED'), 'Wanted');
+  assert.equal(titleCaseFromAllCaps('MUCH ADO ABOUT NOTHING'), 'Much Ado About Nothing');
+  assert.equal(titleCaseFromAllCaps('MIX AND MASTER'), 'Mix and Master');
+  assert.equal(titleCaseFromAllCaps('THE FULL MONTY'), 'The Full Monty');
+  assert.equal(titleCaseFromAllCaps("AWAKE AND SING!"), 'Awake and Sing!');
+});
+
+test('titleCaseFromAllCaps does NOT treat an apostrophe as a word boundary (regression: ship-check finding)', () => {
+  // "COAL MINER'S DAUGHTER" must not become "Coal Miner'S Daughter" —
+  // the apostrophe-owner's initial is not a new word.
+  assert.equal(titleCaseFromAllCaps("COAL MINER'S DAUGHTER"), "Coal Miner's Daughter");
+  assert.equal(titleCaseFromAllCaps("AIN'T TOO PROUD"), "Ain't Too Proud");
+  assert.equal(titleCaseFromAllCaps("THE GRISWOLDS'"), "The Griswolds'");
+});
+
+test('titleCaseFromAllCaps leaves already-mixed-case titles untouched', () => {
+  assert.equal(titleCaseFromAllCaps('Hamilton'), 'Hamilton');
+  assert.equal(titleCaseFromAllCaps('MJ the Musical'), 'MJ the Musical');
+});
+
+test('titleCaseFromAllCaps handles null/empty', () => {
+  assert.equal(titleCaseFromAllCaps(''), '');
+  assert.equal(titleCaseFromAllCaps(null), null);
 });
