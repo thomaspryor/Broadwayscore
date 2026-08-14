@@ -34,6 +34,38 @@ function aliasCanonical(venue) {
   return null;
 }
 
+/**
+ * Safe venue equality — the replacement for every automated-decision call
+ * site that used to do `canonicalVenue(a) === canonicalVenue(b)` (title-
+ * match.js's canonicalVenue falls back to the lowercased FIRST WORD for any
+ * venue outside VENUE_ALIASES, so two unrelated theatres that both start
+ * with "The" collapse to the same key — verified live 2026-08-11:
+ * canonicalVenue("The Duke on 42nd Street") === canonicalVenue("The Public
+ * Theater")). Fine for canonicalVenue's original callers (fuzzy duplicate-
+ * detection candidates a human reviews); unsafe for anything making an
+ * automated match/skip/corroborate decision off venue equality (BRO-243,
+ * generalizing the fix task #1246 shipped locally in aggregator-candidate-
+ * extract.js's findKnownObShow/venuesMatch).
+ *
+ * Reuses two already-shipped, separately-tested helpers instead of adding a
+ * third normalization scheme: aliasCanonical() requires a REAL VENUE_ALIASES
+ * hit on both sides — no lossy fallback; normalizeVenueName() is an exact
+ * (punctuation/whitespace/Theatre-vs-Theater insensitive) full-string
+ * comparison for venues the alias table doesn't cover.
+ *
+ * @param {string} a
+ * @param {string} b
+ * @returns {boolean}
+ */
+function venuesMatch(a, b) {
+  if (!a || !b) return false;
+  const aliasA = aliasCanonical(a);
+  const aliasB = aliasCanonical(b);
+  if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
+  const normA = normalizeVenueName(a);
+  return normA !== '' && normA === normalizeVenueName(b);
+}
+
 const KNOWN_DUPLICATES = {
   // Short titles that need special handling
   'six': ['six', 'six the musical', 'six on broadway'],
@@ -774,5 +806,6 @@ module.exports = {
   isLongClosedTwin,
   isSubtitleVariantOf,
   aliasCanonical,
+  venuesMatch,
   KNOWN_DUPLICATES
 };

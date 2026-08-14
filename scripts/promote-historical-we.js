@@ -23,8 +23,8 @@ const path = require('path');
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
-const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
-const { isSubtitleVariantOf } = require('./lib/deduplication');
+const { normalizeTitle } = require('./lib/title-match');
+const { isSubtitleVariantOf, venuesMatch } = require('./lib/deduplication');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
@@ -113,20 +113,22 @@ function main() {
   console.log(`Candidates: ${audit.candidates?.length || 0}; promotable (corroborated or explicitly allowed): ${promotable.length}`);
 
   const showsData = loadShows();
-  const existingKeys = new Set(showsData.shows.map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  const existingByVenue = new Map();
-  for (const s of showsData.shows) {
-    const vk = canonicalVenue(s.venue);
-    if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
-    existingByVenue.get(vk).push(s.title);
+  // Live pool of {title, venue} — see promote-ob-historical.js's identical
+  // comment (BRO-243). venuesMatch(), not title-match.js's canonicalVenue()
+  // equality: canonicalVenue's fallback for a venue outside VENUE_ALIASES is
+  // just the lowercased FIRST WORD, so two unrelated venues sharing a
+  // leading word would collapse and silently skip a genuinely new show.
+  const knownShows = showsData.shows.filter(s => s.title && s.venue);
+
+  function findExactDuplicate(candidateTitle, venue) {
+    const norm = normalizeTitle(candidateTitle);
+    return knownShows.find(s => normalizeTitle(s.title) === norm && venuesMatch(s.venue, venue)) || null;
   }
 
-  function findSubtitleDuplicateTitle(candidateTitle, venueKey) {
-    const titles = existingByVenue.get(venueKey);
-    if (!titles) return null;
-    for (const existingTitle of titles) {
-      if (isSubtitleVariantOf(candidateTitle, existingTitle)) return existingTitle;
+  function findSubtitleDuplicateTitle(candidateTitle, venue) {
+    for (const s of knownShows) {
+      if (venuesMatch(s.venue, venue) && isSubtitleVariantOf(candidateTitle, s.title)) return s.title;
     }
     return null;
   }
@@ -136,17 +138,14 @@ function main() {
   for (const c of promotable) {
     if (!c.venue) { skipped.push({ candidate: c, reason: 'no venue' }); continue; }
     const entry = buildShowEntry(c);
-    const key = `${normalizeTitle(entry.title)}|${canonicalVenue(entry.venue)}`;
-    const venueKey = canonicalVenue(entry.venue);
-    const subtitleDup = findSubtitleDuplicateTitle(entry.title, venueKey);
-    if (existingKeys.has(key)) { skipped.push({ candidate: c, reason: 'duplicate title+venue' }); continue; }
+    const exactDup = findExactDuplicate(entry.title, entry.venue);
+    const subtitleDup = !exactDup && findSubtitleDuplicateTitle(entry.title, entry.venue);
+    if (exactDup) { skipped.push({ candidate: c, reason: 'duplicate title+venue' }); continue; }
     if (subtitleDup) { skipped.push({ candidate: c, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ candidate: c, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate) { skipped.push({ candidate: c, reason: 'no opening date parsed' }); continue; }
     toPromote.push(entry);
-    existingKeys.add(key);
-    if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
-    existingByVenue.get(venueKey).push(entry.title);
+    knownShows.push({ title: entry.title, venue: entry.venue });
     existingIds.add(entry.id);
   }
 
