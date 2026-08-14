@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T01:20:19.256Z",
+  "timestamp": "2026-08-14T02:24:19.997Z",
   "stats": {
     "totalReviews": 42207,
-    "alreadyFlagged": 18305,
+    "alreadyFlagged": 18306,
     "dateGuardCatches": 142,
     "directorMismatch": 965,
-    "tvFilmSignals": 1196,
+    "tvFilmSignals": 1197,
     "londonSignals": 878,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3561
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -8949,6 +8949,20 @@
     },
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "deadline--andreas-wiseman.json",
+      "score": 79,
+      "publishDate": "2026-08-10",
+      "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "guardian--unknown.json",
       "score": 76,
       "publishDate": "2026-08-09",
@@ -8964,6 +8978,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "independent--unknown.json",
+      "score": 79,
       "publishDate": "2026-08-09",
       "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
       "findings": [
@@ -8991,6 +9006,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "whatsonstage--unknown.json",
+      "score": 94,
       "publishDate": "2026-08-09",
       "url": "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
       "findings": [

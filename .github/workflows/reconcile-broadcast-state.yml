@@ -86,6 +86,20 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh
 
+      # opening-night-sent.json is one of push-core-data's CORE_FILES — the
+      # commit above only reaches the public repo's gitignore-forced copy.
+      # Without this step the reconciled draftStatus/sentAt/recipientCount
+      # never lands in the authoritative private data repo, so the next
+      # checkout-core-data (e.g. opening-night-broadcast.yml) silently
+      # reverts it to the pre-reconciliation state (task #1442, same bug
+      # class as #1441's update-tony-awards.yml).
+      - name: Push core data to private repo
+        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Reconcile Resend broadcast state'
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
