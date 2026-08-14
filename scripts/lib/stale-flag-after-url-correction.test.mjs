@@ -5,7 +5,6 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   detectStaleFlagAfterUrlCorrection,
-  remediateStaleFlagAfterUrlCorrection,
   isAwaitingUrlCorrectionRefetch,
   shouldWithholdStaleExclusionFlag,
 } = require('./stale-flag-after-url-correction.js');
@@ -161,51 +160,90 @@ test('no match when neither flag is set', () => {
   }), []);
 });
 
-test('remediate clears wrongProduction + shared fields (contentVerification, contentTier) and extends the breadcrumb', () => {
-  const data = {
+// --- the auto-remediation must STAY deleted --------------------------------
+// remediateStaleFlagAfterUrlCorrection() cleared the exclusion-flag families on
+// every detector match until 2026-08-14. It was removed because the detector's
+// matches are overwhelmingly CORRECT flags: a URL "correction" can replace a
+// correct article with a different production's, so the bodyless record really
+// does warrant exclusion (verified on equus-west-end-2026/guardian--unknown.json,
+// whose breadcrumb moved from the 2026 Menier review to a 2019 Stratford East
+// one; 8/8 files examined in review were correctly flagged). Running the drain
+// stripped 121 files and immediately reddened two independent CI gates — 59
+// [wrong-production-by-date] errors and 5 zero-tolerance class-A cross-market
+// leaks — with 100% of hits being drained files. 17 current matches carry
+// aggregatorStars and score WITHOUT fullText, so clearing them puts a
+// wrong-production review into live scoring.
+// These tests exist so re-adding a drain is a RED TEST, not a quiet regression.
+//
+// The guard is BEHAVIOURAL, not name-based, deliberately. An earlier version
+// matched export names against /^(remediate|fix|drain|clear)/i, which an
+// adversarial review pointed out is trivially bypassed — `repairStaleFlags`,
+// `applyStaleFlagCorrection` or `normalizeFlags` would all sail through while
+// doing exactly the forbidden thing. Every export is now called against a
+// record that matches the detector and asserted not to mutate it, so ANY
+// mutating helper fails regardless of what it is called.
+test('every export is non-mutating (no drain can be reintroduced under any name)', async () => {
+  const mod = await import('./stale-flag-after-url-correction.js');
+  const api = mod.default ?? mod;
+  // A record the detector matches, i.e. exactly what a drain would target.
+  // needsRefetch: true is REQUIRED in this fixture, not incidental — 107 of the
+  // 115 real matches carry it, so a re-added drain gated on `needsRefetch ===
+  // true` is the single most likely shape. A review proved that exact mutant
+  // slipped through a fixture that omitted the field.
+  const build = () => ({
+    url: 'https://example.com/b',
     wrongProduction: true,
-    wrongProductionReason: 'Pre-opening guard',
+    wrongProductionNote: 'Pre-opening guard: pre-window date',
+    wrongShow: true,
+    wrongShowReason: 'title mismatch',
     contentVerification: { verified: false },
     contentTier: 'stub',
     fullText: null,
-    _urlChangedClear: { from: 'a', to: 'b', cleared: ['fullText'] },
-  };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.ok(cleared.includes('wrongProduction'));
-  assert.ok(cleared.includes('wrongProductionReason'));
-  assert.ok(cleared.includes('contentVerification'));
-  assert.ok(cleared.includes('contentTier'));
-  assert.equal(data.wrongProduction, undefined);
-  assert.equal(data.contentVerification, undefined);
-  assert.equal(data.contentTier, undefined);
-  assert.equal(data.needsRefetch, true);
-  assert.ok(data._urlChangedClear.cleared.includes('fullText'));
-  assert.ok(data._urlChangedClear.cleared.includes('wrongProduction'));
-  assert.deepEqual(detectStaleFlagAfterUrlCorrection(data), [], 'remediated record must no longer match the detector');
+    needsRefetch: true,
+    aggregatorStars: '4/5',
+    _urlChangedClear: { from: 'https://example.com/a', to: 'https://example.com/b', cleared: ['fullText'] },
+  });
+  const FAIL = (name, how) =>
+    `${name}() ${how}. This module must expose no bulk flag-clearing helper under any name: `
+    + 'its matches are usually CORRECT flags, and clearing them re-admits wrong-production '
+    + 'reviews into live Critic Scores. The remedy for these records is a refetch, never a '
+    + 'flag-clear.';
+
+  let checked = 0;
+  for (const [name, fn] of Object.entries(api)) {
+    if (typeof fn !== 'function') continue;
+    checked++;
+    const data = build();
+    const before = JSON.stringify(data);
+    // `await` so an async drain that mutates after a tick is still caught; the
+    // try/catch keeps a signature-mismatch drain (fn(data, flags), fn(path))
+    // failing with THIS message rather than a bare TypeError.
+    let returned;
+    try {
+      returned = await fn(data);
+    } catch (err) {
+      assert.fail(FAIL(name, `threw on a matching record (${err.message})`));
+    }
+    assert.equal(JSON.stringify(data), before, FAIL(name, 'MUTATED a matching record'));
+    // A drain need not mutate in place — returning a cleared COPY that the
+    // caller writes back is just as destructive, and mutation-testing showed
+    // that shape passing silently.
+    if (returned && typeof returned === 'object' && !Array.isArray(returned)) {
+      for (const flag of ['wrongProduction', 'wrongShow']) {
+        if (data[flag] === true && returned[flag] !== true) {
+          assert.fail(FAIL(name, `returned a COPY with ${flag} cleared`));
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 3, `expected to exercise the module's exported functions, checked ${checked}`);
 });
 
-test('remediate clears BOTH flag families in a single pass on a dual-flagged record', () => {
-  const data = {
-    wrongProduction: true,
-    wrongProductionReason: 'Pre-opening guard',
-    wrongShow: true,
-    wrongShowReason: 'title mismatch',
-    fullText: null,
-    _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
-  };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.ok(cleared.includes('wrongProduction'));
-  assert.ok(cleared.includes('wrongShow'));
-  assert.equal(data.wrongProduction, undefined);
-  assert.equal(data.wrongShow, undefined);
-  assert.deepEqual(detectStaleFlagAfterUrlCorrection(data), [], 'a single remediate() call must clear a dual-flagged record completely');
-});
-
-test('remediate is a no-op for a non-matching record', () => {
-  const data = { wrongProduction: true, fullText: 'a real body' };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.deepEqual(cleared, []);
-  assert.equal(data.wrongProduction, true, 'non-matching record must be untouched');
+test('the deleted remediate export specifically has not come back', async () => {
+  const mod = await import('./stale-flag-after-url-correction.js');
+  const api = mod.default ?? mod;
+  assert.equal(api.remediateStaleFlagAfterUrlCorrection, undefined,
+    'remediateStaleFlagAfterUrlCorrection was deleted 2026-08-14 — do not reintroduce it.');
 });
 
 // --- producer predicate must agree with the gate, by construction ----------

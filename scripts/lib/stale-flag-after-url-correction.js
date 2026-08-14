@@ -1,19 +1,23 @@
 /**
- * Pure detector for the #483 corpus signature: a review file that carries an
- * exclusion flag (wrongProduction/wrongShow) describing an OLD article, an
- * `_urlChangedClear` breadcrumb proving a URL correction already happened,
- * an empty body (the correction is still waiting on refetch), and no human
- * override — i.e. the exact state a stale maybeUpgradeUrl escape left behind
- * on 112 corpus files (2026-07-26 sweep). The breadcrumb existing at all
- * means SOME fields were cleared at write time; the flag surviving anyway
- * means the write path that touched this file didn't clear the flag family.
+ * Pure detector for the #483 corpus signature: a review file carrying an
+ * exclusion flag (wrongProduction/wrongShow), an `_urlChangedClear` breadcrumb
+ * proving a URL correction already happened, an empty body, and no human
+ * override — the state a maybeUpgradeUrl escape left on 112 corpus files
+ * (2026-07-26 sweep).
+ *
+ * READ THE SIGNATURE CAREFULLY. It says "some writer produced this state". It
+ * does NOT say "this flag is stale", and an earlier version of this docblock
+ * claiming otherwise was wrong (corrected 2026-08-14). A URL "correction" can
+ * replace a CORRECT article with a different production's, in which case the
+ * surviving flag is right. Two independent hand adjudications found 20/20 and
+ * 8/8 matching files correctly flagged, 0 stale. Details and the specific
+ * counter-example are in isAwaitingUrlCorrectionRefetch's docblock below —
+ * read it before acting on any match.
  *
  * Not scoped to maybeUpgradeUrl specifically — any write chokepoint that
  * clears some URL-derived fields but not wrongProduction/wrongShow produces
  * this signature, so the sweep is chokepoint-agnostic by design.
  */
-
-const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve');
 
 const MANUAL_CLEAR_FIELDS = [
   'wrongProductionManualClear',
@@ -34,15 +38,26 @@ function _hasManualClear(data) {
  *   (both, if the record carries both stale flags); empty if no match.
  */
 /**
- * A record whose URL was corrected but whose body has not been refetched yet.
+ * A record that carries a URL-correction breadcrumb and still has no body.
  *
- * Its `publishDate` still belongs to the OLD article, so it is NOT evidence
- * about which production the (new) URL covers. Any date-window guard that
- * treats it as evidence will re-derive an exclusion flag from stale data —
- * which is precisely the drain→rebuild→re-flag loop that kept the #483 gate
- * red: a human cleared 157 flags in review-texts 773ebb7189d and the very
- * next Rebuild Reviews (Fast) run (a4246421ff0, ~4h later) re-added
- * `wrongProduction: true` to the same files with a "Date guard:" note.
+ * WHAT THIS DOES **NOT** MEAN (corrected 2026-08-14 — the original docblock
+ * asserted the opposite and it was false): this is NOT proof that the record's
+ * exclusion flag is stale. A URL "correction" can REPLACE A CORRECT URL WITH A
+ * DIFFERENT PRODUCTION'S, in which case the flag is correct and the record
+ * really is evidence of the wrong article. Verified on
+ * equus-west-end-2026/guardian--unknown.json, whose breadcrumb moved from the
+ * 2026 Menier Chocolate Factory review to a 2019 Stratford East one; an
+ * independent review of 8 such files found 8/8 correctly flagged. Acting on
+ * the old reading drained 121 files and immediately reddened two independent
+ * CI gates (59 [wrong-production-by-date] errors, 5 class-A cross-market
+ * leaks), 100% of the hits being drained files. See
+ * ~/Documents/claude-outputs/handoff-483-predicate-narrowing-2026-08-14.md
+ * and the URL-downgrade card for the real defect.
+ *
+ * What it DOES mean: a producer wrote (or would write) an exclusion flag onto
+ * a record in this state. Because the 12 live producer sites consult
+ * shouldWithholdStaleExclusionFlag, a NEW match indicates a writer that did
+ * not — which is the escape class the sweep exists to catch.
  *
  * Exported so producers skip the same state the detector matches — the two
  * must agree by construction, not by a comment asking them to.
@@ -94,57 +109,19 @@ function detectStaleFlagAfterUrlCorrection(data) {
   return flags;
 }
 
-// Derived from the canonical REPLACE_CLEAR_FIELDS family (not hand-rolled) so
-// this stays in sync automatically when that set grows — a hardcoded subset
-// is exactly how wrongProduction/contentVerification went stale in the first
-// place (see wrongprod-replacement-preserve.js's own docblock).
-const _clearFieldsArr = Array.from(REPLACE_CLEAR_FIELDS);
-const WRONG_PRODUCTION_FIELDS = _clearFieldsArr.filter((f) => f.startsWith('wrongProduction'));
-const WRONG_SHOW_FIELDS = _clearFieldsArr.filter((f) => f.startsWith('wrongShow'));
-const SHARED_FIELDS = _clearFieldsArr.filter(
-  (f) => !f.startsWith('wrongProduction') && !f.startsWith('wrongShow')
-);
-
-/**
- * One-time backlog remediation for files the detector matches. Clears every
- * field family for every flag the record carries (not just the first one —
- * a record with BOTH wrongProduction and wrongShow true gets both cleared in
- * a single pass) plus the shared old-URL-derived fields (contentTier,
- * contentVerification, etc.), and extends the existing `_urlChangedClear.
- * cleared` breadcrumb so the CI push-restore machinery doesn't resurrect
- * them from a committed snapshot. Never touches files the detector doesn't
- * match — no blanket flag-clearing.
- *
- * @param {object} data - a parsed review-text record (mutated in place)
- * @returns {string[]} field names actually cleared (empty if no match)
- */
-function remediateStaleFlagAfterUrlCorrection(data) {
-  const flags = detectStaleFlagAfterUrlCorrection(data);
-  if (!flags.length) return [];
-
-  const fields = [
-    ...(flags.includes('wrongProduction') ? WRONG_PRODUCTION_FIELDS : []),
-    ...(flags.includes('wrongShow') ? WRONG_SHOW_FIELDS : []),
-    ...SHARED_FIELDS,
-  ];
-  const cleared = [];
-  for (const f of fields) {
-    if (data[f] !== undefined) {
-      delete data[f];
-      cleared.push(f);
-    }
-  }
-  data.needsRefetch = true;
-
-  const priorCleared = Array.isArray(data._urlChangedClear.cleared) ? data._urlChangedClear.cleared : [];
-  data._urlChangedClear.cleared = Array.from(new Set([...priorCleared, ...cleared]));
-
-  return cleared;
-}
+// NOTE: this module deliberately has NO auto-remediation. A
+// remediateStaleFlagAfterUrlCorrection() existed until 2026-08-14 and cleared
+// the exclusion-flag families on every detector match. It was removed, not
+// refactored: the detector's matches are overwhelmingly CORRECT flags (see
+// isAwaitingUrlCorrectionRefetch's docblock), so an auto-drain built on it is
+// a contamination tool — 17 of the current matches carry aggregatorStars and
+// are scoreable WITHOUT fullText, so clearing their flag puts a wrong-
+// production review straight into live scoring. Nothing in CI ever called it.
+// The right remedy for these records is a refetch, not a flag-clear; 107 of
+// them already carry needsRefetch: true. Do not reintroduce it.
 
 module.exports = {
   detectStaleFlagAfterUrlCorrection,
-  remediateStaleFlagAfterUrlCorrection,
   isAwaitingUrlCorrectionRefetch,
   shouldWithholdStaleExclusionFlag,
 };
