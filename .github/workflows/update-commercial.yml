@@ -95,6 +95,9 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
 
       - name: Commit and push changes
         if: always() && steps.build.outcome != 'failure'
