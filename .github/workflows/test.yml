@@ -3409,11 +3409,11 @@ jobs:
           # failing test named — the failure is invisible.
           mapfile -t node_tests < tests/unit-test-manifest.txt
           [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
-          node --test --test-timeout 120000 "${node_tests[@]}"
+          node --test --test-timeout 300000 "${node_tests[@]}"
 
           mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
           [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
-          npx tsx --test --test-timeout 120000 "${tsx_tests[@]}"
+          npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
@@ -3434,7 +3434,7 @@ jobs:
         # claim was true when one helper was covered; it is now 279 files /
         # ~3,700 tests): the glob runs in 34s wall locally. It is not slow.
         #
-        # --test-timeout 120000 is the load-bearing part. `node --test` has NO
+        # --test-timeout 300000 is the load-bearing part. `node --test` has NO
         # default per-test timeout, so a single wedged file blocks until the
         # JOB timeout fires and the runner SIGTERMs everything. Run 31823977918
         # is the worked example: scripts/lib/intake-breaker.test.mjs hung for
@@ -3442,10 +3442,18 @@ jobs:
         # a 10-minute budget, and the whole run concluded `cancelled` — so the
         # `# fail 1` it did report was never surfaced and four other jobs' worth
         # of results were thrown away. With a per-test ceiling the same hang
-        # fails as one named test in 2 minutes and every other result survives.
-        # 120s is ~3.4x the slowest file measured across all 777 unit files
-        # (scripts/lib/health-row-probe.test.mjs, 35.6s — it does live probe
-        # work); anything past that is wedged, not slow.
+        # fails as one named test and every other result survives.
+        #
+        # SIZING (corrected in run 31827505814 — the first attempt used 120s and
+        # cancelled a legitimate test, so this number is measured, not guessed):
+        # the slowest honest test is tests/unit/validate-data-push-refusal-
+        # sentinel.test.mjs, which shells out to validate-data.js against the
+        # full corpus — 52.5s locally, ~121s on a runner (CI is ~2.3x slower
+        # than the dev machine). 300s is ~2.5x that CI figure, and still less
+        # than a third of the 15-minute job budget, so a genuine hang (the 635s
+        # one above included) is still caught and NAMED rather than eating the
+        # job. Raise this only against a fresh measurement of the slowest
+        # legitimate test — not to silence a hang.
         # if: always() so a red earlier test batch (e.g. tests/unit/*) can't skip
         # this step — otherwise a new scripts/lib/*.test.mjs gets ZERO CI coverage.
         if: always()
@@ -3453,7 +3461,7 @@ jobs:
           shopt -s nullglob
           tests=(scripts/lib/*.test.mjs)
           [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          node --test --test-timeout 120000 "${tests[@]}"
+          node --test --test-timeout 300000 "${tests[@]}"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test

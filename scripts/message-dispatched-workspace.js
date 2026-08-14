@@ -14,6 +14,7 @@
 const { execFileSync } = require('child_process');
 const { readEntries } = require('./lib/dispatch-ledger.js');
 const { parseWorkspaceListing, resolveWorkspaceForTask } = require('./lib/dispatched-workspace-lookup.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -50,6 +51,19 @@ function parseArgs(argv) {
 }
 
 function main() {
+  // --help/-h must short-circuit BEFORE any real work (task #498 help-flag
+  // safety guard): this script shells out to cmux via execFileSync, so a
+  // `--help` that fell through to parseArgs would dispatch a real command
+  // instead of printing usage.
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/message-dispatched-workspace.js --task=<id> [--status] [--lines=<n>] ["message text"]');
+    console.log('');
+    console.log('Finds the LIVE cmux workspace a task was auto-dispatched to and messages it.');
+    console.log('  --task=<id>     task/card id the workspace was dispatched for (required)');
+    console.log('  --status        print the workspace\'s recent output instead of messaging it');
+    console.log('  --lines=<n>     how many lines of output --status should print');
+    return;
+  }
   const { taskId, status, lines, message } = parseArgs(process.argv.slice(2));
   if (!taskId) usage();
   if (!status && !message) usage();
