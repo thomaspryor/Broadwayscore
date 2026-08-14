@@ -1,7 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { parseArgs, tailLines, formatWorkspaces, runOrientationSweep, buildSeed, STANDING_RULES, main, USAGE } =
@@ -125,14 +124,40 @@ test('buildSeed carries all 7 standing rules by number', () => {
   assert.match(STANDING_RULES, /STAY DISPOSABLE/);
 });
 
+// Behavior test (task #1438 — replaces a source-regex that pinned the exact
+// ternary/ call-arg formatting, same fragile class as #1432/#1434). main()
+// already takes spawnSync as a test seam; call it for real and capture what
+// it was actually invoked with, instead of matching this file's source text.
 test('main() defaults to --model opus --effort high, never a bare/inherited model', () => {
-  const src = fs.readFileSync(new URL('./bsc-conductor.js', import.meta.url), 'utf8');
-  assert.match(src, /model = typeof args\.model === 'string' \? args\.model : 'opus'/);
-  assert.match(src, /effort = typeof args\.effort === 'string' \? args\.effort : 'high'/);
-  assert.match(src, /spawnSync\('claude', \['--model', model, '--effort', effort,/);
+  let spawnCall = null;
+  const spawnFn = (cmd, args, opts) => { spawnCall = { cmd, args, opts }; return { status: 0 }; };
+  const origExit = process.exit;
+  let exitCode = null;
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    assert.throws(() => main([], () => 'ok', spawnFn), /__EXIT__/);
+  } finally {
+    process.exit = origExit;
+  }
+  assert.equal(exitCode, 0);
+  assert.equal(spawnCall.cmd, 'claude');
+  assert.deepEqual(spawnCall.args.slice(0, 4), ['--model', 'opus', '--effort', 'high']);
   // no --dangerously-skip-permissions: this is the owner's own interactive
   // session, unlike bsc-next's unattended dispatch targets.
-  assert.doesNotMatch(src, /--dangerously-skip-permissions/);
+  assert.ok(!spawnCall.args.includes('--dangerously-skip-permissions'));
+});
+
+test('main(): --model/--effort flags override the opus/high defaults, threaded to the real spawnSync call', () => {
+  let spawnCall = null;
+  const spawnFn = (cmd, args) => { spawnCall = { cmd, args }; return { status: 0 }; };
+  const origExit = process.exit;
+  process.exit = (code) => { throw new Error('__EXIT__'); };
+  try {
+    assert.throws(() => main(['--model', 'sonnet', '--effort', 'xhigh'], () => 'ok', spawnFn), /__EXIT__/);
+  } finally {
+    process.exit = origExit;
+  }
+  assert.deepEqual(spawnCall.args.slice(0, 4), ['--model', 'sonnet', '--effort', 'xhigh']);
 });
 
 // 2026-07-14 incident + scope add: `--help` used to run the full orientation

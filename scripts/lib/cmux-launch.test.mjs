@@ -6,8 +6,25 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
-  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC } = require('./cmux-launch.js');
+  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
+
+// Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
+// exact template-literal formatting (would break on a harmless reformat while
+// the launched command stayed byte-identical — the #1432/#1434 fragile class).
+test('buildLaunchCommand: always carries the resolved model + --dangerously-skip-permissions', () => {
+  const cmd = buildLaunchCommand('opus', null, '/tmp/seed.txt');
+  assert.match(cmd, /^claude --model opus --dangerously-skip-permissions /);
+  assert.ok(cmd.includes('--dangerously-skip-permissions'));
+  assert.ok(cmd.includes('$(cat /tmp/seed.txt)'));
+});
+
+test('buildLaunchCommand: settingsPath adds --settings, omitted when null', () => {
+  const withSettings = buildLaunchCommand('sonnet', '/path/to/deny.json', '/tmp/seed.txt');
+  assert.ok(withSettings.includes('--settings /path/to/deny.json'));
+  const withoutSettings = buildLaunchCommand('sonnet', null, '/tmp/seed.txt');
+  assert.ok(!withoutSettings.includes('--settings'));
+});
 
 // Card #856 (Session-system overhaul S3): launcher auth pre-check gate.
 test('shouldRefuseForAuth: refuses only on an explicit ok:false result', () => {
