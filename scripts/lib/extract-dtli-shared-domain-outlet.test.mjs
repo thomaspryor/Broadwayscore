@@ -72,6 +72,23 @@ test('(b) still refuses to launder a real outlet onto an aggregator via a broken
   assert.notEqual(reviews[0].outletId, 'dtli');
 });
 
+test('(c2) refines a Time Out (US)-labeled review to timeout-london when the URL path says /london (#1529)', () => {
+  // timeout.com hosts both Time Out New York and Time Out London under
+  // different paths — a genuine path-split domain, unlike the pure
+  // edition-label collisions above. outletOwnsUrlDomain alone would wrongly
+  // shield the "timeout" label here since both outlets share timeout.com;
+  // the path-aware guard must still let the URL win.
+  const html = reviewItemHtml({
+    outlet: 'Time Out',
+    criticName: 'Andrzej Lukowski',
+    url: 'https://www.timeout.com/london/theatre/some-west-end-show-review',
+    excerpt: LONG_EXCERPT,
+  });
+  const reviews = quiet(() => extractReviewsFromDTLI(html, 'some-west-end-show-2026'));
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].outletId, 'timeout-london', 'path-split domain must still refine despite bare-domain ownership');
+});
+
 test('(c) still applies ordinary cross-domain refinement between two genuinely different real outlets', () => {
   // Two real outlets, no domain overlap — the URL should still win.
   const html = reviewItemHtml({

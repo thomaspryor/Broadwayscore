@@ -949,6 +949,33 @@ function outletOwnsUrlDomain(outletId, url) {
   return owned.some(d => hostname === d || hostname.endsWith('.' + d));
 }
 
+/**
+ * Like outletOwnsUrlDomain, but only shields the label when the URL's PATH
+ * carries no outlet-identifying signal beyond the bare domain. Two outlets
+ * can share a bare domain for two different reasons:
+ *  - pure edition/section labels with no path signal (telegraph vs
+ *    sunday-telegraph, express-uk vs sunday-express) — domain ownership
+ *    alone should protect the existing label here.
+ *  - a genuine path-split domain (timeout.com/london vs timeout.com/newyork)
+ *    — the path IS the signal that identifies the correct outlet, so owning
+ *    the bare domain must NOT block refinement.
+ * Detected generically, mirroring review-file-writer.js's Case 1
+ * pathInformed check (task #1529): resolve the URL's bare origin — if that
+ * resolves to a DIFFERENT outlet than the full URL, the path is informative
+ * and this returns false so the caller still refines.
+ */
+function outletOwnsUrlDomainIgnoringPath(outletId, url) {
+  if (!outletOwnsUrlDomain(outletId, url)) return false;
+  try {
+    const originResolved = resolveOutletFromUrl(new URL(url).origin + '/');
+    const fullResolved = resolveOutletFromUrl(url);
+    if (originResolved && fullResolved && originResolved.outletId !== fullResolved.outletId) {
+      return false;
+    }
+  } catch { /* unparseable — fall through to the domain-only answer */ }
+  return true;
+}
+
 function getOutletFromRegistry(outletId) {
   const registry = loadOutletRegistry();
   if (!registry || !registry.outlets) return null;
@@ -1852,6 +1879,7 @@ module.exports = {
   clearCriticRegistryCache,
   resolveOutletFromUrl,
   outletOwnsUrlDomain,
+  outletOwnsUrlDomainIgnoringPath,
   isCrossOutletUrl,
   WIRE_SERVICE_OUTLETS,
   clearDomainCache,
