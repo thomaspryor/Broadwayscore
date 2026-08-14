@@ -1538,7 +1538,14 @@ async function consumeShowScoreCandidatesFile() {
       // If ShowScore has no "Opens" date, leave openingDate null — don't guess.
       let openingDate = null;
       let openingDateSource = null;
-      let previewsStartDate = ttShow.startDate || null;
+      // TodayTix returns the literal string "null" (not JSON null) for shows
+      // without confirmed dates — same quirk the closingDate guard 40 lines
+      // below already handles. Fix #2 (Gap B, card #1446) now lets these
+      // candidates reach this branch (previously always filtered out by
+      // isOneNightShow's own "null" === "null" false-positive), so this raw
+      // assignment needs the same guard or it writes the string "null" into
+      // shows.json (adversarial ship-check finding).
+      let previewsStartDate = ttShow.startDate === 'null' ? null : ttShow.startDate || null;
       // Hoisted so the venue fallback below can reuse this fetch instead of
       // discarding it — see the venueName resolution just after this block.
       let ssData = null;
@@ -1555,7 +1562,7 @@ async function consumeShowScoreCandidatesFile() {
         }
       } else {
         // Broadway: TodayTix startDate is used as openingDate until IBDB enrichment
-        openingDate = ttShow.startDate || null;
+        openingDate = ttShow.startDate === 'null' ? null : ttShow.startDate || null;
         openingDateSource = openingDate ? 'todaytix' : null;
       }
 
@@ -2037,7 +2044,19 @@ async function discoverShows() {
   // this mutation is what saveShows(data) below persists. Always logged (even
   // in dry-run) so --dry-run output demonstrates the refresh; only mutated
   // when actually writing.
-  function reconcileMatchedShow(existing, candidate) {
+  //
+  // Gated to HIGH-CONFIDENCE match reasons only (adversarial ship-check
+  // finding, card #1446): checkForDuplicate() also returns fuzzy/containment/
+  // slug-prefix matches, which exist specifically to catch messy title
+  // variants — exactly the cases where "these are definitely the same show"
+  // is least certain. Mutating shows.json on a fuzzy match risk writing one
+  // show's live-source data onto a DIFFERENT show that merely has a similar
+  // title. Reconciliation only fires for reasons that assert real identity
+  // equality (exact title/slug, ID base) — todaytixId matches (Step 0 below)
+  // are separately high-confidence and always eligible.
+  const HIGH_CONFIDENCE_REASON_PREFIXES = ['Exact title match', 'Exact slug match', 'ID base match'];
+  function reconcileMatchedShow(existing, candidate, reason) {
+    if (reason && !HIGH_CONFIDENCE_REASON_PREFIXES.some(p => reason.startsWith(p))) return;
     const patch = computeShowReconciliation(existing, candidate);
     if (!patch) return;
     reconciledShows.push({ id: existing.id, title: existing.title, patch });
@@ -2049,7 +2068,7 @@ async function discoverShows() {
     // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
     if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
       const existing = existingTodaytixIds.get(show.todaytixId);
-      reconcileMatchedShow(existing, show);
+      reconcileMatchedShow(existing, show, null);
       skippedDuplicates.push({
         title: show.title,
         reason: `Same TodayTix ID (${show.todaytixId}) as existing show`,
@@ -2062,7 +2081,7 @@ async function discoverShows() {
     const duplicateCheck = checkForDuplicate(show, data.shows);
 
     if (duplicateCheck.isDuplicate) {
-      if (duplicateCheck.existingShow) reconcileMatchedShow(duplicateCheck.existingShow, show);
+      if (duplicateCheck.existingShow) reconcileMatchedShow(duplicateCheck.existingShow, show, duplicateCheck.reason);
       skippedDuplicates.push({
         title: show.title,
         reason: duplicateCheck.reason,

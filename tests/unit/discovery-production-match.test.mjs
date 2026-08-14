@@ -160,3 +160,37 @@ test('Gap C: no patch when the candidate has nothing new to offer', () => {
   const candidate = { title: 'Wanted', venue: 'James Earl Jones Theatre', previewsStartDate: '2026-10-15' };
   assert.equal(computeShowReconciliation(existing, candidate), null);
 });
+
+test('Gap C: a curated openingDateSource (e.g. press-night inferred from reviews) is never clobbered', () => {
+  const existing = {
+    id: 'some-show-west-end-2026',
+    title: 'Some Show',
+    status: 'upcoming',
+    venue: 'Some Theatre',
+    openingDate: '2026-09-01',
+    openingDateSource: 'review-derived-press-night',
+    previewsStartDate: '2026-08-15',
+  };
+  const candidate = {
+    title: 'Some Show',
+    venue: 'A Different Theatre',
+    openingDate: '2026-09-15',
+    openingDateSource: 'todaytix',
+    previewsStartDate: '2026-08-01',
+  };
+  assert.equal(computeShowReconciliation(existing, candidate), null, 'curated source must block ALL fields, not just openingDate');
+});
+
+test('Gap C: a candidate openingDate with no source is refused (never write an unattributed date)', () => {
+  const existing = {
+    id: 'some-show-2026',
+    title: 'Some Show',
+    status: 'announced',
+    venue: 'Some Theatre',
+    openingDate: null,
+    openingDateSource: null,
+  };
+  const candidate = { title: 'Some Show', venue: 'Some Theatre', openingDate: '2026-09-15' };
+  const patch = computeShowReconciliation(existing, candidate);
+  assert.equal(patch, null, 'no venue/date change offered besides the unattributed openingDate, so no patch at all');
+});
