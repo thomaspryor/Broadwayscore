@@ -53,12 +53,19 @@ function loadJson(file, fallback) {
   }
 }
 
+// Earliest of the 3 candidate fields, not first-available (adversarial
+// review, 2026-08-14): a historical show backfilled today gets a fresh
+// discoveredAt but a years-old openingDate — picking discoveredAt would
+// reset its "since when has this been imageless" clock and suppress a
+// genuinely overdue show behind a false 24h grace period.
 function resolveSinceMs(show) {
-  const raw = show.discoveredAt || show.openingDate || show.previewsStartDate;
-  if (!raw) return null;
-  const ms = Date.parse(raw);
-  return Number.isNaN(ms) ? null : ms;
+  const candidates = [show.discoveredAt, show.openingDate, show.previewsStartDate]
+    .map((raw) => (raw ? Date.parse(raw) : NaN))
+    .filter((ms) => !Number.isNaN(ms));
+  if (!candidates.length) return null;
+  return Math.min(...candidates);
 }
+
 
 function buildReviewCountByShow(reviewsData) {
   const list = Array.isArray(reviewsData) ? reviewsData
