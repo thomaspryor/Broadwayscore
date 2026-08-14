@@ -3,7 +3,12 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyReverseCrossMarket, classifyCrossMarketContamination } = require('./cross-market-guard.js');
+const {
+  classifyReverseCrossMarket,
+  classifyCrossMarketContamination,
+  isUkVenueString,
+  evaluateReverseLondonCrossMarketGuard,
+} = require('./cross-market-guard.js');
 
 const D = (s) => new Date(s + 'T00:00:00Z');
 
@@ -217,4 +222,75 @@ test('US-on-WE: unknown region never errors, even pre-window (not enough signal)
       'warning'
     );
   }
+});
+
+// BRO-222: isUkVenueString classifies show.priorRuns[].venue free text.
+test('isUkVenueString: recognizes Fringe / West End / regional UK venue text', () => {
+  assert.equal(isUkVenueString('Edinburgh Festival Fringe (Assembly)'), true);
+  assert.equal(isUkVenueString('Bridge Theatre, London'), true);
+  assert.equal(isUkVenueString("Audible's Minetta Lane Theatre"), false);
+  assert.equal(isUkVenueString(null), false);
+  assert.equal(isUkVenueString(undefined), false);
+});
+
+// Regression: bare "fringe"/"england" collide with genuine US venue text
+// (FringeNYC, "New England ..." theaters) — a false match here would wrongly
+// EXEMPT a real cross-market review, worse than under-matching. Caught in
+// ship-check adversarial review (gpt-5.4-mini), fixed by dropping those two
+// keywords from UK_VENUE_RE.
+test('isUkVenueString: does NOT false-positive on US "Fringe"/"New England" venue text', () => {
+  assert.equal(isUkVenueString('SoHo Playhouse (New York International Fringe Festival)'), false);
+  assert.equal(isUkVenueString('New England Repertory Theatre'), false);
+});
+
+// BRO-222: the reverse cross-market guard (London outlet on a Broadway/off-
+// Broadway show) previously consulted show.priorRuns nowhere at all — this is
+// the guard that actually suppressed the live newsletter-show incident
+// (rosie-odonnell-common-knowledge-off-broadway-2026's neurodiversereview
+// review: UK outlet, published inside the declared Edinburgh Fringe run, still
+// excluded as "Cross-market: London outlet reviewing off-broadway show").
+test('evaluateReverseLondonCrossMarketGuard: a UK outlet on a show whose priorRun venue is UK is NOT cross-market rejected', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Edinburgh Festival Fringe (Assembly)' }];
+  const r = evaluateReverseLondonCrossMarketGuard({
+    outletIsLondon: true,
+    reviewDate: D('2025-08-09'), // inside the declared Fringe window
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, true);
+});
+
+test('evaluateReverseLondonCrossMarketGuard: same outlet WITHOUT priorRuns passed is still flagged (proves the fix, not a tautology)', () => {
+  const r = evaluateReverseLondonCrossMarketGuard({
+    outletIsLondon: true,
+    reviewDate: D('2025-08-09'),
+    // priorRuns omitted — mirrors current-guard-logic-before-the-fix behavior
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateReverseLondonCrossMarketGuard: in-window date but a NON-UK priorRun venue is still flagged', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: "Audible's Minetta Lane Theatre" }];
+  const r = evaluateReverseLondonCrossMarketGuard({
+    outletIsLondon: true,
+    reviewDate: D('2025-08-09'),
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+});
+
+test('evaluateReverseLondonCrossMarketGuard: a date OUTSIDE the declared priorRun window is still flagged', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Edinburgh Festival Fringe (Assembly)' }];
+  const r = evaluateReverseLondonCrossMarketGuard({
+    outletIsLondon: true,
+    reviewDate: D('2026-06-14'), // the republished-review class — explicitly NOT covered by this fix
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+});
+
+test('evaluateReverseLondonCrossMarketGuard: non-London outlet is never flagged regardless of priorRuns', () => {
+  const r = evaluateReverseLondonCrossMarketGuard({ outletIsLondon: false, reviewDate: D('2025-08-09'), priorRuns: null });
+  assert.equal(r.shouldFlag, false);
 });

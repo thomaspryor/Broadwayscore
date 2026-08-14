@@ -315,6 +315,68 @@ function evaluateForwardCrossMarketGuard({
   return { shouldFlag: true, reason: `Cross-market: US outlet "${rawOutlet}" reviewing London show` };
 }
 
+/**
+ * UK-market signal in a free-text venue string (show.priorRuns[].venue).
+ *
+ * priorRuns entries carry a human-written venue string (e.g. "Edinburgh
+ * Festival Fringe (Assembly)"), not a structured market/region field —
+ * this is a lightweight keyword classifier over that string, matching the
+ * same "does the text say UK" approach the codebase already uses for URL
+ * hostnames (isUkUrl above) and festival-venue detection
+ * (review-guards.js's FESTIVAL_VENUE_SHOW_RE).
+ *
+ * Deliberately excludes bare "fringe" and "england" — both collide with
+ * genuine US venue text (FringeNYC / New York International Fringe
+ * Festival; "New England ..." theaters/venue names) and a false match here
+ * wrongly EXEMPTS a cross-market review from a real contamination flag,
+ * which is a worse failure than under-matching (ship-check finding,
+ * BRO-222). "edinburgh" alone already covers the Edinburgh Fringe case this
+ * guard exists for.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {boolean}
+ */
+const UK_VENUE_RE = /\b(?:london|west end|off[- ]?west end|edinburgh|glasgow|manchester|birmingham|leeds|liverpool|bristol|cardiff|scotland|wales|u\.?k\.?|united kingdom)\b/i;
+
+function isUkVenueString(venue) {
+  return !!(venue && UK_VENUE_RE.test(String(venue)));
+}
+
+/**
+ * Reverse cross-market guard (London outlet reviewing a Broadway/off-Broadway
+ * show), priorRuns-aware.
+ *
+ * Background (BRO-222): a review whose publishDate falls inside a show's
+ * declared priorRuns window is coverage of THAT run, not the current one —
+ * its market must be judged against the prior run's own venue, not the
+ * current show's market. Before this fix, the rebuild's reverse cross-market
+ * block (rebuild-all-reviews.js "GUARD:CROSS-MARKET-LONDON-ON-OTHER")
+ * consulted show.priorRuns nowhere at all, so a UK critic's in-window
+ * coverage of a declared Edinburgh Fringe run got excluded from a live NYC
+ * transfer show as "Cross-market: London outlet reviewing off-broadway show"
+ * (rosie-odonnell-common-knowledge-off-broadway-2026 /
+ * neurodiversereview--simon-jay.json, live newsletter incident).
+ *
+ * Pure — the caller resolves reviewDate/priorRuns and the raw "is this a
+ * London outlet" signal (outletRegion === 'london' or a UK-hosted URL); this
+ * function only decides whether a declared prior run exempts the review.
+ *
+ * @param {object} args
+ * @param {boolean} args.outletIsLondon - outletRegion === 'london', or the review URL is UK-hosted
+ * @param {Date|string|null} args.reviewDate - parsed/parseable review publish date
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns
+ * @returns {{ shouldFlag: boolean, exemptedByPriorRun: boolean, matchedVenue: string|null }}
+ */
+function evaluateReverseLondonCrossMarketGuard({ outletIsLondon, reviewDate, priorRuns }) {
+  if (!outletIsLondon) return { shouldFlag: false, exemptedByPriorRun: false, matchedVenue: null };
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const match = findMatchingPriorRun(reviewDate, priorRuns);
+  if (match && isUkVenueString(match.venue)) {
+    return { shouldFlag: false, exemptedByPriorRun: true, matchedVenue: match.venue };
+  }
+  return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
+}
+
 module.exports = {
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
@@ -322,5 +384,7 @@ module.exports = {
   buildOutletRegionMap,
   buildRegisteredOutletIds,
   isUkUrl,
+  isUkVenueString,
   evaluateForwardCrossMarketGuard,
+  evaluateReverseLondonCrossMarketGuard,
 };

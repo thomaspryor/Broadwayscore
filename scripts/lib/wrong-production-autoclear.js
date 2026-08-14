@@ -42,9 +42,25 @@ const { parseDate } = require('./date-utils');
  * @returns {boolean}
  */
 function isWithinPriorRun(reviewDate, priorRuns) {
-  if (!reviewDate || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
+  return !!findMatchingPriorRun(reviewDate, priorRuns);
+}
+
+/**
+ * Same window logic as isWithinPriorRun, but returns the MATCHED priorRun
+ * entry (not just a boolean) — callers that need to know which run a review
+ * belongs to (e.g. to judge the review's market against that run's OWN venue
+ * rather than the current run's) use this instead of re-deriving the window
+ * math. isWithinPriorRun is defined in terms of this so the two can never
+ * drift apart.
+ *
+ * @param {Date|string|null} reviewDate
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} priorRuns
+ * @returns {{openingDate?: string, closingDate?: string, venue?: string}|null}
+ */
+function findMatchingPriorRun(reviewDate, priorRuns) {
+  if (!reviewDate || !Array.isArray(priorRuns) || priorRuns.length === 0) return null;
   const rd = reviewDate instanceof Date ? reviewDate : parseDate(reviewDate);
-  if (!rd || isNaN(rd.getTime())) return false;
+  if (!rd || isNaN(rd.getTime())) return null;
   const rdMs = rd.getTime();
 
   for (const run of priorRuns) {
@@ -60,9 +76,9 @@ function isWithinPriorRun(reviewDate, priorRuns) {
       close = new Date(open.getTime());
       close.setUTCDate(close.getUTCDate() + 180);
     }
-    if (rdMs >= open.getTime() && rdMs <= close.getTime()) return true;
+    if (rdMs >= open.getTime() && rdMs <= close.getTime()) return run;
   }
-  return false;
+  return null;
 }
 
 /**
@@ -637,6 +653,7 @@ module.exports = {
   shouldAutoClearWrongShowUkUrl,
   isTextStaleRelativeToUrlRewrite,
   isWithinPriorRun,
+  findMatchingPriorRun,
   hasDeclaredPriorRuns,
   isWithinTourLeg,
   hasDeclaredTourLegs,
