@@ -195,28 +195,39 @@ jobs:
           # upstream tip right before rebuilding. A `git fetch` + `rev-parse` is a
           # few seconds; this runs on EVERY invocation but only pays for a re-sync
           # when drift is actually detected (unchanged SHA = zero added cost).
+          #
+          # Explicit destination refspec (+main:refs/remotes/origin/main), not a
+          # bare `git fetch origin main` — the checkout-review-texts composite
+          # action's shallow checkout may not leave a fetch refspec configured
+          # that a later bare fetch would resolve into refs/remotes/origin/main,
+          # in which case the ref update would silently land only in FETCH_HEAD
+          # and the drift check below would never fire.
           CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
-          git -C data/review-texts fetch origin main --depth=1 --quiet
-          CURRENT_SHA=$(git -C data/review-texts rev-parse origin/main)
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
           echo "" > /tmp/stale-checkout-shows.txt
           if node -e "
             const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
             process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
           " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
             echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
-            # Record which shows drifted (for the post-rebuild verify step below)
-            # BEFORE pulling them in, then update ONLY those paths from the fresh
-            # tip — a targeted `git checkout <sha> -- <paths>` instead of a full
-            # rm -rf + re-clone, so the uncommitted local edits the pre-rebuild
-            # utility steps above just made to OTHER files are not discarded.
-            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" > /tmp/stale-checkout-files.txt
-            cut -d/ -f1 /tmp/stale-checkout-files.txt | sort -u > /tmp/stale-checkout-shows.txt
-            # Explicit pathspec only — an empty $() would make `git checkout
-            # <sha> --` take ALL paths, silently discarding the pre-rebuild
-            # utility steps' uncommitted edits repo-wide instead of just the
-            # drifted files.
+            # Record which SHOWS drifted (for the post-rebuild verify step below) —
+            # includes deletions, since a show can still have other scoreable
+            # content worth verifying even if one file was removed upstream.
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            # Then update ONLY files that still EXIST at the new tip (--diff-filter=d
+            # excludes deletions — `git checkout <sha> -- <deleted-path>` errors and
+            # would abort this whole step on an ordinary review-texts deletion, not
+            # just the staleness race this guard targets) from the fresh tip — a
+            # targeted checkout instead of a full rm -rf + re-clone, so the
+            # uncommitted local edits the pre-rebuild utility steps above just made
+            # to OTHER files are not discarded. NUL-delimited (`-z` / `xargs -0`) so
+            # no filename can be mis-split by whitespace or shell glob chars.
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
             if [ -s /tmp/stale-checkout-files.txt ]; then
-              git -C data/review-texts checkout "$CURRENT_SHA" -- $(cat /tmp/stale-checkout-files.txt)
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
             fi
           fi
 

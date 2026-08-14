@@ -16,11 +16,14 @@
  * has a file that passes both but reviews.json has zero entries for that
  * show, the rebuild silently dropped it — fail the job loudly.
  *
- * Known residual gap: rebuild-all-reviews.js also skips an unflagged
- * syndication SECONDARY when an unflagged primary sibling already exists for
- * the same critic (KNOWN_SYNDICATION_PAIRS, scripts/lib/syndication-pairs.js)
- * — checked below via isSecondaryOutlet() so a same-show primary+secondary
- * pair doesn't false-positive.
+ * Also mirrors two more of rebuild-all-reviews.js's pre-scoring steps so a
+ * drifted-but-legitimately-excluded file isn't misread as a dropped show:
+ * applyScoreRelevantMigrations() (normalizes aggregator-source scores /
+ * recovers garbage-text before getBestScore() decides) and the unflagged
+ * syndication-SECONDARY dedup (KNOWN_SYNDICATION_PAIRS,
+ * scripts/lib/syndication-pairs.js — a secondary copy is excluded only when
+ * an unflagged PRIMARY sibling, by filename prefix, exists for the same
+ * critic).
  *
  * Usage: node scripts/check-rebuild-staleness.js --shows-file=<path>
  *   <path> is a newline-delimited list of candidate show ids. Missing/empty
@@ -32,9 +35,9 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isIncludableForRebuild } = require('./lib/review-guards');
-const { getBestScore } = require('./lib/rebuild-helpers');
+const { getBestScore, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
 const { normalizeOutlet } = require('./lib/review-normalization');
-const { isSecondaryOutlet } = require('./lib/syndication-pairs');
+const { getSyndicationConfig } = require('./lib/syndication-pairs');
 const { findMissingScoreableShows } = require('./lib/rebuild-staleness-guard');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -61,27 +64,44 @@ function readCandidateShowIds(showsFileArg) {
 
 /**
  * Would rebuild-all-reviews.js include this specific file? Composes the two
- * real functions it calls — never a bespoke reimplementation.
+ * real functions it calls — never a bespoke reimplementation. Mirrors
+ * rebuild-all-reviews.js's own pre-scoring step: applyScoreRelevantMigrations
+ * mutates a working copy in-memory before getBestScore() is asked whether a
+ * score exists, so a file whose score is only exposed by that migration
+ * (aggregator-source normalization, garbage-text recovery) isn't
+ * misclassified as unscoreable here. Mutates a fresh copy, never the file on
+ * disk.
  */
 function isScoreableFile(data, show, filePath) {
   if (!isIncludableForRebuild(data, show || {}, filePath)) return false;
-  return getBestScore(data) !== null;
+  const migrated = { ...data };
+  applyScoreRelevantMigrations(migrated);
+  return getBestScore(migrated) !== null;
 }
 
 /**
- * Mirrors the unflagged-secondary dedup in rebuild-all-reviews.js: a
- * syndicated secondary copy is excluded when an unflagged primary sibling
- * for the same critic already exists in the same show directory.
+ * Mirrors the unflagged-secondary dedup in rebuild-all-reviews.js (the
+ * KNOWN_SYNDICATION_PAIRS check ~line 3193): a syndicated secondary copy is
+ * excluded when an UNFLAGGED PRIMARY SIBLING for the same critic already
+ * exists in the same show directory. Must require the sibling filename to
+ * start with the primary outlet's prefix — checking only "some file whose
+ * name contains the critic slug" without that prefix requirement matches the
+ * file being tested against ITSELF (every candidate file's own name contains
+ * its own critic slug), which always short-circuits true and silently
+ * excludes every syndicated-secondary file from the scoreable set regardless
+ * of whether a real primary exists.
  */
-function isUnflaggedSyndicationSecondary(data, allFiles, showDir) {
+function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir) {
   const criticName = (data.criticName || '').toLowerCase().trim();
   const outletId = normalizeOutlet(data.outletId || data.outlet || '');
-  if (!isSecondaryOutlet(criticName, outletId)) return false;
+  const syndConfig = getSyndicationConfig(criticName);
+  if (!syndConfig || !syndConfig.secondary.includes(outletId)) return false;
+  const primaryPrefix = `${syndConfig.primary}--`;
   const criticSlug = criticName.replace(/\s+/g, '-');
   return allFiles.some((f) => {
-    if (!f.includes(criticSlug)) return false;
-    const full = path.join(showDir, f);
-    const pData = loadJSON(full);
+    if (f === currentFile) return false;
+    if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
+    const pData = loadJSON(path.join(showDir, f));
     if (!pData) return false;
     return !pData.wrongProduction && !pData.wrongShow;
   });
@@ -124,7 +144,7 @@ function main() {
       const data = loadJSON(path.join(showDir, file));
       if (!data) return false;
       if (!isScoreableFile(data, show, path.join(showDir, file))) return false;
-      if (isUnflaggedSyndicationSecondary(data, files, showDir)) return false;
+      if (isUnflaggedSyndicationSecondary(data, file, files, showDir)) return false;
       return true;
     });
     if (isScoreable) scoreableShowIds.push(showId);
