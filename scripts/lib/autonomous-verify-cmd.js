@@ -63,7 +63,7 @@ function extractVerifyCmd(notes, isSafeCheckCommand) {
   // the tsc line captured purely because it appeared first — and "tsc still
   // passes" says nothing about whether THAT card's work survived (ship-check
   // finding). Ranked, not reordered: order within a rank is still card order.
-  const rank = c => (/^node --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+  const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
   const safe = candidates.filter(c => isSafeCheckCommand(c));
   if (safe.length) {
     const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];

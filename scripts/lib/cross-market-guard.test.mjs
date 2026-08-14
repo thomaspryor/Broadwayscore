@@ -7,7 +7,9 @@ const {
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
   isUkVenueString,
+  isUsVenueString,
   evaluateReverseLondonCrossMarketGuard,
+  evaluateForwardCrossMarketGuard,
 } = require('./cross-market-guard.js');
 
 const D = (s) => new Date(s + 'T00:00:00Z');
@@ -293,4 +295,100 @@ test('evaluateReverseLondonCrossMarketGuard: a date OUTSIDE the declared priorRu
 test('evaluateReverseLondonCrossMarketGuard: non-London outlet is never flagged regardless of priorRuns', () => {
   const r = evaluateReverseLondonCrossMarketGuard({ outletIsLondon: false, reviewDate: D('2025-08-09'), priorRuns: null });
   assert.equal(r.shouldFlag, false);
+});
+
+// Card #1528 (BRO-222 cousin, opposite direction): the FORWARD cross-market
+// guard (US outlet reviewing a West End/Off-West-End show) had zero priorRuns
+// handling — a US critic's in-window coverage of a declared US prior run
+// (e.g. an Off-Broadway/regional run before a West End transfer) would be
+// wrongly flagged 'Cross-market: US outlet reviewing London show', the
+// mirror image of the rosie-odonnell-common-knowledge incident BRO-222 fixed.
+
+test('isUsVenueString: recognizes explicit US venue text via positive keyword match', () => {
+  assert.equal(isUsVenueString('Playwrights Horizons (Off-Broadway)'), true);
+  assert.equal(isUsVenueString('Berkeley Repertory Theatre'), true);
+  assert.equal(isUsVenueString('Bridge Theatre, London'), false);
+  assert.equal(isUsVenueString('Edinburgh Festival Fringe (Assembly)'), false);
+  assert.equal(isUsVenueString(null), false);
+  assert.equal(isUsVenueString(undefined), false);
+});
+
+// Regression (ship-check adversarial finding): isUsVenueString must NOT be
+// the bare inverse of isUkVenueString — UK regional venues with no keyword
+// in UK_VENUE_RE's necessarily-partial city list must still resolve to
+// isUsVenueString === false (fail closed: guard keeps flagging), not get
+// silently reclassified as "US" and wrongly exempt a real cross-market leak.
+test('isUsVenueString: does NOT false-positive on unlisted UK regional venues (fails closed, not the UK-inverse)', () => {
+  assert.equal(isUsVenueString('Chichester Festival Theatre'), false);
+  assert.equal(isUsVenueString('Sheffield Crucible'), false);
+  assert.equal(isUsVenueString('Bath Theatre Royal'), false);
+  assert.equal(isUsVenueString('Nottingham Playhouse'), false);
+  assert.equal(isUsVenueString('York Theatre Royal'), false);
+  assert.equal(isUsVenueString('Newcastle Theatre Royal'), false);
+  assert.equal(isUsVenueString('Belfast Grand Opera House'), false);
+});
+
+const forwardGuardBase = {
+  outletRegionMap: {},
+  registeredOutletIds: new Set(['nypost']),
+  canonicalOutlet: 'nypost',
+  rawOutlet: 'nypost',
+  url: 'https://nypost.com/theater/some-review/',
+  contentVerification: undefined,
+};
+
+test('evaluateForwardCrossMarketGuard: a US outlet on a show whose priorRun venue is US is NOT cross-market flagged when the review date falls inside the declared window', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Playwrights Horizons (Off-Broadway)' }];
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    reviewDate: D('2025-08-09'), // inside the declared US prior run window
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, true);
+});
+
+test('evaluateForwardCrossMarketGuard: same outlet WITHOUT priorRuns passed is still flagged (proves the fix, not a tautology)', () => {
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    reviewDate: D('2025-08-09'),
+    // priorRuns omitted — mirrors pre-fix behavior
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateForwardCrossMarketGuard: in-window date but a UK priorRun venue is still flagged', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Bridge Theatre, London' }];
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    reviewDate: D('2025-08-09'),
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+});
+
+test('evaluateForwardCrossMarketGuard: a date OUTSIDE the declared priorRun window is still flagged', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Playwrights Horizons (Off-Broadway)' }];
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    reviewDate: D('2026-06-14'), // outside every declared window — republished-review class, out of scope
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+});
+
+test('evaluateForwardCrossMarketGuard: a London outlet is still skip-exempted regardless of priorRuns (unaffected by this fix)', () => {
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    outletRegionMap: { guardian: 'london' },
+    registeredOutletIds: new Set(['guardian']),
+    canonicalOutlet: 'guardian',
+    rawOutlet: 'guardian',
+    url: 'https://www.theguardian.com/stage/some-review',
+    reviewDate: D('2025-08-09'),
+    priorRuns: null,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, false);
 });

@@ -156,6 +156,26 @@ test('does not overwrite a shared-domain edition label with its sibling outlet',
   assert.equal(primary.outletId, 'sunday-telegraph', 'shared-domain edition label must survive, not collapse onto the sibling outlet');
 });
 
+test('refines a Timeout (US)-labeled review to timeout-london when the URL path says /london (#1529)', () => {
+  // timeout.com hosts both Time Out New York and Time Out London under
+  // different paths — a genuine path-split domain, unlike the pure
+  // edition-label collisions above (Sunday Telegraph/Telegraph). Label
+  // "Timeout" slugifies directly to "timeout" (this extractor slugifies the
+  // DTLI label text rather than going through the registry alias map), so
+  // outletOwnsUrlDomain alone would wrongly shield it since both outlets
+  // share timeout.com — the path-aware guard must still let the URL win.
+  const html = reviewItemHtml({
+    outlet: 'Timeout',
+    criticName: 'Andrzej Lukowski',
+    url: 'https://www.timeout.com/london/theatre/some-west-end-show-review',
+    excerpt: LONG_EXCERPT,
+  });
+  const reviews = quiet(() => extractDTLIReviews(html, 'some-west-end-show-2026', 'https://didtheylikeit.com/shows/some-west-end-show/', 'Some West End Show'));
+  const primary = reviews.find((r) => r.criticName === 'Andrzej Lukowski');
+  assert.ok(primary, 'block-parser review must be present');
+  assert.equal(primary.outletId, 'timeout-london', 'path-split domain must still refine despite bare-domain ownership');
+});
+
 test('does not relabel the outlet from a URL that gets rejected as belonging to a different show', () => {
   // DTLI labels the review "Associated Press" but the button href is a stale/
   // cross-show HuffPost link whose slug doesn't match this show's title — the
