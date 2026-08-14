@@ -12,7 +12,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { resolveCanonicalOutletId } = require('../../scripts/lib/outlet-canonicalize.js');
+const { resolveCanonicalOutletId, _buildDomainMap } = require('../../scripts/lib/outlet-canonicalize.js');
 
 describe('resolveCanonicalOutletId — 2026-04-23 Rocky Horror drift fixtures', () => {
   test('davidcote-substack + davidcote1.substack.com → cote-notices (URL wins)', () => {
@@ -104,5 +104,45 @@ describe('resolveCanonicalOutletId — edge cases', () => {
     // pick one of the shared canonicals from URL.
     assert.notStrictEqual(r.source, 'url');
     assert.ok(r.outletId, 'resolves to some canonical via alias');
+  });
+});
+
+describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BRO-247)', () => {
+  // silent-exclusion-detectors.js (#1254) and review-normalization.js's
+  // buildDomainToOutletIndex (BRO-247, PR #573) both had the same bug: they
+  // stripped the TLD to a bare "domainBase" fallback key, so two legitimately
+  // distinct outlets sharing a brand word across TLDs (dancemagazine.com vs
+  // dancemagazine.co.uk) collided on the bare key and printed a live warning
+  // every build. outlet-canonicalize.js's _buildDomainMap() never had that
+  // bug — it keys the map by the outlet's FULL registered domain/domainAliases
+  // string, no TLD stripping — so dancemagazine.com and dancemagazine.co.uk
+  // were never the same key and never collided. These tests lock that in so a
+  // future edit can't reintroduce the class a third time by "generalizing"
+  // this function to match the other two's old (buggy) bare-base behavior.
+  const CROSS_TLD = [
+    { a: 'dancemagazine.com', aId: 'dance-magazine', b: 'dancemagazine.co.uk', bId: 'dance-informa-uk' },
+    { a: 'independent.com', aId: 'santa-barbara-independent', b: 'independent.co.uk', bId: 'independent' },
+    { a: 'boston.com', aId: 'boston-com', b: 'boston.edgemedianetwork.com', bId: 'edge-boston' },
+  ];
+
+  test('each full-TLD domain resolves to its own outlet, independently of its cross-TLD sibling', () => {
+    const { domainToOutlet, ambiguous } = _buildDomainMap();
+    for (const { a, aId, b, bId } of CROSS_TLD) {
+      assert.strictEqual(ambiguous.has(a), false, `${a} must not be marked ambiguous`);
+      assert.strictEqual(ambiguous.has(b), false, `${b} must not be marked ambiguous`);
+      assert.strictEqual(domainToOutlet[a], aId, `${a} should resolve to ${aId}`);
+      assert.strictEqual(domainToOutlet[b], bId, `${b} should resolve to ${bId}`);
+    }
+  });
+
+  test('resolveCanonicalOutletId resolves both sides of a cross-TLD brand pair via URL', () => {
+    for (const { a, aId, b, bId } of CROSS_TLD) {
+      const ra = resolveCanonicalOutletId({ outletArg: aId, url: `https://${a}/x` });
+      const rb = resolveCanonicalOutletId({ outletArg: bId, url: `https://${b}/x` });
+      assert.strictEqual(ra.outletId, aId);
+      assert.strictEqual(ra.source, 'url');
+      assert.strictEqual(rb.outletId, bId);
+      assert.strictEqual(rb.source, 'url');
+    }
   });
 });
