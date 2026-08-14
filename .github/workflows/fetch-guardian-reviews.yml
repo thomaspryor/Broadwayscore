@@ -99,7 +99,12 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
 
-          # Core data files pushed to private repo by push-core-data action
+          # data/audit/*.json (rebuild-all-reviews.js's non-blocking guard
+          # ledgers) is NOT in push-core-data's CORE_FILES list, so it must be
+          # staged explicitly here — the prior comment claiming push-core-data
+          # covered it was wrong and made this step a permanent no-op
+          # (task #1460, same bug class as #1456).
+          git add data/audit/*.json 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
