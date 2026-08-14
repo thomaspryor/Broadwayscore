@@ -41,6 +41,8 @@ export interface OffWestEndShow {
 
 interface OffWestEndPageClientProps {
   shows: OffWestEndShow[];
+  /** Cache-busting hash for off-west-end-archive.json (lazy-loaded closed shows). */
+  archiveHash?: string;
   totalShows: number;
   totalReviews: number;
   /** Open-show counts for the market pills */
@@ -112,7 +114,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] 
 }
 
 // Inner component that uses searchParams
-function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets }: OffWestEndPageClientProps) {
+function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, marketOpenCounts, awardWinnerSets }: OffWestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -184,10 +186,54 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
     window.history.replaceState({}, '', '/off-west-end');
   }, []);
 
+  // Archive shows (closed Off-West End shows) — lazy-loaded on demand when the
+  // user filters to all/closed or searches. Mirrors OffBroadwayPageClient's
+  // archive pattern: this page only ever receives open/previews shows as
+  // props, so without this, closed shows are unreachable from Status:
+  // All/Closed and from search (#1448).
+  const [archiveShows, setArchiveShows] = useState<OffWestEndShow[] | null>(null);
+  const archiveFetchedRef = useRef(false);
+
+  const fetchArchive = useCallback(async () => {
+    if (archiveFetchedRef.current) return;
+    archiveFetchedRef.current = true;
+    try {
+      const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
+      const res = await fetch(`/data/off-west-end-archive.json${cacheBust}`);
+      const data: OffWestEndShow[] = await res.json();
+      setArchiveShows(data);
+    } catch (e) {
+      console.error('Failed to load Off-West End archive shows:', e);
+      archiveFetchedRef.current = false; // allow retry
+    }
+  }, [archiveHash]);
+
+  const allShows = useMemo(() => {
+    if (archiveShows) {
+      const ids = new Set(shows.map(s => s.id));
+      return [...shows, ...archiveShows.filter(s => !ids.has(s.id))];
+    }
+    return shows;
+  }, [shows, archiveShows]);
+
+  // Trigger archive fetch when the user needs closed shows or searches
+  useEffect(() => {
+    if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery) {
+      fetchArchive();
+    }
+  }, [statusFilter, searchQuery, fetchArchive]);
+
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<OffWestEndShow> | null>(null);
-  const fuseDataRef = useRef(shows);
-  fuseDataRef.current = shows;
+  const fuseDataRef = useRef(allShows);
+  fuseDataRef.current = allShows;
+
+  // Invalidate Fuse index when the archive loads so search includes closed shows
+  useEffect(() => {
+    if (archiveShows) {
+      fuseRef.current = null;
+    }
+  }, [archiveShows]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -223,7 +269,12 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
       }
     }).catch(() => { /* Fuse load failed — fallback to unfiltered results */ });
     return () => { cancelled = true; };
-  }, [searchQuery, getFuse]);
+    // archiveShows is a dependency (not just fuseDataRef) so a deep link that
+    // lands with `q` already set re-searches once the archive lands — without
+    // it, this effect's single initial run can search a Fuse index built
+    // before the archive merged in, and nothing re-triggers it since fuseRef
+    // invalidation alone doesn't change this effect's inputs.
+  }, [searchQuery, getFuse, archiveShows]);
 
   // Featured rows
   const topRecentShows = useMemo(() => {
@@ -263,7 +314,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
       return fuseResults;
     }
 
-    let result = shows.filter(show => {
+    let result = allShows.filter(show => {
       if (scoreMode === 'audience') {
         return show.audienceCombinedScore !== null && show.status !== 'previews';
       } else {
@@ -319,7 +370,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
     });
 
     return result;
-  }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
   const panelSingleGroups = useMemo(
     () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
