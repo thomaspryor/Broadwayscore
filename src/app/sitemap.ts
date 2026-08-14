@@ -6,6 +6,7 @@ import {
   getAllBestOfCategories,
   getAllTheaterSlugs,
   getAllLondonTheaterSlugs,
+  getAllOffBroadwayTheaterSlugs,
   getAllBrowseSlugs,
   getDataFreshness,
   getOperaShows,
@@ -95,6 +96,12 @@ function buildTheatersShard(ctx: DateContext): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
+  const offBroadwayTheaterPages = getAllOffBroadwayTheaterSlugs().map((slug) => ({
+    url: `${BASE_URL}/off-broadway/theater/${slug}`,
+    lastModified: ctx.showsDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
   return [
     {
       url: `${BASE_URL}/theater`,
@@ -110,6 +117,13 @@ function buildTheatersShard(ctx: DateContext): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     ...londonTheaterPages,
+    {
+      url: `${BASE_URL}/off-broadway/theater`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...offBroadwayTheaterPages,
     {
       url: `${BASE_URL}/broadway-theaters-map`,
       lastModified: ctx.showsDate,
