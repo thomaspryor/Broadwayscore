@@ -55,6 +55,7 @@ const {
   AGGREGATOR_SCORE_SOURCES,
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomain,
+  outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -1820,13 +1821,17 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
       // Gated on reviewUrl (post show-title validation, not the raw urlMatch)
       // so a cross-show/stale link that just got nulled above can't still
       // relabel the outlet. Also skipped when the current label already
-      // legitimately owns this URL's domain (outletOwnsUrlDomain — shared-
-      // domain editions like Telegraph/Sunday Telegraph, Guardian/Observer)
-      // so a same-domain edition label isn't overwritten by its sibling.
+      // legitimately owns this URL's domain (outletOwnsUrlDomainIgnoringPath
+      // — shared-domain editions like Telegraph/Sunday Telegraph,
+      // Guardian/Observer) so a same-domain edition label isn't overwritten
+      // by its sibling. #1529: bare domain ownership is NOT enough for a
+      // genuine path-split domain like timeout.com/london vs /newyork — the
+      // path-aware variant still lets a mislabeled Time Out (US) review
+      // refine to timeout-london when the URL path says /london.
       if (reviewUrl) {
         const urlResolved = resolveOutletFromUrl(reviewUrl);
         if (urlResolved && urlResolved.outletId && urlResolved.outletId !== outletId
-            && !outletOwnsUrlDomain(outletId, reviewUrl)) {
+            && !outletOwnsUrlDomainIgnoringPath(outletId, reviewUrl)) {
           if (shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId)) {
             console.log(`    ⛔ DTLI outlet refinement refused for ${showId}: URL=${urlResolved.outletId} (${reviewUrl}) resolves to an aggregator — keeping DTLI label=${outletId}`);
           } else {

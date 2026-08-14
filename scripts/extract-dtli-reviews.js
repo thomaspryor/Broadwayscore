@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry, outletOwnsUrlDomainIgnoringPath } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -222,18 +222,22 @@ function extractReviewsFromDTLI(content, showId) {
     // script writes via safeWriteReview, not createOrMergeReviewFile.
     //
     // #1524: also skip refinement when the DTLI-labeled outlet's own registry
-    // entry already claims the URL's domain (outletOwnsUrlDomain) — shared-
-    // domain editions like Telegraph/Sunday Telegraph both resolve to
-    // telegraph.co.uk, so without this a correctly-labeled "Sunday Telegraph"
-    // review would get relabeled onto its sibling "Telegraph" just because
-    // resolveOutletFromUrl() arbitrarily picks one domain owner. Same guard
-    // gather-reviews.js's own extractDTLIReviews() already applies (task #1506).
+    // entry already claims the URL's domain (outletOwnsUrlDomainIgnoringPath)
+    // — shared-domain editions like Telegraph/Sunday Telegraph both resolve
+    // to telegraph.co.uk, so without this a correctly-labeled "Sunday
+    // Telegraph" review would get relabeled onto its sibling "Telegraph" just
+    // because resolveOutletFromUrl() arbitrarily picks one domain owner. Same
+    // guard gather-reviews.js's own extractDTLIReviews() already applies
+    // (task #1506). #1529: bare domain ownership is NOT enough for a genuine
+    // path-split domain like timeout.com/london vs /newyork — the path-aware
+    // variant still lets a mislabeled Time Out (US) review refine to
+    // timeout-london when the URL path says /london.
     let finalOutletId = outlet.outletId;
     let finalOutletName = outlet.name;
     if (url) {
       const urlResolved = resolveOutletFromUrl(url);
       if (urlResolved && urlResolved.outletId && urlResolved.outletId !== finalOutletId
-          && !outletOwnsUrlDomain(finalOutletId, url)) {
+          && !outletOwnsUrlDomainIgnoringPath(finalOutletId, url)) {
         if (shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, finalOutletId)) {
           console.warn(`  ⛔ DTLI outlet refinement refused for ${showId}: URL=${urlResolved.outletId} (${url}) resolves to an aggregator — keeping DTLI label=${finalOutletId}`);
         } else {
