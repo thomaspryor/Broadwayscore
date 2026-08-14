@@ -119,6 +119,17 @@ const BENIGN_REASONS = [
   'unregistered-outlet-empty-stub', // no text to lose; nothing was dropped
 ];
 
+// Shared verdict lookup — both public entry points below reduce to this.
+function classify(reasonLower, detail) {
+  if (CONFLICT_REASONS.includes(reasonLower)) return { kind: 'conflict', reason: reasonLower, detail };
+  if (EXPECTED_REJECTION_REASONS.includes(reasonLower)) return { kind: 'expected', reason: reasonLower, detail };
+  if (BENIGN_REASONS.includes(reasonLower)) return { kind: 'benign', reason: reasonLower, detail };
+  // Deliberately NOT benign: an unrecognised reason is a contract drift, and
+  // defaulting it to quiet is how the original silent veto survived. The audit
+  // counts these separately and prints them.
+  return { kind: 'unclassified', reason: reasonLower, detail };
+}
+
 /**
  * Classify one ingest attempt from the child process's stdout.
  *
@@ -139,15 +150,31 @@ function classifyIngestSkip(stdout) {
   const text = String(stdout || '');
   const m = text.match(/Skipped:\s*([a-z0-9-]+)(?::(\S+))?/i);
   if (!m) return { kind: 'unclassified', reason: null, detail: null };
-  const reason = m[1].toLowerCase();
-  const detail = m[2] || null;
-  if (CONFLICT_REASONS.includes(reason)) return { kind: 'conflict', reason, detail };
-  if (EXPECTED_REJECTION_REASONS.includes(reason)) return { kind: 'expected', reason, detail };
-  if (BENIGN_REASONS.includes(reason)) return { kind: 'benign', reason, detail };
-  // Deliberately NOT benign: an unrecognised reason is a contract drift, and
-  // defaulting it to quiet is how the original silent veto survived. The audit
-  // counts these separately and prints them.
-  return { kind: 'unclassified', reason, detail };
+  return classify(m[1].toLowerCase(), m[2] || null);
+}
+
+/**
+ * Classify a raw `reason` field the way createOrMergeReviewFile returns it
+ * directly (scripts/lib/review-file-writer.js's `{ action: 'skipped', reason }`)
+ * — for callers that hold the structured result in hand and never round-trip
+ * through a child process's stdout. Same shapes, same three-bucket contract,
+ * same lower-casing as classifyIngestSkip; only the input differs.
+ *
+ * Born from BRO-205: 6 scrape-*.js callers checked `result.action === 'skipped'`
+ * (or special-cased only `domain-mismatch`) and filed every OTHER conflict
+ * reason — cross-show-url-owned, no-outlet, suspicious-outlet-id,
+ * aggregator-url-mismatch, aggregator-url-refinement-refused — under a generic
+ * "already have it" counter. That is the same silent veto the gap audit fixed
+ * in audit-show-review-gap.js, just reached through a different call shape.
+ *
+ * @param {string|null|undefined} rawReason  e.g. 'cross-show-url-owned:show-id', 'domain-mismatch: prose', 'junk-outlet'
+ * @returns {{kind: 'conflict'|'expected'|'benign'|'unclassified', reason: string|null, detail: string|null}}
+ */
+function classifyReason(rawReason) {
+  const text = String(rawReason || '');
+  const m = text.match(/^([a-z0-9-]+)(?::(\S+))?/i);
+  if (!m) return { kind: 'unclassified', reason: null, detail: null };
+  return classify(m[1].toLowerCase(), m[2] || null);
 }
 
 /**
@@ -200,6 +227,7 @@ function describeSkip(showId, url, { reason, detail }) {
 
 module.exports = {
   classifyIngestSkip,
+  classifyReason,
   describeSkip,
   CONFLICT_REASONS,
   EXPECTED_REJECTION_REASONS,

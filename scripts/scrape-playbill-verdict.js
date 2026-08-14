@@ -25,6 +25,7 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
@@ -44,6 +45,7 @@ const stats = {
   newReviews: 0,
   updatedReviews: 0,
   skippedExisting: 0,
+  skippedConflict: 0,
   skippedOffBroadway: 0,
   googleSearches: 0,
   errors: [],
@@ -389,8 +391,18 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
 
   if (result.action === 'new') stats.newReviews++;
   else if (result.action === 'updated') stats.updatedReviews++;
-  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-  else stats.skippedExisting++;
+  else {
+    // BRO-205: classify the skip reason instead of lumping every conflict
+    // (cross-show-url-owned, no-outlet, suspicious-outlet-id, domain-mismatch,
+    // aggregator-url-mismatch/-refinement-refused) into "already exists".
+    const cls = classifyReason(result.reason);
+    if (cls.kind === 'conflict' || cls.kind === 'unclassified') {
+      stats.skippedConflict++;
+      console.warn(`  ⚠️  ${describeSkip(showId, reviewInfo.url, cls)}`);
+    } else {
+      stats.skippedExisting++;
+    }
+  }
 
   return result.action === 'skipped' ? 'skipped' : result.action;
 }
@@ -554,6 +566,7 @@ function printSummary() {
   console.log(`New reviews created: ${stats.newReviews}`);
   console.log(`Existing reviews updated: ${stats.updatedReviews}`);
   console.log(`Skipped (existing): ${stats.skippedExisting}`);
+  if (stats.skippedConflict) console.log(`⚠️  Skipped (conflict — needs a human, see warnings above): ${stats.skippedConflict}`);
   console.log(`Skipped (off-Broadway): ${stats.skippedOffBroadway}`);
   console.log(`Google searches: ${stats.googleSearches}`);
   if (stats.errors.length > 0) {

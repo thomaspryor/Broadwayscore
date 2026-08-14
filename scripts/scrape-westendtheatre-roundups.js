@@ -27,6 +27,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -64,6 +65,8 @@ const stats = {
   skippedContentMismatch: 0,
   skippedNoTable: 0,
   skippedCachedNoRatings: 0,
+  skippedConflict: 0,
+  skippedExisting: 0,
   pageFetches: 0,
   unprocessedPosts: 0,
   paginationBudgetExit: false,
@@ -379,6 +382,19 @@ function saveReview(review) {
 
   if (result.action === 'new') stats.newReviews++;
   else if (result.action === 'updated') stats.updatedReviews++;
+  else {
+    // BRO-205: this scraper never tracked skips at all — every conflict
+    // (cross-show-url-owned, no-outlet, suspicious-outlet-id, domain-mismatch,
+    // aggregator-url-mismatch/-refinement-refused) vanished silently. Classify
+    // and warn loudly instead.
+    const cls = classifyReason(result.reason);
+    if (cls.kind === 'conflict' || cls.kind === 'unclassified') {
+      stats.skippedConflict++;
+      console.warn(`  ⚠️  ${describeSkip(review.showId, review.url, cls)}`);
+    } else {
+      stats.skippedExisting++;
+    }
+  }
 
   return result.filepath;
 }
@@ -651,6 +667,8 @@ async function main() {
   if (!dryRun) {
     console.log(`  New reviews:    ${stats.newReviews}`);
     console.log(`  Updated:        ${stats.updatedReviews}`);
+    console.log(`  Skipped (existing): ${stats.skippedExisting}`);
+    if (stats.skippedConflict) console.log(`  ⚠️  Skipped (conflict — needs a human, see warnings above): ${stats.skippedConflict}`);
   }
   if (stats.errors.length > 0) {
     console.log(`  Errors:         ${stats.errors.length}`);

@@ -37,6 +37,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
+const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
@@ -68,6 +69,7 @@ const stats = {
   updatedReviews: 0,
   skippedExisting: 0,
   skippedGuards: 0,
+  skippedConflict: 0,
   errors: [],
 };
 
@@ -986,8 +988,20 @@ function saveReview(showId, reviewData, options = {}) {
   if (result.action === 'new') stats.newReviews++;
   else if (result.action === 'updated') stats.updatedReviews++;
   else if (result.reason === 'junk-outlet') stats.skippedGuards++;
-  else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-  else stats.skippedExisting++;
+  else {
+    // BRO-205: don't lump conflict skips (cross-show-url-owned, no-outlet,
+    // suspicious-outlet-id, aggregator-url-mismatch/-refinement-refused, and
+    // any future conflict reason — not just domain-mismatch) into the
+    // "already exists" bucket. Those are real dropped reviews needing human
+    // action, not benign no-ops.
+    const cls = classifyReason(result.reason);
+    if (cls.kind === 'conflict' || cls.kind === 'unclassified') {
+      stats.skippedConflict++;
+      console.warn(`  ⚠️  ${describeSkip(showId, reviewData.url, cls)}`);
+    } else {
+      stats.skippedExisting++;
+    }
+  }
 
   return result.action === 'skipped' ? 'skipped' : result.action;
 }
@@ -1395,6 +1409,7 @@ async function main() {
   console.log(`Updated reviews: ${stats.updatedReviews}`);
   console.log(`Skipped (existing): ${stats.skippedExisting}`);
   console.log(`Skipped (guards): ${stats.skippedGuards}`);
+  if (stats.skippedConflict) console.log(`⚠️  Skipped (conflict — needs a human, see warnings above): ${stats.skippedConflict}`);
   if (stats.errors.length > 0) {
     console.log(`Errors: ${stats.errors.length}`);
     stats.errors.slice(0, 10).forEach(e => console.log(`  - ${e}`));
