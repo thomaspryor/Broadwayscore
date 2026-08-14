@@ -882,6 +882,7 @@ function main() {
   // Load shows.json
   if (!fs.existsSync(SHOWS_FILE)) {
     log(`[scoring-delta] ❌ shows.json not found at ${SHOWS_FILE}`);
+    log(`[scoring-delta]    Fix: run \`npm run data:check\` (or \`./scripts/setup-local-data.sh\`) — worktrees don't inherit the main checkout's data-repo symlinks.`);
     process.exit(1);
   }
   const showsRaw = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -908,6 +909,7 @@ function main() {
   // Walk review-texts
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     log(`[scoring-delta] ❌ review-texts dir not found at ${REVIEW_TEXTS_DIR}`);
+    log(`[scoring-delta]    Fix: run \`./scripts/setup-local-data.sh --all\`, or symlink from the main checkout: ln -sf <main-repo>/data/review-texts ${REVIEW_TEXTS_DIR}`);
     process.exit(1);
   }
 
