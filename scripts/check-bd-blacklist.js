@@ -26,7 +26,7 @@
  */
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { parseCidr, isCoveredByAny, cidrContains } = require('./lib/ip-cidr.js');
+const { cidrContains, classifyBlacklistEntries } = require('./lib/ip-cidr.js');
 
 const USAGE =
   'Usage: node scripts/check-bd-blacklist.js [--dry-run] [--zone=NAME]\n\n' +
@@ -123,14 +123,7 @@ async function main() {
   }
 
   const ghRanges = await getGithubActionsRanges();
-  const ours = [];
-  const unknown = [];
-  const unclassified = [];
-  for (const e of entries) {
-    if (!parseCidr(e)) unclassified.push(e);
-    else if (isCoveredByAny(e, ghRanges)) ours.push(e);
-    else unknown.push(e);
-  }
+  const { ours, unknown, unclassified } = classifyBlacklistEntries(entries, ghRanges);
   console.log(
     `[bd-blacklist] zone ${ZONE}: ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'} — ` +
       `${ours.length} GitHub-runner (auto-clear), ${unknown.length} unknown (keep + digest), ` +
