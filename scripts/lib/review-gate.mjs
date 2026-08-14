@@ -239,11 +239,19 @@ const DIFF_STABLE_FLAGS = ['--no-ext-diff', '--src-prefix=a/', '--dst-prefix=b/'
 // Gated files + added/deleted line totals for base...ref (three-dot: what this
 // push adds relative to the merge-base with main). `twoDot` is used for drift
 // (verdict.head..ref where verdict.head is a known ancestor).
-export function gatedDiffStats(repoRoot, base, ref, { twoDot = false } = {}) {
+// The gated pathspec. Kept as a named export so the drift scan can narrow it to
+// exactly the pushed files without re-stating the default in two places.
+export const GATED_DIFF_DIRS = ['src', 'scripts', '.github/workflows'];
+
+// `noRenames`/`pathspec` are used ONLY by queryPushAllowed's drift scan (see
+// driftContentKeys) — every other caller keeps the historical invocation
+// byte-for-byte, so the primary gate decision and computeDiffHash are unchanged.
+export function gatedDiffStats(repoRoot, base, ref, { twoDot = false, noRenames = false, pathspec = null } = {}) {
   const range = diffRangeArgs(repoRoot, base, ref, twoDot);
+  const paths = pathspec && pathspec.length ? pathspec : GATED_DIFF_DIRS;
   let out;
   try {
-    out = git(repoRoot, ['diff', '--numstat', ...range, '--', 'src', 'scripts', '.github/workflows']);
+    out = git(repoRoot, ['diff', '--numstat', ...(noRenames ? ['--no-renames'] : []), ...range, '--', ...paths]);
   } catch {
     return { files: [], totalLines: 0, error: `git diff failed for ${range.join(' ')}` };
   }
@@ -519,6 +527,90 @@ export function queryInfraEditAllowed({
   });
 }
 
+// Safety valve for the drift memo: heads × pushed-files object lookups fed
+// through one `cat-file` process. Past this, skip the memo and fall back to the
+// historical one-diff-per-entry scan (slower, identical answers) rather than
+// push a multi-megabyte batch through a pipe.
+const DRIFT_KEY_PAIR_LIMIT = 200_000;
+// Sentinel for "path does not exist at this head". MUST be head-independent:
+// `cat-file --batch-check` echoes the full `<sha>:<path> missing` for absent
+// objects, and leaving that raw would give every head a unique key and defeat
+// the memo entirely — which is the single most common case (a brand-new file
+// added by the push exists at NO reviewed head).
+const DRIFT_KEY_ABSENT = '∅';
+
+// Content key for the drift diff, batched.
+//
+// The drift scan below asks the same question once per ledger entry: "how many
+// lines of THIS PUSH'S files changed between the reviewed head and ref?" With a
+// ~1700-entry ledger that was ~1250 `git diff` spawns per push — measured at
+// 105s (and 178s on a warmer ledger), which is what made the merge gate a
+// throughput problem and blew merge-gate-hook.test's 20s per-call ceiling.
+//
+// Because that diff is taken with `--no-renames` over exactly the pushed paths,
+// its result is a PURE FUNCTION of those paths' blob OIDs at `head` (the ref
+// side is fixed for the whole scan). Two heads with the same blobs therefore
+// have the same drift, so one diff per DISTINCT key replaces one per entry. In
+// the common case — a push that adds or rewrites a file that no reviewed head
+// ever had — every head collapses to ONE key and the scan costs ONE diff.
+// Measured on the live ledger: 1257 spawns → 1, 105s → 0.5s.
+//
+// `--no-renames` is what makes the key exact. With rename detection on, a
+// pushed path could be paired against a differently-named source that the key
+// does not cover (the main diff normalizes `old => new` to the POST-rename path
+// only, so the source is not in pushFiles), and two heads with identical
+// pushed-file blobs could still diff differently.
+//
+// This is a deliberate, MEASURED semantic narrowing, not an assumption. Old vs
+// new drift was compared head-by-head across the live 1700-entry ledger on
+// synthetic pushes off origin/main (2026-08-14):
+//     modify an existing gated file   1165 heads,  0 mismatches
+//     pure rename of a gated file     1165 heads, 56 mismatches
+//     rename + content change         1165 heads, 56 mismatches
+// EVERY mismatch was new > old (e.g. old=0 new=91, old=31 new=91) — a rename
+// counts as delete+add instead of collapsing to its content delta. So the only
+// behaviour change is that a push which RENAMES a gated file larger than
+// DRIFT_BUDGET_LINES can now need a fresh review where it previously rode an
+// older verdict. It can turn an allow into a deny but never a deny into an
+// allow, which is the fail-closed direction for a review gate. Exact-hash
+// matches — the gate's primary path — are not affected at all.
+//
+// Returns null (→ caller memoizes per-head, i.e. today's behaviour) if the
+// batch is oversized or git fails, so this can only ever cost speed.
+export function driftContentKeys(repoRoot, heads, paths) {
+  const uniqueHeads = [...new Set(heads)];
+  if (!uniqueHeads.length || !paths.length) return null;
+  if (uniqueHeads.length * paths.length > DRIFT_KEY_PAIR_LIMIT) return null;
+  const probes = [];
+  for (const h of uniqueHeads) for (const p of paths) probes.push(`${h}:${p}`);
+  let out;
+  try {
+    out = execFileSync('git', ['-C', repoRoot, 'cat-file', '--batch-check=%(objectname)'], {
+      input: `${probes.join('\n')}\n`,
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024,
+    });
+  } catch {
+    return null;
+  }
+  const lines = out.split('\n');
+  if (lines.length && lines[lines.length - 1] === '') lines.pop();
+  // One output line per probe is the contract; anything else means a format we
+  // did not predict, so decline the memo rather than mis-key it.
+  if (lines.length !== probes.length) return null;
+  const byHead = new Map();
+  let i = 0;
+  for (const h of uniqueHeads) {
+    const parts = [];
+    for (let j = 0; j < paths.length; j++, i++) {
+      const line = lines[i];
+      parts.push(line.endsWith(' missing') ? DRIFT_KEY_ABSENT : line);
+    }
+    byHead.set(h, parts.join(','));
+  }
+  return byHead;
+}
+
 // ── the gate decision ────────────────────────────────────────────────────────
 
 export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) {
@@ -549,12 +641,50 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   const isAncestorOfRef = (head) => (
     ancestors ? ancestors.has(head) : isAncestor(repoRoot, head, ref === 'WORKTREE' ? 'HEAD' : ref)
   );
+  // Loop-invariant: `stats` does not change inside the scan, so the pushed-file
+  // set is hoisted out (it was rebuilt per entry) and doubles as the drift
+  // pathspec.
+  const pushFiles = new Set(stats.files.map(f => f.path));
+  const pushFilePaths = [...pushFiles];
+  const reviewerEligible = (e) => {
+    const light = LIGHT_REVIEWERS.has(e.reviewer);
+    if (light) return stats.totalLines <= SECOND_OPINION_MAX_LINES;
+    return STRONG_REVIEWERS.has(e.reviewer);
+  };
+  // Pre-pass over exactly the entries the scan below would price, so the memo
+  // keys for all of them resolve in ONE `cat-file` batch instead of a diff each.
+  const driftHeads = [];
+  for (const e of entries) {
+    if (!e || !reviewerEligible(e) || !e.head) continue;
+    if (isAncestorOfRef(e.head)) driftHeads.push(e.head);
+  }
+  const driftKeyByHead = driftContentKeys(repoRoot, driftHeads, pushFilePaths);
+  const driftByKey = new Map();
+  const driftFor = (head) => {
+    // No key map → key on the head itself, which is just the historical
+    // one-diff-per-distinct-head behaviour.
+    const key = (driftKeyByHead && driftKeyByHead.get(head)) || head;
+    if (driftByKey.has(key)) return driftByKey.get(key);
+    const raw = gatedDiffStats(repoRoot, head, ref, {
+      twoDot: true, noRenames: true, pathspec: pushFilePaths,
+    });
+    // verdict.head..ref also spans the OTHER parent of any merge (e.g. main
+    // merged into the branch after review) — those files are already on
+    // origin/main and don't appear in the push diff, so counting them would
+    // false-inflate drift and block clean merges. Narrowing the pathspec above
+    // already enforces this; the filter stays as a belt-and-braces assertion.
+    const hit = raw.error ? raw : {
+      files: raw.files.filter(f => pushFiles.has(f.path)),
+      totalLines: raw.files.filter(f => pushFiles.has(f.path))
+        .reduce((n, f) => n + f.added + f.deleted, 0),
+    };
+    driftByKey.set(key, hit);
+    return hit;
+  };
   let nearest = null;
   for (let i = entries.length - 1; i >= 0; i--) {
     const e = entries[i];
-    const light = LIGHT_REVIEWERS.has(e.reviewer);
-    if (light && stats.totalLines > SECOND_OPINION_MAX_LINES) continue;
-    if (!light && !STRONG_REVIEWERS.has(e.reviewer)) continue;
+    if (!reviewerEligible(e)) continue;
     // 'empty' is a no-gated-hunks sentinel, not a content hash — it must never
     // satisfy an exact match (a hash-degradation bug on either side would
     // otherwise turn one old verdict into a permanent rubber stamp).
@@ -567,17 +697,8 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
     }
     if (e.head && isAncestorOfRef(e.head)) {
       // Drift = gated changes since the reviewed head, restricted to files this
-      // push actually changes. verdict.head..ref also spans the OTHER parent of
-      // any merge (e.g. main merged into the branch after review) — those files
-      // are already on origin/main and don't appear in the push diff, so
-      // counting them would false-inflate drift and block clean merges.
-      const pushFiles = new Set(stats.files.map(f => f.path));
-      const raw = gatedDiffStats(repoRoot, e.head, ref, { twoDot: true });
-      const drift = raw.error ? raw : {
-        files: raw.files.filter(f => pushFiles.has(f.path)),
-        totalLines: raw.files.filter(f => pushFiles.has(f.path))
-          .reduce((n, f) => n + f.added + f.deleted, 0),
-      };
+      // push actually changes.
+      const drift = driftFor(e.head);
       if (!drift.error && drift.totalLines <= DRIFT_BUDGET_LINES) {
         return {
           gated: true, allowed: true, via: 'fixup-drift', verdict: e,

@@ -42,15 +42,56 @@ const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own c
 Usage:
   node scripts/audit-self-contradictory-clears.js [--gate] [--max=N] [--fix] [--show=ID] [--json]
 
-  --gate      exit 1 when the contradiction count exceeds --max
-  --max=N     gate ceiling (default 0 — the invariant admits no exceptions)
-  --fix       retract the stale CLEAR breadcrumb, leaving the flag intact
-  --show=ID   scope the sweep to one show directory
-  --json      machine-readable output
+  --gate            exit 1 when the count exceeds the baseline band (or --max)
+  --baseline[=PATH] gate against the committed baseline count + tolerance
+                    (preferred; defaults to data/audit/self-contradictory-
+                    clears-baseline.json). Bot writes move this corpus every
+                    ~30 min, so an absolute ceiling flaps main red.
+  --record-baseline rewrite the baseline file from the current count
+  --max=N           legacy absolute ceiling, used only without --baseline
+  --fix             retract the stale CLEAR breadcrumb, leaving the flag intact.
+                    NOT a safe bulk drain — it flips 563 records to
+                    contentTier 'invalid' and drops 438 scored reviews out of
+                    live scores. Use --show=ID for adjudicated single fixes.
+  --show=ID         scope the sweep to one show directory
+  --json            machine-readable output
 `;
 
 const ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradictory-clears-baseline.json');
+
+// Why this gate is a BAND around a committed baseline rather than an absolute
+// ceiling (2026-08-14).
+//
+// The old form was `--gate --max=780` against a live count of ~772-776. The
+// rebuild bots rewrite this corpus every ~30 minutes and each pass moves the
+// count by a few records, so main went red at 20:27 and 20:31 and green at
+// 20:33 and 20:37 — the SAME code, four different answers. A ceiling sitting
+// ~4 records above the live count is a coin flip, not a guard. (This session
+// watched the count read 772 and 776 twenty minutes apart.)
+//
+// The workflow's prescribed remedy was "DRAIN THEN RATCHET" — run --fix, then
+// lower --max. That remedy was measured on 2026-08-14 and is UNSAFE. --fix
+// deletes the clear breadcrumb and leaves the exclusion flag standing, and
+// content-quality.js:classifyContentTier treats `wrongProduction &&
+// !wrongProductionAutoCleared` as contentTier 'invalid'. So removing the
+// breadcrumb EXCLUDES the review:
+//     563 of 772 records flip contentTier valid -> invalid
+//     438 of those carry a live score signal (assignedScore/aggregatorStars/
+//         showScoreExcerpt/llmScore), incl. NYT, WSJ, The Stage, FT
+//       0 records become newly INCLUDED
+// That is the mirror image of the sibling remediation that was deleted after
+// audit-stale-flag-after-url-correction.js --fix un-suppressed 8 wrong-
+// production reviews into live Critic Scores. Draining here would silently
+// drop 438 scored reviews out of published scores. Do not run --fix in bulk.
+//
+// So the backlog is STRUCTURAL, not a queue to be worked off, and the honest
+// gate is "has this got materially worse than the number we last agreed to?"
+// A committed baseline + tolerance keeps drift visible (every run prints the
+// delta) while a single bot write no longer reddens main. A genuine new source
+// of contradictions still fails the moment it exceeds the band.
+const BASELINE_TOLERANCE = 25;
 
 // Tombstone directories only. `_pending/` is deliberately NOT here: it holds
 // real reviews awaiting a byline strand that later land on a live show, so a
@@ -62,21 +103,45 @@ const SKIP_DIRS = new Set(['_superseded-misattributed']);
 function parseArgs(argv) {
   // --max via the shared parser: the old inline parseInt returned NaN for
   // `--max=abc`/`--max=`, and `unhandled > NaN` is always false, which would
-  // have silently disabled this gate (test.yml runs it at --max=780).
+  // have silently disabled this gate. test.yml now gates on --baseline instead,
+  // but --max is still the fallback path whenever --baseline is absent, so the
+  // NaN-safety it provides still matters.
   const args = {
     gate: false,
     max: parseMaxArgOrExit(argv, { scriptName: 'audit-self-contradictory-clears' }),
     fix: false,
     show: null,
     json: false,
+    baseline: null,
+    recordBaseline: false,
   };
   for (const a of argv) {
     if (a === '--gate') args.gate = true;
     else if (a === '--fix') args.fix = true;
     else if (a === '--json') args.json = true;
+    else if (a === '--record-baseline') args.recordBaseline = true;
+    else if (a === '--baseline') args.baseline = DEFAULT_BASELINE_PATH;
+    else if (a.startsWith('--baseline=')) args.baseline = a.slice('--baseline='.length);
     else if (a.startsWith('--show=')) args.show = a.split('=')[1];
   }
   return args;
+}
+
+// Committed baseline: { count, tolerance, recordedAt, note }. A missing or
+// unparseable file is FATAL under --gate rather than a silent fall-through to
+// the old ceiling — a gate that quietly stops gating when its baseline goes
+// missing is the vacuous-guard class this repo has already fixed six times
+// (see corpus-scan-guard.js / #1063).
+function readBaseline(baselinePath) {
+  const raw = fs.readFileSync(baselinePath, 'utf8');
+  const parsed = JSON.parse(raw);
+  if (typeof parsed.count !== 'number' || !Number.isFinite(parsed.count)) {
+    throw new Error(`baseline ${baselinePath} has no numeric "count"`);
+  }
+  const tolerance = typeof parsed.tolerance === 'number' && Number.isFinite(parsed.tolerance)
+    ? parsed.tolerance
+    : BASELINE_TOLERANCE;
+  return { count: parsed.count, tolerance };
 }
 
 function listShowDirs(showFilter) {
@@ -178,9 +243,48 @@ function main() {
     process.exit(1);
   }
 
+  if (args.recordBaseline) {
+    const target = args.baseline || DEFAULT_BASELINE_PATH;
+    fs.writeFileSync(target, `${JSON.stringify({
+      count: hits.length,
+      tolerance: BASELINE_TOLERANCE,
+      recordedAt: new Date().toISOString().split('T')[0],
+      note: 'Structural backlog — see the BASELINE_TOLERANCE comment in scripts/audit-self-contradictory-clears.js. --fix is NOT a safe drain (it excludes 438 scored reviews).',
+    }, null, 2)}\n`);
+    console.log(`\nRecorded baseline ${hits.length} (±${BASELINE_TOLERANCE}) → ${target}`);
+    return;
+  }
+
+  if (args.gate && args.baseline) {
+    let baseline;
+    try {
+      baseline = readBaseline(args.baseline);
+    } catch (e) {
+      console.error(`\nFAIL: cannot read baseline (${e.message}).`);
+      console.error('Fix: node scripts/audit-self-contradictory-clears.js --record-baseline');
+      process.exit(1);
+    }
+    const delta = hits.length - baseline.count;
+    const sign = delta >= 0 ? '+' : '';
+    console.log(`\nBaseline ${baseline.count} (±${baseline.tolerance}) — now ${hits.length} (${sign}${delta}).`);
+    if (delta > baseline.tolerance) {
+      console.error(`\nFAIL: ${hits.length} self-contradictory clear(s) is ${delta} over the committed baseline of ${baseline.count} (tolerance ±${baseline.tolerance}).`);
+      console.error('This is a REGRESSION: something started writing an exclusion flag alongside its own');
+      console.error('clear breadcrumb. Find the writer — do NOT re-record the baseline to make this pass,');
+      console.error('and do NOT bulk-run --fix (it excludes scored reviews; see the comment in this file).');
+      process.exit(1);
+    }
+    if (-delta > baseline.tolerance) {
+      // An improvement, not a failure — but the baseline is now stale and would
+      // hide a later regression back up to the old number, so say so loudly.
+      console.log(`NOTE: count is ${-delta} BELOW baseline — re-record it with --record-baseline to keep the band tight.`);
+    }
+    return;
+  }
+
   if (args.gate && hits.length > args.max) {
     console.error(`\nFAIL: ${hits.length} self-contradictory clear(s) > max ${args.max}.`);
-    console.error('Fix: node scripts/audit-self-contradictory-clears.js --fix');
+    console.error('Fix: investigate the writer. --fix is NOT a safe bulk drain — see the comment in this file.');
     process.exit(1);
   }
 }

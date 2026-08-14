@@ -284,7 +284,9 @@ function isUkUrl(url) {
  * @param {string} params.rawOutlet - lowercased data.outletId || data.outlet
  * @param {string} params.url - data.url
  * @param {object} [params.contentVerification] - data.contentVerification
- * @returns {{ shouldFlag: boolean, reason: string|null }}
+ * @param {Date|string|null} [params.reviewDate] - parsed/parseable review publish date
+ * @param {Array|null|undefined} [params.priorRuns] - show.priorRuns
+ * @returns {{ shouldFlag: boolean, reason: string|null, exemptedByPriorRun: boolean }}
  */
 function evaluateForwardCrossMarketGuard({
   outletRegionMap,
@@ -293,10 +295,26 @@ function evaluateForwardCrossMarketGuard({
   rawOutlet,
   url,
   contentVerification,
+  reviewDate,
+  priorRuns,
 }) {
   const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-  if (outletRegion === 'london') return { shouldFlag: false, reason: null };
-  if (isUkUrl(url)) return { shouldFlag: false, reason: null };
+  if (outletRegion === 'london') return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  if (isUkUrl(url)) return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+
+  // Production-continuity exemption (BRO-222 cousin, opposite direction): a
+  // review whose publishDate falls inside a declared priorRuns window is
+  // coverage of THAT run, not the current (West End) one — its market must be
+  // judged against the prior run's own venue, not the current show's market.
+  // E.g. a US critic's in-window coverage of a declared Off-Broadway/regional
+  // run before a West End transfer. Same structural gap as the reverse guard
+  // (evaluateReverseLondonCrossMarketGuard, BRO-222) — this guard consulted
+  // show.priorRuns nowhere at all before this fix.
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const matchedPriorRun = findMatchingPriorRun(reviewDate, priorRuns);
+  if (matchedPriorRun && isUsVenueString(matchedPriorRun.venue)) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: true };
+  }
 
   // Don't flag when contentVerification has already affirmatively verified
   // the production is correct with high confidence. [GUARD:CROSS-MARKET-CV-OVERRIDE]
@@ -309,10 +327,10 @@ function evaluateForwardCrossMarketGuard({
     && !registeredOutletIds.has(rawOutlet);
 
   if (cvSaysCorrect || outletIsUnregistered) {
-    return { shouldFlag: false, reason: null };
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
   }
 
-  return { shouldFlag: true, reason: `Cross-market: US outlet "${rawOutlet}" reviewing London show` };
+  return { shouldFlag: true, reason: `Cross-market: US outlet "${rawOutlet}" reviewing London show`, exemptedByPriorRun: false };
 }
 
 /**
@@ -340,6 +358,33 @@ const UK_VENUE_RE = /\b(?:london|west end|off[- ]?west end|edinburgh|glasgow|man
 
 function isUkVenueString(venue) {
   return !!(venue && UK_VENUE_RE.test(String(venue)));
+}
+
+/**
+ * US-market signal in a free-text venue string (show.priorRuns[].venue),
+ * used by the forward guard's own priorRuns exemption (BRO-222 cousin,
+ * opposite direction).
+ *
+ * Deliberately a POSITIVE keyword match (same shape as isUkVenueString),
+ * NOT "not UK" — an earlier version defined this as `!isUkVenueString(venue)`
+ * and ship-check adversarial review caught the resulting failure-open hole:
+ * plenty of genuine UK regional venues (Chichester Festival Theatre, Sheffield
+ * Crucible, Bath Theatre Royal, Nottingham Playhouse, York Theatre Royal,
+ * Newcastle Theatre Royal, Belfast Grand Opera House, ...) carry no keyword
+ * from UK_VENUE_RE's necessarily-partial city list, so "not UK" silently
+ * became "US" and would wrongly EXEMPT a real cross-market Broadway leak
+ * whose declared priorRun was actually a UK regional tryout before the West
+ * End transfer — worse than under-matching, same principle isUkVenueString's
+ * own docstring states. Requiring an explicit US signal instead means an
+ * unrecognized venue string fails CLOSED (guard still flags), not open.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {boolean}
+ */
+const US_VENUE_RE = /\b(?:off[- ]?broadway|off[- ]?off[- ]?broadway|broadway|new york|nyc|brooklyn|manhattan|chicago|los angeles|san francisco|berkeley|boston|philadelphia|washington(?:,?\s*d\.?c\.?)?|atlanta|seattle|denver|minneapolis|dallas|houston|connecticut|massachusetts|california|u\.?s\.?a?\.?|united states)\b/i;
+
+function isUsVenueString(venue) {
+  return !!(venue && US_VENUE_RE.test(String(venue)));
 }
 
 /**
@@ -377,6 +422,44 @@ function evaluateReverseLondonCrossMarketGuard({ outletIsLondon, reviewDate, pri
   return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
 }
 
+/**
+ * URL-path cross-market guard, priorRuns-aware.
+ *
+ * Third sibling of evaluateForwardCrossMarketGuard (#1528, outlet-region-based)
+ * and evaluateReverseLondonCrossMarketGuard (BRO-222, outlet-region-based):
+ * rebuild-all-reviews.js's [GUARD:URL-PATH-CROSS-MARKET] block flags
+ * wrongProduction from the review URL's PATH TEXT instead of the outlet's
+ * region (e.g. '/broadway-review/', '/chicago-', '/national-tour/' on a WE
+ * show; '/west-end-review/', '/london-review/', '/london/' on a Broadway/OB
+ * show) and, same as the other two guards before their fixes, never
+ * consulted show.priorRuns at all — a review whose URL-path legitimately
+ * describes a declared prior run in the OPPOSITE market of the current show
+ * (a Chicago pre-Broadway tryout before a West End transfer; a West End run
+ * before an Off-Broadway transfer) was flagged as cross-market contamination
+ * even though it's valid in-window coverage of that declared run.
+ *
+ * Pure — the caller has already evaluated the URL-path regex and tells this
+ * function which market that path text implies is being reviewed
+ * (oppositeMarket), plus the review's parsed publishDate and show.priorRuns.
+ *
+ * @param {object} args
+ * @param {boolean} args.urlPathImpliesOppositeMarket - the guard's URL-path regex already matched
+ * @param {'us'|'uk'} args.oppositeMarket - market the matched URL-path text implies (US indicators on a WE show → 'us'; London indicators on a Broadway/OB show → 'uk')
+ * @param {Date|string|null} args.reviewDate - parsed/parseable review publish date
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns
+ * @returns {{ shouldFlag: boolean, exemptedByPriorRun: boolean, matchedVenue: string|null }}
+ */
+function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, oppositeMarket, reviewDate, priorRuns }) {
+  if (!urlPathImpliesOppositeMarket) return { shouldFlag: false, exemptedByPriorRun: false, matchedVenue: null };
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const match = findMatchingPriorRun(reviewDate, priorRuns);
+  const venueMatches = match && (oppositeMarket === 'us' ? isUsVenueString(match.venue) : isUkVenueString(match.venue));
+  if (venueMatches) {
+    return { shouldFlag: false, exemptedByPriorRun: true, matchedVenue: match.venue };
+  }
+  return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
+}
+
 module.exports = {
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
@@ -385,6 +468,8 @@ module.exports = {
   buildRegisteredOutletIds,
   isUkUrl,
   isUkVenueString,
+  isUsVenueString,
   evaluateForwardCrossMarketGuard,
   evaluateReverseLondonCrossMarketGuard,
+  evaluateUrlPathCrossMarketGuard,
 };

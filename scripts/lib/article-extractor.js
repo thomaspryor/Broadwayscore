@@ -73,6 +73,91 @@ function removeBalancedDivBlocks(html, classNeedles) {
   return out;
 }
 
+// Common CMS body-container class names, ordered by real-world frequency
+// across the per-outlet PATTERNS entries below (entry-content — WordPress —
+// dominates). Last-resort fallback for domains with no dedicated pattern:
+// see extractByCommonClass.
+const GENERIC_CONTENT_CLASSES = [
+  'entry-content', 'post-content', 'article-content', 'article-body',
+  'content-body', 'story-body', 'articleBody', 'single-content',
+  'main-content', 'td-post-content', 'post_content', 'page-content',
+  'c-entry-content', 'article__body', 'post-body',
+];
+
+/**
+ * Balanced-match a <div>'s inner HTML by class name — same depth-counting
+ * tag walk as removeBalancedDivBlocks above, but capturing the inner HTML
+ * instead of splicing it out. A naive non-greedy `[\s\S]*?</div>` regex
+ * would truncate at the first NESTED div's close tag; unknown templates
+ * can't be assumed div-shallow the way targeted per-outlet patterns can.
+ * Returns the first match's raw inner HTML, or null.
+ */
+function extractBalancedDivByClass(html, classNeedle) {
+  const openRe = new RegExp(
+    '<div[^>]*class="[^"]*\\b' + classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b[^"]*"[^>]*>',
+    'i'
+  );
+  const openM = html.match(openRe);
+  if (!openM) return null;
+  const start = openM.index + openM[0].length;
+  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  tagRe.lastIndex = start;
+  let depth = 1;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    if (m[0] === '</div>') {
+      depth--;
+      if (depth === 0) return html.slice(start, m.index);
+    } else {
+      depth++;
+    }
+  }
+  return null; // unbalanced — bail rather than guess
+}
+
+/**
+ * BRO-203: article-extractor had no true generic fallback — a domain with no
+ * PATTERNS entry (and whose HTML doesn't happen to use <article>/<main>)
+ * returned 0 chars, so genuinely-new outlets stayed uncollectable even after
+ * ingest-review-from-url.js started auto-deriving a provisional outlet for
+ * them (commit 514ed6ccd52). Almost every dedicated pattern added to
+ * PATTERNS above turns out to be one of a handful of common CMS content-class
+ * names once a human looks (WordPress entry-content overwhelmingly), so try
+ * those directly — with balanced div matching — before giving up.
+ */
+function extractByCommonClass(html) {
+  for (const cls of GENERIC_CONTENT_CLASSES) {
+    const inner = extractBalancedDivByClass(html, cls);
+    if (!inner) continue;
+    const text = stripHtml(inner);
+    if (text.length >= 300) return text;
+  }
+  return null;
+}
+
+/**
+ * Absolute last resort (BRO-203): no known wrapper — dedicated or common-class
+ * — matched anything. Strip obvious chrome blocks (nav/header/footer/form),
+ * then collect every remaining <p> with real prose. Noisier than the
+ * class-based passes above (can pull in a stray related-post teaser), but
+ * this only fires for domains with zero prior signal, and downstream
+ * scoreability checks (ensemble LLM / url_content_mismatch gate) already
+ * treat any freshly-extracted new-outlet text as unverified — some noise
+ * beats the current guaranteed 0 chars.
+ */
+function extractByParagraphDensity(html) {
+  const trimmed = html
+    .replace(/<nav[\s\S]*?<\/nav>/gi, ' ')
+    .replace(/<header[\s\S]*?<\/header>/gi, ' ')
+    .replace(/<footer[\s\S]*?<\/footer>/gi, ' ')
+    .replace(/<form[\s\S]*?<\/form>/gi, ' ');
+  const paras = [...trimmed.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((m) => stripHtml(m[1]))
+    .filter((t) => t.length > 40 && /[a-z]/i.test(t));
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
 /**
  * The Stage (thestage.co.uk) — paywalled subscription site. Until the cookie
  * auth was restored (2026-05-31) every fetch returned a registration wall with
@@ -451,9 +536,25 @@ const PATTERNS = [
  *   Will have leading "www." stripped before matching.
  * @returns {string|null} Cleaned article text, or null if no plausible match.
  */
+// Hosts with dedicated non-PATTERNS extraction above (WSJ/Variety/LSA check-
+// and-conditionally-fall-through; LaVoce/Stage/Times return unconditionally).
+// BRO-203's new common-class/paragraph-density fallbacks below must NEVER
+// run for these — they're a "known outlet whose extraction failed this
+// specific fetch" (paywall logout, page-shape drift), not a "genuinely
+// unknown domain" in the sense this task is scoped to. WSJ/Variety/LSA fall
+// through their own conditional return into the PATTERNS loop by design (a
+// dedicated PATTERNS entry may still match), but must stop there — same
+// "dead session mistaken for a successful recovery" risk the Stage/Times
+// unconditional-return fix above exists to prevent (ship-check task #919).
+const DEDICATED_EXTRACTOR_HOSTS = [
+  'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
+  'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
+];
+
 function extractArticleText(html, hostname) {
   if (!html || typeof html !== 'string') return null;
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
+  const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
 
   // WSJ: modern articles serve full body via __NEXT_DATA__ JSON for
   // authenticated sessions. Plain DOM patterns only catch the lede teaser
@@ -512,8 +613,10 @@ function extractArticleText(html, hostname) {
     if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
+  let matchedDedicatedPattern = false;
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
+    if (hostMatch) matchedDedicatedPattern = true;
     // Generic fallbacks (hostMatch === null) pick the LARGEST match, not the
     // first — sidebar teaser cards on Next.js/SPA sites use <article> too, and
     // the first <article> on the page is often a teaser (Joe Turner 2026-04-26
@@ -534,7 +637,20 @@ function extractArticleText(html, hostname) {
       if (text.length >= 100) return text;
     }
   }
-  return null;
+
+  // Nothing above matched — try the common-CMS-class and paragraph-density
+  // fallbacks (BRO-203) before giving up, but ONLY for genuinely unknown
+  // domains: no dedicated extractor branch (isDedicatedHost) and no matching
+  // PATTERNS entry (matchedDedicatedPattern). Known outlets whose dedicated
+  // extraction failed this fetch (WSJ paywall logout, a page-shape drift on
+  // an outlet with a PATTERNS entry) must still return null here — same
+  // "dead session mistaken for a successful recovery" risk the Stage/Times
+  // unconditional-return fix above exists to prevent (ship-check task #919,
+  // adversarial review 2026-08-14 caught this falling-through for WSJ).
+  if (isDedicatedHost || matchedDedicatedPattern) return null;
+  const commonClassText = extractByCommonClass(html);
+  if (commonClassText) return commonClassText;
+  return extractByParagraphDensity(html);
 }
 
 /**

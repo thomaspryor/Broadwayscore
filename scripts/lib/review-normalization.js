@@ -911,9 +911,11 @@ const WIRE_SERVICE_OUTLETS = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
 /**
  * Is this URL positive evidence of a DIFFERENT outlet than outletId?
  * True only when the registry maps the URL's domain to another outlet AND
- * outletId's own registry entry does not claim that domain (domain /
- * domainAliases) AND outletId is not a wire service. Used to refuse
- * cross-outlet URL swaps (Louise Penn 'Cambridge' incident, 2026-07-12).
+ * outletId's own registry entry does not claim that domain, path-aware
+ * (outletOwnsUrlDomainIgnoringPath — domain / domainAliases, but path-split
+ * domains like timeout.com/london still refine) AND outletId is not a wire
+ * service. Used to refuse cross-outlet URL swaps (Louise Penn 'Cambridge'
+ * incident, 2026-07-12).
  */
 function isCrossOutletUrl(outletId, url) {
   if (!outletId || !url) return false;
@@ -921,7 +923,7 @@ function isCrossOutletUrl(outletId, url) {
   if (WIRE_SERVICE_OUTLETS.has(id)) return false;
   const resolved = resolveOutletFromUrl(url);
   if (!resolved || resolved.outletId === id) return false;
-  return !outletOwnsUrlDomain(id, url);
+  return !outletOwnsUrlDomainIgnoringPath(id, url);
 }
 
 /**
