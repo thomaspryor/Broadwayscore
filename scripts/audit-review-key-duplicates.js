@@ -32,6 +32,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -86,8 +87,7 @@ function countKeyDuplicates(reviewTextsDir) {
 
 function main() {
   const argv = process.argv.slice(2);
-  const maxArg = argv.find((a) => a.startsWith('--max='));
-  const max = maxArg ? parseInt(maxArg.split('=')[1], 10) : 5;
+  const max = parseMaxArgOrExit(argv, { defaultMax: 5, scriptName: 'audit-review-key-duplicates' });
   const asJson = argv.includes('--json');
 
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {

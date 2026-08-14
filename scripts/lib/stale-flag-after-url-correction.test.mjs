@@ -42,6 +42,31 @@ test('audit --max with a valid integer is accepted (not rejected as malformed)',
   }
 });
 
+// Proves --max is actually USED as a ceiling, not merely parsed. Without this,
+// the rejection tests above would still pass if --max were ignored entirely.
+test('audit --max is applied as a real ceiling against a corpus with a known hit count', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'stale-flag-ceiling-'));
+  const HITS = 3;
+  for (let i = 0; i < HITS; i++) {
+    const showDir = path.join(root, `show-${i}-2026`);
+    fs.mkdirSync(showDir, { recursive: true });
+    fs.writeFileSync(path.join(showDir, 'outlet--critic.json'), JSON.stringify({
+      criticName: 'Critic',
+      wrongProduction: true,
+      _urlChangedClear: { from: 'https://a.example/old', to: 'https://a.example/new', cleared: ['fullText'] },
+    }));
+  }
+
+  const atCeiling = runAudit(['--gate', `--max=${HITS}`, `--review-texts-dir=${root}`]);
+  assert.equal(atCeiling.status, 0, `${HITS} hits at --max=${HITS} should pass; stdout=${atCeiling.stdout}`);
+
+  const belowCeiling = runAudit(['--gate', `--max=${HITS - 1}`, `--review-texts-dir=${root}`]);
+  assert.equal(belowCeiling.status, 1, `${HITS} hits at --max=${HITS - 1} should fail`);
+  assert.match(belowCeiling.stderr, /match the #483 stale-flag-after-URL-correction signature/);
+});
+
 // --- producer/detector agreement (the drain→rebuild→re-flag loop) ---------
 // The #483 gate stayed red for a day because the DRAIN and the RE-FLAGGER were
 // different code: a human cleared 157 flags (review-texts 773ebb7189d) and the

@@ -38,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { detectCrossShowUrlMismatch } = require('./lib/cross-show-url');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -45,8 +46,8 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const FIX = process.argv.includes('--fix');
 const JSON_OUT = process.argv.includes('--json');
 const STRICT = process.argv.includes('--strict');
-const maxArg = process.argv.find(a => a.startsWith('--max='));
-const MAX = maxArg ? parseInt(maxArg.split('=')[1], 10) : 0; // strict fails when unhandled > MAX
+// strict fails when unhandled > MAX
+const MAX = parseMaxArgOrExit(process.argv.slice(2), { scriptName: 'audit-cross-show-url' });
 
 // A file is already handled if a guard/human has resolved its show membership.
 // Mirrors shouldSkipCrossShowUrlFlag (review-guards.js) plus the exclusion flags

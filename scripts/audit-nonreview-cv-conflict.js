@@ -33,6 +33,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isNonReviewDemotedByFreshCV } = require('./lib/review-guards');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-nonreview-cv-conflict.js — stale isNonReview outranked by a fresher high-confidence CV (#1255)
 
@@ -51,11 +52,15 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SKIP_DIRS = new Set(['_superseded-misattributed']);
 
 function parseArgs(argv) {
-  const args = { gate: false, max: 15, show: null, json: false };
+  const args = {
+    gate: false,
+    max: parseMaxArgOrExit(argv, { defaultMax: 15, scriptName: 'audit-nonreview-cv-conflict' }),
+    show: null,
+    json: false,
+  };
   for (const a of argv) {
     if (a === '--gate') args.gate = true;
     else if (a === '--json') args.json = true;
-    else if (a.startsWith('--max=')) args.max = parseInt(a.split('=')[1], 10);
     else if (a.startsWith('--show=')) args.show = a.split('=')[1];
   }
   return args;

@@ -30,6 +30,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { detectStaleFlagAfterUrlCorrection, remediateStaleFlagAfterUrlCorrection } = require('./lib/stale-flag-after-url-correction.js');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-stale-flag-after-url-correction.js — stale flag + URL-correction breadcrumb sweep (#483)
 
@@ -82,21 +83,7 @@ function main() {
   // does not mean "not scoreable". The real fix is to narrow the DETECTOR so it
   // stops matching records whose publishDate independently corroborates the
   // flag — not to weaken the date guard.
-  const maxArg = argv.find((a) => a.startsWith('--max='));
-  // Reject a non-integer instead of letting parseInt hand back NaN. `--max=abc`
-  // and `--max=` both yielded NaN, and `hits.length > NaN` is ALWAYS false — so
-  // a typo in the workflow silently disabled the gate entirely while still
-  // printing a pass. Fail loud (exit 2, distinct from the exit-1 gate failure)
-  // so a malformed ceiling can never be mistaken for a clean corpus.
-  let max = 0;
-  if (maxArg) {
-    const raw = maxArg.slice('--max='.length);
-    if (!/^\d+$/.test(raw)) {
-      console.error(`FAIL: --max must be a non-negative integer, got "${raw}".`);
-      process.exit(2);
-    }
-    max = Number(raw);
-  }
+  const max = parseMaxArgOrExit(argv, { scriptName: 'audit-stale-flag-after-url-correction' });
   const dirArg = argv.find((a) => a.startsWith('--review-texts-dir='));
   const REVIEW_TEXTS_DIR = dirArg ? dirArg.split('=')[1] : path.join(ROOT, 'data', 'review-texts');
 
