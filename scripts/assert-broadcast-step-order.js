@@ -44,7 +44,10 @@ function findNodeInstallLine(lines) {
       return i;
     }
 
-    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+    // Accepts the inline `- run: <cmd>` list-item shorthand too — the bare
+    // `^run\s*:` anchor missed it (task #1474's audit-workflow-hygiene.js
+    // fix, same bug class, applied here before this file's copy could bite).
+    const runMatch = stripped.match(/^(?:-\s+)?run\s*:\s*(.*?)\s*$/);
     if (runMatch) {
       const content = runMatch[1];
       const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -130,4 +133,8 @@ function main() {
   console.log(`OK: node install (line ${installLine + 1}) runs after checkout (line ${checkoutLine + 1}) and before checklist_gate (line ${gateLine + 1}).`);
 }
 
-main();
+module.exports = { findNodeInstallLine, findChecklistGateLine, findCheckoutLine };
+
+if (require.main === module) {
+  main();
+}
