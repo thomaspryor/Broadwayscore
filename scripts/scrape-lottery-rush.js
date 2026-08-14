@@ -29,7 +29,6 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
-const { isBroadwayCategory } = require('./lib/venue-classification');
 
 // ==================== Configuration ====================
 

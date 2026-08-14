@@ -45,13 +45,17 @@ const RATE_LIMIT_MS = 1500;
  * @returns {Promise<string|null>} Raw HTML content or null
  */
 async function fetchIBDBPageHTML(url) {
+  let content = null;
+
   try {
     const pageResult = await fetchPage(url, { renderJs: true });
-    return pageResult.content;
+    content = pageResult.content;
   } catch (e) {
     console.log(`  ⚠️  Scraper fetch failed: ${e.message}`);
     return null;
   }
+
+  return content;
 }
 
 /**
