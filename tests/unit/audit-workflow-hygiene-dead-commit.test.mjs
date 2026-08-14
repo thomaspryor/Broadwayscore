@@ -126,6 +126,41 @@ jobs:
     assert.strictEqual(violations[0].job, 'committer');
   });
 
+  test('does NOT flag inline `- run: <cmd>` list-item shorthand for git add (ship-check finding)', () => {
+    const raw = synthetic(`
+      - run: git add data/shows.json
+      - name: Commit
+        run: |
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh
+`);
+    const violations = findDeadCommitSteps(raw);
+    assert.deepStrictEqual(violations, []);
+  });
+
+  test('flags when a commit message merely mentions a staging-script filename (ship-check finding)', () => {
+    const raw = synthetic(`
+      - name: Commit
+        run: |
+          git commit -m "Fixed per stage-data-changes.sh review notes"
+          bash scripts/lib/push-with-retry.sh
+`);
+    const violations = findDeadCommitSteps(raw);
+    assert.strictEqual(violations.length, 1);
+  });
+
+  test('does NOT flag a real staging-script invocation (full scripts/lib/ path)', () => {
+    const raw = synthetic(`
+      - name: Stage and commit
+        run: |
+          bash scripts/lib/stage-data-changes.sh
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh
+`);
+    const violations = findDeadCommitSteps(raw);
+    assert.deepStrictEqual(violations, []);
+  });
+
   test('a git commit inside a `uses:` composite action call is not treated as inline', () => {
     const raw = synthetic(`
       - name: Push core data

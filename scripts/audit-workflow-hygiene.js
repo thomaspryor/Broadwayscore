@@ -385,12 +385,20 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
 // Shared helper scripts that perform `git add` internally — a job that
 // invokes one of these has staged files even though the literal text
 // "git add" never appears in the job's own YAML lines (see rule (h)).
+// Matched against the full `scripts/lib/<name>` path (not the bare filename)
+// inside actual run content only — a bare filename can appear incidentally in
+// a commit message or step name ("Fixed per stage-data-changes.sh notes"),
+// and matching that would silently defeat the exact dead-commit bug class
+// this rule exists to catch (ship-check finding, task #1461).
 const GIT_ADD_SATISFYING_SCRIPTS = [
   'stage-data-changes.sh',
   'git-add-existing.sh',
   'safe-sync-review-texts.sh',
   'sync-audit-checkout.sh',
 ];
+const GIT_ADD_SATISFYING_SCRIPT_RE = new RegExp(
+  `scripts/lib/(?:${GIT_ADD_SATISFYING_SCRIPTS.map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+);
 
 /**
  * Return job-scoped violations of rule (h): a job with an inline `git
@@ -432,12 +440,12 @@ function findDeadCommitSteps(raw) {
       const stripped = line.trimStart();
       if (stripped.startsWith('#')) continue;
 
-      if (GIT_ADD_SATISFYING_SCRIPTS.some((s) => line.includes(s))) {
-        hasGitAdd = true;
-      }
-
       let textToCheck = null;
-      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      // Accepts both the common `- name: X` + indented `run: |` style and the
+      // inline `- run: <cmd>` list-item shorthand (e.g. `- run: git add x`) —
+      // the latter is used elsewhere in this repo and was invisible to the
+      // original `^run\s*:` anchor, a false-positive found by ship-check.
+      const runMatch = stripped.match(/^(?:-\s+)?run\s*:\s*(.*?)\s*$/);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -458,6 +466,9 @@ function findDeadCommitSteps(raw) {
 
       if (textToCheck !== null && !textToCheck.trimStart().startsWith('#')) {
         if (/\bgit\s+add\b/.test(textToCheck)) {
+          hasGitAdd = true;
+        }
+        if (GIT_ADD_SATISFYING_SCRIPT_RE.test(textToCheck)) {
           hasGitAdd = true;
         }
         if (/\bgit push\b/.test(textToCheck) || /push-with-retry\.sh/.test(textToCheck)) {
