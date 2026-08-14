@@ -108,6 +108,8 @@ Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellchec
 ### Private Repo Pattern (core data)
 9 core data files (`shows.json`, `reviews.json`, `grosses.json`, etc.) live in `thomaspryor/broadway-scorecard-data`. All workflows check them out via `.github/actions/checkout-core-data/` and push changes via `.github/actions/push-core-data/`. See root `CLAUDE.md` §7b for full details.
 
+**Exception — `data/awards.json` is dual-tracked:** unlike every other `CORE_FILES` entry, it's ALSO committed directly to the public repo, because `test.yml`'s staleness gate ("Check awards.json was updated within 14 months") and `vercel-preview.yml`'s build-trigger path both key off its *public* git history. Workflows that write it (`update-tony-awards.yml`, `update-precursor-awards.yml`) commit to the public repo AND call `push-core-data` — don't "fix" the public commit away as if it were the #1441 bug class.
+
 | Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ✅ | ✅ | **PRIMARY sync** - daily + manual trigger. Pre-rebuild flag-setters (flag-wrong-production-by-date, cleanup-phantom-outlets, etc.) write review-texts, pushed via push-review-texts (line 375). LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
