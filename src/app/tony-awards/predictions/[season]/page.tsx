@@ -3,7 +3,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { BlendedTrioDisplay } from '@/components/show-cards';
+import { BlendedTrioDisplay, ShowListCard } from '@/components/show-cards';
+import { createShowSerializer } from '@/lib/serialize-show';
+import { groupShowsByTonyShape } from '@/lib/tony-season-groups';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
@@ -102,10 +104,28 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // 10-things-2024 are still sitting in shows.json with 2022/2024 preview dates and
   // would otherwise render as fresh 2026-27 announcements. No previewsStartDate at all
   // is fine: that's a genuinely undated future announcement (Dreamgirls, Purple Rain).
+  // Shows with previews scheduled INSIDE the season window but no openingDate yet.
+  // These are unambiguously this season's shows — Paranormal Activity starts previews
+  // 2026-08-14 — and listing them as "no date" was wrong. getEligibleShows can't see
+  // them (it keys off openingDate), and openingDate is null because our Broadway date
+  // source (IBDB) is currently returning a bot challenge, so the enrichment that would
+  // fill it in is failing. Surface them with the date we DO have, labelled as previews.
+  // See tony-nominees-premature, 2026-08-11.
+  const previewsThisSeason = isCurrent
+    ? allShows
+        // 'previews' included: a show that has ALREADY started previews but has
+        // no announced opening night is the exact case this section exists for,
+        // and listing only announced/upcoming silently dropped it.
+        .filter(s => (s.status === 'announced' || s.status === 'upcoming' || s.status === 'previews') && !s.openingDate)
+        .filter(s => s.previewsStartDate && s.previewsStartDate >= season.start && s.previewsStartDate <= season.end)
+        .sort((a, b) => (a.previewsStartDate ?? '').localeCompare(b.previewsStartDate ?? ''))
+    : [];
+
+  // Truly undated: no openingDate AND no previewsStartDate. Announced, nothing scheduled.
+  // (Shows with a LAPSED preview date are stale/abandoned announcements — excluded.)
   const announcedNoDate = isCurrent
     ? allShows
-        .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
-        .filter(s => !s.previewsStartDate || s.previewsStartDate >= season.start)
+        .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate && !s.previewsStartDate)
         .sort((a, b) => a.title.localeCompare(b.title))
     : [];
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
@@ -159,6 +179,67 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     season,
   );
   const outcomes = getSeasonOutcomes(allShows, season);
+
+  // Shows with a confirmed opening date in this season that aren't scored yet.
+  // groupIntoCategories parks these in cat.upcoming, which CategorySection never
+  // renders — so before nominations they were completely invisible, and with only
+  // one show scored the page showed nothing but "Predictions coming soon". These
+  // are the MOST relevant shows on the page (dated, in-season, real contenders):
+  // Evita, The Sound of Music, Paddington, Dolly, School Girls, Gloria, and more.
+  // Deduped across categories and sorted by opening date, soonest first.
+  // See tony-nominees-premature, 2026-08-11 — "list all Broadway shows announced".
+  // Includes cat.shows (already opened) as well as cat.upcoming: with fewer than 2
+  // scored shows the category sections don't render at all, so listing only `upcoming`
+  // would still hide the one show that HAS opened. Both together = every dated show
+  // in the season, which is what "list all announced shows" actually means.
+  const openingThisSeason = isCurrent && !nominationsAnnounced
+    ? Array.from(
+        new Map(
+          categories
+            .flatMap(cat => [...cat.shows, ...cat.upcoming].map(s => [s.slug, s] as const))
+        ).values()
+      ).sort((a, b) => (a.openingDate ?? '').localeCompare(b.openingDate ?? ''))
+    : [];
+
+  // Render every season list on ShowListCard — the same component the homepage,
+  // /off-broadway and /west-end use (CLAUDE.md rule 4). The bespoke two-column
+  // thumbnail rows these sections used to carry had no score slot at ALL, so a
+  // show with a real critic score (Celebrity Autobiography, 68.95) rendered
+  // blank while the section copy promised "scores appear once each one opens".
+  //
+  // Serialize from the full ComputedShow rather than the SerializedTonyShow in
+  // `openingThisSeason`: that shape carries no id / type / isRevival and no
+  // per-tier review counts, and ScoreBadge needs the tier counts to decide
+  // whether a score is publishable at all.
+  const serializeCard = createShowSerializer();
+  const showBySlug = new Map(allShows.map(s => [s.slug, s]));
+  // A show whose previews start inside the season window belongs in the same
+  // buckets as everything else: it IS a play or a musical, it IS or isn't a
+  // revival, and it is unambiguously opening this season (owner, 2026-08-13).
+  // Splitting it into a separate "in previews" list implied those facts were
+  // unknown when only the opening DATE is. The card shows its previews date.
+  const openingThisSeasonCards = [
+    ...openingThisSeason
+      .map(s => showBySlug.get(s.slug))
+      .filter((s): s is NonNullable<typeof s> => s != null),
+    ...previewsThisSeason,
+    // Announced with no date at all still belongs in its category list — it is
+    // a play or a musical either way, and the owner's rule is that EVERY
+    // announced Broadway show appears here (2026-08-13). The card prints TBA
+    // where a date would go.
+    ...announcedNoDate,
+  ]
+    // Sort on the earliest date we actually have. Dateless shows sort last
+    // rather than first, which is what an empty string would do.
+    .sort((a, b) =>
+      (a.openingDate || a.previewsStartDate || '9999').localeCompare(b.openingDate || b.previewsStartDate || '9999'))
+    .map(s => serializeCard(s));
+  // Grouped musical/play and new/revival, the shape the Tony show-level
+  // categories take. Grouping is on facts we store (type, isRevival), NOT on
+  // Tony eligibility — that's an Administration Committee ruling nobody has made
+  // yet, which is what the disclaimer below the heading still says.
+  const seasonGroups = groupShowsByTonyShape(openingThisSeasonCards);
+  const awaitingOpeningNight = previewsThisSeason.length;
 
   // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
   // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
@@ -369,7 +450,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Tony Awards Predictions
+                {/* Saying "Predictions" while the page states predictions aren't available
+                    was the same overclaim in the largest type on the page. */}
+                {isCurrent && !nominationsAnnounced ? 'Tony Awards Season Tracker' : 'Tony Awards Predictions'}
               </h1>
               <SeasonSelect
                 basePath="/tony-awards/predictions"
@@ -405,7 +488,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                   // Pre-nominations this page has no predictions on it, so the old
                   // "Data-driven predictions … Updated daily" line contradicted both the
                   // eligibility banner below and the FAQ schema. Describe the real content.
-                  ? `Every Broadway show that has opened so far in the ${season.label} season. Predictions start once Tony nominations are announced.`
+                  ? `Broadway shows opening in the ${season.label} season, tracked as they open. Predictions start once Tony nominations are announced.`
                   : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
           </p>
           {ceremonyDate && isCurrent && (
@@ -619,17 +702,20 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* Coming Soon — shown when the season has too few shows to make meaningful predictions */}
+        {/* Coming Soon — shown when the season has too few shows to make meaningful
+            predictions. Kept deliberately compact: it used to be the ONLY thing on the
+            page in this state, which is why a season with 9 dated shows looked empty.
+            The real season list renders below it. */}
         {totalScored < 2 && winnerCount === 0 ? (
-          <div className="rounded-xl border border-white/10 bg-surface-overlay p-8 text-center mb-10">
-            <p className="text-2xl mb-2">🎭</p>
-            <h2 className="text-lg font-bold text-white mb-2">Predictions coming soon</h2>
-            <p className="text-gray-400 text-sm max-w-md mx-auto">
-              The {season.label} Tony season is just getting started. Predictions will be available once enough shows have opened and been reviewed — Broadway&apos;s season runs September through April.
+          <div className="rounded-xl border border-white/10 bg-surface-overlay p-5 mb-8">
+            <h2 className="text-base font-bold text-white mb-1">Predictions start after nominations</h2>
+            <p className="text-gray-400 text-sm">
+              The {season.label} Tony season is still early &mdash; the shows below have been announced
+              or have opened, but our model doesn&apos;t rank them until Tony nominations are announced.
             </p>
             <Link
               href={`/tony-awards/predictions/${allSeasonLabels[1] ?? ''}`}
-              className="inline-block mt-5 text-sm text-brand hover:text-brand-hover transition-colors"
+              className="inline-block mt-3 text-sm text-brand hover:text-brand-hover transition-colors"
             >
               See {allSeasonLabels[1]} predictions and results &rarr;
             </Link>
@@ -671,50 +757,50 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </>
         )}
 
-        {/* Announced with no opening date. Deliberately NOT titled "this season": with no
-            date we genuinely cannot place a show in a Tony season window, so claiming these
-            belong to the current one would be the same overclaim this page just removed.
-            Listed separately and unscored. See tony-nominees-premature, 2026-08-11. */}
-        {isCurrent && announcedNoDate.length > 0 && (
+        {/* Dated and in-season, but not yet scored. These live in cat.upcoming, which
+            CategorySection doesn't render, so before this they were invisible — the page
+            showed only "Predictions coming soon" while 9 real dated shows sat hidden.
+            No scores or ranking: unopened shows have nothing to rank on. */}
+        {/* Gate on the CARD list, not on `openingThisSeason`: in an early season
+            whose only entries are previews-dated or dateless announcements, the
+            old gate hid the whole section and the page showed no shows at all. */}
+        {openingThisSeasonCards.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-lg font-bold text-white mb-1">Announced, no opening night yet</h2>
-            <p className="text-sm text-gray-400 mb-4">
-              {/* Most of these DO have a previews date — saying they are "not dated" was
-                  wrong. Tony eligibility keys off opening night specifically, which is
-                  what these are missing. */}
-              These have been announced without a confirmed opening night. Tony eligibility runs
-              off opening date, so they can&apos;t be placed in a category yet.
+            <h2 className="text-lg font-bold text-white mb-1">This season&apos;s Broadway shows</h2>
+            <p className="text-sm text-gray-400 mb-6">
+              {openingThisSeasonCards.length} show{openingThisSeasonCards.length !== 1 ? 's' : ''} scheduled
+              for the {season.label} season, grouped the way the Tony show categories are.
+              {awaitingOpeningNight > 0 && <> {awaitingOpeningNight} of them {awaitingOpeningNight === 1 ? 'has' : 'have'} a
+              previews date but no announced opening night yet.</>} Eligibility itself is not yet
+              determined — the Tony Administration Committee rules on that, and it hasn&apos;t.
+              Scores appear once each show opens and reviews land.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {announcedNoDate.map(show => (
-                <Link
-                  key={show.id}
-                  href={`/show/${show.slug}`}
-                  className="flex items-center gap-3 p-2.5 rounded-lg bg-surface-raised border border-white/5 hover:bg-white/[0.03] transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-md overflow-hidden bg-surface-overlay flex-shrink-0">
-                    {show.images?.thumbnail ? (
-                      <img
-                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-                        alt={show.title}
-                        className="w-full h-full object-cover"
-                        width={40}
-                        height={40}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{show.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{show.venue || 'Venue TBA'}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {seasonGroups.map(group => (
+              <div key={group.key} className="mb-8 last:mb-0">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
+                  {group.title}
+                  <span className="ml-2 text-gray-600 tabular-nums">{group.shows.length}</span>
+                </h3>
+                <div className="space-y-3" role="list" aria-label={group.title}>
+                  {group.shows.map((show, i) => (
+                    <ShowListCard key={show.id} show={show} index={i} scoreMode="critics" />
+                  ))}
+                </div>
+              </div>
+            ))}
           </section>
         )}
+
+        {/* Previews-dated shows used to live in their own "In previews this season"
+            section here. They now fold into the grouped season block above: a show
+            with a previews date IS a play or a musical and IS or isn't a revival,
+            and it is unambiguously opening this season — only the opening DATE is
+            unknown, which its card states. Owner, 2026-08-13. */}
+
+        {/* The "Announced, no opening night yet" section is gone: those shows now
+            sit in the grouped season block above with TBA in the date slot.
+            Every announced Broadway show belongs on this list (owner, 2026-08-13);
+            a show with no date is still a play or a musical. */}
 
         {/* Performer + craft categories — no model predictions; data depends on season:
             - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
