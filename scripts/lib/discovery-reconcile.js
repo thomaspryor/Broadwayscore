@@ -1,3 +1,5 @@
+const { normalizeTitle, areTitlesSimilar } = require('./deduplication');
+
 /**
  * Stale-entry reconciliation for scripts/discover-new-shows.js (Gap C, card #1446).
  *
@@ -28,13 +30,33 @@
  *   still re-crawlable (or unset) — once an opening date has been curated by
  *   hand, the whole record is treated as settled rather than picking which
  *   individual fields to still trust.
+ *
+ * A third guard added after the same review: reconciliation trusts WHICHEVER
+ * check matched (todaytixId equality, or any of checkForDuplicate's 9 checks,
+ * including its loosest fuzzy/containment ones) as proof this is the same
+ * production. scripts/lib/todaytix-dates.js documents that TodayTix recycles
+ * show IDs across unrelated productions — the reason unconfirmedStartDate
+ * quarantining exists for dates — but nothing quarantined venue, so a
+ * recycled-ID or loose-fuzzy false-positive match could silently overwrite a
+ * real show's venue with an unrelated production's. Independent of which
+ * check matched, require the candidate's title to itself resemble the
+ * existing show's title before writing anything.
  */
 const RECRAWLABLE_OPENING_DATE_SOURCES = new Set(['playbill', 'ibdb', 'todaytix', null, undefined]);
+
+function titlesResembleEachOther(a, b) {
+  const na = normalizeTitle(a || '');
+  const nb = normalizeTitle(b || '');
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  return areTitlesSimilar(na, nb);
+}
 
 function computeShowReconciliation(existing, candidate) {
   if (!existing || !candidate) return null;
   if (existing.status !== 'announced' && existing.status !== 'upcoming') return null;
   if (!RECRAWLABLE_OPENING_DATE_SOURCES.has(existing.openingDateSource)) return null;
+  if (!titlesResembleEachOther(existing.title, candidate.title)) return null;
 
   const patch = {};
 
