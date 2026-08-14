@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-10T15:54:38.922Z",
-    "completedAt": "2026-08-10T15:54:42.632Z",
-    "totalReviews": 42318,
-    "processed": 0,
-    "skipped": 42316,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3766,
-      "output": 105,
-      "total": 11166
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-10T16:17:47.736Z",
     "completedAt": "2026-08-10T16:17:50.972Z",
     "totalReviews": 42318,
@@ -708062,17 +708042,37 @@
     ]
   },
   {
-    "startedAt": "2026-08-14T01:00:57.962Z",
-    "completedAt": "2026-08-14T01:01:00.662Z",
-    "totalReviews": 24,
-    "processed": 0,
-    "skipped": 23,
+    "startedAt": "2026-08-14T01:22:38.070Z",
+    "completedAt": "2026-08-14T01:22:44.330Z",
+    "totalReviews": 26,
+    "processed": 1,
+    "skipped": 25,
     "errors": 0,
     "tokensUsed": {
-      "input": 4335,
-      "output": 116,
-      "total": 12115
+      "input": 6936,
+      "output": 360,
+      "total": 16269
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-14T01:32:30.355Z",
+    "completedAt": "2026-08-14T01:32:49.055Z",
+    "totalReviews": 7,
+    "processed": 3,
+    "skipped": 3,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 22827,
+      "output": 1047,
+      "total": 51750
+    },
+    "errorDetails": [
+      {
+        "showId": "game-of-thrones-the-mad-king-regional-2026",
+        "outletId": "deadline",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]

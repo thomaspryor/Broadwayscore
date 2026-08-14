@@ -65,6 +65,7 @@ function evaluateCommitDecision({ preErrors, postErrors, postExitCode }) {
 }
 
 const QUOTED_TOKEN_RE = /"([^"]+)"/g;
+const PAREN_GROUP_RE = /\(([^()]+)\)/g;
 
 function extractQuotedTokens(text) {
   const out = [];
@@ -74,11 +75,35 @@ function extractQuotedTokens(text) {
   return out;
 }
 
-// Attribute each new validation error to one of the show IDs a batch write
-// touched (validate-data.js quotes the show ID in nearly every per-show
-// error, e.g. `awards.json: "galileo-2026" tony.season=...`). Returns which
-// candidate IDs are implicated, and whether EVERY new error could be pinned
-// to a candidate.
+// Some error() call sites (mostly the awards.json/tony.season family, e.g.
+// `awards.json: "galileo-2026" tony.season=...`) quote the show ID directly.
+// Most of validate-data.js's per-show error() calls instead quote the show
+// TITLE and put the id unquoted in parens right after, e.g.
+// `Show "${show.title}" (${show.id}) missing required field: venue` or
+// `... (${show.id}, status=${show.status}) has category=...`. Splitting each
+// paren group on commas catches the id in both the single-value and
+// multi-value-parenthetical shapes. Without this, attribution only works for
+// the minority of error sites that quote the id itself, and every other
+// per-show error in this file falls through to allAttributed=false — the
+// discovery gate's own error surface (task #1439).
+function extractCandidateTokens(text) {
+  const out = extractQuotedTokens(text);
+  let m;
+  PAREN_GROUP_RE.lastIndex = 0;
+  while ((m = PAREN_GROUP_RE.exec(text)) !== null) {
+    for (const part of m[1].split(',')) out.push(part.trim());
+  }
+  return out;
+}
+
+// Attribute each new validation error to the show ID(s) a batch write
+// touched. Returns which candidate IDs are implicated, and whether EVERY new
+// error could be pinned to a candidate.
+//
+// Collects EVERY candidate token an error names, not just the first — some
+// validate-data.js errors name two shows at once (e.g. duplicate-ID or
+// duplicate-match pairs), and blocking only the first-mentioned show would
+// let the second implicated show commit unblocked.
 //
 // allAttributed=false means at least one new error names something outside
 // this batch's candidateIds (or names nothing at all) — its cause is
@@ -89,10 +114,10 @@ function attributeNewErrorsToShowIds(newErrors, candidateIds) {
   const blockedIds = new Set();
   let allAttributed = true;
   for (const err of newErrors) {
-    const tokens = extractQuotedTokens(err);
-    const hit = tokens.find((t) => candidateSet.has(t));
-    if (hit) {
-      blockedIds.add(hit);
+    const tokens = extractCandidateTokens(err);
+    const hits = tokens.filter((t) => candidateSet.has(t));
+    if (hits.length > 0) {
+      hits.forEach((h) => blockedIds.add(h));
     } else {
       allAttributed = false;
     }
@@ -143,6 +168,7 @@ module.exports = {
   computeNewErrors,
   shouldCommitDespiteValidationErrors,
   evaluateCommitDecision,
+  extractCandidateTokens,
   attributeNewErrorsToShowIds,
   evaluatePerShowCommitDecision,
 };
