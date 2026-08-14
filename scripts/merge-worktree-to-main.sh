@@ -340,6 +340,7 @@ if [ "${DRY_RUN:-0}" = "1" ]; then
   log "DRY_RUN=1 — skipping push"
 else
   PUSHED=0
+  EVER_UNKNOWN=0
   for attempt in 1 2 3 4 5; do
     OUT=$(g push origin "$DEFAULT_BRANCH" 2>&1)
     # Authoritative success check: is local HEAD now an ancestor of origin? NEVER
@@ -365,17 +366,33 @@ else
         # UNKNOWN (shallow checkout, could not restore full history) — never
         # treat this as landed. Fall through to the same retry path as a
         # plain NOT_LANDED; a few extra retries is the safe failure mode,
-        # unlike wrongly declaring success (task #1489).
+        # unlike wrongly declaring success (task #1489). EVER_UNKNOWN tracks
+        # this across attempts so the terminal failure message below can
+        # tell the user "verification was inconclusive" instead of the
+        # flatly wrong "push failed" — the push itself may well have
+        # succeeded (ship-check finding: a git push whose remote-tracking
+        # ref we simply cannot verify is not the same failure as a rejected
+        # push, and telling the user "failed" when it may be live risks a
+        # bad recovery decision, exactly the class of incident this file
+        # exists to prevent).
+        EVER_UNKNOWN=1
         log "ancestry check UNKNOWN (shallow checkout) — treating as not-yet-confirmed, retrying"
       fi
     fi
     if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out" || [ "$FETCHED" = 0 ]; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
-    log "push rejected (attempt $attempt) — merging remote and retrying"
+    log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"
     g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1 || { restore_stash; die "could not merge remote changes on retry"; }
   done
-  [ "$PUSHED" = 1 ] || { restore_stash; die "push failed after retries"; }
+  if [ "$PUSHED" != 1 ]; then
+    restore_stash
+    if [ "$EVER_UNKNOWN" = 1 ]; then
+      die "could not CONFIRM the push landed after retries — ancestry checks stayed UNKNOWN (shallow checkout, unshallow failed). This is NOT proof the push failed: verify manually via 'git ls-remote origin $DEFAULT_BRANCH' or the GitHub compare API before assuming the work is lost or re-pushing/force-pushing (task #1489)."
+    else
+      die "push failed after retries"
+    fi
+  fi
   log "pushed"
 fi
 

@@ -790,7 +790,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # the same bounded logic CI uses — never leave the shared checkout shallow
   # if a full fetch can fix it, but never go unbounded if it can't (that is
   # exactly the >2GB/rc=124 failure task #466 fixed in the first place).
+  # PUSH_SKIP_UNSHALLOW=1 is an incident escape hatch (ship-check finding,
+  # task #1489): GIT_NET_TIMEOUT_SEC bounds the unshallow attempt's DURATION,
+  # not the amount of history it tries to transfer, so on a badly-drifted
+  # checkout it can burn a full 90s doing nothing useful on every retry. Set
+  # this to skip straight to the bounded fallback below without editing the
+  # script mid-incident.
   if [ -z "${GITHUB_ACTIONS:-}" ] && [ -z "${_unshallow_attempted:-}" ] \
+     && [ "${PUSH_SKIP_UNSHALLOW:-}" != "1" ] \
      && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
     _unshallow_attempted=1
     echo "  ::warning::local checkout is SHALLOW outside CI — this should never happen on the persistent shared checkout. Attempting 'git fetch --unshallow' once to restore full history (task #1489); if this recurs, something is shallow-fetching the shared checkout directly."

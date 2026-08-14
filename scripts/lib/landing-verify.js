@@ -44,6 +44,16 @@ function isShallowRepo(cwd) {
   return git(['rev-parse', '--is-shallow-repository'], cwd) === 'true';
 }
 
+/**
+ * Tri-state, not boolean: `git merge-base --is-ancestor` exits 1 SPECIFICALLY
+ * for "genuinely not an ancestor" — any other nonzero exit (128 for a
+ * missing/invalid object, a timeout, a corrupt ref) is an ERROR, not a
+ * verdict (ship-check finding, task #1489). Collapsing both into `false`
+ * meant a fetch that silently left `origin/<branch>` unresolved, or a
+ * timed-out check, read as NOT_LANDED just as wrongly as the shallow-graph
+ * case this module exists to fix.
+ * @returns {boolean|null} true/false = definitive verdict, null = error (caller must not treat as NOT_LANDED)
+ */
 function isAncestor(sha, ref, cwd) {
   try {
     execFileSync('git', ['merge-base', '--is-ancestor', sha, ref], {
@@ -52,8 +62,9 @@ function isAncestor(sha, ref, cwd) {
       timeout: GIT_NET_TIMEOUT_SEC * 1000,
     });
     return true;
-  } catch {
-    return false;
+  } catch (err) {
+    if (err && err.status === 1) return false;
+    return null;
   }
 }
 
@@ -65,6 +76,13 @@ function isAncestor(sha, ref, cwd) {
  * @param {string} [opts.cwd=process.cwd()]
  * @param {(msg: string) => void} [opts.log]
  * @returns {{verdict: 'LANDED'|'NOT_LANDED'|'UNKNOWN', landed: boolean|null, shallow: boolean, reason: string|null}}
+ *
+ * PRECONDITION: reads the LOCAL `<remote>/<branch>` tracking ref as-is — it
+ * does not fetch it (except to unshallow, see below). Callers that need a
+ * fresh remote-side answer must `git fetch <remote> <branch>` immediately
+ * before calling this, same as scripts/merge-worktree-to-main.sh's two call
+ * sites do; a stale local ref can read LANDED against a tip the remote has
+ * since moved past.
  */
 function checkLanded({ sha, branch = 'main', remote = 'origin', cwd = process.cwd(), log = () => {} } = {}) {
   if (!sha) throw new Error('checkLanded requires sha');
@@ -84,6 +102,12 @@ function checkLanded({ sha, branch = 'main', remote = 'origin', cwd = process.cw
   }
 
   const landed = isAncestor(sha, remoteRef, cwd);
+  if (landed === null) {
+    log(
+      `WARNING: ancestry check for ${sha} against ${remoteRef} errored (not a definitive "not an ancestor" — a timeout, missing ref, or invalid object). Reporting UNKNOWN, not NOT_LANDED.`
+    );
+    return { verdict: 'UNKNOWN', landed: null, shallow: false, reason: 'ancestor-check-error' };
+  }
   return { verdict: landed ? 'LANDED' : 'NOT_LANDED', landed, shallow: false, reason: null };
 }
 

@@ -125,6 +125,40 @@ test('checkLanded reports UNKNOWN, not NOT_LANDED, when unshallow is impossible'
   }
 });
 
+test('an ancestor-check ERROR (invalid sha) reports UNKNOWN, not NOT_LANDED — not every non-shallow failure is a real "not landed" verdict', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'landing-verify-error-'));
+  try {
+    const origin = path.join(root, 'origin.git');
+    const workdir = path.join(root, 'workdir');
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'main', origin]);
+    execFileSync('git', ['init', '-q', '-b', 'main', workdir]);
+    const git = (...a) => execFileSync('git', a, { cwd: workdir, encoding: 'utf8' });
+    git('config', 'user.email', 'test@example.com');
+    git('config', 'user.name', 'test');
+    git('remote', 'add', 'origin', origin);
+    fs.writeFileSync(path.join(workdir, 'a.txt'), 'a\n');
+    git('add', '-A');
+    git('commit', '-qm', 'first');
+    git('push', '-q', 'origin', 'main');
+
+    assert.equal(isShallowRepo(workdir), false, 'fixture precondition: full clone, not shallow');
+    // A well-formed but nonexistent SHA: `merge-base --is-ancestor` exits 128
+    // ("Not a valid commit name"), not 1 ("not an ancestor") — ship-check
+    // finding, task #1489: the old code collapsed every nonzero exit into
+    // NOT_LANDED, which would misreport a transient/plumbing error as
+    // definitive proof the commit never landed.
+    const bogusSha = 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef';
+    const warnings = [];
+    const result = checkLanded({ sha: bogusSha, branch: 'main', remote: 'origin', cwd: workdir, log: (m) => warnings.push(m) });
+    assert.equal(result.verdict, 'UNKNOWN');
+    assert.equal(result.landed, null);
+    assert.equal(result.reason, 'ancestor-check-error');
+    assert.ok(warnings.length > 0, 'an ancestor-check error must be logged loudly, not swallowed');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('control: non-shallow repo + commit truly not on branch reports NOT_LANDED', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'landing-verify-control-'));
   try {
