@@ -42,5 +42,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-14T12:34:45.569Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-08-14T13:00:03.333868+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nThe Apple Boys (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please update the summary since the main thing that Bucks County wasn’t its World Premiere, and so the summary includes the critic’s take on it.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/582",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31808519638",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "queuedAt": "2026-08-14T14:16:52.693Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2672/2250 reqs)",
+    "description": "Zone web_unlocker2 billed 2672 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n7 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (862), audit-show-review-gap.js (629), recover-explicit-ratings.js (70).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-14T15:40:07.376Z"
   }
 ]

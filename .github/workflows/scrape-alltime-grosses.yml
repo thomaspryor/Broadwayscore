@@ -97,22 +97,6 @@ jobs:
             git diff --stat data/grosses.json
           fi
 
-      - name: Commit and push changes
-        if: always() && inputs.dry_run != 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          SHOW_COUNT=$(node -e "const d=require('./data/grosses.json'); console.log(Object.keys(d.shows).length)")
-
-          # Core data files pushed to private repo by push-core-data action
-          git commit -m "data: Update all-time grosses ($SHOW_COUNT shows)
-
-          Automated cumulative grosses scrape from BroadwayWorld."
-
-          bash scripts/lib/push-with-retry.sh
-
-
       - name: Push core data to private repo
         if: always()
         uses: ./.github/actions/push-core-data

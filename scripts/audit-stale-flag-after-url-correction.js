@@ -42,8 +42,12 @@ Usage:
                         file from an unguarded producer cannot block every
                         session's merge — same ratchet as
                         audit-self-contradictory-clears.js
-  --fix                remediate matches in place (clears the stale flag + contentVerification,
-                        extends the existing _urlChangedClear breadcrumb, sets needsRefetch)
+  --fix                DESTRUCTIVE — remediate matches in place (clears the flag +
+                        contentVerification, extends the existing _urlChangedClear
+                        breadcrumb, sets needsRefetch). Clearing the flag RE-ADMITS the
+                        review into live Critic Scores. A 20-file hand-adjudicated sample
+                        (2026-08-14) found 20/20 matches were CORRECTLY flagged, so a match
+                        is not evidence of staleness. Adjudicate by hand before using this.
   --json               machine-readable output
   --review-texts-dir=  override the corpus path (default data/review-texts)
 `;
@@ -147,9 +151,40 @@ function main() {
     }
   }
 
+  // Precision warning, printed to stderr (stdout stays clean for --json).
+  //
+  // This banner exists because the obvious next move on seeing this sweep fail
+  // — running `--fix` — is DESTRUCTIVE and, on every sample measured so far,
+  // WRONG. See the long evidence block on the "Audit stale flag after URL
+  // correction" step in .github/workflows/test.yml. Short version: a
+  // stratified random sample of 20 matching files (2026-08-14) adjudicated
+  // 20/20 flags CORRECT and 0 stale, and the detector's premise ("empty
+  // fullText ⇒ pending refetch ⇒ stale flag") is contradicted by the corpus
+  // (most files already had publishDate cleared, were already refetched, or
+  // were flagged by guards that never read publishDate at all).
+  if (gate && hits.length > 0) {
+    console.error('\n' + '='.repeat(72));
+    console.error('WARNING: this sweep\'s PRECISION IS UNMEASURED AND MEASURED-ZERO ON SAMPLE.');
+    console.error('='.repeat(72));
+    console.error('A hand-adjudicated stratified sample of 20 matching files (2026-08-14)');
+    console.error('found 20/20 flags CORRECT (review really is a different production) and');
+    console.error('0 stale. A match here is NOT evidence that a flag is stale.');
+    console.error('');
+    console.error('DO NOT run --fix reflexively. --fix CLEARS exclusion flags, which');
+    console.error('re-admits wrong-production reviews into live Critic Scores. Draining the');
+    console.error('115-file backlog on 2026-08-14 would have re-admitted ~115 such reviews;');
+    console.error('an earlier session did drain it and correctly self-reverted.');
+    console.error('');
+    console.error('Adjudicate each file by hand before touching it. For attribution of');
+    console.error('which code path wrote a flag, use scripts/audit-stale-flag-producers.js.');
+    console.error('='.repeat(72));
+  }
+
   if (gate && !fix && hits.length > max) {
     console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature (> max ${max}).`);
-    console.error('Drain with --fix, then check scripts/audit-stale-flag-producers.js for which code re-created it.');
+    console.error('This signature has no demonstrated precision (see warning above), so a');
+    console.error('failure here is NOT by itself a reason to change corpus data. In CI this');
+    console.error('step is report-only (continue-on-error) for that reason.');
     process.exit(1);
   }
 }

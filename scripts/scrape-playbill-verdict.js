@@ -25,11 +25,13 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
+const sitemapAccumulatorPath = path.join(__dirname, '../data/audit/playbill-verdict-sitemap-seen.json');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
@@ -629,6 +631,29 @@ async function scrapePlaybillVerdict() {
     stats.errors.push(`Category page: ${err.message}`);
   }
 
+  // Step 1b: Supplement with playbill.com/sitemap.xml — the category page is
+  // a single static fetch that never runs the site's scroll-triggered JS, so
+  // it only ever sees the ~27-30 articles present on first paint (verified
+  // live 2026-08-14 — the visible page has 100+ once a user scrolls). The
+  // sitemap is site-wide and unrelated to /category/the-verdict, so filter
+  // to review-roundup slugs and accumulate across runs (see comment on
+  // accumulateSitemapArticles) since any single sitemap fetch can miss an
+  // article that has already scrolled out of its ~700-entry window.
+  try {
+    const sitemapXml = await fetchHtml(VERDICT_SITEMAP_URL);
+    if (sitemapXml && sitemapXml.length > 500) {
+      const sitemapArticles = extractArticlesFromSitemap(sitemapXml);
+      const accumulated = accumulateSitemapArticles(sitemapAccumulatorPath, sitemapArticles);
+      allArticles.push(...accumulated);
+      console.log(`  Sitemap: found ${sitemapArticles.length} review-slug article(s) this run, ${accumulated.length} accumulated total`);
+    } else {
+      console.log('  Sitemap returned no content.');
+    }
+  } catch (err) {
+    console.error(`  Error fetching sitemap: ${err.message}`);
+    stats.errors.push(`Sitemap: ${err.message}`);
+  }
+
   // Deduplicate
   const uniqueArticles = [];
   const seenUrls = new Set();
@@ -729,6 +754,12 @@ async function scrapePlaybillVerdict() {
   console.log(`Skipped ${stats.skippedOffBroadway} off-Broadway articles\n`);
 
   // Step 3: Fetch each matched article and extract review links
+  // Tracks articles that cleared the fetch + Broadway-market gates below, so
+  // the sitemap accumulator prune (after this loop) only drops candidates
+  // that were actually processed — pruning on tentative match alone would
+  // permanently lose a candidate whose fetch/validation fails on a day it's
+  // already scrolled out of the live sitemap window.
+  const processedArticleUrls = new Set();
   for (const article of matchedArticles) {
     const archivePath = path.join(archiveDir, `${article.showId}.html`);
     // Also check slug-based archive from older runs
@@ -771,6 +802,8 @@ async function scrapePlaybillVerdict() {
       continue;
     }
 
+    processedArticleUrls.add(article.url);
+
     // Extract review links
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
     stats.reviewLinksExtracted += reviewLinks.length;
@@ -796,6 +829,19 @@ async function scrapePlaybillVerdict() {
         console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
       }
     }
+  }
+
+  // Prune sitemap accumulator: only drop candidates that actually cleared
+  // fetch + Broadway-market validation this run (processedArticleUrls) — NOT
+  // every tentative match. A match whose fetch failed or got rejected as
+  // off-market must stay in the accumulator, or a candidate that has already
+  // scrolled out of the live sitemap window is lost for good the moment it
+  // hits a transient failure.
+  try {
+    const remaining = loadSitemapAccumulator(sitemapAccumulatorPath).filter(a => !processedArticleUrls.has(a.url));
+    saveSitemapAccumulator(sitemapAccumulatorPath, remaining);
+  } catch (err) {
+    console.error(`  Error pruning sitemap accumulator: ${err.message}`);
   }
 
   // Step 4: Google fallback for unmatched shows (recent shows only)

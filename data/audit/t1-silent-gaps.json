@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T12:47:39.776Z",
+  "generatedAt": "2026-08-14T14:19:25.359Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 527.5956986111111,
+      "fileAgeHours": 529.1302286111111,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 2.7940705555555554
+      "nonTerminalAgeHours": 4.3233991666666665
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 218.03888833333335,
+      "fileAgeHours": 219.5734175,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 2.7940705555555554
+      "nonTerminalAgeHours": 4.3233991666666665
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -50,30 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 12.304778333333333,
+      "fileAgeHours": 13.836454166666666,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 2.7940705555555554
-    },
-    {
-      "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "title": "Game of Thrones: The Mad King",
-      "openingDate": "2026-08-08",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=game-of-thrones-the-mad-king-regional-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-14T04:01:05.909Z",
-      "fileAgeHours": 8.776074166666668,
-      "gapSeenAt": "2026-08-14T12:47:39.776Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 4.3233991666666665
     }
   ],
   "contradictions": []

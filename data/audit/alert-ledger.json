@@ -134,12 +134,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-14T04:35:37.053Z",
+      "lastSeen": "2026-08-14T15:46:33.391Z",
       "lastNotifiedAt": "2026-08-13T16:23:53.786Z",
       "notifyCount": 28,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 13
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -234,23 +234,24 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-14T12:47:49.747Z",
+      "lastSeen": "2026-08-14T14:19:35.792Z",
       "lastNotifiedAt": "2026-08-13T21:44:54.462Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 21
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-14T10:00:20.455Z",
+      "lastSeen": "2026-08-14T14:19:35.639Z",
       "lastNotifiedAt": "2026-08-14T10:00:20.455Z",
       "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -743,11 +744,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2093/2000 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2672/2250 reqs)",
       "firstSeen": "2026-08-12T18:43:27.704Z",
-      "lastSeen": "2026-08-13T17:47:22.904Z",
-      "lastNotifiedAt": "2026-08-13T17:47:22.904Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-14T15:40:07.375Z",
+      "lastNotifiedAt": "2026-08-14T15:40:07.375Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -768,60 +769,60 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-14T04:35:37.052Z",
+      "lastSeen": "2026-08-14T15:46:33.390Z",
       "lastNotifiedAt": "2026-08-13T16:23:53.490Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 11
+      "silentRefires": 13
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Anansi the Spider",
       "firstSeen": "2026-08-13T00:01:58.198Z",
-      "lastSeen": "2026-08-14T13:47:48.117Z",
+      "lastSeen": "2026-08-14T15:10:15.368Z",
       "lastNotifiedAt": "2026-08-13T00:01:58.198Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 23
+      "silentRefires": 24
     },
     "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
       "firstSeen": "2026-08-13T08:46:36.407Z",
-      "lastSeen": "2026-08-14T13:47:48.116Z",
+      "lastSeen": "2026-08-14T15:10:15.368Z",
       "lastNotifiedAt": "2026-08-13T08:46:36.407Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 17
+      "silentRefires": 18
     },
     "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on How the Other Half Loves",
       "firstSeen": "2026-08-13T10:30:56.123Z",
-      "lastSeen": "2026-08-14T13:52:31.775Z",
+      "lastSeen": "2026-08-14T15:01:15.721Z",
       "lastNotifiedAt": "2026-08-13T10:30:56.123Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 15
+      "silentRefires": 16
     },
     "opening-night-stale-upcoming-tag-marlise-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Marlise",
       "firstSeen": "2026-08-13T10:30:57.283Z",
-      "lastSeen": "2026-08-14T13:47:48.117Z",
+      "lastSeen": "2026-08-14T15:10:15.369Z",
       "lastNotifiedAt": "2026-08-13T10:30:57.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 18
+      "silentRefires": 19
     },
     "opening-night-stale-upcoming-tag-the-winters-tale-off-broadway-2026": {
       "status": "open",
@@ -841,24 +842,24 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-08-13T12:11:11.913Z",
-      "lastSeen": "2026-08-14T13:52:31.897Z",
+      "lastSeen": "2026-08-14T15:01:15.782Z",
       "lastNotifiedAt": "2026-08-14T12:16:30.074Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:how-the-other-half-loves-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on How the Other Half Loves",
       "firstSeen": "2026-08-13T14:02:56.999Z",
-      "lastSeen": "2026-08-14T13:52:31.774Z",
+      "lastSeen": "2026-08-14T15:01:15.721Z",
       "lastNotifiedAt": "2026-08-13T14:02:56.999Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-fulltext-mentions-show:the-winters-tale-off-broadway-2026": {
       "status": "open",
@@ -901,24 +902,24 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-14T12:47:42.370Z",
+      "lastSeen": "2026-08-14T14:19:27.980Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on How the Other Half Loves",
       "firstSeen": "2026-08-13T23:58:55.287Z",
-      "lastSeen": "2026-08-14T13:52:31.773Z",
+      "lastSeen": "2026-08-14T15:01:15.720Z",
       "lastNotifiedAt": "2026-08-13T23:58:55.287Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "gap:an-american-daughter-off-broadway-2026/nysr--david-finkle.json": {
       "status": "open",
@@ -961,6 +962,18 @@
       "firstSeen": "2026-08-14T12:49:57.430Z",
       "lastSeen": "2026-08-14T12:49:57.430Z",
       "lastNotifiedAt": "2026-08-14T12:49:57.430Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "feedback-outcomes:2026-08-14T13:00:03.333868+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "firstSeen": "2026-08-14T14:16:52.690Z",
+      "lastSeen": "2026-08-14T14:16:52.690Z",
+      "lastNotifiedAt": "2026-08-14T14:16:52.690Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

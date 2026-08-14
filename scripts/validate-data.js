@@ -1002,6 +1002,15 @@ function validateShowTypes(shows) {
       error(`Show "${show.title}" (${show.id}) has isRevival:false but a "revival" tag — engine.ts ORs the tag in, so the flag is ignored. Remove the tag or set isRevival:true.`);
       issues++;
     }
+
+    // A show tagged both "new" and "revival" is self-contradictory — a later
+    // automated revival check (e.g. detect-revivals-ibdb.js) flipped isRevival
+    // and pushed "revival" without removing the "new" tag set at creation
+    // (Galileo 2026-08-14: isRevival:true, tags:["new","revival"]).
+    if (Array.isArray(show.tags) && show.tags.includes('new') && show.tags.includes('revival')) {
+      error(`Show "${show.title}" (${show.id}) has both "new" and "revival" tags — self-contradictory. Remove whichever no longer applies.`);
+      issues++;
+    }
   }
 
   if (issues === 0) {
