@@ -174,6 +174,19 @@ jobs:
         continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates --time-budget-min=35
 
+      # Broadway source-coverage guard (card #1445): independently diffs
+      # Playbill's announced Broadway schedule against shows.json and alerts
+      # on anything Playbill has that discovery above didn't add. Alert-only
+      # (never writes shows.json); continue-on-error so a scraper hiccup here
+      # never blocks the rest of the pipeline.
+      - name: Check Broadway source coverage
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/check-broadway-source-coverage.js
+
       # Regional→Broadway transfer auto-linking: if a just-discovered (or any
       # existing) Broadway show title-matches a tracked regional tryout and
       # opened after it, set the reciprocal transferOf/transferredTo pair so
@@ -556,6 +569,14 @@ jobs:
           git add data/off-broadway-venues.json 2>/dev/null || true
           git add data/audit/pipeline-health/ 2>/dev/null || true
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          # Source-coverage telemetry (card #1445) — without this the
+          # per-source zero-streak state never persists across runs, so
+          # sustained source blindness would still be treated as one-run
+          # noise every time a fresh runner checks out a stale committed copy.
+          git add data/audit/discovery-source-coverage.json 2>/dev/null || true
+          git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
+          git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
+          git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
 
           # Only commit if there are staged changes
           if git diff --staged --quiet; then
@@ -1701,7 +1722,7 @@ jobs:
             } else if (/^Commit gate/i.test(step)) {
               hint = "Discovery/enrichment introduced a NEW validation error not present before this run (task #649 set-diff) — a pre-existing, unrelated error alone no longer blocks the commit. Check data/audit/discovery-blocked/ (new_errors_preview) or the run's step summary for the specific error.";
             } else if (/^Discover new shows$/i.test(step)) {
-              hint = "discover-new-shows.js itself failed. Check Broadway.org availability and ScrapingBee/Bright Data credits.";
+              hint = "discover-new-shows.js itself failed. Check TodayTix API availability, Playbill scraping, and ScrapingBee/Bright Data credits.";
             } else if (/^Update show statuses$/i.test(step)) {
               hint = "update-show-status.js (status transitions) failed before discovery ran. Check ShowScore + aggregator availability.";
             } else {
