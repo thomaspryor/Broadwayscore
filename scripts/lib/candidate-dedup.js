@@ -20,8 +20,8 @@
  *     titles ("Cats" vs "Rats", distance 1).
  */
 
-const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./title-match');
-const { isSubtitleVariantOf, levenshteinDistance } = require('./deduplication');
+const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
+const { isSubtitleVariantOf, levenshteinDistance, venuesMatch } = require('./deduplication');
 
 const DEFAULT_DEDUP_JACCARD_THRESHOLD = 0.80;
 const DEFAULT_TYPO_EDIT_DISTANCE_MAX = 3;
@@ -29,9 +29,19 @@ const DEFAULT_TYPO_MIN_TITLE_LENGTH = 10;
 
 /**
  * Does `candidate` ({title, venue}) match an existing show ({id, title,
- * venue})? Same canonical venue AND (normalized title OR subtitle-stripped
- * title OR small edit-distance typo OR jaccard ≥ threshold). Returns
- * { match, reason } or null.
+ * venue})? Same venue (per venuesMatch — see below) AND (normalized title OR
+ * subtitle-stripped title OR small edit-distance typo OR jaccard ≥
+ * threshold). Returns { match, reason } or null.
+ *
+ * Venue equality uses deduplication.js's venuesMatch(), NOT title-match.js's
+ * canonicalVenue() directly — canonicalVenue falls back to the lowercased
+ * FIRST WORD for any venue outside the curated VENUE_ALIASES table, so two
+ * unrelated theatres that both start with "The" would collapse to the same
+ * key. This function runs on every scheduled CI aggregator-roundup
+ * promotion with no human in the loop (BRO-243, generalizing the fix task
+ * #1246 shipped locally in aggregator-candidate-extract.js) — a false venue
+ * MATCH here would silently skip a genuinely new show as an "existing"
+ * duplicate.
  *
  * @param {{title: string, venue: string}} candidate
  * @param {Array<{id: string, title: string, venue: string}>} existingShows
@@ -45,9 +55,8 @@ function findExistingMatch(candidate, existingShows, opts = {}) {
   const typoEditDistanceMax = opts.typoEditDistanceMax ?? DEFAULT_TYPO_EDIT_DISTANCE_MAX;
   const typoMinTitleLength = opts.typoMinTitleLength ?? DEFAULT_TYPO_MIN_TITLE_LENGTH;
 
-  const venueKey = canonicalVenue(candidate.venue);
   const cands = (Array.isArray(existingShows) ? existingShows : [])
-    .filter(e => canonicalVenue(e.venue) === venueKey);
+    .filter(e => venuesMatch(candidate.venue, e.venue));
   if (cands.length === 0) return null;
   const cNorm = normalizeTitle(candidate.title);
   const cTokens = titleTokens(candidate.title);
