@@ -2444,6 +2444,18 @@ on:
       - 'scripts/lib/linear-cap-policy.js'
       - 'scripts/check-linear-cap.js'
       - 'scripts/linear-archive-done.js'
+      # Task-to-workspace lookup (card #1465): resolves the live cmux
+      # workspace hosting a dispatched task, cross-checking dispatch-ledger's
+      # taskId->workspaceRef record against a live `cmux list-workspaces`
+      # snapshot. Colocated test runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist). The CLI entry point
+      # (scripts/message-dispatched-workspace.js) is out of infra-review-gate
+      # scope (not scripts/lib/, no dispatch-* prefix match) and has no test
+      # of its own — it's a thin shell-out wrapper around this module.
+      - 'scripts/lib/dispatched-workspace-lookup.js'
+      - 'scripts/lib/dispatched-workspace-lookup.test.mjs'
+      - 'scripts/message-dispatched-workspace.js'
   pull_request:
     branches: [main]
   schedule:
