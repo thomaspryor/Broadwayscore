@@ -129,6 +129,10 @@ test('every export is non-mutating (no drain can be reintroduced under any name)
   const mod = await import('./stale-flag-after-url-correction.js');
   const api = mod.default ?? mod;
   // A record the detector matches, i.e. exactly what a drain would target.
+  // needsRefetch: true is REQUIRED in this fixture, not incidental — 107 of the
+  // 115 real matches carry it, so a re-added drain gated on `needsRefetch ===
+  // true` is the single most likely shape. A review proved that exact mutant
+  // slipped through a fixture that omitted the field.
   const build = () => ({
     url: 'https://example.com/b',
     wrongProduction: true,
@@ -138,24 +142,44 @@ test('every export is non-mutating (no drain can be reintroduced under any name)
     contentVerification: { verified: false },
     contentTier: 'stub',
     fullText: null,
+    needsRefetch: true,
     aggregatorStars: '4/5',
     _urlChangedClear: { from: 'https://example.com/a', to: 'https://example.com/b', cleared: ['fullText'] },
   });
+  const FAIL = (name, how) =>
+    `${name}() ${how}. This module must expose no bulk flag-clearing helper under any name: `
+    + 'its matches are usually CORRECT flags, and clearing them re-admits wrong-production '
+    + 'reviews into live Critic Scores. The remedy for these records is a refetch, never a '
+    + 'flag-clear.';
 
+  let checked = 0;
   for (const [name, fn] of Object.entries(api)) {
     if (typeof fn !== 'function') continue;
+    checked++;
     const data = build();
     const before = JSON.stringify(data);
-    fn(data);
-    assert.equal(
-      JSON.stringify(data),
-      before,
-      `${name}() MUTATED a matching record. This module must expose no bulk flag-clearing `
-        + 'helper under any name: its matches are usually CORRECT flags, and clearing them '
-        + 're-admits wrong-production reviews into live Critic Scores. The remedy for these '
-        + 'records is a refetch, never a flag-clear.'
-    );
+    // `await` so an async drain that mutates after a tick is still caught; the
+    // try/catch keeps a signature-mismatch drain (fn(data, flags), fn(path))
+    // failing with THIS message rather than a bare TypeError.
+    let returned;
+    try {
+      returned = await fn(data);
+    } catch (err) {
+      assert.fail(FAIL(name, `threw on a matching record (${err.message})`));
+    }
+    assert.equal(JSON.stringify(data), before, FAIL(name, 'MUTATED a matching record'));
+    // A drain need not mutate in place — returning a cleared COPY that the
+    // caller writes back is just as destructive, and mutation-testing showed
+    // that shape passing silently.
+    if (returned && typeof returned === 'object' && !Array.isArray(returned)) {
+      for (const flag of ['wrongProduction', 'wrongShow']) {
+        if (data[flag] === true && returned[flag] !== true) {
+          assert.fail(FAIL(name, `returned a COPY with ${flag} cleared`));
+        }
+      }
+    }
   }
+  assert.ok(checked >= 3, `expected to exercise the module's exported functions, checked ${checked}`);
 });
 
 test('the deleted remediate export specifically has not come back', async () => {
