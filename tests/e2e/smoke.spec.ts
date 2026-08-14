@@ -16,11 +16,23 @@ test.describe('Post-deploy smoke tests', () => {
     // Page loads with correct title
     await expect(page).toHaveTitle(/Broadway/i);
 
-    // Show cards are present (not an empty page or error boundary)
+    // Show cards are present (not an empty page or error boundary).
+    //
+    // Count the hydrated grid, not whatever has painted so far. page.tsx
+    // server-renders the "Best Recent Shows" shelf first and HomePageClient
+    // renders the real grid after, so a bare count() here resolves to the shelf
+    // on a slow runner — 6 links with the CPU throttled 6x today. That shelf is
+    // seasonal (see the long note in homepage.spec.ts) and drops to 5 when
+    // Ragtime closes 2026-08-16, at which point `> 5` would have started failing
+    // this post-deploy smoke test on a healthy site.
     const showLinks = page.locator('a[href^="/show/"]');
     await expect(showLinks.first()).toBeVisible({ timeout: 15000 });
-    const count = await showLinks.count();
-    expect(count).toBeGreaterThan(5);
+
+    const grid = page.getByRole('list', { name: 'Broadway shows' });
+    await expect(grid).toBeVisible({ timeout: 15000 });
+    await expect
+      .poll(() => grid.locator('a[href^="/show/"]').count(), { timeout: 15000 })
+      .toBeGreaterThan(5);
 
     // No "undefined" or "NaN" in visible text (common rendering bugs)
     // innerText returns only rendered/visible text, skipping JSON-LD and RSC payloads
