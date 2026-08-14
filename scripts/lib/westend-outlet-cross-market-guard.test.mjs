@@ -1,23 +1,31 @@
 /**
  * BRO-254: outletId 'westend' is a real, legitimate West End review outlet
  * (westend.com — has its own byline files across multiple shows), but it had
- * no entry in data/outlet-registry.json. The forward cross-market guard
- * (rebuild-all-reviews.js, extracted to lib/cross-market-guard.js) falls
- * back to a URL-shape check when an outlet has no registered region, and
- * www.westend.com doesn't match any of the UK URL heuristics (.co.uk,
- * "london", "theatre") — so it was flagged wrongProduction as if 'westend'
- * were a US outlet leaking into a West End directory. Confirmed corpus
- * evidence: now-you-see-me-live-west-end-2026/westend--unknown.json,
+ * no entry in data/outlet-registry.json. Confirmed corpus evidence:
+ * now-you-see-me-live-west-end-2026/westend--unknown.json,
  * allegra-west-end-2026/westend--peter-quilter.json,
  * the-gruffalo-west-end-2026/westend--unknown.json all carry
  * wrongProductionNote: 'Cross-market: US outlet "westend" reviewing London show'.
  *
+ * Exactly HOW those 3 files got flagged is unresolved: with the codebase's
+ * CURRENT unregistered-outlet bootstrap exemption (task #817), an
+ * unregistered 'westend' would NOT be flagged (the "regression guard" test
+ * below proves this) — so either they were flagged by a run that predates
+ * that exemption, or by a stale/partial checkout (a known recurring class
+ * of pipeline bug in this repo). The precise mechanism doesn't change the
+ * fix: an outlet with no registry entry is fragile regardless of which
+ * historical code path flagged it — one stale-checkout race, one revert of
+ * the #817 exemption, or one future refactor of that fallback and the same
+ * outlet is exposed again.
+ *
  * Root cause: no registry entry for 'westend' (region-less), and its
  * domain (westend.com) has no UK-looking substring for the URL fallback
- * to catch. Fix: register 'westend' explicitly with region: 'london'
- * (data/outlet-registry.json) so the region lookup — the guard's primary
- * signal — resolves correctly regardless of URL shape or the unregistered-
- * outlet bootstrap exemption (task #817).
+ * to catch, so the forward cross-market guard (rebuild-all-reviews.js,
+ * extracted to lib/cross-market-guard.js) has no reliable signal that it's
+ * a London outlet. Fix: register 'westend' explicitly with region: 'london'
+ * (data/outlet-registry.json) so the region lookup — the guard's primary,
+ * first-checked signal — resolves correctly on its own, independent of
+ * URL shape or the unregistered-outlet bootstrap exemption.
  *
  * Run: node --test scripts/lib/westend-outlet-cross-market-guard.test.mjs
  */

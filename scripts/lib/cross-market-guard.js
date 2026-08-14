@@ -233,21 +233,17 @@ function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindow
 
 /**
  * outletId -> region (e.g. 'london'), built from the outlet registry.
- * Registered ids AND their aliases map to the same region.
+ * Registered ids AND their (lowercased) aliases map to the same region.
+ *
+ * Delegates to lib/outlet-region-map.js's buildOutletMaps() — the
+ * pre-existing single source of truth shared by validate-data.js and
+ * audit-review-contamination.js — instead of re-deriving this map, so this
+ * guard can't drift from that implementation (it previously did: this
+ * function used to build its own copy that didn't lowercase alias keys,
+ * the exact bug a 2026-06-15 ship-check already had to fix once upstream).
  */
 function buildOutletRegionMap(outletRegistry) {
-  const outletRegionMap = {};
-  for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-    // Use explicit region, or infer from market (west-end → london)
-    const region = info.region || (info.market === 'west-end' || info.market === 'off-west-end' ? 'london' : null);
-    if (region) outletRegionMap[id] = region;
-    if (info.aliases && region) {
-      for (const alias of info.aliases) {
-        outletRegionMap[alias] = region;
-      }
-    }
-  }
-  return outletRegionMap;
+  return require('./outlet-region-map').buildOutletMaps(outletRegistry).outletRegionMap;
 }
 
 /**
