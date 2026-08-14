@@ -64,6 +64,14 @@ const EXEMPT_NEVER_CI = {
   // at its RECHECK-AFTER date, never by CI. Lives in scripts/, not
   // tests/unit/ (same pattern as the entry above).
   'verify-seo-health-clean.test.mjs': '3a7637c5-416f-81fd',
+  // Deferred-effect acceptance probe (task #1466, card 3bc637c5-416f-8118):
+  // asserts promote-we-aggregator.yml's daily cron produced a real
+  // we-promotion-log.jsonl entry after the feature merged 2026-08-14.
+  // RECHECK-AFTER 2026-08-16. This file was left off the manifest by the
+  // merging session (#1478 ship-check found it as an orphan-tests block
+  // when merging unrelated work) — same fix as the two entries above:
+  // exempt from CI, let autonomous-acceptance-recheck.js pick it up.
+  'verify-we-aggregator-promotion-ran.test.mjs': '3bc637c5-416f-8118',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
