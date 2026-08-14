@@ -366,7 +366,13 @@ sync_restore_base_head() {
       echo "::warning::push-with-retry: HEAD advanced from $RESTORE_BASE_HEAD to $current but the new commit(s) include a parentless/orphan commit — NOT adopting as the restore point (BRO-259); the existing corruption guard will catch and reset it instead."
       return 0
     fi
-    if [ -f "$SCRIPT_DIR/conflict-markers.js" ]; then
+    if [ -f "$SCRIPT_DIR/conflict-markers.js" ] && [ "${PUSH_SKIP_CONFLICT_CHECK:-}" != "1" ]; then
+      # Same bypass assert_no_conflict_markers() honors (Codex finding,
+      # BRO-259): without it, an intentional fixture/doc file that legitimately
+      # embeds marker-like lines would get refused here even though the rest
+      # of the pipeline (and PUSH_SKIP_CONFLICT_CHECK itself) explicitly
+      # allows it — the foreign append would then be silently dropped by the
+      # next reset instead of preserved.
       local candidate_files=()
       local f
       while IFS= read -r f; do
@@ -832,8 +838,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # RESTORE_BASE_HEAD (the last KNOWN-good point) regardless.
       [ "$HEAD_TRUSTED_CLEAN" = "true" ] && sync_restore_base_head
       git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null || true
-      HEAD_TRUSTED_CLEAN=true
+      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+      # landed — a failed reset (e.g. a transient git lock) would otherwise
+      # leave this iteration's unverified merge result checked out AND
+      # flagged trusted, letting the next loop-top sync adopt it exactly
+      # like the bug HEAD_TRUSTED_CLEAN exists to prevent.
+      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+        HEAD_TRUSTED_CLEAN=true
+      fi
     fi
   fi
 
@@ -1330,8 +1342,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # sync_restore_base_head()'s header). The discard stays LOUD instead of
       # silent — the SHAs stay recoverable via reflog.
       git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null || true
-      HEAD_TRUSTED_CLEAN=true
+      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+      # landed — see the identical comment at the pre-resolution reset above.
+      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+        HEAD_TRUSTED_CLEAN=true
+      fi
     fi
   fi
 
