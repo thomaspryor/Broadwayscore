@@ -279,6 +279,77 @@ function loadLinearMirrorMapping(mappingPath = LINEAR_MAPPING_PATH) {
 // If that happens, this guard fails OPEN (dispatches) rather than blocking on
 // a mapping key that no longer matches — same fail-open direction as every
 // other guard in this file's missing-data case.
+// Cross-session worktree/job-branch collision guard (card #1281): a LOCAL
+// git branch already carrying commits not yet on origin/main for this task
+// means another session already worked it — or is still working it — outside
+// findLiveWorkspaceForTask's cmux-only view (a dead/closed cmux tab, a
+// headless bsc-runner.js job, or a worktree nobody has pushed yet). Confirmed
+// real: task #1233's fix was independently dispatched 3+ times — 3 dead cmux
+// attempts, then 2-3 concurrent successful sessions, each doing a full
+// independent implementation before any merged — with at least 3 distinct
+// local branches for the identical fix, none of which findLiveWorkspaceForTask
+// ever looks at (it only scans currently-live cmux workspace TITLES).
+//
+// Two branch-naming conventions carry per-task provenance: EnterWorktree
+// names a branch worktree-<name>, usually with the task id first
+// (worktree-1233-infra-death-cap); bsc-runner.js's headless jobs use
+// job/<taskId>-<jobSuffix> instead (see gitSafeJobId in lib/bsc-runner.js).
+// Both prefixes are checked so a collision can't slip through just because
+// the second dispatch happened to be headless instead of cmux, or vice versa.
+//
+// Known gap: a branch that never mentions the task id at all in its name
+// (e.g. task #1233's own third branch, worktree-dead-dispatch-cap-infra-
+// split — a freeform rename) is structurally invisible to an id-anchored
+// match. Nothing records task-id provenance for a worktree/job branch beyond
+// its own name, so this cannot be closed without a separate provenance
+// signal (e.g. stamping the task id into the ledger at EnterWorktree time).
+const WORK_BRANCH_PREFIXES = ['worktree-', 'job/'];
+
+function matchesTaskWorkBranch(branchName, taskId) {
+  const id = String(taskId == null ? '' : taskId).trim();
+  if (!id) return false;
+  const name = String(branchName || '');
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Anchored on both ends (a trailing "-" after a prefix match, or a leading
+  // "-" before a suffix match) so task #123 can never match a branch for
+  // task #1233 (or vice versa) on a bare numeric-substring coincidence.
+  const re = new RegExp(`^(?:${escaped}-|.*-${escaped}$)`);
+  return WORK_BRANCH_PREFIXES.some(prefix => name.startsWith(prefix) && re.test(name.slice(prefix.length)));
+}
+
+// Pure: given a pre-computed list of {name, unlandedCommits: string[]} (see
+// scripts/lib/worktree-branch-guard.js's listWorkBranchStatuses for how that
+// list is built — is-ancestor + git cherry, squash-merge aware), find the
+// ones that belong to this task AND still carry commits origin/main has
+// never seen. An empty unlandedCommits means that branch's work already
+// reached origin (merged/pushed, including via squash) — not a collision.
+function findWorkBranchCollisions(taskId, branchStatuses) {
+  return (branchStatuses || [])
+    .filter(b => b && matchesTaskWorkBranch(b.name, taskId))
+    .filter(b => Array.isArray(b.unlandedCommits) && b.unlandedCommits.length > 0);
+}
+
+// Same shape/bypass convention as this file's other guards: (task, data,
+// opts), pure, returns a refusal string or null; opts.force/dry-run/print-
+// prompt bypass it — the same "yes I know, second workspace anyway" escape
+// hatch every sibling guard already uses.
+function workBranchCollisionGuard(task, branchStatuses, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const collisions = findWorkBranchCollisions(task.id, branchStatuses);
+  if (!collisions.length) return null;
+  const lines = collisions.map(c => {
+    const first = c.unlandedCommits[0];
+    const more = c.unlandedCommits.length > 1 ? `, +${c.unlandedCommits.length - 1} more` : '';
+    return `    ${c.name}: ${c.unlandedCommits.length} commit(s) not yet on origin/main — ${first}${more}`;
+  });
+  return `REFUSING to dispatch #${task.id}: local branch(es) already carry unlanded work for this task:\n` +
+    `${lines.join('\n')}\n` +
+    `  Another session likely already worked (or is still working) this card there — dispatching again risks a\n` +
+    `  duplicate independent implementation (card #1281: card #1233 was independently redone 2-3x this way). Inspect first:\n` +
+    `    git log origin/main..${collisions[0].name} --oneline\n` +
+    `  If that work is stale/abandoned, merge or discard it, then dispatch. Re-run with --force to dispatch anyway.`;
+}
+
 function linearMirrorGuard(task, mapping, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
   const entry = mapping && mapping[String(task.id)];
@@ -299,6 +370,10 @@ module.exports = {
   loadLinearMirrorMapping,
   linearMirrorGuard,
   LINEAR_MAPPING_PATH,
+  matchesTaskWorkBranch,
+  findWorkBranchCollisions,
+  workBranchCollisionGuard,
+  WORK_BRANCH_PREFIXES,
   // Re-exported so both dispatchers have a single require() for all six
   // guards, per this file's header. Owning modules (verify-gate.js /
   // headless-dispatchability.js) are unchanged — this is a re-export, not a

@@ -7,6 +7,7 @@ const require = createRequire(import.meta.url);
 const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
+const { matchesTaskWorkBranch, findWorkBranchCollisions, workBranchCollisionGuard } = require('./lib/dispatch-guards.js');
 
 // 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
 // through parseArgs as an unrecognized flag and launch a real Cmux workspace
@@ -778,6 +779,177 @@ test('main(): a task mapped to a live Linear issue is refused before launching a
   }
   assert.equal(exitCode, 1);
   assert.ok(errors.some(e => /BRO-500/.test(e)), `expected a BRO-500 refusal, got: ${errors.join(' | ')}`);
+});
+
+// ── Card #1281: cross-session worktree/job-branch collision guard ──────────
+// card #1233 was independently dispatched 3+ times (3 dead cmux attempts,
+// then 2-3 concurrent successful sessions each redoing the same fix) because
+// findLiveWorkspaceForTask only sees currently-live cmux workspace titles,
+// never local git branches. See dispatch-guards.js's workBranchCollisionGuard
+// header for the full incident.
+
+test('matchesTaskWorkBranch: matches worktree-<id>-* and job/<id>-* (bsc-runner headless naming)', () => {
+  assert.ok(matchesTaskWorkBranch('worktree-1233-infra-death-cap', 1233));
+  assert.ok(matchesTaskWorkBranch('worktree-1233-infra-vs-substantive-dead', '1233'));
+  assert.ok(matchesTaskWorkBranch('job/1233-msp9eki9', 1233), 'headless bsc-runner job branch');
+});
+
+test('matchesTaskWorkBranch: matches a trailing id, still requires the worktree-/job/ prefix', () => {
+  assert.ok(matchesTaskWorkBranch('worktree-infra-death-cap-1233', 1233));
+  assert.ok(!matchesTaskWorkBranch('infra-death-cap-1233', 1233), 'no worktree-/job/ prefix at all');
+});
+
+test('matchesTaskWorkBranch: numeric-substring safety — #123 never matches a #1233 branch or vice versa', () => {
+  assert.ok(!matchesTaskWorkBranch('worktree-1233-infra-death-cap', 123));
+  assert.ok(!matchesTaskWorkBranch('worktree-infra-death-cap-1233', 123));
+  assert.ok(!matchesTaskWorkBranch('worktree-123-something', 1233));
+});
+
+test('matchesTaskWorkBranch: known gap — a branch that never mentions the task id is invisible (documented, not silently "fixed")', () => {
+  // The actual 3rd #1233 branch from the incident this card describes.
+  assert.ok(!matchesTaskWorkBranch('worktree-dead-dispatch-cap-infra-split', 1233));
+});
+
+test('findWorkBranchCollisions: only branches matching the task id AND carrying unlanded commits count', () => {
+  const statuses = [
+    { name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] },
+    { name: 'worktree-1233-already-merged', unlandedCommits: [] }, // squash-merged, landed
+    { name: 'worktree-999-unrelated-task', unlandedCommits: ['def456 other work'] },
+  ];
+  const collisions = findWorkBranchCollisions('1233', statuses);
+  assert.equal(collisions.length, 1);
+  assert.equal(collisions[0].name, 'worktree-1233-infra-death-cap');
+});
+
+test('workBranchCollisionGuard: refuses when a matching branch carries unlanded commits', () => {
+  const task = { id: '1233', subject: 'the 2-death dispatch cap fix' };
+  const statuses = [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }];
+  const msg = workBranchCollisionGuard(task, statuses, {});
+  assert.ok(msg);
+  assert.match(msg, /REFUSING to dispatch #1233/);
+  assert.match(msg, /worktree-1233-infra-death-cap/);
+});
+
+test('workBranchCollisionGuard: silent when the matching branch has zero unlanded commits (already landed/merged)', () => {
+  const task = { id: '1233', subject: 'x' };
+  const statuses = [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: [] }];
+  assert.equal(workBranchCollisionGuard(task, statuses, {}), null);
+});
+
+test('workBranchCollisionGuard: --force/--dry-run/--print-prompt all bypass it', () => {
+  const task = { id: '1233', subject: 'x' };
+  const statuses = [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }];
+  assert.equal(workBranchCollisionGuard(task, statuses, { force: true }), null);
+  assert.equal(workBranchCollisionGuard(task, statuses, { 'dry-run': true }), null);
+  assert.equal(workBranchCollisionGuard(task, statuses, { 'print-prompt': true }), null);
+});
+
+test('workBranchCollisionGuard: ignores collisions belonging to a different task id', () => {
+  const task = { id: '999', subject: 'unrelated task' };
+  const statuses = [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }];
+  assert.equal(workBranchCollisionGuard(task, statuses, {}), null);
+});
+
+test('main(): --id refuses to dispatch when a local worktree branch already carries unlanded commits for that task (the actual #1233 collision shape), never reaching launchCmux', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-worktree-branch-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1233.json'), JSON.stringify({
+    id: '1233', subject: 'the 2-death dispatch cap fix', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '1233'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }],
+      launchCmux: () => { throw new Error('launchCmux must never be called once the worktree-branch guard refuses'); },
+      cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
+      fetchCard: () => null,
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #1233/.test(e)), `expected a worktree-branch refusal, got: ${errors.join(' | ')}`);
+  assert.ok(errors.some(e => /worktree-1233-infra-death-cap/.test(e)));
+});
+
+test('main(): --id --force bypasses the worktree-branch guard and proceeds to the cmux duplicate check', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-worktree-branch-guard-force-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1233.json'), JSON.stringify({
+    id: '1233', subject: 'the 2-death dispatch cap fix', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  let listWorkBranchStatusesCalled = false;
+  const origExit = process.exit;
+  let exitCode = null;
+  const origError = console.error;
+  console.error = () => {};
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '1233', '--force'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => { listWorkBranchStatusesCalled = true; return [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }]; },
+      cmuxAvailable: () => false, // sidestep the cmux path entirely once past this guard
+      fetchCard: () => null,
+      launchCmux: () => ({ ok: true, ref: 'workspace:1' }),
+    });
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  // --force skips the outer `if (!args.force)` gate entirely — the guard's
+  // own I/O function is never even called.
+  assert.equal(listWorkBranchStatusesCalled, false);
+});
+
+test('main(): --id --dry-run also skips the git I/O entirely (ship-check finding, 2026-08-14: a "dry" preview was still running a real git fetch)', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-worktree-branch-guard-dryrun-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1233.json'), JSON.stringify({
+    id: '1233', subject: 'the 2-death dispatch cap fix', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  let listWorkBranchStatusesCalled = false;
+  const origLog = console.log;
+  console.log = () => {};
+  try {
+    main(['--id', '1233', '--dry-run'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => { listWorkBranchStatusesCalled = true; return []; },
+      fetchCard: () => null,
+    });
+  } finally {
+    console.log = origLog;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(listWorkBranchStatusesCalled, false);
 });
 
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────
