@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-13T23:42:12.998Z",
+  "generatedAt": "2026-08-14T01:02:20.643Z",
   "windowDays": 45,
-  "showsScanned": 72,
+  "showsScanned": 71,
   "gaps": [
     {
       "showId": "cats-west-end-2026",
@@ -21,7 +21,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-13T22:43:47.284Z",
-      "nonTerminalAgeHours": 0.9738094444444444
+      "nonTerminalAgeHours": 2.3092663888888887
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 514.5093616666667,
+      "fileAgeHours": 515.8415255555556,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 473.8130727777778
+      "nonTerminalAgeHours": 475.14852972222224
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -53,9 +53,26 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 204.95254777777777,
+      "fileAgeHours": 206.2847136111111,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 204.31525666666667
+      "nonTerminalAgeHours": 205.65071361111112
+    },
+    {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "title": "An American Daughter",
+      "openingDate": "2026-08-11",
+      "file": "nysr--david-finkle.json",
+      "outletId": "nysr",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/ --outlet=nysr --critic=\"David Finkle\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-12T11:39:40.132Z",
+      "fileAgeHours": 37.37697,
+      "gapSeenAt": "2026-08-14T01:02:20.643Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
