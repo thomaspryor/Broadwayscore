@@ -13,7 +13,10 @@
  *   6. Append promotion log to data/audit/ob-promotion-log.jsonl
  *
  * Modes:
- *   default                — strict cross-validation; safe for cron
+ *   default                — strict cross-validation for most candidates;
+ *                            regional/off-broadway-roundup candidates skip
+ *                            it in every mode (see the two decide* functions
+ *                            below) — safe for cron
  *   --regional-only        — daily CI path: auto-promotes regional AND
  *                            off-broadway candidates sourced directly from a
  *                            PV/BWW roundup page (no extra fetches needed —
@@ -35,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
+const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
@@ -218,14 +222,86 @@ function decideRegionalPromotion(candidate) {
  * --admin-force). Scoping to AGGREGATOR_ROUNDUP_SOURCES is what keeps this
  * safe to run unattended in CI, same as the regional rule.
  */
-function decideOffBroadwayAggregatorPromotion(candidate) {
+// Same threshold decideCriticListingPromotion uses (scripts/lib/
+// ob-cross-validation.js) for the same reason: distinguishes a near-real-time
+// roundup discovery from a resurfaced/backfilled old archive URL. Kept as a
+// local constant (not exported by that module) rather than duplicating its
+// full staleness-check block — see below.
+const OB_AGGREGATOR_MAX_STALENESS_DAYS = 400;
+const OB_AGGREGATOR_DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Ship-check adversarial review (2026-08-14, Codex) found two real gaps in
+ * the first cut of this gate: (1) it trusted `articlePublishedAt` verbatim
+ * with no staleness check, so a resurfaced old roundup URL would silently
+ * mint a show marked "open" forever with nothing to correct it; (2)
+ * `classifyVenueMarket()` labels ANY venue "off-broadway" that merely isn't
+ * in the regional feeder table — prose-extracted venue text was trusted
+ * with no plausibility check, unlike the regional branch (which rechecks its
+ * own feeder allowlist) and the sibling nyt-theater path
+ * (decideCriticListingPromotion, which requires a canonical Off-Broadway
+ * venue). Both checks below close those gaps by mirroring
+ * decideCriticListingPromotion's approach exactly, rather than inventing a
+ * separate scheme for what is the same problem.
+ */
+function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
+  const {
+    isKnownVenue = isKnownOffBroadwayVenue,
+    venueDirectoryAvailable = () => OFF_BROADWAY_VENUES.size > 0,
+  } = options;
+
   if (!candidate || candidate.category !== 'off-broadway') {
     return { confirmed: false, reason: 'not an off-broadway candidate' };
   }
   if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
     return { confirmed: false, reason: `off-broadway candidate from non-roundup source "${candidate.source}" — needs Playbill-OB/Lortel cross-validation (isCandidateConfirmed) or --admin-force` };
   }
-  return { confirmed: true, reason: 'aggregator roundup page exists (off-broadway)', source: 'aggregator-roundup' };
+  if (!candidate.venue) {
+    return { confirmed: false, reason: 'null venue' };
+  }
+
+  let directoryAvailable;
+  try { directoryAvailable = venueDirectoryAvailable(); } catch { directoryAvailable = false; }
+  if (!directoryAvailable) {
+    return { confirmed: false, reason: 'canonical Off-Broadway venue directory unavailable — refusing to confirm (not a venue rejection)' };
+  }
+  // aggregator-candidate-extract.js's cleanVenue() unconditionally strips a
+  // leading "the " off every extracted venue (headline/body prose match),
+  // but data/off-broadway-venues.json stores several canonical names WITH
+  // it ("the shed", "the duke on 42nd street", "the new group", ...) and
+  // normalizeVenueName() never restores it. A candidate at any of those
+  // real venues would otherwise systematically fail this gate (codebase-aware
+  // review finding, 2026-08-14: verified isKnownOffBroadwayVenue('Shed') is
+  // false while isKnownOffBroadwayVenue('The Shed') is true). Try the
+  // "The "-restored form as a fallback before rejecting.
+  let venueKnown;
+  try {
+    venueKnown = isKnownVenue(candidate.venue) || isKnownVenue(`The ${candidate.venue}`);
+  } catch { venueKnown = false; }
+  if (!venueKnown) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" not in canonical Off-Broadway venue list — use --admin-force if this is a genuine new venue` };
+  }
+
+  const published = candidate.articlePublishedAt ? new Date(candidate.articlePublishedAt) : null;
+  const discovered = candidate.discoveredAt ? new Date(candidate.discoveredAt) : null;
+  if (!published || Number.isNaN(published.getTime()) || !discovered || Number.isNaN(discovered.getTime())) {
+    return { confirmed: false, reason: 'missing or unparseable articlePublishedAt/discoveredAt' };
+  }
+  // discoveredAt must land at/after the article's own publish date — staging
+  // always records discovery AFTER the page existed, so a published date
+  // AFTER discoveredAt is bogus/unparsed data, not a fresh roundup (dropped
+  // from the first cut of this check, codebase-aware review finding
+  // 2026-08-14: decideCriticListingPromotion, which this mirrors, rejects
+  // this case too — scripts/lib/ob-cross-validation.js:191-196).
+  if (discovered.getTime() < published.getTime() - OB_AGGREGATOR_DAY_MS) {
+    return { confirmed: false, reason: `date mismatch: discoveredAt (${candidate.discoveredAt}) precedes articlePublishedAt (${candidate.articlePublishedAt})` };
+  }
+  const stalenessDays = (discovered.getTime() - published.getTime()) / OB_AGGREGATOR_DAY_MS;
+  if (stalenessDays > OB_AGGREGATOR_MAX_STALENESS_DAYS) {
+    return { confirmed: false, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
+  }
+
+  return { confirmed: true, reason: `aggregator roundup page exists + canonical venue "${candidate.venue}" + compatible dates (off-broadway)`, source: 'aggregator-roundup' };
 }
 
 /**
@@ -440,17 +516,21 @@ async function main() {
       // (the OB buildShowEntry would mint a mislabeled entry).
       const r = decideRegionalPromotion(c);
       confirmed = r.confirmed; reason = r.reason; source = r.source || null;
-    } else if (isOBAggregatorRoundup) {
-      // Off-broadway candidates sourced directly from a PV/BWW roundup page
-      // auto-promote the same way (owner rule 2026-08-13) — checked before
-      // adminPromoteAll/adminForce so this class behaves identically whether
-      // or not those flags are set, same as the regional branch above.
-      const r = decideOffBroadwayAggregatorPromotion(c);
-      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
     } else if (adminPromoteAll) {
       confirmed = true; reason = '--admin-promote-all'; source = 'admin';
     } else if (adminForceArgs.includes(titleLower)) {
       confirmed = true; reason = `--admin-force="${c.title}"`; source = 'admin-force';
+    } else if (isOBAggregatorRoundup) {
+      // Off-broadway candidates sourced directly from a PV/BWW roundup page
+      // auto-promote the same way (owner rule 2026-08-13) — but UNLIKE the
+      // regional branch above, checked AFTER adminPromoteAll/adminForce.
+      // decideOffBroadwayAggregatorPromotion requires a canonical Off-Broadway
+      // venue, which — unlike regional's small curated feeder table — a
+      // genuine new-but-not-yet-catalogued venue can legitimately fail; an
+      // operator needs --admin-force to still promote that case by hand
+      // (ship-check adversarial review, 2026-08-14).
+      const r = decideOffBroadwayAggregatorPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
     } else if (c.source === 'nyt-theater') {
       // Critic-listing candidates (newyorktheater.me — Sprint 1, task #997)
       // can never be corroborated by isCandidateConfirmed's Playbill/Lortel

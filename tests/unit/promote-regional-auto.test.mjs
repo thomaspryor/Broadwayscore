@@ -98,25 +98,69 @@ test('OB buildShowEntry unchanged: still -off-broadway- id, announced, market br
 // should automatically trigger that show to be on the site if it isn't
 // already"). Mirrors decideRegionalPromotion's reasoning, extended to
 // off-broadway — venue-page-sourced OB candidates are deliberately excluded.
-test('decideOffBroadwayAggregatorPromotion: roundup-sourced OB candidate is confirmed', () => {
-  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'bww-roundup' });
+//
+// Base fixture for the confirming cases: canonical venue + fresh, compatible
+// dates. Ship-check adversarial review (2026-08-14) added the venue +
+// staleness checks below after finding neither was gated in the first cut.
+const OB_ROUNDUP_CANDIDATE = {
+  title: 'A Serious Play', venue: 'Daryl Roth Theatre', slug: 'a-serious-play',
+  source: 'bww-roundup',
+  articlePublishedAt: '2026-08-01T10:00:00-04:00',
+  discoveredAt: '2026-08-01T18:00:00.000Z',
+  category: 'off-broadway',
+};
+
+test('decideOffBroadwayAggregatorPromotion: roundup-sourced OB candidate at a canonical venue with fresh dates is confirmed', () => {
+  const r = decideOffBroadwayAggregatorPromotion(OB_ROUNDUP_CANDIDATE);
   assert.equal(r.confirmed, true);
   assert.equal(r.source, 'aggregator-roundup');
 });
 
 test('decideOffBroadwayAggregatorPromotion: playbill-verdict source also confirms', () => {
-  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'playbill-verdict' });
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, source: 'playbill-verdict' });
   assert.equal(r.confirmed, true);
 });
 
 test('decideOffBroadwayAggregatorPromotion: venue-page source does NOT confirm (still needs Playbill-OB/Lortel)', () => {
-  const r = decideOffBroadwayAggregatorPromotion({ category: 'off-broadway', source: 'venue-page:atlantic-theater' });
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, source: 'venue-page:atlantic-theater' });
   assert.equal(r.confirmed, false);
 });
 
 test('decideOffBroadwayAggregatorPromotion: non-off-broadway categories never confirm', () => {
-  assert.equal(decideOffBroadwayAggregatorPromotion({ category: 'regional', source: 'bww-roundup' }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, category: 'regional' }).confirmed, false);
   assert.equal(decideOffBroadwayAggregatorPromotion(null).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: unknown/prose-garbled venue does NOT confirm (Codex P0)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: 'Some Random Room Nobody Has Heard Of' });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /not in canonical Off-Broadway venue list/);
+});
+
+test('decideOffBroadwayAggregatorPromotion: null venue does NOT confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: null }).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: venue directory unavailable refuses rather than guessing', () => {
+  const r = decideOffBroadwayAggregatorPromotion(OB_ROUNDUP_CANDIDATE, { venueDirectoryAvailable: () => false });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /directory unavailable/);
+});
+
+test('decideOffBroadwayAggregatorPromotion: missing/unparseable dates do NOT confirm', () => {
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, articlePublishedAt: null }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, articlePublishedAt: 'not-a-date' }).confirmed, false);
+  assert.equal(decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, discoveredAt: null }).confirmed, false);
+});
+
+test('decideOffBroadwayAggregatorPromotion: a resurfaced 400+ day-old article does NOT auto-promote as open (Codex P0)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({
+    ...OB_ROUNDUP_CANDIDATE,
+    articlePublishedAt: '2024-01-01T10:00:00-04:00',
+    discoveredAt: '2026-08-01T18:00:00.000Z',
+  });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /stale relative to discoveredAt/);
 });
 
 // buildOffBroadwayAggregatorShowEntry (2026-08-13, second-opinion review
