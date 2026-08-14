@@ -89,4 +89,42 @@ describe('article-extractor: BRO-203 generic fallback for unknown domains', () =
     const text = extractArticleText(html, 'thestage.co.uk');
     assert.strictEqual(text, null, 'logged-out Stage HTML must still return null');
   });
+
+  test('WSJ fall-through: failed __NEXT_DATA__ + no PATTERNS match must still return null, not the new fallback', () => {
+    // Adversarial review (2026-08-14) caught this: unlike Stage/Times/LaVoce
+    // (unconditional return), WSJ/Variety/LSA check-and-conditionally-return,
+    // so a failed dedicated extraction used to fall all the way through into
+    // the new common-class/paragraph-density passes — reopening the exact
+    // "dead paywall session mistaken for a successful recovery" hole the
+    // Stage/Times fix exists to prevent. A logged-out WSJ page with no
+    // __NEXT_DATA__ article body and no article-body/article-content match
+    // must return null, even though it has plausible-looking <p> prose in a
+    // generic wrapper (the paywall teaser + navigation chrome).
+    const html =
+      '<html><body>' +
+      '<div class="site-nav"><p>Sign in to continue reading premium WSJ content and support quality journalism today.</p></div>' +
+      '<div class="unrecognized-wrapper">' +
+      '<p>' + 'This is a subscriber-only teaser paragraph that should never be mistaken for the real review body. '.repeat(10) + '</p>' +
+      '</div>' +
+      '</body></html>';
+    const text = extractArticleText(html, 'wsj.com');
+    assert.strictEqual(text, null, 'WSJ with failed dedicated extraction must not fall through to the generic fallback');
+  });
+
+  test('a host with a PATTERNS entry that fails to match still returns null, not the new fallback', () => {
+    // theatermania.com has 2 dedicated PATTERNS entries (news-content, then
+    // legacy article-body). If a redesign breaks BOTH, the outlet is
+    // "known but currently broken" — not "genuinely unknown" — and must
+    // still surface as null so the stub-rate monitor (audit-outlet-stub-
+    // rate.js) catches the redesign, rather than silently degrading to
+    // noisier auto-extracted text.
+    const html =
+      '<html><body>' +
+      '<div class="totally-new-wrapper-class">' +
+      '<p>' + 'A redesigned TheaterMania page with a wrapper class neither PATTERNS entry recognizes. '.repeat(10) + '</p>' +
+      '</div>' +
+      '</body></html>';
+    const text = extractArticleText(html, 'theatermania.com');
+    assert.strictEqual(text, null, 'a known outlet with a broken dedicated pattern must not silently degrade to the generic fallback');
+  });
 });

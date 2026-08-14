@@ -536,9 +536,25 @@ const PATTERNS = [
  *   Will have leading "www." stripped before matching.
  * @returns {string|null} Cleaned article text, or null if no plausible match.
  */
+// Hosts with dedicated non-PATTERNS extraction above (WSJ/Variety/LSA check-
+// and-conditionally-fall-through; LaVoce/Stage/Times return unconditionally).
+// BRO-203's new common-class/paragraph-density fallbacks below must NEVER
+// run for these — they're a "known outlet whose extraction failed this
+// specific fetch" (paywall logout, page-shape drift), not a "genuinely
+// unknown domain" in the sense this task is scoped to. WSJ/Variety/LSA fall
+// through their own conditional return into the PATTERNS loop by design (a
+// dedicated PATTERNS entry may still match), but must stop there — same
+// "dead session mistaken for a successful recovery" risk the Stage/Times
+// unconditional-return fix above exists to prevent (ship-check task #919).
+const DEDICATED_EXTRACTOR_HOSTS = [
+  'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
+  'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
+];
+
 function extractArticleText(html, hostname) {
   if (!html || typeof html !== 'string') return null;
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
+  const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
 
   // WSJ: modern articles serve full body via __NEXT_DATA__ JSON for
   // authenticated sessions. Plain DOM patterns only catch the lede teaser
@@ -597,8 +613,10 @@ function extractArticleText(html, hostname) {
     if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
+  let matchedDedicatedPattern = false;
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
+    if (hostMatch) matchedDedicatedPattern = true;
     // Generic fallbacks (hostMatch === null) pick the LARGEST match, not the
     // first — sidebar teaser cards on Next.js/SPA sites use <article> too, and
     // the first <article> on the page is often a teaser (Joe Turner 2026-04-26
@@ -621,11 +639,15 @@ function extractArticleText(html, hostname) {
   }
 
   // Nothing above matched — try the common-CMS-class and paragraph-density
-  // fallbacks (BRO-203) before giving up. Domains with an explicit early
-  // return above (lavocedinewyork.com, thestage.co.uk, thetimes.*) never
-  // reach here, so this can't rescue a paywall-logged-out session into a
-  // false "successful recovery" the way falling through the <article>/<main>
-  // patterns already could (see those comments above).
+  // fallbacks (BRO-203) before giving up, but ONLY for genuinely unknown
+  // domains: no dedicated extractor branch (isDedicatedHost) and no matching
+  // PATTERNS entry (matchedDedicatedPattern). Known outlets whose dedicated
+  // extraction failed this fetch (WSJ paywall logout, a page-shape drift on
+  // an outlet with a PATTERNS entry) must still return null here — same
+  // "dead session mistaken for a successful recovery" risk the Stage/Times
+  // unconditional-return fix above exists to prevent (ship-check task #919,
+  // adversarial review 2026-08-14 caught this falling-through for WSJ).
+  if (isDedicatedHost || matchedDedicatedPattern) return null;
   const commonClassText = extractByCommonClass(html);
   if (commonClassText) return commonClassText;
   return extractByParagraphDensity(html);
