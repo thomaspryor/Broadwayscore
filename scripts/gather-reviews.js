@@ -2658,18 +2658,17 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // Build set of "non-local" outlet IDs based on market.
   // For Broadway: non-local = non-NYC outlets (London, regional, etc.)
   // For West End: non-local = non-London outlets (NYC, regional US, etc.)
+  // outletRegionMap (id + lowercased aliases -> region) sourced from the canonical
+  // lib/outlet-region-map.js single source of truth (BRO-254 follow-up: this used
+  // to re-derive its own id->region map inline, the exact duplication shape that
+  // let cross-market-guard.js's copy ship with a missed-alias-lowercasing bug once).
+  const { outletRegionMap: __outletRegionMap } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
   const NON_LOCAL_OUTLET_IDS = new Set();
-  for (const [id, info] of Object.entries(outletRegistry)) {
-    if (!info.region) continue;
+  for (const [key, region] of Object.entries(__outletRegionMap)) {
     const isLocal = isWestEnd
-      ? (info.region === 'london' || info.region === 'national-uk' || info.region === 'national')
-      : (info.region === 'nyc' || info.region === 'national');
-    if (!isLocal) {
-      NON_LOCAL_OUTLET_IDS.add(id);
-      if (info.aliases) {
-        for (const alias of info.aliases) NON_LOCAL_OUTLET_IDS.add(alias.toLowerCase());
-      }
-    }
+      ? (region === 'london' || region === 'national-uk' || region === 'national')
+      : (region === 'nyc' || region === 'national');
+    if (!isLocal) NON_LOCAL_OUTLET_IDS.add(key);
   }
 
   function isNonLocalOutlet(outletId) {
