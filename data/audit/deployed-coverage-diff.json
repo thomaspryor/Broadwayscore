@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T14:19:35.632Z",
+  "generatedAt": "2026-08-14T15:47:32.386Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,7 +7,7 @@
   "clean": 153,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
@@ -17,12 +17,14 @@
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 50.01 vs local 50.06 (Δ0.05)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theater-life"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 15,
+      "missingFromProd": [
+        "theater-life"
+      ],
+      "localCount": 16,
       "deployedCount": 15
     }
   ]
