@@ -91,9 +91,20 @@ test('countCreatedToday: a line merely CONTAINING the date string is not counted
 });
 
 test('recordCreated: never throws on an unwritable path (telemetry must not break a create)', () => {
+  // The unwritable path is built under a REGULAR FILE, so mkdirSync(recursive)
+  // fails with ENOTDIR immediately and identically on every platform. This used
+  // to be a hardcoded '/proc/definitely/not/writable/l.jsonl', which does not
+  // exist on macOS (fails instantly, 79ms for the whole file) but is a live
+  // procfs mount on the Linux CI runner — where this file wedged for 635s and
+  // was SIGTERM'd at the job timeout, cancelling the whole Unit Tests job and
+  // masking every other result in it. Never point a filesystem test at a kernel
+  // pseudo-filesystem; a temp file's child path proves the same property.
+  const notADir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'intake-breaker-nodir-')), 'a-file');
+  fs.writeFileSync(notADir, 'not a directory');
   assert.doesNotThrow(() => recordCreated({
-    identifier: 'BRO-1', title: 'x', now: NOW, ledgerPath: '/proc/definitely/not/writable/l.jsonl',
+    identifier: 'BRO-1', title: 'x', now: NOW, ledgerPath: path.join(notADir, 'nope', 'l.jsonl'),
   }));
+  assert.equal(fs.readFileSync(notADir, 'utf8'), 'not a directory', 'must not have clobbered the file');
 });
 
 test('recordCreated: truncates long titles and tolerates a missing one', () => {
