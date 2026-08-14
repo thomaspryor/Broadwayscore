@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T11:03:55.098Z",
+  "timestamp": "2026-08-14T12:14:58.567Z",
   "stats": {
-    "totalReviews": 42243,
-    "alreadyFlagged": 18323,
-    "dateGuardCatches": 144,
+    "totalReviews": 42247,
+    "alreadyFlagged": 18322,
+    "dateGuardCatches": 145,
     "directorMismatch": 965,
     "tvFilmSignals": 1201,
     "londonSignals": 879,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3574
+    "noPublishDate": 3576
   },
   "findings": [
     {
@@ -33509,6 +33509,17 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 132d before show (2026-03-16 vs 2026-07-26)"
         }
       ]
     },
