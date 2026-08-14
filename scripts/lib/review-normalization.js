@@ -967,9 +967,14 @@ function outletOwnsUrlDomain(outletId, url) {
 function outletOwnsUrlDomainIgnoringPath(outletId, url) {
   if (!outletOwnsUrlDomain(outletId, url)) return false;
   try {
-    const originResolved = resolveOutletFromUrl(new URL(url).origin + '/');
     const fullResolved = resolveOutletFromUrl(url);
-    if (originResolved && fullResolved && originResolved.outletId !== fullResolved.outletId) {
+    const originResolved = resolveOutletFromUrl(new URL(url).origin + '/');
+    // Matches review-file-writer.js's Case 1 pathInformed check exactly: an
+    // origin that fails to resolve at all counts as path-informed (not just
+    // an origin that resolves to a DIFFERENT outlet) — an unresolvable bare
+    // domain means whatever the full URL matched, it matched on the path.
+    const pathInformed = !originResolved || (fullResolved && originResolved.outletId !== fullResolved.outletId);
+    if (pathInformed) {
       return false;
     }
   } catch { /* unparseable — fall through to the domain-only answer */ }
