@@ -63,6 +63,15 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # Stale-checkout race guard (same class as rebuild-reviews.yml — see
+      # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js
+      # for the full rationale). This workflow has a shorter checkout-to-rebuild
+      # window (4 utility steps vs rebuild-reviews.yml's ~12) but is a 4-hourly
+      # safety-net cron, so the exposure accumulates over many more runs/day.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - uses: ./.github/actions/setup-node
 
       # Opening-night contamination guard (Notion 386637c5-416f-81b9): during
@@ -121,6 +130,27 @@ jobs:
             echo "⚠️  Force-write enabled — regression guard overridden"
           fi
 
+          # Stale-checkout race guard, part 2 (see rebuild-reviews.yml for the
+          # full rationale/comment). Explicit destination refspec so the ref
+          # update can't silently land only in FETCH_HEAD.
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
+            fi
+          fi
+
           # First attempt
           if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
             echo "Rebuild succeeded on first attempt"
@@ -135,6 +165,9 @@ jobs:
           git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      - name: Verify no scoreable review vanished during checkout drift
+        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
 
       # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
       # the checkout-time baseline push-core-data diffs against (2beb6617c58);
