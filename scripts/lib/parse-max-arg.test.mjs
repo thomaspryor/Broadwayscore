@@ -43,6 +43,23 @@ test('a bare --max (no "=") is rejected rather than silently using the default',
   assert.throws(() => parseMaxArg(['--gate', '--max', '15']), MaxArgError);
 });
 
+test('a duplicated --max is rejected rather than silently taking the first', () => {
+  // `--max=60 --max=0` reads as "0" to the next person editing the workflow
+  // while actually gating at 60; the reverse silently weakens the gate.
+  assert.throws(() => parseMaxArg(['--max=60', '--max=0']), MaxArgError);
+  assert.throws(() => parseMaxArg(['--max=5', '--max=5']), MaxArgError);
+  try {
+    parseMaxArg(['--max=60', '--max=0']);
+  } catch (e) {
+    assert.match(e.message, /given 2 times/);
+  }
+});
+
+test('a ceiling beyond the safe integer range is rejected, not silently rounded', () => {
+  assert.throws(() => parseMaxArg(['--max=9007199254740993']), MaxArgError);
+  assert.equal(parseMaxArg(['--max=9007199254740991']), 9007199254740991);
+});
+
 test('the error message names the script so a CI log points at the right gate', () => {
   try {
     parseMaxArg(['--max=abc'], { scriptName: 'audit-self-contradictory-clears' });
