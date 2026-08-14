@@ -3,12 +3,18 @@
 /**
  * Standing CI sweep for the #483 corpus signature: flag=true (wrongProduction
  * /wrongShow) + `_urlChangedClear` breadcrumb present + empty fullText + no
- * manual clear. 112 corpus files matched this exact shape on 2026-07-26 —
- * a stale maybeUpgradeUrl escape (fixed in scripts/lib/review-normalization.js
- * maybeUpgradeUrl + scripts/lib/url-change-invariant.js's force option) left
- * the OLD article's exclusion flag attached to a file that had already
- * started a URL correction and was waiting on refetch, permanently blocking
- * rebuild of the corrected URL.
+ * manual clear. 112 corpus files matched this shape on 2026-07-26, traced to a
+ * maybeUpgradeUrl escape (fixed in scripts/lib/review-normalization.js
+ * maybeUpgradeUrl + scripts/lib/url-change-invariant.js's force option).
+ *
+ * A MATCH IS NOT PROOF THE FLAG IS STALE (corrected 2026-08-14 — the previous
+ * header said it was). A URL "correction" can replace a correct URL with a
+ * different production's, leaving a CORRECT exclusion flag on a bodyless
+ * record; 8/8 files examined in an independent review were correctly flagged.
+ * Read the signature as "a writer produced this state", not "this flag is
+ * wrong": because the live producer sites consult
+ * shouldWithholdStaleExclusionFlag, a NEW match points at a writer that did
+ * not. There is deliberately no --fix; see the detector module's docblock.
  *
  * Detector: scripts/lib/stale-flag-after-url-correction.js
  * (detectStaleFlagAfterUrlCorrection) — chokepoint-agnostic, so it also
@@ -17,7 +23,6 @@
  * Usage:
  *   node scripts/audit-stale-flag-after-url-correction.js                    # report
  *   node scripts/audit-stale-flag-after-url-correction.js --gate             # exit 1 on any match
- *   node scripts/audit-stale-flag-after-url-correction.js --fix              # remediate backlog matches
  *   node scripts/audit-stale-flag-after-url-correction.js --json
  *   node scripts/audit-stale-flag-after-url-correction.js --review-texts-dir=/path  # override corpus location
  */
@@ -28,21 +33,19 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs.js');
-const { detectStaleFlagAfterUrlCorrection, remediateStaleFlagAfterUrlCorrection } = require('./lib/stale-flag-after-url-correction.js');
+const { detectStaleFlagAfterUrlCorrection } = require('./lib/stale-flag-after-url-correction.js');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
 
 const USAGE = `audit-stale-flag-after-url-correction.js — stale flag + URL-correction breadcrumb sweep (#483)
 
 Usage:
-  node scripts/audit-stale-flag-after-url-correction.js [--gate] [--fix] [--json] [--review-texts-dir=PATH]
+  node scripts/audit-stale-flag-after-url-correction.js [--gate] [--json] [--review-texts-dir=PATH]
 
   --gate               exit 1 when the match count exceeds --max (CI gate mode)
   --max=N              gate ceiling (default 0). CI uses headroom so one new
                         file from an unguarded producer cannot block every
                         session's merge — same ratchet as
                         audit-self-contradictory-clears.js
-  --fix                remediate matches in place (clears the stale flag + contentVerification,
-                        extends the existing _urlChangedClear breadcrumb, sets needsRefetch)
   --json               machine-readable output
   --review-texts-dir=  override the corpus path (default data/review-texts)
 `;
@@ -54,7 +57,6 @@ function main() {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const gate = argv.includes('--gate');
   const json = argv.includes('--json');
-  const fix = argv.includes('--fix');
   // --max=N ratchet, matching audit-self-contradictory-clears.js:62-67. That
   // sibling gate learned this the hard way: a hard-equality baseline "flaps
   // main red for non-code reasons" because the rebuild bots mutate this corpus
@@ -103,35 +105,23 @@ function main() {
       const flags = detectStaleFlagAfterUrlCorrection(data);
       if (!flags.length) continue;
       hits.push({ showId, file, flags });
-      if (fix) {
-        remediateStaleFlagAfterUrlCorrection(data);
-        // Deliberately a plain write, not safeWriteReview(): the disk record
-        // IS the stale bug state this remediation exists to fix, and
-        // isIntentionalClear()'s "same-era committed value is never
-        // suppressed" rule (review-write-guard.js _urlChangeCleared) treats
-        // that stale committed value as authoritative and restores it —
-        // verified empirically, routing through the guard silently undid the
-        // clear. Listed in .review-write-guard-exempt.txt so the
-        // write-routing lint records this as a reviewed exemption rather
-        // than a pass-by-accident (the lint's import check is textual and
-        // "safeWriteReview" appears in this very comment).
-        fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
-      }
     }
   }
 
   if (json) {
-    console.log(JSON.stringify({ scanned: showDirs.length, count: hits.length, fixed: fix, hits }, null, 2));
+    console.log(JSON.stringify({ scanned: showDirs.length, count: hits.length, hits }, null, 2));
   } else {
-    console.log(`Stale-flag-after-URL-correction sweep: ${showDirs.length} shows scanned, ${hits.length} match(es)${fix ? ' (remediated)' : ''}.`);
+    console.log(`Stale-flag-after-URL-correction sweep: ${showDirs.length} shows scanned, ${hits.length} match(es).`);
     for (const h of hits) {
       console.log(`  [${h.flags.join('+')}] ${h.showId}/${h.file}`);
     }
   }
 
-  if (gate && !fix && hits.length > max) {
+  if (gate && hits.length > max) {
     console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature (> max ${max}).`);
-    console.error('Drain with --fix, then check scripts/audit-stale-flag-producers.js for which code re-created it.');
+    console.error('DO NOT clear these flags to make this pass — they are usually CORRECT (a URL "correction"');
+    console.error('can swap in a different production\'s article). Run scripts/audit-stale-flag-producers.js to');
+    console.error('find the writer that produced the state; the remedy for the record itself is a refetch.');
     process.exit(1);
   }
 }

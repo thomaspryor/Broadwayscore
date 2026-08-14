@@ -5,7 +5,6 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   detectStaleFlagAfterUrlCorrection,
-  remediateStaleFlagAfterUrlCorrection,
   isAwaitingUrlCorrectionRefetch,
   shouldWithholdStaleExclusionFlag,
 } = require('./stale-flag-after-url-correction.js');
@@ -104,51 +103,30 @@ test('no match when neither flag is set', () => {
   }), []);
 });
 
-test('remediate clears wrongProduction + shared fields (contentVerification, contentTier) and extends the breadcrumb', () => {
-  const data = {
-    wrongProduction: true,
-    wrongProductionReason: 'Pre-opening guard',
-    contentVerification: { verified: false },
-    contentTier: 'stub',
-    fullText: null,
-    _urlChangedClear: { from: 'a', to: 'b', cleared: ['fullText'] },
-  };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.ok(cleared.includes('wrongProduction'));
-  assert.ok(cleared.includes('wrongProductionReason'));
-  assert.ok(cleared.includes('contentVerification'));
-  assert.ok(cleared.includes('contentTier'));
-  assert.equal(data.wrongProduction, undefined);
-  assert.equal(data.contentVerification, undefined);
-  assert.equal(data.contentTier, undefined);
-  assert.equal(data.needsRefetch, true);
-  assert.ok(data._urlChangedClear.cleared.includes('fullText'));
-  assert.ok(data._urlChangedClear.cleared.includes('wrongProduction'));
-  assert.deepEqual(detectStaleFlagAfterUrlCorrection(data), [], 'remediated record must no longer match the detector');
-});
-
-test('remediate clears BOTH flag families in a single pass on a dual-flagged record', () => {
-  const data = {
-    wrongProduction: true,
-    wrongProductionReason: 'Pre-opening guard',
-    wrongShow: true,
-    wrongShowReason: 'title mismatch',
-    fullText: null,
-    _urlChangedClear: { from: 'a', to: 'b', cleared: [] },
-  };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.ok(cleared.includes('wrongProduction'));
-  assert.ok(cleared.includes('wrongShow'));
-  assert.equal(data.wrongProduction, undefined);
-  assert.equal(data.wrongShow, undefined);
-  assert.deepEqual(detectStaleFlagAfterUrlCorrection(data), [], 'a single remediate() call must clear a dual-flagged record completely');
-});
-
-test('remediate is a no-op for a non-matching record', () => {
-  const data = { wrongProduction: true, fullText: 'a real body' };
-  const cleared = remediateStaleFlagAfterUrlCorrection(data);
-  assert.deepEqual(cleared, []);
-  assert.equal(data.wrongProduction, true, 'non-matching record must be untouched');
+// --- the auto-remediation must STAY deleted --------------------------------
+// remediateStaleFlagAfterUrlCorrection() cleared the exclusion-flag families on
+// every detector match until 2026-08-14. It was removed because the detector's
+// matches are overwhelmingly CORRECT flags: a URL "correction" can replace a
+// correct article with a different production's, so the bodyless record really
+// does warrant exclusion (verified on equus-west-end-2026/guardian--unknown.json,
+// whose breadcrumb moved from the 2026 Menier review to a 2019 Stratford East
+// one; 8/8 files examined in review were correctly flagged). Running the drain
+// stripped 121 files and immediately reddened two independent CI gates — 59
+// [wrong-production-by-date] errors and 5 zero-tolerance class-A cross-market
+// leaks — with 100% of hits being drained files. 17 current matches carry
+// aggregatorStars and score WITHOUT fullText, so clearing them puts a
+// wrong-production review into live scoring.
+// This test exists so re-adding the export is a RED TEST, not a quiet regression.
+test('no auto-remediation export is reintroduced (the drain was a contamination tool)', async () => {
+  const mod = await import('./stale-flag-after-url-correction.js');
+  const exported = Object.keys(mod.default ?? mod);
+  const drainLike = exported.filter((k) => /^(remediate|fix|drain|clear)/i.test(k));
+  assert.deepEqual(
+    drainLike,
+    [],
+    `This module must expose no bulk flag-clearing helper. Found: ${drainLike.join(', ')}. `
+      + 'The remedy for these records is a refetch (107/115 already carry needsRefetch:true), never a flag-clear.'
+  );
 });
 
 // --- producer predicate must agree with the gate, by construction ----------

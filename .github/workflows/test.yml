@@ -3859,9 +3859,17 @@ jobs:
 
       - name: Audit stale flag after URL correction
         if: always()
-        # --max=15, not 0. Corpus is drained to 0 as of 2026-08-14, but 19 of
-        # the 22 scripts that can write these flags still do so unguarded, and
-        # the collector path adds roughly one file every 40 hours. At --max=0 a
+        # --max=15, not 0. NOTE: the corpus is NOT drained — it sits at ~115
+        # (an earlier version of this comment claimed 0, which was false), so
+        # this step is currently RED and the ceiling is not what is holding it
+        # up. Those ~115 are mostly CORRECT flags: a URL "correction" that
+        # swapped in a different production's article leaves a bodyless record
+        # whose exclusion flag is right. Do NOT drain them to go green — doing
+        # exactly that on 2026-08-14 reddened validate-data (59 errors) and the
+        # contamination gate (5 class-A leaks). The real defect is the
+        # URL-downgrade bug (carded); this gate stays as a producer tripwire.
+        # 19 of the 22 scripts that can write these flags still do so unguarded,
+        # and the collector path adds roughly one file every 40 hours. At --max=0 a
         # single such file blocks EVERY parallel session's merge (the merge
         # script's post-merge test floor), which is exactly how one review
         # record gated all code delivery for two days. 15 absorbs the trickle
