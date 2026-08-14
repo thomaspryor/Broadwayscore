@@ -1,28 +1,8 @@
 {
-  "generatedAt": "2026-08-14T11:44:16.172Z",
+  "generatedAt": "2026-08-14T12:47:39.776Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "file": "independent--alice-saville.json",
-      "outletId": "independent",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:per-file-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-14T11:44:16.171Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -36,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 526.5443433333334,
+      "fileAgeHours": 527.5956986111111,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 1.7375136111111111
+      "nonTerminalAgeHours": 2.7940705555555554
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -53,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 216.98753194444444,
+      "fileAgeHours": 218.03888833333335,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 1.7375136111111111
+      "nonTerminalAgeHours": 2.7940705555555554
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -70,9 +50,30 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 11.250568611111111,
+      "fileAgeHours": 12.304778333333333,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 1.7375136111111111
+      "nonTerminalAgeHours": 2.7940705555555554
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "title": "Game of Thrones: The Mad King",
+      "openingDate": "2026-08-08",
+      "file": "times-uk--clive-davis.json",
+      "outletId": "times-uk",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=game-of-thrones-the-mad-king-regional-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-14T04:01:05.909Z",
+      "fileAgeHours": 8.776074166666668,
+      "gapSeenAt": "2026-08-14T12:47:39.776Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
