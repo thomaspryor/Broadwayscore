@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards } from '@/lib/data-awards';
@@ -250,6 +250,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
   // Theater scorecard lookup (Broadway only) — regional/off-broadway venues aren't Broadway houses
   const theater = !isWestEnd && !isOffBroadway && !isRegional && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+  // Off-Broadway venue page lookup — undefined if the venue string didn't resolve
+  // (freeform data entry, unlike the curated Broadway/West End venue lists), in
+  // which case the venue name renders as plain text rather than a dead link.
+  const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined);
 
   const breadcrumbSchema = isOpera
@@ -626,6 +630,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <p className="text-gray-400 text-xs sm:text-sm mt-3 mb-1 leading-relaxed" data-testid="show-meta-line">
                 {isWestEnd ? (
                   <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                ) : isOffBroadway && offBroadwayTheater ? (
+                  <Link href={`/off-broadway/theater/${offBroadwayTheater.slug}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 ) : isOffBroadway || isRegional ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (

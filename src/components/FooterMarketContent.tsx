@@ -132,6 +132,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/trending" className="hover:text-white transition-colors">Trending Shows</Link></li>
               <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
               <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
+              {marketId === 'off-broadway' && <li><Link href="/off-broadway/theater" className="hover:text-white transition-colors">Off-Broadway Theatres</Link></li>}
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
               {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
