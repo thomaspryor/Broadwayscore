@@ -43,6 +43,28 @@ test('#832 crocodile replay: WhatsOnStage /tours/ page dated far before the WE o
   assert.equal(verdict.implausible, true);
 });
 
+test('an LLM-guessed date (dateSource: llm-scoring) never makes a review implausible', () => {
+  // ensemble-scorer.ts fills a missing publishDate from the scoring model's own
+  // guess. Nothing verifies it, and a hallucinated year previously turned this
+  // guard into a phantom wrong-production detector — that is what held main red.
+  // Same fixture as the cyrano replay above, which IS implausible on a real date.
+  const show = { id: 'cyrano-de-bergerac-west-end-2026', previewsStartDate: '2026-03-10', openingDate: '2026-03-25' };
+  const guessed = { publishDate: '2025-08-01', dateSource: 'llm-scoring' };
+  const verdict = evaluateDatePlausibility({ review: guessed, show });
+  assert.equal(verdict.implausible, false, 'an unverified model guess is not evidence of a wrong production');
+  assert.equal(verdict.reason, null);
+
+  // Control: the identical date from a real extractor is still caught, so this
+  // exemption is scoped to the guess and has not disarmed the guard.
+  for (const src of ['url', 'text-regex', 'html-cookies', 'text-llm', undefined]) {
+    const real = { publishDate: '2025-08-01', ...(src ? { dateSource: src } : {}) };
+    assert.equal(
+      evaluateDatePlausibility({ review: real, show }).implausible, true,
+      `dateSource=${String(src)} must still be judged on its date`
+    );
+  }
+});
+
 test('same-window review writes normally: publishDate a few days before opening is plausible', () => {
   const show = { previewsStartDate: '2026-04-01', openingDate: '2026-04-14' };
   const review = { publishDate: '2026-04-13' };

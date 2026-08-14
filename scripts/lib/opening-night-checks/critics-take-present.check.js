@@ -8,9 +8,15 @@ const description = 'Composite score exists but Critics Take (critic-consensus.j
 /**
  * Scored reviews as this check can see them: reviews.json entries, the same
  * source and the same exclusions t1-outlets-scored.check.js uses. Deliberately
- * NOT the review-text files the generator scans — opening-night-checklist.yml
- * checks out core-data only, so data/review-texts/ does not exist in that job
- * and a disk count would be zero for every show.
+ * NOT the review-text files the generator scans.
+ *
+ * This must stay a pure function of `reviews` — no filesystem reads. The
+ * original reason was that data/review-texts/ did not exist in the checklist
+ * job at all; BRO-234 (commit 4275723c6f0) added checkout-review-texts for the
+ * 8 other checks that need it, so that is no longer true. The rule stands for a
+ * better reason: a count that varies with which job happens to have the
+ * directory mounted would make this check's verdict depend on CI plumbing
+ * rather than on data. Locked by tests/unit/critic-consensus-eligibility.test.mjs.
  *
  * @param {Array<Object>} reviews - context.reviewsDoc[show.id]
  * @returns {number}
