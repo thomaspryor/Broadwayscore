@@ -165,7 +165,13 @@ function classifyReclaimable(trapped, ctx = {}) {
   for (const task of trapped || []) {
     if (!task) continue;
     const id = String(task.id);
-    const push = (action, reason, detail = null) => out.push({ id, subject: task.subject || '', action, reason, detail });
+    // cardStatus rides along so the executor can gate its Notion write on what
+    // the card ACTUALLY reads right now. Without it, parking a card that
+    // already reads Done would downgrade it to Paused — inventing a decision
+    // the owner never asked for. Same shape as sweepUntrackedInProgress's
+    // `if (card.status === 'In progress')` guard on its own correction.
+    let cardStatus = null;
+    const push = (action, reason, detail = null) => out.push({ id, subject: task.subject || '', action, reason, detail, cardStatus });
 
     if (leaseAliveOf(id)) { push('skip-live', 'a live claude process still holds this task\'s lease'); continue; }
     const tab = liveTabOf(task);
@@ -186,6 +192,7 @@ function classifyReclaimable(trapped, ctx = {}) {
 
     const card = cardOf(marker);
     if (!card) { push('skip-card-unavailable', 'Notion card could not be fetched — refusing to act blind'); continue; }
+    cardStatus = card.status || null;
     if (card.lastEditedAt) {
       const idle = now - Date.parse(card.lastEditedAt);
       if (Number.isFinite(idle) && idle < idleMs) { push('skip-fresh', `card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it`); continue; }
@@ -265,6 +272,7 @@ module.exports = {
   classifyReclaimable,
   reclaimedTaskShape,
   supersededTaskShape,
+  parkedTaskShape,
   taskBranchEvidence,
   notionMarkerOf,
   normalizeSubject,

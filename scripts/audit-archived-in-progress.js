@@ -245,7 +245,10 @@ function applyDecision(decision, { liveDir, archiveDir, now, correctCardFn }) {
     let cardCorrected = null;
     // The #1272 convention: a card whose Outcome records finished work gets
     // Paused for a human yes/no, never auto-reopened and never auto-closed.
-    if (decision.action === 'park-outcome' && decision.notionId && correctCardFn) {
+    // Only correct a card that still READS In progress. A card already at Done
+    // is right; flipping it to Paused would invent a decision nobody asked for
+    // and would show up on the owner's board as a regression.
+    if (decision.action === 'park-outcome' && decision.cardStatus === 'In progress' && decision.notionId && correctCardFn) {
       cardCorrected = correctCardFn(decision.notionId, `Auto-parked ${new Date(now).toISOString().slice(0, 10)} by audit-archived-in-progress --fix: this card's task was archived while still in_progress, but the card already records completed work — parked for a human yes/no rather than reopened (card #1402, the #1272 class). Resume with \`node scripts/bsc-next.js --id ${id} --force\` if it is genuinely unfinished.`, 'Paused');
     }
     return { id, done: true, action: decision.action, cardCorrected };
@@ -260,7 +263,9 @@ function applyDecision(decision, { liveDir, archiveDir, now, correctCardFn }) {
 
   let cardCorrected = null;
   const notionId = decision.notionId;
-  if (notionId && correctCardFn) {
+  // Same guard as the park path, and as sweepUntrackedInProgress's own
+  // `if (card.status === 'In progress')` before it corrects a card.
+  if (notionId && correctCardFn && (decision.cardStatus === 'In progress' || decision.cardStatus == null)) {
     cardCorrected = correctCardFn(notionId, `Auto-corrected ${new Date(now).toISOString().slice(0, 10)} by audit-archived-in-progress --fix: this card's task was archived while its status still said in_progress, so no sweep could reach it (card #1402). Returned to the backlog as Not started.`, 'Not started');
   }
   return { id, done: true, action: 'reclaim', cardCorrected };

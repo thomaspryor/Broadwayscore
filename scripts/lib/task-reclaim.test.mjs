@@ -189,3 +189,35 @@ test('classifyReclaimable tolerates null/empty input', () => {
   assert.deepEqual(classifyReclaimable(null, { now: NOW }), []);
   assert.deepEqual(classifyReclaimable([null], { now: NOW }), []);
 });
+
+// Regression: the first REAL --fix run crashed with "parkedTaskShape is not a
+// function" because the export list was missed. The dry-run path never calls
+// the shape helpers, so only executing the real thing surfaced it. Assert the
+// whole public surface the executor reaches for by name.
+test('every shape helper the --fix executor calls is actually exported', () => {
+  const mod = require('./task-reclaim.js');
+  for (const name of ['classifyReclaimable', 'reclaimedTaskShape', 'supersededTaskShape', 'parkedTaskShape', 'taskBranchEvidence']) {
+    assert.equal(typeof mod[name], 'function', `${name} must be exported — the executor calls it by name`);
+  }
+});
+
+test('parkedTaskShape writes a terminal, non-dispatchable status', () => {
+  const { parkedTaskShape } = require('./task-reclaim.js');
+  const out = parkedTaskShape({ id: '9', status: 'in_progress', owner: 'x' }, { now: NOW, reason: 'card already records a completed Outcome' });
+  assert.equal(out.status, 'completed', 'never pending — that is exactly what arms p01Queue and zombie-tab-sweep');
+  assert.equal(out.owner, null);
+  assert.match(out.reclaimParkedReason, /completed Outcome/);
+});
+
+test('every decision carries the card status the executor gates its Notion write on', () => {
+  const done = classify([trapped(9)], { cardOf: () => ({ status: 'Done', lastEditedAt: hAgo(72) }) });
+  assert.equal(done[0].action, 'park-outcome');
+  assert.equal(done[0].cardStatus, 'Done', 'without this the executor would downgrade an already-Done card to Paused');
+
+  const inprog = classify([trapped(9)], { cardOf: () => ({ status: 'In progress', lastEditedAt: hAgo(72) }) });
+  assert.equal(inprog[0].action, 'reclaim');
+  assert.equal(inprog[0].cardStatus, 'In progress');
+
+  const noCard = classify([trapped(5, { description: 'no marker' })], {});
+  assert.equal(noCard[0].cardStatus, null, 'a task with no card must report null, not a stale value from a previous loop iteration');
+});
