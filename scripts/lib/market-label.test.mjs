@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext } = require('./market-label.js');
+const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isUkRegionalVenue } = require('./market-label.js');
 const { buildWrongProductionUserPrompt } = require('./classifier-prompts.js');
 
 test('every known market gets its own label — none falls through to Broadway', () => {
@@ -53,6 +53,97 @@ test('regional prompt context tells the model not to flag non-Broadway as a mism
   assert.match(note, /wrong_production/);
   // Works without a venue too.
   assert.match(getRegionalPromptContext(undefined), /REGIONAL production/);
+});
+
+test('a UK regional venue is labelled UK, not US — card #1405 (RSC Stratford)', () => {
+  // The bug: getMarketLabel('regional') hardcoded "(US, outside New York)", so
+  // an RSC Stratford-upon-Avon world premiere was announced to the ensemble as
+  // a US production. The review body says England in its first paragraph, so
+  // both legs answer wrong_production and the review is dropped.
+  const uk = getMarketLabel('regional', 'Royal Shakespeare Theatre, Stratford-upon-Avon');
+  assert.match(uk, /^Regional/);
+  assert.match(uk, /UK/);
+  assert.doesNotMatch(uk, /US/);
+  assert.doesNotMatch(uk, /New York/);
+
+  // Chichester is the other entry in data/uk-regional-venues.json.
+  assert.match(getMarketLabel('regional', 'Chichester Festival Theatre'), /UK/);
+
+  // A US regional house keeps the US wording.
+  const us = getMarketLabel('regional', 'La Jolla Playhouse, La Jolla, CA');
+  assert.match(us, /US/);
+  assert.doesNotMatch(us, /UK/);
+
+  // No venue supplied → unchanged pre-#1405 behaviour.
+  assert.equal(getMarketLabel('regional'), getMarketLabel('regional', undefined));
+  assert.match(getMarketLabel('regional'), /US/);
+
+  // Non-regional markets ignore the venue argument entirely.
+  assert.equal(getMarketLabel('west-end', 'Royal Shakespeare Theatre'), 'West End');
+  assert.equal(getMarketLabel('broadway', 'Royal Shakespeare Theatre'), 'Broadway');
+});
+
+test('isUkRegionalVenue matches the shared table case-insensitively', () => {
+  assert.equal(isUkRegionalVenue('Royal Shakespeare Theatre, Stratford-upon-Avon'), true);
+  assert.equal(isUkRegionalVenue('ROYAL SHAKESPEARE THEATRE'), true);
+  assert.equal(isUkRegionalVenue('Chichester Festival Theatre'), true);
+  assert.equal(isUkRegionalVenue('La Jolla Playhouse'), false);
+  assert.equal(isUkRegionalVenue(''), false);
+  assert.equal(isUkRegionalVenue('   '), false);
+  assert.equal(isUkRegionalVenue(undefined), false);
+  assert.equal(isUkRegionalVenue(null), false);
+});
+
+test('isUkRegionalVenue rejects non-strings instead of coercing them', () => {
+  // String(['Royal Shakespeare Theatre']) === 'Royal Shakespeare Theatre', so a
+  // coercing implementation matches an ARRAY. getMarketLabel's optional 2nd
+  // param means `arr.map(getMarketLabel)` would pass the index as venue; both
+  // must be inert.
+  assert.equal(isUkRegionalVenue(['Royal Shakespeare Theatre']), false);
+  assert.equal(isUkRegionalVenue({ name: 'Royal Shakespeare Theatre' }), false);
+  assert.equal(isUkRegionalVenue(0), false);
+  assert.equal(isUkRegionalVenue(1), false);
+  assert.equal(isUkRegionalVenue(true), false);
+  // The map() footgun specifically: index 0/1/2 must never flip the label.
+  assert.equal(['regional', 'regional', 'regional'].map(getMarketLabel).join('|'),
+    [getMarketLabel('regional'), getMarketLabel('regional'), getMarketLabel('regional')].join('|'));
+});
+
+test('regional prompt note names the right country for a UK house — card #1405', () => {
+  const uk = getRegionalPromptContext('Royal Shakespeare Theatre, Stratford-upon-Avon');
+  assert.match(uk, /UK theatre outside London/);
+  assert.doesNotMatch(uk, /US theater outside New York/);
+  // The "not X" clause must name the UK metro, not Broadway.
+  assert.match(uk, /West End/);
+  assert.match(uk, /do NOT flag/);
+
+  const us = getRegionalPromptContext('La Jolla Playhouse');
+  assert.match(us, /US theater outside New York/);
+  assert.match(us, /Broadway/);
+});
+
+test('classifier prompt files a UK regional show under Regional (UK) — card #1405', () => {
+  const prompt = buildWrongProductionUserPrompt({
+    show: {
+      title: 'Game of Thrones: The Mad King',
+      market: 'regional',
+      venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon',
+    },
+    result: {
+      showId: 'game-of-thrones-the-mad-king-regional-2026',
+      showYear: 2026,
+      outlet: 'The Guardian',
+      criticName: 'Unknown',
+      publishDate: '2026-08-09',
+      signals: [],
+    },
+    reviewData: { fullText: 'A world premiere at the RSC in Stratford-upon-Avon.' },
+    revivals: [],
+  });
+  assert.match(prompt, /FILED UNDER PRODUCTION: \S+ \(Regional \(UK, outside London\) opening: 2026\)/);
+  assert.match(prompt, /UK theatre outside London/);
+  assert.doesNotMatch(prompt, /Regional \(US, outside New York\)/);
+  assert.doesNotMatch(prompt, /US theater outside New York/);
 });
 
 test('classifier prompt files a regional show under Regional, not Broadway', () => {

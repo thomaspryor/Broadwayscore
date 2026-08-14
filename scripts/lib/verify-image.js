@@ -145,7 +145,7 @@ function resolveMarketSlug(category, market) {
  */
 function buildVerificationPrompt({ market, venue } = {}) {
   const profile = getMarketProfile(market);
-  const label = getMarketLabel(market);
+  const label = getMarketLabel(market, venue);
   const atVenue = venue ? ` at ${venue}` : '';
 
   const venueRejectRule = `- The image names a THEATER or PRODUCING COMPANY belonging to a DIFFERENT market than this production. This is a ${label} production${atVenue}. Venue and company branding consistent with ${label} is EXPECTED on the poster and must be ACCEPTED — expected venues here are ${profile.expected}. Only reject on a genuine cross-market mismatch, e.g. ${profile.mismatch}.`;
@@ -369,7 +369,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
 
   // Market context — without it the prompt frames every show as Broadway and
   // rejects correct West End / Off-Broadway / regional key art (2026-08-02).
-  const marketLabel = getMarketLabel(options.market);
+  const marketLabel = getMarketLabel(options.market, options.venue);
   const venueSuffix = options.venue ? ` at ${options.venue}` : '';
   const systemPrompt = buildVerificationPrompt({ market: options.market, venue: options.venue });
 
