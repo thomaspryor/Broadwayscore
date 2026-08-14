@@ -187,6 +187,17 @@ function main() {
   const scope = scopeStdin
     ? fs.readFileSync(0, 'utf8').split('\n').map(s => s.trim()).filter(Boolean)
     : undefined;
+  // Known accepted tradeoff (raised in review — Codex): a push that edits
+  // test.yml/a manifest to REMOVE a test's registration, without touching
+  // that test file's own content, downgrades the newly-orphaned test to
+  // informational here instead of blocking. Making test.yml's mere presence
+  // in scope fall back to full blocking was tried and reverted — it defeats
+  // the fix's actual purpose, since test.yml touched for an UNRELATED reason
+  // is exactly the #483/#1478 trigger this card exists to stop blocking.
+  // There's no cheap way to tell "this push removed a registration line"
+  // apart from "this push touched test.yml for any other reason" without a
+  // content diff, so this stays a real, informational-only gap covered by
+  // CI's unscoped full check as the safety net (test.yml:2566/2600).
   const files = listTestFiles();
   const referenced = collectReferencedTests();
   const rawOrphans = files.filter(f => !referenced.has(f.name));
