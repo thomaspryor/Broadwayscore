@@ -9,6 +9,10 @@
  * @param {Date} args.pubDate - parsed publish date of the review
  * @param {object} args.show - the show record (uses previewDate / previewsStartDate / openingDate, closingDate, category/market)
  * @param {string|null} args.outletId - outletId on the review
+ * @param {Array|null|undefined} [args.priorRuns] - show.priorRuns; a pubDate covered by a
+ *   declared prior run is legitimate earlier-run coverage and is never flagged here
+ * @param {Array|null|undefined} [args.tourLegs] - show.tourLegs; a pubDate covered by a
+ *   declared tour leg is legitimate current-production coverage and is never flagged here
  * @returns {{ flag: boolean, issue: 'before_preview'|'after_close'|null, diffDays: number, daysAllowedBefore: number }}
  */
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
@@ -48,7 +52,7 @@ function earliestShowDate(show) {
   return cands.reduce((min, d) => (d < min ? d : min));
 }
 
-function evaluateDateGuard({ pubDate, show, outletId }) {
+function evaluateDateGuard({ pubDate, show, outletId, priorRuns, tourLegs }) {
   // NOTE: 'observer' deliberately excluded. observer.com is flagged
   // isDualMarket:true in outlet-registry.json — both NY Observer (US/Broadway
   // critics like David Cote) and The Observer UK share the outletId. Giving
@@ -78,6 +82,16 @@ function evaluateDateGuard({ pubDate, show, outletId }) {
   }
 
   if (pubDate < windowStart) {
+    // Production-continuity exemption: pubDate falls inside a declared
+    // priorRuns/tourLegs window — legitimate coverage of an earlier run (or
+    // tour stop) of THIS production, not a different one. Baked into the
+    // pure decision function itself (rather than left to each caller to
+    // remember) so no guard built on top of evaluateDateGuard can forget it
+    // (BRO-222: the rebuild's reverse cross-market guard was exactly that
+    // kind of forgotten caller).
+    if (isWithinPriorRun(pubDate, priorRuns) || isWithinTourLeg(pubDate, tourLegs)) {
+      return { flag: false, issue: null, diffDays: 0, daysAllowedBefore };
+    }
     return {
       flag: true,
       issue: 'before_preview',
@@ -86,6 +100,9 @@ function evaluateDateGuard({ pubDate, show, outletId }) {
     };
   }
   if (windowEnd && pubDate > windowEnd) {
+    if (isWithinPriorRun(pubDate, priorRuns) || isWithinTourLeg(pubDate, tourLegs)) {
+      return { flag: false, issue: null, diffDays: 0, daysAllowedBefore };
+    }
     return {
       flag: true,
       issue: 'after_close',
