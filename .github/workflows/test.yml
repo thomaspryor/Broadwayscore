@@ -2950,6 +2950,34 @@ jobs:
         # immediately on a new violation instead of relying on server logs.
         run: node scripts/audit-digest-clip-safety.js
 
+      - name: Audit — no submitter PII in committed data/audit files
+        # Task #1074/#1091. "Never store submitter name/email; cap free text" existed
+        # only as a prose comment in feedback-request-ledger.js:54-60 until a
+        # session violated it in a fresh code path the same week (#1064):
+        # notify-feedback-outcomes.js's buildAlert() put submitter name + email
+        # + an uncapped message into an owner-alert-router description, which
+        # data/audit/alert-digest-queue.json — a file 12 workflows commit —
+        # then persists to this PUBLIC repo. Caught pre-merge only by an
+        # adversarial reviewer, not by any lint. Blocking: a committed PII leak
+        # in a public repo is a real exposure, not style debt. Waive a reviewed
+        # false positive (outlet contact address, critic byline) by adding it
+        # to ALLOWLIST in scripts/lint-committed-pii.js with a justification —
+        # never a silent skip. Detection cadence note: data/audit/** is not in
+        # this workflow's push-path allowlist (bot commits there don't trigger
+        # a push run), so the real enforcement cadence is the daily 6am UTC
+        # cron, not every commit — up to ~24h lag, not real-time blocking.
+        #
+        # GOTCHA (task #1091, 2026-08-14): this exact step was added in commit
+        # 6c1d2ef9861 (2026-08-06) then silently clobbered 31 minutes later by
+        # an unrelated commit (97849bf3f908, task #1078 follow-up) that pasted
+        # a new step over this one's location instead of alongside it — 8 days
+        # with the PII gate absent from CI despite a "Done" tracking card.
+        # tests/unit/lint-script-ci-wiring.test.mjs now catches this class
+        # (every scripts/lint-*.js must be invoked by a `run:` line here). If
+        # you are editing this job again, ADD your new step; do not paste over
+        # an existing `- name:` block without diffing the full job first.
+        run: node scripts/lint-committed-pii.js
+
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515
         # lineage): a NEW workflow/script calling sendAlert with email:true
