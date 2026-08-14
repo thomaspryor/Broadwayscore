@@ -91,6 +91,10 @@ on:
       - 'scripts/audit-serp-census-recall.js'
       - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
+      # Push-retry deadman row (BRO-231/#1221): colocated *.test.mjs runs in
+      # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-retry-deadman.js'
+      - 'scripts/lib/push-retry-deadman.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
@@ -642,6 +646,13 @@ on:
       # of silently discarding the incoming branch's fix. Path-listed so a
       # solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
+      # Task #1511: the push-retry loop's `git merge origin/$DEFAULT_BRANCH
+      # --no-edit` on retry redirected its own stderr/stdout to /dev/null
+      # before die("could not merge remote changes on retry") — zero
+      # information on WHY it failed (conflict vs. dirty tree vs. something
+      # else), unlike the syntax-floor and push-audits die() paths above it.
+      # Path-listed so a solo edit to the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh'
       # Card #835: shared range-scoped push-audit dispatch — extracted from
       # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
       # below) so scripts/merge-worktree-to-main.sh can call the same runner.
@@ -3752,6 +3763,21 @@ jobs:
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+
+      - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
+        # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry
+        # loop's `git merge origin/$DEFAULT_BRANCH --no-edit` on retry
+        # suppressed the merge command's own stderr/stdout before calling
+        # die("could not merge remote changes on retry") — an operator hitting
+        # a real conflict there got zero information on why, unlike the
+        # syntax-floor and push-audits die() paths a few lines above it, which
+        # both capture and print their command's output. Fault-injects a real
+        # conflict onto the retry-merge path specifically (a git shim on PATH
+        # sneaks a conflicting commit onto origin right as the script's first
+        # push fires) and asserts the die() message includes git's own
+        # conflict text, not the old bare message.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
