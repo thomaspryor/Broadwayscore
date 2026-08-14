@@ -238,6 +238,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Terminal-state guard (task #1517): refuse to dispatch an issue that is
+  // already Done/Canceled. This is the actual root cause behind the BRO-247
+  // incident (task #1510) — a closed, archived issue got re-dispatched
+  // anyway, and the archived-issue write failed with a cryptic 'Entity not
+  // found: Issue' error. #1510 made that failure self-heal (unarchive and
+  // retry) but deliberately left this dispatch-time guard for a follow-up —
+  // without it, re-dispatching a terminal issue silently self-heals through
+  // the archive dance every time instead of refusing outright. Checked after
+  // --dry-run/--print-prompt (same convention as the kill switch above: those
+  // stay side-effect-free previews) but before every other gate.
+  // buildIssueQuery (linear-dispatch.js) already fetches state { id name
+  // type } on every getIssue() call, so this needs no extra request.
+  if (!args.force && issue.state && (issue.state.type === 'completed' || issue.state.type === 'canceled')) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: issue is already ${issue.state.type} (state "${issue.state.name || '?'}").`);
+    console.error(`  Re-run with --force if you deliberately want to re-open and re-dispatch it.`);
+    process.exit(1);
+  }
+
   // Verify gate (mirrors bsc-next.js's dispatch gate exactly): a Linear
   // issue's description carries its own "## Acceptance criteria" section by
   // the same convention a Notion card's notes would, so evaluateVerifiability
