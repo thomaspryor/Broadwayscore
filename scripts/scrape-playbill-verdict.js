@@ -25,11 +25,13 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
+const sitemapAccumulatorPath = path.join(__dirname, '../data/audit/playbill-verdict-sitemap-seen.json');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
@@ -629,6 +631,29 @@ async function scrapePlaybillVerdict() {
     stats.errors.push(`Category page: ${err.message}`);
   }
 
+  // Step 1b: Supplement with playbill.com/sitemap.xml — the category page is
+  // a single static fetch that never runs the site's scroll-triggered JS, so
+  // it only ever sees the ~27-30 articles present on first paint (verified
+  // live 2026-08-14 — the visible page has 100+ once a user scrolls). The
+  // sitemap is site-wide and unrelated to /category/the-verdict, so filter
+  // to review-roundup slugs and accumulate across runs (see comment on
+  // accumulateSitemapArticles) since any single sitemap fetch can miss an
+  // article that has already scrolled out of its ~700-entry window.
+  try {
+    const sitemapXml = await fetchHtml(VERDICT_SITEMAP_URL);
+    if (sitemapXml && sitemapXml.length > 500) {
+      const sitemapArticles = extractArticlesFromSitemap(sitemapXml);
+      const accumulated = accumulateSitemapArticles(sitemapAccumulatorPath, sitemapArticles);
+      allArticles.push(...accumulated);
+      console.log(`  Sitemap: found ${sitemapArticles.length} review-slug article(s) this run, ${accumulated.length} accumulated total`);
+    } else {
+      console.log('  Sitemap returned no content.');
+    }
+  } catch (err) {
+    console.error(`  Error fetching sitemap: ${err.message}`);
+    stats.errors.push(`Sitemap: ${err.message}`);
+  }
+
   // Deduplicate
   const uniqueArticles = [];
   const seenUrls = new Set();
@@ -692,6 +717,17 @@ async function scrapePlaybillVerdict() {
       // the OB discovery pipeline via the audit log instead of dropping silently.
       unmatchedArticles.push({ url: article.url, title: article.title, slug: article.slug, reason: 'no-match' });
     }
+  }
+
+  // Prune sitemap accumulator: an article matched to a show this run (or a
+  // prior run) has done its job — drop it so the accumulator only carries
+  // still-unresolved candidates, mirroring the unmatched-audit prune below.
+  try {
+    const matchedUrls = new Set(matchedArticles.map(a => a.url));
+    const remaining = loadSitemapAccumulator(sitemapAccumulatorPath).filter(a => !matchedUrls.has(a.url));
+    saveSitemapAccumulator(sitemapAccumulatorPath, remaining);
+  } catch (err) {
+    console.error(`  Error pruning sitemap accumulator: ${err.message}`);
   }
 
   // Dump unmatched articles to audit log for OB discovery pipeline.
