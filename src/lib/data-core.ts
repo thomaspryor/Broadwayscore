@@ -883,10 +883,16 @@ export function getAllOffBroadwayComplexes(): TheaterComplex[] {
       });
     const currentShow = allShows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
 
+    // Synthetic complexes (no own raw venue string, e.g. Lincoln Center Theater)
+    // have no ownTheater to source an address from — fall back to the first
+    // sub-venue that has one, rather than shipping every synthetic complex
+    // page with no map link.
+    const address = ownTheater?.address ?? subVenues.find(t => t.address)?.address;
+
     return {
       name: def.name,
       slug: complexSlug,
-      address: ownTheater?.address,
+      address,
       currentShow,
       allShows,
       showCount: allShows.length,
