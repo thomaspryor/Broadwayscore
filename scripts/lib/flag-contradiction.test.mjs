@@ -8,6 +8,8 @@ const {
   detectCvFlagContradiction,
   contradictionFixCommand,
   shouldAlertContradiction,
+  detectAllSelfContradictoryClears,
+  retractStaleClearBreadcrumb,
 } = require('./flag-contradiction.js');
 
 // Pre-fix Grace Pervades snapshot: a real West End review flagged
@@ -242,4 +244,57 @@ test('no contentVerification → null', () => {
 test('null/undefined data → null (never throws)', () => {
   assert.equal(detectCvFlagContradiction(null), null);
   assert.equal(detectCvFlagContradiction(undefined), null);
+});
+
+// SELF_CLEAR_PAIRS coverage (tasks #1020/#1022/#1023) — a record asserting an
+// exclusion flag AND its own retraction breadcrumb at once. Regression guard
+// for #1023: an-american-in-paris-2015/broadwayworld--roy-berko.json and
+// kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json shipped with
+// wrongAttribution:true + crossOutletVerified:true simultaneously (a 'flag'
+// action from an earlier sweep whose crossOutletVerified was never retracted
+// with the clearBreadcrumbRetracted breadcrumb review-write-guard.js's
+// PROTECTED_FIELDS preserve loop requires to honor the delete).
+test('wrongAttribution + crossOutletVerified fires (#1023 pair)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongAttribution');
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+  assert.equal(hits[0].task, '#1023');
+});
+
+test('wrongAttribution alone (no crossOutletVerified) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ wrongAttribution: true }), []);
+});
+
+test('crossOutletVerified alone (no wrongAttribution) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ crossOutletVerified: true }), []);
+});
+
+test('human-decided file exempt from the #1023 pair too', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, humanReviewScore: 85 };
+  assert.deepEqual(detectAllSelfContradictoryClears(f), []);
+});
+
+test('retractStaleClearBreadcrumb deletes crossOutletVerified, leaves wrongAttribution, stamps retraction breadcrumb', () => {
+  const f = {
+    wrongAttribution: true,
+    wrongAttributionReason: 'unconfirmed byline',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const removed = retractStaleClearBreadcrumb(f, contradiction);
+  assert.deepEqual(removed, ['crossOutletVerified']);
+  assert.equal(f.crossOutletVerified, undefined);
+  assert.equal(f.wrongAttribution, true, 'the flag must survive — it is the live verdict');
+  assert.equal(f.wrongAttributionReason, 'unconfirmed byline');
+  assert.ok(f.clearBreadcrumbRetracted.includes('#1023'));
+  assert.ok(f.clearBreadcrumbRetractedFields.includes('crossOutletVerified'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('retractStaleClearBreadcrumb on a no-contradiction record is a no-op', () => {
+  const f = { wrongAttribution: true };
+  assert.deepEqual(retractStaleClearBreadcrumb(f, null), []);
 });
