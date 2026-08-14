@@ -40,7 +40,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS, calculateDateWindow } = require('./l
 const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { domainMatchesExpected } = require('./lib/scraper');
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -384,7 +384,7 @@ async function main() {
   } else {
     // --market mode: filter by category
     targetShows = shows.shows
-      .filter(s => opts.market === 'broadway' ? (!s.category || s.category === 'broadway') : (isLondonMarket(opts.market) ? isLondonMarket(s.category) : s.category === opts.market))
+      .filter(s => opts.market === 'broadway' ? isBroadwayCategory(s) : (isLondonMarket(opts.market) ? isLondonMarket(s.category) : s.category === opts.market))
       .filter(s => s.status !== 'previews')
       .filter(s => !opts.showIds || opts.showIds.includes(s.id));
   }

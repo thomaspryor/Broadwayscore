@@ -66,6 +66,7 @@ const path = require('path');
 const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -141,7 +142,7 @@ const MARKET_CONFIG = {
   broadway: {
     // Shows included in this market's audit
     showFilter: s => !s.id.includes('west-end') && !s.id.includes('off-broadway')
-      && (!s.category || s.category === 'broadway'),
+      && isBroadwayCategory(s),
 
     // Outlet regions that are CORRECT for this market (so we DON'T flag)
     correctRegions: new Set(['new-york', 'nyc', 'dual', 'us']),
