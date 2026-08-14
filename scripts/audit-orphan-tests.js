@@ -64,6 +64,15 @@ const EXEMPT_NEVER_CI = {
   // at its RECHECK-AFTER date, never by CI. Lives in scripts/, not
   // tests/unit/ (same pattern as the entry above).
   'verify-seo-health-clean.test.mjs': '3a7637c5-416f-81fd',
+  // Deferred-effect acceptance probe (task #1466, card 3bc637c5-416f-816d):
+  // asserts promote-we-aggregator.yml (cron '30 14 * * *') produced a real
+  // we-promotion-log.jsonl entry in production after the feature merged. It
+  // reads LIVE repo data, not a fixture, so it is EXPECTED to fail until the
+  // first scheduled fire — registering it in CI would make main red for a
+  // non-regression. Run by autonomous-acceptance-recheck.js at its
+  // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/
+  // (same pattern as the two entries above).
+  'verify-we-aggregator-promotion-ran.test.mjs': '3bc637c5-416f-816d',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
