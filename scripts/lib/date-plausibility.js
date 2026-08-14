@@ -38,6 +38,28 @@ function evaluateDatePlausibility({ review, show }) {
 
   if (!review.publishDate) return empty;
 
+  // An LLM-guessed date is not evidence of a wrong production.
+  // scripts/llm-scoring/ensemble-scorer.ts fills a missing publishDate from the
+  // scoring model's own guess and stamps dateSource: 'llm-scoring'. That guess
+  // is a by-product of scoring, not a date extraction: there is no URL segment,
+  // no dateline, no JSON-LD behind it, and nothing ever verifies it. Once
+  // written it is indistinguishable on disk from a real date, so a hallucinated
+  // year turns this guard into a phantom wrong-production detector — one such
+  // file is what held main red (611 files carry this dateSource; the 44 that
+  // fall outside their show's window were all already flagged wrongProduction,
+  // which is exactly what this guard would have done to the rest given a bad
+  // guess).
+  //
+  // Treating it as no-date rather than as a date is the conservative reading:
+  // `!review.publishDate` above already means "no date → not implausible", so
+  // this only ever REMOVES a flag this guard would otherwise have invented. It
+  // cannot suppress a real signal, because a real signal requires a real date,
+  // and any review that has one does not carry this dateSource (the scorer only
+  // fills when publishDate is empty). Genuinely dated reviews from every other
+  // source — url, text-regex, html-*, json-ld, text-llm (the purpose-built
+  // extractor that reads the article) — are unaffected.
+  if (review.dateSource === 'llm-scoring') return empty;
+
   const pub = parsePlausibilityDate(review.publishDate);
   const earliestStr = earliestShowDate(show);
   const earliestD = earliestStr ? parsePlausibilityDate(earliestStr) : null;
