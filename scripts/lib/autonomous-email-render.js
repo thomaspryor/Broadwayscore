@@ -216,6 +216,12 @@ function renderRecheckBlock(recheck) {
 // 2026-08-02: "I can't even tell from any of the descriptions what they are or
 // mean"). Keyed by name prefix; unmapped names fall back to the raw name.
 const PLAIN_HEALTH = [
+  // "Cron failed:" (last-run failure) and "Workflow repeat-failure:" (N-in-a-
+  // row failure) are the SAME row family as digest-autofix.js's rowFamilyKey
+  // (BRO-232 S4) — sharing this translation makes renderAutofixBlock's own
+  // seen-Map dedup (below) collapse them into one line instead of two, since
+  // its key is this function's output.
+  [/^Cron failed: (.+)/, (m) => `The automated "${m[1]}" job keeps failing`],
   [/^Workflow repeat-failure: (.+)/, (m) => `The automated "${m[1]}" job keeps failing`],
   [/^Audience coverage/, () => 'Some shows have audience ratings that never linked up'],
   [/^Sync: baseline drift/, () => 'The site is showing fewer shows/reviews than yesterday'],
