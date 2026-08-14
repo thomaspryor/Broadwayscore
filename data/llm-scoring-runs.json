@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-11T07:14:56.460Z",
-    "completedAt": "2026-08-11T07:14:59.214Z",
-    "totalReviews": 42326,
-    "processed": 0,
-    "skipped": 42324,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3766,
-      "output": 108,
-      "total": 11175
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-11T07:34:04.266Z",
     "completedAt": "2026-08-11T07:34:07.462Z",
     "totalReviews": 42326,
@@ -642001,6 +641981,31 @@
       "total": 22473
     },
     "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-14T13:03:09.259Z",
+    "completedAt": "2026-08-14T13:03:35.007Z",
+    "totalReviews": 42549,
+    "processed": 3,
+    "skipped": 42542,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 25683,
+      "output": 1248,
+      "total": 67263
+    },
+    "errorDetails": [
+      {
+        "showId": "the-winters-tale-off-broadway-2026",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
       {
         "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
         "outletId": "london-theatre",
