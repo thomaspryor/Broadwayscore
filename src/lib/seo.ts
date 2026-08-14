@@ -111,7 +111,16 @@ function toPostalAddress(address: string, country: string = 'US') {
       addressCountry: country,
     };
   }
-  return address;
+  // Non-US formats (UK postcodes, etc.) don't match the strict US regex above.
+  // Returning the bare string here used to silently drop addressCountry from
+  // the schema entirely (#1437, #1451) — fall back to a minimal PostalAddress
+  // that still carries the country the caller already resolved, rather than
+  // parsing every country's street-address format.
+  return {
+    '@type': 'PostalAddress',
+    streetAddress: address,
+    addressCountry: country,
+  };
 }
 
 // WebSite Schema - For sitelinks search box
