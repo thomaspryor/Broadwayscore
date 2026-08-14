@@ -16,6 +16,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   evaluatePreWindowInclusion,
+  evaluateDateGuard,
   PRE_WINDOW_DAYS,
   PRE_WINDOW_DAYS_BROADWAY,
 } = require('./date-guard.js');
@@ -107,4 +108,55 @@ test('reviews published on or after the earliest date are always included', () =
     priorRuns: null,
   });
   assert.equal(r.exclude, false);
+});
+
+// BRO-222: evaluateDateGuard() itself must be priorRuns-aware, not just its
+// callers. Before this fix, a review dated inside a declared priorRun window
+// but outside the CURRENT run's grace window was still flagged 'before_preview'
+// by this pure function — every downstream caller had to remember to bolt on
+// its own isWithinPriorRun() check (and the reverse cross-market guard in
+// rebuild-all-reviews.js never did).
+test('evaluateDateGuard: review dated inside a declared priorRun window is NOT date-guarded', () => {
+  const show = {
+    previewsStartDate: '2026-07-15',
+    openingDate: '2026-07-22',
+    // Edinburgh Fringe prior run, well outside the current show's 21d grace window.
+    priorRuns: [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Edinburgh Festival Fringe (Assembly)' }],
+  };
+  const r = evaluateDateGuard({
+    pubDate: D('2025-08-05'), // inside the declared priorRun window
+    show,
+    outletId: 'neurodiversereview',
+    priorRuns: show.priorRuns,
+  });
+  assert.equal(r.flag, false);
+  assert.equal(r.issue, null);
+});
+
+test('evaluateDateGuard: same pubDate WITHOUT priorRuns passed is still flagged (proves the fix, not a tautology)', () => {
+  const show = { previewsStartDate: '2026-07-15', openingDate: '2026-07-22' };
+  const r = evaluateDateGuard({
+    pubDate: D('2025-08-05'),
+    show,
+    outletId: 'neurodiversereview',
+    // priorRuns omitted — mirrors current-guard-logic-before-the-fix behavior
+  });
+  assert.equal(r.flag, true);
+  assert.equal(r.issue, 'before_preview');
+});
+
+test('evaluateDateGuard: a date OUTSIDE every declared priorRun is still flagged', () => {
+  const show = {
+    previewsStartDate: '2026-07-15',
+    openingDate: '2026-07-22',
+    priorRuns: [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Edinburgh Festival Fringe (Assembly)' }],
+  };
+  const r = evaluateDateGuard({
+    pubDate: D('2024-01-01'), // nowhere near the declared run
+    show,
+    outletId: 'neurodiversereview',
+    priorRuns: show.priorRuns,
+  });
+  assert.equal(r.flag, true);
+  assert.equal(r.issue, 'before_preview');
 });
