@@ -15,6 +15,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,10 +32,12 @@ const OUTPUT_FILE = path.join(ROOT, 'data', 'guide-editorials.json');
 const MAX_FILE_SIZE = 500 * 1024; // 500KB
 const MAX_RETRIES = 3;
 
-// Broadway-only filter — matches isBroadwayShow() in src/lib/data-core.ts
-function isBroadway(s) {
-  return !s.category || s.category === 'broadway';
-}
+// Broadway-only filter. Deliberately permissive (null category counts as
+// Broadway) — NOT the same as src/lib/data-core.ts's isBroadwayShow(), which
+// was made strict in #1428 for UI symmetry with getOffBroadwayShows(). This
+// script delegates to the scripts/-side canonical predicate instead of
+// reimplementing it; see #1471 and scripts/lib/venue-classification.js.
+const isBroadway = isBroadwayCategory;
 
 // Guide definitions (mirrors src/config/guide-pages.ts)
 const GUIDE_DEFS = [

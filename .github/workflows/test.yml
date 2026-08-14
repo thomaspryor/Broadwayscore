@@ -1754,6 +1754,13 @@ on:
       - 'scripts/audit-closing-dates.js'
       - 'scripts/lib/closing-audit-classify.js'
       - 'scripts/lib/closing-audit-classify.test.mjs'
+      # Stale-checkout race guard (rebuild-reviews.yml): pure predicates +
+      # colocated *.test.mjs run in the lib-test glob; path-listed (with the
+      # driver script and workflow, both already covered by other entries in
+      # this list) so a solo edit to just the lib file triggers CI.
+      - 'scripts/lib/rebuild-staleness-guard.js'
+      - 'scripts/lib/rebuild-staleness-guard.test.mjs'
+      - 'scripts/check-rebuild-staleness.js'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
