@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {
   utcFromZoned, computeWindow, activeWindows, nightKey, launchDecision,
-  HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC,
+  HEARTBEAT_STALE_MIN, MAX_ATTEMPTS_PER_NIGHT, LAUNCH_INFLIGHT_GRACE_SEC, MAX_NO_PROGRESS_PASSES,
   claimLockGeneration, isLockGenerationOwner, shouldPageForFailedPass,
 } from './opening-night-windows.js';
 import { computeClaudeAlive } from './cmux-workspaces.js';
@@ -229,9 +229,19 @@ test('decision: a LIVE session is never preempted by coverageComplete — the ru
   assert.match(d.reason, /heartbeat/);
 });
 
-test('decision: a DEAD locked session still reclaims even if coverage looks complete — coverage is only checked once no session is live', () => {
+test('decision: a DEAD locked session with coverage complete stops rather than reclaiming and launching another pass', () => {
   const d = launchDecision({ ...base, coverageComplete: true, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive: false, attemptsTonight: 0 });
+  assert.equal(d.action, 'stop');
+});
+
+test('decision: a DEAD locked session with coverage NOT complete still reclaims and launches (unchanged)', () => {
+  const d = launchDecision({ ...base, coverageComplete: false, lockExists: true, heartbeatAgeMin: HEARTBEAT_STALE_MIN + 30, claudeAlive: false, attemptsTonight: 0 });
   assert.equal(d.action, 'reclaim-and-launch');
+});
+
+test('decision: coverage complete beats noProgressPasses — success stop, not a CRITICAL escalate, when a covered show also looks stuck', () => {
+  const d = launchDecision({ ...base, coverageComplete: true, noProgressPasses: MAX_NO_PROGRESS_PASSES });
+  assert.equal(d.action, 'stop');
 });
 
 // ── shouldPageForFailedPass (card #1413) ───────────────────────────────────

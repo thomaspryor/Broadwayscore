@@ -17,7 +17,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getTier } = require('./outlet-tiers');
 const { isLondonMarket } = require('./venue-classification');
 const { getFoundOutletIds } = require('./found-outlet-ids');
 
@@ -49,6 +48,11 @@ function getMissingT1T2Outlets(showId, market, show) {
   const outlets = registry.outlets || registry;
   const foundIds = getFoundOutletIds(showId, { show, market });
 
+  // Lazy require (matches the original poller.js placement): keeps this
+  // module's own require-time footprint minimal so a broken outlet-tiers.js
+  // fails inside the function call, not at require() of this whole file —
+  // same failure-isolation the original code had.
+  const { getTier } = require('./outlet-tiers');
   const showCategory = isLondonMarket(market) ? 'west-end' : 'broadway';
 
   const missing = [];

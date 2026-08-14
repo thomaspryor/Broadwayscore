@@ -333,28 +333,16 @@ function carryForwardNightState(priorStates, shows, current = {}) {
 function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, claudeAlive, attemptsTonight, lockAgeSec = null, metaExists = true, noProgressPasses = 0, coverageComplete = false }) {
   if (killSwitch) return { action: 'skip', reason: 'kill switch active' };
   if (!windows.length) return { action: 'skip', reason: 'no show in its opening-night window' };
-  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
-  // of opus passes; nothing stopped a *finished* show from burning the rest of
-  // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
-  // show had ~27 more $5 passes queued). Counting passes that produced neither
-  // a session-state write nor a git commit is the market-agnostic version of
-  // "there is nothing left to do" — it needs no census (the aggregator archive
-  // is CI-populated and absent from the launchd checkout, so a census-based
-  // stop would silently never fire here) and it degrades correctly whether the
-  // show is complete or the pipeline is wedged.
-  //
-  // The counter RE-ARMS on new reviews (see launcher), so the long tail — a T1
-  // dropping at 02:00 — still wakes the monitor. Without that this stop would
-  // defeat the monitor's entire reason to exist.
-  if (noProgressPasses >= MAX_NO_PROGRESS_PASSES) {
-    return { action: 'escalate', reason: `${noProgressPasses} consecutive passes made no change (no state write, no commits) — nothing left to do this window` };
-  }
+  // Live-session gate FIRST, ahead of every terminal decision below (coverage,
+  // no-progress, attempt cap): coverage reads live reviews.json/review-texts a
+  // currently-running pass may be writing RIGHT NOW, so nothing past this
+  // block may fire until we know no session is actually alive. Heartbeat
+  // freshness OUTRANKS the process probe: a session sleeping between census
+  // passes (ScheduleWakeup pacing) has no running claude process but a recent
+  // heartbeat — relaunching onto it is the duplicate-session clobber scenario.
+  // Only stale-heartbeat AND no-process counts as dead.
+  let sessionDead = false;
   if (lockExists) {
-    // Heartbeat freshness OUTRANKS the process probe: a session sleeping
-    // between census passes (ScheduleWakeup pacing) has no running claude
-    // process but a recent heartbeat — relaunching onto it is the duplicate-
-    // session clobber scenario. Only stale-heartbeat AND no-process counts
-    // as dead.
     if (heartbeatAgeMin !== null && heartbeatAgeMin < HEARTBEAT_STALE_MIN) {
       return { action: 'skip', reason: `live session (heartbeat ${Math.round(heartbeatAgeMin)}m ago)` };
     }
@@ -375,21 +363,44 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
     if (!metaExists && lockAgeSec !== null && lockAgeSec < LAUNCH_INFLIGHT_GRACE_SEC) {
       return { action: 'skip', reason: `lock is ${Math.round(lockAgeSec)}s old, no meta.json yet — launch likely still in flight` };
     }
+    sessionDead = true; // stale heartbeat + no process: dead, not live
+  }
+  // Coverage-complete stop (card #1413) — checked before BOTH noProgressPasses
+  // and the attempt/reclaim decisions below. It must outrank noProgressPasses:
+  // a fully-covered show reliably ALSO produces no-progress passes (there's
+  // nothing left to fix), so without this ordering the pre-existing
+  // noProgressPasses branch — which pages severity:error/disposition:human —
+  // would win and CRITICAL-page the owner for what is actually a success, not
+  // a failure (adversarial review finding, 2026-08-14). It must also outrank
+  // the dead-lock reclaim/escalate paths below, or a fully-covered show whose
+  // lock merely looks dead would reclaim-and-launch yet another $5 pass (or
+  // page as a dead-session escalate) instead of stopping.
+  if (coverageComplete) {
+    return { action: 'stop', reason: 'show coverage complete — all T1/T2 outlets present and broadcast-ready; nothing left for the monitor to do this window' };
+  }
+  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
+  // of opus passes; nothing stopped a *finished* show from burning the rest of
+  // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
+  // show had ~27 more $5 passes queued). Counting passes that produced neither
+  // a session-state write nor a git commit is the market-agnostic version of
+  // "there is nothing left to do" — it needs no census (the aggregator archive
+  // is CI-populated and absent from the launchd checkout, so a census-based
+  // stop would silently never fire here) and it degrades correctly whether the
+  // show is complete or the pipeline is wedged. Coverage-complete (above) is
+  // the more DIRECT signal and is checked first; this stays as the backstop
+  // for "stuck, not actually covered" nights coverageComplete can't see.
+  //
+  // The counter RE-ARMS on new reviews (see launcher), so the long tail — a T1
+  // dropping at 02:00 — still wakes the monitor. Without that this stop would
+  // defeat the monitor's entire reason to exist.
+  if (noProgressPasses >= MAX_NO_PROGRESS_PASSES) {
+    return { action: 'escalate', reason: `${noProgressPasses} consecutive passes made no change (no state write, no commits) — nothing left to do this window` };
+  }
+  if (sessionDead) {
     if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
       return { action: 'escalate', reason: `session dead and ${attemptsTonight} attempts already spent tonight` };
     }
     return { action: 'reclaim-and-launch', reason: 'locked session dead (stale heartbeat + no process)' };
-  }
-  // Coverage-complete stop (card #1413): checked only once we know no session
-  // is actively running (past the whole lockExists block above) — a live
-  // pass may be writing reviews.json/review-texts RIGHT NOW, so evaluating
-  // this earlier (e.g. alongside noProgressPasses, which only reads settled
-  // ledger state from a COMPLETED prior pass) could fire mid-pass without
-  // ever consulting heartbeat/claudeAlive. A launchd tick only reaches this
-  // branch when the previous pass has already released its lock, so there is
-  // no live session to interrupt.
-  if (coverageComplete) {
-    return { action: 'stop', reason: 'show coverage complete — all T1/T2 outlets present and broadcast-ready; nothing left for the monitor to do this window' };
   }
   if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
     return { action: 'escalate', reason: `${attemptsTonight} attempts already spent tonight` };

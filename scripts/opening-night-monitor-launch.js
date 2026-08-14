@@ -465,16 +465,20 @@ async function main(argv = process.argv.slice(2)) {
     // wrong, page the owner), 'stop' is a SUCCESSFUL outcome: the show is
     // covered, so ending the night is the correct behavior, not a failure.
     // severity:info/disposition:digest (never error/human) and exit 0 keep
-    // that distinction — reusing 'escalated:true' only for its sticky
-    // one-alert-per-night effect, not to imply this was a page.
-    if (!nightState.escalated) {
+    // that distinction. Dedup on its OWN `coverageStopped` field, deliberately
+    // NOT `escalated`: coverageComplete is recomputed fresh every tick (a
+    // regressed review can flip it back to false and resume launches), so
+    // reusing `escalated` would let an early benign stop permanently suppress
+    // a LATER genuine escalate alert for the same night key if the show later
+    // exhausts its real attempt/spend caps (adversarial review finding).
+    if (!nightState.coverageStopped) {
       await alert({
         conditionKey: `on-monitor-coverage-complete-${key}`,
         title: `Opening-night monitor: stopping for ${windows.map(w => w.showId).join(', ')} — coverage complete`,
-        description: `${decision.reason} (${nightState.attempts} total passes tonight, $${(nightState.usdTonight || 0).toFixed(2)} spent). The launcher will not start another pass tonight for ${windows.map(w => w.showId).join(', ')} — a new review landing re-arms the standard pipeline, not this stop.`,
+        description: `${decision.reason} (${nightState.attempts} total passes tonight, $${(nightState.usdTonight || 0).toFixed(2)} spent). Coverage is re-evaluated every tick — if it later regresses (e.g. a review gets flagged and removed) the launcher resumes on its own; this alert fires once and won't repeat while coverage stays complete.`,
         severity: 'info', disposition: 'digest',
       });
-      writeNightState(key, { ...nightState, escalated: true });
+      writeNightState(key, { ...nightState, coverageStopped: true });
     }
     return 0;
   }
