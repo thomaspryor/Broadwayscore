@@ -44,6 +44,7 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
+const { venuesMatch } = require('./lib/deduplication');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -240,7 +241,15 @@ function compareShow(show, parsed, playbillUrl) {
   const mismatches = [];
   const showVenueCanon = canonicalVenue(show.venue || '');
   const pageVenueCanon = canonicalVenue(parsed.titleParse?.venue || '');
-  if (showVenueCanon && pageVenueCanon && showVenueCanon !== pageVenueCanon) {
+  // The actual mismatch decision uses venuesMatch(), not the showVenueCanon/
+  // pageVenueCanon equality above (those two stay as display-only fields in
+  // the audit record below) — canonicalVenue()'s fallback for a venue
+  // outside VENUE_ALIASES is just the lowercased FIRST WORD, so two
+  // genuinely different venues sharing a leading word ("The X") would
+  // silently PASS this check as "not a mismatch" (BRO-243). That's the wrong
+  // direction of error for a venue-mismatch DETECTOR — false negatives are
+  // exactly what this script exists to catch.
+  if (show.venue && parsed.titleParse?.venue && !venuesMatch(show.venue, parsed.titleParse.venue)) {
     mismatches.push({
       field: 'venue',
       shows: show.venue,

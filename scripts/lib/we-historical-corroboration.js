@@ -20,7 +20,8 @@
  * "the" date).
  */
 
-const { normalizeTitle, canonicalVenue } = require('./title-match');
+const { normalizeTitle } = require('./title-match');
+const { venuesMatch } = require('./deduplication');
 
 // Theatre Record is the discovery source, not a validation source — a
 // candidate agreeing with itself proves nothing. Any name variant used to
@@ -41,7 +42,13 @@ function recordsAgree(a, b, opts = {}) {
   const dayTolerance = opts.dayTolerance ?? DEFAULT_DAY_TOLERANCE;
 
   if (normalizeTitle(a.title) !== normalizeTitle(b.title)) return false;
-  if (canonicalVenue(a.venue) !== canonicalVenue(b.venue)) return false;
+  // venuesMatch(), not title-match.js's canonicalVenue() — that function's
+  // fallback for a venue outside VENUE_ALIASES is just the lowercased FIRST
+  // WORD, so two unrelated venues sharing a leading word ("The X") would
+  // falsely corroborate each other here — the one thing standing between a
+  // real independent-source agreement and a rubber-stamped bad candidate
+  // (BRO-243).
+  if (!venuesMatch(a.venue, b.venue)) return false;
 
   // Fail closed on a missing date rather than skipping the window check —
   // West End venues restage the same title+venue combo years or decades

@@ -44,7 +44,7 @@ const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
-const { canonicalVenue } = require('./lib/title-match');
+const { venuesMatch } = require('./lib/deduplication');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -521,10 +521,12 @@ async function main() {
     // roundup one opening, with slight title variants → different slugified
     // ids — hits findExistingMatch instead of minting a duplicate show. Two
     // entries (one per venue spelling) is fine — findExistingMatch matches on
-    // canonicalVenue(candidate.venue) against each entry's own venue, and
+    // venuesMatch(candidate.venue, entry.venue) (BRO-243 — not the raw
+    // canonicalVenue() equality this used before, which could silently skip
+    // pushing the second spelling on a false first-word collision), and
     // duplicate rows never change the outcome, only which one is returned.
     existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });
-    if (canonicalVenue(entry.venue) !== canonicalVenue(c.venue)) {
+    if (!venuesMatch(entry.venue, c.venue)) {
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });
     }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
