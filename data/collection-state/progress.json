@@ -66,7 +66,9 @@
     "tao-of-glass-west-end-2026/london-box-office--camille-leadbeater.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
-    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -771,7 +773,15 @@
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
     "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
-    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json"
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -822,7 +832,8 @@
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -855,11 +866,12 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "tao-of-glass-west-end-2026/bestoftheatre--unknown.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
     ]
   },
   "startTime": "2026-08-14T10:26:10.017Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json",
   "log": [
     {
       "t": "2026-08-14T11:19:07.811Z",
@@ -871,6 +883,17 @@
       "t": "2026-08-14T11:19:08.683Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-14T20:20:29.700Z",
+      "event": "bb-session",
+      "session": "f6b79a60",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-14T20:20:30.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
