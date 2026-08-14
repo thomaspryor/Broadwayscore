@@ -60,9 +60,21 @@ function normalizeUrl(url) {
 let staleFlagWritesWithheld = 0;
 function atomicWriteJSON(filePath, data) {
   if (shouldWithholdStaleExclusionFlag(data)) {
+    // Fail SAFE, not open: if the on-disk record is unreadable we cannot tell a
+    // flag this run is ADDING from one that was already there, and the
+    // fail-open version treated every true flag as new and stripped it —
+    // turning an unrelated URL-null write into the loss of a real exclusion
+    // verdict and its provenance (ship-check finding, 2026-08-14). No prior
+    // read means no withholding.
     let prior = null;
-    try { prior = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { prior = null; }
-    for (const f of ['wrongProduction', 'wrongShow']) {
+    let priorReadOk = false;
+    try {
+      prior = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      priorReadOk = true;
+    } catch {
+      priorReadOk = fs.existsSync(filePath) ? false : true; // brand-new file: nothing to preserve
+    }
+    for (const f of priorReadOk ? ['wrongProduction', 'wrongShow'] : []) {
       if (data[f] === true && !(prior && prior[f] === true)) {
         delete data[f];
         delete data[`${f}Note`];

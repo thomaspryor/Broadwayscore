@@ -7,6 +7,7 @@ import {
   getAllTheaterSlugs,
   getAllLondonTheaterSlugs,
   getAllOffBroadwayTheaterSlugs,
+  getAllOffBroadwayComplexSlugs,
   getAllBrowseSlugs,
   getDataFreshness,
   getOperaShows,
@@ -96,7 +97,11 @@ function buildTheatersShard(ctx: DateContext): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
-  const offBroadwayTheaterPages = getAllOffBroadwayTheaterSlugs().map((slug) => ({
+  const offBroadwayTheaterSlugs = new Set([
+    ...getAllOffBroadwayTheaterSlugs(),
+    ...getAllOffBroadwayComplexSlugs(),
+  ]);
+  const offBroadwayTheaterPages = Array.from(offBroadwayTheaterSlugs).map((slug) => ({
     url: `${BASE_URL}/off-broadway/theater/${slug}`,
     lastModified: ctx.showsDate,
     changeFrequency: 'monthly' as const,

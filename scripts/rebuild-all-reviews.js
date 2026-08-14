@@ -1283,9 +1283,15 @@ const crossShowFingerprints = new Map();
             if (d.wrongProduction || d.wrongProductionManualClear) continue;
             if (!d.url) continue;
             if (shouldSkipWrongProductionAudit(d)) continue; // [GUARD:OB-BW-TRANSFER]
-            if (skipStaleFlagWrite(d)) continue; // [GUARD:OB-BW-TRANSFER-483]
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
+              // [GUARD:OB-BW-TRANSFER-483] INSIDE the URL match, not before it.
+              // Before it, this skipped the shared-URL test itself for every
+              // awaiting-refetch OB record and counted each one as "withheld"
+              // even when no Broadway twin existed — inflating the counter and
+              // widening the behaviour change past the records it is meant to
+              // cover (ship-check finding, 2026-08-14).
+              if (skipStaleFlagWrite(d)) continue;
               d.wrongProduction = true;
               invalidateWrongProductionAutoClear(d);
               d.wrongProductionReason = 'ob-broadway-transfer';
@@ -1444,7 +1450,12 @@ const crossShowFingerprints = new Map();
         // carries its own inline copy of the same decision (notes
         // `Pre-opening guard:` / `Dateless revival guard:`). Same predicate,
         // imported — not re-implemented — so the two cannot drift apart again.
-        if (isAwaitingUrlCorrectionRefetch(d)) { awaitingRefetchSkipped++; continue; }
+        // shouldWithholdStaleExclusionFlag, not the bare predicate: this line
+        // predates the shared helper and kept the two-policies-for-one-invariant
+        // split the helper exists to end (ship-check finding, 2026-08-14). An
+        // operator-cleared record now falls through to the manual-clear
+        // handling below rather than being skipped here.
+        if (shouldWithholdStaleExclusionFlag(d)) { awaitingRefetchSkipped++; continue; }
         // routedFromShowId: already rerouted — publish date reflects the original show's era
         if (d.routedFromShowId) continue;
         // allowEarlyDate bypasses all date-based flagging
@@ -3472,10 +3483,17 @@ showDirs.forEach(showId => {
               console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} — likely wrong production`);
               logExclusion("skippedUrlYearStandalone", showId, file, data);
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
-              safeWriteReview(path.join(showDir, file), data);
+              // [GUARD:URL-YEAR-STANDALONE-483] The seventh site. Found by
+              // ship-check AFTER the other six shipped — its trigger is
+              // `!data.publishDate`, which is the exact shape of the 204
+              // never-fetched aggregator stubs in the awaiting-refetch set, so
+              // it was the likeliest of all of them to re-redden the gate.
+              if (!skipStaleFlagWrite(data)) {
+                data.wrongProduction = true;
+                invalidateWrongProductionAutoClear(data);
+                data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
+                safeWriteReview(path.join(showDir, file), data);
+              }
               return;
             }
           }

@@ -26,6 +26,10 @@ const path = require('path');
 const { fetchPage } = require('./scraper');
 
 const PLAYBILL_OB_URL = 'https://playbill.com/article/schedule-of-upcoming-off-broadway-shows-2';
+// Broadway's equivalent announced-schedule article. Broadway discovery never
+// read this; it ran off TodayTix, which only lists shows already ON SALE, so
+// announced-but-unticketed shows were structurally invisible (owner, 2026-08-13).
+const PLAYBILL_BROADWAY_URL = 'https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows';
 const LAST_SUCCESS_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'playbill-ob-last-success.json');
 const GRACE_WINDOW_MS = 24 * 60 * 60 * 1000;
 const SILENT_ROT_HTML_THRESHOLD = 5000;
@@ -40,7 +44,15 @@ const MONTHS = {
 
 function parseUSDate(text, defaultYear) {
   if (!text) return null;
-  const m = text.match(/(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+(\d{1,2})(?:,\s*(\d{4}))?/i);
+  // `(\d{1,2})(?!\d)` — the day must NOT be followed by another digit.
+  // Playbill writes month-year-only entries for shows without a firm date
+  // ("First Preview: February 2027"). Without the lookahead, \d{1,2} bit the
+  // first two digits of the YEAR: "February 2027" parsed as day 20 of Feb in
+  // the current year → 2026-02-20, a confidently wrong date in the past for a
+  // show that has not been scheduled (Three Days of Rain, 2026-08-13).
+  // A month with no day is not a date we have; return null and let the caller
+  // show TBA.
+  const m = text.match(/(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+(\d{1,2})(?!\d)(?:,\s*(\d{4}))?/i);
   if (!m) return null;
   const month = MONTHS[m[1].toLowerCase()];
   const day = m[2].padStart(2, '0');
@@ -70,6 +82,20 @@ function validatePageTitle(html, expectedTitleSubstring) {
  * unlabeled bullet line exists, returns null and the caller falls back to TBA.
  */
 function extractVenue(plain) {
+  // Broadway's schedule article labels the venue explicitly on a <br> line
+  // ("Theatre: James Earl Jones Theatre") instead of using the Off-Broadway
+  // bullet format. Without this branch every Broadway entry parsed with a null
+  // venue, which downstream treats as "venue TBA" — a silent quality loss on
+  // rows that DO state their theatre (2026-08-13).
+  const labelled = plain.match(/^\s*Theatre:\s*(.+?)\s*$/mi);
+  if (labelled) {
+    const v = labelled[1]
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (v && v.length >= 3 && v.length <= 120) return v;
+  }
   for (const raw of plain.split('\n')) {
     const line = raw.trim();
     if (!line.startsWith('•')) continue;
@@ -101,7 +127,7 @@ function extractVenue(plain) {
  * Structure: each show block lives inside one <p>, with <br>-separated lines.
  * Splitting on <strong>...<a>TITLE</a>...</strong> chunks the document.
  */
-function parsePlaybillOBSchedule(html) {
+function parsePlaybillOBSchedule(html, { market = 'Off-Broadway' } = {}) {
   // Distinguish a genuine soft-404 (page removed, HTTP 200 per fetchPage —
   // see memory/feedback_aggregator_soft_404.md) from a real selector/layout
   // change, so a future break here doesn't need the same re-investigation
@@ -111,20 +137,40 @@ function parsePlaybillOBSchedule(html) {
     const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
     const pageTitle = titleMatch ? titleMatch[1].trim() : null;
     if (pageTitle && /page not found/i.test(pageTitle)) {
-      console.warn(`  WARNING: Playbill OB schedule page soft-404s ("${pageTitle}") — the page has been removed or moved, not a layout change.`);
+      console.warn(`  WARNING: Playbill schedule page soft-404s ("${pageTitle}") — the page has been removed or moved, not a layout change.`);
       return [];
     }
   }
-  if (!validatePageTitle(html, 'Off-Broadway')) {
-    console.warn('  WARNING: Playbill OB schedule page title did not match — refusing to parse');
+  if (!validatePageTitle(html, market)) {
+    console.warn(`  WARNING: Playbill ${market} schedule page title did not match — refusing to parse`);
     return [];
   }
 
-  const titleRe = /<strong>\s*<a[^>]*>([^<]{2,160})<\/a>\s*<\/strong>/g;
+  // Playbill wraps schedule titles in TWO different shapes, sometimes on the
+  // same page:
+  //   <strong><a href=…>TITLE</a></strong>          — bare text in the anchor
+  //   <a href=…><strong>TITLE</strong></a>          — title nested inside
+  //   <strong><a href=…><strong>TITLE</strong></a></strong>
+  // The original regex required bare text ([^<]) directly inside the anchor, so
+  // it silently dropped every entry of the second shape. On the Broadway
+  // schedule that was most of the article — Wanted, Galileo, 860, Inter Alia
+  // and others parsed to nothing while 18 other shows parsed fine, which is
+  // exactly the kind of partial success that never trips an "empty result"
+  // alarm (owner, 2026-08-13). Match the anchor, then strip inner tags.
+  // The emphasis is load-bearing and MUST stay in the pattern. Matching a bare
+  // <a> would turn this into an "any link" parser: a linked venue, cast member
+  // or production company inside a show's block would end that show's segment
+  // and then claim the date lines that follow as its own — silently writing a
+  // person's name and someone else's dates into Off-Broadway enrichment, which
+  // shares this parser. So require <strong> on one side or the other, which is
+  // what distinguishes a schedule title from an in-body link, while accepting
+  // either nesting order.
+  const titleRe = /(?:<strong>\s*<a[^>]*>\s*(?:<strong>\s*)?([^<]{2,160}?)\s*(?:<\/strong>\s*)?<\/a>|<a[^>]*>\s*<strong>\s*([^<]{2,160}?)\s*<\/strong>\s*<\/a>)/g;
   const titleMatches = [];
   let tm;
   while ((tm = titleRe.exec(html)) !== null) {
-    titleMatches.push({ title: tm[1].trim(), index: tm.index });
+    // Two alternation branches, so the title is in whichever group matched.
+    titleMatches.push({ title: (tm[1] ?? tm[2] ?? '').trim(), index: tm.index });
   }
   const entries = [];
   for (let i = 0; i < titleMatches.length; i++) {
@@ -132,8 +178,8 @@ function parsePlaybillOBSchedule(html) {
     const nextIndex = titleMatches[i + 1]?.index ?? Math.min(index + 5000, html.length);
     const segment = html.slice(index, nextIndex);
     const plain = segment.replace(/<br[^>]*>/gi, '\n').replace(/<[^>]+>/g, ' ');
-    const fpMatch = plain.match(/First Preview[s]?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
-    const openMatch = plain.match(/Open(?:s|ing)?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
+    const fpMatch = plain.match(/First Preview[s]?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?!\d)(?:,\s*\d{4})?)/i);
+    const openMatch = plain.match(/Open(?:s|ing)?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?!\d)(?:,\s*\d{4})?)/i);
     if (!fpMatch && !openMatch) continue;
     entries.push({
       title,
@@ -150,6 +196,19 @@ function parsePlaybillOBSchedule(html) {
  * Fetch + parse in one call. Returns [] on fetch failure (logs warning).
  * Does NOT log success — caller decides how to announce.
  */
+async function scrapePlaybillBroadwayData() {
+  const result = await fetchPage(PLAYBILL_BROADWAY_URL, { tier: 1 });
+  const html = result?.content || '';
+  if (!html) {
+    console.warn('WARNING: Failed to fetch Playbill Broadway schedule');
+    return { entries: [], html: '' };
+  }
+  // 'Broadway' also matches the Off-Broadway title, so the Broadway article is
+  // validated on its full distinctive phrase instead of the bare market word.
+  const entries = parsePlaybillOBSchedule(html, { market: 'Announced Broadway' });
+  return { entries, html };
+}
+
 async function scrapePlaybillOBData() {
   const result = await fetchPage(PLAYBILL_OB_URL, { tier: 1 });
   const html = result?.content || '';
@@ -214,6 +273,8 @@ function checkSilentRot({ entries, html }) {
 
 module.exports = {
   PLAYBILL_OB_URL,
+  PLAYBILL_BROADWAY_URL,
+  scrapePlaybillBroadwayData,
   extractVenue,
   parsePlaybillOBSchedule,
   scrapePlaybillOBData,

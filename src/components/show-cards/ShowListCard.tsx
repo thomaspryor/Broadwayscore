@@ -210,9 +210,26 @@ const ShowListCard = memo(function ShowListCard({
       </div>
       <p className="text-sm text-gray-400 mt-2.5 truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
-          <>Opens {formatOpeningDate(show.openingDate)}</>
+          // Show BOTH dates when we have both — a previews start is real,
+          // useful information, not a lesser substitute for opening night.
+          // Guarding on presence also stops the "Opens Jan 1970" that an
+          // unguarded formatOpeningDate(null) printed for every dateless
+          // upcoming show, here and on the homepage (owner, 2026-08-13).
+          <>
+            {show.previewsStartDate && <>Previews {formatOpeningDate(show.previewsStartDate)}</>}
+            {show.previewsStartDate && show.openingDate && ' · '}
+            {show.openingDate && <>Opens {formatOpeningDate(show.openingDate)}</>}
+            {!show.previewsStartDate && !show.openingDate && 'TBA'}
+          </>
         ) : show.status === 'announced' ? (
-          <span className="text-blue-400">{show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</> : 'Announced — dates TBA'}</span>
+          // Plain "TBA" in the date slot, not a sentence. An announced show with
+          // no dates still belongs in its category list; it just has nothing to
+          // print where a date goes (owner, 2026-08-13).
+          <span className="text-blue-400">
+            {show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</>
+              : show.previewsStartDate ? <>Previews {formatOpeningDate(show.previewsStartDate)}</>
+              : 'TBA'}
+          </span>
         ) : show.status === 'closed' ? (
           <span className="text-orange-400">{(() => {
             if (!show.closingDate) return 'Closed';
