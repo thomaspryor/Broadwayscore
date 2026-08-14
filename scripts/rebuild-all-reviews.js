@@ -31,6 +31,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -200,26 +201,11 @@ const NYT_CRITICS_PICK_URLS = (() => {
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
-const outletRegionMap = {};  // outletId -> region (e.g., 'london')
-for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-  // Use explicit region, or infer from market (west-end → london)
-  const region = info.region || (info.market === 'west-end' || info.market === 'off-west-end' ? 'london' : null);
-  if (region) outletRegionMap[id] = region;
-  // Also map aliases to the same region
-  if (info.aliases && region) {
-    for (const alias of info.aliases) {
-      outletRegionMap[alias] = region;
-    }
-  }
-}
+const outletRegionMap = buildOutletRegionMap(outletRegistry);  // outletId -> region (e.g., 'london')
 // All registered outlet ids + aliases (lowercased) — lets the cross-market guard
 // distinguish "registered but region-less" (US nationals; keep flagging) from
 // "not in the registry at all" (brand-new outlet; bootstrap exemption, task #817).
-const REGISTERED_OUTLET_IDS = new Set();
-for (const [id, info] of Object.entries(outletRegistry.outlets)) {
-  REGISTERED_OUTLET_IDS.add(id.toLowerCase());
-  if (info.aliases) for (const a of info.aliases) REGISTERED_OUTLET_IDS.add(String(a).toLowerCase());
-}
+const REGISTERED_OUTLET_IDS = buildRegisteredOutletIds(outletRegistry);
 // Outlets that genuinely cover BOTH Broadway and West End markets.
 // Derived from `isDualMarket: true` in outlet-registry.json — single source of truth.
 // Used by the REVERSE guard (London→Broadway), so only truly dual-market outlets belong here.
@@ -2949,57 +2935,30 @@ showDirs.forEach(showId => {
 
       if (isLondonMarket(showCategory) && !data.allowEarlyDate && !data.allowCrossMarket
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
-        const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-        // URL-domain fallback: if outlet has no region in registry, check if the URL is a UK domain
-        // This prevents unknown UK outlets (blogs, small reviewers) from being flagged as US
-        let urlIsUK = false;
-        if (!outletRegion && data.url) {
-          try {
-            const hostname = new URL(data.url).hostname || '';
-            urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
-          } catch (e) { /* ignore malformed URLs */ }
-        }
-        if (outletRegion !== 'london' && !urlIsUK) {
-          // Don't flag — and don't exclude — when contentVerification has already
-          // affirmatively verified the production is correct with high confidence.
-          // The cross-market heuristic ("US outlet on London show") produces false
-          // positives for US theater bloggers covering specific London productions
-          // (e.g. Jinkx Monsoon in End of the Rainbow at Soho Theatre Walthamstow).
-          // High-confidence LLM content verification is a stronger signal than the
-          // outlet-region heuristic. [GUARD:CROSS-MARKET-CV-OVERRIDE]
-          const cv = data.contentVerification;
-          const cvSaysCorrect = cv && cv.isValid === true
-            && cv.wrongProduction === false && cv.confidence === 'high';
-          // Bootstrap exemption for COMPLETELY unregistered outlets (task #817).
-          // A flagged review returns before allReviews.push, so a brand-new
-          // outlet whose first-ever review is on a London show would never reach
-          // auto-registration — the region inference can't run and the outlet
-          // stays flagged-as-US forever (liamodell/jonathan-baz on NYSM Live
-          // needed a manual registry patch). Letting the FIRST run's review
-          // through registers the outlet with region inferred from unanimous
-          // market evidence; subsequent runs use the real region. Registered
-          // region-less outlets (US nationals like WSJ/EW) keep current
-          // behavior — this only applies when the registry has NO entry at all.
-          const outletIsUnregistered = !REGISTERED_OUTLET_IDS.has(canonicalOutlet)
-            && !REGISTERED_OUTLET_IDS.has(rawOutlet);
-          if (cvSaysCorrect || outletIsUnregistered) {
-            // skip the flag + skip the exclusion — let downstream pipeline use it
-          } else {
-            // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
-              // [GUARD:CROSS-MARKET-US-ON-LONDON]
-              data.wrongProduction = true;
-              invalidateWrongProductionAutoClear(data);
-              data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
-              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
-            }
-            logExclusion("skippedCrossMarket", showId, file, data);
-            stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
-            if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
-            stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
-            return;
+        // [GUARD:CROSS-MARKET-CV-OVERRIDE] / [GUARD:CROSS-MARKET-US-ON-LONDON] — decision
+        // logic lives in lib/cross-market-guard.js (BRO-254) so it's unit-testable against
+        // the real outlet registry; this call site just applies the verdict + side effects.
+        const crossMarketVerdict = evaluateForwardCrossMarketGuard({
+          outletRegionMap,
+          registeredOutletIds: REGISTERED_OUTLET_IDS,
+          canonicalOutlet,
+          rawOutlet,
+          url: data.url,
+          contentVerification: data.contentVerification,
+        });
+        if (crossMarketVerdict.shouldFlag) {
+          // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
+          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
+            data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
+            data.wrongProductionNote = crossMarketVerdict.reason;
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
+          logExclusion("skippedCrossMarket", showId, file, data);
+          stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+          if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
+          return;
         }
       }
 
