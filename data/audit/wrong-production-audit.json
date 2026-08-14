@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T10:11:56.659Z",
+  "timestamp": "2026-08-14T11:03:55.098Z",
   "stats": {
-    "totalReviews": 42240,
-    "alreadyFlagged": 18319,
+    "totalReviews": 42243,
+    "alreadyFlagged": 18323,
     "dateGuardCatches": 144,
     "directorMismatch": 965,
-    "tvFilmSignals": 1200,
-    "londonSignals": 880,
+    "tvFilmSignals": 1201,
+    "londonSignals": 879,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3575
+    "noPublishDate": 3574
   },
   "findings": [
     {
@@ -6159,6 +6159,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "guardian--andrew-pulver.json",
+      "score": 87,
+      "publishDate": "2026-08-12",
+      "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 80,
       "publishDate": "2026-08-12",
@@ -6271,6 +6285,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "thestage--tom-wicker.json",
+      "score": 84,
+      "publishDate": "2024-08-21",
+      "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 708d before show (2024-08-21 vs 2026-07-30)"
         }
       ]
     },
@@ -9006,6 +9034,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "polygon--aimee-hart.json",
+      "score": 90,
       "publishDate": "2026-08-09",
       "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
       "findings": [
@@ -32816,19 +32845,6 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "publishDate": null,
-      "url": "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "avenue-q-west-end-2026",
       "file": "british-theatre--susan-novak.json",
       "score": 78,
@@ -33493,17 +33509,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
-        }
-      ]
-    },
-    {
-      "showId": "brainiac-live-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 258d before show (2025-11-10 vs 2026-07-26)"
         }
       ]
     },
@@ -36342,6 +36347,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 95,
       "publishDate": "2026-08-09",
       "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
       "findings": [

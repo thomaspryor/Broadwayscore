@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T10:12:03.255Z",
+  "generatedAt": "2026-08-14T11:04:01.779Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1494,15 +1494,15 @@
       "status": "open",
       "slug": "death-note-the-musical-west-end",
       "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": 72.52,
+      "siteScore": 72.98,
       "liveScore": 73,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
       "total": 26,
-      "t1": 5,
-      "t2": 6,
+      "t1": 4,
+      "t2": 7,
       "t3": 15,
       "positive": 20,
       "mixed": 3,
@@ -1510,7 +1510,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 7,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1818,6 +1818,18 @@
           "m": 3,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-14T11:04:01.779Z",
+          "rc": 26,
+          "s": 72.98,
+          "t1": 4,
+          "t2": 7,
+          "t3": 15,
+          "p": 20,
+          "m": 3,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -1935,6 +1947,10 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
