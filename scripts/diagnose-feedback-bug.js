@@ -115,6 +115,9 @@ function loadAllShowData(showName) {
     } catch { /* skip */ }
 
     return matches.map(show => ({
+      // Mirrors loadShowData() above — same ALLOWED_DATA_FIELDS blind-spot fix
+      // (issue #582), since this path (message-text show extraction) is the
+      // one actually exercised when a report has no separate show field.
       show: {
         id: show.id,
         title: show.title,
@@ -123,6 +126,13 @@ function loadAllShowData(showName) {
         venue: show.venue,
         openingDate: show.openingDate,
         closingDate: show.closingDate,
+        synopsis: show.synopsis,
+        runtime: show.runtime,
+        intermissions: show.intermissions,
+        ageRecommendation: show.ageRecommendation,
+        type: show.type,
+        isRevival: show.isRevival,
+        previewsStartDate: show.previewsStartDate,
         creativeTeam: show.creativeTeam || [],
       },
       reviewCount: allReviews.filter(r => r.showId === show.id).length,
