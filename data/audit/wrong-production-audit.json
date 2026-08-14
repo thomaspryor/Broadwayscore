@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T20:14:36.180Z",
+  "timestamp": "2026-08-14T20:33:24.069Z",
   "stats": {
     "totalReviews": 42251,
-    "alreadyFlagged": 18320,
+    "alreadyFlagged": 18321,
     "dateGuardCatches": 144,
     "directorMismatch": 965,
     "tvFilmSignals": 1202,
-    "londonSignals": 881,
+    "londonSignals": 880,
     "offBroadwaySignals": 484,
     "yearMismatch": 88,
-    "noPublishDate": 3577
+    "noPublishDate": 3575
   },
   "findings": [
     {
@@ -44280,19 +44280,6 @@
       "score": 36,
       "publishDate": "December 6th, 2024",
       "url": "https://twi-ny.com/2024/12/06/the-wrong-kind-of-faith-tammy-faye-on-broadway/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "tao-of-glass-west-end-2026",
-      "file": "bestoftheatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.bestoftheatre.co.uk/tao-of-glass",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
