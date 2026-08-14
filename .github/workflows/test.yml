@@ -2525,7 +2525,25 @@ jobs:
   lint-workflows:
     name: Lint Workflows
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 5 -> 10 (2026-08-14). This is RUNNER VARIANCE IN `actions/checkout`, not
+    # audit growth — measured from the two runs on main that day:
+    #
+    #   run 31829014708 (green): job 1m31s total. Checkout 16s, actionlint
+    #     install 1s, lint 0s, Setup Node 10s, npm ci 23s, and all ~45 audit
+    #     steps after it 38s combined. Real work after checkout: 1m13s.
+    #   run 31832656296 (killed): job hit this 5-minute cap at 5m03s having
+    #     completed only Checkout (4m52s), actionlint install (1s) and the lint
+    #     itself (0s). It was SIGTERMed inside `Setup Node`, and all ~45 audits
+    #     after it reported `skipped`.
+    #
+    # Same commit range, same audits, 18x difference in one step. The Unit Tests
+    # job's checkout in that same run took 4m14s, so it was the runner/network,
+    # not this job. 5 minutes left only ~3.3x headroom over the real work, which
+    # a single slow checkout consumes entirely; 10 covers the worst checkout
+    # observed (4m52s) PLUS the full 1m13s of real work at ~1.6x, and is still
+    # ~6.6x the good-path 1m31s. Do NOT read this as licence to raise the other
+    # timeouts in this file — none of them was killed by this.
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -3422,13 +3440,58 @@ jobs:
           # per-test ceiling one wedged file consumes the whole job budget and
           # the run concludes `cancelled`, which reports as a red X with no
           # failing test named — the failure is invisible.
+          #
+          # BOTH BATCHES ALWAYS RUN (2026-08-14 correctness fix). GitHub's
+          # default shell for `run:` on Linux is `bash -e {0}`, so the first
+          # non-zero command ABORTS the step. Run 31832656296 is the worked
+          # example: the node batch exited 1 (one wedged file) and the entire
+          # 539-test tsx batch below never executed — not failed, not reported,
+          # just gone. The run looked "a bit red" while a whole batch had never
+          # been run at all, which is strictly worse than a red batch because
+          # nothing names the gap. So: capture each batch's exit code instead of
+          # letting -e abort, print both pass/fail counts, and fail the step if
+          # EITHER batch failed. A batch that did not run shows up as a missing
+          # count, not as silence.
+          set +e
+
+          run_batch() {  # $1=label $2=logfile; remaining args = the command
+            local label="$1" log="$2"; shift 2
+            echo "::group::$label batch"
+            "$@" 2>&1 | tee "$log"
+            local rc=${PIPESTATUS[0]}
+            echo "::endgroup::"
+            # Reporter-agnostic on purpose: node --test's default reporter is
+            # TAP on Node 20 (what CI pins, `# pass N`) but spec on Node 22+
+            # (`ℹ pass N`), and a count line that silently reads UNKNOWN after
+            # a Node bump would defeat the whole point of printing counts.
+            # Match both, take $NF so the column shift doesn't matter, and
+            # tail -n1 so it is the top-level summary and never a nested
+            # subtest diagnostic.
+            BATCH_PASS=$(grep -E '^(# pass |ℹ pass )' "$log" | tail -n1 | awk '{print $NF}')
+            BATCH_FAIL=$(grep -E '^(# fail |ℹ fail )' "$log" | tail -n1 | awk '{print $NF}')
+            : "${BATCH_PASS:=UNKNOWN}" "${BATCH_FAIL:=UNKNOWN}"
+            return "$rc"
+          }
+
           mapfile -t node_tests < tests/unit-test-manifest.txt
           [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
-          node --test --test-timeout 300000 "${node_tests[@]}"
+          run_batch node /tmp/unit-node-batch.log \
+            node --test --test-timeout 300000 "${node_tests[@]}"
+          node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL
 
           mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
           [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
-          npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
+          run_batch tsx /tmp/unit-tsx-batch.log \
+            npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
+          tsx_rc=$?; tsx_pass=$BATCH_PASS; tsx_fail=$BATCH_FAIL
+
+          echo "── unit test batches ──────────────────────────────"
+          echo "node batch: ${#node_tests[@]} files, pass=$node_pass fail=$node_fail exit=$node_rc"
+          echo "tsx  batch: ${#tsx_tests[@]} files, pass=$tsx_pass fail=$tsx_fail exit=$tsx_rc"
+          if [ "$node_rc" -ne 0 ] || [ "$tsx_rc" -ne 0 ]; then
+            echo "::error::unit tests failed (node exit=$node_rc, tsx exit=$tsx_rc) — see the per-batch groups above"
+            exit 1
+          fi
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
@@ -3485,10 +3548,26 @@ jobs:
         # above proves nothing about a regression. Repeat the file standalone
         # (not the whole scripts/lib/*.test.mjs glob) so a future change to
         # withFileLock's steal path can't hide behind one lucky run.
+        #
+        # --test-timeout 60000 (added 2026-08-14, completing the coverage the
+        # 300000 ceilings above started — this step and the E2E job's unit-test
+        # step were the two invocations still running with NO per-test ceiling
+        # at all, i.e. still able to wedge until the job timeout and conclude
+        # `cancelled` with nothing named).
+        #
+        # SIZING, measured on the dev machine 2026-08-14: the whole file runs in
+        # 1.60/1.61/1.62s wall across three consecutive runs, and its slowest
+        # single test — 'racing stale-lock breakers', the 6-child-process one
+        # this step exists to repeat — is 788ms. At the ~2.3x CI-vs-dev factor
+        # measured for this repo that is ~1.8s on a runner, so 60s is ~33x the
+        # slowest legitimate test. It is deliberately NOT the 300000 used above:
+        # the loop aborts on the first failing repeat, so the worst case here is
+        # one 60s wedge (not 20), and keeping it tight means a hang is named in
+        # a minute instead of eating a third of the 15-minute job budget.
         if: always()
         run: |
           for i in $(seq 1 20); do
-            node --test scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
+            node --test --test-timeout 60000 scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
           done
 
       - name: Run pre-push conflict-marker guard test (bash integration)
@@ -4496,9 +4575,20 @@ jobs:
           # tests/unit-test-manifest*.txt from task #763). mapfile + array-length
           # guard instead of $(cat ...): `npx tsx --test` with zero file args does
           # NOT fail, it silently falls back to its own default discovery glob.
+          #
+          # --test-timeout 300000 (added 2026-08-14). This 1,424-test batch was
+          # the last invocation in the file with NO per-test ceiling, and this
+          # job carries no timeout-minutes either, so its default is GitHub's
+          # 360-minute job cap: a single wedged test here hangs for up to six
+          # hours and concludes `cancelled` with no failing test named. Value
+          # matched to the unit-tests job's 300000 for the same measured reason
+          # documented there — the slowest legitimate test in this repo is
+          # ~52.5s on the dev machine / ~121s on a runner at the measured ~2.3x
+          # factor, so 300s is ~2.5x the CI figure. Raise only against a fresh
+          # measurement of the slowest honest test, never to silence a hang.
           mapfile -t e2e_unit_tests < tests/e2e-unit-test-manifest.txt
           [ ${#e2e_unit_tests[@]} -eq 0 ] && { echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; exit 1; }
-          npx tsx --test "${e2e_unit_tests[@]}"
+          npx tsx --test --test-timeout 300000 "${e2e_unit_tests[@]}"
 
       - name: Run E2E tests
         run: npx playwright test --project=chromium

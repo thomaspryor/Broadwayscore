@@ -70,6 +70,44 @@ function gitOk(cwd, args) {
 // CANONICAL_ROOT is the shared checkout; in a plain CI clone it's REPO_ROOT.
 const CANONICAL_ROOT = canonicalRoot(REPO_ROOT);
 
+// ── base ref resolution: LOCAL ONLY, no network ────────────────────────────
+//
+// This suite used to open with an untimed `git fetch origin main` in before().
+// `node --test` has no default per-test timeout and none at all for before(),
+// so on a slow runner that call is an unbounded wait on remote reachability:
+// run 31832656296 wedged here and was killed at the 300s --test-timeout with
+// `# fail 0` and no failing assertion named — a whole batch of results lost to
+// a hook that a unit test never needed in the first place.
+//
+// It never needed the network because nothing here tests fetching. The fixture
+// only needs a commit to branch from that the GATE will also treat as its base,
+// and scripts/lib/review-gate.mjs resolves that base itself with exactly this
+// precedence (origin/main, then main) off refs already in the object store. So
+// read the same refs the gate reads, locally, and let git answer in
+// microseconds whether they exist. A CI checkout (actions/checkout@v5 on a push
+// to main) always has refs/remotes/origin/main; a scratch clone without a
+// remote still has main.
+//
+// If NEITHER resolves there is no meaningful fixture to build, and every
+// BLOCKED assertion below would be vacuous — so the tests skip with this
+// reason printed, immediately, rather than hanging until something kills them.
+//
+// RULE for anyone extending this file: no live network in setup. Not a fetch,
+// not a clone from a URL, not an HTTP call. If a future scenario genuinely
+// needs remote behaviour, build a local bare repo and use it as `origin` (see
+// scripts/tests/infra-gate-registration.test.mjs, which does exactly that).
+function resolveBaseRef() {
+  for (const ref of ['origin/main', 'main']) {
+    if (gitOk(CANONICAL_ROOT, ['rev-parse', '--verify', '--quiet', ref])) {
+      return { ref, reason: null };
+    }
+  }
+  return {
+    ref: null,
+    reason: `no local origin/main or main ref in ${CANONICAL_ROOT} to cut the probe fixture from (checked with rev-parse; this suite deliberately never fetches)`,
+  };
+}
+
 function resolveHookPath(basename) {
   const userHook = path.join(REAL_HOME, '.claude', 'hooks', basename);
   if (fs.existsSync(userHook)) return userHook;
@@ -98,7 +136,10 @@ const PROBE_BRANCH = `merge-gate-hook-test-probe-${suffix}`;
 const NONMAIN_BRANCH = `merge-gate-hook-test-nonmain-${suffix}`;
 let probeWorktree, nonmainWorktree, unrelatedRepo;
 let probeLines = null;
-let originAvailable = false;
+// The ref the probe branch is cut from. Resolved from refs ALREADY PRESENT in
+// the local object store — never over the network (see resolveBaseRef).
+let BASE_REF = null;
+let baseRefReason = null;
 
 function runHook(hookPath, { command, cwd = REPO_ROOT, transcript = TRANSCRIPT_PATH, sessionId = `mgh-test-${randomUUID()}`, toolUseId = `tu-${randomUUID()}`, env = {} }) {
   const stdin = JSON.stringify({
@@ -138,20 +179,23 @@ before(() => {
   if (!hasGates) return; // nothing else to build if the hooks themselves aren't present
 
   // ── a wholly unrelated git repo, to prove cross-repo `cd`s are left alone.
-  // Built here (before the originAvailable gate below) because it needs
-  // nothing from origin — gating it on origin availability would silently
-  // degrade the "unrelated repo" test into a meaningless `cd undefined`.
+  // Built here (before the BASE_REF gate below) because it needs nothing from
+  // a base ref — gating it on base availability would silently degrade the
+  // "unrelated repo" test into a meaningless `cd undefined`.
   unrelatedRepo = makeTmpDir('unrelated-repo');
   git(unrelatedRepo, ['init', '-q']);
 
-  originAvailable = gitOk(CANONICAL_ROOT, ['fetch', 'origin', 'main', '-q']) && gitOk(CANONICAL_ROOT, ['rev-parse', '--verify', '--quiet', 'origin/main']);
-  if (!originAvailable) return;
+  const base = resolveBaseRef();
+  BASE_REF = base.ref;
+  baseRefReason = base.reason;
+  if (!BASE_REF) return;
 
   // ── probe branch: >150 gated lines (exceeds both GATE_LINE_BUDGET=30 and
-  // DRIFT_BUDGET_LINES=150 in scripts/lib/review-gate.mjs), off origin/main,
-  // with no review verdict — the exact shape the gate must BLOCK.
+  // DRIFT_BUDGET_LINES=150 in scripts/lib/review-gate.mjs), off BASE_REF (the
+  // same base the gate itself resolves), with no review verdict — the exact
+  // shape the gate must BLOCK.
   git(CANONICAL_ROOT, ['branch', '-D', PROBE_BRANCH]);
-  gitOk(CANONICAL_ROOT, ['branch', PROBE_BRANCH, 'origin/main']);
+  gitOk(CANONICAL_ROOT, ['branch', PROBE_BRANCH, BASE_REF]);
   probeWorktree = makeTmpDir('probe-wt');
   fs.rmSync(probeWorktree, { recursive: true, force: true });
   if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--detach', probeWorktree, PROBE_BRANCH])) {
@@ -185,7 +229,7 @@ before(() => {
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);
   nonmainWorktree = makeTmpDir('nonmain-wt');
   fs.rmSync(nonmainWorktree, { recursive: true, force: true });
-  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '-b', NONMAIN_BRANCH, nonmainWorktree, 'origin/main'])) {
+  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '-b', NONMAIN_BRANCH, nonmainWorktree, BASE_REF])) {
     nonmainWorktree = null;
   }
 });
@@ -200,8 +244,8 @@ after(() => {
 });
 
 const skipNoGates = { get skip() { return !hasGates && 'neither ~/.claude/hooks nor the repo .claude/hooks copy of the merge/push gates is present on this machine' } };
-const skipNoProbe = { get skip() { return (!hasGates || !originAvailable || !probeWorktree || probeLines === null) && 'probe branch fixture failed to build' } };
-const skipNoNonmain = { get skip() { return (!hasGates || !originAvailable || !nonmainWorktree) && 'non-main worktree fixture failed to build' } };
+const skipNoProbe = { get skip() { return (!hasGates || !BASE_REF || !probeWorktree || probeLines === null) && `probe branch fixture failed to build${baseRefReason ? ` — ${baseRefReason}` : ''}` } };
+const skipNoNonmain = { get skip() { return (!hasGates || !BASE_REF || !nonmainWorktree) && `non-main worktree fixture failed to build${baseRefReason ? ` — ${baseRefReason}` : ''}` } };
 
 // ── fixture self-check: the premise every BLOCKED assertion below rests on ─
 
