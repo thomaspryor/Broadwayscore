@@ -145,6 +145,9 @@ async function main() {
         if (showRecord) {
           showRecord.isRevival = true;
           if (!showRecord.tags) showRecord.tags = [];
+          // Strip any stale "new" tag from creation-time classification — a show
+          // can't be both (Galileo 2026-08-14 shipped with tags:["new","revival"]).
+          showRecord.tags = showRecord.tags.filter(t => t !== 'new');
           if (!showRecord.tags.includes('revival')) showRecord.tags.push('revival');
         }
       }
@@ -193,6 +196,9 @@ async function main() {
       if (showRecord) {
         showRecord.isRevival = true;
         if (!showRecord.tags) showRecord.tags = [];
+        // Strip any stale "new" tag from creation-time classification — a show
+        // can't be both (Galileo 2026-08-14 shipped with tags:["new","revival"]).
+        showRecord.tags = showRecord.tags.filter(t => t !== 'new');
         if (!showRecord.tags.includes('revival')) showRecord.tags.push('revival');
       }
     }

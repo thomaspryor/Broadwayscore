@@ -2339,11 +2339,18 @@ async function discoverShows() {
           match = existingTitleMap.get(normBase);
         }
       }
-      if (match && match.id !== show.id) {
+      // A same-title match in a DIFFERENT market (e.g. a West End production
+      // transferring to Broadway, like Inter Alia 2026) is a transfer, not a
+      // revival — only same-market matches are real revival evidence.
+      // (Inter Alia Broadway shipped isRevival:true 2026-08-14 solely because
+      // the West End "Inter Alia" entry already existed in shows.json.)
+      if (match && match.id !== show.id && match.category === (show.category || undefined)) {
         isRevival = true;
         detectedType = match.type || detectedType;
         confidence = 'high';
         console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${match.title}" (${match.id})`);
+      } else if (match && match.id !== show.id) {
+        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${match.title}" (${match.category || 'broadway'}, ${match.id}) — treating as transfer`);
       }
     }
 
