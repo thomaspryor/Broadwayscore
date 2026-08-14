@@ -524,19 +524,67 @@ test('bridge tasks with a category keep the ≤5-word product-card carve-out (un
   assert.equal(isExcludedCategory(bridgeTech), false);
 });
 
-test('dispatch command always passes a resolved --model (never bare, never inherits interactive default)', () => {
-  // The command template lives in the shared launch lib (extracted 2026-07-24
-  // for the opening-night monitor launcher); bsc-next must delegate to it and
-  // still resolve the model itself.
-  const launchSrc = fs.readFileSync(new URL('./lib/cmux-launch.js', import.meta.url), 'utf8');
-  assert.match(launchSrc, /claude --model \$\{model\}\$\{settingsArg\} --dangerously-skip-permissions/);
+// Task #1438 triage: the old version of this test also pinned cmux-launch.js's
+// exact `claude --model ${model}${settingsArg} --dangerously-skip-permissions`
+// template via a source regex (the #1432/#1434 fragile class — a harmless
+// reformat there would break this file's test for zero behavior change). That
+// template is now `buildLaunchCommand()`, extracted and behavior-tested
+// directly in scripts/lib/cmux-launch.test.mjs. What's left here are
+// presence/wiring checks (require + call-site exist), which is the
+// 'unavoidable, generic' precedent from autonomous-checks.test.mjs — they
+// don't pin formatting, only that the resolveModel() integration wasn't
+// silently deleted. The real behavioral proof is the end-to-end test below.
+test('bsc-next.js wires resolveModel() and cmux-launch.js in (presence, not formatting)', () => {
   const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
   assert.match(src, /require\('\.\/lib\/cmux-launch\.js'\)/);
   assert.match(src, /launchCmuxSession\(\{/);
-  // model is resolved via resolveModel() (task #151), not a blanket 'sonnet'
-  // literal — the sonnet floor now lives in scripts/lib/bsc-next-model.js.
   assert.match(src, /require\('\.\/lib\/bsc-next-model\.js'\)/);
   assert.match(src, /const model = resolveModel\(/);
+});
+
+// Behavior test (task #1438): proves the model resolveModel() actually
+// computes is what reaches the real launchCmux() call in main()'s cmux
+// dispatch path — an explicit --model flag, and the no-hint/no-card default
+// (which must float to the sonnet floor, not a stale/inherited value).
+// cmuxAvailable:false skips the duplicate/dead/park guards (unrelated to
+// model threading); readLedgerEntries/appendLedgerEntry are stubbed so this
+// never touches the real dispatch-ledger.jsonl.
+test('main(): resolved model reaches the real launchCmux() call (dispatch command threading)', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-model-thread-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '9001.json'), JSON.stringify({
+    id: '9001', subject: 'Model threading test task', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const calls = [];
+  const dispatch = (argv) => {
+    calls.length = 0;
+    main(argv, {
+      loadTasks: () => loadTasks(dir),
+      fetchCard: () => null,
+      loadLinearMirrorMapping: () => ({}),
+      cmuxAvailable: () => false,
+      launchCmux: (task, seed, override, model, project) => { calls.push({ task, model, project }); return { ok: true, ref: 'workspace:1' }; },
+      appendLedgerEntry: () => {},
+      readLedgerEntries: () => [],
+    });
+  };
+
+  try {
+    dispatch(['--id', '9001', '--model', 'opus']);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].model, 'opus', 'explicit --model flag must be the model launchCmux actually receives');
+
+    dispatch(['--id', '9001']);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].model, 'sonnet', 'default dispatch (no hint, no card, no triage) must float to the sonnet floor via resolveModel()');
+  } finally {
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
 });
 
 // resolveModel()'s own resolution-order tests (fable-exclusion, size->model,

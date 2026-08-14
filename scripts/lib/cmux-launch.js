@@ -161,6 +161,18 @@ function shouldPreWake({ idleSec, attempt = 1, idleGateSec = IDLE_GATE_SEC }) {
 // and costs one cmux round trip per interval.
 const REWAKE_INTERVAL_SEC = 10;
 
+// Pure — extracted (task #1438) so the exact --model/--dangerously-skip-
+// permissions shape is behavior-tested directly instead of via a source-text
+// regex against this file (the #1432/#1434 fragile-pattern class: a harmless
+// reformat of this template would break a regex pinning it while the actual
+// launched command stayed identical).
+// --dangerously-skip-permissions: launched sessions must never permission-ping
+// (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
+function buildLaunchCommand(model, settingsPath, seedFile) {
+  const settingsArg = settingsPath ? ` --settings ${settingsPath}` : '';
+  return `claude --model ${model}${settingsArg} --dangerously-skip-permissions "$(cat ${seedFile})"`;
+}
+
 function sleepSec(s) { spawnSync('sleep', [String(s)]); }
 
 // Poll fn() every second until it returns truthy or timeoutSec elapses.
@@ -485,10 +497,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
-  // --dangerously-skip-permissions: launched sessions must never permission-ping
-  // (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
-  const settingsArg = settingsPath ? ` --settings ${settingsPath}` : '';
-  const command = commandOverride || `claude --model ${model}${settingsArg} --dangerously-skip-permissions "$(cat ${seedFile})"`;
+  const command = commandOverride || buildLaunchCommand(model, settingsPath, seedFile);
   // Shell-init race (real failure 2026-07-12): new-workspace TYPES the command
   // into the pane while zsh/direnv may still be initializing, so leading
   // keystrokes get swallowed ('nclaude' → command not found) and the session
@@ -667,6 +676,7 @@ module.exports = {
   launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
   osActivateCmuxApp, strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
+  buildLaunchCommand,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, LAST_LAUNCH_MARKER,
