@@ -48,6 +48,9 @@ function minReviewsForCategory(category) {
  */
 function reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) {
   let min = minReviewsForCategory(category);
+  // Intentionally NOT isBroadwayCategory(): this is a verbatim port of
+  // src/config/score-buckets.ts, which can't import scripts/lib (browser
+  // bundle) and inlines the same check — see the file-header comment.
   if (isCuratedHistorical && (!category || category === 'broadway') && (tier1And2Count ?? 0) >= 1) {
     min = MIN_REVIEWS_CURATED_HISTORICAL;
   }

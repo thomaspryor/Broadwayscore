@@ -28,6 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const leaguePath = path.join(dataDir, 'fantasy-league.json');
@@ -44,7 +45,7 @@ function calibrateK(evByShow, league) {
   const bwEvs = Object.entries(evByShow)
     .filter(([id]) => {
       const show = league.shows[id];
-      return show && (show.category === 'broadway' || !show.category);
+      return isBroadwayCategory(show);
     })
     .map(([, ev]) => ev.totalPoints)
     .filter(n => Number.isFinite(n))
