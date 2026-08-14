@@ -988,6 +988,7 @@ const PV_HEAD_PATTERNS = [
   /^reviews-what-(do-the|did)-critics-think-of-/,
   /^reviews-(did|do)-(the-)?critics-(feel-at-home-on|find|think)-/,
   /^reviews-are-out-for-/,
+  /^reviews-sound-off-on-/,
   /^read-the-reviews-for-/,
   /^read-reviews-for-/,
   /^what-(are|do|did)-(the-)?(reviews|critics)-(think-of-|for-)?/,
@@ -1030,6 +1031,22 @@ function cleanSlugTitle(slug) {
   s = _stripPvHead(s);
   s = _stripPvTail(s);
   return s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
+}
+
+/**
+ * Classify whether a Playbill article slug looks like a Verdict review
+ * roundup (as opposed to news/casting/gallery content) — a slug matches one
+ * of the known review-wrapper verb phrases in PV_HEAD_PATTERNS.
+ *
+ * Used to filter playbill.com/sitemap.xml entries (which cover the whole
+ * site, not just /category/the-verdict) down to review-roundup candidates.
+ * @param {string} slug
+ * @returns {boolean}
+ */
+function isVerdictReviewSlug(slug) {
+  if (!slug || typeof slug !== 'string') return false;
+  const s = slug.toLowerCase().replace(/^\/?article\//, '');
+  return _stripPvHead(s) !== s;
 }
 
 /**
@@ -1374,6 +1391,7 @@ module.exports = {
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
   cleanSlugTitle,
+  isVerdictReviewSlug,
   matchSlugToShow,
   matchBwwRoundupSlugToShow,
   // Matcher internals — exported so audit/apply scripts share one source
