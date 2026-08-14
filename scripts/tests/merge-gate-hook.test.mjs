@@ -52,8 +52,73 @@ const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..
 const REAL_HOME = os.homedir();
 const RUN_ID = randomUUID().slice(0, 8);
 
+// ── every subprocess in this file is bounded ────────────────────────────────
+//
+// `node --test` applies --test-timeout to the FILE-level subtest, so one
+// unbounded spawnSync in before() does not fail one assertion — it consumes
+// the whole 300s ceiling and reports `testTimeoutFailure` with ZERO subtests
+// emitted and nothing naming which call blocked. That exact signature appeared
+// twice on main (runs 31832656296 and 31841012020), and both times the log
+// carried no clue at all. Removing the live `git fetch` (see resolveBaseRef)
+// removed the known network wait; these ceilings remove the whole CLASS, so a
+// future blocking call fails as a named error at its ceiling instead of
+// silently eating the file.
+//
+// TWO ceilings, because a per-call ceiling alone is not enough: this file makes
+// ~28 hook calls, so even a generous per-call limit multiplies straight through
+// the 300s file budget and lands back on the same invisible testTimeoutFailure.
+//   GIT_TIMEOUT_MS  — plain git plumbing in the fixture builder. A handful of
+//                     calls, none over ~1s locally.
+//   HOOK_TIMEOUT_MS — one `bash <gate>` per test. Slowest is 788ms locally and
+//                     the whole file is 21.5s, so 20s is ~25x the slowest real
+//                     call, and ONE of them blowing the ceiling still leaves the
+//                     file finishing around 40s.
+// Plus the fail-fast below, which is what actually bounds the total.
+const GIT_TIMEOUT_MS = 45_000;
+const HOOK_TIMEOUT_MS = 20_000;
+
+// WHY A HOOK CALL CAN BE UNBOUNDEDLY SLOW (reproduced locally 2026-08-14):
+// the gate shells into scripts/lib/review-gate.mjs --query=push-allowed, whose
+// scope walk runs ONE `git diff --numstat <cursor>..<ref>` per commit as it
+// walks back looking for its base. When the probe branch's parent is no longer
+// the base the gate resolves — e.g. origin/main advanced after the fixture was
+// cut — the walk does not terminate at the parent and grinds through history
+// instead, one full-tree diff at a time. Caught in the act:
+//   git -C … diff --numstat d3f06f3a62..merge-gate-hook-test-probe-959f701a -- src scripts .github/workflows
+//   git -C … diff --numstat 25bac90d8e..merge-gate-hook-test-probe-959f701a -- src scripts .github/workflows
+//   git -C … diff --numstat e51ec55294..merge-gate-hook-test-probe-959f701a -- src scripts .github/workflows
+// three different bases, same ref, seconds apart. That is a real defect in
+// review-gate.mjs's walk (it should bound itself), not in this suite — but this
+// suite must not be the thing that hangs because of it.
+let subprocTimeout = null;
+
+// Fail fast: once ANY bounded call has hit its ceiling the fixture/gate is
+// already unhealthy, every remaining hook call would pay the same price, and
+// the only thing more waiting buys is a silent file-level timeout instead of a
+// named failure. Short-circuit the rest and let the dedicated assertion below
+// report it.
+function timedOutAlready() {
+  return subprocTimeout !== null;
+}
+
+function noteTimeout(r, label, ceilingMs) {
+  if (r && (r.error?.code === 'ETIMEDOUT' || r.signal === 'SIGKILL')) {
+    subprocTimeout = subprocTimeout || `${label} exceeded ${ceilingMs}ms and was killed`;
+  }
+  return r;
+}
+
 function git(cwd, args) {
-  return spawnSync('git', args, { cwd, encoding: 'utf8' });
+  return noteTimeout(
+    spawnSync('git', args, {
+      cwd,
+      encoding: 'utf8',
+      timeout: GIT_TIMEOUT_MS,
+      killSignal: 'SIGKILL',
+    }),
+    `git ${args.slice(0, 3).join(' ')}`,
+    GIT_TIMEOUT_MS
+  );
 }
 function gitOut(cwd, args) {
   const r = git(cwd, args);
@@ -148,12 +213,22 @@ function runHook(hookPath, { command, cwd = REPO_ROOT, transcript = TRANSCRIPT_P
     transcript_path: transcript,
     tool_use_id: toolUseId,
   });
-  const r = spawnSync('bash', [hookPath], {
-    cwd,
-    input: stdin,
-    encoding: 'utf8',
-    env: { ...process.env, ...env },
-  });
+  if (timedOutAlready()) {
+    // Fail fast — see the ceiling notes at the top of the file.
+    return { status: 124, stdout: '', stderr: `skipped: ${subprocTimeout}` };
+  }
+  const r = noteTimeout(
+    spawnSync('bash', [hookPath], {
+      cwd,
+      input: stdin,
+      encoding: 'utf8',
+      env: { ...process.env, ...env },
+      timeout: HOOK_TIMEOUT_MS,
+      killSignal: 'SIGKILL',
+    }),
+    `hook ${path.basename(hookPath)} on \`${command.slice(0, 90)}\``,
+    HOOK_TIMEOUT_MS
+  );
   return { status: r.status, stdout: r.stdout || '', stderr: r.stderr || '' };
 }
 
@@ -211,12 +286,21 @@ before(() => {
   const probeHead = gitOut(probeWorktree, ['rev-parse', 'HEAD']);
   gitOk(CANONICAL_ROOT, ['branch', '-f', PROBE_BRANCH, probeHead]);
 
-  const diffHashOut = spawnSync('node', [
-    path.join(CANONICAL_ROOT, 'scripts', 'lib', 'review-gate.mjs'),
-    '--query=diff-hash',
-    `--repo=${CANONICAL_ROOT}`,
-    `--ref=${PROBE_BRANCH}`,
-  ], { cwd: CANONICAL_ROOT, encoding: 'utf8' });
+  const diffHashOut = noteTimeout(
+    spawnSync('node', [
+      path.join(CANONICAL_ROOT, 'scripts', 'lib', 'review-gate.mjs'),
+      '--query=diff-hash',
+      `--repo=${CANONICAL_ROOT}`,
+      `--ref=${PROBE_BRANCH}`,
+    ], {
+      cwd: CANONICAL_ROOT,
+      encoding: 'utf8',
+      timeout: GIT_TIMEOUT_MS,
+      killSignal: 'SIGKILL',
+    }),
+    'review-gate.mjs --query=diff-hash',
+    GIT_TIMEOUT_MS
+  );
   try {
     const parsed = JSON.parse(diffHashOut.stdout || '{}');
     probeLines = typeof parsed.totalLines === 'number' ? parsed.totalLines : null;
@@ -244,8 +328,15 @@ after(() => {
 });
 
 const skipNoGates = { get skip() { return !hasGates && 'neither ~/.claude/hooks nor the repo .claude/hooks copy of the merge/push gates is present on this machine' } };
-const skipNoProbe = { get skip() { return (!hasGates || !BASE_REF || !probeWorktree || probeLines === null) && `probe branch fixture failed to build${baseRefReason ? ` — ${baseRefReason}` : ''}` } };
-const skipNoNonmain = { get skip() { return (!hasGates || !BASE_REF || !nonmainWorktree) && `non-main worktree fixture failed to build${baseRefReason ? ` — ${baseRefReason}` : ''}` } };
+function why(base) {
+  const bits = [base];
+  if (baseRefReason) bits.push(baseRefReason);
+  if (subprocTimeout) bits.push(`TIMED OUT: ${subprocTimeout}`);
+  return bits.join(' — ');
+}
+const skipNoProbe = { get skip() { return (!hasGates || !BASE_REF || !probeWorktree || probeLines === null) && why('probe branch fixture failed to build') } };
+const skipNoNonmain = { get skip() { return (!hasGates || !BASE_REF || !nonmainWorktree) && why('non-main worktree fixture failed to build') } };
+
 
 // ── fixture self-check: the premise every BLOCKED assertion below rests on ─
 
@@ -343,7 +434,7 @@ test('merge-gate fails open: missing transcript file (no escape hatch available)
 });
 
 test('merge-gate fails open: malformed stdin never blocks', skipNoGates, () => {
-  const r = spawnSync('bash', [MERGE_HOOK], { input: 'not json at all', encoding: 'utf8' });
+  const r = noteTimeout(spawnSync('bash', [MERGE_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'merge hook (malformed stdin)', HOOK_TIMEOUT_MS);
   assertAllowed(r, 'malformed stdin');
 });
 
@@ -481,6 +572,27 @@ test('push-gate fails open: missing transcript file never blocks', skipNoProbe, 
 });
 
 test('push-gate fails open: malformed stdin never blocks', skipNoGates, () => {
-  const r = spawnSync('bash', [PUSH_HOOK], { input: 'not json at all', encoding: 'utf8' });
+  const r = noteTimeout(spawnSync('bash', [PUSH_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'push hook (malformed stdin)', HOOK_TIMEOUT_MS);
   assertAllowed(r, 'malformed stdin');
+});
+
+// ── last, deliberately ──────────────────────────────────────────────────────
+//
+// Registered at the END of the file because `node --test` runs tests in
+// registration order: declared at the top it would evaluate before any hook
+// call had a chance to hit its ceiling and would pass vacuously (it did, on the
+// first draft of this guard). Here it sees the final state.
+//
+// A bounded call that hit its ceiling means this suite's environment or the
+// gate itself is unhealthy. Say so in one named assertion, so the failure is
+// diagnosable straight from the CI log instead of arriving as a file-level
+// `testTimeoutFailure` with no subtests and no reason.
+test('no subprocess in this suite hit its bounded timeout', skipNoGates, () => {
+  assert.equal(
+    subprocTimeout,
+    null,
+    `a bounded subprocess was killed at its ceiling: ${subprocTimeout}. ` +
+      'Every assertion after the first timeout was short-circuited (exit 124) by design — ' +
+      'fix the slow/blocking call, do not raise the ceiling.'
+  );
 });
