@@ -266,6 +266,21 @@ jobs:
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/fix-shared-ibdb-urls.js
 
+      # Every show ID this run touched, from ANY of the steps above — diffed
+      # against /tmp/core-data-snapshot/shows.json, the pre-run baseline
+      # checkout-core-data (above) saves specifically for this kind of
+      # diff. data/shows.json itself is gitignored in this repo and never
+      # committed to its git history, so a git-HEAD-based diff would not
+      # work here. Feeds the per-show partial-block gate (task #1439): a
+      # new-slugs/opened-slugs-only candidate set would miss shows touched
+      # ONLY by an enrichment step (TodayTix runtimes/links, Wikipedia
+      # synopsis/runtimes, StubHub prices, fallback ticket links) — exactly
+      # the writers card #1439 was filed to cover. Pure logic + snapshot
+      # reader: scripts/lib/shows-since-checkout-diff.js.
+      - name: Compute candidate show IDs
+        id: candidates
+        run: node scripts/compute-candidate-show-ids.js >> "$GITHUB_OUTPUT"
+
       # Step 4: Validate data after discovery/enrichment. continue-on-error
       # keeps the job going so the set-diff step below can decide whether
       # this run should still commit — a pre-existing, unrelated error must
@@ -294,19 +309,55 @@ jobs:
       # former should block the commit (task #649). --post-exit-code guards
       # against a validate-data.js crash/format-change that exits non-zero
       # but prints nothing matching "❌ ERROR:" — without it that would read
-      # as should_commit=true (ship-check finding). Pure logic lives in
-      # scripts/lib/validation-setdiff.js, tested in
+      # as should_commit=true (ship-check finding). --candidate-ids enables
+      # per-show attribution (task #1439): a new error attributed to one
+      # show holds back just that show instead of the whole batch. Pure
+      # logic lives in scripts/lib/validation-setdiff.js, tested in
       # tests/unit/discovery-validation-setdiff.test.mjs.
       - name: Compute validation error set-diff
         id: setdiff
         if: always()
-        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" --candidate-ids="${{ steps.candidates.outputs.candidate_ids }}" >> "$GITHUB_OUTPUT"
+
+      # Partial-block recovery (task #1439): when the set-diff attributed a
+      # new error to specific show(s), revert just those shows to their
+      # pre-run state (or remove them if newly discovered this run) so the
+      # rest of the batch can still commit. Mirrors scripts/enrich-ibdb-
+      # dates.js's in-memory snapshot/revert/reverify, adapted for this
+      # workflow's multi-process mutation (scripts/lib/shows-since-
+      # checkout-diff.js). Runs even if the validate/setdiff steps above
+      # produced nothing (blocked_ids is then empty and this is a no-op
+      # condition).
+      - name: Revert blocked shows (partial-block recovery)
+        id: revert-blocked
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: node scripts/revert-blocked-shows.js --ids="${{ steps.setdiff.outputs.blocked_ids }}"
+
+      # Re-validate after the revert, to CONFIRM it actually cleared the
+      # attributed error(s) before trusting the attribution — same paranoia
+      # as enrich-ibdb-dates.js's reverifyDecision check. An attribution
+      # that turns out wrong must still block the whole commit, not just
+      # silently drop the mis-attributed show.
+      - name: Re-validate after revert
+        id: reverify
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: |
+          set -o pipefail
+          EC=0
+          node scripts/validate-data.js 2>&1 | tee /tmp/reverify-validate-output.txt || EC=$?
+          echo "$EC" > /tmp/reverify-validate-exitcode.txt
+
+      - name: Compute reverify set-diff
+        id: reverify-setdiff
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/reverify-validate-output.txt --post-exit-code="$(cat /tmp/reverify-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
 
       # Fails the job — WITHOUT continue-on-error — only when the set-diff
-      # found a NEW error. Every downstream `if:` below keys off
-      # steps.commit-gate.outcome exactly like it previously keyed off
-      # steps.validate.outcome, but the decision now comes from the set-diff
-      # instead of validate-data.js's raw exit code (task #649).
+      # found a NEW error that survived the revert above. Every downstream
+      # `if:` below keys off steps.commit-gate.outcome exactly like it
+      # previously keyed off steps.validate.outcome, but the decision now
+      # comes from the set-diff instead of validate-data.js's raw exit code
+      # (task #649).
       - name: Commit gate — block only on NEW validation errors
         id: commit-gate
         if: always()
@@ -321,11 +372,24 @@ jobs:
             echo "::error::A required step failed before validation could run (steps.validate was skipped) — refusing to commit or push."
             exit 1
           fi
-          if [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
+          if [ -n "${{ steps.setdiff.outputs.blocked_ids }}" ]; then
+            # Partial block: trust the reverify result, not the original
+            # setdiff (which is expected to still show the now-reverted
+            # error until reverify confirms it's gone).
+            if [ "${{ steps.reverify-setdiff.outputs.should_commit }}" != "true" ]; then
+              echo "::error::Revert of held-back show(s) [${{ steps.setdiff.outputs.blocked_ids }}] did not clear the new error(s) — attribution was wrong. Blocking the full commit."
+              exit 1
+            fi
+            if [ "${{ steps.setdiff.outputs.committable_count }}" = "0" ]; then
+              echo "::warning::${{ steps.setdiff.outputs.new_error_count }} new validation error(s) attributed to show(s): ${{ steps.setdiff.outputs.blocked_ids }} — ALL candidate show(s) this run touched were held back and reverted (revert re-verified clean). No show-related changes commit this run; other non-show writes still proceed."
+            else
+              echo "::warning::${{ steps.setdiff.outputs.new_error_count }} new validation error(s) attributed to show(s): ${{ steps.setdiff.outputs.blocked_ids }} — held back, revert re-verified clean. ${{ steps.setdiff.outputs.committable_count }} other candidate show(s) still committed."
+            fi
+          elif [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
             echo "::error::Discovery/enrichment introduced ${{ steps.setdiff.outputs.new_error_count }} new validation error(s) — see data/audit/discovery-blocked/ (written by the next step) for the diff."
             exit 1
           fi
-          echo "No new validation errors — commit is clear to proceed (${{ steps.setdiff.outputs.pre_error_count }} pre-existing error(s) ignored)."
+          echo "No new validation errors blocking the full batch — commit is clear to proceed (${{ steps.setdiff.outputs.pre_error_count }} pre-existing error(s) ignored)."
 
       # Audit trail when validation blocks the commit. Two outputs:
       #   1. $GITHUB_STEP_SUMMARY — at-a-glance diagnosis on the run page
@@ -341,9 +405,14 @@ jobs:
       # introduced". Includes the actual new-error text (not just counts) so
       # an operator finding this a week later can tell which file to fix
       # without re-running validate-data.js locally.
+      # Fires on a full block (should_commit=false) same as before, AND on a
+      # partial block (blocked_ids non-empty even though the rest committed)
+      # — task #1439's own reviewers flagged that a partial block succeeding
+      # the job would otherwise leave NO audit trail, unlike today's loud
+      # full-block failure.
       - name: Audit discovery on validation failure
         id: audit
-        if: always() && steps.setdiff.outputs.should_commit != 'true'
+        if: always() && (steps.setdiff.outputs.should_commit != 'true' || steps.setdiff.outputs.blocked_ids != '')
         env:
           PRE_VALIDATION: ${{ steps.pre-validate.outputs.status }}
           NEW_ERROR_COUNT: ${{ steps.setdiff.outputs.new_error_count }}
@@ -353,14 +422,21 @@ jobs:
           OPENED_COUNT: ${{ steps.status-update.outputs.opened_count }}
           OPENED_SLUGS: ${{ steps.status-update.outputs.opened_slugs }}
           WE_NEW_COUNT: ${{ steps.discover.outputs.we_new_count }}
+          BLOCKED_IDS: ${{ steps.setdiff.outputs.blocked_ids }}
+          COMMITTABLE_COUNT: ${{ steps.setdiff.outputs.committable_count }}
           RUN_ID: ${{ github.run_id }}
           REPO: ${{ github.repository }}
         run: |
-          DIAGNOSIS_KIND="discovery-introduced"
-          DIAGNOSIS_TEXT="Discovery/enrichment introduced ${NEW_ERROR_COUNT} NEW validation error(s) not present before this run (task #649 set-diff). See new_errors_preview below, or re-run \`node scripts/validate-data.js\` locally, for the file to fix."
+          if [ -n "$BLOCKED_IDS" ]; then
+            DIAGNOSIS_KIND="partial-block"
+            DIAGNOSIS_TEXT="${NEW_ERROR_COUNT} NEW validation error(s) attributed to show(s): ${BLOCKED_IDS} (task #1439 per-show gate). Held back and reverted; ${COMMITTABLE_COUNT} other candidate show(s) still committed."
+          else
+            DIAGNOSIS_KIND="discovery-introduced"
+            DIAGNOSIS_TEXT="Discovery/enrichment introduced ${NEW_ERROR_COUNT} NEW validation error(s) not present before this run (task #649 set-diff). See new_errors_preview below, or re-run \`node scripts/validate-data.js\` locally, for the file to fix."
+          fi
 
           {
-            echo "## Validation blocked commit"
+            echo "## Validation ${DIAGNOSIS_KIND}"
             echo ""
             echo "**Pre-discovery validation:** \`${PRE_VALIDATION}\`"
             echo "**New errors introduced:** \`${NEW_ERROR_COUNT}\`"
@@ -380,6 +456,7 @@ jobs:
             echo "| opened_count | \`${OPENED_COUNT}\` |"
             echo "| opened_slugs | \`${OPENED_SLUGS}\` |"
             echo "| we_new_count | \`${WE_NEW_COUNT}\` |"
+            echo "| blocked_ids | \`${BLOCKED_IDS}\` |"
           } >> "$GITHUB_STEP_SUMMARY"
 
           # Persistent JSON for grep-ability after run retention expires.
@@ -399,7 +476,9 @@ jobs:
               newSlugs: process.env.NEW_SLUGS || "",
               openedCount: process.env.OPENED_COUNT || "",
               openedSlugs: process.env.OPENED_SLUGS || "",
-              weNewCount: process.env.WE_NEW_COUNT || ""
+              weNewCount: process.env.WE_NEW_COUNT || "",
+              blockedIds: process.env.BLOCKED_IDS || "",
+              committableCount: process.env.COMMITTABLE_COUNT || ""
             };
             fs.writeFileSync(process.env.AUDIT_FILE, JSON.stringify(out, null, 2) + "\n");
             console.log("Wrote audit:", process.env.AUDIT_FILE);
@@ -499,9 +578,24 @@ jobs:
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
-          NEW_SLUGS="${{ steps.discover.outputs.new_slugs }}"
-          if [ -z "$NEW_SLUGS" ]; then
+          RAW_NEW_SLUGS="${{ steps.discover.outputs.new_slugs }}"
+          if [ -z "$RAW_NEW_SLUGS" ]; then
             echo "No new slugs to queue"
+            exit 0
+          fi
+          # Filter out any slug whose show got reverted/removed by the
+          # partial-block gate above (task #1439) — discover's raw new_slugs
+          # output predates that revert, so an unfiltered pass here would
+          # queue commercial research for a show no longer in shows.json.
+          NEW_SLUGS=$(RAW_NEW_SLUGS="$RAW_NEW_SLUGS" node -e '
+            const fs = require("fs");
+            const shows = JSON.parse(fs.readFileSync("data/shows.json", "utf8")).shows;
+            const present = new Set(shows.map((s) => s.slug));
+            const kept = process.env.RAW_NEW_SLUGS.split(",").filter(Boolean).filter((s) => present.has(s));
+            console.log(kept.join(","));
+          ')
+          if [ -z "$NEW_SLUGS" ]; then
+            echo "No new slugs to queue (all held back by the partial-block gate)"
             exit 0
           fi
           # Logic lives in scripts/lib/commercial-queue.js (colocated-tested,
@@ -552,8 +646,14 @@ jobs:
       # avoids racing with concurrent core-data writers and dodges the
       # "validate failed so nothing pushes" gate. Pattern from
       # memory/feedback_gh_api_emergency_commit.md.
+      # Pushes whenever the audit step ran (full block OR partial block —
+      # task #1439), not just steps.commit-gate.outcome == 'failure'. A
+      # partial block lets the job SUCCEED, so gating this push on job
+      # failure would leave the local audit_file written but never pushed
+      # anywhere — silently discarded at job end (same class of bug as the
+      # "Writes Before Pushes" rule in .github/workflows/CLAUDE.md).
       - name: Push discovery-blocked audit to private repo
-        if: always() && steps.commit-gate.outcome == 'failure' && steps.audit.outputs.audit_file != ''
+        if: always() && steps.audit.outputs.audit_file != ''
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           RUN_ID: ${{ github.run_id }}
