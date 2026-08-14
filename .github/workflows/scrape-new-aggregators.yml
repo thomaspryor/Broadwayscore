@@ -175,6 +175,12 @@ jobs:
               # this job). Neither workflow dispatches back — no cascade.
               gh workflow run update-reddit-sentiment.yml -f shows="$IDS" || echo "::warning::reddit-sentiment dispatch failed"
               gh workflow run update-mezzanine.yml -f shows="$IDS" || echo "::warning::mezzanine dispatch failed"
+              # Images — card #1456: this promotion path is a go-live event
+              # like previews->open in update-show-status.yml, but it never
+              # dispatched image fetch, so a regional show sat scored with
+              # images:{} until the next twice-weekly cron caught it (up to
+              # 3.5 days). One show_id-scoped dispatch per promoted show.
+              node scripts/dispatch-new-show-images.js --ids="$IDS" || echo "::warning::image-fetch dispatch failed — will still be picked up by the next fetch-all-image-formats.yml sweep"
             fi
           else
             # Push is refused via the sentinel. Roll back the staging consumption

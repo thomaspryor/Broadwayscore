@@ -154,9 +154,15 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # Trigger image fetch if shows are missing images
+  # always() (card #1456): without it, this job was silently SKIPPED every
+  # time auto-maintain's overall conclusion was failure — even on runs where
+  # the "Evaluate and set job outputs" step (itself `if: always()`) correctly
+  # computed needs_images=true. An unrelated `npm run build` verify step in
+  # auto-maintain failed for 5+ consecutive days (2026-08-09 -> 2026-08-13),
+  # so this backstop never fired despite looking green in its own output.
   fetch-missing-images:
     needs: auto-maintain
-    if: needs.auto-maintain.outputs.needs_images == 'true'
+    if: always() && needs.auto-maintain.outputs.needs_images == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger image fetch workflow

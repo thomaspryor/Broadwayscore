@@ -1,0 +1,72 @@
+name: Audit Imageless Scored Shows
+
+# Card #1456 backstop: independent of check-show-freshness.yml (which was
+# silently skipping its own image-fetch job for 5+ days due to an unrelated
+# build-verify failure). Finds any show with reviews but no image on disk
+# past the grace window, self-heals via scripts/audit-imageless-scored-shows.js
+# (per-show cooldown + dispatch cap so this can't storm the fetch-images
+# concurrency group), and alerts if self-heal itself isn't working.
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, skip dispatch/alert/write'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/audit-imageless-scored-shows.js --dry-run
+          else
+            node scripts/audit-imageless-scored-shows.js
+          fi
+
+      - name: Push core data
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: imageless-scored-shows audit [skip ci]'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Imageless Scored Shows Failed'
+          severity: 'warning'
