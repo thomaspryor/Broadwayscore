@@ -60,6 +60,10 @@ setup() {
   mkdir -p "$d/main/scripts/lib"
   cp "$SCRIPT" "$d/main/scripts/merge-worktree-to-main.sh"
   cp "$GATE" "$d/main/scripts/lib/"
+  # tap-failure-parser.js: hard require() of merge-post-merge-test-gate.js
+  # (card #1433's baseline-diff TAP parsing), not optional like
+  # acceptance-check-core.js — must be present in any real deployment.
+  cp "$REPO_ROOT/scripts/lib/tap-failure-parser.js" "$d/main/scripts/lib/"
   cp "$REPO_ROOT/scripts/lib/push-mutex.sh" "$d/main/scripts/lib/"
   # Stub the unrelated range-scoped push-audit gate (own coverage elsewhere;
   # a real run here would abort before reaching the check this test targets).
