@@ -113,6 +113,37 @@ test('merge preserves timestamp order even when array order is reversed (newest-
   assert.equal(merged[0].review_url, 'https://right.com', 'the chronologically-latest part still wins regardless of array order');
 });
 
+test('a URL-only correction that leaves optional fields blank does not blank out the original notes/critic/outlet', () => {
+  const original = {
+    _id: 'sub-1',
+    _date: '2026-08-14T15:00:00.000Z',
+    review_url: 'https://www.wrongsite.com/review',
+    show_name: 'Hamilton',
+    outlet_name: 'The New York Times',
+    critic_name: 'Jesse Green',
+    notes: 'Found this via a Google search',
+    submitter_email: 'jane@example.com',
+  };
+  // The submit-review form resets between submissions (SubmitReviewForm.tsx
+  // form.reset()), so a real-world "just fixing the URL" correction leaves
+  // outlet_name/critic_name/notes blank rather than re-typing them.
+  const correction = {
+    _id: 'sub-2',
+    _date: '2026-08-14T15:03:00.000Z',
+    review_url: 'https://www.nytimes.com/2026/08/10/theater/hamilton-review.html',
+    show_name: 'Hamilton',
+    submitter_email: 'jane@example.com',
+  };
+
+  const merged = mergeReviewSubmissionCorrections([original, correction]);
+
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].review_url, correction.review_url, 'URL takes the corrected value');
+  assert.equal(merged[0].outlet_name, original.outlet_name, 'outlet_name is NOT blanked by the correction leaving it empty');
+  assert.equal(merged[0].critic_name, original.critic_name, 'critic_name is NOT blanked by the correction leaving it empty');
+  assert.equal(merged[0].notes, original.notes, 'notes is NOT blanked by the correction leaving it empty');
+});
+
 test('fewer than 2 submissions is a no-op', () => {
   const a = { _id: 'a', _date: '2026-08-14T15:00:00.000Z', review_url: 'https://a.com/1', show_name: 'Hamilton', submitter_email: 'jane@example.com' };
   assert.deepEqual(mergeReviewSubmissionCorrections([a]), [a]);

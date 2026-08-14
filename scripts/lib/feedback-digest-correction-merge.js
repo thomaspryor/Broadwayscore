@@ -206,12 +206,29 @@ function reviewSubmitterKey(sub) {
 }
 
 /**
+ * Per field, the most recent part that actually set it (non-empty) wins.
+ * Falls back toward earlier parts rather than blindly taking the latest
+ * part's value — the submit-review form resets between submissions
+ * (SubmitReviewForm.tsx `form.reset()`), so a correction that only re-types
+ * the URL naturally leaves optional fields (notes, critic_name, outlet_name)
+ * blank. Spreading the latest part verbatim would silently blank out real
+ * values the original submission had instead of carrying them forward.
+ */
+function latestNonEmpty(parts, field) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const v = parts[i][field];
+    if (v) return v;
+  }
+  return parts[parts.length - 1][field];
+}
+
+/**
  * Combine 2+ raw review-submission parts (earliest first) into one. Unlike
  * feedback's free-text message concatenation, a review-submission correction
  * replaces structured fields (a wrong URL, wrong show name) rather than
- * adding to them — so the LATEST part's review_url/show_name/outlet_name/
- * critic_name/notes win (the corrected info), while every part's values are
- * preserved in _correctionHistory for the human reviewer and issue body.
+ * adding to them — so each field's most-recently-set value wins (the
+ * corrected info), while every part's values are preserved in
+ * _correctionHistory for the human reviewer and issue body.
  */
 function buildMergedReviewSubmission(parts) {
   const earliest = parts[0];
@@ -232,7 +249,12 @@ function buildMergedReviewSubmission(parts) {
   });
   return {
     ...latest,
-    submitter_email: latest.submitter_email || earliest.submitter_email,
+    review_url: latestNonEmpty(parts, 'review_url'),
+    show_name: latestNonEmpty(parts, 'show_name'),
+    outlet_name: latestNonEmpty(parts, 'outlet_name'),
+    critic_name: latestNonEmpty(parts, 'critic_name'),
+    notes: latestNonEmpty(parts, 'notes'),
+    submitter_email: latestNonEmpty(parts, 'submitter_email'),
     _correctionHistory: history.join('\n\n'),
     _mergedSubmissionIds: parts.map(submissionIdOf).filter(Boolean),
     _isMergedCorrection: true,
