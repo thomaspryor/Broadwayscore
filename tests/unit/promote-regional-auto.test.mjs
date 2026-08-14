@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideOffBroadwayAggregatorPromotion } =
+const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry } =
   require('../../scripts/promote-ob-venue-candidates.js');
 const { feederVenueCity, classifyVenueMarket } =
   require('../../scripts/lib/aggregator-candidate-extract.js');
@@ -117,6 +117,42 @@ test('decideOffBroadwayAggregatorPromotion: venue-page source does NOT confirm (
 test('decideOffBroadwayAggregatorPromotion: non-off-broadway categories never confirm', () => {
   assert.equal(decideOffBroadwayAggregatorPromotion({ category: 'regional', source: 'bww-roundup' }).confirmed, false);
   assert.equal(decideOffBroadwayAggregatorPromotion(null).confirmed, false);
+});
+
+// buildOffBroadwayAggregatorShowEntry (2026-08-13, second-opinion review
+// finding): buildShowEntry's status:'announced'/openingDate:null defaults
+// permanently hide reviews (engine.ts hideReviews) with no automated path
+// forward for this class, since it deliberately skips the Playbill-OB/Lortel
+// enrichment that would otherwise supply a date. This builder fixes that.
+test('buildOffBroadwayAggregatorShowEntry: status open + real openingDate, unlike buildShowEntry', () => {
+  const candidate = {
+    title: "Rosie O'Donnell's COMMON KNOWLEDGE",
+    venue: 'Daryl Roth Theatre',
+    slug: 'rosie-odonnells-common-knowledge',
+    source: 'bww-roundup',
+    articlePublishedAt: '2026-07-31T09:29:29-04:00',
+    discoveredAt: '2026-08-01T14:59:40.620Z',
+    category: 'off-broadway',
+  };
+  const e = buildOffBroadwayAggregatorShowEntry(candidate);
+  assert.equal(e.status, 'open', 'must NOT be announced — that permanently hides reviews (engine.ts)');
+  assert.equal(e.openingDate, '2026-07-31');
+  assert.equal(e.openingDateSource, 'aggregator-roundup');
+  assert.equal(e.category, 'off-broadway');
+  assert.equal(e.market, 'broadway', "unlike regional, OB stays market:'broadway'");
+  assert.match(e.id, /-off-broadway-\d{4}$/);
+  assert.equal(e.provisional, true);
+  assert.equal(e.discoverySource, 'aggregator-roundup:bww-roundup');
+});
+
+test('buildOffBroadwayAggregatorShowEntry: unparseable date still stays visible (status open, no closed-guess)', () => {
+  const e = buildOffBroadwayAggregatorShowEntry({
+    title: 'A Serious Play', venue: 'MCC Theater', slug: 'a-serious-play', source: 'playbill-verdict',
+    articlePublishedAt: 'not-a-date', discoveredAt: '2026-08-01',
+  });
+  assert.equal(e.openingDate, null);
+  assert.equal(e.status, 'open', 'no staleness-based closed guess for OB — run lengths are not known like regional tryouts');
+  assert.equal(e.openingDateSource, null);
 });
 
 test('stale-roundup guard: a roundup older than 90 days promotes as closed, fresh as open (2026-07-09)', () => {

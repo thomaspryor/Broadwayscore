@@ -228,6 +228,60 @@ function decideOffBroadwayAggregatorPromotion(candidate) {
   return { confirmed: true, reason: 'aggregator roundup page exists (off-broadway)', source: 'aggregator-roundup' };
 }
 
+/**
+ * Show entry for an off-broadway candidate confirmed via
+ * decideOffBroadwayAggregatorPromotion — NOT the generic buildShowEntry.
+ *
+ * Second-opinion review (2026-08-13) caught that buildShowEntry's safe
+ * defaults (status:'announced', openingDate:null) are a dead end for this
+ * class: engine.ts:710 hides reviews/score whenever status==='announced',
+ * and the only code that ever promotes 'announced' forward — either
+ * decideAnnouncedPromotion (requires an openingDate/previewsStartDate to
+ * already exist) or opening-signal.js's review-driven catch-up (scoped to
+ * PRE_OPEN_STATUSES = {'previews','upcoming'}, which excludes 'announced')
+ * — needs a date this class has no other way to acquire (it deliberately
+ * skips the Playbill-OB/Lortel cross-validation that would normally supply
+ * one). Promoted via buildShowEntry, these shows would have their reviews
+ * scraped and scored in the same CI run and then stayed permanently
+ * invisible — the opposite of the goal. Mirrors buildRegionalShowEntry's
+ * fix for the identical problem, minus the regional-only city suffix/tags
+ * and the ageDays>90→'closed' guess: off-broadway runs (unlike regional's
+ * known-short tryout engagements) range from a few weeks to open-ended
+ * commercial runs, so there's no safe staleness-based status to infer here.
+ * Status always starts 'open' and existing closing-date automation (which
+ * already covers off-broadway shows generically, regardless of how they
+ * were added) corrects it once the run actually ends.
+ */
+function buildOffBroadwayAggregatorShowEntry(candidate) {
+  // Take the DATE PART of the publish timestamp verbatim (see
+  // buildRegionalShowEntry for why: UTC conversion can roll an ET
+  // late-evening publish into the next calendar day).
+  const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const year = dm ? Number(dm[1]) : new Date().getFullYear();
+  const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const id = `${slugBase}-off-broadway-${year}`;
+  return {
+    id,
+    title: candidate.title,
+    slug: slugBase,
+    venue: candidate.venue,
+    openingDate,
+    openingDateSource: openingDate ? 'aggregator-roundup' : null,
+    previewsStartDate: null,
+    closingDate: null,
+    status: 'open',
+    category: 'off-broadway',
+    market: 'broadway',
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    discoverySource: `aggregator-roundup:${candidate.source}`,
+    discoveredAt: candidate.discoveredAt,
+    // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
+    // show exists; images/cast/exact dates arrive via later enrichment.
+    provisional: true,
+  };
+}
+
 /** Show entry for an auto-promoted REGIONAL production. Differs from the OB
  *  stub: -regional- id/slug (useCurrentMarket detection requires it), market
  *  'regional' (fail-closed: every `.market !== 'broadway'` gate — broadcasts,
@@ -418,7 +472,14 @@ async function main() {
     }
 
     // Build show entry + dedupe by ID
-    const entry = c.category === 'regional' ? buildRegionalShowEntry(c) : buildShowEntry(c);
+    // isOBAggregatorRoundup gets its own builder (status:'open' + a real
+    // openingDate) — buildShowEntry's null-openingDate/'announced' defaults
+    // would leave these shows permanently invisible (engine.ts:710), since
+    // this class deliberately skips the Playbill-OB/Lortel enrichment path
+    // that would otherwise supply a date later (second-opinion review finding).
+    const entry = c.category === 'regional' ? buildRegionalShowEntry(c)
+      : isOBAggregatorRoundup ? buildOffBroadwayAggregatorShowEntry(c)
+      : buildShowEntry(c);
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
@@ -535,7 +596,7 @@ async function main() {
             `Auto-promoted from an aggregator roundup (${p.candidate.sourceUrl || 'source n/a'}). ` +
             'Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: ' +
             'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
-            '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/feedback_regional_show_add_runbook.md steps 5-6.',
+            '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/project_regional_expansion_watchlist.md.',
         });
         console.log(`Queued go-live digest line for ${p.entry.id}.`);
       } catch (e) {
@@ -565,4 +626,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, findExistingMatch };
+module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };
