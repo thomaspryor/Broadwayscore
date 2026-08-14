@@ -23,8 +23,7 @@ const path = require('path');
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
-const { normalizeTitle } = require('./lib/title-match');
-const { isSubtitleVariantOf, venuesMatch } = require('./lib/deduplication');
+const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
@@ -114,32 +113,17 @@ function main() {
 
   const showsData = loadShows();
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  // Live pool of {title, venue} — see promote-ob-historical.js's identical
-  // comment (BRO-243). venuesMatch(), not title-match.js's canonicalVenue()
-  // equality: canonicalVenue's fallback for a venue outside VENUE_ALIASES is
-  // just the lowercased FIRST WORD, so two unrelated venues sharing a
-  // leading word would collapse and silently skip a genuinely new show.
-  const knownShows = showsData.shows.filter(s => s.title && s.venue);
-
-  function findExactDuplicate(candidateTitle, venue) {
-    const norm = normalizeTitle(candidateTitle);
-    return knownShows.find(s => normalizeTitle(s.title) === norm && venuesMatch(s.venue, venue)) || null;
-  }
-
-  function findSubtitleDuplicateTitle(candidateTitle, venue) {
-    for (const s of knownShows) {
-      if (venuesMatch(s.venue, venue) && isSubtitleVariantOf(candidateTitle, s.title)) return s.title;
-    }
-    return null;
-  }
+  // Live pool of {title, venue} — see promote-ob-historical.js and
+  // venue-title-dedup-pool.js for the full rationale (BRO-243).
+  const knownShows = buildVenueTitlePool(showsData.shows);
 
   const toPromote = [];
   const skipped = [];
   for (const c of promotable) {
     if (!c.venue) { skipped.push({ candidate: c, reason: 'no venue' }); continue; }
     const entry = buildShowEntry(c);
-    const exactDup = findExactDuplicate(entry.title, entry.venue);
-    const subtitleDup = !exactDup && findSubtitleDuplicateTitle(entry.title, entry.venue);
+    const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
+    const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
     if (exactDup) { skipped.push({ candidate: c, reason: 'duplicate title+venue' }); continue; }
     if (subtitleDup) { skipped.push({ candidate: c, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ candidate: c, reason: 'duplicate id' }); continue; }
