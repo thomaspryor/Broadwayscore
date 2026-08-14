@@ -504,8 +504,16 @@ async function processReview(entry) {
       return;
     }
     current.llmPullQuote = quote;
-    safeWriteReview(filePath, current);
-    stats.written++;
+    // safeWriteReview quarantines date-implausible / cross-market-contaminated
+    // writes (returns wrote:false) instead of writing — count those as errors,
+    // not successes, so the run summary reflects what actually landed.
+    const result = safeWriteReview(filePath, current);
+    if (result && result.wrote === false) {
+      stats.errors++;
+      if (VERBOSE) console.log(`  Quarantined by safeWriteReview (${result.skipped || 'unknown reason'}): ${path.basename(filePath)}`);
+    } else {
+      stats.written++;
+    }
   }
 }
 
