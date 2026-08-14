@@ -193,6 +193,20 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Commit content-error ledger tracking
+        if: always() && steps.plan.outputs.ledger_updated == 'true'
+        run: |
+          git add data/audit/feedback-request-ledger.json
+          if git diff --staged --quiet; then
+            echo "No ledger change to commit"
+          else
+            git commit -m "chore: Track Manual-Fix-Needed content-error ask (#${{ steps.issue.outputs.number }})
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Send thank-you email to submitter
         if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'not-a-bug')
         env:

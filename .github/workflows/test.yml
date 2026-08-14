@@ -662,6 +662,12 @@ on:
       # solo lib edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/merge-social-post-history.js'
       - 'tests/unit/merge-social-post-history.test.mjs'
+      # feedback-request-ledger.json rebase-race reconciliation (task #1440).
+      # Pure merge fn in scripts/lib/merge-feedback-ledger.js; test lives in
+      # tests/unit/ (in the node --test batch). Path-listed so a solo lib edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/merge-feedback-ledger.js'
+      - 'tests/unit/merge-feedback-ledger.test.mjs'
       # Shared sync-only-changed-files helper for push-aggregator-archive
       # (same P0 revert-risk class as push-core-data's snapshot diff, generalized
       # to a recursive directory instead of a fixed file list). Colocated test

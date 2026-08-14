@@ -32,6 +32,7 @@ const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
+const { buildEntry, mergeEntries } = require('./lib/feedback-request-ledger.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -107,6 +108,56 @@ async function sendEmail(to, from, subject, html) {
     req.write(data);
     req.end();
   });
+}
+
+const LEDGER_PATH = path.join(ROOT, 'data/audit/feedback-request-ledger.json');
+
+/**
+ * Track a "Manual Fix Needed" content-error ask the same way missing-show/
+ * missing-reviews requests already are (task #1440, 2026-08-13 feedback-form
+ * audit): so scripts/verify-feedback-requests-live.js can confirm it actually
+ * shipped instead of the fix silently never landing after the GitHub issue
+ * closes. Only wired for the one content-error shape the diagnosis already
+ * extracts structured facts for (see diagnose-feedback-bug.js's awards
+ * instructions) — ceremony/category/missingPerson are real data here, not a
+ * guess reconstructed from prose, which is the bar the other content-error
+ * shapes (wrong critic name, outlet rename, single missing review, rebuilt
+ * show record) don't clear yet without their own prompt-side extraction.
+ * Fail-soft: a broken ledger write must never crash plan generation.
+ */
+function maybeTrackContentFix(diagnosis, issueNumber) {
+  if (diagnosis.fixType !== 'data') return false;
+  if (!diagnosis.showId || !diagnosis.ceremony || !diagnosis.category || !diagnosis.missingPerson) {
+    return false;
+  }
+  try {
+    const raw = fs.existsSync(LEDGER_PATH) ? JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8')) : { entries: [] };
+    const entry = buildEntry(
+      {
+        kind: 'content-fix',
+        contentErrorType: 'wrong-award-co-winner',
+        showId: diagnosis.showId,
+        showTitle: diagnosis.submitterShow,
+        expected: { ceremony: diagnosis.ceremony, category: diagnosis.category, person: diagnosis.missingPerson },
+      },
+      {
+        submissionId: `issue-${issueNumber}`,
+        issueNumber: Number(issueNumber) || null,
+        requestedAt: new Date().toISOString(),
+        message: diagnosis.originalMessage,
+        show: diagnosis.submitterShow,
+      }
+    );
+    const { ledger, added } = mergeEntries(raw, [entry]);
+    if (added === 0) return false;
+    fs.mkdirSync(path.dirname(LEDGER_PATH), { recursive: true });
+    fs.writeFileSync(LEDGER_PATH, JSON.stringify(ledger, null, 2) + '\n');
+    console.log(`Tracked content-error ask in the request ledger: ${entry.key}`);
+    return true;
+  } catch (err) {
+    console.error('maybeTrackContentFix: failed to update ledger (non-fatal):', err.message);
+    return false;
+  }
 }
 
 // Files a self-contained P1 card so the standing P0/P1-auto-dispatch-at-creation
@@ -451,6 +502,9 @@ Or if you cannot create an actionable plan:
   if (!plan.canCreatePlan) {
     console.log(`Cannot create plan: ${plan.reason}`);
     output('plan_created', 'false');
+
+    const tracked = maybeTrackContentFix(diagnosis, issueNumber);
+    output('ledger_updated', tracked ? 'true' : 'false');
 
     // Task #755 (owner mandate 2026-08-02): a refused plan used to just email
     // the owner "needs your attention" with nothing behind it — homework, not

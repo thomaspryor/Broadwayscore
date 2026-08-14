@@ -44,6 +44,7 @@ const {
   staleEntries,
   daysSince,
   STALE_AFTER_DAYS,
+  describeContentFixClaim,
 } = require('./lib/feedback-request-ledger.js');
 
 const LEDGER_PATH = path.join(__dirname, '../data/audit/feedback-request-ledger.json');
@@ -250,6 +251,20 @@ function describeRun(picked) {
 }
 
 /**
+ * Does this entry's kind ever have named reviews to report? Only these two
+ * shapes can produce a non-empty `reviews` array from evaluateEntry() — every
+ * other kind (missing-show, missing-image, and every content-fix type except
+ * single-review) legitimately has nothing to name, so the "no readable review
+ * rows" caveat below must not fire for them. An allowlist here (not the old
+ * `!== 'missing-image'` denylist) is deliberate: a new kind defaults to no
+ * caveat instead of silently gaining a wrong one.
+ */
+function entryNamesReviews(entry) {
+  return entry.kind === 'missing-reviews' ||
+    (entry.kind === 'content-fix' && entry.contentErrorType === 'single-review');
+}
+
+/**
  * Deduped + sorted conditionKey. A repeated entry must not reorder the key and
  * slip past the router's cooldown as a fresh incident.
  */
@@ -277,7 +292,7 @@ function buildLiveAlert(nowLive) {
       ? `"${r.entry.title || r.showId}" is now on the site — ${r.evidence}: ${named.map((x) => x.text).join('; ')}.`
       : `"${r.entry.title || r.showId}" is now on the site — ${r.evidence}.`;
     const lines = [lead, `  See it: ${r.url}`];
-    if (!named.length && r.entry.kind !== 'missing-image') {
+    if (!named.length && entryNamesReviews(r.entry)) {
       // Never let a review request report a bare count again. If the reviews
       // could not be read out of the live payload, say that outright — silence
       // here is what made "0 → 1 review(s) live" unverifiable.
@@ -343,8 +358,15 @@ function buildStuckAlert(stale, runsByWorkflow) {
     const days = Math.round(daysSince(e.requestedAt));
     const issueUrl = e.issueNumber ? `https://github.com/${REPO}/issues/${e.issueNumber}` : null;
     const picked = picks.get(e.key);
+    // content-fix entries carry no `workflow` — there is no GitHub Actions
+    // dispatch behind a plan-refusal fix, so describeRun()/pickRunForRequest()
+    // ("what did the workflow do") has nothing to report and would always
+    // print the same unhelpful "could not establish" line regardless of what
+    // was actually asked for. describeContentFixClaim() says WHAT is being
+    // asked for instead.
+    const whatHappened = e.kind === 'content-fix' ? describeContentFixClaim(e) : describeRun(picked);
     const lines = [
-      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${describeRun(picked)}`,
+      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${whatHappened}`,
       `  They asked: "${e.requestedMessage || '(no message)'}"`,
     ];
     if (picked?.run?.url) lines.push(`  That run: ${picked.run.url}`);
@@ -490,6 +512,7 @@ module.exports = {
   pickRunForRequest,
   showUrl,
   resolveEntryShowId,
+  entryNamesReviews,
 };
 
 if (require.main === module) {
