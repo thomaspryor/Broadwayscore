@@ -255,6 +255,38 @@ function evaluateContentFix(entry, live, reviews) {
   return { satisfied: false, evidence: `no live-check rule for content error type "${type}"`, reviews: [] };
 }
 
+/**
+ * Plain-English restatement of a stuck content-fix entry's claim, for the
+ * owner's stuck report.
+ *
+ * Content-fix entries carry no `workflow` — there is no GitHub Actions
+ * dispatch behind a plan-refusal fix, so verify-feedback-requests-live.js's
+ * describeRun()/pickRunForRequest() ("what did the workflow do") has nothing
+ * to report for these and would always print the same unhelpful "could not
+ * establish" line regardless of what was actually asked for. This says WHAT
+ * is being asked for instead of HOW it was supposed to get fixed.
+ */
+function describeContentFixClaim(entry) {
+  const type = entry.contentErrorType;
+  const expected = entry.expected || {};
+  if (type === 'wrong-critic-name') {
+    return `Asked to credit the ${expected.outlet || 'named outlet'} review to ${expected.criticName || 'the corrected critic'}.`;
+  }
+  if (type === 'outlet-rename') {
+    return `Asked to show the outlet as "${expected.newOutletName || 'the corrected name'}".`;
+  }
+  if (type === 'single-review') {
+    return `Asked to add the missing ${expected.outlet || 'named outlet'} review.`;
+  }
+  if (type === 'new-show-record') {
+    return `Asked to rebuild this show's record — it still is not live.`;
+  }
+  if (type === 'wrong-award-co-winner') {
+    return `Asked to add ${expected.person || 'the named person'} as a co-winner in ${expected.category || 'the named category'} (${expected.ceremony || 'ceremony unspecified'}) — awards data is not in the live payload, so this can only be closed by a manual confirmation, not an automated re-check.`;
+  }
+  return `Content-error ask ("${type || 'unspecified type'}") with no live-check rule yet.`;
+}
+
 /** Days between an ISO timestamp and now. Returns 0 on an unparseable date. */
 function daysSince(iso, now = Date.now()) {
   const t = Date.parse(iso);
@@ -306,6 +338,7 @@ module.exports = {
   buildEntry,
   evaluateEntry,
   evaluateContentFix,
+  describeContentFixClaim,
   describeReview,
   newReviewsFor,
   staleEntries,

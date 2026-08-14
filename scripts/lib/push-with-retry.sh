@@ -430,6 +430,23 @@ resolve_conflicts() {
     fi
 
     case "$file" in
+      data/audit/feedback-request-ledger.json)
+        # Unlike other data/audit/* files (per-run-independent logs, safe to
+        # keep-local on conflict), this ledger accumulates entries across
+        # runs and now has TWO independent writers (process-feedback.yml +
+        # generate-remediation-plan.js via auto-fix-feedback-bug.yml, task
+        # #1440) — a whole-file keep-local would silently drop the other
+        # writer's newly-added or newly-flipped-to-live entries, recreating
+        # the exact silent-loss bug this ledger exists to prevent. Same
+        # per-key-union pattern as commercial.json/diary-shows.json below.
+        echo "  Auto-resolving (feedback-ledger merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::feedback-ledger merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"

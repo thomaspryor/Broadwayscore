@@ -44,6 +44,7 @@ const {
   staleEntries,
   daysSince,
   STALE_AFTER_DAYS,
+  describeContentFixClaim,
 } = require('./lib/feedback-request-ledger.js');
 
 const LEDGER_PATH = path.join(__dirname, '../data/audit/feedback-request-ledger.json');
@@ -357,8 +358,15 @@ function buildStuckAlert(stale, runsByWorkflow) {
     const days = Math.round(daysSince(e.requestedAt));
     const issueUrl = e.issueNumber ? `https://github.com/${REPO}/issues/${e.issueNumber}` : null;
     const picked = picks.get(e.key);
+    // content-fix entries carry no `workflow` — there is no GitHub Actions
+    // dispatch behind a plan-refusal fix, so describeRun()/pickRunForRequest()
+    // ("what did the workflow do") has nothing to report and would always
+    // print the same unhelpful "could not establish" line regardless of what
+    // was actually asked for. describeContentFixClaim() says WHAT is being
+    // asked for instead.
+    const whatHappened = e.kind === 'content-fix' ? describeContentFixClaim(e) : describeRun(picked);
     const lines = [
-      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${describeRun(picked)}`,
+      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${whatHappened}`,
       `  They asked: "${e.requestedMessage || '(no message)'}"`,
     ];
     if (picked?.run?.url) lines.push(`  That run: ${picked.run.url}`);
