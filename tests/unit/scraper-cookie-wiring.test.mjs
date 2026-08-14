@@ -35,6 +35,25 @@ import { MockAgent, setGlobalDispatcher, getGlobalDispatcher } from 'undici';
 process.env.BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || 'test-bd-token';
 process.env.SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'test-sb-key';
 
+// Neutralize the Bright Data daily cost breaker for this file.
+//
+// fetchWithBrightData() consults consultBrightData() (scripts/lib/scraper.js,
+// just above the try block) BEFORE it builds a request, and returns null when
+// the zone's daily breaker has tripped. The breaker's state lives in
+// data/audit/bd-circuit-breaker.json — a GIT-TRACKED file that an hourly cron
+// commits with real production spend. So without this line the outcome of a
+// pure cookie-wiring unit test depends on how much Bright Data quota the site
+// happened to burn today: on 2026-08-14 the file said 2768 billed against a
+// 2250 ceiling, fetchWithBrightData early-returned, both BD tests captured
+// zero https.request calls, and Unit Tests went red on main for a reason that
+// had nothing to do with cookies. It would have gone green again by itself the
+// next UTC day, which is worse than a stable failure — the test was a coin
+// flip on live cost data.
+//
+// This file asserts that cookies reach body.headers.Cookie. The cost breaker
+// is a different contract with its own tests (scripts/lib/brightdata-caps.test.mjs).
+process.env.BD_CAPS_DISABLED = '1';
+
 const require = createRequire(import.meta.url);
 const https = require('https');
 const scraper = require('../../scripts/lib/scraper');
