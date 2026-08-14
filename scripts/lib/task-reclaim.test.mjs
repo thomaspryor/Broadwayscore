@@ -310,3 +310,36 @@ test('F1: indexLiveTasks exposes plain id membership', () => {
   assert.equal(ids.has('1164'), true, 'numeric ids must be normalised to strings');
   assert.equal(ids.has('7'), false);
 });
+
+// ── owner override: forceReclaimIds ────────────────────────────────────────
+test('forceReclaimIds reclaims a named started-and-lost task', () => {
+  const rows = classify([trapped(647)], {
+    startedIds: new Set(['647']),
+    branchEvidenceOf: () => ({ hasEvidence: true, matches: ['worktree-arm-yield-detector-647'] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+    forceReclaimIds: new Set(['647']),
+  });
+  assert.equal(actionOf(rows, 647), 'reclaim');
+  assert.match(rows[0].reason, /owner-directed branch review/);
+});
+
+test('forceReclaimIds is per-id — an unnamed started task still parks', () => {
+  const rows = classify([trapped(647), trapped(752)], {
+    startedIds: new Set(['647', '752']),
+    branchEvidenceOf: () => ({ hasEvidence: true, matches: ['b'] }),
+    cardOf: () => ({ lastEditedAt: hAgo(72) }),
+    forceReclaimIds: new Set(['647']),
+  });
+  assert.equal(actionOf(rows, 647), 'reclaim');
+  assert.equal(actionOf(rows, 752), 'park-started', 'the override must never widen beyond the ids the owner named');
+});
+
+test('forceReclaimIds does NOT override the safety guards it has no business overriding', () => {
+  const force = new Set(['647']);
+  const base = { startedIds: new Set(['647']), forceReclaimIds: force, cardOf: () => ({ lastEditedAt: hAgo(72) }) };
+  assert.equal(actionOf(classify([trapped(647)], { ...base, leaseAliveOf: () => true }), 647), 'skip-live',
+    'a live lease still wins — the owner answered a branch question, not a liveness one');
+  assert.equal(actionOf(classify([trapped(647)], { ...base, liveTabOf: () => 'workspace:9' }), 647), 'skip-live');
+  assert.equal(actionOf(classify([trapped(647)], { ...base, cardOf: () => ({ lastEditedAt: hAgo(72), outcome: 'done already' }) }), 647), 'park-outcome',
+    'a card recording completed work still parks');
+});
