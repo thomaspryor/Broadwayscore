@@ -6,10 +6,11 @@ const require = createRequire(import.meta.url);
 const {
   renderEmail, renderItem, renderUsageBlock, renderRecheckBlock, extractWhy, summarizeQueue,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
-  renderHealthDigestBlock, healthIssueCount,
+  renderHealthDigestBlock, healthIssueCount, renderAutofixBlock, autofixLoopDeadMessage,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
 } = require('./autonomous-email-render.js');
 const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
+const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 
 const STATS = {
   runId: 'run-x',
@@ -839,4 +840,85 @@ test('autofix block never claims a fix is underway on faith (#1311/#1220 regress
     assert.match(html, /tomorrow’s digest verifies/,
       'header lost the deferred-verification clause, which is what makes the claim honest');
   }
+});
+
+// Task #1220/BRO-230: the previous test proves the header is bounded to
+// "launched" when the loop's OWN health is unknown/fine. This suite proves
+// the other half — that bound must downgrade further, to an explicit dead-
+// loop warning, once health-check.js's own "Autofix: jobs actually
+// succeeding" row (autofix-effectiveness.js) has already proven the loop
+// dead. Without this, the 2026-08-10 incident (13 near-identical mornings
+// under an unconditional "being fixed" banner) recurs verbatim under the
+// renamed BRO-286 header — "filed and launched" is just as false as "being
+// fixed automatically" when nothing the fleet launches ever reports back.
+test('autofixLoopDeadMessage: null when the effectiveness row is absent or healthy', () => {
+  assert.equal(autofixLoopDeadMessage(null), null);
+  assert.equal(autofixLoopDeadMessage({}), null);
+  assert.equal(autofixLoopDeadMessage({ errors: [], warns: [] }), null);
+  // A pass/warn outcome from the effectiveness check lives in health.warns,
+  // never health.errors (health-check.js only escalates to 'error' on a
+  // proven-dead loop) — a warn-tier row here must not trip the dead banner.
+  assert.equal(autofixLoopDeadMessage({
+    errors: [], warns: [{ name: AUTOFIX_EFFECTIVENESS_CHECK_NAME, message: 'fails more than it fixes' }],
+  }), null);
+  // A same-named row from a DIFFERENT check must not accidentally match.
+  assert.equal(autofixLoopDeadMessage({ errors: [{ name: 'Some other check', message: 'x' }] }), null);
+});
+
+test('autofixLoopDeadMessage: returns the effectiveness message when the loop is DEAD', () => {
+  const msg = 'Auto-fix loop is DEAD: 12 job(s) launched in the last 7d, 0 reported back, 0 succeeded.';
+  const got = autofixLoopDeadMessage({
+    errors: [{ name: AUTOFIX_EFFECTIVENESS_CHECK_NAME, message: msg }],
+    warns: [],
+  });
+  assert.equal(got, msg);
+});
+
+test('renderAutofixBlock: dead-loop message overrides the "filed and launched" header with an honest warning', () => {
+  const rows = [{ name: 'Some issue', state: 'dispatched', taskId: 1 }];
+  const normal = renderAutofixBlock(rows);
+  assert.match(normal, /filed and launched/);
+
+  const dead = renderAutofixBlock(rows, 'Auto-fix loop is DEAD: 0 of 12 succeeded.');
+  assert.doesNotMatch(dead, /filed and launched/,
+    'must not still claim "filed and launched" once the loop is proven dead');
+  assert.match(dead, /DEAD/);
+  assert.match(dead, /Auto-fix loop is DEAD: 0 of 12 succeeded\./,
+    'the actual effectiveness-check message must surface, not a generic placeholder');
+});
+
+test('renderHealthDigestBlock: threads the fleet-wide dead-loop signal into the Automation queue header', () => {
+  const health = {
+    errors: [
+      { name: AUTOFIX_EFFECTIVENESS_CHECK_NAME, message: 'Auto-fix loop is DEAD: 0 of 8 succeeded in the last 7d.' },
+    ],
+    warns: [],
+    queued: [],
+  };
+  const html = renderHealthDigestBlock(health, [
+    { name: AUTOFIX_EFFECTIVENESS_CHECK_NAME, state: 'dispatched', taskId: 99 },
+  ]);
+  assert.match(html, /auto-fix loop looks DEAD/i);
+  assert.match(html, /Auto-fix loop is DEAD: 0 of 8 succeeded/);
+  assert.doesNotMatch(html, /Automation queue.{0,40}filed and launched/s,
+    'the "filed and launched" promise must not survive once the fleet-wide check says otherwise');
+});
+
+// Codex adversarial review (task #1220/BRO-230): health-check.js runs ONLY in
+// GitHub Actions, where digest-autofix-ledger.jsonl is a per-machine file
+// that doesn't exist in the checkout — so health.errors can never carry this
+// check's row in steady state; a caller that reads the ledger LOCALLY (same
+// machine as the dispatch loop) must be able to override the health-derived
+// signal. This locks in that the 3rd param wins even when health.errors says
+// nothing is wrong (the case that will actually occur in production).
+test('renderHealthDigestBlock: explicit loopDeadMessage override wins even when health.errors is silent (local-ledger read beats CI-blind health snapshot)', () => {
+  const health = { errors: [{ name: 'Some other check', message: 'x' }], warns: [], queued: [] };
+  const html = renderHealthDigestBlock(
+    health,
+    [{ name: 'Some other check', state: 'dispatched', taskId: 1 }],
+    'Auto-fix loop is DEAD: 12 job(s) launched, 0 reported back.',
+  );
+  assert.match(html, /auto-fix loop looks DEAD/i);
+  assert.match(html, /12 job\(s\) launched, 0 reported back/);
+  assert.doesNotMatch(html, /Automation queue.{0,40}filed and launched/s);
 });

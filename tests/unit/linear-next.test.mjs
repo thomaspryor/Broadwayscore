@@ -405,6 +405,115 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
 });
 
+// ── terminal-state guard (task #1517, BRO-247 root cause) ──────────────────
+//
+// buildIssueQuery already fetches state { id name type } on every getIssue()
+// call, but nothing previously read it before dispatching — an issue that
+// was already Done/Canceled would get re-dispatched anyway (BRO-247). These
+// drive main() end-to-end in a REAL SUBPROCESS for the same reason the
+// guard-parity test above does: this guard's process.exit(1) is NOT wrapped
+// in a try/catch, but running for real avoids any ambiguity about whether a
+// stubbed process.exit would actually stop execution.
+
+function terminalGuardFixture({ identifier, stateType, stateName }) {
+  return {
+    id: `issue-uuid-${identifier}`, identifier,
+    title: 'Terminal-state guard fixture issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: `https://linear.app/broadway-scorecard/issue/${identifier}/terminal-state-guard-fixture-issue`,
+    priority: 2,
+    state: { id: 'state-1', name: stateName, type: stateType },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('terminal-state guard: refuses dispatch when the issue is already Done (state.type === "completed")', () => {
+  const issue = terminalGuardFixture({ identifier: 'BRO-9101', stateType: 'completed', stateName: 'Done' });
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    main(['--id', ${JSON.stringify(issue.identifier)}], {
+      getIssue: async () => (${JSON.stringify(issue)}),
+      launchCmux: () => { throw new Error('launchCmux must not be called — terminal-state guard refuses before any launch attempt'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /REFUSING to dispatch BRO-9101: issue is already completed \(state "Done"\)/);
+});
+
+test('terminal-state guard: refuses dispatch when the issue is already Canceled (state.type === "canceled")', () => {
+  const issue = terminalGuardFixture({ identifier: 'BRO-9102', stateType: 'canceled', stateName: 'Canceled' });
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    main(['--id', ${JSON.stringify(issue.identifier)}], {
+      getIssue: async () => (${JSON.stringify(issue)}),
+      launchCmux: () => { throw new Error('launchCmux must not be called — terminal-state guard refuses before any launch attempt'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /REFUSING to dispatch BRO-9102: issue is already canceled \(state "Canceled"\)/);
+});
+
+test('terminal-state guard: --force overrides the refusal and proceeds to launch', () => {
+  const issue = terminalGuardFixture({ identifier: 'BRO-9103', stateType: 'completed', stateName: 'Done' });
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    main(['--id', ${JSON.stringify(issue.identifier)}, '--force'], {
+      getIssue: async () => (${JSON.stringify(issue)}),
+      launchCmux: () => { console.log('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stdout, /LAUNCHCMUX_WAS_CALLED/);
+  assert.doesNotMatch(res.stderr, /REFUSING to dispatch/);
+});
+
+test('terminal-state guard: dispatch proceeds normally for a non-terminal state (state.type === "unstarted")', () => {
+  const issue = terminalGuardFixture({ identifier: 'BRO-9104', stateType: 'unstarted', stateName: 'Todo' });
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    main(['--id', ${JSON.stringify(issue.identifier)}], {
+      getIssue: async () => (${JSON.stringify(issue)}),
+      launchCmux: () => { console.log('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stdout, /LAUNCHCMUX_WAS_CALLED/);
+  assert.doesNotMatch(res.stderr, /REFUSING to dispatch/);
+});
+
+test('terminal-state guard: does not fire on --dry-run — same side-effect-free-preview convention as the kill switch', () => {
+  const issue = terminalGuardFixture({ identifier: 'BRO-9105', stateType: 'completed', stateName: 'Done' });
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    main(['--id', ${JSON.stringify(issue.identifier)}, '--dry-run'], {
+      getIssue: async () => (${JSON.stringify(issue)}),
+      launchCmux: () => { throw new Error('launchCmux must not be called on --dry-run'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0 (dry-run preview, not a refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stdout, /would launch/);
+  assert.doesNotMatch(res.stderr, /REFUSING to dispatch/);
+});
+
 // Regression (2026-08-12): getTeam() returns states as a GraphQL connection
 // ({nodes:[...]}), and pickStateForMode crashed on it (.find is not a
 // function) — linear-brain.js create was broken on every invocation since
