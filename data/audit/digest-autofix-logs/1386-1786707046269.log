@@ -1,0 +1,9 @@
+[bsc-next] WARNING: task #1386 has a near-identical title with in_progress task #803 ("BSC Daily: Credits: ScrapingDog") — check it isn't already being worked before dispatching a duplicate.
+[bsc-next] REFUSING to dispatch #1386: no runnable verify command (acceptance criteria names no runnable command (prose only)).
+  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.
+  Fix one of:
+    1. Add a backticked safe-form command to the card's "## Acceptance criteria":
+       node --test <file>.test.mjs | npx tsc --noEmit | npx next lint | test -f <path>
+       (criteria written only in the Notion page body are invisible here — put them in the card Notes via notion-brain update)
+    2. Add "VERIFY: owner-judgment" to the card if this outcome cannot be machine-checked.
+    3. Re-run with --allow-unverifiable to dispatch anyway (recorded in the ledger).

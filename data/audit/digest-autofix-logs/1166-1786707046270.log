@@ -1,0 +1,2 @@
+[bsc-next] task #1166 already has a live Linear counterpart (BRO-212) — dispatching it from Notion risks two sessions working the same card. Use the Linear-side dispatcher instead:
+  node scripts/linear-next.js --id BRO-212
