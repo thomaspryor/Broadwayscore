@@ -739,6 +739,12 @@ on:
       - 'scripts/discover-new-shows.js'
       - 'scripts/discover-new-shows.test.mjs'
       - 'scripts/backfill-genre.js'
+      # Per-source discovery contribution telemetry + the standalone Broadway
+      # schedule coverage guard (card #1445). Test lives in
+      # tests/unit/discovery-source-coverage.test.mjs (already globbed via
+      # 'tests/**'); these two are path-listed so a solo edit triggers CI.
+      - 'scripts/lib/discovery-source-coverage.js'
+      - 'scripts/check-broadway-source-coverage.js'
       # Duplicate-show audit + the title-fragment detector it now also runs
       # (colocated *.test.mjs runs in the lib glob). Without these a solo edit
       # triggers ZERO CI.

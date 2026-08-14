@@ -2,8 +2,23 @@
 /**
  * Broadway New Show Discovery
  *
- * Discovers new Broadway shows using TodayTix API (primary) with
- * Broadway.org scraping as fallback.
+ * Discovers new Broadway shows by unioning TodayTix API + the Playbill
+ * "Schedule of Upcoming and Announced Broadway Shows" article — both run
+ * every pass, not source-B-only-if-source-A-returns-nothing. The prior
+ * Broadway.org scraper was wired as `if (discoveredShows.length === 0)`;
+ * TodayTix reliably returns ~40+ shows, so that branch never actually ran —
+ * dead code that looked like redundancy while Broadway discovery quietly
+ * depended on TodayTix alone for months (card #1445). Removed rather than
+ * revived: it was also Cloudflare-blocked more often than not, so making it
+ * a real always-on union source would have added telemetry noise without
+ * real coverage. Per-source contribution counts are recorded every run to
+ * data/audit/discovery-source-coverage.json (scripts/lib/discovery-source-coverage.js)
+ * so a source going silent is a detected defect, not silent rot.
+ *
+ * scripts/check-broadway-source-coverage.js is the independent check that
+ * this union itself isn't missing shows: it diffs the same Playbill
+ * schedule against shows.json and alerts on anything Playbill has that we
+ * don't.
  *
  * IMPORTANT — WE/London date handling:
  * TodayTix and Official London Theatre (OLT) return `startDate` = first preview/performance,
@@ -87,9 +102,6 @@ const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 const CANDIDATES_PATH = path.join(__dirname, '..', 'data', 'show-score-candidates.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
-
-// Broadway.org shows page
-const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
 
 // Non-theater content patterns — shared across all markets (Broadway, OB, West End)
 const NON_THEATER_PATTERNS = [
@@ -1678,112 +1690,6 @@ function saveShows(data) {
   showsWriteGuard.saveShows(data);
 }
 
-async function fetchShowsFromBroadwayOrg() {
-  console.log(`Fetching Broadway.org shows page...`);
-
-  // Use shared scraper with automatic fallback
-  const result = await fetchPage(BROADWAY_ORG_URL);
-
-  console.log(`Received ${result.format} content from ${result.source}`);
-  console.log('Parsing show data...');
-
-  // Parse HTML with JSDOM
-  const dom = new JSDOM(result.content);
-  const document = dom.window.document;
-
-  const showsList = [];
-
-  // Try finding h4 headings (show titles)
-  const h4s = Array.from(document.querySelectorAll('h4'));
-  console.log(`Found ${h4s.length} h4 headings`);
-
-  if (h4s.length > 0) {
-    h4s.forEach(h4 => {
-      const title = h4.textContent.trim();
-      if (!title || title.length < 3) return;
-
-      // Find container
-      let container = h4.closest('div');
-      if (container && container.parentElement) {
-        container = container.parentElement;
-      }
-
-      const text = container?.textContent || '';
-      const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
-      // Broadway.org's venue link is sometimes absent from the container —
-      // same #994-class leak, guarded instead of resurrected via `|| 'TBA'`
-      // (card #1060). This fallback path only runs when TodayTix returns
-      // nothing, so deferring is the same "polled fresh next run" story.
-      const venue = sanitizeVenueForWrite(venueLink?.textContent?.trim());
-      if (!venue) {
-        if (verbose) console.log(`  [SKIP] "${title}" — Broadway.org has no resolvable venue, deferring to next run (card #1060)`);
-        return;
-      }
-
-      // Extract dates from text
-      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-
-      if (!showsList.find(s => s.title === title)) {
-        showsList.push({
-          title,
-          venue,
-          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-          openingDate: beginsMatch ? beginsMatch[1] : null,
-          closingDate: throughMatch ? throughMatch[1] : null
-        });
-      }
-    });
-  } else {
-    // Fallback: try to find show links
-    const showLinks = Array.from(document.querySelectorAll('a[href^="/shows/"]'));
-    console.log(`Found ${showLinks.length} show links`);
-
-    for (const link of showLinks) {
-      const href = link.getAttribute('href');
-      if (!href || href === '/shows/') continue;
-
-      const slug = href.replace('/shows/', '');
-      const h4 = link.querySelector('h4');
-      if (!h4) continue;
-
-      const title = h4.textContent.trim();
-      if (!title || title.length < 3) continue;
-
-      let container = link.closest('div');
-      if (container && container.parentElement) {
-        container = container.parentElement;
-      }
-
-      const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
-      // Same #994-class leak as the h4-heading branch above — guard instead
-      // of `|| 'TBA'` (card #1060).
-      const venue = sanitizeVenueForWrite(venueLink?.textContent?.trim());
-      if (!venue) {
-        if (verbose) console.log(`  [SKIP] "${title}" — Broadway.org has no resolvable venue, deferring to next run (card #1060)`);
-        continue;
-      }
-      const text = container?.textContent || '';
-
-      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-
-      if (!showsList.find(s => s.title === title)) {
-        showsList.push({
-          title,
-          venue,
-          slug,
-          openingDate: beginsMatch ? beginsMatch[1] : null,
-          closingDate: throughMatch ? throughMatch[1] : null
-        });
-      }
-    }
-  }
-
-  console.log(`Extracted ${showsList.length} shows from Broadway.org`);
-  return showsList;
-}
-
 async function discoverShows() {
   console.log('='.repeat(60));
   console.log(includeWestEnd ? 'BROADWAY + WEST END SHOW DISCOVERY' : 'BROADWAY SHOW DISCOVERY');
@@ -1796,42 +1702,38 @@ async function discoverShows() {
   console.log(`Existing shows in database: ${data.shows.length}`);
   console.log('');
 
-  // Primary: TodayTix API (public JSON, no Cloudflare)
-  // Fallback: Broadway.org scraping (often blocked by Cloudflare)
+  // Per-source candidate counts for this run, written to
+  // data/audit/discovery-source-coverage.json at the end (card #1445). Every
+  // source that runs records its count here, INCLUDING zero and INCLUDING a
+  // source that threw — a source going silent is a defect signal, not noise
+  // we swallow in a catch block.
+  const sourceCounts = {};
+
+  // Broadway union: TodayTix API + Playbill schedule article both run every
+  // pass — no source is gated behind another returning zero (card #1445; the
+  // prior Broadway.org fallback was dead code for exactly that reason).
   let discoveredShows;
   try {
     discoveredShows = await fetchShowsFromTodayTix();
+    sourceCounts.todaytix = discoveredShows.length;
     console.log(`Found ${discoveredShows.length} shows via TodayTix API`);
   } catch (e) {
-    console.log(`TodayTix API failed (${e.message}), falling back to Broadway.org...`);
+    console.log(`TodayTix API failed (${e.message})`);
+    sourceCounts.todaytix = 0;
     discoveredShows = [];
-  }
-
-  if (discoveredShows.length === 0) {
-    try {
-      discoveredShows = await fetchShowsFromBroadwayOrg();
-      console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
-      if (discoveredShows.length === 0) {
-        console.error('ERROR: Both TodayTix API and Broadway.org returned 0 shows.');
-        process.exitCode = 1;
-      }
-    } catch (e) {
-      console.error('ERROR: Both sources failed. TodayTix API and Broadway.org:', e.message);
-      process.exitCode = 1;
-      return { newShows: [], count: 0 };
-    }
   }
   console.log('');
 
-  // Broadway: Playbill schedule article — supplements TodayTix/Broadway.org
-  // with a source that publishes real openingDate values and dedicated venue
-  // pages don't cover a subscription-house-style gap for (card #1426).
+  // Broadway: Playbill schedule article — supplements TodayTix with a
+  // source that publishes real openingDate values and covers a
+  // subscription-house-style gap dedicated venue pages don't (card #1426).
   // Flat-pushed into discoveredShows so the existing checkForDuplicate /
   // findSameTitleTwinIfNoOpeningDate path adjudicates dups — no custom dedup
   // layer, same reasoning as the OB block below.
   const BROADWAY_SCHEDULE_CAP = 30;
   try {
     const playbillBroadwayShows = await fetchShowsFromPlaybillBroadway();
+    sourceCounts.playbillBroadway = playbillBroadwayShows.length;
     if (playbillBroadwayShows.length > BROADWAY_SCHEDULE_CAP) {
       console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Aborting.`);
       process.exitCode = 1;
@@ -1839,6 +1741,7 @@ async function discoverShows() {
     }
     discoveredShows.push(...playbillBroadwayShows);
   } catch (e) {
+    sourceCounts.playbillBroadway = 0;
     console.log(`⚠️  Playbill Broadway schedule failed (${e.message}), continuing with other sources`);
   }
   console.log('');
@@ -1857,6 +1760,7 @@ async function discoverShows() {
   if (includeOffBroadway) {
     try {
       const playbillOBShows = await fetchShowsFromPlaybillOB();
+      sourceCounts.playbillOB = playbillOBShows.length;
       if (playbillOBShows.length > OB_VENUE_CAP) {
         console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
         process.exitCode = 1;
@@ -1864,6 +1768,7 @@ async function discoverShows() {
       }
       discoveredShows.push(...playbillOBShows);
     } catch (e) {
+      sourceCounts.playbillOB = 0;
       console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
     }
     // OB venue listings — fan out to scrapeVenueListing per venue, capture
@@ -1896,9 +1801,11 @@ async function discoverShows() {
           console.log(`  ${v.name}: failed (${r.reason?.message})`);
         }
       }
+      sourceCounts.obVenueListings = all.length;
       if (all.length > 0 && !dryRun) writeStagingCandidates(all);
       else if (dryRun) console.log(`  (dry-run: would stage ${all.length} candidates)`);
     } catch (e) {
+      sourceCounts.obVenueListings = 0;
       console.log(`⚠️  OB venue scraping failed (${e.message}), continuing with other sources`);
     }
     console.log('');
@@ -1964,6 +1871,12 @@ async function discoverShows() {
     logWESourceDivergence(todayTixWEShows, oltShows);
     logLTSourceDivergence(todayTixWEShows, oltShows, ltShows);
 
+    sourceCounts.todaytixWE = todayTixWEShows.length;
+    sourceCounts.olt = oltShows.length;
+    sourceCounts.theatremonkey = tmShows.length;
+    sourceCounts.londonTheatre = ltShows.length;
+    sourceCounts.oweVenues = venueShows.length;
+
     // TodayTix first (richer metadata), OLT second, TM third, LT fourth, venue pages last — dedup prefers earlier entries
     discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows, ...venueShows);
     console.log('');
@@ -1992,6 +1905,7 @@ async function discoverShows() {
       }
 
       const ssValidated = await consumeShowScoreCandidatesFile();
+      sourceCounts.showScoreCandidates = ssValidated.length;
       if (ssValidated.length > 0) {
         // Track ShowScore URLs for post-save assignment
         for (const s of ssValidated) {
@@ -2001,9 +1915,36 @@ async function discoverShows() {
         console.log(`Added ${ssValidated.length} ShowScore candidates to discovery pipeline`);
       }
     } catch (e) {
+      sourceCounts.showScoreCandidates = 0;
       console.log(`⚠️  ShowScore candidate processing failed (continuing without): ${e.message}`);
     }
     console.log('');
+  }
+
+  // Per-source contribution telemetry (card #1445): record this run's
+  // candidate counts, including zero, so a source going silent for
+  // consecutive runs is a detected defect instead of quiet rot (the
+  // TodayTix-only-for-months incident this guards against). Fail-soft —
+  // telemetry writing itself must never block discovery. Gated on !dryRun
+  // (same contract as check-broadway-source-coverage.js's --dry-run) so a
+  // dry-run invocation can't advance the real zeroStreak/totalRuns state.
+  if (!dryRun) {
+    try {
+      const { recordDiscoveryRun } = require('./lib/discovery-source-coverage');
+      const { silentSources } = recordDiscoveryRun(sourceCounts);
+      if (silentSources.length > 0) {
+        console.error(`::error::Discovery source(s) contributing 0 for ${silentSources.map(s => `${s.name} (${s.zeroStreak} runs)`).join(', ')} — possible source outage.`);
+        process.exitCode = 1;
+        const { sendAlert } = require('./lib/discord-notify');
+        await sendAlert({
+          severity: 'error',
+          title: `Discovery source coverage: ${silentSources.length} source(s) gone silent`,
+          description: silentSources.map(s => `**${s.name}**: 0 candidates for ${s.zeroStreak} consecutive runs (last non-zero: ${s.lastNonZeroAt || 'never'})`).join('\n'),
+        });
+      }
+    } catch (e) {
+      console.log(`⚠️  Source-coverage telemetry failed (${e.message}), continuing`);
+    }
   }
 
   // Find new shows not in our database using improved duplicate detection
