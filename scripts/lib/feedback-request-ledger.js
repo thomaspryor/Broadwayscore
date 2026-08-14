@@ -51,6 +51,13 @@ function buildEntry(action, { submissionId, issueNumber, requestedAt, message, s
     issueNumber: issueNumber || null,
     submissionId: submissionId || null,
     requestedShowField: show || null,
+    // Only content-fix entries carry these (existing-content-is-wrong asks,
+    // as opposed to missing-show/missing-reviews/missing-image content
+    // ADDITIONS). `contentErrorType` picks which evaluateEntry() rule below
+    // applies; `expected` is that rule's own structured claim (outlet, name,
+    // ceremony...) — never free text, so re-checking never has to parse prose.
+    contentErrorType: action.contentErrorType || null,
+    expected: action.expected || null,
     // Capped. This file is committed to a PUBLIC repo, and a submitter can type
     // anything into a free-text box. The same message is already posted verbatim
     // into a public GitHub issue by the issue-creation step, so the incremental
@@ -153,9 +160,99 @@ function evaluateEntry(entry, live) {
     return { satisfied: false, evidence: 'still no hero image in production', reviews: [] };
   }
 
+  if (entry.kind === 'content-fix') {
+    return evaluateContentFix(entry, live, reviews);
+  }
+
   // Unknown kind: never claim satisfied. A wrong "it's fixed!" email is worse
   // than another day of waiting — it is how a request gets closed unfixed.
   return { satisfied: false, evidence: `no live-check rule for kind "${entry.kind}"`, reviews: [] };
+}
+
+/** Case/whitespace-insensitive outlet name match — "BroadwayWorld" vs "broadwayworld ". */
+function sameOutlet(a, b) {
+  return typeof a === 'string' && typeof b === 'string' &&
+    a.trim().toLowerCase() === b.trim().toLowerCase();
+}
+
+/**
+ * The "Manual Fix Needed" content-error asks (2026-08-13, task #1440 audit of
+ * ~/Documents/claude-outputs/feedback-form-audit-2026-08-13.md): reports that
+ * EXISTING site content is wrong, as opposed to missing-show/missing-reviews/
+ * missing-image which ask for content that doesn't exist yet. These never got
+ * the "did it actually ship?" treatment those three kinds have had since
+ * 2026-08-05 — ~10 were closed as GitHub issues despite the paired email
+ * saying the auto-fix explicitly failed, and one (Kinky Boots NJ tour, issue
+ * #150) was still broken 6 months later with nothing watching it.
+ *
+ * `entry.contentErrorType` selects the rule; `entry.expected` is that rule's
+ * structured claim, set by whatever builds the entry — never inferred from
+ * free text here, so a wrong guess can't manufacture a false "it's fixed".
+ * A type with no rule yet (or one this payload can't verify, e.g. awards
+ * data isn't in {base}/data/shows/{id}.json) reports that honestly and stays
+ * open — staleEntries() still surfaces it after STALE_AFTER_DAYS instead of
+ * the silence this whole change exists to replace.
+ */
+function evaluateContentFix(entry, live, reviews) {
+  const type = entry.contentErrorType;
+  const expected = entry.expected || {};
+
+  if (type === 'new-show-record') {
+    // The show record existing (correctly) at all is the whole ask — same
+    // bar as missing-show, for a record that had to be rebuilt from scratch.
+    return {
+      satisfied: true,
+      evidence: `live with ${reviews.length} review(s)${live.cat ? ` in ${live.cat}` : ''}`,
+      reviews: [],
+    };
+  }
+
+  if (type === 'wrong-critic-name') {
+    const match = reviews.find((r) => r && expected.outlet && sameOutlet(r.o, expected.outlet));
+    if (!match) return { satisfied: false, evidence: `no live review found yet for ${expected.outlet || 'that outlet'}`, reviews: [] };
+    if (expected.criticName && match.cn === expected.criticName) {
+      return { satisfied: true, evidence: `${expected.outlet} review now credited to ${expected.criticName}`, reviews: [] };
+    }
+    return {
+      satisfied: false,
+      evidence: `${expected.outlet} review still credited to ${match.cn || 'no byline'}, not ${expected.criticName || 'the corrected name'}`,
+      reviews: [],
+    };
+  }
+
+  if (type === 'outlet-rename') {
+    if (expected.newOutletName && reviews.some((r) => r && sameOutlet(r.o, expected.newOutletName))) {
+      return { satisfied: true, evidence: `outlet now shows as "${expected.newOutletName}"`, reviews: [] };
+    }
+    return {
+      satisfied: false,
+      evidence: `outlet still not showing as "${expected.newOutletName || 'the corrected name'}"`,
+      reviews: [],
+    };
+  }
+
+  if (type === 'single-review') {
+    const match = reviews.find((r) => r && expected.outlet && sameOutlet(r.o, expected.outlet));
+    if (match) {
+      const named = describeReview(match);
+      return { satisfied: true, evidence: `${expected.outlet} review is now live`, reviews: named ? [named] : [] };
+    }
+    return { satisfied: false, evidence: `still no ${expected.outlet || 'that'} review live`, reviews: [] };
+  }
+
+  if (type === 'wrong-award-co-winner') {
+    // Awards data (ceremony/category winners) is not in the compact live show
+    // payload this checker fetches — there is no public endpoint to verify
+    // against yet. Never guess: report the gap honestly rather than silently
+    // claiming satisfied or dropping the ask.
+    return {
+      satisfied: false,
+      evidence: 'awards data is not exposed in the live show payload — cannot auto-verify; will keep surfacing as stuck until confirmed manually',
+      reviews: [],
+    };
+  }
+
+  return { satisfied: false, evidence: `no live-check rule for content error type "${type}"`, reviews: [] };
 }
 
 /** Days between an ISO timestamp and now. Returns 0 on an unparseable date. */
@@ -208,6 +305,7 @@ module.exports = {
   entryKey,
   buildEntry,
   evaluateEntry,
+  evaluateContentFix,
   describeReview,
   newReviewsFor,
   staleEntries,
