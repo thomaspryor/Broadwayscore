@@ -1,3 +1,5 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check only — asserts editable
+// field names exist as keys on data/shows.json, pins no specific show facts.
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
