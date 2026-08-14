@@ -67,7 +67,7 @@ const USAGE = `audit-archived-in-progress.js — report (and optionally recover)
 
 Usage:
   node scripts/audit-archived-in-progress.js [--list] [--json]
-  node scripts/audit-archived-in-progress.js --fix [--dry-run] [--limit=N] [--yes]
+  node scripts/audit-archived-in-progress.js --fix [--dry-run] [--limit=N] [--yes] [--reclaim-ids=A,B]
 
   --list       print every trapped task (default prints the summary + top 15)
   --json       emit JSON instead of prose
@@ -77,6 +77,9 @@ Usage:
   --dry-run    with --fix, print the plan and write nothing
   --limit=N    with --fix, act on at most N tasks (default ${DEFAULT_FIX_LIMIT})
   --yes        required to raise --limit above ${MAX_UNCONFIRMED_FIX_LIMIT}
+  --reclaim-ids=A,B  with --fix, reclaim these specific started-and-lost tasks
+               anyway — the owner's answer after reviewing their branches.
+               Overrides ONLY the park-started guard; every other guard stands.
 
 Default mode is read-only. --fix returns work to the visible pool, which
 changes what every session's --list shows and what the backlog drain can pick
@@ -306,6 +309,21 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
     process.exitCode = 2; return;
   }
 
+  // --reclaim-ids=647,752 — the owner's answer to the one question this tool
+  // deliberately refuses to guess: "did that surviving branch's work already
+  // land?". Ids must be named explicitly, so it can never widen into a sweep,
+  // and it overrides ONLY the park-started guard.
+  const forceRaw = (argv.find((a) => a.startsWith('--reclaim-ids=')) || '').split('=')[1] || '';
+  const forceReclaimIds = new Set(forceRaw.split(',').map((s) => s.trim()).filter(Boolean));
+  if (forceReclaimIds.size) {
+    console.log(`[audit-archived-in-progress] owner-directed reclaim of ${forceReclaimIds.size} started-and-lost task(s): ${[...forceReclaimIds].join(', ')}`);
+    // A typo'd or already-drained id would otherwise print the confirming line
+    // above and then silently do nothing (review nit) — say so instead.
+    const trappedIds = new Set(trapped.map((t) => String(t.id)));
+    const unmatched = [...forceReclaimIds].filter((id) => !trappedIds.has(id));
+    if (unmatched.length) console.log(`[audit-archived-in-progress] WARN ${unmatched.length} --reclaim-ids value(s) match no trapped task and will do nothing: ${unmatched.join(', ')}`);
+  }
+
   const archiveDir = path.join(dir, 'archive');
   const liveTasks = readLiveTasks(dir);
   const refs = gitRefSources(repoRoot);
@@ -362,6 +380,7 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
     liveTabOf,
     cardOf: fetchCard,
     now: Date.now(),
+    forceReclaimIds,
   });
 
   const byAction = decisions.reduce((acc, d) => { (acc[d.action] = acc[d.action] || []).push(d); return acc; }, {});
