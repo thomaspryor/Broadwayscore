@@ -49,7 +49,7 @@
  *   node scripts/linear-next.js --id BRO-123 --tab           force a cmux tab (overrides --headless)
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
- *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency guards
+ *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
@@ -103,7 +103,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --tab            force a cmux tab (overrides --headless)
   node scripts/linear-next.js --list                        list open BRO issues, priority-sorted
   node scripts/linear-next.js --id BRO-123 --model opus     override the resolved model
-  node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency guards
+  node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
@@ -229,30 +229,29 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
+  // Terminal-state guard (task #1517, BRO-247 incident root cause): refuse
+  // outright rather than silently self-healing through the archive dance
+  // (task #1510) every time. Checked after --dry-run/--print-prompt (which
+  // stay side-effect-free previews even for a terminal issue — matching
+  // bsc-next.js's completedLaunchGuard, which self-exempts the same two
+  // flags, and this file's own documented "--list/--dry-run still work"
+  // kill-switch contract) but before every other launch gate below — an
+  // already-Done/Canceled issue should never reach the verify/idempotency
+  // gates that assume a live, dispatchable issue.
+  if (!args.force) {
+    const terminalRefusal = ld.checkTerminalStateGuard(issue);
+    if (terminalRefusal) {
+      console.error(`[linear-next] ${terminalRefusal}`);
+      process.exit(1);
+    }
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should
   // learn "the dispatcher is off" first, not "no verify command".
   if (process.env.LINEAR_NEXT_DISABLED === '1') {
     console.error('[linear-next] LINEAR_NEXT_DISABLED=1 — this dispatcher is switched off (cmux and headless both); rerun once it is re-enabled.');
-    process.exit(1);
-  }
-
-  // Terminal-state guard (task #1517): refuse to dispatch an issue that is
-  // already Done/Canceled. This is the actual root cause behind the BRO-247
-  // incident (task #1510) — a closed, archived issue got re-dispatched
-  // anyway, and the archived-issue write failed with a cryptic 'Entity not
-  // found: Issue' error. #1510 made that failure self-heal (unarchive and
-  // retry) but deliberately left this dispatch-time guard for a follow-up —
-  // without it, re-dispatching a terminal issue silently self-heals through
-  // the archive dance every time instead of refusing outright. Checked after
-  // --dry-run/--print-prompt (same convention as the kill switch above: those
-  // stay side-effect-free previews) but before every other gate.
-  // buildIssueQuery (linear-dispatch.js) already fetches state { id name
-  // type } on every getIssue() call, so this needs no extra request.
-  if (!args.force && issue.state && (issue.state.type === 'completed' || issue.state.type === 'canceled')) {
-    console.error(`[linear-next] REFUSING to dispatch ${identifier}: issue is already ${issue.state.type} (state "${issue.state.name || '?'}").`);
-    console.error(`  Re-run with --force if you deliberately want to re-open and re-dispatch it.`);
     process.exit(1);
   }
 
