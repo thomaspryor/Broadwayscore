@@ -10,6 +10,7 @@ scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-standing-coverage.test.mjs
+scripts/audit-venue-complex-slugs.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-parity.test.mjs
 scripts/autonomous-merge.test.mjs
@@ -75,6 +76,7 @@ tests/unit/announced-promotion.test.mjs
 tests/unit/archive-row-outlet-id.test.mjs
 tests/unit/article-extractor-multi-article.test.mjs
 tests/unit/article-extractor-publish-date-scoping.test.mjs
+tests/unit/assert-broadcast-step-order.test.mjs
 tests/unit/atomic-shows-write.test.mjs
 tests/unit/audience-buzz-write-guard.test.mjs
 tests/unit/audience-coverage-gaps.test.mjs
@@ -208,6 +210,7 @@ tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/feedback-owner-reports.test.mjs
+tests/unit/feedback-pipeline-fields.test.mjs
 tests/unit/feedback-request-ledger.test.mjs
 tests/unit/feedback-run-report.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs

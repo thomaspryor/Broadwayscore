@@ -18,6 +18,23 @@ const { normalizeOutlet, normalizeCritic, mergeReviews } = require('./lib/review
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+
+// ─── Lazy-loaded show record map for mergeReviews' wrong-production URL-swap
+// guard (#1478) ───
+let _showByIdCache = null;
+function _getShowById(showId) {
+  if (!_showByIdCache) {
+    try {
+      const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
+      _showByIdCache = {};
+      for (const s of shows) if (s.id) _showByIdCache[s.id] = s;
+    } catch {
+      _showByIdCache = {};
+    }
+  }
+  return _showByIdCache[showId] || null;
+}
 const BACKUP_DIR = path.join(__dirname, '..', 'data', 'audit', 'cleanup-backups');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'source-cleanup-report.json');
 
@@ -329,7 +346,7 @@ function pass4_sameShowDedup(reviews) {
         backupFile(winner.filePath);
         backupFile(loser.filePath);
 
-        const merged = mergeReviews(winner.data, loser.data);
+        const merged = mergeReviews(winner.data, loser.data, {}, { script: 'cleanup-review-sources', showId, show: _getShowById(showId) });
         Object.assign(winner.data, merged);
         atomicWriteJSON(winner.filePath, winner.data);
 
@@ -379,7 +396,7 @@ function pass4_sameShowDedup(reviews) {
         backupFile(winner.filePath);
         backupFile(loser.filePath);
 
-        const merged = mergeReviews(winner.data, loser.data);
+        const merged = mergeReviews(winner.data, loser.data, {}, { script: 'cleanup-review-sources', showId, show: _getShowById(showId) });
         Object.assign(winner.data, merged);
         atomicWriteJSON(winner.filePath, winner.data);
 
