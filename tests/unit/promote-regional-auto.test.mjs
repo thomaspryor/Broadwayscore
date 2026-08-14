@@ -131,6 +131,26 @@ test('decideOffBroadwayAggregatorPromotion: non-off-broadway categories never co
   assert.equal(decideOffBroadwayAggregatorPromotion(null).confirmed, false);
 });
 
+test('decideOffBroadwayAggregatorPromotion: "The "-prefixed canonical venues confirm even after upstream strips "the " (codebase-aware review)', () => {
+  // aggregator-candidate-extract.js's cleanVenue() always strips a leading
+  // "the " from extracted venue text, but several canonical Off-Broadway
+  // venues are stored WITH it ("the shed", "the new group", ...) — a real
+  // roundup for a show at one of these venues arrives here already stripped.
+  const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: 'Shed' });
+  assert.equal(r.confirmed, true);
+  assert.match(r.reason, /canonical venue "Shed"/, 'the WRITTEN venue stays the stripped form, only the lookup is "The "-tolerant');
+});
+
+test('decideOffBroadwayAggregatorPromotion: a future-dated (bogus) articlePublishedAt does NOT confirm (codebase-aware review)', () => {
+  const r = decideOffBroadwayAggregatorPromotion({
+    ...OB_ROUNDUP_CANDIDATE,
+    articlePublishedAt: '2099-01-01T10:00:00-04:00',
+    discoveredAt: '2026-08-01T18:00:00.000Z',
+  });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /precedes articlePublishedAt/);
+});
+
 test('decideOffBroadwayAggregatorPromotion: unknown/prose-garbled venue does NOT confirm (Codex P0)', () => {
   const r = decideOffBroadwayAggregatorPromotion({ ...OB_ROUNDUP_CANDIDATE, venue: 'Some Random Room Nobody Has Heard Of' });
   assert.equal(r.confirmed, false);
