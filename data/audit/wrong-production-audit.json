@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-14T15:56:03.865Z",
+  "timestamp": "2026-08-14T20:14:36.180Z",
   "stats": {
-    "totalReviews": 42254,
+    "totalReviews": 42251,
     "alreadyFlagged": 18320,
-    "dateGuardCatches": 145,
+    "dateGuardCatches": 144,
     "directorMismatch": 965,
-    "tvFilmSignals": 1201,
+    "tvFilmSignals": 1202,
     "londonSignals": 881,
-    "offBroadwaySignals": 483,
+    "offBroadwaySignals": 484,
     "yearMismatch": 88,
     "noPublishDate": 3577
   },
@@ -1248,6 +1248,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 48,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -6173,25 +6192,6 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": 80,
-      "publishDate": "2026-08-12",
-      "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
       "file": "london-theatre--unknown.json",
       "publishDate": "2026-06-10",
       "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
@@ -6290,15 +6290,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "thestage--tom-wicker.json",
-      "score": 84,
-      "publishDate": "2024-08-21",
-      "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+      "file": "telegraph--unknown.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
         {
-          "type": "DATE_GUARD",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Published 708d before show (2024-08-21 vs 2026-07-30)"
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -35100,6 +35104,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-08-14",
+      "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "matineemouse--matinee-mouse.json",
       "score": 78,
       "publishDate": "2026-08-12",
@@ -35156,7 +35173,7 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "standard--unknown.json",
+      "file": "standard--nick-curtis.json",
       "score": 39,
       "publishDate": "2026-08-13",
       "url": "https://standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
@@ -35179,19 +35196,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "publishDate": "2026-08-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -37677,6 +37681,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": 89,
+      "publishDate": "2026-08-14",
+      "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -42271,20 +42289,6 @@
       "score": 79,
       "publishDate": null,
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15697515/Robert-Ickes-Romeo-Juliet-adaptation-receives-glowing-reviews.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": 61,
-      "publishDate": "2026-03-12",
-      "url": "https://www.theguardian.com/stage/2025/jul/09/noughts-crosses-review-malorie-blackman-racism-regents-park-open-air-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

@@ -363,6 +363,13 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/shallow-fetch-args.js'
       - 'scripts/lib/shallow-fetch-args.test.mjs'
+      # Shallow-aware landing/ancestry check (task #1489): a shallow shared
+      # checkout makes `git merge-base --is-ancestor` silently answer "not
+      # landed" for commits genuinely on main. Colocated *.test.mjs runs in
+      # the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/landing-verify.js'
+      - 'scripts/lib/landing-verify.test.mjs'
       # Unbounded-fetch lint guard (task #420): #466 fixed push-with-retry.sh's
       # own fetch, but 7 scripts hand-rolled the same fetch+rebase+push and so
       # never got that fix. The guard flags any git fetch/pull without a depth
@@ -1963,6 +1970,14 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # Intake breaker — the storm guard in front of owner-alert-router's
+      # filing path. Its test runs in the scripts/lib/*.test.mjs glob but was
+      # never path-listed, so a solo edit to either file got ZERO CI
+      # (feedback_test_yml_push_path_allowlist). That gap is not theoretical
+      # here: intake-breaker.test.mjs is the file that hung for 635s in run
+      # 31823977918 and cancelled the whole Unit Tests job.
+      - 'scripts/lib/intake-breaker.js'
+      - 'scripts/lib/intake-breaker.test.mjs'
       # headStandsAlone() clip-readability guard (card #1078) — colocated
       # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
       # this is path-listed for the same reason as owner-alert-router.js above.
@@ -2444,6 +2459,18 @@ on:
       - 'scripts/lib/linear-cap-policy.js'
       - 'scripts/check-linear-cap.js'
       - 'scripts/linear-archive-done.js'
+      # Task-to-workspace lookup (card #1465): resolves the live cmux
+      # workspace hosting a dispatched task, cross-checking dispatch-ledger's
+      # taskId->workspaceRef record against a live `cmux list-workspaces`
+      # snapshot. Colocated test runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist). The CLI entry point
+      # (scripts/message-dispatched-workspace.js) is out of infra-review-gate
+      # scope (not scripts/lib/, no dispatch-* prefix match) and has no test
+      # of its own — it's a thin shell-out wrapper around this module.
+      - 'scripts/lib/dispatched-workspace-lookup.js'
+      - 'scripts/lib/dispatched-workspace-lookup.test.mjs'
+      - 'scripts/message-dispatched-workspace.js'
   pull_request:
     branches: [main]
   schedule:
@@ -3317,7 +3344,21 @@ jobs:
     # Bumped to 10 for headroom as the suite keeps growing — see task #80 (CI
     # health: test.yml cancels under data-commit churn) for the related but
     # distinct concurrency-group flakiness this does NOT fix.
-    timeout-minutes: 10
+    #
+    # 10 -> 15 (2026-08-14). MEASURED from run 31823977918's step timings:
+    # setup+install+checkout+gold-lists 75s, "Run unit tests" batch 183s,
+    # scripts/lib glob 34s locally across 279 files — call it ~350s of real work
+    # before the remaining bash-integration and repeat steps, all of which were
+    # skipped in that run and so are unmeasured. 15 gives that headroom.
+    #
+    # The bump is NOT the fix for that run's cancellation and must not be read
+    # as one: the 644s came from ONE hung test file, not from suite growth (see
+    # the --test-timeout note on the scripts/lib step). The per-test ceilings
+    # added alongside this are what stop a wedge from consuming the budget; this
+    # number only buys room for the suite to keep growing honestly. If this job
+    # starts timing out again, find the hung test before raising it further —
+    # `# duration_ms` on the failing file in the TAP output names it directly.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -3369,13 +3410,17 @@ jobs:
           # pattern already used below for scripts/lib/*.test.mjs), which also
           # avoids $(cat ...)'s unquoted word-splitting/glob-expansion on the
           # manifest entries themselves (task #763 ship-check finding).
+          # --test-timeout: see the note on the scripts/lib step below. Without a
+          # per-test ceiling one wedged file consumes the whole job budget and
+          # the run concludes `cancelled`, which reports as a red X with no
+          # failing test named — the failure is invisible.
           mapfile -t node_tests < tests/unit-test-manifest.txt
           [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
-          node --test "${node_tests[@]}"
+          node --test --test-timeout 300000 "${node_tests[@]}"
 
           mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
           [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
-          npx tsx --test "${tsx_tests[@]}"
+          npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
@@ -3391,7 +3436,31 @@ jobs:
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
         # per CLAUDE.md §15 test-extraction pattern. Covered helpers:
         #   - scripts/lib/transcript-scan.mjs (visual-qa gate helper)
-        # 25/25 pass in <100ms; safe to run on every push.
+        #
+        # MEASURED 2026-08-14 (the "25/25 pass in <100ms" this comment used to
+        # claim was true when one helper was covered; it is now 279 files /
+        # ~3,700 tests): the glob runs in 34s wall locally. It is not slow.
+        #
+        # --test-timeout 300000 is the load-bearing part. `node --test` has NO
+        # default per-test timeout, so a single wedged file blocks until the
+        # JOB timeout fires and the runner SIGTERMs everything. Run 31823977918
+        # is the worked example: scripts/lib/intake-breaker.test.mjs hung for
+        # 635.9s (`signal: 'SIGTERM'`, `exitCode: ~`), this step burned 645s of
+        # a 10-minute budget, and the whole run concluded `cancelled` — so the
+        # `# fail 1` it did report was never surfaced and four other jobs' worth
+        # of results were thrown away. With a per-test ceiling the same hang
+        # fails as one named test and every other result survives.
+        #
+        # SIZING (corrected in run 31827505814 — the first attempt used 120s and
+        # cancelled a legitimate test, so this number is measured, not guessed):
+        # the slowest honest test is tests/unit/validate-data-push-refusal-
+        # sentinel.test.mjs, which shells out to validate-data.js against the
+        # full corpus — 52.5s locally, ~121s on a runner (CI is ~2.3x slower
+        # than the dev machine). 300s is ~2.5x that CI figure, and still less
+        # than a third of the 15-minute job budget, so a genuine hang (the 635s
+        # one above included) is still caught and NAMED rather than eating the
+        # job. Raise this only against a fresh measurement of the slowest
+        # legitimate test — not to silence a hang.
         # if: always() so a red earlier test batch (e.g. tests/unit/*) can't skip
         # this step — otherwise a new scripts/lib/*.test.mjs gets ZERO CI coverage.
         if: always()
@@ -3399,7 +3468,7 @@ jobs:
           shopt -s nullglob
           tests=(scripts/lib/*.test.mjs)
           [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          node --test "${tests[@]}"
+          node --test --test-timeout 300000 "${tests[@]}"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test

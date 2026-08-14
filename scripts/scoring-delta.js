@@ -144,6 +144,16 @@ const INCLUSION_FILES = [
   // validated by hand instead. Watch it: with this entry the same working tree
   // replays Phase A properly (verified — 42,254 reviews, 0 flips).
   'scripts/lib/stale-flag-after-url-correction.js',
+  // Historical miss (2026-08-14, third of this exact shape after date-guard.js
+  // and stale-flag-after-url-correction.js above): review-write-guard.js's
+  // safeWriteReview consumes evaluateDatePlausibility to decide whether a NEW
+  // review is quarantined as wrongProduction at ingest. A review quarantined
+  // there never reaches reviews.json, so this is an inclusion decision by the
+  // same reading that put date-guard.js on this list — the two files even share
+  // the 180-day threshold and the priorRuns/tourLegs escape hatches. It was not
+  // watched, so the dateSource: 'llm-scoring' exemption landed with this gate
+  // reporting "nothing to check".
+  'scripts/lib/date-plausibility.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but

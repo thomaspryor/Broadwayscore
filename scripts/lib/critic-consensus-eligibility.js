@@ -24,11 +24,19 @@
  * sides count identically — is wrong twice over. (a) It would be a second,
  * independently-maintained copy of the review exclusion predicate, the exact
  * shape memory/feedback_includability_predicates_must_be_canonical.md exists to
- * prevent. (b) .github/workflows/opening-night-checklist.yml checks out
- * core-data ONLY — data/review-texts/ is never present in that job — so a check
- * that counted files on disk would count zero for every show, every hour, and
- * silently disable itself site-wide. So the shared thing is the THRESHOLD; each
- * caller counts from whatever source it actually has.
+ * prevent. (b) the two sides do not have the same source to count from, so a
+ * shared loader would still not make them agree — see the count-gap note on
+ * isConsensusEligible below. So the shared thing is the THRESHOLD; each caller
+ * counts from whatever source it actually has.
+ *
+ * HISTORICAL NOTE (corrected by BRO-234, commit 4275723c6f0): reason (b) used
+ * to be stated as "opening-night-checklist.yml checks out core-data ONLY, so
+ * data/review-texts/ is never present in that job". That stopped being true —
+ * the workflow now runs checkout-review-texts, because 8 other checks under
+ * scripts/lib/opening-night-checks/ read context.reviewTextsRoot and were blind
+ * in CI without it. The conclusion is unchanged (this check counts reviews.json
+ * entries, not files on disk) but the reason is now the count gap, not absence.
+ * Do not re-derive "review-texts is absent in CI" from this file.
  */
 
 /**
