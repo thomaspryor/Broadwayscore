@@ -131,6 +131,34 @@ const NOTIFICATION_TRIGGERS = ['schedule:', 'push:', 'workflow_dispatch:', 'work
 
 const indentOf = (line) => line.length - line.replace(/^ +/, '').length;
 
+// Matches a `run:` step line, accepting both the common indented `run: |`/
+// `run: <cmd>` style and the inline `- run: <cmd>` list-item shorthand (used
+// elsewhere in this repo, e.g. .github/workflows/overnight-collect.yml:48).
+// Shared by every rule below that scans `run:` content — a fix to this
+// anchor previously had to be applied in 5 separate near-identical copies
+// (task #1461 fixed only rule (h)'s copy; #1474 unifies the rest).
+const RUN_LINE_RE = /^(?:-\s+)?run\s*:\s*(.*?)\s*$/;
+
+/**
+ * Find job block boundaries under a top-level `jobs:` map (indent-2 keys
+ * directly under `jobs:`). Returns start-line indices with `lines.length`
+ * appended as the final boundary; callers iterate [jobStarts[j], jobStarts[j+1])
+ * as each job's line range.
+ */
+function findJobBoundaries(lines, jobsIdx) {
+  const jobStarts = [];
+  for (let i = jobsIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '') continue;
+    if (indentOf(line) === 0) break;
+    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
+      jobStarts.push(i);
+    }
+  }
+  jobStarts.push(lines.length);
+  return jobStarts;
+}
+
 /** Return true if the workflow's top-level `on:` block contains any of the listed triggers. */
 function hasNotificationTrigger(raw) {
   const lines = raw.split('\n');
@@ -162,7 +190,7 @@ function runLineMatches(raw, pattern) {
     // Detect start of a `run:` block.
     // `run: |` and `run: >` are block scalars — NOT an inline command.
     // `run: echo foo` is an inline command on the same line.
-    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+    const runMatch = stripped.match(RUN_LINE_RE);
     if (runMatch) {
       const content = runMatch[1];
       const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -211,17 +239,7 @@ function findMissingGitIdentityCommits(raw) {
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return violations;
 
-  // Job blocks are indent-2 keys directly under the top-level `jobs:` map.
-  const jobStarts = [];
-  for (let i = jobsIdx + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.trim() === '') continue;
-    if (indentOf(line) === 0) break;
-    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
-      jobStarts.push(i);
-    }
-  }
-  jobStarts.push(lines.length);
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
 
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -247,7 +265,7 @@ function findMissingGitIdentityCommits(raw) {
       }
 
       let textToCheck = null;
-      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      const runMatch = stripped.match(RUN_LINE_RE);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -314,16 +332,7 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return violations;
 
-  const jobStarts = [];
-  for (let i = jobsIdx + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.trim() === '') continue;
-    if (indentOf(line) === 0) break;
-    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
-      jobStarts.push(i);
-    }
-  }
-  jobStarts.push(lines.length);
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
 
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -345,7 +354,7 @@ function findCoreFileWritesWithoutPush(raw, coreFiles) {
       }
 
       let textToCheck = null;
-      const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+      const runMatch = stripped.match(RUN_LINE_RE);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -413,16 +422,7 @@ function findDeadCommitSteps(raw) {
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return violations;
 
-  const jobStarts = [];
-  for (let i = jobsIdx + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.trim() === '') continue;
-    if (indentOf(line) === 0) break;
-    if (indentOf(line) === 2 && /^ {2}[A-Za-z0-9_.-]+\s*:\s*$/.test(line)) {
-      jobStarts.push(i);
-    }
-  }
-  jobStarts.push(lines.length);
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
 
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -441,11 +441,7 @@ function findDeadCommitSteps(raw) {
       if (stripped.startsWith('#')) continue;
 
       let textToCheck = null;
-      // Accepts both the common `- name: X` + indented `run: |` style and the
-      // inline `- run: <cmd>` list-item shorthand (e.g. `- run: git add x`) —
-      // the latter is used elsewhere in this repo and was invisible to the
-      // original `^run\s*:` anchor, a false-positive found by ship-check.
-      const runMatch = stripped.match(/^(?:-\s+)?run\s*:\s*(.*?)\s*$/);
+      const runMatch = stripped.match(RUN_LINE_RE);
       if (runMatch) {
         const content = runMatch[1];
         const isBlockScalar = /^[|>][-+]?\d*$/.test(content) || content === '';
@@ -511,7 +507,7 @@ function extractRunBlocks(raw) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const stripped = line.trimStart();
-    const runMatch = stripped.match(/^run\s*:\s*(.*?)\s*$/);
+    const runMatch = stripped.match(RUN_LINE_RE);
 
     if (runMatch) {
       const content = runMatch[1];
@@ -962,6 +958,9 @@ module.exports = {
   findCoreFileWritesWithoutPush,
   getCoreFilesFromPushAction,
   findDeadCommitSteps,
+  runLineMatches,
+  findMissingGitIdentityCommits,
+  findPipefailDeadExitCodeEcho,
 };
 
 if (require.main === module) {
