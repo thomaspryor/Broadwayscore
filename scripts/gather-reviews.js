@@ -54,7 +54,6 @@ const {
   isSuspiciousOutletId,
   AGGREGATOR_SCORE_SOURCES,
   WIRE_SERVICE_OUTLETS,
-  outletOwnsUrlDomain,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
@@ -3698,11 +3697,12 @@ function createReviewFile(showId, reviewData, options = {}) {
         const resolved = resolveOutletFromUrl(review.url);
         if (resolved && resolved.outletId !== normalizedOutletId) {
           // Allow when the attributed outlet's own registry entry claims the
-          // URL's domain — shared domains (timeout/timeout-london,
-          // telegraph/sunday-telegraph) AND domainAliases syndication
-          // (observer on theguardian.com). Same rule as the mergeReviews
-          // cross-outlet guard (outletOwnsUrlDomain).
-          if (!outletOwnsUrlDomain(normalizedOutletId, review.url)) {
+          // URL's domain — shared domains (telegraph/sunday-telegraph) AND
+          // domainAliases syndication (observer on theguardian.com). Path-split
+          // domains (timeout.com/london vs timeout.com/newyork) still refine
+          // via outletOwnsUrlDomainIgnoringPath. Same rule as the mergeReviews
+          // cross-outlet guard (isCrossOutletUrl).
+          if (!outletOwnsUrlDomainIgnoringPath(normalizedOutletId, review.url)) {
             console.log(`    ✗ Skipping ${filename}: URL domain resolves to "${resolved.outletId}" but attributed to "${normalizedOutletId}"`);
             return 'domainMismatch';
           }
