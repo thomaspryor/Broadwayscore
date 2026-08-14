@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-14T12:47:20.281Z",
+  "generatedAt": "2026-08-14T14:19:24.571Z",
   "windowDays": 1095,
-  "targets": 50,
-  "auditedThisRun": 17,
-  "carriedForward": 287,
+  "targets": 57,
+  "auditedThisRun": 26,
+  "carriedForward": 278,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 192,
-    "totalMissing": 1131,
+    "withGap": 189,
+    "totalMissing": 1094,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1273,
-    "totalRecoverable": 31,
-    "totalRecovered": 7
+    "totalFlaggedMisses": 1257,
+    "totalRecoverable": 32,
+    "totalRecovered": 8
   },
   "results": [
     {
@@ -1877,11 +1877,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 318,
+        "count": 315,
         "byReason": {
           "not-http-url": 78,
+          "aggregator-internal-nav": 218,
           "non-review-host": 16,
-          "aggregator-internal-nav": 221,
           "non-review-path": 3
         }
       },
@@ -1970,7 +1970,7 @@
         "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -3379,30 +3379,17 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
         "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
         "https://pagesonstages.com/2026/08/11/an-american-daughter/",
-        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-        "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-        "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-        "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-        "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-        "https://nyctheatreaddict.com/an-american-daughter/"
+        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html"
       ],
-      "dirFiles": 25,
-      "dirClean": 13,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 27,
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "nyctheatreaddict.com",
+          "count": 1
+        },
         {
           "host": "showriz.com",
           "count": 1
@@ -3422,23 +3409,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": true,
-          "recoverableFile": "nysr--frank-scheck.json",
-          "recoverableOutletId": "nysr",
-          "recoverableCritic": "Frank Scheck",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--frank-scheck.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
-            }
-          ]
-        },
-        {
           "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
           "host": "nystagereview.com",
           "knownOutletId": "nysr",
@@ -3453,200 +3423,68 @@
               "flag": "emptyBody",
               "urlInDir": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://theaterlife.com/an-american-daughter-1-2/",
           "host": "theaterlife.com",
           "knownOutletId": "theater-life",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theater-life--unknown.json",
+          "recoverableOutletId": "theater-life",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "theater-life--unknown.json",
-              "flag": "wrongProduction",
+              "flag": "emptyBody",
               "urlInDir": "https://theaterlife.com/an-american-daughter-1-2/"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theatermania--unknown.json",
+          "recoverableOutletId": "theatermania",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "theatermania--rachel-graham.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+            },
             {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html"
+              "file": "theatermania--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
             }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "clean",
-              "urlInDir": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/"
-            }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"An American Daughter\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"An American Daughter\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"An American Daughter\" review irene",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"An American Daughter\" Wasserstein review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "An American Daughter The Irene Diamond Stage at the Pershing Square Signature Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 10,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 113,
+        "count": 89,
         "byReason": {
           "not-http-url": 20,
-          "aggregator-internal-nav": 54,
-          "non-review-host": 31,
-          "non-review-path": 1,
-          "roundup-page": 3,
-          "venue-production-page": 1,
-          "ticketing-reseller": 3
+          "aggregator-internal-nav": 48,
+          "non-review-host": 21
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~148954/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-          "host": "nystagereview.com",
-          "file": "nysr--frank-scheck.json",
+          "url": "https://theaterlife.com/an-american-daughter-1-2/",
+          "host": "theaterlife.com",
+          "file": "theater-life--unknown.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
@@ -3655,42 +3493,20 @@
           "recoveryCount": 0
         },
         {
-          "url": "https://playbill.com/article/read-the-reviews-for-an-american-daughter-off-broadway",
-          "host": "playbill.com",
-          "file": "playbill--unknown.json",
-          "recovered": false,
+          "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
+          "host": "theatermania.com",
+          "file": "theatermania--unknown.json",
+          "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~148960/day) projects exhaustion in ~17d, before the 20d-out renewal — still u",
-          "recoveryCount": 3,
-          "uncited": true
+          "reason": null,
+          "recoveryCount": 0
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html"
-          },
-          {
-            "outletId": "stagebuddy",
-            "outlet": "stagebuddy",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/"
-          },
           {
             "outletId": "nysr",
             "outlet": "nysr",
@@ -3711,20 +3527,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html"
-          },
-          {
-            "outletId": "tickpick.com",
-            "outlet": "tickpick.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/"
           }
         ],
         "suppressedMissing": [],
@@ -3744,6 +3546,12 @@
           {
             "url": "https://www.newyorktheatreguide.com/reviews/an-american-daughter-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-14T01:02:05.257Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
+            "outletId": "nystagereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
@@ -3778,37 +3586,10 @@
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://nyctheatreaddict.com/an-american-daughter/",
-            "outletId": "nyctheatreaddict.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
             "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "interestedbystander.com",
+            "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-            "outletId": "stagebuddy",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
           {
             "url": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
@@ -3830,26 +3611,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.tickpick.com/buy-an-american-daughter-tickets-irene-diamond-stage-at-signature-theatre-9-1-26-7pm/8074538/",
-            "outletId": "tickpick.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
           }
         ],
-        "liveCount": 9,
-        "candidateCount": 16
+        "liveCount": 10,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -3884,7 +3651,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -4927,7 +4694,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159170/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4997,7 +4764,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "armory-public-tours-off-broadway-2026",
@@ -5463,7 +5230,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-14T12:47:20.281Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -5576,7 +5343,7 @@
       ],
       "dirFiles": 58,
       "dirClean": 31,
-      "inReviewsJson": 30,
+      "inReviewsJson": 31,
       "missing": [],
       "dirOnly": [
         {
@@ -5752,11 +5519,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 89,
+        "count": 88,
         "byReason": {
           "not-http-url": 20,
-          "non-review-host": 19,
-          "aggregator-internal-nav": 50
+          "aggregator-internal-nav": 49,
+          "non-review-host": 19
         }
       },
       "dedupedVariants": [
@@ -5996,7 +5763,7 @@
         "liveCount": 20,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "barbarians-v-wales-double-header-off-west-end-2026",
@@ -10327,7 +10094,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-13T15:59:02.152Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -21229,28 +20996,17 @@
         "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
         "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
         "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-        "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-        "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-        "https://www.thereviewshub.com/death-note-the-musical-barbican-theatre-london/",
-        "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
-        "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review"
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
       ],
-      "dirFiles": 45,
-      "dirClean": 28,
+      "dirFiles": 47,
+      "dirClean": 29,
       "inReviewsJson": 26,
-      "missing": [
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "knownOutletId": "playbill",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
         {
           "host": "everything-theatre.co.uk",
           "count": 1
@@ -21260,11 +21016,19 @@
           "count": 1
         },
         {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
           "host": "matineemouse.substack.com",
           "count": 1
         },
         {
           "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
           "count": 1
         },
         {
@@ -21280,29 +21044,23 @@
           "count": 1
         },
         {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stanservice.substack.com",
+          "count": 1
+        },
+        {
           "host": "telegraph.co.uk",
           "count": 2
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
           "host": "barbican.org.uk",
@@ -21365,109 +21123,22 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 16,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 107,
+        "count": 90,
         "byReason": {
           "not-http-url": 20,
           "aggregator-internal-nav": 49,
-          "non-review-host": 35,
-          "non-review-path": 1,
+          "non-review-host": 19,
           "roundup-page": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-          "host": "playbill.com",
-          "outletId": "playbill",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~148950/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "playbill",
-            "outlet": "playbill",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle"
-          },
           {
             "outletId": "barbican.org.uk",
             "outlet": "barbican.org.uk",
@@ -21505,6 +21176,12 @@
           {
             "url": "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
             "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
@@ -21557,62 +21234,6 @@
             "firstSeenAt": "2026-08-12T14:20:51.359Z"
           },
           {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/death-note-the-musical-barbican-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london",
-            "outletId": "playbill",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
             "outletId": "barbican.org.uk",
             "state": "GAP",
@@ -21620,10 +21241,10 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 19,
-        "candidateCount": 22
+        "liveCount": 14,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -28575,96 +28196,39 @@
         "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
         "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
         "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
-        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
-        "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-        "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-        "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
-        "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
-        "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-        "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-        "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-        "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-        "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-        "https://www.theartsdesk.com/theatre/game-thrones-mad-king-rsc-stratford-review-tangled-telling-origin-stories",
-        "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-        "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
-        "https://www.theguardian.com/stage/2026/aug/10/critics-weigh-up-game-of-thrones-the-mad-king-royal-shakespeare-company-george-rr-martin",
-        "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-        "https://northwestend.com/game-of-thrones-the-mad-king-rsc-stratford-upon-avon/",
-        "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon"
+        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review"
       ],
-      "dirFiles": 11,
-      "dirClean": 8,
-      "inReviewsJson": 8,
-      "missing": [
-        {
-          "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
-          "host": "polygon.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-          "host": "rsc.org.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-          "host": "perspectivemedia.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
-          "host": "yahoo.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-          "host": "aol.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://northwestend.com/game-of-thrones-the-mad-king-rsc-stratford-upon-avon/",
-          "host": "northwestend.com",
-          "knownOutletId": "north-west-end",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 17,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
         {
           "host": "broadwayworld.com",
           "count": 1
         },
         {
+          "host": "polygon.com",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "stratford-herald.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
           "count": 1
         }
       ],
@@ -28677,327 +28241,66 @@
           "recoverableFile": "times-uk--clive-davis.json",
           "recoverableOutletId": "times-uk",
           "recoverableCritic": "Clive Davis",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "times-uk--clive-davis.json",
               "flag": "emptyBody",
               "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw"
             }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--andreas-wiseman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--andreas-wiseman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-            }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Game of Thrones: The Mad King\" review shakespeare",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Game of Thrones: The Mad King\" Cooke review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 19,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 451,
+        "count": 427,
         "byReason": {
           "not-http-url": 124,
-          "aggregator-internal-nav": 267,
-          "non-review-host": 51,
-          "non-review-path": 3,
-          "roundup-page": 6
+          "aggregator-internal-nav": 266,
+          "non-review-host": 34,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
+      "recoveryResults": [
         {
-          "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
+          "host": "thetimes.com",
+          "file": "times-uk--clive-davis.json",
+          "recovered": false,
+          "skipped": false,
           "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "reason": "game-of-thrones-the-mad-king-regional-2026: https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html is already owned by weve-been-here-before-a-one-woman-musical-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/weve-been-here-before-a-one-woman-musical-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
-          "host": "polygon.com",
-          "outletId": "polygon",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-          "host": "rsc.org.uk",
-          "outletId": "rsc",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u",
+          "recoveryCount": 2
         },
         {
           "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
           "host": "thestage.co.uk",
-          "outletId": "thestage",
+          "file": "thestage--unknown.json",
+          "recovered": false,
+          "skipped": false,
           "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-          "host": "perspectivemedia.com",
-          "outletId": "perspectivemedia"
-        },
-        {
-          "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo"
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-          "host": "aol.co.uk",
-          "outletId": "aol"
-        },
-        {
-          "url": "https://northwestend.com/game-of-thrones-the-mad-king-rsc-stratford-upon-avon/",
-          "host": "northwestend.com",
-          "outletId": "north-west-end"
-        }
-      ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
-          "host": "thetimes.com",
-          "file": "times-uk--clive-davis.json"
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html"
-          },
-          {
-            "outletId": "polygon.com",
-            "outlet": "polygon.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/"
-          },
-          {
-            "outletId": "rsc.org.uk",
-            "outlet": "rsc.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
-          },
-          {
-            "outletId": "perspectivemedia.com",
-            "outlet": "perspectivemedia.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/"
-          },
-          {
-            "outletId": "yahoo.com",
-            "outlet": "yahoo.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html"
-          },
-          {
-            "outletId": "aol.co.uk",
-            "outlet": "aol.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html"
-          },
-          {
-            "outletId": "north-west-end",
-            "outlet": "north-west-end",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://northwestend.com/game-of-thrones-the-mad-king-rsc-stratford-upon-avon/"
-          },
-          {
             "outletId": "times-uk",
             "outlet": "times-uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/"
           }
         ],
         "suppressedMissing": [],
@@ -29039,125 +28342,17 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.theartsdesk.com/theatre/game-thrones-mad-king-rsc-stratford-review-tangled-telling-origin-stories",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/10/critics-weigh-up-game-of-thrones-the-mad-king-royal-shakespeare-company-george-rr-martin",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
-            "outletId": "polygon.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-            "outletId": "rsc.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-            "outletId": "perspectivemedia.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
-            "outletId": "yahoo.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.aol.co.uk/articles/game-thrones-mad-king-reviews-083632000.html",
-            "outletId": "aol.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://northwestend.com/game-of-thrones-the-mad-king-rsc-stratford-upon-avon/",
-            "outletId": "north-west-end",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
             "outletId": "times-uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
-          },
-          {
-            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://deadline.com/2026/07/game-of-thrones-mad-king-uk-1237003415/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
           }
         ],
         "liveCount": 6,
-        "candidateCount": 17
+        "candidateCount": 7
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -42120,76 +41315,13 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
-        "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
-        "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
-        "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-        "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/"
-      ],
-      "dirFiles": 9,
-      "dirClean": 5,
-      "inReviewsJson": 5,
-      "missing": [
-        {
-          "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
-          "host": "birminghamstage.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--s-norman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -42223,10 +41355,7 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
         "ran": true,
@@ -42239,8 +41368,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 3,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -42249,8 +41378,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -42259,7 +41388,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -42269,8 +41398,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -42279,7 +41408,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -42289,106 +41418,30 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
-        "byReason": {
-          "not-http-url": 8,
-          "non-review-host": 22,
-          "non-review-path": 2,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
-          "host": "birminghamstage.com",
-          "outletId": "birminghamstage",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "birminghamstage.com",
-            "outlet": "birminghamstage.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T14:24:54.437Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
-            "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
-            "outletId": "birminghamstage.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T14:22:04.271Z"
-          }
-        ],
-        "liveCount": 2,
-        "candidateCount": 5
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
@@ -42433,50 +41486,40 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
-        "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
-        "https://www.thereviewshub.com/how-the-other-half-loves-old-vic-london/",
-        "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-        "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-        "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
-        "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
-        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-        "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-        "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-        "https://theatrecat.com/2026/08/12/how-the-other-half-loves-old-vic-se1/",
-        "https://westendwilma.com/review-how-the-other-half-loves/",
-        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-        "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
-        "https://sierz.co.uk/reviews/how-the-other-half-loves-old-vic/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+        "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
         "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
         "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
-        "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812"
+        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html"
       ],
-      "dirFiles": 30,
+      "dirFiles": 31,
       "dirClean": 21,
       "inReviewsJson": 20,
-      "missing": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "britishtheatreguide.info",
           "count": 1
         },
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "sierz.co.uk",
           "count": 1
         },
         {
@@ -42490,67 +41533,28 @@
         {
           "host": "thetheatretimes.com",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "monstagigz--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
-            }
-          ],
-          "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1"
-            }
-          ],
-          "serpCensus": true
+          "host": "theatrevibe.co.uk",
+          "count": 1
         },
         {
-          "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/how-the-other-half-loves"
-            }
-          ],
-          "serpCensus": true
+          "host": "theatreandtonic.co.uk",
+          "count": 2
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 14,
+        "rowCount": 7,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -42560,11 +41564,11 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": true,
-            "rows": 7,
+            "found": false,
+            "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": true,
@@ -42582,220 +41586,38 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 14,
-        "corroborated": 9,
+        "currentRunRows": 7,
+        "corroborated": 6,
         "perSource": {
           "westendtheatre": {
             "cited": 6,
             "corroborated": 6
-          },
-          "theatre-reviews": {
-            "cited": 7,
-            "corroborated": 7
           }
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"How the Other Half Loves\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"How the Other Half Loves\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 7,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"How the Other Half Loves\" Ayckbourn review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "How the Other Half Loves The Old Vic review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 15,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 13,
-        "byReason": {
-          "non-review-host": 10,
-          "roundup-page": 2,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-how-the-other-half-loves/"
-          },
-          {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
-            "outletId": "theguardian.com",
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
+            "outletId": "independent.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/how-the-other-half-loves-old-vic-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
             "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://theatrecat.com/2026/08/12/how-the-other-half-loves-old-vic-se1/",
-            "outletId": "theatrecat.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
-            "outletId": "theatrevibe.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://sierz.co.uk/reviews/how-the-other-half-loves-old-vic/",
-            "outletId": "sierz.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
-            "outletId": "independent.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
@@ -42806,57 +41628,28 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
+            "outletId": "standard.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://lovelondonloveculture.com/2026/08/13/review-round-up-how-the-other-half-loves-old-vic-theatre/",
-            "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-how-the-other-half-loves/",
-            "outletId": "west-end-wilma",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/07/30/theatre-review-how-the-other-half-loves-at-the-old-vic-starring-roger-allam/",
-            "outletId": "monstagigz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 19
+        "liveCount": 6,
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -46244,158 +45037,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-        "https://www.offoffonline.com/offoffonline/2026/8/10/isla"
-      ],
-      "dirFiles": 3,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 18,
-        "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 13,
-          "roundup-page": 1,
-          "venue-production-page": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/"
-          },
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          },
-          {
-            "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T09:59:55.932Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -49172,11 +47840,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 387,
+        "count": 388,
         "byReason": {
           "not-http-url": 45,
+          "aggregator-internal-nav": 303,
           "non-review-host": 37,
-          "aggregator-internal-nav": 302,
           "non-review-path": 3
         }
       },
@@ -49373,7 +48041,7 @@
         "liveCount": 24,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "kavakos-conducts-dvorak-schumann-and-brahms-off-west-end-2026",
@@ -53379,7 +52047,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T12:47:20.281Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -53907,42 +52575,26 @@
       "openingDate": "2024-11-12",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending",
-        "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-        "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-        "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-        "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-        "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
-        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
-        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
         "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-        "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
-        "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
-        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
+        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
         "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-        "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
-        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
         "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
         "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
         "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
         "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/",
+        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
+        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
         "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
         "https://www.theaterscene.net/musicals/broadway/maybe-happy-ending/victor-gluck/",
         "https://www.theatrereviews.com/broadway-review-maybe-happy-ending-at-the-belasco-theatre-currently-on/",
+        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
         "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
         "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
         "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
@@ -53951,11 +52603,6 @@
       "dirClean": 36,
       "inReviewsJson": 34,
       "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
           "host": "today.com",
@@ -53977,6 +52624,18 @@
           "count": 1
         },
         {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
           "host": "frontmezzjunkies.com",
           "count": 1
         },
@@ -53985,11 +52644,27 @@
           "count": 1
         },
         {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
           "host": "newyorker.com",
           "count": 1
         },
         {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
           "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "showbiz411.com",
+          "count": 1
+        },
+        {
+          "host": "slantmagazine.com",
           "count": 1
         },
         {
@@ -53998,6 +52673,18 @@
         },
         {
           "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "usatoday.com",
           "count": 1
         },
         {
@@ -54082,13 +52769,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 389,
-        "byReason": {
-          "non-review-host": 40,
-          "aggregator-internal-nav": 298,
-          "not-http-url": 48,
-          "non-review-path": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [
         {
@@ -54101,18 +52783,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159619/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
-        },
-        {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
           "host": "today.com",
           "outletId": "today",
@@ -54122,7 +52792,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159619/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
         },
         {
           "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
@@ -54134,20 +52804,13 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159620/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "cititour",
-            "outlet": "cititour",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263"
-          },
           {
             "outletId": "today.com",
             "outlet": "today.com",
@@ -54194,64 +52857,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+            "outletId": "nytimes.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
@@ -54260,46 +52869,16 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
-            "outletId": "showbiz411.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-            "outletId": "slantmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-            "outletId": "usatoday.com",
+            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+            "outletId": "vulture.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
           },
           {
             "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
@@ -54314,16 +52893,22 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-            "outletId": "thewrap.com",
+            "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
+            "outletId": "nypost.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
-            "outletId": "vulture.com",
+            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+            "outletId": "ew.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
@@ -54344,6 +52929,12 @@
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
+            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
             "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
@@ -54353,13 +52944,6 @@
             "url": "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
             "outletId": "pagesonstages.wordpress.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-            "outletId": "cititour",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
@@ -54405,10 +52989,10 @@
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           }
         ],
-        "liveCount": 25,
-        "candidateCount": 32
+        "liveCount": 15,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-13T15:59:02.152Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -59814,89 +58398,38 @@
       "openingDate": "2024-07-11",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
-        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
-        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-        "https://thefrontrowcenter.com/2024/02/oh-mary/",
-        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
-        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
-        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
-        "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-        "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
-        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-        "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-        "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-        "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
-        "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-        "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-        "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-        "https://www.londontheatredirect.com/news/oh-mary-review",
-        "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-        "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
-        "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
-        "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-        "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-        "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-        "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-        "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-        "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-        "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
-        "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
-        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
-        "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
-        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-        "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-        "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-        "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
-        "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
-        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-        "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-        "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-        "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
-        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
         "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
-        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
         "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
-        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
-        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
         "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+        "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
         "https://www.newyorktheatreguide.com/theatre-news/news/purpose-wins-2025-pulitzer-prize-for-drama-oh-mary-named-a-finalist",
         "https://www.newyorktheatreguide.com/theatre-news/news/tituss-burgess-to-return-to-oh-mary-broadway-cast-cole-escola-sets-departure",
         "https://theaterscene.com/Oh-Mary-DD.html",
         "https://pagesonstages.wordpress.com/2024/08/29/oh-mary/",
         "https://www.interestedbystander.com/2024/07/broadway-review-cole-escolas-irreverent.html",
+        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
         "https://www.nytimes.com/2024/02/07/theater/cole-escola-oh-mary-mary-todd-lincoln.html",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KHRRIA",
         "https://www.talkinbroadway.com/page/ob/02_08_24b.html",
+        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
         "http://www.theaterscene.net/plays/offbway-plays/oh-mary/joel-benjamin/",
+        "https://thefrontrowcenter.com/2024/02/oh-mary/",
         "https://newyorktheater.me/2024/04/09/oh-mary-review-cole-escola-as-mrs-lincoln/",
+        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
         "https://twi-ny.com/2024/05/05/oh-mary/"
       ],
       "dirFiles": 80,
@@ -59904,287 +58437,70 @@
       "inReviewsJson": 33,
       "missing": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-          "host": "huffingtonpost.co.uk",
-          "knownOutletId": "huffpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
-          "host": "lbc.co.uk",
-          "knownOutletId": "lbc",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-          "host": "londonist.com",
-          "knownOutletId": "londonist",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-          "host": "loureviews.blog",
-          "knownOutletId": "loureviews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": "readaboutstuff",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://twi-ny.com/2024/05/05/oh-mary/",
           "host": "twi-ny.com",
           "knownOutletId": "this-week-in-new-york"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "digitaljournal.com",
+          "count": 1
+        },
+        {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "hollywoodreporter.com",
+          "count": 1
+        },
+        {
+          "host": "liamodell.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nj.com",
+          "count": 1
+        },
+        {
+          "host": "observer.com",
+          "count": 1
+        },
+        {
+          "host": "queerty.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "usatoday.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "clean",
-              "urlInDir": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--steven-suskin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--joshua-barone.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--adam-feldman.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.theatermania.com/broadway/reviews/oh-mary-cole-escola_95234.html"
-            },
-            {
-              "file": "theatermania--jesse-green.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/"
-            },
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/"
-            },
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--angela-thomas.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://musicaltheatrereview.com/oh-mary-creator-cole-escola-to-make-west-end-debut-in-show/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/full-casting-summer-performances-oh-mary-west-end"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
           "host": "culturesauce.com",
@@ -60203,9 +58519,9 @@
           ]
         },
         {
-          "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
+          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -60213,14 +58529,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
+              "file": "nytimes--joshua-barone.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html"
             }
           ]
         },
         {
-          "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
           "recoverable": false,
@@ -60229,6 +58545,11 @@
           "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
+            {
+              "file": "theatermania--adam-feldman.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatermania.com/broadway/reviews/oh-mary-cole-escola_95234.html"
+            },
             {
               "file": "theatermania--jesse-green.json",
               "flag": "clean",
@@ -60279,6 +58600,57 @@
               "urlInDir": "https://www.talkinbroadway.com/page/world/OhMary.html"
             }
           ]
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--steven-suskin.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
+            }
+          ]
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturesauce--thom-geier.json",
+              "flag": "clean",
+              "urlInDir": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -60288,14 +58660,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 903,
-        "byReason": {
-          "not-http-url": 115,
-          "aggregator-internal-nav": 690,
-          "non-review-host": 91,
-          "non-review-path": 6,
-          "roundup-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [
         {
@@ -60304,130 +58670,6 @@
           "matchedUrl": "https://theaterscene.com/Oh-Mary-DD.html",
           "outletId": "theater-scene",
           "reason": "same outlet \"theater-scene\" already held at theaterscene.com; theaterscene.net is a registered alias of it"
-        }
-      ],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
-          "publishDate": "2024-02-09"
-        },
-        {
-          "url": "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
-          "publishDate": "2025-12-19"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208",
-          "publishDate": "2024-02-08"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-          "host": "allthatdazzles.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-          "host": "huffingtonpost.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-          "host": "the-independent.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-          "host": "jonathanbaz.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
-          "host": "lbc.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-          "host": "londonist.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-          "host": "londontheatre1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-          "host": "londontheatredirect.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-          "host": "loureviews.blog",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-          "host": "readaboutstuff.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-          "host": "theatreweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-          "host": "whatsonstage.com",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
@@ -60449,132 +58691,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219"
-          },
-          {
-            "outletId": "huffpost",
-            "outlet": "huffpost",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1"
-          },
-          {
-            "outletId": "independent",
-            "outlet": "independent",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html"
-          },
-          {
-            "outletId": "jonathan-baz",
-            "outlet": "jonathan-baz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html"
-          },
-          {
-            "outletId": "lbc",
-            "outlet": "lbc",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/"
-          },
-          {
-            "outletId": "londonist",
-            "outlet": "londonist",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/news/oh-mary-review"
-          },
-          {
-            "outletId": "loureviews",
-            "outlet": "loureviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/"
-          },
-          {
-            "outletId": "readaboutstuff",
-            "outlet": "readaboutstuff",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london"
-          },
-          {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/"
-          },
-          {
-            "outletId": "theupcoming",
-            "outlet": "theupcoming",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/"
-          },
-          {
             "outletId": "this-week-in-new-york",
             "outlet": "this-week-in-new-york",
             "critic": "Unknown",
@@ -60586,21 +58702,7 @@
             "outlet": "culturesauce",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/"
+            "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
           },
           {
             "outletId": "nytimes",
@@ -60617,41 +58719,6 @@
             "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/"
           },
           {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/"
-          },
-          {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre"
-          },
-          {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
-          },
-          {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/"
-          },
-          {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
             "critic": "Unknown",
@@ -60664,171 +58731,36 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/02_08_24b.html"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
+          },
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-            "outletId": "queerty.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+            "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
             "outletId": "nytimes.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
-            "outletId": "broadwaynews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-            "outletId": "deadline.com",
-            "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-            "outletId": "digitaljournal.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
@@ -60837,44 +58769,8 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-            "outletId": "nj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-            "outletId": "observer.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
             "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
-            "outletId": "usatoday.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -60885,10 +58781,22 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-            "outletId": "thewrap.com",
+            "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+            "outletId": "deadline.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/theatre-news/news/purpose-wins-2025-pulitzer-prize-for-drama-oh-mary-named-a-finalist",
@@ -60927,8 +58835,38 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
             "url": "http://www.theaterscene.net/plays/offbway-plays/oh-mary/joel-benjamin/",
             "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
+            "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
@@ -60939,183 +58877,20 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-            "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+            "outletId": "cititour.com",
+            "state": "live",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
-            "outletId": "huffpost",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-            "outletId": "independent",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-            "outletId": "jonathan-baz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
-            "outletId": "lbc",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
-            "outletId": "londonist",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
-            "outletId": "loureviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-            "outletId": "readaboutstuff",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-            "outletId": "sunday-telegraph",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
-            "outletId": "theupcoming",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+            "outletId": "thewrap.com",
+            "state": "live",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
             "url": "https://twi-ny.com/2024/05/05/oh-mary/",
             "outletId": "this-week-in-new-york",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-            "outletId": "culturesauce",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
-            "outletId": "musical-theatre-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
-            "outletId": "west-end-best-friend",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -61128,14 +58903,14 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-            "outletId": "nydailynews",
+            "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+            "outletId": "nytimes",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+            "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
             "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
@@ -61154,12 +58929,33 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
           }
         ],
-        "liveCount": 31,
-        "candidateCount": 59
+        "liveCount": 16,
+        "candidateCount": 23
       },
-      "computedAt": "2026-08-13T16:56:06.359Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -65081,11 +62877,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 378,
+        "count": 375,
         "byReason": {
           "not-http-url": 39,
+          "aggregator-internal-nav": 298,
           "non-review-host": 35,
-          "aggregator-internal-nav": 301,
           "non-review-path": 3
         }
       },
@@ -65258,7 +63054,7 @@
         "liveCount": 5,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "onegin-off-broadway-2026",
@@ -65301,38 +63097,25 @@
       "openingDate": "2025-03-20",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-operation-mincemeat-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.broadwaynews.com/the-broadway-review-operation-mincemeat-is-a-gleeful-mi5-inspired-romp/",
-        "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
-        "https://cititour.com/NYC_Broadway/Operation-Mincemeat/1287",
-        "https://www.thedailybeast.com/operation-mincemeat-review-seasons-most-surprising-showstopper-lands-on-broadway/",
-        "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
-        "https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/",
-        "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
-        "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
-        "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
-        "https://nystagereview.com/2025/03/20/operation-mincemeat-satirical-wartime-musical-successfully-invades-broadway/",
-        "https://nystagereview.com/2025/03/20/operation-mincemeat-a-comical-slice-of-world-war-ii-lore/",
-        "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/operation-mincemeat-broadway-review",
         "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
-        "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
-        "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
-        "https://www.theatrely.com/post/spinning-a-military-operation-into-musical-comedy-gold-in-operation-mincemeat-review",
+        "https://www.newyorktheatreguide.com/reviews/operation-mincemeat-broadway-review",
         "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+        "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
         "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
         "https://variety.com/2025/legit/reviews/operation-mincemeat-review-broadway-musical-1236343736/",
-        "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
-        "https://www.thewrap.com/operation-mincemeat-broadway-review/",
+        "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
+        "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
         "https://www.newyorktheatreguide.com/theatre-news/interviews/jak-malone-on-being-a-tony-nominee-for-his-broadway-debut-in-operation-mincemeat",
         "https://www.usatoday.com/story/entertainment/music/2025/05/14/operation-mincemeat-broadway-fact-check/82224626007/",
+        "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
+        "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
         "https://www.talkinbroadway.com/page/world/OperationMincemeat.html",
         "https://www.theaterscene.net/musicals/broadway/operation-mincemeat/victor-gluck/",
         "https://www.theatrereviews.com/broadway-review-operation-mincemeat-at-the-john-golden-theatre-through-monday-august-18-2025/",
+        "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
+        "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
         "https://pagesonstages.com/2025/05/10/operation-mincemeat/"
       ],
       "dirFiles": 47,
@@ -65345,12 +63128,32 @@
           "count": 1
         },
         {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
           "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "forward.com",
           "count": 1
         },
         {
           "host": "frontmezzjunkies.com",
           "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 2
         },
         {
           "host": "slantmagazine.com",
@@ -65363,26 +63166,21 @@
         {
           "host": "theaterlife.com",
           "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/"
-            }
-          ]
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
           "host": "timeout.com",
@@ -65447,25 +63245,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 404,
+        "count": 1,
         "byReason": {
-          "non-review-host": 41,
-          "aggregator-internal-nav": 307,
-          "not-http-url": 53,
-          "non-review-path": 3
+          "aggregator-internal-nav": 1
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -65491,68 +63279,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.broadwaynews.com/the-broadway-review-operation-mincemeat-is-a-gleeful-mi5-inspired-romp/",
-            "outletId": "broadwaynews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Operation-Mincemeat/1287",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/operation-mincemeat-review-seasons-most-surprising-showstopper-lands-on-broadway/",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/",
-            "outletId": "forward.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T14:18:07.998Z"
-          },
-          {
-            "url": "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/03/20/operation-mincemeat-satirical-wartime-musical-successfully-invades-broadway/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/03/20/operation-mincemeat-a-comical-slice-of-world-war-ii-lore/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
-            "outletId": "newyorktheater.me",
+            "url": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -65563,28 +63291,10 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
+            "outletId": "vulture.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
-            "outletId": "observer.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/spinning-a-military-operation-into-musical-comedy-gold-in-operation-mincemeat-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
           },
           {
             "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
@@ -65599,20 +63309,32 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
-            "outletId": "washingtonpost.com",
+            "url": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/",
+            "outletId": "observer.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thewrap.com/operation-mincemeat-broadway-review/",
-            "outletId": "thewrap.com",
+            "url": "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
+            "outletId": "nypost.com",
             "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/theatre-news/interviews/jak-malone-on-being-a-tony-nominee-for-his-broadway-debut-in-operation-mincemeat",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -65635,11 +63357,16 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
-            "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
-            "outletId": "nydailynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+            "url": "https://newyorktheater.me/2025/03/20/operation-mincemeat-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/03/20/operation-mincemeat-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
@@ -65663,10 +63390,10 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 22,
-        "candidateCount": 26
+        "liveCount": 14,
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-13T15:59:02.152Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -69151,7 +66878,7 @@
         "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "pepper-slit-live-in-her-living-room-off-broadway-2026",
@@ -71246,9 +68973,7 @@
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
-        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
-        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
-        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031"
+        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/ragtime-broadway-revival-review-2025/",
@@ -71282,7 +69007,6 @@
         "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
         "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
         "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
-        "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
         "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K",
         "https://www.talkinbroadway.com/page/world/Ragtime2025.html",
@@ -71304,6 +69028,10 @@
       "dirOnly": [
         {
           "host": "americamagazine.org",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
           "count": 1
         },
         {
@@ -71400,22 +69128,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 876,
+        "count": 215,
         "byReason": {
-          "not-http-url": 186,
-          "non-review-host": 80,
-          "aggregator-internal-nav": 604,
-          "non-review-path": 6
+          "not-http-url": 8,
+          "aggregator-internal-nav": 163,
+          "non-review-host": 44
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
-          "publishDate": "2024-10-31"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031",
           "publishDate": "2024-10-31"
         }
       ],
@@ -71430,7 +69153,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~159172/day) projects exhaustion in ~16d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -71650,12 +69373,6 @@
             "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
-            "url": "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
             "outletId": "nypost.com",
             "state": "live",
@@ -71715,10 +69432,10 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 26,
-        "candidateCount": 31
+        "liveCount": 25,
+        "candidateCount": 30
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -72182,7 +69899,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-13T14:24:54.437Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "roller-rink-at-electric-summer-off-west-end-2026",
@@ -83562,11 +81279,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 774,
+        "count": 771,
         "byReason": {
           "not-http-url": 92,
+          "aggregator-internal-nav": 601,
           "non-review-host": 72,
-          "aggregator-internal-nav": 604,
           "non-review-path": 6
         }
       },
@@ -84007,7 +81724,7 @@
         "liveCount": 26,
         "candidateCount": 39
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -91085,7 +88802,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T12:47:20.281Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -92433,11 +90150,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 383,
+        "count": 381,
         "byReason": {
           "not-http-url": 47,
+          "aggregator-internal-nav": 296,
           "non-review-host": 35,
-          "aggregator-internal-nav": 298,
           "non-review-path": 3
         }
       },
@@ -92704,7 +90421,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "the-karate-kid-the-musical-west-end-2026",
@@ -100855,85 +98572,16 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Winter's Tale\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Winter's Tale\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Winter's Tale\" review delacorte",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Winter's Tale\" Shakespeare review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Winter's Tale Delacorte Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 342,
+        "count": 326,
         "byReason": {
           "not-http-url": 87,
-          "aggregator-internal-nav": 226,
-          "non-review-host": 24,
-          "non-review-path": 3,
-          "venue-production-page": 1,
-          "ticketing-reseller": 1
+          "aggregator-internal-nav": 221,
+          "non-review-host": 15,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
@@ -100945,7 +98593,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T09:59:55.932Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "this-is-rambert-west-end-2026",
@@ -107913,11 +105561,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 661,
+        "count": 663,
         "byReason": {
           "not-http-url": 86,
+          "aggregator-internal-nav": 518,
           "non-review-host": 53,
-          "aggregator-internal-nav": 516,
           "non-review-path": 6
         }
       },
@@ -108133,7 +105781,7 @@
         "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-13T12:49:37.936Z"
+      "computedAt": "2026-08-14T14:19:24.571Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
