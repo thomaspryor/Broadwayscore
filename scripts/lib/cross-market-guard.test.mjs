@@ -10,6 +10,7 @@ const {
   isUsVenueString,
   evaluateReverseLondonCrossMarketGuard,
   evaluateForwardCrossMarketGuard,
+  evaluateUrlPathCrossMarketGuard,
 } = require('./cross-market-guard.js');
 
 const D = (s) => new Date(s + 'T00:00:00Z');
@@ -386,6 +387,94 @@ test('evaluateForwardCrossMarketGuard: a London outlet is still skip-exempted re
     canonicalOutlet: 'guardian',
     rawOutlet: 'guardian',
     url: 'https://www.theguardian.com/stage/some-review',
+    reviewDate: D('2025-08-09'),
+    priorRuns: null,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+// Card #1532 (3rd cousin of BRO-222/#1528): the URL-PATH cross-market guard
+// (rebuild-all-reviews.js [GUARD:URL-PATH-CROSS-MARKET]) flags wrongProduction
+// from the review URL's path text (e.g. '/broadway-review/', '/chicago-' on a
+// WE show; '/west-end-review/', '/london/' on a Broadway/OB show) and, like
+// the other two guards before their fixes, never consulted show.priorRuns.
+
+test('evaluateUrlPathCrossMarketGuard: US URL-path indicator on a show whose priorRun venue is US is NOT flagged when in-window', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Cadillac Palace Theatre, Chicago' }];
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true, // e.g. urlPath matched /\/(chicago|national-tour)[-/]/
+    oppositeMarket: 'us',
+    reviewDate: D('2025-08-09'), // inside the declared Chicago tryout window
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, true);
+});
+
+test('evaluateUrlPathCrossMarketGuard: same URL-path signal WITHOUT priorRuns passed is still flagged (proves the fix, not a tautology)', () => {
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true,
+    oppositeMarket: 'us',
+    reviewDate: D('2025-08-09'),
+    // priorRuns omitted — mirrors pre-fix behavior
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateUrlPathCrossMarketGuard: in-window date but a WRONG-market (UK) priorRun venue is still flagged for a US-implying URL-path', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Bridge Theatre, London' }];
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true,
+    oppositeMarket: 'us',
+    reviewDate: D('2025-08-09'),
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateUrlPathCrossMarketGuard: a date OUTSIDE the declared priorRun window is still flagged', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Cadillac Palace Theatre, Chicago' }];
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true,
+    oppositeMarket: 'us',
+    reviewDate: D('2026-06-14'), // outside every declared window
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateUrlPathCrossMarketGuard: UK URL-path indicator on a show whose priorRun venue is UK is NOT flagged when in-window (opposite direction)', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Bridge Theatre, London' }];
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true, // e.g. urlPath matched /[-/](west-end-review|london-review|london[-/])/
+    oppositeMarket: 'uk',
+    reviewDate: D('2025-08-09'),
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, false);
+  assert.equal(r.exemptedByPriorRun, true);
+});
+
+test('evaluateUrlPathCrossMarketGuard: in-window date but a WRONG-market (US) priorRun venue is still flagged for a UK-implying URL-path', () => {
+  const priorRuns = [{ openingDate: '2025-08-01', closingDate: '2025-08-10', venue: 'Playwrights Horizons (Off-Broadway)' }];
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: true,
+    oppositeMarket: 'uk',
+    reviewDate: D('2025-08-09'),
+    priorRuns,
+  });
+  assert.equal(r.shouldFlag, true);
+  assert.equal(r.exemptedByPriorRun, false);
+});
+
+test('evaluateUrlPathCrossMarketGuard: no URL-path indicator at all is never flagged, regardless of priorRuns', () => {
+  const r = evaluateUrlPathCrossMarketGuard({
+    urlPathImpliesOppositeMarket: false,
+    oppositeMarket: 'us',
     reviewDate: D('2025-08-09'),
     priorRuns: null,
   });
