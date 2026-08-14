@@ -219,13 +219,16 @@ const ShowListCard = memo(function ShowListCard({
             {show.previewsStartDate && <>Previews {formatOpeningDate(show.previewsStartDate)}</>}
             {show.previewsStartDate && show.openingDate && ' · '}
             {show.openingDate && <>Opens {formatOpeningDate(show.openingDate)}</>}
-            {!show.previewsStartDate && !show.openingDate && 'Dates TBA'}
+            {!show.previewsStartDate && !show.openingDate && 'TBA'}
           </>
         ) : show.status === 'announced' ? (
+          // Plain "TBA" in the date slot, not a sentence. An announced show with
+          // no dates still belongs in its category list; it just has nothing to
+          // print where a date goes (owner, 2026-08-13).
           <span className="text-blue-400">
             {show.openingDate ? <>Opens {formatOpeningDate(show.openingDate)}</>
               : show.previewsStartDate ? <>Previews {formatOpeningDate(show.previewsStartDate)}</>
-              : 'Announced — dates TBA'}
+              : 'TBA'}
           </span>
         ) : show.status === 'closed' ? (
           <span className="text-orange-400">{(() => {
