@@ -129,7 +129,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -138,7 +138,8 @@
       "lastNotifiedAt": "2026-08-14T18:22:35.301Z",
       "notifyCount": 30,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-14T18:42:43.696Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -233,12 +234,12 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-14T17:43:35.810Z",
-      "lastNotifiedAt": "2026-08-13T21:44:54.462Z",
-      "notifyCount": 18,
+      "lastSeen": "2026-08-14T18:40:32.437Z",
+      "lastNotifiedAt": "2026-08-14T18:40:26.990Z",
+      "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 27
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -764,7 +765,7 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
@@ -772,7 +773,8 @@
       "lastNotifiedAt": "2026-08-14T18:22:34.924Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "resolvedAt": "2026-08-14T18:42:43.385Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -900,12 +902,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-14T17:43:27.343Z",
+      "lastSeen": "2026-08-14T18:40:22.239Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
