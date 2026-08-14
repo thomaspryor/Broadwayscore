@@ -7,7 +7,7 @@
  * discovery's good work.
  *
  * Usage:
- *   node scripts/check-validation-setdiff.js --pre=<file> --post=<file>
+ *   node scripts/check-validation-setdiff.js --pre=<file> --post=<file> [--candidate-ids=id1,id2,...]
  *   node scripts/check-validation-setdiff.js --help, -h    print this usage and exit
  *
  * Emits GITHUB_OUTPUT-format lines to stdout:
@@ -16,22 +16,33 @@
  *   pre_error_count=<N>
  *   post_error_count=<N>
  *   new_errors_preview=<first few new errors, pipe-separated, truncated>
+ *
+ * With --candidate-ids (non-empty), uses evaluatePerShowCommitDecision
+ * instead of the all-or-nothing evaluateCommitDecision, and additionally
+ * emits (task #1439):
+ *   blocked_ids=<comma-separated show ids held back>
+ *   committable_count=<N>
  */
 
 const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { parseErrorLines, evaluateCommitDecision } = require('./lib/validation-setdiff');
+const { parseErrorLines, evaluateCommitDecision, evaluatePerShowCommitDecision } = require('./lib/validation-setdiff');
 
 const USAGE = `check-validation-setdiff.js — set-diff two validate-data.js output captures.
 
 Usage:
-  node scripts/check-validation-setdiff.js --pre=<file> --post=<file> [--post-exit-code=<N>]
+  node scripts/check-validation-setdiff.js --pre=<file> --post=<file> [--post-exit-code=<N>] [--candidate-ids=id1,id2,...]
   node scripts/check-validation-setdiff.js --help, -h    print this usage and exit
 
 --post-exit-code is optional but recommended: without it, a validate-data.js
 crash/format-change that prints no "❌ ERROR:" lines reads as should_commit=true.
 With it, a non-zero post exit code paired with zero parsed error lines blocks
 the commit instead of silently passing (task #649 crash-safety net).
+
+--candidate-ids is optional. When non-empty, a new validation error is
+attributed to the specific show ID(s) it names (task #1439's per-show
+partial-block gate) instead of blocking every candidate. Omit it to keep the
+original all-or-nothing behavior.
 `;
 
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -50,11 +61,17 @@ if (!preFile || !postFile) {
 }
 const postExitCodeArg = argValue('post-exit-code');
 const postExitCode = postExitCodeArg !== null && postExitCodeArg !== '' ? Number(postExitCodeArg) : undefined;
+const candidateIdsArg = argValue('candidate-ids');
+const candidateIds = candidateIdsArg ? candidateIdsArg.split(',').map((s) => s.trim()).filter(Boolean) : [];
 
 const readSafe = (f) => (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '');
 const preErrors = parseErrorLines(readSafe(preFile));
 const postErrors = parseErrorLines(readSafe(postFile));
-const { shouldCommit, newErrors, reason } = evaluateCommitDecision({ preErrors, postErrors, postExitCode });
+
+const decision = candidateIds.length > 0
+  ? evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode, candidateIds })
+  : evaluateCommitDecision({ preErrors, postErrors, postExitCode });
+const { shouldCommit, newErrors, reason } = decision;
 
 console.log(`should_commit=${shouldCommit}`);
 console.log(`new_error_count=${newErrors.length}`);
@@ -65,3 +82,8 @@ console.log(`decision_reason=${reason}`);
 // for real multiline values, which isn't worth the ceremony for a preview.
 const preview = newErrors.slice(0, 5).join(' | ').slice(0, 500);
 console.log(`new_errors_preview=${preview}`);
+if (candidateIds.length > 0) {
+  const blockedIds = decision.blockedIds || new Set();
+  console.log(`blocked_ids=${[...blockedIds].join(',')}`);
+  console.log(`committable_count=${candidateIds.length - blockedIds.size}`);
+}

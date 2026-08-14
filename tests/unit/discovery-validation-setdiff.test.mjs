@@ -12,9 +12,11 @@ import {
   computeNewErrors,
   shouldCommitDespiteValidationErrors,
   evaluateCommitDecision,
+  extractCandidateTokens,
   attributeNewErrorsToShowIds,
   evaluatePerShowCommitDecision,
 } from '../../scripts/lib/validation-setdiff.js';
+import { computeChangedShowIds, revertOrRemoveShows } from '../../scripts/lib/shows-since-checkout-diff.js';
 
 describe('parseErrorLines', () => {
   test('extracts ❌ ERROR: lines, ignores ✅/⚠️/ℹ️ noise', () => {
@@ -191,6 +193,17 @@ describe('attributeNewErrorsToShowIds', () => {
     assert.equal(allAttributed, false);
     assert.equal(blockedIds.size, 0);
   });
+
+  // Adversarial finding (task #1439 ship-check): validate-data.js's
+  // duplicate-ID/duplicate-match errors name TWO shows in one line. Blocking
+  // only the first-mentioned show would let the second implicated show
+  // commit unblocked — both must be held back from a single error.
+  test('a single error naming two candidate show IDs blocks both', () => {
+    const errors = ['Show "out-in-jersey" transferOf "some-show-2026" is not reciprocated — "some-show-2026" must set transferredTo: "out-in-jersey"'];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['out-in-jersey', 'some-show-2026', 'unrelated-show-2026']);
+    assert.equal(allAttributed, true);
+    assert.deepEqual([...blockedIds].sort(), ['out-in-jersey', 'some-show-2026']);
+  });
 });
 
 describe('evaluatePerShowCommitDecision', () => {
@@ -228,5 +241,109 @@ describe('evaluatePerShowCommitDecision', () => {
     const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds: ['galileo-2026'] });
     assert.equal(result.shouldCommit, false, 'nothing survives when every candidate is blocked');
     assert.deepEqual([...result.blockedIds], ['galileo-2026']);
+  });
+});
+
+// Task #1439 — pre-mortem finding: most of validate-data.js's per-show
+// error() calls quote the show TITLE, not the id, and put the id unquoted
+// in parens right after (e.g. `Show "${show.title}" (${show.id}) has
+// previewsStartDate ... — previews precede opening.`, validate-data.js
+// line ~562, exactly the shape update-show-status.yml's own discovery/
+// enrichment steps trigger). The original QUOTED_TOKEN_RE-only extraction
+// only caught the awards.json/#1426 id-quoted shape, so this workflow's own
+// errors would fall through to allAttributed=false every time — extending
+// extraction to parenthesized groups fixes that.
+describe('extractCandidateTokens', () => {
+  test('extracts a single parenthesized id alongside the quoted title', () => {
+    const err = 'Show "Boop! The Musical" (boop-the-musical-2025) has previewsStartDate (2025-11-01) implausibly far before openingDate (2025-12-09) — likely a wrong-production previews date.';
+    const tokens = extractCandidateTokens(err);
+    assert.ok(tokens.includes('Boop! The Musical'));
+    assert.ok(tokens.includes('boop-the-musical-2025'));
+  });
+
+  test('splits a multi-value paren group and extracts each part', () => {
+    const err = 'Show "Some Show" (some-show-2026, status=open) has category="broadway" but market=null — scripts/backfill-market.js can fill this.';
+    const tokens = extractCandidateTokens(err);
+    assert.ok(tokens.includes('some-show-2026'));
+    assert.ok(tokens.includes('status=open'));
+  });
+});
+
+describe('attributeNewErrorsToShowIds — title-quoted, id-in-parens shape', () => {
+  test('attributes a real validate-data.js previewsStartDate-shape error to its candidate id', () => {
+    const errors = ['Show "Boop! The Musical" (boop-the-musical-2025) has previewsStartDate (2025-11-01) implausibly far before openingDate (2025-12-09) — likely a wrong-production previews date.'];
+    const { blockedIds, allAttributed } = attributeNewErrorsToShowIds(errors, ['boop-the-musical-2025', 'other-show-2026']);
+    assert.equal(allAttributed, true);
+    assert.deepEqual([...blockedIds], ['boop-the-musical-2025']);
+  });
+});
+
+// Task #1439's actual discovery-gate scenario: update-show-status.yml
+// touches shows via several independent scripts in one run (discover-new-
+// shows.js adds new shows, update-show-status.js flips previews->open,
+// enrichment scripts like enrich-todaytix-runtimes.js/enrich-wikipedia-
+// synopsis.js mutate EXISTING shows that were neither newly discovered nor
+// newly opened this run). One show's write introduces a real, title-quoted/
+// id-in-parens validation error; the rest — including an enrichment-only
+// show that isn't in the "new" or "opened" sets — must still commit.
+describe('discovery gate partial-block (card #1439)', () => {
+  test('one bad show among newly-discovered + opened + enrichment-only candidates still lets the rest commit', () => {
+    const preErrors = [];
+    const postErrors = [
+      'Show "Boop! The Musical" (boop-the-musical-2025) has previewsStartDate (2025-11-01) implausibly far before openingDate (2025-12-09) — likely a wrong-production previews date.',
+    ];
+    // Mixed provenance: 2 newly-discovered, 1 newly-opened, 1 touched only
+    // by an enrichment step (e.g. TodayTix runtime backfill) that never
+    // appears in discover-new-shows.js's or update-show-status.js's own
+    // outputs — the exact case a new/opened-only candidate set would miss.
+    const candidateIds = ['boop-the-musical-2025', 'some-new-show-2026', 'a-show-that-just-opened-2026', 'enrichment-only-show-2024'];
+    const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds });
+    assert.equal(result.shouldCommit, true, 'the 3 unaffected shows must still commit');
+    assert.deepEqual([...result.blockedIds], ['boop-the-musical-2025']);
+  });
+});
+
+describe('computeChangedShowIds (scripts/lib/shows-since-checkout-diff.js)', () => {
+  test('flags added, changed, and removed ids; leaves untouched ids out', () => {
+    const baseline = [
+      { id: 'unchanged-show', status: 'open' },
+      { id: 'changed-show', status: 'previews' },
+      { id: 'removed-show', status: 'open' },
+    ];
+    const current = [
+      { id: 'unchanged-show', status: 'open' },
+      { id: 'changed-show', status: 'open' },
+      { id: 'new-show', status: 'previews' },
+    ];
+    const changed = computeChangedShowIds(baseline, current);
+    assert.deepEqual(changed.sort(), ['changed-show', 'new-show', 'removed-show']);
+  });
+
+  test('empty diff when nothing changed', () => {
+    const shows = [{ id: 'a', status: 'open' }, { id: 'b', status: 'closed' }];
+    assert.deepEqual(computeChangedShowIds(shows, shows), []);
+  });
+});
+
+describe('revertOrRemoveShows (scripts/lib/shows-since-checkout-diff.js)', () => {
+  test('reverts a blocked existing show to its baseline object', () => {
+    const baseline = [{ id: 'x', status: 'previews', previewsStartDate: '2026-01-01' }];
+    const current = [{ id: 'x', status: 'open', openingDate: '2026-02-01', previewsStartDate: '2026-01-01' }];
+    const next = revertOrRemoveShows(current, baseline, ['x']);
+    assert.deepEqual(next, baseline);
+  });
+
+  test('removes a blocked show that has no baseline (newly discovered this run)', () => {
+    const baseline = [{ id: 'kept', status: 'open' }];
+    const current = [{ id: 'kept', status: 'open' }, { id: 'brand-new', status: 'previews' }];
+    const next = revertOrRemoveShows(current, baseline, ['brand-new']);
+    assert.deepEqual(next, [{ id: 'kept', status: 'open' }]);
+  });
+
+  test('leaves non-blocked shows untouched', () => {
+    const baseline = [{ id: 'a', v: 1 }, { id: 'b', v: 1 }];
+    const current = [{ id: 'a', v: 2 }, { id: 'b', v: 2 }];
+    const next = revertOrRemoveShows(current, baseline, ['a']);
+    assert.deepEqual(next, [{ id: 'a', v: 1 }, { id: 'b', v: 2 }]);
   });
 });
