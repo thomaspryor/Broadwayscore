@@ -56,6 +56,33 @@ function isAwaitingUrlCorrectionRefetch(data) {
   return !data.fullText; // body present — refetch already landed
 }
 
+/**
+ * Producer-side twin of detectStaleFlagAfterUrlCorrection — the same predicate
+ * minus the "is a flag ALREADY set" half. TRUE when persisting a NEW exclusion
+ * flag on this record would create the state --gate fails on.
+ *
+ * Producers must call THIS, not isAwaitingUrlCorrectionRefetch directly. The
+ * bare predicate omits the manual-clear check, so a producer keyed on it
+ * withholds flags on operator-cleared records that the gate never matches —
+ * a silent, invisible divergence between what the gate forbids and what the
+ * producers refuse to write. That divergence is a new form of the defect that
+ * got the 2026-08-13 write-guard attempt reverted (its override allowlist was
+ * semantically inverted), and it is what "the two must agree by construction,
+ * not by a comment asking them to" means in this file's docblock.
+ *
+ * Operator-cleared records are deliberately NOT withheld here: whether a
+ * producer may re-flag them is review-guards.js's shouldSkipWrongProductionAudit
+ * decision, not this module's.
+ *
+ * @param {object} data - a parsed review-text record
+ * @returns {boolean}
+ */
+function shouldWithholdStaleExclusionFlag(data) {
+  if (!isAwaitingUrlCorrectionRefetch(data)) return false;
+  if (_hasManualClear(data)) return false;
+  return true;
+}
+
 function detectStaleFlagAfterUrlCorrection(data) {
   if (!data || typeof data !== 'object') return [];
   if (!isAwaitingUrlCorrectionRefetch(data)) return [];
@@ -119,4 +146,5 @@ module.exports = {
   detectStaleFlagAfterUrlCorrection,
   remediateStaleFlagAfterUrlCorrection,
   isAwaitingUrlCorrectionRefetch,
+  shouldWithholdStaleExclusionFlag,
 };

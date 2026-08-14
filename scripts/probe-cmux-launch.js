@@ -40,6 +40,31 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `probe-cmux-launch.js — reproduce the dispatch false-negative on demand.
+
+Usage:
+  node scripts/probe-cmux-launch.js
+  PROBE_REPO=/path/to/worktree node scripts/probe-cmux-launch.js
+
+Launches ONE throwaway cmux workspace whose payload only touches a marker file,
+then compares launchCmuxSession's verdict against what actually happened.
+
+  exit 0  verdict and ground truth agree
+  exit 1  they disagree — the bug is reproduced
+
+Env:
+  PROBE_REPO   repo whose scripts/lib/cmux-launch.js to exercise
+               (default /Users/tompryor/Broadwayscore)
+`;
+
+// Before the REPO require and before any launch: this script spawns a real
+// cmux workspace, so a bare --help must not do that.
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE);
+  process.exit(0);
+}
 
 // Overridable so the probe can exercise a worktree's cmux-launch.js — otherwise
 // it would always test main's copy and silently "verify" the wrong code.

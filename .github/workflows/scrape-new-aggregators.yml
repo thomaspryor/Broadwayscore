@@ -237,6 +237,22 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: auto-promote regional shows from aggregator roundups"
 
+      # Images — card #1456: this promotion path is a go-live event like
+      # previews->open in update-show-status.yml, but it never dispatched
+      # image fetch, so a regional show sat scored with images:{} until the
+      # next twice-weekly cron caught it (up to 3.5 days). MUST run AFTER
+      # the core-data push above — fetch-all-image-formats.yml's own
+      # checkout-core-data pulls from the private repo, so dispatching
+      # earlier (still inside the promotion step) races the show ID against
+      # its own not-yet-pushed shows.json entry and silently no-ops
+      # (adversarial review, 2026-08-14). data/audit/last-promotion-ids.json
+      # is untouched by the push step, so it's still readable here.
+      - name: Dispatch image fetch for newly promoted shows
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/dispatch-new-show-images.js || echo "::warning::image-fetch dispatch failed — will still be picked up by the next fetch-all-image-formats.yml sweep"
+
       - name: Push review-texts to private repo (PV)
         if: always()
         uses: ./.github/actions/push-review-texts

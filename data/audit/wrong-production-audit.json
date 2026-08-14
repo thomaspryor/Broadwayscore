@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T02:24:19.997Z",
+  "timestamp": "2026-08-14T04:15:51.341Z",
   "stats": {
-    "totalReviews": 42207,
-    "alreadyFlagged": 18306,
-    "dateGuardCatches": 142,
+    "totalReviews": 42206,
+    "alreadyFlagged": 18188,
+    "dateGuardCatches": 207,
     "directorMismatch": 965,
     "tvFilmSignals": 1197,
     "londonSignals": 878,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3560
+    "noPublishDate": 3593
   },
   "findings": [
     {
@@ -224,6 +224,94 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "broadwayworld--michael-dale.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2155d before show (2020-12-18 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2898d before show (2018-12-06 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2898d before show (2018-12-06 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "timeout--adam-feldman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 435d before show (2025-09-03 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "timeout--anya-ryan.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 435d before show (2025-09-03 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3618d before show (2016-12-16 vs 2026-11-12)"
         }
       ]
     },
@@ -2936,6 +3024,28 @@
       ]
     },
     {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "file": "thereviewshub--the-reviews-hub.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 366d before show (2026-02-11 vs 2027-02-12)"
+        }
+      ]
+    },
+    {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "file": "whatsonstage--phil-lowe.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 366d before show (2026-02-11 vs 2027-02-12)"
+        }
+      ]
+    },
+    {
       "showId": "birthday-candles-2022",
       "file": "variety--marilyn-stasio.json",
       "score": 84,
@@ -5209,6 +5319,96 @@
       ]
     },
     {
+      "showId": "cinderella-west-end-2026",
+      "file": "bloomberg--jeremy-gerard.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1352d before show (2023-03-24 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "broadwaynews--brittani-samuel.json",
+      "publishDate": "2023-03-24",
+      "url": "https://broadwaynews.com/2023/03/23/review-andrew-lloyd-webbers-bad-cinderella-is-an-uninspired-derivative-of-the-famous-tale/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1352d before show (2023-03-24 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 5085d before show (2013-01-02 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "hollywood-reporter--alex-ritman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1965d before show (2021-07-19 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "independent--oliver-browning.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1964d before show (2021-07-20 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "london-box-office--marian-pashley.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2560d before show (2019-12-02 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "standard--the-standard.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 5352d before show (2012-04-10 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1678d before show (2022-05-02 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
       "showId": "cirque-du-soleil-paramour-2016",
       "file": "variety--marilyn-stasio.json",
       "score": 42,
@@ -5523,6 +5723,17 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "file": "wsj--heidi-waleson.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3110d before show (2018-03-19 vs 2026-09-23)"
         }
       ]
     },
@@ -7727,6 +7938,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "evita-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2025-07-01",
+      "url": "https://theatreweekly.com/review-evita-at-the-london-palladium/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 606d before show (2025-07-01 vs 2027-02-27)"
         }
       ]
     },
@@ -11025,6 +11249,20 @@
       ]
     },
     {
+      "showId": "hamilton-west-end-2021",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "February 17, 2015",
+      "url": "https://www.theatermania.com/news/lin-manuel-miranda-performs-3-minute-abridged-hamilton_83386/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1038d before show (February 17, 2015 vs 2017-12-21)"
+        }
+      ]
+    },
+    {
       "showId": "hand-to-god-2015",
       "file": "broadwayworld--michael-dale.json",
       "score": 89,
@@ -11740,6 +11978,17 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2856d before show (2018-09-13 vs 2026-07-09)"
         }
       ]
     },
@@ -16400,6 +16649,50 @@
       ]
     },
     {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1607d before show (2022-04-29 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "huffpost--gazelle-emami.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 5187d before show (2012-07-10 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "newsday--linda-winer.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4492d before show (2014-06-05 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "timeout--naveen-kumar.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4688d before show (2013-11-21 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
       "showId": "mamma-mia-2025",
       "file": "amny--unknown.json",
       "score": 82,
@@ -16733,6 +17026,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "file": "express-uk--neil-norman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4481d before show (2014-07-24 vs 2026-10-30)"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2654d before show (2019-07-25 vs 2026-10-30)"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "file": "timeout--adam-feldman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4298d before show (2015-01-23 vs 2026-10-30)"
         }
       ]
     },
@@ -17167,6 +17493,28 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-west-end-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3703d before show (2017-03-23 vs 2027-05-13)"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-west-end-2026",
+      "file": "london-box-office--phil-willmott.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4731d before show (2014-05-30 vs 2027-05-13)"
         }
       ]
     },
@@ -18280,6 +18628,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "deadline--greg-evans.json",
+      "score": null,
+      "publishDate": "July 11, 2024",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 510d before show (July 11, 2024 vs 2025-12-03)"
         }
       ]
     },
@@ -21563,6 +21925,17 @@
       ]
     },
     {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "london-box-office--phil-willmott.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3968d before show (2015-07-23 vs 2026-06-03)"
+        }
+      ]
+    },
+    {
       "showId": "singfeld-a-musical-about-nothing-off-broadway-2023",
       "file": "nytg--unknown.json",
       "publishDate": null,
@@ -24719,6 +25092,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "washpost--unknown.json",
+      "score": null,
+      "publishDate": "March 24, 2011",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restores-faith-in-musicals/2013/07/11/f965037a-ea68-11e2-818e-aa29e855f3ab_story.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 728d before show (March 24, 2011 vs 2013-03-21)"
         }
       ]
     },
@@ -28313,6 +28700,39 @@
       ]
     },
     {
+      "showId": "the-snowman-west-end-2026",
+      "file": "express-uk--neil-norman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3268d before show (2017-12-10 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
+      "showId": "the-snowman-west-end-2026",
+      "file": "manchester-evening-news--emma-gill.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3300d before show (2017-11-08 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
+      "showId": "the-snowman-west-end-2026",
+      "file": "timeout-london--caroline-mcginn.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 437d before show (2025-09-10 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
       "showId": "the-sound-inside-2019",
       "file": "variety--marilyn-stasio.json",
       "score": 91,
@@ -28323,6 +28743,110 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--anikatrina-fageol.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.broadwayworld.com/memphis/article/Review-THE-SOUND-OF-MUSIC-at-Orpheum-Theatre-Memphis-20260218",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 398d before show (2026-02-18 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--david-friscic.json",
+      "publishDate": "2025-09-15",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-SOUND-OF-MUSIC-at-the-Kennedy-Center-20250915",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 554d before show (2025-09-15 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "publishDate": "2025-10-08",
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-THE-SOUND-OF-MUSIC-National-Tour-at-Durham-Performing-Arts-Center-20251008",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 531d before show (2025-10-08 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--joni-lorraine.json",
+      "publishDate": "2026-02-04",
+      "url": "https://www.broadwayworld.com/austin/article/Review-THE-SOUND-OF-MUSIC-at-Bass-Concert-Hall-20260204",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 412d before show (2026-02-04 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--paul-batterson.json",
+      "publishDate": "2026-02-25",
+      "url": "https://www.broadwayworld.com/columbus/article/Review-THE-SOUND-OF-MUSIC-at-Ohio-Theatre-20260225",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 391d before show (2026-02-25 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-01-11",
+      "url": "https://www.broadwayworld.com/boston/article/Review-THE-SOUND-OF-MUSIC-is-Gorgeously-Sung-at-the-Citizens-Opera-House-20260111",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 436d before show (2026-01-11 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--tina-st-angelo.json",
+      "publishDate": "2025-10-25",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-THE-SOUND-OF-MUSIC-at-The-James-M-Nederlander-Theatre-20251025",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 514d before show (2025-10-25 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--vickie-evans.json",
+      "publishDate": "2025-11-20",
+      "url": "https://www.broadwayworld.com/charlotte/article/Review-THE-SOUND-OF-MUSIC-at-Belk-Theatre-20251120",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 488d before show (2025-11-20 vs 2027-03-23)"
         }
       ]
     },
@@ -28491,6 +29015,17 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 567d before show (2025-03-25 vs 2026-10-13)"
         }
       ]
     },
@@ -28912,6 +29447,17 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1498d before show (2022-05-19 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 93,
       "publishDate": "2022-04-01",
@@ -28954,6 +29500,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "hollywood-reporter--abbey-white.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1427d before show (2022-07-29 vs 2026-06-25)"
         }
       ]
     },
@@ -29637,6 +30194,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "washpost--unknown.json",
+      "score": null,
+      "publishDate": "March 14, 2013",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-christopher-durangs-vanya-and-sonia-and-masha-and-spike-is-a-zany-joy/2013/03/14/f86bfec0-8d0b-11e2-adca-74ab31da3399_story.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4380d before show (March 14, 2013 vs 2025-03-11)"
         }
       ]
     },
@@ -31510,6 +32081,50 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 333d before show (2025-12-14 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "times-uk--rachel-halliburton.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
       "showId": "a-dolls-house-2023",
       "file": "amny--matt-windman.json",
       "score": 80,
@@ -33248,6 +33863,17 @@
       ]
     },
     {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "file": "londontheatre1--chris-omaweng.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 244d before show (2026-06-13 vs 2027-02-12)"
+        }
+      ]
+    },
+    {
       "showId": "birthday-candles-2022",
       "file": "theater-scene--victor-gluck.json",
       "score": 63,
@@ -33439,6 +34065,28 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "londontheatre1--london-theatre-1.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 132d before show (2026-03-16 vs 2026-07-26)"
         }
       ]
     },
@@ -34190,6 +34838,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "April 7, 2026",
+      "url": "https://www.thewrap.com/creative-content/theater/andrew-lloyd-webber-cats-the-jellicle-ball-closing-night-broadway/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 109d before show (April 7, 2026 vs 2026-07-25)"
         }
       ]
     },
@@ -35715,6 +36377,19 @@
       ]
     },
     {
+      "showId": "evita-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "publishDate": "2026-04-29",
+      "url": "https://www.broadwayworld.com/article/EVITA-Starring-Rachel-Zegler-to-Open-on-Broadway-in-2027-20260429",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 304d before show (2026-04-29 vs 2027-02-27)"
+        }
+      ]
+    },
+    {
       "showId": "evita-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 97,
@@ -36849,6 +37524,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "February 17, 2015",
+      "url": "https://www.theatermania.com/news/hamilton-announces-broadway-cast-recording_73610/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 146d before show (February 17, 2015 vs 2015-07-13)"
         }
       ]
     },
@@ -41442,6 +42131,18 @@
       ]
     },
     {
+      "showId": "othello-off-broadway-2026",
+      "file": "thestage--unknown.json",
+      "score": 62,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 239d before show (2025-11-05 vs 2026-07-02)"
+        }
+      ]
+    },
+    {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martland.json",
       "score": 96,
@@ -44835,6 +45536,17 @@
     },
     {
       "showId": "the-car-man-west-end-2026",
+      "file": "londontheatre1--terry-eastham.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
       "file": "quays-life--carmel-thomason.json",
       "score": 86,
       "publishDate": "2026-06-24",
@@ -47634,6 +48346,30 @@
       ]
     },
     {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--greg-dalton-white.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 244d before show (2026-07-22 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "file": "broadwayworld--michael-quintos.json",
+      "publishDate": "2026-06-08",
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-OCs-Segerstrom-Center-Welcomes-New-Tour-of-THE-SOUND-OF-MUSIC-20260608",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 288d before show (2026-06-08 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
       "file": "british-theatre--mary-beer.json",
       "score": 42,
@@ -48258,6 +48994,28 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "file": "broadwayworld--alexandre-diaconu.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 125d before show (2026-06-29 vs 2026-11-01)"
+        }
+      ]
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 122d before show (2026-07-02 vs 2026-11-01)"
         }
       ]
     },

@@ -95,8 +95,15 @@ export function getRunLength(
 }
 
 /** Format a date string as "Mon YYYY" (e.g. "Jan 2025") */
-export function formatOpeningDate(dateStr: string): string {
+export function formatOpeningDate(dateStr: string | null | undefined): string {
+  // Returns '' rather than a formatted epoch for missing/invalid input.
+  // `new Date(null)` is 1970-01-01, so the old unguarded version rendered
+  // "Opens Jan 1970" for every show whose openingDate isn't set yet — six of
+  // them were live on the Tony season page (owner, 2026-08-13). Guarding the
+  // formatter rather than each call site means no future caller can reprint it.
+  if (!dateStr) return '';
   const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '';
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }

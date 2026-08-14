@@ -7,6 +7,7 @@ scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
+scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
@@ -278,6 +279,7 @@ tests/unit/mezzanine-sibling-year-gate.test.mjs
 tests/unit/model-default-guard.test.mjs
 tests/unit/multi-critic-serp.test.mjs
 tests/unit/multi-show-splitter.test.mjs
+tests/unit/new-show-image-trigger.test.mjs
 tests/unit/news-article-not-a-review.test.mjs
 tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
@@ -328,6 +330,7 @@ tests/unit/placeholder-images.test.mjs
 tests/unit/placeholder-venue-guard.test.mjs
 tests/unit/plan-ready.test.mjs
 tests/unit/playbill-ob-schedule.test.mjs
+tests/unit/playbill-schedule-parser.test.mjs
 tests/unit/playbill-verdict-discover.test.mjs
 tests/unit/poller-blocklist.test.mjs
 tests/unit/poller-idempotency.test.mjs

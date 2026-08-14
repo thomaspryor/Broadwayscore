@@ -94,6 +94,9 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
 
       # Push core data (shows.json etc) to private repo
       - name: Push core data to private repo
@@ -154,9 +157,15 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # Trigger image fetch if shows are missing images
+  # always() (card #1456): without it, this job was silently SKIPPED every
+  # time auto-maintain's overall conclusion was failure — even on runs where
+  # the "Evaluate and set job outputs" step (itself `if: always()`) correctly
+  # computed needs_images=true. An unrelated `npm run build` verify step in
+  # auto-maintain failed for 5+ consecutive days (2026-08-09 -> 2026-08-13),
+  # so this backstop never fired despite looking green in its own output.
   fetch-missing-images:
     needs: auto-maintain
-    if: needs.auto-maintain.outputs.needs_images == 'true'
+    if: always() && needs.auto-maintain.outputs.needs_images == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger image fetch workflow

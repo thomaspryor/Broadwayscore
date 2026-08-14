@@ -992,6 +992,16 @@ function validateShowTypes(shows) {
     if (show.isRevival !== undefined && typeof show.isRevival !== 'boolean') {
       warn(`Show "${show.title}" (${show.id}) has isRevival of type ${typeof show.isRevival}, expected boolean`);
     }
+
+    // engine.ts computes isRevival as `show.isRevival || tags.includes('revival')`,
+    // so a 'revival' tag OVERRIDES an explicit isRevival:false everywhere on the
+    // site. Paddington was corrected to isRevival:false on 2026-08-13 but kept its
+    // stale tag, and the Tony season page still filed it under Musical Revivals.
+    // A correction that the renderer silently ignores is worse than no correction.
+    if (show.isRevival === false && Array.isArray(show.tags) && show.tags.includes('revival')) {
+      error(`Show "${show.title}" (${show.id}) has isRevival:false but a "revival" tag — engine.ts ORs the tag in, so the flag is ignored. Remove the tag or set isRevival:true.`);
+      issues++;
+    }
   }
 
   if (issues === 0) {

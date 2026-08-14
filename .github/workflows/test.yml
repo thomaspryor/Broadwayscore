@@ -1396,6 +1396,14 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
+      # (g)) — advisory scan for workflows that write data/audit/*.json but
+      # rely only on push-core-data (which never syncs data/audit/) to
+      # persist it. Colocated test runs via tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit to either file still triggers CI.
+      - 'scripts/audit-push-core-data-audit-gap.js'
+      - 'scripts/audit-push-core-data-audit-gap.test.mjs'
       # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
       # audit-*.js that walks data/review-texts must call assertCorpusScanned
       # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
@@ -2565,6 +2573,18 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — push-core-data audit-persistence gap (advisory)
+        # Task #1460 (cousin of #1442's rule (g) in audit-workflow-hygiene.js):
+        # push-core-data's CORE_FILES list never includes data/audit/*.json, so
+        # a workflow that writes an audit ledger (directly, or inside an
+        # invoked node scripts/X.js) and relies only on push-core-data to
+        # persist it silently never commits that file — every run starts cold,
+        # defeating any cross-run state the ledger was meant to hold (real bug
+        # fixed in audit-imageless-scored-shows.yml, task #1456). Heuristic,
+        # non-blocking — always exits 0 (see script header for why). Exempt a
+        # workflow with # hygiene-audit-persist-ok: <reason>.
+        run: node scripts/audit-push-core-data-audit-gap.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
@@ -3839,7 +3859,17 @@ jobs:
 
       - name: Audit stale flag after URL correction
         if: always()
-        run: node scripts/audit-stale-flag-after-url-correction.js --gate
+        # --max=15, not 0. Corpus is drained to 0 as of 2026-08-14, but 19 of
+        # the 22 scripts that can write these flags still do so unguarded, and
+        # the collector path adds roughly one file every 40 hours. At --max=0 a
+        # single such file blocks EVERY parallel session's merge (the merge
+        # script's post-merge test floor), which is exactly how one review
+        # record gated all code delivery for two days. 15 absorbs the trickle
+        # while still catching a real regression — the 121-file backlog this
+        # gate was built for would fail loudly. Same ratchet as the
+        # self-contradictory-clears gate above; ratchet DOWN as producers are
+        # closed. Root fix (predicate + write chokepoint) is carded.
+        run: node scripts/audit-stale-flag-after-url-correction.js --gate --max=15
         # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
         # _urlChangedClear URL-correction breadcrumb with an empty body — the
         # 112-file class from 2026-07-26, caused by maybeUpgradeUrl's write
