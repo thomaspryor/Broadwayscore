@@ -96,20 +96,50 @@ test('registry covers exactly the folded digests (opening digest is standalone a
 // renderer mapping never does, and the line silently never appears in any
 // email — a producer running nightly for nobody. Adding a digest is TWO edits
 // (registry row + renderer), and this is the assertion that says so.
-test('every SNAPSHOTS entry has a matching renderer in send-morning-digest.js', () => {
-  const sender = fs.readFileSync(new URL('../send-morning-digest.js', import.meta.url), 'utf8');
-  const missing = SNAPSHOTS
-    .filter((s) => !s.bannerOnly)
-    .map((s) => s.key)
-    .filter((key) => !new RegExp(`sections\\.${key}\\b`).test(sender));
-  assert.deepEqual(missing, [], `SNAPSHOTS keys with no renderer: ${missing.join(', ')}`);
-  // bannerOnly is not a dumping ground: a key marked quiet that DOES have a
-  // renderer is a stale flag, and a stale flag would hide the next real gap.
-  const contradictory = SNAPSHOTS
-    .filter((s) => s.bannerOnly)
-    .map((s) => s.key)
-    .filter((key) => new RegExp(`sections\\.${key}\\b`).test(sender));
-  assert.deepEqual(contradictory, [], `bannerOnly keys that are actually rendered: ${contradictory.join(', ')}`);
+//
+// This used to read send-morning-digest.js's raw source and regex-match
+// `sections.KEY` — a specific code SHAPE (dotted property access) that a
+// behavior-preserving refactor (e.g. destructuring `sections` before use)
+// would silently break, with no signal until it blocked a merge — the same
+// failure mode as the cmux-launch.js/dispatch-ledger incident this test
+// suite was audited over (task #1432). Driving it through buildHtml's public
+// interface instead means it only fails when the wiring is actually gone.
+function sampleSnapshotValue(key) {
+  if (key === 'trunk') {
+    return {
+      state: 'RED', generatedAt: '2026-07-30T06:54:26.128Z',
+      consecutiveFailures: 3, redForHours: 30, topFailingJob: 'Unit Tests',
+    };
+  }
+  if (key === 'health') {
+    return {
+      generatedAt: '2026-07-30T06:54:26.128Z',
+      errors: [{ name: 'Sample check', message: 'sample failure' }], warns: [], checks: [],
+    };
+  }
+  return {
+    generatedAt: '2026-07-30T06:54:26.128Z',
+    bannerText: `sample ${key} banner`,
+    items: [{ title: 'Sample', detail: `sample-${key}-detail` }],
+    moreCount: 0,
+  };
+}
+
+test('every SNAPSHOTS entry is actually wired to a renderer: non-bannerOnly keys change buildHtml output, bannerOnly keys render nothing directly', () => {
+  const now = new Date('2026-07-30T12:00:00Z');
+  const baseline = buildHtml({ sections: {}, now });
+  for (const s of SNAPSHOTS) {
+    const html = buildHtml({ sections: { [s.key]: sampleSnapshotValue(s.key) }, now });
+    if (s.bannerOnly) {
+      // bannerOnly is not a dumping ground: a key marked quiet that DOES
+      // render is a stale flag, and a stale flag would hide the next real gap.
+      assert.equal(html, baseline,
+        `${s.key} is bannerOnly (feeds problemsNote only) but rendering a buildHtml block anyway — drop bannerOnly or this is now double-rendered`);
+    } else {
+      assert.notEqual(html, baseline,
+        `${s.key} is registered in SNAPSHOTS but has no renderer wired in buildHtml — add the sections.${s.key} render block in send-morning-digest.js, or mark bannerOnly if it's meant to be problemsNote-only`);
+    }
+  }
 });
 
 // The contract the plan review flagged as a P0: the monitor's classifier and

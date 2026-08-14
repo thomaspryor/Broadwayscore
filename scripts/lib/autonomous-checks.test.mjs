@@ -254,6 +254,18 @@ test('runSafeChecks executes a validated card check', () => {
 
 // ── dependency rule ─────────────────────────────────────────────────────────
 
+// Source-text assertion is unavoidable here (task #1432 audit): "this module
+// has zero non-builtin dependencies" is a structural property of the source,
+// not an input/output behavior reachable through autonomous-checks.js's
+// public functions — there's no call you can make to observe what it
+// require()d. Unlike the cmux-launch.js/dispatch-ledger incident this audit
+// was triggered by, the regex here doesn't pin a specific code SHAPE (an
+// exact statement form, comment, or ordering) — it enumerates every
+// require() call generically and only fails when one resolves to something
+// outside the builtins allow-list. Reordering, renaming, reformatting, or
+// adding comments in autonomous-checks.js cannot break this test; only
+// actually adding a new dependency can, which is the exact regression it
+// exists to catch.
 test('autonomous-checks.js requires node built-ins only', () => {
   const src = fs.readFileSync(new URL('./autonomous-checks.js', import.meta.url), 'utf8');
   const requires = [...src.matchAll(/require\(['"]([^'"]+)['"]\)/g)].map(m => m[1]);
