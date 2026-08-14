@@ -36,7 +36,11 @@ const USAGE = `audit-stale-flag-after-url-correction.js — stale flag + URL-cor
 Usage:
   node scripts/audit-stale-flag-after-url-correction.js [--gate] [--fix] [--json] [--review-texts-dir=PATH]
 
-  --gate               exit 1 if any match is found (CI gate mode)
+  --gate               exit 1 when the match count exceeds --max (CI gate mode)
+  --max=N              gate ceiling (default 0). CI uses headroom so one new
+                        file from an unguarded producer cannot block every
+                        session's merge — same ratchet as
+                        audit-self-contradictory-clears.js
   --fix                remediate matches in place (clears the stale flag + contentVerification,
                         extends the existing _urlChangedClear breadcrumb, sets needsRefetch)
   --json               machine-readable output
@@ -51,6 +55,17 @@ function main() {
   const gate = argv.includes('--gate');
   const json = argv.includes('--json');
   const fix = argv.includes('--fix');
+  // --max=N ratchet, matching audit-self-contradictory-clears.js:62-67. That
+  // sibling gate learned this the hard way: a hard-equality baseline "flaps
+  // main red for non-code reasons" because the rebuild bots mutate this corpus
+  // every ~30 min (memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md).
+  // This gate shipped with hard-zero semantics instead, so a SINGLE new file
+  // from any of the 19 still-unguarded producers blocks every parallel
+  // session's merge — which is how one data record came to gate all code
+  // delivery for two days. Default stays 0 so local `--gate` is unchanged;
+  // CI passes a ceiling with headroom.
+  const maxArg = argv.find((a) => a.startsWith('--max='));
+  const max = maxArg ? parseInt(maxArg.split('=')[1], 10) : 0;
   const dirArg = argv.find((a) => a.startsWith('--review-texts-dir='));
   const REVIEW_TEXTS_DIR = dirArg ? dirArg.split('=')[1] : path.join(ROOT, 'data', 'review-texts');
 
@@ -114,8 +129,9 @@ function main() {
     }
   }
 
-  if (gate && !fix && hits.length > 0) {
-    console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature.`);
+  if (gate && !fix && hits.length > max) {
+    console.error(`\nFAIL: ${hits.length} file(s) match the #483 stale-flag-after-URL-correction signature (> max ${max}).`);
+    console.error('Drain with --fix, then check scripts/audit-stale-flag-producers.js for which code re-created it.');
     process.exit(1);
   }
 }

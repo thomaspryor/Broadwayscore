@@ -3839,7 +3839,17 @@ jobs:
 
       - name: Audit stale flag after URL correction
         if: always()
-        run: node scripts/audit-stale-flag-after-url-correction.js --gate
+        # --max=15, not 0. Corpus is drained to 0 as of 2026-08-14, but 19 of
+        # the 22 scripts that can write these flags still do so unguarded, and
+        # the collector path adds roughly one file every 40 hours. At --max=0 a
+        # single such file blocks EVERY parallel session's merge (the merge
+        # script's post-merge test floor), which is exactly how one review
+        # record gated all code delivery for two days. 15 absorbs the trickle
+        # while still catching a real regression — the 121-file backlog this
+        # gate was built for would fail loudly. Same ratchet as the
+        # self-contradictory-clears gate above; ratchet DOWN as producers are
+        # closed. Root fix (predicate + write chokepoint) is carded.
+        run: node scripts/audit-stale-flag-after-url-correction.js --gate --max=15
         # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
         # _urlChangedClear URL-correction breadcrumb with an empty body — the
         # 112-file class from 2026-07-26, caused by maybeUpgradeUrl's write
