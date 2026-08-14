@@ -55,8 +55,10 @@ function getReviewYearNote(show, showReviews) {
  * @param {(show: object) => boolean} opts.belongsToMarket - market membership
  *   predicate (mirrors the getXShows() filter in data-core.ts).
  * @param {string} opts.label - human label for log output, e.g. 'Off-Broadway'
+ * @param {Set<string>} [opts.excludeIds] - show ids to always exclude, mirroring
+ *   HIDDEN_LONDON_IDS-style hub exclusions in data-core.ts.
  */
-function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket, label }) {
+function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket, label, excludeIds }) {
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -107,6 +109,7 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
   // Closed shows in this market with 5+ scored reviews
   const archiveShows = shows.filter(show => {
     if (show.status !== 'closed') return false;
+    if (excludeIds && excludeIds.has(show.id)) return false;
     if (!belongsToMarket(show)) return false;
     const showReviews = reviewsByShow[show.id] || [];
     return showReviews.length >= 5;
@@ -150,6 +153,11 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
 
     if (show.closingDate) entry.closingDate = show.closingDate;
     if (show.isRevival) entry.isRevival = true;
+    // Non-theatrical genre (dance/magic/comedy/cabaret/concert/circus) — the
+    // client's GenrePill/type-pill branch (ShowListCard) reads this; omitting
+    // it makes a genre-routed closed show render the wrong "musical"/"play"
+    // badge in search results instead of its actual genre.
+    if (show.genre) entry.genre = show.genre;
     if (show.tags?.length > 0) entry.tags = show.tags;
     if (show.creativeTeam?.length > 0) entry.creativeTeam = show.creativeTeam;
     if (show.images) entry.images = show.images;
