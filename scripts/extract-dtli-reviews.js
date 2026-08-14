@@ -13,6 +13,7 @@ const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -210,17 +211,30 @@ function extractReviewsFromDTLI(content, showId) {
     // outlet's domain and that outlet differs from what DTLI labeled it,
     // prefer the URL-derived outlet. DTLI has been observed misattributing
     // theguardian.com URLs as "Observer", etc. (Apr 2026, cats-the-jellicle-ball-2026)
+    //
+    // BRO-226: this refinement must never rewrite a real outlet's id ONTO an
+    // aggregator outlet (e.g. a broken "read more" link that resolves back to
+    // didtheylikeit.com itself) — that both destroys the real outlet's
+    // attribution and launders the file past the aggregator-URL write guard,
+    // which permits an aggregator-domain URL precisely when outletId IS the
+    // aggregator. Same predicate the shared review-file-writer.js chokepoint
+    // uses (shouldRefuseAggregatorOutletRefinement) — mirrored here since this
+    // script writes via safeWriteReview, not createOrMergeReviewFile.
     let finalOutletId = outlet.outletId;
     let finalOutletName = outlet.name;
     if (url) {
       const urlResolved = resolveOutletFromUrl(url);
       if (urlResolved && urlResolved.outletId && urlResolved.outletId !== finalOutletId) {
-        const registry = loadOutletRegistry();
-        const urlOutletEntry = registry?.outlets?.[urlResolved.outletId];
-        if (urlOutletEntry) {
-          console.warn(`  ⚠️  DTLI outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${url}) vs DTLI label=${finalOutletId}. Preferring URL.`);
-          finalOutletId = urlResolved.outletId;
-          finalOutletName = getOutletDisplayName(finalOutletId) || finalOutletName;
+        if (shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, finalOutletId)) {
+          console.warn(`  ⛔ DTLI outlet refinement refused for ${showId}: URL=${urlResolved.outletId} (${url}) resolves to an aggregator — keeping DTLI label=${finalOutletId}`);
+        } else {
+          const registry = loadOutletRegistry();
+          const urlOutletEntry = registry?.outlets?.[urlResolved.outletId];
+          if (urlOutletEntry) {
+            console.warn(`  ⚠️  DTLI outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${url}) vs DTLI label=${finalOutletId}. Preferring URL.`);
+            finalOutletId = urlResolved.outletId;
+            finalOutletName = getOutletDisplayName(finalOutletId) || finalOutletName;
+          }
         }
       }
     }
@@ -235,6 +249,18 @@ function extractReviewsFromDTLI(content, showId) {
         console.log(`  [DTLI canon] ${canon.from} → ${canon.name} (outletId=${finalOutletId})`);
         finalCriticName = canon.name;
       }
+    }
+
+    // Second chokepoint guard, mirrored for the same reason as above: refuse a
+    // write that would leave a real outletId sitting on an aggregator-domain
+    // URL with nothing worth preserving. In practice this is a no-op for DTLI's
+    // own shape (source is always 'dtli', which isAggregatorReviewSource() treats
+    // as exempt whenever dtliExcerpt is present, and it always is here — see the
+    // length<30 skip above) — kept for parity with review-file-writer.js so a
+    // future change to either side can't silently reopen the gap.
+    if (shouldSkipAggregatorUrlWrite({ source: 'dtli', url, dtliExcerpt: fullText }, finalOutletId)) {
+      console.warn(`  ⚠️  Skipping DTLI review for ${showId}: outletId "${finalOutletId}" with aggregator URL ${url} (roundup page, not this outlet's review)`);
+      continue;
     }
 
     reviews.push({
