@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-14T06:50:55.664Z",
+  "timestamp": "2026-08-14T10:05:28.901Z",
   "stats": {
-    "totalReviews": 42230,
+    "totalReviews": 42240,
     "alreadyFlagged": 18319,
-    "dateGuardCatches": 143,
+    "dateGuardCatches": 144,
     "directorMismatch": 965,
-    "tvFilmSignals": 1199,
-    "londonSignals": 878,
+    "tvFilmSignals": 1200,
+    "londonSignals": 880,
     "offBroadwaySignals": 483,
     "yearMismatch": 88,
-    "noPublishDate": 3573
+    "noPublishDate": 3575
   },
   "findings": [
     {
@@ -8995,6 +8995,19 @@
       "score": 79,
       "publishDate": "2026-08-09",
       "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "polygon--aimee-hart.json",
+      "publishDate": "2026-08-09",
+      "url": "https://www.polygon.com/the-mad-king-saved-game-of-thrones/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -32803,6 +32816,19 @@
       ]
     },
     {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "british-theatre--susan-novak.json",
       "score": 78,
@@ -33467,6 +33493,17 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 258d before show (2025-11-10 vs 2026-07-26)"
         }
       ]
     },
@@ -36299,6 +36336,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-08-09",
+      "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
