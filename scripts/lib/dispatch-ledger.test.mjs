@@ -307,6 +307,23 @@ test('a retry verdict never closes the workspace or drops its attribution (owner
   // CLOSED — while attempt 2's real workspace stayed unattributed. Attribution
   // is the entire point of the fix, so the carry-forward must stay gone.
   assert.doesNotMatch(src, /lastWs\s*=\s*ws\s*\|\|\s*lastWs/);
+  // Source-text assertion is unavoidable here (task #1434 audit), and unlike
+  // the autonomous-checks.js precedent it DOES pin an exact assignment shape
+  // — accepted anyway because there is no public predicate to assert on
+  // instead. "attempt N's ws wins per-attempt, never falls back to a prior
+  // attempt's ref" is an invariant of launchCmuxSessionInner's internal retry
+  // loop, not a separate exported function. Reaching it behaviorally means
+  // driving the real function through a 'retry' verdict, which requires
+  // stubbing fs.existsSync(CMUX) (global — used by every fs call in this
+  // process, not safely scopeable to just the CMUX check without risking
+  // every other test in this file that touches fs), child_process.spawnSync,
+  // and cmux-workspaces.js's listWorkspaces/claudeAliveIn — none of which
+  // this suite stubs anywhere else, and CI has no cmux.app installed so the
+  // real fs.existsSync(CMUX) check short-circuits before the retry logic is
+  // ever reached. waitForLaunchOutcome's OWN decision logic (what actually
+  // produces a 'retry' verdict) IS exercised behaviorally, via its documented
+  // probes seam, in cmux-launch.test.mjs — this assertion covers only the one
+  // line that consumes that verdict.
   assert.match(src, /survivingWs\s*=\s*ws\s*\|\|\s*null/);
   // dispatch fix afb00813dac (owner-approved Option A, 2026-08-13): the old
   // 'retry' branch closed attempt 1's workspace on an unreliable
@@ -316,12 +333,41 @@ test('a retry verdict never closes the workspace or drops its attribution (owner
   assert.doesNotMatch(src, /closeWorkspace\(ws\.ref\)/);
 });
 
-test('bsc-next dispatches with the long verify window + late-adopt grace, and journals failures', () => {
+// Behavior test (task #1434 audit — replaces a source-regex that pinned an
+// exact key order/formatting for verifyTimeoutSec/lateAdoptSec, which would
+// break on a harmless reorder or reformat while behavior stayed identical).
+// bsc-next.js's launchCmux() is a thin delegator to cmux-launch.js's
+// launchCmuxSession — stub that one exported function (mutate the shared,
+// require-cached module object, then force bsc-next.js to re-require it so
+// its top-level destructure picks up the stub) and capture what it was
+// actually called with. Same require-cache-stubbing technique already used
+// by digest-autofix.test.mjs.
+test('bsc-next dispatches with the long verify window + late-adopt grace', () => {
+  const bscNextPath = require.resolve('../bsc-next.js');
+  const cmuxLaunchMod = require('./cmux-launch.js');
+  const origLaunch = cmuxLaunchMod.launchCmuxSession;
+  const calls = [];
+  cmuxLaunchMod.launchCmuxSession = (opts) => { calls.push(opts); return { ok: true, ref: 'workspace:999' }; };
+  delete require.cache[bscNextPath];
+  try {
+    const { launchCmux } = require(bscNextPath);
+    launchCmux({ id: '705', subject: 'slow boot regression test' }, 'seed text');
+    assert.equal(calls.length, 1);
+    // Task #503: the 30s default declared 10 healthy launches dead on
+    // 2026-07-26; bsc-next must pass the same window + late-adopt grace the
+    // opening-night monitor launcher has used since its own 2026-07-24 false
+    // CRITICAL.
+    assert.equal(calls[0].verifyTimeoutSec, 90);
+    assert.equal(calls[0].lateAdoptSec, 60);
+  } finally {
+    cmuxLaunchMod.launchCmuxSession = origLaunch;
+    delete require.cache[bscNextPath];
+    require(bscNextPath); // leave a clean, unstubbed copy cached for later tests
+  }
+});
+
+test('bsc-next journals failed launches via failedLaunchEntries', () => {
   const src = fs.readFileSync(new URL('../bsc-next.js', import.meta.url), 'utf8');
-  // The 30s default is what produced the false failures; bsc-next must pass the
-  // same window the opening-night launcher has used since its own 2026-07-24
-  // false CRITICAL, and must ask for late adoption.
-  assert.match(src, /verifyTimeoutSec:\s*90,\s*lateAdoptSec:\s*60/);
   assert.match(src, /failedLaunchEntries/);
 });
 
