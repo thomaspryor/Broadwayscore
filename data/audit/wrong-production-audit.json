@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T18:07:32.489Z",
+  "timestamp": "2026-08-15T20:18:01.186Z",
   "stats": {
-    "totalReviews": 42308,
-    "alreadyFlagged": 18226,
+    "totalReviews": 42310,
+    "alreadyFlagged": 18228,
     "dateGuardCatches": 144,
     "directorMismatch": 968,
     "tvFilmSignals": 1207,
-    "londonSignals": 898,
+    "londonSignals": 900,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3619
+    "noPublishDate": 3617
   },
   "findings": [
     {
@@ -35249,6 +35249,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "closeupculture--genevieve.json",
+      "score": 79,
+      "publishDate": "2026-08-14",
+      "url": "https://closeupculture.com/2026/08/14/death-note-the-musical-at-the-barbican-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "everything-theatre--mary-pollard.json",
       "score": 60,
       "publishDate": "2026-08-12",
@@ -35320,6 +35334,19 @@
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-to-see--soyoon-koo.json",
       "score": 89,
+      "publishDate": "2026-08-14",
+      "url": "https://playstosee.com/reviews/death-note-the-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "plays-to-see--unknown.json",
       "publishDate": "2026-08-14",
       "url": "https://playstosee.com/reviews/death-note-the-musical/",
       "findings": [
