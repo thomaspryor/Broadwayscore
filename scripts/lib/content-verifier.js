@@ -831,9 +831,6 @@ module.exports = {
   // (venue aliases, long-runner hint, URL-year conflict) are directly
   // unit-testable without mocking the LLM call. See card 34c637c5-416f-812b.
   buildVerificationPrompt,
-  // Pure prompt-builder, exported for unit testing (content-verifier.test.mjs)
-  // without mocking LLM providers — see verifyContent's doc comment.
-  buildVerificationPrompt,
   // Generic prompt→text providers, exported so other verifiers (e.g. the
   // slug-misroute content check) can run multi-model agreement without
   // duplicating the HTTPS plumbing. Each takes a prompt string, returns a

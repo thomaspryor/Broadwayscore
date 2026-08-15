@@ -917,6 +917,14 @@ on:
       # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
       # until 2026-07-10; its test runs in the line-1715 batch.
       - 'scripts/lib/content-verifier.js'
+      # WE long-runner CV hardening (task #1615): buildVerificationPrompt is
+      # the extracted pure prompt-builder (venue aliases, long-runner hint,
+      # URL-year conflict logging) — colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      # venue-aliases.js and the reverify-*.js call sites are already
+      # path-listed elsewhere (lines 126, 1083-1084).
+      - 'scripts/lib/content-verifier.test.mjs'
+      - 'scripts/lib/long-runner-registry.js'
       - 'scripts/scrape-playbill-verdict.js'
       - 'scripts/scrape-bww-reviews.js'
       - 'scripts/lib/show-duplicate-detection.test.mjs'
