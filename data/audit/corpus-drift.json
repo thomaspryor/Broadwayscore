@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-15T13:51:06.284Z",
+    "generatedAt": "2026-08-15T14:01:50.549Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -36,7 +36,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-regex-patterns] Scanned 22110 substantial reviews (tier=complete/truncated/excerpt, length>=500).\n[audit-regex-patterns] Threshold: 5 hits per pattern (per-pattern allowlist overrides possible).\n\nPattern family            Patterns  Max hits  Over threshold\n------------------------  --------  --------  --------------\nAD_BLOCKER_PATTERNS              8        11               0\nPAYWALL_PATTERNS                16        25               0\nLEGAL_PAGE_PATTERNS              7       648               0\nCOOKIE_CONSENT_PATTERNS          7        51               0\nERROR_PAGE_PATTERNS             12         1               0\nSTRONG_ERROR_PAGE_PATTERNS         4         1               0\nSTRONG_CHROME_DUMP_PATTERNS         9         2               0\nNEWSLETTER_PATTERNS              8       154               0\nNAVIGATION_PATTERNS             11       848               0\nWRONG_ARTICLE_PATTERNS           9        27               0\nHORROR_FILM_PATTERNS             7       127               0\n\n✅ All patterns under threshold."
+      "detail": "[audit-regex-patterns] Scanned 22111 substantial reviews (tier=complete/truncated/excerpt, length>=500).\n[audit-regex-patterns] Threshold: 5 hits per pattern (per-pattern allowlist overrides possible).\n\nPattern family            Patterns  Max hits  Over threshold\n------------------------  --------  --------  --------------\nAD_BLOCKER_PATTERNS              8        11               0\nPAYWALL_PATTERNS                16        25               0\nLEGAL_PAGE_PATTERNS              7       648               0\nCOOKIE_CONSENT_PATTERNS          7        51               0\nERROR_PAGE_PATTERNS             12         1               0\nSTRONG_ERROR_PAGE_PATTERNS         4         1               0\nSTRONG_CHROME_DUMP_PATTERNS         9         2               0\nNEWSLETTER_PATTERNS              8       154               0\nNAVIGATION_PATTERNS             11       848               0\nWRONG_ARTICLE_PATTERNS           9        27               0\nHORROR_FILM_PATTERNS             7       127               0\n\n✅ All patterns under threshold."
     },
     {
       "name": "cross-show-url",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 27 exempt, 38 covered\n  ⚠️    69  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    55  tests/unit-test-manifest.txt  — no merge driver; needs a decision\n  ⚠️    53  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    53  data/audit/sd-circuit-breaker.json  — no merge driver; needs a decision\n  ⚠️    48  data/audit/remediation-log.jsonl  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 27 exempt, 38 covered\n  ⚠️    69  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    55  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    54  tests/unit-test-manifest.txt  — no merge driver; needs a decision\n  ⚠️    53  data/audit/sd-circuit-breaker.json  — no merge driver; needs a decision\n  ⚠️    47  data/audit/remediation-log.jsonl  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -108,7 +108,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35911 scored reviews\nAlready rejected: 565\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35912 scored reviews\nAlready rejected: 565\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
