@@ -467,6 +467,30 @@ test('CLI: poller incident shape WITHOUT --pushed-sha -> pre-existing behavior p
 // design it only proves "did MY committed content survive", not "was my
 // committed content itself correct".
 //
+// Corroborating evidence (addresses an adversarial-review challenge to the
+// forensic argument above): push-with-retry.sh's own resolve_conflicts()
+// default case (generic files like .js/.yml, ~line 507-549) already refuses
+// to silently discard content that differs from ours — it only auto-accepts
+// remote when the blob is BYTE-IDENTICAL to our side; otherwise it leaves the
+// conflict UNRESOLVED so a safer fallback (merge -X ours / reset+cherry-pick,
+// which replays our FULL commit range) integrates it instead. That makes it
+// structurally implausible for push-with-retry's own auto-resolution to have
+// silently reverted scrape-cast-changes.js/test.yml in the real incident —
+// independent confirmation that the corruption predates SCRIPT_ENTRY_HEAD.
+//
+// Caveat (also from the adversarial review): the 2 tests below are
+// hand-crafted end-states (same convention as every other CLI test in this
+// file, including the original #619/#833 repros) — they prove the deep
+// check's occurrence-count logic handles this SHAPE of revert correctly, not
+// that real `git rebase -X theirs`/resolve_conflicts() output is guaranteed
+// to always take this shape. A fully faithful end-to-end repro would need to
+// sandbox push-with-retry.sh itself (network push, GH auth, disk-floor
+// checks, mutex) — out of scope here. The genuine, acknowledged scope gap
+// this investigation surfaces — push-content-survival.js can only verify
+// "did MY committed content survive", never "was my committed content
+// correct" — is carded separately for owner judgment on whether it's worth
+// a new guard (see Notion card linked from #1539's outcome).
+//
 // These 2 tests instead stress-test the hypothesis directly: does the deep
 // check correctly classify a genuine full-function-body revert introduced by
 // OUR OWN run's conflict resolution (combined with an unrelated legitimate
