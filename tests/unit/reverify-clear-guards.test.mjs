@@ -240,6 +240,20 @@ test('GUARD 4 PERMITS: negated forms and genuine review verdicts', () => {
   assert.equal(detectNonReviewAdmission({ reasoning: null }), null);
 });
 
+test('GUARD 4 PERMITS: an admission phrase that is only a prefix of a longer word', () => {
+  // "is a feature" must not fire on "is a feature-length review" — a false
+  // refusal strands a clearable review, so prefix matches are discarded.
+  for (const reasoning of [
+    'This is a feature-length review of the opening night performance.',
+    'The piece is a featured review in the Sunday edition.',
+  ]) {
+    assert.equal(detectNonReviewAdmission({ reasoning }), null,
+      `prefix-only match must not refuse: ${reasoning}`);
+  }
+  // ...but the standalone admission still fires.
+  assert.ok(detectNonReviewAdmission({ reasoning: 'The content is a feature, not a review.' }));
+});
+
 // ───────────────────── GUARD 3: confidence gate on every path ─────────────────────
 
 test('GUARD 3 REFUSES: medium/low/missing confidence on a wrongShow-only clear (was ungated)', () => {
