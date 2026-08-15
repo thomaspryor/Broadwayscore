@@ -830,9 +830,17 @@ let _shellLex = null;
 function shellLex() {
   if (_shellLex !== null) return _shellLex;
   try {
-    const { shellSegments, tokenize } = require('./infra-review-scope.js');
+    const { shellSegments, tokenize, stripHeredocBodies } = require('./infra-review-scope.js');
     if (typeof shellSegments !== 'function' || typeof tokenize !== 'function') throw new Error('missing exports');
-    _shellLex = { shellSegments, tokenize };
+    // stripHeredocBodies (task #1557) is a newer export than shellSegments/
+    // tokenize. A paired infra-review-scope.js old enough to predate it must
+    // not disable the WHOLE merge gate over one missing optional helper —
+    // that would be strictly worse than the heredoc false-positive this
+    // closes (adversarial review: a hard require() here opens a version-skew
+    // fail-open window). Degrade to an identity passthrough instead, same
+    // convention as this file's other optional-sibling requires above.
+    const strip = typeof stripHeredocBodies === 'function' ? stripHeredocBodies : (s) => s;
+    _shellLex = { shellSegments, tokenize, stripHeredocBodies: strip };
   } catch (e) {
     process.stderr.write(`review-gate: infra-review-scope.js tokenizer unavailable (${e.code || e.message}) — merge gate degraded to no-op\n`);
     _shellLex = false;
@@ -958,13 +966,23 @@ function classifySegment(rawTokens) {
 // The hook resolves them exactly as the push gate resolves its own.
 export function parseMergeIngress(command, { currentBranch = null, defaultBranch = 'main' } = {}) {
   const notMerge = (reason) => ({ isMerge: false, targetsMain: false, sources: [], via: null, destination: null, reason });
-  const cmd = String(command || '');
-  if (!cmd.trim()) return notMerge('empty command');
-  // Cheap pre-filter — keeps the gate off the hot path for the ~99% of Bash
-  // calls that are not merges.
-  if (!/\bmerge\b/.test(cmd)) return notMerge('no merge ingress in command');
+  const raw = String(command || '');
+  if (!raw.trim()) return notMerge('empty command');
+  // Cheap pre-filter on the RAW text — keeps the gate off the hot path for
+  // the ~99% of Bash calls that mention "merge" nowhere at all, not even in
+  // prose. A false positive here (a heredoc body mentioning "merge") just
+  // means we proceed to the accurate, heredoc-aware check below — costs
+  // nothing to get this permissive.
+  if (!/\bmerge\b/.test(raw)) return notMerge('no merge ingress in command');
   const lex = shellLex();
   if (!lex) return notMerge('tokenizer unavailable — fail open');
+  // Strip heredoc BODIES before segmenting: a `git commit -m "$(cat <<'EOF'
+  // … EOF)"` argument embeds literal prose across multiple *shell* lines, and
+  // shellSegments()/tokenize() have no notion of quoting across a newline —
+  // each heredoc body line would otherwise be classified as its own live
+  // command, e.g. a commit message that merely NAMES the merge wrapper script
+  // or describes "git merge --abort" in words (task #1557).
+  const cmd = lex.stripHeredocBodies(raw);
 
   let destination = currentBranch;   // `git merge X` merges into the checked-out branch
   let segments;

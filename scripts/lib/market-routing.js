@@ -25,6 +25,7 @@
 const { parseDate } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath } = require('./review-guards');
 const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
+const { VENUE_STOPWORDS } = require('./production-match-gate');
 
 const DAY = 86400000;
 const SIBLING_CLOSE_DAYS = 30;         // same-market: sibling opening this close to review → candidate
@@ -193,7 +194,17 @@ function collectSameTitleSignals(candidate, ctx) {
         .replace(/\b(theatre|theater|playhouse|the)\b/g, '')
         .replace(/[^a-z0-9 ]+/g, ' ')
         .trim();
-      const tokens = stripped.split(/\s+/).filter(t => t.length >= 5 && !GENERIC_VENUE_SLUGS.has(t));
+      // Also drop generic venue-descriptor words ("center", "hall", "studio",
+      // "arts"...) that aren't in GENERIC_VENUE_SLUGS (a whole-venue-name set,
+      // not a per-word one) but are common enough to false-match unrelated
+      // URLs/outlet names by pure substring — e.g. "A.R.T.'s Loeb Drama
+      // Center" contributing the token "center", which then matches
+      // thefrontrowcenter.com (the OUTLET's own name, "Front Row Center") and
+      // wrongly signals that a Broadway review names the regional venue.
+      // Found 2026-08-14 auditing two-strangers-carry-a-cake-across-new-york's
+      // regional/Broadway sibling pair. Shared with production-match-gate.js's
+      // VENUE_STOPWORDS so both venue-token filters stay in sync.
+      const tokens = stripped.split(/\s+/).filter(t => t.length >= 5 && !GENERIC_VENUE_SLUGS.has(t) && !VENUE_STOPWORDS.has(t));
       const urlLower = url.toLowerCase();
       for (const tok of tokens) {
         if (urlLower.includes(tok)) {

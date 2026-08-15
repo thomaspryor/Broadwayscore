@@ -126,4 +126,4 @@ function passesProductionMatch(result = {}, show = {}) {
   return false;
 }
 
-module.exports = { productionMatchSignals, passesProductionMatch };
+module.exports = { productionMatchSignals, passesProductionMatch, VENUE_STOPWORDS };

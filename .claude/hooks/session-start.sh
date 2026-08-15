@@ -337,15 +337,19 @@ if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.git" ]; then
   fi
 fi
 
-# Stale-MERGE_HEAD detection on the SHARED MAIN worktree (BRO-142, recurrence
-# of #916/#1279/#1445). The block above only fires when THIS session's own
-# REPO_ROOT/.git is a directory — true for the main checkout, but false for
-# every worktree-launched session (a linked worktree's .git is a FILE), which
-# is most sessions on this project per CLAUDE.md's worktree-first rule. That
-# left the shared main worktree's own MERGE_HEAD state invisible to exactly
-# the sessions most likely to hit it via push-with-retry.sh/merge-worktree-
-# to-main.sh. Resolve the main worktree explicitly via `git worktree list` so
-# this fires regardless of which worktree the current session is in.
+# Stale in-progress-operation-marker detection on the SHARED MAIN worktree
+# (BRO-142, recurrence of #916/#1279/#1445; generalized from MERGE_HEAD-only
+# to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task #1558 after a second,
+# independent incident — task #946, 2026-08-03 — showed the same class of bug
+# via a stuck interactive rebase instead of a MERGE_HEAD file). The block
+# above only fires when THIS session's own REPO_ROOT/.git is a directory —
+# true for the main checkout, but false for every worktree-launched session
+# (a linked worktree's .git is a FILE), which is most sessions on this
+# project per CLAUDE.md's worktree-first rule. That left the shared main
+# worktree's own marker state invisible to exactly the sessions most likely
+# to hit it via push-with-retry.sh/merge-worktree-to-main.sh. Resolve the
+# main worktree explicitly via `git worktree list` so this fires regardless
+# of which worktree the current session is in.
 # Read-only: warns only, never mutates — see detect-stale-merge-head.sh's
 # header for why auto-recovery was deliberately rejected for v1.
 if [ -n "$REPO_ROOT" ]; then
@@ -360,13 +364,15 @@ if [ -n "$REPO_ROOT" ]; then
   if [ -n "$BRO142_MAIN_DIR" ] && [ -d "$BRO142_MAIN_DIR" ] && [ -f "$BRO142_LIB" ]; then
     # shellcheck source=scripts/lib/detect-stale-merge-head.sh
     source "$BRO142_LIB"
-    BRO142_RESULT=$(merge_head_staleness "$BRO142_MAIN_DIR" 2>/dev/null)
-    BRO142_STATUS="${BRO142_RESULT%% *}"
-    if [ "$BRO142_STATUS" = "stale" ]; then
-      echo ""
-      merge_head_staleness_message "$BRO142_MAIN_DIR" "$BRO142_STATUS" "${BRO142_RESULT#* }"
-      echo ""
-    fi
+    for BRO142_MARKER in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+      BRO142_RESULT=$(marker_staleness "$BRO142_MAIN_DIR" "$BRO142_MARKER" 2>/dev/null)
+      BRO142_STATUS="${BRO142_RESULT%% *}"
+      if [ "$BRO142_STATUS" = "stale" ]; then
+        echo ""
+        marker_staleness_message "$BRO142_MAIN_DIR" "$BRO142_MARKER" "$BRO142_STATUS" "${BRO142_RESULT#* }"
+        echo ""
+      fi
+    done
   fi
 fi
 
