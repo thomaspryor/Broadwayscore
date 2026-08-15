@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T09:28:33.536Z",
+  "timestamp": "2026-08-15T11:23:51.346Z",
   "stats": {
-    "totalReviews": 42291,
-    "alreadyFlagged": 18220,
-    "dateGuardCatches": 146,
+    "totalReviews": 42310,
+    "alreadyFlagged": 18228,
+    "dateGuardCatches": 144,
     "directorMismatch": 968,
     "tvFilmSignals": 1207,
     "londonSignals": 897,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3610
+    "noPublishDate": 3613
   },
   "findings": [
     {
@@ -26096,19 +26096,6 @@
       ]
     },
     {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "show-score--unknown.json",
-      "publishDate": "2024-05-28",
-      "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 791d before show (2024-05-28 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
       "showId": "the-father-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 77,
@@ -39301,17 +39288,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
-        }
-      ]
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "file": "theatermania--jonas-schwartz.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 54d before show (2026-08-13 vs 2026-10-06)"
         }
       ]
     },
