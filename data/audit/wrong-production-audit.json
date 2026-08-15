@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T04:41:17.618Z",
+  "timestamp": "2026-08-15T05:42:08.237Z",
   "stats": {
-    "totalReviews": 42262,
-    "alreadyFlagged": 18262,
-    "dateGuardCatches": 149,
+    "totalReviews": 42290,
+    "alreadyFlagged": 18266,
+    "dateGuardCatches": 148,
     "directorMismatch": 965,
     "tvFilmSignals": 1202,
-    "londonSignals": 885,
+    "londonSignals": 889,
     "offBroadwaySignals": 486,
     "yearMismatch": 88,
-    "noPublishDate": 3599
+    "noPublishDate": 3622
   },
   "findings": [
     {
@@ -1254,7 +1254,7 @@
     {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": 48,
+      "score": 65,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
       "findings": [
@@ -2016,7 +2016,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "telegraph--claire-allfree.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2024-10-31",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/barcelona-duke-of-yorks-theatre-review-lily-collins/",
       "findings": [
@@ -5983,6 +5983,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
+      "score": 97,
       "publishDate": "2026-06-25",
       "url": "https://www.whatsonstage.com/news/cyrano-de-bergerac-in-the-west-end-review_1726277/",
       "findings": [
@@ -6220,7 +6221,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "guardian--andrew-pulver.json",
-      "score": 87,
+      "score": 82,
       "publishDate": "2026-08-12",
       "url": "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
       "findings": [
@@ -9093,7 +9094,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 85,
+      "score": 89,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -14751,7 +14752,7 @@
     {
       "showId": "juno-and-the-paycock-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2024-10-07",
       "url": "https://www.standard.co.uk/culture/theatre/juno-and-the-paycock-gielgud-theatre-review-succession-j-smithcameron-mark-rylance-b1185983.html",
       "findings": [
@@ -35272,19 +35273,6 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-03-03",
-      "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 149d before show (2026-03-03 vs 2026-07-30)"
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
       "file": "times-uk--kate-maltby.json",
       "score": 83,
       "publishDate": "2026-08-12",
@@ -37695,6 +37683,62 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-04",
+      "url": "https://www.allthatdazzles.co.uk/post/review-high-society-barbican-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-04",
+      "url": "https://www.britishtheatre.com/posts/high-society-review-a-joyous-champagne-soaked-revival-at-the-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 60,
+      "publishDate": "2026-06-03",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HIGH-SOCIETY-Barbican-Theatre-20260603",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-05",
+      "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -48096,6 +48140,7 @@
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
       "file": "vulture--jackson-mchenry.json",
+      "score": 76,
       "publishDate": "2026-07-20",
       "url": "https://www.vulture.com/article/theater-review-whoopi-monologues-goldberg-potluck-alvarez.html",
       "findings": [
