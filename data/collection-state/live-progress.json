@@ -1,28 +1,61 @@
 {
-  "updatedAt": "2026-08-15T10:37:18.932Z",
-  "processed": 24,
-  "failed": 126,
-  "successRate": "16.0%",
+  "updatedAt": "2026-08-15T10:36:16.582Z",
+  "processed": 35,
+  "failed": 225,
+  "successRate": "13.5%",
   "tierBreakdown": {
     "playwright": 15,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
+    "browserbase": 0,
+    "directCookies": 1,
     "scrapingbee": 6,
-    "brightdata": 0,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 3
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-08-15T10:20:42.808Z",
+      "t": "2026-08-15T09:29:58.867Z",
       "event": "bb-session",
-      "session": "15eeb9d8",
+      "session": "3188f481",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-15T10:20:43.772Z",
+      "t": "2026-08-15T09:29:59.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T09:35:06.144Z",
+      "event": "bb-session",
+      "session": "28cf0a17",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2651846"
+    },
+    {
+      "t": "2026-08-15T09:35:06.559Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T09:35:23.376Z",
+      "event": "bb-session",
+      "session": "3c9d1767",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2651846"
+    },
+    {
+      "t": "2026-08-15T09:35:23.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T09:51:12.358Z",
+      "event": "bb-session",
+      "session": "bca6e9be",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-08-15T09:51:12.739Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
