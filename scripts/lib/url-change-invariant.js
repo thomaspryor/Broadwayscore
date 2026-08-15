@@ -147,6 +147,28 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
 }
 
 /**
+ * True when `newUrl` is a swap BACK to the url this file held before its most
+ * recent URL-change clear (existing._urlChangedClear.from) — i.e. an
+ * aggregator/poller is flip-flopping the file's url between two variants that
+ * normalizeUrl() treats as different articles (BRO-121: most often an
+ * untracked query param a source cites inconsistently, e.g. Independent's
+ * ?loginSuccessful=true paywall-login-gate param). Each direction of the
+ * cycle otherwise re-triggers applyUrlChangeInvariant and wipes
+ * llmScore/fullText/aggregatorStars/etc every poll.
+ *
+ * Reads the breadcrumb `applyUrlChangeInvariant` already stamps on every real
+ * URL change, so this needs no new state and works from either write
+ * chokepoint (mergeReviews, review-write-guard.js's safeWriteReview).
+ */
+function isUrlFlipFlop(existing, newUrl) {
+  if (!existing || !newUrl) return false;
+  const prior = existing._urlChangedClear;
+  if (!prior || !prior.from) return false;
+  const { normalizeUrl } = require('./review-normalization');
+  return normalizeUrl(String(prior.from)) === normalizeUrl(newUrl);
+}
+
+/**
  * Enforce the invariant on a post-merge record. Mutates `merged` in place.
  *
  * CONTRACT: `merged` must be the COMPLETE record that will be written to disk
@@ -409,6 +431,7 @@ function _removeLlmScoreSidecar(reviewFilePath) {
 module.exports = {
   applyUrlChangeInvariant,
   urlCanonicallyChanged,
+  isUrlFlipFlop,
   updateFileUrlWithInvariant,
   removeLlmScoreSidecar: _removeLlmScoreSidecar,
   NEW_ERA_FETCH_FIELDS,

@@ -892,6 +892,25 @@ describe('normalizeUrl', () => {
     );
   });
 
+  // BRO-121: Independent.co.uk appends ?loginSuccessful=true after its
+  // paywall-login gate. LBO roundups cite the article verbatim WITH the
+  // param while a direct fetch/verify doesn't carry it — the two variants
+  // must normalize identically or mergeReviews() treats them as different
+  // articles and wipes scored state on every poller run.
+  test('strips loginSuccessful (Independent paywall-gate param)', () => {
+    assert.strictEqual(
+      normalizeUrl('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true'),
+      normalizeUrl('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html')
+    );
+  });
+
+  test('strips loginSuccessful composed with other tracking params', () => {
+    assert.strictEqual(
+      normalizeUrl('https://www.independent.co.uk/review-b123.html?loginSuccessful=true&utm_source=lbo'),
+      'independent.co.uk/review-b123.html'
+    );
+  });
+
   test('lowercases the URL', () => {
     assert.strictEqual(
       normalizeUrl('HTTPS://WWW.EXAMPLE.COM/Page'),
@@ -1415,6 +1434,91 @@ describe('mergeReviews — URL protection', () => {
     const merged = mergeReviews(existing, incoming);
     assert.strictEqual(merged.url, 'https://www.thestage.co.uk/reviews/real-review',
       'URLs containing "undefined" should be repaired');
+  });
+});
+
+// ============================================================================
+// mergeReviews — flip-flop breaker (BRO-121)
+// An aggregator/poller alternating between two url variants that
+// normalizeUrl() treats as DIFFERENT articles (most often an untracked query
+// param a source cites inconsistently — Independent's ?loginSuccessful=true
+// paywall-login-gate param, added to LBO roundups but not present on a direct
+// fetch) re-triggered applyUrlChangeInvariant's full state wipe
+// (llmScore/fullText/aggregatorStars/etc) on EVERY poller run. isUrlFlipFlop()
+// detects the swap-BACK half of the cycle via the _urlChangedClear breadcrumb
+// applyUrlChangeInvariant already stamps and refuses it, pinning urlVerified.
+// ============================================================================
+
+describe('mergeReviews — flip-flop breaker (BRO-121)', () => {
+  test('refuses a swap back to the url this file held before its last URL change, and pins urlVerified', () => {
+    const urlA = 'https://www.independent.co.uk/review-b123.html';
+    const urlB = 'https://www.independent.co.uk/review-b123.html?not-a-tracked-param=xyz';
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'independent',
+      criticName: 'Alice Saville',
+      url: urlA,
+      llmScore: { score: 71 },
+      fullText: 'The full review text.',
+      aggregatorStars: 4,
+      // Breadcrumb applyUrlChangeInvariant stamps on the FIRST swap (A -> B):
+      // this file's url is currently B, having moved from A.
+      _urlChangedClear: { from: urlA, to: urlB, at: '2026-08-01T00:00:00.000Z', cleared: ['llmScore', 'fullText', 'aggregatorStars'] },
+    };
+    const existingAtB = { ...existing, url: urlB, llmScore: undefined, fullText: undefined, aggregatorStars: undefined };
+    // Poller swaps back to A — the ping-pong.
+    const incoming = { ...existingAtB, url: urlA, source: 'lbo-roundup', fullText: 'Re-scraped roundup echo text.' };
+    const merged = mergeReviews(existingAtB, incoming, {}, { script: 'test' });
+
+    assert.strictEqual(merged.url, urlB, 'swap-back to the prior url must be refused, keeping the file at its current url');
+    assert.strictEqual(merged.urlVerified, true, 'file must be pinned after a detected flip-flop');
+    assert.ok(merged.urlVerifiedNote && merged.urlVerifiedNote.includes('flip-flop'), 'note should explain the auto-pin');
+    assert.strictEqual(merged.fullText, undefined, 'flip-flop-rejected incoming fullText must not be adopted');
+  });
+
+  test('does not treat a genuinely NEW third url as a flip-flop', () => {
+    const urlA = 'https://www.independent.co.uk/review-old.html';
+    const urlB = 'https://www.independent.co.uk/review-current.html';
+    const urlC = 'https://www.independent.co.uk/review-corrected.html';
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'independent',
+      url: urlB,
+      _urlChangedClear: { from: urlA, to: urlB, at: '2026-08-01T00:00:00.000Z', cleared: ['llmScore'] },
+    };
+    const incoming = { ...existing, url: urlC, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, urlC, 'a genuinely new url (not matching the flip-flop breadcrumb) must still update');
+    assert.notStrictEqual(merged.urlVerified, true, 'a normal url upgrade must not get auto-pinned');
+  });
+
+  test('does not misfire when there is no _urlChangedClear breadcrumb', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'independent',
+      url: 'https://www.independent.co.uk/review-old.html',
+    };
+    const incoming = { ...existing, url: 'https://www.independent.co.uk/review-new.html', source: 'show-score' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, 'https://www.independent.co.uk/review-new.html');
+    assert.notStrictEqual(merged.urlVerified, true);
+  });
+
+  test('a file already urlVerified from an unrelated manual fix keeps its original note', () => {
+    const urlA = 'https://www.independent.co.uk/review-a.html';
+    const urlB = 'https://www.independent.co.uk/review-b.html';
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'independent',
+      url: urlB,
+      urlVerified: true,
+      urlVerifiedNote: 'Manually confirmed canonical url 2026-07-01',
+      _urlChangedClear: { from: urlA, to: urlB, at: '2026-07-01T00:00:00.000Z', cleared: [] },
+    };
+    const incoming = { ...existing, urlVerified: undefined, urlVerifiedNote: undefined, url: urlA, source: 'lbo-roundup' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, urlB);
+    assert.strictEqual(merged.urlVerifiedNote, 'Manually confirmed canonical url 2026-07-01', 'existing manual note must not be clobbered by the auto-pin');
   });
 });
 
