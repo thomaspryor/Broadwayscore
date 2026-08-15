@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-15T13:30:00.385Z",
+    "generatedAt": "2026-08-15T13:50:43.038Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -38,35 +38,35 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 310
+      "churn": 313
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 271
+      "churn": 272
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 271
+      "churn": 272
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 271
+      "churn": 272
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 177
+      "churn": 178
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
       "churn": 112
     },
     {
-      "path": "public/data/shows/an-american-daughter-off-broadway-2026.json",
+      "path": "data/llm-scoring-runs.json",
       "churn": 99
     },
     {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 98
+      "path": "public/data/shows/an-american-daughter-off-broadway-2026.json",
+      "churn": 99
     },
     {
       "path": "public/opening-night-status.json",
@@ -81,12 +81,12 @@
       "churn": 71
     },
     {
-      "path": "data/audit/processed-feedback.json",
+      "path": "public/data/shows/the-winters-tale-off-broadway-2026.json",
       "churn": 61
     },
     {
-      "path": "public/data/shows/the-winters-tale-off-broadway-2026.json",
-      "churn": 61
+      "path": "data/audit/processed-feedback.json",
+      "churn": 60
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -148,72 +148,72 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1192,
+      "churn": 1183,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1153,
+      "churn": 1144,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 756,
+      "churn": 759,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 699,
+      "churn": 702,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 363,
+      "churn": 366,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 331,
+      "churn": 332,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 331,
+      "churn": 332,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 331,
+      "churn": 332,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 303,
+      "churn": 304,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 271,
+      "churn": 272,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-death-note-the-musical-west-end-2026.json",
-      "churn": 266,
+      "churn": 267,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-marlise-off-broadway-2026.json",
-      "churn": 206,
+      "churn": 207,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-winters-tale-off-broadway-2026.json",
-      "churn": 199,
+      "churn": 200,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-an-american-daughter-off-broadway-2026.json",
-      "churn": 190,
+      "churn": 191,
       "mergeAttr": "ours"
     },
     {
@@ -292,6 +292,11 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/death-note-the-musical-west-end-2026.json",
       "churn": 33,
       "mergeAttr": "ours"
@@ -314,11 +319,6 @@
     {
       "path": "data/audit/poller-backoff/the-enormous-crocodile-west-end-2026.json",
       "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 32,
       "mergeAttr": "ours"
     },
     {
