@@ -28,6 +28,7 @@ const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
+const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -412,9 +413,11 @@ async function scrapeNYCTheatreRoundups() {
   } else {
     // Batch mode: skip closed shows (won't get new reviews) and pre-2023.
     // Exception: regional shows close fast (limited runs), so a closed
-    // regional show may not have been caught yet by scheduled discovery.
+    // regional show may not have been caught yet by scheduled discovery —
+    // bounded to a window post-close so an already-exhausted miss doesn't
+    // retry forever (there's no negative cache here).
     recentShows = shows.filter(s => {
-      if (s.status === 'closed' && s.category !== 'regional') return false;
+      if (!isClosedShowEligibleForBatchDiscovery(s)) return false;
       const opening = new Date(s.openingDate);
       return opening >= new Date('2023-01-01');
     });
