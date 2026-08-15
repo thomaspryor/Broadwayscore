@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T06:22:37.125Z",
+  "timestamp": "2026-08-15T07:43:09.940Z",
   "stats": {
-    "totalReviews": 42290,
+    "totalReviews": 42291,
     "alreadyFlagged": 18219,
     "dateGuardCatches": 145,
     "directorMismatch": 968,
     "tvFilmSignals": 1207,
-    "londonSignals": 891,
+    "londonSignals": 896,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3618
+    "noPublishDate": 3613
   },
   "findings": [
     {
@@ -37853,6 +37853,76 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "jewishnews--unknown.json",
+      "score": 90,
+      "publishDate": "2026-06-16",
+      "url": "https://www.jewishnews.co.uk/review-high-society-at-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "http://www.jonathanbaz.com/2026/06/high-society-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "londontheatre1--unknown.json",
+      "score": 75,
+      "publishDate": "2026-06-04",
+      "url": "https://www.londontheatre1.com/reviews/high-society-barbican-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 74,
+      "publishDate": "2026-06-04",
+      "url": "https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-06",
+      "url": "https://theatreandtonic.co.uk/blog/high-society-at-the-barbican-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
