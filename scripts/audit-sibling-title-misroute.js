@@ -20,6 +20,23 @@
  * url/publishDate, and reports (or --fix) any file the guard would place
  * differently today.
  *
+ * --fix is for manual, supervised runs only — same posture as
+ * audit-cross-show-url.js's own "report-only by default, NEVER auto --fix
+ * the whole corpus" rule. It is NOT wired into any CI workflow with --fix.
+ * Two reasons: (1) it moves/deletes files non-atomically (read → write →
+ * unlink, no lock, no transaction) against a directory tree that many
+ * scheduled scrapers write to concurrently — running --fix unattended risks
+ * racing a live write; (2) classifyMarketRouting's signals (date proximity,
+ * URL year, venue substrings) can still disagree with clear content evidence
+ * on individual files (found while building this: 4 flagged shows where the
+ * date-only Tier-1 heuristic contradicted an explicit "-broadway-" or
+ * "/london/" URL marker) — verify each --fix target by hand before applying,
+ * the way this script's own author did for the Two Strangers pair.
+ * Rollback: data/review-texts is a git repo (private broadway-review-texts) —
+ * a bad --fix run is a normal `git revert` on that commit, same as any other
+ * data-repo mistake. Run --fix against a clean working tree so the run is
+ * its own isolated, revertible commit.
+ *
  * Usage:
  *   node scripts/audit-sibling-title-misroute.js                 # report
  *   node scripts/audit-sibling-title-misroute.js --show=ID        # one show
@@ -59,6 +76,40 @@ function isHumanCleared(d) {
 // Already flagged (by this guard or any other) — not this audit's job to redo.
 function isAlreadyFlagged(d) {
   return !!(d && (d.wrongProduction === true || d.wrongShow === true));
+}
+
+// Ordinal content-quality rank so --fix's dedup-by-URL path never discards
+// the better of two copies of the same review. Ties (equal rank) keep the
+// EXISTING target copy and drop the source — never destructive when quality
+// is indistinguishable. Mirrors the tier order used elsewhere in the corpus
+// (complete > truncated > excerpt > stub > invalid/missing).
+const CONTENT_TIER_RANK = { complete: 4, truncated: 3, excerpt: 2, stub: 1, invalid: 0 };
+function reviewQualityRank(d) {
+  const tierRank = CONTENT_TIER_RANK[d && d.contentTier] ?? -1;
+  const hasScore = d && (d.assignedScore != null || (d.llmScore && d.llmScore.score != null)) ? 1 : 0;
+  const textLen = (d && typeof d.fullText === 'string') ? d.fullText.length : 0;
+  return [tierRank, hasScore, textLen];
+}
+function isHigherQuality(a, b) {
+  const ra = reviewQualityRank(a);
+  const rb = reviewQualityRank(b);
+  for (let i = 0; i < ra.length; i++) {
+    if (ra[i] !== rb[i]) return ra[i] > rb[i];
+  }
+  return false;
+}
+
+// Find a filename in targetDir that doesn't collide, looping (not a single
+// one-shot rename) so a second/third collision can't silently overwrite an
+// unrelated file before the source is unlinked.
+function uniqueDestName(targetDir, baseName) {
+  let destName = baseName;
+  let n = 1;
+  while (fs.existsSync(path.join(targetDir, destName))) {
+    n++;
+    destName = baseName.replace(/\.json$/, `-rerouted${n > 2 ? `-${n}` : ''}.json`);
+  }
+  return destName;
 }
 
 function loadShows() {
@@ -140,29 +191,34 @@ function main() {
         const d = JSON.parse(fs.readFileSync(h.filePath, 'utf8'));
         const targetDir = path.join(REVIEW_TEXTS_DIR, h.targetShowId);
         const normUrl = String(d.url).toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '');
-        let alreadyAtTarget = false;
+        let existingMatch = null; // { file, data } — the target-dir file with the same URL, if any
         if (fs.existsSync(targetDir)) {
           for (const tf of fs.readdirSync(targetDir).filter(x => x.endsWith('.json'))) {
             try {
               const td = JSON.parse(fs.readFileSync(path.join(targetDir, tf), 'utf8'));
               const tUrl = td.url ? String(td.url).toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '') : null;
-              if (tUrl && tUrl === normUrl) { alreadyAtTarget = true; break; }
+              if (tUrl && tUrl === normUrl) { existingMatch = { file: tf, data: td }; break; }
             } catch { /* skip unreadable */ }
           }
         }
-        if (alreadyAtTarget) {
-          fs.unlinkSync(h.filePath);
-          h.applied = 'deleted-duplicate';
+        if (existingMatch) {
+          if (isHigherQuality(d, existingMatch.data)) {
+            // The misrouted copy is BETTER than what's already at the target
+            // (e.g. complete text vs a stub) — overwrite the target with it
+            // instead of discarding it, then remove the source.
+            d.showId = h.targetShowId;
+            fs.writeFileSync(path.join(targetDir, existingMatch.file), JSON.stringify(d, null, 2) + '\n');
+            fs.unlinkSync(h.filePath);
+            h.applied = `overwrote-lower-quality-duplicate:${path.join(h.targetShowId, existingMatch.file)}`;
+          } else {
+            fs.unlinkSync(h.filePath);
+            h.applied = 'deleted-duplicate';
+          }
         } else {
           fs.mkdirSync(targetDir, { recursive: true });
           d.showId = h.targetShowId;
-          let destName = h.file;
-          let destPath = path.join(targetDir, destName);
-          if (fs.existsSync(destPath)) {
-            destName = destName.replace(/\.json$/, `-rerouted.json`);
-            destPath = path.join(targetDir, destName);
-          }
-          fs.writeFileSync(destPath, JSON.stringify(d, null, 2) + '\n');
+          const destName = uniqueDestName(targetDir, h.file);
+          fs.writeFileSync(path.join(targetDir, destName), JSON.stringify(d, null, 2) + '\n');
           fs.unlinkSync(h.filePath);
           h.applied = `moved-to:${path.join(h.targetShowId, destName)}`;
         }
