@@ -308,6 +308,21 @@ function main() {
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
+      // A prior 'verify' pass may have left crossOutletVerified:true on
+      // disk — that field is PROTECTED_FIELDS, so a plain delete is
+      // silently reverted by safeWriteReview's preserve loop, leaving a
+      // self-contradictory crossOutletVerified:true + wrongAttribution:true
+      // state (the exact bug class task #1008/#1023 exists to fix, caught
+      // again by ship-check/Codex on this batch, task #1006). The retraction
+      // breadcrumb is what makes the delete stick.
+      if (data.crossOutletVerified === true) {
+        data.clearBreadcrumbRetractedFields = Array.from(new Set([
+          ...(Array.isArray(data.clearBreadcrumbRetractedFields) ? data.clearBreadcrumbRetractedFields : []),
+          'crossOutletVerified',
+        ]));
+        data.clearBreadcrumbRetracted = 'retracted stale crossOutletVerified: contradicted live wrongAttribution (#1023)';
+        data.clearBreadcrumbRetractedAt = new Date().toISOString().slice(0, 10);
+      }
       data.wrongAttribution = true;
       data.wrongAttributionReason = entry.note;
       delete data.crossOutletVerified;
