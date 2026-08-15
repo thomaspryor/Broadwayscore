@@ -299,6 +299,11 @@ jobs:
             echo "::error::Build took ${BUILD_SECS}s (>10 min) — likely regression in build pipeline"
           fi
 
+      - name: "DIAGNOSTIC (card #1551, remove after root-cause confirmed): print built category value before upload"
+        continue-on-error: true
+        run: |
+          cat .vercel/output/static/data/shows/the-car-man-west-end-2026.json | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{console.log('DIAGNOSTIC cat field:', JSON.parse(d).cat)}catch(e){console.log('DIAGNOSTIC parse error')}})"
+
       - name: Determine recently-opened show for dynamic smoke test
         id: recent_show
         run: |
