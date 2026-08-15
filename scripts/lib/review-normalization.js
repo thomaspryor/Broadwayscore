@@ -651,6 +651,26 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const urlChanged = incoming.url && existing.url && !incomingUrlGarbage
     && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
 
+  // Flip-flop breaker (BRO-121): a poller/aggregator alternating between two
+  // url variants that normalizeUrl() treats as different articles (most
+  // often an untracked query param — see the loginsuccessful strip above)
+  // otherwise re-triggers applyUrlChangeInvariant's full state wipe
+  // (llmScore/fullText/aggregatorStars/etc) on EVERY run. isUrlFlipFlop()
+  // detects the swap-BACK half of the cycle — incoming matches the url this
+  // file held before its last URL-change clear — and refuses it.
+  const { isUrlFlipFlop } = require('./url-change-invariant');
+  const urlFlipFlop = urlChanged && isUrlFlipFlop(existing, incoming.url);
+  if (urlFlipFlop) {
+    console.warn(`[mergeReviews] refused url flip-flop for ${existing.outletId || context.file || '?'}: ${incoming.url} matches the url this file held before its last change`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedUrlFlipFlop',
+      details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
+    });
+  }
+
   // Wrong-production regression guard (#1478, mirrors #1416's maybeUpgradeUrl
   // fix): a urlChanged swap whose candidate is dated outside the show's
   // current-run window is a prior production's article, not a genuine URL
@@ -711,12 +731,23 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   const merged = { ...existing };
 
+  // Flip-flop detected: pin the file at its current (stable) url so neither
+  // direction of the cycle can reopen it. Mirrors the manual urlVerified fix
+  // already applied by hand to jesus-christ-superstar-west-end-2026's
+  // independent--alice-saville.json (Notion 3aa637c5) — automating it here so
+  // future files don't need the same manual intervention.
+  if (urlFlipFlop && !merged.urlVerified) {
+    merged.urlVerified = true;
+    merged.urlVerifiedAuto = true;
+    merged.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} ↔ ${incoming.url}) — locked against further automated changes (BRO-121).`;
+  }
+
   // Prefer longer/more complete fullText (decode entities on incoming text).
   // Skipped when the url swap was just refused as a wrong-production
-  // regression — that text was scraped from the rejected candidate URL, so
-  // adopting it here would contaminate the existing (correct) url's record
-  // with the wrong production's content.
-  if (incoming.fullText && !urlSwapRegressed) {
+  // regression, or as a flip-flop — that text was scraped from the rejected
+  // candidate URL, so adopting it here would contaminate the existing
+  // (correct) url's record with the oscillating/wrong-production content.
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -726,9 +757,10 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Prefer valid URLs — and when URL changes, clear stale content flags.
   // This handles preview-article stubs being replaced by real review URLs.
   // Block URL changes only when the existing URL is protected AND not
-  // obviously broken. First-URL-set and undefined-repair always proceed.
-  const blockUrlChange = urlIsProtected && !existingUrlLooksBroken && urlChanged;
-  if (blockUrlChange) {
+  // obviously broken, or when the swap is a detected flip-flop.
+  // First-URL-set and undefined-repair always proceed.
+  const blockUrlChange = (urlIsProtected && !existingUrlLooksBroken && urlChanged) || urlFlipFlop;
+  if (blockUrlChange && !urlFlipFlop) {
     logExclusion({
       script: context.script || 'unknown-caller',
       showId: context.showId || 'unknown',
@@ -1655,7 +1687,14 @@ function normalizeUrl(url) {
       .replace(/#.*$/, '');
     // Tracking-param strip first so any later regex can anchor on the
     // post-strip path/query state.
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid)=[^&]*/g, '')
+    // loginsuccessful (BRO-121): Independent.co.uk appends ?loginSuccessful=true
+    // after its paywall-login gate. LBO roundups cite the article verbatim
+    // WITH the param while a direct fetch/verify doesn't carry it, so the two
+    // variants normalized as DIFFERENT urls — mergeReviews() then flipped the
+    // file's url on every poller run, wiping llmScore/fullText/aggregatorStars
+    // via applyUrlChangeInvariant on each flip (data/review-texts/jesus-christ-
+    // superstar-west-end-2026 had to be manually urlVerified-pinned to stop it).
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
     // Re-strip trailing slashes: the first strip (above) runs before the
