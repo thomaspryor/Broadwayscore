@@ -951,3 +951,162 @@ describe('safeWriteReview intentional-clear breadcrumbs (2026-08-02 FP-recovery 
     assert.equal(written.wrongProduction, true);
   });
 });
+
+describe('delete-without-breadcrumb merge-mode revert (task #1624)', () => {
+  // Root cause: the merge-mode "keep any existing field not in newData" pass
+  // (the `if (merge) { for (const [key, val] of Object.entries(existing)) ... }`
+  // loop) restores ANY field missing from the incoming write — not just
+  // PROTECTED_FIELDS — unless CLEAR_BREADCRUMBS has an entry for it. A plain
+  // `delete data.X` on a non-PROTECTED field with no breadcrumb is therefore a
+  // silent no-op once the file already exists on disk. This bit
+  // reverify-stale-cv-promoted.js and flag-combined-reviews.js live: both
+  // called `delete data.rejectionReason` (and isNonReviewReason) expecting the
+  // clear to stick.
+  const onDisk = () => ({
+    showId: 'test-show',
+    outlet: 'blog',
+    url: 'https://example.com/review',
+    fullText: 'A real review of this production...',
+    isNonReview: true,
+    isNonReviewReason: 'CV-promoted (not a review): stale reasoning',
+    rejectionReason: 'not_a_review',
+  });
+
+  test('plain delete of an unregistered field is silently reverted by merge mode', () => {
+    const filePath = path.join(tmpDir, 'delete-no-breadcrumb.json');
+    fs.writeFileSync(filePath, JSON.stringify(onDisk(), null, 2));
+    const incoming = onDisk();
+    incoming.isNonReview = false;
+    delete incoming.isNonReviewReason;
+    delete incoming.rejectionReason;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    // Demonstrates the bug: isNonReview flips correctly, but the stale reason
+    // text is resurrected right next to it.
+    assert.equal(written.isNonReview, false);
+    assert.equal(written.isNonReviewReason, 'CV-promoted (not a review): stale reasoning');
+    assert.equal(written.rejectionReason, 'not_a_review');
+  });
+
+  test('null-assignment instead of delete clears the field for real (the shipped fix)', () => {
+    const filePath = path.join(tmpDir, 'null-assign-fix.json');
+    fs.writeFileSync(filePath, JSON.stringify(onDisk(), null, 2));
+    const incoming = onDisk();
+    incoming.isNonReview = false;
+    incoming.isNonReviewReason = null;
+    incoming.rejectionReason = null;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.isNonReview, false);
+    assert.equal(written.isNonReviewReason, null);
+    assert.equal(written.rejectionReason, null);
+  });
+
+  test('flag-combined-reviews.js pattern: null-assigning the rejection family sticks', () => {
+    const filePath = path.join(tmpDir, 'combined-review-clear.json');
+    const flagged = {
+      showId: 'test-show',
+      outlet: 'blog',
+      url: 'https://example.com/review',
+      fullText: 'A joint review of two productions...',
+      wrongShow: true,
+      rejectionReason: 'wrong_show',
+      rejectedBy: 'audit-wrongshow.js',
+      rejectedAt: '2026-08-01T00:00:00.000Z',
+      rejectionReasoning: 'URL only matched one show dir at scrape time',
+      rescoreCompletedAt: '2026-08-01T00:00:00.000Z',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(flagged, null, 2));
+    const incoming = { ...flagged };
+    delete incoming.wrongShow;
+    incoming.rejectionReason = null;
+    incoming.rejectedBy = null;
+    incoming.rejectedAt = null;
+    incoming.rejectionReasoning = null;
+    incoming.rescoreCompletedAt = null;
+    incoming.needsRescore = true;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.rejectionReason, null);
+    assert.equal(written.rejectedBy, null);
+    assert.equal(written.rejectedAt, null);
+    assert.equal(written.rejectionReasoning, null);
+    assert.equal(written.rescoreCompletedAt, null);
+    assert.equal(written.needsRescore, true);
+  });
+
+  test('audit-duplicate-of-url-mismatch.js pattern: duplicateTextOf delete + duplicateClearReason breadcrumb sticks', () => {
+    // duplicateTextOf can't use null-assignment (validate-data.js flags a null
+    // duplicateTextOf as "should be string"), so the fix here is a
+    // CLEAR_BREADCRUMBS entry reusing duplicateClearReason — the same
+    // breadcrumb already gating duplicateOf/duplicateReason.
+    const filePath = path.join(tmpDir, 'duplicate-text-of-mismatch.json');
+    const flagged = {
+      showId: 'test-show',
+      outlet: 'blog',
+      url: 'https://example.com/review',
+      fullText: 'A review with a stale duplicate pointer...',
+      duplicateTextOf: 'stale-sibling--critic.json',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(flagged, null, 2));
+    const incoming = { ...flagged };
+    incoming.duplicateClearReason = 'audit-duplicate-of-url-mismatch.js (--fix): sibling no longer exists';
+    delete incoming.duplicateTextOf;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.duplicateTextOf, undefined);
+  });
+
+  test('fix-cross-outlet-attributions.js pattern: wrongAttributionReason clears alongside wrongAttribution', () => {
+    // wrongAttribution had a CLEAR_BREADCRUMBS entry (_wrongArticleCleared);
+    // its sibling wrongAttributionReason did not, so the flag correctly
+    // cleared but the stale reason text was resurrected by the
+    // PROTECTED_FIELDS preserve loop (mechanism #1, not the merge-mode
+    // restore the other tests in this block cover).
+    const filePath = path.join(tmpDir, 'wrong-attribution-review.json');
+    const flagged = {
+      showId: 'test-show',
+      outlet: 'blog',
+      url: 'https://example.com/review',
+      fullText: 'A review misattributed to the wrong critic...',
+      wrongAttribution: true,
+      wrongAttributionReason: 'byline scraped from a different outlet\'s roundup',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(flagged, null, 2));
+    const incoming = { ...flagged };
+    incoming.crossOutletVerified = true;
+    incoming.crossOutletVerifiedNote = 'verified: same critic, cross-posted to both outlets';
+    incoming.wrongArticleManualClear = true;
+    delete incoming.wrongAttribution;
+    delete incoming.wrongAttributionReason;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongAttribution, undefined);
+    assert.equal(written.wrongAttributionReason, undefined);
+  });
+
+  test('fix-cross-outlet-attributions.js "flag" branch: crossOutletVerifiedNote clears alongside crossOutletVerified', () => {
+    const filePath = path.join(tmpDir, 'cross-outlet-reflag-review.json');
+    const verified = {
+      showId: 'test-show',
+      outlet: 'blog',
+      url: 'https://example.com/review',
+      fullText: 'A review previously verified as cross-outlet syndication...',
+      crossOutletVerified: true,
+      crossOutletVerifiedNote: 'verified: same critic, cross-posted to both outlets',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(verified, null, 2));
+    const incoming = { ...verified };
+    incoming.clearBreadcrumbRetractedFields = ['crossOutletVerified'];
+    incoming.clearBreadcrumbRetracted = 'retracted stale crossOutletVerified: contradicted live wrongAttribution (#1023)';
+    incoming.wrongAttribution = true;
+    incoming.wrongAttributionReason = 'new evidence: bylines do not match';
+    delete incoming.crossOutletVerified;
+    delete incoming.crossOutletVerifiedNote;
+    safeWriteReview(filePath, incoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.crossOutletVerified, undefined);
+    assert.equal(written.crossOutletVerifiedNote, undefined);
+    assert.equal(written.wrongAttribution, true);
+  });
+});
