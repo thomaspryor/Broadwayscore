@@ -257,6 +257,12 @@ jobs:
         # .vercel/output is cleared to prevent EEXIST symlink errors (commit 6c20768ead).
         run: rm -rf .vercel/output
 
+      - name: "DIAGNOSTIC (card #1551): run prebuild explicitly and check public/ value before vercel build"
+        continue-on-error: true
+        run: |
+          bash scripts/prebuild.sh
+          cat public/data/shows/the-car-man-west-end-2026.json | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{console.log('DIAGNOSTIC pre-build public/ cat field:', JSON.parse(d).cat)}catch(e){console.log('DIAGNOSTIC parse error', e.message)}})"
+
       - name: Build
         id: build
         env:
