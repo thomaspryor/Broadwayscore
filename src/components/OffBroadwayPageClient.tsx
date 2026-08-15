@@ -15,6 +15,7 @@ import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
 import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 
 // Serialized show data passed from server component
 export interface OffBroadwayShow {
@@ -61,7 +62,8 @@ interface OffBroadwayPageClientProps {
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'previews' | 'closed' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'alpha' | 'audience_buzz';
+type SortParam = 'recent' | 'recent_asc' | 'score_desc' | 'score_asc' | 'alpha' | 'alpha_desc' | 'audience_buzz' | 'audience_asc';
+const SORT_PARAMS: SortParam[] = ['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'];
 type TypeParam = 'all' | 'musical' | 'play' | 'opera';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
@@ -140,7 +142,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
   const [filters, setFilters] = useState(() => ({
     status: (['now_playing', 'previews', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (['recent', 'score_desc', 'alpha', 'audience_buzz'].includes(initialSearchParams.get('sort') as string)
+    sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
@@ -378,13 +380,37 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
           const bScore = (b.status === 'previews' || !bHasEnough) ? -1 : (b.criticScore?.score ?? -1);
           return bScore - aScore;
         }
+        case 'score_asc': {
+          if (scoreMode === 'audience') {
+            const aAud = (a.status === 'previews') ? Infinity : (a.audienceCombinedScore ?? Infinity);
+            const bAud = (b.status === 'previews') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+            return aAud - bAud;
+          }
+          const aHasEnough = obHasEnoughReviews(a);
+          const bHasEnough = obHasEnoughReviews(b);
+          const aScore = (a.status === 'previews' || !aHasEnough) ? Infinity : (a.criticScore?.score ?? Infinity);
+          const bScore = (b.status === 'previews' || !bHasEnough) ? Infinity : (b.criticScore?.score ?? Infinity);
+          return aScore - bScore;
+        }
         case 'audience_buzz': {
           const aScore = (a.status === 'previews') ? -1 : (a.audienceCombinedScore ?? -1);
           const bScore = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
           return bScore - aScore;
         }
+        case 'audience_asc': {
+          const aScore = (a.status === 'previews') ? Infinity : (a.audienceCombinedScore ?? Infinity);
+          const bScore = (b.status === 'previews') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+          return aScore - bScore;
+        }
         case 'alpha':
           return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+        case 'alpha_desc':
+          return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
+        case 'recent_asc':
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
+          return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
         case 'recent':
         default:
           if (!a.openingDate && !b.openingDate) return 0;
@@ -543,7 +569,11 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
           value={scoreMode}
           onChange={(key) => {
             if (key === 'audience') {
-              updateParams({ scoreMode: key, sort: 'score_desc' });
+              // Land on the sort value that matches what's actually displayed —
+              // score_desc's audience-mode branch already sorts by audience score,
+              // which left CRITICS visually active while AUDIENCE sat inert
+              // (task #592/#30, same bug homepage already fixed this way).
+              updateParams({ scoreMode: key, sort: 'audience_buzz' });
             } else {
               updateParams({ scoreMode: key });
             }
@@ -570,13 +600,34 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
         <ToggleBar
           label="SORT:"
           options={[
-            { value: 'recent' as SortParam, label: 'NEWEST' },
-            { value: 'score_desc' as SortParam, label: 'CRITICS' },
-            { value: 'audience_buzz' as SortParam, label: 'AUDIENCE' },
-            { value: 'alpha' as SortParam, label: 'A-Z' },
+            {
+              value: 'recent' as SortParam,
+              label: `NEWEST ${getSortArrow('recent', sort)}`.trim(),
+              title: sort === 'recent' ? 'Sorted newest first, click to reverse' : sort === 'recent_asc' ? 'Sorted oldest first, click to reverse' : 'Click to sort by opening date',
+            },
+            {
+              value: 'score_desc' as SortParam,
+              label: `CRITICS ${getSortArrow('score_desc', sort)}`.trim(),
+              title: (() => {
+                const scoreLabel = scoreMode === 'audience' ? 'audience score' : 'critic score';
+                if (sort === 'score_desc') return `Sorted by ${scoreLabel}, highest first, click to reverse`;
+                if (sort === 'score_asc') return `Sorted by ${scoreLabel}, lowest first, click to reverse`;
+                return `Click to sort by ${scoreLabel}`;
+              })(),
+            },
+            {
+              value: 'audience_buzz' as SortParam,
+              label: `AUDIENCE ${getSortArrow('audience_buzz', sort)}`.trim(),
+              title: sort === 'audience_buzz' ? 'Sorted by audience score, highest first, click to reverse' : sort === 'audience_asc' ? 'Sorted by audience score, lowest first, click to reverse' : 'Click to sort by audience score',
+            },
+            {
+              value: 'alpha' as SortParam,
+              label: `A-Z ${getSortArrow('alpha', sort)}`.trim(),
+              title: sort === 'alpha' ? 'Sorted alphabetically, A to Z, click to reverse' : sort === 'alpha_desc' ? 'Sorted alphabetically, Z to A, click to reverse' : 'Click to sort alphabetically',
+            },
           ]}
-          value={sort}
-          onChange={(s) => updateParams({ sort: s })}
+          value={normalizeSort(sort) as SortParam}
+          onChange={(s) => updateParams({ sort: getNextSort(s, sort) })}
           ariaLabel="Sort shows"
         />
       </div>
