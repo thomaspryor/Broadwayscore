@@ -67,6 +67,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
 const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
 
@@ -113,13 +114,25 @@ function loadBaselineKeys() {
   }
 }
 
-// Mirrors review-file-writer.js's humanCleared check — never override an
-// explicit human decision, whichever direction it went.
+// Never override an explicit human decision, whichever direction it went.
+//
+// Delegates to the canonical guard in review-guards.js rather than re-listing the
+// breadcrumb fields by hand. The hand-rolled copy this replaces was missing
+// `allowCrossMarket === true` — a review a human had explicitly marked as
+// legitimately cross-market would still have been rerouted or re-flagged
+// wrongProduction by this audit. Keeping the predicate canonical is also what the
+// wrongProduction-setter canary
+// (tests/unit/wrong-production-setters-honor-manual-clear.test.mjs) requires of
+// every script that writes `wrongProduction = true`; that canary went red on main
+// in run 31863276943 when this script landed without it.
+//
+// Deliberately no `name(` form anywhere in this comment: that canary's "must
+// actually CALL the guard" regex matches raw source, so a mention-with-parens in
+// a comment would satisfy it vacuously and stop the check from protecting this
+// file at all. The only parenthesised occurrence below is the real call.
 function isHumanCleared(d) {
   return !!(d && (
-    d.humanReviewedWrongProduction === false ||
-    d.wrongProductionManualClear === true ||
-    d.wrongProductionOverride === true ||
+    shouldSkipWrongProductionAudit(d) ||
     d.wrongProduction === false
   ));
 }

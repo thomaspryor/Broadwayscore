@@ -31,10 +31,20 @@ test('tests/unit/*.test.mjs selects tests-vs-derived-data + orphan-tests', () =>
   );
 });
 
-test('scripts/*.js selects unbounded-fetch + write-routing', () => {
+test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
   assert.deepEqual(
     listAudits(['scripts/recover-wsj-browser.js']),
-    ['unbounded-fetch', 'write-routing']
+    ['help-flag-safety', 'unbounded-fetch', 'write-routing']
+  );
+});
+
+// The help-flag audit is the most frequent recurring cause of a red main here, so
+// its selection is asserted on its own input too, not only via the scripts/*.js
+// case above: the baseline file can change without any script changing.
+test('help-flag baseline change alone selects help-flag-safety', () => {
+  assert.deepEqual(
+    listAudits(['scripts/.help-flag-safety-baseline.json']),
+    ['help-flag-safety']
   );
 });
 
@@ -57,6 +67,7 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     { encoding: 'utf8' }
   );
   assert.deepEqual(out.trim().split('\n').filter(Boolean).sort(), [
+    'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
   ]);
@@ -65,6 +76,6 @@ test('argv form (no stdin) matches piped-stdin form', () => {
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
-    ['orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
+    ['help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
   );
 });
