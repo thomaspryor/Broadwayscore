@@ -22,17 +22,6 @@
     "queuedAt": "2026-08-15T01:53:16.756Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 8 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31863493178",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-15T04:26:52.659Z"
-  },
-  {
     "conditionKey": "bd-circuit-breaker-serp_api1",
     "title": "Bright Data daily breaker TRIPPED: serp_api1 (2524/2250 reqs)",
     "description": "Zone serp_api1 billed 2524 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1034), opening-night-poller.js (349), audit-show-review-gap.js (54).",
@@ -88,14 +77,14 @@
     "queuedAt": "2026-08-15T12:12:24.110Z"
   },
   {
-    "conditionKey": "arm-yield:outlet:nypost",
-    "title": "New York Post (reviews collected) has stopped updating (13 days)",
-    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-02, 13 days ago. It has never before gone quiet for more than 11 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 13d, from 4 productive day(s) / 4 item(s) between 2026-07-04 and 2026-08-02.)",
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": null,
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31885605357",
     "decision": false,
     "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T13:04:25.661Z"
+    "model": "opus",
+    "queuedAt": "2026-08-15T13:07:23.392Z"
   }
 ]
