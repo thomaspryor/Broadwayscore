@@ -569,6 +569,9 @@ for (const show of visibleShows) {
   };
 
   // Category (for market-aware display)
+  if (show.id === 'the-car-man-west-end-2026') {
+    console.error('DIAGNOSTIC (card #1551) generate-mobile-show-details: show.category =', JSON.stringify(show.category), 'show.id =', show.id, 'show.slug =', show.slug);
+  }
   if (show.category) {
     detail.cat = show.category;
   }
