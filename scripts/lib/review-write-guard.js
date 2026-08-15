@@ -220,6 +220,11 @@ const PROTECTED_FIELDS = [
   'allowFilmSignal',
   'routedFromShowId',
   'urlVerified',
+  // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
+  // from a real human urlVerified decision. Must survive rebases alongside
+  // urlVerified itself, or a restored file loses the marker and becomes
+  // indistinguishable from a genuine manual verification.
+  'urlVerifiedAuto',
   'urlManualOverride',
   'urlManualOverrideNote',
   // Additional override flags added in Rocky Horror 2026-04-23 postmortem (Session 2 #7):
@@ -1010,7 +1015,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       // urlManualOverride url — and any url on a _locked file — is only
       // replaceable via force (mirrors mergeReviews' blockUrlChange).
       {
-        const { urlCanonicallyChanged, applyUrlChangeInvariant } = require('./url-change-invariant');
+        const { urlCanonicallyChanged, applyUrlChangeInvariant, isUrlFlipFlop } = require('./url-change-invariant');
         // The protection block must NOT key on urlCanonicallyChanged: that
         // predicate deliberately returns false for garbage incoming urls
         // ('undefined', non-http), and gating the block on it would let a
@@ -1032,6 +1037,20 @@ function safeWriteReview(filePath, newData, options = {}) {
         } else if (normalizedUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
+        } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)) {
+          // Flip-flop breaker (BRO-121): newData.url matches the url this file
+          // held before its last URL-change clear (_urlChangedClear.from) — a
+          // poller/aggregator is oscillating between two url variants
+          // normalizeUrl() treats as different articles. Refuse the swap-back
+          // and pin the file so neither direction of the cycle reopens it.
+          console.warn(`[review-write-guard] blocked url flip-flop on ${path.basename(filePath)}: ${existing.url} <-> ${newData.url} — pinning urlVerified`);
+          const flippedFromUrl = newData.url;
+          newData.url = existing.url;
+          if (!newData.urlVerified) {
+            newData.urlVerified = true;
+            newData.urlVerifiedAuto = true;
+            newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
+          }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
           for (const f of inv.cleared) {
