@@ -23,6 +23,19 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `check-cross-outlet-attribution-drift.js — run the cross-outlet attribution
+audit assertions and persist a snapshot for the daily health digest. SHADOW mode:
+reports only, never fixes anything, and never fails its step.
+
+Usage:
+  node scripts/check-cross-outlet-attribution-drift.js        run the check, write the snapshot
+  node scripts/check-cross-outlet-attribution-drift.js --help print this usage and exit
+
+Snapshot: data/audit/cross-outlet-attribution-drift.json
+`;
+
 const REPO = path.join(__dirname, '..');
 const TEST_FILE = path.join('scripts', 'audit-cross-outlet-attributions.test.mjs');
 const SNAPSHOT_PATH = path.join(REPO, 'data', 'audit', 'cross-outlet-attribution-drift.json');
@@ -51,6 +64,15 @@ function parseCount(output, label) {
 }
 
 function main() {
+  // --help/-h BEFORE runTest(): this script shells out to a 120s `node --test`
+  // pass over the whole review corpus and then writes a snapshot file, which
+  // is exactly the "real side effects on --help" class test.yml's help-flag
+  // safety audit blocks on (it reddened Lint Workflows in run 31857433854).
+  // Same pattern as classify-unscored-blocked-url.js / collect-review-texts.js.
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   const { exitCode, output } = runTest();
   const passed = exitCode === 0;
   const total = parseCount(output, 'tests');
