@@ -24,6 +24,18 @@ function isNonTheatricalGenre(genre) {
   return !!genre && NON_THEATRICAL_SET.has(genre);
 }
 
+/**
+ * Genre overrides venue for category too: a non-theatrical show (dance/magic/
+ * comedy/cabaret/concert/circus) belongs on the Off-West End hub even when it
+ * plays a West End venue (e.g. dance at Sadler's Wells) — see src/lib/genre.ts.
+ * Single source of truth for both discover-new-shows.js (apply at intake) and
+ * validate-data.js's validateVenueCategory (CI backstop) so the two can't
+ * drift — the "§6 category reverts" bug this fixes was exactly that drift.
+ */
+function applyGenreCategoryOverride(category, genre) {
+  return (isNonTheatricalGenre(genre) && category === 'west-end') ? 'off-west-end' : category;
+}
+
 // Venues that are unambiguously dance houses — anything programmed here is dance
 // unless an explicit manual genre says otherwise. (Regent's Park, the Coliseum,
 // the Globe etc. are deliberately NOT here: they programme plays/musicals/opera
@@ -84,6 +96,7 @@ function classifyGenre(show) {
 module.exports = {
   NON_THEATRICAL_GENRES,
   isNonTheatricalGenre,
+  applyGenreCategoryOverride,
   classifyGenre,
   DANCE_VENUES,
 };

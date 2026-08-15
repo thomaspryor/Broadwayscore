@@ -70,6 +70,24 @@ test('classifyShow always returns category+market consistent with validate-data.
   }
 });
 
+// --- BRO-157: genre must override venue for category at discovery time too ---
+// (not just in validate-data.js's CI backstop — see genre-classification.test.mjs
+// for the shared applyGenreCategoryOverride() behavior tests).
+
+test('discover-new-shows.js applies applyGenreCategoryOverride before pushing a TodayTix-confirmed show', () => {
+  const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
+  assert.ok(
+    /require\(['"]\.\/lib\/genre-classification['"]\)/.test(src),
+    'discover-new-shows.js no longer requires ./lib/genre-classification'
+  );
+  assert.ok(
+    /applyGenreCategoryOverride\(/.test(src),
+    'discover-new-shows.js no longer calls applyGenreCategoryOverride — a non-theatrical ' +
+      'show at a West End venue (e.g. dance at Sadler\'s Wells) can ship with category=' +
+      '"west-end" again until the next validate-data.js CI run (BRO-157 regression).'
+  );
+});
+
 // --- Wiring test: the creator must actually use the helper ---
 
 test('scripts/discover-new-shows.js calls classifyShow on every new show', () => {
