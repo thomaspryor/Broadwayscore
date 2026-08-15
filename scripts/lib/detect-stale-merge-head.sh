@@ -122,24 +122,26 @@ _marker_git_path() {
 # under-reports a live, progressing rebase as stale. Prefer REBASE_HEAD's own
 # mtime when present (a conflict stop is the freshest, most specific signal);
 # fall back to the rebase-merge/rebase-apply directory's mtime otherwise.
+# Checks REBASE_HEAD FIRST, independent of directory presence (ship-check
+# finding, task #1558): a partial-cleanup crash — process died after removing
+# rebase-merge/rebase-apply but before removing REBASE_HEAD — is exactly the
+# "died mid-operation" scenario this whole file exists to catch; requiring
+# the directory to exist too would silently miss that state and under-report
+# a genuinely stuck rebase as "none".
 # Prints the path to stdout, or nothing if no rebase is in progress.
 _rebase_staleness_path() {
   local repo_dir="$1" rm_dir ra_dir head_path
-  rm_dir=$(_marker_git_path "$repo_dir" rebase-merge)
-  ra_dir=$(_marker_git_path "$repo_dir" rebase-apply)
-  local dir=""
-  if [ -n "$rm_dir" ] && [ -d "$rm_dir" ]; then
-    dir="$rm_dir"
-  elif [ -n "$ra_dir" ] && [ -d "$ra_dir" ]; then
-    dir="$ra_dir"
-  else
-    return 0
-  fi
   head_path=$(_marker_git_path "$repo_dir" REBASE_HEAD)
   if [ -n "$head_path" ] && [ -f "$head_path" ]; then
     echo "$head_path"
-  else
-    echo "$dir"
+    return 0
+  fi
+  rm_dir=$(_marker_git_path "$repo_dir" rebase-merge)
+  ra_dir=$(_marker_git_path "$repo_dir" rebase-apply)
+  if [ -n "$rm_dir" ] && [ -d "$rm_dir" ]; then
+    echo "$rm_dir"
+  elif [ -n "$ra_dir" ] && [ -d "$ra_dir" ]; then
+    echo "$ra_dir"
   fi
 }
 

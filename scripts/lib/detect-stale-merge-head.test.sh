@@ -213,6 +213,24 @@ else
   echo "PASS[11b]: back-dated rebase-merge dir (no REBASE_HEAD file) classifies as stale ($out11b)"
 fi
 
+# --- Case 11c: REBASE_HEAD file present with NEITHER rebase-merge nor
+# rebase-apply directory (ship-check finding, task #1558) — a partial-cleanup
+# crash: a process died after removing the state directory but before
+# removing REBASE_HEAD. This is exactly the "died mid-operation" scenario the
+# whole file exists to catch; requiring the directory too would silently miss
+# it. ---
+R11C="$TMP/repo11c"
+mkdir -p "$R11C"
+setup_repo "$R11C"
+git -C "$R11C" rev-parse HEAD > "$(git -C "$R11C" rev-parse --path-format=absolute --git-path REBASE_HEAD)"
+# deliberately no rebase-merge/ or rebase-apply/ directory
+out11c=$(marker_staleness "$R11C" REBASE_HEAD)
+if [ "${out11c%% *}" != "fresh" ]; then
+  echo "FAIL[11c]: expected fresh REBASE_HEAD file with no state dir, got '$out11c'"; fail=1
+else
+  echo "PASS[11c]: REBASE_HEAD file with no rebase-merge/rebase-apply dir still detected, fresh ($out11c)"
+fi
+
 # --- Case 12: REBASE_HEAD via the rebase-apply (non-interactive) backend
 # (task #1558) — `git rebase --apply` forces the older am-based backend,
 # which uses .git/rebase-apply/ instead of .git/rebase-merge/. ---
