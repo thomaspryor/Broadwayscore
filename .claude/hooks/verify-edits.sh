@@ -189,12 +189,40 @@ import re
 # effect is writing to /tmp/. Without this, hook self-tests and any other
 # heredoc that mentions both `sed -i` and `review-texts` in the body
 # falsely tripped the gate. Recurred 3x in a single session 2026-05-16.
-_heredoc_re = re.compile(
-    r"<<-?\s*['\"]?(\w+)['\"]?\n.*?^\1\s*$",
-    re.MULTILINE | re.DOTALL,
+#
+# The open-tag regex requires EXACTLY two '<' via lookbehind/lookahead —
+# `<<<TAG` here-strings (a single token, no multi-line body at all) must NOT
+# be treated as a heredoc open. The prior version matched at a here-string's
+# second '<' and then DOTALL-greedily consumed forward to the next line that
+# happened to equal TAG, silently swallowing real command text — including a
+# genuine `sed -i .../review-texts/...` write — as fake heredoc body. Same
+# false-negative class fixed in stripHeredocBodies() in
+# scripts/lib/infra-review-scope.js (task #1557); ported here (task #1606).
+_heredoc_open_re = re.compile(
+    r"(?<!<)<<(?!<)(-)?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_.-]*)\2"
 )
 def _strip_heredocs(cmd: str) -> str:
-    return _heredoc_re.sub('', cmd)
+    if '<<' not in cmd:
+        return cmd
+    lines = cmd.split('\n')
+    out = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        out.append(lines[i])
+        i += 1
+        tags = [(m.group(3), bool(m.group(1))) for m in _heredoc_open_re.finditer(lines[i - 1])]
+        for tag, dashed in tags:
+            # Plain `<<TAG` requires the line to be EXACTLY the tag (no
+            # trim()); `<<-TAG` additionally permits leading TABS (not
+            # spaces) before the tag. A body line that merely trims down to
+            # the tag text must not end the strip early.
+            while i < n and (lines[i].lstrip('\t') if dashed else lines[i]) != tag:
+                i += 1
+            if i >= n:
+                break  # unterminated — nothing left to strip precisely
+            i += 1  # drop the terminator line, continue with the next tag's body
+    return '\n'.join(out)
 
 # Each alternation requires BOTH the write primitive AND the review-texts path
 # to be locally adjacent in the same statement. Bare `sed -i` is no longer
