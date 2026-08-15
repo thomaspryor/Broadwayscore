@@ -16,6 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   joinContinuationLines,
   parseGateWiredAudits,
+  parseStrictWiredAudits,
   isReviewTextsCorpusScanner,
   hasCorpusGuard,
   findUnguardedGateAudits,
@@ -97,6 +98,26 @@ describe('parseGateWiredAudits', () => {
       '  --gate',
     ].join('\n');
     assert.deepStrictEqual(parseGateWiredAudits(workflow), [{ script: 'audit-foo.js', line: 3 }]);
+  });
+});
+
+describe('parseStrictWiredAudits', () => {
+  test('extracts script + line for a --strict invocation', () => {
+    const workflow = 'steps:\n  - run: node scripts/audit-foo.js --strict\n';
+    assert.deepStrictEqual(parseStrictWiredAudits(workflow), [{ script: 'audit-foo.js', line: 2 }]);
+  });
+
+  test('ignores invocations without --strict (--gate or bare)', () => {
+    const workflow = [
+      'run: node scripts/audit-cast-changes.js --gate',
+      'run: node scripts/audit-run-budget-coverage.js',
+    ].join('\n');
+    assert.deepStrictEqual(parseStrictWiredAudits(workflow), []);
+  });
+
+  test('ignores commented-out lines', () => {
+    const workflow = '      # run: node scripts/audit-foo.js --strict\n';
+    assert.deepStrictEqual(parseStrictWiredAudits(workflow), []);
   });
 });
 
@@ -184,6 +205,36 @@ describe('findUnguardedGateAudits', () => {
     assert.deepStrictEqual(missingScripts, [{ script: 'audit-ghost.js', line: 1 }]);
   });
 
+  test('flags a --strict-wired script that walks review-texts with no guard (#1619)', () => {
+    const workflowText = 'run: node scripts/audit-fake-vacuous.js --strict';
+    const { violations, gateWiredCount, strictWiredCount } = findUnguardedGateAudits({
+      workflowText,
+      getScriptSource: (script) =>
+        script === 'audit-fake-vacuous.js' ? UNGUARDED_REVIEW_TEXTS_SCRIPT : null,
+    });
+    assert.strictEqual(gateWiredCount, 0);
+    assert.strictEqual(strictWiredCount, 1);
+    assert.deepStrictEqual(violations, [{ script: 'audit-fake-vacuous.js', line: 1 }]);
+  });
+
+  test('does not flag a --strict-wired review-texts scanner that already has the guard', () => {
+    const workflowText = 'run: node scripts/audit-autoclear-vs-ensemble.js --strict';
+    const { violations } = findUnguardedGateAudits({
+      workflowText,
+      getScriptSource: () => GUARDED_REVIEW_TEXTS_SCRIPT,
+    });
+    assert.deepStrictEqual(violations, []);
+  });
+
+  test('does not flag a --strict-wired script that gates on a non-review-texts corpus', () => {
+    const workflowText = 'run: node scripts/audit-direct-provider-calls.js --strict';
+    const { violations } = findUnguardedGateAudits({
+      workflowText,
+      getScriptSource: () => UNRELATED_GATE_SCRIPT,
+    });
+    assert.deepStrictEqual(violations, []);
+  });
+
   test('checks each distinct script once even when wired in multiple steps', () => {
     const workflowText = [
       'run: node scripts/audit-fake-vacuous.js --gate',
@@ -227,6 +278,24 @@ describe('findUnguardedGateAudits', () => {
         reviewTextsScripts.has(script) ? GUARDED_REVIEW_TEXTS_SCRIPT : UNRELATED_GATE_SCRIPT,
     });
     assert.strictEqual(wiredCount, 10);
+    assert.deepStrictEqual(violations, []);
+  });
+
+  test('real-world snapshot (#1619): all 4 current --strict-wired scripts pass — 2 review-texts scanners already guarded, 2 gate on a different corpus', () => {
+    const workflowText = [
+      'run: node scripts/audit-direct-provider-calls.js --strict',
+      'run: node scripts/audit-autoclear-vs-ensemble.js --strict',
+      'run: node scripts/audit-sibling-title-misroute.js --strict',
+      'run: node scripts/audit-aggregator-archive-integrity.js --strict',
+    ].join('\n');
+    const reviewTextsScripts = new Set(['audit-autoclear-vs-ensemble.js', 'audit-sibling-title-misroute.js']);
+    const { violations, gateWiredCount, strictWiredCount } = findUnguardedGateAudits({
+      workflowText,
+      getScriptSource: (script) =>
+        reviewTextsScripts.has(script) ? GUARDED_REVIEW_TEXTS_SCRIPT : UNRELATED_GATE_SCRIPT,
+    });
+    assert.strictEqual(gateWiredCount, 0);
+    assert.strictEqual(strictWiredCount, 4);
     assert.deepStrictEqual(violations, []);
   });
 });

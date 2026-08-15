@@ -64,6 +64,11 @@ const KNOWN_SETTERS = [
   // wrongProduction=true and owes the same guard: a file a human explicitly
   // cleared or overrode is left alone. (added 2026-08-07, #1085)
   'repair-noteless-wrongprod-autoclear.js',
+  // Backfill audit for same-title sibling misroutes (task #1617). Skips
+  // shouldSkipWrongProductionAudit()-cleared files before ever computing a
+  // hit, in addition to its own humanReviewedWrongProduction/manualClear/
+  // override/explicit-false checks. (added 2026-08-15, #1617)
+  'audit-sibling-title-misroute.js',
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {

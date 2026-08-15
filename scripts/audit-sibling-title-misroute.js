@@ -67,6 +67,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
 const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
 
@@ -114,13 +115,13 @@ function loadBaselineKeys() {
 }
 
 // Mirrors review-file-writer.js's humanCleared check — never override an
-// explicit human decision, whichever direction it went.
+// explicit human decision, whichever direction it went. wrongProduction===false
+// is the one case shouldSkipWrongProductionAudit() doesn't cover (it also
+// checks allowCrossMarket, which this OR picks up).
 function isHumanCleared(d) {
   return !!(d && (
-    d.humanReviewedWrongProduction === false ||
-    d.wrongProductionManualClear === true ||
-    d.wrongProductionOverride === true ||
-    d.wrongProduction === false
+    d.wrongProduction === false ||
+    shouldSkipWrongProductionAudit(d)
   ));
 }
 
