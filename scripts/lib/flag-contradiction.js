@@ -52,7 +52,8 @@
 
 'use strict';
 
-const { wrongShowCleared } = require('./review-guards');
+const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale } = require('./review-guards');
+const { clearWrongProductionFlags } = require('./wrong-production-clear');
 
 /**
  * A file whose flag a human has already ruled on — never escalate it. Covers:
@@ -262,6 +263,7 @@ const SELF_CLEAR_PAIRS = [
     flag: 'wrongProduction',
     breadcrumb: 'wrongProductionAutoCleared',
     task: '#1020',
+    resolution: 'retract-breadcrumb',
   },
   {
     flag: 'wrongShow',
@@ -269,16 +271,30 @@ const SELF_CLEAR_PAIRS = [
     task: '#1022',
     // The promotion stamp only contradicts the flag when the CV it was promoted
     // FROM now affirms the review. Without this the stamp is just provenance.
+    // NOTE: this is a broad-recall detector for AUDIT/REPORTING purposes only —
+    // it is intentionally looser than isStaleCvPromotedWrongShow (accepts
+    // medium confidence, doesn't check isFilmTv or cvIsStale), so more files
+    // surface here than the resolver is willing to auto-fix. The demote-flag
+    // resolution below re-gates through the strict predicate before mutating
+    // anything (BRO-168 second-opinion review: two divergent evidentiary bars
+    // for the same mutation would silently drift apart over time).
     extra: (f) => {
       const cv = f.contentVerification;
       return !!cv && cv.isValid === true
         && cv.wrongArticle === false && cv.wrongProduction === false;
     },
+    // demote-flag (not retract-breadcrumb, BRO-168): contentVerificationPromoted
+    // is PROVENANCE for why wrongShow was set true, not a retraction record —
+    // retracting only the breadcrumb here left the actual stale exclusion
+    // (wrongShow=true) standing forever, which is the bug this pair exists to
+    // catch. See demoteStaleWrongShowPromotion below.
+    resolution: 'demote-flag',
   },
   {
     flag: 'wrongAttribution',
     breadcrumb: 'crossOutletVerified',
     task: '#1023',
+    resolution: 'retract-breadcrumb',
   },
   {
     // The wrongProduction pair's exact twin: rebuild-all-reviews.js (~2607/2619)
@@ -290,6 +306,7 @@ const SELF_CLEAR_PAIRS = [
     flag: 'wrongShow',
     breadcrumb: 'wrongShowAutoCleared',
     task: '#1020',
+    resolution: 'retract-breadcrumb',
   },
   {
     // #1023's own cousin, found by the /what-else pattern lens after the
@@ -358,6 +375,7 @@ function detectAllSelfContradictoryClears(file) {
       breadcrumb: pair.breadcrumb,
       breadcrumbValue: file[pair.breadcrumb],
       task: pair.task,
+      resolution: pair.resolution || 'retract-breadcrumb',
     });
   }
   return hits;
@@ -407,12 +425,83 @@ function retractStaleClearBreadcrumb(file, contradiction, now = new Date()) {
   return removed;
 }
 
+/**
+ * Resolve the wrongShow + contentVerificationPromoted self-contradiction
+ * (#1022, BRO-168) by demoting the STALE flag, not retracting the breadcrumb.
+ *
+ * retractStaleClearBreadcrumb() above is correct for pairs where the
+ * breadcrumb really is a CLEAR record (wrongProductionAutoCleared,
+ * crossOutletVerified, wrongShowAutoCleared) — there the flag is the live,
+ * later-written verdict and the breadcrumb is the leftover. contentVerification
+ * Promoted is NOT that kind of breadcrumb: it is the PROVENANCE for why
+ * wrongShow got set to true in the first place, not a retraction of it. When
+ * the file's own current contentVerification block affirms the review is
+ * valid, the PROMOTION is what's stale — retracting only the breadcrumb (the
+ * old behavior) left wrongShow=true standing and the review silently excluded
+ * forever. BRO-168 found 28 files this way, including NYT, Variety and WSJ
+ * reviews with zero new evidence of wrong-show content.
+ *
+ * Re-gates through isStaleCvPromotedWrongShow — the SAME strict predicate the
+ * rebuild-loop self-heal uses — rather than trusting the SELF_CLEAR_PAIRS
+ * `extra()` match alone. `extra()` is a broad-recall audit detector (accepts
+ * medium confidence, doesn't check isFilmTv or CV staleness); firing this
+ * mutation off that looser bar would un-suppress reviews on weaker evidence
+ * than the automated self-heal itself requires (BRO-168 second-opinion
+ * review). Returns false (no-op) when the strict predicate disagrees — the
+ * file stays flagged for a slower/manual pass instead.
+ *
+ * Reuses clearWrongProductionFlags(wrongShowOnly) for the same reasons every
+ * other wrongShow clearer does (review-write-guard PROTECTED_FIELDS parity,
+ * embedded contentVerification correction so the next rebuild doesn't
+ * re-promote it). The CV's own reasoning is captured BEFORE calling
+ * clearWrongProductionFlags — that helper overwrites contentVerification.
+ * reasoning in place with a generic "Superseded by X recovery" wrapper, and
+ * unlike a stale-CV recovery, the CV here is NOT stale: it's the fresh verdict
+ * that justifies the demotion, so its own reasoning is restored afterward
+ * (same "restore the LLM's own reasoning" call already made in
+ * scripts/reverify-promoted-reviews.js).
+ *
+ * @param {object} file - parsed review-text JSON (mutated in place)
+ * @param {object} contradiction - the detectAllSelfContradictoryClears() entry
+ *   for this file (flag: 'wrongShow', breadcrumb: 'contentVerificationPromoted')
+ * @param {Date} [now] - injectable clock for tests
+ * @returns {boolean} true when the flag was demoted, false when the strict
+ *   predicate declined (contradiction reported but not auto-fixed)
+ */
+function demoteStaleWrongShowPromotion(file, contradiction, now = new Date()) {
+  if (!file || !contradiction) return false;
+  if (contradiction.flag !== 'wrongShow' || contradiction.breadcrumb !== 'contentVerificationPromoted') return false;
+  if (!isStaleCvPromotedWrongShow(file, computeCvIsStale(file))) return false;
+
+  const freshReasoning = file.contentVerification && file.contentVerification.reasoning;
+
+  clearWrongProductionFlags(file, {
+    source: 'flag-contradiction.js#1022',
+    reason: 'own current contentVerification affirms valid — stale CV-promotion never demoted (BRO-168)',
+    wrongShowOnly: true,
+  });
+
+  if (freshReasoning && file.contentVerification) {
+    file.contentVerification.reasoning = freshReasoning;
+  }
+  delete file.contentVerificationPromoted;
+
+  // Redundant with wrongShowOverride (set by clearWrongProductionFlags above)
+  // but matches the double-stamp convention reverify-promoted-reviews.js
+  // already established for this exact recovery shape.
+  file.wrongShowAutoCleared = 'flag-contradiction.js#1022 (BRO-168): own contentVerification affirms valid, promotion stamp was stale';
+  file.wrongShowAutoClearedAt = now.toISOString().split('T')[0];
+
+  return true;
+}
+
 module.exports = {
   detectFlagContradiction,
   detectCvFlagContradiction,
   detectSelfContradictoryClear,
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
+  demoteStaleWrongShowPromotion,
   hasClearBreadcrumbValue,
   contradictionFixCommand,
   shouldAlertContradiction,

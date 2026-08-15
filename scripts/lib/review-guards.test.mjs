@@ -12,6 +12,8 @@ const {
   isIncludableForRebuild,
   isLikelyStaleRoundupFlag,
   isStaleCvPromotedWrongProduction,
+  isStaleCvPromotedWrongShow,
+  computeCvIsStale,
 } = require('./review-guards.js');
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -356,4 +358,92 @@ test('isStaleCvPromotedWrongProduction: Auto-adjudicated note still respects man
     llmScore: { score: 78, confidence: 'high' },
   };
   assert.equal(isStaleCvPromotedWrongProduction(manuallyCleared, false), false);
+});
+
+// isStaleCvPromotedWrongShow (BRO-168) — the girl-interrupted-off-broadway-2026
+// talkinbroadway--unknown.json case that motivated the fix: wrongShow=true +
+// contentVerificationPromoted stamped from an old CV snapshot, while its own
+// contentVerification block (verifiedBy llm:openai, high confidence) already
+// affirms isValid:true/wrongArticle:false/wrongProduction:false. Fields trimmed
+// to what the predicate reads (verified against the real pre-fix file, task
+// #1021 git history).
+const GIRL_INTERRUPTED_TB_STUB = {
+  wrongShow: true,
+  contentVerificationPromoted: 'rebuild: promoted from contentVerification (llm:claude-haiku, high)',
+  contentVerification: {
+    isValid: true,
+    confidence: 'high',
+    wrongArticle: false,
+    wrongProduction: false,
+    isFilmTv: false,
+    verifiedBy: 'llm:openai',
+    verifiedAt: '2026-06-05T23:55:34.160Z',
+  },
+};
+
+test('isStaleCvPromotedWrongShow: girl-interrupted TB stub (task #1021 real case) self-heals', () => {
+  assert.equal(isStaleCvPromotedWrongShow(GIRL_INTERRUPTED_TB_STUB, false), true);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire without wrongShow=true', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShow: false };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire when cvIsStale is true', () => {
+  assert.equal(isStaleCvPromotedWrongShow(GIRL_INTERRUPTED_TB_STUB, true), false);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire without the contentVerificationPromoted provenance stamp', () => {
+  const { contentVerificationPromoted, ...f } = GIRL_INTERRUPTED_TB_STUB;
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire on medium confidence (stricter than the promote path)', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, contentVerification: { ...GIRL_INTERRUPTED_TB_STUB.contentVerification, confidence: 'medium' } };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire when CV still says wrongArticle/wrongProduction/isFilmTv', () => {
+  const wrongArticle = { ...GIRL_INTERRUPTED_TB_STUB, contentVerification: { ...GIRL_INTERRUPTED_TB_STUB.contentVerification, wrongArticle: true } };
+  const wrongProduction = { ...GIRL_INTERRUPTED_TB_STUB, contentVerification: { ...GIRL_INTERRUPTED_TB_STUB.contentVerification, wrongProduction: true } };
+  const filmTv = { ...GIRL_INTERRUPTED_TB_STUB, contentVerification: { ...GIRL_INTERRUPTED_TB_STUB.contentVerification, isFilmTv: true } };
+  assert.equal(isStaleCvPromotedWrongShow(wrongArticle, false), false);
+  assert.equal(isStaleCvPromotedWrongShow(wrongProduction, false), false);
+  assert.equal(isStaleCvPromotedWrongShow(filmTv, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: respects a manual/override clear', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShowManualClear: true };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: does not fire without a contentVerification block at all', () => {
+  const { contentVerification, ...f } = GIRL_INTERRUPTED_TB_STUB;
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: combo file (wrongProduction ALSO true) still self-heals wrongShow — the review stays excluded via wrongProduction, this just clears the stale/redundant wrongShow label', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongProduction: true };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), true);
+});
+
+test('computeCvIsStale: false when no contentVerification', () => {
+  assert.equal(computeCvIsStale({}), false);
+});
+
+test('computeCvIsStale: true when fullText was fetched after the CV verdict', () => {
+  const f = {
+    textFetchedAt: '2026-06-06T00:00:00.000Z',
+    contentVerification: { verifiedAt: '2026-06-05T23:55:34.160Z' },
+  };
+  assert.equal(computeCvIsStale(f), true);
+});
+
+test('computeCvIsStale: false when the CV verdict postdates the fetch', () => {
+  const f = {
+    textFetchedAt: '2026-06-05T23:55:33.406Z',
+    contentVerification: { verifiedAt: '2026-06-05T23:55:34.160Z' },
+  };
+  assert.equal(computeCvIsStale(f), false);
 });
