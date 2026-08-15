@@ -50,6 +50,28 @@ test('areSameTitleSiblings is false when the show is missing from the index', ()
   assert.equal(areSameTitleSiblings('unknown-show-id', bway.id, siblingIndex), false);
 });
 
+// buildSiblingIndex() (market-routing.js) drops a show from its counterpart's
+// .siblings array when it has neither a -YYYY-suffixed id nor an openingDate
+// — so checking only one direction is asymmetric. A newly-tracked/provisional
+// show can plausibly lack both signals before enrichment fills them in.
+// (code-review finding, 2026-08-15.)
+const provisionalRegional = {
+  id: 'some-show-not-yet-year-suffixed',
+  title: 'Some Show',
+  transferredTo: 'some-show-bway-2025',
+};
+const enrichedBway = {
+  id: 'some-show-bway-2025',
+  title: 'Some Show',
+  transferOf: provisionalRegional.id,
+  openingDate: '2025-01-01',
+};
+test('areSameTitleSiblings is symmetric even when one side lacks a year suffix and openingDate', () => {
+  const siblingIndex = buildSiblingIndex([provisionalRegional, enrichedBway]);
+  assert.equal(areSameTitleSiblings(provisionalRegional.id, enrichedBway.id, siblingIndex), true);
+  assert.equal(areSameTitleSiblings(enrichedBway.id, provisionalRegional.id, siblingIndex), true);
+});
+
 // A whole-group skip ("flag nothing if ANY member isn't a mutual sibling of
 // member[0]") would let the sibling pair back into each other's combinedWith
 // the moment a 3rd, genuinely different show shares the same URL (e.g. a
