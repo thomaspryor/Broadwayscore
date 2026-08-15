@@ -105,6 +105,13 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: commercial-weekly
+
   sweep-pending:
     # Hygiene pass — runs BEFORE deep-research so the requeued shows are picked
     # up in the same orchestrator run. Archive ages out >180d low-conf entries

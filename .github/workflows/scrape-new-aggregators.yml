@@ -290,6 +290,13 @@ jobs:
             echo "No audit/staging changes to commit"
           fi
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-playbill-verdict
+
   scrape-nyc-theatre:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -353,6 +360,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: NYC Theatre aggregator archive"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-nyc-theatre
+
   scrape-lbo-roundups:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -415,6 +429,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LBO roundup aggregator archive"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-lbo-roundups
 
   # BWW /reviews/ landing-page discovery: scrape the visible REVIEW ROUNDUPS
   # section, match URLs to shows.json, dispatch matched shows through the
@@ -491,6 +512,13 @@ jobs:
           else
             echo "No BWW unmatched-roundups changes to commit"
           fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-bww-landing
 
   # Rebuild reviews.json after aggregator data is committed
   rebuild:

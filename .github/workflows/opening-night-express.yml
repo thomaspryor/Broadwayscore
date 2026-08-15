@@ -447,6 +447,13 @@ jobs:
           echo "Triggering production deploy..."
           gh workflow run vercel-deploy.yml || echo "::warning::Deploy dispatch failed — trigger manually: gh workflow run vercel-deploy.yml"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-express
+
       - name: Step summary
         if: always()
         run: |

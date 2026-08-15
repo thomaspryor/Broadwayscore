@@ -51,6 +51,13 @@ const path = require('path');
 
 const LEDGER_FILE = 'scraper-spend-ledger.jsonl';
 const LEDGER_PATH = 'data/audit/scraper-spend-ledger.jsonl';
+// The reusable composite action (BRO-163) that wraps the canonical
+// git-add/commit/push pattern this whole check exists to enforce — its own
+// `git add data/audit/scraper-spend-ledger.jsonl` line lives inside
+// .github/actions/commit-scraper-spend-ledger/action.yml, invisible to a
+// scan of the CALLING workflow's YAML text. A job that `uses:` it counts as
+// staging the ledger without the check needing to open the action file.
+const COMMIT_LEDGER_ACTION_RE = /uses:\s*\.\/\.github\/actions\/commit-scraper-spend-ledger\b/;
 const TRACKED_LIB_BASENAME = 'url-discovery.js';
 const TRACKED_EXPORT_NAMES = new Set(['serpQuery', 'discoverCorrectUrl']);
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
@@ -489,6 +496,28 @@ function lineStagesLedgerViaHelper(line) {
   return args.some(argCoversLedgerPath);
 }
 
+// Does a bare `git add <path...>` line (no stage-data-changes.sh helper, no
+// literal ledger filename) cover the ledger file via a directory-prefix or
+// exact-path operand — e.g. `git add data/audit/` or `git add data/`? Real
+// examples: collect-review-texts.yml:368/742, collect-free-reviews.yml:362,
+// collect-soft-paywall.yml, collect-hard-paywall.yml, overnight-collect.yml
+// all stage via a bare directory add, not the literal filename — a
+// LEDGER_FILE substring search misses every one of them (found by BRO-163's
+// pre-implementation review; see ledger-coverage-exemptions.js history).
+// Operands containing a shell glob character are deliberately rejected —
+// `git add data/audit/*.json` (opening-night-express.yml) does NOT cover the
+// ledger's `.jsonl` extension, and this function can't safely evaluate glob
+// semantics, so it conservatively treats globbed operands as non-covering
+// (a real gap stays flagged rather than silently passing).
+function lineStagesLedgerViaDirectAdd(line) {
+  const m = line.match(/git add\b([^#]*)/);
+  if (!m) return false;
+  const argsStr = m[1].trim();
+  if (argsStr === '') return false;
+  const args = argsStr.split(/\s+/).filter((a) => a && !a.startsWith('-') && a !== '||' && a !== '&&');
+  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a));
+}
+
 function jobStagesLedgerFile(jobLines) {
   const lines = joinBackslashContinuations(jobLines);
   for (let i = 0; i < lines.length; i++) {
@@ -497,6 +526,8 @@ function jobStagesLedgerFile(jobLines) {
 
     if (line.includes(LEDGER_FILE) && /git add\b/.test(line)) return true;
     if (lineStagesLedgerViaHelper(line)) return true;
+    if (lineStagesLedgerViaDirectAdd(line)) return true;
+    if (COMMIT_LEDGER_ACTION_RE.test(line)) return true;
 
     const loopMatch = matchForLoopStart(lines, i);
     if (loopMatch && loopMatch.list.includes(LEDGER_FILE)) {

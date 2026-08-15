@@ -140,6 +140,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: BWW reviews scrape (aggregator archive)"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-bww-reviews
+
   rebuild:
     needs: [scrape]
     if: always() && needs.scrape.result == 'success'

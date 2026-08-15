@@ -4700,6 +4700,20 @@ jobs:
           git add data/audit/pipeline-health/
           git diff --staged --quiet || git commit -m "health: Record test success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
 
+      # Own step, NOT folded into "Record pipeline success" (if: success()) —
+      # this job's data-validation `--gate` audits redden main routinely (see
+      # comments above), and folding ledger telemetry into a success()-gated
+      # step would silently drop it on every one of those routine failures.
+      # This step is unconditional (if: always()) so SERP-spend rows from
+      # this job's url-discovery.js calls are never lost to a validation
+      # gate failure. BRO-163.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: test-data-validation
+
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
