@@ -113,11 +113,14 @@ function main() {
           // Theater combined-review deadlock, girl-interrupted 2026-06-05).
           // Clear the stale rejection breadcrumbs and request a rescore so the
           // combined-review Haiku fallback (llm-scoring/index.ts) can run.
-          delete data.rejectionReason;
-          delete data.rejectedBy;
-          delete data.rejectedAt;
-          delete data.rejectionReasoning;
-          delete data.rescoreCompletedAt;
+          // null, not delete — none of these fields has a CLEAR_BREADCRUMBS
+          // entry, so a delete is silently reverted by safeWriteReview's
+          // merge-mode restore pass (task #1624).
+          data.rejectionReason = null;
+          data.rejectedBy = null;
+          data.rejectedAt = null;
+          data.rejectionReasoning = null;
+          data.rescoreCompletedAt = null;
           data.needsRescore = true;
         }
         safeWriteReview(entry.filePath, data);
