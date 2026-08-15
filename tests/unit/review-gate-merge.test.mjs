@@ -164,6 +164,43 @@ test('parse: prose mentioning merge is not an ingress', () => {
   assert.equal(r.isMerge, false);
 });
 
+test('parse: heredoc commit body mentioning the wrapper/git-merge as prose is not an ingress', () => {
+  // task #1557: shellSegments splits on every newline, including inside a
+  // heredoc body — so a plain `git commit -m "$(cat <<'EOF' … EOF)"` whose
+  // message text merely NAMES merge-worktree-to-main.sh or describes
+  // "git merge --abort" in prose used to be misclassified as invoking it.
+  const cmd = [
+    `git commit -m "$(cat <<'EOF'`,
+    'fix: something about merge-worktree-to-main.sh and git merge --abort',
+    '',
+    'This is prose discussing the merge wrapper script and git merge --abort,',
+    'not an actual invocation of either.',
+    'EOF',
+    ')"',
+  ].join('\n');
+  const r = parseMergeIngress(cmd, { currentBranch: 'main' });
+  assert.equal(r.isMerge, false);
+});
+
+test('parse: a real merge AFTER a heredoc commit body still gates', () => {
+  // Stripping the heredoc body must not blind the parser to a genuine merge
+  // that follows it in the same compound command.
+  const cmd = [
+    `git commit -m "$(cat <<'EOF'`,
+    'mentions merge-worktree-to-main.sh in prose only',
+    'EOF',
+    ')" && scripts/merge-worktree-to-main.sh wt-feature',
+  ].join('\n');
+  const r = parseMergeIngress(cmd, { currentBranch: 'wt-feature' });
+  assert.equal(r.isMerge, true);
+  assert.equal(r.targetsMain, true);
+  assert.equal(r.via, 'wrapper');
+  // The heredoc-opening line still classifies as kind:'commit', so the
+  // working-tree source is correctly added too — same as any other compound
+  // `git commit … && <merge ingress>` (see the WORKTREE test above).
+  assert.deepEqual(r.sources, ['wt-feature', 'WORKTREE']);
+});
+
 test('parse: `bash -c` payload bails rather than guessing (fail open)', () => {
   const r = parseMergeIngress(`bash -c 'git merge feat'`, { currentBranch: 'main' });
   assert.equal(r.isMerge, false);

@@ -215,6 +215,50 @@ function tokenize(segment) {
   return out;
 }
 
+// A commit body built via `$(cat <<'EOF' … EOF)`, or any other embedded
+// here-doc, carries literal prose across multiple *shell* lines even though
+// it is a single quoted VALUE to the real shell. shellSegments()/tokenize()
+// have no notion of quoting across a newline, so each heredoc body line would
+// otherwise become its own fake "segment" and get tokenized/classified as if
+// it were a live command — a commit message that merely NAMES a write
+// command, the merge wrapper script, or `git merge --abort` as prose got
+// misread as invoking it (task #1557, first caught in the merge gate;
+// bashWriteTargets/bashPatchSources below share the exposure since they
+// tokenize the same way). Strip heredoc BODIES (and their terminator line,
+// which names the tag, not a command) before segmenting.
+const HEREDOC_OPEN_RE = /<<(-)?~?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/g;
+function stripHeredocBodies(command) {
+  const str = String(command || '');
+  if (!str.includes('<<')) return str; // fast path — no heredocs
+  const lines = str.split('\n');
+  const out = [];
+  for (let i = 0; i < lines.length; i++) {
+    out.push(lines[i]);
+    HEREDOC_OPEN_RE.lastIndex = 0;
+    let m, tag = null, dashed = false;
+    // A line can open more than one heredoc (`cmd <<A <<B`); tracking only
+    // the LAST tag and stripping through its terminator over-strips (it also
+    // swallows the first tag's own terminator line) rather than under-strips
+    // — the safe direction here, since it can only remove more candidate
+    // prose, never leave a fake segment classifiable.
+    while ((m = HEREDOC_OPEN_RE.exec(lines[i])) !== null) { tag = m[3]; dashed = !!m[1]; }
+    if (!tag) continue;
+    // Real bash terminator rules: plain `<<TAG` requires the line to be
+    // EXACTLY the tag (no leading/trailing whitespace); `<<-TAG` additionally
+    // permits leading TABS (not spaces) before the tag. Matching this
+    // precisely — rather than a loose trim() — matters: a body line that
+    // merely trims down to the tag text would otherwise end the strip early
+    // and re-expose the rest of the body to classification.
+    const isTerminator = dashed ? (l) => l.replace(/^\t+/, '') === tag : (l) => l === tag;
+    i++;
+    while (i < lines.length && !isTerminator(lines[i])) i++;
+    // lines[i] (if found) is the terminator — dropped, not pushed. If
+    // unterminated, i has run past the end and the outer loop's own i++
+    // ends it there; nothing further is emitted.
+  }
+  return out.join('\n');
+}
+
 // Documented, deliberate holes. Named here so a future session reads them as a
 // known cost rather than "discovering" them and hard-locking the gate in
 // response. Every one of these is cheaper to accept than to chase, because the
@@ -315,6 +359,7 @@ function classifyChange(paths, opts = {}) {
  */
 function bashWriteTargets(command) {
   if (!command) return [];
+  command = stripHeredocBodies(command);
   const out = new Set();
   const add = (t) => {
     const v = (t || '').trim();
@@ -360,6 +405,7 @@ function bashWriteTargets(command) {
  */
 function bashPatchSources(command) {
   if (!command) return [];
+  command = stripHeredocBodies(command);
   const out = new Set();
   for (const segment of shellSegments(command)) {
     const tokens = tokenize(segment);
@@ -520,6 +566,7 @@ module.exports = {
   // verdict storage. One tokenizer, two callers.
   shellSegments,
   tokenize,
+  stripHeredocBodies,
   toRepoRelative,
   classifyPath,
   classifyChange,
