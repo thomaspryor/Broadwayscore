@@ -147,6 +147,42 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
 }
 
 /**
+ * True when `newUrl` is a swap BACK to the url this file held before its most
+ * recent URL-change clear (existing._urlChangedClear.from) — i.e. an
+ * aggregator/poller is flip-flopping the file's url between two variants that
+ * normalizeUrl() treats as different articles (BRO-121: most often an
+ * untracked query param a source cites inconsistently, e.g. Independent's
+ * ?loginSuccessful=true paywall-login-gate param). Each direction of the
+ * cycle otherwise re-triggers applyUrlChangeInvariant and wipes
+ * llmScore/fullText/aggregatorStars/etc every poll.
+ *
+ * Reads the breadcrumb `applyUrlChangeInvariant` already stamps on every real
+ * URL change, so this needs no new state and works from either write
+ * chokepoint (mergeReviews, review-write-guard.js's safeWriteReview).
+ *
+ * Only catches the immediate two-url reversal (A->B->A), not a slower 3+-way
+ * oscillation (A->B->C->A) — the breadcrumb only records the single most
+ * recent hop. That mirrors the ticket's "ping-pong" framing; a longer cycle
+ * needs a history, not a single breadcrumb.
+ *
+ * Requires prior.to to still match the file's CURRENT url (same integrity
+ * check applyUrlChangeInvariant's own chain-carry logic applies before
+ * trusting a breadcrumb, see below) — a write path that changes `url`
+ * without going through the invariant (a manual edit, a restored field from
+ * committed state) leaves the breadcrumb stale, and trusting `.from` alone
+ * would wrongly block a genuinely new, unrelated url that happens to match
+ * an old `from`.
+ */
+function isUrlFlipFlop(existing, newUrl) {
+  if (!existing || !newUrl) return false;
+  const prior = existing._urlChangedClear;
+  if (!prior || !prior.from || !prior.to) return false;
+  const { normalizeUrl } = require('./review-normalization');
+  if (normalizeUrl(String(prior.to)) !== normalizeUrl(existing.url)) return false;
+  return normalizeUrl(String(prior.from)) === normalizeUrl(newUrl);
+}
+
+/**
  * Enforce the invariant on a post-merge record. Mutates `merged` in place.
  *
  * CONTRACT: `merged` must be the COMPLETE record that will be written to disk
@@ -409,6 +445,7 @@ function _removeLlmScoreSidecar(reviewFilePath) {
 module.exports = {
   applyUrlChangeInvariant,
   urlCanonicallyChanged,
+  isUrlFlipFlop,
   updateFileUrlWithInvariant,
   removeLlmScoreSidecar: _removeLlmScoreSidecar,
   NEW_ERA_FETCH_FIELDS,

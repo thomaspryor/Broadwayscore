@@ -123,6 +123,35 @@ log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} dele
 push_mutex_acquire
 trap 'push_mutex_release' EXIT
 
+# BRO-142: refuse to touch $MAIN_DIR if it already has a MERGE_HEAD this run
+# didn't create. Checked HERE — right after push_mutex_acquire, not before it
+# — so there's no TOCTOU window: two concurrent invocations could both observe
+# "none" if checked pre-mutex, then the loser (having already passed its own
+# check) barrels into merging/pushing on top of the MERGE_HEAD the winner's
+# failed merge just left behind. Checking only once the mutex is actually HELD
+# closes that gap for every mutex-protected caller (a manual, out-of-band
+# `git merge` outside the scripted flow remains a documented residual gap —
+# see detect-stale-merge-head.sh's header). die() already releases the mutex
+# and the EXIT trap above is idempotent, so no duplicate cleanup is needed.
+# Guarded on the file existing (fail OPEN, not closed): a copy of this script
+# running from a branch/checkout that predates this file must behave exactly
+# as it always did, not spuriously refuse every merge because a dependency
+# it's never heard of is missing (caught by this file's own test fixture,
+# which — deliberately, matching push-mutex.sh/push-content-survival.js
+# above — copies only named dependencies into an isolated fixture dir).
+if [ -f "$SCRIPT_DIR/lib/detect-stale-merge-head.sh" ]; then
+  # shellcheck source=scripts/lib/detect-stale-merge-head.sh
+  source "$SCRIPT_DIR/lib/detect-stale-merge-head.sh"
+  _bro142_result=$(merge_head_staleness "$MAIN_DIR")
+  _bro142_status="${_bro142_result%% *}"
+else
+  _bro142_status="none"
+fi
+if [ "$_bro142_status" != "none" ]; then
+  die "existing MERGE_HEAD in $MAIN_DIR — refusing to merge/push on top of it. $(merge_head_staleness_message "$MAIN_DIR" "$_bro142_status" "${_bro142_result#* }")"
+fi
+unset _bro142_result _bro142_status
+
 # --- Stash any dirty tracked files (the data-daemon race) ---
 STASHED=0
 if ! g diff --quiet 2>/dev/null || ! g diff --cached --quiet 2>/dev/null; then
