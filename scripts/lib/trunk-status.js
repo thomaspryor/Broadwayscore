@@ -88,7 +88,9 @@ function summarizeTrunkRuns(runs, { now = Date.now() } = {}) {
     .sort((a, b) => b._t - a._t);
 
   const empty = {
-    state: 'UNKNOWN', consecutiveFailures: 0, redSince: null, redForHours: null,
+    state: 'UNKNOWN', consecutiveFailures: 0, consecutiveSuccesses: 0,
+    greenSince: null, greenForHours: null, greenDurationIsFloor: false,
+    redSince: null, redForHours: null,
     redDurationIsFloor: false, lastSuccessAt: null, latestFailedRunId: null,
     latestFailedRunUrl: null, decidedRuns: 0,
   };
@@ -97,7 +99,33 @@ function summarizeTrunkRuns(runs, { now = Date.now() } = {}) {
   const firstSuccess = decided.find((r) => r.conclusion === 'success');
   const lastSuccessAt = firstSuccess ? firstSuccess.createdAt : null;
   if (!FAILED_CONCLUSIONS.has(String(decided[0].conclusion))) {
-    return { ...empty, state: 'GREEN', lastSuccessAt, decidedRuns: decided.length };
+    // Green streak, the exact mirror of the red one below. Added 2026-08-14:
+    // the GREEN branch previously recorded only "the latest run passed", which
+    // cannot answer the one question a post-incident hold actually asks —
+    // "has main STAYED green?". Without it, an acceptance probe re-run days
+    // later (scripts/autonomous-acceptance-recheck.js) would rubber-stamp a
+    // trunk that had flapped red and back between snapshots. Purely additive:
+    // renderTrunkDigestLine's GREEN branch is unchanged and reads none of it.
+    const greenStreak = [];
+    for (const r of decided) {
+      if (FAILED_CONCLUSIONS.has(String(r.conclusion))) break;
+      greenStreak.push(r);
+    }
+    const oldestGreen = greenStreak[greenStreak.length - 1];
+    return {
+      ...empty,
+      state: 'GREEN',
+      consecutiveSuccesses: greenStreak.length,
+      greenSince: oldestGreen.createdAt,
+      greenForHours: Math.max(0, (now - oldestGreen._t) / 3600e3),
+      // Same semantics as redDurationIsFloor: no failure anywhere in the
+      // fetched window means the green streak runs off the end of it, so the
+      // duration is AT LEAST greenForHours. A consumer asserting "green for
+      // 24h" must treat the floor as satisfying the bound, never as capping it.
+      greenDurationIsFloor: greenStreak.length === decided.length,
+      lastSuccessAt,
+      decidedRuns: decided.length,
+    };
   }
 
   const streak = [];
@@ -109,6 +137,14 @@ function summarizeTrunkRuns(runs, { now = Date.now() } = {}) {
   return {
     state: 'RED',
     consecutiveFailures: streak.length,
+    // Explicit, not left undefined: a consumer asserting a green streak must
+    // read a real 0 on a red trunk rather than `undefined >= N` (which is
+    // false, but silently — and JSON.stringify drops undefined entirely, so
+    // the field would vanish from the committed snapshot).
+    consecutiveSuccesses: 0,
+    greenSince: null,
+    greenForHours: null,
+    greenDurationIsFloor: false,
     redSince: oldest.createdAt,
     redForHours: Math.max(0, (now - oldest._t) / 3600e3),
     // No success anywhere in the fetched window means the streak runs off the

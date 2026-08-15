@@ -129,6 +129,35 @@ const PROTECTED_FIELDS = [
   'wrongProductionManualClear',
   'wrongArticleManualClear',
   'wrongShowManualClear',
+  // "This file is not a review at all" — a human/audit exclusion (allegra-west-end-2026
+  // westend--peter-quilter.json, 2026-08-14: a ticketing/listing page whose recorded
+  // critic was the show's playwright, lifted out of the page's Creative-team block).
+  // Read by the rebuild gate (rebuild-all-reviews.js ~2820), review-guards.js ~2939,
+  // opening-signal.js, date-plausibility.js, star-score-mismatch.js and t1-silent-gap.js
+  // — every one of them EXCLUDES the file when the flag is true. Nothing in the repo
+  // writes it (grep: zero producers), so it only ever arrives by hand; that is exactly
+  // the profile that gets silently dropped on a bot rebase, re-including a non-review
+  // and reddening Data Validation on the same record. The reason/setAt/setBy siblings
+  // are protected alongside the boolean for the same reason every other *Reason/*At/*By
+  // trio here is: a protected flag with no provenance is an audit-trail hole (cf. the
+  // wrongShowReasonAt/wrongProductionReasonAt note below).
+  // NOTE deliberately NOT protected: rejectionReason / rejectedAt / rejectedBy /
+  // rejectionReasoning. They look like the same family but are CI-derived, and two
+  // scripts intentionally DELETE them with no breadcrumb — flag-combined-reviews.js
+  // (~line 116, clearing a stale wrong_show rejection so the scorer's UNSCORED /
+  // needsRescore queries stop excluding the file — the girl-interrupted deadlock)
+  // and split-multi-show-roundups.js (~line 234, after trimming a roundup down to its
+  // own show's section). Protecting them would make both clears no-ops on the next
+  // rebase and resurrect exactly the deadlock they exist to break.
+  'isNotReview',
+  'isNotReviewReason',
+  'isNotReviewSetAt',
+  'isNotReviewSetBy',
+  // Breadcrumb that makes an intentional UNSET of isNotReview possible (a record
+  // later proven to be a real review). Self-protecting, like wrongShowManualClear:
+  // if the breadcrumb itself were droppable the restore would resurrect the flag it
+  // was raised to retire. See CLEAR_BREADCRUMBS below.
+  'isNotReviewManualClear',
   'wrongProductionOverride',
   'wrongProductionOverrideReason',
   'wrongProductionOverrideSetAt',
@@ -504,8 +533,28 @@ const _clearBreadcrumbRetracted = (field) => (d) => {
   return Array.isArray(fields) && fields.includes(field);
 };
 
+// Intentional-unset of the manual "not a review" exclusion. Two shapes count:
+//   1. isNotReview === false — an explicit "no, this IS a review" assertion. `false`
+//      is not _isEmptyValue, so the boolean itself is never restore-eligible in that
+//      shape; this entry exists so the SIBLINGS (reason/setAt/setBy), which ARE
+//      deleted alongside it, don't get resurrected and leave the file carrying a
+//      "not a review because…" rationale with no flag.
+//   2. isNotReviewManualClear === true — the durable breadcrumb for the delete-the-key
+//      shape, mirroring wrongShowManualClear / wrongProductionManualClear. Without it
+//      a deletion is indistinguishable from data loss and the restore traps the
+//      exclusion permanently.
+// Not freshness-gated (unlike the staleScoredBeforeOpening family): those bridge a
+// single CI job and must expire; this is a durable human assertion, same as the other
+// manual-clear predicates above, which are also unbounded.
+const _isNotReviewCleared = (d) =>
+  d.isNotReviewManualClear === true || d.isNotReview === false;
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
+  isNotReview: _isNotReviewCleared,
+  isNotReviewReason: _isNotReviewCleared,
+  isNotReviewSetAt: _isNotReviewCleared,
+  isNotReviewSetBy: _isNotReviewCleared,
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
   wrongProductionAutoCleared: _clearBreadcrumbRetracted('wrongProductionAutoCleared'),
   wrongProductionAutoClearedAt: _clearBreadcrumbRetracted('wrongProductionAutoClearedAt'),

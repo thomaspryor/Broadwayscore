@@ -827,21 +827,32 @@ function checkSync() {
 
 // --- Category C: Pipeline Health (warn only) ---
 
+// Every marker here is written by a workflow step that ends in a git push, so a
+// stale marker has TWO possible causes: the workflow stopped succeeding, or it
+// kept succeeding and only its marker push failed. The recording steps are
+// deliberately non-fatal about that push (a lost race against a busy main must
+// not redden a green run — see test.yml "Record pipeline success"), which makes
+// this staleness check the durable cross-run signal for a persistently failing
+// health push. The hints name both causes so a stale marker isn't misdiagnosed
+// as "the workflow never ran" when the run history is in fact green.
+const PIPELINE_PUSH_HINT = (wf) =>
+  `Check "${wf}" in the Actions tab. If its recent runs are GREEN, the workflow succeeded and only the marker push failed — grep those runs for "All push attempts failed" / "Health recording push failed" (the recording step is non-fatal by design, so a failing push leaves a green run with a stale marker).`;
+
 const PIPELINE_CHECKS = [
-  { file: 'rebuild-reviews.last-success', label: 'rebuild-reviews', warnH: 48 },
-  { file: 'update-show-status.last-success', label: 'update-show-status', warnH: 48 },
-  { file: 'collect-review-texts.last-success', label: 'collect-review-texts', warnH: 48 },
-  { file: 'weekly-grosses.last-success', label: 'weekly-grosses', warnH: 240 },
-  { file: 'weekly-integrity.last-success', label: 'weekly-integrity', warnH: 240 },
-  { file: 'test.last-success', label: 'test', warnH: 48 },
+  { file: 'rebuild-reviews.last-success', label: 'rebuild-reviews', warnH: 48, hint: PIPELINE_PUSH_HINT('Rebuild Reviews') },
+  { file: 'update-show-status.last-success', label: 'update-show-status', warnH: 48, hint: PIPELINE_PUSH_HINT('Update Show Status') },
+  { file: 'collect-review-texts.last-success', label: 'collect-review-texts', warnH: 48, hint: PIPELINE_PUSH_HINT('Collect Review Texts') },
+  { file: 'weekly-grosses.last-success', label: 'weekly-grosses', warnH: 240, hint: PIPELINE_PUSH_HINT('Weekly Broadway Grosses') },
+  { file: 'weekly-integrity.last-success', label: 'weekly-integrity', warnH: 240, hint: PIPELINE_PUSH_HINT('Weekly Integrity') },
+  { file: 'test.last-success', label: 'test', warnH: 48, hint: PIPELINE_PUSH_HINT('Test Suite (test.yml)') },
 ];
 
 function checkPipelines() {
-  return PIPELINE_CHECKS.map(({ file, label, warnH }) =>
+  return PIPELINE_CHECKS.map(({ file, label, warnH, hint }) =>
     runCheck(`Pipeline: ${label}`, () => {
       const filePath = path.join(PIPELINE_DIR, file);
       if (!fs.existsSync(filePath)) {
-        return { name: `Pipeline: ${label}`, status: 'warn', message: 'No timestamp file (workflow may not have run yet)' };
+        return { name: `Pipeline: ${label}`, status: 'warn', message: 'No timestamp file (workflow may not have run yet)', hint };
       }
       const content = fs.readFileSync(filePath, 'utf8').trim();
       const age = hoursAgo(content);
@@ -849,7 +860,7 @@ function checkPipelines() {
         return { name: `Pipeline: ${label}`, status: 'warn', message: `Unparseable timestamp: ${content}` };
       }
       if (age > warnH) {
-        return { name: `Pipeline: ${label}`, status: 'warn', message: `Last success ${formatAge(age)} ago (threshold: ${formatAge(warnH)})` };
+        return { name: `Pipeline: ${label}`, status: 'warn', message: `Last success ${formatAge(age)} ago (threshold: ${formatAge(warnH)})`, hint };
       }
       return { name: `Pipeline: ${label}`, status: 'pass', message: `Last success ${formatAge(age)} ago` };
     })
