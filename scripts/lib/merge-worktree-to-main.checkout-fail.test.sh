@@ -25,7 +25,16 @@
 #      shows UU) — proves die() fires when even `git stash push` itself
 #      cannot succeed (mid-conflict stash is refused by git), so the script
 #      must reach die() via the plain untracked/dirty-index path instead.
+#      UPDATED (BRO-142): this repo left MERGE_HEAD present before the
+#      script ever runs, which scripts/lib/detect-stale-merge-head.sh now
+#      catches at the very top of merge-worktree-to-main.sh — earlier, and
+#      with a clearer diagnosis ("existing MERGE_HEAD ... not created by
+#      this run"), than the original checkout-main failure this case used to
+#      reach. That's a strict improvement (same non-zero exit, no silent
+#      success, no stash leaked, but a faster and more accurate refusal), so
+#      the assertion below matches the new message instead of the old one.
 #
+
 # Run: bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
 set -uo pipefail
 
@@ -139,18 +148,20 @@ else
     echo "FAIL[2]: script exited 0 with an unresolved UU conflict in the working tree. Output:"
     echo "$out2" | tail -20 | sed 's/^/    /'
     fail=1
-  elif ! echo "$out2" | grep -q "could not checkout main"; then
+  elif ! echo "$out2" | grep -q "existing MERGE_HEAD in"; then
     # Non-zero alone isn't enough — an earlier, unrelated failure (mutex,
     # branch resolution, git incompatibility) would also exit non-zero and
-    # falsely pass this case without ever exercising the checkout-fail path.
-    echo "FAIL[2]: exited non-zero but NOT via the checkout-fail message — this case didn't exercise what it claims to. Output:"
+    # falsely pass this case without ever exercising the intended path.
+    # BRO-142: the pre-existing MERGE_HEAD guard now catches this before the
+    # script ever reaches the checkout-main logic — see the header comment.
+    echo "FAIL[2]: exited non-zero but NOT via the BRO-142 stale-MERGE_HEAD guard — this case didn't exercise what it claims to. Output:"
     echo "$out2" | tail -20 | sed 's/^/    /'
     fail=1
   elif [ "$pre_stash2" != "$post_stash2" ]; then
     echo "FAIL[2]: a new stash entry was created/left behind during the UU-conflict run."
     fail=1
   else
-    echo "PASS[2]: UU-conflict simulation — script exits non-zero via 'could not checkout main' (got $code2), no new stash entry"
+    echo "PASS[2]: UU-conflict simulation — script exits non-zero via the BRO-142 pre-existing-MERGE_HEAD guard (got $code2), no new stash entry"
   fi
 fi
 

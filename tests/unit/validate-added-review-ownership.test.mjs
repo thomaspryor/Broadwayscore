@@ -209,8 +209,36 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
     // Simulate an in-progress merge (the action's rebase --continue || true path)
     fs.writeFileSync(path.join(repo, '.git', 'MERGE_HEAD'), git(repo, 'rev-parse HEAD').trim() + '\n');
     const out = execSync(`node ${SCRIPT} --base=base-marker`, { cwd: repo, encoding: 'utf8' });
-    assert.match(out, /rebase\/merge in progress — skipping/);
+    assert.match(out, /MERGE_HEAD in progress — skipping/);
     assert.equal(fs.existsSync(path.join(sibDir, 'violator.json')), true); // untouched
+  });
+
+  test('stale MERGE_HEAD (BRO-142 class) → skips with a distinct, louder warning', () => {
+    const repo = path.join(tmpDir, 'repo-stale-merge-head');
+    fs.mkdirSync(repo);
+    git(repo, 'init -q -b main');
+    git(repo, 'config user.email t@t');
+    git(repo, 'config user.name t');
+    fs.mkdirSync(path.join(repo, OWNER_SHOW), { recursive: true });
+    fs.writeFileSync(path.join(repo, OWNER_SHOW, 'seed.json'), JSON.stringify({ url: SOHO_URL }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm base');
+    git(repo, 'branch base-marker');
+    const sibDir = path.join(repo, SIBLING_SHOW);
+    fs.mkdirSync(sibDir, { recursive: true });
+    fs.writeFileSync(path.join(sibDir, 'violator.json'), JSON.stringify({ url: SOHO_URL }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm "writer changes"');
+    const mergeHeadPath = path.join(repo, '.git', 'MERGE_HEAD');
+    fs.writeFileSync(mergeHeadPath, git(repo, 'rev-parse HEAD').trim() + '\n');
+    // Back-date well past STALE_MERGE_HEAD_WARN_SEC (1800s) so this reads as
+    // a leftover from a dead session, not a normal few-seconds-old merge.
+    const staleTime = new Date(Date.now() - 3600 * 1000);
+    fs.utimesSync(mergeHeadPath, staleTime, staleTime);
+    const out = execSync(`node ${SCRIPT} --base=base-marker`, { cwd: repo, encoding: 'utf8' });
+    assert.match(out, /STALE MERGE_HEAD/);
+    assert.match(out, /BRO-142/);
+    assert.equal(fs.existsSync(path.join(sibDir, 'violator.json')), true); // untouched — detect only, never auto-recovers
   });
 
   test('no violations → no drop commit, tree untouched', () => {
