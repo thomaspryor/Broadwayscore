@@ -17,7 +17,13 @@ fail=0
 
 setup_repo() {
   local dir="$1"
-  git -C "$dir" init -q
+  # -b main is REQUIRED, not cosmetic: cases 9 and 12 do `git checkout -q main`
+  # / `git rebase main`. Without -b, the initial branch is whatever the ambient
+  # init.defaultBranch says — `main` on this repo's developer machines, but
+  # `master` on a stock GitHub Actions runner, where those two cases failed with
+  # "pathspec 'main' did not match any file(s) known to git" (run 31863276943).
+  # Pinning it here makes the fixture independent of ambient git config.
+  git -C "$dir" init -q -b main
   git -C "$dir" config user.email t@t.t
   git -C "$dir" config user.name t
   git -C "$dir" commit -q --allow-empty -m init
