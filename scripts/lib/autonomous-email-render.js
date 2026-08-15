@@ -342,11 +342,16 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
   // 'decision' rows are genuine judgment calls (task #843) — they belong ONLY
   // in the "Needs your attention" card with a button, never here (this block
   // would otherwise mislabel them as an in-flight auto-fix). Task #1641: also
-  // drop any row whose name is a forbidden heading — defense in depth so a
-  // caller that builds autofixRows from something other than the already-
-  // filtered health.queued (a future extraIssues/tasks source, say) can't
-  // reintroduce "T1 Coverage Scoreboard"/"Deployed coverage" through this
-  // block the way send-morning-digest.js's queuedForAutofix did.
+  // drop any row whose name STARTS WITH a forbidden heading (verbatim
+  // prefix match, same as the queued-title filter — digest-autofix.js's
+  // planAutofix copies q.title into row.name unchanged for queued rows, so
+  // this catches the same string form) — defense in depth so a second
+  // consumer of an unfiltered `queued` array can't reintroduce
+  // "T1 Coverage Scoreboard"/"Deployed coverage" the way
+  // send-morning-digest.js's queuedForAutofix did. NOT source-agnostic: a
+  // caller that wraps or prefixes the name (e.g. "BSC Daily: T1 Coverage
+  // Scoreboard") would bypass this — it guards the exact shape the queued
+  // path produces today, not every conceivable future shape.
   let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision'
     && !QUEUED_TELEMETRY_BLOCKLIST.some((re) => re.test(String(r.name))));
   if (!rows.length) return '';
@@ -389,15 +394,22 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
 
 // Queued owner-router lines that are pure internal telemetry never belong in
 // the owner email (mandate 2026-08-02) — everything else renders as a
-// "Needs your attention" card. Derived from digest-content-invariants.js's
-// FORBIDDEN_HEADINGS (task #1641) rather than a second hand-kept list: that
-// duplication is exactly how "T1 Coverage Scoreboard"/"Deployed coverage"
-// leaked through the "Automation queue" block for two weeks — the invariant
-// check knew about them, this file's blocklist didn't, and nothing kept the
-// two in sync.
-const { FORBIDDEN_HEADINGS } = require('./digest-content-invariants.js');
-const escapeRegExp = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const QUEUED_TELEMETRY_BLOCKLIST = FORBIDDEN_HEADINGS.map((h) => new RegExp(`^${escapeRegExp(h)}`, 'i'));
+// "Needs your attention" card. Task #1641: deliberately NOT derived from
+// digest-content-invariants.js's full FORBIDDEN_HEADINGS list — that was
+// tried and reverted (codex adversarial finding) for two reasons: (1) that
+// list is HTML-invariant text, so its one entity-escaped entry
+// ('Fixes &amp; features merged') would never match a queued item's raw,
+// unescaped `title`, a silent no-op false sense of coverage; (2) it would
+// couple queue-input filtering to four unrelated display headings
+// ('Closing soon'/'Score drift'/'Backlog drain'/'Fixes & features merged')
+// that no queued source has ever emitted, silently dropping a legitimate
+// future queued item that happened to start with one of those words. This
+// list stays scoped to what routeAlert's disposition:'digest' path actually
+// produces today (scripts/audit-opening-night-coverage.js's
+// 't1-coverage:scoreboard' and scripts/audit-deployed-coverage.js) — add a
+// new entry here explicitly if a new mandate-deleted heading starts
+// reaching the email through the queued path.
+const QUEUED_TELEMETRY_BLOCKLIST = [/^T1 Coverage/i, /^Deployed coverage/i];
 
 // Single choke point for stripping forbidden-telemetry rows out of a queued
 // list — used both here (display) and by send-morning-digest.js (before the
