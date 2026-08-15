@@ -598,6 +598,12 @@ on:
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
+      # BRO-142: stale-MERGE_HEAD detection shared by push-with-retry.sh,
+      # merge-worktree-to-main.sh, and the session-start.sh hook (advisory,
+      # untested in CI — no dedicated harness for hook scripts in this repo).
+      # Path-listed so a solo edit to the lib or its test triggers CI.
+      - 'scripts/lib/detect-stale-merge-head.sh'
+      - 'scripts/lib/detect-stale-merge-head.test.sh'
       # #458 (2026-07-30 finding, card #669): mutex-wait-vs-deadline interaction.
       # push_mutex_acquire can block for a real stretch (its own timeout defaults
       # to 900s, longer than PUSH_DEADLINE_SEC's 240s default) BEFORE the retry
@@ -3742,6 +3748,16 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run detect-stale-merge-head test (bash integration)
+        # BRO-142 (recurrence of #916/#1279/#1445): pure classifier shared by
+        # push-with-retry.sh, merge-worktree-to-main.sh, and the session-start.sh
+        # hook. Covers none/fresh/stale classification, the env-var threshold
+        # override, and linked-worktree MERGE_HEAD path resolution (the exact
+        # gap that made the pre-existing session-start.sh stalled-merge check
+        # invisible to worktree-launched sessions).
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/detect-stale-merge-head.test.sh
 
       - name: Run push-with-retry mutex/deadline interaction test (bash integration)
         # Task #458 (2026-07-30 finding, card #669): push_mutex_acquire can block
