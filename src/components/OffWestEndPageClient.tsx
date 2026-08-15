@@ -541,7 +541,11 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
           value={scoreMode}
           onChange={(key) => {
             if (key === 'audience') {
-              updateParams({ scoreMode: key, sort: 'score_desc' });
+              // Land on the sort value that matches what's actually displayed —
+              // score_desc's audience-mode branch already sorts by audience score,
+              // which left CRITICS visually active while AUDIENCE sat inert
+              // (task #592/#30, same bug homepage already fixed this way).
+              updateParams({ scoreMode: key, sort: 'audience_buzz' });
             } else {
               updateParams({ scoreMode: key });
             }
