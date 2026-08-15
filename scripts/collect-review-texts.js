@@ -4968,6 +4968,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       issues: contentVerification.issues,
       reasoning: contentVerification.reasoning,
       verifiedBy: contentVerification.verifiedBy,
+      // WE long-runner CV hardening issue #4 (task #1615): surface the
+      // URL-year/publishDate conflict (if any) so it's visible on disk, not
+      // just in the LLM prompt hint. Reverify scripts already persist this
+      // via `...result` spreads — this keeps the main ingestion path in sync.
+      urlYearConflict: contentVerification.urlYearConflict || null,
       verifiedAt: new Date().toISOString(),
       // Stamp the hash over cleanedText (what's about to be stored as
       // data.fullText a few lines up), NOT contentVerification.contentHash —

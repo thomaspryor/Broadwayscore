@@ -35,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
@@ -152,7 +153,7 @@ async function main() {
         openingDate: show?.openingDate || null,
         venue: show?.venue || null,
         market: resolveCvMarket(show) || marketFor(f.showId, show),
-        isLongRunningProduction: false,
+        isLongRunningProduction: isLongRunningProduction(show),
         publishDate: data.publishDate || data.textFetchedAt || null,
         url: data.url || null,
         show,
