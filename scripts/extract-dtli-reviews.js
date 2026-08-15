@@ -15,6 +15,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -368,6 +369,52 @@ function extractReviewsFromDTLI(content, showId) {
   return reviews;
 }
 
+// The review file already on disk for THIS show/outlet/critic, or null.
+//
+// Deliberately NOT findExistingReviewFile: that helper skips
+// wrongProduction/duplicateOf files because they are never valid MERGE targets
+// (task #653). The scope check below needs the opposite — it must SEE a flagged
+// file in order to leave it alone. (Using findExistingReviewFile here returned
+// null for every flagged record and silently defeated the whole scope rule.)
+//
+// Canonical filename first: 2350 of 2391 real source:'dtli' records resolve that
+// way. The fallback covers the other 41, which are almost all critic-name
+// spelling drift under the SAME outlet (ew--isabella-biedenahrn vs
+// ...biedenharn, amny--matt-windham vs ...windman).
+//
+// The fallback is constrained to the same outlet twice over — only filenames
+// beginning `<outletId>--` are opened, and the parsed record's own outletId must
+// match. A bare same-URL scan is NOT safe: 17 show directories in the real
+// corpus have a single URL shared by two different outlets (arcadia-2011
+// about-entertainment + nytimes, hercules-west-end-2025 the-sun + times-uk).
+// Matching one of those would read ANOTHER outlet's flags as this record's, so a
+// flagged neighbour would suppress routing for a genuinely unflagged review and
+// write it, unflagged, into the wrong show directory — manufacturing exactly the
+// strict-audit hit this guard exists to prevent. The prefix filter also bounds
+// the scan to one outlet's files instead of parsing every JSON in the directory.
+function readReviewOnDisk(showDir, review) {
+  if (!review || !fs.existsSync(showDir)) return null;
+  const readJson = (p) => {
+    try { return JSON.parse(fs.readFileSync(p, 'utf-8')); } catch { return null; }
+  };
+  const canonical = path.join(showDir, generateReviewFilename(review.outletId, review.criticName));
+  if (fs.existsSync(canonical)) return readJson(canonical);
+
+  if (!review.url || !review.outletId) return null;
+  const norm = (u) => String(u || '').toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '');
+  const want = norm(review.url);
+  if (!want) return null;
+  const prefix = `${review.outletId}--`;
+  let entries;
+  try { entries = fs.readdirSync(showDir); } catch { return null; }
+  for (const f of entries) {
+    if (!f.endsWith('.json') || !f.startsWith(prefix)) continue;
+    const d = readJson(path.join(showDir, f));
+    if (d && d.outletId === review.outletId && d.url && norm(d.url) === want) return d;
+  }
+  return null;
+}
+
 function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited) {
   // Guard A mirror (BRO-363): same cross-market sibling reroute
   // review-file-writer.js's createOrMergeReviewFile applies at its shared
@@ -375,6 +422,37 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
   // this check a stale/mis-scoped archive page under a regional show's id
   // writes its Broadway sibling's reviews straight into the regional show's
   // directory on every extraction run.
+  //
+  // SCOPE (added after BRO-363): only records that are NOT already adjudicated.
+  // audit-sibling-title-misroute.js skips records that are already
+  // wrongProduction/wrongShow-flagged (its isAlreadyFlagged: "already flagged by
+  // this guard or any other — not this audit's job to redo") and records a human
+  // has cleared (its isHumanCleared). Without the same scope here, this guard is
+  // far more than a new-misroute preventer: measured against the real corpus on
+  // 2026-08-15, classifyMarketRouting returns `reroute` for 297 existing
+  // source:'dtli' records across 49 sibling pairs, of which 296 are ALREADY
+  // flagged and exactly 1 is not. Every one of those 296 would be physically
+  // relocated between show directories on the next unattended review-refresh.yml
+  // run (daily, 09:00 UTC) — a bulk migration of suppressed, scored state that
+  // nobody asked for. A further 107 dtli records carry allowCrossMarket or a
+  // human-clear marker, i.e. somebody deliberately decided they belong where they
+  // are; relocating those silently overrides a human.
+  //
+  // Repairing the 296 is a supervised migration, tracked separately.
+  const onDiskRecord = readReviewOnDisk(path.join(dir, review.showId), review);
+  if (onDiskRecord && (
+    onDiskRecord.wrongProduction === true ||
+    onDiskRecord.wrongShow === true ||
+    onDiskRecord.allowCrossMarket === true ||
+    onDiskRecord.wrongProduction === false ||
+    onDiskRecord.wrongProductionManualClear === true ||
+    onDiskRecord.wrongProductionOverride === true ||
+    onDiskRecord.humanReviewedWrongProduction === false ||
+    shouldSkipWrongProductionAudit(onDiskRecord)
+  )) {
+    return saveReviewUnrouted(review, overwrite, dir);
+  }
+
   const visited = _rerouteVisited || new Set();
   visited.add(review.showId);
   const routingDecision = classifyMarketRouting({
@@ -414,6 +492,13 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
     }
   }
 
+  return saveReviewUnrouted(review, overwrite, dir);
+}
+
+// The write half of saveReview: everything after the cross-market routing
+// decision. Split out so the "already adjudicated" scope check above can write
+// the record where it is without re-entering the routing block.
+function saveReviewUnrouted(review, overwrite = false, dir = outputDir) {
   const showDir = path.join(dir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
