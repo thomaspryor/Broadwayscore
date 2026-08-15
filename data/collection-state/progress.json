@@ -1,6 +1,8 @@
 {
   "processed": [
-    "high-society-west-end-2026/london-theatre--unknown.json"
+    "high-society-west-end-2026/london-theatre--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "high-society-west-end-2026/timeout-london--unknown.json",
@@ -18,7 +20,15 @@
     "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
-    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json"
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -28,13 +38,17 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    ],
+    "brightdata": [
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-15T04:46:17.038Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
   "log": [
     {
       "t": "2026-08-15T05:20:23.250Z",
@@ -47,6 +61,17 @@
       "event": "bb-session",
       "session": "22b4686a",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-15T05:22:44.768Z",
+      "event": "bb-session",
+      "session": "6392f793",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T05:22:45.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
