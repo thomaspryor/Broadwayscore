@@ -84,4 +84,55 @@ function inferOutletRegionFromCategories(categories, isLondonMarket) {
   return null;
 }
 
-module.exports = { buildOutletMaps, inferOutletRegionFromCategories };
+/**
+ * Backfill region on ALREADY-REGISTERED outlets that have none, using the same
+ * unanimous-category-evidence inference as auto-registration (BRO-133).
+ *
+ * inferOutletRegionFromCategories() above only ever ran at the moment an
+ * outlet was FIRST auto-registered (task #817) — an outlet registered
+ * before that fix landed (2026-08-04), or one whose first-seen review's
+ * show category was inconclusive at registration time, was stuck
+ * region-less forever: the newOutlets loop only touches outlets NOT YET in
+ * the registry, so a region-less entry never got a second look even once
+ * its evidence became unanimous. That left the cross-market guard's
+ * fragile isUkUrl domain-substring fallback (venue-classification.js) as
+ * the ONLY defense for these outlets — real for londonmumsmagazine
+ * (auto-registered 2026-08-02, saved only because "london" happens to be a
+ * substring of its own domain) and the root cause behind the
+ * amomentwithfranca/readaboutstuff strandings this backfill retroactively
+ * resolves.
+ *
+ * Mutates `outlets` in place (same contract as the auto-register call
+ * site) and returns the list of ids that were backfilled, for logging.
+ *
+ * Stamps `regionInferredBy`/`regionInferredAt` alongside `region` — this is a
+ * once-and-done inference (an outlet that already has a `region` is skipped
+ * on every future call, same as auto-registration always was), so if the
+ * evidence a stamp was based on later turns out wrong there is otherwise no
+ * record of why `region` is what it is. `region` stays the field every guard
+ * reads; the two new fields are metadata only, for a human tracing a bad
+ * stamp back to this pass (ship-check adversarial review, codex, BRO-133).
+ *
+ * @param {object} outlets - outletRegistry.outlets (mutated in place)
+ * @param {Record<string, Set<string>|string[]>} outletShowCategories - outlet id -> show categories it's been reviewed under
+ * @param {(cat: string) => boolean} isLondonMarket
+ * @param {string} [nowIso] - injectable clock for tests; defaults to new Date().toISOString()
+ * @returns {string[]} ids that were backfilled with region:'london'
+ */
+function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso) {
+  const backfilled = [];
+  for (const [id, info] of Object.entries(outlets || {})) {
+    if (!info || info.region || info.isDualMarket) continue;
+    const inferredRegion = inferOutletRegionFromCategories(
+      [...(outletShowCategories[id] || [])], isLondonMarket);
+    if (inferredRegion) {
+      info.region = inferredRegion;
+      info.regionInferredBy = 'backfillMissingOutletRegions (BRO-133)';
+      info.regionInferredAt = nowIso || new Date().toISOString();
+      backfilled.push(id);
+    }
+  }
+  return backfilled;
+}
+
+module.exports = { buildOutletMaps, inferOutletRegionFromCategories, backfillMissingOutletRegions };

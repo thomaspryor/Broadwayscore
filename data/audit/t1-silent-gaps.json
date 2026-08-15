@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-14T22:08:14.061Z",
+  "generatedAt": "2026-08-15T02:22:50.185Z",
   "windowDays": 45,
-  "showsScanned": 71,
+  "showsScanned": 72,
   "gaps": [
     {
       "showId": "cats-west-end-2026",
@@ -14,14 +14,14 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
       "recovery": {
         "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "reason": "circuit-breaker:per-file-cap"
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-14T19:38:43.811Z",
-      "nonTerminalAgeHours": 2.4917358333333333
+      "nonTerminalAgeHours": 6.735103888888889
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 536.9437602777778,
+      "fileAgeHours": 541.187125,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 12.136927222222223
+      "nonTerminalAgeHours": 16.380295277777776
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -53,9 +53,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 227.38694694444445,
+      "fileAgeHours": 231.63031361111112,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 12.136927222222223
+      "nonTerminalAgeHours": 16.380295277777776
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -70,29 +70,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 21.649982777777776,
+      "fileAgeHours": 25.893350833333333,
       "gapSeenAt": "2026-08-14T20:09:32.482Z",
-      "nonTerminalAgeHours": 1.9782161111111112
-    },
-    {
-      "showId": "twelfth-night-off-west-end-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-08-01",
-      "file": "times-uk--unknown.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-the-globe-ntlv2z3pn",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=twelfth-night-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-the-globe-ntlv2z3pn --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-14T22:08:14.060Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 6.221584166666666
     }
   ],
   "contradictions": []
