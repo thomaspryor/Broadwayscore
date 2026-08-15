@@ -9,19 +9,26 @@
  * exact bug fixed reactively across #1063/#1065/#1066/#1067/#1068 (10
  * scripts total, 5+ sessions).
  *
- * Scope is deliberately narrow: only --gate-wired scripts that ACTUALLY
- * walk review-texts (source contains both 'review-texts' and 'readdirSync')
- * need the guard. Several --gate-wired audits (cast-changes,
+ * Scope is deliberately narrow: only --gate-OR-strict-wired scripts that
+ * ACTUALLY walk review-texts (source contains both 'review-texts' and
+ * 'readdirSync') need the guard. Several wired audits (cast-changes,
  * cast-contamination, commercial-contamination, audience-buzz-contamination,
- * critic-consensus-contamination) gate on a different corpus entirely and
- * correctly have no assertCorpusScanned call — flagging them would be a
- * false positive, not prevention.
+ * critic-consensus-contamination, audit-direct-provider-calls --strict,
+ * audit-aggregator-archive-integrity --strict) gate on a different corpus
+ * entirely and correctly have no assertCorpusScanned call — flagging them
+ * would be a false positive, not prevention.
+ *
+ * Task #1619: --strict is scanned alongside --gate because a --strict audit
+ * is still a hard block wherever it's invoked that way (e.g. a daily
+ * corpus-drift job) — the same vacuous-gate risk applies, just under a
+ * different flag name.
  */
 
 'use strict';
 
 const GATE_INVOCATION_RE = /\bnode\s+scripts\/(audit-[\w.-]+\.js)\b([^\n]*)/;
 const GATE_FLAG_RE = /(^|\s)--gate(\s|$)/;
+const STRICT_FLAG_RE = /(^|\s)--strict(\s|$)/;
 const REVIEW_TEXTS_RE = /review-texts/;
 const READDIR_RE = /readdirSync/;
 const GUARD_RE = /assertCorpusScanned|corpus-scan-guard/;
@@ -64,12 +71,13 @@ function joinContinuationLines(lines) {
 }
 
 /**
- * Every `node scripts/audit-*.js ... --gate` invocation found in the raw
- * workflow YAML text, one entry per (script, line). Skips commented-out
- * lines. Line-based (not a full YAML parse), but joins `\`-continued lines
- * first so a --gate flag wrapped onto a second line is still caught.
+ * Every `node scripts/audit-*.js ...` invocation found in the raw workflow
+ * YAML text whose flags match `flagRe`, one entry per (script, line). Skips
+ * commented-out lines. Line-based (not a full YAML parse), but joins
+ * `\`-continued lines first so a flag wrapped onto a second line is still
+ * caught.
  */
-function parseGateWiredAudits(workflowText) {
+function parseFlagWiredAudits(workflowText, flagRe) {
   const results = [];
   const logicalLines = joinContinuationLines(workflowText.split('\n'));
   for (const { text, line } of logicalLines) {
@@ -77,10 +85,26 @@ function parseGateWiredAudits(workflowText) {
     const m = GATE_INVOCATION_RE.exec(text);
     if (!m) continue;
     const [, script, rest] = m;
-    if (!GATE_FLAG_RE.test(rest)) continue;
+    if (!flagRe.test(rest)) continue;
     results.push({ script, line });
   }
   return results;
+}
+
+/** Every `--gate`-wired audit invocation. See parseFlagWiredAudits. */
+function parseGateWiredAudits(workflowText) {
+  return parseFlagWiredAudits(workflowText, GATE_FLAG_RE);
+}
+
+/**
+ * Every `--strict`-wired audit invocation. `--strict` audits are advisory by
+ * default (informational, non-blocking) but still turn INTO a hard block
+ * under `--strict` — the same vacuous-gate risk as `--gate` applies whenever
+ * something runs the script with `--strict` in CI (e.g. a daily corpus-drift
+ * job), so they need the same assertCorpusScanned coverage.
+ */
+function parseStrictWiredAudits(workflowText) {
+  return parseFlagWiredAudits(workflowText, STRICT_FLAG_RE);
 }
 
 /** True if the script's source walks data/review-texts (readdirSync over a review-texts path). */
@@ -99,7 +123,9 @@ function hasCorpusGuard(source) {
  * wrapper wires it to fs.readFileSync.
  */
 function findUnguardedGateAudits({ workflowText, getScriptSource }) {
-  const wired = parseGateWiredAudits(workflowText);
+  const gateWired = parseGateWiredAudits(workflowText);
+  const strictWired = parseStrictWiredAudits(workflowText);
+  const wired = gateWired.concat(strictWired);
   const violations = [];
   const missingScripts = [];
   const checked = new Set();
@@ -118,12 +144,19 @@ function findUnguardedGateAudits({ workflowText, getScriptSource }) {
     }
   }
 
-  return { violations, missingScripts, wiredCount: wired.length };
+  return {
+    violations,
+    missingScripts,
+    wiredCount: wired.length,
+    gateWiredCount: gateWired.length,
+    strictWiredCount: strictWired.length,
+  };
 }
 
 module.exports = {
   joinContinuationLines,
   parseGateWiredAudits,
+  parseStrictWiredAudits,
   isReviewTextsCorpusScanner,
   hasCorpusGuard,
   findUnguardedGateAudits,
