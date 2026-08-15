@@ -106,6 +106,7 @@ function main() {
       const newCombinedWith = computeCombinedWith(entry.showId, showList, siblingIndex);
       if (newCombinedWith.length === 0) {
         siblingEntriesSkipped++;
+        if (DRY_RUN) console.log(`  [sibling-only, no genuine joint review] ${entry.showId}/${entry.file}`);
         // Backfill: a prior buggy run (pre task #1608 fix) may have already
         // stamped this file isCombinedReview:true with ONLY a title-sibling
         // in combinedWith — a stale false-positive, not something this run
@@ -120,6 +121,10 @@ function main() {
         // cititour--brian-scott-lipton.json — delete came back on disk).
         {
           const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+          // Re-check flags on fresh read (handles concurrent modifications) —
+          // same guard the flagging branch below applies (code-review finding,
+          // 2026-08-15: this branch was writing unconditionally on a race).
+          if (data.wrongProduction || data.duplicateOf || data.fabricatedEntry) continue;
           if (data.isCombinedReview === true) {
             staleFlagsCleared++;
             if (DRY_RUN) {
