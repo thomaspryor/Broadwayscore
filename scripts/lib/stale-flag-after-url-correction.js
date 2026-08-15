@@ -17,6 +17,16 @@
  * Not scoped to maybeUpgradeUrl specifically — any write chokepoint that
  * clears some URL-derived fields but not wrongProduction/wrongShow produces
  * this signature, so the sweep is chokepoint-agnostic by design.
+ *
+ * THE SWEEP BUILT ON THIS SIGNATURE WAS RETIRED FROM CI on 2026-08-14 (0/120
+ * precision, and 0/13 recall — not one genuinely stale flag in the corpus
+ * carries an `_urlChangedClear` breadcrumb). This MODULE is unchanged and
+ * still load-bearing: isAwaitingUrlCorrectionRefetch and
+ * shouldWithholdStaleExclusionFlag are what stop producers re-flagging a
+ * record mid-URL-correction (rebuild-all-reviews.js,
+ * flag-wrong-production-by-date.js, audit-cross-show-url-collisions.js), and
+ * audit-stale-flag-producers.js uses the detector for writer attribution.
+ * The stale-flag GATE now lives in scripts/lib/contradicted-flag-basis.js.
  */
 
 const MANUAL_CLEAR_FIELDS = [
