@@ -254,6 +254,15 @@ function extractShowData(html, showId, sourceUrl) {
         result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
         result.criticReviews = [];
         result._rejectionReason = `sibling-misfile: ${count}/${totalReviews} critic reviews date-match sibling ${targetId}'s opening, not ${showId}'s own — archive is likely ${targetId}'s page saved under the wrong filename`;
+        // Unlike the cross-show-contamination case above (a real page for
+        // THIS show whose critic-tile carousel briefly served the wrong
+        // content), a sibling-misfile means the ENTIRE archived page belongs
+        // to targetId — its audienceScore/audienceReviewCount/
+        // criticReviewCount are the sibling's numbers, not this show's own.
+        // Drop the whole entry from show-score.json rather than keep a
+        // "0 critic reviews but 91% audience score borrowed from Broadway"
+        // record (ship-check adversarial finding, BRO-363).
+        result._rejectAll = true;
         break;
       }
     }
@@ -319,18 +328,23 @@ function main() {
 
       const data = extractShowData(html, showId, sourceUrl);
 
-      if (data) {
+      if (data && data._rejectAll) {
+        // Sibling-misfile: the whole page belongs to another show, so don't
+        // persist ANY of its numbers (audienceScore/audienceReviewCount
+        // included) under this showId — see the comment at the rejection
+        // site in extractShowData(). Still logged loudly for CI visibility.
+        console.log(`  REJECT: [${data.category}] ${data._rejectionReason}`);
+        console.log(`::warning::[show-score] ${showId} all critic tiles rejected — archive likely holds a same-title sibling's page under this show's filename — see logs, no entry written to show-score.json`);
+        failCount++;
+      } else if (data) {
         showScoreData.shows[showId] = data;
         categoryCounts[data.category] = (categoryCounts[data.category] || 0) + 1;
         const extracted = data.criticReviews.length;
         const expected = data.criticReviewCount || 0;
         // Surface contamination rejections distinctly from regular gaps
         if (data._rejectionReason) {
-          const isSiblingMisfile = data._rejectionReason.startsWith('sibling-misfile:');
           console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, 0/${expected} critic reviews — ${data._rejectionReason}`);
-          console.log(isSiblingMisfile
-            ? `::warning::[show-score] ${showId} all critic tiles rejected — archive likely holds a same-title sibling's page under this show's filename — see rejectedCriticUrls in show-score.json`
-            : `::warning::[show-score] ${showId} all critic tiles rejected as cross-show contamination (Show Score upgrade state) — see rejectedCriticUrls in show-score.json`);
+          console.log(`::warning::[show-score] ${showId} all critic tiles rejected as cross-show contamination (Show Score upgrade state) — see rejectedCriticUrls in show-score.json`);
         } else {
           console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, ${extracted}/${expected} critic reviews extracted`);
         }
