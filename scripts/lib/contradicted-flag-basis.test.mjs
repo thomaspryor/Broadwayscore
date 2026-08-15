@@ -189,3 +189,14 @@ test('audit --gate refuses to pass when the corpus was never checked out', () =>
     [AUDIT_SCRIPT, '--gate', '--max=12', '--review-texts-dir=/nonexistent'], { encoding: 'utf8' });
   assert.equal(r.status, 1, 'an unscanned corpus must fail, not report a clean sweep');
 });
+
+// The gate has TWO inputs. A missing shows.json makes every detection return
+// false (no run window ⇒ no verdict), so without this check the gate would
+// report a clean corpus and pass — the same silent no-op corpus-scan-guard
+// prevents on the review-texts side.
+test('audit --gate refuses to pass when shows.json is missing', () => {
+  const r = spawnSync(process.execPath,
+    [AUDIT_SCRIPT, '--gate', '--max=12', '--shows-path=/nonexistent/shows.json'], { encoding: 'utf8' });
+  assert.equal(r.status, 1, 'no show records must fail, not report a clean sweep');
+  assert.match(r.stderr, /cannot pass vacuously/);
+});

@@ -76,10 +76,15 @@ function main() {
     const shows = Array.isArray(parsed) ? parsed : parsed.shows;
     for (const s of shows || []) if (s && s.id) showsById[s.id] = s;
   } catch {
-    // Left empty on purpose: with no show records every detection returns
-    // false (the detector requires a show), so the sweep reports 0 rather
-    // than throwing. assertCorpusScanned below is what catches "the data
-    // never got checked out".
+    // fall through to the vacuity check below
+  }
+  // A missing shows.json would make EVERY detection return false (the detector
+  // needs a run window), so the gate would report a clean corpus and pass — the
+  // silent no-op that corpus-scan-guard exists to prevent on the review-texts
+  // side. This gate has TWO inputs, so it needs both checks.
+  if (gate && Object.keys(showsById).length === 0) {
+    console.error(`\nFAIL: no show records loaded from ${SHOWS_PATH}. The gate cannot pass vacuously — check out the core-data private repo first.`);
+    process.exit(1);
   }
 
   let showDirs = [];
