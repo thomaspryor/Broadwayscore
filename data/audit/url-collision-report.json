@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-15T10:55:37.876Z",
+  "generatedAt": "2026-08-15T18:01:25.713Z",
   "summary": {
-    "total": 3,
+    "total": 6,
     "high": 3,
-    "medium": 0,
-    "low": 0
+    "medium": 2,
+    "low": 1
   },
   "collisions": [
     {
@@ -87,6 +87,87 @@
       "suggestedWinner": "a-dolls-house-2023",
       "reason": "publishDate 2023-03-13 is 4 days from a-dolls-house-2023 opening (2023-03-09)",
       "confidence": "high"
+    },
+    {
+      "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
+      "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
+      "candidates": [
+        {
+          "showId": "giant-royal-court-off-west-end-2024",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": null,
+          "openingDate": "2024-09-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        },
+        {
+          "showId": "giant-west-end-2025",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": null,
+          "openingDate": "2025-04-30",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        }
+      ],
+      "suggestedWinner": "giant-west-end-2025",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+      "normalizedUrl": "https://thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+      "candidates": [
+        {
+          "showId": "giant-royal-court-off-west-end-2024",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": "2024-09-26",
+          "openingDate": "2024-09-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "giant-west-end-2025",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": "2025-05-02",
+          "openingDate": "2025-04-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "giant-royal-court-off-west-end-2024",
+      "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+      "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
+      "candidates": [
+        {
+          "showId": "little-bear-ridge-road-2025",
+          "file": "around-the-town-chicago--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-10-30",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "around-the-town-chicago"
+        },
+        {
+          "showId": "little-bear-ridge-road-regional-2024",
+          "file": "around-the-town-chicago--alan-bresloff.json",
+          "publishDate": null,
+          "openingDate": "2024-06-24",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "around-the-town-chicago"
+        }
+      ],
+      "suggestedWinner": "little-bear-ridge-road-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     }
   ]
 }
