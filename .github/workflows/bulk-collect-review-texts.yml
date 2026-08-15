@@ -339,6 +339,14 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from bulk-collect-review-texts'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: bulk-collect-review-texts
+
       - name: Upload collection report
         uses: actions/upload-artifact@v5
         if: always()

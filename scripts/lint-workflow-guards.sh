@@ -361,17 +361,17 @@ check_ledger_coverage() {
   # stage data/audit/scraper-spend-ledger.jsonl for commit in the SAME job,
   # or that job's SERP telemetry is silently discarded when the runner exits
   # (19/~40 SERP-calling workflows had this gap; 18 fixed by hand in
-  # 436f4a24092/943bd4a9327). Logic lives in scripts/lib/ledger-coverage-
-  # check.js (real acorn AST walk — not text regex — because "requires
-  # url-discovery.js" != "calls its SERP function"; see that file's header
-  # comment for the false-positive it avoids). A single Node process handles
-  # every workflow file — the AST walk over scripts/**/*.js is the expensive
-  # part and must run once, not once per workflow.
+  # 436f4a24092/943bd4a9327, the remaining ~39 by BRO-163, 2026-08-15).
+  # Logic lives in scripts/lib/ledger-coverage-check.js (real acorn AST walk
+  # — not text regex — because "requires url-discovery.js" != "calls its
+  # SERP function"; see that file's header comment for the false-positive it
+  # avoids). A single Node process handles every workflow file — the AST
+  # walk over scripts/**/*.js is the expensive part and must run once, not
+  # once per workflow.
   #
-  # scripts/lib/ledger-coverage-exemptions.js lists 40 pre-existing gaps this
-  # check's more-thorough (transitive) analysis found beyond the 19 the
-  # original manual audit covered — out of scope for #996 itself, tracked in
-  # a follow-up card. Remove an entry there the moment its workflow is fixed
+  # scripts/lib/ledger-coverage-exemptions.js now lists exactly one entry —
+  # a documented detector false positive, not a real gap (see that file's
+  # header). Remove a real-gap entry there the moment its workflow is fixed
   # — a STALE exemption (one that no longer matches a real violation) is
   # itself a failure below, so fixing a workflow without removing its
   # exemption entry doesn't silently rot forever (ship-check finding,
