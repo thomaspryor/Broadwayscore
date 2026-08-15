@@ -83,6 +83,19 @@ const PREFERRED_CANONICAL = {
   // copy — force the clean name.
   'broken-glass-west-end-2026|https://www.telegraph.co.uk/theatre/what-to-see/broken-glass-young-vic-anti-semitism':
     'telegraph--dominic-cavendish.json',
+  // wsj--charles-isherwood.json is already the correct, complete-tier,
+  // correctly-named copy with an operator's wrongProductionManualClear
+  // already on file (2026-08-15 spot-check: body is venue-matched to Hudson
+  // Theatre and self-identifies "Mr. Isherwood is the Journal's theater
+  // critic") — it's just invisible to the DEFAULT ranking because
+  // isCandidate() used to exclude any wrongProduction:true file outright.
+  // Do NOT route this through the --unknown-byline sibling instead: renaming
+  // its criticName away from "unknown" would trip rebuild-all-reviews.js's
+  // stale-filename cleanup (merge-into-named-file-then-delete), which
+  // silently re-excludes the review on the next full rebuild (task #1627
+  // ship-check finding).
+  'death-of-a-salesman-2022|https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217':
+    'wsj--charles-isherwood.json',
 };
 
 // Clusters where every byline is an invented WhatsOnStage-staff name (the true
@@ -90,12 +103,6 @@ const PREFERRED_CANONICAL = {
 const NEUTRALIZE_CRITIC = {
   'a-midsummer-nights-dream-west-end-2026|https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521':
     'WhatsOnStage',
-  // wsj--unknown.json is the best-signal copy (no stale wrongProduction flag)
-  // but scraped with a null criticName even though the body opens with the
-  // byline "Charles Isherwood" — matches the flagged wsj--charles-isherwood.json
-  // sibling's identical body.
-  'death-of-a-salesman-2022|https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217':
-    'Charles Isherwood',
 };
 
 const STAMP = process.env.FIX_STAMP || 'byline-cluster-cleanup';
@@ -169,6 +176,7 @@ function signalsFor(cluster, dir, parsed, show) {
       fullTextLen: body.length,
       fullTextHead: body.slice(0, 400),
       wrongProduction: r.wrongProduction === true,
+      wrongProductionManualClear: r.wrongProductionManualClear === true,
       wrongShow: r.wrongShow === true,
       aggregatorStars: r.aggregatorStars,
       originalScore: r.originalScore,

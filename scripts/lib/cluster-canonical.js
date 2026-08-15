@@ -52,6 +52,8 @@ function looksLikeConsentWall(head) {
  * @property {number}  [fullTextLen]   length of fullText
  * @property {string}  [fullTextHead]  first ~400 chars of fullText (for consent-wall check)
  * @property {boolean} [wrongProduction]
+ * @property {boolean} [wrongProductionManualClear]  an operator already cleared
+ *   wrongProduction on this file (mirrors review-guards.js's real scoring gate)
  * @property {boolean} [wrongShow]
  * @property {string}  [aggregatorStars]
  * @property {string}  [originalScore]
@@ -85,7 +87,14 @@ function decideClusterAction(files, opts = {}) {
     // A human-vouched review is ALWAYS a candidate (and pinned by rank below) —
     // never let a longer junk sibling out-rank and bury real human work.
     if (f.humanReviewScore != null) return true;
-    if (f.wrongProduction === true) return false;
+    // Mirrors review-guards.js's real isIncludableForRebuild gate (the one that
+    // actually decides scoring): wrongProduction is excluded UNLESS a manual
+    // clear is already on file. Without this, a file an operator already
+    // vetted and cleared (death-of-a-salesman-2022 wsj--charles-isherwood.json,
+    // 2026-08-15) is invisible to candidacy, so the driver can never point
+    // preferredCanonical at it — the override is silently ignored and a worse
+    // file (an --unknown-byline copy) gets recovered instead.
+    if (f.wrongProduction === true && f.wrongProductionManualClear !== true) return false;
     // A stale wrongShow flag is overridable ONLY when the body names the venue.
     if (f.wrongShow === true && f.venueMatch !== true) return false;
     // MUST carry a genuine review body. A star / `includable` flag ALONE is not
