@@ -226,35 +226,53 @@ function tokenize(segment) {
 // bashWriteTargets/bashPatchSources below share the exposure since they
 // tokenize the same way). Strip heredoc BODIES (and their terminator line,
 // which names the tag, not a command) before segmenting.
-const HEREDOC_OPEN_RE = /<<(-)?~?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/g;
+// Lookbehind/lookahead pin this to EXACTLY two `<` — without it, `<<<TAG`
+// (a here-string, no multi-line body at all) matches at its second `<` and
+// gets read as a heredoc opener, swallowing every following line — including
+// a genuine merge command — as fake "body" until (if ever) a line matching
+// the tag turns up. That is a false NEGATIVE (a real merge silently hidden
+// from the gate), the dangerous direction for a review gate to fail in —
+// caught by adversarial review, task #1557. Tag charset intentionally starts
+// with a letter/underscore (never a digit): Bash also accepts purely numeric
+// delimiters (`<<123`), but allowing digit-led tags would make this regex
+// match `<<8`-style bit-shift text inside arithmetic expansions
+// (`$((x<<8))`) — a far more common shape in real commands than a numeric
+// heredoc tag, so the false-positive trade favors requiring a leading
+// letter/underscore. Dash/dot are still allowed after the first character
+// (`<<END-1`, `<<'END.TAG'`) since those cost nothing extra.
+const HEREDOC_OPEN_RE = /(?<!<)<<(?!<)(-)?\s*(['"]?)([A-Za-z_][A-Za-z0-9_.-]*)\2/g;
 function stripHeredocBodies(command) {
   const str = String(command || '');
   if (!str.includes('<<')) return str; // fast path — no heredocs
   const lines = str.split('\n');
   const out = [];
-  for (let i = 0; i < lines.length; i++) {
-    out.push(lines[i]);
-    HEREDOC_OPEN_RE.lastIndex = 0;
-    let m, tag = null, dashed = false;
-    // A line can open more than one heredoc (`cmd <<A <<B`); tracking only
-    // the LAST tag and stripping through its terminator over-strips (it also
-    // swallows the first tag's own terminator line) rather than under-strips
-    // — the safe direction here, since it can only remove more candidate
-    // prose, never leave a fake segment classifiable.
-    while ((m = HEREDOC_OPEN_RE.exec(lines[i])) !== null) { tag = m[3]; dashed = !!m[1]; }
-    if (!tag) continue;
-    // Real bash terminator rules: plain `<<TAG` requires the line to be
-    // EXACTLY the tag (no leading/trailing whitespace); `<<-TAG` additionally
-    // permits leading TABS (not spaces) before the tag. Matching this
-    // precisely — rather than a loose trim() — matters: a body line that
-    // merely trims down to the tag text would otherwise end the strip early
-    // and re-expose the rest of the body to classification.
-    const isTerminator = dashed ? (l) => l.replace(/^\t+/, '') === tag : (l) => l === tag;
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    out.push(line);
     i++;
-    while (i < lines.length && !isTerminator(lines[i])) i++;
-    // lines[i] (if found) is the terminator — dropped, not pushed. If
-    // unterminated, i has run past the end and the outer loop's own i++
-    // ends it there; nothing further is emitted.
+    HEREDOC_OPEN_RE.lastIndex = 0;
+    const tags = [];
+    let m;
+    while ((m = HEREDOC_OPEN_RE.exec(line)) !== null) tags.push({ tag: m[3], dashed: !!m[1] });
+    // A line can open more than one heredoc (`cmd <<A <<B`). Real bash
+    // consumes their bodies in the order the redirections appear — A's body
+    // runs until A's own terminator, then B's body begins immediately after
+    // — so a coincidental line matching B's tag inside A's body must NOT end
+    // the strip early (it did in an earlier revision that tracked only the
+    // last tag on the line, itself an adversarial-review finding).
+    for (const { tag, dashed } of tags) {
+      // Real bash terminator rules: plain `<<TAG` requires the line to be
+      // EXACTLY the tag (no leading/trailing whitespace); `<<-TAG`
+      // additionally permits leading TABS (not spaces) before the tag.
+      // Matching this precisely — rather than a loose trim() — matters: a
+      // body line that merely trims down to the tag text would otherwise end
+      // the strip early and re-expose the rest of the body to classification.
+      const isTerminator = dashed ? (l) => l.replace(/^\t+/, '') === tag : (l) => l === tag;
+      while (i < lines.length && !isTerminator(lines[i])) i++;
+      if (i >= lines.length) break; // unterminated — nothing left to strip precisely
+      i++; // drop the terminator line, continue with the next tag's body (if any)
+    }
   }
   return out.join('\n');
 }

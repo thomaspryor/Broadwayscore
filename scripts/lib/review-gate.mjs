@@ -831,10 +831,16 @@ function shellLex() {
   if (_shellLex !== null) return _shellLex;
   try {
     const { shellSegments, tokenize, stripHeredocBodies } = require('./infra-review-scope.js');
-    if (typeof shellSegments !== 'function' || typeof tokenize !== 'function' || typeof stripHeredocBodies !== 'function') {
-      throw new Error('missing exports');
-    }
-    _shellLex = { shellSegments, tokenize, stripHeredocBodies };
+    if (typeof shellSegments !== 'function' || typeof tokenize !== 'function') throw new Error('missing exports');
+    // stripHeredocBodies (task #1557) is a newer export than shellSegments/
+    // tokenize. A paired infra-review-scope.js old enough to predate it must
+    // not disable the WHOLE merge gate over one missing optional helper —
+    // that would be strictly worse than the heredoc false-positive this
+    // closes (adversarial review: a hard require() here opens a version-skew
+    // fail-open window). Degrade to an identity passthrough instead, same
+    // convention as this file's other optional-sibling requires above.
+    const strip = typeof stripHeredocBodies === 'function' ? stripHeredocBodies : (s) => s;
+    _shellLex = { shellSegments, tokenize, stripHeredocBodies: strip };
   } catch (e) {
     process.stderr.write(`review-gate: infra-review-scope.js tokenizer unavailable (${e.code || e.message}) — merge gate degraded to no-op\n`);
     _shellLex = false;
