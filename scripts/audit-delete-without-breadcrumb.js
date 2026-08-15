@@ -34,6 +34,15 @@
  * analysis), so false positives/negatives are possible; wired as advisory
  * (non-blocking) initially per the card, consistent with
  * audit-same-job-breadcrumb-coverage.js's own precedent for this bug family.
+ * Known gap (QA review, task #1625): scoping is FUNCTION-level, not
+ * block-level — two independent sibling loops in the same function sharing a
+ * generic variable name (e.g. `data`) can cross-attribute. Chosen deliberately
+ * over block-level scoping because the real bug shape this tool targets
+ * (flag-combined-reviews.js's pre-fix pattern) has its delete nested inside an
+ * `if` block while the matching safeWriteReview() call sits in the ENCLOSING
+ * for-loop body — a different, narrower block. Scoping to the innermost block
+ * would have missed that exact case; function-level is the wider net that
+ * still catches it, at the cost of this rarer cross-loop false-positive risk.
  *
  * FAILS OPEN: a file that fails to parse (syntax error, unsupported syntax)
  * is skipped, not crashed on — this must never break CI on an unrelated file.
@@ -140,17 +149,28 @@ function analyzeSource(src) {
       && node.callee.name === 'safeWriteReview') {
       const args = node.arguments;
       if (args.length >= 2 && args[1].type === 'Identifier') {
-        let hasForceTrue = false;
-        if (args.length >= 3 && args[2].type === 'ObjectExpression') {
-          hasForceTrue = args[2].properties.some((p) => (
+        const optHasLiteral = (name, value) => args.length >= 3 && args[2].type === 'ObjectExpression'
+          && args[2].properties.some((p) => (
             p.type === 'Property'
             && !p.computed
-            && ((p.key.type === 'Identifier' && p.key.name === 'force')
-              || (p.key.type === 'Literal' && p.key.value === 'force'))
-            && p.value.type === 'Literal' && p.value.value === true
+            && ((p.key.type === 'Identifier' && p.key.name === name)
+              || (p.key.type === 'Literal' && p.key.value === name))
+            && p.value.type === 'Literal' && p.value.value === value
           ));
-        }
-        calls.push({ objName: args[1].name, hasForceTrue, start: node.start });
+        calls.push({
+          objName: args[1].name,
+          hasForceTrue: optHasLiteral('force', true),
+          // merge:false disables safeWriteReview's "keep any existing field
+          // not in newData" pass (review-write-guard.js's `if (merge) {...}`
+          // loop) — the ONLY mechanism that restores a deleted field with no
+          // CLEAR_BREADCRUMBS entry when that field is NOT in PROTECTED_FIELDS
+          // (a separate preserve-loop, gated on PROTECTED_FIELDS membership
+          // only and NOT on `merge`, still restores a PROTECTED field
+          // regardless of merge:false — so this only neutralizes the risk for
+          // non-PROTECTED fields; findUnprotectedDeletes checks both).
+          hasMergeFalse: optHasLiteral('merge', false),
+          start: node.start,
+        });
       }
     }
   });
@@ -177,25 +197,41 @@ function analyzeSource(src) {
 /**
  * For one file's { deletes, calls }, return the flaggable sites: a delete
  * whose same-scope, same-var, NEAREST-by-position safeWriteReview() call
- * lacks force:true, and whose field has no CLEAR_BREADCRUMBS entry.
+ * lacks force:true, has no CLEAR_BREADCRUMBS entry for the deleted field,
+ * AND isn't neutralized by merge:false.
+ *
+ * merge:false disables ONLY safeWriteReview's "keep any existing field not
+ * in newData" pass — the mechanism that restores a deleted field with no
+ * CLEAR_BREADCRUMBS entry when that field is NOT in PROTECTED_FIELDS. A
+ * separate preserve-loop (gated on PROTECTED_FIELDS membership, not on
+ * `merge`) still restores a PROTECTED field regardless of merge:false — so
+ * merge:false only makes a delete safe when the field is unprotected
+ * (adversarial codex review finding: treating merge:false as blanket-safe
+ * would miss real PROTECTED-field bugs).
  *
  * A file with zero safeWriteReview calls anywhere is never flagged (writes
  * via raw fs.writeFileSync, unaffected by this bug class) — callers should
  * check `calls.length === 0` themselves; this function only handles the
  * per-delete matching once that gate has passed.
  */
-function findUnprotectedDeletes(deletes, calls, breadcrumbKeys) {
+function findUnprotectedDeletes(deletes, calls, breadcrumbKeys, protectedFields = new Set()) {
   const findings = [];
   for (const d of deletes) {
-    const candidates = calls.filter((c) => c.objName === d.objName && c.scopeStart === d.scopeStart && c.scopeEnd === d.scopeEnd);
-    if (candidates.length === 0) continue; // no matching call in this scope — nothing to attribute to, skip (avoid noise)
+    // Only a call AFTER the delete can be the write this delete is trying to
+    // persist — a call that already ran before the delete wrote the PRE-delete
+    // state and can't be reverted by this delete at all (QA review finding:
+    // plain nearest-by-distance falsely matched `safeWriteReview(fp, data);
+    // delete data.x;` — that write already landed with the old value).
+    const candidates = calls.filter((c) => c.objName === d.objName && c.scopeStart === d.scopeStart && c.scopeEnd === d.scopeEnd && c.start > d.start);
+    if (candidates.length === 0) continue; // no later call in this scope — nothing to attribute to, skip (avoid noise)
     let nearest = candidates[0];
-    let nearestDist = Math.abs(candidates[0].start - d.start);
+    let nearestDist = candidates[0].start - d.start;
     for (const c of candidates.slice(1)) {
-      const dist = Math.abs(c.start - d.start);
+      const dist = c.start - d.start;
       if (dist < nearestDist) { nearest = c; nearestDist = dist; }
     }
     if (nearest.hasForceTrue) continue; // intentional overwrite — safe
+    if (nearest.hasMergeFalse && !protectedFields.has(d.field)) continue; // merge pass never runs, and no PROTECTED preserve-loop applies — safe
     if (breadcrumbKeys.has(d.field)) continue; // registered clear breadcrumb — safe
     findings.push({ field: d.field, objName: d.objName, deleteStart: d.start, callStart: nearest.start });
   }
@@ -210,11 +246,11 @@ function lineOf(src, offset) {
  * Scan a single file's source for findings. Returns [] for a file with no
  * safeWriteReview calls at all, or one that fails to parse (fails open).
  */
-function checkFile(src, breadcrumbKeys) {
+function checkFile(src, breadcrumbKeys, protectedFields = new Set()) {
   if (src.includes(EXEMPTION)) return [];
   const { deletes, calls, error } = analyzeSource(src);
   if (error || calls.length === 0) return [];
-  const raw = findUnprotectedDeletes(deletes, calls, breadcrumbKeys);
+  const raw = findUnprotectedDeletes(deletes, calls, breadcrumbKeys, protectedFields);
   return raw.map((f) => ({ ...f, deleteLine: lineOf(src, f.deleteStart), callLine: lineOf(src, f.callStart) }));
 }
 
@@ -222,21 +258,23 @@ function checkFile(src, breadcrumbKeys) {
  * Scan every scripts/*.js file (non-recursive — matches the card's own
  * "grep all scripts/*.js" scope) for delete-without-breadcrumb sites.
  *
- * @returns {{ findings: object[], scanned: { files: number, filesWithSafeWrite: number } }}
+ * @returns {{ findings: object[], scanned: { files: number, filesWithSafeWrite: number, filesSkipped: number } }}
  */
-function auditRepo({ scriptsDir, breadcrumbKeys }) {
+function auditRepo({ scriptsDir, breadcrumbKeys, protectedFields = new Set() }) {
   const files = fs.readdirSync(scriptsDir).filter((f) => f.endsWith('.js')).sort();
   const findings = [];
   let filesWithSafeWrite = 0;
+  let filesSkipped = 0;
 
   for (const file of files) {
     const abs = path.join(scriptsDir, file);
     const src = fs.readFileSync(abs, 'utf8');
     if (src.includes(EXEMPTION)) continue;
     const { deletes, calls, error } = analyzeSource(src);
-    if (error || calls.length === 0) continue;
+    if (error) { filesSkipped++; continue; } // fails open — never crash the audit on one bad file
+    if (calls.length === 0) continue;
     filesWithSafeWrite++;
-    const raw = findUnprotectedDeletes(deletes, calls, breadcrumbKeys);
+    const raw = findUnprotectedDeletes(deletes, calls, breadcrumbKeys, protectedFields);
     for (const f of raw) {
       findings.push({
         file,
@@ -247,40 +285,52 @@ function auditRepo({ scriptsDir, breadcrumbKeys }) {
     }
   }
 
-  return { findings, scanned: { files: files.length, filesWithSafeWrite } };
+  return { findings, scanned: { files: files.length, filesWithSafeWrite, filesSkipped } };
 }
 
 function main() {
-  if (!loadAcorn()) {
-    console.error('🚨 Delete-without-breadcrumb guard cannot run: acorn is not installed. Run `npm ci` and re-run.');
-    process.exitCode = 1;
-    return;
+  // Non-blocking is a hard contract (test.yml's step has no continue-on-error
+  // — see header). Everything below must never throw uncaught: an unexpected
+  // require() failure or fs error would otherwise exit non-zero and fail the
+  // "Lint Workflows" job despite every doc comment promising advisory-only
+  // (adversarial codex review finding — mirrors the same guard already in
+  // scripts/audit-same-job-breadcrumb-coverage.js's main()).
+  try {
+    if (!loadAcorn()) {
+      console.warn('⚠️  Delete-without-breadcrumb guard: acorn is not installed — skipping (advisory only, not failing CI).');
+      return;
+    }
+
+    const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } = require('./lib/review-write-guard');
+    const breadcrumbKeys = new Set(Object.keys(CLEAR_BREADCRUMBS));
+    const protectedFields = new Set(PROTECTED_FIELDS);
+
+    const { findings, scanned } = auditRepo({ scriptsDir: SCRIPTS_DIR, breadcrumbKeys, protectedFields });
+    const skippedNote = scanned.filesSkipped > 0 ? `, ${scanned.filesSkipped} skipped (parse error)` : '';
+
+    if (findings.length === 0) {
+      console.log(`✅ Delete-without-breadcrumb guard: no violations (${scanned.filesWithSafeWrite}/${scanned.files} scripts call safeWriteReview${skippedNote}).`);
+      return;
+    }
+
+    console.log(`⚠️  Delete-without-breadcrumb guard — ${findings.length} site(s) where a delete has no matching`);
+    console.log('CLEAR_BREADCRUMBS entry, and the nearest safeWriteReview() call in the same scope has no force:true');
+    console.log('(and no merge:false neutralizing it, for unprotected fields). safeWriteReview\'s merge-mode restore');
+    console.log('pass will silently revert this delete on its very next run — the exact bug class fixed by hand in');
+    console.log('#1618/#1624. See scripts/lib/review-write-guard.js.\n');
+    console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
+    for (const f of findings) {
+      console.log(`  • scripts/${f.file}:${f.deleteLine} deletes "${f.field}" — safeWriteReview() at line ${f.callLine} has no force:true, and "${f.field}" has no CLEAR_BREADCRUMBS entry`);
+    }
+    console.log(`\nFix: either pass { force: true } to the safeWriteReview() call (if this is an intentional overwrite),`);
+    console.log(`or register a CLEAR_BREADCRUMBS[field] predicate in scripts/lib/review-write-guard.js (see`);
+    console.log(`duplicateTextOf / wrongAttributionReason for the pattern), or null-assign instead of delete if the field`);
+    console.log(`should never be protected (null survives safeWriteReview's undefined-only merge check).`);
+    console.log(`Exempt (false positive): add  // ${EXEMPTION}: <reason>  anywhere in the file.\n`);
+    // Advisory only — never fails CI (see header).
+  } catch (e) {
+    console.warn(`[audit-delete-without-breadcrumb] non-fatal error: ${e.message} — advisory only, not failing CI.`);
   }
-
-  const { PROTECTED_FIELDS: _unused, CLEAR_BREADCRUMBS } = require('./lib/review-write-guard');
-  const breadcrumbKeys = new Set(Object.keys(CLEAR_BREADCRUMBS));
-
-  const { findings, scanned } = auditRepo({ scriptsDir: SCRIPTS_DIR, breadcrumbKeys });
-
-  if (findings.length === 0) {
-    console.log(`✅ Delete-without-breadcrumb guard: no violations (${scanned.filesWithSafeWrite}/${scanned.files} scripts call safeWriteReview).`);
-    return;
-  }
-
-  console.log(`⚠️  Delete-without-breadcrumb guard — ${findings.length} site(s) where a delete has no matching`);
-  console.log('CLEAR_BREADCRUMBS entry, and the nearest safeWriteReview() call in the same scope has no force:true.');
-  console.log('safeWriteReview\'s merge-mode restore pass will silently revert this delete on its very next run,');
-  console.log('the exact bug class fixed by hand in #1618/#1624. See scripts/lib/review-write-guard.js.\n');
-  console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
-  for (const f of findings) {
-    console.log(`  • scripts/${f.file}:${f.deleteLine} deletes "${f.field}" — safeWriteReview() at line ${f.callLine} has no force:true, and "${f.field}" has no CLEAR_BREADCRUMBS entry`);
-  }
-  console.log(`\nFix: either pass { force: true } to the safeWriteReview() call (if this is an intentional overwrite),`);
-  console.log(`or register a CLEAR_BREADCRUMBS[field] predicate in scripts/lib/review-write-guard.js (see`);
-  console.log(`duplicateTextOf / wrongAttributionReason for the pattern), or null-assign instead of delete if the field`);
-  console.log(`should never be protected (null survives safeWriteReview's undefined-only merge check).`);
-  console.log(`Exempt (false positive): add  // ${EXEMPTION}: <reason>  anywhere in the file.\n`);
-  // Advisory only — never fails CI (see header).
 }
 
 if (require.main === module) {

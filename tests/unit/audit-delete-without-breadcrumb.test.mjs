@@ -105,6 +105,67 @@ test('checkFile: fails open on unparseable source (never throws)', () => {
   assert.equal(findings.length, 0);
 });
 
+// ── Adversarial review fixes (codex + Claude QA, task #1625) ──
+
+test('checkFile: does NOT flag a delete that occurs AFTER the matching safeWriteReview call (the earlier write already persisted the pre-delete state)', () => {
+  const src = `
+function run(fp, data) {
+  safeWriteReview(fp, data);
+  delete data.someUnbreadcrumbedField;
+}
+`;
+  const findings = checkFile(src, new Set());
+  assert.equal(findings.length, 0);
+});
+
+test('checkFile: does NOT flag a delete of an UNPROTECTED field when the call passes merge:false (the merge-back pass that would restore it never runs)', () => {
+  const src = `
+function run(fp, data) {
+  delete data.someScratchField;
+  safeWriteReview(fp, data, { merge: false });
+}
+`;
+  const findings = checkFile(src, new Set(), new Set(['humanReviewScore']));
+  assert.equal(findings.length, 0);
+});
+
+test('checkFile: STILL flags a delete of a PROTECTED field even with merge:false — the preserve-loop restores PROTECTED fields regardless of merge', () => {
+  const src = `
+function run(fp, data) {
+  delete data.humanReviewScore;
+  safeWriteReview(fp, data, { merge: false });
+}
+`;
+  const findings = checkFile(src, new Set(), new Set(['humanReviewScore']));
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].field, 'humanReviewScore');
+});
+
+test('main(): does not set a non-zero exitCode when acorn/acorn-walk cannot be loaded (advisory contract must hold even on a broken install)', () => {
+  const path = require('path');
+  const Module = require('module');
+  const scriptPath = require.resolve(path.join(process.cwd(), 'scripts/audit-delete-without-breadcrumb.js'));
+  delete require.cache[scriptPath];
+  const originalResolve = Module._resolveFilename;
+  Module._resolveFilename = function (request, ...rest) {
+    if (request === 'acorn' || request === 'acorn-walk') {
+      throw new Error('simulated missing dependency');
+    }
+    return originalResolve.call(this, request, ...rest);
+  };
+  const originalExitCode = process.exitCode;
+  process.exitCode = undefined;
+  try {
+    const isolated = require(scriptPath);
+    isolated.main();
+    assert.notEqual(process.exitCode, 1, 'main() must stay advisory (exitCode !== 1) even when acorn cannot load');
+  } finally {
+    Module._resolveFilename = originalResolve;
+    process.exitCode = originalExitCode;
+    delete require.cache[scriptPath];
+  }
+});
+
 test('checkFile: respects the breadcrumb-delete-ok exemption annotation', () => {
   const src = `
 // breadcrumb-delete-ok: reviewed false positive, tracked in card #999
