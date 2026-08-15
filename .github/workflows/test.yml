@@ -1697,6 +1697,11 @@ on:
       - '.claude/hooks/pre-merge-review-gate.sh'
       - '.claude/hooks/pre-push-review-gate.sh'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
+      # verify-edits.sh heredoc-stripper here-string false negative (task
+      # #1606), same shell-e2e class as merge-gate-hook.test.mjs above and
+      # the same "scripts/tests/ is not scripts/lib/" path-list gap.
+      - 'scripts/tests/verify-edits-heredoc.test.mjs'
+      - '.claude/hooks/verify-edits.sh'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
