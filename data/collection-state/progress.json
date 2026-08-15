@@ -1671,7 +1671,17 @@
     "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
     "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
-    "dog-man-the-musical-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+    "dog-man-the-musical-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1773,7 +1783,7 @@
     ]
   },
   "startTime": "2026-08-14T10:26:10.017Z",
-  "lastProcessed": "dog-man-the-musical-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-08-14T11:19:07.811Z",
@@ -1808,6 +1818,17 @@
       "event": "bb-session",
       "session": "e74cf8ec",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/"
+    },
+    {
+      "t": "2026-08-15T01:25:32.042Z",
+      "event": "bb-session",
+      "session": "89ec68aa",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T01:25:32.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
