@@ -43,6 +43,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { assessClearSafety } = require('./lib/reverify-clear-guards');
 
 const USAGE = `reverify-nulled-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose fullText was nulled entirely
@@ -189,15 +190,27 @@ async function main() {
         show,
       });
 
-      const clean = result.isValid && !result.wrongArticle && !result.wrongProduction && !result.isFilmTv;
+      // DETERMINISTIC REFUSAL GATE — shared with reverify-stale-cv-promoted.js.
+      // This script has the same shape as its sibling (LLM verdict → clear an
+      // exclusion on a live review) and therefore the same two failure modes the
+      // 2026-08-15 incident exposed there: trusting the verdict's booleans against
+      // contrary evidence in the verdict's own reasoning, and manufacturing a
+      // same-URL duplicate. Guarded here too rather than waiting for it to fire.
+      const safety = assessClearSafety({ filePath, data, show, result, showTitle });
+      if (!safety.safe) {
+        for (const r of safety.refusals) console.log(`  [REFUSED:${r.code}] ${r.detail}`);
+      }
+      const clean = result.isValid && !result.wrongArticle && !result.wrongProduction
+        && !result.isFilmTv && safety.safe;
       const articleConfidence = result.articleTypeConfidence || result.confidence;
 
       // Per-family clearability, decided BEFORE any mutation. A family that
       // isn't currently set is trivially "clearable" (nothing to do for it).
       // wrongProduction needs high confidence (wrongProductionOverride is a
-      // blanket, permanent exemption — task #1404 / Codex review). wrongShow
-      // clears stay ungated, matching established precedent. isNonReview needs
-      // high articleTypeConfidence, matching isNonReviewDemotedByFreshCV's bar.
+      // blanket, permanent exemption — task #1404 / Codex review). isNonReview
+      // needs high articleTypeConfidence, matching isNonReviewDemotedByFreshCV's
+      // bar. wrongShow-only clears are no longer ungated: assessClearSafety()
+      // (GUARD 3) applies the high-confidence bar to every clear path.
       const wrongProductionClearable = !data.wrongProduction || result.confidence === 'high';
       const isNonReviewClearable = !data.isNonReview || articleConfidence === 'high';
       const fullyClean = clean && wrongProductionClearable && isNonReviewClearable;
