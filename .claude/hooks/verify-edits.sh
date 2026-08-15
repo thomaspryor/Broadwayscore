@@ -198,6 +198,19 @@ import re
 # genuine `sed -i .../review-texts/...` write — as fake heredoc body. Same
 # false-negative class fixed in stripHeredocBodies() in
 # scripts/lib/infra-review-scope.js (task #1557); ported here (task #1606).
+#
+# KNOWN GAP (pre-existing, unchanged by task #1606 — /ship-check adversarial
+# review 2026-08-15): this is a regex heuristic, not a shell parser. It does
+# not track quoting, comments, or arithmetic-expansion context, so `<<TAG`
+# text inside a single-quoted string (e.g. `printf '%s' '<<EOF'`) or a
+# `(( x << EOF ))` arithmetic shift can still be misread as a heredoc open,
+# and text following it stripped as fake body. Confirmed this predates task
+# #1606 (the pre-fix regex had the identical blind spot) and is shared by the
+# JS reference (scripts/lib/infra-review-scope.js) this was ported from — not
+# a regression here. A real fix needs a shell tokenizer; per that file's own
+# KNOWN_GAPS list, documenting is cheaper than chasing until this is observed
+# to matter in practice, and the push-time gate (pre-push-review-gate.sh)
+# still sees the resulting diff either way.
 _heredoc_open_re = re.compile(
     r"(?<!<)<<(?!<)(-)?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_.-]*)\2"
 )
