@@ -262,6 +262,12 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+          # DIAGNOSTIC (card #1551): disables Vercel's own remote build cache
+          # (hosted on Vercel's infra, separate from our GH Actions .next/cache
+          # — that was already proven cold/irrelevant). Testing whether THIS is
+          # why public/data/shows/*.json files rewritten by prebuild.sh as a
+          # build-time side effect aren't picked up by `vercel build`'s output.
+          VERCEL_FORCE_NO_BUILD_CACHE: '1'
         run: |
           BUILD_START=$(date +%s)
           npx vercel build --prod --token=$VERCEL_TOKEN
