@@ -398,6 +398,21 @@ test('recheck block states the counts and labels itself as watching only', () =>
   assert.ok(html.includes('its own check does not pass any more'));
 });
 
+// The cards that used to disappear entirely (autonomous-recheck-core.js's
+// bare `continue`) are counted, never listed — so the ONLY place the owner
+// can see the class exists is this tally. If it stops rendering, the class is
+// invisible again and nothing else would notice.
+test('recheck block surfaces the had-no-check-to-run tally', () => {
+  const html = renderRecheckBlock({ ...RECHECK, counts: { ...RECHECK.counts, noCriteria: 34 } });
+  assert.ok(html.includes('34 had no check to run'));
+  assert.ok(html.includes('2 still work'), 'the existing counts still render alongside it');
+});
+
+test('recheck block omits the tally when nothing was dropped', () => {
+  assert.ok(!renderRecheckBlock(RECHECK).includes('had no check to run'));
+  assert.ok(!renderRecheckBlock({ ...RECHECK, counts: { ...RECHECK.counts, noCriteria: 0 } }).includes('had no check to run'));
+});
+
 test('recheck block renders nothing when there is nothing to report', () => {
   assert.equal(renderRecheckBlock(null), '');
   assert.equal(renderRecheckBlock({ counts: {}, lines: [] }), '');
