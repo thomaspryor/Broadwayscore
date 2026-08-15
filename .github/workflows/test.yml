@@ -1072,6 +1072,16 @@ on:
       # solo edit triggers CI (no scripts/lib/** broad glob, no scripts/** glob).
       - 'scripts/lib/review-submission-correction-merge.test.mjs'
       - 'scripts/process-review-formspree.js'
+      # Deterministic refusal guards for the CV-promoted re-verification sweeps
+      # (2026-08-15 incident: LLM-verdict clears produced six CI errors incl. a
+      # manufactured same-URL duplicate). Test lives in tests/unit/ (registered in
+      # tests/unit-test-manifest.txt, which the node --test batch reads); these are
+      # path-listed so a solo edit to the guard lib or either consuming sweep
+      # triggers CI — there is no scripts/lib/** or scripts/** broad glob.
+      - 'scripts/lib/reverify-clear-guards.js'
+      - 'tests/unit/reverify-clear-guards.test.mjs'
+      - 'scripts/reverify-stale-cv-promoted.js'
+      - 'scripts/reverify-nulled-cv-promoted.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
       # Without these, an edit to the normalizer pushes with ZERO CI coverage

@@ -39,6 +39,7 @@ const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { assessClearSafety } = require('./lib/reverify-clear-guards');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -110,7 +111,7 @@ async function main() {
   const todo = findings.slice(0, Number.isFinite(limit) ? limit : findings.length);
   console.log(`${findings.length} stale-hash CV-promoted findings; processing ${todo.length}${dryRun ? ' (DRY RUN)' : ''}\n`);
 
-  const stats = { cleared: 0, confirmed: 0, protected: 0, skippedNoText: 0, errors: 0 };
+  const stats = { cleared: 0, confirmed: 0, protected: 0, skippedNoText: 0, errors: 0, refused: 0, refusalsByCode: {} };
 
   for (const f of todo) {
     const filePath = path.join(REVIEW_TEXTS_DIR, f.showId, f.file);
@@ -159,7 +160,25 @@ async function main() {
 
       console.log(`  New: isValid=${result.isValid} wrongArticle=${result.wrongArticle} wrongProduction=${result.wrongProduction} isFilmTv=${result.isFilmTv} confidence=${result.confidence}`);
 
-      const clean = result.isValid && !result.wrongArticle && !result.wrongProduction && !result.isFilmTv;
+      // DETERMINISTIC REFUSAL GATE (2026-08-15 incident, six CI errors incl. a
+      // manufactured same-URL duplicate). The LLM's booleans are a NECESSARY
+      // condition for a clear, never a sufficient one: assessClearSafety()
+      // re-checks the verdict against evidence the verdict itself carries and
+      // against the on-disk state of the show directory, with no model call.
+      // Refusals are logged individually so a later audit of a stranded review
+      // can see which guard held it and why. See scripts/lib/reverify-clear-guards.js.
+      const safety = assessClearSafety({ filePath, data, show, result, showTitle });
+      const clean = result.isValid && !result.wrongArticle && !result.wrongProduction
+        && !result.isFilmTv && safety.safe;
+      if (!safety.safe) {
+        for (const r of safety.refusals) {
+          console.log(`  [REFUSED:${r.code}] ${r.detail}`);
+        }
+        stats.refused++;
+        for (const r of safety.refusals) {
+          stats.refusalsByCode[r.code] = (stats.refusalsByCode[r.code] || 0) + 1;
+        }
+      }
       let didClear = false;
 
       if (!dryRun) {
@@ -196,11 +215,17 @@ async function main() {
         // self-heal predicate for this exact flag (isStaleCvPromotedWrongProduction,
         // review-guards.js) requires cv.confidence === 'high' before demoting a
         // wrongProduction flag; this script must not clear on weaker evidence than
-        // it took to set one (Codex second-opinion, task #1404). wrongShow-only
-        // clears stay ungated, matching reverify-promoted-reviews.js precedent.
+        // it took to set one (Codex second-opinion, task #1404).
+        //
+        // 2026-08-15: the confidence bar now applies to EVERY clear path, not just
+        // wrongProduction — it is enforced centrally in assessClearSafety() (GUARD 3)
+        // and folded into `clean` above. wrongShow-only clears used to be ungated
+        // entirely, which is how low-confidence verdicts reached live reviews. The
+        // inner check below is kept as defence in depth so this branch stays correct
+        // even if a caller reaches it without the central gate.
         if (clean && (data.wrongShow || data.wrongProduction)) {
           const wantsFullClear = Boolean(data.wrongProduction);
-          if (!wantsFullClear || result.confidence === 'high') {
+          if (result.confidence === 'high') {
             clearWrongProductionFlags(data, {
               source: 'reverify-stale-cv-promoted.js',
               reason: result.reasoning || 'stored fullText re-verified clean (task #1404 stale-hash sweep)',
