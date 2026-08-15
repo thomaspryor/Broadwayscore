@@ -20,5 +20,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-15T01:53:16.756Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 20.8% of shows changed coverage state",
+    "description": "review-gap blast radius 20.8% (5/24 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: an-american-daughter-off-broadway-2026, anansi-the-spider-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T02:22:49.544Z"
   }
 ]
