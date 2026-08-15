@@ -21,7 +21,30 @@ const { PARK_MARKER_RE } = require('./park-marker');
 // midnight UTC, i.e. the START of that day: the recheck becomes due the
 // instant that UTC day begins, not at its end — a deferred-effect claim like
 // "7-day spend streak" names the day its OWN window already closes on).
-const RECHECK_AFTER_RE = /RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/i;
+//
+// The colon is OPTIONAL (fixed 2026-08-14). Live cards are stamped
+// `RECHECK-AFTER 2026-08-24` without one — sessions type the stamp by hand at
+// wrap-up — and those failed the match outright, which is the silent-drop
+// failure this whole file exists to prevent: a card that plainly carries a
+// stamp was treated as carrying none.
+//
+// Widened DELIBERATELY narrowly, not to "anything near the word". What
+// follows the keyword must be a colon and/or blanks and then, immediately, a
+// full ISO date: no other token may intervene. That is what keeps prose about
+// the mechanism from matching — "RECHECK-AFTER stamps landed 2026-08-24" has
+// a word between the keyword and the date and is NOT a stamp, while
+// "RECHECK-AFTER 2026-08-24" is. The colon-less branch allows blanks only
+// (`[ \t]+`), never `\s`: `\s` crosses newlines, so a card ending in a bare
+// "RECHECK-AFTER" heading would swallow an unrelated date from the next line.
+// The colon branch keeps the original `\s*` verbatim, so this is a strict
+// superset of what matched before — no previously-matching card can stop
+// matching.
+//
+// Writes stay canonical regardless: hoistRecheckAfterStamp (below) re-emits
+// every stamp it finds in the canonical `RECHECK-AFTER: <date>` form at the
+// head of the text, so a colon-less stamp normalises the next time the card
+// is written through notion-brain.
+const RECHECK_AFTER_RE = /RECHECK-AFTER(?::\s*|[ \t]+)(\d{4}-\d{2}-\d{2})/i;
 
 function parseRecheckAfter(text) {
   const m = RECHECK_AFTER_RE.exec(String(text || ''));
@@ -75,8 +98,16 @@ function hoistRecheckAfterStamp(text) {
   const s = String(text || '');
   if (PARK_MARKER_RE.test(s)) return s;
   const m = RECHECK_AFTER_RE.exec(s);
-  if (!m || m.index === 0) return s;
-  return `RECHECK-AFTER: ${m[1]}\n\n${s}`;
+  if (!m) return s;
+  // "already at the head" means already at the head IN CANONICAL FORM. A
+  // colon-less head stamp (`RECHECK-AFTER 2026-08-24`, which live cards do
+  // carry) is parseable but not canonical, so it still gets a canonical copy
+  // prepended — that is how the colon-less form self-heals on the next write
+  // instead of persisting forever. Idempotent: the next call sees the
+  // canonical head and returns unchanged.
+  const canonicalHead = `RECHECK-AFTER: ${m[1]}`;
+  if (m.index === 0 && s.startsWith(canonicalHead)) return s;
+  return `${canonicalHead}\n\n${s}`;
 }
 
 module.exports = { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard, hoistRecheckAfterStamp };

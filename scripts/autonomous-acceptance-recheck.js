@@ -48,7 +48,7 @@ const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
 // ONE implementation of "check out origin/main and run the card's command",
 // shared with notion-brain.js's close-time verify (task #1003, CLAUDE.md §15).
 const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
-const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
+const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS, needsOverflowHydration } = require('./lib/autonomous-recheck-core.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
@@ -104,6 +104,52 @@ function notionBrain(args) {
     cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: process.env,
   });
   return JSON.parse(out);
+}
+
+// ── Un-truncating the candidates (2026-08-14) ──────────────────────────────
+//
+// `list --include-notes` hands back the RAW Notion property, and notion-brain
+// caps a property at 1800 chars: past that it stores a preview and puts the
+// tail in the page body. `## Acceptance criteria` is written last on this
+// repo's cards, so it is the first thing to fall off — 14 of the 18
+// RECHECK-AFTER-stamped cards on the live board were truncated, their
+// criteria invisible, and every one of them was dropped as "no runnable
+// command" by a recheck that had simply never seen the command.
+//
+// Fixed on THIS side rather than by teaching `list` to stitch, deliberately:
+// `get` (notion-brain's loadCard) is already the ONE canonical un-truncation
+// path — readFieldWithOverflow, one implementation, used by `get` and by
+// audit-card-verifiability.js with this same comment ("every card needs its
+// own `get` to see the acceptance-criteria body"). Stitching inside `list`
+// would add a second place that knows how, and would cost a page-body fetch
+// for EVERY long card in the listing (128 of 200 Done+Paused rows carry the
+// marker) on every nightly run. Hydrating here is bounded to the cards that
+// actually promise a recheck: 14 today, and only because the stamp itself
+// survives truncation (notion-brain hoists it to the front on write), so a
+// stamped card is still recognisable from its preview.
+//
+// Best-effort per card, never fatal — same posture as
+// audit-card-verifiability.js's fetchCard: a Notion blip on one card leaves
+// that card truncated (exactly as bad as before, no worse) instead of
+// sinking the whole night's run.
+function hydrateOverflowCards(cards, label) {
+  const needy = (cards || []).filter(needsOverflowHydration);
+  if (!needy.length) return { cards, hydrated: 0, failed: 0 };
+  let hydrated = 0;
+  let failed = 0;
+  const byId = new Map();
+  for (const card of needy) {
+    try {
+      const full = notionBrain(['get', card.id]);
+      byId.set(card.id, { ...card, notes: full.notes, outcome: full.outcome });
+      hydrated++;
+    } catch (err) {
+      console.error(`[recheck] WARN could not re-read ${label} card ${card.id} for its full notes: ${String(err.message).slice(0, 160)}`);
+      failed++;
+    }
+  }
+  console.error(`[recheck] re-read ${hydrated}/${needy.length} truncated ${label} card(s) through \`get\` to recover their acceptance criteria${failed ? ` (${failed} failed)` : ''}`);
+  return { cards: (cards || []).map(c => byId.get(c.id) || c), hydrated, failed };
 }
 
 // Same shared-task snapshot the triage pass uses for its claim-visibility
@@ -252,14 +298,26 @@ function main(argv = process.argv.slice(2)) {
 
   // A full page means there may be cards we never saw — say so instead of
   // reporting "nothing to re-check" from a truncated list (ship-check finding).
+  // `if (!dryRun)` on both appends (2026-08-14): --dry-run documents itself as
+  // "plan only — no checks run, no ledger write", and every OTHER append in
+  // this function already honours that — these two did not. Caught live while
+  // dry-running this fix: four recheck-truncated rows landed in the CI-owned
+  // ledger from planning runs that were supposed to write nothing, which is
+  // both a dirty working tree for whoever runs it from a worktree and false
+  // telemetry (a "coverage may be incomplete" row for a run that never ran).
   if (doneCards.length >= DONE_LIST_LIMIT) {
     console.error(`[recheck] WARN the Done listing came back full (${DONE_LIST_LIMIT}) — older Done cards in the window may have been cut off`);
-    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
   }
   if (pausedCards.length >= PAUSED_LIST_LIMIT) {
     console.error(`[recheck] WARN the Paused listing came back full (${PAUSED_LIST_LIMIT}) — older Paused cards in the window may have been cut off`);
-    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Paused listing hit the ${PAUSED_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Paused listing hit the ${PAUSED_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
   }
+  // Recover the acceptance criteria that Notion's 1800-char property cap cut
+  // off, BEFORE anything judges these cards on their notes.
+  doneCards = hydrateOverflowCards(doneCards, 'Done').cards;
+  pausedCards = hydrateOverflowCards(pausedCards, 'Paused').cards;
+
   const taskState = loadSharedTaskState();
   // Starvation guard (ship-check finding): a permanently-due RECHECK-AFTER
   // card must not win the same slot every night forever once other cards
@@ -274,12 +332,21 @@ function main(argv = process.argv.slice(2)) {
     const prev = lastRecheckedByCard.get(e.cardId);
     if (prev === undefined || t > prev) lastRecheckedByCard.set(e.cardId, t);
   }
+  // Cards in the window that never became targets — no RECHECK-AFTER stamp
+  // AND no runnable acceptance criteria. selectRecheckTargets used to drop
+  // these with a bare `continue`; they are deliberately not listed card by
+  // card (see the drop branch there) but they ARE counted, and the count
+  // rides in the summary the morning email renders. A class of card that can
+  // disappear between "selected" and "reported" without leaving a number
+  // behind is how the truncation bug stayed invisible for weeks.
+  const dropped = [];
   const selectFrom = (cards) => selectRecheckTargets({
     doneCards: cards,
     launchEntries: dispatchLedger.readEntries(),
     windowHours,
     isClaimed: cardId => !!findClaimedTask(cardId, taskState),
     lastRecheckedAt: cardId => lastRecheckedByCard.get(cardId) ?? null,
+    onDrop: d => dropped.push(d),
   });
   // Selected SEPARATELY per status, then merged with a reserved Paused share,
   // rather than concatenating the two lists and leaning on selectRecheckTargets'
@@ -308,12 +375,16 @@ function main(argv = process.argv.slice(2)) {
   }
 
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
+  if (dropped.length) {
+    console.error(`[recheck] ${dropped.length} card(s) in the window had no RECHECK-AFTER stamp and no runnable acceptance criteria — counted, not checked`);
+  }
   if (!targets.length) {
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-summary', runId, note: 'nothing to re-check', counts: { pass: 0, fail: 0, unverifiable: 0, skipped: 0 } }, RECHECK_LEDGER_PATH);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-summary', runId, note: 'nothing to re-check', counts: summarize([], { noCriteria: dropped.length }) }, RECHECK_LEDGER_PATH);
     return;
   }
   if (dryRun) {
     for (const t of targets) console.log(`  ${t.cardId} ${t.name} → ${t.skip ? `SKIP (${t.skip})` : (t.verifyCmd || `NOT VERIFIABLE (${t.reason})`)}`);
+    for (const d of dropped) console.log(`  DROPPED ${d.cardId} ${d.name} → ${d.reason}`);
     return;
   }
 
@@ -362,8 +433,8 @@ function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
-  const counts = summarize(results);
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped` }, RECHECK_LEDGER_PATH);
+  const counts = summarize(results, { noCriteria: dropped.length });
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}`);
 }
 

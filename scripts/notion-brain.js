@@ -33,6 +33,11 @@ require('./lib/load-env').loadEnv();
 
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
+// The truncation marker this file WRITES lives in a shared leaf so the
+// readers that must detect it (the nightly acceptance recheck) cannot drift
+// from the producer — this CLI exports nothing and exits at load without
+// NOTION_API_KEY, so nothing can require it to learn the string.
+const { OVERFLOW_NOTE, OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
 
 if (!process.env.NOTION_API_KEY) {
@@ -209,8 +214,6 @@ function formatCard(page) {
 
 const PROP_CHUNK = 1800;       // safe under Notion's 2000-char property cap
 const BODY_CHUNK = 1900;       // safe under Notion's 2000-char rich_text object cap
-const OVERFLOW_NOTE = '\n\n[Full content in page body below ↓]';
-const OVERFLOW_MARKER_SUBSTR = '[Full content in page body below';
 const BODY_HEADING_PREFIX = '[auto:';
 const BODY_HEADING_SUFFIX = '] full content';
 
@@ -1249,6 +1252,22 @@ async function listCards(args) {
   // naturally write RECHECK-AFTER stamps into Outcome at wrap-up, and 3 of 5
   // live stamped cards carried theirs ONLY there — invisible to the recheck.
   // Opt-in because these fields can be large and most callers don't need them.
+  //
+  // TRUNCATION WARNING, and it has bitten before: these are the RAW property
+  // values. Anything longer than PROP_CHUNK (1800) was stored as a preview
+  // ending in OVERFLOW_MARKER_SUBSTR, with the rest of the text in the page
+  // body — `## Acceptance criteria`, written last on this repo's cards, is
+  // the first thing to fall past the cut. The list endpoint deliberately does
+  // NOT stitch the body back: doing it here would mean one extra page-body
+  // fetch per long card (128 of 200 Done+Paused rows carry the marker on the
+  // live board), turning a single query into ~130 API calls for every caller
+  // whether it needs the tail or not.
+  //
+  // So a caller that needs COMPLETE notes must re-read the specific cards it
+  // cares about through `get` (loadCard), which stitches — exactly what
+  // audit-card-verifiability.js does, and what autonomous-acceptance-recheck.js
+  // now does for its RECHECK-AFTER-stamped candidates. Detect with
+  // lib/overflow-marker.js's cardHasOverflow(); never eyeball the string.
   const includeNotes = !!args['include-notes'];
   const table = results.map(c => ({
     name: c.name,
@@ -1276,13 +1295,11 @@ async function loadCard(pageId) {
   const card = formatCard(page);
 
   // If any of the long-text fields contain the overflow marker, fetch the
-  // page body once and stitch the full content back in.
-  const needsBody =
-    (card.notes && card.notes.includes(OVERFLOW_MARKER_SUBSTR)) ||
-    (card.outcome && card.outcome.includes(OVERFLOW_MARKER_SUBSTR)) ||
-    (card.keyFiles && card.keyFiles.includes(OVERFLOW_MARKER_SUBSTR));
-
-  if (needsBody) {
+  // page body once and stitch the full content back in. The predicate is the
+  // shared one (lib/overflow-marker.js) so callers that decide "this card
+  // needs a `get` before I can trust its notes" ask the exact same question
+  // this function answers.
+  if (cardHasOverflow(card)) {
     const children = await listAllChildren(pageId);
     card.notes = await readFieldWithOverflow(pageId, card.notes, 'notes', { children });
     card.outcome = await readFieldWithOverflow(pageId, card.outcome, 'outcome', { children });

@@ -447,7 +447,15 @@ async function main() {
           skip: skipped ? (note.replace(/^skipped:?\s*/, '') || 'being worked on') : null,
         };
       });
-      recheck = { counts: summarizeRecheck(results), lines: results.map(describeResult) };
+      // noCriteria never appears as a per-card 'recheck' row (those cards are
+      // counted, not named — see autonomous-recheck-core.js's drop branch),
+      // so it can only come off the run's own summary entry. Newest summary
+      // in the same 24h window wins; absent/older-format entries yield 0,
+      // which renders exactly as before.
+      const summaries = recheckEntries.filter(e => e.event === 'recheck-summary' && new Date(e.ts).getTime() >= since);
+      const newest = summaries.length ? summaries[summaries.length - 1] : null;
+      const noCriteria = (newest && newest.counts && Number(newest.counts.noCriteria)) || 0;
+      recheck = { counts: summarizeRecheck(results, { noCriteria }), lines: results.map(describeResult) };
     }
   } catch (err) {
     console.error(`[email] WARN could not read recheck results: ${String(err.message).slice(0, 120)}`);

@@ -2372,6 +2372,12 @@ on:
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/park-marker.js'
       - 'scripts/lib/park-marker.test.mjs'
+      # Page-body overflow marker contract shared by notion-brain.js (which
+      # writes the truncated preview) and the acceptance recheck's
+      # needsOverflowHydration (2026-08-14). Colocated test runs in the
+      # lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/overflow-marker.js'
+      - 'scripts/lib/overflow-marker.test.mjs'
       - 'scripts/audit-t1-silent-gaps.js'
       # ST-1 (2026-07-22): manual-entry merge-path force-override fix — a merge
       # onto an existing wrongProduction:true file now clears it instead of

@@ -194,6 +194,11 @@ function renderRecheckBlock(recheck) {
   if (c.fail) bits.push(`${c.fail} no longer pass their own check`);
   if (c.unverifiable) bits.push(`${c.unverifiable} can't be checked automatically`);
   if (c.skipped) bits.push(`${c.skipped} skipped (being worked on)`);
+  // Cards that were in the window but had nothing runnable to check at all.
+  // These used to vanish without a trace (autonomous-recheck-core.js's bare
+  // `continue`); they are counted, never listed, so the section stays about
+  // the work that WAS checked.
+  if (c.noCriteria) bits.push(`${c.noCriteria} had no check to run`);
   const rows = recheck.lines.slice(0, 5).map(l =>
     `<div style="font-size:12px;color:#555;margin:0 0 3px;">${esc(l)}</div>`).join('');
   const more = recheck.lines.length > 5

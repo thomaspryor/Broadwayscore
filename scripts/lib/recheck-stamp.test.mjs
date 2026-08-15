@@ -73,3 +73,46 @@ test('hoistRecheckAfterStamp never hoists past a head Parked marker', () => {
   const parked = '## Parked 2026-08-03\nOwner closed its workspace. Resume with `--id 1 --force`.\n\n---\n\nRECHECK-AFTER: 2026-08-01 (old, buried)';
   assert.equal(hoistRecheckAfterStamp(parked), parked);
 });
+
+// ── Colon-less stamps (2026-08-14) ─────────────────────────────────────────
+// Live cards are stamped `RECHECK-AFTER 2026-08-24` — sessions type the stamp
+// by hand at wrap-up and the colon is easy to drop. Those failed the match
+// outright, so a card that plainly carried a stamp was treated as carrying
+// none and could never trigger its own recheck.
+
+test('a colon-less stamp is a stamp', () => {
+  assert.equal(parseRecheckAfter('RECHECK-AFTER 2026-08-24'), Date.parse('2026-08-24T00:00:00Z'));
+  assert.equal(parseRecheckAfter('recheck-after   2026-08-24'), Date.parse('2026-08-24T00:00:00Z'));
+  assert.equal(parseRecheckAfter('notes\nRECHECK-AFTER 2026-08-24\nmore'), Date.parse('2026-08-24T00:00:00Z'));
+  assert.equal(parseRecheckAfterFromCard({ outcome: 'RECHECK-AFTER 2026-08-24' }), Date.parse('2026-08-24T00:00:00Z'));
+});
+
+// The widening is narrow ON PURPOSE: the date must follow the keyword
+// immediately (colon and/or blanks only). Anything else between them means
+// the text is ABOUT stamps, not a stamp — and cards about this very mechanism
+// exist on the board.
+test('prose that merely mentions the keyword near a date is not a stamp', () => {
+  assert.equal(parseRecheckAfter('RECHECK-AFTER stamps started landing 2026-08-24'), null);
+  assert.equal(parseRecheckAfter('cards with RECHECK-AFTER, filed 2026-08-24'), null);
+  assert.equal(parseRecheckAfter('RECHECK-AFTER: YYYY-MM-DD'), null);
+});
+
+// `\s` would cross newlines: a card ending on a bare "RECHECK-AFTER" heading
+// would then swallow an unrelated date from the following line.
+test('a colon-less keyword does not reach across a newline for its date', () => {
+  assert.equal(parseRecheckAfter('## RECHECK-AFTER\n2026-08-24 was when this shipped'), null);
+});
+
+test('every colon form that matched before still matches (strict superset)', () => {
+  assert.equal(parseRecheckAfter('RECHECK-AFTER:2026-08-24'), Date.parse('2026-08-24T00:00:00Z'));
+  assert.equal(parseRecheckAfter('RECHECK-AFTER:\n2026-08-24'), Date.parse('2026-08-24T00:00:00Z'));
+});
+
+test('hoistRecheckAfterStamp normalises a colon-less head stamp instead of leaving it', () => {
+  const colonless = 'RECHECK-AFTER 2026-08-24\n\nsome outcome text';
+  const hoisted = hoistRecheckAfterStamp(colonless);
+  assert.ok(hoisted.startsWith('RECHECK-AFTER: 2026-08-24\n\n'), 'canonical form is prepended');
+  assert.ok(hoisted.includes(colonless), 'original text preserved');
+  // Idempotent: a second pass sees a canonical head and changes nothing.
+  assert.equal(hoistRecheckAfterStamp(hoisted), hoisted);
+});
