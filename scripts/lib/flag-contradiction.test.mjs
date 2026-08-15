@@ -13,6 +13,7 @@ const {
   shouldAlertContradiction,
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
+  demoteStaleWrongShowPromotion,
 } = require('./flag-contradiction.js');
 const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
 
@@ -393,4 +394,74 @@ test('isIntentionalClear recognizes a retracted wrongArticleManualClear as inten
   retractStaleClearBreadcrumb(f, contradiction);
   assert.equal(f.wrongArticleManualClear, undefined);
   assert.equal(isIntentionalClear('wrongArticleManualClear', f), true);
+});
+
+// wrongShow + contentVerificationPromoted (#1022, BRO-168) — the pair whose
+// resolution is demote-flag, not retract-breadcrumb. Fixture mirrors the real
+// girl-interrupted-off-broadway-2026 talkinbroadway--unknown.json pre-fix state
+// (task #1021).
+const GIRL_INTERRUPTED_FIXTURE = {
+  wrongShow: true,
+  contentVerificationPromoted: 'rebuild: promoted from contentVerification (llm:claude-haiku, high)',
+  contentVerification: {
+    isValid: true,
+    confidence: 'high',
+    wrongArticle: false,
+    wrongProduction: false,
+    isFilmTv: false,
+    verifiedBy: 'llm:openai',
+    verifiedAt: '2026-06-05T23:55:34.160Z',
+    reasoning: 'The content is a review of the Off-Broadway production...',
+  },
+};
+
+test('wrongShow + contentVerificationPromoted fires (#1022 pair) and is tagged resolution=demote-flag', () => {
+  const hits = detectAllSelfContradictoryClears(GIRL_INTERRUPTED_FIXTURE);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongShow');
+  assert.equal(hits[0].breadcrumb, 'contentVerificationPromoted');
+  assert.equal(hits[0].task, '#1022');
+  assert.equal(hits[0].resolution, 'demote-flag');
+});
+
+test('other SELF_CLEAR_PAIRS entries are still tagged resolution=retract-breadcrumb', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [hit] = detectAllSelfContradictoryClears(f);
+  assert.equal(hit.resolution, 'retract-breadcrumb');
+});
+
+test('demoteStaleWrongShowPromotion clears wrongShow (not the breadcrumb), preserves the fresh CV reasoning, and deletes contentVerificationPromoted', () => {
+  const f = JSON.parse(JSON.stringify(GIRL_INTERRUPTED_FIXTURE));
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const result = demoteStaleWrongShowPromotion(f, contradiction, new Date('2026-08-14T00:00:00.000Z'));
+
+  assert.equal(result, true);
+  assert.equal(f.wrongShow, undefined, 'the stale flag must be cleared — this is the actual BRO-168 fix');
+  assert.equal(f.contentVerificationPromoted, undefined, 'the stale provenance stamp must be removed');
+  assert.equal(f.wrongShowOverride, true, 'clearWrongProductionFlags stamps the standard clear marker');
+  assert.equal(f.contentVerification.reasoning, GIRL_INTERRUPTED_FIXTURE.contentVerification.reasoning, 'the fresh CV verdict\'s own reasoning must survive, not the generic "Superseded by" wrapper');
+  assert.ok(f.wrongShowAutoCleared.includes('#1022'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('demoteStaleWrongShowPromotion declines (no-op) when the strict predicate disagrees with the looser extra() match — medium confidence', () => {
+  // Regression guard for the second-opinion review finding: the #1022 extra()
+  // detector accepts medium confidence for REPORTING, but the mutation must
+  // re-gate through isStaleCvPromotedWrongShow's stricter high-confidence bar.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  assert.ok(contradiction, 'extra() still reports it (broad recall)');
+  const result = demoteStaleWrongShowPromotion(f, contradiction);
+  assert.equal(result, false);
+  assert.equal(f.wrongShow, true, 'must NOT be cleared on weaker evidence than the promote path required');
+  assert.equal(f.contentVerificationPromoted, GIRL_INTERRUPTED_FIXTURE.contentVerificationPromoted);
+});
+
+test('demoteStaleWrongShowPromotion is a no-op on null/mismatched contradiction', () => {
+  assert.equal(demoteStaleWrongShowPromotion(null, {}), false);
+  assert.equal(demoteStaleWrongShowPromotion({}, null), false);
+  assert.equal(demoteStaleWrongShowPromotion({ wrongShow: true }, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared' }), false);
 });
