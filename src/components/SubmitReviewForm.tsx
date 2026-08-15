@@ -1,15 +1,33 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useEffect, useRef, useState, FormEvent } from 'react';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+
+const REVIEW_URL_PATTERN = /^https?:\/\/.+\..+/i;
+const REVIEW_URL_ERROR = 'Please enter a valid review URL (starting with http:// or https://).';
 
 export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [urlError, setUrlError] = useState('');
+  const [shouldFocusUrl, setShouldFocusUrl] = useState(false);
+  const urlRef = useRef<HTMLInputElement>(null);
+  const submittingRef = useRef(false);
+
+  // Runs after urlError's aria-invalid/aria-describedby commit to the DOM, so a
+  // screen reader focusing the field gets the error association immediately.
+  useEffect(() => {
+    if (!shouldFocusUrl) return;
+    urlRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    urlRef.current?.focus();
+    setShouldFocusUrl(false);
+  }, [shouldFocusUrl]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (submittingRef.current) return;
 
     if (!endpoint) {
       setStatus('error');
@@ -17,11 +35,22 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
       return;
     }
 
-    setStatus('submitting');
-    setErrorMessage('');
-
     const form = e.currentTarget;
     const data = new FormData(form);
+    const reviewUrl = String(data.get('review_url') || '').trim();
+
+    if (!REVIEW_URL_PATTERN.test(reviewUrl)) {
+      setUrlError(REVIEW_URL_ERROR);
+      setShouldFocusUrl(true);
+      setStatus('idle');
+      setErrorMessage('');
+      return;
+    }
+
+    setUrlError('');
+    setStatus('submitting');
+    setErrorMessage('');
+    submittingRef.current = true;
 
     try {
       const res = await fetch(endpoint, {
@@ -41,6 +70,8 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
     } catch {
       setStatus('error');
       setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      submittingRef.current = false;
     }
   }
 
@@ -68,7 +99,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
   const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {/* Review URL */}
       <div>
         <label htmlFor="review_url" className="block text-sm font-semibold text-gray-200 mb-2">
@@ -78,10 +109,18 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           type="url"
           id="review_url"
           name="review_url"
-          className={inputClasses}
-          placeholder="https://www.nytimes.com/2024/04/25/theater/..."
+          ref={urlRef}
           required
+          aria-required="true"
+          className={`${inputClasses} ${urlError ? 'border-red-500 ring-2 ring-red-500/50' : ''}`}
+          placeholder="https://www.nytimes.com/2024/04/25/theater/..."
+          aria-invalid={urlError ? true : undefined}
+          aria-describedby="review-url-error"
+          onChange={() => setUrlError('')}
         />
+        <p id="review-url-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
+          {urlError}
+        </p>
         <p className="mt-1 text-xs text-gray-500/70">
           The full URL of the review article
         </p>
