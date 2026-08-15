@@ -128,6 +128,53 @@ jobs:
           git commit -m 'x'
 `;
 
+const DIRECT_ADD_DIR_FIXTURE = `name: Good Example (bare git add of a covering directory)
+on:
+  push:
+jobs:
+  ok:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run
+        run: node scripts/audit-foo.js
+      - name: Commit
+        run: |
+          git add data/audit/ data/collection-state/ || true
+          git commit -m 'x'
+`;
+
+const DIRECT_ADD_GLOB_FIXTURE = `name: Bad Example (glob that does not cover the .jsonl ledger)
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run
+        run: node scripts/audit-foo.js
+      - name: Commit
+        run: |
+          git add data/audit/*.json 2>/dev/null || true
+          git commit -m 'x'
+`;
+
+const COMPOSITE_ACTION_FIXTURE = `name: Good Example (composite action wraps the git add)
+on:
+  push:
+jobs:
+  ok:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run
+        run: node scripts/audit-foo.js
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-foo
+`;
+
 const NO_LEDGER_CALLER_FIXTURE = `name: Irrelevant workflow
 on:
   push:
@@ -177,6 +224,32 @@ test('still flags a job whose stage-data-changes.sh call only covers an unrelate
   const violations = findMissingLedgerCommits(STAGE_HELPER_NON_COVERING_FIXTURE, LEDGER_SCRIPTS);
   assert.equal(violations.length, 1);
   assert.equal(violations[0].job, 'broken');
+});
+
+// Real gap found in BRO-163's pre-implementation review: several workflows
+// (collect-review-texts.yml, collect-free-reviews.yml, collect-soft-paywall.yml,
+// collect-hard-paywall.yml, overnight-collect.yml) stage the ledger via a bare
+// `git add data/audit/` directory add, not the literal filename or the
+// stage-data-changes.sh helper — a LEDGER_FILE substring search missed all of
+// them.
+test('does not flag a job that stages the ledger file via a bare directory git add', () => {
+  assert.deepEqual(findMissingLedgerCommits(DIRECT_ADD_DIR_FIXTURE, LEDGER_SCRIPTS), []);
+});
+
+// opening-night-express.yml stages via `git add data/audit/*.json`, which does
+// NOT cover the ledger's `.jsonl` extension — must stay flagged, not be
+// swallowed by the new directory-add recognition.
+test('still flags a job whose git add is a glob that does not cover the .jsonl ledger', () => {
+  const violations = findMissingLedgerCommits(DIRECT_ADD_GLOB_FIXTURE, LEDGER_SCRIPTS);
+  assert.equal(violations.length, 1);
+  assert.equal(violations[0].job, 'broken');
+});
+
+// BRO-163: a job that `uses:` the reusable commit-scraper-spend-ledger
+// composite action counts as staging the ledger, even though the actual
+// `git add` line lives inside the action file, not the calling workflow.
+test('does not flag a job that uses the commit-scraper-spend-ledger composite action', () => {
+  assert.deepEqual(findMissingLedgerCommits(COMPOSITE_ACTION_FIXTURE, LEDGER_SCRIPTS), []);
 });
 
 // --- AST-level tests (findLedgerScripts) — real fixture files on disk, since

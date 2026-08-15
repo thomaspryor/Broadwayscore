@@ -46,6 +46,12 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/confirm-sd-empty-authoritative.js
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.mode == 'confirm-empty-authoritative'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrapingdog-account-usage
       - name: Fetch account usage
         if: ${{ inputs.mode != 'billing-probe' && inputs.mode != 'confirm-empty-authoritative' }}
         env:

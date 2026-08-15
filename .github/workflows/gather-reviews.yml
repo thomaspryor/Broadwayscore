@@ -190,6 +190,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Outlet-first SERP discovery for ${{ inputs.shows }}"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews-outlet-serp
+
   # Step 2: Gather reviews in parallel batches
   gather-reviews:
     needs: [prepare, outlet-serp]
@@ -348,6 +355,14 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh 8 main
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews
+          push-retry-args: "8 main"
+
       - name: Notify on gather failure
         if: failure()
         uses: ./.github/actions/notify-failure
@@ -451,6 +466,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Add aggregator data (PV + NYC Theatre + BWW + LBO Roundups) for ${{ inputs.shows }}"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews-scrape-aggregators
 
   # Step 4: Rebuild reviews.json after all batches and aggregators complete
   rebuild:

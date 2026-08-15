@@ -189,6 +189,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: add requested show '${{ inputs.title }}' via feedback-pipeline routing"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: add-requested-show
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

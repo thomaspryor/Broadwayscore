@@ -1517,6 +1517,13 @@ jobs:
           git commit -m "chore: Record indexing API quota usage [skip ci]"
           bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-show-status-trigger-data-agent
+
   # Safety net: catch open shows that slipped through without review collection
   catchup-zero-review-shows:
     needs: update-shows

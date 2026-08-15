@@ -89,6 +89,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from backfill-historical-metadata'
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-historical-metadata
       - name: Summary
         run: |
           echo "## Historical Metadata Backfill Results" >> $GITHUB_STEP_SUMMARY
