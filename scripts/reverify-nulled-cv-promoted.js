@@ -201,6 +201,14 @@ async function main() {
           // Restore BEFORE clearing/reclassifying — clearWrongProductionFlags and
           // classifyContentTier both read data.fullText.
           data.fullText = data.wrongFullText;
+          // wrongFullText is a PROTECTED_FIELDS entry whose clear is only
+          // honored with this breadcrumb (review-write-guard.js CLEAR_BREADCRUMBS:
+          // wrongFullText -> _wrongArticleCleared) — a plain delete is silently
+          // reverted by safeWriteReview's preserve loop, resurrecting the stale
+          // text alongside the restored fullText (same bug class fixed for
+          // wrongAttribution in fix-cross-outlet-attributions.js, task #1008/#1023;
+          // caught here by adversarial review before this script ever ran live).
+          data.wrongArticleManualClear = true;
           delete data.wrongFullText;
           clearQuarantineBookkeeping(data);
 
