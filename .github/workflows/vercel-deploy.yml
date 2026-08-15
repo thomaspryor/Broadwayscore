@@ -110,6 +110,12 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: "DIAGNOSTIC (card #1551): check raw checked-out data/shows.json before any script touches it"
+        continue-on-error: true
+        run: |
+          node -e "const s=require('./data/shows.json').shows.find(x=>x.slug==='the-car-man-west-end'); console.log('DIAGNOSTIC raw checkout cat field:', s ? s.category : 'SHOW NOT FOUND')"
+
       - name: Validate core data JSON
         run: |
           # Defense-in-depth: catch conflict markers or corrupt JSON before build.
