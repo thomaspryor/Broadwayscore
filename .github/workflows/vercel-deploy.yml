@@ -110,12 +110,6 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-
-      - name: "DIAGNOSTIC (card #1551): check raw checked-out data/shows.json before any script touches it"
-        continue-on-error: true
-        run: |
-          node -e "const s=require('./data/shows.json').shows.find(x=>x.slug==='the-car-man-west-end'); console.log('DIAGNOSTIC raw checkout cat field:', s ? s.category : 'SHOW NOT FOUND')"
-
       - name: Validate core data JSON
         run: |
           # Defense-in-depth: catch conflict markers or corrupt JSON before build.
@@ -263,23 +257,11 @@ jobs:
         # .vercel/output is cleared to prevent EEXIST symlink errors (commit 6c20768ead).
         run: rm -rf .vercel/output
 
-      - name: "DIAGNOSTIC (card #1551): run prebuild explicitly and check public/ value before vercel build"
-        continue-on-error: true
-        run: |
-          bash scripts/prebuild.sh
-          cat public/data/shows/the-car-man-west-end-2026.json | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{console.log('DIAGNOSTIC pre-build public/ cat field:', JSON.parse(d).cat)}catch(e){console.log('DIAGNOSTIC parse error', e.message)}})"
-
       - name: Build
         id: build
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
-          # DIAGNOSTIC (card #1551): disables Vercel's own remote build cache
-          # (hosted on Vercel's infra, separate from our GH Actions .next/cache
-          # — that was already proven cold/irrelevant). Testing whether THIS is
-          # why public/data/shows/*.json files rewritten by prebuild.sh as a
-          # build-time side effect aren't picked up by `vercel build`'s output.
-          VERCEL_FORCE_NO_BUILD_CACHE: '1'
         run: |
           BUILD_START=$(date +%s)
           npx vercel build --prod --token=$VERCEL_TOKEN
@@ -316,11 +298,6 @@ jobs:
           if [ "$BUILD_SECS" -gt 600 ]; then
             echo "::error::Build took ${BUILD_SECS}s (>10 min) — likely regression in build pipeline"
           fi
-
-      - name: "DIAGNOSTIC (card #1551, remove after root-cause confirmed): print built category value before upload"
-        continue-on-error: true
-        run: |
-          cat .vercel/output/static/data/shows/the-car-man-west-end-2026.json | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{console.log('DIAGNOSTIC cat field:', JSON.parse(d).cat)}catch(e){console.log('DIAGNOSTIC parse error')}})"
 
       - name: Determine recently-opened show for dynamic smoke test
         id: recent_show
