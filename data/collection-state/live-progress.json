@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-15T01:29:16.183Z",
+  "updatedAt": "2026-08-15T01:30:22.945Z",
   "processed": 81,
-  "failed": 1609,
+  "failed": 1619,
   "successRate": "4.8%",
   "tierBreakdown": {
     "playwright": 42,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 21
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-14T11:19:07.811Z",
@@ -59,6 +59,39 @@
       "t": "2026-08-15T01:25:32.555Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T01:29:51.032Z",
+      "event": "bb-session",
+      "session": "e00b3d7b",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-15T01:29:51.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T01:29:51.760Z",
+      "event": "bb-session",
+      "session": "5fb28a5e",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-15T01:29:52.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T01:30:08.837Z",
+      "event": "bb-session",
+      "session": "32c5f909",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-15T01:30:09.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
