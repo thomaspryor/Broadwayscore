@@ -113,15 +113,18 @@ Fetched: ${now.split('T')[0]}
 `;
 }
 
-// Save HTML to archive
-function saveHtml(aggregator: string, showId: string, html: string, showTitle: string, url: string): void {
+// Save HTML to archive. Returns true if the file was written, false if the
+// title-mismatch guard rejected it — callers MUST check this before treating
+// the fetch as a success or persisting the URL (e.g. Show Score's stored-URL
+// cache), otherwise a wrong-show page gets recorded as a confirmed match.
+function saveHtml(aggregator: string, showId: string, html: string, showTitle: string, url: string): boolean {
   // Validate page title matches the show before archiving — Stuart King 2026-04-25
   // Show Score uses a redirect-to-homepage pattern when a show doesn't exist,
   // so this is especially important there.
   const validation = validateRoundupPageTitle(html, showTitle);
   if (!validation.ok) {
     console.log(`  [SKIP] page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" doesn't match "${showTitle}" — not archived`);
-    return;
+    return false;
   }
 
   const archiveSubdir = aggregator === 'show-score' ? 'show-score' :
@@ -136,6 +139,7 @@ function saveHtml(aggregator: string, showId: string, html: string, showTitle: s
   const metadata = generateMetadata(aggregator, showTitle, url);
   fs.writeFileSync(filePath, metadata + html);
   console.log(`  Saved: ${filePath}`);
+  return true;
 }
 
 // Check if archive file exists
@@ -281,8 +285,13 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
       html = await page.content();
       const finalTiles = (html.match(/id=['"]critic_review_\d+['"]/g) || []).length;
 
-      // Save and return; report extracted-vs-expected for downstream visibility
-      saveHtml('show-score', showId, html, show.title, pageUrl);
+      // Save; a title mismatch means this URL is the WRONG show — don't record
+      // it as this show's stored URL, and don't count it as a success. Try the
+      // next pattern instead.
+      const saved = saveHtml('show-score', showId, html, show.title, pageUrl);
+      if (!saved) {
+        continue;
+      }
 
       if (urlMappings[showId] !== pageUrl) {
         urlMappings[showId] = pageUrl;
@@ -352,8 +361,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
         await page.waitForTimeout(500);
         const html = await page.content();
         if (!html.includes('Page not found') && !html.includes('404') && html.includes('didtheylikeit')) {
-          if (validateProduction(html)) {
-            saveHtml('dtli', showId, html, show.title, mappedUrl);
+          if (validateProduction(html) && saveHtml('dtli', showId, html, show.title, mappedUrl)) {
             return { showId, aggregator: 'dtli', success: true };
           }
         }
@@ -414,8 +422,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
         }
 
         // Validate this is the right production
-        if (validateProduction(html)) {
-          saveHtml('dtli', showId, html, show.title, url);
+        if (validateProduction(html) && saveHtml('dtli', showId, html, show.title, url)) {
           return { showId, aggregator: 'dtli', success: true };
         } else {
           console.log(`    Skipping ${url} - wrong production`);
@@ -479,7 +486,9 @@ async function fetchBwwRoundup(page: Page, showId: string, shows: Record<string,
       return { showId, aggregator: 'bww-rr', success: false, error: 'Page does not appear to be a BWW article' };
     }
 
-    saveHtml('bww-rr', showId, html, show.title, finalUrl);
+    if (!saveHtml('bww-rr', showId, html, show.title, finalUrl)) {
+      return { showId, aggregator: 'bww-rr', success: false, error: 'Search result page-title did not match this show' };
+    }
     return { showId, aggregator: 'bww-rr', success: true };
   } catch (error) {
     return { showId, aggregator: 'bww-rr', success: false, error: String(error) };
