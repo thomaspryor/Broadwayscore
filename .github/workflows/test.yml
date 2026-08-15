@@ -1486,6 +1486,19 @@ on:
       - 'scripts/lib/cross-show-url.js'
       - 'scripts/lib/cross-show-url.test.mjs'
       - 'scripts/audit-cross-show-url.js'
+      # Same-title sibling misroute guard (regional pre-Broadway run vs its
+      # Broadway transfer, or any two shows.json entries sharing a title) —
+      # classifyMarketRouting() prevents this at write time, but nothing ever
+      # re-checked already-written review-texts files against it. Found
+      # 2026-08-14: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025
+      # was showing 4 Broadway-run reviews that belonged only to the transfer.
+      # Colocated .test.mjs covered by the lib test step; audit script has no
+      # test but needs the entry for solo-edit CI (no scripts/lib/** broad glob).
+      - 'scripts/lib/market-routing.js'
+      - 'scripts/lib/market-routing.test.mjs'
+      - 'scripts/lib/production-match-gate.js'
+      - 'scripts/lib/production-match-gate.test.mjs'
+      - 'scripts/audit-sibling-title-misroute.js'
       # Daily digest spike/suspicious thresholds (prevCount>0 false-alarm filter).
       - 'scripts/send-daily-digest.js'
       - 'scripts/lib/reddit-api.js'
