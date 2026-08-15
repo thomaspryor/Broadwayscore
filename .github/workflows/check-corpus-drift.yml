@@ -113,12 +113,15 @@ jobs:
         env:
           REVIEW_TEXTS_DIR: data/review-texts
         run: |
-          # Byline-explosion detector: one review URL scraped into 5+ files under
+          # Byline-explosion detector: one review URL scraped into 3+ files under
           # different critic names. criticName-keyed dedup misses these; they
           # usually leave the real review unscored (invalid tier + circular dup),
           # which buried WhatsOnStage reviews for the concurrent 2026 Midsummers.
-          # Non-blocking warning until the existing backlog is cleaned.
-          OUT=$(node scripts/audit-review-url-clusters.js || true)
+          # Non-blocking warning. Threshold lowered 5->3 (task #1627, 2026-08-15)
+          # after sweeping the threshold=3 backlog to 0 — this is standing
+          # detection so new clusters at that scale get caught instead of
+          # silently re-accumulating until the next manual sweep.
+          OUT=$(node scripts/audit-review-url-clusters.js --threshold=3 || true)
           echo "$OUT"
           if echo "$OUT" | grep -q "byline-explosion cluster"; then
             N=$(echo "$OUT" | head -1 | grep -oE '[0-9]+' | head -1)
