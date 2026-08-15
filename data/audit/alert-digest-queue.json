@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-as-you-like-it-globe-west-end-2026",
+    "title": "Stale 'upcoming' tag on As You Like It - Globe",
+    "description": "as-you-like-it-globe-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=as-you-like-it-globe-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T01:53:16.459Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-house-of-the-negro-insane-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on The House of the Negro Insane",
+    "description": "the-house-of-the-negro-insane-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-house-of-the-negro-insane-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T01:53:16.756Z"
+  }
+]
