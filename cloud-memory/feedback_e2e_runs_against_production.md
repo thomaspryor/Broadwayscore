@@ -1,6 +1,6 @@
 ---
 name: feedback_e2e_runs_against_production
-description: "CI E2E tests target the live production URL, so a UI fix stays red until its Vercel deploy lands"
+description: "CI reads DEPLOYED/DERIVED state, not your commit: a UI fix stays red until its Vercel deploy lands, and a review-texts data fix stays red until a rebuild round-trips into core-data reviews.json — both produce lag false-negatives that corrupt green-streak counts"
 metadata: 
   node_type: memory
   type: feedback
@@ -18,3 +18,9 @@ The Test Suite "E2E Tests" job runs Playwright with `TEST_BASE_URL=https://broad
 4. Don't manual-dispatch "Deploy to Vercel" to rush it — the `gh-poll-block.sh` hook blocks it (cascade risk); the cron picks up main HEAD. `# FORCE-DEPLOY` bypass is for genuinely broken prod only, not a too-tall-row test failure.
 
 Incident 2026-06-03: Tony PressPicks row-height regression (76px>70px from Joshua Henry's 9 critic picks wrapping). Fixed in [[design-system]] component; chased the deploy-lag red Test Suite before realizing E2E hits prod. See [[feedback_local_preview_before_push]].
+
+**Same trap, different subsystem — core-data lag (2026-08-15).** `Data Validation` and `Unit Tests` read `data/reviews.json`, which is DERIVED and lives in the private core-data repo (symlinked to `~/broadway-scorecard-data`), not in the main repo. Fixing the SOURCE (`data/review-texts/**`) does not turn CI green — a rebuild has to round-trip first (~25 min: trigger `Rebuild Reviews Data`, wait, then core-data gets a `data: Update from rebuild-*` commit). Any test.yml run that STARTS before that commit lands still checks out the stale reviews.json and goes red on the already-fixed defect.
+
+Incident: six consecutive push runs (12:58–13:11Z) went red on a duplicate-URL error I had already fixed in review-texts at 13:10; the rebuild landed at 13:21 and the next run was green. Reading those six as "the fix didn't work" or as six real reds is the trap — and it also silently corrupts any "consecutive greens" streak count.
+
+**How to apply:** after fixing anything under `data/review-texts/**` that a CI gate reads out of `reviews.json`, (1) trigger `Rebuild Reviews Data` rather than waiting for the 4 AM UTC cron, (2) confirm a new core-data commit exists (`git -C ~/broadway-scorecard-data log -1 -- reviews.json`), and only THEN (3) count the streak from a run whose `createdAt` is after that commit. Note `validate-data.js` failing also reddens `Unit Tests`, because `tests/unit/validate-data-push-refusal-sentinel.test.mjs` shells out to it and asserts exit 0 — one data defect, two red jobs, and the unit-test name points nowhere near the cause.
