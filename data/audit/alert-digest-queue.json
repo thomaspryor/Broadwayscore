@@ -22,17 +22,6 @@
     "queuedAt": "2026-08-15T01:53:16.756Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 20.8% of shows changed coverage state",
-    "description": "review-gap blast radius 20.8% (5/24 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: an-american-daughter-off-broadway-2026, anansi-the-spider-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T02:22:49.544Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 8 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -64,5 +53,38 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-15T09:14:38.881Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 24.6% of shows changed coverage state",
+    "description": "review-gap blast radius 24.6% (16/65 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: beetlejuice-west-end-2026, dinosaur-world-live-off-west-end-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, how-the-other-half-loves-west-end-2026, hungry-women-off-broadway-2026, jesus-christ-superstar-west-end-2026, loves-labours-lost-globe-west-end-2026, music-city-off-broadway-2026, pride-west-end-2026, tao-of-glass-west-end-2026, the-car-man-west-end-2026, the-enormous-crocodile-west-end-2026, the-jonathan-larson-project-off-west-end-2026, the-rocky-horror-show-2026, the-vessel-off-broadway-2026, trainspotting-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T12:12:08.763Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/155 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nDeath Note: The Musical: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T12:12:24.015Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "215 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T12:12:24.110Z"
   }
 ]
