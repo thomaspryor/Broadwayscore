@@ -1,7 +1,107 @@
 {
-  "generatedAt": "2026-08-14T22:19:22.922Z",
+  "generatedAt": "2026-08-15T00:30:03.767Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "anansi-the-spider-west-end-2026",
+      "title": "Anansi the Spider",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-08-15",
+      "status": "upcoming",
+      "slug": "anansi-the-spider-west-end",
+      "thumbnail": "/images/shows/anansi-the-spider-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "as-you-like-it-globe-west-end-2026",
       "title": "As You Like It - Globe",
@@ -1507,930 +1607,9 @@
           "bc": "waiting"
         }
       ]
-    },
-    {
-      "id": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-08-11",
-      "status": "open",
-      "slug": "death-note-the-musical-west-end",
-      "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": 73.34,
-      "liveScore": 73,
-      "scoreDrift": -0.3400000000000034,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 28,
-      "t1": 6,
-      "t2": 7,
-      "t3": 15,
-      "positive": 22,
-      "mixed": 3,
-      "negative": 3,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 10,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-08-11T00:01:54.885Z",
-          "rc": 1,
-          "s": 44,
-          "t1": 0,
-          "t2": 0,
-          "t3": 1,
-          "p": 0,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-11T03:04:42.354Z",
-          "rc": 3,
-          "s": 70,
-          "t1": 0,
-          "t2": 0,
-          "t3": 3,
-          "p": 2,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T10:28:01.638Z",
-          "rc": 4,
-          "s": 75.77,
-          "t1": 0,
-          "t2": 1,
-          "t3": 3,
-          "p": 3,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T11:53:02.540Z",
-          "rc": 5,
-          "s": 76.16,
-          "t1": 0,
-          "t2": 1,
-          "t3": 4,
-          "p": 4,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T12:38:43.760Z",
-          "rc": 5,
-          "s": 78.26,
-          "t1": 0,
-          "t2": 1,
-          "t3": 4,
-          "p": 4,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T14:15:52.313Z",
-          "rc": 5,
-          "s": 78.4,
-          "t1": 0,
-          "t2": 1,
-          "t3": 4,
-          "p": 4,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T15:58:04.054Z",
-          "rc": 8,
-          "s": 78.62,
-          "t1": 2,
-          "t2": 2,
-          "t3": 4,
-          "p": 7,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T16:20:59.571Z",
-          "rc": 13,
-          "s": 81.81,
-          "t1": 1,
-          "t2": 3,
-          "t3": 9,
-          "p": 11,
-          "m": 1,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T16:37:50.857Z",
-          "rc": 12,
-          "s": 81.77,
-          "t1": 1,
-          "t2": 3,
-          "t3": 8,
-          "p": 10,
-          "m": 1,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T17:56:00.603Z",
-          "rc": 13,
-          "s": 81.63,
-          "t1": 2,
-          "t2": 3,
-          "t3": 8,
-          "p": 11,
-          "m": 1,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T18:41:16.331Z",
-          "rc": 16,
-          "s": 81.11,
-          "t1": 2,
-          "t2": 4,
-          "t3": 10,
-          "p": 13,
-          "m": 2,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T19:12:30.421Z",
-          "rc": 19,
-          "s": 76.56,
-          "t1": 4,
-          "t2": 4,
-          "t3": 11,
-          "p": 15,
-          "m": 2,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T19:59:39.756Z",
-          "rc": 19,
-          "s": 75.97,
-          "t1": 4,
-          "t2": 4,
-          "t3": 11,
-          "p": 15,
-          "m": 2,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T20:05:53.964Z",
-          "rc": 20,
-          "s": 76.08,
-          "t1": 4,
-          "t2": 4,
-          "t3": 12,
-          "p": 16,
-          "m": 2,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T20:42:39.585Z",
-          "rc": 21,
-          "s": 76.19,
-          "t1": 4,
-          "t2": 4,
-          "t3": 13,
-          "p": 17,
-          "m": 2,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T20:53:51.175Z",
-          "rc": 21,
-          "s": 76.01,
-          "t1": 4,
-          "t2": 4,
-          "t3": 13,
-          "p": 17,
-          "m": 2,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-12T21:20:42.818Z",
-          "rc": 22,
-          "s": 74.99,
-          "t1": 4,
-          "t2": 5,
-          "t3": 13,
-          "p": 17,
-          "m": 3,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T00:51:32.629Z",
-          "rc": 23,
-          "s": 75.49,
-          "t1": 4,
-          "t2": 5,
-          "t3": 14,
-          "p": 18,
-          "m": 3,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T01:16:57.886Z",
-          "rc": 23,
-          "s": 75.68,
-          "t1": 4,
-          "t2": 5,
-          "t3": 14,
-          "p": 18,
-          "m": 3,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T13:44:08.869Z",
-          "rc": 25,
-          "s": 73.22,
-          "t1": 5,
-          "t2": 6,
-          "t3": 14,
-          "p": 19,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T21:51:33.779Z",
-          "rc": 26,
-          "s": 72.73,
-          "t1": 5,
-          "t2": 6,
-          "t3": 15,
-          "p": 20,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T06:51:02.373Z",
-          "rc": 26,
-          "s": 72.52,
-          "t1": 5,
-          "t2": 6,
-          "t3": 15,
-          "p": 20,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T11:04:01.779Z",
-          "rc": 26,
-          "s": 72.98,
-          "t1": 4,
-          "t2": 7,
-          "t3": 15,
-          "p": 20,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T11:49:15.977Z",
-          "rc": 26,
-          "s": 72.49,
-          "t1": 4,
-          "t2": 7,
-          "t3": 15,
-          "p": 20,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T17:50:29.409Z",
-          "rc": 27,
-          "s": 73.24,
-          "t1": 5,
-          "t2": 7,
-          "t3": 15,
-          "p": 21,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T18:46:55.317Z",
-          "rc": 28,
-          "s": 73.65,
-          "t1": 6,
-          "t2": 7,
-          "t3": 15,
-          "p": 22,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T20:14:42.887Z",
-          "rc": 28,
-          "s": 73.34,
-          "t1": 6,
-          "t2": 7,
-          "t3": 15,
-          "p": 22,
-          "m": 3,
-          "n": 3,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "an-american-daughter-off-broadway-2026",
-      "title": "An American Daughter",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "play",
-      "openingDate": "2026-08-11",
-      "status": "open",
-      "slug": "an-american-daughter-off-broadway",
-      "thumbnail": "/images/shows/an-american-daughter-off-broadway-2026/thumbnail.webp",
-      "siteScore": 51.64,
-      "liveScore": 52,
-      "scoreDrift": 0.35999999999999943,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 16,
-      "t1": 0,
-      "t2": 7,
-      "t3": 9,
-      "positive": 1,
-      "mixed": 6,
-      "negative": 9,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:0/3"
-        ],
-        "highConfidence": 9,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        },
-        {
-          "name": "About Entertainment",
-          "isDualMarket": false
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The Baltimore Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "DC Theatre Scene",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Front Row Center",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Vox",
-          "isDualMarket": false
-        },
-        {
-          "name": "Broadway Blog",
-          "isDualMarket": false
-        },
-        {
-          "name": "Exeunt Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "British Theatre Guide",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatre Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Spectator  (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "LondonTheatre1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        },
-        {
-          "name": "Everything Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Tennessean",
-          "isDualMarket": false
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-08-13T09:28:37.243Z",
-          "rc": 5,
-          "s": 42.16,
-          "t1": 0,
-          "t2": 2,
-          "t3": 3,
-          "p": 0,
-          "m": 1,
-          "n": 4,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T12:32:35.980Z",
-          "rc": 8,
-          "s": 43.7,
-          "t1": 0,
-          "t2": 4,
-          "t3": 4,
-          "p": 0,
-          "m": 1,
-          "n": 7,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T12:56:20.023Z",
-          "rc": 9,
-          "s": 43.16,
-          "t1": 0,
-          "t2": 5,
-          "t3": 4,
-          "p": 0,
-          "m": 1,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T13:44:08.869Z",
-          "rc": 11,
-          "s": 46.76,
-          "t1": 0,
-          "t2": 6,
-          "t3": 5,
-          "p": 0,
-          "m": 3,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T17:12:19.829Z",
-          "rc": 12,
-          "s": 47.64,
-          "t1": 0,
-          "t2": 6,
-          "t3": 6,
-          "p": 0,
-          "m": 4,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T18:20:34.344Z",
-          "rc": 11,
-          "s": 47.99,
-          "t1": 0,
-          "t2": 5,
-          "t3": 6,
-          "p": 0,
-          "m": 4,
-          "n": 7,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T21:51:33.779Z",
-          "rc": 12,
-          "s": 48.04,
-          "t1": 0,
-          "t2": 5,
-          "t3": 7,
-          "p": 0,
-          "m": 4,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-13T23:48:40.975Z",
-          "rc": 14,
-          "s": 50.06,
-          "t1": 0,
-          "t2": 6,
-          "t3": 8,
-          "p": 0,
-          "m": 6,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T01:08:52.355Z",
-          "rc": 13,
-          "s": 48.91,
-          "t1": 0,
-          "t2": 5,
-          "t3": 8,
-          "p": 0,
-          "m": 5,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T10:05:33.114Z",
-          "rc": 14,
-          "s": 50.06,
-          "t1": 0,
-          "t2": 6,
-          "t3": 8,
-          "p": 0,
-          "m": 6,
-          "n": 8,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T14:26:06.359Z",
-          "rc": 15,
-          "s": 50.01,
-          "t1": 0,
-          "t2": 6,
-          "t3": 9,
-          "p": 0,
-          "m": 6,
-          "n": 9,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T15:56:09.096Z",
-          "rc": 16,
-          "s": 49.18,
-          "t1": 0,
-          "t2": 7,
-          "t3": 9,
-          "p": 0,
-          "m": 6,
-          "n": 10,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-14T19:44:19.379Z",
-          "rc": 16,
-          "s": 51.64,
-          "t1": 0,
-          "t2": 7,
-          "t3": 9,
-          "p": 1,
-          "m": 6,
-          "n": 9,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
-    {
-      "id": "anansi-the-spider-west-end-2026",
-      "title": "Anansi the Spider",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-08-15",
-      "status": "upcoming",
-      "slug": "anansi-the-spider-west-end",
-      "thumbnail": "/images/shows/anansi-the-spider-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "jeeves-takes-charge-west-end-2026",
       "title": "Jeeves Takes Charge",
@@ -2441,7 +1620,7 @@
       "status": "previews",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2466,7 +1645,7 @@
       "status": "previews",
       "slug": "abigails-party-west-end",
       "thumbnail": "/images/shows/abigails-party-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2491,7 +1670,7 @@
       "status": "previews",
       "slug": "spellbound-off-broadway",
       "thumbnail": "/images/shows/spellbound-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
