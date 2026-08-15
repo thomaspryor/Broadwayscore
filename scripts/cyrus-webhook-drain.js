@@ -20,6 +20,22 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `cyrus-webhook-drain.js — pull queued Linear webhook deliveries from the
+Vercel relay and replay each one byte-for-byte at the local Cyrus edge worker.
+Outbound only; nothing inbound is ever opened on this machine.
+
+Usage:
+  node scripts/cyrus-webhook-drain.js                 drain forever (default)
+  node scripts/cyrus-webhook-drain.js --once          drain a single batch and exit
+  node scripts/cyrus-webhook-drain.js --interval=2000 poll interval in ms (default 2000)
+  node scripts/cyrus-webhook-drain.js --help, -h      print this usage and exit
+
+Env:   CYRUS_RELAY_URL (default https://cyrus-relay.vercel.app), CYRUS_HOME (~/.cyrus)
+Secret: CYRUS_RELAY_SECRET from the env or ~/.cyrus/.env (shared with the relay)
+Log:    ~/.cyrus/webhook-drain.log
+`;
 
 const RELAY_URL = process.env.CYRUS_RELAY_URL || 'https://cyrus-relay.vercel.app';
 const CYRUS_HOME = process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus');
@@ -131,6 +147,17 @@ async function drainOnce(secret, port) {
 }
 
 async function main() {
+  // --help/-h BEFORE readRelaySecret()/log()/fetch(): this script reads a secret
+  // off disk, appends to ~/.cyrus/webhook-drain.log, then enters an unbounded
+  // network poll loop against the relay and the local Cyrus worker — real side
+  // effects on --help, the class the help-flag safety audit blocks on (it
+  // reddened Lint Workflows in run 31863276943). Without the gate, `--help` on a
+  // machine with no ~/.cyrus/.env exits 1 with a FATAL stack instead of usage.
+  if (hasHelpFlag(args)) {
+    console.log(USAGE);
+    return;
+  }
+
   const secret = readRelaySecret();
   const port = readCyrusPort();
   log(`START relay=${RELAY_URL} cyrus=http://127.0.0.1:${port} interval=${INTERVAL_MS}ms`);
