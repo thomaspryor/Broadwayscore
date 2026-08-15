@@ -132,6 +132,7 @@ async function main() {
       console.log(`  New: isValid=${result.isValid} wrongArticle=${result.wrongArticle} wrongProduction=${result.wrongProduction} isFilmTv=${result.isFilmTv} confidence=${result.confidence}`);
 
       const clean = result.isValid && !result.wrongArticle && !result.wrongProduction && !result.isFilmTv;
+      let didClear = false;
 
       if (!dryRun) {
         data.contentVerification = {
@@ -144,6 +145,20 @@ async function main() {
             verifiedBy: data.contentVerification.verifiedBy,
             verifiedAt: data.contentVerification.verifiedAt,
           } : null,
+        };
+        // clearWrongProductionFlags deletes wrongShowReason/wrongProductionReason
+        // outright — preserve them here first so a later audit of a clear that
+        // turns out wrong isn't left reconstructing intent from contentVerification
+        // .previousVerification.reasoning alone (gpt-5.4-mini adversarial review,
+        // task #1404).
+        const preClearFlagState = {
+          wrongShow: data.wrongShow || false,
+          wrongShowReason: data.wrongShowReason || null,
+          wrongProduction: data.wrongProduction || false,
+          wrongProductionReason: data.wrongProductionReason || null,
+          isNonReview: data.isNonReview || false,
+          isNonReviewReason: data.isNonReviewReason || null,
+          rejectionReason: data.rejectionReason || null,
         };
 
         // Full-mode clear grants wrongProductionOverride — a PERMANENT exemption
@@ -164,15 +179,39 @@ async function main() {
               wrongShowOnly: !wantsFullClear,
             });
             data.contentVerification.reasoning = result.reasoning || data.contentVerification.reasoning;
+            didClear = true;
           } else {
             console.log(`  (clean but confidence=${result.confidence} — leaving wrongProduction flagged; hash still corrected)`);
           }
         }
 
+        // isNonReview is a SEPARATE flag family from wrongShow/wrongProduction —
+        // rebuild-all-reviews.js routes "pure non-review" wrongArticle verdicts
+        // (wrongArticle:true, wrongProduction:false) here specifically, and
+        // clearWrongProductionFlags never touches it (codebase-aware review,
+        // task #1404: without this branch, a clean re-verify logged CLEARED and
+        // stamped a matching contentHash — which drops the file from future
+        // audit-stale-cv-hash.js runs — while isNonReview stayed true and the
+        // review stayed excluded forever, permanently invisible). Gated on high
+        // confidence to match isNonReviewDemotedByFreshCV's own bar (review-guards.js).
+        const articleConfidence = result.articleTypeConfidence || result.confidence;
+        if (clean && data.isNonReview && articleConfidence === 'high') {
+          data.isNonReview = false;
+          if (data.rejectionReason === 'not_a_review') delete data.rejectionReason;
+          delete data.isNonReviewReason;
+          data.nonReviewOverride = `reverify-stale-cv-promoted.js: ${result.reasoning || 'stored fullText re-verified clean (task #1404 stale-hash sweep)'}`;
+          data.nonReviewOverrideAt = new Date().toISOString();
+          didClear = true;
+        } else if (clean && data.isNonReview) {
+          console.log(`  (clean but articleTypeConfidence=${articleConfidence} — leaving isNonReview flagged; hash still corrected)`);
+        }
+
+        if (didClear) data.clearedFlagsBeforeRecovery = preClearFlagState;
+
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       }
 
-      if (clean) { console.log('  >>> CLEARED'); stats.cleared++; }
+      if (didClear) { console.log('  >>> CLEARED'); stats.cleared++; }
       else { console.log('  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
       console.log('');
 
