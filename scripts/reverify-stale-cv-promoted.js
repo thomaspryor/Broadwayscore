@@ -36,6 +36,7 @@ const fs = require('fs');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
@@ -208,7 +209,7 @@ async function main() {
 
         if (didClear) data.clearedFlagsBeforeRecovery = preClearFlagState;
 
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        safeWriteReview(filePath, data);
       }
 
       if (didClear) { console.log('  >>> CLEARED'); stats.cleared++; }
