@@ -1509,6 +1509,19 @@ on:
       - 'scripts/lib/production-match-gate.js'
       - 'scripts/lib/production-match-gate.test.mjs'
       - 'scripts/audit-sibling-title-misroute.js'
+      # flag-combined-reviews.js's baseSlug() check alone can't tell a
+      # same-title transfer-sibling pair (regional run -> its Broadway
+      # transfer) from 2 genuinely different shows that happen to share a
+      # review URL (issue #316 joint-review case) — it re-flagged an
+      # already --fix'd sibling-title-misroute reroute as isCombinedReview
+      # and re-duplicated it back into both dirs, breaking the gate above
+      # (2026-08-15, same two-strangers pair). areSameTitleSiblings() closes
+      # that gap. Colocated .test.mjs covered by the lib test step; the two
+      # callers below need the entry for solo-edit CI (no scripts/lib/** or
+      # bare scripts/*.js broad glob).
+      - 'scripts/lib/combined-review-utils.js'
+      - 'scripts/lib/combined-review-utils.test.mjs'
+      - 'scripts/flag-combined-reviews.js'
       # Daily digest spike/suspicious thresholds (prevCount>0 false-alarm filter).
       - 'scripts/send-daily-digest.js'
       - 'scripts/lib/reddit-api.js'

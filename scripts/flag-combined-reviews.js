@@ -10,8 +10,9 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug } = require('./lib/combined-review-utils');
+const { baseSlug, areSameTitleSiblings } = require('./lib/combined-review-utils');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { buildSiblingIndex } = require('./lib/market-routing');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -22,7 +23,13 @@ Usage:
   node scripts/flag-combined-reviews.js --help, -h    print this usage and exit
 `;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
+
+function loadShows() {
+  const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  return Array.isArray(raw) ? raw : raw.shows;
+}
 
 function normalizeUrl(url) {
   if (!url) return null;
@@ -66,7 +73,9 @@ function main() {
   // 2+ DIFFERENT base shows (e.g. lost-boys + schmigadoon, NOT
   // the-lost-boys + the-lost-boys-2026).
 
-  let flagged = 0, urlCount = 0;
+  const siblingIndex = buildSiblingIndex(loadShows());
+
+  let flagged = 0, urlCount = 0, siblingPairsSkipped = 0;
   for (const [url, entries] of urlMap) {
     const uniqueShows = new Set(entries.map(e => e.showId));
     if (uniqueShows.size < 2) continue;
@@ -74,6 +83,17 @@ function main() {
     // cases that aren't joint reviews.
     const uniqueBaseShows = new Set([...uniqueShows].map(baseSlug));
     if (uniqueBaseShows.size < 2) continue;
+    // baseSlug() doesn't strip every market suffix (e.g. "-at-art-regional"),
+    // so a same-title transfer pair like a regional run and its Broadway
+    // transfer can still pass the check above as "2 different base shows".
+    // Those pairs are NOT a joint review — classifyMarketRouting() /
+    // audit-sibling-title-misroute.js already own routing the review to
+    // exactly ONE sibling by date proximity. Skip so this script doesn't
+    // undo that routing by re-duplicating the review into both dirs.
+    const showIdList = Array.from(uniqueShows);
+    const allTitleSiblings = showIdList.every((id, i) =>
+      i === 0 || areSameTitleSiblings(showIdList[0], id, siblingIndex));
+    if (allTitleSiblings) { siblingPairsSkipped++; continue; }
     urlCount++;
     const showList = Array.from(uniqueShows);
     if (DRY_RUN) {
@@ -132,6 +152,7 @@ function main() {
   console.log('=== SUMMARY ===');
   console.log(`URLs shared across 2+ shows: ${urlCount}`);
   console.log(`Files flagged isCombinedReview: ${flagged}`);
+  console.log(`Same-title sibling pairs skipped (owned by market-routing instead): ${siblingPairsSkipped}`);
   if (DRY_RUN) console.log('(DRY RUN)');
 }
 

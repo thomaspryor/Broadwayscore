@@ -31,4 +31,24 @@ function baseSlug(showId) {
     .replace(/-(?:off-broadway|west-end|off-west-end|tour|first-national-tour)$/, '');
 }
 
-module.exports = { baseSlug };
+/**
+ * True if idA and idB are same-TITLE siblings per buildSiblingIndex()
+ * (scripts/lib/market-routing.js) — e.g. a regional/pre-Broadway run and its
+ * Broadway transfer, linked only by sharing a title (not by baseSlug, which
+ * doesn't strip market suffixes like "-at-art-regional").
+ *
+ * flag-combined-reviews.js must NOT flag a URL shared between such a pair as
+ * a legitimate joint review: classifyMarketRouting() /
+ * audit-sibling-title-misroute.js already own routing that review to exactly
+ * ONE of the pair by date proximity. Flagging it isCombinedReview instead
+ * lets a stale copy sit in both directories forever, undoing any prior
+ * reroute fix the next time this script runs (task #1608 CI gate incident,
+ * two-strangers-carry-a-cake-across-new-york, 2026-08-15: a prior --fix'd
+ * reroute was silently re-duplicated back into the regional show's dir).
+ */
+function areSameTitleSiblings(idA, idB, siblingIndex) {
+  const data = siblingIndex.get(idA);
+  return !!(data && Array.isArray(data.siblings) && data.siblings.some((s) => s.id === idB));
+}
+
+module.exports = { baseSlug, areSameTitleSiblings };
