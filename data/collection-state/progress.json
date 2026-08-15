@@ -1701,7 +1701,17 @@
     "disruption-off-broadway-2026/timeout-london--unknown.json",
     "disruption-off-broadway-2026/wsj--unknown.json",
     "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
-    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json"
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json",
+    "disruption-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1804,7 +1814,7 @@
     ]
   },
   "startTime": "2026-08-14T10:26:10.017Z",
-  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+  "lastProcessed": "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-14T11:19:07.811Z",
@@ -1883,6 +1893,18 @@
       "t": "2026-08-15T01:30:09.374Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T01:32:05.329Z",
+      "event": "bb-session",
+      "session": "d0dc2eef",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-15T01:32:13.963Z",
+      "event": "bb-session",
+      "session": "560b1ff5",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
