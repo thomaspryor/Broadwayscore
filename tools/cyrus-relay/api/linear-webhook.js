@@ -16,6 +16,33 @@ const FORWARD_HEADERS = [
 
 const MAX_BODY_BYTES = 512 * 1024;
 
+// A delivery Linear signed months ago is still validly signed. Anything whose
+// own timestamp is outside this window is a replay, not a delivery.
+const MAX_DELIVERY_AGE_MS = 5 * 60 * 1000;
+
+function replayWindowVerdict(rawBody) {
+  let stamp;
+  try {
+    const parsed = JSON.parse(rawBody);
+    stamp = parsed.webhookTimestamp ?? parsed.createdAt;
+  } catch {
+    return { ok: false, reason: 'unparseable body' };
+  }
+  if (stamp === undefined || stamp === null) {
+    // Linear has always sent one; if a payload shape ever drops it, fail closed
+    // rather than quietly losing the only replay defence.
+    return { ok: false, reason: 'no webhookTimestamp' };
+  }
+  const ms = typeof stamp === 'number' ? stamp : Date.parse(stamp);
+  if (!Number.isFinite(ms)) return { ok: false, reason: 'unreadable webhookTimestamp' };
+  const age = Date.now() - ms;
+  // Allow a little clock skew in the future direction.
+  if (age > MAX_DELIVERY_AGE_MS || age < -MAX_DELIVERY_AGE_MS) {
+    return { ok: false, reason: `outside replay window (${Math.round(age / 1000)}s)` };
+  }
+  return { ok: true };
+}
+
 function signatureMatches(secret, rawBody, signature) {
   const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
   const a = Buffer.from(expected, 'utf8');
@@ -37,8 +64,13 @@ async function readRawBody(req) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('method not allowed');
 
+  // Fail CLOSED on either missing secret. Cyrus runs Claude Code with write
+  // access to a real repo, so an unauthenticated payload that reaches it is
+  // remote code execution — a cleared env var must take the endpoint offline,
+  // never downgrade it to "accept anything carrying a signature header".
   const secret = process.env.RELAY_SECRET;
-  if (!secret) return res.status(500).send('relay not configured');
+  const webhookSecret = process.env.LINEAR_WEBHOOK_SECRET;
+  if (!secret || !webhookSecret) return res.status(503).send('relay not configured');
 
   let raw;
   try {
@@ -69,9 +101,15 @@ export default async function handler(req, res) {
 
   // The relay is a public URL, so verify the signature here too rather than
   // letting anything that merely *has* the header take up space in the queue.
-  const webhookSecret = process.env.LINEAR_WEBHOOK_SECRET;
-  if (webhookSecret && !signatureMatches(webhookSecret, raw, headers['linear-signature'])) {
+  if (!signatureMatches(webhookSecret, raw, headers['linear-signature'])) {
     return res.status(401).send('bad linear-signature');
+  }
+
+  // Only after the signature checks out — parsing attacker-controlled JSON
+  // before authentication is free work for anyone who wants it.
+  const replay = replayWindowVerdict(raw);
+  if (!replay.ok) {
+    return res.status(401).send(`rejected: ${replay.reason}`);
   }
 
   const envelope = JSON.stringify({

@@ -12,7 +12,14 @@ set -euo pipefail
 
 SECRET="${1:-}"
 if [ -z "$SECRET" ]; then
-  echo "usage: apply-webhook-secret.sh <linear-webhook-signing-secret>" >&2
+  # Read it from a prompt rather than argv when not supplied, so the secret does
+  # not sit in the shell history or in `ps` output for every process on the box.
+  read -r -s -p "Linear webhook signing secret: " SECRET
+  echo
+fi
+if [ -z "$SECRET" ]; then
+  echo "usage: apply-webhook-secret.sh [linear-webhook-signing-secret]" >&2
+  echo "       (omit the argument to be prompted instead of putting it in argv)" >&2
   exit 2
 fi
 
@@ -21,9 +28,11 @@ ENVF="$HOME/.cyrus/.env"
 
 echo "1/5 writing LINEAR_WEBHOOK_SECRET to $ENVF"
 if grep -q '^LINEAR_WEBHOOK_SECRET=' "$ENVF"; then
-  python3 - "$ENVF" "$SECRET" <<'PY'
-import sys
-path, secret = sys.argv[1], sys.argv[2]
+  # Secret goes through the environment, not argv, so it stays out of `ps`.
+  CYRUS_NEW_SECRET="$SECRET" python3 - "$ENVF" <<'PY'
+import os, sys
+path = sys.argv[1]
+secret = os.environ["CYRUS_NEW_SECRET"]
 lines = open(path).read().splitlines(True)
 out = [f"LINEAR_WEBHOOK_SECRET={secret}\n" if l.startswith("LINEAR_WEBHOOK_SECRET=") else l for l in lines]
 open(path, "w").writelines(out)
@@ -48,7 +57,9 @@ grep -q 'Linear event transport registered (direct mode)' "$HOME/.cyrus/cyrus.lo
   || { echo "     Cyrus did NOT come up in direct mode — check ~/.cyrus/cyrus.log" >&2; exit 1; }
 
 echo "5/5 round-trip check through the public relay"
-BODY='{"type":"AgentSessionEvent","action":"created","webhookId":"apply-secret-check"}'
+# webhookTimestamp must be current — the relay rejects anything outside a
+# 5-minute replay window, so a hardcoded timestamp here would always 401.
+BODY="{\"type\":\"AgentSessionEvent\",\"action\":\"created\",\"webhookId\":\"apply-secret-check\",\"webhookTimestamp\":$(python3 -c 'import time;print(int(time.time()*1000))')}"
 SIG="$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$SECRET" -hex | awk '{print $NF}')"
 CODE="$(curl -s -o /dev/null -w '%{http_code}' -m 30 -X POST \
   https://cyrus-relay.vercel.app/api/linear-webhook \

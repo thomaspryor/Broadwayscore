@@ -16,9 +16,17 @@ if [ -z "$SECRET" ]; then
 fi
 
 for TARGET in production preview development; do
-  curl -s -X POST "https://api.vercel.com/v10/projects/$PROJECT_ID/env?teamId=$TEAM&upsert=true" \
+  # jq builds the body so a secret containing a quote or backslash cannot
+  # corrupt the request, and the response is inspected rather than discarded —
+  # printing "set" after a failed API call is the exact lie this must not tell.
+  BODY="$(jq -n --arg v "$SECRET" --arg t "$TARGET" \
+    '{key:"LINEAR_WEBHOOK_SECRET", value:$v, type:"encrypted", target:[$t]}')"
+  RESP="$(curl -s -X POST "https://api.vercel.com/v10/projects/$PROJECT_ID/env?teamId=$TEAM&upsert=true" \
     -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
-    -d "{\"key\":\"LINEAR_WEBHOOK_SECRET\",\"value\":\"$SECRET\",\"type\":\"encrypted\",\"target\":[\"$TARGET\"]}" \
-    > /dev/null
+    -d "$BODY")"
+  if printf '%s' "$RESP" | jq -e '.error' > /dev/null 2>&1; then
+    echo "  $TARGET: FAILED — $(printf '%s' "$RESP" | jq -r '.error.message // .error')" >&2
+    exit 1
+  fi
   echo "  $TARGET: set"
 done
