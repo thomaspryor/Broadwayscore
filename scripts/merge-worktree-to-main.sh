@@ -123,16 +123,21 @@ log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} dele
 push_mutex_acquire
 trap 'push_mutex_release' EXIT
 
-# BRO-142: refuse to touch $MAIN_DIR if it already has a MERGE_HEAD this run
-# didn't create. Checked HERE — right after push_mutex_acquire, not before it
-# — so there's no TOCTOU window: two concurrent invocations could both observe
-# "none" if checked pre-mutex, then the loser (having already passed its own
-# check) barrels into merging/pushing on top of the MERGE_HEAD the winner's
-# failed merge just left behind. Checking only once the mutex is actually HELD
-# closes that gap for every mutex-protected caller (a manual, out-of-band
-# `git merge` outside the scripted flow remains a documented residual gap —
-# see detect-stale-merge-head.sh's header). die() already releases the mutex
-# and the EXIT trap above is idempotent, so no duplicate cleanup is needed.
+# BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
+# #1558): refuse to touch $MAIN_DIR if it already has an in-progress-operation
+# marker this run didn't create. Checked HERE — right after
+# push_mutex_acquire, not before it — so there's no TOCTOU window: two
+# concurrent invocations could both observe "none" if checked pre-mutex, then
+# the loser (having already passed its own check) barrels into merging/pushing
+# on top of the marker the winner's failed operation just left behind.
+# Checking only once the mutex is actually HELD closes that gap for every
+# mutex-protected caller (a manual, out-of-band `git merge`/`rebase`/etc.
+# outside the scripted flow remains a documented residual gap — see detect-
+# stale-merge-head.sh's header). die() already releases the mutex and the
+# EXIT trap above is idempotent, so no duplicate cleanup is needed. This
+# script never rebases/cherry-picks/reverts $MAIN_DIR itself (see the
+# preserve-HEAD comments below), so unlike push-with-retry.sh there's no
+# self-trigger risk from adding the extra marker types here.
 # Guarded on the file existing (fail OPEN, not closed): a copy of this script
 # running from a branch/checkout that predates this file must behave exactly
 # as it always did, not spuriously refuse every merge because a dependency
@@ -142,15 +147,15 @@ trap 'push_mutex_release' EXIT
 if [ -f "$SCRIPT_DIR/lib/detect-stale-merge-head.sh" ]; then
   # shellcheck source=scripts/lib/detect-stale-merge-head.sh
   source "$SCRIPT_DIR/lib/detect-stale-merge-head.sh"
-  _bro142_result=$(merge_head_staleness "$MAIN_DIR")
-  _bro142_status="${_bro142_result%% *}"
-else
-  _bro142_status="none"
+  for _bro142_marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+    _bro142_result=$(marker_staleness "$MAIN_DIR" "$_bro142_marker")
+    _bro142_status="${_bro142_result%% *}"
+    if [ "$_bro142_status" != "none" ]; then
+      die "existing $_bro142_marker in $MAIN_DIR — refusing to merge/push on top of it. $(marker_staleness_message "$MAIN_DIR" "$_bro142_marker" "$_bro142_status" "${_bro142_result#* }")"
+    fi
+  done
 fi
-if [ "$_bro142_status" != "none" ]; then
-  die "existing MERGE_HEAD in $MAIN_DIR — refusing to merge/push on top of it. $(merge_head_staleness_message "$MAIN_DIR" "$_bro142_status" "${_bro142_result#* }")"
-fi
-unset _bro142_result _bro142_status
+unset _bro142_result _bro142_status _bro142_marker
 
 # --- Stash any dirty tracked files (the data-daemon race) ---
 STASHED=0

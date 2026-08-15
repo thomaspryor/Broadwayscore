@@ -263,17 +263,24 @@ if [ "$PUSH_MUTEX_HELD" = "1" ]; then
 fi
 trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
 
-# BRO-142: refuse to fetch/rebase/merge on top of a MERGE_HEAD this run didn't
-# create. Checked HERE — right after push_mutex_acquire, not before it — so
-# there's no TOCTOU window: two concurrent invocations could both observe
-# "none" if checked pre-mutex, then the loser (having already passed its own
-# check) barrels into fetch/merge on top of the MERGE_HEAD the winner's failed
-# merge just left behind. Checking only once the mutex is actually HELD closes
-# that gap for every mutex-protected caller (a manual, out-of-band `git merge`
+# BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
+# #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
+# marker this run didn't create. Checked HERE — right after
+# push_mutex_acquire, not before it — so there's no TOCTOU window: two
+# concurrent invocations could both observe "none" if checked pre-mutex, then
+# the loser (having already passed its own check) barrels into fetch/merge on
+# top of the marker the winner's failed operation just left behind. Checking
+# only once the mutex is actually HELD closes that gap for every
+# mutex-protected caller (a manual, out-of-band `git merge`/`rebase`/etc.
 # outside the scripted flow remains a documented residual gap — see detect-
 # stale-merge-head.sh's header). The EXIT trap above already covers this exit
 # path (mutex release + restore_head_if_moved on nonzero exit), so no
 # duplicate cleanup is needed here.
+# SINGLE UPFRONT CHECK ONLY — this script performs its OWN `git rebase` later
+# in this file as legitimate conflict-resolution behavior (see the REBASE_HEAD/
+# MERGE_HEAD handling below). A repeated/later check here would false-block on
+# this run's own in-flight rebase; see detect-stale-merge-head.sh's "CALLER
+# CONSTRAINT" header.
 # Guarded on the file existing (fail OPEN, not closed): a copy of this script
 # running from a branch/checkout that predates this file must behave exactly
 # as it always did, not spuriously refuse every push because a dependency
@@ -281,17 +288,17 @@ trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-
 if [ -f "$SCRIPT_DIR/detect-stale-merge-head.sh" ]; then
   # shellcheck source=scripts/lib/detect-stale-merge-head.sh
   source "$SCRIPT_DIR/detect-stale-merge-head.sh"
-  _bro142_result=$(merge_head_staleness "$(pwd)")
-  _bro142_status="${_bro142_result%% *}"
-else
-  _bro142_status="none"
+  for _bro142_marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+    _bro142_result=$(marker_staleness "$(pwd)" "$_bro142_marker")
+    _bro142_status="${_bro142_result%% *}"
+    if [ "$_bro142_status" != "none" ]; then
+      echo "::error::push-with-retry: existing $_bro142_marker found before this run touched anything — refusing to fetch/rebase/merge on top of it." >&2
+      marker_staleness_message "$(pwd)" "$_bro142_marker" "$_bro142_status" "${_bro142_result#* }" >&2
+      exit 1
+    fi
+  done
 fi
-if [ "$_bro142_status" != "none" ]; then
-  echo "::error::push-with-retry: existing MERGE_HEAD found before this run touched anything — refusing to fetch/rebase/merge on top of it." >&2
-  merge_head_staleness_message "$(pwd)" "$_bro142_status" "${_bro142_result#* }" >&2
-  exit 1
-fi
-unset _bro142_result _bro142_status
+unset _bro142_result _bro142_status _bro142_marker
 
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
 # Captured ONCE, before this script performs ANY fetch/rebase/merge/reset, so
