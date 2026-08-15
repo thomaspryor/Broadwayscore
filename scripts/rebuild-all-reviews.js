@@ -2105,18 +2105,28 @@ showDirs.forEach(showId => {
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
       //
-      // Deliberately does NOT exclude wrongProduction — that's the exact flag class
-      // this backfill exists to self-heal (a region-less outlet gets wrongly flagged
-      // cross-market), so a wrongProduction file's evidence must still count. It DOES
-      // exclude content-wrongness flags (wrongShow / fabricatedEntry / isRoundupArticle)
-      // — those mean the file isn't even a genuine review of THIS show, so its
-      // showId-derived category could poison the outlet's region inference with
-      // garbage evidence (ship-check adversarial review, codex).
+      // Excludes wrongProduction/wrongShow/fabricatedEntry/isRoundupArticle — a
+      // second-pass Claude review (ship-check) confirmed on REAL data that an earlier
+      // version of this filter, which deliberately kept counting wrongProduction:true
+      // evidence (reasoning that's the exact flag this backfill exists to self-heal),
+      // produced concrete false positives: US regional outlets (Entertainment Tonight,
+      // Edmonton Journal, KUTV, etc.) misfiled under a title-collision West End show
+      // directory get wrongProduction:true for being the WRONG SHOW ENTIRELY, not for
+      // being cross-market — and with only that one file as evidence, "unanimous"
+      // London category evidence permanently mis-stamped region:'london' on genuine US
+      // outlets. There is no cheap way to distinguish "wrongProduction because
+      // cross-market guard fired" from "wrongProduction because it's a different show"
+      // from data fields alone, so this now excludes wrongProduction unconditionally.
+      // The originally-targeted case (a region-less outlet excluded for a REASON OTHER
+      // THAN wrongProduction, e.g. londonmumsmagazine's dedup exclusion) is unaffected.
+      // Outlets whose ONLY reviews are wrongProduction-flagged stay region-less here —
+      // strictly safer than a wrong stamp, and they still get the isUkUrl fallback plus
+      // the chance to earn evidence from a future non-flagged review.
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        const contentIsUntrustworthy = data.wrongShow === true || data.fabricatedEntry === true
-          || data.isRoundupArticle === true;
+        const contentIsUntrustworthy = data.wrongProduction === true || data.wrongShow === true
+          || data.fabricatedEntry === true || data.isRoundupArticle === true;
         if (rawOutletForCategory && cat && !contentIsUntrustworthy) {
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
