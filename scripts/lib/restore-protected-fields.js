@@ -61,6 +61,20 @@ const MANUAL_FIELDS = [
   'wrongShowOverrideAt',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // Manual "this file is not a review at all" exclusion + its provenance and its
+  // intentional-unset breadcrumb. Nothing in the repo WRITES these (zero producers
+  // as of 2026-08-14) — they only ever arrive by hand, which is precisely the class
+  // this list exists for. The rebuild gate and review-guards both exclude on the
+  // boolean, so losing it on a rebase re-includes a non-review and reddens Data
+  // Validation. isIntentionalClear() (CLEAR_BREADCRUMBS in review-write-guard.js)
+  // keys on isNotReviewManualClear / isNotReview:false so a legitimate unset is not
+  // trapped by this restore. See the PROTECTED_FIELDS comment there for why
+  // rejectionReason/rejectedAt/rejectedBy are deliberately NOT in this family.
+  'isNotReview',
+  'isNotReviewReason',
+  'isNotReviewSetAt',
+  'isNotReviewSetBy',
+  'isNotReviewManualClear',
   // The wrongProduction / wrongShow flags themselves. Added 2026-05-17 alongside
   // the review-file-writer.js human-override guard. A human's manual
   // `wrongProduction: false` (i.e. "this IS the right production, don't exclude")

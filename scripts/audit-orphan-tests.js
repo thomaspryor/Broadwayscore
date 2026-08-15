@@ -85,6 +85,15 @@ const EXEMPT_NEVER_CI = {
   // when merging unrelated work) — same fix as the two entries above:
   // exempt from CI, let autonomous-acceptance-recheck.js pick it up.
   'verify-we-aggregator-promotion-ran.test.mjs': '3bc637c5-416f-8118',
+  // Deferred-effect acceptance probe (card 3bd637c5-416f-81ed): asserts main's
+  // test.yml has HELD green for 24h after the 2026-08-14 recovery from an
+  // 89-failure red streak, reading the committed trunk snapshot (the recheck's
+  // sandbox has no gh auth). RECHECK-AFTER 2026-08-15. Run by
+  // autonomous-acceptance-recheck.js at its stamp date, never by CI — a probe
+  // that is EXPECTED to report "not yet 24h" on its first evaluation must
+  // never be able to redden the very trunk it is measuring. Lives in scripts/,
+  // not tests/unit/ (same pattern as the three entries above).
+  'verify-main-green-streak.test.mjs': '3bd637c5-416f-81ed',
 };
 
 const EXEMPT_KNOWN_BROKEN = {

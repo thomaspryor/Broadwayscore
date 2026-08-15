@@ -47,6 +47,17 @@ const REQUIRED_OVERRIDES = [
   'isLikelyTourReview',
   'dtliThumb',
   'bwwThumb',
+  // Manual "not a review at all" exclusion (allegra-west-end-2026 /
+  // westend--peter-quilter.json, 2026-08-14 — a ticketing page whose "critic" was
+  // the playwright). Hand-set only (zero producers in the repo) and read as an
+  // exclusion by rebuild-all-reviews.js + review-guards.js, so a rebase that drops
+  // it re-includes a non-review and reddens Data Validation on the same record.
+  // Pinned here so all three sync locations must carry it.
+  'isNotReview',
+  'isNotReviewReason',
+  'isNotReviewSetAt',
+  'isNotReviewSetBy',
+  'isNotReviewManualClear',
 ];
 
 test('review-write-guard.js PROTECTED_FIELDS contains every opening-night override', () => {

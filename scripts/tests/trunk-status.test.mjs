@@ -80,6 +80,63 @@ test('summarizeTrunkRuns: latest decided run green → GREEN, no streak', () => 
   );
   assert.equal(t.state, 'GREEN');
   assert.equal(t.consecutiveFailures, 0);
+  // Green streak stops at the failure 4h back. The cancelled run is not
+  // decided, so it neither breaks the streak nor counts toward it.
+  assert.equal(t.consecutiveSuccesses, 1);
+  assert.equal(t.greenSince, hoursAgo(1));
+  assert.ok(Math.abs(t.greenForHours - 1) < 0.01, `greenForHours ${t.greenForHours}`);
+  assert.equal(t.greenDurationIsFloor, false);
+});
+
+// The green-streak mirror of the redDurationIsFloor case below. Added with
+// scripts/verify-main-green-streak.test.mjs (card 3bd637c5-416f-81ed): that
+// probe asks "has main STAYED green for 24h?", which the GREEN branch could
+// not answer before — it recorded only that the latest run passed.
+test('summarizeTrunkRuns: GREEN records the streak length and duration, not just the latest run', () => {
+  const t = summarizeTrunkRuns(
+    [{ conclusion: 'success', createdAt: hoursAgo(1) },
+     { conclusion: 'success', createdAt: hoursAgo(10) },
+     { conclusion: 'success', createdAt: hoursAgo(30) },
+     { conclusion: 'failure', createdAt: hoursAgo(40) },
+     { conclusion: 'success', createdAt: hoursAgo(50) }],
+    { now: NOW }
+  );
+  assert.equal(t.state, 'GREEN');
+  assert.equal(t.consecutiveSuccesses, 3);
+  assert.equal(t.greenSince, hoursAgo(30));
+  assert.ok(t.greenForHours >= 24, `greenForHours ${t.greenForHours} should clear the 24h hold`);
+  // A failure exists in the window, so the duration is exact, not a floor.
+  assert.equal(t.greenDurationIsFloor, false);
+});
+
+test('summarizeTrunkRuns: an all-green window reports a FLOOR duration (streak runs off the end)', () => {
+  const t = summarizeTrunkRuns(
+    [{ conclusion: 'success', createdAt: hoursAgo(1) },
+     { conclusion: 'cancelled', createdAt: hoursAgo(2) },
+     { conclusion: 'success', createdAt: hoursAgo(6) }],
+    { now: NOW }
+  );
+  assert.equal(t.state, 'GREEN');
+  assert.equal(t.consecutiveSuccesses, 2);
+  assert.equal(t.greenDurationIsFloor, true,
+    'no failure anywhere in the window means the real green duration is AT LEAST greenForHours');
+});
+
+test('summarizeTrunkRuns: RED emits explicit zero/null green fields, never undefined', () => {
+  const t = summarizeTrunkRuns(
+    [{ conclusion: 'failure', createdAt: hoursAgo(1) },
+     { conclusion: 'success', createdAt: hoursAgo(9) }],
+    { now: NOW }
+  );
+  assert.equal(t.state, 'RED');
+  // JSON.stringify drops undefined, so an undefined here would vanish from the
+  // committed snapshot and the acceptance probe could not tell "red" from
+  // "old snapshot that predates these fields".
+  const round = JSON.parse(JSON.stringify(t));
+  assert.equal(round.consecutiveSuccesses, 0);
+  assert.equal(round.greenSince, null);
+  assert.equal(round.greenForHours, null);
+  assert.equal(round.greenDurationIsFloor, false);
 });
 
 test('summarizeTrunkRuns: nothing decided → UNKNOWN (never a false GREEN)', () => {

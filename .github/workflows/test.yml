@@ -4714,7 +4714,40 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record test success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+          # Was a single `A || B && C || echo warning` chain. Two problems:
+          #   1. Precedence — `(A || B) && C` ran push-with-retry.sh even when
+          #      there was nothing staged to commit.
+          #   2. A total push failure (push-with-retry.sh exits 1 after
+          #      MAX_RETRIES) was swallowed into a ::warning:: and the step still
+          #      reported success. Observed on green runs 31850823598 and
+          #      31852747324: "All push attempts failed after 7 attempts", step
+          #      green. That is exactly when it matters — the marker written here
+          #      is what health-check.js's "Pipeline: test" staleness check reads
+          #      for the daily digest, so a persistently failing push makes the
+          #      digest report a stale test pipeline while CI is in fact green.
+          # Still deliberately NON-FATAL (explicit `exit 0`): losing a single race
+          # against a busy main must not redden a green run. The failure is made
+          # observable instead — an ::error:: annotation plus a job-summary entry,
+          # which surface on the run page rather than at line ~N of the log — and
+          # the durable cross-run signal is the marker's own staleness, which
+          # health-check.js already reports daily (hint added there names this
+          # step as a cause so a stale marker isn't misread as "test never ran").
+          if git diff --staged --quiet; then
+            echo "No pipeline-health change to record"
+            exit 0
+          fi
+          git commit -q -m "health: Record test success"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          fi
+          MSG="Health recording push failed — data/audit/pipeline-health/test.last-success was NOT updated. CI is green but the marker is now stale; if this repeats for >48h the daily health digest will report 'Pipeline: test' as stale. Check run ${GITHUB_RUN_ID} for the push-with-retry.sh output."
+          echo "::error title=Health recording push failed::${MSG}"
+          {
+            echo "### :warning: Health recording push failed"
+            echo ""
+            echo "${MSG}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
 
       # Own step, NOT folded into "Record pipeline success" (if: success()) —
       # this job's data-validation `--gate` audits redden main routinely (see
