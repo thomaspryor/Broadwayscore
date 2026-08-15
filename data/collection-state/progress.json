@@ -141,7 +141,17 @@
     "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
     "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
     "the-unbelievers-off-broadway-2026/standard--nick-curtis.json",
-    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
+    "magic-mike-live-new-york-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "magic-mike-live-new-york-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "magic-mike-live-new-york-off-broadway-2026/nysr--david-finkle.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/i-paper--fiona-mountford.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/standard--nick-curtis.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -163,7 +173,9 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -182,7 +194,7 @@
     ]
   },
   "startTime": "2026-08-15T10:20:06.773Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-08-15T10:20:42.808Z",
@@ -194,6 +206,12 @@
       "t": "2026-08-15T10:20:43.772Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T10:37:00.919Z",
+      "event": "bb-session",
+      "session": "dd8a4bd7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-ka"
     }
   ]
 }
