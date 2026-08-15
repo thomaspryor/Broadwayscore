@@ -191,18 +191,26 @@ const MANIFEST = [
   { file: 'stranger-things-2024/newsday--joe-dziemianowicz.json', action: 'verify',
     note: 'Already wrongShow:true (excluded); Joe Dziemianowicz is a real NY-area critic (NY Daily News, and freelances elsewhere) plausibly covering for Newsday.' },
 
-  // --- Tim Teeman / nytimes — Tim Teeman has never been an NYT staff theater
-  // critic (established finding, card 3b2637c5-416f-818f: two sibling
-  // nytimes--tim-teeman.json files with unindexed/fabricated-looking URLs
-  // were flagged there). These three carry real nytimes.com URLs but no way
-  // to independently recover the true byline (NYT is paywalled to fetch) —
-  // flag rather than guess. ---
-  { file: 'heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
-    note: 'Tim Teeman has never been an NYT theater critic (established, card 3b2637c5-416f-818f); NYT is paywalled so the true byline can\'t be recovered from here.' },
-  { file: 'what-happened-was-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
-    note: 'Tim Teeman has never been an NYT theater critic (established, card 3b2637c5-416f-818f); NYT is paywalled so the true byline can\'t be recovered from here. Was live-scoring (assignedScore 87) before this flag.' },
-  { file: 'chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
-    note: 'Tim Teeman has never been an NYT theater critic (established, card 3b2637c5-416f-818f); already wrongShow:true (excluded either way) but flagged for consistency with the sibling nytimes--tim-teeman files.' },
+  // --- Tim Teeman / nytimes — CORRECTED (task #1180, 2026-08-14). The
+  // original "Tim Teeman has never been an NYT theater critic" premise
+  // (card 3b2637c5-416f-818f) was never checked against the live page. A
+  // direct cookie-authenticated fetch (scripts/lib/scraper.js fetchPage,
+  // NYT cookie jar) of all 6 nytimes--tim-teeman.json sibling URLs returned
+  // NYT's own GraphQL byline block on every one:
+  //   "bylines":[{"creators":[{"displayName":"Tim Teeman", ...,
+  //   "id":"UGVyc29uOm55dDovL3BlcnNvbi8xY2NhYTEzOS1mZTgyLTVlNTktOGI2OC0zZjU1YTkwMTQ4ZDE=",
+  //   "__typename":"Person"}]}] — a real nyt://person/ entity ID from NYT's
+  // own backend, not a scraper artifact or cross-contaminated byline. Tim
+  // Teeman is a working journalist (Daily Beast senior editor) who freelances
+  // widely, plausibly covering Off Broadway for the Times while NYT searched
+  // for/onboarded a new chief theater critic (Jesse Green reassigned mid-2025,
+  // Helen Shaw hired). ---
+  { file: 'heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/nytimes--tim-teeman.json', action: 'verify',
+    note: 'Live-page GraphQL byline block confirms genuine "By Tim Teeman" NYT byline (see header note above) — not fabricated.' },
+  { file: 'what-happened-was-off-broadway-2026/nytimes--tim-teeman.json', action: 'verify',
+    note: 'Live-page GraphQL byline block confirms genuine "By Tim Teeman" NYT byline (see header note above) — not fabricated. Restores live scoring (assignedScore 87).' },
+  { file: 'chinese-republicans-off-broadway-2026/nytimes--tim-teeman.json', action: 'verify',
+    note: 'Live-page GraphQL byline block confirms genuine "By Tim Teeman" NYT byline (see header note above) — not fabricated. Already wrongShow:true (excluded from scoring either way).' },
 
   // --- other singleton suspects: real, plausible freelance/syndication
   // bylines with corroborating evidence (specific matching URL, known
@@ -264,8 +272,8 @@ const MANIFEST = [
     note: 'Confirmed via fullText ("Don\'t let the haters put kitty litter in your cream...") — genuine NY Post byline; Kyle Smith was the Post\'s film/culture critic through this era who also covered theater (same pattern already established on the cats-1982 sibling file).' },
   { file: 'cats-west-end-2026/broadwayworld--louise-penn.json', action: 'verify',
     note: 'Already duplicateOf broadwayworld--senior-louise-penn.json (excluded from scoring either way); specific dated broadwayworld.com/westend URL (Regent\'s Park, Aug 2026) matches the established Louise Penn/loureviews.co.uk freelance-to-BroadwayWorld pattern verified repeatedly in the prior sweep.' },
-  { file: 'disruption-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
-    note: 'Tim Teeman has never been an NYT theater critic (established, card 3b2637c5-416f-818f); same unconfirmable-byline pattern as the three sibling nytimes--tim-teeman.json flags above. Was live-scoring (assignedScore 49) before this flag.' },
+  { file: 'disruption-off-broadway-2026/nytimes--tim-teeman.json', action: 'verify',
+    note: 'CORRECTION (task #1180, 2026-08-14): live-page GraphQL byline block confirms genuine "By Tim Teeman" NYT byline (see the Tim Teeman header note earlier in this MANIFEST) — not fabricated. Restores live scoring (assignedScore 49).' },
   { file: 'othello-2025/vulture--david-fox.json', action: 'flag',
     note: 'Codex adversarial review (2026-08-14) correctly caught a contradiction in the original verify note: WebSearch confirms Vulture\'s Othello review is bylined Sara Holdren SOLELY (no "Jesse David Fox" involvement — that critic co-wrote this show\'s companion Queen of Versailles piece instead, a different show). "David Fox" cannot be explained as a genuine byline here; unconfirmable, flagged rather than guessed. Already duplicateOf vulture--sara-holdren-and-jesse-david-fox.json (excluded from scoring either way, so this corrects the audit trail without changing scoring).' },
   { file: 'queen-versailles-2025/vulture--david-fox.json', action: 'verify',
