@@ -9,7 +9,10 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { getFirstInvalidField, FEEDBACK_FIELDS } from '../../src/lib/feedback-form-validation.ts';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { getFirstInvalidField, FEEDBACK_FIELDS } = require('../../src/lib/feedback-form-validation.js');
 
 const VALID = { email: '', category: 'bug', message: 'hello' };
 
