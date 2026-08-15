@@ -189,6 +189,17 @@ test('isUrlFlipFlop is false with no breadcrumb (first-ever url change)', () => 
   assert.equal(isUrlFlipFlop(existing, 'https://www.independent.co.uk/review-b.html'), false);
 });
 
+// Codex adversarial review (BRO-121): a breadcrumb whose `to` no longer
+// matches the file's actual current url is stale (something changed `url`
+// without going through applyUrlChangeInvariant) and must not be trusted.
+test('isUrlFlipFlop ignores a stale breadcrumb whose "to" does not match the current url', () => {
+  const existing = {
+    url: 'https://www.independent.co.uk/review-hand-corrected.html',
+    _urlChangedClear: { from: 'https://www.independent.co.uk/review-old.html', to: 'https://www.independent.co.uk/review-mid.html', at: '2026-07-01T00:00:00.000Z', cleared: ['llmScore'] },
+  };
+  assert.equal(isUrlFlipFlop(existing, 'https://www.independent.co.uk/review-old.html'), false, 'stale breadcrumb must not block a genuinely new url');
+});
+
 test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins urlVerified', () => {
   const { safeWriteReview } = require('./review-write-guard.js');
   const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-'));
@@ -222,6 +233,7 @@ test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins url
   assert.equal(after.llmScore.score, 82, 'scored state must survive — this is the BRO-121 regression');
   assert.equal(after.fullText, 'The real scored review text.');
   assert.equal(after.urlVerified, true, 'file must be pinned after a detected flip-flop');
+  assert.equal(after.urlVerifiedAuto, true, 'auto-pin must be distinguishable from a real human urlVerified decision');
   assert.ok(after.urlVerifiedNote && after.urlVerifiedNote.includes('flip-flop'));
 
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });

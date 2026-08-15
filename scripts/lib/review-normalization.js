@@ -738,6 +738,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // future files don't need the same manual intervention.
   if (urlFlipFlop && !merged.urlVerified) {
     merged.urlVerified = true;
+    merged.urlVerifiedAuto = true;
     merged.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} ↔ ${incoming.url}) — locked against further automated changes (BRO-121).`;
   }
 
