@@ -65,6 +65,10 @@ interface FetchResult {
   aggregator: string;
   success: boolean;
   error?: string;
+  // true only when the aggregator was actually checked and confirmed to have
+  // no page for this show — distinct from transient errors (timeouts,
+  // network failures) that should be retried, not cached into _not-found.json.
+  notFoundReason?: boolean;
 }
 
 // Load shows data
@@ -154,7 +158,7 @@ function archiveExists(aggregator: string, showId: string): boolean {
 async function fetchShowScore(page: Page, showId: string, shows: Record<string, Show>, urlMappings: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
-    return { showId, aggregator: 'show-score', success: false, error: 'Show not found in shows.json' };
+    return { showId, aggregator: 'show-score', success: false, error: 'Show not found in shows.json', notFoundReason: true };
   }
 
   // Show Score only has Broadway and Off-Broadway listings — no 'regional'
@@ -295,7 +299,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 
     // All patterns failed
     const tried = storedUrl ? `${urlPatterns.length} URL patterns (incl. stored)` : `${urlPatterns.length} URL patterns`;
-    return { showId, aggregator: 'show-score', success: false, error: `No Show Score page found (tried ${tried})` };
+    return { showId, aggregator: 'show-score', success: false, error: `No Show Score page found (tried ${tried})`, notFoundReason: true };
   } catch (error) {
     return { showId, aggregator: 'show-score', success: false, error: String(error) };
   }
@@ -312,7 +316,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>, dtliSlugMap: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
-    return { showId, aggregator: 'dtli', success: false, error: 'Show not found in shows.json' };
+    return { showId, aggregator: 'dtli', success: false, error: 'Show not found in shows.json', notFoundReason: true };
   }
 
   const expectedYear = showId.match(/-(\d{4})$/)?.[1];
@@ -419,7 +423,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
       }
     }
 
-    return { showId, aggregator: 'dtli', success: false, error: 'Page not found or wrong production (tried multiple URL patterns)' };
+    return { showId, aggregator: 'dtli', success: false, error: 'Page not found or wrong production (tried multiple URL patterns)', notFoundReason: true };
   } catch (error) {
     return { showId, aggregator: 'dtli', success: false, error: String(error) };
   }
@@ -429,7 +433,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
 async function fetchBwwRoundup(page: Page, showId: string, shows: Record<string, Show>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
-    return { showId, aggregator: 'bww-rr', success: false, error: 'Show not found in shows.json' };
+    return { showId, aggregator: 'bww-rr', success: false, error: 'Show not found in shows.json', notFoundReason: true };
   }
 
   // Use BWW's internal search instead of Google (Google blocks headless browsers)
@@ -448,7 +452,7 @@ async function fetchBwwRoundup(page: Page, showId: string, shows: Record<string,
       // Try broader search for any review article
       const reviewLinks = page.locator('a[href*="broadwayworld.com/article/"][href*="Review"]');
       if (await reviewLinks.count() === 0) {
-        return { showId, aggregator: 'bww-rr', success: false, error: 'No review roundup found in BWW search' };
+        return { showId, aggregator: 'bww-rr', success: false, error: 'No review roundup found in BWW search', notFoundReason: true };
       }
       // Use first review link as fallback
       const href = await reviewLinks.first().getAttribute('href');
@@ -619,11 +623,7 @@ async function main() {
         } else {
           console.log(`[${showId}] Failed: ${result.error}`);
           // Cache "not found" failures (not transient errors like timeouts/network)
-          const isNotFound = result.error?.includes('No Broadway page found') ||
-                             result.error?.includes('No DTLI slug') ||
-                             result.error?.includes('Show not found') ||
-                             result.error?.includes('Page not found or wrong production');
-          if (isNotFound) {
+          if (result.notFoundReason) {
             notFound[showId] = new Date().toISOString().split('T')[0];
           }
         }
