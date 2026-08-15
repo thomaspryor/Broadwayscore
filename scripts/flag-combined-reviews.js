@@ -75,7 +75,7 @@ function main() {
 
   const siblingIndex = buildSiblingIndex(loadShows());
 
-  let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0;
+  let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0, staleFlagsCleared = 0;
   for (const [url, entries] of urlMap) {
     const uniqueShows = new Set(entries.map(e => e.showId));
     if (uniqueShows.size < 2) continue;
@@ -104,7 +104,33 @@ function main() {
       // combinedWith (a whole-group skip would still list the sibling in a
       // 3-member group's combinedWith, reintroducing the exact bug).
       const newCombinedWith = computeCombinedWith(entry.showId, showList, siblingIndex);
-      if (newCombinedWith.length === 0) { siblingEntriesSkipped++; continue; }
+      if (newCombinedWith.length === 0) {
+        siblingEntriesSkipped++;
+        // Backfill: a prior buggy run (pre task #1608 fix) may have already
+        // stamped this file isCombinedReview:true with ONLY a title-sibling
+        // in combinedWith — a stale false-positive, not something this run
+        // would newly flag. Clear it so the cross-show contamination guards
+        // that treat isCombinedReview as an exemption
+        // (audit-cross-show-url-collisions.js, audit-cross-attribution-by-
+        // critic.js, scripts/lib/url-ownership.js, validate-data.js) stop
+        // skipping it. Safe: neither field is in PROTECTED_FIELDS or
+        // CLEAR_BREADCRUMBS, so a plain overwrite via safeWriteReview isn't
+        // reverted by its merge-mode restore pass.
+        {
+          const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+          if (data.isCombinedReview === true) {
+            staleFlagsCleared++;
+            if (DRY_RUN) {
+              console.log(`  [would clear stale isCombinedReview] ${entry.showId}/${entry.file}`);
+            } else {
+              data.isCombinedReview = false;
+              delete data.combinedWith;
+              safeWriteReview(entry.filePath, data);
+            }
+          }
+        }
+        continue;
+      }
       if (!DRY_RUN) {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
         // Re-check flags on fresh read (handles concurrent modifications).
@@ -156,6 +182,7 @@ function main() {
   console.log(`URLs shared across 2+ shows: ${urlCount}`);
   console.log(`Files flagged isCombinedReview: ${flagged}`);
   console.log(`Entries skipped (co-occurrence was only with a same-title sibling, owned by market-routing instead): ${siblingEntriesSkipped}`);
+  console.log(`Stale isCombinedReview flags cleared (backfill of pre-fix false positives): ${staleFlagsCleared}`);
   if (DRY_RUN) console.log('(DRY RUN)');
 }
 
