@@ -1,42 +1,58 @@
 {
-  "updatedAt": "2026-08-15T06:16:47.192Z",
-  "processed": 11,
-  "failed": 57,
-  "successRate": "16.2%",
+  "updatedAt": "2026-08-15T09:00:41.980Z",
+  "processed": 35,
+  "failed": 115,
+  "successRate": "23.3%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 5,
-    "scrapingbee": 9,
-    "brightdata": 3,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 7,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-08-15T05:20:23.250Z",
+      "t": "2026-08-15T08:40:17.457Z",
       "event": "bb-session",
-      "session": "e7cee97e",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-15T05:20:30.099Z",
-      "event": "bb-session",
-      "session": "22b4686a",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-15T05:22:44.768Z",
-      "event": "bb-session",
-      "session": "6392f793",
+      "session": "bceeeeba",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-15T05:22:45.191Z",
+      "t": "2026-08-15T08:40:18.538Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T08:53:28.125Z",
+      "event": "bb-session",
+      "session": "a14282d4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2651627"
+    },
+    {
+      "t": "2026-08-15T08:53:29.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T08:53:47.456Z",
+      "event": "bb-session",
+      "session": "9dc82cc4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2651627"
+    },
+    {
+      "t": "2026-08-15T08:53:48.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T08:57:22.805Z",
+      "event": "bb-session",
+      "session": "50ce82e4",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
