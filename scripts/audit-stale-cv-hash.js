@@ -69,6 +69,8 @@ function audit() {
     withContentVerification: 0,
     withContentHash: 0,
     noFullText: 0,
+    noFullTextRecoverable: 0,
+    noFullTextLost: 0,
     hashMismatch: 0,
     hashMismatchExcluded: 0,
     hashMismatchExcludedPromoted: 0,
@@ -79,6 +81,14 @@ function audit() {
     skippedContainerDirs: [],
   };
   const findings = [];
+  // Separate population from `findings` (task #1618): excluded + CV-promoted
+  // files whose fullText was nulled entirely rather than merely drifting from
+  // its hash. Invisible to the hash-mismatch scan above (no fullText to hash
+  // against) but frequently recoverable — collect-review-texts.js's quarantine
+  // branches (showNotMentioned, wrongArticle, wrongProduction, isFilmTv) move
+  // the pre-null text to `wrongFullText` before clearing `fullText`, rather
+  // than discarding it.
+  const nulledFindings = [];
 
   for (const showId of listShowDirs(REVIEW_TEXTS_DIR, { silent: true })) {
     if (NON_SHOW_DIRS.has(showId)) { stats.skippedContainerDirs.push(showId); continue; }
@@ -110,7 +120,29 @@ function audit() {
         // A nulled body is the worst sub-class of this bug — the verdict that
         // suppressed the review outlives the text it judged entirely — so count
         // it rather than dropping it silently.
-        if (isExcluded(d) && d.contentVerificationPromoted) stats.noFullText++;
+        if (isExcluded(d) && d.contentVerificationPromoted) {
+          stats.noFullText++;
+          const hasWrongFullText = Boolean(d.wrongFullText && d.wrongFullText.length > 0);
+          if (hasWrongFullText) stats.noFullTextRecoverable++; else stats.noFullTextLost++;
+          nulledFindings.push({
+            showId,
+            file,
+            outletId: d.outletId || null,
+            criticName: d.criticName || null,
+            assignedScore: d.assignedScore ?? null,
+            contentTier: d.contentTier || null,
+            wrongShow: Boolean(d.wrongShow),
+            wrongProduction: Boolean(d.wrongProduction),
+            isNonReview: Boolean(d.isNonReview),
+            incompleteReason: d.incompleteReason || null,
+            hasWrongFullText,
+            wrongFullTextLength: d.wrongFullText ? d.wrongFullText.length : 0,
+            cvArticleType: cv.articleType || null,
+            cvConfidence: cv.confidence || null,
+            cvVerifiedAt: cv.verifiedAt || null,
+            nulledTextReverifiedAt: d.nulledTextReverifiedAt || null,
+          });
+        }
         continue;
       }
       if (contentHash(text) === cv.contentHash) continue;
@@ -160,7 +192,7 @@ function audit() {
     return score(b) - score(a) || String(a.showId).localeCompare(String(b.showId));
   });
 
-  return { stats, findings };
+  return { stats, findings, nulledFindings };
 }
 
 function main() {
@@ -178,10 +210,10 @@ function main() {
     process.exit(1);
   }
 
-  const { stats, findings } = audit();
+  const { stats, findings, nulledFindings } = audit();
 
   if (asJson) {
-    console.log(JSON.stringify({ stats, findings }, null, 2));
+    console.log(JSON.stringify({ stats, findings, nulledFindings }, null, 2));
     return;
   }
 
@@ -200,7 +232,10 @@ function main() {
   console.log('');
   console.log(`  trusted via the high-confidence wrongArticle carve-out: ${stats.trustedWrongArticleCarveout}`);
   console.log(`  CV itself judged the text truncated:                    ${stats.cvJudgedTruncatedText}`);
+  console.log('');
   console.log(`  excluded+promoted with fullText nulled entirely:        ${stats.noFullText}`);
+  console.log(`    ...recoverable (wrongFullText present): ${stats.noFullTextRecoverable}  <-- see reverify-nulled-cv-promoted.js`);
+  console.log(`    ...genuinely lost (no wrongFullText):   ${stats.noFullTextLost}`);
   if (stats.skippedContainerDirs.length) {
     console.log(`  container dirs skipped (reviews nested deeper): ${stats.skippedContainerDirs.join(', ')}`);
   }
@@ -231,4 +266,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit };
+module.exports = { audit, isExcluded };
