@@ -1472,8 +1472,35 @@ describe('mergeReviews — flip-flop breaker (BRO-121)', () => {
 
     assert.strictEqual(merged.url, urlB, 'swap-back to the prior url must be refused, keeping the file at its current url');
     assert.strictEqual(merged.urlVerified, true, 'file must be pinned after a detected flip-flop');
+    assert.strictEqual(merged.urlVerifiedAuto, true, 'auto-pin must be distinguishable from a real human urlVerified decision');
     assert.ok(merged.urlVerifiedNote && merged.urlVerifiedNote.includes('flip-flop'), 'note should explain the auto-pin');
     assert.strictEqual(merged.fullText, undefined, 'flip-flop-rejected incoming fullText must not be adopted');
+  });
+
+  // Codex adversarial review (BRO-121): isUrlFlipFlop() must not trust a
+  // breadcrumb whose `to` no longer matches the file's actual current url —
+  // that means something changed `url` WITHOUT going through
+  // applyUrlChangeInvariant (a manual edit, a rebase-restored field), so the
+  // breadcrumb's `from` is stale and must not be allowed to block a
+  // genuinely new, unrelated url.
+  test('does not misfire on a stale breadcrumb whose "to" no longer matches the current url', () => {
+    const urlA = 'https://www.independent.co.uk/review-old.html';
+    const urlB = 'https://www.independent.co.uk/review-mid.html';
+    const urlD = 'https://www.independent.co.uk/review-hand-corrected.html';
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'independent',
+      // A manual edit moved url to D WITHOUT going through the invariant —
+      // the breadcrumb (to: urlB) is now stale.
+      url: urlD,
+      _urlChangedClear: { from: urlA, to: urlB, at: '2026-07-01T00:00:00.000Z', cleared: ['llmScore'] },
+    };
+    // Incoming happens to match the stale breadcrumb's `from` — must NOT be
+    // treated as a flip-flop, since the file never actually held urlB.
+    const incoming = { ...existing, url: urlA, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, urlA, 'a stale breadcrumb must not block a genuinely new url change');
+    assert.notStrictEqual(merged.urlVerified, true);
   });
 
   test('does not treat a genuinely NEW third url as a flip-flop', () => {

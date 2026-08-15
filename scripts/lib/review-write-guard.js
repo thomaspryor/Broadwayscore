@@ -220,6 +220,11 @@ const PROTECTED_FIELDS = [
   'allowFilmSignal',
   'routedFromShowId',
   'urlVerified',
+  // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
+  // from a real human urlVerified decision. Must survive rebases alongside
+  // urlVerified itself, or a restored file loses the marker and becomes
+  // indistinguishable from a genuine manual verification.
+  'urlVerifiedAuto',
   'urlManualOverride',
   'urlManualOverrideNote',
   // Additional override flags added in Rocky Horror 2026-04-23 postmortem (Session 2 #7):
@@ -1043,6 +1048,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           newData.url = existing.url;
           if (!newData.urlVerified) {
             newData.urlVerified = true;
+            newData.urlVerifiedAuto = true;
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
