@@ -375,6 +375,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Close Coverage Gaps — batch ${{ matrix.batch_id }} (${{ inputs.era }})"
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: close-coverage-gaps-gather-gaps
+
       - name: Upload failure report
         if: always()
         uses: actions/upload-artifact@v5
@@ -466,6 +473,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Close Coverage Gaps — PV + NYC Theatre (${{ inputs.era }})"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: close-coverage-gaps-scrape-pv-nyc
 
   # Job 4: Validate and rebuild reviews.json
   rebuild:

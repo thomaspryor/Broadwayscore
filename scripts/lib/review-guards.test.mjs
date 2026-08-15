@@ -428,6 +428,42 @@ test('isStaleCvPromotedWrongShow: combo file (wrongProduction ALSO true) still s
   assert.equal(isStaleCvPromotedWrongShow(f, false), true);
 });
 
+// Regression guard (Codex adversarial review, 2026-08-14): a live corpus scan
+// found 500 files where wrongShow=true was set by an UNRELATED writer
+// (audit-cross-show-url-collisions.js, classify-wrong-show.js's LLM
+// classifier, the collector) while a stale contentVerificationPromoted stamp
+// from an EARLIER, unrelated promotion sat untouched on the same file. Without
+// the wrongShowReason-consistency gate, isStaleCvPromotedWrongShow would
+// wrongly clear a correctly-set, CV-unrelated wrongShow flag.
+test('isStaleCvPromotedWrongShow: does NOT fire when wrongShowReason indicates a non-CV writer (real corpus pattern — cross-show URL collision)', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShowReason: 'Cross-show URL collision: review belongs to some-other-show-2026 (title mismatch)' };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: does NOT fire when wrongShowReason indicates the collector classifier (real corpus pattern)', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShowReason: 'Collector LLM: not a review (interview, confidence: high) — This is a pre-opening preview/interview article' };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
+test('isStaleCvPromotedWrongShow: DOES fire when wrongShowReason is the CV-promoted prefix rebuild-all-reviews.js itself writes', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShowReason: 'CV-promoted: This is a preview about the show, not a review.' };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), true);
+});
+
+test('isStaleCvPromotedWrongShow: DOES fire when wrongShowReason is the film/TV CV-promoted prefix', () => {
+  const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShowReason: 'CV-promoted (film/TV): This reviews the film adaptation, not the stage production.' };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), true);
+});
+
+test('isStaleCvPromotedWrongShow: does NOT fire on the wrongShowReason-fallback promotion path (contentVerificationPromoted "...fallback (stale cv)" with pre-existing non-CV reason text) — deliberately left for the slower audit/manual path', () => {
+  const f = {
+    ...GIRL_INTERRUPTED_TB_STUB,
+    contentVerificationPromoted: 'rebuild: promoted via wrongShowReason fallback (stale cv)',
+    wrongShowReason: 'Collector LLM: not a review (feature, confidence: high) — descriptive feature article',
+  };
+  assert.equal(isStaleCvPromotedWrongShow(f, false), false);
+});
+
 test('computeCvIsStale: false when no contentVerification', () => {
   assert.equal(computeCvIsStale({}), false);
 });

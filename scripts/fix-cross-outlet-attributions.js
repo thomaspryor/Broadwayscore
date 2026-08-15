@@ -157,6 +157,18 @@ const MANIFEST = [
     note: 'Stored URL (INTOTHEABYSS.cfm) is a generic theaternewsonline.com page unrelated in name to this show — unverifiable.' },
   { file: 'travesties-2018/dailybeast--william-wolf.json', action: 'flag',
     note: 'No stored URL; could not corroborate. Not live-scored.' },
+
+  // --- recheck batch (task #1006, 2026-08-14): 4 new suspects surfaced by
+  // fresh review-texts accumulated since the 2026-08-03 sweep above. None
+  // live-scoring (assignedScore null on all four). ---
+  { file: 'cats-2016/huffpost--jonathan-mandell.json', action: 'verify',
+    note: 'Jonathan Mandell is a widely cross-posting freelance theater critic (former Newsday staff critic; also freelanced for Playbill, American Theatre Magazine, NYT, Backstage, NPR, CNN, DNAinfo, Patch, BroadwayWorld) — HuffPost\'s open contributor platform is a plausible extension of that pattern. Not live-scored (assignedScore null).' },
+  { file: 'cats-2016/stagezine--lauren-yarger.json', action: 'verify',
+    note: 'Lauren Yarger (editor of Reflections in the Light, registry defaultCritic) is also a confirmed contributing editor for BroadwayWorld, reviewer for the Manchester Journal-Inquirer, CT theater editor for CurtainUp.com, and CT/NY reviewer for American Theater Web — an established prolific-freelancer cross-posting pattern. Not live-scored (assignedScore null).' },
+  { file: 'cats-west-end-2026/nypost--kyle-smith.json', action: 'verify',
+    note: 'Already wrongProduction:true (shares the exact 2016 NY Post URL/byline as the cats-2016/nypost--kyle-smith.json sibling, misattached to this 2026 West End revival, excluded from scoring either way); Kyle Smith is a genuine NY Post critic (see sibling file note).' },
+  { file: 'galileo-2026/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'SFGate/SF Chronicle share critic Lily Janiak (SF Chronicle\'s own lead theater critic; her work runs on both properties, the same organizationally-equivalent pattern already documented in this file\'s own header). Not live-scored (assignedScore null).' },
 ];
 
 function main() {
@@ -198,6 +210,18 @@ function main() {
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
+      // Same fix as fix-cross-outlet-attributions-fulltext.js (task #1006):
+      // a prior 'verify' pass may have left crossOutletVerified:true on
+      // disk, which is PROTECTED_FIELDS — a plain delete is silently
+      // reverted without this retraction breadcrumb (task #1008/#1023).
+      if (data.crossOutletVerified === true) {
+        data.clearBreadcrumbRetractedFields = Array.from(new Set([
+          ...(Array.isArray(data.clearBreadcrumbRetractedFields) ? data.clearBreadcrumbRetractedFields : []),
+          'crossOutletVerified',
+        ]));
+        data.clearBreadcrumbRetracted = 'retracted stale crossOutletVerified: contradicted live wrongAttribution (#1023)';
+        data.clearBreadcrumbRetractedAt = new Date().toISOString().slice(0, 10);
+      }
       data.wrongAttribution = true;
       data.wrongAttributionReason = entry.note;
       delete data.crossOutletVerified;

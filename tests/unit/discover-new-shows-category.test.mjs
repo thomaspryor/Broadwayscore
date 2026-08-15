@@ -70,6 +70,57 @@ test('classifyShow always returns category+market consistent with validate-data.
   }
 });
 
+// --- BRO-157: genre must override venue for category at discovery time too ---
+// (not just in validate-data.js's CI backstop — see genre-classification.test.mjs
+// for the shared applyGenreCategoryOverride() behavior tests).
+
+test('discover-new-shows.js applies applyGenreCategoryOverride before pushing a TodayTix-confirmed show', () => {
+  const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
+  assert.ok(
+    /require\(['"]\.\/lib\/genre-classification['"]\)/.test(src),
+    'discover-new-shows.js no longer requires ./lib/genre-classification'
+  );
+  assert.ok(
+    /applyGenreCategoryOverride\(/.test(src),
+    'discover-new-shows.js no longer calls applyGenreCategoryOverride — a non-theatrical ' +
+      'show at a West End venue (e.g. dance at Sadler\'s Wells) can ship with category=' +
+      '"west-end" again until the next validate-data.js CI run (BRO-157 regression).'
+  );
+});
+
+// BRO-157 follow-up: the second-opinion review on the original fix found TWO
+// MORE live, non-provisional West End intake paths that never computed genre
+// at all — fetchShowsFromTodayTixLondon() and fetchShowsFromOfficialLondonTheatre()
+// — a higher-risk gap than the one originally fixed, since genre being unset
+// (not just wrong) means validate-data.js's CI backstop can't catch it either
+// (isNonTheatricalGenre(undefined) is false). All three West End intake
+// functions must call applyGenreCategoryOverride — assert the count so a
+// future refactor can't silently drop one.
+test('all 3 West End show-intake sites call applyGenreCategoryOverride (BRO-157 follow-up)', () => {
+  const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
+  const callCount = (src.match(/applyGenreCategoryOverride\(/g) || []).length;
+  assert.strictEqual(
+    callCount, 3,
+    `Expected applyGenreCategoryOverride() to be called exactly 3 times ` +
+      `(fetchShowsFromTodayTixLondon, fetchShowsFromOfficialLondonTheatre, and the ` +
+      `TodayTix-confirmed validated.push branch) — found ${callCount}. If you added or ` +
+      `removed a West End intake path, keep every one genre-aware or this count out of sync.`
+  );
+
+  for (const fnName of ['fetchShowsFromTodayTixLondon', 'fetchShowsFromOfficialLondonTheatre']) {
+    const start = src.indexOf(`async function ${fnName}`);
+    assert.ok(start !== -1, `could not find function ${fnName} in discover-new-shows.js`);
+    const nextFnStart = src.indexOf('\nasync function ', start + 1);
+    const body = src.slice(start, nextFnStart === -1 ? start + 6000 : nextFnStart);
+    assert.ok(
+      /classifyGenre\(/.test(body) && /applyGenreCategoryOverride\(/.test(body),
+      `${fnName} must call classifyGenre() and applyGenreCategoryOverride() before pushing ` +
+        `a show — otherwise a non-theatrical show at a West End venue ships with the wrong ` +
+        `category AND no genre, so even the validate-data.js CI backstop can't fix it later.`
+    );
+  }
+});
+
 // --- Wiring test: the creator must actually use the helper ---
 
 test('scripts/discover-new-shows.js calls classifyShow on every new show', () => {
