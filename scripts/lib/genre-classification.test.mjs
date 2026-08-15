@@ -85,6 +85,17 @@ test('The Car Man (dance @ Sadler\'s Wells) never ships with category="west-end"
   assert.equal(applyGenreCategoryOverride('west-end', genre), 'off-west-end');
 });
 
+test('backfill-genre.js uses the shared applyGenreCategoryOverride helper, not a hand-rolled copy', () => {
+  const src = readFileSync(join(here, '../backfill-genre.js'), 'utf8');
+  assert.ok(
+    /applyGenreCategoryOverride\(/.test(src),
+    'backfill-genre.js no longer calls applyGenreCategoryOverride — it likely reverted to a ' +
+      'hand-rolled "genre overrides venue" copy, which is exactly the drift BRO-157 fixed by ' +
+      'introducing this shared helper (validate-data.js, discover-new-shows.js, and this file ' +
+      'must all call the same function).'
+  );
+});
+
 test('NON_THEATRICAL_GENRES matches the TS source in src/lib/genre.ts', () => {
   const tsSrc = readFileSync(join(here, '../../src/lib/genre.ts'), 'utf8');
   const block = tsSrc.match(/NON_THEATRICAL_GENRES\s*=\s*\[([^\]]*)\]/);

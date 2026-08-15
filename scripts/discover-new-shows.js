@@ -643,6 +643,12 @@ async function fetchShowsFromTodayTixLondon() {
     // TodayTix startDate is first preview for WE shows, NOT press night.
     // Treat as previewsStartDate; openingDate set later by ShowScore or enrichment.
     const weStart = classifyTodayTixStartDate(show.startDate, title);
+    const description = show.description || '';
+    const genre = classifyGenre({ title, venue: weVenue, description });
+    const category = applyGenreCategoryOverride(
+      isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
+      genre
+    );
     showsList.push({
       title,
       venue: weVenue,
@@ -650,8 +656,9 @@ async function fetchShowsFromTodayTixLondon() {
       openingDate: null,
       previewsStartDate: weStart.previewsStartDate,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
-      category: isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
-      description: show.description || '',
+      ...(genre ? { genre } : {}),
+      category,
+      description,
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
       ...unconfirmedStartFlags(weStart.unconfirmedStartDate),
@@ -823,6 +830,8 @@ async function fetchShowsFromOfficialLondonTheatre() {
       const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
       seen.add(titleLower);
+      const description = (data.description || '').substring(0, 500);
+      const genre = classifyGenre({ title, venue, description });
       shows.push({
         title,
         venue,
@@ -830,8 +839,9 @@ async function fetchShowsFromOfficialLondonTheatre() {
         openingDate: null,
         previewsStartDate: data.startDate || null,
         closingDate: endDate,
-        category: 'west-end',
-        description: (data.description || '').substring(0, 500),
+        ...(genre ? { genre } : {}),
+        category: applyGenreCategoryOverride('west-end', genre),
+        description,
       });
     } catch (e) {
       // Skip malformed JSON-LD blocks
