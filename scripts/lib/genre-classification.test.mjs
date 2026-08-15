@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
-const { classifyGenre, isNonTheatricalGenre, NON_THEATRICAL_GENRES } =
+const { classifyGenre, isNonTheatricalGenre, applyGenreCategoryOverride, NON_THEATRICAL_GENRES } =
   require('./genre-classification.js');
 
 test('dance houses classify as dance', () => {
@@ -59,6 +59,30 @@ test('isNonTheatricalGenre', () => {
   assert.equal(isNonTheatricalGenre('play'), false);
   assert.equal(isNonTheatricalGenre(undefined), false);
   assert.equal(isNonTheatricalGenre(null), false);
+});
+
+// BRO-157: The Car Man (dance, Sadler's Wells) shipped with category="west-end"
+// at discovery, showing "WEST END" on its own page while genre-routing already
+// placed it on the Off-West End hub in listings. Root cause: only the
+// validate-data.js CI backstop applied "genre overrides venue" for category —
+// discover-new-shows.js didn't, so a freshly-discovered show could sit with
+// the wrong category (and show the wrong tag) until the next CI run. Fixed by
+// calling this same helper at discovery time too (scripts/discover-new-shows.js).
+test('applyGenreCategoryOverride: non-theatrical genre forces off-west-end', () => {
+  assert.equal(applyGenreCategoryOverride('west-end', 'dance'), 'off-west-end');
+  assert.equal(applyGenreCategoryOverride('west-end', 'magic'), 'off-west-end');
+});
+
+test('applyGenreCategoryOverride: leaves category alone otherwise', () => {
+  assert.equal(applyGenreCategoryOverride('west-end', 'play'), 'west-end');
+  assert.equal(applyGenreCategoryOverride('west-end', null), 'west-end');
+  assert.equal(applyGenreCategoryOverride('off-west-end', 'dance'), 'off-west-end');
+  assert.equal(applyGenreCategoryOverride('off-broadway', 'dance'), 'off-broadway');
+});
+
+test('The Car Man (dance @ Sadler\'s Wells) never ships with category="west-end"', () => {
+  const genre = classifyGenre({ title: 'The Car Man', venue: "Sadler's Wells" });
+  assert.equal(applyGenreCategoryOverride('west-end', genre), 'off-west-end');
 });
 
 test('NON_THEATRICAL_GENRES matches the TS source in src/lib/genre.ts', () => {
