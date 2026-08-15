@@ -32,6 +32,7 @@
  *   node scripts/reverify-nulled-cv-promoted.js              # process all recoverable findings
  *   node scripts/reverify-nulled-cv-promoted.js --limit=20    # smoke-test a subset
  *   node scripts/reverify-nulled-cv-promoted.js --dry-run     # verify only, write nothing
+ *   node scripts/reverify-nulled-cv-promoted.js --help, -h    # print this usage and exit
  */
 
 const fs = require('fs');
@@ -41,6 +42,23 @@ const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { classifyContentTier } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `reverify-nulled-cv-promoted.js — re-verify reviews excluded by a CV-promoted
+flag (wrongShow / wrongProduction / isNonReview) whose fullText was nulled entirely
+(quarantined to wrongFullText) rather than merely drifting from its hash. Re-runs
+verification against the quarantined wrongFullText: restores + clears only when the
+fresh verdict comes back clean on every exclusion-flag family the file carries,
+leaves it exactly as found otherwise.
+
+Usage:
+  node scripts/reverify-nulled-cv-promoted.js             process all recoverable findings
+  node scripts/reverify-nulled-cv-promoted.js --limit=20  smoke-test a subset
+  node scripts/reverify-nulled-cv-promoted.js --dry-run   verify only, write nothing
+  node scripts/reverify-nulled-cv-promoted.js --help, -h  print this usage and exit
+
+Makes live LLM verification calls and writes review files — never blind-clears.
+`;
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
@@ -82,6 +100,15 @@ function clearQuarantineBookkeeping(data) {
 
 async function main() {
   const args = process.argv.slice(2);
+
+  // --help/-h BEFORE the corpus walk: this script runs live LLM verifyContent()
+  // calls and rewrites review files through safeWriteReview — real side effects
+  // on --help, the class the help-flag safety audit blocks on (task #498).
+  if (hasHelpFlag(args)) {
+    console.log(USAGE);
+    return;
+  }
+
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? Number(limitArg.split('=')[1]) : Infinity;
