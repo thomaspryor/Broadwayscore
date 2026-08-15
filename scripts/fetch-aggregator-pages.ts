@@ -155,6 +155,20 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
     return { showId, aggregator: 'show-score', success: false, error: 'Show not found in shows.json' };
   }
 
+  // Show Score only has Broadway and Off-Broadway listings — no 'regional'
+  // section. Without a stored URL, a regional show's slug-guess falls through
+  // to the broadway-shows base (same as an uncategorized show) and, for a
+  // regional-to-Broadway transfer, the guessed `${baseSlug}-broadway` pattern
+  // IS the sibling Broadway show's real slug — matching and archiving the
+  // sibling's page under this show's own filename, every run (no stored URL
+  // ever gets cached to short-circuit the guess). BRO-363 (2026-08-15): hit
+  // two-strangers-carry-a-cake-across-new-york-at-art-regional-2025,
+  // little-bear-ridge-road-regional-2024, and
+  // the-outsiders-world-premiere-regional-2023 this way.
+  if (show.category != null && show.category !== 'broadway' && show.category !== 'off-broadway' && !urlMappings[showId]) {
+    return { showId, aggregator: 'show-score', success: false, error: `category "${show.category}" has no Show Score listings and no stored URL — skipping slug-guess fallback` };
+  }
+
   // Generate URL slug from title
   const baseSlug = show.title
     .toLowerCase()

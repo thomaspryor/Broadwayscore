@@ -10,6 +10,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -24,6 +25,7 @@ const showsList = showsRaw.shows || showsRaw;
 const showsArray = Array.isArray(showsList) ? showsList : Object.values(showsList);
 const showsById = {};
 for (const s of showsArray) if (s.id) showsById[s.id] = s;
+const siblingIndex = buildSiblingIndex(showsArray);
 
 function detectCategory(html, showId) {
   // Use shows.json category if available
@@ -215,6 +217,44 @@ function extractShowData(html, showId, sourceUrl) {
         result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
         result.criticReviews = [];
         result._rejectionReason = `cross-show-contamination: ${matching.length}/${withUrl.length} URLs mention show probe tokens [${probeTokens.join(',')}]`;
+      }
+    }
+  }
+
+  // Sibling-misfile guard (BRO-363, 2026-08-15): the archived HTML for this
+  // showId may actually be a same-title SIBLING's page saved under the wrong
+  // filename — e.g. a regional pre-Broadway run's id holding its Broadway
+  // transfer's archived page (fetch-aggregator-pages.ts's Show-Score
+  // slug-guess falls back to the broadway-shows base for any non-OB category,
+  // including 'regional', and the guessed `${slug}-broadway` pattern IS the
+  // sibling's real slug). Reuses the same date-proximity heuristic write-time
+  // writes already apply via classifyMarketRouting (review-file-writer.js
+  // Guard A) — not a new policy, just applied one step earlier so a stale
+  // archive can't keep re-littering the wrong show's review-texts dir every week
+  // even for reviews an individual per-review reroute can't confidently
+  // disambiguate on its own (e.g. an undated tile on the same misfiled page).
+  if (result.criticReviews.length > 0) {
+    const totalReviews = result.criticReviews.length;
+    const siblingCounts = new Map();
+    for (const r of result.criticReviews) {
+      const decision = classifyMarketRouting({
+        showId,
+        url: r.url,
+        outletId: null,
+        publishDate: r.date,
+        category: showsById[showId]?.category,
+        siblingIndex,
+      });
+      if (decision.action === 'reroute') {
+        siblingCounts.set(decision.targetShowId, (siblingCounts.get(decision.targetShowId) || 0) + 1);
+      }
+    }
+    for (const [targetId, count] of siblingCounts) {
+      if (count >= 3 && count / totalReviews >= 0.5) {
+        result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
+        result.criticReviews = [];
+        result._rejectionReason = `sibling-misfile: ${count}/${totalReviews} critic reviews date-match sibling ${targetId}'s opening, not ${showId}'s own — archive is likely ${targetId}'s page saved under the wrong filename`;
+        break;
       }
     }
   }

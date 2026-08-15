@@ -275,6 +275,36 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('preserves duplicateOf when sibling URL differs only by NYT tracking params (task #1627)', () => {
+    // king-kong-2018/mother-play-2024: NYT recirculation-module and search-
+    // result tracking params (?action=click&contentCollection=...,
+    // ?searchResultPosition=1) varied per-fetch across siblings of the SAME
+    // article. Before the normalizeUrl fix, this looked like a genuine URL
+    // mismatch and wrongly un-collapsed an already-resolved byline-explosion
+    // cluster on every subsequent write.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tracking-param-dupe-'));
+    try {
+      const cleanUrl = 'https://www.nytimes.com/2024/04/25/theater/mother-play-review-jessica-lange-paula-vogel.html';
+      fs.writeFileSync(path.join(dir, 'nytimes--jesse-green.json'), JSON.stringify({ url: cleanUrl }, null, 2));
+
+      const ourPath = path.join(dir, 'nytimes--alexis-soloski.json');
+      safeWriteReview(ourPath, {
+        url: `${cleanUrl}?searchResultPosition=1`,
+        duplicateOf: 'nytimes--jesse-green.json',
+        duplicateReason: 'byline-explosion-collapse',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      // The write-time collision detector independently confirms the same
+      // sibling as a TRUE match once params are stripped, so it may relabel
+      // the reason to its own collision string — what matters is duplicateOf
+      // stays pointed at the sibling instead of being wrongly self-healed away.
+      assert.equal(written.duplicateOf, 'nytimes--jesse-green.json');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   test('urlCorrectedFrom + bodyless + sibling-owned URL → tombstoned (post-correction branch)', () => {
     // The blanket urlCorrectedFrom skip was replaced 2026-08-01 (enormous-
     // crocodile oscillation): a corrected file adopting a URL a substantive

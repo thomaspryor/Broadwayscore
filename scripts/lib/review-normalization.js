@@ -1684,7 +1684,13 @@ function normalizeUrl(url) {
       .replace(/^https?:\/\//, '')
       .replace(/^www\./, '')
       .replace(/\/+$/, '')
-      .replace(/#.*$/, '');
+      .replace(/#.*$/, '')
+      // HTML-entity-encoded query separators: some stored URLs have literal
+      // "&amp;" instead of "&" (king-kong-2018 NYT recirculation-module URL,
+      // task #1627) — undecoded, every param after the first is glued onto
+      // the previous one ("amp;contentcollection=...") and the tracking-param
+      // strip below can't recognize or remove any of them.
+      .replace(/&amp;/g, '&');
     // Tracking-param strip first so any later regex can anchor on the
     // post-strip path/query state.
     // loginsuccessful (BRO-121): Independent.co.uk appends ?loginSuccessful=true
@@ -1704,7 +1710,15 @@ function normalizeUrl(url) {
     // wildcard, per codex adversarial review) — these are the 4 known keys
     // Google's protocol emits; an open wildcard risks stripping a genuinely
     // meaningful gaa_* param on some other, unrelated site.
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig))=[^&]*/g, '')
+    // action/contentcollection/region/module/version/contentplacement/pgtype
+    // (task #1627): NYT's "recirculation module" tracking params, appended
+    // when a review URL is clicked from a related-stories widget rather than
+    // the article page directly. searchresultposition: NYT search-results
+    // tracking param. Both varied per-fetch across siblings of the SAME
+    // article, so review-write-guard.js's stale-duplicateOf self-heal saw a
+    // URL "mismatch" and wrongly un-collapsed an already-resolved
+    // byline-explosion cluster (mother-play-2024, king-kong-2018).
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
     // Re-strip trailing slashes: the first strip (above) runs before the
