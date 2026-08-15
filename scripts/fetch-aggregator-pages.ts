@@ -359,6 +359,23 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
     }
   }
 
+  // Same slug-collision risk as fetchShowScore's guard above (BRO-363
+  // what-else follow-up): the `-bway`/`-broadway` fallback patterns below are
+  // guesses at a SIBLING production's own DTLI slug, not this show's. For a
+  // regional-to-Broadway transfer they ARE the sibling's real slug. Unlike
+  // Show Score, DTLI's validateProduction() below only compares showId's
+  // year suffix to the page's opening year — a same-calendar-year sibling
+  // pair (e.g. Two Strangers itself: regional June 2025, Broadway Nov 2025)
+  // passes that check and still gets archived under the wrong filename. Gate
+  // the guess the same way: skip for a non-listed category, or a
+  // pre-categorization show with a known sibling, unless a curated slug-map
+  // entry already exists for this show (checked above, authoritative).
+  const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';
+  const hasKnownSibling = !!show.transferredTo || !!show.transferOf;
+  if (!isListedCategory && (show.category != null || hasKnownSibling) && !mappedSlug) {
+    return { showId, aggregator: 'dtli', success: false, error: `category "${show.category ?? 'null'}"${hasKnownSibling ? ' (has known sibling)' : ''} has no curated DTLI slug — skipping slug-guess fallback` };
+  }
+
   // Fall back to URL guessing for unmapped shows
   const baseSlug = show.title
     .toLowerCase()
