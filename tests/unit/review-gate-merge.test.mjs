@@ -25,6 +25,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, chmodSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createRequire } from 'node:module';
 
 import {
   GATE_LINE_BUDGET,
@@ -34,6 +35,9 @@ import {
   queryMergeGate,
   recordVerdict,
 } from '../../scripts/lib/review-gate.mjs';
+
+const require = createRequire(import.meta.url);
+const { stripHeredocBodies, bashWriteTargets } = require('../../scripts/lib/infra-review-scope.js');
 
 function git(repo, ...args) {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' });
@@ -162,6 +166,108 @@ test('parse: octopus merge reports every source', () => {
 test('parse: prose mentioning merge is not an ingress', () => {
   const r = parseMergeIngress('echo "about to merge things" && ls', { currentBranch: 'main' });
   assert.equal(r.isMerge, false);
+});
+
+test('parse: heredoc commit body mentioning the wrapper/git-merge as prose is not an ingress', () => {
+  // task #1557: shellSegments splits on every newline, including inside a
+  // heredoc body — so a plain `git commit -m "$(cat <<'EOF' … EOF)"` whose
+  // message text merely NAMES merge-worktree-to-main.sh or describes
+  // "git merge --abort" in prose used to be misclassified as invoking it.
+  const cmd = [
+    `git commit -m "$(cat <<'EOF'`,
+    'fix: something about merge-worktree-to-main.sh and git merge --abort',
+    '',
+    'This is prose discussing the merge wrapper script and git merge --abort,',
+    'not an actual invocation of either.',
+    'EOF',
+    ')"',
+  ].join('\n');
+  const r = parseMergeIngress(cmd, { currentBranch: 'main' });
+  assert.equal(r.isMerge, false);
+});
+
+test('parse: a real merge AFTER a heredoc commit body still gates', () => {
+  // Stripping the heredoc body must not blind the parser to a genuine merge
+  // that follows it in the same compound command.
+  const cmd = [
+    `git commit -m "$(cat <<'EOF'`,
+    'mentions merge-worktree-to-main.sh in prose only',
+    'EOF',
+    ')" && scripts/merge-worktree-to-main.sh wt-feature',
+  ].join('\n');
+  const r = parseMergeIngress(cmd, { currentBranch: 'wt-feature' });
+  assert.equal(r.isMerge, true);
+  assert.equal(r.targetsMain, true);
+  assert.equal(r.via, 'wrapper');
+  // The heredoc-opening line still classifies as kind:'commit', so the
+  // working-tree source is correctly added too — same as any other compound
+  // `git commit … && <merge ingress>` (see the WORKTREE test above).
+  assert.deepEqual(r.sources, ['wt-feature', 'WORKTREE']);
+});
+
+// ── stripHeredocBodies: the shared primitive, tested directly ───────────────
+// Adversarial review (task #1557): a naive `<<TAG` regex also matches inside
+// a `<<<TAG` here-string, which has no multi-line body at all. Getting this
+// wrong swallows every following line — including a real merge command — as
+// fake "heredoc body", a false NEGATIVE (a real merge silently let through).
+// That is the dangerous failure direction for a review gate, so it gets its
+// own direct tests rather than relying only on parseMergeIngress coverage.
+
+test('stripHeredocBodies: a here-string (<<<) is not mistaken for a heredoc opener', () => {
+  const cmd = "printf '%s\\n' <<<EOF\ngit merge feature\necho done";
+  const out = stripHeredocBodies(cmd);
+  assert.equal(out, cmd, 'a here-string has no body to strip — output must be unchanged');
+});
+
+test('stripHeredocBodies: multiple heredocs on one line are consumed in OPENING order', () => {
+  // Real bash: A's body runs until A's own terminator, then B's body starts
+  // immediately after. An earlier revision tracked only the LAST tag on the
+  // line, so a coincidental "B" line inside A's body ended stripping early
+  // and re-exposed the rest of A's body (and all of B's) to classification.
+  const cmd = [
+    'cmd <<A <<B',
+    'body-a line 1',
+    'B',              // NOT a real terminator here — it's inside A's body
+    'body-a line 2',
+    'A',              // A's real terminator
+    'body-b line 1',
+    'B',              // B's real terminator
+    'echo after',
+  ].join('\n');
+  const out = stripHeredocBodies(cmd);
+  assert.equal(out, 'cmd <<A <<B\necho after');
+});
+
+test('stripHeredocBodies: <<-TAG permits a tab-indented terminator', () => {
+  const cmd = 'cat <<-EOF\n\tgit merge feat\nEOF\necho done';
+  assert.equal(stripHeredocBodies(cmd), 'cat <<-EOF\necho done');
+});
+
+test('stripHeredocBodies: unterminated heredoc does not hang or throw', () => {
+  const cmd = 'cat <<EOF\nline1\nline2';
+  assert.equal(stripHeredocBodies(cmd), 'cat <<EOF');
+});
+
+test('stripHeredocBodies: a command with no heredoc is returned byte-identical', () => {
+  const cmd = 'git checkout main && git merge feat';
+  assert.equal(stripHeredocBodies(cmd), cmd);
+});
+
+// ── the twin bug: bashWriteTargets shares the same exposure ────────────────
+// infra-review-scope.js's edit-scope gate (queryInfraEditAllowed) tokenizes
+// commands the same quote-blind way parseMergeIngress does, so a heredoc
+// commit body could equally hide (or fabricate) a write target for THAT
+// gate. Fixed by wiring stripHeredocBodies into bashWriteTargets itself —
+// this is the regression test locking that fix in (task #1557).
+
+test('bashWriteTargets: a heredoc commit body mentioning a write-looking command is not a write target', () => {
+  const cmd = [
+    `git commit -m "$(cat <<'EOF'`,
+    'this mentions sed -i and > data/foo.json as prose only',
+    'EOF',
+    ')"',
+  ].join('\n');
+  assert.deepEqual(bashWriteTargets(cmd), []);
 });
 
 test('parse: `bash -c` payload bails rather than guessing (fail open)', () => {
