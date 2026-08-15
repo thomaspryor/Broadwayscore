@@ -1744,13 +1744,19 @@ const crossShowFingerprints = new Map();
           const h = crypto.createHash('md5').update(d.fullText.substring(0, 2500)).digest('hex');
           if (cv.contentHash !== h) stale = true;
         }
-        // EXCEPTION: never skip staleness for high-confidence wrongArticle findings.
-        // Hash mismatch means the text was re-fetched, but if the LLM said with high
-        // confidence "this is the wrong show", that judgment is almost always still valid
-        // (we re-fetch the same URL, which yields the same wrong page). Found in WE
-        // pre-Reddit-launch audit (2026-04-10): Matilda was rendering a TimeOut
-        // Paddington review at 100, Harry Potter rendering a David Lan play, etc.
-        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
+        // EXCEPTION: never skip staleness for high-confidence wrongArticle findings
+        // that name a DIFFERENT SHOW (hasStrongDifferentShowSignal) — that judgment
+        // is stable across a refetch (we re-fetch the same URL, which yields the same
+        // wrong page). Found in WE pre-Reddit-launch audit (2026-04-10): Matilda was
+        // rendering a TimeOut Paddington review at 100, Harry Potter rendering a David
+        // Lan play, etc. Narrowed 2026-08 (task #1404): wrongArticle also fires for
+        // "this is a preview/interview, not a review" — an articleType classification
+        // that is NOT stable across a refetch (a truncated first fetch reads as a
+        // preview; the full body reads as a review). Trusting that verdict through
+        // staleness silently suppressed 133 reviews with a stale hash and no
+        // different-show evidence at all — see audit-stale-cv-hash.js.
+        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high'
+          && hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
         if (stale && !trustWrongArticleDespiteStale) continue;
         let promoted = false;
         // Balusters CLASS 1 generalization (2026-04-22): CV.wrongProduction is advisory
@@ -2509,10 +2515,15 @@ showDirs.forEach(showId => {
           }
         }
 
-        // EXCEPTION (mirrors pre-pass): high-confidence wrongArticle is trusted even on
-        // stale CV. The hash mismatched but the LLM was right that this URL points to a
-        // different show — re-fetching the same URL almost always gives the same wrong page.
-        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
+        // EXCEPTION (mirrors pre-pass): high-confidence wrongArticle naming a
+        // DIFFERENT SHOW is trusted even on stale CV — re-fetching the same URL
+        // almost always gives the same wrong page. Narrowed (task #1404) to
+        // require hasStrongDifferentShowSignal: a bare wrongArticle verdict can
+        // also mean "preview/interview, not a review", which is NOT stable across
+        // a refetch and must not bypass the staleness guard. See pre-pass comment
+        // above and audit-stale-cv-hash.js.
+        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high'
+          && hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
         if (cvIsStale && trustWrongArticleDespiteStale) {
           cvIsStale = false;
         }
