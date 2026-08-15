@@ -90,7 +90,13 @@ async function main() {
         showTitle,
         outletName,
         criticName,
-        openingDate: c.data.publishDate,
+        // Was `openingDate: c.data.publishDate` — self-referential (compared
+        // publishDate to itself), which always fired the "reviewed on opening
+        // night" temporal hint and broke the long-runner / URL-year hints for
+        // this script (Codex adversarial review, task #1615). Use the real
+        // show opening date, and pass publishDate as its own field.
+        openingDate: showById[c.showId]?.openingDate || '',
+        publishDate: c.data.publishDate,
         market,
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.

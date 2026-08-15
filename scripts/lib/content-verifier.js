@@ -312,7 +312,8 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       wrongArticle: false,
       wrongProduction: false,
       isFilmTv: false,
-      verifiedBy: 'skip-short'
+      verifiedBy: 'skip-short',
+      urlYearConflict: null
     };
   }
 

@@ -253,6 +253,9 @@ test('verifyContent short-circuits on <200 char content regardless of API keys',
   const result = await verifyContent({ scrapedText: 'too short', showTitle: 'X', outletName: 'Y' });
   assert.equal(result.isValid, false);
   assert.equal(result.verifiedBy, 'skip-short');
+  // Documented return shape includes urlYearConflict on every path (Codex
+  // adversarial review, task #1615) — the short-circuit must not omit the key.
+  assert.equal(result.urlYearConflict, null);
 });
 
 test('heuristicVerify still flags missing show title as wrongArticle', () => {
