@@ -92,9 +92,11 @@ const { backfillMissingOutletRegions } = require('./outlet-region-map.js');
 test('backfill: fills region on a pre-existing region-less outlet with unanimous London evidence', () => {
   const outlets = { londonmumsmagazine: { displayName: 'Londonmumsmagazine', tier: 3, aliases: ['londonmumsmagazine'], domain: 'londonmumsmagazine.com' } };
   const categories = { londonmumsmagazine: new Set(['off-west-end']) };
-  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket);
+  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket, '2026-08-15T00:00:00.000Z');
   assert.deepEqual(backfilled, ['londonmumsmagazine']);
   assert.equal(outlets.londonmumsmagazine.region, 'london');
+  assert.equal(outlets.londonmumsmagazine.regionInferredBy, 'backfillMissingOutletRegions (BRO-133)');
+  assert.equal(outlets.londonmumsmagazine.regionInferredAt, '2026-08-15T00:00:00.000Z');
 });
 
 test('backfill: leaves outlets with an existing region untouched', () => {

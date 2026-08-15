@@ -2104,13 +2104,29 @@ showDirs.forEach(showId => {
       // Region-backfill evidence (BRO-133) — record BEFORE any skip/exclusion check
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
+      //
+      // Deliberately does NOT exclude wrongProduction — that's the exact flag class
+      // this backfill exists to self-heal (a region-less outlet gets wrongly flagged
+      // cross-market), so a wrongProduction file's evidence must still count. It DOES
+      // exclude content-wrongness flags (wrongShow / fabricatedEntry / isRoundupArticle)
+      // — those mean the file isn't even a genuine review of THIS show, so its
+      // showId-derived category could poison the outlet's region inference with
+      // garbage evidence (ship-check adversarial review, codex).
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        if (rawOutletForCategory && cat) {
+        const contentIsUntrustworthy = data.wrongShow === true || data.fabricatedEntry === true
+          || data.isRoundupArticle === true;
+        if (rawOutletForCategory && cat && !contentIsUntrustworthy) {
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
           // ALIASES back to an already-registered outlet's actual registry key.
+          // NOTE: this runs before the timeout→timeout-london URL-based correction and
+          // the unknown→resolved-critic outlet fill further down this loop (codex
+          // review) — a 'timeout' or 'unknown' file's evidence can undercount toward
+          // the corrected outlet. Low-impact: it's a missed-evidence gap (self-heals
+          // over later runs as other files accrue), not a wrong-region stamp, and
+          // 'unknown' is never itself a registry id that needs backfilling.
           const canonicalOutletForCategory = normalizeOutletCanonical(rawOutletForCategory);
           const canonicalId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForCategory]
             || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;

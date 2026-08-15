@@ -105,12 +105,21 @@ function inferOutletRegionFromCategories(categories, isLondonMarket) {
  * Mutates `outlets` in place (same contract as the auto-register call
  * site) and returns the list of ids that were backfilled, for logging.
  *
+ * Stamps `regionInferredBy`/`regionInferredAt` alongside `region` — this is a
+ * once-and-done inference (an outlet that already has a `region` is skipped
+ * on every future call, same as auto-registration always was), so if the
+ * evidence a stamp was based on later turns out wrong there is otherwise no
+ * record of why `region` is what it is. `region` stays the field every guard
+ * reads; the two new fields are metadata only, for a human tracing a bad
+ * stamp back to this pass (ship-check adversarial review, codex, BRO-133).
+ *
  * @param {object} outlets - outletRegistry.outlets (mutated in place)
  * @param {Record<string, Set<string>|string[]>} outletShowCategories - outlet id -> show categories it's been reviewed under
  * @param {(cat: string) => boolean} isLondonMarket
+ * @param {string} [nowIso] - injectable clock for tests; defaults to new Date().toISOString()
  * @returns {string[]} ids that were backfilled with region:'london'
  */
-function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket) {
+function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso) {
   const backfilled = [];
   for (const [id, info] of Object.entries(outlets || {})) {
     if (!info || info.region || info.isDualMarket) continue;
@@ -118,6 +127,8 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
       [...(outletShowCategories[id] || [])], isLondonMarket);
     if (inferredRegion) {
       info.region = inferredRegion;
+      info.regionInferredBy = 'backfillMissingOutletRegions (BRO-133)';
+      info.regionInferredAt = nowIso || new Date().toISOString();
       backfilled.push(id);
     }
   }
