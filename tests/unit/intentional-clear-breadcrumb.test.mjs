@@ -146,12 +146,112 @@ test('restore decision: intentional clear is NOT reverted; data-loss IS', () => 
   assert.equal(wouldRestore('wrongProduction', { wrongProduction: false }, committed), false);
 });
 
-test('every CLEAR_BREADCRUMBS key is an actual PROTECTED_FIELD', () => {
-  // A breadcrumb for a non-protected field would be dead code — the restore loop
-  // only iterates PROTECTED fields, so the exception could never fire.
+// ── Which loop can actually consume a breadcrumb? (BRO-1624 follow-up) ──
+//
+// The original form of the test below asserted that EVERY CLEAR_BREADCRUMBS key
+// must be in PROTECTED_FIELDS, on the premise that "the restore loop only
+// iterates PROTECTED fields". That premise is true of only SOME consumers.
+// There are two structurally different loops, and they differ in what they
+// iterate:
+//
+//   LOOP 1 — "preserve" (review-write-guard.js safeWriteReview, ~line 1005) and
+//     the git-level push-restore (.github/actions/push-review-texts/action.yml
+//     ~line 166) and checkForDataLoss (~line 1359). These iterate
+//     getEffectiveProtectedFields(existing) / PROTECTED_FIELDS ∪ ACTION_EXTRA —
+//     i.e. PROTECTED fields only. A breadcrumb for an unprotected field is
+//     unreachable here.
+//
+//   LOOP 2 — "merge" (review-write-guard.js safeWriteReview, ~line 1053):
+//     `for (const [key, val] of Object.entries(existing))` — EVERY key already
+//     on disk, protected or not — and it consults clearHonored(key) →
+//     isIntentionalClear. A breadcrumb IS meaningful here for an unprotected
+//     field: without it, a write that deletes the key gets it merged straight
+//     back from disk.
+//
+// So the correct invariant is not "breadcrumb ⇒ protected" but "breadcrumb ⇒
+// reachable by at least one loop, and deliberately classified". Unprotected
+// breadcrumb keys are allowlisted below so adding a new one stays a conscious
+// decision rather than an accident.
+//
+// duplicateTextOf is deliberately NOT protected. It cannot be promoted into
+// PROTECTED_FIELDS, because scripts/backfill-review-flags.js (~line 207) deletes
+// a stale duplicateTextOf WITHOUT stamping duplicateClearReason, and
+// .github/workflows/weekly-integrity.yml runs it weekly and then pushes through
+// push-review-texts. Protecting the field would make the git-level restore
+// resurrect the pointer that cleanup just removed — turning the weekly stale-
+// pointer sweep into a permanent no-op, which is precisely the
+// "Protected-N-from-data-loss, pushed nothing" failure the action.yml comment
+// block describes for the original stale-duplicateOf incident.
+const MERGE_PATH_ONLY_BREADCRUMBS = new Set(['duplicateTextOf']);
+
+test('every CLEAR_BREADCRUMBS key is reachable by a loop that consults it', () => {
   for (const field of Object.keys(CLEAR_BREADCRUMBS)) {
+    if (MERGE_PATH_ONLY_BREADCRUMBS.has(field)) {
+      // Allowlisted: reachable via LOOP 2 only. Assert the classification is
+      // honest — if someone later protects it, the allowlist entry is stale and
+      // must be removed rather than left to rot.
+      assert.ok(!PROTECTED_FIELDS.includes(field),
+        `'${field}' is allowlisted as merge-path-only but IS in PROTECTED_FIELDS — drop it from MERGE_PATH_ONLY_BREADCRUMBS`);
+      continue;
+    }
     assert.ok(PROTECTED_FIELDS.includes(field),
-      `CLEAR_BREADCRUMBS has '${field}' but it is not in PROTECTED_FIELDS`);
+      `CLEAR_BREADCRUMBS has '${field}' but it is not in PROTECTED_FIELDS (and is not allowlisted as merge-path-only)`);
+  }
+});
+
+test('merge-path-only breadcrumbs are NOT relied on by the push-restore path', () => {
+  // Documents the limitation of the allowlist: LOOP 1 (the git-level restore)
+  // never iterates these fields, so wouldRestore() — which mirrors LOOP 1 — is
+  // structurally unable to protect them either way. This is the trade-off
+  // accepted above, asserted so it is visible rather than assumed.
+  for (const field of MERGE_PATH_ONLY_BREADCRUMBS) {
+    assert.ok(!PROTECTED_FIELDS.includes(field),
+      `${field} must stay unprotected for the weekly stale-pointer sweep to work`);
+  }
+});
+
+test('BRO-1624 regression: a merge-path-only breadcrumb actually suppresses the merge-back', async () => {
+  // Behavioural lock, not a shape assertion. Deleting the duplicateTextOf entry
+  // from CLEAR_BREADCRUMBS makes this test fail — which is the point: the entry
+  // is load-bearing even though the field is unprotected, so "it's not in
+  // PROTECTED_FIELDS, therefore it's dead code" must never be acted on again.
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const { safeWriteReview } = require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
+
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'dtof-breadcrumb-'));
+  try {
+    const showDir = path.join(tmp, 'some-show-2026');
+    fs.mkdirSync(showDir, { recursive: true });
+    const file = path.join(showDir, 'variety--jane-doe.json');
+    // The sibling must EXIST, or safeWriteReview's dangling-pointer self-heal
+    // deletes duplicateTextOf for an unrelated reason and the test proves nothing.
+    fs.writeFileSync(path.join(showDir, 'nyt--x.json'),
+      JSON.stringify({ outlet: 'NYT', url: 'https://nyt.com/x', fullText: 'text' }));
+
+    const onDisk = {
+      outlet: 'Variety', critic: 'Jane Doe', url: 'https://variety.com/a',
+      fullText: 'text', duplicateTextOf: 'nyt--x.json',
+    };
+
+    // (a) delete WITH the breadcrumb → the clear sticks.
+    fs.writeFileSync(file, JSON.stringify(onDisk));
+    safeWriteReview(file, {
+      outlet: 'Variety', critic: 'Jane Doe', url: 'https://variety.com/a', fullText: 'text',
+      duplicateClearReason: 'audit-duplicate-of-url-mismatch --fix: url mismatch',
+    });
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).duplicateTextOf, undefined,
+      'a stamped delete of duplicateTextOf must survive the merge loop');
+
+    // (b) delete WITHOUT a breadcrumb → data-loss protection restores it.
+    fs.writeFileSync(file, JSON.stringify(onDisk));
+    safeWriteReview(file, {
+      outlet: 'Variety', critic: 'Jane Doe', url: 'https://variety.com/a', fullText: 'text',
+    });
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).duplicateTextOf, 'nyt--x.json',
+      'an unstamped delete of duplicateTextOf must be merged back (data-loss protection)');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
