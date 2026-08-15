@@ -1,15 +1,44 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useEffect, useRef, useState, FormEvent } from 'react';
+import { getFirstInvalidField } from '@/lib/feedback-form-validation';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function FeedbackForm({ endpoint }: { endpoint: string }) {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [focusField, setFocusField] = useState<string | null>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const submittingRef = useRef(false);
+
+  // Runs after the invalid field's aria-invalid/aria-describedby have committed to the
+  // DOM, so a screen reader focusing the field picks up the error association immediately
+  // instead of racing a synchronous focus() call against React's render.
+  useEffect(() => {
+    if (!focusField) return;
+    const target = focusField === 'email' ? emailRef.current : focusField === 'category' ? categoryRef.current : focusField === 'message' ? messageRef.current : null;
+    target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target?.focus();
+    setFocusField(null);
+  }, [focusField]);
+
+  function clearFieldError(name: string) {
+    setFieldErrors((prev) => {
+      if (!(name in prev)) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (submittingRef.current) return;
 
     if (!endpoint) {
       setStatus('error');
@@ -17,11 +46,27 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
       return;
     }
 
-    setStatus('submitting');
-    setErrorMessage('');
-
     const form = e.currentTarget;
     const data = new FormData(form);
+
+    const invalidField = getFirstInvalidField({
+      email: String(data.get('email') || ''),
+      category: String(data.get('category') || ''),
+      message: String(data.get('message') || ''),
+    });
+
+    if (invalidField) {
+      setFieldErrors({ [invalidField.name]: invalidField.message });
+      setFocusField(invalidField.name);
+      setStatus('idle');
+      setErrorMessage('');
+      return;
+    }
+
+    setFieldErrors({});
+    setStatus('submitting');
+    setErrorMessage('');
+    submittingRef.current = true;
 
     try {
       const res = await fetch(endpoint, {
@@ -41,6 +86,8 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
     } catch {
       setStatus('error');
       setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      submittingRef.current = false;
     }
   }
 
@@ -65,7 +112,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
   const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {/* Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
@@ -89,9 +136,16 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
           type="email"
           id="email"
           name="email"
-          className={inputClasses}
+          ref={emailRef}
+          className={`${inputClasses} ${fieldErrors.email ? 'border-red-500 ring-2 ring-red-500/50' : ''}`}
           placeholder="your.email@example.com"
+          aria-invalid={fieldErrors.email ? true : undefined}
+          aria-describedby="email-error"
+          onChange={() => clearFieldError('email')}
         />
+        <p id="email-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
+          {fieldErrors.email}
+        </p>
         <p className="mt-1 text-xs text-gray-500/70">
           Only if you&apos;d like a response
         </p>
@@ -100,14 +154,19 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
       {/* Category */}
       <div>
         <label htmlFor="category" className="block text-sm font-semibold text-gray-200 mb-2">
-          Category
+          Category <span className="text-red-500">*</span>
         </label>
         <select
           id="category"
           name="category"
-          className={inputClasses}
+          ref={categoryRef}
           required
+          aria-required="true"
+          className={`${inputClasses} ${fieldErrors.category ? 'border-red-500 ring-2 ring-red-500/50' : ''}`}
+          aria-invalid={fieldErrors.category ? true : undefined}
+          aria-describedby="category-error"
           defaultValue=""
+          onChange={() => clearFieldError('category')}
         >
           <option value="" disabled>Select a category...</option>
           <option value="bug">Bug Report</option>
@@ -116,6 +175,9 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
           <option value="praise">Praise</option>
           <option value="other">Other</option>
         </select>
+        <p id="category-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
+          {fieldErrors.category}
+        </p>
       </div>
 
       {/* Show */}
@@ -143,11 +205,19 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
         <textarea
           id="message"
           name="message"
+          ref={messageRef}
           rows={6}
-          className={inputClasses}
-          placeholder="Tell us more..."
           required
+          aria-required="true"
+          className={`${inputClasses} ${fieldErrors.message ? 'border-red-500 ring-2 ring-red-500/50' : ''}`}
+          placeholder="Tell us more..."
+          aria-invalid={fieldErrors.message ? true : undefined}
+          aria-describedby="message-error"
+          onChange={() => clearFieldError('message')}
         />
+        <p id="message-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
+          {fieldErrors.message}
+        </p>
       </div>
 
       {/* Honeypot */}
