@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: c02b66da-16e5-4e04-830b-535890fdfa5f
-  modified: 2026-08-15T04:00:03.481Z
+  modified: 2026-08-15T04:00:09.726Z
 ---
 
 6 of 16 regional shows in shows.json have zero audience-buzz coverage (no Mezzanine, no Reddit), clustered at exactly 3 venues:
@@ -20,5 +20,3 @@ Confirmed 2026-08-15 by directly re-running both scrapers against The Outsiders 
 **This is NOT a pipeline coverage-sweep gap.** The weekly Mezzanine cron (`update-mezzanine.yml`) already runs against every show in shows.json including all regional-category entries, and has its own built-in near-miss title-drift audit (`data/audit/mezzanine-coverage.json`). The gap is upstream: these specific venues have no audience-rating platform we track. Not worth building bespoke scraper infrastructure for ~6 small-house tryout productions.
 
 Do not re-investigate this as a bug if it's flagged again (e.g. via a feedback-form submission) — re-verify with a direct `--shows=` scraper dispatch if the show list has changed, but expect the same result for shows at these 3 venues.
-
-Related tangent found the same day: [[feedback_theatr_coverage_audit_market_filter]] (Theatr coverage-audit false positives on West End shows — separate bug, already fixed 2026-08-13, unrelated to this gap).
