@@ -1694,7 +1694,17 @@ function normalizeUrl(url) {
     // file's url on every poller run, wiping llmScore/fullText/aggregatorStars
     // via applyUrlChangeInvariant on each flip (data/review-texts/jesus-christ-
     // superstar-west-end-2026 had to be manually urlVerified-pinned to stop it).
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful)=[^&]*/g, '')
+    // gaa_(at|n|ts|sig) (BRO-121 cousin, found via /what-else on the
+    // loginsuccessful fix): Google's "Grant Access via Google" cross-domain
+    // paywall-bypass tokens appear on WSJ urls and are CRYPTOGRAPHICALLY
+    // SIGNED per-grant — never stable across two fetches of the same article.
+    // 173 corpus files carry one; at least one (meteor-shower-2017/wsj--terry-
+    // teachout.json) was found already wiped (llmScore gone, _urlChangedClear
+    // set) from this exact class of ping-pong. Enumerated (not a gaa_\w+
+    // wildcard, per codex adversarial review) — these are the 4 known keys
+    // Google's protocol emits; an open wildcard risks stripping a genuinely
+    // meaningful gaa_* param on some other, unrelated site.
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig))=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
     // Re-strip trailing slashes: the first strip (above) runs before the

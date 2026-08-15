@@ -3742,6 +3742,40 @@ function blocksRediscovery(data, show) { // eslint-disable-line no-unused-vars
   return isRetrieved(data);
 }
 
+/**
+ * Is this review file's content trustworthy enough to use as EVIDENCE for
+ * inference (outlet-region backfill, registry stats, etc.) — as opposed to
+ * "is it includable in reviews.json" (that's explainExclusion, which is
+ * heavier-weight and requires a show object).
+ *
+ * Extracted from rebuild-all-reviews.js's BRO-133 region-backfill evidence
+ * collector after two rounds of ship-check review found real omissions in a
+ * hand-derived inline version of this filter. Deliberately excludes
+ * wrongProduction UNCONDITIONALLY (not scoped to a specific wrongProduction
+ * cause): an earlier version that kept counting wrongProduction:true
+ * evidence produced 16 confirmed false positives — US regional outlets
+ * (Entertainment Tonight, Edmonton Journal, KUTV, etc.) misfiled under a
+ * title-collision show got mis-stamped region:'london', because there is no
+ * cheap way to distinguish "wrongProduction because a cross-market guard
+ * fired" from "wrongProduction because it's a different show entirely" from
+ * data fields alone. Mirrors the same unconditional wrongProduction/wrongShow
+ * exclusion already used by hasIndependentExcerptScore (above) — not a novel
+ * design choice for this file.
+ *
+ * Pure — no I/O. @see hasIndependentExcerptScore @see explainExclusion
+ * @param {object} data - review-text JSON
+ * @returns {boolean}
+ */
+function isReviewContentTrustworthy(data) {
+  if (!data) return false;
+  return !(
+    data.wrongProduction === true ||
+    data.wrongShow === true ||
+    data.fabricatedEntry === true ||
+    data.isRoundupArticle === true
+  );
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -3805,6 +3839,7 @@ module.exports = {
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,
+  isReviewContentTrustworthy,
   hasValidScore,
   hasAggregatorExcerpt,
   NON_REVIEW_REJECTION_REASONS,

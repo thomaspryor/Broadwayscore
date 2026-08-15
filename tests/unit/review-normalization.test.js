@@ -911,6 +911,29 @@ describe('normalizeUrl', () => {
     );
   });
 
+  // BRO-121 cousin (found via /what-else): WSJ articles cited with Google's
+  // "Grant Access via Google" cross-domain paywall-bypass tokens
+  // (gaa_at/gaa_n/gaa_ts/gaa_sig). These are cryptographically signed
+  // per-grant and never stable across two fetches of the same article — 173
+  // corpus files carry one, at least one already found sitting wiped from
+  // this exact ping-pong pattern.
+  test('strips gaa_* Google grant-access paywall tokens (WSJ)', () => {
+    assert.strictEqual(
+      normalizeUrl('https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98?gaa_at=eafs&gaa_n=AWEtsqce2FTvgiSgCcEnVwQdmm3MbLeX3Yn0l0Gx2l_IVOC8a-SP1le6TBvMeM4ydQ%3D%3D&gaa_ts=6973946c&gaa_sig=sGnFOu6zuIujie7_hZKdtN7CRQrWGvhoLuRGNVe'),
+      normalizeUrl('https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98')
+    );
+  });
+
+  // Codex adversarial review (BRO-121 gaa_* follow-up): the strip is scoped
+  // to the 4 enumerated Google grant-access keys, not a gaa_\w+ wildcard —
+  // an unrelated gaa_mode param on some other site must survive.
+  test('does NOT strip a gaa_-prefixed param outside the 4 known Google grant-access keys', () => {
+    assert.strictEqual(
+      normalizeUrl('https://example.com/page?gaa_mode=preview'),
+      'example.com/page?gaa_mode=preview'
+    );
+  });
+
   test('lowercases the URL', () => {
     assert.strictEqual(
       normalizeUrl('HTTPS://WWW.EXAMPLE.COM/Page'),
