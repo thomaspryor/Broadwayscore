@@ -42,7 +42,22 @@
  *   node scripts/audit-sibling-title-misroute.js --show=ID        # one show
  *   node scripts/audit-sibling-title-misroute.js --fix            # apply
  *   node scripts/audit-sibling-title-misroute.js --json
- *   node scripts/audit-sibling-title-misroute.js --strict --max=0 # CI gate
+ *   node scripts/audit-sibling-title-misroute.js --strict         # CI gate
+ *   node scripts/audit-sibling-title-misroute.js --update-baseline # freeze current hits
+ *
+ * --strict fails ONLY on a hit not already in the baseline (data/audit/
+ * sibling-title-misroute-baseline.json), not on a raw reroute+ambiguous
+ * count ceiling. A plain count ceiling would mask a genuinely new misroute
+ * the same run in which one of the known baseline hits happens to get
+ * hand-fixed (count stays flat), and would give zero headroom for
+ * classifyMarketRouting's own documented heuristic disagreements (date-only
+ * Tier-1 signal vs an explicit URL market marker) to flap CI on an unrelated
+ * push — the same class of flap audit-contradicted-flag-basis.js's --max
+ * headroom and audit-direct-provider-calls.js's baseline file both exist to
+ * prevent. Identity-based diffing (mirrors audit-direct-provider-calls.js:
+ * freeze known offenders by key, fail only on a key outside that set) avoids
+ * both failure modes. --update-baseline is a manual, supervised operation
+ * (same posture as --fix) — never run from CI.
  */
 'use strict';
 
@@ -50,17 +65,39 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
-const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const BASELINE_PATH = path.join(__dirname, '..', 'data', 'audit', 'sibling-title-misroute-baseline.json');
 
 const ARGV = process.argv.slice(2);
 const FIX = ARGV.includes('--fix');
 const JSON_OUT = ARGV.includes('--json');
 const STRICT = ARGV.includes('--strict');
+const UPDATE_BASELINE = ARGV.includes('--update-baseline');
 const showArg = ARGV.find(a => a.startsWith('--show='));
 const ONLY_SHOW = showArg ? showArg.replace('--show=', '').trim() : null;
+
+// Stable identity for baseline diffing — type+showId+file+targetShowId.
+// targetShowId is included so a RECLASSIFICATION of an already-baselined file
+// (e.g. a third same-title sibling later added, shifting classifyMarketRouting's
+// verdict to a different target) still trips as new, rather than silently
+// riding the old key. Same coarser granularity as audit-direct-provider-calls.js
+// (keys by file) otherwise — a rename of the underlying review file drops out
+// of the baseline like that precedent too; accepted tradeoff, documented there.
+function hitKey(h) {
+  return `${h.type}:${h.showId}:${h.file}:${h.targetShowId || ''}`;
+}
+
+function loadBaselineKeys() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+    return new Set(Array.isArray(raw.hits) ? raw.hits.map(hitKey) : []);
+  } catch {
+    return new Set();
+  }
+}
 
 // Mirrors review-file-writer.js's humanCleared check — never override an
 // explicit human decision, whichever direction it went.
@@ -118,9 +155,6 @@ function loadShows() {
 }
 
 function main() {
-  let MAX;
-  if (STRICT) MAX = parseMaxArgOrExit(ARGV, { scriptName: 'audit-sibling-title-misroute' });
-
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     console.error(`✗ review-texts not found at ${REVIEW_TEXTS_DIR} (worktree without data symlinks?)`);
     process.exit(2);
@@ -181,9 +215,28 @@ function main() {
     }
   }
 
+  // Must run after the scan completes but before any exit decision — a
+  // missing/empty review-texts checkout scans 0 files and would otherwise
+  // report a false-clean pass (task #1069 vacuous-gate class). Gated on
+  // STRICT/UPDATE_BASELINE only: a plain report run has nothing to gate.
+  assertCorpusScanned(scanned, { gate: STRICT || UPDATE_BASELINE });
+
   const rerouteHits = hits.filter(h => h.type === 'reroute');
   const ambiguousHits = hits.filter(h => h.type === 'ambiguous');
   const rejectHits = hits.filter(h => h.type === 'reject');
+
+  if (UPDATE_BASELINE) {
+    const baseline = {
+      generatedAt: new Date().toISOString().slice(0, 10),
+      hits: [...rerouteHits, ...ambiguousHits].map(h => ({
+        type: h.type, showId: h.showId, file: h.file, targetShowId: h.targetShowId || null,
+      })),
+    };
+    fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+    fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    console.log(`✅ Baseline updated: ${baseline.hits.length} known sibling-title misroute hit(s) (${BASELINE_PATH})`);
+    return;
+  }
 
   if (FIX) {
     for (const h of rerouteHits) {
@@ -259,10 +312,17 @@ function main() {
     if (FIX) console.log(`\n✓ Applied fixes to ${rerouteHits.filter(h => h.applied).length + ambiguousHits.filter(h => h.applied).length} file(s).`);
   }
 
-  const total = rerouteHits.length + ambiguousHits.length;
-  if (STRICT && total > MAX && !FIX) {
-    console.error(`\n✗ STRICT: ${total} unhandled sibling-title misroute(s) > baseline ${MAX}.`);
-    process.exit(1);
+  if (STRICT && !FIX) {
+    const baselineKeys = loadBaselineKeys();
+    const newHits = [...rerouteHits, ...ambiguousHits].filter(h => !baselineKeys.has(hitKey(h)));
+    if (newHits.length > 0) {
+      console.error(`\n✗ STRICT: ${newHits.length} sibling-title misroute(s) NOT in baseline (${BASELINE_PATH}):`);
+      for (const h of newHits) {
+        console.error(`    [${h.type}] ${h.showId}${h.targetShowId ? ` -> ${h.targetShowId}` : ''}  ${h.file}  (${h.reason})`);
+      }
+      console.error(`  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.`);
+      process.exit(1);
+    }
   }
 }
 
