@@ -300,7 +300,7 @@ async function callWithFallback(prompt) {
  * @param {string} [params.url] - Review URL. Used to surface URL-year-vs-publishDate conflicts
  *   to the LLM (issue #4). Per CLAUDE.md rule 3 the URL year is not authoritative but it's a
  *   useful signal when publishDate disagrees by multiple years.
- * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
+ * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy, urlYearConflict }
  */
 async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, show }) {
   if (!scrapedText || scrapedText.length < 200) {
@@ -316,6 +316,107 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     };
   }
 
+  const { prompt, urlYearConflict } = buildVerificationPrompt({
+    scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url
+  });
+
+  const result = await callWithFallback(prompt);
+
+  if (!result) {
+    // No LLM providers available — fall back to heuristics
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+  }
+
+  try {
+    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      let wpFlag = parsed.wrongProduction || false;
+      let wpConfidence = parsed.confidence || 'medium';
+      let wpReasoning = parsed.reasoning || '';
+
+      // Temporal proximity guards — pure logic lives in review-guards.js (testable in isolation).
+      // Call site keeps logging and wpReasoning annotation so CI output remains informative.
+      let filmTvFlag = parsed.isFilmTv || false;
+      let filmTvConfidence = parsed.confidence || 'medium';
+      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
+        issues: parsed.issues,
+        reasoning: parsed.reasoning,
+        show,
+        fullText: scrapedText,
+      });
+      if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
+        console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
+      }
+      if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
+        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
+      }
+      if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
+        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        filmTvConfidence = 'low';
+      }
+      wpConfidence = temporalOverrides.wpConfidence;
+      filmTvFlag = temporalOverrides.filmTvFlag;
+
+      // Festival-venue carve-out (R&J Delacorte 2026-06-15): the Public
+      // Theater's Delacorte / Shakespeare-in-the-Park stage is filed off-broadway
+      // here. The LLM keeps treating "not an Off-Broadway venue" as wrongProduction
+      // and/or isValid=false on correctly-attributed reviews. Neutralize a
+      // venue-only objection deterministically so it can't drop a legit review.
+      let isValid = parsed.isValid ?? true;
+      const venueCarve = applyVenueClassificationCarveout(
+        { wrongProduction: wpFlag, isValid, issues: parsed.issues || [], reasoning: parsed.reasoning || '' },
+        show
+      );
+      if (venueCarve.venueCarveoutApplied) {
+        const parts = [];
+        if (venueCarve.clearedWrongProduction) parts.push('wrongProduction→false');
+        if (venueCarve.restoredValidity) parts.push('isValid→true');
+        console.log(`    ✓ Festival-venue carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
+        wpFlag = venueCarve.wrongProduction;
+        isValid = venueCarve.isValid;
+      }
+
+      if (urlYearConflict) {
+        console.log(`    ⚠ URL-year/publishDate conflict: URL says ${urlYearConflict.urlYear}, publishDate says ${urlYearConflict.publishYear} (${urlYearConflict.gapYears}yr gap)`);
+      }
+
+      return {
+        isValid,
+        confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
+        issues: parsed.issues || [],
+        truncated: parsed.truncated || false,
+        wrongArticle: parsed.wrongArticle || false,
+        articleType: parsed.articleType || 'review',
+        articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
+        wrongProduction: wpFlag,
+        isFilmTv: filmTvFlag,
+        reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
+        verifiedBy: `llm:${result.provider}`,
+        contentHash: contentHash(scrapedText),
+        urlYearConflict
+      };
+    }
+
+    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+
+  } catch (error) {
+    console.error(`    LLM verify parse error: ${error.message}`);
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+  }
+}
+
+/**
+ * Pure prompt-builder for verifyContent — no network calls, so it's directly
+ * unit-testable (content-verifier.test.mjs) without mocking LLM providers.
+ *
+ * @returns {{ prompt: string, urlYearConflict: {urlYear: number, publishYear: number, gapYears: number}|null }}
+ */
+function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url }) {
   // Market-aware prompt construction
   const effectiveMarket = market || 'broadway';
   const marketConfig = {
@@ -468,10 +569,13 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   // Issue #4 of Notion 34c637c5-416f-812b.
   let urlYearHint = '';
   const urlYear = _extractUrlYear(url);
+  let urlYearConflict = null;
   if (urlYear && publishDate) {
     const pubYear = new Date(publishDate).getFullYear();
     if (Number.isFinite(pubYear) && Math.abs(pubYear - urlYear) >= 3) {
-      urlYearHint = `\n\n**URL-YEAR / PUBLISHDATE CONFLICT**: The review URL path contains "/${urlYear}/" but the stored publishDate is ${publishDate} (year ${pubYear}) — a ${Math.abs(pubYear - urlYear)}-year gap. This often happens when the outlet recrawls / republishes an older article and the metadata date gets updated while the URL slug preserves the original publication year. Treat the URL year as ONE signal, not authoritative. If the review text itself reads as contemporary to the ${urlYear} opening of the production, the URL year is probably correct. Do NOT flag wrongProduction based solely on the publishDate being far from openingDate when this conflict is present.`;
+      const gapYears = Math.abs(pubYear - urlYear);
+      urlYearConflict = { urlYear, publishYear: pubYear, gapYears };
+      urlYearHint = `\n\n**URL-YEAR / PUBLISHDATE CONFLICT**: The review URL path contains "/${urlYear}/" but the stored publishDate is ${publishDate} (year ${pubYear}) — a ${gapYears}-year gap. This often happens when the outlet recrawls / republishes an older article and the metadata date gets updated while the URL slug preserves the original publication year. Treat the URL year as ONE signal, not authoritative. If the review text itself reads as contemporary to the ${urlYear} opening of the production, the URL year is probably correct. Do NOT flag wrongProduction based solely on the publishDate being far from openingDate when this conflict is present.`;
     }
   }
 
@@ -560,89 +664,7 @@ ${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:
 
 Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}${urlYearHint}`;
 
-  const result = await callWithFallback(prompt);
-
-  if (!result) {
-    // No LLM providers available — fall back to heuristics
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-  }
-
-  try {
-    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      let wpFlag = parsed.wrongProduction || false;
-      let wpConfidence = parsed.confidence || 'medium';
-      let wpReasoning = parsed.reasoning || '';
-
-      // Temporal proximity guards — pure logic lives in review-guards.js (testable in isolation).
-      // Call site keeps logging and wpReasoning annotation so CI output remains informative.
-      let filmTvFlag = parsed.isFilmTv || false;
-      let filmTvConfidence = parsed.confidence || 'medium';
-      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
-        issues: parsed.issues,
-        reasoning: parsed.reasoning,
-        show,
-        fullText: scrapedText,
-      });
-      if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
-        console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
-      }
-      if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
-        console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
-        wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
-      }
-      if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
-        console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
-        filmTvConfidence = 'low';
-      }
-      wpConfidence = temporalOverrides.wpConfidence;
-      filmTvFlag = temporalOverrides.filmTvFlag;
-
-      // Festival-venue carve-out (R&J Delacorte 2026-06-15): the Public
-      // Theater's Delacorte / Shakespeare-in-the-Park stage is filed off-broadway
-      // here. The LLM keeps treating "not an Off-Broadway venue" as wrongProduction
-      // and/or isValid=false on correctly-attributed reviews. Neutralize a
-      // venue-only objection deterministically so it can't drop a legit review.
-      let isValid = parsed.isValid ?? true;
-      const venueCarve = applyVenueClassificationCarveout(
-        { wrongProduction: wpFlag, isValid, issues: parsed.issues || [], reasoning: parsed.reasoning || '' },
-        show
-      );
-      if (venueCarve.venueCarveoutApplied) {
-        const parts = [];
-        if (venueCarve.clearedWrongProduction) parts.push('wrongProduction→false');
-        if (venueCarve.restoredValidity) parts.push('isValid→true');
-        console.log(`    ✓ Festival-venue carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
-        wpFlag = venueCarve.wrongProduction;
-        isValid = venueCarve.isValid;
-      }
-
-      return {
-        isValid,
-        confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
-        issues: parsed.issues || [],
-        truncated: parsed.truncated || false,
-        wrongArticle: parsed.wrongArticle || false,
-        articleType: parsed.articleType || 'review',
-        articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
-        wrongProduction: wpFlag,
-        isFilmTv: filmTvFlag,
-        reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
-        verifiedBy: `llm:${result.provider}`,
-        contentHash: contentHash(scrapedText)
-      };
-    }
-
-    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-
-  } catch (error) {
-    console.error(`    LLM verify parse error: ${error.message}`);
-    return heuristicVerify({ scrapedText, excerpt, showTitle });
-  }
+  return { prompt, urlYearConflict };
 }
 
 // ============================================================
@@ -805,6 +827,13 @@ module.exports = {
   contentHash,
   shouldDeferCvWrongShow,
   resolveCvMarket,
+  // Pure prompt-builder, exported so WE long-runner CV hardening issues #2-#4
+  // (venue aliases, long-runner hint, URL-year conflict) are directly
+  // unit-testable without mocking the LLM call. See card 34c637c5-416f-812b.
+  buildVerificationPrompt,
+  // Pure prompt-builder, exported for unit testing (content-verifier.test.mjs)
+  // without mocking LLM providers — see verifyContent's doc comment.
+  buildVerificationPrompt,
   // Generic prompt→text providers, exported so other verifiers (e.g. the
   // slug-misroute content check) can run multi-model agreement without
   // duplicating the HTTPS plumbing. Each takes a prompt string, returns a
