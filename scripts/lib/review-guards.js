@@ -1486,8 +1486,15 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
  * Shared staleness check: has fullText changed since contentVerification ran?
  * Extracted from rebuild-all-reviews.js's inline main-loop computation so
  * callers outside the rebuild loop (flag-contradiction.js's --fix dispatch)
- * can gate on the SAME staleness definition instead of re-deriving a looser
- * one (BRO-168 second-opinion review, 2026-08-14).
+ * can gate on the same two staleness signals instead of re-deriving a looser
+ * one (BRO-168 second-opinion review, 2026-08-14). NOT a full port: the
+ * rebuild loop also has a `trustWrongArticleDespiteStale` exception (a
+ * hash-mismatch is still trusted when cv.wrongArticle===true at high
+ * confidence — rebuild-all-reviews.js ~2470-2476) that this helper omits.
+ * Harmless for isStaleCvPromotedWrongShow's own caller (its separate
+ * `cv.wrongArticle === true` gate makes the omission unobservable), but a
+ * future caller relying on this function alone should not assume parity with
+ * the rebuild loop's exact behavior.
  *
  * @param {object} data - Review-text JSON
  * @returns {boolean} true when the fullText postdates the CV verdict, or the
@@ -1561,12 +1568,37 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
   if (!data || data.wrongShow !== true) return false;
   if (cvIsStale) return false;
 
-  // Provenance gate: only self-heal wrongShow flags that a rebuild CV-promotion
-  // pass itself stamped. Never touch wrongShow set by unrelated guards (cross-
-  // show-URL collision audits, combined-review detection, manual classification,
-  // etc.) — those don't stamp contentVerificationPromoted and carry their own
-  // (non-CV) reasoning that a CV record disagreeing does not invalidate.
+  // Provenance gate, part 1: contentVerificationPromoted must be present.
   if (!data.contentVerificationPromoted) return false;
+
+  // Provenance gate, part 2 (Codex adversarial review, 2026-08-14 — the
+  // original part-1-only gate was a real bug, not just a documented risk).
+  // contentVerificationPromoted is a SHARED, flag-unscoped stamp: the exact
+  // same template string is written by wrongProduction, wrongShow,
+  // isNonReview, AND film/TV promotions alike (rebuild-all-reviews.js
+  // ~2506/2552/1780/1851), so its mere presence does NOT prove it explains why
+  // wrongShow is CURRENTLY true. A live corpus scan found 500 files where
+  // wrongShow=true was set by an entirely unrelated writer — audit-cross-
+  // show-url-collisions.js, classify-wrong-show.js's LLM classifier, or the
+  // collect-review-texts.js collector — while a stale contentVerification
+  // Promoted stamp from an EARLIER, unrelated promotion event on the same
+  // file sat untouched (those writers overwrite/preserve wrongShowReason but
+  // never clear the old breadcrumb). Left as part 1 alone, the self-heal would
+  // clear a correctly-set, CV-unrelated wrongShow flag purely because of that
+  // leftover stamp.
+  //
+  // Fix: require wrongShowReason, when present, to itself be CV-promotion
+  // language. Absent is fine — the girl-interrupted-off-broadway-2026 real
+  // case (task #1021) that motivated this predicate has no wrongShowReason at
+  // all. This deliberately also declines the wrongShowReason-FALLBACK
+  // promotion path (rebuild-all-reviews.js:2563-2578, whose
+  // contentVerificationPromoted reads "...fallback (stale cv)") — that path's
+  // wrongShowReason is whatever pre-existing text (often the collector's own
+  // words) triggered it, which is exactly as ambiguous as the bug just found,
+  // so it stays on the slower audit/manual path rather than risk the same
+  // false-clear.
+  const reason = data.wrongShowReason;
+  if (reason != null && !/^CV-promoted:|^CV-promoted \(film\/TV\):/.test(String(reason))) return false;
 
   // Never re-touch a human/manual decision (and avoid no-op churn).
   if (wrongShowCleared(data)) return false;
