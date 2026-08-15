@@ -47,8 +47,20 @@ function baseSlug(showId) {
  * reroute was silently re-duplicated back into the regional show's dir).
  */
 function areSameTitleSiblings(idA, idB, siblingIndex) {
-  const data = siblingIndex.get(idA);
-  return !!(data && Array.isArray(data.siblings) && data.siblings.some((s) => s.id === idB));
+  const dataA = siblingIndex.get(idA);
+  if (dataA && Array.isArray(dataA.siblings) && dataA.siblings.some((s) => s.id === idB)) return true;
+  // Checked both directions on purpose — not just belt-and-suspenders.
+  // buildSiblingIndex() (market-routing.js) drops a show from its
+  // counterpart's .siblings array via .filter(x => x.year || x.openingDate),
+  // so a sibling with neither a -YYYY-suffixed id NOR an openingDate set is
+  // invisible from the OTHER side's list even though the reverse direction
+  // still finds it — an asymmetric relation that would silently reintroduce
+  // the exact re-duplication bug this function exists to prevent for any
+  // newly-tracked/provisional sibling show missing both signals (code-review
+  // finding, 2026-08-15; dormant today only because current shows.json is
+  // 100% year-suffixed).
+  const dataB = siblingIndex.get(idB);
+  return !!(dataB && Array.isArray(dataB.siblings) && dataB.siblings.some((s) => s.id === idA));
 }
 
 /**
