@@ -16,23 +16,50 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
-    const urls = body.urls;
-    if (Array.isArray(urls) && urls.length) await del(urls);
-    return res.status(200).json({ deleted: Array.isArray(urls) ? urls.length : 0 });
+    const urls = Array.isArray(body.urls) ? body.urls : [];
+    // Deleting is authenticated, but the bearer should still only be able to
+    // reach this queue — not every blob in the store.
+    const queueUrls = urls.filter((u) => typeof u === 'string' && u.includes('/q/'));
+    const rejected = urls.length - queueUrls.length;
+    if (queueUrls.length) await del(queueUrls);
+    return res.status(200).json({ deleted: queueUrls.length, rejected });
   }
 
   if (req.method !== 'GET') return res.status(405).send('method not allowed');
 
-  const { blobs } = await list({ prefix: 'q/', limit: MAX_BATCH });
-  // Oldest first: the pathname is prefixed with the receive timestamp.
-  blobs.sort((a, b) => a.pathname.localeCompare(b.pathname));
+  // Depth/age are computed over the whole queue, not just this batch, so a
+  // backlog is visible even while the drain is chewing through the head of it.
+  const { blobs: allBlobs } = await list({ prefix: 'q/' });
+  const oldestAgeSeconds = allBlobs.length
+    ? Math.round((Date.now() - Math.min(...allBlobs.map((b) => queuedAtMs(b.pathname)))) / 1000)
+    : 0;
+
+  const batch = [...allBlobs]
+    // Oldest first: the pathname is prefixed with the receive timestamp.
+    .sort((a, b) => a.pathname.localeCompare(b.pathname))
+    .slice(0, MAX_BATCH);
 
   const items = [];
-  for (const b of blobs) {
+  let unreadable = 0;
+  for (const b of batch) {
     const r = await fetch(b.url, { cache: 'no-store' });
-    if (!r.ok) continue;
-    items.push({ url: b.url, pathname: b.pathname, ciphertext: await r.text() });
+    if (!r.ok) {
+      unreadable += 1;
+      continue;
+    }
+    items.push({
+      url: b.url,
+      pathname: b.pathname,
+      queuedAtMs: queuedAtMs(b.pathname),
+      ciphertext: await r.text(),
+    });
   }
 
-  return res.status(200).json({ items });
+  return res.status(200).json({ items, depth: allBlobs.length, oldestAgeSeconds, unreadable });
+}
+
+// Pathnames look like q/<epoch-ms>-<uuid>[-<vercel suffix>].enc
+function queuedAtMs(pathname) {
+  const ms = Number(pathname.slice(2).split('-')[0]);
+  return Number.isFinite(ms) ? ms : Date.now();
 }
