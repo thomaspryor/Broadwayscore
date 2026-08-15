@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-15T09:51:05.546Z",
+  "updatedAt": "2026-08-15T09:52:41.539Z",
   "processed": 28,
-  "failed": 112,
-  "successRate": "20.0%",
+  "failed": 122,
+  "successRate": "18.7%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-15T09:29:58.867Z",
@@ -47,6 +47,17 @@
       "t": "2026-08-15T09:35:23.729Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T09:51:12.358Z",
+      "event": "bb-session",
+      "session": "bca6e9be",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-08-15T09:51:12.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

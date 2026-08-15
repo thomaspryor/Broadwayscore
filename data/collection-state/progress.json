@@ -141,7 +141,17 @@
     "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
     "the-unbelievers-off-broadway-2026/timeout-london--andrzej-lukowski.json",
     "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
-    "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json"
+    "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
+    "the-unbelievers-off-broadway-2026/standard--nick-curtis.json",
+    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
+    "magic-mike-live-new-york-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "magic-mike-live-new-york-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "magic-mike-live-new-york-off-broadway-2026/nysr--david-finkle.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/i-paper--fiona-mountford.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/standard--nick-curtis.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -187,7 +197,7 @@
     ]
   },
   "startTime": "2026-08-15T09:28:20.450Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
+  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
   "log": [
     {
       "t": "2026-08-15T09:29:58.867Z",
@@ -221,6 +231,17 @@
       "t": "2026-08-15T09:35:23.729Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-15T09:51:12.358Z",
+      "event": "bb-session",
+      "session": "bca6e9be",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-08-15T09:51:12.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
