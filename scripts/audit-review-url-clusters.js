@@ -63,6 +63,26 @@ const HARD_REJECT = new Set(['date-out-of-window', 'page-title-mismatch']);
 const PREFERRED_CANONICAL = {
   'aint-no-mo-2022|https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778':
     'variety--aramide-tinubu.json',
+  // NYT ran this as a genuine joint byline ("We sent both of our chief
+  // critics to King Kong") — not a byline explosion. The default longest-
+  // text tiebreak would collapse onto the single-name "Ben Brantley" file
+  // and drop Jesse Green's credit; force the properly formatted joint file.
+  'king-kong-2018|https://www.nytimes.com/2018/11/08/theater/king-kong-review.html':
+    'nytimes--jesse-green-and-ben-brantley.json',
+  // "Lovia Gayarkye" is a scraper typo of the real THR critic Lovia Gyarkye
+  // (confirmed in CRITIC_ALIASES, review-normalization.js) — the misspelled
+  // copy is longer so the default tiebreak would pick it.
+  'mj-2022|https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage-1235085086':
+    'hollywood-reporter--lovia-gyarkye.json',
+  // "Sarah Holdren" is a scraper typo of Vulture critic Sara Holdren
+  // (confirmed in CRITIC_ALIASES) — same longest-text tiebreak issue.
+  'moulin-rouge-2019|https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html':
+    'vulture--sara-holdren.json',
+  // "Asserts Dominic Cavendish" is a scraper artifact (sentence fragment
+  // captured as byline) tied in length with the clean "Dominic Cavendish"
+  // copy — force the clean name.
+  'broken-glass-west-end-2026|https://www.telegraph.co.uk/theatre/what-to-see/broken-glass-young-vic-anti-semitism':
+    'telegraph--dominic-cavendish.json',
 };
 
 // Clusters where every byline is an invented WhatsOnStage-staff name (the true
@@ -70,6 +90,12 @@ const PREFERRED_CANONICAL = {
 const NEUTRALIZE_CRITIC = {
   'a-midsummer-nights-dream-west-end-2026|https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521':
     'WhatsOnStage',
+  // wsj--unknown.json is the best-signal copy (no stale wrongProduction flag)
+  // but scraped with a null criticName even though the body opens with the
+  // byline "Charles Isherwood" — matches the flagged wsj--charles-isherwood.json
+  // sibling's identical body.
+  'death-of-a-salesman-2022|https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217':
+    'Charles Isherwood',
 };
 
 const STAMP = process.env.FIX_STAMP || 'byline-cluster-cleanup';

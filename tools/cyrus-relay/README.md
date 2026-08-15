@@ -66,3 +66,11 @@ application page in Linear. To set it, use
 which rewrites `~/.cyrus/.env`, pushes the value to Vercel, redeploys the relay,
 restarts Cyrus and round-trips a signed payload to prove both ends agree. Set it
 by hand and the relay and Cyrus will disagree, and every delivery 401s.
+
+`~/.cyrus/config.json` must leave the single repository entry with **no**
+`routingLabels`, `teamKeys` or `projectKeys`. With any of them set, an issue that
+does not carry the label falls through to "Which repository should I work in for
+this issue?" and the session sits in `awaitingInput` — which reads exactly like
+Cyrus being broken. With none of them set the repo becomes the workspace
+catch-all and routes automatically (`RepositoryRouter.js:179-190`). Re-add them
+only when a second repository is configured.
