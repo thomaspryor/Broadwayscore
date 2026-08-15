@@ -1,15 +1,15 @@
 {
   "system": "autofix",
-  "status": "warn",
-  "lastChecked": "2026-08-14T08:04:13.567Z",
+  "status": "error",
+  "lastChecked": "2026-08-15T01:34:22.966Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Autofix: jobs actually succeeding",
-      "status": "warn",
-      "message": "Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. It is untracked, so CI never sees it — this row cannot judge the loop from this environment."
+      "status": "error",
+      "message": "Auto-fix loop is DEAD: 3 job(s) launched in the last 7d, 0 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
     },
     {
       "name": "Autofix: daily canary (dispatch pipeline proof)",
@@ -18,8 +18,8 @@
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "status": "warn",
-      "message": "Autofix throughput is not measurable from this environment — both data/audit/digest-autofix-ledger.jsonl and data/audit/backlog-drain-ledger.jsonl are gitignored/per-machine and absent here."
+      "status": "error",
+      "message": "Autofix throughput DEAD: 0 passes on each of the last 7 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — dispatches are launching but nothing is landing."
     }
   ]
 }

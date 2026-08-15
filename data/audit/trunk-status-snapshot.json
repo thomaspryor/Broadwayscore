@@ -1,45 +1,22 @@
 {
-  "generatedAt": "2026-08-14T08:04:29.308Z",
+  "generatedAt": "2026-08-15T01:35:40.729Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "9c06d7f7e0a68c31845b8e1befe0c01ba2c96dbb",
-  "state": "RED",
-  "consecutiveFailures": 89,
-  "redSince": "2026-08-12T14:14:28Z",
-  "redForHours": 41.83369666666667,
+  "latestRunHeadSha": "82efc932225187833dd71c62df441925948de611",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 14,
+  "greenSince": "2026-08-14T23:34:22Z",
+  "greenForHours": 2.021869166666667,
+  "greenDurationIsFloor": false,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-12T07:26:23Z",
-  "latestFailedRunId": "31769548660",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31769548660",
-  "decidedRuns": 90,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit self-contradictory clear breadcrumbs",
-        "Audit stale flag after URL correction"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/audit-stale-flag-after-url-correction.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-cast-contamination.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    }
-  ],
-  "topFailingJob": "Data Validation"
+  "lastSuccessAt": "2026-08-15T01:08:25Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 88,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

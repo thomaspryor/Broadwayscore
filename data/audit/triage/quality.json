@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-14T08:04:13.565Z",
+  "lastChecked": "2026-08-15T01:34:22.964Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: take-me-out-2022 Theater Life 2/5 stars→40 vs LLM 84, gap 45)"
+      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: an-american-daughter-off-broadway-2026 The Interested Bystander 5/5→100 vs LLM 48, gap 52)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (19676/19939)"
+      "message": "98.7% scored (19688/19950)"
     },
     {
       "name": "Quality: corpus drift",
@@ -34,7 +34,7 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1110 outlet(s), 42481 review(s)"
+      "message": "No broken-extractor signature in 1115 outlet(s), 42504 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
@@ -54,7 +54,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 4d ago)"
+      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 5d ago)"
     }
   ]
 }

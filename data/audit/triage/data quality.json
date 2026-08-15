@@ -1,5 +1,5 @@
 {
-  "system": "cron failed",
+  "system": "data quality",
   "status": "warn",
   "lastChecked": "2026-08-15T01:34:22.964Z",
   "lastAlertTimestamp": null,
@@ -7,9 +7,9 @@
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Cron failed: Update Show Status",
+      "name": "Data quality: cross-outlet attribution drift",
       "status": "warn",
-      "message": "Last run inconclusive: failure (17h ago), no success in 36h"
+      "message": "No drift-check snapshot yet (cron not yet run)"
     }
   ]
 }
