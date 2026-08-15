@@ -558,6 +558,15 @@ function decideInclusion(review, show, guards) {
 
   if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true && !wrongProductionCleared) return { included: false, reason: 'wrongProduction' };
+  // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
+  // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
+  // (unlike wrongShow/wrongProduction above). crossOutletVerified/
+  // wrongArticleManualClear are safeWriteReview re-flag-guard breadcrumbs
+  // only, never read by the inclusion predicate itself. Added task #1180:
+  // wrongAttribution was in FLAG_FIELDS (triggering this replay) but had no
+  // branch here, so the gate could detect the field changed yet never
+  // actually model a wrongAttribution-driven flip in either direction.
+  if (review.wrongAttribution === true) return { included: false, reason: 'wrongAttribution' };
   if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
   if (review.isRoundupArticle) {
     const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
@@ -1171,7 +1180,7 @@ function main() {
   process.exit((totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
-module.exports = { decideInclusion };
+module.exports = { decideInclusion, FLAG_FIELDS };
 
 if (require.main === module) {
   try {

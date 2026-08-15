@@ -95,4 +95,69 @@ describe('scoring-delta.js decideInclusion auto-clear replay', () => {
     // what makes this file testable at all (require.main === module guard).
     assert.strictEqual(typeof decideInclusion, 'function');
   });
+
+  // Task #1180: wrongAttribution was listed in FLAG_FIELDS (the set of fields
+  // whose changes trigger this replay) but decideInclusion never actually
+  // checked it — so the gate could detect the field changed yet never model
+  // an actual flip. Discovered while clearing a false-positive wrongAttribution
+  // flag on 6 nytimes--tim-teeman.json files (Tim Teeman's byline was real,
+  // confirmed via the live NYT page's own GraphQL data).
+  test('wrongAttribution:true excludes a review that otherwise passes all guards', () => {
+    const flagged = { wrongAttribution: true, assignedScore: 49, contentTier: 'complete' };
+    const decision = decideInclusion(flagged, show, buildGuards({}));
+    assert.strictEqual(decision.included, false);
+    assert.strictEqual(decision.reason, 'wrongAttribution');
+  });
+
+  test('clearing wrongAttribution (manual-verify shape) restores inclusion', () => {
+    const cleared = {
+      assignedScore: 49,
+      contentTier: 'complete',
+      crossOutletVerified: true,
+      wrongArticleManualClear: true,
+      // wrongAttribution intentionally absent — safeWriteReview's post-clear shape.
+    };
+    const decision = decideInclusion(cleared, show, buildGuards({}));
+    assert.strictEqual(decision.included, true);
+  });
+});
+
+// Task #1180 follow-up (second-opinion warning): a FLAG_FIELDS entry with no
+// matching decideInclusion branch is exactly how the wrongAttribution gap
+// above went unnoticed — assert every FLAG_FIELDS name is at least referenced
+// somewhere in decideInclusion's own source, so the next silent addition
+// fails a test instead of shipping a dead trigger.
+//
+// KNOWN_UNCOVERED: this same audit found 4 PRE-EXISTING dead triggers beyond
+// wrongAttribution — suspectedMisattribution, isNonReview, fabricatedEntry,
+// rejectedAt (the last has 4 exception branches in review-guards.js's
+// explainExclusion, of comparable complexity to the wrongProduction auto-clear
+// replay decideInclusion already does — not a one-line fix). Fixing those is
+// scoped to a dedicated follow-up (Notion, filed alongside task #1180) rather
+// than bundled into this card's wrongAttribution fix. Listed explicitly here
+// (not silently allowed) so this test still fails the moment a FIFTH field is
+// added without a branch, and so removing an entry from this list is a visible
+// diff when the follow-up lands.
+const KNOWN_UNCOVERED = new Set(['suspectedMisattribution', 'isNonReview', 'fabricatedEntry', 'rejectedAt']);
+describe('scoring-delta.js FLAG_FIELDS / decideInclusion coverage', () => {
+  test('every FLAG_FIELDS name is referenced inside decideInclusion, or explicitly listed as a known gap', () => {
+    const { FLAG_FIELDS } = require('./scoring-delta.js');
+    const body = decideInclusion.toString();
+    const unreferenced = [...FLAG_FIELDS].filter((field) => !body.includes(field) && !KNOWN_UNCOVERED.has(field));
+    assert.deepStrictEqual(
+      unreferenced,
+      [],
+      `FLAG_FIELDS entries not referenced in decideInclusion and not in KNOWN_UNCOVERED (dead trigger — add a branch or add to KNOWN_UNCOVERED with a reason): ${unreferenced.join(', ')}`
+    );
+  });
+
+  test('KNOWN_UNCOVERED has no stale entries (fails once a listed field gets a real branch)', () => {
+    const body = decideInclusion.toString();
+    const staleEntries = [...KNOWN_UNCOVERED].filter((field) => body.includes(field));
+    assert.deepStrictEqual(
+      staleEntries,
+      [],
+      `These KNOWN_UNCOVERED fields now have a decideInclusion branch — remove from the allowlist: ${staleEntries.join(', ')}`
+    );
+  });
 });
