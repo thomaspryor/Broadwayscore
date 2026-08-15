@@ -1,0 +1,15 @@
+{
+  "system": "data quality",
+  "status": "warn",
+  "lastChecked": "2026-08-15T01:34:22.964Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data quality: cross-outlet attribution drift",
+      "status": "warn",
+      "message": "No drift-check snapshot yet (cron not yet run)"
+    }
+  ]
+}

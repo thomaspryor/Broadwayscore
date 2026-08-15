@@ -35,11 +35,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-08-14T08:04:14.810Z",
+      "lastSeen": "2026-08-15T01:34:22.970Z",
       "lastNotifiedAt": "2026-08-08T11:39:22.847Z",
       "notifyCount": 3,
       "cardId": "3b6637c5-416f-8119-ab95-d4c487f4e7c2",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
@@ -57,11 +57,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
       "firstSeen": "2026-07-24T07:50:34.747Z",
-      "lastSeen": "2026-07-25T16:22:17.395Z",
-      "lastNotifiedAt": "2026-07-24T07:50:34.747Z",
-      "notifyCount": 1,
-      "cardId": "3a7637c5-416f-81f4-b695-e8bd0a8d73b6",
-      "silentRefires": 1
+      "lastSeen": "2026-08-15T01:34:24.038Z",
+      "lastNotifiedAt": "2026-08-15T01:34:24.038Z",
+      "notifyCount": 2,
+      "cardId": null,
+      "linearIdentifier": "BRO-335"
     },
     "health-check:Audience coverage: open-show gaps": {
       "status": "open",
@@ -79,22 +79,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-08-14T08:04:14.811Z",
+      "lastSeen": "2026-08-15T01:34:24.854Z",
       "lastNotifiedAt": "2026-08-10T08:19:21.892Z",
       "notifyCount": 3,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-14T08:04:14.812Z",
+      "lastSeen": "2026-08-15T01:34:24.856Z",
       "lastNotifiedAt": "2026-08-08T11:39:24.175Z",
       "notifyCount": 3,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -147,11 +147,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-08-14T08:04:14.812Z",
+      "lastSeen": "2026-08-15T01:34:24.855Z",
       "lastNotifiedAt": "2026-08-10T08:19:23.719Z",
       "notifyCount": 2,
       "cardId": "3b8637c5-416f-817d-832d-eac6c91739ee",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -269,11 +269,12 @@
       "disposition": "digest",
       "title": "Scraping spend over budget: brightdata $7.24 > $2.5 (2301 serp + 2524 unlocker reqs); scrapingbee 39663 credits > 35000; scrapingdog 70495 credits > 45000",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-14T08:04:20.315Z",
+      "lastSeen": "2026-08-15T01:34:30.474Z",
       "lastNotifiedAt": "2026-08-14T08:04:20.315Z",
       "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -558,11 +559,11 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-08-14T08:04:35.312Z",
+      "lastSeen": "2026-08-15T01:35:43.427Z",
       "lastNotifiedAt": "2026-08-08T11:39:46.729Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -690,22 +691,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet domain moves",
       "firstSeen": "2026-08-11T07:57:54.489Z",
-      "lastSeen": "2026-08-14T08:04:14.813Z",
+      "lastSeen": "2026-08-15T01:34:24.856Z",
       "lastNotifiedAt": "2026-08-11T07:57:54.489Z",
       "notifyCount": 1,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet invalid-content rate",
       "firstSeen": "2026-08-12T08:06:37.851Z",
-      "lastSeen": "2026-08-13T08:07:21.005Z",
+      "lastSeen": "2026-08-15T01:34:24.857Z",
       "lastNotifiedAt": "2026-08-12T08:06:37.851Z",
       "notifyCount": 1,
       "cardId": "3ba637c5-416f-81cd-956b-fd19199a2a23",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:death-note-the-musical-west-end-2026": {
       "status": "open",
@@ -935,7 +936,7 @@
       "linearIdentifier": "BRO-329"
     },
     "affiliate:provider-auth:impact": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Affiliate revenue: impact API — BROKEN [shadow]",
       "firstSeen": "2026-08-14T08:03:42.012Z",
@@ -943,7 +944,8 @@
       "lastNotifiedAt": "2026-08-14T08:03:42.012Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-15T01:33:42.978Z"
     },
     "gap:an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json": {
       "status": "open",
@@ -991,6 +993,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Rebuild Reviews (Fast)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews (Fast)",
+      "firstSeen": "2026-08-15T01:34:22.971Z",
+      "lastSeen": "2026-08-15T01:34:22.971Z",
+      "lastNotifiedAt": "2026-08-15T01:34:22.971Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-334"
     }
   }
 }

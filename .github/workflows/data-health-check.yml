@@ -193,6 +193,24 @@ jobs:
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
         run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 3
 
+      # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
+      # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
+      # only CI-gated when someone edited the audited script itself (test.yml
+      # path-trigger) — new review-texts from opening-night pollers/discovery never
+      # got diffed against them, so the count silently drifted from 0 to 11 suspects
+      # between two manual recheck sessions (task #1006). Runs here because this job
+      # already checks out data/review-texts (required — the test self-skips
+      # otherwise) and commits data/audit snapshots. SHADOW MODE: writes a snapshot,
+      # never fails the step or reopens anything — drift is expected as new reviews
+      # arrive, so a hard CI gate would redden main on legitimate data, not a
+      # regression. The digest check in health-check.js is what surfaces it to a
+      # human. continue-on-error + timeout: a hang here must never block the commit.
+      - name: Cross-outlet attribution drift check (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/check-cross-outlet-attribution-drift.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -286,6 +304,11 @@ jobs:
           # above: the Mac Studio renders the morning digest and runs the
           # close gate, so the snapshot has to leave the runner.
           git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
+          # Cross-outlet attribution drift snapshot (card #1550) — single
+          # writer (this cron); without this the snapshot never leaves the
+          # runner and health-check.js's digest check reads a stale/missing
+          # file forever.
+          git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

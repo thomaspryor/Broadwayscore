@@ -1,15 +1,15 @@
 {
   "system": "push-retry deadman",
-  "status": "pass",
-  "lastChecked": "2026-08-14T08:04:13.567Z",
+  "status": "warn",
+  "lastChecked": "2026-08-15T01:34:22.965Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Push-retry deadman",
-      "status": "pass",
-      "message": "No push-retry failures recorded (log absent)"
+      "status": "warn",
+      "message": "Cannot measure push-retry failures from this environment — data/audit/push-retry-failures.jsonl is gitignored, per-machine, and absent here. This row cannot judge push health from here."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-08-14T08:04:13.567Z",
+  "lastChecked": "2026-08-15T01:34:22.966Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,6 +10,11 @@
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
       "message": "11 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "5 discovered review(s) not reaching the composite score (4 T1). First: cats-west-end-2026 — independent (empty-body)"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
