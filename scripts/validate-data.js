@@ -44,7 +44,7 @@ const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-gua
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { detectRefusalPattern } = require('./lib/synopsis-validation');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
-const { isNonTheatricalGenre } = require('./lib/genre-classification');
+const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
 
@@ -797,8 +797,9 @@ function validateVenueCategory(shows) {
     // "category reverts" bug. Handle both directions: force off-west-end, and
     // exempt them from the off-west-end→west-end venue flip.
     if (isNonTheatricalGenre(show.genre)) {
-      if (show.category === 'west-end') {
-        show.category = 'off-west-end';
+      const fixed = applyGenreCategoryOverride(show.category, show.genre);
+      if (fixed !== show.category) {
+        show.category = fixed;
         autoFixed++;
         info(`Auto-fixed "${show.title}" (${show.id}): west-end → off-west-end (genre: ${show.genre} overrides venue)`);
       }

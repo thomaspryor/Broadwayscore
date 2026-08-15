@@ -48,7 +48,7 @@ const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
-const { classifyGenre } = require('./lib/genre-classification');
+const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -1605,6 +1605,10 @@ async function consumeShowScoreCandidatesFile() {
       // Conservative classifier — returns null unless a venue/title signal is
       // unambiguous, so plays/musicals are never mislabelled.
       const genre = classifyGenre({ title, venue: venueName, description: ttShow.description || '' });
+      // Apply the genre-overrides-venue category rule at intake too, so a
+      // non-theatrical show (dance at Sadler's Wells, etc.) never ships with
+      // category="west-end" even momentarily — see applyGenreCategoryOverride.
+      const category = applyGenreCategoryOverride(candidate.category, genre);
       validated.push({
         title,
         venue: venueName,
@@ -1614,7 +1618,7 @@ async function consumeShowScoreCandidatesFile() {
         previewsStartDate,
         ...(genre ? { genre } : {}),
         closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
-        category: candidate.category,
+        category,
         description: ttShow.description || '',
         todayTixCategory: ttShow.category?.name || null,
         _showScoreUrl: candidate.showScoreUrl,
