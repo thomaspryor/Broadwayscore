@@ -100,7 +100,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
 
 // LLM-based content verification
-const { verifyContent, quickValidityCheck, resolveCvMarket } = require('./lib/content-verifier');
+const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
@@ -4969,7 +4969,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       reasoning: contentVerification.reasoning,
       verifiedBy: contentVerification.verifiedBy,
       verifiedAt: new Date().toISOString(),
-      contentHash: contentVerification.contentHash || null
+      // Stamp the hash over cleanedText (what's about to be stored as
+      // data.fullText a few lines up), NOT contentVerification.contentHash —
+      // that one was computed by verifyContent() over the pre-clean raw
+      // scrapedText. cleanText()/classifyTextQuality() decode entities,
+      // collapse whitespace, and strip trailing junk, which shifts characters
+      // inside the hashed 2500-char window on many articles. Hashing the raw
+      // text made rebuild-all-reviews.js's staleness guard see a mismatch on
+      // the SAME write that created the file — not a later refetch — so ~192
+      // of 203 CV-excluded reviews audited 2026-08 had no real staleness at
+      // all (audit-stale-cv-hash.js). Hashing cleanedText keeps this stamp in
+      // sync with the text the staleness guard actually compares against.
+      contentHash: contentHash(cleanedText)
     };
 
     const isHighConfidence = contentVerification.confidence === 'high' || contentVerification.confidence === 'medium';
