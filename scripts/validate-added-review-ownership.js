@@ -139,6 +139,12 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
   return drops;
 }
 
+// Mirrors scripts/lib/detect-stale-merge-head.sh's STALE_MERGE_HEAD_WARN_SEC
+// default (BRO-142). Not sourced from there — this is JS, that's bash — but
+// the intent must stay in sync: past this age, a MERGE_HEAD is no longer
+// "a normal in-progress op", it's the #916/#1279/#1445 leftover-marker class.
+const STALE_MERGE_HEAD_WARN_SEC = 1800;
+
 /**
  * True when a rebase/merge/cherry-pick is in progress. The action's
  * post-conflict call site can reach the gate after `git rebase --continue ||
@@ -146,15 +152,32 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
  * that detached HEAD is pointless (the loop aborts the rebase on push
  * failure) and mid-rebase diffs are unreliable — skip and let the next
  * attempt's fully-rebased tree re-run the gate.
+ *
+ * Also flags whether the marker found is a STALE MERGE_HEAD (BRO-142): before
+ * this, a leftover MERGE_HEAD from a dead session made this gate skip and
+ * exit 0 forever, identically to a genuine few-seconds-old in-progress merge
+ * — CI stayed green while ownership validation silently never ran, with no
+ * signal distinguishing "normal, retry next attempt" from "stuck for days".
+ * Still never fails the build or touches git state — detection only, same as
+ * every other BRO-142 call site.
  */
 function gitOpInProgress(cwd) {
   for (const marker of ['rebase-merge', 'rebase-apply', 'MERGE_HEAD', 'CHERRY_PICK_HEAD']) {
     try {
       const p = execSync(`git rev-parse --git-path ${marker}`, { cwd, encoding: 'utf8' }).trim();
-      if (fs.existsSync(path.resolve(cwd, p))) return true;
+      const resolved = path.resolve(cwd, p);
+      if (!fs.existsSync(resolved)) continue;
+      let stale = false;
+      if (marker === 'MERGE_HEAD') {
+        try {
+          const ageSec = (Date.now() - fs.statSync(resolved).mtimeMs) / 1000;
+          stale = ageSec >= STALE_MERGE_HEAD_WARN_SEC;
+        } catch { /* stat failure → treat as not stale, still in-progress */ }
+      }
+      return { inProgress: true, marker, stale };
     } catch { /* rev-parse failure → treat as not in progress */ }
   }
-  return false;
+  return { inProgress: false, marker: null, stale: false };
 }
 
 function main() {
@@ -165,8 +188,13 @@ function main() {
   const base = baseArg ? baseArg.split('=')[1] : null;
   const cwd = process.cwd();
 
-  if (base && gitOpInProgress(cwd)) {
-    console.log('::warning::[ownership-gate] rebase/merge in progress — skipping (next attempt re-runs the gate on the completed tree)');
+  const gitOp = base ? gitOpInProgress(cwd) : { inProgress: false };
+  if (gitOp.inProgress) {
+    if (gitOp.stale) {
+      console.log(`::warning::[ownership-gate] STALE ${gitOp.marker} (>=${STALE_MERGE_HEAD_WARN_SEC}s old, BRO-142 class) — skipping, but this looks like a leftover from a dead session, not a normal in-progress merge. Ownership validation will not run until it's resolved: git -C ${cwd} status`);
+    } else {
+      console.log(`::warning::[ownership-gate] ${gitOp.marker} in progress — skipping (next attempt re-runs the gate on the completed tree)`);
+    }
     return;
   }
 
