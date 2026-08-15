@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-15T19:19:58.032Z",
-  "processed": 5,
-  "failed": 43,
-  "successRate": "10.4%",
+  "updatedAt": "2026-08-15T19:23:39.406Z",
+  "processed": 8,
+  "failed": 50,
+  "successRate": "13.8%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-15T17:55:38.665Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "07c8603f",
       "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-15T19:22:20.746Z",
+      "event": "bb-session",
+      "session": "0a65c2a4",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T19:22:21.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
