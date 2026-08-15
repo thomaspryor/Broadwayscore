@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T11:23:51.346Z",
+  "timestamp": "2026-08-15T18:07:32.489Z",
   "stats": {
-    "totalReviews": 42310,
-    "alreadyFlagged": 18228,
+    "totalReviews": 42308,
+    "alreadyFlagged": 18226,
     "dateGuardCatches": 144,
     "directorMismatch": 968,
     "tvFilmSignals": 1207,
-    "londonSignals": 897,
+    "londonSignals": 898,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3613
+    "noPublishDate": 3619
   },
   "findings": [
     {
@@ -35318,6 +35318,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "plays-to-see--soyoon-koo.json",
+      "score": 89,
+      "publishDate": "2026-08-14",
+      "url": "https://playstosee.com/reviews/death-note-the-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "seatplan--unknown.json",
       "score": 89,
       "publishDate": "2026-08-12",
@@ -37902,7 +37916,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "theatreandtonic--unknown.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2026-06-06",
       "url": "https://theatreandtonic.co.uk/blog/high-society-at-the-barbican-theatre-review",
       "findings": [
@@ -37916,7 +37930,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "theupcoming--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2026-06-04",
       "url": "https://www.theupcoming.co.uk/2026/06/04/high-society-at-barbican-theatre-theatre-review/",
       "findings": [
