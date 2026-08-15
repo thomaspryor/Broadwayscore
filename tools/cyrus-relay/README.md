@@ -59,5 +59,10 @@ Vercel's SSO gate.
     LINEAR_WEBHOOK_SECRET=...      # the OAuth app's webhook signing secret
 
 `LINEAR_WEBHOOK_SECRET` must match the signing secret shown on the Cyrus OAuth
-application page in Linear. After changing it, run `sync-webhook-secret.sh` and
-restart Cyrus, or the relay and Cyrus will disagree and every delivery 401s.
+application page in Linear. To set it, use
+
+    tools/cyrus-relay/apply-webhook-secret.sh <secret>
+
+which rewrites `~/.cyrus/.env`, pushes the value to Vercel, redeploys the relay,
+restarts Cyrus and round-trips a signed payload to prove both ends agree. Set it
+by hand and the relay and Cyrus will disagree, and every delivery 401s.
