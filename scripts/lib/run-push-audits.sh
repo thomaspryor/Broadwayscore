@@ -129,4 +129,27 @@ if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-rou
   fi
 fi
 
+# Help-flag safety — scripts that do REAL work on `--help` (task #498 class).
+# Same script CI runs in test.yml's "Audit — help-flag safety" step.
+#
+# Why this gate moved from CI-only to push-time: it is the single most frequent
+# recurring cause of a red main in this repo (25+ separate "add the missing
+# --help guard" fix commits since June, three of them on the single night of
+# 2026-08-14, when audit-sibling-title-misroute.js and cyrus-webhook-drain.js
+# reddened run 31863276943 hours after landing). Detecting it in CI puts the cost
+# on whoever pushes NEXT — they inherit a red main they did not cause and cannot
+# fix from their own diff — which is exactly the cost-transfer this shared runner
+# was extracted to stop (card #835, see the header). The author is the only
+# person who can fix it cheaply, and push time is the last moment they still
+# hold it.
+#
+# Affordable to run in full: ~0.7s for all 917 scripts, no network, no repo
+# state, so there is no reason to scope it to the changed files (and scoping it
+# would miss a guard DELETED from a file the push doesn't otherwise touch).
+# Fires on the same `scripts/*.js` shape as the write-routing lint above, plus
+# the audit's own baseline file.
+if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/\.help-flag-safety-baseline\.json$"; then
+  run_audit "help-flag-safety" "scripts/audit-help-flag-safety.js" || FAIL=1
+fi
+
 exit $FAIL
