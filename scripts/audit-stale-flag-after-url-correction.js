@@ -7,6 +7,17 @@
  * maybeUpgradeUrl escape (fixed in scripts/lib/review-normalization.js
  * maybeUpgradeUrl + scripts/lib/url-change-invariant.js's force option).
  *
+ * RETIRED FROM CI 2026-08-14. This script is no longer wired into test.yml and
+ * must not be re-wired; the retirement block in .github/workflows/test.yml
+ * (search "RETIRED 2026-08-14") carries the measurement. Short version: this
+ * signature has 0/120 precision AND 0/13 recall against the real stale-flag
+ * class — not one genuinely stale flag in the corpus carries an
+ * `_urlChangedClear` breadcrumb, so no narrowing of this rule reaches them.
+ * The blocking gate that replaced it is
+ * scripts/audit-contradicted-flag-basis.js. This CLI is kept as a manual
+ * investigative tool for the #483 SHAPE (pair it with
+ * scripts/audit-stale-flag-producers.js for writer attribution).
+ *
  * A MATCH IS NOT PROOF THE FLAG IS STALE (corrected 2026-08-14 — the previous
  * header said it was). A URL "correction" can replace a correct URL with a
  * different production's, leaving a CORRECT exclusion flag on a bodyless
