@@ -1,13 +1,7 @@
-export interface FeedbackFieldSpec {
-  name: string;
-  message: string;
-  isValid: (value: string) => boolean;
-}
-
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // DOM order: email (optional, format-checked), category (required), message (required).
-export const FEEDBACK_FIELDS: FeedbackFieldSpec[] = [
+const FEEDBACK_FIELDS = [
   {
     name: 'email',
     message: 'Please enter a valid email address, or leave it blank.',
@@ -25,10 +19,7 @@ export const FEEDBACK_FIELDS: FeedbackFieldSpec[] = [
   },
 ];
 
-export function getFirstInvalidField(
-  values: Record<string, string | undefined>,
-  fields: FeedbackFieldSpec[] = FEEDBACK_FIELDS
-): FeedbackFieldSpec | null {
+function getFirstInvalidField(values, fields = FEEDBACK_FIELDS) {
   for (const field of fields) {
     if (!field.isValid(values[field.name] || '')) {
       return field;
@@ -36,3 +27,5 @@ export function getFirstInvalidField(
   }
   return null;
 }
+
+module.exports = { FEEDBACK_FIELDS, getFirstInvalidField };
