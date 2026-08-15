@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS } from '@/components/show-cards';
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 
 export interface OperaPageClientProps {
   shows: ShowCardShow[];
@@ -14,7 +15,8 @@ export interface OperaPageClientProps {
 }
 
 type StatusParam = 'now_playing' | 'closed' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'alpha';
+type SortParam = 'recent' | 'recent_asc' | 'score_desc' | 'score_asc' | 'alpha' | 'alpha_desc';
+const SORT_PARAMS: SortParam[] = ['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc'];
 
 const DEFAULT_STATUS: StatusParam = 'all';
 const DEFAULT_SORT: SortParam = 'recent';
@@ -41,7 +43,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
   const [filters, setFilters] = useState(() => ({
     status: (['now_playing', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (['recent', 'score_desc', 'alpha'].includes(initialSearchParams.get('sort') as string)
+    sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
   }));
 
@@ -108,8 +110,20 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           const bScore = operaHasEnoughReviews(b) ? (b.criticScore?.score ?? -1) : -1;
           return bScore - aScore;
         }
+        case 'score_asc': {
+          const aScore = operaHasEnoughReviews(a) ? (a.criticScore?.score ?? Infinity) : Infinity;
+          const bScore = operaHasEnoughReviews(b) ? (b.criticScore?.score ?? Infinity) : Infinity;
+          return aScore - bScore;
+        }
         case 'alpha':
           return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+        case 'alpha_desc':
+          return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
+        case 'recent_asc':
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
+          return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
         case 'recent':
         default:
           if (!a.openingDate && !b.openingDate) return 0;
@@ -179,12 +193,24 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
         <ToggleBar
           label="SORT:"
           options={[
-            { value: 'recent' as SortParam, label: 'NEWEST' },
-            { value: 'score_desc' as SortParam, label: 'CRITICS' },
-            { value: 'alpha' as SortParam, label: 'A-Z' },
+            {
+              value: 'recent' as SortParam,
+              label: `NEWEST ${getSortArrow('recent', sort)}`.trim(),
+              title: sort === 'recent' ? 'Sorted newest first, click to reverse' : sort === 'recent_asc' ? 'Sorted oldest first, click to reverse' : 'Click to sort by opening date',
+            },
+            {
+              value: 'score_desc' as SortParam,
+              label: `CRITICS ${getSortArrow('score_desc', sort)}`.trim(),
+              title: sort === 'score_desc' ? 'Sorted by critic score, highest first, click to reverse' : sort === 'score_asc' ? 'Sorted by critic score, lowest first, click to reverse' : 'Click to sort by critic score',
+            },
+            {
+              value: 'alpha' as SortParam,
+              label: `A-Z ${getSortArrow('alpha', sort)}`.trim(),
+              title: sort === 'alpha' ? 'Sorted alphabetically, A to Z, click to reverse' : sort === 'alpha_desc' ? 'Sorted alphabetically, Z to A, click to reverse' : 'Click to sort alphabetically',
+            },
           ]}
-          value={sort}
-          onChange={(s) => updateParams({ sort: s })}
+          value={normalizeSort(sort) as SortParam}
+          onChange={(s) => updateParams({ sort: getNextSort(s, sort) })}
           ariaLabel="Sort productions"
         />
       </div>
