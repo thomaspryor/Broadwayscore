@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-15T09:52:50.901Z",
-  "processed": 28,
-  "failed": 122,
-  "successRate": "18.7%",
+  "updatedAt": "2026-08-15T10:08:05.772Z",
+  "processed": 29,
+  "failed": 131,
+  "successRate": "18.1%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -11,9 +11,9 @@
     "scrapingbee": 6,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-15T09:29:58.867Z",
@@ -58,6 +58,29 @@
       "t": "2026-08-15T09:51:12.739Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T10:05:00.443Z",
+      "event": "bb-session",
+      "session": "ba8e1bac",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T10:05:01.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T10:06:10.753Z",
+      "event": "bb-session",
+      "session": "ca656ea0",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-15T10:06:20.805Z",
+      "event": "bb-session",
+      "session": "0d2daaa9",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }

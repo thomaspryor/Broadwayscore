@@ -27,7 +27,8 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "king-of-the-yees-off-broadway-2026/theatermania--jonas-schwartz.json"
+    "king-of-the-yees-off-broadway-2026/theatermania--jonas-schwartz.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -151,7 +152,16 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/i-paper--fiona-mountford.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/standard--nick-curtis.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json"
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -193,11 +203,12 @@
     "archive": [
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ]
   },
   "startTime": "2026-08-15T09:28:20.450Z",
-  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-08-15T09:29:58.867Z",
@@ -242,6 +253,29 @@
       "t": "2026-08-15T09:51:12.739Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T10:05:00.443Z",
+      "event": "bb-session",
+      "session": "ba8e1bac",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T10:05:01.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-15T10:06:10.753Z",
+      "event": "bb-session",
+      "session": "ca656ea0",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-15T10:06:20.805Z",
+      "event": "bb-session",
+      "session": "0d2daaa9",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
