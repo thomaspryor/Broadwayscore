@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug, areSameTitleSiblings } = require('./lib/combined-review-utils');
+const { baseSlug, computeCombinedWith } = require('./lib/combined-review-utils');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
 
@@ -75,7 +75,7 @@ function main() {
 
   const siblingIndex = buildSiblingIndex(loadShows());
 
-  let flagged = 0, urlCount = 0, siblingPairsSkipped = 0;
+  let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0;
   for (const [url, entries] of urlMap) {
     const uniqueShows = new Set(entries.map(e => e.showId));
     if (uniqueShows.size < 2) continue;
@@ -83,17 +83,6 @@ function main() {
     // cases that aren't joint reviews.
     const uniqueBaseShows = new Set([...uniqueShows].map(baseSlug));
     if (uniqueBaseShows.size < 2) continue;
-    // baseSlug() doesn't strip every market suffix (e.g. "-at-art-regional"),
-    // so a same-title transfer pair like a regional run and its Broadway
-    // transfer can still pass the check above as "2 different base shows".
-    // Those pairs are NOT a joint review — classifyMarketRouting() /
-    // audit-sibling-title-misroute.js already own routing the review to
-    // exactly ONE sibling by date proximity. Skip so this script doesn't
-    // undo that routing by re-duplicating the review into both dirs.
-    const showIdList = Array.from(uniqueShows);
-    const allTitleSiblings = showIdList.every((id, i) =>
-      i === 0 || areSameTitleSiblings(showIdList[0], id, siblingIndex));
-    if (allTitleSiblings) { siblingPairsSkipped++; continue; }
     urlCount++;
     const showList = Array.from(uniqueShows);
     if (DRY_RUN) {
@@ -102,12 +91,25 @@ function main() {
       console.log();
     }
     for (const entry of entries) {
+      // baseSlug() doesn't strip every market suffix (e.g. "-at-art-regional"),
+      // so a same-title transfer pair like a regional run and its Broadway
+      // transfer can still pass the ">= 2 different base shows" check above.
+      // That pair is NOT a joint review — classifyMarketRouting() /
+      // audit-sibling-title-misroute.js already own routing the review to
+      // exactly ONE sibling by date proximity. Filtered per-entry (not by
+      // skipping the whole URL group) so a MIXED group — a sibling pair AND
+      // a genuinely different show sharing the same URL (e.g. a roundup
+      // covering both) — still flags the real joint-review relationship
+      // without the sibling pair re-duplicating into each other's dirs via
+      // combinedWith (a whole-group skip would still list the sibling in a
+      // 3-member group's combinedWith, reintroducing the exact bug).
+      const newCombinedWith = computeCombinedWith(entry.showId, showList, siblingIndex);
+      if (newCombinedWith.length === 0) { siblingEntriesSkipped++; continue; }
       if (!DRY_RUN) {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
         // Re-check flags on fresh read (handles concurrent modifications).
         // wrongShow stays in the recovery path — see top-of-loop comment.
         if (data.wrongProduction || data.duplicateOf || data.fabricatedEntry) continue;
-        const newCombinedWith = showList.filter(s => s !== entry.showId).sort();
         const existingCombinedWith = (data.combinedWith || []).slice().sort();
         // Only write if flag is new or combinedWith list changed
         if (data.isCombinedReview && JSON.stringify(newCombinedWith) === JSON.stringify(existingCombinedWith)) {
@@ -115,15 +117,16 @@ function main() {
           // flags below — those clear the rebuild gate.
         } else {
           data.isCombinedReview = true;
-          data.combinedWith = showList.filter(s => s !== entry.showId);
+          data.combinedWith = newCombinedWith;
         }
         // Recover from a stale wrongShow rejection: a URL that exists in 2+
-        // show dirs is intentional joint coverage, not a wrong-show false
-        // positive. Clear the flag so this file lands in reviews.json.
+        // show dirs (excluding this entry's own title-siblings) is intentional
+        // joint coverage, not a wrong-show false positive. Clear the flag so
+        // this file lands in reviews.json.
         if (data.wrongShow === true && data.rejectionReason === 'wrong_show') {
           clearWrongProductionFlags(data, {
             source: 'flag-combined-reviews.js',
-            reason: 'URL co-occurs across ' + uniqueShows.size + ' show dirs — joint review',
+            reason: 'URL co-occurs across ' + (newCombinedWith.length + 1) + ' show dirs — joint review',
             wrongShowOnly: true,
           });
           // The override clears the rebuild gate, but the scorer's UNSCORED /
@@ -152,7 +155,7 @@ function main() {
   console.log('=== SUMMARY ===');
   console.log(`URLs shared across 2+ shows: ${urlCount}`);
   console.log(`Files flagged isCombinedReview: ${flagged}`);
-  console.log(`Same-title sibling pairs skipped (owned by market-routing instead): ${siblingPairsSkipped}`);
+  console.log(`Entries skipped (co-occurrence was only with a same-title sibling, owned by market-routing instead): ${siblingEntriesSkipped}`);
   if (DRY_RUN) console.log('(DRY RUN)');
 }
 
