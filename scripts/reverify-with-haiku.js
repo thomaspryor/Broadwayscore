@@ -35,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const BASE = 'data/review-texts';
 
@@ -103,6 +104,10 @@ function buildVerifyInput(showId, r) {
     // (Hamlet 2026-05-08 FRC class). Critical for backfill flows: without `show`,
     // historical FPs of the FRC class won't get re-classified during reverify.
     show: show || null,
+    // WE long-runner CV hardening (task #1615): without this, backfill reverify
+    // never gets the LONG-RUNNING PRODUCTION hint even for Phantom/Les Mis/Mousetrap.
+    isLongRunningProduction: isLongRunningProduction(show),
+    url: r.url || '',
   };
 }
 

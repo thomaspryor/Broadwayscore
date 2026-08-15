@@ -54,6 +54,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 }
 
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
@@ -191,6 +192,10 @@ async function processVerify(items) {
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
+        // WE long-runner CV hardening (task #1615): without this, backfill reverify
+        // never gets the LONG-RUNNING PRODUCTION hint even for Phantom/Les Mis/Mousetrap.
+        isLongRunningProduction: isLongRunningProduction(show),
+        url: r.url || '',
       });
 
       const provider = result.verifiedBy || 'unknown';
@@ -285,6 +290,10 @@ async function processRecover(items) {
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: show || null,
+        // WE long-runner CV hardening (task #1615): without this, backfill reverify
+        // never gets the LONG-RUNNING PRODUCTION hint even for Phantom/Les Mis/Mousetrap.
+        isLongRunningProduction: isLongRunningProduction(show),
+        url: r.url || '',
       });
 
       const provider = result.verifiedBy || 'unknown';

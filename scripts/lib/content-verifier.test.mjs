@@ -297,8 +297,19 @@ test('buildVerificationPrompt: baseline call (no venue/long-runner/url) has no h
   assert.equal(urlYearConflict, null);
 });
 
-test('reverify call sites no longer hardcode isLongRunningProduction: false (regression guard)', () => {
-  for (const rel of ['reverify-stale-cv-promoted.js', 'reverify-nulled-cv-promoted.js']) {
+test('verifyContent call sites no longer hardcode isLongRunningProduction: false, and derive it from the show (regression guard)', () => {
+  // All non-lib callers of verifyContent() that resolve a real per-show `show`
+  // object. reverify-era-venue-wrongprod.js is excluded — it's Broadway-only
+  // (isLongRunningProduction is WE-only by design, so wiring it there would
+  // always evaluate false anyway) — and test-content-verifier.js is excluded —
+  // it's a manual dev harness with synthetic/CLI-supplied input, not a show lookup.
+  for (const rel of [
+    'reverify-stale-cv-promoted.js',
+    'reverify-nulled-cv-promoted.js',
+    'reverify-with-haiku.js',
+    'reverify-promoted-reviews.js',
+    'verify-existing-reviews.js',
+  ]) {
     const file = path.resolve(__dirname, '..', rel);
     const src = fs.readFileSync(file, 'utf8');
     assert.doesNotMatch(
@@ -308,8 +319,8 @@ test('reverify call sites no longer hardcode isLongRunningProduction: false (reg
     );
     assert.match(
       src,
-      /isLongRunningProduction:\s*isLongRunningProduction\(show\)/,
-      `${rel} should call isLongRunningProduction(show) from lib/long-runner-registry`
+      /isLongRunningProduction:\s*isLongRunningProduction\(/,
+      `${rel} should call isLongRunningProduction(...) from lib/long-runner-registry`
     );
   }
 });

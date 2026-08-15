@@ -17,6 +17,7 @@ const fs = require("fs");
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
 const { isLondonMarket } = require("./lib/venue-classification");
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
@@ -94,6 +95,10 @@ async function main() {
         // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
         // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
         show: showById[c.showId] || null,
+        // WE long-runner CV hardening (task #1615): without this, backfill reverify
+        // never gets the LONG-RUNNING PRODUCTION hint even for Phantom/Les Mis/Mousetrap.
+        isLongRunningProduction: isLongRunningProduction(showById[c.showId]),
+        url: c.data.url || '',
       });
 
       console.log(`  New result: isValid=${result.isValid}, wrongArticle=${result.wrongArticle}, wrongProduction=${result.wrongProduction}`);
