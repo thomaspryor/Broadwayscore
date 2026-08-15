@@ -49,6 +49,15 @@ function countFixThisButtons(html) {
   return m ? m.length : 0;
 }
 
+// Sections deleted by the 2026-08-02 owner mandate — must never reappear
+// anywhere in the assembled email. Hoisted to module scope (not just this
+// file's own check below) so autonomous-email-render.js's queued-item filter
+// can require() the SAME list instead of keeping a second one in sync by
+// hand — that drift is exactly how task #1641 shipped (a second render path
+// carried its own copy of two of these six headings and missed the other
+// four, plus any future addition here).
+const FORBIDDEN_HEADINGS = ['Closing soon', 'Score drift', 'Backlog drain', 'T1 Coverage Scoreboard', 'Deployed coverage', 'Fixes &amp; features merged'];
+
 /**
  * Assert content invariants on an assembled digest email.
  * @param {string} html - the full email HTML about to be sent
@@ -85,7 +94,6 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   if (fixCount !== 0) {
     violations.push(`Digest v3 renders NO Fix-this buttons (auto-dispatch replaced them) — found ${fixCount}`);
   }
-  const FORBIDDEN_HEADINGS = ['Closing soon', 'Score drift', 'Backlog drain', 'T1 Coverage Scoreboard', 'Deployed coverage', 'Fixes &amp; features merged'];
   for (const h of FORBIDDEN_HEADINGS) {
     if (html.includes(h)) violations.push(`forbidden section "${h}" rendered — deleted by the 2026-08-02 owner mandate`);
   }
@@ -153,4 +161,4 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   return { ok: violations.length === 0, violations };
 }
 
-module.exports = { assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST };
+module.exports = { assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST, FORBIDDEN_HEADINGS };

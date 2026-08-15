@@ -341,8 +341,14 @@ function autofixLoopDeadMessage(health) {
 function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
   // 'decision' rows are genuine judgment calls (task #843) — they belong ONLY
   // in the "Needs your attention" card with a button, never here (this block
-  // would otherwise mislabel them as an in-flight auto-fix).
-  let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision');
+  // would otherwise mislabel them as an in-flight auto-fix). Task #1641: also
+  // drop any row whose name is a forbidden heading — defense in depth so a
+  // caller that builds autofixRows from something other than the already-
+  // filtered health.queued (a future extraIssues/tasks source, say) can't
+  // reintroduce "T1 Coverage Scoreboard"/"Deployed coverage" through this
+  // block the way send-morning-digest.js's queuedForAutofix did.
+  let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision'
+    && !QUEUED_TELEMETRY_BLOCKLIST.some((re) => re.test(String(r.name))));
   if (!rows.length) return '';
   // Two checks can share a plain-English translation (e.g. two "Stuck work:"
   // variants) — collapse them so the owner never reads the same sentence twice.
@@ -383,8 +389,23 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
 
 // Queued owner-router lines that are pure internal telemetry never belong in
 // the owner email (mandate 2026-08-02) — everything else renders as a
-// "Needs your attention" card.
-const QUEUED_TELEMETRY_BLOCKLIST = [/^T1 Coverage/i, /^Deployed coverage/i];
+// "Needs your attention" card. Derived from digest-content-invariants.js's
+// FORBIDDEN_HEADINGS (task #1641) rather than a second hand-kept list: that
+// duplication is exactly how "T1 Coverage Scoreboard"/"Deployed coverage"
+// leaked through the "Automation queue" block for two weeks — the invariant
+// check knew about them, this file's blocklist didn't, and nothing kept the
+// two in sync.
+const { FORBIDDEN_HEADINGS } = require('./digest-content-invariants.js');
+const escapeRegExp = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const QUEUED_TELEMETRY_BLOCKLIST = FORBIDDEN_HEADINGS.map((h) => new RegExp(`^${escapeRegExp(h)}`, 'i'));
+
+// Single choke point for stripping forbidden-telemetry rows out of a queued
+// list — used both here (display) and by send-morning-digest.js (before the
+// list feeds planAutofix), so a third render path can't reintroduce them by
+// reading health.queued directly.
+function filterForbiddenQueued(queued) {
+  return (queued || []).filter((q) => q && !QUEUED_TELEMETRY_BLOCKLIST.some((re) => re.test(String(q.title || ''))));
+}
 
 function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOverride = null) {
   if (!health) return '';
@@ -398,8 +419,7 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
     ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const clip = (s2, n) => { const t = String(s2); return t.length > n ? `${t.slice(0, n - 1)}\u2026` : t; };
-  const validQueued = queued.filter(Boolean)
-    .filter(q => !QUEUED_TELEMETRY_BLOCKLIST.some(re2 => re2.test(String(q.title || ''))));
+  const validQueued = filterForbiddenQueued(queued.filter(Boolean));
   // Owner mandate 2026-08-02 (second half, stated twice): anything that still
   // needs the human MUST carry a one-click action — "If something TRULY needs
   // approval, give me a link to click Approve so I can move on with my life."
@@ -787,4 +807,5 @@ module.exports = {
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderParkedCardsBlock,
+  filterForbiddenQueued,
 };

@@ -8,6 +8,7 @@ const {
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderHealthDigestBlock, healthIssueCount, renderAutofixBlock, autofixLoopDeadMessage,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
+  filterForbiddenQueued,
 } = require('./autonomous-email-render.js');
 const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
@@ -911,6 +912,36 @@ test('renderAutofixBlock: dead-loop message overrides the "filed and launched" h
   assert.match(dead, /DEAD/);
   assert.match(dead, /Auto-fix loop is DEAD: 0 of 12 succeeded\./,
     'the actual effectiveness-check message must surface, not a generic placeholder');
+});
+
+// Task #1641 regression: "T1 Coverage Scoreboard" and "Deployed coverage" are
+// pure internal telemetry (owner mandate 2026-08-02) that queuedForAutofix in
+// send-morning-digest.js was folding into autofixRows UNFILTERED — the
+// QUEUED_TELEMETRY_BLOCKLIST only ever guarded the "Needs your attention"
+// display path, so these two headings leaked into the "Automation queue"
+// block on every digest for two weeks. Guard both layers: the shared queued
+// filter, and renderAutofixBlock's own defense-in-depth check.
+test('filterForbiddenQueued: strips T1 Coverage Scoreboard / Deployed coverage rows, keeps everything else', () => {
+  const queued = [
+    { title: 'T1 Coverage Scoreboard', description: 'broadway: 92%' },
+    { title: 'Deployed coverage — the site is serving stale coverage' },
+    { title: 'Scraping spend over budget: brightdata $7 > $2.5' },
+    null,
+  ];
+  const out = filterForbiddenQueued(queued);
+  assert.deepEqual(out.map(q => q.title), ['Scraping spend over budget: brightdata $7 > $2.5']);
+});
+
+test('renderAutofixBlock: never renders a forbidden-heading row even if a caller builds autofixRows from an unfiltered source', () => {
+  const rows = [
+    { name: 'T1 Coverage Scoreboard', state: 'queued', taskId: null },
+    { name: 'Deployed coverage — the site is serving stale coverage', state: 'queued', taskId: null },
+    { name: 'Scraping spend over budget', state: 'queued', taskId: null },
+  ];
+  const out = renderAutofixBlock(rows);
+  assert.doesNotMatch(out, /T1 Coverage Scoreboard/, 'deleted by the 2026-08-02 owner mandate — must never render');
+  assert.doesNotMatch(out, /Deployed coverage/, 'deleted by the 2026-08-02 owner mandate — must never render');
+  assert.match(out, /Scraping spend over budget/, 'a real row must still render');
 });
 
 test('renderHealthDigestBlock: threads the fleet-wide dead-loop signal into the Automation queue header', () => {

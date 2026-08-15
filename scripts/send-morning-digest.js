@@ -406,6 +406,19 @@ async function main() {
 
   const { sections, problems } = readAllSnapshots();
 
+  // Task #1641: strip forbidden-telemetry queue rows (e.g. "T1 Coverage
+  // Scoreboard", "Deployed coverage" — deleted by the 2026-08-02 owner
+  // mandate) HERE, before anything downstream reads sections.health.queued.
+  // Filtering only inside renderHealthDigestBlock's display path left the
+  // raw list open to planAutofix below, which folded these rows into the
+  // "Automation queue" block through a path the display-only filter never
+  // touched — this single choke point is what a third path can no longer
+  // route around.
+  if (sections.health && Array.isArray(sections.health.queued)) {
+    const { filterForbiddenQueued } = require('./lib/autonomous-email-render.js');
+    sections.health.queued = filterForbiddenQueued(sections.health.queued);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).
@@ -568,15 +581,20 @@ async function main() {
   const now = new Date();
   const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
 
-  // Card #670: fail-soft pre-send content check — never blocks the send (the
-  // digest must always send), but a violation here means the CI test on
-  // composeDigestEmail() didn't catch a regression introduced somewhere else
-  // in the render chain, and that must be visible somewhere other than a
-  // silently-broken inbox.
+  // Card #670/#1641: pre-send content check. Never blocks the SEND itself
+  // (the digest must always send — a broken invariant check must not turn
+  // into a broken inbox), but a violation is a real regression the CI test
+  // on composeDigestEmail() missed, so it must not be able to hide behind a
+  // WARN nobody reads — set the process exit code so callers (cron, CI, a
+  // manual --dry-run) see it fail even though the email still went out.
+  let invariantViolations = [];
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
     const { ok, violations } = assertDigestInvariants(html, { health: sections.health, subject, verifySecret: process.env.APPROVAL_HMAC_SECRET });
-    if (!ok) console.error(`[digest] WARN content invariant violation(s): ${violations.join('; ')}`);
+    if (!ok) {
+      invariantViolations = violations;
+      console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+    }
   } catch (err) {
     console.error(`[digest] WARN content invariant check failed to run: ${String(err.message).slice(0, 120)}`);
   }
@@ -586,6 +604,7 @@ async function main() {
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, html);
     console.log(`[digest] DRY RUN — preview written to ${out} (subject: ${subject})`);
+    if (invariantViolations.length) process.exitCode = 1;
     return;
   }
 
@@ -647,6 +666,7 @@ async function main() {
   } catch (e) {
     console.error(`[digest] warn: could not persist sent-state (${e.message}) — the once-per-day guard will not hold until this is fixed`);
   }
+  if (invariantViolations.length) process.exitCode = 1;
 }
 
 if (require.main === module) {
