@@ -512,6 +512,15 @@ const CLEAR_BREADCRUMBS = {
   wrongShowAutoCleared: _clearBreadcrumbRetracted('wrongShowAutoCleared'),
   wrongShowAutoClearedAt: _clearBreadcrumbRetracted('wrongShowAutoClearedAt'),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
+  // /what-else cousin of the crossOutletVerified row above (task #1023): the
+  // SELF_CLEAR_PAIRS entries pairing wrongFullText/wrongAttribution with
+  // wrongArticleManualClear (flag-contradiction.js) retract THIS field when
+  // a re-flag leaves it stale. Without an entry here, that retraction is
+  // itself an unprotected PROTECTED_FIELDS deletion — the next rebase-time
+  // restore would treat it as data loss and resurrect the very breadcrumb
+  // the sweep just removed, exactly the bug #1023 exists to fix, one level
+  // deeper. Zero corpus instances as of 2026-08-14; this is prevention.
+  wrongArticleManualClear: _clearBreadcrumbRetracted('wrongArticleManualClear'),
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,

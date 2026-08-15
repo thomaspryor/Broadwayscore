@@ -33,6 +33,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
+  demoteStaleWrongShowPromotion,
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
@@ -195,7 +196,15 @@ function main() {
       if (args.fix) {
         let removedAny = false;
         for (const c of contradictions) {
-          if (retractStaleClearBreadcrumb(data, c).length) removedAny = true;
+          // Dispatch per pair: demote-flag (currently only #1022, wrongShow +
+          // contentVerificationPromoted) clears the stale FLAG instead of the
+          // breadcrumb — see demoteStaleWrongShowPromotion's docstring for why
+          // retractStaleClearBreadcrumb is the wrong resolution for that pair.
+          if (c.resolution === 'demote-flag') {
+            if (demoteStaleWrongShowPromotion(data, c)) removedAny = true;
+          } else if (retractStaleClearBreadcrumb(data, c).length) {
+            removedAny = true;
+          }
         }
         if (removedAny) {
           // Deliberately a plain write, not safeWriteReview(): the whole point

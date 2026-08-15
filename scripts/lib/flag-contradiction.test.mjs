@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -8,7 +11,11 @@ const {
   detectCvFlagContradiction,
   contradictionFixCommand,
   shouldAlertContradiction,
+  detectAllSelfContradictoryClears,
+  retractStaleClearBreadcrumb,
+  demoteStaleWrongShowPromotion,
 } = require('./flag-contradiction.js');
+const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
 
 // Pre-fix Grace Pervades snapshot: a real West End review flagged
 // wrongProduction:true by an early flagger (2026-04-15), then re-verified by a
@@ -242,4 +249,219 @@ test('no contentVerification → null', () => {
 test('null/undefined data → null (never throws)', () => {
   assert.equal(detectCvFlagContradiction(null), null);
   assert.equal(detectCvFlagContradiction(undefined), null);
+});
+
+// SELF_CLEAR_PAIRS coverage (tasks #1020/#1022/#1023) — a record asserting an
+// exclusion flag AND its own retraction breadcrumb at once. Regression guard
+// for #1023: an-american-in-paris-2015/broadwayworld--roy-berko.json and
+// kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json shipped with
+// wrongAttribution:true + crossOutletVerified:true simultaneously (a 'flag'
+// action from an earlier sweep whose crossOutletVerified was never retracted
+// with the clearBreadcrumbRetracted breadcrumb review-write-guard.js's
+// PROTECTED_FIELDS preserve loop requires to honor the delete).
+test('wrongAttribution + crossOutletVerified fires (#1023 pair)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongAttribution');
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+  assert.equal(hits[0].task, '#1023');
+});
+
+test('wrongAttribution alone (no crossOutletVerified) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ wrongAttribution: true }), []);
+});
+
+test('crossOutletVerified alone (no wrongAttribution) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ crossOutletVerified: true }), []);
+});
+
+test('human-decided file exempt from the #1023 pair too', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, humanReviewScore: 85 };
+  assert.deepEqual(detectAllSelfContradictoryClears(f), []);
+});
+
+test('retractStaleClearBreadcrumb deletes crossOutletVerified, leaves wrongAttribution, stamps retraction breadcrumb', () => {
+  const f = {
+    wrongAttribution: true,
+    wrongAttributionReason: 'unconfirmed byline',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const removed = retractStaleClearBreadcrumb(f, contradiction);
+  assert.deepEqual(removed, ['crossOutletVerified']);
+  assert.equal(f.crossOutletVerified, undefined);
+  assert.equal(f.wrongAttribution, true, 'the flag must survive — it is the live verdict');
+  assert.equal(f.wrongAttributionReason, 'unconfirmed byline');
+  assert.ok(f.clearBreadcrumbRetracted.includes('#1023'));
+  assert.ok(f.clearBreadcrumbRetractedFields.includes('crossOutletVerified'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('retractStaleClearBreadcrumb on a no-contradiction record is a no-op', () => {
+  const f = { wrongAttribution: true };
+  assert.deepEqual(retractStaleClearBreadcrumb(f, null), []);
+});
+
+test('hasClearBreadcrumbValue: a non-empty-string breadcrumb also fires the #1023 pair', () => {
+  // The detector's hasClearBreadcrumbValue() treats any non-empty string as an
+  // asserted breadcrumb, not just boolean true (flag-contradiction.js:249-253)
+  // — mirrors wrongProductionAutoCleared's mixed string/boolean corpus shape.
+  // crossOutletVerified is written as a boolean everywhere observed, but the
+  // detector doesn't special-case that, so prove the string path too.
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, crossOutletVerified: 'yes' });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+});
+
+// Durability contract (codex adversarial finding on this same task): the tests
+// above only check the in-memory object after retraction. The actual bug this
+// card fixes is that review-write-guard.js's safeWriteReview() PRESERVE loop
+// resurrects a deleted PROTECTED field from the on-disk `existing` record
+// unless the incoming write carries a breadcrumb isIntentionalClear()
+// recognizes. Exercise the REAL safeWriteReview (CLAUDE.md rule 15), not a
+// re-implementation, so a regression in either module fails here.
+test('isIntentionalClear recognizes a retracted crossOutletVerified as intentional', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(isIntentionalClear('crossOutletVerified', f), true);
+});
+
+test('safeWriteReview does NOT resurrect crossOutletVerified when the incoming write retracted it (the #1023 bug, replayed)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'self-clear-'));
+  const target = path.join(root, 'an-american-in-paris-2015--broadwayworld--roy-berko.json');
+
+  // Pre-fix on-disk state: the exact self-contradiction this card exists to fix.
+  fs.writeFileSync(target, JSON.stringify({
+    wrongAttribution: true,
+    wrongAttributionReason: 'could not confirm this specific file',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+    assignedScore: 87,
+  }, null, 2));
+
+  // The retraction fix, applied the same way audit-self-contradictory-clears.js
+  // --fix does: read, retract, write back through safeWriteReview (not the
+  // audit script's own bypass-write) to prove the guard itself honors it.
+  const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
+  const [contradiction] = detectAllSelfContradictoryClears(existing);
+  assert.ok(contradiction, 'fixture must reproduce the #1023 contradiction');
+  const fixed = { ...existing };
+  retractStaleClearBreadcrumb(fixed, contradiction);
+
+  safeWriteReview(target, fixed);
+
+  const onDisk = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(onDisk.crossOutletVerified, undefined, 'safeWriteReview must not resurrect the retracted breadcrumb from the on-disk existing record');
+  assert.equal(onDisk.wrongAttribution, true, 'the live exclusion flag must survive');
+  assert.equal(onDisk.assignedScore, 87, 'unrelated protected fields must be unaffected');
+
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// /what-else cousins of the #1023 pair — same self-contradiction shape
+// (wrongArticleManualClear is the ACTUAL breadcrumb review-write-guard.js's
+// _wrongArticleCleared() checks for both wrongFullText and wrongAttribution),
+// zero corpus instances as of 2026-08-14 but no writer invalidates the
+// breadcrumb on re-flag the way invalidateWrongProductionAutoClear() does for
+// its sibling, so a future re-flag would reproduce #1023 undetected without
+// these two SELF_CLEAR_PAIRS rows.
+test('wrongFullText + wrongArticleManualClear fires (cousin of the #1023 pair)', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongFullText: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongFullText');
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('wrongAttribution + wrongArticleManualClear fires directly, even without crossOutletVerified', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('a file with BOTH wrongAttribution cousin pairs reports both (retraction must converge in one pass)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, wrongArticleManualClear: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 2);
+  assert.deepEqual(hits.map((h) => h.breadcrumb).sort(), ['crossOutletVerified', 'wrongArticleManualClear']);
+});
+
+test('isIntentionalClear recognizes a retracted wrongArticleManualClear as intentional (durability for the new CLEAR_BREADCRUMBS row)', () => {
+  const f = { wrongFullText: true, wrongArticleManualClear: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(f.wrongArticleManualClear, undefined);
+  assert.equal(isIntentionalClear('wrongArticleManualClear', f), true);
+});
+
+// wrongShow + contentVerificationPromoted (#1022, BRO-168) — the pair whose
+// resolution is demote-flag, not retract-breadcrumb. Fixture mirrors the real
+// girl-interrupted-off-broadway-2026 talkinbroadway--unknown.json pre-fix state
+// (task #1021).
+const GIRL_INTERRUPTED_FIXTURE = {
+  wrongShow: true,
+  contentVerificationPromoted: 'rebuild: promoted from contentVerification (llm:claude-haiku, high)',
+  contentVerification: {
+    isValid: true,
+    confidence: 'high',
+    wrongArticle: false,
+    wrongProduction: false,
+    isFilmTv: false,
+    verifiedBy: 'llm:openai',
+    verifiedAt: '2026-06-05T23:55:34.160Z',
+    reasoning: 'The content is a review of the Off-Broadway production...',
+  },
+};
+
+test('wrongShow + contentVerificationPromoted fires (#1022 pair) and is tagged resolution=demote-flag', () => {
+  const hits = detectAllSelfContradictoryClears(GIRL_INTERRUPTED_FIXTURE);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongShow');
+  assert.equal(hits[0].breadcrumb, 'contentVerificationPromoted');
+  assert.equal(hits[0].task, '#1022');
+  assert.equal(hits[0].resolution, 'demote-flag');
+});
+
+test('other SELF_CLEAR_PAIRS entries are still tagged resolution=retract-breadcrumb', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [hit] = detectAllSelfContradictoryClears(f);
+  assert.equal(hit.resolution, 'retract-breadcrumb');
+});
+
+test('demoteStaleWrongShowPromotion clears wrongShow (not the breadcrumb), preserves the fresh CV reasoning, and deletes contentVerificationPromoted', () => {
+  const f = JSON.parse(JSON.stringify(GIRL_INTERRUPTED_FIXTURE));
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const result = demoteStaleWrongShowPromotion(f, contradiction, new Date('2026-08-14T00:00:00.000Z'));
+
+  assert.equal(result, true);
+  assert.equal(f.wrongShow, undefined, 'the stale flag must be cleared — this is the actual BRO-168 fix');
+  assert.equal(f.contentVerificationPromoted, undefined, 'the stale provenance stamp must be removed');
+  assert.equal(f.wrongShowOverride, true, 'clearWrongProductionFlags stamps the standard clear marker');
+  assert.equal(f.contentVerification.reasoning, GIRL_INTERRUPTED_FIXTURE.contentVerification.reasoning, 'the fresh CV verdict\'s own reasoning must survive, not the generic "Superseded by" wrapper');
+  assert.ok(f.wrongShowAutoCleared.includes('#1022'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('demoteStaleWrongShowPromotion declines (no-op) when the strict predicate disagrees with the looser extra() match — medium confidence', () => {
+  // Regression guard for the second-opinion review finding: the #1022 extra()
+  // detector accepts medium confidence for REPORTING, but the mutation must
+  // re-gate through isStaleCvPromotedWrongShow's stricter high-confidence bar.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  assert.ok(contradiction, 'extra() still reports it (broad recall)');
+  const result = demoteStaleWrongShowPromotion(f, contradiction);
+  assert.equal(result, false);
+  assert.equal(f.wrongShow, true, 'must NOT be cleared on weaker evidence than the promote path required');
+  assert.equal(f.contentVerificationPromoted, GIRL_INTERRUPTED_FIXTURE.contentVerificationPromoted);
+});
+
+test('demoteStaleWrongShowPromotion is a no-op on null/mismatched contradiction', () => {
+  assert.equal(demoteStaleWrongShowPromotion(null, {}), false);
+  assert.equal(demoteStaleWrongShowPromotion({}, null), false);
+  assert.equal(demoteStaleWrongShowPromotion({ wrongShow: true }, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared' }), false);
 });

@@ -65,6 +65,19 @@ gitc "$REPO" checkout -q main
 SNEAKY_CLONE="$D/sneaky-clone"
 "$REAL_GIT_BIN" clone -q "$D/origin.git" "$SNEAKY_CLONE"
 gitc "$SNEAKY_CLONE" config user.email s@s; gitc "$SNEAKY_CLONE" config user.name s
+# Force a local `main` tracking origin/main regardless of what branch the
+# clone actually checked out. `git clone` only checks out a branch by
+# resolving the BARE origin's symbolic HEAD ref (set once at `git init
+# --bare` time from `init.defaultBranch`, independent of which branches
+# actually exist) — on a runner whose default differs from this repo's "main"
+# (reproduced on CI: "warning: remote HEAD refers to nonexistent ref, unable
+# to checkout"), the clone lands with NO branch checked out at all. The shim
+# below then tries to commit+push a local "main" that was never created, that
+# push silently no-ops (unchecked exit code — see the shim's push line), the
+# sneaky conflict never lands on origin, and the whole test degrades into
+# "first push just succeeds" — a false PASS-shaped green that actually never
+# exercised the retry-merge conflict path it exists to test.
+gitc "$SNEAKY_CLONE" checkout -q -B main origin/main
 
 # git shim: forwards everything to the real git, except the FIRST
 # `push origin <branch>` call, which first commits a conflicting change to
@@ -73,11 +86,13 @@ gitc "$SNEAKY_CLONE" config user.email s@s; gitc "$SNEAKY_CLONE" config user.nam
 WRAPPER_DIR="$D/wrapper"
 mkdir -p "$WRAPPER_DIR"
 MARKER="$D/sneaky-pushed.marker"
+INJECT_LOG="$D/inject.log"
 cat > "$WRAPPER_DIR/git" <<EOF
 #!/usr/bin/env bash
 REAL_GIT="$REAL_GIT_BIN"
 SNEAKY_CLONE="$SNEAKY_CLONE"
 MARKER="$MARKER"
+INJECT_LOG="$INJECT_LOG"
 args=("\$@")
 if [ "\${args[0]:-}" = "-C" ]; then
   rest=("\${args[@]:2}")
@@ -86,12 +101,22 @@ else
 fi
 if [ "\${rest[0]:-}" = "push" ] && [ "\${rest[1]:-}" = "origin" ] && [ ! -f "\$MARKER" ]; then
   touch "\$MARKER"
-  "\$REAL_GIT" -C "\$SNEAKY_CLONE" fetch origin -q
-  "\$REAL_GIT" -C "\$SNEAKY_CLONE" reset -q --hard "origin/\${rest[2]:-main}"
-  echo "sneaky-conflict-content" > "\$SNEAKY_CLONE/conflict.txt"
-  "\$REAL_GIT" -C "\$SNEAKY_CLONE" add -A
-  "\$REAL_GIT" -C "\$SNEAKY_CLONE" commit -q -m "sneaky concurrent commit conflicting with feature-branch"
-  "\$REAL_GIT" -C "\$SNEAKY_CLONE" push -q origin "\${rest[2]:-main}"
+  # Explicit per-step success checks (not \`set -e\`, which would abort the
+  # whole shim and skip forwarding the real command on any failure): a silent
+  # failure anywhere in this sequence used to fall straight through to
+  # forwarding the UNMODIFIED real push, which then succeeds normally — the
+  # exact false-pass this test exists to catch, just moved into its own
+  # fixture instead of the script under test (BRO-212, CI-only, 2026-08-14).
+  {
+    "\$REAL_GIT" -C "\$SNEAKY_CLONE" fetch origin -q \
+      && "\$REAL_GIT" -C "\$SNEAKY_CLONE" reset -q --hard "origin/\${rest[2]:-main}" \
+      && echo "sneaky-conflict-content" > "\$SNEAKY_CLONE/conflict.txt" \
+      && "\$REAL_GIT" -C "\$SNEAKY_CLONE" add -A \
+      && "\$REAL_GIT" -C "\$SNEAKY_CLONE" commit -q -m "sneaky concurrent commit conflicting with feature-branch" \
+      && "\$REAL_GIT" -C "\$SNEAKY_CLONE" push -q origin "\${rest[2]:-main}" \
+      && echo "injected ok" >> "\$INJECT_LOG" \
+      || echo "INJECTION FAILED at exit \$? — real push will proceed WITHOUT the conflict" >> "\$INJECT_LOG"
+  } 2>>"\$INJECT_LOG"
 fi
 exec "\$REAL_GIT" "\${args[@]}"
 EOF
@@ -102,8 +127,22 @@ out=$(cd "$REPO" && PATH="$WRAPPER_DIR:$PATH" bash "$MERGE_SCRIPT" feature-branc
 echo "--- script output ---"
 echo "$out" | tail -40 | sed 's/^/    /'
 
-if [ "$code" -eq 0 ]; then
-  echo "FAIL: script exited 0 despite a genuine retry-merge conflict"
+if [ -f "$INJECT_LOG" ]; then
+  echo "--- conflict-injection log ---"
+  sed 's/^/    /' "$INJECT_LOG"
+fi
+
+injected_ok=0
+[ -f "$INJECT_LOG" ] && grep -q "^injected ok$" "$INJECT_LOG" && injected_ok=1
+
+if [ "$code" -eq 0 ] && [ ! -f "$MARKER" ]; then
+  echo "FAIL: script exited 0 AND the shim's push-interception marker was never created — the shimmed 'git' on PATH was never invoked as 'push origin <branch>' at all (fixture/PATH-precedence problem, not evidence the script under test is bug-free)."
+  fail=1
+elif [ "$code" -eq 0 ] && [ "$injected_ok" -ne 1 ]; then
+  echo "FAIL: script exited 0, the shim WAS invoked as 'push origin <branch>' (marker present), but the conflict-injection sequence itself failed (see log above) — the real push landed unmolested, so this run never actually exercised the retry-merge conflict path. Fixture bug, not evidence the script under test is bug-free."
+  fail=1
+elif [ "$code" -eq 0 ]; then
+  echo "FAIL: script exited 0 despite a genuine, successfully-injected retry-merge conflict"
   fail=1
 elif ! echo "$out" | grep -q "could not merge remote changes on retry"; then
   echo "FAIL: exited non-zero but NOT via the retry-merge die() message — this case didn't exercise what it claims to."
