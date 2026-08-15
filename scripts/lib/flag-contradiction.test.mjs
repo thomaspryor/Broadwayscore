@@ -359,3 +359,38 @@ test('safeWriteReview does NOT resurrect crossOutletVerified when the incoming w
 
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+// /what-else cousins of the #1023 pair — same self-contradiction shape
+// (wrongArticleManualClear is the ACTUAL breadcrumb review-write-guard.js's
+// _wrongArticleCleared() checks for both wrongFullText and wrongAttribution),
+// zero corpus instances as of 2026-08-14 but no writer invalidates the
+// breadcrumb on re-flag the way invalidateWrongProductionAutoClear() does for
+// its sibling, so a future re-flag would reproduce #1023 undetected without
+// these two SELF_CLEAR_PAIRS rows.
+test('wrongFullText + wrongArticleManualClear fires (cousin of the #1023 pair)', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongFullText: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongFullText');
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('wrongAttribution + wrongArticleManualClear fires directly, even without crossOutletVerified', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('a file with BOTH wrongAttribution cousin pairs reports both (retraction must converge in one pass)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, wrongArticleManualClear: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 2);
+  assert.deepEqual(hits.map((h) => h.breadcrumb).sort(), ['crossOutletVerified', 'wrongArticleManualClear']);
+});
+
+test('isIntentionalClear recognizes a retracted wrongArticleManualClear as intentional (durability for the new CLEAR_BREADCRUMBS row)', () => {
+  const f = { wrongFullText: true, wrongArticleManualClear: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(f.wrongArticleManualClear, undefined);
+  assert.equal(isIntentionalClear('wrongArticleManualClear', f), true);
+});
