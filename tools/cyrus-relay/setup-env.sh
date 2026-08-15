@@ -14,12 +14,23 @@ PROJECT_ID="$(python3 -c "import json;print(json.load(open('$HERE/.vercel/projec
 
 echo "projectId=$PROJECT_ID"
 
+# Every call here is checked. A silent failure connecting the blob store leaves
+# the relay with nowhere to put deliveries — it 500s on every webhook — and a
+# setup script that printed nothing would look like it had worked.
+fail_on_api_error() {
+  local what="$1" resp="$2"
+  if printf '%s' "$resp" | jq -e '.error' > /dev/null 2>&1; then
+    echo "  $what: FAILED — $(printf '%s' "$resp" | jq -r '.error.message // .error')" >&2
+    exit 1
+  fi
+}
+
 echo "--- connect blob store ---"
-curl -s -X POST "https://api.vercel.com/v1/storage/stores/$STORE/connections?teamId=$TEAM" \
+RESP="$(curl -s -X POST "https://api.vercel.com/v1/storage/stores/$STORE/connections?teamId=$TEAM" \
   -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
-  -d "{\"projectId\":\"$PROJECT_ID\",\"envVarEnvironments\":[\"production\",\"preview\",\"development\"]}" \
-  | head -c 600
-echo
+  -d "$(jq -n --arg p "$PROJECT_ID" '{projectId:$p, envVarEnvironments:["production","preview","development"]}')")"
+fail_on_api_error "blob store connection" "$RESP"
+echo "  connected"
 
 CYRUS_ENV="$HOME/.cyrus/.env"
 if grep -q '^CYRUS_RELAY_SECRET=' "$CYRUS_ENV" 2>/dev/null; then
@@ -33,8 +44,10 @@ fi
 
 echo "--- set RELAY_SECRET on project ---"
 for TARGET in production preview development; do
-  curl -s -X POST "https://api.vercel.com/v10/projects/$PROJECT_ID/env?teamId=$TEAM&upsert=true" \
-    -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
-    -d "{\"key\":\"RELAY_SECRET\",\"value\":\"$SECRET\",\"type\":\"encrypted\",\"target\":[\"$TARGET\"]}" \
-    | python3 -c 'import json,sys; d=json.load(sys.stdin); print("  '"$TARGET"':", "ok" if "created" in d or "id" in str(d) else d)'
+  BODY="$(jq -n --arg v "$SECRET" --arg t "$TARGET" \
+    '{key:"RELAY_SECRET", value:$v, type:"encrypted", target:[$t]}')"
+  RESP="$(curl -s -X POST "https://api.vercel.com/v10/projects/$PROJECT_ID/env?teamId=$TEAM&upsert=true" \
+    -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d "$BODY")"
+  fail_on_api_error "$TARGET" "$RESP"
+  echo "  $TARGET: set"
 done

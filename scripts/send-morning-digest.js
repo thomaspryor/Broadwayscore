@@ -65,6 +65,7 @@ const {
   autofixLoopDeadMessage,
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
+const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -86,6 +87,27 @@ function localLoopDeadMessage() {
   if (rows === null) return null; // ledger absent on this machine this run — unknown, not dead
   const r = assessAutofixEffectiveness(rows);
   return r.status === 'error' ? r.message : null;
+}
+
+// Cyrus relay health. Same reasoning as the ledger above: the status file is
+// written by a launchd job on THIS machine, so CI health checks can never see
+// it. The relay's only failure mode is silence — the drain dies, Linear
+// @mentions vanish, and nothing says so until someone wonders why Cyrus went
+// quiet. This is the one reader that closes that loop.
+// CYRUS_HOME override matches scripts/cyrus-webhook-drain.js, and is what makes
+// the alerting path testable without disturbing the live status file.
+const CYRUS_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'webhook-drain-status.json'
+);
+function localCyrusRelayMessage() {
+  let status;
+  try {
+    status = JSON.parse(fs.readFileSync(CYRUS_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // no Cyrus on this machine, or file not written yet — unknown, not dead
+  }
+  return assessCyrusRelay(status).message;
 }
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
@@ -262,6 +284,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
   } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
+  }
+  const cyrusMsg = localCyrusRelayMessage();
+  if (cyrusMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(cyrusMsg)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
