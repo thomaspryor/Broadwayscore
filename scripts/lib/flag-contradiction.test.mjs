@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -11,6 +14,7 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
 } = require('./flag-contradiction.js');
+const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
 
 // Pre-fix Grace Pervades snapshot: a real West End review flagged
 // wrongProduction:true by an early flagger (2026-04-15), then re-verified by a
@@ -297,4 +301,96 @@ test('retractStaleClearBreadcrumb deletes crossOutletVerified, leaves wrongAttri
 test('retractStaleClearBreadcrumb on a no-contradiction record is a no-op', () => {
   const f = { wrongAttribution: true };
   assert.deepEqual(retractStaleClearBreadcrumb(f, null), []);
+});
+
+test('hasClearBreadcrumbValue: a non-empty-string breadcrumb also fires the #1023 pair', () => {
+  // The detector's hasClearBreadcrumbValue() treats any non-empty string as an
+  // asserted breadcrumb, not just boolean true (flag-contradiction.js:249-253)
+  // — mirrors wrongProductionAutoCleared's mixed string/boolean corpus shape.
+  // crossOutletVerified is written as a boolean everywhere observed, but the
+  // detector doesn't special-case that, so prove the string path too.
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, crossOutletVerified: 'yes' });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+});
+
+// Durability contract (codex adversarial finding on this same task): the tests
+// above only check the in-memory object after retraction. The actual bug this
+// card fixes is that review-write-guard.js's safeWriteReview() PRESERVE loop
+// resurrects a deleted PROTECTED field from the on-disk `existing` record
+// unless the incoming write carries a breadcrumb isIntentionalClear()
+// recognizes. Exercise the REAL safeWriteReview (CLAUDE.md rule 15), not a
+// re-implementation, so a regression in either module fails here.
+test('isIntentionalClear recognizes a retracted crossOutletVerified as intentional', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(isIntentionalClear('crossOutletVerified', f), true);
+});
+
+test('safeWriteReview does NOT resurrect crossOutletVerified when the incoming write retracted it (the #1023 bug, replayed)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'self-clear-'));
+  const target = path.join(root, 'an-american-in-paris-2015--broadwayworld--roy-berko.json');
+
+  // Pre-fix on-disk state: the exact self-contradiction this card exists to fix.
+  fs.writeFileSync(target, JSON.stringify({
+    wrongAttribution: true,
+    wrongAttributionReason: 'could not confirm this specific file',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+    assignedScore: 87,
+  }, null, 2));
+
+  // The retraction fix, applied the same way audit-self-contradictory-clears.js
+  // --fix does: read, retract, write back through safeWriteReview (not the
+  // audit script's own bypass-write) to prove the guard itself honors it.
+  const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
+  const [contradiction] = detectAllSelfContradictoryClears(existing);
+  assert.ok(contradiction, 'fixture must reproduce the #1023 contradiction');
+  const fixed = { ...existing };
+  retractStaleClearBreadcrumb(fixed, contradiction);
+
+  safeWriteReview(target, fixed);
+
+  const onDisk = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(onDisk.crossOutletVerified, undefined, 'safeWriteReview must not resurrect the retracted breadcrumb from the on-disk existing record');
+  assert.equal(onDisk.wrongAttribution, true, 'the live exclusion flag must survive');
+  assert.equal(onDisk.assignedScore, 87, 'unrelated protected fields must be unaffected');
+
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// /what-else cousins of the #1023 pair — same self-contradiction shape
+// (wrongArticleManualClear is the ACTUAL breadcrumb review-write-guard.js's
+// _wrongArticleCleared() checks for both wrongFullText and wrongAttribution),
+// zero corpus instances as of 2026-08-14 but no writer invalidates the
+// breadcrumb on re-flag the way invalidateWrongProductionAutoClear() does for
+// its sibling, so a future re-flag would reproduce #1023 undetected without
+// these two SELF_CLEAR_PAIRS rows.
+test('wrongFullText + wrongArticleManualClear fires (cousin of the #1023 pair)', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongFullText: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongFullText');
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('wrongAttribution + wrongArticleManualClear fires directly, even without crossOutletVerified', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('a file with BOTH wrongAttribution cousin pairs reports both (retraction must converge in one pass)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, wrongArticleManualClear: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 2);
+  assert.deepEqual(hits.map((h) => h.breadcrumb).sort(), ['crossOutletVerified', 'wrongArticleManualClear']);
+});
+
+test('isIntentionalClear recognizes a retracted wrongArticleManualClear as intentional (durability for the new CLEAR_BREADCRUMBS row)', () => {
+  const f = { wrongFullText: true, wrongArticleManualClear: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(f.wrongArticleManualClear, undefined);
+  assert.equal(isIntentionalClear('wrongArticleManualClear', f), true);
 });
