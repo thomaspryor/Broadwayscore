@@ -927,6 +927,15 @@ on:
       - 'scripts/lib/long-runner-registry.js'
       - 'scripts/scrape-playbill-verdict.js'
       - 'scripts/scrape-bww-reviews.js'
+      # Batch-discovery eligibility carve-out (card 1632): closed-regional-show
+      # retry window shared by scrape-playbill-verdict.js, scrape-bww-reviews.js,
+      # scrape-nyc-theatre-roundups.js. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      # scrape-nyc-theatre-roundups.js itself was never path-listed before this
+      # (pre-existing gap, unrelated to this helper — fixed here too).
+      - 'scripts/scrape-nyc-theatre-roundups.js'
+      - 'scripts/lib/discovery-eligibility.js'
+      - 'scripts/lib/discovery-eligibility.test.mjs'
       - 'scripts/lib/show-duplicate-detection.test.mjs'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by

@@ -26,6 +26,7 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
+const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
 const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
@@ -868,8 +869,10 @@ async function scrapePlaybillVerdict() {
   const recentShows = shows.filter(s => {
     // Skip closed shows — they won't get new reviews. Exception: regional shows
     // close fast (limited runs, often weeks), so a closed regional show may not
-    // have been caught yet by category-page discovery — give it a shot too.
-    if (s.status === 'closed' && s.category !== 'regional') return false;
+    // have been caught yet by category-page discovery — give it a shot too,
+    // bounded to a window post-close so an already-exhausted miss doesn't
+    // retry forever (there's no negative cache here).
+    if (!isClosedShowEligibleForBatchDiscovery(s)) return false;
     const opening = new Date(s.openingDate);
     return opening >= new Date('2023-01-01');
   });

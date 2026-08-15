@@ -361,6 +361,25 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
     console.warn(`  ⚠️  Cross-market reroute: ${review.showId} → ${routingDecision.targetShowId} (${routingDecision.reason})`);
     return saveReview({ ...review, showId: routingDecision.targetShowId }, overwrite, dir, visited);
   }
+  if (routingDecision.action === 'accept' && routingDecision.flag === 'wrongProduction') {
+    // Mirrors review-file-writer.js's same accept-with-flag branch: don't
+    // clobber a human's explicit manual-clear decision on the existing file.
+    const showDirForCheck = path.join(dir, review.showId);
+    const existingForCheck = findExistingReviewFile(showDirForCheck, review.outletId, review.criticName);
+    const existingData = existingForCheck && existingForCheck.data;
+    const humanCleared = existingData && (
+      existingData.humanReviewedWrongProduction === false ||
+      existingData.wrongProductionManualClear === true ||
+      existingData.wrongProductionOverride === true ||
+      existingData.wrongProduction === false
+    );
+    if (humanCleared) {
+      console.warn(`  ⏭️  Skipping wrongProduction stamp for ${review.showId}/${review.outletId}: human override in place`);
+    } else {
+      review = { ...review, wrongProduction: true, wrongProductionReason: routingDecision.reason || 'ambiguous-production' };
+      console.warn(`  ⚠️  Ambiguous production for ${review.showId}/${review.outletId}: stamping wrongProduction (${review.wrongProductionReason})`);
+    }
+  }
 
   const showDir = path.join(dir, review.showId);
   if (!fs.existsSync(showDir)) {
