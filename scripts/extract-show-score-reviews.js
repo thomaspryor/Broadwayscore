@@ -326,8 +326,11 @@ function main() {
         const expected = data.criticReviewCount || 0;
         // Surface contamination rejections distinctly from regular gaps
         if (data._rejectionReason) {
+          const isSiblingMisfile = data._rejectionReason.startsWith('sibling-misfile:');
           console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, 0/${expected} critic reviews — ${data._rejectionReason}`);
-          console.log(`::warning::[show-score] ${showId} all critic tiles rejected as cross-show contamination (Show Score upgrade state) — see rejectedCriticUrls in show-score.json`);
+          console.log(isSiblingMisfile
+            ? `::warning::[show-score] ${showId} all critic tiles rejected — archive likely holds a same-title sibling's page under this show's filename — see rejectedCriticUrls in show-score.json`
+            : `::warning::[show-score] ${showId} all critic tiles rejected as cross-show contamination (Show Score upgrade state) — see rejectedCriticUrls in show-score.json`);
         } else {
           console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, ${extracted}/${expected} critic reviews extracted`);
         }

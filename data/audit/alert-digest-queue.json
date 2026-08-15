@@ -86,5 +86,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-15T12:12:24.110Z"
+  },
+  {
+    "conditionKey": "arm-yield:outlet:nypost",
+    "title": "New York Post (reviews collected) has stopped updating (13 days)",
+    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-02, 13 days ago. It has never before gone quiet for more than 11 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 13d, from 4 productive day(s) / 4 item(s) between 2026-07-04 and 2026-08-02.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T13:04:25.661Z"
   }
 ]

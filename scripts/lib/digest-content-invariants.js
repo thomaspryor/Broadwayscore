@@ -50,12 +50,15 @@ function countFixThisButtons(html) {
 }
 
 // Sections deleted by the 2026-08-02 owner mandate — must never reappear
-// anywhere in the assembled email. Hoisted to module scope (not just this
-// file's own check below) so autonomous-email-render.js's queued-item filter
-// can require() the SAME list instead of keeping a second one in sync by
-// hand — that drift is exactly how task #1641 shipped (a second render path
-// carried its own copy of two of these six headings and missed the other
-// four, plus any future addition here).
+// anywhere in the assembled email. Hoisted to module scope and exported for
+// testability (task #1641). Deliberately NOT reused as the source for
+// autonomous-email-render.js's queued-item blocklist — that was tried and
+// reverted: this list matches raw ASSEMBLED HTML (hence the HTML-entity
+// form 'Fixes &amp; features merged'), while a queued item's `title` is
+// unescaped plain text, so sharing the array verbatim silently broke that
+// one entry's match and coupled queue-filtering to four headings no queued
+// source has ever emitted. Keep the two lists independent; this one is
+// HTML-invariant scope only.
 const FORBIDDEN_HEADINGS = ['Closing soon', 'Score drift', 'Backlog drain', 'T1 Coverage Scoreboard', 'Deployed coverage', 'Fixes &amp; features merged'];
 
 /**

@@ -365,11 +365,11 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-14T13:50:21.439Z",
+      "lastSeen": "2026-08-15T13:04:25.659Z",
       "lastNotifiedAt": "2026-08-10T13:50:53.428Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -769,35 +769,36 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-15T12:46:22.296Z",
-      "lastNotifiedAt": "2026-08-15T12:46:22.296Z",
+      "lastSeen": "2026-08-15T13:03:33.627Z",
+      "lastNotifiedAt": "2026-08-15T12:44:06.283Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Anansi the Spider",
       "firstSeen": "2026-08-13T00:01:58.198Z",
-      "lastSeen": "2026-08-15T08:49:24.763Z",
+      "lastSeen": "2026-08-15T13:02:29.991Z",
       "lastNotifiedAt": "2026-08-13T00:01:58.198Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 37
+      "silentRefires": 38
     },
     "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on anansi-the-spider-west-end-2026",
       "firstSeen": "2026-08-13T08:46:36.407Z",
-      "lastSeen": "2026-08-15T07:01:46.184Z",
+      "lastSeen": "2026-08-15T13:02:29.990Z",
       "lastNotifiedAt": "2026-08-13T08:46:36.407Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 29
+      "silentRefires": 30
     },
     "opening-night-stale-upcoming-tag-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1006,24 +1007,35 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on As You Like It - Globe",
       "firstSeen": "2026-08-15T01:53:16.458Z",
-      "lastSeen": "2026-08-15T08:49:24.465Z",
+      "lastSeen": "2026-08-15T13:02:29.989Z",
       "lastNotifiedAt": "2026-08-15T01:53:16.458Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-stale-upcoming-tag-the-house-of-the-negro-insane-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on The House of the Negro Insane",
       "firstSeen": "2026-08-15T01:53:16.756Z",
-      "lastSeen": "2026-08-15T08:49:24.764Z",
+      "lastSeen": "2026-08-15T13:02:29.991Z",
       "lastNotifiedAt": "2026-08-15T01:53:16.756Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 5
+    },
+    "arm-yield:outlet:nypost": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "New York Post (reviews collected) has stopped updating (13 days)",
+      "firstSeen": "2026-08-15T13:04:25.661Z",
+      "lastSeen": "2026-08-15T13:04:25.661Z",
+      "lastNotifiedAt": "2026-08-15T13:04:25.661Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
