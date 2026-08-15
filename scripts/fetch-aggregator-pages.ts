@@ -53,9 +53,11 @@ interface Show {
   id: string;
   title: string;
   slug: string;
-  category?: 'broadway' | 'off-broadway';
+  category?: string;
   market?: string;
   venue?: string;
+  transferredTo?: string;
+  transferOf?: string;
 }
 
 interface FetchResult {
@@ -165,8 +167,18 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
   // two-strangers-carry-a-cake-across-new-york-at-art-regional-2025,
   // little-bear-ridge-road-regional-2024, and
   // the-outsiders-world-premiere-regional-2023 this way.
-  if (show.category != null && show.category !== 'broadway' && show.category !== 'off-broadway' && !urlMappings[showId]) {
-    return { showId, aggregator: 'show-score', success: false, error: `category "${show.category}" has no Show Score listings and no stored URL — skipping slug-guess fallback` };
+  //
+  // Also gate a pre-categorization show (category null/undefined) that has
+  // a known sibling (ship-check finding): it falls through to the same
+  // broadway-shows slug-guess as an explicitly-categorized regional show, so
+  // it carries the identical slug-collision risk whenever a same-title
+  // sibling exists to collide with. A null-category show with NO sibling is
+  // still allowed through — blocking it too would break the common case of
+  // fetching ShowScore data for a brand-new show before it's categorized.
+  const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';
+  const hasKnownSibling = !!show.transferredTo || !!show.transferOf;
+  if (!isListedCategory && (show.category != null || hasKnownSibling) && !urlMappings[showId]) {
+    return { showId, aggregator: 'show-score', success: false, error: `category "${show.category ?? 'null'}"${hasKnownSibling ? ' (has known sibling)' : ''} has no Show Score listings and no stored URL — skipping slug-guess fallback` };
   }
 
   // Generate URL slug from title
