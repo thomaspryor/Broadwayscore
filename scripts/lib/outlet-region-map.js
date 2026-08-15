@@ -84,4 +84,44 @@ function inferOutletRegionFromCategories(categories, isLondonMarket) {
   return null;
 }
 
-module.exports = { buildOutletMaps, inferOutletRegionFromCategories };
+/**
+ * Backfill region on ALREADY-REGISTERED outlets that have none, using the same
+ * unanimous-category-evidence inference as auto-registration (BRO-133).
+ *
+ * inferOutletRegionFromCategories() above only ever ran at the moment an
+ * outlet was FIRST auto-registered (task #817) — an outlet registered
+ * before that fix landed (2026-08-04), or one whose first-seen review's
+ * show category was inconclusive at registration time, was stuck
+ * region-less forever: the newOutlets loop only touches outlets NOT YET in
+ * the registry, so a region-less entry never got a second look even once
+ * its evidence became unanimous. That left the cross-market guard's
+ * fragile isUkUrl domain-substring fallback (venue-classification.js) as
+ * the ONLY defense for these outlets — real for londonmumsmagazine
+ * (auto-registered 2026-08-02, saved only because "london" happens to be a
+ * substring of its own domain) and the root cause behind the
+ * amomentwithfranca/readaboutstuff strandings this backfill retroactively
+ * resolves.
+ *
+ * Mutates `outlets` in place (same contract as the auto-register call
+ * site) and returns the list of ids that were backfilled, for logging.
+ *
+ * @param {object} outlets - outletRegistry.outlets (mutated in place)
+ * @param {Record<string, Set<string>|string[]>} outletShowCategories - outlet id -> show categories it's been reviewed under
+ * @param {(cat: string) => boolean} isLondonMarket
+ * @returns {string[]} ids that were backfilled with region:'london'
+ */
+function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket) {
+  const backfilled = [];
+  for (const [id, info] of Object.entries(outlets || {})) {
+    if (!info || info.region || info.isDualMarket) continue;
+    const inferredRegion = inferOutletRegionFromCategories(
+      [...(outletShowCategories[id] || [])], isLondonMarket);
+    if (inferredRegion) {
+      info.region = inferredRegion;
+      backfilled.push(id);
+    }
+  }
+  return backfilled;
+}
+
+module.exports = { buildOutletMaps, inferOutletRegionFromCategories, backfillMissingOutletRegions };

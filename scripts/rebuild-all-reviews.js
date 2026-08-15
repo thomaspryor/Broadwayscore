@@ -202,6 +202,15 @@ const NYT_CRITICS_PICK_URLS = (() => {
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = buildOutletRegionMap(outletRegistry);  // outletId -> region (e.g., 'london')
+// canonicalOutletId (alias -> registry key) + a per-file evidence collector for the
+// outlet-region backfill (BRO-133). Populated from EVERY review file the per-file loop
+// touches below — including ones that get excluded (cross-market, dedup, wrongProduction,
+// etc.) — not just the final included set. An outlet whose reviews are currently excluded
+// (the exact bug this backfill fixes) would otherwise never accumulate the category
+// evidence needed to backfill its own region: allReviews (the included-only set) can't
+// prove an outlet's market when that outlet's only reviews are the ones being excluded.
+const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
+const outletShowCategoriesRaw = {};
 // All registered outlet ids + aliases (lowercased) — lets the cross-market guard
 // distinguish "registered but region-less" (US nationals; keep flagging) from
 // "not in the registry at all" (brand-new outlet; bootstrap exemption, task #817).
@@ -2091,6 +2100,23 @@ showDirs.forEach(showId => {
       }
 
       const data = JSON.parse(rawContent);
+
+      // Region-backfill evidence (BRO-133) — record BEFORE any skip/exclusion check
+      // below so an outlet whose reviews are currently excluded still contributes
+      // to its own region inference. See outletShowCategoriesRaw's declaration above.
+      {
+        const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
+        const cat = showCategoryMap[showId];
+        if (rawOutletForCategory && cat) {
+          // normalizeOutletCanonical matches the key allReviews/newOutlets register
+          // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
+          // ALIASES back to an already-registered outlet's actual registry key.
+          const canonicalOutletForCategory = normalizeOutletCanonical(rawOutletForCategory);
+          const canonicalId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForCategory]
+            || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;
+          (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
+        }
+      }
 
       // Auto-migrate aggregator-sourced originalScore → aggregatorStars, and
       // recover review text from garbageFullText when fullText is missing.
@@ -5592,58 +5618,67 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     }
   }
 
+  // Build a URL → domain map from existing reviews to auto-populate domain field
+  const outletDomainHints = {};
+  for (const r of allReviews) {
+    if (r.outletId && r.url && !outletDomainHints[r.outletId]) {
+      try {
+        const hostname = new URL(r.url).hostname.replace(/^www\./, '');
+        if (hostname) outletDomainHints[r.outletId] = hostname;
+      } catch (e) { /* ignore invalid URLs */ }
+    }
+  }
+
+  // Show-category evidence per outlet, for inferOutletRegionFromCategories — both
+  // at registration time (task #817) and in the backfill pass below (BRO-133).
+  // Uses outletShowCategoriesRaw, collected from EVERY review file touched during
+  // the per-file loop above (not just allReviews' included-only set) — see that
+  // collector's declaration for why: an outlet whose reviews are excluded (the
+  // exact bug this backfill fixes) must still be able to prove its own market.
+  const { backfillMissingOutletRegions } = require('./lib/outlet-region-map');
+  const outletShowCategories = outletShowCategoriesRaw;
+
   if (newOutlets.length > 0) {
-    // Build a URL → domain map from existing reviews to auto-populate domain field
-    const outletDomainHints = {};
-    for (const r of allReviews) {
-      if (r.outletId && r.url && !outletDomainHints[r.outletId]) {
-        try {
-          const hostname = new URL(r.url).hostname.replace(/^www\./, '');
-          if (hostname) outletDomainHints[r.outletId] = hostname;
-        } catch (e) { /* ignore invalid URLs */ }
-      }
-    }
-
-    // Infer region from the markets of the shows this outlet reviews (task #817:
-    // region-less registration made the cross-market guard flag new UK blogs' genuine
-    // reviews as wrongProduction). Unanimous market evidence only — see
-    // inferOutletRegionFromCategories in lib/outlet-region-map.js.
-    const { inferOutletRegionFromCategories } = require('./lib/outlet-region-map');
-    const outletShowCategories = {};
-    for (const r of allReviews) {
-      if (!r.outletId || !r.showId) continue;
-      const cat = showCategoryMap[r.showId];
-      if (!cat) continue;
-      (outletShowCategories[r.outletId] = outletShowCategories[r.outletId] || new Set()).add(cat);
-    }
-
-    // Auto-add missing outlets with tier 3
+    // Auto-add missing outlets with tier 3 (region is filled in by the
+    // backfill pass below, which runs over the whole registry including
+    // these brand-new entries)
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
-      const entry = {
+      outletRegistry.outlets[outletId] = {
         displayName,
         tier: 3,
         aliases: [outletId],
         domain: outletDomainHints[outletId] || null
       };
-      const inferredRegion = inferOutletRegionFromCategories(
-        [...(outletShowCategories[outletId] || [])], isLondonMarket);
-      if (inferredRegion) entry.region = inferredRegion;
-      outletRegistry.outlets[outletId] = entry;
     }
+  }
+
+  // Backfill region on outlets that are registered but region-less — covers
+  // both the newOutlets just added above and pre-existing entries (BRO-133).
+  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
+
+  if (newOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {
       outletRegistry._meta.lastUpdated = new Date().toISOString();
     }
     const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
     fs.writeFileSync(registryPath, JSON.stringify(outletRegistry, null, 2));
-    console.log(`\n✅ AUTO-REGISTERED ${newOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
-    for (const id of newOutlets.sort()) {
-      console.log(`  + ${id}`);
+    if (newOutlets.length > 0) {
+      console.log(`\n✅ AUTO-REGISTERED ${newOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
+      for (const id of newOutlets.sort()) {
+        console.log(`  + ${id}`);
+      }
+      console.log('  Review tiers manually if needed.');
     }
-    console.log('  Review tiers manually if needed.');
+    if (backfilledOutlets.length > 0) {
+      console.log(`\n✅ BACKFILLED region:'london' on ${backfilledOutlets.length} previously region-less outlet(s) (BRO-133):`);
+      for (const id of backfilledOutlets.sort()) {
+        console.log(`  + ${id}`);
+      }
+    }
     console.log('  ⚠ IMPORTANT: Also update outlet-registry.json in the PRIVATE repo (~/broadway-scorecard-data/data/outlet-registry.json).');
     console.log('    CI uses the private repo copy — reviews scored here won\'t appear in production until the private registry is updated.');
     console.log('    Quick sync: cp data/outlet-registry.json ~/broadway-scorecard-data/data/ && cd ~/broadway-scorecard-data && git add data/outlet-registry.json && git commit -m "sync outlet registry" && git push');
