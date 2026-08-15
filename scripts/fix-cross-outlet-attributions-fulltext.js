@@ -256,6 +256,24 @@ const MANIFEST = [
     note: 'Stored URL (timeout.com/london/theatre/hamilton-tickets-and-review) is a generic evergreen tickets page, not a dated review article — no way to confirm David Cote (a NYC-based critic) actually wrote West End Time Out London copy. assignedScore 100 is also an outlier for this file. Unverifiable, flagged.' },
   { file: 'master-class-2011/broadwayworld--david-cote.json', action: 'flag',
     note: 'Stored URL (broadwayworld.com/reviews/Master-Class) is a generic review-index page, not a dated article — no specific evidence David Cote (Time Out NY\'s own critic) freelanced this specific BroadwayWorld piece. Unverifiable, flagged.' },
+
+  // --- recheck batch (task #1006, 2026-08-14): 7 new suspects surfaced by
+  // fresh review-texts accumulated since the 2026-08-04 sweep above. Same
+  // triage methodology. ---
+  { file: 'cats-2016/nypost--kyle-smith.json', action: 'verify',
+    note: 'Confirmed via fullText ("Don\'t let the haters put kitty litter in your cream...") — genuine NY Post byline; Kyle Smith was the Post\'s film/culture critic through this era who also covered theater (same pattern already established on the cats-1982 sibling file).' },
+  { file: 'cats-west-end-2026/broadwayworld--louise-penn.json', action: 'verify',
+    note: 'Already duplicateOf broadwayworld--senior-louise-penn.json (excluded from scoring either way); specific dated broadwayworld.com/westend URL (Regent\'s Park, Aug 2026) matches the established Louise Penn/loureviews.co.uk freelance-to-BroadwayWorld pattern verified repeatedly in the prior sweep.' },
+  { file: 'disruption-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
+    note: 'Tim Teeman has never been an NYT theater critic (established, card 3b2637c5-416f-818f); same unconfirmable-byline pattern as the three sibling nytimes--tim-teeman.json flags above. Was live-scoring (assignedScore 49) before this flag.' },
+  { file: 'othello-2025/vulture--david-fox.json', action: 'verify',
+    note: 'Already duplicateOf vulture--sara-holdren-and-jesse-david-fox.json (excluded from scoring either way). WebSearch confirms the real byline is Sara Holdren solely for this piece; "David Fox" is not the registry\'s opera critic (parterre-box/df-reviews) but a garbled fragment of "Jesse David Fox," the real co-critic on this show\'s companion Queen of Versailles review at the same outlet.' },
+  { file: 'queen-versailles-2025/vulture--david-fox.json', action: 'verify',
+    note: 'Already duplicateOf vulture--jackson-mchenry.json (excluded from scoring either way). WebSearch confirms Vulture\'s Queen of Versailles review is co-bylined "Sara Holdren and Jesse David Fox" (matching the sibling vulture--sara-holdren-and-jesse-david-fox.json file) — "David Fox" here is a truncated match to real co-critic Jesse David Fox, not the registry\'s opera critic (parterre-box/df-reviews).' },
+  { file: 'the-book-of-mormon-west-end-2024/timeout-london--david-cote.json', action: 'flag',
+    note: 'Same unconfirmable pattern as the hamilton-west-end-2021 sibling flag above: stored URL (timeout.com/london/theatre/the-book-of-mormon-explained) is a generic "what you need to know" evergreen page, not a dated review, and David Cote is a NYC-based critic. Not live-scoring (assignedScore null) either way.' },
+  { file: 'the-ritz-2007/ew--david-barbour.json', action: 'flag',
+    note: 'Already contentTier:truncated (99 words, excluded from scoring regardless). David Barbour\'s established home outlets are TheaterMania (early career) and Lighting & Sound America, not Entertainment Weekly; WebSearch could not surface the actual Oct 2007 EW byline to confirm — unverifiable, flagged rather than guessed.' },
 ];
 
 function main() {

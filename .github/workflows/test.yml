@@ -3318,10 +3318,22 @@ jobs:
   awards-data-freshness:
     name: Awards Data Freshness
     runs-on: ubuntu-latest
-    # 3 min is ample now that the check is one O(1) API call + shallow checkout —
-    # the 8-min bump (2026-05-17) only existed to outlast the full-history clone,
-    # which this job no longer does. See the freshness-check step for the why.
-    timeout-minutes: 3
+    # 3 -> 10 (2026-08-15, BRO-162). The "3 min is ample" reasoning below was
+    # about the freshness-check STEP (an O(1) API call), but it's `actions/
+    # checkout` itself that has high runner/network variance — the same class
+    # of bug just fixed for the lint-workflows job in 5f3c06f9b85 (checkout
+    # 16s clean vs 4m52s killed, same runner pool). Direct evidence for THIS
+    # job: runs 31713911025 (2026-08-13) and 31822872316 (2026-08-14) were
+    # both killed with Checkout still `in_progress` at the 3-min mark (3m20s
+    # and 2m59s respectively) — real work never even started. Because a job
+    # hitting its own timeout gets conclusion "cancelled", and any cancelled
+    # job makes the WHOLE test.yml run report "cancelled" regardless of other
+    # jobs' outcomes, this was one of the sources behind BRO-162 (masked a
+    # genuine Data Validation + Test Summary failure in 31713911025). 10
+    # borrows lint-workflows' measured 4m52s-worst-checkout headroom rather
+    # than a same-job measurement (no run has finished a slow checkout here to
+    # time it) — the freshness-check step itself is still ~1s of real work.
+    timeout-minutes: 10
     # Schedule + manual only — never block unrelated PRs.
     # Surfaces in daily digest via getWorkflowRunSummary; promotes from
     # "operator forgot annual update" silent rot to a loud weekly failure.
@@ -3368,7 +3380,11 @@ jobs:
           fi
           echo "Awards data freshness OK (within ${MAX_DAYS}-day window)"
       - name: Notify on failure
-        if: failure()
+        # BRO-162: `failure()` never fires on a timeout-cancelled job (its
+        # conclusion is "cancelled", not "failure") — so if checkout ever
+        # exceeds the budget above, this alert silently doesn't fire either.
+        # Widening the timeout reduces frequency but doesn't close that gap.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Awards Data Stale (>14 months)'
