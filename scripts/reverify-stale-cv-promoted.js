@@ -225,8 +225,11 @@ async function main() {
         const articleConfidence = result.articleTypeConfidence || result.confidence;
         if (clean && data.isNonReview && articleConfidence === 'high') {
           data.isNonReview = false;
-          if (data.rejectionReason === 'not_a_review') delete data.rejectionReason;
-          delete data.isNonReviewReason;
+          // null, not delete — neither field has a CLEAR_BREADCRUMBS entry, so
+          // a delete is silently reverted by safeWriteReview's merge-mode
+          // restore pass (task #1624; same fix as reverify-nulled-cv-promoted.js).
+          if (data.rejectionReason === 'not_a_review') data.rejectionReason = null;
+          data.isNonReviewReason = null;
           data.nonReviewOverride = `reverify-stale-cv-promoted.js: ${result.reasoning || 'stored fullText re-verified clean (task #1404 stale-hash sweep)'}`;
           data.nonReviewOverrideAt = new Date().toISOString();
           didClear = true;

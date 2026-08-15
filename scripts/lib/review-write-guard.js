@@ -143,12 +143,25 @@ const PROTECTED_FIELDS = [
   // wrongShowReasonAt/wrongProductionReasonAt note below).
   // NOTE deliberately NOT protected: rejectionReason / rejectedAt / rejectedBy /
   // rejectionReasoning. They look like the same family but are CI-derived, and two
-  // scripts intentionally DELETE them with no breadcrumb — flag-combined-reviews.js
-  // (~line 116, clearing a stale wrong_show rejection so the scorer's UNSCORED /
-  // needsRescore queries stop excluding the file — the girl-interrupted deadlock)
-  // and split-multi-show-roundups.js (~line 234, after trimming a roundup down to its
-  // own show's section). Protecting them would make both clears no-ops on the next
-  // rebase and resurrect exactly the deadlock they exist to break.
+  // scripts intentionally clear them with no PROTECTED_FIELDS breadcrumb —
+  // flag-combined-reviews.js (~line 116, clearing a stale wrong_show rejection so
+  // the scorer's UNSCORED / needsRescore queries stop excluding the file — the
+  // girl-interrupted deadlock) and split-multi-show-roundups.js (~line 234, after
+  // trimming a roundup down to its own show's section, via a direct
+  // fs.writeFileSync that never goes through safeWriteReview). Protecting them
+  // would make both clears no-ops on the next rebase and resurrect exactly the
+  // deadlock they exist to break.
+  //
+  // Task #1624: NOT being in PROTECTED_FIELDS does not exempt a field from the
+  // separate merge-mode restore pass below (safeWriteReview's "keep any existing
+  // field not in newData" loop), which restores ANY field — protected or not —
+  // deleted via plain `delete data.X` when the on-disk file still has a value.
+  // flag-combined-reviews.js was hitting exactly that: its rejectionReason/
+  // rejectedBy/rejectedAt/rejectionReasoning/rescoreCompletedAt deletes were
+  // silently reverted every run. Fixed there by null-assigning instead of
+  // deleting (null is not `undefined`, so the merge loop leaves it alone).
+  // split-multi-show-roundups.js is unaffected because it writes directly via
+  // fs.writeFileSync and never calls safeWriteReview for this path.
   'isNotReview',
   'isNotReviewReason',
   'isNotReviewSetAt',
@@ -556,6 +569,21 @@ const _isNotReviewCleared = (d) =>
 
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
+  // duplicateTextOf (task #1624, found by ship-check codebase review): the
+  // content-fingerprint dedup pointer shares duplicateClearReason with
+  // duplicateOf/duplicateReason above — every setter in the codebase
+  // (audit-duplicate-of-url-mismatch.js, cascade-clear-duplicate-refs.js,
+  // heal-duplicate-of-direction.js, and safeWriteReview's own self-heal a few
+  // hundred lines below) stamps it specifically when clearing EITHER pointer
+  // field. audit-duplicate-of-url-mismatch.js --fix deletes duplicateTextOf
+  // (not null — validate-data.js flags a null duplicateTextOf as "should be
+  // string", so null-assignment isn't an option here, unlike the
+  // rejectionReason-family fields fixed elsewhere in this task) right after
+  // stamping duplicateClearReason, then calls safeWriteReview with default
+  // options — without this entry, the merge-mode restore pass silently
+  // resurrected the stale pointer on every run, making --fix a permanent
+  // no-op for duplicateTextOf mismatches specifically.
+  duplicateTextOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   isNotReview: _isNotReviewCleared,
   isNotReviewReason: _isNotReviewCleared,
   isNotReviewSetAt: _isNotReviewCleared,
@@ -566,6 +594,22 @@ const CLEAR_BREADCRUMBS = {
   wrongShowAutoCleared: _clearBreadcrumbRetracted('wrongShowAutoCleared'),
   wrongShowAutoClearedAt: _clearBreadcrumbRetracted('wrongShowAutoClearedAt'),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
+  // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
+  // shares the SAME field-scope key as crossOutletVerified above — every
+  // caller that retracts the flag (fix-cross-outlet-attributions.js and its
+  // -fulltext/playbill-bleed siblings, 'flag' branch) deletes the note
+  // alongside it but only ever stamps 'crossOutletVerified' in
+  // clearBreadcrumbRetractedFields, never a separate 'crossOutletVerifiedNote'
+  // entry — the two have always been written and cleared as a pair (see the
+  // PROTECTED_FIELDS comment above: "the notes/rename-history weren't"
+  // protected until task #991 added them). Reusing the flag's retraction key
+  // here (rather than requiring callers to also list the note) means the
+  // note's clear is honored without touching any caller. Before this entry,
+  // wrongAttribution/wrongArticleManualClear correctly cleared the flag but
+  // the note text was silently resurrected by the PROTECTED_FIELDS preserve
+  // loop on every run — same bug shape as the isNonReviewReason fix earlier
+  // in this task, one mechanism over (preserve loop, not merge-mode restore).
+  crossOutletVerifiedNote: _clearBreadcrumbRetracted('crossOutletVerified'),
   // /what-else cousin of the crossOutletVerified row above (task #1023): the
   // SELF_CLEAR_PAIRS entries pairing wrongFullText/wrongAttribution with
   // wrongArticleManualClear (flag-contradiction.js) retract THIS field when
@@ -583,6 +627,16 @@ const CLEAR_BREADCRUMBS = {
   wrongShowNote: _wrongShowCleared,
   wrongFullText: _wrongArticleCleared,
   wrongAttribution: _wrongArticleCleared,
+  // wrongAttributionReason (task #1624, found by ship-check codebase review):
+  // same PROTECTED_FIELDS gap as wrongAttribution's sibling *Reason fields
+  // elsewhere in this table — fix-cross-outlet-attributions.js and its
+  // -fulltext/playbill-bleed siblings delete wrongAttribution AND
+  // wrongAttributionReason together (their own comments claim
+  // wrongArticleManualClear "is only honored with this breadcrumb" for both
+  // fields, but only wrongAttribution actually had an entry). Without this,
+  // the reason text was silently resurrected by the preserve loop even
+  // though the flag itself correctly cleared.
+  wrongAttributionReason: _wrongArticleCleared,
   originalScore: (d) => d.originalScoreCleared === true,
   originalScoreSource: (d) => d.originalScoreCleared === true,
   originalScoreNormalized: (d) => d.originalScoreCleared === true,
