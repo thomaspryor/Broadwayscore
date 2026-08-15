@@ -51,4 +51,25 @@ function areSameTitleSiblings(idA, idB, siblingIndex) {
   return !!(data && Array.isArray(data.siblings) && data.siblings.some((s) => s.id === idB));
 }
 
-module.exports = { baseSlug, areSameTitleSiblings };
+/**
+ * The combinedWith list flag-combined-reviews.js should write for `showId`
+ * given the other shows a URL was seen under. Filters per-entry (not by
+ * skipping the whole URL group) so a MIXED group — a same-title sibling AND
+ * a genuinely different show sharing the URL (e.g. a roundup article
+ * covering both) — still records the real joint-review relationship without
+ * the sibling re-duplicating into `showId`'s own combinedWith (a whole-group
+ * skip would still list the sibling in a 3+-member mixed group, reintroducing
+ * the exact bug areSameTitleSiblings() exists to prevent — caught by
+ * /ship-check's Codex reviewer, 2026-08-15).
+ *
+ * An empty return means every other show sharing the URL was a title-sibling
+ * of `showId` — not a joint review at all, so the caller should skip writing
+ * isCombinedReview for this entry entirely.
+ */
+function computeCombinedWith(showId, otherShowIds, siblingIndex) {
+  return otherShowIds
+    .filter((s) => s !== showId && !areSameTitleSiblings(showId, s, siblingIndex))
+    .sort();
+}
+
+module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith };

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { baseSlug, areSameTitleSiblings } = require('./combined-review-utils.js');
+const { baseSlug, areSameTitleSiblings, computeCombinedWith } = require('./combined-review-utils.js');
 const { buildSiblingIndex } = require('./market-routing.js');
 
 test('baseSlug strips year and market suffixes', () => {
@@ -48,4 +48,33 @@ test('areSameTitleSiblings is false for genuinely different shows', () => {
 test('areSameTitleSiblings is false when the show is missing from the index', () => {
   const siblingIndex = buildSiblingIndex([regional, bway]);
   assert.equal(areSameTitleSiblings('unknown-show-id', bway.id, siblingIndex), false);
+});
+
+// A whole-group skip ("flag nothing if ANY member isn't a mutual sibling of
+// member[0]") would let the sibling pair back into each other's combinedWith
+// the moment a 3rd, genuinely different show shares the same URL (e.g. a
+// roundup article, or — found live in production 2026-08-15 by /ship-check's
+// Codex + codebase reviewers — an over-normalized URL that collapses many
+// unrelated articles onto one key, such as lightingandsoundamerica.com's
+// story.asp?ID=... query string being stripped by normalizeUrl()).
+// computeCombinedWith() must filter per-entry so the sibling pair is excluded
+// from EACH OTHER's list while still correctly recording genuine co-occurrence
+// with the 3rd show.
+const roundupShow = { id: 'beaches-2026', title: 'Beaches' };
+test('computeCombinedWith excludes only the sibling in a mixed 3-member group', () => {
+  const siblingIndex = buildSiblingIndex([regional, bway, roundupShow]);
+  const showList = [regional.id, bway.id, roundupShow.id];
+  const regionalCombined = computeCombinedWith(regional.id, showList, siblingIndex);
+  assert.deepEqual(regionalCombined, [roundupShow.id]);
+  const bwayCombined = computeCombinedWith(bway.id, showList, siblingIndex);
+  assert.deepEqual(bwayCombined, [roundupShow.id]);
+  const roundupCombined = computeCombinedWith(roundupShow.id, showList, siblingIndex);
+  assert.deepEqual(roundupCombined.sort(), [bway.id, regional.id].sort());
+});
+
+test('computeCombinedWith is empty when every co-occurrence is a title-sibling', () => {
+  const siblingIndex = buildSiblingIndex([regional, bway]);
+  const showList = [regional.id, bway.id];
+  assert.deepEqual(computeCombinedWith(regional.id, showList, siblingIndex), []);
+  assert.deepEqual(computeCombinedWith(bway.id, showList, siblingIndex), []);
 });
