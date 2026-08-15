@@ -60,8 +60,15 @@ test('batchStateResult: just under 12h is still pass, 12.5h flips to warn', () =
   assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(12.5), itemCount: 1 })).status, 'warn');
 });
 
+// 23.99, not 24 — the sibling of the 11.99 fix above, which this test was left
+// out of. Same bug, same file: the predicate is `age > 24`, and hoursAgoIso(24)
+// is already 24h PLUS however many milliseconds elapse before batchStateResult()
+// reads the clock, so on a slow runner it lands on the error side and reddens
+// main. It did exactly that in run 31856551268 (2026-08-15, `not ok 2086`), on a
+// commit that touched nothing in this code path. 0.01h = 36s of slack, still far
+// tighter than the 0.5h step the test is actually asserting.
 test('batchStateResult: 24h boundary is still warn, 24.5h flips to error', () => {
-  assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(24), itemCount: 1 })).status, 'warn');
+  assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(23.99), itemCount: 1 })).status, 'warn');
   assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(24.5), itemCount: 1 })).status, 'error');
 });
 
