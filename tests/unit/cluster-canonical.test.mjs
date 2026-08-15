@@ -58,6 +58,41 @@ test('recover with preferredCanonical override among identical bodies (aint-no-m
   assert.equal(withOverride.canonical, 'variety--aramide-tinubu.json');
 });
 
+test('wrongProduction with a manual clear is a valid candidate (death-of-a-salesman-2022 wsj)', () => {
+  // Real 2026-08-15 corpus: wsj--charles-isherwood.json carries a STALE
+  // wrongProduction:true (cross-show URL collision) that an operator already
+  // cleared via wrongProductionManualClear — review-guards.js's real scoring
+  // gate already treats this file as includable. isCandidate() must agree,
+  // or a preferredCanonical override pointing at it is silently ignored.
+  const files = [
+    { file: 'wsj--charles-isherwood.json', contentTier: 'complete', fullTextLen: 5848,
+      fullTextHead: 'Wendell Pierce and Sharon D Clarke Joan MarcusNew York',
+      wrongProduction: true, wrongProductionManualClear: true, wrongShow: false,
+      criticName: 'Charles Isherwood' },
+    { file: 'wsj--chris-jones.json', contentTier: 'excerpt', fullTextLen: 0,
+      wrongProduction: true, wrongShow: false, criticName: 'Chris Jones' },
+    { file: 'wsj--unknown.json', contentTier: 'complete', fullTextLen: 5706,
+      fullTextHead: 'Charles Isherwood\n\nNew York',
+      wrongProduction: false, wrongShow: false, criticName: null },
+  ];
+  // Without the manual-clear-respecting fix, isCandidate drops isherwood.json
+  // outright and a preferredCanonical pointing at it would be silently ignored.
+  const withOverride = decideClusterAction(files, { preferredCanonical: 'wsj--charles-isherwood.json' });
+  assert.equal(withOverride.action, 'recover');
+  assert.equal(withOverride.canonical, 'wsj--charles-isherwood.json');
+
+  // An UNCLEARED wrongProduction file must still be excluded from candidacy.
+  const stillExcluded = [
+    { file: 'wsj--chris-jones.json', contentTier: 'excerpt', fullTextLen: 0,
+      wrongProduction: true, wrongShow: false, criticName: 'Chris Jones' },
+    { file: 'wsj--unknown.json', contentTier: 'complete', fullTextLen: 5706,
+      fullTextHead: 'Charles Isherwood\n\nNew York',
+      wrongProduction: false, wrongShow: false, criticName: null },
+  ];
+  const noPref = decideClusterAction(stillExcluded, {});
+  assert.equal(noPref.canonical, 'wsj--unknown.json');
+});
+
 test('skip no-recoverable-review: all wrong-production tour files (moulin Chicago tour)', () => {
   const files = Array.from({ length: 29 }, (_, i) => ({
     file: `broadwayworld--${i}.json`, contentTier: 'invalid', fullTextLen: 0, wrongProduction: true,
