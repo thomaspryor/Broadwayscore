@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-11T23:13:41.000Z",
+    "lastUpdated": "2026-08-15T10:16:10.733Z",
     "version": "2.1.0",
     "lastChange": "BRO-254: register westend (westend.com, region: london) — was unregistered and falling through the cross-market guard's US-outlet fallback"
   },
@@ -2628,7 +2628,10 @@
         "reviews"
       ],
       "domain": "",
-      "accessModel": "defunct"
+      "accessModel": "defunct",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "arenastageorg": {
       "displayName": "Arena Stage",
@@ -9750,7 +9753,10 @@
       "displayName": "Mr Carl Woodward",
       "tier": 3,
       "domain": "mrcarlwoodward.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "publictheaterorg": {
       "displayName": "The Public Theater",
@@ -9816,7 +9822,10 @@
       "aliases": [
         "theatre-news"
       ],
-      "domain": "theatre-news.com"
+      "domain": "theatre-news.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "theatre-vibe": {
       "displayName": "Theatre Vibe",
@@ -9931,7 +9940,10 @@
       "aliases": [
         "co"
       ],
-      "domain": "stagedoorjoe.co.uk"
+      "domain": "stagedoorjoe.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "suntimes": {
       "displayName": "Suntimes",
@@ -10183,7 +10195,10 @@
       "aliases": [
         "rhombus-rota"
       ],
-      "domain": "rhombusrota.co.uk"
+      "domain": "rhombusrota.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "american-songwriter": {
       "displayName": "American Songwriter",
@@ -10241,7 +10256,10 @@
       "aliases": [
         "londongrip"
       ],
-      "domain": "londongrip.co.uk"
+      "domain": "londongrip.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "musical-theatre-report": {
       "displayName": "Musical Theatre Report",
@@ -10266,7 +10284,10 @@
       "aliases": [
         "londonbornandbred"
       ],
-      "domain": "londonbornandbred.co.uk"
+      "domain": "londonbornandbred.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "revstanstheatreblog": {
       "displayName": "Revstanstheatreblog",
@@ -10274,7 +10295,10 @@
       "aliases": [
         "revstanstheatreblog"
       ],
-      "domain": "revstanstheatreblog.co.uk"
+      "domain": "revstanstheatreblog.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "viewfromthegods": {
       "displayName": "Viewfromthegods",
@@ -10282,7 +10306,10 @@
       "aliases": [
         "viewfromthegods"
       ],
-      "domain": "viewfromthegods.co.uk"
+      "domain": "viewfromthegods.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "jewishnews": {
       "displayName": "Jewishnews",
@@ -10290,7 +10317,10 @@
       "aliases": [
         "jewishnews"
       ],
-      "domain": "jewishnews.co.uk"
+      "domain": "jewishnews.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "operationlivetheatre": {
       "displayName": "Operationlivetheatre",
@@ -10298,7 +10328,10 @@
       "aliases": [
         "operationlivetheatre"
       ],
-      "domain": "operationlivetheatre.com"
+      "domain": "operationlivetheatre.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "shinylife": {
       "displayName": "Shinylife",
@@ -10306,7 +10339,10 @@
       "aliases": [
         "shinylife"
       ],
-      "domain": "shinylife.co.uk"
+      "domain": "shinylife.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "onin": {
       "displayName": "Onin",
@@ -10314,7 +10350,10 @@
       "aliases": [
         "onin"
       ],
-      "domain": "onin.london"
+      "domain": "onin.london",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "londonmumsmagazine": {
       "displayName": "Londonmumsmagazine",
@@ -10322,7 +10361,10 @@
       "aliases": [
         "londonmumsmagazine"
       ],
-      "domain": "londonmumsmagazine.com"
+      "domain": "londonmumsmagazine.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "jadar": {
       "displayName": "JADAR",
@@ -10463,7 +10505,10 @@
       "aliases": [
         "strandmagazine"
       ],
-      "domain": "strandmagazine.co.uk"
+      "domain": "strandmagazine.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "unmissabletheatre": {
       "displayName": "Unmissabletheatre",
@@ -10471,7 +10516,10 @@
       "aliases": [
         "unmissabletheatre"
       ],
-      "domain": "unmissabletheatre.co.uk"
+      "domain": "unmissabletheatre.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "fringereview": {
       "displayName": "Fringereview",
@@ -10479,7 +10527,10 @@
       "aliases": [
         "fringereview"
       ],
-      "domain": "fringereview.co.uk"
+      "domain": "fringereview.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "acsntn": {
       "displayName": "Acsntn",
@@ -10495,7 +10546,10 @@
       "aliases": [
         "londontheatrehub"
       ],
-      "domain": "londontheatrehub.co.uk"
+      "domain": "londontheatrehub.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T10:16:10.733Z"
     },
     "amsterdamnews": {
       "displayName": "Amsterdamnews",
@@ -10511,7 +10565,10 @@
       "aliases": [
         "londontheatredirect"
       ],
-      "domain": "londontheatredirect.com"
+      "domain": "londontheatredirect.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "therealchrisparkle": {
       "displayName": "The Real Chris Parkle",
@@ -10802,6 +10859,73 @@
       ],
       "domain": "allthingstheatre.uk",
       "region": "london"
+    },
+    "stage-west": {
+      "displayName": "Stage West",
+      "tier": 3,
+      "aliases": [
+        "stage-west"
+      ],
+      "domain": "davidcoddon.com"
+    },
+    "thetheatreflyer-co-uk": {
+      "displayName": "Thetheatreflyer Co Uk",
+      "tier": 3,
+      "aliases": [
+        "thetheatreflyer-co-uk"
+      ],
+      "domain": "thetheatreflyer.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-15T09:06:13.009Z"
+    },
+    "polygon": {
+      "displayName": "Polygon",
+      "tier": 3,
+      "aliases": [
+        "polygon"
+      ],
+      "domain": "polygon.com"
+    },
+    "stratford-herald": {
+      "displayName": "Stratford Herald",
+      "tier": 3,
+      "aliases": [
+        "stratford-herald"
+      ],
+      "domain": "stratford-herald.com"
+    },
+    "winteriscoming": {
+      "displayName": "Winteriscoming",
+      "tier": 3,
+      "aliases": [
+        "winteriscoming"
+      ],
+      "domain": "winteriscoming.net"
+    },
+    "princetoninfo": {
+      "displayName": "Princetoninfo",
+      "tier": 3,
+      "aliases": [
+        "princetoninfo"
+      ],
+      "domain": "princetoninfo.com"
+    },
+    "popculturepress": {
+      "displayName": "Popculturepress",
+      "tier": 3,
+      "aliases": [
+        "popculturepress"
+      ],
+      "domain": "popculturepress.org"
+    },
+    "outinjersey": {
+      "displayName": "Outinjersey",
+      "tier": 3,
+      "aliases": [
+        "outinjersey"
+      ],
+      "domain": "outinjersey.net"
     }
   },
   "_aliasIndex": {

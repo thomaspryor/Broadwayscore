@@ -410,9 +410,11 @@ async function scrapeNYCTheatreRoundups() {
     // Targeted mode: process any show regardless of status/date
     recentShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
   } else {
-    // Batch mode: skip closed shows (won't get new reviews) and pre-2023
+    // Batch mode: skip closed shows (won't get new reviews) and pre-2023.
+    // Exception: regional shows close fast (limited runs), so a closed
+    // regional show may not have been caught yet by scheduled discovery.
     recentShows = shows.filter(s => {
-      if (s.status === 'closed') return false;
+      if (s.status === 'closed' && s.category !== 'regional') return false;
       const opening = new Date(s.openingDate);
       return opening >= new Date('2023-01-01');
     });

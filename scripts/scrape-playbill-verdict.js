@@ -866,7 +866,10 @@ async function scrapePlaybillVerdict() {
   }
   console.log('\n--- Google Fallback ---');
   const recentShows = shows.filter(s => {
-    if (s.status === 'closed') return false; // Skip closed shows — they won't get new reviews
+    // Skip closed shows — they won't get new reviews. Exception: regional shows
+    // close fast (limited runs, often weeks), so a closed regional show may not
+    // have been caught yet by category-page discovery — give it a shot too.
+    if (s.status === 'closed' && s.category !== 'regional') return false;
     const opening = new Date(s.openingDate);
     return opening >= new Date('2023-01-01');
   });

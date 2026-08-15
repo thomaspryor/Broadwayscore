@@ -1342,13 +1342,15 @@ async function main() {
   // current production when no date/URL-year signal is present.
   options.tokenOverlapSet = buildTokenOverlapSiblingSet(shows);
 
-  // Filter shows — exclude closed shows (won't get new reviews) and pre-2023 unless targeted
+  // Filter shows — exclude closed shows (won't get new reviews) and pre-2023 unless targeted.
+  // Exception: regional shows close fast (limited runs), so a closed regional
+  // show may not have been caught yet by scheduled discovery.
   let targetShows = shows;
   if (targetShowIds) {
     targetShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
   } else {
     targetShows = shows.filter(s => {
-      if (s.status === 'closed') return false;
+      if (s.status === 'closed' && s.category !== 'regional') return false;
       const opening = s.openingDate ? new Date(s.openingDate) : null;
       return opening && opening >= new Date('2023-01-01');
     });
