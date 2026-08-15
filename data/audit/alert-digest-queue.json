@@ -44,17 +44,6 @@
     "queuedAt": "2026-08-15T09:14:38.881Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 24.6% of shows changed coverage state",
-    "description": "review-gap blast radius 24.6% (16/65 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: beetlejuice-west-end-2026, dinosaur-world-live-off-west-end-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, how-the-other-half-loves-west-end-2026, hungry-women-off-broadway-2026, jesus-christ-superstar-west-end-2026, loves-labours-lost-globe-west-end-2026, music-city-off-broadway-2026, pride-west-end-2026, tao-of-glass-west-end-2026, the-car-man-west-end-2026, the-enormous-crocodile-west-end-2026, the-jonathan-larson-project-off-west-end-2026, the-rocky-horror-show-2026, the-vessel-off-broadway-2026, trainspotting-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T12:12:08.763Z"
-  },
-  {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
     "description": "1/155 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nDeath Note: The Musical: score-drift",
@@ -97,5 +86,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-15T19:25:40.084Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 28.3% of shows changed coverage state",
+    "description": "review-gap blast radius 28.3% (15/53 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: beetlejuice-west-end-2026, dinosaur-world-live-off-west-end-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, how-the-other-half-loves-west-end-2026, jesus-christ-superstar-west-end-2026, loves-labours-lost-globe-west-end-2026, paranormal-activity-west-end-2025, pride-west-end-2026, tao-of-glass-west-end-2026, the-car-man-west-end-2026, the-enormous-crocodile-west-end-2026, the-jonathan-larson-project-off-west-end-2026, the-rocky-horror-show-2026, the-vessel-off-broadway-2026, trainspotting-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T20:10:58.599Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.8% (406/522)\noff-broadway: 46.8% (161/344)\nwest-end: 70% (409/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (568h)\nCelebrity Autobiography — nypost (398h)\nCelebrity Autobiography — thewrap (386h)\nCelebrity Autobiography — timeout (386h)\nCelebrity Autobiography — vulture (386h)\n… 218 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (386h)\nAladdin — ew (34h)\nThe Book of Mormon — usatoday (34h)\nBuena Vista Social Club — broadwaynews (34h)\nHeathers The Musical — dailybeast (34h)\n… 16 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-15T20:11:06.737Z"
   }
 ]

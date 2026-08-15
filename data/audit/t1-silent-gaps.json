@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-15T12:12:11.687Z",
+  "generatedAt": "2026-08-15T20:10:59.256Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 551.0091377777778,
+      "fileAgeHours": 558.9896430555556,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 26.20293472222222
+      "nonTerminalAgeHours": 34.182814722222226
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 241.45295194444444,
+      "fileAgeHours": 249.43283277777778,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 26.20293472222222
+      "nonTerminalAgeHours": 34.182814722222226
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-american-daughter-off-broadway-2026 --url=https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html --outlet=nytimes --critic=\"Laura Collins-Hughes\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-14T00:29:14.103Z",
-      "fileAgeHours": 35.71599,
+      "fileAgeHours": 43.69587027777778,
       "gapSeenAt": "2026-08-15T12:12:11.687Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 7.97988
     }
   ],
   "contradictions": []
