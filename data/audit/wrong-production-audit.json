@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T07:43:09.940Z",
+  "timestamp": "2026-08-15T09:28:33.536Z",
   "stats": {
     "totalReviews": 42291,
-    "alreadyFlagged": 18219,
-    "dateGuardCatches": 145,
+    "alreadyFlagged": 18220,
+    "dateGuardCatches": 146,
     "directorMismatch": 968,
     "tvFilmSignals": 1207,
-    "londonSignals": 896,
+    "londonSignals": 897,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3613
+    "noPublishDate": 3610
   },
   "findings": [
     {
@@ -37927,6 +37927,20 @@
       ]
     },
     {
+      "showId": "high-society-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-04",
+      "url": "https://www.theupcoming.co.uk/2026/06/04/high-society-at-barbican-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "hillary-and-clinton-2019",
       "file": "dailybeast--tim-teeman.json",
       "score": 61,
@@ -39287,6 +39301,17 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "file": "theatermania--jonas-schwartz.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 54d before show (2026-08-13 vs 2026-10-06)"
         }
       ]
     },
