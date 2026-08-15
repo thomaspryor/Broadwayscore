@@ -14,10 +14,49 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
+const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
 const AGGREGATOR_SUMMARY_PATH = path.join(__dirname, '../data/aggregator-summary.json');
+const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
+
+// Mirrors review-file-writer.js's lazy-loaded sibling index / category cache
+// (BRO-363): extract-dtli-reviews.js writes via safeWriteReview, not
+// createOrMergeReviewFile, so it never got the cross-market sibling reroute
+// guard (classifyMarketRouting) that review-file-writer.js's Guard A applies.
+// The archive is a full sweep of whatever .html files exist in
+// data/aggregator-archive/dtli/ with no URL-mapping gate — a stale archive
+// file fetched under a REGIONAL show's id but containing its Broadway
+// transfer's page content (Two Strangers, found 2026-08-15) writes straight
+// through under the wrong show id every time this script runs.
+let _siblingIndexCache = null;
+function _getSiblingIndex() {
+  if (_siblingIndexCache) return _siblingIndexCache;
+  try {
+    const shows = require(SHOWS_PATH).shows;
+    _siblingIndexCache = buildSiblingIndex(shows);
+  } catch {
+    _siblingIndexCache = new Map();
+  }
+  return _siblingIndexCache;
+}
+
+let _showCategoryCache = null;
+function _getShowCategory(showId) {
+  if (!_showCategoryCache) {
+    try {
+      const shows = require(SHOWS_PATH).shows;
+      _showCategoryCache = {};
+      for (const s of shows) {
+        if (s.id && s.category) _showCategoryCache[s.id] = s.category;
+      }
+    } catch {
+      _showCategoryCache = {};
+    }
+  }
+  return _showCategoryCache[showId] || null;
+}
 
 /**
  * Load aggregator summary data
@@ -296,7 +335,33 @@ function extractReviewsFromDTLI(content, showId) {
   return reviews;
 }
 
-function saveReview(review, overwrite = false, dir = outputDir) {
+function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited) {
+  // Guard A mirror (BRO-363): same cross-market sibling reroute
+  // review-file-writer.js's createOrMergeReviewFile applies at its shared
+  // chokepoint. This script writes via safeWriteReview instead, so without
+  // this check a stale/mis-scoped archive page under a regional show's id
+  // writes its Broadway sibling's reviews straight into the regional show's
+  // directory on every extraction run.
+  const visited = _rerouteVisited || new Set();
+  visited.add(review.showId);
+  const routingDecision = classifyMarketRouting({
+    showId: review.showId,
+    url: review.url,
+    outletId: review.outletId,
+    publishDate: review.publishDate,
+    category: _getShowCategory(review.showId),
+    visited,
+    siblingIndex: _getSiblingIndex(),
+  });
+  if (routingDecision.action === 'reject') {
+    console.warn(`  ⛔ Cross-market guard: rejecting ${review.outletId}/${review.criticName || 'Unknown'} for ${review.showId} — ${routingDecision.reason}`);
+    return null;
+  }
+  if (routingDecision.action === 'reroute') {
+    console.warn(`  ⚠️  Cross-market reroute: ${review.showId} → ${routingDecision.targetShowId} (${routingDecision.reason})`);
+    return saveReview({ ...review, showId: routingDecision.targetShowId }, overwrite, dir, visited);
+  }
+
   const showDir = path.join(dir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
