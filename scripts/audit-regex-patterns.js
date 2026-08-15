@@ -83,10 +83,10 @@ const PATTERN_ALLOWLIST = {
   'COOKIE_CONSENT_PATTERNS::1': 100, // /legitimate\s+interest/
   // Newsletter: real newsletter prompts in Guardian, artsdesk, TimeOut scrapes —
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
-  'NEWSLETTER_PATTERNS::0': 150,  // /thanks?\s+for\s+subscribing/
+  'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154 (2026-08-15 recalibration)
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
-  'NEWSLETTER_PATTERNS::4': 12,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 9 (Newsday footer + Cleveland.com CTA bleed)
-  'NEWSLETTER_PATTERNS::5': 15,   // /newsletter\s+sign[-\s]?up/ — raw 10 (HuffPost/TheaterMania footer)
+  'NEWSLETTER_PATTERNS::4': 28,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 21 (BroadwayWorld/South London Theatre/Express UK sign-up CTAs)
+  'NEWSLETTER_PATTERNS::5': 22,   // /newsletter\s+sign[-\s]?up/ — raw 17 (HuffPost/TheaterMania footer)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
   // Navigation: scraped pages have real nav/footer bleed; the 5+ threshold in
   // detectNavigationJunk prevents single-match rejection.
@@ -101,12 +101,17 @@ const PATTERN_ALLOWLIST = {
   'NAVIGATION_PATTERNS::4': 1200, // /related\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::5': 70,   // /popular\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::6': 400,  // /latest\s+(articles?|stories|news)/
-  'NAVIGATION_PATTERNS::7': 10,   // /trending\s+(now|stories|articles)/ — raw 6
+  'NAVIGATION_PATTERNS::7': 15,   // /trending\s+(now|stories|articles)/ — raw 11 (2026-08-15 recalibration)
   // Wrong-article: ^breaking news catches genuine news-sidebar pollution
   'WRONG_ARTICLE_PATTERNS::7': 50, // /^breaking\s+news/im
   // Paywall: bare /paywall/i matches critics discussing their publication's
   // funding model in trailing editor notes — absorbed by trailing-junk mitigation
-  'PAYWALL_PATTERNS::12': 20, // /paywall/i
+  'PAYWALL_PATTERNS::12': 33, // /paywall/i — raw 25 (2026-08-15 recalibration; parterre-box/forward/guardian funding notices)
+  // Paywall: "subscribers only" chrome (Bloomberg lock icon, NY Daily News tag,
+  // WaPo archive nav) bleeds into scraped review text; absorbed downstream.
+  'PAYWALL_PATTERNS::4': 12, // /subscribers?\s+(only|content|exclusive|access)/i — raw 9
+  // Ad-blocker: Playbill's "whitelist us with your ad blocker" footer notice.
+  'AD_BLOCKER_PATTERNS::0': 15, // /\bad\s*block(er)?/i — raw 11
   // NYT bot-detection JS-loader artifact appears literally in 171 archived NYT reviews.
   // Each match is a real positive — the scraper got partial article + this anti-bot stub.
   // No FP risk: phrase is too specific to occur in legitimate review prose. Sized to
@@ -174,34 +179,60 @@ const PATTERN_CALIBRATION = {
         + 'concentration in one ACTIVE outlet = scraper chrome leak, fix the strip.',
   },
   'NAVIGATION_PATTERNS::7': {
-    commit: '07bfb0c497',
-    date: '2026-04-28',
-    rawHits: 6,
-    headroom: 1.7,
-    note: '/trending (now|stories|articles)/ — recent-articles widget bleed. '
-        + 'Sized to default-+30%; widget appears on most modern outlet '
-        + 'review pages.',
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 11,
+    headroom: 1.36,
+    note: '/trending (now|stories|articles)/ — recent-articles widget bleed '
+        + '(Playbill, Rolling Stone, NY Post, Daily Beast, Metro UK). Corpus-growth '
+        + 'drift from the 2026-04-28 baseline (raw 6), not a scraper regression — '
+        + 'widget appears on most modern outlet review pages. Sized to current '
+        + 'baseline + 30%.',
+  },
+  'NEWSLETTER_PATTERNS::0': {
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 154,
+    headroom: 1.3,
+    note: '/thanks?\\s+for\\s+subscribing/ — TimeOut/TimeOut London newsletter '
+        + 'confirmation widget footer bleed, diffuse across many outlets. '
+        + 'Previously set to 150 with no provenance entry (retroactively added '
+        + 'here); corpus growth pushed raw 154 over it. Absorbed by '
+        + 'leading/trailing-junk mitigation in isGarbageContent.',
   },
   'NEWSLETTER_PATTERNS::4': {
-    commit: 'ee76cc8307',
-    date: '2026-06-16',
-    rawHits: 9,
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 21,
     headroom: 1.33,
-    note: '"Get the latest news/updates" CTA. Newsday footer boilerplate bleeds '
-        + 'into 2 archived Newsday reviews (ann-2013, chaplin-2012), plus '
-        + 'Cleveland.com CTA in a-beautiful-noise-2022. All 9 hits are scraped '
-        + 'footer chrome, not newsletter signup overlays. Runtime unaffected: '
-        + 'detectNewsletterSignup requires 2+ pattern hits to reject. '
-        + 'Next bump: probe by-outlet — Newsday expansion or a new Cleveland outlet '
-        + 'archive batch are the expected growth drivers.',
+    note: '"Get the latest news/updates" CTA. All 21 hits are scraped sign-up '
+        + 'widget chrome — BroadwayWorld "Sign-Up for News" sidebar, South London '
+        + 'Theatre / South London Press "direct to your inbox" footer (8 hits '
+        + 'across multiple West End shows), Express UK Royal Family newsletter CTA — '
+        + 'none are review prose. Runtime unaffected: detectNewsletterSignup '
+        + 'requires 2+ pattern hits to reject. Corpus-growth drift from the '
+        + '2026-06-16 baseline (raw 9), not a scraper regression. Next bump: '
+        + 'probe by-outlet — South London Theatre and BroadwayWorld West End '
+        + 'coverage are the expected growth drivers.',
   },
   'NEWSLETTER_PATTERNS::5': {
-    commit: '07bfb0c497',
-    date: '2026-04-28',
-    rawHits: 10,
-    headroom: 1.5,
-    note: 'HuffPost/TheaterMania newsletter widget footer. Caught in '
-        + 'leading/trailing-junk mitigation downstream.',
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 17,
+    headroom: 1.29,
+    note: 'HuffPost/TheaterMania newsletter widget footer. Corpus-growth drift '
+        + 'from the 2026-04-28 baseline (raw 10). Caught in leading/trailing-junk '
+        + 'mitigation downstream.',
+  },
+  'PAYWALL_PATTERNS::4': {
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 9,
+    headroom: 1.33,
+    note: '/subscribers?\\s+(only|content|exclusive|access)/i — "subscribers only" '
+        + 'chrome: Bloomberg lock-icon tag, NY Daily News "SUBSCRIBER ONLY" section '
+        + 'label, WaPo archive nav, Seattle Times comments gate. All scraped UI '
+        + 'chrome, not review prose. Absorbed by trailing-junk mitigation.',
   },
   'PAYWALL_PATTERNS::7': {
     commit: '07bfb0c497',
@@ -210,6 +241,30 @@ const PATTERN_CALIBRATION = {
     headroom: 1.4,
     note: 'NYT "Already a subscriber? Log in" chrome that bleeds into '
         + '~28 archived NYT reviews. Sized baseline + 30%.',
+  },
+  'PAYWALL_PATTERNS::12': {
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 25,
+    headroom: 1.32,
+    note: 'Bare /paywall/i matches critics discussing their OWN publication\'s '
+        + 'funding model in trailing editor/support notes (parterre-box '
+        + '"No paywalls, no institutional backing" boilerplate — 11 of 25 hits — '
+        + 'plus Forward, Guardian, Slant, Jewish News, National Review support '
+        + 'pleas). Never the review\'s own paywall status. Absorbed by '
+        + 'trailing-junk mitigation. Corpus-growth drift, concentrated in a '
+        + 'handful of recurring outlet sign-offs.',
+  },
+  'AD_BLOCKER_PATTERNS::0': {
+    commit: 'pending',
+    date: '2026-08-15',
+    rawHits: 11,
+    headroom: 1.36,
+    note: '/\\bad\\s*block(er)?/i — Playbill\'s "supporting us by whitelisting '
+        + 'playbill.com with your ad blocker" footer notice, identical string '
+        + 'across all 11 hits (different shows, same Playbill template). '
+        + 'Real chrome bleed, not prose (\\b boundary already excludes '
+        + '"roadblock" per the 2026-04-24 fix).',
   },
 };
 
