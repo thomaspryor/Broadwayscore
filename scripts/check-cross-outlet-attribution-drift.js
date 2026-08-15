@@ -55,19 +55,28 @@ function main() {
   const passed = exitCode === 0;
   const total = parseCount(output, 'tests');
   const skipped = parseCount(output, 'skipped');
-  const allSkipped = total !== null && skipped !== null && skipped === total;
+  // If `node --test`'s summary line format changes entirely (not just the
+  // TAP-vs-spec prefix parseCount already tolerates), total stays null. A
+  // silent fallback here would let a genuinely-skipped run (data/review-texts
+  // missing, exitCode 0) misreport as "PASS (no unreviewed suspects)" instead
+  // of surfacing that the parser itself needs updating.
+  const summaryUnparseable = total === null;
+  const allSkipped = !summaryUnparseable && skipped !== null && skipped === total;
   const snapshot = {
     updatedAt: new Date().toISOString(),
     exitCode,
     passed,
     allSkipped,
+    summaryUnparseable,
     total,
     skipped,
     outputTail: output.length > OUTPUT_TAIL_CHARS ? output.slice(-OUTPUT_TAIL_CHARS) : output,
   };
   fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
   fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + '\n');
-  if (allSkipped) {
+  if (summaryUnparseable) {
+    console.log(`cross-outlet attribution drift check: UNKNOWN (could not parse node --test summary; exit ${exitCode}) — snapshot written to ${path.relative(REPO, SNAPSHOT_PATH)}`);
+  } else if (allSkipped) {
     console.log('cross-outlet attribution drift check: SKIPPED (data/review-texts not present in this checkout)');
   } else if (passed) {
     console.log('cross-outlet attribution drift check: PASS (no unreviewed suspects)');

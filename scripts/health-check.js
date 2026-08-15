@@ -1226,6 +1226,9 @@ function checkQuality() {
       if (age > 48) {
         return { name, status: 'error', message: `Drift-check snapshot is ${formatAge(age)} old (>48h) — the daily check itself has stopped running`, hint: 'Check the "Cross-outlet attribution drift check" step in data-health-check.yml' };
       }
+      if (snap.summaryUnparseable) {
+        return { name, status: 'warn', message: `Could not parse the node --test summary (${formatAge(age)} ago) — the check's own parser needs updating, this is NOT a suspect-count reading`, hint: 'node scripts/check-cross-outlet-attribution-drift.test.mjs and scripts/check-cross-outlet-attribution-drift.js parseCount() vs current `node --test` output format' };
+      }
       if (snap.allSkipped) {
         return { name, status: 'warn', message: `Skipped (${formatAge(age)} ago) — data/review-texts was not checked out in that run`, hint: 'Should not happen in data-health-check.yml, which always checks out review-texts; investigate the workflow run.' };
       }
