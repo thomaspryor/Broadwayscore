@@ -1206,6 +1206,38 @@ function checkQuality() {
       return { name: 'Revenue: affiliate health', status: 'pass', message: `${checks.length} checks healthy (${formatAge(age)} ago)${shadowTag}` };
     }),
 
+    // Cross-outlet attribution drift (card #1550, Notion 3bd637c5-416f-81b0):
+    // scripts/check-cross-outlet-attribution-drift.js runs earlier in this same
+    // data-health-check.yml job and writes this snapshot — same dead-man shape as
+    // "Revenue: affiliate health" above. A failing suspect count is a warn, not an
+    // error: drift is expected as new review-texts land (opening-night pollers,
+    // discovery), the underlying audit's own unit test is what the owner runs to
+    // triage it, and this is a shadow-mode visibility check, not a gate (see the
+    // card: a hard CI gate would redden main on legitimate data). An error is
+    // reserved for the detector itself going dark.
+    runCheck('Data quality: cross-outlet attribution drift', () => {
+      const name = 'Data quality: cross-outlet attribution drift';
+      const snapFile = path.join(AUDIT_DIR, 'cross-outlet-attribution-drift.json');
+      if (!fs.existsSync(snapFile)) {
+        return { name, status: 'warn', message: 'No drift-check snapshot yet (cron not yet run)', hint: 'node scripts/check-cross-outlet-attribution-drift.js' };
+      }
+      const snap = readJSON(snapFile);
+      const age = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Drift-check snapshot is ${formatAge(age)} old (>48h) — the daily check itself has stopped running`, hint: 'Check the "Cross-outlet attribution drift check" step in data-health-check.yml' };
+      }
+      if (snap.summaryUnparseable) {
+        return { name, status: 'warn', message: `Could not parse the node --test summary (${formatAge(age)} ago) — the check's own parser needs updating, this is NOT a suspect-count reading`, hint: 'node scripts/check-cross-outlet-attribution-drift.test.mjs and scripts/check-cross-outlet-attribution-drift.js parseCount() vs current `node --test` output format' };
+      }
+      if (snap.allSkipped) {
+        return { name, status: 'warn', message: `Skipped (${formatAge(age)} ago) — data/review-texts was not checked out in that run`, hint: 'Should not happen in data-health-check.yml, which always checks out review-texts; investigate the workflow run.' };
+      }
+      if (!snap.passed) {
+        return { name, status: 'warn', message: `Unreviewed cross-outlet attribution suspect(s) found (${formatAge(age)} ago)`, hint: 'node scripts/audit-cross-outlet-attributions.js --json (and --include-fulltext / --playbill-bleed) to triage' };
+      }
+      return { name, status: 'pass', message: `No unreviewed suspects (${formatAge(age)} ago)` };
+    }),
+
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
     // once, after four owner spot-checks in a row found published reviews the
     // census reported absent — then nothing measured it again, so the next arm
