@@ -235,12 +235,12 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-14T22:08:23.596Z",
+      "lastSeen": "2026-08-15T02:23:01.538Z",
       "lastNotifiedAt": "2026-08-14T18:40:26.990Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 9
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -387,14 +387,13 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 14.3% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 20.8% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-13T23:42:09.655Z",
-      "lastNotifiedAt": "2026-08-13T17:55:34.590Z",
-      "notifyCount": 10,
+      "lastSeen": "2026-08-15T02:22:49.544Z",
+      "lastNotifiedAt": "2026-08-15T02:22:49.544Z",
+      "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -784,12 +783,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Anansi the Spider",
       "firstSeen": "2026-08-13T00:01:58.198Z",
-      "lastSeen": "2026-08-14T22:43:57.866Z",
+      "lastSeen": "2026-08-15T01:53:16.755Z",
       "lastNotifiedAt": "2026-08-13T00:01:58.198Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 31
+      "silentRefires": 32
     },
     "opening-night-remediation-exhausted-empty-cast:anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -905,12 +904,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-14T22:08:16.348Z",
+      "lastSeen": "2026-08-15T02:22:52.766Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1004,6 +1003,28 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-334"
+    },
+    "opening-night-stale-upcoming-tag-as-you-like-it-globe-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on As You Like It - Globe",
+      "firstSeen": "2026-08-15T01:53:16.458Z",
+      "lastSeen": "2026-08-15T01:53:16.458Z",
+      "lastNotifiedAt": "2026-08-15T01:53:16.458Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-the-house-of-the-negro-insane-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on The House of the Negro Insane",
+      "firstSeen": "2026-08-15T01:53:16.756Z",
+      "lastSeen": "2026-08-15T01:53:16.756Z",
+      "lastNotifiedAt": "2026-08-15T01:53:16.756Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
