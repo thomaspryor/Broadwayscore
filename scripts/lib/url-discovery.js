@@ -1163,6 +1163,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
     // Reject non-review content: interviews, box office reports, ticket/cast announcements, photos
     const nonReviewTerms = ['interview', 'box-office', 'box office', 'grosses', 'gross-', 'begins-previews',
+      'begins-performances', 'begins performances',
       'first-look', 'first look', 'cast-announced', 'cast announced', 'full-cast', 'meet-the-cast',
       'photos:', 'photo-gallery', 'tickets-on-sale', 'lottery', 'rush-policy', 'all-that-chat',
       'allthatchat', '/forum/', 'business-news',
