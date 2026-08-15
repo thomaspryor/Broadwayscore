@@ -29,7 +29,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
-const { applyUrlChangeInvariant } = require('./url-change-invariant.js');
+const { applyUrlChangeInvariant, isUrlFlipFlop } = require('./url-change-invariant.js');
 
 const quiet = (fn) => {
   const w = console.warn, l = console.log;
@@ -167,4 +167,62 @@ test('applyUrlChangeInvariant force:true clears URL-derived fields even when nor
   assert.ok(forced.cleared.includes('contentVerification'));
   assert.equal(merged.wrongProduction, undefined);
   assert.equal(merged.contentVerification, undefined);
+});
+
+// BRO-121: flip-flop breaker. isUrlFlipFlop() reads the _urlChangedClear
+// breadcrumb applyUrlChangeInvariant stamps on every real url change, so a
+// swap-back to the pre-change url (the ping-pong half of the cycle) can be
+// detected without any new state.
+test('isUrlFlipFlop detects a swap back to the pre-change url', () => {
+  const urlA = 'https://www.independent.co.uk/review-b123.html';
+  const urlB = 'https://www.independent.co.uk/review-b123.html?loginSuccessful=true';
+  const existing = {
+    url: urlA,
+    _urlChangedClear: { from: urlB, to: urlA, at: '2026-08-01T00:00:00.000Z', cleared: ['llmScore'] },
+  };
+  assert.equal(isUrlFlipFlop(existing, urlB), true, 'swap back to the pre-change url is a flip-flop');
+  assert.equal(isUrlFlipFlop(existing, 'https://www.independent.co.uk/a-totally-different-review.html'), false, 'a genuinely new url is not a flip-flop');
+});
+
+test('isUrlFlipFlop is false with no breadcrumb (first-ever url change)', () => {
+  const existing = { url: 'https://www.independent.co.uk/review-a.html' };
+  assert.equal(isUrlFlipFlop(existing, 'https://www.independent.co.uk/review-b.html'), false);
+});
+
+test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins urlVerified', () => {
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-'));
+  const showId = 'hamilton-test-fixture';
+  const urlA = 'https://www.vulture.com/hamilton-review';
+  const urlB = 'https://www.vulture.com/hamilton-review-alt-slug';
+  // A file that already swapped A -> B once and carries the breadcrumb
+  // applyUrlChangeInvariant stamped for that swap.
+  const target = makeFixture(reviewTextsDir, showId, 'vulture--jesse-green.json', {
+    showId, outletId: 'vulture', outlet: 'Vulture', criticName: 'Jesse Green',
+    url: urlB,
+    source: 'gather-reviews',
+    fullText: 'The real scored review text.',
+    contentTier: 'complete',
+    llmScore: { score: 82 },
+    _urlChangedClear: { from: urlA, to: urlB, at: '2026-08-01T00:00:00.000Z', cleared: ['llmScore', 'fullText'] },
+  });
+
+  // A poller/direct writer re-scrapes and swings the url back to A — the
+  // ping-pong — calling safeWriteReview directly (the shared chokepoint every
+  // writer besides mergeReviews goes through, per CLAUDE.md §15).
+  const result = quiet(() => safeWriteReview(target, {
+    criticName: 'Jesse Green',
+    url: urlA,
+    source: 'bww-aggregator',
+  }));
+
+  assert.equal(result.wrote, true);
+  const after = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(after.url, urlB, 'flip-flop swap-back must be refused, keeping the current url');
+  assert.equal(after.llmScore.score, 82, 'scored state must survive — this is the BRO-121 regression');
+  assert.equal(after.fullText, 'The real scored review text.');
+  assert.equal(after.urlVerified, true, 'file must be pinned after a detected flip-flop');
+  assert.ok(after.urlVerifiedNote && after.urlVerifiedNote.includes('flip-flop'));
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
