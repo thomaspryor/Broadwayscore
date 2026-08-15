@@ -44,6 +44,7 @@ const { normalizeTitle } = require('./lib/market-routing');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
+const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -1344,13 +1345,15 @@ async function main() {
 
   // Filter shows — exclude closed shows (won't get new reviews) and pre-2023 unless targeted.
   // Exception: regional shows close fast (limited runs), so a closed regional
-  // show may not have been caught yet by scheduled discovery.
+  // show may not have been caught yet by scheduled discovery — bounded to a
+  // window post-close so an already-exhausted miss doesn't retry forever
+  // (there's no negative cache here).
   let targetShows = shows;
   if (targetShowIds) {
     targetShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
   } else {
     targetShows = shows.filter(s => {
-      if (s.status === 'closed' && s.category !== 'regional') return false;
+      if (!isClosedShowEligibleForBatchDiscovery(s)) return false;
       const opening = s.openingDate ? new Date(s.openingDate) : null;
       return opening && opening >= new Date('2023-01-01');
     });
