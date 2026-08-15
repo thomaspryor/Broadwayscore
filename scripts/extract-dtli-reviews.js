@@ -58,6 +58,39 @@ function _getShowCategory(showId) {
   return _showCategoryCache[showId] || null;
 }
 
+// Page-level mirror of extract-show-score-reviews.js's sibling-misfile guard
+// (BRO-363 ship-check finding): saveReview()'s per-review guard only stops
+// individual review FILES from landing under the wrong showId — it doesn't
+// touch aggregator-summary.json's per-show thumb counts, which are written
+// unconditionally from the archive filename regardless of what saveReview()
+// did with the reviews on that page. A DTLI archive fetched under a regional
+// show's id but actually holding its Broadway sibling's page would still
+// record the sibling's up/meh/down counts under the regional id even after
+// every individual review got rerouted or rejected. Same >=50%-of-3
+// threshold as the Show Score guard, applied to this page's own extracted
+// reviews before the thumb-count write.
+function isSiblingMisfilePage(showId, reviews) {
+  if (reviews.length === 0) return false;
+  const siblingCounts = new Map();
+  for (const r of reviews) {
+    const decision = classifyMarketRouting({
+      showId,
+      url: r.url,
+      outletId: null,
+      publishDate: r.publishDate,
+      category: _getShowCategory(showId),
+      siblingIndex: _getSiblingIndex(),
+    });
+    if (decision.action === 'reroute') {
+      siblingCounts.set(decision.targetShowId, (siblingCounts.get(decision.targetShowId) || 0) + 1);
+    }
+  }
+  for (const count of siblingCounts.values()) {
+    if (count >= 3 && count / reviews.length >= 0.5) return true;
+  }
+  return false;
+}
+
 /**
  * Load aggregator summary data
  */
@@ -525,7 +558,7 @@ for (const file of files.sort()) {
   const thumbCounts = extractDTLIThumbCounts(content);
   const dtliUrl = extractDTLIUrl(content);
 
-  if (thumbCounts.up > 0 || thumbCounts.meh > 0 || thumbCounts.down > 0) {
+  if ((thumbCounts.up > 0 || thumbCounts.meh > 0 || thumbCounts.down > 0) && !isSiblingMisfilePage(showId, reviews)) {
     aggregatorSummary.dtli[showId] = {
       up: thumbCounts.up,
       meh: thumbCounts.meh,
