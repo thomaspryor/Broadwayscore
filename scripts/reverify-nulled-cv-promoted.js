@@ -89,13 +89,24 @@ function isProtected(d) {
 // stamp alongside wrongFullText/fullText=null. None of these are meaningful
 // once fullText is restored — leaving them behind would misdescribe a
 // recovered file as still-quarantined to the next reader.
+// NOTE: safeWriteReview's merge-mode "keep any existing field not in newData"
+// pass (review-write-guard.js ~line 1000) restores ANY field this function
+// deletes unless CLEAR_BREADCRUMBS registers a clear predicate for it — none
+// of these quarantine-bookkeeping fields are registered. A plain `delete`
+// here is silently reverted to its stale on-disk value; assigning null/false
+// instead makes newData[key] !== undefined, so the merge pass leaves the new
+// value alone. Caught live: the first smoke-test run wrote isNonReview:false
+// but left the stale isNonReviewReason/rejectionReason text sitting next to
+// it (task #1618, discovered post-merge — see the two-file cleanup this
+// script's next run also needs to catch via nulledTextReverifiedAt already
+// being stamped on them).
 function clearQuarantineBookkeeping(data) {
-  delete data.showNotMentioned;
-  delete data._showNotMentionedDiscoveryAttempted;
-  delete data.suspectedLlmHallucination;
-  delete data.contentMismatchNote;
-  delete data.contentMismatchScore;
-  if (data.incompleteReason === 'non_review') delete data.incompleteReason;
+  data.showNotMentioned = false;
+  data._showNotMentionedDiscoveryAttempted = null;
+  data.suspectedLlmHallucination = false;
+  data.contentMismatchNote = null;
+  data.contentMismatchScore = null;
+  if (data.incompleteReason === 'non_review') data.incompleteReason = null;
 }
 
 async function main() {
@@ -250,8 +261,11 @@ async function main() {
 
           if (data.isNonReview) {
             data.isNonReview = false;
-            if (data.rejectionReason === 'not_a_review') delete data.rejectionReason;
-            delete data.isNonReviewReason;
+            // null, not delete — see clearQuarantineBookkeeping's note: neither
+            // field has a CLEAR_BREADCRUMBS entry, so a delete is silently
+            // reverted by safeWriteReview's merge-mode restore pass.
+            if (data.rejectionReason === 'not_a_review') data.rejectionReason = null;
+            data.isNonReviewReason = null;
             data.nonReviewOverride = `reverify-nulled-cv-promoted.js: ${result.reasoning || 'wrongFullText restored + re-verified clean (task #1618)'}`;
             data.nonReviewOverrideAt = new Date().toISOString();
           }
