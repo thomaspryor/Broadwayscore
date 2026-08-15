@@ -113,9 +113,11 @@ function main() {
         // that treat isCombinedReview as an exemption
         // (audit-cross-show-url-collisions.js, audit-cross-attribution-by-
         // critic.js, scripts/lib/url-ownership.js, validate-data.js) stop
-        // skipping it. Safe: neither field is in PROTECTED_FIELDS or
-        // CLEAR_BREADCRUMBS, so a plain overwrite via safeWriteReview isn't
-        // reverted by its merge-mode restore pass.
+        // skipping it. null, not delete — combinedWith has no CLEAR_BREADCRUMBS
+        // entry, so a delete is silently reverted by safeWriteReview's
+        // merge-mode restore pass (same footgun as the wrongShow-recovery
+        // block below; confirmed live on buena-vista-social-club-2025/
+        // cititour--brian-scott-lipton.json — delete came back on disk).
         {
           const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
           if (data.isCombinedReview === true) {
@@ -124,7 +126,7 @@ function main() {
               console.log(`  [would clear stale isCombinedReview] ${entry.showId}/${entry.file}`);
             } else {
               data.isCombinedReview = false;
-              delete data.combinedWith;
+              data.combinedWith = null;
               safeWriteReview(entry.filePath, data);
             }
           }
