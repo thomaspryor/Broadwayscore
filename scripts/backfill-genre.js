@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyGenre, isNonTheatricalGenre } = require('./lib/genre-classification');
+const { classifyGenre, isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -54,9 +54,10 @@ for (const show of shows) {
     }
   }
 
-  if (isNonTheatricalGenre(show.genre) && show.category === 'west-end') {
+  const fixedCategory = applyGenreCategoryOverride(show.category, show.genre);
+  if (fixedCategory !== show.category) {
     changes.push(`  category: ${show.id} (genre ${show.genre}) west-end → off-west-end`);
-    show.category = 'off-west-end';
+    show.category = fixedCategory;
     categoryFixed++;
   }
 }

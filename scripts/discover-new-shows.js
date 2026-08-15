@@ -48,7 +48,7 @@ const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
-const { classifyGenre } = require('./lib/genre-classification');
+const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -643,6 +643,12 @@ async function fetchShowsFromTodayTixLondon() {
     // TodayTix startDate is first preview for WE shows, NOT press night.
     // Treat as previewsStartDate; openingDate set later by ShowScore or enrichment.
     const weStart = classifyTodayTixStartDate(show.startDate, title);
+    const description = show.description || '';
+    const genre = classifyGenre({ title, venue: weVenue, description });
+    const category = applyGenreCategoryOverride(
+      isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
+      genre
+    );
     showsList.push({
       title,
       venue: weVenue,
@@ -650,8 +656,9 @@ async function fetchShowsFromTodayTixLondon() {
       openingDate: null,
       previewsStartDate: weStart.previewsStartDate,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
-      category: isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
-      description: show.description || '',
+      ...(genre ? { genre } : {}),
+      category,
+      description,
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
       ...unconfirmedStartFlags(weStart.unconfirmedStartDate),
@@ -823,6 +830,8 @@ async function fetchShowsFromOfficialLondonTheatre() {
       const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
       seen.add(titleLower);
+      const description = (data.description || '').substring(0, 500);
+      const genre = classifyGenre({ title, venue, description });
       shows.push({
         title,
         venue,
@@ -830,8 +839,9 @@ async function fetchShowsFromOfficialLondonTheatre() {
         openingDate: null,
         previewsStartDate: data.startDate || null,
         closingDate: endDate,
-        category: 'west-end',
-        description: (data.description || '').substring(0, 500),
+        ...(genre ? { genre } : {}),
+        category: applyGenreCategoryOverride('west-end', genre),
+        description,
       });
     } catch (e) {
       // Skip malformed JSON-LD blocks
@@ -1605,6 +1615,10 @@ async function consumeShowScoreCandidatesFile() {
       // Conservative classifier — returns null unless a venue/title signal is
       // unambiguous, so plays/musicals are never mislabelled.
       const genre = classifyGenre({ title, venue: venueName, description: ttShow.description || '' });
+      // Apply the genre-overrides-venue category rule at intake too, so a
+      // non-theatrical show (dance at Sadler's Wells, etc.) never ships with
+      // category="west-end" even momentarily — see applyGenreCategoryOverride.
+      const category = applyGenreCategoryOverride(candidate.category, genre);
       validated.push({
         title,
         venue: venueName,
@@ -1614,7 +1628,7 @@ async function consumeShowScoreCandidatesFile() {
         previewsStartDate,
         ...(genre ? { genre } : {}),
         closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
-        category: candidate.category,
+        category,
         description: ttShow.description || '',
         todayTixCategory: ttShow.category?.name || null,
         _showScoreUrl: candidate.showScoreUrl,

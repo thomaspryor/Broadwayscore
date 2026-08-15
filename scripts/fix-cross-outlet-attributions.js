@@ -210,6 +210,18 @@ function main() {
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
+      // Same fix as fix-cross-outlet-attributions-fulltext.js (task #1006):
+      // a prior 'verify' pass may have left crossOutletVerified:true on
+      // disk, which is PROTECTED_FIELDS — a plain delete is silently
+      // reverted without this retraction breadcrumb (task #1008/#1023).
+      if (data.crossOutletVerified === true) {
+        data.clearBreadcrumbRetractedFields = Array.from(new Set([
+          ...(Array.isArray(data.clearBreadcrumbRetractedFields) ? data.clearBreadcrumbRetractedFields : []),
+          'crossOutletVerified',
+        ]));
+        data.clearBreadcrumbRetracted = 'retracted stale crossOutletVerified: contradicted live wrongAttribution (#1023)';
+        data.clearBreadcrumbRetractedAt = new Date().toISOString().slice(0, 10);
+      }
       data.wrongAttribution = true;
       data.wrongAttributionReason = entry.note;
       delete data.crossOutletVerified;
