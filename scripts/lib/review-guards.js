@@ -8,6 +8,8 @@
  * See: scripts/test-opening-night-fixes.js
  */
 
+const crypto = require('crypto');
+
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
  *
@@ -1476,6 +1478,110 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   // happens to carry a stale "wrongProduction=false" record (e.g. the Titus
   // Andronicus / misfiled-Hamlet case, which has no ensemble score).
   if (!hasHighConfidenceLlmScore(data)) return false;
+
+  return true;
+}
+
+/**
+ * Shared staleness check: has fullText changed since contentVerification ran?
+ * Extracted from rebuild-all-reviews.js's inline main-loop computation so
+ * callers outside the rebuild loop (flag-contradiction.js's --fix dispatch)
+ * can gate on the SAME staleness definition instead of re-deriving a looser
+ * one (BRO-168 second-opinion review, 2026-08-14).
+ *
+ * @param {object} data - Review-text JSON
+ * @returns {boolean} true when the fullText postdates the CV verdict, or the
+ *   CV's contentHash no longer matches the current fullText
+ */
+function computeCvIsStale(data) {
+  if (!data) return false;
+  const cv = data.contentVerification;
+  if (!cv) return false;
+  if (data.textFetchedAt && cv.verifiedAt) {
+    const fetchedAt = new Date(data.textFetchedAt).getTime();
+    const verifiedAt = new Date(cv.verifiedAt).getTime();
+    if (fetchedAt > verifiedAt) return true;
+  }
+  if (cv.contentHash && data.fullText) {
+    const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+    if (cv.contentHash !== currentHash) return true;
+  }
+  return false;
+}
+
+/**
+ * Self-heal a stale CV-promoted wrongShow flag (BRO-168).
+ *
+ * Same one-directional bug as isStaleCvPromotedWrongProduction above, but for
+ * wrongShow: rebuild-all-reviews.js's CV-promotion pass sets data.wrongShow=true
+ * and stamps data.contentVerificationPromoted from a contentVerification
+ * snapshot, but a LATER re-verification that overwrites contentVerification in
+ * place to affirm isValid:true/wrongArticle:false/wrongProduction:false never
+ * clears the top-level flag. Found via task #1021 (girl-interrupted-off-
+ * broadway-2026 talkinbroadway--unknown.json: wrongShow=true +
+ * contentVerificationPromoted while its own contentVerification block already
+ * said isValid:true). A corpus scan (scripts/audit-self-contradictory-clears.js
+ * — SELF_CLEAR_PAIRS #1022 in flag-contradiction.js already DETECTS this pair)
+ * found ~23 files stuck this way, including NYT, Variety and WSJ reviews.
+ *
+ * PROVENANCE GATE differs from the wrongProduction sibling: that predicate
+ * gates on wrongProductionReason's "CV-promoted:" prefix, but wrongShow
+ * promotion does not reliably stamp wrongShowReason (the girl-interrupted file
+ * above had none) — every wrongShow-promotion code path DOES stamp
+ * contentVerificationPromoted, so that is the reliable provenance marker here.
+ * CAVEAT: contentVerificationPromoted is shared across flag families (the same
+ * stamp covers a wrongProduction promotion in the same rebuild code block), so
+ * in principle a file could carry wrongShow=true from an unrelated writer
+ * (cross-attribution/URL-collision audits, manual classification) alongside a
+ * stale contentVerificationPromoted left over from an unrelated wrongProduction
+ * promotion earlier in its history. Not observed in the current corpus, but the
+ * CV re-affirmation check below (isValid/wrongArticle/wrongProduction/isFilmTv
+ * all clean at HIGH confidence) is what keeps a false match from doing harm:
+ * it only fires when the review's OWN current text is affirmatively fine.
+ *
+ * NO ensemble-score corroboration requirement, unlike the wrongProduction
+ * sibling. wrongShow=true excludes a review from scoring entirely, so
+ * wrongShow-flagged files never accumulate an llmScore — requiring
+ * hasHighConfidenceLlmScore here would be a vacuous gate that can never pass
+ * (verified empirically: 0 of the 23-file corpus carry an llmScore).
+ *
+ * This is the single strict gate for BOTH the rebuild-loop self-heal AND the
+ * flag-contradiction.js --fix dispatch (demoteStaleWrongShowPromotion) — the
+ * latter must call this directly rather than keeping its own looser predicate,
+ * so the two paths can never drift to different evidentiary bars for the same
+ * mutation (BRO-168 second-opinion review finding).
+ *
+ * @param {object} data - Review-text JSON
+ * @param {boolean} cvIsStale - true when fullText was fetched/changed after the
+ *   contentVerification ran. Callers inside the rebuild loop pass their
+ *   already-computed value; other callers can use computeCvIsStale(data).
+ * @returns {boolean} true when the stale CV-promoted wrongShow flag should be cleared
+ */
+function isStaleCvPromotedWrongShow(data, cvIsStale) {
+  if (!data || data.wrongShow !== true) return false;
+  if (cvIsStale) return false;
+
+  // Provenance gate: only self-heal wrongShow flags that a rebuild CV-promotion
+  // pass itself stamped. Never touch wrongShow set by unrelated guards (cross-
+  // show-URL collision audits, combined-review detection, manual classification,
+  // etc.) — those don't stamp contentVerificationPromoted and carry their own
+  // (non-CV) reasoning that a CV record disagreeing does not invalidate.
+  if (!data.contentVerificationPromoted) return false;
+
+  // Never re-touch a human/manual decision (and avoid no-op churn).
+  if (wrongShowCleared(data)) return false;
+
+  // The current authoritative CV must affirm this IS a valid review of the
+  // right show, at HIGH confidence — mirrors isStaleCvPromotedWrongProduction's
+  // "the clear path must be at least as strict as the promote path" rule (the
+  // promotion itself fires at medium confidence; demotion requires high).
+  const cv = data.contentVerification;
+  if (!cv) return false;
+  if (cv.isValid !== true) return false;
+  if (cv.wrongArticle === true) return false;
+  if (cv.wrongProduction === true) return false;
+  if (cv.isFilmTv === true) return false;
+  if (cv.confidence !== 'high') return false;
 
   return true;
 }
@@ -3633,6 +3739,8 @@ module.exports = {
   isLikelyStaleWrongShow,
   isLikelyStaleWrongProduction,
   isStaleCvPromotedWrongProduction,
+  isStaleCvPromotedWrongShow,
+  computeCvIsStale,
   isNonReviewDemotedByFreshCV,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,

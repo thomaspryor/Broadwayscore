@@ -45,7 +45,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -2595,6 +2595,25 @@ showDirs.forEach(showId => {
           data.wrongProductionSelfHealed = true;
           data.wrongProductionSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says wrongProduction=false + confident ensemble score — cleared stale CV-promoted flag`;
           stats.cvStaleWrongProductionSelfHealed = (stats.cvStaleWrongProductionSelfHealed || 0) + 1;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+        }
+
+        // Self-heal one-directional CV promotion (BRO-168): an earlier pass set
+        // wrongShow=true + contentVerificationPromoted from contentVerification,
+        // but the CURRENT (non-stale, high-confidence) CV record affirms this IS
+        // a valid review of the right show. Root cause of the girl-interrupted
+        // (task #1021) and 23-file corpus backlog — see isStaleCvPromotedWrongShow
+        // in review-guards.js.
+        if (isStaleCvPromotedWrongShow(data, cvIsStale)) {
+          data.wrongShow = false;
+          // Deliberately NOT setting wrongShowManualClear — same reasoning as the
+          // wrongProduction self-heal above: that's a human-override-equivalent
+          // that would permanently bypass future wrongShow audits, so a rare bad
+          // self-heal would become permanently protected. A plain self-heal
+          // marker keeps the file SELF-CORRECTING.
+          data.wrongShowSelfHealed = true;
+          data.wrongShowSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says isValid/not-wrong — cleared stale CV-promoted wrongShow flag`;
+          stats.cvStaleWrongShowSelfHealed = (stats.cvStaleWrongShowSelfHealed || 0) + 1;
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
       }
