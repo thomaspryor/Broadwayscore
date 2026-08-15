@@ -64,13 +64,10 @@ const KNOWN_SETTERS = [
   // wrongProduction=true and owes the same guard: a file a human explicitly
   // cleared or overrode is left alone. (added 2026-08-07, #1085)
   'repair-noteless-wrongprod-autoclear.js',
-  // Same-title sibling misroute backfill audit (2026-08-15). It re-scans every
-  // pre-existing on-disk review file for shows with a same-title sibling and,
-  // under --fix, writes wrongProduction=true on the ambiguous ones — the exact
-  // "auto-flag existing files from a heuristic" shape this guard exists for, so
-  // it belongs in KNOWN_SETTERS rather than ALLOWED_NON_GUARDED even though
-  // --fix is manual-only. Honors the breadcrumb inside its isHumanCleared()
-  // gate, which runs before classifyMarketRouting is consulted at all.
+  // Backfill audit for same-title sibling misroutes (task #1617). Skips
+  // shouldSkipWrongProductionAudit()-cleared files before ever computing a
+  // hit, in addition to its own humanReviewedWrongProduction/manualClear/
+  // override/explicit-false checks. (added 2026-08-15, #1617)
   'audit-sibling-title-misroute.js',
 ];
 

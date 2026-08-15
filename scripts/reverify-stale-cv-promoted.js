@@ -38,6 +38,22 @@ const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
+flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
+matches their current fullText. Re-runs verification against the CURRENT stored text
+(not a re-scrape): clears the flag when the fresh verdict comes back clean, leaves it
+excluded but hash-corrected when it does not.
+
+Usage:
+  node scripts/reverify-stale-cv-promoted.js             process all findings
+  node scripts/reverify-stale-cv-promoted.js --limit=20  smoke-test a subset
+  node scripts/reverify-stale-cv-promoted.js --dry-run   verify only, write nothing
+  node scripts/reverify-stale-cv-promoted.js --help, -h  print this usage and exit
+
+Makes live LLM verification calls and writes review files — never blind-clears.
+`;
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
@@ -66,6 +82,17 @@ function isProtected(d) {
 
 async function main() {
   const args = process.argv.slice(2);
+
+  // --help/-h BEFORE the corpus walk: this script runs live LLM verifyContent()
+  // calls over the stale-CV-hash population and rewrites review files through
+  // safeWriteReview — real side effects on --help, the class the help-flag
+  // safety audit blocks on (task #498). Gate sits above the REVIEW_TEXTS_DIR
+  // check too, so `--help` prints usage and exits 0 without a data checkout.
+  if (hasHelpFlag(args)) {
+    console.log(USAGE);
+    return;
+  }
+
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? Number(limitArg.split('=')[1]) : Infinity;
