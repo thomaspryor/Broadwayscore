@@ -14,6 +14,7 @@ const {
   isStaleCvPromotedWrongProduction,
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
+  isReviewContentTrustworthy,
 } = require('./review-guards.js');
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -482,4 +483,34 @@ test('computeCvIsStale: false when the CV verdict postdates the fetch', () => {
     contentVerification: { verifiedAt: '2026-06-05T23:55:34.160Z' },
   };
   assert.equal(computeCvIsStale(f), false);
+});
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * isReviewContentTrustworthy (task #1553) — extracted from rebuild-all-
+ * reviews.js's BRO-133 region-backfill evidence collector.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+test('isReviewContentTrustworthy: wrongProduction:true → false (unconditional exclusion)', () => {
+  assert.equal(isReviewContentTrustworthy(GRACE_STALE_WRONGPROD), false);
+});
+
+test('isReviewContentTrustworthy: wrongShow:true → false', () => {
+  assert.equal(isReviewContentTrustworthy({ outletId: 'nytimes', fullText: 'real review', wrongShow: true }), false);
+});
+
+test('isReviewContentTrustworthy: fabricatedEntry:true → false', () => {
+  assert.equal(isReviewContentTrustworthy({ outletId: 'nytimes', fullText: 'real review', fabricatedEntry: true }), false);
+});
+
+test('isReviewContentTrustworthy: isRoundupArticle:true → false', () => {
+  assert.equal(isReviewContentTrustworthy({ outletId: 'nytimes', fullText: 'real review', isRoundupArticle: true }), false);
+});
+
+test('isReviewContentTrustworthy: clean file with none of the flags → true', () => {
+  assert.equal(isReviewContentTrustworthy({ outletId: 'nytimes', fullText: 'real review' }), true);
+});
+
+test('isReviewContentTrustworthy: falsy data → false', () => {
+  assert.equal(isReviewContentTrustworthy(null), false);
+  assert.equal(isReviewContentTrustworthy(undefined), false);
 });

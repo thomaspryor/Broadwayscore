@@ -45,7 +45,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -2105,29 +2105,19 @@ showDirs.forEach(showId => {
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
       //
-      // Excludes wrongProduction/wrongShow/fabricatedEntry/isRoundupArticle — a
-      // second-pass Claude review (ship-check) confirmed on REAL data that an earlier
-      // version of this filter, which deliberately kept counting wrongProduction:true
-      // evidence (reasoning that's the exact flag this backfill exists to self-heal),
-      // produced concrete false positives: US regional outlets (Entertainment Tonight,
-      // Edmonton Journal, KUTV, etc.) misfiled under a title-collision West End show
-      // directory get wrongProduction:true for being the WRONG SHOW ENTIRELY, not for
-      // being cross-market — and with only that one file as evidence, "unanimous"
-      // London category evidence permanently mis-stamped region:'london' on genuine US
-      // outlets. There is no cheap way to distinguish "wrongProduction because
-      // cross-market guard fired" from "wrongProduction because it's a different show"
-      // from data fields alone, so this now excludes wrongProduction unconditionally.
-      // The originally-targeted case (a region-less outlet excluded for a REASON OTHER
-      // THAN wrongProduction, e.g. londonmumsmagazine's dedup exclusion) is unaffected.
-      // Outlets whose ONLY reviews are wrongProduction-flagged stay region-less here —
-      // strictly safer than a wrong stamp, and they still get the isUkUrl fallback plus
-      // the chance to earn evidence from a future non-flagged review.
+      // Trustworthiness gate is isReviewContentTrustworthy() (task #1553,
+      // scripts/lib/review-guards.js) — see its JSDoc for the full rationale on why
+      // wrongProduction is excluded UNCONDITIONALLY (a second-pass Claude review
+      // found 16 real false positives — US regional outlets like Entertainment
+      // Tonight, Edmonton Journal, KUTV — from an earlier version that kept counting
+      // wrongProduction:true evidence). Outlets whose ONLY reviews are
+      // wrongProduction-flagged stay region-less here — strictly safer than a wrong
+      // stamp, and they still get the isUkUrl fallback plus the chance to earn
+      // evidence from a future non-flagged review.
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        const contentIsUntrustworthy = data.wrongProduction === true || data.wrongShow === true
-          || data.fabricatedEntry === true || data.isRoundupArticle === true;
-        if (rawOutletForCategory && cat && !contentIsUntrustworthy) {
+        if (rawOutletForCategory && cat && isReviewContentTrustworthy(data)) {
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
           // ALIASES back to an already-registered outlet's actual registry key.
