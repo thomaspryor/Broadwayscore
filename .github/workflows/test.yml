@@ -4162,6 +4162,36 @@ jobs:
         if: always()
         run: node scripts/audit-autoclear-vs-ensemble.js --strict
 
+      - name: Audit sibling-title misroute (strict)
+        # Task #1608: classifyMarketRouting() (scripts/lib/market-routing.js)
+        # prevents a same-title-sibling review (a regional/pre-Broadway run vs
+        # its Broadway transfer, linked via transferOf/transferredTo) landing
+        # under the wrong one of the pair — but only at WRITE time. Nothing
+        # ever re-checked already-written review-texts files against it until
+        # this audit. Found 2026-08-14:
+        # two-strangers-carry-a-cake-across-new-york-at-art-regional-2025
+        # carried 4 live reviews that were actually about its Broadway
+        # transfer, dated from before firstSeenAt stamping existed.
+        #
+        # --strict fails on a hit NOT in the frozen baseline
+        # (data/audit/sibling-title-misroute-baseline.json), not on a raw
+        # count — a plain --max ceiling would (a) mask a genuinely new
+        # misroute the same run one of the baseline's known FPs gets hand-
+        # fixed (count stays flat), and (b) give zero headroom for
+        # classifyMarketRouting's own documented heuristic disagreements to
+        # flap CI on an unrelated push. See the script's own header comment
+        # for the full rationale (mirrors audit-direct-provider-calls.js's
+        # baseline-file pattern). Baseline currently holds 4 known,
+        # deliberately-unfixed Tier-1 false positives (Notion 3bd637c5-416f-
+        # 8168) — mamma-mia-west-end-2021, oh-mary-2024,
+        # stranger-things-the-first-shadow-west-end-2023,
+        # titanique-west-end-2024. Update via
+        # `node scripts/audit-sibling-title-misroute.js --update-baseline`
+        # only after hand-verifying a new hit is a genuine FP, never to make
+        # a red build pass.
+        if: always()
+        run: node scripts/audit-sibling-title-misroute.js --strict
+
       - name: Run aggregator-domain TLD parity corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above: the scripts/lib/*.test.mjs
         # glob runs in the unit-tests job, which never checks out data/review-texts, so
