@@ -284,6 +284,112 @@ if [ -n "$SCRIPT_ENTRY_HEAD" ] && git rev-parse --verify --quiet "origin/$PULL_B
   SCRIPT_ENTRY_BASE="$(git merge-base "$SCRIPT_ENTRY_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)"
 fi
 
+# Shared ancestor predicate (BRO-259) — used by both sync_restore_base_head()
+# below and restore_head_if_moved() so the two "is it safe to treat this HEAD
+# advance as a clean append?" checks can't drift out of sync with each other.
+_head_is_descendant() {
+  git merge-base --is-ancestor "$1" "$2" 2>/dev/null
+}
+
+# The known-safe local commit to reset back to when this run needs to discard
+# its own (possibly polluted) resolution attempt and retry cleanly. Starts
+# equal to SCRIPT_ENTRY_HEAD but can ADVANCE — see sync_restore_base_head()
+# below. SCRIPT_ENTRY_HEAD itself is NEVER reassigned: verify_content_
+# survived()'s --before-sha and the API fallback's <base_sha> both need it to
+# keep meaning "the original commit our own payload is built on," not
+# "wherever it's currently safe to reset to."
+RESTORE_BASE_HEAD="$SCRIPT_ENTRY_HEAD"
+
+# True only when current local HEAD is KNOWN to be either RESTORE_BASE_HEAD
+# itself or a clean, unmutated-by-us append on top of it — i.e. sync_
+# restore_base_head() below is safe to call. Adversarial review (Codex,
+# BRO-259) found that a plain ancestor check alone is NOT sufficient: a
+# `git merge origin/$PULL_BRANCH -X ours` resolution produces a merge commit
+# whose first parent IS RESTORE_BASE_HEAD, so it passes the ancestor check
+# even though it's OUR OWN unverified resolution output, not a foreign
+# commit — adopting it would let a later content-drop reset (or the API
+# fallback) silently retry/diff that same possibly-bad tree forever instead
+# of truly falling back to the original payload. (The rebase and reset+
+# cherry-pick resolution paths don't have this problem: both replay onto
+# origin's tip as brand-new commits, so RESTORE_BASE_HEAD is generally NOT
+# even a graph ancestor of their result — the plain ancestor check already
+# rejects those on its own.) Set false the moment this iteration's own
+# resolution touches history (history_changed=true below); set true again
+# only once HEAD is deliberately reset back to RESTORE_BASE_HEAD.
+HEAD_TRUSTED_CLEAN=true
+
+# BRO-259 (recurrence of #769): #769 taught restore_head_if_moved() (below)
+# to preserve a HEAD that only ADVANCED past SCRIPT_ENTRY_HEAD — e.g. a
+# concurrent writer on this shared local checkout committed to the same
+# branch while this script ran (push_mutex_acquire fails OPEN under extreme
+# contention — see the push_mutex_acquire comment above). But three OTHER
+# call sites further down (the two "commit-dropped-post-push" resets in the
+# retry loop, and the Git-Data-API fallback's pre-diff reset) did a DIRECT,
+# unconditional `git reset --hard "$SCRIPT_ENTRY_HEAD"` with none of that
+# protection — reported live: a session's already-merged commits were
+# silently dropped THREE separate times in one run.
+#
+# Callers MUST gate on HEAD_TRUSTED_CLEAN (see above) before calling this —
+# it does not check that itself, so a caller at the wrong point in the flow
+# (e.g. right after this iteration's own merge) can still misuse it. Safe
+# call sites: the top of every retry-loop iteration, and immediately before
+# the pre-resolution reset — both gated by HEAD_TRUSTED_CLEAN in the loop
+# body below.
+#
+# Residual TOCTOU (Codex, BRO-259): there is a small window between this
+# function's `git rev-parse HEAD` read and the caller's subsequent
+# `git reset --hard` where a concurrent writer could land yet another commit
+# that then gets discarded unseen. Closing that completely would need an
+# atomic compare-and-swap on the working-tree HEAD, which git doesn't offer;
+# under the mutex (task #556) this window is sub-millisecond and only reached
+# at all when the mutex has already failed open, so it's accepted as a
+# known, narrow residual rather than engineered away.
+sync_restore_base_head() {
+  local current
+  current="$(git rev-parse HEAD 2>/dev/null || true)"
+  [ -n "$current" ] && [ "$current" != "$RESTORE_BASE_HEAD" ] || return 0
+  _head_is_descendant "$RESTORE_BASE_HEAD" "$current" || return 0
+
+  # Don't adopt a candidate that is itself corrupted (conflict markers or a
+  # parentless commit) — adoption is meant ONLY for clean foreign appends. A
+  # poisoned candidate must stay caught by assert_no_conflict_markers /
+  # assert_no_orphan_commit, which already run right after every loop-top
+  # call to this function — but those only work if RESTORE_BASE_HEAD is
+  # STILL the last known-clean commit when they fire (their force-reset goes
+  # through restore_head_if_moved, which no-ops the instant current_head ==
+  # RESTORE_BASE_HEAD). Leaving RESTORE_BASE_HEAD unchanged here is what lets
+  # that force-reset actually discard the poison instead of silently
+  # treating it as the new normal (Codex finding, BRO-259).
+  if command -v node >/dev/null 2>&1; then
+    if [ -f "$SCRIPT_DIR/../check-orphan-commits.js" ] \
+         && ! node "$SCRIPT_DIR/../check-orphan-commits.js" --range="${RESTORE_BASE_HEAD}..${current}" >/dev/null 2>&1; then
+      echo "::warning::push-with-retry: HEAD advanced from $RESTORE_BASE_HEAD to $current but the new commit(s) include a parentless/orphan commit — NOT adopting as the restore point (BRO-259); the existing corruption guard will catch and reset it instead."
+      return 0
+    fi
+    if [ -f "$SCRIPT_DIR/conflict-markers.js" ] && [ "${PUSH_SKIP_CONFLICT_CHECK:-}" != "1" ]; then
+      # Same bypass assert_no_conflict_markers() honors (Codex finding,
+      # BRO-259): without it, an intentional fixture/doc file that legitimately
+      # embeds marker-like lines would get refused here even though the rest
+      # of the pipeline (and PUSH_SKIP_CONFLICT_CHECK itself) explicitly
+      # allows it — the foreign append would then be silently dropped by the
+      # next reset instead of preserved.
+      local candidate_files=()
+      local f
+      while IFS= read -r f; do
+        [ -n "$f" ] && [ -f "$f" ] && candidate_files+=("$f")
+      done < <(git diff --name-only --diff-filter=ACM "$RESTORE_BASE_HEAD" "$current" 2>/dev/null || true)
+      if [ ${#candidate_files[@]} -gt 0 ] && ! node "$SCRIPT_DIR/conflict-markers.js" "${candidate_files[@]}" >/dev/null 2>&1; then
+        echo "::warning::push-with-retry: HEAD advanced from $RESTORE_BASE_HEAD to $current but the new commit(s) contain unresolved conflict markers — NOT adopting as the restore point (BRO-259); the existing corruption guard will catch and reset it instead."
+        return 0
+      fi
+    fi
+  fi
+
+  echo "::warning::push-with-retry: local HEAD advanced from $RESTORE_BASE_HEAD to $current (a concurrent writer on the shared checkout) — adopting it as the new restore point so a later reset never drops it (BRO-259, recurrence of #769)."
+  git log --oneline "$RESTORE_BASE_HEAD".."$current" 2>/dev/null | sed 's/^/    adopted: /' || true
+  RESTORE_BASE_HEAD="$current"
+}
+
 # Call immediately before every `exit 1` in the retry loop below. If local
 # HEAD no longer matches what it was when this script started, force it back
 # and name the at-risk commit(s) loudly — an abort must be a true no-op on
@@ -291,21 +397,22 @@ fi
 restore_head_if_moved() {
   local reason="${1:-unknown}"
   local force="${2:-}"
-  [ -n "$SCRIPT_ENTRY_HEAD" ] || return 0
+  [ -n "$RESTORE_BASE_HEAD" ] || return 0
   local current_head
   current_head="$(git rev-parse HEAD 2>/dev/null || true)"
-  [ -n "$current_head" ] && [ "$current_head" != "$SCRIPT_ENTRY_HEAD" ] || return 0
+  [ -n "$current_head" ] && [ "$current_head" != "$RESTORE_BASE_HEAD" ] || return 0
 
-  # Task #769: if the entry HEAD is an ANCESTOR of the current HEAD, nothing
-  # was lost — HEAD only ADVANCED (a parallel session committing to this
-  # shared local branch mid-run, or this script's own merge fallback folding
-  # origin in ON TOP of our commits). `reset --hard` back to the entry HEAD
-  # would DROP those newer commits — the exact silent-loss failure this
-  # guard exists to prevent, self-inflicted by the guard. The #543 invariant
-  # this function actually protects is "the entry commits stay reachable",
-  # and in the descendant case they already are; so preserve the newer
-  # commits and leave HEAD alone. Only a rewritten/shortened history (entry
-  # HEAD no longer reachable) still triggers the forced restore below.
+  # Task #769: if the restore base is an ANCESTOR of the current HEAD,
+  # nothing was lost — HEAD only ADVANCED (a parallel session committing to
+  # this shared local branch mid-run, or this script's own merge fallback
+  # folding origin in ON TOP of our commits). `reset --hard` back to the
+  # restore base would DROP those newer commits — the exact silent-loss
+  # failure this guard exists to prevent, self-inflicted by the guard. The
+  # #543 invariant this function actually protects is "the entry commits
+  # stay reachable", and in the descendant case they already are; so
+  # preserve the newer commits and leave HEAD alone. Only a
+  # rewritten/shortened history (restore base no longer reachable) still
+  # triggers the forced restore below.
   #
   # EXCEPTION (ship-check adversarial finding): the CORRUPTION aborts —
   # conflict-markers / orphan-commit — fire precisely BECAUSE a descendant
@@ -315,21 +422,21 @@ restore_head_if_moved() {
   # becomes publishable by any other push path. Those call sites pass
   # force=1 to restore unconditionally; the discarded SHAs stay recoverable
   # via reflog and are logged loudly below either way.
-  if [ "$force" != "1" ] && git merge-base --is-ancestor "$SCRIPT_ENTRY_HEAD" "$current_head" 2>/dev/null; then
-    echo "::warning::push-with-retry: local HEAD advanced from $SCRIPT_ENTRY_HEAD to $current_head during this run (abort reason: $reason) — entry commits are intact ancestors; preserving the commits made during the run instead of resetting (task #769)."
-    git log --oneline "$SCRIPT_ENTRY_HEAD".."$current_head" 2>/dev/null | sed 's/^/    preserved: /' || true
+  if [ "$force" != "1" ] && _head_is_descendant "$RESTORE_BASE_HEAD" "$current_head"; then
+    echo "::warning::push-with-retry: local HEAD advanced from $RESTORE_BASE_HEAD to $current_head during this run (abort reason: $reason) — entry commits are intact ancestors; preserving the commits made during the run instead of resetting (task #769)."
+    git log --oneline "$RESTORE_BASE_HEAD".."$current_head" 2>/dev/null | sed 's/^/    preserved: /' || true
     return 0
   fi
 
-  echo "::error::push-with-retry: local HEAD moved from $SCRIPT_ENTRY_HEAD to $current_head during this run (abort reason: $reason)."
+  echo "::error::push-with-retry: local HEAD moved from $RESTORE_BASE_HEAD to $current_head during this run (abort reason: $reason)."
   echo "::error::  Commit(s) unique to the current (about-to-be-discarded) HEAD:"
-  git log --oneline "$SCRIPT_ENTRY_HEAD".."$current_head" 2>/dev/null | sed 's/^/    /' || true
+  git log --oneline "$RESTORE_BASE_HEAD".."$current_head" 2>/dev/null | sed 's/^/    /' || true
   echo "::error::  Commit(s) being restored (this run's original local history):"
-  git log --oneline "$SCRIPT_ENTRY_HEAD" -5 2>/dev/null | sed 's/^/    /' || true
-  if git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null; then
-    echo "::error::push-with-retry: restored HEAD to $SCRIPT_ENTRY_HEAD before aborting — the commit(s) above are intact on local main again."
+  git log --oneline "$RESTORE_BASE_HEAD" -5 2>/dev/null | sed 's/^/    /' || true
+  if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+    echo "::error::push-with-retry: restored HEAD to $RESTORE_BASE_HEAD before aborting — the commit(s) above are intact on local main again."
   else
-    echo "::error::push-with-retry: FAILED to restore HEAD to $SCRIPT_ENTRY_HEAD — recover manually with: git reset --hard $SCRIPT_ENTRY_HEAD"
+    echo "::error::push-with-retry: FAILED to restore HEAD to $RESTORE_BASE_HEAD — recover manually with: git reset --hard $RESTORE_BASE_HEAD"
   fi
 }
 
@@ -691,6 +798,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # 6h hang. A commit resolved just before the deadline is still pushed: the
   # in-iteration push after conflict resolution (below) publishes it before we can
   # break here.
+  # BRO-259: refresh the restore point BEFORE anything below can mutate HEAD.
+  # Gated on HEAD_TRUSTED_CLEAN: at a fresh loop top after a successful reset
+  # (or on the very first iteration), any HEAD delta can only be a concurrent
+  # writer. But after a PLAIN-rejected (not content-dropped) post-resolution
+  # push, this iteration's own merge/rebase result is deliberately left in
+  # place for the next attempt to just retry (existing behavior, unchanged) —
+  # HEAD_TRUSTED_CLEAN is false in that case, so this call correctly no-ops
+  # instead of mistaking our own unverified merge result for a foreign commit
+  # (Codex finding, BRO-259 — see HEAD_TRUSTED_CLEAN's own comment above).
+  [ "$HEAD_TRUSTED_CLEAN" = "true" ] && sync_restore_base_head
+
   if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
     echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded after $((i - 1)) attempt(s); giving up to avoid hanging the job"
     break
@@ -709,12 +827,25 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "::error::push-with-retry: push on attempt $i reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — a prior iteration's conflict resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
       record_push_failure "commit-dropped-post-push" "$i"
-      # Task #769 residual: this reset restores the payload tree for the
-      # retry (skipping it would re-push the content-dropped tree forever),
-      # but any commits made DURING the run get discarded with it. Make that
-      # discard LOUD instead of silent — the SHAs stay recoverable via reflog.
-      git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
+      # BRO-259: re-sync immediately before resetting — git_push above did its
+      # own network round-trip, the single most likely window in this whole
+      # script for a concurrent writer to land a commit (see the fixture in
+      # tests/unit/push-with-retry-abort-preserves-head.test.mjs that injects
+      # exactly this). Gated on HEAD_TRUSTED_CLEAN for the same reason as the
+      # loop-top call — if this push was HEAD_TRUSTED_CLEAN=false's own
+      # unverified merge result (not a fresh reset), don't mistake it for a
+      # foreign append. The reset itself always runs and always targets
+      # RESTORE_BASE_HEAD (the last KNOWN-good point) regardless.
+      [ "$HEAD_TRUSTED_CLEAN" = "true" ] && sync_restore_base_head
+      git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
+      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+      # landed — a failed reset (e.g. a transient git lock) would otherwise
+      # leave this iteration's unverified merge result checked out AND
+      # flagged trusted, letting the next loop-top sync adopt it exactly
+      # like the bug HEAD_TRUSTED_CLEAN exists to prevent.
+      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+        HEAD_TRUSTED_CLEAN=true
+      fi
     fi
   fi
 
@@ -1107,6 +1238,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
+  # BRO-259: this iteration's resolution may have moved HEAD to output that
+  # hasn't been push-verified yet (most notably a merge commit, which stays
+  # a graph descendant of RESTORE_BASE_HEAD and would otherwise look
+  # indistinguishable from a clean foreign append to sync_restore_base_head's
+  # plain ancestor check). Mark it untrusted until a deliberate reset (above)
+  # or a verified successful push proves it good.
+  [ "$history_changed" = "true" ] && HEAD_TRUSTED_CLEAN=false
+
   # Post-resolution survival check (Sprint 5 + Sprint 2.7 ship-check fix).
   # Fires on ANY path that changed history this iteration (rebase, merge
   # -X ours, reset+cherry-pick). The merge -X ours and cherry-pick paths
@@ -1190,12 +1329,24 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
       record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
-      # Task #769 residual: this reset restores the payload tree for the
-      # retry (skipping it would re-push the content-dropped tree forever),
-      # but any commits made DURING the run get discarded with it. Make that
-      # discard LOUD instead of silent — the SHAs stay recoverable via reflog.
-      git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
+      # BRO-259: resets to RESTORE_BASE_HEAD (the best known-good point as of
+      # the last sync_restore_base_head() call, at loop-top or before the
+      # pre-resolution push above), NOT the stale original SCRIPT_ENTRY_HEAD
+      # — see the "Task #769 residual" this replaces at the pre-resolution
+      # reset above. NOT re-syncing here: HEAD right now is THIS iteration's
+      # own rebase/merge/cherry-pick result, not a clean append, so it isn't
+      # safe to treat as adoptable (a rebase rewrites history — HEAD is
+      # generally not even a descendant of RESTORE_BASE_HEAD any more). A
+      # foreign commit landing during the few seconds this iteration's own
+      # resolution took is a known, accepted residual (see
+      # sync_restore_base_head()'s header). The discard stays LOUD instead of
+      # silent — the SHAs stay recoverable via reflog.
+      git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
+      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+      # landed — see the identical comment at the pre-resolution reset above.
+      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+        HEAD_TRUSTED_CLEAN=true
+      fi
     fi
   fi
 
@@ -1254,9 +1405,18 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
   # stale bundle — not just our own edits — onto the live tip. Resetting
   # here guarantees the diff handed to the fallback is exactly our original
   # commit(s), nothing an intermediate rebase attempt picked up along the way.
-  git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding before API-fallback diff (recover via reflog if foreign): /' || true
-  if ! git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null; then
-    echo "::warning::push-with-retry: could not reset HEAD to $SCRIPT_ENTRY_HEAD before the Git Data API fallback — skipping fallback rather than diffing a possibly-polluted HEAD"
+  #
+  # BRO-259: resets to RESTORE_BASE_HEAD, not the stale SCRIPT_ENTRY_HEAD —
+  # same rationale as the in-loop resets above. If a foreign commit was
+  # adopted earlier in this run, it rides along in the base_sha..HEAD diff
+  # push-via-git-api.sh builds next, so it gets pushed too instead of
+  # silently dropped. Note: push-via-git-api.sh already has a pre-existing,
+  # logged caveat for this shape (multiple outgoing commits get squashed into
+  # one API commit "with the message taken from HEAD's") — an adopted foreign
+  # commit is just one more commit in that same, already-accepted squash.
+  git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding before API-fallback diff (recover via reflog if foreign): /' || true
+  if ! git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+    echo "::warning::push-with-retry: could not reset HEAD to $RESTORE_BASE_HEAD before the Git Data API fallback — skipping fallback rather than diffing a possibly-polluted HEAD"
     _api_fallback_ok=false
   elif [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] && command -v node >/dev/null 2>&1; then
     # Union-merge-MANAGED files (commercial*.json, diary-shows.json,

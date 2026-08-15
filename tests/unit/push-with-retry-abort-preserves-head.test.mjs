@@ -404,3 +404,258 @@ test('reset+cherry-pick fallback replays ALL outgoing commits, not just the tip'
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// A `git` wrapper that lets the FIRST `push` actually succeed against the
+// real remote, but injects a foreign commit into the runner's working tree
+// immediately beforehand — simulating a concurrent writer landing a commit
+// on the shared local checkout during THIS script's own `git_push` network
+// call (the realistic window: push-with-retry.sh's OWN mutex serializes the
+// whole flow, so the highest-probability race is exactly the few seconds a
+// push spends on the wire, not the rest of the run). Subcommand detection
+// mirrors makePushFailingGitDir() above.
+function makeConcurrentCommitDuringPushGitDir(tmp, runnerDir) {
+  const dir = path.join(tmp, 'fake-git-concurrent-push-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+sub=""
+args=("$@")
+i=0
+while [ $i -lt \${#args[@]} ]; do
+  a="\${args[$i]}"
+  case "$a" in
+    -c|-C) i=$((i+2)); continue;;
+    -*) i=$((i+1)); continue;;
+    *) sub="$a"; break;;
+  esac
+done
+if [ "$sub" = "push" ] && [ -n "\${CONCURRENT_COMMIT_MARKER:-}" ] && [ ! -f "$CONCURRENT_COMMIT_MARKER" ]; then
+  touch "$CONCURRENT_COMMIT_MARKER"
+  (
+    cd "${runnerDir}" || exit 1
+    echo 'const concurrent = 1;' > concurrent-session.js
+    "${realGit}" add concurrent-session.js
+    "${realGit}" -c user.email=c@c.c -c user.name=c commit -q -m "concurrent session commit"
+  )
+fi
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
+test('BRO-259 (recurrence of #769): a commit-dropped-post-push reset preserves a commit a concurrent writer lands during the push itself', () => {
+  // The push-content-survival check can legitimately fire even when `git
+  // push` itself reported success (task #619) — push-with-retry.sh then
+  // resets local HEAD back to a known-good point before retrying. Before
+  // this fix, that reset targeted the STALE SCRIPT_ENTRY_HEAD captured at
+  // script start, unconditionally, with no ancestor check — so a commit a
+  // concurrent writer landed on the shared local checkout during THIS
+  // script's own push call (the realistic race window, since push_mutex_
+  // acquire fails OPEN under extreme contention) was silently discarded.
+  // This stubs push-content-survival.js to always report a drop (so the
+  // reset fires deterministically) and injects a real concurrent commit
+  // exactly inside the `git push` call, then asserts it survives.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-bro259-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+  const fixtureLibDir = path.join(tmp, 'fixture-scripts', 'lib');
+  const fixtureScriptsDir = path.join(tmp, 'fixture-scripts');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    // The payload commit this run is trying to push (= SCRIPT_ENTRY_HEAD).
+    fs.writeFileSync(path.join(runnerDir, 'payload.js'), 'const payload = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "payload commit"', runnerDir);
+
+    // Isolated copy of push-with-retry.sh + its sibling deps so we can stub
+    // JUST push-content-survival.js without touching the real script. Needs
+    // push-mutex.sh and disk-floor-check.sh too (sourced at the top of
+    // push-with-retry.sh) — omitting them makes the fixture script die at
+    // `source` before ever reaching a push, which would make this test pass
+    // for the wrong reason (nothing ran, so nothing could be dropped).
+    fs.mkdirSync(fixtureLibDir, { recursive: true });
+    const realLibDir = path.dirname(SCRIPT);
+    const realScriptsDir = path.dirname(realLibDir);
+    for (const f of fs.readdirSync(realLibDir)) {
+      if (f.endsWith('.js') || f.endsWith('.sh')) {
+        fs.copyFileSync(path.join(realLibDir, f), path.join(fixtureLibDir, f));
+      }
+    }
+    for (const f of ['check-orphan-commits.js', 'check-post-rebase-survival.js', 'validate-added-review-ownership.js']) {
+      const src = path.join(realScriptsDir, f);
+      if (fs.existsSync(src)) fs.copyFileSync(src, path.join(fixtureScriptsDir, f));
+    }
+    // Always reports the push as content-dropped, regardless of actual
+    // state — forces the "commit-dropped-post-push" reset path to fire on
+    // the very first (pre-resolution) push attempt, every attempt.
+    fs.writeFileSync(path.join(fixtureLibDir, 'push-content-survival.js'), '#!/usr/bin/env node\nprocess.exit(1);\n');
+    const fixtureScript = path.join(fixtureLibDir, 'push-with-retry.sh');
+
+    const fakeGitDir = makeConcurrentCommitDuringPushGitDir(tmp, runnerDir);
+    const marker = path.join(tmp, 'concurrent-committed.marker');
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${fixtureScript}" 2 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          CONCURRENT_COMMIT_MARKER: marker,
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    const postRunLog = sh('git log --oneline', runnerDir).trim();
+    assert.equal(fs.existsSync(marker), true, 'fixture failed to inject the concurrent commit during git push');
+    assert.notEqual(code, 0, `expected non-zero exit (content-survival stubbed to always fail); got 0. Output:\n${stdout}`);
+    assert.match(postRunLog, /concurrent session commit/,
+      `the commit landed DURING the push was dropped by the commit-dropped-post-push reset (BRO-259 regression). Log:\n${postRunLog}\nOutput:\n${stdout}`);
+    assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// Same injection mechanism as makeConcurrentCommitDuringPushGitDir(), but the
+// injected commit is itself POISONED (contains unresolved conflict markers)
+// instead of a clean file.
+function makePoisonedConcurrentCommitDuringPushGitDir(tmp, runnerDir) {
+  const dir = path.join(tmp, 'fake-git-poisoned-concurrent-push-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+sub=""
+args=("$@")
+i=0
+while [ $i -lt \${#args[@]} ]; do
+  a="\${args[$i]}"
+  case "$a" in
+    -c|-C) i=$((i+2)); continue;;
+    -*) i=$((i+1)); continue;;
+    *) sub="$a"; break;;
+  esac
+done
+if [ "$sub" = "push" ] && [ -n "\${CONCURRENT_COMMIT_MARKER:-}" ] && [ ! -f "$CONCURRENT_COMMIT_MARKER" ]; then
+  touch "$CONCURRENT_COMMIT_MARKER"
+  (
+    cd "${runnerDir}" || exit 1
+    printf '<<<<<<< HEAD\\nours\\n=======\\ntheirs\\n>>>>>>> branch\\n' > poisoned.js
+    "${realGit}" add poisoned.js
+    "${realGit}" -c user.email=c@c.c -c user.name=c commit -q -m "poisoned concurrent commit"
+  )
+fi
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
+test('BRO-259 (Codex adversarial finding): a poisoned concurrent commit is NOT adopted as the restore point', () => {
+  // A candidate HEAD advance that itself carries unresolved conflict markers
+  // must not become RESTORE_BASE_HEAD — otherwise restore_head_if_moved's
+  // force-reset path (used by the conflict-marker corruption abort) would
+  // see current_head == RESTORE_BASE_HEAD and no-op, permanently wedging the
+  // checkout on the poison instead of discarding it. This reuses the
+  // during-push injection mechanism above but with a poisoned file, and
+  // asserts the poisoned commit never survives to local history.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-bro259-poison-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+  const fixtureLibDir = path.join(tmp, 'fixture-scripts', 'lib');
+  const fixtureScriptsDir = path.join(tmp, 'fixture-scripts');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    fs.writeFileSync(path.join(runnerDir, 'payload.js'), 'const payload = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "payload commit"', runnerDir);
+
+    fs.mkdirSync(fixtureLibDir, { recursive: true });
+    const realLibDir = path.dirname(SCRIPT);
+    const realScriptsDir = path.dirname(realLibDir);
+    for (const f of fs.readdirSync(realLibDir)) {
+      if (f.endsWith('.js') || f.endsWith('.sh')) {
+        fs.copyFileSync(path.join(realLibDir, f), path.join(fixtureLibDir, f));
+      }
+    }
+    for (const f of ['check-orphan-commits.js', 'check-post-rebase-survival.js', 'validate-added-review-ownership.js']) {
+      const src = path.join(realScriptsDir, f);
+      if (fs.existsSync(src)) fs.copyFileSync(src, path.join(fixtureScriptsDir, f));
+    }
+    fs.writeFileSync(path.join(fixtureLibDir, 'push-content-survival.js'), '#!/usr/bin/env node\nprocess.exit(1);\n');
+    const fixtureScript = path.join(fixtureLibDir, 'push-with-retry.sh');
+
+    const fakeGitDir = makePoisonedConcurrentCommitDuringPushGitDir(tmp, runnerDir);
+    const marker = path.join(tmp, 'concurrent-committed.marker');
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${fixtureScript}" 2 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          CONCURRENT_COMMIT_MARKER: marker,
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    const postRunLog = sh('git log --oneline', runnerDir).trim();
+    assert.equal(fs.existsSync(marker), true, 'fixture failed to inject the poisoned concurrent commit during git push');
+    assert.notEqual(code, 0, `expected non-zero exit; got 0. Output:\n${stdout}`);
+    assert.doesNotMatch(postRunLog, /poisoned concurrent commit/,
+      `the poisoned commit was adopted/preserved instead of discarded. Log:\n${postRunLog}\nOutput:\n${stdout}`);
+    assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}`);
+    assert.match(stdout, /NOT adopting as the restore point/,
+      `expected sync_restore_base_head to explicitly refuse the poisoned candidate. Output:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
