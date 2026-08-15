@@ -291,6 +291,31 @@ const SELF_CLEAR_PAIRS = [
     breadcrumb: 'wrongShowAutoCleared',
     task: '#1020',
   },
+  {
+    // #1023's own cousin, found by the /what-else pattern lens after the
+    // crossOutletVerified pair shipped: wrongArticleManualClear (the ACTUAL
+    // breadcrumb review-write-guard.js's _wrongArticleCleared() checks for
+    // wrongFullText — see CLEAR_BREADCRUMBS.wrongFullText) is the same shape
+    // as wrongProductionAutoCleared for wrongProduction. Zero instances in
+    // the corpus as of 2026-08-14 (no writer has re-flagged wrongFullText
+    // over a stale manual clear yet), but nothing invalidates the breadcrumb
+    // the way invalidateWrongProductionAutoClear() does for its sibling, so
+    // a future re-flag would reproduce #1023 undetected without this row.
+    flag: 'wrongFullText',
+    breadcrumb: 'wrongArticleManualClear',
+    task: '#1023',
+  },
+  {
+    // wrongAttribution's direct twin of the pair above: a clear path can set
+    // wrongArticleManualClear without ever setting crossOutletVerified (the
+    // existing wrongAttribution pair only fires when THAT companion note is
+    // also present), so this closes the gap for a re-flag that leaves the
+    // manual-clear breadcrumb stale but no crossOutletVerified note. Zero
+    // instances in the corpus as of 2026-08-14.
+    flag: 'wrongAttribution',
+    breadcrumb: 'wrongArticleManualClear',
+    task: '#1023',
+  },
 ];
 
 /**
