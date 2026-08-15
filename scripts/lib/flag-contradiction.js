@@ -442,6 +442,18 @@ function retractStaleClearBreadcrumb(file, contradiction, now = new Date()) {
  * @param {Date} [now] - injectable clock for tests
  * @returns {boolean} true when the flag was demoted, false when the strict
  *   predicate declined (contradiction reported but not auto-fixed)
+ *
+ * CALLER WARNING: this deletes contentVerificationPromoted, which has NO
+ * CLEAR_BREADCRUMBS entry in review-write-guard.js (it isn't a "clear"
+ * breadcrumb, just provenance — see the module comment above). If a caller
+ * persists the result via safeWriteReview() with its default merge:true, the
+ * generic "restore any field missing from newData" pass will silently
+ * resurrect the deleted stamp from disk (safeWriteReview only protects fields
+ * with a registered clear breadcrumb from that resurrection). Every current
+ * caller either bypasses safeWriteReview (audit-self-contradictory-clears.js's
+ * --fix uses a plain fs.writeFileSync, matching reverify-promoted-reviews.js's
+ * precedent) or passes {merge: false} explicitly. Do the same for any new
+ * caller, or add contentVerificationPromoted to CLEAR_BREADCRUMBS instead.
  */
 function demoteStaleWrongShowPromotion(file, contradiction, now = new Date()) {
   if (!file || !contradiction) return false;
