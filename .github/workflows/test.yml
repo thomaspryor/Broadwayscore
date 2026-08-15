@@ -1570,6 +1570,16 @@ on:
       # solo edit to either file still triggers CI.
       - 'scripts/audit-same-job-breadcrumb-coverage.js'
       - 'tests/unit/audit-same-job-breadcrumb-coverage.test.mjs'
+      # Delete-without-breadcrumb guard (task #1625 / Notion 3bd637c5) —
+      # advisory AST scan for a script that `delete data.X`-s a field with no
+      # CLEAR_BREADCRUMBS entry, then calls safeWriteReview() with no
+      # force:true — safeWriteReview's OWN merge-mode restore pass silently
+      # reverts the delete on the very next run, no CI restore step needed.
+      # Same bug class fixed by hand 3 times (#1618, #1624 x2). Test lives in
+      # tests/unit/ (registered in tests/unit-test-manifest.txt, covered by
+      # the 'tests/**' glob above); path-listed here so a solo edit to the
+      # script itself still triggers CI.
+      - 'scripts/audit-delete-without-breadcrumb.js'
       # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
       # audit-*.js that walks data/review-texts must call assertCorpusScanned
       # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
@@ -2856,6 +2866,21 @@ jobs:
         # header for why). Exempt a workflow with
         # # breadcrumb-coverage-ok: <reason>.
         run: node scripts/audit-same-job-breadcrumb-coverage.js
+
+      - name: Audit — delete without CLEAR_BREADCRUMBS entry (advisory)
+        # Task #1625 / Notion 3bd637c5: catches a script that `delete data.X`-s
+        # a field with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
+        # entry, then calls safeWriteReview() with no force:true. Unlike the
+        # same-job guard above (a force:true clear resurrected by a LATER
+        # push-review-texts restore), this is the more common mistake:
+        # safeWriteReview's OWN merge-mode restore pass silently reverts the
+        # delete on its very next invocation, no CI restore step required.
+        # Fixed by hand 3 times already (#1618, #1624 x2). Scopes
+        # delete/safeWriteReview pairs per-function via an acorn AST walk.
+        # Heuristic, non-blocking — always exits 0 (see script header for
+        # why). Exempt a reviewed false positive with
+        # // breadcrumb-delete-ok: <reason> in the script.
+        run: node scripts/audit-delete-without-breadcrumb.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
