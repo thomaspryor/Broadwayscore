@@ -66,6 +66,20 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
 const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
+
+Usage:
+  node scripts/audit-sibling-title-misroute.js                  # report
+  node scripts/audit-sibling-title-misroute.js --show=ID         # one show
+  node scripts/audit-sibling-title-misroute.js --fix             # apply
+  node scripts/audit-sibling-title-misroute.js --json
+  node scripts/audit-sibling-title-misroute.js --strict          # CI gate
+  node scripts/audit-sibling-title-misroute.js --update-baseline # freeze current hits
+  node scripts/audit-sibling-title-misroute.js --help, -h        print this usage and exit
+`;
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
