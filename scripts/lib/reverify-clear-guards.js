@@ -232,6 +232,12 @@ function detectNonReviewAdmission({ reasoning }) {
       // Discard a negated occurrence: "not a preview", "isn't a roundup".
       const before = lower.slice(Math.max(0, i - 14), i);
       if (/\b(?:not|isn'?t|n'?t|never)\s+$/.test(before)) continue;
+      // Discard a phrase that is only a PREFIX of a longer word: "is a feature"
+      // must not fire on "is a feature-length review", and "is a preview" must
+      // not fire on "is a previewing". A refusal here strands a legitimately
+      // clearable review, so the miss is cheaper than the false positive.
+      const after = lower.charAt(i + phrase.length);
+      if (after && /[a-z-]/.test(after)) continue;
       return {
         phrase,
         snippet: reasoning.slice(Math.max(0, i - 50), i + phrase.length + 60).trim(),
