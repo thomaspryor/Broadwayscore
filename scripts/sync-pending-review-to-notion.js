@@ -359,8 +359,14 @@ function main() {
       // task #1310: this is a standing owner-review-status card (N shows
       // awaiting manual commercial review), never autonomously worked by a
       // bsc-next session — --no-spawn keeps the explicit 'In progress'
-      // status without triggering a redundant/nonsensical dispatch.
+      // status without triggering a redundant/nonsensical dispatch. task
+      // #1691: --no-spawn now requires a reason, written to Notes as a
+      // NO-DISPATCH marker that excludes this card from the task mirror
+      // entirely (isMirrorableCard) — it never occupies a claimed queue
+      // slot, regardless of the 'In progress' status this caller wants
+      // visible on the Notion board.
       '--dispatch', '--no-spawn',
+      'standing owner-review-status card, never auto-dispatched by bsc-next',
     ]);
     if (create.status !== 0) {
       console.error(`FATAL: failed to create card: ${create.stderr.slice(0, 500)}`);

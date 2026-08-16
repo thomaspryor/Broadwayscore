@@ -516,6 +516,31 @@ async function createCard(args) {
     process.exit(2);
   }
 
+  // --no-spawn reason gate (task #1691): a bare `--no-spawn` used to leave
+  // Notion Status="In progress" (mirrors to a CLAIMED task-list slot) with
+  // no workspace behind it and no record of WHY — the exact shape of the
+  // incident this gate closes (4 real work-item cards silently lost this
+  // way). --no-spawn is now the same shape as --park: it must carry a
+  // reason, so misuse is auditable instead of a silent default path. See
+  // scripts/lib/no-dispatch-marker.js for what happens to the reason next.
+  const NO_SPAWN_REASON_MIN_LENGTH = 10;
+  const noSpawnRaw = args['no-spawn'];
+  const noSpawnReason = typeof noSpawnRaw === 'string' ? noSpawnRaw.trim() : '';
+  if (noSpawnRaw !== undefined) {
+    if (!noSpawnReason) {
+      console.error(`\n❌ REJECTED (NO_SPAWN_REASON_MISSING) — "${title}"\n`);
+      console.error(`--no-spawn requires a reason: --no-spawn "<reason (>=${NO_SPAWN_REASON_MIN_LENGTH} chars)>". State WHY no bsc-next workspace should be launched for this card.`);
+      console.error('');
+      process.exit(2);
+    }
+    if (noSpawnReason.length < NO_SPAWN_REASON_MIN_LENGTH) {
+      console.error(`\n❌ REJECTED (NO_SPAWN_REASON_TOO_SHORT) — "${title}"\n`);
+      console.error(`--no-spawn reason must be at least ${NO_SPAWN_REASON_MIN_LENGTH} characters ("${noSpawnReason}" is ${noSpawnReason.length}).`);
+      console.error('');
+      process.exit(2);
+    }
+  }
+
   // Enforce card context quality — reject sparse cards at the CLI level.
   // See memory/feedback_notion_card_context.md for the rule rationale.
   const validation = validateCardNotes({
@@ -586,18 +611,26 @@ async function createCard(args) {
 
   // Collect per-field overflow so we can write body sections after create.
   const overflow = {};
-  if (args.notes || disposition.mode === 'park') {
+  if (args.notes || disposition.mode === 'park' || noSpawnReason) {
     // Park reason goes at the very front of Notes — "why is nothing
     // happening on this" must be answerable from the card without opening
     // Outcome or digging through prose (task #1310).
     const withParkReason =
       disposition.mode === 'park' ? `PARKED: ${disposition.reason}\n\n${args.notes || ''}`.trim() : args.notes;
+    // NO-DISPATCH marker goes at the front too, same reasoning as PARKED
+    // above and task #1691: notion-tasks-sync.js's isMirrorableCard() greps
+    // Notes for this exact marker (scripts/lib/no-dispatch-marker.js is the
+    // one definition of the regex) to exclude the card from the task mirror
+    // entirely, regardless of Notion Status.
+    const withNoSpawnMarker = noSpawnReason
+      ? `NO-DISPATCH: ${noSpawnReason}\n\n${withParkReason || ''}`.trim()
+      : withParkReason;
     // Hoist a RECHECK-AFTER stamp to the front — same reason as the Outcome
     // field below: the property is truncated to a ~1752-char preview before
     // overflowing to the page body, and stuck-work.js's classifier only ever
     // reads the raw property (task #802 fixed this for Outcome; Notes had
     // the identical bug, found via card #1136's OWNER card).
-    const notesText = hoistRecheckAfterStamp(withParkReason);
+    const notesText = hoistRecheckAfterStamp(withNoSpawnMarker);
     const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
     properties.Notes = propertyValue;
     if (bodyText) overflow.notes = bodyText;
@@ -633,7 +666,7 @@ async function createCard(args) {
   console.error(`__NOTION_CARD_ID__=${page.id}`);
 
   if (disposition.mode === 'dispatch') {
-    if (args['no-spawn']) {
+    if (noSpawnReason) {
       // Escape hatch: --dispatch means "this is being worked", but not every
       // dispatch needs a NEW bsc-next workspace — a session filing its own
       // CLAUDE.md §6 tracking card is dispatched by definition (it's already
@@ -641,7 +674,11 @@ async function createCard(args) {
       // data awaiting manual review) is intentionally never autonomously
       // worked. Both would spawn a REDUNDANT or nonsensical workspace via
       // the normal pull -> bsc-next chain, so the caller opts out of it here.
-      console.error(`DISPATCHED (no-spawn): "${title}" — created without launching a new bsc-next workspace`);
+      // task #1691: this is deliberately NOT printed as "DISPATCHED:" — no
+      // workspace exists, and the card is excluded from the task mirror
+      // (isMirrorableCard, via the NO-DISPATCH marker just written to
+      // Notes), so nothing is claimed and nothing needs a live session.
+      console.error(`FILED (no-spawn, not claimed): "${title}" — ${noSpawnReason}. No workspace launched; excluded from the shared task list.`);
     } else {
       dispatchCreatedCard({ pageId: page.id, title });
     }

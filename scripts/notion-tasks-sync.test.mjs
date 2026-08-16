@@ -203,6 +203,39 @@ test('executor claim: a card flipped to In progress mirrors as in_progress, neve
   assert.equal(mergeStatus(undefined, 'pending'), 'pending');
 });
 
+// Task #1691: planStatusDrift is the pure decision behind `sync-drift` —
+// fixes the case measured on the live backlog 2026-08-16 where 99 of 139
+// "in_progress, no live workspace" tasks were already Done in Notion, stuck
+// only because `pull`'s own fetch filter never re-queries a card once its
+// Status leaves In progress/Not started.
+test('#1691: planStatusDrift flips an in_progress mirror to completed once Notion says Done', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Done', name: 'Shipped work', notes: '' };
+  const drift = planStatusDrift(task, card);
+  assert.deepEqual(drift, { newStatus: 'completed', cardStatus: 'Done' });
+});
+
+test('#1691: planStatusDrift is a no-op when Notion still says In progress', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'In progress', name: 'Still going', notes: '' };
+  assert.equal(planStatusDrift(task, card), null);
+});
+
+test('#1691: planStatusDrift does NOT downgrade in_progress for Paused/Not started/Archived/Cancelled — all four map to mapStatus()\'s "pending" default, which mergeStatus() refuses over in_progress (needs a liveness check, not this function)', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  for (const status of ['Paused', 'Not started', 'Archived', 'Cancelled']) {
+    assert.equal(planStatusDrift(task, { status, name: 'x', notes: '' }), null, `expected no drift for Notion status "${status}"`);
+  }
+});
+
+test('#1691: planStatusDrift degrades to no-op on a failed fetch (null card), never guesses', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  assert.equal(planStatusDrift({ id: '42', status: 'in_progress' }, null), null);
+});
+
 // ── #485: .sync-lock staleness must use its own acquiredAt, not fs mtime ────
 // Same bug class as json-write-guard.js and #476's monitor.lock: mtime is
 // trivially reset by any unrelated process touching the lock file.
