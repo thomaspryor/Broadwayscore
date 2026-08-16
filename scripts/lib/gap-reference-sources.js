@@ -165,7 +165,7 @@ async function getWeReferenceRows(show, opts = {}) {
     if (lbo) {
       sources['lbo-roundup'].found = true;
       const { extractReviewsFromLBO } = require('../scrape-london-box-office-roundups');
-      const parsed = extractReviewsFromLBO(lbo.html, show.id) || [];
+      const parsed = extractReviewsFromLBO(lbo.html, show.id, lbo.url) || [];
       sources['lbo-roundup'].rows = parsed.length;
       if (parsed.length === 0) sources['lbo-roundup'].emptyParse = true;
       for (const r of parsed) push('lbo-roundup', lbo.url, false, r);
