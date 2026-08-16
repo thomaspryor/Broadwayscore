@@ -165,7 +165,7 @@ function extractShowTitleFromUrl(url) {
 // Extract reviews from roundup HTML
 // ---------------------------------------------------------------------------
 
-function extractReviewsFromLBO(html, showId) {
+function extractReviewsFromLBO(html, showId, sourceUrl) {
   const $ = cheerio.load(html);
   const reviews = [];
   const seenOutlets = new Set();
@@ -184,6 +184,15 @@ function extractReviewsFromLBO(html, showId) {
   let currentCritic = null;
   let currentExcerpt = null;
   let currentUrl = null;
+  // True once any h3/h4 passes the outlet-heading filters below, regardless
+  // of whether a full review later gets flushed for it. Used to gate the
+  // individual-page fallback below on "this page structurally has no outlet
+  // markers at all", not just "0 reviews were extracted" — the latter would
+  // also be true for a genuine roundup page where a real (unrelated) bug
+  // breaks extraction after an outlet heading was found, and silently
+  // masking that as a fabricated 1-row individual review would be worse
+  // than the false "parser drift" alert it replaces (#1708 review).
+  let sawOutletHeading = false;
 
   function flushReview() {
     if (currentOutlet && (currentExcerpt || currentStars !== null)) {
@@ -230,6 +239,7 @@ function extractReviewsFromLBO(html, showId) {
       if (/^★+$/.test(text)) continue;
 
       currentOutlet = text;
+      sawOutletHeading = true;
       continue;
     }
 
@@ -347,6 +357,40 @@ function extractReviewsFromLBO(html, showId) {
     }
   });
 
+  // Fallback: some URLs discovered as "roundups" (loose sitemap slug match,
+  // or a stale curated/archive entry) are actually LBO's own single-critic
+  // review page — a different template with no <h4>Outlet</h4> markers, so
+  // the loop above legitimately finds nothing. That template is already
+  // handled by extractIndividualReviewFromLBO; without this fallback the
+  // page reports a false "parser drift" 0-row parse even though it has one
+  // citable review (#1708).
+  //
+  // Gated on !sawOutletHeading (not just reviews.length === 0) deliberately:
+  // "100% Honest Reviews" is LBO boilerplate present on EVERY LBO page,
+  // roundup or individual, so it does not discriminate between templates.
+  // If a genuine multi-outlet roundup's extraction broke for an unrelated
+  // reason after finding real outlet headings, falling back here would
+  // fabricate a bogus "London Box Office" row and mask a real regression
+  // behind a fake success instead of correctly reporting 0 rows.
+  if (reviews.length === 0 && !sawOutletHeading) {
+    const individual = extractIndividualReviewFromLBO(html, showId);
+    if (individual && (individual.excerpt || individual.stars !== null)) {
+      reviews.push(individual);
+    }
+  }
+
+  // Individual-fallback rows have no per-outlet link (the whole page IS the
+  // review), so extractIndividualReviewFromLBO always returns url: ''.
+  // Backfilling here — not per-caller — means every caller gets a real
+  // citation URL for free; without it, callers that skip URL-less reviews
+  // (opening-night-poller.js's processDiscoveredReviews) silently drop the
+  // recovered review instead of ingesting it (#1708 review finding).
+  if (sourceUrl) {
+    for (const r of reviews) {
+      if (!r.url) r.url = sourceUrl;
+    }
+  }
+
   return reviews;
 }
 
@@ -394,11 +438,16 @@ function extractIndividualReviewFromLBO(html, showId) {
   }
   const score = stars !== null ? Math.round((stars / 5) * 100) : null;
 
-  // Extract first 500 chars of body text as excerpt
+  // Extract first 500 chars of body text as excerpt. LBO's current template
+  // wraps review paragraphs in .pctnt/.pmain, not article/.post-content/
+  // .entry-content (those selectors matched an older template and silently
+  // returned zero paragraphs — #1708 parser drift). Boilerplate disclaimer
+  // paragraphs are >30 chars too, so they must be excluded explicitly.
+  const boilerplateRe = /^100% Honest Reviews|^If you're interested in more|^Not every review published/i;
   const paragraphs = [];
-  $('article p, .post-content p, .entry-content p').each((_, el) => {
+  $('article p, .post-content p, .entry-content p, .pmain p, .pctnt p').each((_, el) => {
     const text = $(el).text().trim();
-    if (text.length > 30) paragraphs.push(text);
+    if (text.length > 30 && !boilerplateRe.test(text)) paragraphs.push(text);
   });
   const excerpt = paragraphs.slice(0, 3).join(' ').substring(0, 500);
 
@@ -795,7 +844,7 @@ async function scrapeLBORoundups() {
     }
 
     // Extract reviews
-    const reviews = extractReviewsFromLBO(html, showId);
+    const reviews = extractReviewsFromLBO(html, showId, url);
     stats.reviewsExtracted += reviews.length;
     console.log(`  Found ${reviews.length} reviews`);
 

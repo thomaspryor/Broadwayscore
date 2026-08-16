@@ -2082,6 +2082,18 @@ on:
       # Path-listed so a solo edit to either triggers CI.
       - 'scripts/lib/task-reclaim.js'
       - 'scripts/lib/task-reclaim.test.mjs'
+      # Task #1705: the LIVE-population sibling of the audit-archived-in-
+      # progress.js recovery above — classifies in_progress tasks with no
+      # matching cmux workspace (FINISHED/LOST/STALE/NEEDS-REVIEW) and reuses
+      # task-reclaim.js's leaf predicates rather than reimplementing them.
+      # Pure decision logic's colocated test runs in the lib-test glob; the
+      # acceptance probe lives in tests/unit-test-manifest.txt (scripts/tests/
+      # is NOT globbed). Path-listed so a solo edit to any of the three
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-orphan-inprogress.js'
+      - 'scripts/lib/orphan-inprogress-triage.js'
+      - 'scripts/lib/orphan-inprogress-triage.test.mjs'
+      - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
@@ -2711,6 +2723,16 @@ on:
       - 'scripts/linear-next.js'
       - 'scripts/lib/linear-dispatch.js'
       - 'scripts/lib/dispatch-guards.js'
+      # Task #1696: wired dispatch-guards.js's exactTitleOverlapGuard +
+      # sessionTrackingCloneGuard (added for bsc-next.js by task #1672) into
+      # linear-next.js's main(), via listOpenIssuesWithDescriptions()
+      # (scripts/lib/linear-client.js — already listed above) and a new
+      # dispatch-overlap-check.js require. Its colocated test lives in
+      # scripts/tests/ (NOT covered by the 'tests/**' glob — same
+      # "scripts/tests/ is not scripts/lib/" gap as this block's siblings,
+      # feedback_test_yml_push_path_allowlist), so it needs its own explicit
+      # line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/linear-next-overlap-guards.test.mjs'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are
