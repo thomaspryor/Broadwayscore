@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-16T09:32:51.488Z",
+  "timestamp": "2026-08-16T10:17:37.593Z",
   "stats": {
-    "totalReviews": 42315,
-    "alreadyFlagged": 18235,
-    "dateGuardCatches": 146,
+    "totalReviews": 42322,
+    "alreadyFlagged": 18238,
+    "dateGuardCatches": 145,
     "directorMismatch": 969,
     "tvFilmSignals": 1207,
-    "londonSignals": 905,
+    "londonSignals": 906,
     "offBroadwaySignals": 490,
     "yearMismatch": 88,
-    "noPublishDate": 3598
+    "noPublishDate": 3597
   },
   "findings": [
     {
@@ -33687,17 +33687,6 @@
       ]
     },
     {
-      "showId": "brainiac-live-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 258d before show (2025-11-10 vs 2026-07-26)"
-        }
-      ]
-    },
-    {
       "showId": "breakfast-at-tiffanys-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 44,
@@ -38166,6 +38155,19 @@
       "score": 71,
       "publishDate": "2026-08-13",
       "url": "https://www.britishtheatreguide.info/reviews/how-the-other-h-old-vic-theatre-25823",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2026-08-16",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
