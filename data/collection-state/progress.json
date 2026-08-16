@@ -3,7 +3,9 @@
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
     "how-the-other-half-loves-west-end-2026/all-allam--margaux.json",
     "cats-west-end-2026/north-west-end--michelle-knight.json",
-    "how-the-other-half-loves-west-end-2026/plays-international--unknown.json"
+    "how-the-other-half-loves-west-end-2026/plays-international--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -210,7 +212,15 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -223,13 +233,40 @@
     ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [],
+    "archive": [
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+    ],
     "amp": []
   },
   "startTime": "2026-08-16T10:36:45.841Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+  "log": [
+    {
+      "t": "2026-08-16T12:23:31.305Z",
+      "event": "bb-session",
+      "session": "b87fc5ed",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-16T12:23:32.266Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T12:24:03.064Z",
+      "event": "bb-session",
+      "session": "20c5ebfa",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-16T12:24:04.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
