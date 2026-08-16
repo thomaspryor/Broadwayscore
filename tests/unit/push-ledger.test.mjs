@@ -43,6 +43,7 @@ test('buildLedgerEntry: preserves explicit fields', () => {
     workflow: 'Rebuild Reviews Data',
     runId: '12345',
     runAttempt: '1',
+    fallbackUsed: false,
   });
 });
 
