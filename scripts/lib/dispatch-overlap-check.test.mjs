@@ -14,9 +14,18 @@ test('findOverlappingCards flags an in_progress card sharing a scripts/ file pat
   assert.deepEqual(hits[0].sharedPaths, ['scripts/audit-show-review-gap.js']);
 });
 
-test('findOverlappingCards flags near-identical titles with no shared path (#897/#911 class)', () => {
+test('findOverlappingCards flags a byte-identical title as exact-title-match, not similar-title (task #1672: this is proof, not a hint)', () => {
   const target = { id: '911', subject: 'Extract pushCookieSecretWithMeta() helper so #850/#876 OTP-login outlets inherit cookie freshness fix', notes: '' };
   const other = { id: '897', subject: 'Extract pushCookieSecretWithMeta() helper so #850/#876 OTP-login outlets inherit cookie freshness fix', notes: '' };
+  const hits = findOverlappingCards(target, [other]);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].card.id, '897');
+  assert.equal(hits[0].reason, 'exact-title-match');
+});
+
+test('findOverlappingCards flags a true prefix (non-identical) title overlap as similar-title (#897/#911-style near-miss)', () => {
+  const target = { id: '911', subject: 'Extract pushCookieSecretWithMeta() helper so #850/#876 OTP-login outlets inherit cookie freshness fix', notes: '' };
+  const other = { id: '897', subject: 'Extract pushCookieSecretWithMeta() helper so #850/#876 OTP-login outlets inherit cookie freshness', notes: '' };
   const hits = findOverlappingCards(target, [other]);
   assert.equal(hits.length, 1);
   assert.equal(hits[0].card.id, '897');

@@ -157,7 +157,7 @@ const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard,
-  workBranchCollisionGuard,
+  workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
 } = require('./lib/dispatch-guards.js');
 // Real I/O half of the card #1281 cross-session collision guard above:
 // shells out to git to build the {name, unlandedCommits} list
@@ -798,6 +798,16 @@ function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
+  // Session-tracking clone refusal (task #1672, defect 2): runs AFTER the
+  // succession branch above (and its early return), same placement rule as
+  // the cross-task overlap check just below — a successor continuing ITS OWN
+  // task is not a fresh dispatch decision, even if that task's own notes
+  // happen to self-describe as a session-tracking clone. See
+  // dispatch-guards.js's sessionTrackingCloneGuard header for the full
+  // rationale and the #1353/#1659 "why not a title prefix" note.
+  const cloneErr = sessionTrackingCloneGuard(task, args);
+  if (cloneErr) { console.error(`[bsc-next] ${cloneErr}`); process.exit(1); }
+
   // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
   // catches a SECOND dispatch of THIS SAME task id. It has no way to catch
   // two DIFFERENT task ids whose notes describe the same underlying work —
@@ -825,9 +835,23 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const inProgressCards = mergeWithArchive(TASKS_DIR, tasks)
       .filter(t => t.status === 'in_progress' && String(t.id) !== String(task.id))
       .map(t => ({ id: t.id, subject: t.subject, notes: t.description }));
+    // Computed once and shared between the refusal check and the warn loop
+    // below (second-opinion review, 2026-08-16) — calling findOverlappingCards
+    // twice risked the two call sites drifting out of lock-step on which
+    // pairs count as 'exact-title-match'.
     const overlaps = findOverlappingCards({ id: task.id, subject: task.subject, notes: task.description }, inProgressCards);
+    const overlapErr = exactTitleOverlapGuard(task, overlaps, args);
+    if (overlapErr) { console.error(`[bsc-next] ${overlapErr}`); process.exit(1); }
+    // An 'exact-title-match' entry only ever reaches this loop when the
+    // refusal above was itself bypassed (--force/--dry-run/--print-prompt) —
+    // a real refusal already exited. Still surface it here (worded
+    // distinctly from the fuzzy 'similar-title' case) rather than silently
+    // dropping it, preserving --dry-run's existing "previews the overlap
+    // check too" contract (see the comment on the block this loop lives in).
     overlaps.forEach(o => {
-      const why = o.reason === 'shared-file-path' ? `shares file(s) ${o.sharedPaths.join(', ')}` : 'has a near-identical title';
+      const why = o.reason === 'exact-title-match'
+        ? 'has an exact title match (refusal bypassed via --force/--dry-run/--print-prompt)'
+        : o.reason === 'shared-file-path' ? `shares file(s) ${o.sharedPaths.join(', ')}` : 'has a near-identical title';
       console.error(`[bsc-next] WARNING: task #${task.id} ${why} with in_progress task #${o.card.id} ("${o.card.subject}") — check it isn't already being worked before dispatching a duplicate.`);
     });
   } catch (e) { console.error(`[bsc-next] WARN overlap check failed (continuing): ${e.message}`); }

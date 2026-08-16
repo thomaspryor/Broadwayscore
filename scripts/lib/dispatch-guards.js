@@ -64,6 +64,7 @@ const cmuxws = require('./cmux-workspaces.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+const { findOverlappingCards } = require('./dispatch-overlap-check.js');
 
 // scripts/linear-import.js's Notion-mirror <-> Linear-issue join (Phase 0
 // rail 1, plan 2026-08-12). Default path only — linearMirrorGuard() itself
@@ -350,6 +351,97 @@ function workBranchCollisionGuard(task, branchStatuses, opts) {
     `  If that work is stale/abandoned, merge or discard it, then dispatch. Re-run with --force to dispatch anyway.`;
 }
 
+// Exact-title duplicate-dispatch refusal (task #1672). dispatch-overlap-check.js's
+// findOverlappingCards has been warn-only on EVERY title overlap since task
+// #917 — deliberately, because a prefix match or a shared scripts/ path is
+// suggestive, not proof (two cards can legitimately touch the same file for
+// unrelated reasons). A byte-for-byte normalized subject match against a LIVE
+// in_progress card is a different case: it is proof, not a hint. Confirmed
+// real 2026-08-16: task #1662 and #1670 had an exact subject match,
+// bsc-next.js printed the WARNING and dispatched anyway, and two parallel
+// worktrees independently built the identical helper file — wasted spend for
+// a signal the dispatcher had already computed and discarded. Second-opinion
+// review, 2026-08-16: spot-checked the live task mirror (197 in_progress
+// cards) and found 7 exact-title-duplicate groups, all genuine duplicates
+// (different Notion cards describing the same bug) — no false positive.
+// Fuzzy prefix overlap and shared-file-path stay warn-only (unchanged) — only
+// 'exact-title-match' refuses. Takes a pre-computed `overlaps` array (the
+// caller's own findOverlappingCards() result) rather than recomputing it, so
+// bsc-next.js's refusal check and its warn-loop over the remaining overlaps
+// can't drift out of lock-step by calling the underlying match twice.
+function exactTitleOverlapGuard(task, overlaps, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const exact = (overlaps || []).find(o => o.reason === 'exact-title-match');
+  if (!exact) return null;
+  return `REFUSING to dispatch #${task.id}: its title is an exact match with in_progress task ` +
+    `#${exact.card.id} ("${exact.card.subject}") — a byte-for-byte subject match against live in_progress ` +
+    `work isn't suggestive, it's proof the same work is already being dispatched. Confirm #${exact.card.id} ` +
+    `isn't already covering this before dispatching a duplicate. Re-run with --force to dispatch anyway.`;
+}
+
+// Session-tracking clone refusal (task #1672, defect 2): worker sessions
+// routinely create a SECOND Notion card to track their own in-flight
+// implementation of a pre-existing card ("Session tracking card for task
+// #1557", "Working parent card <uuid> (P1 #1660)", etc). actionable()
+// includes in_progress tasks, and --id reaches any task directly, so these
+// self-declared clones are exactly as dispatchable as real backlog — that's
+// how task #1670 (a clone) became a duplicate workspace alongside #1662's own
+// duplicate. staleOutcomeGuard doesn't catch this: it only engages on
+// status === 'completed', and these clones are in_progress. Deliberately keys
+// off the SELF-DECLARED phrase in notes/description rather than a "Session:"
+// title prefix — #1353 and #1659 are the identical pathology with plain
+// titles, so a prefix match would miss them.
+//
+// Requires BOTH the clone-phrase AND an extractable parent reference before
+// refusing (second-opinion review, 2026-08-16): the phrase alone (especially
+// the generic "parent card" alternative) could plausibly appear in a card
+// that's legitimately ABOUT this mechanism, not a clone of one. A phrase with
+// no extractable parent id fails open (returns null) rather than refusing on
+// a half-signal — same fail-open direction every other guard in this file
+// takes on ambiguous/missing data.
+const SESSION_TRACKING_CLONE_RE = /\b(?:session[\s-]*tracking\s+card|working\s+parent\s+card|parent\s+card|per\s+(?:task|card)\s*#\d+)\b/i;
+
+// How far past the matched clone-phrase to look for the parent reference.
+// Bounded so a stray unrelated #N or UUID elsewhere in a long description
+// can't be misread as the parent — real observed distances (e.g. "Working
+// parent card <uuid> (P1 #1660)") are well under this.
+const CLONE_PARENT_REF_WINDOW = 200;
+
+// `fromIndex` anchors the search to right after the clone-phrase match
+// (found live, task #1661: without an anchor, a naive whole-text scan for
+// the first UUID-shaped string grabbed this task's OWN `[notion:<uuid>]`
+// self-tag — which always sits earlier in the text — instead of the actual
+// parent referenced later in the notes). Bare `#(\d+)` (no "task"/"card"
+// prefix requirement) inside the window also catches "(P1 #1660)"-style
+// parenthetical refs that a stricter prefix-anchored pattern would miss.
+function extractCloneParentRef(text, fromIndex) {
+  const window = text.slice(fromIndex, fromIndex + CLONE_PARENT_REF_WINDOW);
+  const numeric = /#(\d+)/.exec(window);
+  if (numeric) return { kind: 'task', id: numeric[1] };
+  const uuid = /\b([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})\b/i.exec(window);
+  if (uuid) return { kind: 'notion', id: uuid[1] };
+  return null;
+}
+
+function sessionTrackingCloneGuard(task, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const raw = `${(task && task.subject) || ''}\n${(task && task.description) || ''}`;
+  // Strip this task's own `[notion:<uuid>]` self-tag (notionIdOf's format)
+  // FIRST — otherwise it's indistinguishable from a genuine parent reference
+  // to extractCloneParentRef's UUID fallback.
+  const text = raw.replace(/\[notion:[a-f0-9-]+\]/gi, '');
+  const phraseMatch = SESSION_TRACKING_CLONE_RE.exec(text);
+  if (!phraseMatch) return null;
+  const parent = extractCloneParentRef(text, phraseMatch.index);
+  if (!parent) return null;
+  const parentRef = parent.kind === 'task' ? `task #${parent.id}` : `Notion card ${parent.id}`;
+  const dispatchHint = parent.kind === 'task' ? ` (node scripts/bsc-next.js --id ${parent.id})` : '';
+  return `REFUSING to dispatch #${task.id}: its own notes self-identify it as a session-tracking clone of ` +
+    `${parentRef}, not standalone backlog work — dispatching it opens a duplicate session alongside whatever ` +
+    `is already tracking ${parentRef}. If that original work stalled, dispatch ${parentRef}${dispatchHint} ` +
+    `directly instead. Re-run with --force to dispatch anyway.`;
+}
+
 function linearMirrorGuard(task, mapping, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
   const entry = mapping && mapping[String(task.id)];
@@ -369,6 +461,9 @@ module.exports = {
   notionIdOf,
   loadLinearMirrorMapping,
   linearMirrorGuard,
+  exactTitleOverlapGuard,
+  sessionTrackingCloneGuard,
+  extractCloneParentRef,
   LINEAR_MAPPING_PATH,
   matchesTaskWorkBranch,
   findWorkBranchCollisions,
