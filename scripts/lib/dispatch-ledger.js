@@ -815,12 +815,28 @@ const JOB_EVENTS = Object.freeze({
   FAILED: 'job-failed',     // + stage (claude-cli STAGES / autonomous-run-core vocabulary)
   ORPHANED: 'job-orphaned', // appended by bsc-reconcile when pid is dead with no terminal event
   RETRIED: 'job-retried',   // reconciler-initiated resume attempt (capped)
+  // Card #1454: a headless `launch` row (workspaceRef `headless:N`/`linear:N`) can
+  // reach runJob() and still never spawn a job — acquireLease() finds the task's
+  // lease already held (a duplicate-dispatch race), or something throws before the
+  // spawn (e.g. LEASE_ROOT mkdir failure). Before this event existed, that launch
+  // got NO jobId-bearing row at all: foldJobs()/openJobs() are jobId-keyed, so it
+  // was invisible to every job-outcome read, forever. Written ONLY by
+  // bsc-runner.runJob() itself (the jobId is already minted before the lease check,
+  // so it's always available). Deliberately NOT in isDeadlikeEvent below: a
+  // lease-held abandon means a DIFFERENT job for this task is healthy right now —
+  // feeding it into the substantive-dead-attempt count would let two benign
+  // concurrent-dispatch races permanently park a task that never actually failed.
+  ABANDONED: 'job-abandoned',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
 // job (its own spawned→done/failed chain). Leaving it open made the old id a
 // permanent ghost that every tick re-orphaned (ship-check Codex blocker).
-const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED]);
+// ABANDONED joins the set for the same reason (card #1454): without it, a
+// lease-held/pre-spawn-abandoned "job" reads as perpetually open to every
+// TERMINAL_JOB_EVENTS consumer (bsc-status.js, backlog-drain.js,
+// dispatch-card-drift.js, digest-autofix.js, autofix-canary.js).
+const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED]);
 
 // Latest job state per jobId: fold events, last one wins. Returns
 // Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.

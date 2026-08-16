@@ -1,6 +1,7 @@
 'use strict';
 
-const { foldAttempts, CMUX_LANE, OTHER_LANE, PAIR_WINDOW_MS, DAY_MS } = require('./dispatch-attempts.js');
+const { foldAttempts, laneOf, tsOf, CMUX_LANE, OTHER_LANE, PAIR_WINDOW_MS, DAY_MS } = require('./dispatch-attempts.js');
+const { JOB_EVENTS, TERMINAL_JOB_EVENTS } = require('./dispatch-ledger.js');
 
 /**
  * dispatch-health — the dead-dispatch RATE over a window.
@@ -193,10 +194,120 @@ function computeDispatchHealthDigest({
   };
 }
 
+// ── Job-lane (headless) outcome rate (card #1454) ───────────────────────────
+// computeDeadRate above answers "did the cmux terminal surface render" — its
+// `dead` signal is a cmux `dead` ROW, which is never written for the headless
+// job lane (bsc-runner.js's job-* vocabulary reports outcomes a different
+// way). Passing `--lane=headless` into computeDeadRate today silently reports
+// 0% dead for every headless launch, regardless of how many actually failed —
+// not because headless is healthy, but because this file was blind to job
+// outcomes. That is the literal "reliability is unmeasurable" from the card
+// title. This is the headless-lane equivalent, built on the SAME job-*
+// vocabulary bsc-runner.js/bsc-reconcile.js already write (JOB_EVENTS,
+// TERMINAL_JOB_EVENTS) rather than a new one.
+const JOB_LANE = 'headless';
+
+// One `launch` row does not always own its job-* events cleanly if the same
+// task is redispatched — job events between one launch and the NEXT launch
+// for that task belong to the earlier one (a resume/retry never writes a new
+// `launch` row, so it stays correctly attributed without any extra logic).
+function ownershipWindows(entries) {
+  const byTask = new Map();
+  for (const e of entries) {
+    if (e.event !== 'launch' || e.taskId == null) continue;
+    const t = tsOf(e);
+    if (t === null) continue;
+    const k = String(e.taskId);
+    if (!byTask.has(k)) byTask.set(k, []);
+    byTask.get(k).push({ ...e, ts: t });
+  }
+  for (const arr of byTask.values()) arr.sort((a, b) => a.ts - b.ts);
+  return byTask;
+}
+
+/**
+ * Job-lane (headless) launch outcomes over a trailing window — same shape and
+ * window semantics as computeDeadRate, built on job-* events instead of cmux
+ * `dead` rows.
+ *
+ * @param {object[]} entries raw dispatch-ledger.jsonl rows
+ * @param {object} opts
+ * @param {number} opts.nowMs REQUIRED window anchor (epoch ms) — no clock of
+ *   its own, matching every other function in this file.
+ * @param {number} [opts.windowDays=7]
+ * @param {string} [opts.lane='headless']
+ * @returns {{lane, windowDays, windowStartIso, launches, done, failed,
+ *            inFlight, none, successRate, failureRate,
+ *            failedTaskIds:string[]}}
+ */
+function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = JOB_LANE } = {}) {
+  if (!Number.isFinite(nowMs)) {
+    throw new Error('dispatch-health.computeJobLaneOutcomeRate: nowMs (epoch ms) is required — this module takes no clock of its own');
+  }
+  const rows = Array.isArray(entries) ? entries : [];
+  const windowStart = nowMs - windowDays * DAY_MS;
+  const byTask = ownershipWindows(rows);
+
+  const results = [];
+  for (const [taskId, launches] of byTask) {
+    for (let i = 0; i < launches.length; i++) {
+      const launch = launches[i];
+      if (laneOf(launch.workspaceRef) !== lane) continue;
+      if (launch.ts < windowStart || launch.ts > nowMs) continue;
+      const upperBound = i + 1 < launches.length ? launches[i + 1].ts : Infinity;
+
+      let last = null; // last job-* event for this task inside the ownership window
+      for (const e of rows) {
+        if (String(e.taskId) !== taskId || !String(e.event || '').startsWith('job-')) continue;
+        const t = tsOf(e);
+        if (t === null || t < launch.ts || t >= upperBound) continue;
+        if (!last || t >= last.ts) last = { ...e, ts: t };
+      }
+
+      let outcome;
+      if (!last) outcome = 'none';
+      else if (last.event === JOB_EVENTS.DONE) outcome = 'done';
+      else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ORPHANED/ABANDONED/RETRIED-with-no-successor-spawn-yet
+      else outcome = 'inFlight'; // SPAWNED — chain still open
+
+      results.push({ taskId, launchTs: launch.tsIso || launch.ts, outcome });
+    }
+  }
+
+  const done = results.filter((r) => r.outcome === 'done').length;
+  const failed = results.filter((r) => r.outcome === 'failed').length;
+  const inFlight = results.filter((r) => r.outcome === 'inFlight').length;
+  const none = results.filter((r) => r.outcome === 'none').length;
+  const launchesCount = results.length;
+  // Resolved = the denominator a RATE can honestly be computed over — an
+  // in-flight/never-spawned launch has no verdict yet, and folding it into
+  // either success or failure would misreport a still-running job as one or
+  // the other (same "don't call an unknown outcome healthy" doctrine as
+  // computeDispatchHealthDigest's zero-launches guard below).
+  const resolved = done + failed;
+
+  return {
+    lane,
+    windowDays,
+    windowStartIso: new Date(windowStart).toISOString(),
+    launches: launchesCount,
+    done,
+    failed,
+    inFlight,
+    none,
+    resolved,
+    successRate: resolved === 0 ? null : done / resolved,
+    failureRate: resolved === 0 ? null : failed / resolved,
+    failedTaskIds: [...new Set(results.filter((r) => r.outcome === 'failed').map((r) => r.taskId))],
+  };
+}
+
 module.exports = {
   foldAttempts,
   computeDeadRate,
   computeDispatchHealthDigest,
+  computeJobLaneOutcomeRate,
+  JOB_LANE,
   CHECK_NAME,
   CMUX_LANE,
   OTHER_LANE,
