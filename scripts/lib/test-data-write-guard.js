@@ -198,15 +198,42 @@ function extractCallArgs(text, openParenIdx) {
 }
 
 // Every top-level `const|let|var NAME = RHS` declaration in the file, with
-// its character offset, sorted by position. RHS capture is single-line
-// (matches up to end of line) — a known limitation for multi-line RHS, same
-// tradeoff the original bashWriteTargets-style heuristics accept.
+// its character offset, sorted by position. RHS capture stops at the first
+// top-level (depth-0, outside any quote) ';' or newline — NOT simply "end of
+// line": a compact single-line body like
+// `function f() { const ROOT = 'data'; return join(ROOT, 'x.json'); }` used
+// to capture "'data'; return join(ROOT, 'x.json'); }" as ROOT's entire RHS
+// (the old `.+?);?\s*$` regex had no way to stop at ROOT's OWN semicolon
+// when more code followed on the same line — /code-review, task #1685
+// follow-up, caught this while verifying the shadowing fix below). Still a
+// known limitation for RHS that itself spans multiple lines (stops at the
+// first newline either way) — same tradeoff the original
+// bashWriteTargets-style heuristics accept.
 function collectDeclarations(source) {
   const decls = [];
-  const re = /\b(?:const|let|var)\s+(\w+)\s*=\s*(.+?);?\s*$/gm;
+  const declStartRe = /\b(?:const|let|var)\s+(\w+)\s*=\s*/g;
   let m;
-  while ((m = re.exec(source)) !== null) {
-    decls.push({ name: m[1], rhs: m[2], index: m.index });
+  while ((m = declStartRe.exec(source)) !== null) {
+    const rhsStart = m.index + m[0].length;
+    let i = rhsStart;
+    let depth = 0;
+    let quote = null;
+    for (; i < source.length; i++) {
+      const ch = source[i];
+      if (quote) {
+        if (ch === quote && source[i - 1] !== '\\') quote = null;
+        continue;
+      }
+      if (ch === '"' || ch === "'" || ch === '`') { quote = ch; continue; }
+      if (ch === '(' || ch === '[' || ch === '{') { depth++; continue; }
+      if (ch === ')' || ch === ']' || ch === '}') {
+        if (depth === 0) break; // unbalanced close = outside this declaration's expression
+        depth--;
+        continue;
+      }
+      if (depth === 0 && (ch === ';' || ch === '\n')) break;
+    }
+    decls.push({ name: m[1], rhs: source.slice(rhsStart, i).trim(), index: m.index });
   }
   return decls;
 }
@@ -228,6 +255,17 @@ function collectDeclarations(source) {
 // still won't resolve (the return expression is just `x`, an unbound
 // parameter name, which correctly resolves to "unknown" via
 // resolveIdentifierRhs finding no matching declaration).
+//
+// Each entry stores the return expression's OWN character offset in
+// `source`, not just its text — /code-review (task #1685 follow-up) caught
+// that resolving identifiers *inside* a function's return expression against
+// the CALL SITE's position (rather than the return statement's own
+// position) lets an unrelated same-named declaration elsewhere in the file
+// shadow the function's real local variable, in both directions: a
+// module-level `const ROOT = mkdtempSync(...)` declared between the
+// function and its call site could wrongly make an unsafe function-local
+// `const ROOT = 'data'` look tmp-safe, or vice versa. resolveFunctionCallReturn
+// and every caller now resolve the returned expression at ITS OWN index.
 function collectFunctionReturns(source) {
   const returns = new Map();
   const fnRe = /\bfunction\s+(\w+)\s*\([^)]*\)\s*\{/g;
@@ -250,7 +288,13 @@ function collectFunctionReturns(source) {
     }
     const body = source.slice(bodyStart, Math.max(bodyStart, i - 1));
     const returnMatches = [...body.matchAll(/\breturn\s+(.+?);/g)];
-    returns.set(name, returnMatches.length === 1 ? returnMatches[0][1].trim() : null);
+    if (returnMatches.length !== 1) {
+      returns.set(name, null);
+      continue;
+    }
+    const match = returnMatches[0];
+    const prefixLen = match[0].match(/^return\s+/)[0].length;
+    returns.set(name, { expr: match[1].trim(), index: bodyStart + match.index + prefixLen });
   }
   return returns;
 }
@@ -302,7 +346,7 @@ function isTmpSafeExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
   }
 
   const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
-  if (fnReturn) return isTmpSafeExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+  if (fnReturn) return isTmpSafeExpr(fnReturn.expr, fnReturn.index, decls, fnReturns, depth + 1);
 
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
@@ -336,7 +380,7 @@ function isKnownRealRootExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
   }
 
   const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
-  if (fnReturn) return isKnownRealRootExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+  if (fnReturn) return isKnownRealRootExpr(fnReturn.expr, fnReturn.index, decls, fnReturns, depth + 1);
 
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
@@ -377,7 +421,7 @@ function resolveToLiteralString(expr, usageIndex, decls, fnReturns, depth) {
   }
 
   const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
-  if (fnReturn) return resolveToLiteralString(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+  if (fnReturn) return resolveToLiteralString(fnReturn.expr, fnReturn.index, decls, fnReturns, depth + 1);
 
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
@@ -453,26 +497,35 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
     // is just as often spread across multiple join() segments —
     // join(ROOT, 'data', 'shows.json') — where no single segment alone
     // contains the full 'data/...json' shape. Reconstruct the path from the
-    // literal segments and test the joined shape — but ONLY when every
-    // non-literal arg (the base) is a CONFIRMED real root, not merely
-    // "not provably tmp-safe". An unresolvable base (template literal,
-    // string concat, function param) is unknown, not "assume real root" —
-    // see isKnownRealRootExpr's docstring for the false positive this fixes.
-    const nonLiteralArgs = innerArgs.filter((a) => !/^(['"`])(.*)\1$/s.test(a.trim()));
-    if (!nonLiteralArgs.every((a) => isKnownRealRootExpr(a, usageIndex, decls, fnReturns, depth + 1))) return false;
-
+    // literal segments and test the joined shape. Each non-literal arg is
+    // resolved one of two ways: (a) it traces to a KNOWN literal string
+    // constant (an identifier/function-return/join() built entirely from
+    // resolvable pieces — e.g. a function-local `const ROOT = 'data'` used
+    // as a path SEGMENT, not a root) — its resolved value is used as that
+    // segment's text; or (b) it's a CONFIRMED real root (import.meta.dirname
+    // / __dirname / process.cwd()-derived — contributes no literal text of
+    // its own, but doesn't block reconstruction either). An arg that is
+    // NEITHER — a template literal, string concat, function param — is
+    // unknown, not "assume real root" or "assume literal", and reconstruction
+    // is abandoned entirely (see isKnownRealRootExpr's docstring for the
+    // false positive that established this asymmetry).
     const literalSegments = [];
     for (const a of innerArgs) {
-      const m = a.trim().match(/^(['"`])(.*)\1$/s);
-      if (m) literalSegments.push(m[2]);
+      const argTrimmed = a.trim();
+      const litMatch = argTrimmed.match(/^(['"`])(.*)\1$/s);
+      if (litMatch) { literalSegments.push(litMatch[2]); continue; }
+      const resolvedLit = resolveToLiteralString(argTrimmed, usageIndex, decls, fnReturns, depth + 1);
+      if (resolvedLit !== null) { literalSegments.push(resolvedLit); continue; }
+      if (isKnownRealRootExpr(argTrimmed, usageIndex, decls, fnReturns, depth + 1)) continue;
+      return false;
     }
     return literalSegments.length > 0 && DATA_JSON_TAIL_RE.test(literalSegments.join('/'));
   }
 
   const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
   if (fnReturn) {
-    if (isTmpSafeExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1)) return false;
-    return isUnsafeDataPathExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+    if (isTmpSafeExpr(fnReturn.expr, fnReturn.index, decls, fnReturns, depth + 1)) return false;
+    return isUnsafeDataPathExpr(fnReturn.expr, fnReturn.index, decls, fnReturns, depth + 1);
   }
 
   if (/^\w+$/.test(trimmed)) {
