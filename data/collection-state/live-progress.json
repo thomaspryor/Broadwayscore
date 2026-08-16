@@ -1,18 +1,64 @@
 {
-  "updatedAt": "2026-08-16T09:07:44.350Z",
+  "updatedAt": "2026-08-16T09:12:47.207Z",
   "processed": 68,
-  "failed": 1837,
+  "failed": 1847,
   "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 0,
+    "playwright": 47,
+    "amp": 2,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "directCookies": 6,
+    "scrapingbee": 8,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 6
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-08-15T17:55:38.665Z",
+      "event": "bb-session",
+      "session": "bac91876",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-15T17:55:47.877Z",
+      "event": "bb-session",
+      "session": "07c8603f",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-15T19:22:20.746Z",
+      "event": "bb-session",
+      "session": "0a65c2a4",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-15T19:22:21.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T01:12:48.197Z",
+      "event": "bb-session",
+      "session": "d676a592",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:12:49.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-16T01:13:07.748Z",
+      "event": "bb-session",
+      "session": "030f683e",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:13:08.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
