@@ -405,7 +405,23 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
 // no extractable parent id fails open (returns null) rather than refusing on
 // a half-signal — same fail-open direction every other guard in this file
 // takes on ambiguous/missing data.
-const SESSION_TRACKING_CLONE_RE = /\b(?:session[\s-]*tracking\s+card|working\s+parent\s+card|parent\s+card|per\s+(?:task|card)\s*#\d+)\b/i;
+//
+// Task #1698 (P1 regression): phrase+parent-ref alone was still wrong in both
+// directions. False positives — #1615's "parent card <uuid>, shipped
+// 2026-04-24" and #1674's "per card #1657" (already merged) — are CITATIONS
+// of finished work, not clone declarations; the guard never checked whether
+// the referenced parent was actually live. False negatives — #1670's "per
+// card <uuid> (task #1662)" never matched the old `per\s+(?:task|card)\s*#\d+`
+// branch (no `#digit` immediately after "card"), and #1680's self-declaration
+// sat in the TITLE ("...continuing card #N)") while the only matching phrase
+// ("session-tracking card") was later in the description, so the forward-only
+// window search in extractCloneParentRef() never looked far enough back.
+// Fixed by widening the "per" branch (extractCloneParentRef's own window
+// search already finds the id either way) and adding "continuing card" so a
+// title-only self-declaration is the leftmost match; the false-positive half
+// is fixed by sessionTrackingCloneGuard() itself now requiring the resolved
+// parent to be LIVE (see below) rather than trusting phrase+ref alone.
+const SESSION_TRACKING_CLONE_RE = /\b(?:session[\s-]*tracking\s+card|working\s+parent\s+card|parent\s+card|per\s+(?:task|card)|continuing\s+card)\b/i;
 
 // How far past the matched clone-phrase to look for the parent reference.
 // Bounded so a stray unrelated #N or UUID elsewhere in a long description
@@ -429,7 +445,59 @@ function extractCloneParentRef(text, fromIndex) {
   return null;
 }
 
-function sessionTrackingCloneGuard(task, opts) {
+// Deliberately does NOT also match a bare 8-hex-char short id (e.g. some
+// cards abbreviate a Notion uuid to just its first segment, "3be637c5", in
+// prose). Verified live against the real mirror (task #1698 sweep,
+// 2026-08-16): 42 unrelated cards share that exact 8-char prefix (22 of them
+// in_progress/pending) — it's a workspace/database-level prefix, not a
+// unique-enough fragment to resolve safely. Matching it would trade one
+// known false negative (a card whose parent ref is this ambiguous — fails
+// open, same as any other unresolvable reference) for near-certain false
+// positives against whichever unrelated live card happens to share the
+// prefix and sorts first in the mirror.
+
+const LIVE_TASK_STATUSES = new Set(['pending', 'in_progress']);
+
+// UUIDs from card TEXT may or may not carry hyphens (extractCloneParentRef's
+// UUID regex makes them optional), but notionIdOf() always returns the
+// hyphenated `[notion:<uuid>]` form as-tagged — compare both sides
+// hyphen-stripped so a hyphen-stripped id in a card's prose still matches its
+// referenced task (second-opinion review, 2026-08-16).
+function normalizeNotionId(id) {
+  return String(id || '').replace(/-/g, '').toLowerCase();
+}
+
+// Resolves a clone-parent reference (see extractCloneParentRef) to the
+// task it actually points at, using the SAME task-mirror array the caller
+// already has in hand (bsc-next.js's `tasks`, loaded once in main()) — no
+// I/O of its own, same shape as this file's other data-taking guards
+// (deadDispatchGuard(task, ledgerEntries, opts), workBranchCollisionGuard
+// (task, branchStatuses, opts): extra data is a plain array, not a
+// pre-built lookup — no guard in this file pre-builds a Map).
+//
+// Returns null (fails open, same direction as every other guard here on
+// ambiguous/missing data) when: no tasks array was passed, the referenced id
+// isn't found in it, OR the reference resolves to the task itself — a card
+// can plausibly restate its own numeric id near the clone phrase (e.g.
+// templated boilerplate), and since the task being evaluated is by
+// definition live (it's mid-dispatch), a naive self-match would always read
+// as "live parent" and refuse a card for citing itself.
+function resolveCloneParentTask(task, parent, tasks) {
+  if (!parent || !Array.isArray(tasks)) return null;
+  if (parent.kind === 'task') {
+    if (String(parent.id) === String(task && task.id)) return null;
+    return tasks.find(t => t && String(t.id) === String(parent.id)) || null;
+  }
+  const needle = normalizeNotionId(parent.id);
+  const found = tasks.find(t => t && normalizeNotionId(notionIdOf(t)) === needle) || null;
+  if (found && String(found.id) === String(task && task.id)) return null;
+  return found;
+}
+
+// (task, tasks, opts) — extra data before opts, matching every sibling guard
+// in this file (deadDispatchGuard, parkedGuard, workBranchCollisionGuard,
+// exactTitleOverlapGuard, linearMirrorGuard all take (task, data, opts)).
+function sessionTrackingCloneGuard(task, tasks, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
   const raw = `${(task && task.subject) || ''}\n${(task && task.description) || ''}`;
   // Strip this task's own `[notion:<uuid>]` self-tag (notionIdOf's format)
@@ -440,6 +508,16 @@ function sessionTrackingCloneGuard(task, opts) {
   if (!phraseMatch) return null;
   const parent = extractCloneParentRef(text, phraseMatch.index);
   if (!parent) return null;
+  // Task #1698: a phrase + extractable ref is still only a CITATION unless
+  // the referenced parent is confirmed live right now — resolve it in the
+  // task mirror and fail open (no refusal) when it can't be confirmed live.
+  // A false negative here costs at most one duplicate workspace (usually
+  // caught by exactTitleOverlapGuard's byte-for-byte title match anyway); a
+  // false positive silently drops real backlog work with nobody noticing —
+  // same asymmetry every other guard in this file already resolves in favor
+  // of failing open.
+  const parentTask = resolveCloneParentTask(task, parent, tasks);
+  if (!parentTask || !LIVE_TASK_STATUSES.has(parentTask.status)) return null;
   const parentRef = parent.kind === 'task' ? `task #${parent.id}` : `Notion card ${parent.id}`;
   const dispatchHint = parent.kind === 'task' ? ` (node scripts/bsc-next.js --id ${parent.id})` : '';
   return `REFUSING to dispatch #${task.id}: its own notes self-identify it as a session-tracking clone of ` +
@@ -469,6 +547,7 @@ module.exports = {
   linearMirrorGuard,
   exactTitleOverlapGuard,
   sessionTrackingCloneGuard,
+  resolveCloneParentTask,
   extractCloneParentRef,
   LINEAR_MAPPING_PATH,
   matchesTaskWorkBranch,

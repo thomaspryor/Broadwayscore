@@ -804,8 +804,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // task is not a fresh dispatch decision, even if that task's own notes
   // happen to self-describe as a session-tracking clone. See
   // dispatch-guards.js's sessionTrackingCloneGuard header for the full
-  // rationale and the #1353/#1659 "why not a title prefix" note.
-  const cloneErr = sessionTrackingCloneGuard(task, args);
+  // rationale and the #1353/#1659 "why not a title prefix" note. Passes the
+  // already-loaded `tasks` mirror (task #1698) so the guard can confirm the
+  // referenced parent is actually live before refusing.
+  const cloneErr = sessionTrackingCloneGuard(task, tasks, args);
   if (cloneErr) { console.error(`[bsc-next] ${cloneErr}`); process.exit(1); }
 
   // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
