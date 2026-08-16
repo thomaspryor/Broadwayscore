@@ -659,10 +659,20 @@ function cmdPush(args) {
         // the earlier fix set entry.pushed correctly but left this push
         // unconditional).
         if (!entry.pushed) { refused.push({ taskId: entry.taskId, name: entry.name, pageId }); continue; }
+        // Persist right after each real Notion close, not just once at the
+        // end of the whole loop (task #1701 cousin — /what-else pattern-
+        // recognition pass): markCardDone() is a real, external write. If
+        // the loop dies partway through a multi-card batch (Notion API
+        // hiccup, process kill), every card ALREADY closed on Notion before
+        // that point would otherwise lose its `pushed:true` flag along with
+        // every other entry not yet reached, and the next push run would
+        // call markCardDone() again for cards that are already Done —
+        // harmless to Notion's Status field but appends a duplicate
+        // "Auto-closed" Outcome line every time until the map catches up.
+        writeMap(dir, map);
       }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
-    if (!dry && done.length) writeMap(dir, map);
     console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
