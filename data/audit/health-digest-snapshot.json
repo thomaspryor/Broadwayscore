@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-15T01:34:24.859Z",
-  "subject": "BSC URGENT (day 19): 6 unresolved errors",
-  "bannerText": "6 errors, 29 warnings",
-  "consecutiveErrorDays": 19,
+  "generatedAt": "2026-08-16T12:27:21.774Z",
+  "subject": "BSC URGENT (day 20): 8 unresolved errors",
+  "bannerText": "9 errors, 30 warnings",
+  "consecutiveErrorDays": 20,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2478k credits left (62%) · 138k/day burn · renews in 19d · exhausts in ~18d (BEFORE renewal)"
+      "message": "2387k credits left (60%) · 134k/day burn · renews in 18d · exhausts in ~18d (BEFORE renewal)"
     },
     {
       "name": "Autofix: jobs actually succeeding",
@@ -14,15 +14,23 @@
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "message": "Autofix throughput DEAD: 0 passes on each of the last 7 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — dispatches are launching but nothing is landing."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 2 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "message": "Rebuild Reviews (Fast) failed 11 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 23 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
-      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "message": "Rebuild Reviews Data failed 5 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Checklist",
+      "message": "Opening Night Checklist failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -32,15 +40,15 @@
   "warns": [
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19688 vs baseline 19705"
+      "message": "Reviews dropped: 19780 vs baseline 19791"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: an-american-daughter-off-broadway-2026 The Interested Bystander 5/5→100 vs LLM 48, gap 52)"
+      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: take-me-out-2022 Theater Life 2/5 stars→40 vs LLM 84, gap 45)"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "7 audit(s) drifting: cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Quality: outlet domain moves",
@@ -49,10 +57,6 @@
     {
       "name": "Quality: outlet invalid-content rate",
       "message": "4 outlet(s) show a broken-extractor signature (worst: metrmag — 5/5 recent invalid, 100% vs 0% baseline)"
-    },
-    {
-      "name": "Data quality: cross-outlet attribution drift",
-      "message": "No drift-check snapshot yet (cron not yet run)"
     },
     {
       "name": "Coverage: SERP census recall",
@@ -68,19 +72,19 @@
     },
     {
       "name": "SEO: health",
-      "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
+      "message": "2 SEO warning(s): /west-end: scored 67/100 on a simulated phone test (below 70) — simulated test only; real visitors are fine, usually ignorable; /west-end: simulated-test score dropped to 67 (was 91)"
     },
     {
       "name": "Cron failed: Update Show Status",
-      "message": "Last run inconclusive: failure (17h ago), no success in 36h"
+      "message": "Last run inconclusive: failure (4h ago), no success in 36h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "72 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (12d, stamp overdue 7d); Scraping v2: T4 was a yield regression — reviews.php is not  (12d, stamp overdue 7d); Generalize recover-serp-text.js urlless sweep beyond Telegra (9d, stamp overdue 7d) (11 awaiting recheck, earliest due 2026-08-13; 10 parked via tab-close, oldest 2026-08-09 — resume: node scripts/bsc-next.js --id 1152 --force — not counted)"
+      "message": "94 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (14d, stamp overdue 8d); Scraping v2: T4 was a yield regression — reviews.php is not  (14d, stamp overdue 8d); Generalize recover-serp-text.js urlless sweep beyond Telegra (11d, stamp overdue 8d) (11 awaiting recheck, earliest due 2026-08-14; 8 parked via tab-close, oldest 2026-08-11 — resume: node scripts/bsc-next.js --id 1271 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (22d); Trainspotting: only 4 reviews on site + email said 7 (invest (22d); cmux-launch: adopt a late-alive workspace instead of close-a (22d)"
+      "message": "33 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (24d); Trainspotting: only 4 reviews on site + email said 7 (invest (24d); cmux-launch: adopt a late-alive workspace instead of close-a (23d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",
@@ -103,20 +107,16 @@
       "message": "Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here."
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 16 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Digest: content-invariant check",
+      "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
       "name": "Workflow repeat-failure: Process Feedback Submissions",
       "message": "Process Feedback Submissions failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -128,11 +128,11 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "5 discovered review(s) not reaching the composite score (4 T1). First: cats-west-end-2026 — independent (empty-body)"
+      "message": "3 discovered review(s) not reaching the composite score (1 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "12 aggregator-reviewed show(s) not in the catalogue. First: \"Game of Thrones: The Mad King\" (wet-roundup)"
+      "message": "11 aggregator-reviewed show(s) not in the catalogue. First: \"Game of Thrones: The Mad King\" (wet-roundup)"
     },
     {
       "name": "Data: undispatchable backlog cards",
@@ -141,61 +141,73 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget: brightdata $7.24 > $2.5 (2301 serp + 2524 unlocker reqs); scrapingbee 39663 credits > 35000; scrapingdog 70495 credits > 45000",
-      "description": "Day 2026-08-13. 2026-08-13 · Browserbase: $2.2 (22 sessions) · 2026-08-13 · Bright Data: $7.24 (2301 serp / 2524 unlocker) · ScrapingBee: 39663 credits (239542 this cycle) · ScrapingDog: 70495 credits (1483825 this cycle) · Browserbase attribution: 41% attributed — top: test-caller 8, collect-review-texts.js 1 · Bright Data attribution: 39% attributed — top: audit-show-review-gap.js 756, opening-night-poller.js 583, fetch-show-images-auto.js 292, ingest-review-from-url.js 148, recover-explicit-ratings.js 56 · ScrapingBee attribution: 3% attributed — top: audit-show-review-gap.js 787, fetch-show-images-auto.js 292, opening-night-poller.js 105, ingest-review-from-url.js 84, extract-theatre-record.js 27 · ScrapingDog attribution: 4% attributed — top: opening-night-poller.js 1027, fetch-show-images-auto.js 551, audit-show-review-gap.js 546, collect-review-texts.js 325, ingest-review-from-url.js 187. Verification streak reset to 0.",
-      "severity": "error",
+      "title": "Stale 'upcoming' tag on As You Like It - Globe",
+      "description": "as-you-like-it-globe-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=as-you-like-it-globe-west-end-2026 --apply",
+      "severity": "warning",
       "url": null
     },
     {
-      "title": "Scrapingdog daily breaker TRIPPED: 32922/30000 credits",
-      "description": "Scrapingdog billed 32922 credits today against a ceiling of 30000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n7 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (848), audit-show-review-gap.js (401), collect-review-texts.js (283).",
+      "title": "Stale 'upcoming' tag on The House of the Negro Insane",
+      "description": "the-house-of-the-negro-insane-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-house-of-the-negro-insane-off-broadway-2026 --apply",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2524/2250 reqs)",
+      "description": "Zone serp_api1 billed 2524 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1034), opening-night-poller.js (349), audit-show-review-gap.js (54).",
       "severity": "critical",
       "url": null
     },
     {
       "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/154 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nCats: score-drift",
+      "description": "1/155 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nDeath Note: The Musical: score-drift",
       "severity": "error",
       "url": null
     },
     {
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2426/2250 reqs)",
-      "description": "Zone serp_api1 billed 2426 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n7 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (804), audit-show-review-gap.js (402), recover-explicit-ratings.js (70).",
-      "severity": "critical",
-      "url": null
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 9 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31886083800"
     },
     {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nThe Apple Boys (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please update the summary since the main thing that Bucks County wasn’t its World Premiere, and so the summary includes the critic’s take on it.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/582",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31808519638"
-    },
-    {
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2672/2250 reqs)",
-      "description": "Zone web_unlocker2 billed 2672 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n7 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (862), audit-show-review-gap.js (629), recover-explicit-ratings.js (70).",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4820/2250 reqs)",
+      "description": "Zone web_unlocker2 billed 4820 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1213), opening-night-poller.js (632), audit-show-review-gap.js (264).",
       "severity": "critical",
       "url": null
     },
     {
       "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 77.8% (406/522)\noff-broadway: 46.6% (160/343)\nwest-end: 69.5% (406/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (542h)\nCelebrity Autobiography — nypost (373h)\nCelebrity Autobiography — thewrap (360h)\nCelebrity Autobiography — timeout (360h)\nCelebrity Autobiography — vulture (360h)\n… 220 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (360h)\nAladdin — ew (9h)\nThe Book of Mormon — usatoday (9h)\nBuena Vista Social Club — broadwaynews (9h)\nHeathers The Musical — dailybeast (9h)\n… 17 more circuit-open cell(s)",
+      "description": "broadway: 77.8% (406/522)\noff-broadway: 46.8% (161/344)\nwest-end: 70% (409/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (568h)\nCelebrity Autobiography — nypost (398h)\nCelebrity Autobiography — thewrap (386h)\nCelebrity Autobiography — timeout (386h)\nCelebrity Autobiography — vulture (386h)\n… 218 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (386h)\nAladdin — ew (34h)\nThe Book of Mormon — usatoday (34h)\nBuena Vista Social Club — broadwaynews (34h)\nHeathers The Musical — dailybeast (34h)\n… 16 more circuit-open cell(s)",
       "severity": "warning",
       "url": null
     },
     {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31838288991"
+      "title": "domain-tier-skip.json drift: 1 domain+tier verdict(s) need review",
+      "description": "didtheylikeit.com / scrapingdog (degrade): skip:false but 2% success over 1551 calls (< 30% threshold) — consider flipping to skip:true",
+      "severity": "warn",
+      "url": null
     },
     {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hello,\r\nMy name is Benedict, and I’m contacting you from Redhead Digital Agency. We are currently looking for quality websites for content placement and would like to know whether you accept guest posts.\r\n\r\nIf so, please let me know your pricing and link policies.\r\nThank you for your time.\r\n\r\nSincerely,\r\nBenedict Finchley\"",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31843746859"
+      "title": "Scrapingdog daily breaker TRIPPED: 35071/30000 credits",
+      "description": "Scrapingdog billed 35071 credits today against a ceiling of 30000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (597), collect-review-texts.js (546), collect-outlet-reviews.js (253).",
+      "severity": "critical",
+      "url": null
+    },
+    {
+      "title": "Review-gap audit refused to write — 19.4% of shows changed coverage state",
+      "description": "review-gap blast radius 19.4% (6/31 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, horrible-histories-barmy-britain-the-best-bits-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, paddington-the-musical-west-end-2025, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "T1 Coverage — new gaps past 24h",
+      "description": "214 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+      "severity": "error",
+      "url": null
     }
   ],
-  "autoFixedCount": 0,
-  "passedCount": 53,
-  "totalCount": 93
+  "autoFixedCount": 3,
+  "passedCount": 50,
+  "totalCount": 94
 }

@@ -35,22 +35,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-08-15T01:34:22.970Z",
-      "lastNotifiedAt": "2026-08-08T11:39:22.847Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-16T12:27:16.844Z",
+      "lastNotifiedAt": "2026-08-16T12:27:16.844Z",
+      "notifyCount": 4,
       "cardId": "3b6637c5-416f-8119-ab95-d4c487f4e7c2",
-      "silentRefires": 10
+      "linearIdentifier": "BRO-364"
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Test Suite",
       "firstSeen": "2026-07-24T07:50:34.248Z",
-      "lastSeen": "2026-08-14T08:04:14.810Z",
-      "lastNotifiedAt": "2026-08-09T11:41:24.499Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-16T12:27:21.023Z",
+      "lastNotifiedAt": "2026-08-16T12:27:21.023Z",
+      "notifyCount": 4,
       "cardId": "3b7637c5-416f-8157-8989-cf33da0974b8",
-      "silentRefires": 5
+      "linearIdentifier": "BRO-212"
     },
     "health-check:Workflow repeat-failure: Commercial RSS Poll": {
       "status": "open",
@@ -79,22 +79,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-08-15T01:34:24.854Z",
+      "lastSeen": "2026-08-16T12:27:21.644Z",
       "lastNotifiedAt": "2026-08-10T08:19:21.892Z",
       "notifyCount": 3,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-15T01:34:24.856Z",
-      "lastNotifiedAt": "2026-08-08T11:39:24.175Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-16T12:27:21.646Z",
+      "lastNotifiedAt": "2026-08-16T12:27:21.646Z",
+      "notifyCount": 4,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
-      "silentRefires": 10
+      "linearIdentifier": "BRO-365"
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -147,11 +147,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-08-15T01:34:24.855Z",
+      "lastSeen": "2026-08-16T12:27:21.645Z",
       "lastNotifiedAt": "2026-08-10T08:19:23.719Z",
       "notifyCount": 2,
       "cardId": "3b8637c5-416f-817d-832d-eac6c91739ee",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -267,14 +267,13 @@
     "provider-spend:overspend": {
       "status": "open",
       "disposition": "digest",
-      "title": "Scraping spend over budget: brightdata $7.24 > $2.5 (2301 serp + 2524 unlocker reqs); scrapingbee 39663 credits > 35000; scrapingdog 70495 credits > 45000",
+      "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-15T01:34:30.474Z",
-      "lastNotifiedAt": "2026-08-14T08:04:20.315Z",
-      "notifyCount": 14,
+      "lastSeen": "2026-08-16T12:27:28.439Z",
+      "lastNotifiedAt": "2026-08-16T12:27:28.439Z",
+      "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -302,10 +301,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
       "firstSeen": "2026-08-02T21:53:33.271Z",
-      "lastSeen": "2026-08-02T21:53:33.271Z",
-      "lastNotifiedAt": "2026-08-02T21:53:33.271Z",
-      "notifyCount": 1,
-      "cardId": "3b0637c5-416f-8159-a5c9-d106e8586882"
+      "lastSeen": "2026-08-16T12:27:17.084Z",
+      "lastNotifiedAt": "2026-08-16T12:27:17.084Z",
+      "notifyCount": 2,
+      "cardId": "3b0637c5-416f-8159-a5c9-d106e8586882",
+      "linearIdentifier": "BRO-346"
     },
     "gap:brainiac-live-west-end-2026/theatre-weekly--unknown.json": {
       "status": "open",
@@ -558,11 +558,11 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-08-15T01:35:43.427Z",
-      "lastNotifiedAt": "2026-08-08T11:39:46.729Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-16T12:30:01.350Z",
+      "lastNotifiedAt": "2026-08-16T12:30:01.350Z",
+      "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 10
+      "linearIdentifier": null
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -997,11 +997,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews (Fast)",
       "firstSeen": "2026-08-15T01:34:22.971Z",
-      "lastSeen": "2026-08-15T01:34:22.971Z",
+      "lastSeen": "2026-08-16T12:27:17.083Z",
       "lastNotifiedAt": "2026-08-15T01:34:22.971Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-334"
+      "linearIdentifier": "BRO-334",
+      "silentRefires": 1
     },
     "opening-night-stale-upcoming-tag-as-you-like-it-globe-west-end-2026": {
       "status": "open",
@@ -1048,6 +1049,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Opening Night Checklist": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Opening Night Checklist",
+      "firstSeen": "2026-08-16T12:27:17.220Z",
+      "lastSeen": "2026-08-16T12:27:17.220Z",
+      "lastNotifiedAt": "2026-08-16T12:27:17.220Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-369"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-08-13",
+  "asOf": "2026-08-14",
   "shadow": true,
   "checks": [
     {
@@ -24,45 +24,45 @@
       "key": "affiliate:conversions-flatline",
       "label": "Conversions flatline",
       "verdict": "pass",
-      "reason": "last yield 0d ago, under the 3d threshold"
+      "reason": "last yield 1d ago, under the 3d threshold"
     },
     {
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "13 conversions in trailing 7d"
+      "reason": "12 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "395/485 = 81% of peak, above the 20% floor"
+      "reason": "390/485 = 80% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "727/727 = 100% of peak, above the 20% floor"
+      "reason": "677/727 = 93% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 134% over 3d"
+      "reason": "Impact/PostHog click ratio 157% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
       "label": "Bot click divergence",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 1.3x over 3d"
+      "reason": "Impact/PostHog click ratio 1.6x over 3d"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.79%, 0 zero-payout"
+      "reason": "take-rate 2.10%, 0 zero-payout"
     }
   ],
   "failingCount": 0,
-  "updatedAt": "2026-08-15T01:33:42.982Z"
+  "updatedAt": "2026-08-16T12:26:34.920Z"
 }
