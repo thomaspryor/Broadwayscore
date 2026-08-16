@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-16T05:33:14.326Z",
+  "timestamp": "2026-08-16T09:32:51.488Z",
   "stats": {
-    "totalReviews": 42300,
-    "alreadyFlagged": 18231,
-    "dateGuardCatches": 144,
+    "totalReviews": 42315,
+    "alreadyFlagged": 18235,
+    "dateGuardCatches": 146,
     "directorMismatch": 969,
     "tvFilmSignals": 1207,
     "londonSignals": 905,
-    "offBroadwaySignals": 489,
+    "offBroadwaySignals": 490,
     "yearMismatch": 88,
-    "noPublishDate": 3593
+    "noPublishDate": 3598
   },
   "findings": [
     {
@@ -1254,7 +1254,7 @@
     {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": 65,
+      "score": 91,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
       "findings": [
@@ -1960,7 +1960,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2024-10-31",
       "url": "https://inews.co.uk/culture/arts/lily-collins-barcelona-review-3354734?srsltid=AfmBOoryeRFmjwleJM0WPXh-1cvMFp2Kluo063ENK28cNp1fWUPSwwX-",
       "findings": [
@@ -1974,7 +1974,7 @@
     {
       "showId": "barcelona-west-end-2024",
       "file": "independent--annabel-nugent.json",
-      "score": 39,
+      "score": 38,
       "publishDate": "2024-10-31",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/barcelona-lily-collins-alvaro-morte-b2638352.html",
       "findings": [
@@ -33687,6 +33687,17 @@
       ]
     },
     {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 258d before show (2025-11-10 vs 2026-07-26)"
+        }
+      ]
+    },
+    {
       "showId": "breakfast-at-tiffanys-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 44,
@@ -37971,7 +37982,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 74,
+      "score": 61,
       "publishDate": "2026-06-04",
       "url": "https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html",
       "findings": [
@@ -40328,6 +40339,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 74,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -45436,6 +45461,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "northernartsreview--shannaz.json",
+      "publishDate": "2026-06-23",
+      "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-06-23 vs 2026-07-28)"
         }
       ]
     },
