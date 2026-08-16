@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T10:17:44.412Z",
+  "generatedAt": "2026-08-16T15:22:50.000Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,24 +13,24 @@
       "slug": "anansi-the-spider-west-end",
       "thumbnail": "/images/shows/anansi-the-spider-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 97,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "0/8 total",
           "T1:0/3",
-          "T2:1/2",
+          "T2:0/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -72,6 +72,10 @@
         },
         {
           "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
