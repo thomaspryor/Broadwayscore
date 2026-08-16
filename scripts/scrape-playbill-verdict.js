@@ -422,7 +422,7 @@ async function processShowViaGoogle(show, showId, shows) {
   if (fs.existsSync(effectiveArchive)) {
     const html = fs.readFileSync(effectiveArchive, 'utf8');
     // Validate cached page matches this show
-    const cacheValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    const cacheValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, category: show.category });
     if (!cacheValidation.valid) {
       console.log(`  [CACHE] ${showId}: Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
       fs.unlinkSync(effectiveArchive);
@@ -516,7 +516,7 @@ async function processShowViaGoogle(show, showId, shows) {
         }
 
         // Validate article matches target show (LLM tiebreaker for edge cases)
-        const articleValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const articleValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, category: show.category });
         if (!articleValidation.valid) {
           console.log(`    [SKIP] Article doesn't match show "${show.title}": ${articleValidation.reason}`);
           continue;
