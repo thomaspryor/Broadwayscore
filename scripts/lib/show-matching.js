@@ -926,6 +926,37 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   return { matched, confidence, matchCount, threshold, words, matchedWords, missingWords };
 }
 
+// Explicit market qualifiers aggregators embed in <title>/canonical <link> —
+// e.g. Show Score's "... (Broadway) NYC Reviews" / "... (Off-Broadway) ...",
+// BroadwayWorld's "X Off-Broadway Reviews | BroadwayWorld", or a canonical
+// URL path segment like "/broadway-shows/x" / "/off-broadway-shows/x".
+// Order matters: off-broadway/off-west-end patterns are checked before their
+// broadway/west-end counterparts since e.g. "(Off-Broadway)" also contains
+// the substring "Broadway)".
+const PAGE_MARKET_QUALIFIERS = [
+  { category: 'off-broadway', re: /\(off[\s-]?broadway\)|\boff-broadway reviews\b|\/off-broadway-shows\//i },
+  { category: 'broadway', re: /\(broadway\)|\bbroadway reviews\b|\/broadway-shows\//i },
+  { category: 'off-west-end', re: /\(off[\s-]?west end\)/i },
+  { category: 'west-end', re: /\(west end\)/i },
+];
+
+/**
+ * Look for an explicit market qualifier in the page title / canonical URL.
+ * Returns the qualifier's category ('broadway'/'off-broadway'/'west-end'/
+ * 'off-west-end') or null if the page carries no such signal.
+ */
+function detectPageMarketQualifier(html, pageTitle) {
+  const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
+  const canonicalHref = canonicalMatch
+    ? (canonicalMatch[0].match(/href=["']([^"']+)["']/i) || [])[1] || ''
+    : '';
+  const haystack = `${pageTitle || ''} ${canonicalHref}`.toLowerCase();
+  for (const q of PAGE_MARKET_QUALIFIERS) {
+    if (q.re.test(haystack)) return q.category;
+  }
+  return null;
+}
+
 /**
  * Validate that an aggregator/roundup HTML page is actually about the show
  * we think it is, by comparing the show title against the page's <title> tag.
@@ -941,8 +972,33 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
  * (scrape-london-box-office-roundups, opening-night-poller, gather-reviews)
  * trusting cached archive HTML without checking it matched the showId in
  * the file path.
+ *
+ * `showCategory` + `siblingCategories` (categories of OTHER shows.json
+ * entries sharing this show's normalized title) enable a second check that
+ * plain word-matching is blind to: a page whose title/canonical URL carries
+ * an explicit market qualifier (e.g. Show Score's "(Broadway)") that names a
+ * DIFFERENT market than this show's own category, where a same-title sibling
+ * in that other market actually exists. Word-matching alone passes this case
+ * since "Two Strangers ... (Broadway)" and the regional sibling's title share
+ * every significant word (BRO-363 incident — see the card for scripts/audit-
+ * aggregator-archive-integrity.js). Both params are optional so existing
+ * single-show callers (gather-reviews.js, opening-night-poller.js, etc.) are
+ * unaffected.
+ *
+ * Scoped to `showCategory === 'regional'` ONLY (not e.g. broadway vs.
+ * off-broadway, or broadway vs. west-end): none of these aggregators cover
+ * regional productions at all, so ANY qualifier-bearing archive filed under
+ * a regional showId is inherently suspect. Widening this to other category
+ * pairs was tried and reverted — it produced real false positives against
+ * the live corpus (2026-08-16): BroadwayWorld's /reviews/ page ALWAYS titles
+ * itself "X Broadway Reviews | BroadwayWorld" as page-type boilerplate
+ * regardless of the actual show's market (55 false flags across West End
+ * shows), and Show Score's own "/broadway-shows/" URL bucket doesn't
+ * reliably track our category for legitimate same-production revivals
+ * (e.g. the-gin-game-2026, filed off-broadway in shows.json, sits under
+ * Show Score's broadway-shows/ path with no separate production involved).
  */
-function validateRoundupPageTitle(html, showTitle) {
+function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategories) {
   if (!html || typeof html !== 'string') {
     return { ok: false, reason: 'no-html', pageTitle: null };
   }
@@ -953,6 +1009,19 @@ function validateRoundupPageTitle(html, showTitle) {
   const pageTitle = m[1].trim();
   const conf = titleWordsMatchWithConfidence(showTitle, pageTitle);
   if (conf.matched) {
+    if (showCategory === 'regional' && Array.isArray(siblingCategories) && siblingCategories.length) {
+      const qualifier = detectPageMarketQualifier(html, pageTitle);
+      if (qualifier && qualifier !== showCategory && siblingCategories.includes(qualifier)) {
+        return {
+          ok: false,
+          reason: 'cross-market-sibling',
+          pageTitle,
+          confidence: conf.confidence,
+          showCategory,
+          pageMarketQualifier: qualifier,
+        };
+      }
+    }
     return { ok: true, reason: 'matched', pageTitle, confidence: conf.confidence };
   }
   return {
@@ -1390,6 +1459,7 @@ module.exports = {
   titleWordsMatch,
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
+  detectPageMarketQualifier,
   cleanSlugTitle,
   isVerdictReviewSlug,
   matchSlugToShow,
