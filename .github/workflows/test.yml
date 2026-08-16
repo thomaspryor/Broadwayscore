@@ -157,6 +157,14 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      # Broadway-transfer production-category mismatch (#1650): a same-title Broadway
+      # transfer's own review roundup was accepted as a match for its
+      # regional predecessor on title-word match alone (heading never
+      # mentions a year, so the existing year-mismatch layers never fire).
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/page-validator.js'
+      - 'scripts/lib/page-validator.test.mjs'
       # Shared host-suffix source of truth: which dot-label of a hostname is the
       # outlet identity. provisionalOutletIdFromHost (registration),
       # normalizeHostSlug (domain-move detection) and registrableHost (review-gap
