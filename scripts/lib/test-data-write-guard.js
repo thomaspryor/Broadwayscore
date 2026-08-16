@@ -211,7 +211,10 @@ function resolveExprSegments(node, env, funcDefs, seen, src) {
     case 'Identifier': {
       if (TMP_MARKER_RE.test(node.name)) return { segments: [], tmp: true };
       const decl = env.get(node.name);
-      if (!decl) return { segments: [], tmp: false }; // unresolved — contributes nothing
+      // OPAQUE (a function's own parameter, shadowing any outer same-named
+      // binding — see shadowParams) resolves the same as "unresolved": a
+      // known name whose value this tool cannot see, never an outer fallback.
+      if (!decl || decl === OPAQUE) return { segments: [], tmp: false };
       // Cycle guard is keyed by the DECLARATION NODE, not the bare name — two
       // different scopes' own `repo` locals are two different AST nodes that
       // happen to share a name (real corpus case: a test declares `const repo
@@ -305,16 +308,78 @@ function buildShallowBase(walk) {
   return base;
 }
 
-/** Collect `name -> initializer/RHS node` for declarations made DIRECTLY within `node` (see buildShallowBase) into `into`. */
-function collectScopeDecls(node, into, walk, shallowBase) {
+/**
+ * Collect `name -> initializer/RHS node` for declarations made DIRECTLY
+ * within `node` (see buildShallowBase) into `into`.
+ *
+ * `beforePos` (default Infinity — no cutoff) restricts collection to
+ * declarations/assignments that start strictly before that source offset.
+ * This matters for module/function TOP-LEVEL scope, which executes
+ * sequentially: a variable reused for something else later in the same
+ * scope (`let x = 'data/foo.json'; ...; x = tmpPath;`) must resolve, at an
+ * earlier call site, to whatever it held AT THAT POINT — not to its final
+ * value in the file (adversarial-review finding, task #1662: a flat
+ * whole-scope "last declaration wins" collector conflates "last in the
+ * file" with "in scope here", which is only correct for a scope that is
+ * never reassigned after the site being resolved).
+ */
+function collectScopeDecls(node, into, walk, shallowBase, beforePos = Infinity) {
   walk.simple(node, {
     VariableDeclarator(n) {
+      if (n.start >= beforePos) return;
       if (n.id.type === 'Identifier' && n.init) into.set(n.id.name, n.init);
     },
     AssignmentExpression(n) {
+      if (n.start >= beforePos) return;
       if (n.operator === '=' && n.left.type === 'Identifier') into.set(n.left.name, n.right);
     },
   }, shallowBase);
+}
+
+/**
+ * Identifier names bound by a function's own parameter list — including
+ * destructured/defaulted/rest forms, best-effort. Used to SHADOW those names
+ * in the function's local scope map with an explicit "known, but opaque"
+ * marker (see shadowParams below) rather than leaving them unset, which
+ * would silently fall through to whatever an outer scope happens to declare
+ * under the same name (adversarial-review finding, task #1662: a generic
+ * helper like `function writeJson(target, data) { fs.writeFileSync(target,
+ * ...) }` must never resolve `target` to some unrelated same-named
+ * module-level constant just because the parameter itself isn't a
+ * VariableDeclarator).
+ */
+function collectParamNames(params, out = []) {
+  for (const p of params || []) {
+    if (!p) continue;
+    switch (p.type) {
+      case 'Identifier': out.push(p.name); break;
+      case 'AssignmentPattern': collectParamNames([p.left], out); break;
+      case 'RestElement': collectParamNames([p.argument], out); break;
+      case 'ObjectPattern':
+        for (const prop of p.properties || []) {
+          if (prop.type === 'RestElement') collectParamNames([prop.argument], out);
+          else if (prop.value) collectParamNames([prop.value], out);
+        }
+        break;
+      case 'ArrayPattern':
+        collectParamNames(p.elements || [], out);
+        break;
+      default: break; // computed/complex — best effort, skip
+    }
+  }
+  return out;
+}
+
+// Sentinel distinct from `undefined`: `env.get(name)` returning this means
+// "this name IS a real binding here, but its value is opaque" — the
+// Identifier resolver treats it exactly like "unresolved" (segments: [],
+// tmp: false) but, critically, OVERWRITES whatever the same name would have
+// resolved to in an outer/copied scope, which a plain omission cannot do.
+const OPAQUE = Symbol('opaque');
+
+/** Shadow every name in fnNode's own parameter list within `localEnv` as OPAQUE. */
+function shadowParams(fnNode, localEnv) {
+  for (const name of collectParamNames(fnNode.params)) localEnv.set(name, OPAQUE);
 }
 
 /**
@@ -334,15 +399,23 @@ function resolveFunctionReturns(fnNode, env, funcDefs, seen, src) {
   const { walk } = loaders;
 
   // Arrow with an expression body (`() => mkdtempSync(...)`) — implicit
-  // return, no BlockStatement/ReturnStatement to walk.
+  // return, no BlockStatement/ReturnStatement to walk. Still shadow params
+  // (see shadowParams) — an expression body can reference them directly.
   if (fnNode.type === 'ArrowFunctionExpression' && fnNode.body.type !== 'BlockStatement') {
-    return resolveExprSegments(fnNode.body, env, funcDefs, seen, src);
+    const paramEnv = new Map(env);
+    shadowParams(fnNode, paramEnv);
+    return resolveExprSegments(fnNode.body, paramEnv, funcDefs, seen, src);
   }
   if (!fnNode.body || fnNode.body.type !== 'BlockStatement') return null;
 
   // A scope-shadowed copy of env — see buildShallowBase's doc comment for
-  // why this must not be a flat merge.
+  // why this must not be a flat merge. Params shadowed BEFORE locals, since
+  // this function's own declarations should win over a same-named param
+  // (real JS: `function f(x) { const x = 1; ... }` is a SyntaxError for var
+  // params but this ordering is harmless either way and simpler than
+  // detecting the conflict).
   const localEnv = new Map(env);
+  shadowParams(fnNode, localEnv);
   collectScopeDecls(fnNode.body, localEnv, walk, buildShallowBase(walk));
 
   const returnArgs = [];
@@ -430,11 +503,9 @@ function analyzeSource(src, { isTypeScript = false } = {}) {
   });
 
   // See buildShallowBase()/collectScopeDecls() — plain-variable `env` is
-  // built per call site below (module scope + each enclosing function's own
-  // locals), not as one flat file-wide map.
+  // built fresh per call site below (module scope + each enclosing
+  // function's own locals + param shadowing), not as one flat file-wide map.
   const shallowBase = buildShallowBase(walk);
-  const topLevelEnv = new Map();
-  collectScopeDecls(ast, topLevelEnv, walk, shallowBase); // module/Program scope only — no function bodies
 
   const violations = [];
   walk.ancestor(ast, {
@@ -443,14 +514,19 @@ function analyzeSource(src, { isTypeScript = false } = {}) {
       const argIdxs = WRITE_ARG_INDEXES[name];
       if (!argIdxs) return;
 
-      // Build the env actually in scope at THIS call site: start from module
-      // scope, then overlay each enclosing function's own locals, outermost
-      // first, so the innermost (closest-declared) shadowing wins last.
-      const scoped = new Map(topLevelEnv);
+      // Build the env actually in scope at THIS call site: module scope
+      // (declarations before this point ONLY — see collectScopeDecls's
+      // `beforePos` doc comment, adversarial-review finding on module-level
+      // reassignment), then overlay each enclosing function's own params
+      // (shadowed opaque) and locals, outermost first, so the innermost
+      // (closest-declared) shadowing wins last.
+      const scoped = new Map();
+      collectScopeDecls(ast, scoped, walk, shallowBase, node.start);
       for (const anc of ancestors) {
         if (anc === node) continue;
         if (!FUNCTION_NODE_TYPES.has(anc.type) || !anc.body) continue;
-        collectScopeDecls(anc.body, scoped, walk, shallowBase);
+        shadowParams(anc, scoped);
+        collectScopeDecls(anc.body, scoped, walk, shallowBase, node.start);
       }
 
       for (const idx of argIdxs) {
@@ -567,6 +643,9 @@ module.exports = {
   resolveFunctionReturns,
   buildShallowBase,
   collectScopeDecls,
+  collectParamNames,
+  shadowParams,
+  OPAQUE,
   transpileTypeScript,
   analyzeSource,
   scanFile,

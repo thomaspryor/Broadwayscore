@@ -218,6 +218,50 @@ describe('analyzeSource: local-function tracing', () => {
   });
 });
 
+describe('analyzeSource: scope-resolution adversarial cases (second-opinion review findings)', () => {
+  test('module-level reassignment: an EARLIER call site resolves to the value at that point, not the final one', () => {
+    // `x` is tmp-derived when SAFE_WRITE runs, then reassigned to a real path
+    // afterward. A flat "last declaration in the file wins" env would
+    // wrongly resolve SAFE_WRITE's target using the LATER real-path value.
+    const src = `
+      let x = fs.mkdtempSync(path.join(os.tmpdir(), 'x-'));
+      fs.writeFileSync(path.join(x, 'scratch.json'), '{}'); // SAFE_WRITE
+      x = path.join(ROOT, 'data/shows.json');
+      fs.writeFileSync(x, JSON.stringify(reload()));
+    `;
+    const { violations } = analyzeSource(src);
+    assert.equal(violations.length, 1, `expected exactly the second (real) write flagged, got: ${JSON.stringify(violations)}`);
+    assert.match(violations[0].snippet, /JSON\.stringify\(reload\(\)\)/);
+  });
+
+  test('function parameter is never shadowed BY an outer same-named real-path constant', () => {
+    // `target` is SHADOW-JSON's own parameter (opaque — this tool cannot
+    // know what caller passed), not the module-level `target` constant.
+    // Falling through to the outer constant would misclassify every call to
+    // this generic helper as a violation regardless of what it's actually
+    // called with.
+    const src = `
+      const target = path.join(ROOT, 'data/shows.json');
+      function writeJson(target, data) {
+        fs.writeFileSync(target, data);
+      }
+      writeJson(someTmpPath, '{}');
+    `;
+    const { violations } = analyzeSource(src);
+    assert.equal(violations.length, 0, `expected the parameter to shadow the outer const, got: ${JSON.stringify(violations)}`);
+  });
+
+  test('arrow function with expression body also shadows its own parameter', () => {
+    const src = `
+      const target = path.join(ROOT, 'data/shows.json');
+      const writeJson = (target, data) => fs.writeFileSync(target, data);
+      writeJson(someTmpPath, '{}');
+    `;
+    const { violations } = analyzeSource(src);
+    assert.equal(violations.length, 0);
+  });
+});
+
 describe('analyzeSource: exemption + TypeScript', () => {
   test('EXEMPTION marker anywhere in the file suppresses the finding at scanFile level', () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'guard-exempt-'));

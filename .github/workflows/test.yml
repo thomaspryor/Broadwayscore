@@ -2801,6 +2801,28 @@ jobs:
       # so this costs seconds after the first run.
       - name: Install dependencies (audits below use acorn)
         run: npm ci --no-audit --no-fund
+      - name: Guard — no test writes a real tracked data/*.json path outside tmp (advisory, burn-in)
+        # Task #1662: two tests independently mutated a real, symlinked,
+        # tracked data/*.json file in place as a fixture (backup/mutate/restore
+        # or rename/restore), racing ~20 parallel Claude sessions + CI that
+        # write to those files on their own cadence — caught only by a manual
+        # grep sweep both times (commits b4d6c619317, 8bf5f00eb08). Zero data
+        # dependency (acorn AST scan of tests/**/*.{mjs,ts,js} and
+        # scripts/**/*.test.{mjs,ts,js} only), matching every other scanner in
+        # this job rather than unit-tests (second-opinion review finding —
+        # this job, not unit-tests, is the established home: no core-data
+        # checkout, ~45 similar acorn/regex audit steps already here).
+        # continue-on-error while it burns in against real main-branch churn —
+        # it is a heuristic (documented KNOWN_GAPS in the script header), this
+        # is its first run against real CI, and direct pushes to main are not
+        # gated by required checks (see this file's own header comment), so a
+        # false positive here would otherwise block the next unrelated push
+        # until someone manually added the `test-data-write-guard-ok`
+        # exemption comment. Flip to blocking once it has run clean on main
+        # for a while. False positive? Add
+        # `// test-data-write-guard-ok: <reason>` anywhere in the flagged file.
+        continue-on-error: true
+        run: node scripts/lib/test-data-write-guard.js
       - name: Audit — no orphan unit tests
         # Notion 362637c5-416f-81f4 — every tests/unit/*.test.{mjs,ts,js} must be
         # wired into a workflow runner, or it silently doesn't run. Discovered
