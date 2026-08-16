@@ -48,7 +48,7 @@
  *   - Rotation/pruning of old entries is the scheduled checker's job
  *     (scripts/check-push-ledger.js), not this hot path's.
  *
- * Usage: node scripts/record-push-ledger.js --sha=<sha> --branch=main
+ * Usage: node scripts/record-push-ledger.js --sha=<sha> --branch=main [--fallback-used=true|false]
  * Kill switch: PUSH_SKIP_LEDGER=1 (mirrors PUSH_SKIP_CONTENT_SURVIVAL_CHECK
  * in push-with-retry.sh).
  */
@@ -111,6 +111,7 @@ async function main() {
     workflow: process.env.GITHUB_WORKFLOW || '',
     runId: process.env.GITHUB_RUN_ID || '',
     runAttempt: process.env.GITHUB_RUN_ATTEMPT || '',
+    fallbackUsed: args['fallback-used'] === 'true',
   });
 
   const cwd = process.cwd();

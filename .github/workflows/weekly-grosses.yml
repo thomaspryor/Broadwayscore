@@ -121,6 +121,15 @@ jobs:
 
       - name: Commit and push changes
         if: always() && steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        env:
+          # Canary for task #707's Git Data API fallback (2026-08-16 plan-
+          # review): low-traffic (twice-weekly cron), narrow 2-file diff,
+          # and already concurrency-group-protected against its one known
+          # co-writer (scrape-alltime-grosses.yml) — a low-risk first real
+          # exercise of PUSH_VIA_API_FALLBACK before wider rollout. Repo var
+          # is the kill switch (matches BROWSERBASE_KILL_SWITCH convention);
+          # unset/non-'1' = fallback stays off.
+          PUSH_VIA_API_FALLBACK: ${{ vars.PUSH_VIA_API_FALLBACK }}
         run: |
           set -euo pipefail
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

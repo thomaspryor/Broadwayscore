@@ -3171,6 +3171,31 @@ function bwwRoundupMissBacklogResults(summary) {
   }];
 }
 
+// task #707 canary telemetry (2026-08-16 plan-review): info-only — the
+// fallback firing is EXPECTED and healthy under real contention, not a
+// problem. This exists so the owner can tell "fallback fixed an occasional
+// race" (a few entries) from "normal pushes are now always exhausting
+// first" (most/all of a workflow's entries) BEFORE deciding whether to
+// widen PUSH_VIA_API_FALLBACK's rollout past the canary.
+function pushFallbackUsageResults(entries) {
+  if (!entries || entries.length === 0) return [];
+  const byWorkflow = new Map();
+  for (const e of entries) {
+    const key = e.workflow || '(unknown workflow)';
+    byWorkflow.set(key, (byWorkflow.get(key) || 0) + 1);
+  }
+  const parts = [...byWorkflow.entries()].map(([wf, n]) => `${wf}: ${n}`).join(', ');
+  return [{
+    // 'pass' (not 'error'/'warn' — those are the only two the digest
+    // renders as alarming lines; this is expected/healthy telemetry, only
+    // meant to be discoverable via the daily passed-count, not flagged).
+    name: 'Push: Git Data API fallback usage (24h)',
+    status: 'pass',
+    message: `${entries.length} push(es) landed via the API fallback instead of a normal local push in the last 24h — ${parts}.`,
+    hint: 'Expected while PUSH_VIA_API_FALLBACK is enabled for a workflow (task #707 canary). A sudden jump, or a jump on a NON-canary workflow, means that workflow started opting in or contention got materially worse — check data/audit/*.json glob scope (reconcile-merged-json.js MANAGED list) before widening rollout.',
+  }];
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -4176,6 +4201,17 @@ async function main() {
         allResults.push(...bwwRoundupMissBacklogResults(summarizeBwwRoundupMisses(misses, shows)));
       }
     } catch { /* ledger absent or unreadable — nothing to surface */ }
+
+    try {
+      const { readLedger } = require('./lib/push-ledger-store');
+      const { parseLedgerLines, selectEntriesInWindow } = require('./lib/push-ledger');
+      const { content } = readLedger(path.join(__dirname, '..'));
+      const entries = parseLedgerLines(content);
+      const recentFallbacks = selectEntriesInWindow(entries, {
+        nowMs: Date.now(), minAgeMs: 0, maxAgeMs: 24 * 60 * 60 * 1000,
+      }).filter(e => e.fallbackUsed);
+      allResults.push(...pushFallbackUsageResults(recentFallbacks));
+    } catch { /* push-ledger branch absent/unreadable — nothing to surface */ }
   }
 
   // Print console summary
@@ -4270,4 +4306,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
