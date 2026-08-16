@@ -14,6 +14,7 @@
  */
 
 const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
+const { foldDiacritics } = require('./title-match');
 
 const LONG_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with'];
 const CORE_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'];
@@ -23,7 +24,7 @@ const FILM_TV_PATTERNS = [/\b(?:in cinemas|on screen|film adaptation|movie versi
 
 function computeMentionCounts(show, fullText) {
   const reviewLower = (fullText || '').toLowerCase();
-  const showTitleLower = (show.title || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+  const showTitleLower = foldDiacritics(show.title || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
   const showWords = showTitleLower.split(/\s+/).filter(w => w.length > 3 && !LONG_WORD_STOPWORDS.includes(w));
   const coreWords = showTitleLower.split(/\s+/).filter(w => w.length >= 2 && !CORE_WORD_STOPWORDS.includes(w));
 
