@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-16T01:11:54.448Z",
+  "updatedAt": "2026-08-16T01:14:49.014Z",
   "processed": 64,
-  "failed": 924,
-  "successRate": "6.5%",
+  "failed": 934,
+  "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 43,
-    "amp": 0,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 6,
     "scrapingbee": 8,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-15T17:55:38.665Z",
@@ -37,6 +37,28 @@
       "t": "2026-08-15T19:22:21.212Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T01:12:48.197Z",
+      "event": "bb-session",
+      "session": "d676a592",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:12:49.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-16T01:13:07.748Z",
+      "event": "bb-session",
+      "session": "030f683e",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:13:08.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

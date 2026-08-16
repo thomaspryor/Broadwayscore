@@ -989,7 +989,17 @@
     "picnic-2013/observer--rex-reed.json",
     "ghost-the-musical-2012/timeout--david-cote.json",
     "clybourne-park-2012/usatoday--elysa-gardner.json",
-    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json"
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "la-cage-aux-folles-2010/variety--steven-suskin.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1038,7 +1048,9 @@
       "high-society-west-end-2026/whatsonstage--unknown.json",
       "the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/la-cage-aux-folles-2010/variety--steven-suskin.json"
+    ],
     "browserbase": [],
     "directCookies": [
       "twelfth-night-off-west-end-2026/times-uk--unknown.json",
@@ -1074,7 +1086,7 @@
     ]
   },
   "startTime": "2026-08-15T17:50:36.480Z",
-  "lastProcessed": "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+  "lastProcessed": "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-08-15T17:55:38.665Z",
@@ -1098,6 +1110,28 @@
       "t": "2026-08-15T19:22:21.212Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T01:12:48.197Z",
+      "event": "bb-session",
+      "session": "d676a592",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:12:49.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-16T01:13:07.748Z",
+      "event": "bb-session",
+      "session": "030f683e",
+      "url": "http://www.variety.com/review/VE1117942582.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-08-16T01:13:08.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
