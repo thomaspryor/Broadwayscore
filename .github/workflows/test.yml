@@ -858,6 +858,13 @@ on:
       # triggers ZERO CI.
       - 'scripts/audit-duplicate-shows.js'
       - 'scripts/lib/show-duplicate-detection.js'
+      # Baseline-diff (task #1675, mirrors #1665/#1666 entries above): a solo
+      # edit to any of these three needs CI — without this entry a
+      # --update-baseline commit touching only the JSON (or a lib-only fix)
+      # would get ZERO CI (memory/feedback_test_yml_push_path_allowlist.md).
+      - 'scripts/lib/duplicate-shows-baseline.js'
+      - 'scripts/lib/duplicate-shows-baseline.test.mjs'
+      - 'data/audit/duplicate-shows-baseline.json'
       # Aggregator-candidate bridge (PV/BWW unmatched → OB/regional staging) +
       # its colocated test (lib glob) + driver + promoter. Without these a solo
       # edit triggers ZERO CI.
@@ -4327,11 +4334,13 @@ jobs:
         if: always()
         # Whole-corpus duplicate-SHOW detector — the discovery-time guard only
         # fires at add-time and missed the Much Ado 2026 dup (Shakespeare's Globe
-        # vs "Globe Theatre", opening dates 2 days apart). Non-blocking for now
-        # (surfaces clusters + writes data/audit/duplicate-shows.json); promote to
-        # `--gate` once the existing clusters are merged. Notion 38a637c5-416f-81a7.
-        continue-on-error: true
-        run: node scripts/audit-duplicate-shows.js
+        # vs "Globe Theatre", opening dates 2 days apart). Baseline-diff (task
+        # #1675, mirrors #1665/#1666/#1668): pre-existing clusters are frozen in
+        # data/audit/duplicate-shows-baseline.json so a genuinely distinct
+        # same-title production at a different venue (e.g. the two markets'
+        # separate Christmas Carol 2026 productions) doesn't red the trunk —
+        # only a NEW (showId, showId) pair fails. Notion 38a637c5-416f-81a7.
+        run: node scripts/audit-duplicate-shows.js --strict
 
       - name: Audit cast-changes.json
         if: always()

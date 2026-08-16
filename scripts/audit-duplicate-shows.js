@@ -22,8 +22,20 @@
  * 2026 at Shakespeare's Globe vs Regent's Park Open Air Theatre).
  *
  * Usage:
- *   node scripts/audit-duplicate-shows.js [--json=PATH] [--gate]
- *   --gate   exit 1 if any duplicate cluster is found (for CI)
+ *   node scripts/audit-duplicate-shows.js [--json=PATH]       report only
+ *   node scripts/audit-duplicate-shows.js --strict            exit 1 on new (non-baselined) pair
+ *   node scripts/audit-duplicate-shows.js --update-baseline   regenerate baseline from current scan
+ *
+ * Baseline-diff (task #1675), same posture as audit-broadway-category-predicate.js
+ * (#1665) / audit-outlet-registry.js (#1666) / audit-critic-outlets.js (#1668):
+ * pre-existing clusters are frozen in data/audit/duplicate-shows-baseline.json and
+ * never fail CI — a bare "flag any cluster" gate false-positives on genuinely
+ * distinct same-title productions at different venues (the incomplete-stub branch
+ * in particular, e.g. two markets' own Christmas Carol productions). Only a NEW
+ * (showId, showId) pair not in the baseline fails under --strict. Identity is the
+ * unordered show-id pair, not the cluster key or reason — see
+ * scripts/lib/duplicate-shows-baseline.js for why. Default mode (no flags) always
+ * exits 0 — report only, matching the sibling gates' advisory-first convention.
  *
  * Reuses normalizeTitle from scripts/lib/deduplication.js so the title grouping
  * matches the discovery guard (subtitle/genre-suffix/possessive stripping).
@@ -32,13 +44,17 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
 const { findTitleFragmentDupes } = require('./lib/show-duplicate-detection');
+const { baselineKeySet, computeNewViolators } = require('./lib/duplicate-shows-baseline');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'duplicate-shows-baseline.json');
 
 const args = process.argv.slice(2);
-const GATE = args.includes('--gate');
+const STRICT = args.includes('--strict');
+const UPDATE_BASELINE = args.includes('--update-baseline');
 const jsonArg = args.find((a) => a.startsWith('--json='));
 const JSON_OUT = jsonArg ? jsonArg.split('=')[1] : path.join(ROOT, 'data', 'audit', 'duplicate-shows.json');
 
@@ -89,6 +105,27 @@ function reviewFileCount(id) {
   if (!fs.existsSync(dir)) return 0;
   try { return fs.readdirSync(dir).filter((f) => f.endsWith('.json')).length; }
   catch { return 0; }
+}
+
+// Independent corpus-health probe for assertCorpusScanned (task #1063 class):
+// the detection logic above only calls reviewFileCount() for shows that already
+// landed in a same-title+year group, so on a run with zero such groups it would
+// never touch data/review-texts at all — a healthy-but-quiet corpus and a
+// missing/empty checkout would look identical to the per-pair count. Counting
+// the top-level show-id directories directly reflects whether the private
+// review-texts checkout is actually present, independent of whether any
+// duplicate candidates exist this run.
+function corpusHealthCount() {
+  try { return fs.readdirSync(REVIEW_TEXTS_DIR).length; }
+  catch { return 0; }
+}
+
+function loadBaseline() {
+  try {
+    return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+  } catch {
+    return { pairs: [] };
+  }
 }
 
 function main() {
@@ -159,23 +196,56 @@ function main() {
     });
   }
 
+  if (UPDATE_BASELINE) {
+    const pairs = clusters.flatMap((c) => c.pairs.map((p) => ({ a: p.a.id, b: p.b.id, reason: p.reason })));
+    const baseline = { generatedAt: new Date().toISOString().slice(0, 10), pairs };
+    fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+    fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    console.log(`✅ Baseline updated: ${pairs.length} known duplicate-show pair(s) across ${clusters.length} cluster(s) (${BASELINE_PATH})`);
+    return 0;
+  }
+
   fs.mkdirSync(path.dirname(JSON_OUT), { recursive: true });
   fs.writeFileSync(JSON_OUT, JSON.stringify({ generatedFor: 'duplicate-shows', clusters }, null, 2) + '\n');
 
+  const baselineSet = baselineKeySet(loadBaseline().pairs);
+  const newClusters = computeNewViolators(clusters, baselineSet);
+  const totalPairs = clusters.reduce((sum, c) => sum + c.pairs.length, 0);
+  const newPairs = newClusters.reduce((sum, c) => sum + c.pairs.length, 0);
+
   if (clusters.length === 0) {
     console.log('✓ No duplicate shows found.');
-    return 0;
-  }
-  console.log(`Found ${clusters.length} duplicate-show cluster(s):\n`);
-  for (const c of clusters) {
-    for (const p of c.pairs) {
-      console.log(`  [${p.reason}] ${c.key}`);
-      console.log(`    ${p.a.id}  (${p.a.venue}, ${p.a.reviews} review files)`);
-      console.log(`    ${p.b.id}  (${p.b.venue}, ${p.b.reviews} review files)`);
+  } else {
+    console.log(`Found ${clusters.length} duplicate-show cluster(s), ${totalPairs} pair(s) (baselined: ${totalPairs - newPairs}, new: ${newPairs}):\n`);
+    for (const c of clusters) {
+      for (const p of c.pairs) {
+        console.log(`  [${p.reason}] ${c.key}`);
+        console.log(`    ${p.a.id}  (${p.a.venue}, ${p.a.reviews} review files)`);
+        console.log(`    ${p.b.id}  (${p.b.venue}, ${p.b.reviews} review files)`);
+      }
+    }
+    console.log(`\nDetail written to ${path.relative(ROOT, JSON_OUT)}`);
+    if (newClusters.length > 0) {
+      console.log(`\n⚠️  NEW duplicate pair(s) not in the baseline (${BASELINE_PATH}):`);
+      for (const c of newClusters) {
+        for (const p of c.pairs) console.log(`  [${p.reason}] ${c.key}: ${p.a.id} <-> ${p.b.id}`);
+      }
+      console.log(`\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct`);
+      console.log(`production), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline`);
     }
   }
-  console.log(`\nDetail written to ${path.relative(ROOT, JSON_OUT)}`);
-  return GATE ? 1 : 0;
+
+  if (STRICT) {
+    try {
+      assertCorpusScanned(corpusHealthCount(), { gate: STRICT });
+    } catch (e) {
+      if (!(e instanceof CorpusNotScannedError)) throw e;
+      console.error(`\n❌ STRICT: ${e.message}`);
+      return 1;
+    }
+    if (newClusters.length > 0) return 1;
+  }
+  return 0;
 }
 
 process.exit(main());
