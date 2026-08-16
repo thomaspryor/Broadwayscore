@@ -20,7 +20,7 @@
  */
 'use strict';
 
-function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt }) {
+function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt, fallbackUsed }) {
   if (!sha) throw new Error('buildLedgerEntry: sha is required');
   return JSON.stringify({
     sha,
@@ -29,6 +29,11 @@ function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt }) {
     workflow: workflow || '',
     runId: runId || '',
     runAttempt: runAttempt || '',
+    // task #707 canary (2026-08-16): true when this push landed via the Git
+    // Data API fallback rather than a normal local rebase+push — lets the
+    // digest distinguish "fallback fixed an occasional race" from "normal
+    // pushes are now always exhausting first" (plan-review finding).
+    fallbackUsed: Boolean(fallbackUsed),
   });
 }
 

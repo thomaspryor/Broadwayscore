@@ -824,6 +824,7 @@ verify_content_survived() {
 }
 
 pushed=false
+_pushed_via_api_fallback=false
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
   # script's start. If a prior attempt's git op stalled up to its per-op timeout,
@@ -1473,17 +1474,32 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     # (b) `$?` read from INSIDE an `if ! cmd; then` block is the exit status
     # of the negated `!` expression (always 0), not node's actual exit code
     # — that would make the "=1" check below permanently unreachable.
+    #
+    # Whole-`data/audit/` fail-closed (plan-review finding, 2026-08-16): the
+    # per-file MANAGED list only names 10 paths, but `data/audit/` holds
+    # 1,200+ tracked files (300+ at the top level alone) written by dozens
+    # of independent workflows/crons — auditing each for correct union-merge
+    # semantics is its own multi-session project, not something to guess at
+    # here. Until that audit lands, ANY changed path under `data/audit/` not
+    # itself in MANAGED also disqualifies the fallback (in addition to the
+    # existing itemized MANAGED check above) — "ours wins, squash" is unsafe
+    # for a directory this write-heavy and this unaudited. This makes the
+    # fallback a no-op for callers whose diff always touches `data/audit/`
+    # (e.g. rebuild-fast.yml, rebuild-reviews.yml stage `data/audit/*.json`
+    # on every run) until that follow-up audit narrows or clears specific
+    # paths — expected and intentional, not a bug in this guard.
     _managed_check_rc=0
     node -e '
         const { MANAGED } = require(process.argv[1]);
         const changed = require("child_process")
           .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
           .split("\n").filter(Boolean);
-        const hit = changed.find((f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, ""))));
+        const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
+        const hit = changed.find((f) => isManaged(f) || (f.startsWith("data/audit/") && !isManaged(f)));
         process.exit(hit ? 1 : 0);
       ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" 2>/dev/null || _managed_check_rc=$?
     if [ "$_managed_check_rc" = "1" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for these files."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
       _api_fallback_ok=false
     fi
   fi
@@ -1512,6 +1528,7 @@ if [ "$_api_fallback_ok" = "true" ]; then
       # would have left behind.
       git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
       pushed=true
+      _pushed_via_api_fallback=true
     else
       echo "::error::push-with-retry: Git Data API fallback push succeeded but our commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619 class) — treating the fallback as failed."
       record_push_failure "api-fallback-content-dropped" "$MAX_RETRIES"
@@ -1545,6 +1562,6 @@ if [ "${PUSH_SKIP_LEDGER:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f
     # 60s hard cap: the recorder's own worst case on a degraded remote is
     # ~2.5 min of git timeouts across 4 CAS attempts — never let best-effort
     # telemetry add that to ~130 callers' runtime (ship-check finding).
-    _timeout 60 node "$SCRIPT_DIR/../record-push-ledger.js" --sha="$_ledger_sha" --branch="$PULL_BRANCH" || true
+    _timeout 60 node "$SCRIPT_DIR/../record-push-ledger.js" --sha="$_ledger_sha" --branch="$PULL_BRANCH" --fallback-used="$_pushed_via_api_fallback" || true
   fi
 fi
