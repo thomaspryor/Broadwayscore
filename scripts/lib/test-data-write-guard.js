@@ -144,7 +144,11 @@ function resolvedIsTrackedDataJson(segments) {
   const last = segments[segments.length - 1];
   if (typeof last !== 'string' || !/\.json$/i.test(last)) return false;
   const lastNorm = last.replace(/\\/g, '/');
-  if (/(^|\/)data\/[^/]+\.json$/.test(lastNorm)) return true;
+  // `.+` (not `[^/]+`): a NESTED subdirectory baked into one literal string
+  // (e.g. `'data/review-texts/foo/bar.json'`) must match too, not just a
+  // single flat level directly under data/ — a `[^/]+` cutoff here missed
+  // exactly that shape (ship-check adversarial-review finding, task #1662).
+  if (/(^|\/)data\/.+\.json$/.test(lastNorm)) return true;
   return segments.slice(0, -1).some(segmentIsDataDir);
 }
 
@@ -611,10 +615,20 @@ function main() {
   if (parseErrors.length) {
     console.log(`⚠️  ${parseErrors.length} file(s) could not be parsed and were skipped (not treated as violations):`);
     for (const e of parseErrors) console.log(`  ${path.relative(REPO_ROOT, e.file)}: ${e.error}`);
+    // A parse failure is a COVERAGE gap, not a clean bill of health — it must
+    // not read as silent success (ship-check adversarial-review finding,
+    // task #1662): a file this guard cannot parse is a file it cannot
+    // vouch for, and that is worth a loud, non-zero exit distinct from an
+    // actual violation, even though the whole step is advisory for now.
+    process.exitCode = 1;
   }
 
   if (violations.length === 0) {
-    console.log(`✅ test-data-write-guard: no violations (${files.length} test files scanned).`);
+    if (parseErrors.length === 0) {
+      console.log(`✅ test-data-write-guard: no violations (${files.length} test files scanned).`);
+    } else {
+      console.log(`⚠️  test-data-write-guard: no violations found, but ${parseErrors.length} file(s) were unscannable — see above.`);
+    }
     return;
   }
 

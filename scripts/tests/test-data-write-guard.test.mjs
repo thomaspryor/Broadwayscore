@@ -63,6 +63,14 @@ describe('resolvedIsTrackedDataJson', () => {
     assert.equal(segmentIsDataDir('metadata'), false);
     assert.equal(resolvedIsTrackedDataJson(['some/metadata', 'x.json']), false);
   });
+
+  test('a NESTED subdirectory baked into one literal string is still flagged (ship-check finding)', () => {
+    // `[^/]+` (single flat level only) missed this shape — `.+` (any depth)
+    // is required so a whole path like 'data/review-texts/foo/bar.json'
+    // passed as ONE string literal (not built via separate path.join args)
+    // still resolves as a real tracked path.
+    assert.equal(resolvedIsTrackedDataJson(['data/review-texts/foo/bar.json']), true);
+  });
 });
 
 // ─── analyzeSource: synthetic snippets ──────────────────────────────────────
@@ -339,6 +347,29 @@ describe('acceptance criteria', () => {
       assert.equal(result.violations.length, 1);
       assert.equal(result.violations[0].fn, 'writeFileSync');
       assert.match(result.violations[0].resolvedPath, /data\/shows\.json$/);
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  test('an unparseable file surfaces a non-null error, not a silent clean pass (ship-check finding)', () => {
+    // main() escalates parseErrors.length to process.exitCode = 1 — a file
+    // this guard cannot parse must never look identical to "scanned, clean".
+    // That aggregation is a few lines directly inspectable in the file; this
+    // pins the building block it relies on: listTestFiles() honors a
+    // repoRoot override (used here to scope the scan to a throwaway
+    // fixture), and scanFile() reports the parse failure rather than
+    // swallowing it.
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'guard-parse-error-'));
+    try {
+      fs.mkdirSync(path.join(tmpDir, 'tests'));
+      const badFile = path.join(tmpDir, 'tests', 'bad.test.mjs');
+      fs.writeFileSync(badFile, 'this is not valid javascript &&&');
+      const files = listTestFiles({ repoRoot: tmpDir });
+      assert.equal(files.length, 1);
+      const result = scanFile(files[0]);
+      assert.notEqual(result.error, null);
+      assert.equal(result.violations.length, 0);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
