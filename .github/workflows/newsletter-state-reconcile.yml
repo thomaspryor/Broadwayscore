@@ -1,0 +1,91 @@
+# Daily, standalone reconciliation of data/newsletter-state.json (the
+# weekly-newsletter anti-repeat ledger) against what Resend actually sent.
+#
+# WHY: scripts/newsletter/verify-sent-vs-state.mjs already self-heals this
+# ledger, but until now it only ran INSIDE newsletter-draft.yml (Saturday)
+# and newsletter-draft-refresh.yml (Sunday) — coupled to draft-generation
+# runs. If neither fires in a given week, drift sits undetected for a full
+# week and a show can silently re-air. Card #1683, incident on
+# card 3be637c5-416f-817f-a37c-f28fe1c91f86 (2026-08-16: 10 shows missing +
+# 4 phantom ids in the 2026-08-03 Broadway entry).
+#
+# Mirrors reconcile-broadcast-state.yml's shape (existing hourly reconciler
+# for opening-night-sent.json vs Resend — same problem, already proven here).
+# Unlike that workflow, newsletter-state.json is NOT in push-core-data's
+# CORE_FILES list — it's a plain public-repo file — so this only needs a
+# normal commit + push, same as newsletter-draft-refresh.yml's "Commit
+# newsletter de-dup state" step.
+name: Reconcile Newsletter Dedup State
+
+on:
+  schedule:
+    # Daily, off the two draft-workflow cron times (Sat 11:00/11:30 UTC,
+    # Sun 12:04 UTC) so this is a genuine independent backstop, not just a
+    # third run bunched into the same window.
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+    inputs:
+      edition:
+        description: 'Reconcile a single edition (broadway or west-end). Empty = both.'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reconcile-newsletter-state
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: Verify de-dup state against actually-sent broadcasts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Reconcile
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          ARGS=(--fix)
+          if [ -n "${{ inputs.edition }}" ]; then
+            ARGS+=(--edition="${{ inputs.edition }}")
+          fi
+          node scripts/newsletter/verify-sent-vs-state.mjs "${ARGS[@]}"
+
+      - name: Commit reconciled state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/newsletter-state.json
+          if git diff --cached --quiet; then
+            echo "::notice::newsletter-state.json unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(newsletter): reconcile de-dup state vs actually-sent broadcasts [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reconcile Newsletter Dedup State Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

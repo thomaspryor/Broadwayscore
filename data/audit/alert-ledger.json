@@ -129,7 +129,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -138,7 +138,8 @@
       "lastNotifiedAt": "2026-08-16T14:40:48.714Z",
       "notifyCount": 34,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-16T14:48:48.247Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -764,7 +765,7 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
@@ -773,7 +774,8 @@
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-08-16T14:48:47.953Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1059,6 +1061,94 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-369"
+    },
+    "we-aggregator-go-live:pride-theatre-dorfman-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.853Z",
+      "lastSeen": "2026-08-16T14:51:04.853Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.853Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.854Z",
+      "lastSeen": "2026-08-16T14:51:04.854Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.854Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:an-ideal-husband-hammersmith-review2-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.855Z",
+      "lastSeen": "2026-08-16T14:51:04.855Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.855Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:krapps-last-tape-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Krapps Last Tape @ royal court — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.856Z",
+      "lastSeen": "2026-08-16T14:51:04.856Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.856Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.856Z",
+      "lastSeen": "2026-08-16T14:51:04.856Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.856Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:dracula-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Dracula @ noel coward — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.857Z",
+      "lastSeen": "2026-08-16T14:51:04.857Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.857Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:john-proctor-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "John Proctor @ royal court — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.858Z",
+      "lastSeen": "2026-08-16T14:51:04.858Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.858Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "we-aggregator-go-live:pride-the-musical-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Pride the Musical @ National Theatre — West End show live and scoring",
+      "firstSeen": "2026-08-16T14:51:04.859Z",
+      "lastSeen": "2026-08-16T14:51:04.859Z",
+      "lastNotifiedAt": "2026-08-16T14:51:04.859Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

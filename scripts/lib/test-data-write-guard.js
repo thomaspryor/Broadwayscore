@@ -70,15 +70,49 @@ const WRITE_CALLS = {
 
 const INLINE_ALLOW_RE = /test-data-write-guard-allow:\s*\S/;
 
-// A real tracked data/*.json path, as a bare relative literal (never an
-// absolute /tmp/... path — those are fine regardless of what fragment they
-// embed). Requires the leading 'data/' segment to sit at a token boundary
-// (start of string, quote, backtick, or a run of leading './'/'../'
-// segments — `join(__dirname, '../../data/shows.json')` is the dominant
-// idiom for locating data/ from tests/unit/*.test.mjs and must not bypass
-// detection just because it's relative) so e.g. 'my-data/x.json' still
-// doesn't match.
+// A real tracked data/*.json path, as a bare RELATIVE literal — 'data/' must
+// be the leading real segment (start of string, quote, backtick, or after a
+// run of leading './'/'../' segments — `join(__dirname,
+// '../../data/shows.json')` is the dominant relative idiom for locating
+// data/ from tests/unit/*.test.mjs). Deliberately does NOT match 'data/'
+// nested deeper in a relative path (`'../fixtures/data/sample.json'` is a
+// test's own unrelated fixtures/data/ subdir, not the repo root's data/ —
+// pinned by its own test case) — only ABSOLUTE_DATA_JSON_RE below reaches
+// past the leading segment, and only because an absolute path's leading
+// segments are never "some other relative base the test made up".
 const DATA_JSON_RE = /(?:^|['"`])(?:\.\.?\/)*data\/[\w.-]+(?:\/[\w.-]+)*\.json/;
+
+// A real tracked data/*.json path reached via an ALREADY-ABSOLUTE literal,
+// e.g. a hardcoded `/Users/x/Broadwayscore/data/shows.json`, or a variable
+// holding a `path.join(process.cwd(), 'data', 'reviews.json')` result. This
+// was a genuine false-negative gap (BRO-343 dispatcher, verified live:
+// findUnsafeDataWrites returned [] for writeFileSync of the repo's absolute
+// data/reviews.json path) — the original DATA_JSON_RE only matched a
+// RELATIVE 'data/' segment, on the assumption "an absolute path is always
+// tmp-derived", which is false whenever a test resolves an absolute path to
+// the REAL repo root instead of a tmp root. Anchored to a leading '/' (a
+// true absolute path) so an unrelated RELATIVE fixtures/data/ nesting is
+// never affected — only a path that is unambiguously rooted at the
+// filesystem root is checked for a 'data/…json' segment anywhere within it.
+// ABS_TMP_ROOT_RE below excludes the one absolute shape that's legitimately
+// safe regardless of what it contains further in: an OS tmp directory.
+// Two conditions, checked separately in isAbsoluteDataJsonLiteral() rather
+// than fused into one regex: (1) the literal starts with a leading '/'
+// (unambiguously absolute, never "some other relative base the test made
+// up"), and (2) a '/data/…json' segment appears anywhere within it.
+const ABSOLUTE_LEADING_SLASH_RE = /^(['"`])\//;
+const DATA_JSON_SEGMENT_ANYWHERE_RE = /\/data\/[\w.-]+(?:\/[\w.-]+)*\.json/;
+
+function isAbsoluteDataJsonLiteral(quotedText) {
+  return ABSOLUTE_LEADING_SLASH_RE.test(quotedText) && DATA_JSON_SEGMENT_ANYWHERE_RE.test(quotedText);
+}
+
+// A literal absolute path rooted at a known OS tmp directory (Linux/CI's
+// os.tmpdir() is /tmp; macOS local dev resolves through /var/folders/... or
+// sometimes /tmp via TMPDIR). A hardcoded literal in this shape is tmp-safe
+// regardless of what segment names it contains further down the path —
+// the one absolute shape ABSOLUTE_DATA_JSON_RE must not flag.
+const ABS_TMP_ROOT_RE = /^(['"`])\/(?:tmp|private\/tmp|var\/folders)\//;
 
 // Same shape, anchored for matching a slash-joined reconstruction of a
 // multi-segment join() call (e.g. join(ROOT, 'data', 'shows.json'), or
@@ -239,7 +273,11 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
   const trimmed = String(expr).trim();
 
   const strMatch = trimmed.match(/^(['"`])(.*)\1$/s);
-  if (strMatch) return DATA_JSON_RE.test(`'${strMatch[2]}'`);
+  if (strMatch) {
+    if (ABS_TMP_ROOT_RE.test(trimmed)) return false;
+    if (isAbsoluteDataJsonLiteral(trimmed)) return true;
+    return DATA_JSON_RE.test(`'${strMatch[2]}'`);
+  }
 
   const joinCall = trimmed.match(/^(?:path\s*\.\s*)?join\s*\(/);
   if (joinCall) {
@@ -332,6 +370,8 @@ function findUnsafeDataWrites(source) {
 module.exports = {
   DATA_JSON_RE,
   DATA_JSON_TAIL_RE,
+  ABS_TMP_ROOT_RE,
+  isAbsoluteDataJsonLiteral,
   WRITE_CALLS,
   INLINE_ALLOW_RE,
   splitArgs,
