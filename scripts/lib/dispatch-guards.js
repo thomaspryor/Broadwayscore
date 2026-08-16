@@ -421,6 +421,21 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
 // title-only self-declaration is the leftmost match; the false-positive half
 // is fixed by sessionTrackingCloneGuard() itself now requiring the resolved
 // parent to be LIVE (see below) rather than trusting phrase+ref alone.
+//
+// Known gap (ship-check Codex finding, 2026-08-16, NOT closed by the live-
+// parent gate): "per card #N" / "per task #N" is still a bare citation form,
+// not a self-declaration — a genuinely distinct backlog card that says
+// "implements the follow-up work per card #1660" while #1660 happens to be
+// in_progress (someone else's unrelated live work) will still be refused,
+// even though it isn't a clone of #1660. The live-parent gate only closes
+// the false-positive window for citations of FINISHED work (this task's own
+// #1615/#1674); a citation of unrelated but currently-active work remains a
+// real, undetected false-positive class. Not solvable with a regex — telling
+// "this card IS a clone of X" from "this card CITES X, which happens to be
+// live" needs semantic understanding this heuristic doesn't have. Accepted
+// per this task's own stated tradeoff (a false positive costs real backlog;
+// `--force` is the escape hatch) rather than dropping the "per card/task"
+// branch entirely, which would silently un-fix #1670's motivating case.
 const SESSION_TRACKING_CLONE_RE = /\b(?:session[\s-]*tracking\s+card|working\s+parent\s+card|parent\s+card|per\s+(?:task|card)|continuing\s+card)\b/i;
 
 // How far past the matched clone-phrase to look for the parent reference.
@@ -456,7 +471,15 @@ function extractCloneParentRef(text, fromIndex) {
 // positives against whichever unrelated live card happens to share the
 // prefix and sorts first in the mirror.
 
-const LIVE_TASK_STATUSES = new Set(['pending', 'in_progress']);
+// 'in_progress' ONLY — NOT 'pending' (ship-check Codex finding, task #1698).
+// notion-tasks-sync.js's mapStatus() collapses Notion's "Not started" AND
+// "Paused" into 'pending' (its default case) alongside genuine queued
+// backlog, so 'pending' does not mean "someone has this open right now" —
+// it can equally mean "nobody has started it" or "explicitly paused". The
+// refusal message says "opens a duplicate session alongside whatever is
+// ALREADY TRACKING" the parent, which is only true when a session is
+// actually running against it — that's 'in_progress' alone.
+const LIVE_TASK_STATUSES = new Set(['in_progress']);
 
 // UUIDs from card TEXT may or may not carry hyphens (extractCloneParentRef's
 // UUID regex makes them optional), but notionIdOf() always returns the
@@ -498,6 +521,13 @@ function resolveCloneParentTask(task, parent, tasks) {
 // in this file (deadDispatchGuard, parkedGuard, workBranchCollisionGuard,
 // exactTitleOverlapGuard, linearMirrorGuard all take (task, data, opts)).
 function sessionTrackingCloneGuard(task, tasks, opts) {
+  // Defensive default (ship-check Codex finding, task #1698): this guard's
+  // signature changed from (task, opts) to (task, tasks, opts) — a stray
+  // 2-arg caller would otherwise crash on `opts.force` instead of failing
+  // open like every other guard in this file on missing data. No such
+  // caller exists today (verified: bsc-next.js:810 is the only call site),
+  // but the cost of this guard is one line.
+  opts = opts || {};
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
   const raw = `${(task && task.subject) || ''}\n${(task && task.description) || ''}`;
   // Strip this task's own `[notion:<uuid>]` self-tag (notionIdOf's format)
@@ -516,6 +546,18 @@ function sessionTrackingCloneGuard(task, tasks, opts) {
   // false positive silently drops real backlog work with nobody noticing —
   // same asymmetry every other guard in this file already resolves in favor
   // of failing open.
+  //
+  // `tasks` is a stale, non-atomic snapshot (ship-check Codex finding,
+  // 2026-08-16) — the caller loads it once at the top of main(), and
+  // notion-tasks-sync.js can replace individual task files underneath this
+  // process between that read and the eventual cmux/headless launch. A
+  // parent could complete (this guard's false negative — dispatches anyway,
+  // same bounded cost as above) or start (false positive — refuses on now-
+  // stale "not live" data) in that window. Every other liveness check in
+  // this file (deadDispatchGuard's ledger read, parkedGuard's ledger read)
+  // has the identical structural gap; closing it needs a reservation/lock
+  // this dispatch-guard architecture doesn't have, not a fix scoped to this
+  // one guard.
   const parentTask = resolveCloneParentTask(task, parent, tasks);
   if (!parentTask || !LIVE_TASK_STATUSES.has(parentTask.status)) return null;
   const parentRef = parent.kind === 'task' ? `task #${parent.id}` : `Notion card ${parent.id}`;

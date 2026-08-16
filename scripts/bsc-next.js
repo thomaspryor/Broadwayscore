@@ -798,16 +798,30 @@ function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
+  // Card #955: task-store-archive.js can archive an in_progress task
+  // untouched >7d — including ones whose dispatching session is still
+  // genuinely alive but just hasn't written to the task file (long batch
+  // work is normal here per CLAUDE.md). Reading `tasks` (live-dir-only, see
+  // loadTasks()'s docstring) alone would make those invisible both to the
+  // cross-task overlap check below AND to sessionTrackingCloneGuard's
+  // live-parent resolution (task #1698 ship-check finding: a real clone of a
+  // long-running-but-archived parent was failing open because the guard
+  // could only see the live directory). Computed ONCE here and shared by
+  // both — merging in archive/ here (not in loadTasks()'s hot `--list` path,
+  // which returns above this line) is safe: this block only runs once per
+  // actual dispatch attempt, not on every list/actionable() call.
+  const tasksWithArchive = mergeWithArchive(TASKS_DIR, tasks);
+
   // Session-tracking clone refusal (task #1672, defect 2): runs AFTER the
   // succession branch above (and its early return), same placement rule as
   // the cross-task overlap check just below — a successor continuing ITS OWN
   // task is not a fresh dispatch decision, even if that task's own notes
   // happen to self-describe as a session-tracking clone. See
   // dispatch-guards.js's sessionTrackingCloneGuard header for the full
-  // rationale and the #1353/#1659 "why not a title prefix" note. Passes the
-  // already-loaded `tasks` mirror (task #1698) so the guard can confirm the
-  // referenced parent is actually live before refusing.
-  const cloneErr = sessionTrackingCloneGuard(task, tasks, args);
+  // rationale and the #1353/#1659 "why not a title prefix" note. Passes
+  // `tasksWithArchive` (task #1698) so the guard can confirm the referenced
+  // parent is actually live before refusing.
+  const cloneErr = sessionTrackingCloneGuard(task, tasksWithArchive, args);
   if (cloneErr) { console.error(`[bsc-next] ${cloneErr}`); process.exit(1); }
 
   // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
@@ -822,19 +836,8 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // in_progress candidate is compared with). Non-blocking first cut — a
   // shared scripts/ path or near-identical title is suggestive, not proof
   // (two cards can legitimately touch the same file for unrelated reasons).
-  //
-  // Card #955: task-store-archive.js now also archives in_progress tasks
-  // untouched >7d — including ones whose dispatching session is still
-  // genuinely alive but just hasn't written to the task file (long batch
-  // work is normal here per CLAUDE.md). Reading `tasks` (live-dir-only, see
-  // loadTasks()'s docstring) alone would make those invisible to exactly the
-  // overlap check this comment describes, defeating its purpose for the
-  // longest-running work — the cases most likely to collide with a fresh
-  // dispatch. Merging in archive/ here (not in loadTasks()'s hot `--list`
-  // path, which returns above this line) is safe: this block only runs once
-  // per actual dispatch attempt, not on every list/actionable() call.
   try {
-    const inProgressCards = mergeWithArchive(TASKS_DIR, tasks)
+    const inProgressCards = tasksWithArchive
       .filter(t => t.status === 'in_progress' && String(t.id) !== String(task.id))
       .map(t => ({ id: t.id, subject: t.subject, notes: t.description }));
     // Computed once and shared between the refusal check and the warn loop
