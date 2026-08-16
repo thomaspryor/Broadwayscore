@@ -19,6 +19,13 @@
 // re-anchor on the review-driven content the audience actually subscribes for.
 import { createRequire } from 'node:module';
 const { pluralize } = createRequire(import.meta.url)('../lib/pluralize.js');
+// Canonical Delacorte/Free-Shakespeare-in-the-Park venue check — do not
+// reinvent this as a local regex. review-guards.js already carries the
+// scoped-to-outdoor-festival-stage definition (ship-check P0, 2026-06-16);
+// duplicating it here as `/delacorte/i` would silently mislabel a future show
+// venue'd as "Shakespeare in the Park" without the word "Delacorte" (second-
+// opinion review, 2026-08-16).
+const { showHasFestivalVenue } = createRequire(import.meta.url)('../lib/review-guards.js');
 
 export const WEIGHTS = {
   BW_OPENING_BASE: 85,                // openings ARE the news — what subscribers wait for
@@ -165,7 +172,7 @@ export function scoreCandidates(input) {
     // (user, 2026-08-16). shows.json still carries category:'off-broadway'
     // for market-routing/scoring purposes (out of scope here) — this only
     // changes the newsletter's editorial phrasing, shared by both editions.
-    const isShakespeareInThePark = /delacorte/i.test(s.venue || '');
+    const isShakespeareInThePark = showHasFestivalVenue(s);
     const loc = isShakespeareInThePark ? 'at Free Shakespeare in the Park' : 'off-Broadway';
     const headline = verdict
       ? `${s.title} ${verb} ${loc} to ${verdict}`
