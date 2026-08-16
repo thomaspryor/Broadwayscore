@@ -8,6 +8,19 @@
  * tender-by-dave-harris-off-west-end-2026 (commit 65159277b5b). This gate runs
  * in the push action AFTER pull --rebase, so it sees post-move ownership and
  * drops the re-created file before it can be committed.
+ *
+ * timebomb-audit-exempt: the "stale MERGE_HEAD (BRO-142 class)" test computes
+ * a backdated mtime via the audit's shimmed Date.now() and writes it to a
+ * real file with fs.utimesSync, then execSync spawns the CLI as a *separate*
+ * node process that never loads the clock-shift preload. That child's real,
+ * unshifted Date.now() minus the artificially-future on-disk mtime produces a
+ * negative age, so it never crosses STALE_MERGE_HEAD_WARN_SEC and the test
+ * fails under a shifted clock. This is the same "filesystem mtime is NOT
+ * shifted" limitation scripts/audit-time-bomb-tests.js's own docstring already
+ * documents for scripts/lib/ttl-cache.js and infra-gate-registration-check.js —
+ * scripts/validate-added-review-ownership.js:173 (Date.now() - statSync(...).mtimeMs)
+ * is a third confirmed instance, made worse here by the child-process boundary.
+ * Real coverage is the daily unshifted test.yml run.
  */
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
