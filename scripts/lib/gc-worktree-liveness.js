@@ -41,14 +41,21 @@ function hasLiveProcessInDir(worktreePath) {
   }
   let out;
   try {
+    // Bound the call — a hung/wedged lsof (adversarial review, task #1709)
+    // would otherwise stall the ENTIRE GC run indefinitely, the same
+    // failure shape gc-merged-worktrees.sh already guards against for
+    // `git fetch`/`git cherry` (see its own "Bound the fetch" comment). A
+    // timeout throws here, which the catch below treats as fail-safe
+    // "unknown -> live" like any other lsof failure.
     out = execFileSync('lsof', ['-a', '-d', 'cwd', '-F', 'pn'], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: 10000,
     });
   } catch {
-    // lsof missing, permission denied, or any other failure — genuinely
-    // unknown whether the worktree is in use. Fail safe: treat as live
-    // rather than risk removing one that is.
+    // lsof missing, permission denied, timed out, or any other failure —
+    // genuinely unknown whether the worktree is in use. Fail safe: treat as
+    // live rather than risk removing one that is.
     return true;
   }
   for (const line of out.split('\n')) {
