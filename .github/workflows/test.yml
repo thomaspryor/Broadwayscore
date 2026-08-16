@@ -2057,6 +2057,11 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
       - 'scripts/notion-tasks-sync.test.mjs'
+      # Task #1701: pull-time dedup regression test lives in tests/unit/ (node
+      # --test batch, not globbed — see tests/unit-test-manifest.txt) and is
+      # registered explicitly in the tests/unit node --test invocation below.
+      # Path-listed here too so a solo edit to just this test triggers CI.
+      - 'tests/unit/notion-tasks-sync-dedup.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
       # Card #854: task-store archiver — moves completed tasks >48h old to

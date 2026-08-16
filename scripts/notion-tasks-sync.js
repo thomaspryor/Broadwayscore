@@ -32,6 +32,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./lib/no-dispatch-marker.js');
 const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
+const { indexLiveTasks } = require('./lib/task-reclaim.js');
 
 // Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
 // (scripts/lib/digest-autofix.js's old matchOpenTask, before that module
@@ -377,6 +378,48 @@ function allocateFreeId(dir, startId) {
   return id;
 }
 
+// Task #1701: ground truth for "does a live mirror already represent this
+// Notion card?", independent of the (possibly stale/incomplete) sidecar map
+// — cmdPull's map is only persisted once, at the very end of the whole run
+// (writeMap below), so a crash/thrown error after some doCreate() calls have
+// already written task files but before that final write leaves the map
+// ignorant of a mirror that genuinely exists. The next pull then sees no map
+// entry, routes the card back through doCreate(), and mints a SECOND file
+// carrying the identical [notion:<id>] marker (the #1698/#1699 incident).
+//
+// Reuses task-reclaim.js's indexLiveTasks/notionMarkerOf rather than a fresh
+// regex: that module already fixed the line-1-anchored version of this same
+// scan once — a task carrying a prepended zombie-sweep note pushes
+// `[notion:...]` off line 1, and a line-anchored match under-counted the
+// live-twin population 3 vs the real 14 (see task-reclaim.js's header).
+//
+// Live task files are read in ascending id order before indexing, so
+// indexLiveTasks's first-match-wins semantics resolve to "lowest id wins"
+// whenever two live files already carry the same marker (today's own
+// #1698/#1699 shape) — a deterministic tiebreak instead of depending on
+// readdirSync's unspecified order.
+function buildLiveMarkerIndex(dir) {
+  let files;
+  try { files = fs.readdirSync(dir); } catch { return indexLiveTasks([]); }
+  const ids = files
+    .map((f) => /^(\d+)\.json$/.exec(f))
+    .filter(Boolean)
+    .map((m) => m[1])
+    .sort((a, b) => Number(a) - Number(b));
+  const tasks = ids.map((id) => readLiveTask(dir, id)).filter(Boolean);
+  return indexLiveTasks(tasks);
+}
+
+// Pure: decide whether a card headed for doCreate() is actually already
+// represented by a live mirror the sidecar map lost track of (repair that
+// file in place) or genuinely needs a fresh id (create). `liveByMarker` is
+// buildLiveMarkerIndex(dir).byMarker.
+function resolveCreateTarget(card, liveByMarker) {
+  const marker = String((card && card.id) || '').toLowerCase();
+  const orphanTaskId = liveByMarker.get(marker);
+  return orphanTaskId ? { kind: 'repair', taskId: orphanTaskId } : { kind: 'create' };
+}
+
 // Best-effort cross-process lock so N Cmux panes pulling at once don't race.
 // Stale locks (>2 min) are stolen. Returns a release() fn or null if held.
 // Age is judged off the lock file's own embedded `acquiredAt`, not fs mtime
@@ -492,6 +535,14 @@ function cmdPull(args) {
     const plan = planPull(cards, map);
     let id = nextId(dir);
     const created = [], updated = [];
+    // Lazy + memoized: only scan the live directory if doCreate() is
+    // actually invoked at least once this run (the common case — an empty
+    // toCreate and a clean self-heal pass — pays nothing extra).
+    let liveMarkerIndex = null;
+    const liveByMarker = () => {
+      if (!liveMarkerIndex) liveMarkerIndex = buildLiveMarkerIndex(dir);
+      return liveMarkerIndex.byMarker;
+    };
     // A card whose mapped file was clobbered/reused by a live session is
     // re-created under a fresh free id, so we never rewrite a stranger's task.
     // priorTask (optional): a task whose blocks/blockedBy should carry
@@ -499,7 +550,26 @@ function cmdPull(args) {
     // by the self-heal loop below when the prior copy is confirmed to
     // belong to this same card (see its own comment for why that check
     // matters).
+    //
+    // doCreate() is the single choke point for every path that can mint a
+    // task for a card with no *trusted* map entry (fresh toCreate, the
+    // toUpdate id-reuse fallback, and the self-heal toRecreate loop below) —
+    // so the resolveCreateTarget() ground-truth check lives here once,
+    // rather than being duplicated (and inevitably drifting) across each
+    // call site (task #1701).
     const doCreate = (card, priorTask) => {
+      const target = resolveCreateTarget(card, liveByMarker());
+      if (target.kind === 'repair') {
+        const existing = readLiveTask(dir, target.taskId) || {};
+        const mapped = mapCardToTask(card, target.taskId);
+        mapped.status = mergeStatus(existing.status, mapped.status);
+        const blocks = (priorTask && priorTask.blocks) || existing.blocks || [];
+        const blockedBy = (priorTask && priorTask.blockedBy) || existing.blockedBy || [];
+        if (!dry) writeTask(dir, { ...mapped, blocks, blockedBy });
+        map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+        updated.push({ taskId: target.taskId, name: card.name });
+        return;
+      }
       id = dry ? id : allocateFreeId(dir, id);
       const task = mapCardToTask(card, id);
       if (priorTask) { task.blocks = priorTask.blocks || []; task.blockedBy = priorTask.blockedBy || []; }
@@ -725,4 +795,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
