@@ -173,6 +173,85 @@ describe('findUnsafeDataWrites — flags the original anti-pattern', () => {
   });
 });
 
+// BRO-343 dispatcher finding (2026-08-16): findUnsafeDataWrites returned []
+// for writeFileSync of the repo's real absolute data/reviews.json path —
+// the original DATA_JSON_RE only matched a RELATIVE 'data/' segment, on the
+// assumption that "an absolute path is always tmp-derived". Real test code
+// resolves absolute paths to the REAL repo root just as often (a hardcoded
+// literal, or a path.join(process.cwd()/__dirname, ...) result stored in a
+// variable) — this was a live false-negative in the guard that had already
+// landed on main.
+describe('findUnsafeDataWrites — absolute-path literals (BRO-343 finding)', () => {
+  test('writeFileSync to a hardcoded absolute real data/*.json path is flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync('/Users/tompryor/Broadwayscore/data/reviews.json', '{}');
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1);
+  });
+
+  test('writeFileSync to an absolute real data/*.json path via a template literal is flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync(\`/Users/tompryor/Broadwayscore/data/reviews.json\`, '{}');
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1);
+  });
+
+  test('writeFileSync to a variable holding an absolute real data/*.json path is flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      const target = '/Users/tompryor/Broadwayscore/data/reviews.json';
+      writeFileSync(target, '{}');
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1);
+  });
+
+  test('renameSync with an absolute real data/*.json source is flagged', () => {
+    const source = `
+      import { renameSync } from 'node:fs';
+      renameSync('/Users/tompryor/Broadwayscore/data/shows.json', '/tmp/x.json');
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1);
+  });
+
+  test('an absolute /tmp/... literal that happens to contain a data/ segment is NOT flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync('/tmp/xyz-fixture/data/shows.json', '{}');
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('an absolute /private/tmp/... literal that happens to contain a data/ segment is NOT flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync('/private/tmp/xyz-fixture/data/shows.json', '{}');
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('an absolute /var/folders/... literal (macOS tmp) that happens to contain a data/ segment is NOT flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync('/var/folders/xyz/T/data/shows.json', '{}');
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('an unrelated absolute path (no data/ segment) is NOT flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      writeFileSync('/Users/x/metadata/shows.json', '{}');
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+});
+
 describe('findUnsafeDataWrites — inline escape hatch', () => {
   test('a flagged write is suppressed by a same-line test-data-write-guard-allow comment', () => {
     const source = `
