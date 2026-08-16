@@ -51,6 +51,9 @@ function filterNewBroadwayShows(slugs, shows) {
   }
   return slugs.filter((slug) => {
     const show = bySlug.get(slug) || byId.get(slug);
+    // Intentionally NOT isBroadwayCategory(): see the module doc comment above
+    // (category-race fix) — this filter must never fall back to isCommercialScope()'s
+    // permissive null-category default.
     return !!show && show.category === 'broadway';
   });
 }
