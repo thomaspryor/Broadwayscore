@@ -111,13 +111,24 @@ function reviewFileCount(id) {
 // the detection logic above only calls reviewFileCount() for shows that already
 // landed in a same-title+year group, so on a run with zero such groups it would
 // never touch data/review-texts at all — a healthy-but-quiet corpus and a
-// missing/empty checkout would look identical to the per-pair count. Counting
-// the top-level show-id directories directly reflects whether the private
-// review-texts checkout is actually present, independent of whether any
-// duplicate candidates exist this run.
+// missing/empty checkout would look identical to the per-pair count. Sums the
+// actual .json review-file count across every show-id directory (same signal
+// as reviewFileCount(), just totalled over the whole corpus instead of two
+// specific ids) so a near-empty checkout containing only stray files/dirs
+// (.git, .DS_Store, one leftover empty show dir) doesn't read as healthy —
+// a bare top-level-directory count would have (ship-check adversarial review,
+// task #1675).
 function corpusHealthCount() {
-  try { return fs.readdirSync(REVIEW_TEXTS_DIR).length; }
+  let total = 0;
+  let entries;
+  try { entries = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true }); }
   catch { return 0; }
+  for (const e of entries) {
+    if (!e.isDirectory()) continue;
+    try { total += fs.readdirSync(path.join(REVIEW_TEXTS_DIR, e.name)).filter((f) => f.endsWith('.json')).length; }
+    catch { /* unreadable dir — skip */ }
+  }
+  return total;
 }
 
 function loadBaseline() {
@@ -196,6 +207,21 @@ function main() {
     });
   }
 
+  // FAIL LOUD on an empty corpus (task #1675, same pattern as
+  // audit-outlet-registry.js task #1666) BEFORE writing anything — a missing/
+  // empty data/review-texts checkout would otherwise let --update-baseline
+  // freeze a baseline computed with every isStub() check reading reviews=0,
+  // and would let --strict report a vacuous "0 new" pass.
+  if (STRICT || UPDATE_BASELINE) {
+    try {
+      assertCorpusScanned(corpusHealthCount(), { gate: STRICT || UPDATE_BASELINE });
+    } catch (e) {
+      if (!(e instanceof CorpusNotScannedError)) throw e;
+      console.error(`\n❌ ${e.message}`);
+      return 1;
+    }
+  }
+
   if (UPDATE_BASELINE) {
     const pairs = clusters.flatMap((c) => c.pairs.map((p) => ({ a: p.a.id, b: p.b.id, reason: p.reason })));
     const baseline = { generatedAt: new Date().toISOString().slice(0, 10), pairs };
@@ -235,16 +261,7 @@ function main() {
     }
   }
 
-  if (STRICT) {
-    try {
-      assertCorpusScanned(corpusHealthCount(), { gate: STRICT });
-    } catch (e) {
-      if (!(e instanceof CorpusNotScannedError)) throw e;
-      console.error(`\n❌ STRICT: ${e.message}`);
-      return 1;
-    }
-    if (newClusters.length > 0) return 1;
-  }
+  if (STRICT && newClusters.length > 0) return 1;
   return 0;
 }
 
