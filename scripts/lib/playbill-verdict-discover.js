@@ -324,6 +324,21 @@ async function searchPlaybillVerdict(show, opts = {}) {
   return null;
 }
 
+// Tracks which shows still need Google-fallback discovery for a batch run.
+// A show is confirmed (no longer needs fallback) only once confirmMatch() is
+// called for it — an article title tentatively matching a show is NOT
+// enough, since that match can still fail fetch/page-validation downstream.
+// Calling confirmMatch() only after validation succeeds is what prevents a
+// show from silently losing its only discovery attempt for the run (#1647).
+function createFallbackTracker(showIds) {
+  const pending = new Set(showIds);
+  return {
+    confirmMatch(showId) { pending.delete(showId); },
+    needsFallback(showId) { return pending.has(showId); },
+    pendingIds() { return [...pending]; },
+  };
+}
+
 module.exports = {
   VERDICT_CATEGORY_URL,
   VERDICT_SITEMAP_URL,
@@ -334,4 +349,5 @@ module.exports = {
   accumulateSitemapArticles,
   extractReviewLinksFromArticle,
   searchPlaybillVerdict,
+  createFallbackTracker,
 };
