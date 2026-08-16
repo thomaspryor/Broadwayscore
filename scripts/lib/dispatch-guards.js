@@ -369,6 +369,12 @@ function workBranchCollisionGuard(task, branchStatuses, opts) {
 // caller's own findOverlappingCards() result) rather than recomputing it, so
 // bsc-next.js's refusal check and its warn-loop over the remaining overlaps
 // can't drift out of lock-step by calling the underlying match twice.
+//
+// CONTRACT: `overlaps` must already be findOverlappingCards(task, others)'s
+// OUTPUT (an array of {card, reason, sharedPaths}), not the raw in_progress
+// card list — passing a raw card list silently finds no 'exact-title-match'
+// entries and returns null, which reads as "guard does not work" rather than
+// "caller passed the wrong shape" (flagged in manual verification, 2026-08-16).
 function exactTitleOverlapGuard(task, overlaps, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
   const exact = (overlaps || []).find(o => o.reason === 'exact-title-match');
