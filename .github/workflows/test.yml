@@ -954,6 +954,7 @@ on:
       # exemptions). Unlisted until 2026-08-01, so an edit to the exempt map
       # shipped with ZERO CI — exactly the hole this allow-list exists to close.
       - 'scripts/audit-orphan-tests.js'
+      - 'scripts/audit-orphan-tests.test.mjs'
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
       # Shared duplicateOf N-node cycle walk (Notion #967) — used by

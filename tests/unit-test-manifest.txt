@@ -6,6 +6,7 @@ scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
+scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-show-review-gap.test.mjs
@@ -55,6 +56,7 @@ scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
+scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
@@ -224,6 +226,7 @@ tests/unit/feedback-owner-reports.test.mjs
 tests/unit/feedback-pipeline-fields.test.mjs
 tests/unit/feedback-request-ledger.test.mjs
 tests/unit/feedback-run-report.test.mjs
+tests/unit/find-existing-review-by-url.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
@@ -281,6 +284,7 @@ tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
 tests/unit/llm-scoring-rebuild-parity.test.mjs
 tests/unit/load-env.test.mjs
+tests/unit/london-producing-house-classification.test.mjs
 tests/unit/long-runner-registry.test.mjs
 tests/unit/lottery-stability-guard.test.mjs
 tests/unit/lsa-extractor.test.mjs
@@ -290,6 +294,7 @@ tests/unit/maybe-upgrade-url-cross-show.test.mjs
 tests/unit/merge-bww-roundup-ledger.test.mjs
 tests/unit/merge-commercial-data.test.mjs
 tests/unit/merge-diary-shows.test.mjs
+tests/unit/merge-feedback-ledger.test.mjs
 tests/unit/merge-owner-email-log.test.mjs
 tests/unit/merge-review-fields.test.mjs
 tests/unit/merge-social-post-history.test.mjs
@@ -449,6 +454,7 @@ tests/unit/show-matching-date-disambiguation.test.mjs
 tests/unit/show-score-pagination-regex.test.mjs
 tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
+tests/unit/sibling-matchers-diacritics.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
 tests/unit/stage-pagesonstages-extractor.test.mjs
