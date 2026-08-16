@@ -20,10 +20,12 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
 const { setExtractedScore } = require('./lib/score-routing');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { generateReviewFilename } = require('./lib/review-normalization');
+const { sanitizeCriticName } = require('./lib/byline-normalization');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -272,68 +274,70 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
-function saveReviewFile(showId, outletId, criticSlug, reviewData) {
-  const showDir = path.join(reviewTextsDir, showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
+// Guards against createOrMergeReviewFile's maybeUpgradeUrl() treating a
+// wrongProduction/wrongShow/duplicateOf-flagged file's contentTier ('invalid',
+// because it's flag-driven not quality-driven) as "bad content" worth
+// URL-upgrading — which would clear wrongProduction and every other
+// old-URL-derived field along with it (applyUrlChangeInvariant). Withholding
+// url/publishDate makes maybeUpgradeUrl's first check (`!newUrl`)
+// short-circuit, so the flagged file survives untouched (same fix as
+// scrape-nysr-reviews.js, task #1687 ship-check finding).
+function isFlaggedOnDisk(showId, outletId, criticName) {
+  const sanitized = sanitizeCriticName(criticName) || 'Unknown';
+  const filepath = path.join(reviewTextsDir, showId, generateReviewFilename(outletId, sanitized));
+  if (!fs.existsSync(filepath)) return false;
+  try {
+    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    return !!(data.wrongProduction || data.wrongShow || data.duplicateOf);
+  } catch {
+    return false;
+  }
+}
+
+// Task #1687: routed through the shared writer (scripts/lib/review-file-writer.js)
+// instead of a hand-rolled fs read/merge/write — that hand-rolled path bypassed
+// Guard A (classifyMarketRouting, same-title cross-market sibling reroute), the
+// only place a blog post whose matchTitleToShow() result is a same-title West
+// End/Broadway sibling gets rerouted to the right production. Mirrors the
+// migration commit e103b463a6f applied to scrape-theatre-reviews.js /
+// scrape-thestage-roundups.js. contentTier/tierReason are no longer passed in —
+// the shared writer re-derives them via classifyContentTier(newReview) with the
+// full review object (title, outlet, etc.), which is a strictly better input
+// than this caller's fullText-only classification. Losing the previous
+// "overwrite fullText only if longer" merge behavior is a non-issue here: each
+// site's fullText comes from a single WP REST API fetch of the complete post
+// body, not an incremental paywall/retry fetch, so there's no shorter-then-
+// longer sequence to compare.
+function saveReviewFile(showId, outletId, outletName, reviewData) {
+  const flagged = isFlaggedOnDisk(showId, outletId, reviewData.criticName);
+
+  const fields = {
+    publishDate: flagged ? undefined : reviewData.publishDate,
+    fullText: reviewData.fullText,
+    wordCount: reviewData.wordCount,
+  };
+
+  if (reviewData.originalScore) {
+    setExtractedScore(fields, {
+      value: reviewData.originalScore,
+      normalizedValue: reviewData.originalScoreNormalized || null,
+      source: reviewData.scoreSource || 'wp-api',
+    });
   }
 
-  const filename = `${outletId}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
+  const result = createOrMergeReviewFile(showId, {
+    outlet: outletName,
+    outletId,
+    criticName: reviewData.criticName,
+    url: flagged ? undefined : reviewData.url,
+    publishDate: flagged ? undefined : reviewData.publishDate,
+    source: reviewData.source,
+    fields,
+  }, { reviewTextsDir });
 
-  if (fs.existsSync(filepath)) {
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-
-    // Skip if existing is already complete with longer text
-    if (existing.contentTier === 'complete' && (existing.fullText || '').length >= (reviewData.fullText || '').length) {
-      return 'skipped';
-    }
-
-    // Update if we have better data
-    let updated = false;
-
-    if (reviewData.fullText && (!existing.fullText || reviewData.fullText.length > existing.fullText.length)) {
-      existing.fullText = reviewData.fullText;
-      existing.contentTier = reviewData.contentTier;
-      existing.tierReason = reviewData.tierReason;
-      existing.wordCount = reviewData.wordCount;
-      updated = true;
-    }
-    if (reviewData.originalScore && !existing.originalScore) {
-      const routed = setExtractedScore(existing, {
-        value: reviewData.originalScore,
-        normalizedValue: reviewData.originalScoreNormalized || null,
-        source: reviewData.scoreSource || 'wp-api',
-      });
-      if (!routed.wasAggregator) {
-        existing.scoreSource = reviewData.scoreSource || 'wp-api';
-      }
-      updated = true;
-    }
-    if (reviewData.url && !existing.url) {
-      existing.url = reviewData.url;
-      updated = true;
-    }
-    if (reviewData.publishDate && !existing.publishDate) {
-      existing.publishDate = reviewData.publishDate;
-      updated = true;
-    }
-
-    // Track source
-    const sources = new Set(existing.sources || [existing.source || '']);
-    sources.add(reviewData.source);
-    existing.sources = Array.from(sources).filter(Boolean);
-
-    if (updated) {
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
-      return 'updated';
-    }
-    return 'skipped';
-  }
-
-  // Create new review file
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
-  return 'new';
+  if (result.action === 'new') return 'new';
+  if (result.action === 'updated') return 'updated';
+  return result.reason === 'no-changes' ? 'skipped' : 'guard-rejected';
 }
 
 // ---------------------------------------------------------------------------
@@ -372,6 +376,7 @@ async function scrapeSite(site, shows) {
     newReviews: 0,
     updatedReviews: 0,
     skippedComplete: 0,
+    skippedGuardRejected: 0,
     skippedNoMatch: 0,
     skippedWrongProduction: 0,
     skippedShortContent: 0,
@@ -501,23 +506,14 @@ async function scrapeSite(site, shows) {
     // Resolve author: knownAuthors map → WP users mapping → regex fallback
     let authorName = (site.knownAuthors && site.knownAuthors[authorId]) || authorMapping[authorId] || extractAuthorFromContent(post) || 'Unknown';
 
-    // Generate critic slug
-    const criticSlug = normalizeCritic(authorName) || authorName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-
     // Build review data
     const reviewData = {
-      showId,
-      outletId: site.id,
-      outlet: site.name,
       criticName: authorName,
       url: postUrl,
       publishDate: postDate,
       fullText: plainText,
       wordCount: plainText ? plainText.split(/\s+/).length : 0,
-      contentTier: tierResult.contentTier,
-      tierReason: tierResult.tierReason,
       source: `wp-api-${site.id}`,
-      sources: [`wp-api-${site.id}`],
     };
 
     if (starRating) {
@@ -531,13 +527,15 @@ async function scrapeSite(site, shows) {
     }
 
     // Save
-    const result = saveReviewFile(showId, site.id, criticSlug, reviewData);
+    const result = saveReviewFile(showId, site.id, site.name, reviewData);
     if (result === 'new') {
       siteStats.newReviews++;
       console.log(`    [NEW] ${showId}: ${authorName}${starRating ? ` (${starRating})` : ''}`);
     } else if (result === 'updated') {
       siteStats.updatedReviews++;
       console.log(`    [UPD] ${showId}: ${authorName}${starRating ? ` (${starRating})` : ''}`);
+    } else if (result === 'guard-rejected') {
+      siteStats.skippedGuardRejected++;
     } else {
       siteStats.skippedComplete++;
     }
@@ -551,6 +549,7 @@ async function scrapeSite(site, shows) {
   console.log(`  New reviews: ${siteStats.newReviews}`);
   console.log(`  Updated reviews: ${siteStats.updatedReviews}`);
   console.log(`  Skipped (already complete): ${siteStats.skippedComplete}`);
+  console.log(`  Skipped (guard-rejected): ${siteStats.skippedGuardRejected}`);
   console.log(`  Skipped (no match): ${siteStats.skippedNoMatch}`);
   console.log(`  Skipped (wrong production): ${siteStats.skippedWrongProduction}`);
   console.log(`  Skipped (short content): ${siteStats.skippedShortContent}`);
