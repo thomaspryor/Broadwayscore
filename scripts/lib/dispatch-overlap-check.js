@@ -47,11 +47,24 @@ function normalizeTitle(title) {
 // consistent with the bar already proven in production.
 const TITLE_MATCH_MIN_LEN = 20;
 
-function titlesOverlap(a, b) {
+// Task #1672: distinguishes a byte-for-byte normalized match ('exact' — proof,
+// not a hint; see dispatch-guards.js's exactTitleOverlapGuard) from a mere
+// startsWith prefix overlap ('prefix' — still only suggestive, stays
+// warn-only). Second-opinion review, 2026-08-16: spot-checked live task
+// mirror, 7 exact-title-duplicate groups among 197 in_progress cards, all
+// confirmed genuine duplicates (different Notion UUIDs, same bug) — no false
+// positive found for the exact case.
+function titleMatchKind(a, b) {
   const na = normalizeTitle(a);
   const nb = normalizeTitle(b);
-  if (na.length < TITLE_MATCH_MIN_LEN || nb.length < TITLE_MATCH_MIN_LEN) return false;
-  return na === nb || na.startsWith(nb) || nb.startsWith(na);
+  if (na.length < TITLE_MATCH_MIN_LEN || nb.length < TITLE_MATCH_MIN_LEN) return null;
+  if (na === nb) return 'exact';
+  if (na.startsWith(nb) || nb.startsWith(na)) return 'prefix';
+  return null;
+}
+
+function titlesOverlap(a, b) {
+  return titleMatchKind(a, b) !== null;
 }
 
 function cardText(card) {
@@ -72,12 +85,18 @@ function findOverlappingCards(targetCard, inProgressCards) {
   return (inProgressCards || [])
     .filter(c => c && String(c.id) !== targetId)
     .map(c => {
+      // Exact title match checked FIRST and wins even when the pair also
+      // shares a file path — a byte-for-byte subject match against live
+      // in_progress work is proof on its own, not merely corroborated by a
+      // shared path (task #1672).
+      const titleKind = titleMatchKind(targetSubject, c.subject);
+      if (titleKind === 'exact') return { card: c, reason: 'exact-title-match', sharedPaths: [] };
       const sharedPaths = [...filePathsIn(cardText(c))].filter(p => targetPaths.has(p));
       if (sharedPaths.length) return { card: c, reason: 'shared-file-path', sharedPaths };
-      if (titlesOverlap(targetSubject, c.subject)) return { card: c, reason: 'similar-title', sharedPaths: [] };
+      if (titleKind === 'prefix') return { card: c, reason: 'similar-title', sharedPaths: [] };
       return null;
     })
     .filter(Boolean);
 }
 
-module.exports = { findOverlappingCards, filePathsIn, titlesOverlap, normalizeTitle };
+module.exports = { findOverlappingCards, filePathsIn, titlesOverlap, titleMatchKind, normalizeTitle };
