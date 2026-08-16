@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-07-26T04:19:48.622Z",
+  "timestamp": "2026-08-16T03:58:29.458Z",
   "hasIssues": true,
   "current": {
-    "date": "2026-07-26",
-    "totalReviews": 40668,
-    "unknownOutlets": 5,
-    "duplicates": 8,
-    "syncDelta": 21572
+    "date": "2026-08-16",
+    "totalReviews": 42599,
+    "unknownOutlets": 28,
+    "duplicates": 17,
+    "syncDelta": 22813
   },
   "previous": {
-    "date": "2026-07-25",
-    "totalReviews": 40649,
+    "date": "2026-07-26",
+    "totalReviews": 40668,
     "unknownOutlets": 5,
     "duplicates": 8,
     "syncDelta": 21572
@@ -18,40 +18,65 @@
   "issues": [
     {
       "type": "unknown_outlets",
-      "severity": "warning",
-      "message": "5 reviews have unknown outlets",
+      "severity": "critical",
+      "message": "28 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/death-of-a-salesman-2026/google--unknown.json",
-          "outletId": "google",
-          "outlet": "google"
+          "file": "data/review-texts/anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+          "outletId": "openairtheatreheritage",
+          "outlet": "openairtheatreheritage"
         },
         {
-          "file": "data/review-texts/john-proctor-is-the-villain-2025/teenvogue--p-claire-dodsonbeth-garrabrant.json",
-          "outletId": "teenvogue",
-          "outlet": "teenvogue"
+          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/amazon--thea-sharrock.json",
+          "outletId": "amazon",
+          "outlet": "amazon"
         },
         {
-          "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
-          "outletId": "was-along-for-the-ride",
-          "outlet": "was-along-for-the-ride"
+          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+          "outletId": "letterboxd",
+          "outlet": "letterboxd"
         },
         {
-          "file": "data/review-texts/pride-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
-          "outletId": "buy-tickets-directly-from-the-theatre",
-          "outlet": "Buy tickets directly from the theatre"
+          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+          "outletId": "marquee",
+          "outlet": "marquee"
         },
         {
-          "file": "data/review-texts/titus-andronicus-off-broadway-2026/redbulltheater--unknown.json",
-          "outletId": "redbulltheater",
-          "outlet": "redbulltheater"
+          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+          "outletId": "myreviewer",
+          "outlet": "myreviewer"
+        },
+        {
+          "file": "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
+          "outletId": "chelmsfordtheatre",
+          "outlet": "chelmsfordtheatre"
+        },
+        {
+          "file": "data/review-texts/cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+          "outletId": "show-score",
+          "outlet": "show-score"
+        },
+        {
+          "file": "data/review-texts/dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
+          "outletId": "inyougo",
+          "outlet": "inyougo"
+        },
+        {
+          "file": "data/review-texts/disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+          "outletId": "boxofficeticketsales",
+          "outlet": "boxofficeticketsales"
+        },
+        {
+          "file": "data/review-texts/disruption-off-broadway-2026/scorebig--unknown.json",
+          "outletId": "scorebig",
+          "outlet": "scorebig"
         }
       ]
     },
     {
       "type": "duplicates",
-      "severity": "warning",
-      "message": "8 duplicate reviews detected",
+      "severity": "critical",
+      "message": "17 duplicate reviews detected",
       "examples": [
         {
           "file": "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
@@ -70,33 +95,51 @@
           "key": "anything-goes-2011|variety|steven suskin"
         },
         {
-          "file": "data/review-texts/dukes-off-broadway-2026/theatermania--unknown.json",
-          "key": "dukes-off-broadway-2026|theatermania|linda buchwald"
+          "file": "data/review-texts/carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
+          "key": "carmen-off-broadway-2025|broadwayworld|richard sasanow"
+        },
+        {
+          "file": "data/review-texts/dear-evan-hansen-2016/dailybeast--william-wolf.json",
+          "key": "dear-evan-hansen-2016|dailybeast|tim teeman"
+        },
+        {
+          "file": "data/review-texts/festen-2006/nytimes--ben-brantley.json",
+          "key": "festen-2006|nytimes|ben brantley"
         },
         {
           "file": "data/review-texts/hadestown-west-end-2024/broadwayworld--michael-dale.json",
           "key": "hadestown-west-end-2024|broadwayworld|cindy marcolina"
         },
         {
-          "file": "data/review-texts/pride-west-end-2026/whatsonstage--unknown.json",
-          "key": "pride-west-end-2026|whatsonstage|editorial staff"
+          "file": "data/review-texts/jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json",
+          "key": "jesus-christ-superstar-west-end-2026|broadwayworld|aliya al-hassan"
         },
         {
-          "file": "data/review-texts/the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
-          "key": "the-whoopi-monologues-off-broadway-2026|one-minute-critic|matthew wexler"
+          "file": "data/review-texts/jesus-christ-superstar-west-end-2026/londontheatre1--unknown.json",
+          "key": "jesus-christ-superstar-west-end-2026|londontheatre1|chris omaweng"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (40668) and reviews.json (19096) are out of sync by 21572 reviews"
+      "message": "review-texts (42599) and reviews.json (19786) are out of sync by 22813 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 5 to 28"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 8 to 17"
     }
   ],
   "summary": {
-    "totalReviews": 40668,
-    "unknownOutlets": 5,
-    "duplicates": 8,
-    "syncDelta": 21572
+    "totalReviews": 42599,
+    "unknownOutlets": 28,
+    "duplicates": 17,
+    "syncDelta": 22813
   }
 }
