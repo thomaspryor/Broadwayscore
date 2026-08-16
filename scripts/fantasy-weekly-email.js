@@ -25,7 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { postJSON } = require('./lib/email-templates');
+const { postJSON, buildReplyToAddress } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { fetchFantasyEntries, computeLeaderboard } = require('./lib/fantasy-helpers');
@@ -241,9 +241,13 @@ async function main() {
       console.error(`  Audience sync: ${syncSummary}`);
 
       // Step 2: create broadcast draft
+      // fantasy@ is a Resend-verified sender only (same shape as updates@ for the
+      // weekly round-up, 2026-08-10 incident) — without reply_to, a fantasy-league
+      // player hitting Reply would bounce instead of reaching the owner.
       const result = await postJSON('https://api.resend.com/broadcasts', {
         audience_id: RESEND_FANTASY_AUDIENCE_ID,
         from: FROM_EMAIL,
+        reply_to: buildReplyToAddress(),
         subject,
         html,
         name: `BFL weekly ${weekEnding}`,
