@@ -364,3 +364,75 @@ describe('findUnsafeDataWrites — does not flag legitimate tmp fixtures', () =>
     assert.deepEqual(findUnsafeDataWrites(source), []);
   });
 });
+
+// task #1685 (BRO-343 dispatcher, 2026-08-16): two false negatives still
+// open after the absolute-path fix (42a29ee90ac) — verified live against
+// findUnsafeDataWrites before this fix, both returned [].
+describe('findUnsafeDataWrites — template-literal interpolation and function-return indirection (BRO-343 finding, task #1685)', () => {
+  test('a template literal interpolating a resolvable string constant is flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      const ROOT = "/Users/tompryor/Broadwayscore";
+      const p = \`\${ROOT}/data/reviews.json\`;
+      writeFileSync(p, "{}");
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1, `expected the resolved absolute path to be flagged, got ${JSON.stringify(findings)}`);
+  });
+
+  test('a zero-arg single-return local function reaching a real data/*.json path is flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      import { join } from 'node:path';
+      const ROOT = join(import.meta.dirname, '..', '..');
+      function showsPath() { return join(ROOT, "data/shows.json"); }
+      writeFileSync(showsPath(), "{}");
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1, `expected the function-return path to be flagged, got ${JSON.stringify(findings)}`);
+  });
+
+  test('a template literal whose interpolation resolves tmp-safe is not flagged, even with a trailing data/*.json-shaped suffix', () => {
+    const source = `
+      import { writeFileSync, mkdtempSync } from 'node:fs';
+      import { tmpdir } from 'node:os';
+      const fixtureDir = mkdtempSync(tmpdir());
+      const p = \`\${fixtureDir}/data/shows.json\`;
+      writeFileSync(p, "{}");
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('a template literal with an unresolvable interpolation and NO data/*.json-shaped static text is not flagged', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      function opaqueBase() { return process.env.SOME_UNKNOWN_VAR; }
+      const p = \`\${opaqueBase()}/output/result.txt\`;
+      writeFileSync(p, "{}");
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('a single-return local function reaching a tmp-safe path is not flagged', () => {
+    const source = `
+      import { writeFileSync, mkdtempSync } from 'node:fs';
+      import { join } from 'node:path';
+      import { tmpdir } from 'node:os';
+      function fixturePath() { return join(mkdtempSync(tmpdir()), 'shows.json'); }
+      writeFileSync(fixturePath(), "{}");
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+
+  test('a multi-return local function is not resolved (ambiguous — stays conservative, not flagged)', () => {
+    const source = `
+      import { writeFileSync } from 'node:fs';
+      function pickPath(useReal) {
+        if (useReal) return 'data/shows.json';
+        return '/tmp/scratch/shows.json';
+      }
+      writeFileSync(pickPath(true), "{}");
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
+});
