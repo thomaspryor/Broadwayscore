@@ -15,7 +15,8 @@
     "the-winters-tale-off-broadway-2026/wsj--unknown.json",
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "isla-off-broadway-2026/show-score--unknown.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -131,7 +132,16 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -146,7 +156,8 @@
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "isla-off-broadway-2026/show-score--unknown.json"
+      "isla-off-broadway-2026/show-score--unknown.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -171,7 +182,7 @@
     "amp": []
   },
   "startTime": "2026-08-16T09:36:20.403Z",
-  "lastProcessed": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-08-16T09:40:09.238Z",
@@ -261,6 +272,17 @@
       "t": "2026-08-16T10:14:13.117Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-16T10:17:14.351Z",
+      "event": "bb-session",
+      "session": "b680b3f3",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-16T10:17:15.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
