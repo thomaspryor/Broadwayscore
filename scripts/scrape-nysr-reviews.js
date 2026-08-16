@@ -21,10 +21,11 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { setExtractedScore } = require('./lib/score-routing');
-const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { generateReviewFilename } = require('./lib/review-normalization');
+const { sanitizeCriticName } = require('./lib/byline-normalization');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -40,6 +41,7 @@ const stats = {
   skippedWrongProduction: 0,
   skippedNoMatch: 0,
   skippedAlreadyComplete: 0,
+  skippedGuardRejected: 0,
   errors: [],
 };
 
@@ -253,74 +255,81 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
-function saveReviewFile(showId, criticSlug, reviewData, dir = reviewTextsDir) {
-  const showDir = path.join(dir, showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
+// Task #653/#816: if a wrongProduction/wrongShow/duplicateOf-flagged file
+// already sits at the canonical path, a re-scrape's URL must never reach the
+// writer — createOrMergeReviewFile's maybeUpgradeUrl() treats the flagged
+// file's contentTier ('invalid', because it's flag-driven not quality-driven)
+// as "bad content" and upgrades the URL, which clears wrongProduction and
+// every other old-URL-derived field along with it (applyUrlChangeInvariant).
+// Withholding url/publishDate reproduces the old preserveFlaggedFields()
+// behavior: maybeUpgradeUrl's very first check (`!newUrl`) short-circuits, so
+// the flagged file's own url/publishDate — and everything else, since the
+// generic field merge below only fills falsy fields — survives untouched.
+function isFlaggedOnDisk(showId, outletId, criticName, dir) {
+  const sanitized = sanitizeCriticName(criticName) || 'Unknown';
+  const filepath = path.join(dir, showId, generateReviewFilename(outletId, sanitized));
+  if (!fs.existsSync(filepath)) return false;
+  try {
+    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    return !!(data.wrongProduction || data.wrongShow || data.duplicateOf);
+  } catch {
+    return false;
+  }
+}
+
+// Task #1687: routed through the shared writer (scripts/lib/review-file-writer.js)
+// instead of a hand-rolled fs read/merge/write — that hand-rolled path bypassed
+// Guard A (classifyMarketRouting, same-title cross-market sibling reroute), the
+// only place a NYSR post whose matchTitleToShow() result is a same-title West
+// End/Broadway sibling gets rerouted to the right production. Mirrors the
+// migration commit e103b463a6f applied to scrape-theatre-reviews.js /
+// scrape-thestage-roundups.js. Losing the previous "overwrite fullText only if
+// longer" merge behavior is a non-issue here: NYSR's fullText always comes from
+// a single WP REST API fetch of the complete post body, not an incremental
+// paywall/retry fetch, so there is no shorter-then-longer sequence to compare.
+function saveReviewFile(showId, reviewData, dir = reviewTextsDir) {
+  const flagged = isFlaggedOnDisk(showId, 'nysr', reviewData.criticName, dir);
+
+  const fields = {
+    publishDate: flagged ? undefined : reviewData.publishDate,
+    fullText: reviewData.fullText,
+    isFullReview: reviewData.isFullReview,
+    wordCount: reviewData.wordCount,
+    textQuality: reviewData.textQuality,
+  };
+
+  if (reviewData.originalScore) {
+    setExtractedScore(fields, {
+      value: reviewData.originalScore,
+      normalizedValue: reviewData.originalScoreNormalized || null,
+      source: reviewData.scoreSource || 'nysr-scrape',
+    });
   }
 
-  // Use canonical filename for new files
-  const filename = `nysr--${criticSlug}.json`;
-  let filepath = path.join(showDir, filename);
+  const result = createOrMergeReviewFile(showId, {
+    outlet: 'New York Stage Review',
+    outletId: 'nysr',
+    criticName: reviewData.criticName,
+    url: flagged ? undefined : reviewData.url,
+    publishDate: flagged ? undefined : reviewData.publishDate,
+    source: 'nysr-api',
+    fields,
+  }, { reviewTextsDir: dir });
 
-  // Check for existing file under any outlet ID variant (canonical or legacy)
-  const existingFile = findExistingReviewFile(showDir, 'nysr', reviewData.criticName || criticSlug.replace(/-/g, ' '));
-  if (existingFile && existingFile.data) {
-    // Merge into the existing file (preserve its path/filename)
-    filepath = existingFile.path;
-    const existing = existingFile.data;
-
-    // Only update if we have new/better data
-    let updated = false;
-
-    if (reviewData.fullText && (!existing.fullText || reviewData.fullText.length > existing.fullText.length)) {
-      existing.fullText = reviewData.fullText;
-      updated = true;
-    }
-    if (reviewData.originalScore && !existing.originalScore) {
-      const routed = setExtractedScore(existing, {
-        value: reviewData.originalScore,
-        normalizedValue: reviewData.originalScoreNormalized || null,
-        source: reviewData.scoreSource || 'nysr-scrape',
-      });
-      if (!routed.wasAggregator) {
-        existing.scoreSource = reviewData.scoreSource || 'nysr-scrape';
-      }
-      updated = true;
-    }
-    if (reviewData.url && !existing.url) {
-      existing.url = reviewData.url;
-      updated = true;
-    }
-    if (reviewData.publishDate && !existing.publishDate) {
-      existing.publishDate = reviewData.publishDate;
-      updated = true;
-    }
-
-    // Track source
-    const sources = new Set(existing.sources || [existing.source || '']);
-    sources.add('nysr-api');
-    existing.sources = Array.from(sources).filter(Boolean);
-
-    if (updated) {
-      safeWriteReview(filepath, existing);
-      stats.updatedReviews++;
-      return 'updated';
-    }
+  if (result.action === 'new') {
+    stats.newReviews++;
+    return 'new';
+  }
+  if (result.action === 'updated') {
+    stats.updatedReviews++;
+    return 'updated';
+  }
+  if (result.reason === 'no-changes') {
     stats.skippedAlreadyComplete++;
-    return 'skipped';
+  } else {
+    stats.skippedGuardRejected++;
   }
-
-  // Task #653/#816: findExistingReviewFile() above deliberately skips
-  // wrongProduction/duplicateOf files, so a flagged file can already live at
-  // this exact canonical path even though existingFile came back null — a
-  // raw write here would clobber it. safeWriteReview preserves
-  // PROTECTED_FIELDS; preserveFlaggedFields keeps the flagged file's own url so
-  // the write doesn't trip applyUrlChangeInvariant and strip publishDate too.
-  reviewData = preserveFlaggedFields(filepath, reviewData);
-  safeWriteReview(filepath, reviewData);
-  stats.newReviews++;
-  return 'new';
+  return 'skipped';
 }
 
 // ---------------------------------------------------------------------------
@@ -450,24 +459,15 @@ async function scrapeNYSRReviews() {
       }
     }
 
-    // Generate critic slug
-    const criticSlug = normalizeCritic(canonicalAuthorName) || canonicalAuthorName.toLowerCase().replace(/\s+/g, '-');
-
     // Build review data
     const reviewData = {
-      showId,
-      outletId: 'nysr',
-      outlet: 'New York Stage Review',
       criticName: canonicalAuthorName,
       url: postUrl,
       publishDate: postDate,
       fullText: plainText,
       isFullReview: true,
       wordCount: plainText ? plainText.split(/\s+/).length : 0,
-      contentTier: 'complete',
       textQuality: 'full',
-      source: 'nysr-api',
-      sources: ['nysr-api'],
     };
 
     if (starRating) {
@@ -475,7 +475,7 @@ async function scrapeNYSRReviews() {
     }
 
     // Save
-    const result = saveReviewFile(showId, criticSlug, reviewData);
+    const result = saveReviewFile(showId, reviewData);
     if (result === 'new') {
       console.log(`  [NEW] ${showId}: ${authorName}${starRating ? ` (${starRating})` : ''}`);
     } else if (result === 'updated') {
@@ -497,6 +497,7 @@ async function scrapeNYSRReviews() {
   console.log(`New reviews created: ${stats.newReviews}`);
   console.log(`Existing reviews updated: ${stats.updatedReviews}`);
   console.log(`Skipped (already complete): ${stats.skippedAlreadyComplete}`);
+  console.log(`Skipped (guard-rejected): ${stats.skippedGuardRejected}`);
   console.log(`Skipped (no match): ${stats.skippedNoMatch}`);
   console.log(`Skipped (wrong production): ${stats.skippedWrongProduction}`);
   if (stats.errors.length > 0) {
