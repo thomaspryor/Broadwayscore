@@ -18,7 +18,8 @@
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/ew--unknown.json",
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nypost--unknown.json",
     "little-bear-ridge-road-regional-2024/nytg--gillian-russo.json",
-    "little-bear-ridge-road-regional-2024/cititour--brian-scott-lipton.json"
+    "little-bear-ridge-road-regional-2024/cititour--brian-scott-lipton.json",
+    "cats-west-end-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -650,7 +651,16 @@
     "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
     "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
     "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
-    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "cats-west-end-2026/nyt-theater--unknown.json",
+    "cats-west-end-2026/nytg--kyle-turner.json",
+    "cats-west-end-2026/variety--alison-herman.json",
+    "cats-west-end-2026/variety--frank-rizzo.json",
+    "cats-west-end-2026/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -670,8 +680,13 @@
       "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
       "little-bear-ridge-road-regional-2024/nytg--gillian-russo.json"
     ],
-    "browserbase": [],
-    "directCookies": [],
+    "browserbase": [
+      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
+      "cats-west-end-2026/nytimes--helen-shaw.json"
+    ],
+    "directCookies": [
+      "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
+    ],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
@@ -688,7 +703,7 @@
     "amp": []
   },
   "startTime": "2026-08-16T10:36:45.841Z",
-  "lastProcessed": "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+  "lastProcessed": "cats-west-end-2026/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-08-16T12:23:31.305Z",
@@ -734,6 +749,17 @@
       "event": "bb-session",
       "session": "5e78d368",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-16T20:12:41.050Z",
+      "event": "bb-session",
+      "session": "8742cb69",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-16T20:12:41.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

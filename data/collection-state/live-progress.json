@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-16T20:12:02.350Z",
-  "processed": 19,
-  "failed": 630,
-  "successRate": "2.9%",
+  "updatedAt": "2026-08-16T20:13:01.655Z",
+  "processed": 20,
+  "failed": 639,
+  "successRate": "3.0%",
   "tierBreakdown": {
     "playwright": 14,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 2,
+    "directCookies": 1,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-16T12:23:31.305Z",
@@ -59,6 +59,17 @@
       "event": "bb-session",
       "session": "5e78d368",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-16T20:12:41.050Z",
+      "event": "bb-session",
+      "session": "8742cb69",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-16T20:12:41.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
