@@ -2427,10 +2427,14 @@ on:
       - 'scripts/lib/refetch-circuit-breaker.test.mjs'
       - 'scripts/lib/flag-contradiction.js'
       - 'scripts/lib/flag-contradiction.test.mjs'
-      # Standing CI check for the detector above (#676) — runs informational
-      # (no --gate) in the data-validation job below until the companion
-      # triage card drains the baseline under --threshold=4.
+      # Baseline-diff (task #1673, mirrors the entries directly below for
+      # #1668): a solo edit to any of these four needs CI — without this
+      # entry, audit-cv-flag-contradiction.js's own baseline files had ZERO
+      # push-path coverage (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-cv-flag-contradiction.js'
+      - 'scripts/lib/cv-flag-contradiction-baseline.js'
+      - 'scripts/lib/cv-flag-contradiction-baseline.test.mjs'
+      - 'data/audit/cv-flag-contradiction-baseline.json'
       # Self-contradictory clear breadcrumbs (#1020/#1022/#1023) — gates at zero
       # in the data-validation job. Path-listed so a solo edit to either the
       # auditor or its unit test triggers CI.
@@ -4373,21 +4377,22 @@ jobs:
 
       - name: Audit flag-vs-CV contradictions
         if: always()
-        continue-on-error: true
-        run: node scripts/audit-cv-flag-contradiction.js --window=30
+        run: node scripts/audit-cv-flag-contradiction.js --window=30 --strict
         # Standing check for the signal #651's pipeline-health audit found by
         # hand (Notion 3ad637c5): an exclusion flag (wrongProduction/wrongShow/
         # isRoundupArticle) sitting on a file whose own most recent full-text
         # contentVerification pass affirms it (isValid, high confidence, >300
         # words) — bait for a human look, not proof of a false positive.
         #
-        # Informational only (no --gate) as of 2026-07-30 (#676): baseline is
-        # ~29 hits on the 30-day window, well above --threshold=4's default, so
-        # gating now would red the trunk immediately. The companion triage card
-        # (#675) is draining the backlog; once the real count is under 4, drop
-        # `continue-on-error: true` and add `--gate` to make this blocking, per
-        # #676's acceptance criteria. Script + threshold: scripts/audit-cv-flag-
-        # contradiction.js; detector: scripts/lib/flag-contradiction.js.
+        # Baseline-diff (task #1673, mirrors #1665/#1666/#1668): the manual
+        # "drain to <4, then --gate" plan (#676) stalled at ~24-29 hits for
+        # weeks. The pre-existing backlog is frozen in
+        # data/audit/cv-flag-contradiction-baseline.json and never fails CI —
+        # only a NEW (showId, file) pair not in that baseline fails the build.
+        # Identity is (showId, file), not the detected `flag` or `cvReasoning`
+        # — see scripts/lib/cv-flag-contradiction-baseline.js for why. Script:
+        # scripts/audit-cv-flag-contradiction.js; detector: scripts/lib/flag-
+        # contradiction.js.
 
       - name: Audit self-contradictory clear breadcrumbs
         if: always()
