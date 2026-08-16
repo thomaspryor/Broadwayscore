@@ -101,14 +101,21 @@ is_stale() {
 }
 
 # True (exit 0) iff every dirty (modified/untracked) path under worktree $1
-# is generated pipeline/audit data, never real source — data/**, excluding
-# the two files explicitly documented as source-of-truth (CLAUDE.md §3) that
-# could legitimately hold real uncommitted curated edits. Renames and
-# oddly-quoted paths are treated conservatively (unsafe) rather than parsed.
-# Callers only reach this after the branch is already confirmed fully merged
-# into origin/main, so nothing here risks losing committed work — only
+# is script-written audit/telemetry churn, never real source or real data —
+# data/audit/** only. Deliberately narrower than "any data/*" (an earlier cut
+# of this function): data/ also holds data/finances/, data/subscribers.json,
+# data/review-texts/ and other real/PII-bearing content (see .gitignore) that
+# a session could legitimately leave uncommitted — a blanket data/* allowlist
+# would rubber-stamp discarding that (adversarial review, task #1682). Renames
+# and oddly-quoted paths are treated conservatively (unsafe) rather than
+# parsed. Callers only reach this after the branch is already confirmed fully
+# merged into origin/main, so nothing here risks losing committed work — only
 # whether it's safe to discard whatever LOCAL uncommitted noise is blocking
-# `git worktree remove`.
+# `git worktree remove`. Note: this only sees paths `git status --porcelain`
+# reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
+# content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
+# it either way and is deleted by ANY worktree removal, force or plain; that
+# exposure predates this function and is unchanged by it.
 is_safe_dirty() {
   local p="$1" status line f
   status=$(git -C "$p" status --porcelain 2>/dev/null)
@@ -119,8 +126,7 @@ is_safe_dirty() {
     case "$f" in
       *' -> '*) return 1 ;;
       \"*) return 1 ;;
-      data/shows.json|data/reviews.json) return 1 ;;
-      data/*) ;;
+      data/audit/*) ;;
       *) return 1 ;;
     esac
   done <<< "$status"
@@ -406,25 +412,49 @@ flush
 git worktree prune 2>/dev/null
 
 # Orphaned worktree directories: present on disk under .claude/worktrees but
-# NOT registered with git (a broken/missing .git pointer, left behind by an
-# interrupted `rm -rf` or a partial force-remove elsewhere). `git worktree
-# prune` only clears git's OWN bookkeeping for a worktree whose directory
-# went missing — the opposite case, a directory git has no record of at all —
-# is invisible to it, so these silently accumulate disk forever (task #1682:
-# found 5 such dirs, ~800MB, sitting untouched for 3+ weeks). Safe to delete:
-# with zero git registration there is no worktree lock, admin entry, or
-# uncommitted-change protection `git worktree remove` could offer — any real
-# commits made in one live on via their branch ref regardless of whether this
-# checkout directory exists. A 15-minute freshness guard avoids racing a
-# worktree that's mid-creation (directory written before git's registration
-# step completes).
+# NOT registered with git (left behind by an interrupted `rm -rf` or a partial
+# force-remove elsewhere). `git worktree prune` only clears git's OWN
+# bookkeeping for a worktree whose directory went missing — the opposite case,
+# a directory git has no record of at all — is invisible to it, so these
+# silently accumulate disk forever (task #1682: found 5 such dirs, ~800MB,
+# sitting untouched for 3+ weeks).
+#
+# Two independent guards before deleting (adversarial review, task #1682):
+#  1. action-* excluded, same as the main loop — notion-action-poll.js manages
+#     these with its own --force lifecycle; one could be unregistered for a
+#     moment mid-cycle and this sweep must not race that.
+#  2. Any trace of `.git` (file or dir) inside the candidate — even a broken
+#     one pointing at a gitdir that no longer exists — means WARN-only, not
+#     delete. A directory with zero git artifacts at all can hold no commit
+#     unreachable from a branch ref; one that once had a `.git` might, and
+#     "the commits live on via their branch ref" is not something this loop
+#     can verify from a dead gitdir pointer. Left for manual triage.
+# A 15-minute freshness guard on top avoids racing a worktree that's
+# mid-creation (directory written before git's registration step completes).
 orphan_freed_kb=0
 if [ -d "$REPO/.claude/worktrees" ]; then
-  registered=$(git worktree list --porcelain | awk '/^worktree /{print $2}')
+  registered_paths=()
+  while IFS= read -r reg_line; do
+    case "$reg_line" in
+      "worktree "*) registered_paths+=("${reg_line#worktree }") ;;
+    esac
+  done < <(git worktree list --porcelain)
+  is_registered() {
+    local d="$1" r
+    for r in "${registered_paths[@]}"; do [ "$r" = "$d" ] && return 0; done
+    return 1
+  }
   while IFS= read -r dir; do
     [ -z "$dir" ] && continue
     orphan_name="$(basename "$dir")"
-    echo "$registered" | grep -qxF "$dir" && continue
+    is_registered "$dir" && continue
+    case "$orphan_name" in
+      action-*) continue ;;
+    esac
+    if [ -e "$dir/.git" ]; then
+      log "WARN  $orphan_name — unregistered but has a .git artifact; leaving for manual triage (not auto-deleted)"
+      continue
+    fi
     find "$dir" -newermt '-15 minutes' -print -quit 2>/dev/null | grep -q . && continue
     orphan_sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
     orphan_sz=${orphan_sz:-0}
