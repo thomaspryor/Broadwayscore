@@ -32,16 +32,29 @@ const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { findOrphans } = require(path.join(REPO, 'scripts/audit-orphan-inprogress.js'));
 
-// Snapshot taken 2026-08-16 by `node scripts/audit-orphan-inprogress.js
-// --json` after applying --fix (which resolved FINISHED/LOST/STALE and left
-// exactly this set as NEEDS-REVIEW, each with a one-line reason). See that
-// script's module docstring for what each action name means.
+// Final snapshot taken 2026-08-16 by `node scripts/audit-orphan-inprogress.js
+// --json`, run from the MAIN checkout (not a worktree — see the ledger-null
+// note below) after applying --fix. See that script's module docstring for
+// what each action name means.
+//
+// #57, #1407, #1442 carry a real story: an earlier pass of this SAME session
+// ran the tool from a worktree, where data/audit/dispatch-ledger.jsonl
+// (gitignored) doesn't exist. dispatchedTaskIds() returning null got
+// silently coerced to an empty Set, making all three look never-dispatched
+// when they had real launch/job-spawned/job-done history — they were
+// wrongly reclaimed to LOST/pending. Caught by an adversarial ship-check
+// review, reverted (local status + Notion card both restored to
+// in_progress/In progress), and the driver now refuses to run at all when
+// the ledger is unreadable instead of guessing (audit-orphan-inprogress.js's
+// startedIdsRaw === null branch). All three currently read skip-fresh only
+// because the revert itself just touched their cards; a later re-run past
+// the 48h window will classify them for real, this time with a working ledger.
 const JUSTIFIED_SURVIVORS = {
-  53: 'park-outcome (skip-fresh in substance) — standing commercial-data review request the digest keeps appending to; not dispatchable work, should probably never have mirrored as in_progress at all (follow-up worth filing, out of scope for #1705)',
+  53: 'skip-fresh (in substance a standing commercial-data review request the digest keeps appending to; not dispatchable work, should probably never have mirrored as in_progress at all — follow-up worth filing, out of scope for #1705)',
   278: 'park-outcome — Outcome present, no keyFile/commit hash in it could be corroborated against the repo',
   1147: 'park-started — description says a branch (worktree-coverage-defects-1147) was pushed to origin but not merged; may hold real unlanded work',
   1217: 'park-outcome — Action-Queue verification-gate stuck retrying "Start" with no VERIFIED/UNVERIFIED confirmation; the claimed DONE was never actually confirmed',
-  1279: 'skip-fresh — card edited within the last 48h',
+  1279: 'park-outcome — uncorroborated Outcome',
   1286: 'park-outcome — uncorroborated Outcome',
   1287: 'park-outcome — uncorroborated Outcome',
   1305: 'park-outcome — uncorroborated Outcome',
@@ -52,7 +65,9 @@ const JUSTIFIED_SURVIVORS = {
   1326: 'park-outcome — uncorroborated Outcome',
   1334: 'park-outcome — uncorroborated Outcome',
   1356: 'park-outcome — uncorroborated Outcome',
+  1407: 'skip-fresh — wrongly-reclaimed-then-reverted (see note above); real ledger history, needs a real re-classification pass once quiet',
   1415: 'park-outcome — uncorroborated Outcome',
+  1442: 'skip-fresh — wrongly-reclaimed-then-reverted (see note above); real ledger history, needs a real re-classification pass once quiet',
   1468: 'park-outcome — uncorroborated Outcome',
   1496: 'skip-fresh — card edited within the last 48h',
   1546: 'skip-fresh — card edited within the last 48h',
@@ -63,8 +78,9 @@ const JUSTIFIED_SURVIVORS = {
   1640: 'skip-fresh — card edited within the last 48h',
   1664: 'skip-fresh — card edited within the last 48h',
   1670: 'skip-fresh — card edited within the last 48h',
-  1682: 'skip-fresh — card edited within the last 48h',
+  1682: 'recheck-after-pending — "Disk full 99pct - worktree-gc frees 0KB" names a RECHECK-AFTER date that has not passed yet',
   1700: 'skip-fresh — card edited within the last 48h',
+  57: 'skip-fresh — wrongly-reclaimed-then-reverted (see note above); real ledger history, needs a real re-classification pass once quiet',
 };
 
 // Two tasks the triage resolved to local status 'completed' — NOT orphans,
@@ -93,8 +109,10 @@ test('every in_progress-with-no-workspace task is a named, justified survivor', 
 test('the justified-survivor floor did not silently grow past its 2026-08-16 size', () => {
   // A named survivor that RESOLVES (dispatched, closed, reclaimed) should be
   // removed from the list, not left stale — this catches the list quietly
-  // accumulating entries nobody prunes. 28 is the count as of the #1705
-  // triage; this is a ceiling, not a target — shrinking it is always fine.
+  // accumulating entries nobody prunes. 31 is the count as of the #1705
+  // triage's FINAL pass (run from the main checkout, with a working ledger,
+  // after reverting the 3 wrongly-reclaimed tasks); this is a ceiling, not a
+  // target — shrinking it is always fine.
   const floorSize = Object.keys(JUSTIFIED_SURVIVORS).length;
-  assert.ok(floorSize <= 28, `JUSTIFIED_SURVIVORS grew to ${floorSize} entries (started at 28) — that is the exact "grows silently" failure mode this test exists to catch. Re-triage before adding more names.`);
+  assert.ok(floorSize <= 31, `JUSTIFIED_SURVIVORS grew to ${floorSize} entries (started at 31) — that is the exact "grows silently" failure mode this test exists to catch. Re-triage before adding more names.`);
 });
