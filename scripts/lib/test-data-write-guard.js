@@ -24,15 +24,16 @@
 // (declare immediately before use) far better than a global set did.
 //
 // KNOWN GAPS (false negatives, by design — see isUnsafeDataPathExpr): dynamic
-// paths built via `path.resolve()`, template-literal interpolation, or
-// spread/computed args are not statically resolvable and are silently NOT
-// flagged, per the card's "statically resolves" framing. Also not covered:
+// paths built via `path.resolve()`, or spread/computed args are not
+// statically resolvable and are silently NOT flagged, per the card's
+// "statically resolves" framing. Also not covered:
 // (1) a declaration whose RHS spans multiple lines (collectDeclarations'
 // regex captures to end-of-line) — reformat as single-line or the write must
 // be caught by a direct literal check instead of identifier resolution;
-// (2) indirection through a function parameter or object property
+// (2) indirection through a function PARAMETER or object property
 // (`function restore(target) { renameSync(target, ...) }` called with a real
-// path) — this tool has no call-graph, only textual declaration order;
+// path) — this tool has no call-graph for anything beyond a zero-arg,
+// single-return local function (see collectFunctionReturns / task #1685);
 // (3) `.test.sh` bash integration tests — this scans JS/TS call syntax only.
 // A bash-level equivalent would reuse the WRITE_COMMANDS/bashWriteTargets
 // shape in scripts/lib/infra-review-scope.js, but that machinery scans tool
@@ -41,6 +42,20 @@
 // referencing data/*.json write into synthetic tmp repos, not the real tree,
 // so this is not a live incident today). This tool catches the *shape* of
 // bug that already landed twice; it is not a general taint tracker.
+//
+// TEMPLATE-LITERAL INTERPOLATION (task #1685, BRO-343 dispatcher): unlike a
+// fully opaque identifier (where nothing at all is known), a template
+// literal's STATIC text around a `${...}` interpolation is still real
+// signal — `` `${dir}/data/shows.json` `` unambiguously targets data/ no
+// matter what `dir` turns out to be, UNLESS dir itself is provably tmp-safe.
+// So this is the one place the guard does NOT default unresolvable to
+// "clean": each interpolation resolves to (a) a literal constant — folded
+// into the surrounding text before matching, (b) a tmp-safe base — the
+// WHOLE template is then safe, or (c) neither — the interpolation is
+// dropped and the surrounding literal text is matched as-is. See
+// resolveTemplateLiteral. Defaulting (c) to "clean" is exactly the bug
+// class this reversal closes (BRO-343: `${ROOT}/data/reviews.json` with
+// ROOT a plain string constant was invisible before this).
 //
 // ESCAPE HATCH: a genuine false positive can be suppressed inline —
 // `// test-data-write-guard-allow: <reason>` on the SAME LINE as the flagged
@@ -196,6 +211,50 @@ function collectDeclarations(source) {
   return decls;
 }
 
+// Map of function name -> its single `return EXPR;` text, built once per
+// file (function declarations aren't position-ordered like variable decls —
+// they hoist — so this is a flat name->expr map, not a nearest-preceding
+// lookup). Only functions with EXACTLY ONE return statement are tracked — a
+// function with multiple returns has an ambiguous "the" return value, and
+// guessing wrong in either direction is worse than staying conservative
+// (recorded as null: seen, but deliberately not resolved).
+//
+// task #1685 (BRO-343 dispatcher): `function showsPath() { return
+// join(ROOT, 'data/shows.json') }` called as `showsPath()` was invisible to
+// the guard — no call-graph at all, not even for the simplest zero-arg
+// single-return case. This does NOT do parameter substitution — a function
+// taking arguments is resolved by its return expression as literally
+// written, so `function p(x) { return x }` called as `p('data/shows.json')`
+// still won't resolve (the return expression is just `x`, an unbound
+// parameter name, which correctly resolves to "unknown" via
+// resolveIdentifierRhs finding no matching declaration).
+function collectFunctionReturns(source) {
+  const returns = new Map();
+  const fnRe = /\bfunction\s+(\w+)\s*\([^)]*\)\s*\{/g;
+  let m;
+  while ((m = fnRe.exec(source)) !== null) {
+    const name = m[1];
+    const bodyStart = m.index + m[0].length;
+    let depth = 1;
+    let i = bodyStart;
+    let quote = null;
+    for (; i < source.length && depth > 0; i++) {
+      const ch = source[i];
+      if (quote) {
+        if (ch === quote && source[i - 1] !== '\\') quote = null;
+        continue;
+      }
+      if (ch === '"' || ch === "'" || ch === '`') { quote = ch; continue; }
+      if (ch === '{') depth++;
+      else if (ch === '}') depth--;
+    }
+    const body = source.slice(bodyStart, Math.max(bodyStart, i - 1));
+    const returnMatches = [...body.matchAll(/\breturn\s+(.+?);/g)];
+    returns.set(name, returnMatches.length === 1 ? returnMatches[0][1].trim() : null);
+  }
+  return returns;
+}
+
 // The RHS text of the declaration of `name` nearest before (or at)
 // `usageIndex` — approximates lexical scoping by textual order rather than
 // AST scope. Returns null if no such declaration exists (unresolvable).
@@ -208,10 +267,28 @@ function resolveIdentifierRhs(name, usageIndex, decls) {
   return best ? best.rhs : null;
 }
 
+// If `trimmed` is a bare call expression `NAME(...)` (the ENTIRE string,
+// not just a prefix — `foo().bar` or `foo() + 'x'` must not match) to a
+// tracked, unambiguously-single-return local function, return that
+// function's return expression text. Otherwise null. Shared by all three
+// resolvers below so a function-return is treated identically to an
+// identifier at every resolution site.
+function resolveFunctionCallReturn(trimmed, fnReturns) {
+  const callMatch = trimmed.match(/^(\w+)\s*\(/);
+  if (!callMatch) return null;
+  if (callMatch[1] === 'join') return null; // handled separately, not a tracked local fn
+  const openIdx = trimmed.indexOf('(');
+  const args = extractCallArgs(trimmed, openIdx);
+  if (openIdx + args.length + 2 !== trimmed.length) return null; // trailing junk after the call
+  const ret = fnReturns.get(callMatch[1]);
+  return ret || null; // null both for "unknown function" and "ambiguous (multi-return)"
+}
+
 // Does `expr` resolve to a tmp/mkdtemp-derived base? Recurses through
-// join()/path.join() (safe if ANY leading segment is tmp-safe) and through
-// identifiers (via their nearest preceding declaration).
-function isTmpSafeExpr(expr, usageIndex, decls, depth = 0) {
+// join()/path.join() (safe if ANY leading segment is tmp-safe), identifiers
+// (via their nearest preceding declaration), and single-return local
+// function calls.
+function isTmpSafeExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
   if (depth > MAX_RESOLVE_DEPTH) return false;
   const trimmed = String(expr).trim();
 
@@ -221,13 +298,16 @@ function isTmpSafeExpr(expr, usageIndex, decls, depth = 0) {
   if (joinCall) {
     const openIdx = trimmed.indexOf('(');
     const innerArgs = splitArgs(extractCallArgs(trimmed, openIdx));
-    return innerArgs.some((a) => isTmpSafeExpr(a, usageIndex, decls, depth + 1));
+    return innerArgs.some((a) => isTmpSafeExpr(a, usageIndex, decls, fnReturns, depth + 1));
   }
+
+  const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
+  if (fnReturn) return isTmpSafeExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
 
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
     if (rhs === null) return false;
-    return isTmpSafeExpr(rhs, usageIndex, decls, depth + 1);
+    return isTmpSafeExpr(rhs, usageIndex, decls, fnReturns, depth + 1);
   }
 
   return false;
@@ -242,7 +322,7 @@ function isTmpSafeExpr(expr, usageIndex, decls, depth = 0) {
 // scripts/lib/reconcile-coverage.test.mjs — seedDir traces to mkdtempSync,
 // but the template-literal concatenation isn't statically resolvable, and an
 // unresolvable base must mean "unknown", never "assume unsafe".
-function isKnownRealRootExpr(expr, usageIndex, decls, depth = 0) {
+function isKnownRealRootExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
   if (depth > MAX_RESOLVE_DEPTH) return false;
   const trimmed = String(expr).trim();
 
@@ -252,27 +332,110 @@ function isKnownRealRootExpr(expr, usageIndex, decls, depth = 0) {
   if (joinCall) {
     const openIdx = trimmed.indexOf('(');
     const innerArgs = splitArgs(extractCallArgs(trimmed, openIdx));
-    return innerArgs.some((a) => isKnownRealRootExpr(a, usageIndex, decls, depth + 1));
+    return innerArgs.some((a) => isKnownRealRootExpr(a, usageIndex, decls, fnReturns, depth + 1));
   }
+
+  const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
+  if (fnReturn) return isKnownRealRootExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
 
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
     if (rhs === null) return false;
-    return isKnownRealRootExpr(rhs, usageIndex, decls, depth + 1);
+    return isKnownRealRootExpr(rhs, usageIndex, decls, fnReturns, depth + 1);
   }
 
   return false;
 }
 
+// Best-effort: does `expr` resolve to a KNOWN, fully-literal string constant
+// (a bare quoted literal, an identifier tracing to one, a function call
+// tracing to one, a join()-of-literals, or a template literal whose every
+// interpolation itself resolves to a literal)? Returns the resolved string,
+// or null if any part is unresolvable. Used only to fold a template
+// literal's ${...} interpolations into plain text before matching — see
+// resolveTemplateLiteral and the module header.
+function resolveToLiteralString(expr, usageIndex, decls, fnReturns, depth) {
+  if (depth > MAX_RESOLVE_DEPTH) return null;
+  const trimmed = String(expr).trim();
+
+  const strMatch = trimmed.match(/^(['"])(.*)\1$/s); // single/double only — backtick handled below
+  if (strMatch) return strMatch[2];
+
+  const backtickMatch = trimmed.match(/^`(.*)`$/s);
+  if (backtickMatch) {
+    const { safe, resolved } = resolveTemplateLiteral(backtickMatch[1], usageIndex, decls, fnReturns, depth + 1);
+    return safe ? null : resolved;
+  }
+
+  const joinCall = trimmed.match(/^(?:path\s*\.\s*)?join\s*\(/);
+  if (joinCall) {
+    const openIdx = trimmed.indexOf('(');
+    const innerArgs = splitArgs(extractCallArgs(trimmed, openIdx));
+    const parts = innerArgs.map((a) => resolveToLiteralString(a, usageIndex, decls, fnReturns, depth + 1));
+    if (parts.some((p) => p === null)) return null;
+    return parts.join('/');
+  }
+
+  const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
+  if (fnReturn) return resolveToLiteralString(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+
+  if (/^\w+$/.test(trimmed)) {
+    const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
+    if (rhs === null) return null;
+    return resolveToLiteralString(rhs, usageIndex, decls, fnReturns, depth + 1);
+  }
+
+  return null;
+}
+
+// Resolve a backtick template literal's INNER text (no surrounding
+// backticks) against its `${...}` interpolations. Three-way per
+// interpolation: (a) resolves to a literal constant -> substituted into the
+// reconstructed text, (b) resolves tmp-safe -> the WHOLE template is safe
+// (mirrors join()'s "any tmp-safe segment makes the whole path safe"), or
+// (c) neither -> dropped (substituted with ''), and the surrounding STATIC
+// text is still matched — see the module header's "TEMPLATE-LITERAL
+// INTERPOLATION" note for why unresolvable does NOT mean "assume clean"
+// here specifically.
+function resolveTemplateLiteral(innerText, usageIndex, decls, fnReturns, depth) {
+  const INTERP_RE = /\$\{([^}]*)\}/g;
+  let resolved = '';
+  let lastIndex = 0;
+  let m;
+  while ((m = INTERP_RE.exec(innerText)) !== null) {
+    resolved += innerText.slice(lastIndex, m.index);
+    const expr = m[1].trim();
+    if (isTmpSafeExpr(expr, usageIndex, decls, fnReturns, depth + 1)) {
+      return { safe: true, resolved: null };
+    }
+    const literal = resolveToLiteralString(expr, usageIndex, decls, fnReturns, depth + 1);
+    resolved += literal !== null ? literal : '';
+    lastIndex = INTERP_RE.lastIndex;
+  }
+  resolved += innerText.slice(lastIndex);
+  return { safe: false, resolved };
+}
+
 // Does `expr` statically resolve to a real tracked data/*.json path that is
 // NOT tmp-safe? Returns false (not just "unsafe=false" but genuinely
 // "unresolvable, so don't flag") for anything this heuristic can't trace —
-// see KNOWN GAPS above.
-function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
+// see KNOWN GAPS above. The one deliberate exception is inside a template
+// literal's unresolvable interpolation — see resolveTemplateLiteral.
+function isUnsafeDataPathExpr(expr, usageIndex, decls, fnReturns, depth = 0) {
   if (depth > MAX_RESOLVE_DEPTH) return false;
   const trimmed = String(expr).trim();
 
-  const strMatch = trimmed.match(/^(['"`])(.*)\1$/s);
+  const backtickMatch = trimmed.match(/^`(.*)`$/s);
+  if (backtickMatch) {
+    const { safe, resolved } = resolveTemplateLiteral(backtickMatch[1], usageIndex, decls, fnReturns, depth + 1);
+    if (safe) return false;
+    const quoted = `'${resolved}'`;
+    if (ABS_TMP_ROOT_RE.test(quoted)) return false;
+    if (isAbsoluteDataJsonLiteral(quoted)) return true;
+    return DATA_JSON_RE.test(quoted);
+  }
+
+  const strMatch = trimmed.match(/^(['"])(.*)\1$/s);
   if (strMatch) {
     if (ABS_TMP_ROOT_RE.test(trimmed)) return false;
     if (isAbsoluteDataJsonLiteral(trimmed)) return true;
@@ -283,8 +446,8 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
   if (joinCall) {
     const openIdx = trimmed.indexOf('(');
     const innerArgs = splitArgs(extractCallArgs(trimmed, openIdx));
-    if (innerArgs.some((a) => isTmpSafeExpr(a, usageIndex, decls, depth + 1))) return false;
-    if (innerArgs.some((a) => isUnsafeDataPathExpr(a, usageIndex, decls, depth + 1))) return true;
+    if (innerArgs.some((a) => isTmpSafeExpr(a, usageIndex, decls, fnReturns, depth + 1))) return false;
+    if (innerArgs.some((a) => isUnsafeDataPathExpr(a, usageIndex, decls, fnReturns, depth + 1))) return true;
 
     // A single-segment 'data/foo.json' literal is caught above; a real path
     // is just as often spread across multiple join() segments —
@@ -296,7 +459,7 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
     // string concat, function param) is unknown, not "assume real root" —
     // see isKnownRealRootExpr's docstring for the false positive this fixes.
     const nonLiteralArgs = innerArgs.filter((a) => !/^(['"`])(.*)\1$/s.test(a.trim()));
-    if (!nonLiteralArgs.every((a) => isKnownRealRootExpr(a, usageIndex, decls, depth + 1))) return false;
+    if (!nonLiteralArgs.every((a) => isKnownRealRootExpr(a, usageIndex, decls, fnReturns, depth + 1))) return false;
 
     const literalSegments = [];
     for (const a of innerArgs) {
@@ -306,11 +469,17 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
     return literalSegments.length > 0 && DATA_JSON_TAIL_RE.test(literalSegments.join('/'));
   }
 
+  const fnReturn = resolveFunctionCallReturn(trimmed, fnReturns);
+  if (fnReturn) {
+    if (isTmpSafeExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1)) return false;
+    return isUnsafeDataPathExpr(fnReturn, usageIndex, decls, fnReturns, depth + 1);
+  }
+
   if (/^\w+$/.test(trimmed)) {
     const rhs = resolveIdentifierRhs(trimmed, usageIndex, decls);
     if (rhs === null) return false;
-    if (isTmpSafeExpr(rhs, usageIndex, decls, depth + 1)) return false;
-    return isUnsafeDataPathExpr(rhs, usageIndex, decls, depth + 1);
+    if (isTmpSafeExpr(rhs, usageIndex, decls, fnReturns, depth + 1)) return false;
+    return isUnsafeDataPathExpr(rhs, usageIndex, decls, fnReturns, depth + 1);
   }
 
   return false;
@@ -320,6 +489,7 @@ function isUnsafeDataPathExpr(expr, usageIndex, decls, depth = 0) {
 // data/*.json path. Returns an array of { line, fn, target, snippet }.
 function findUnsafeDataWrites(source) {
   const decls = collectDeclarations(source);
+  const fnReturns = collectFunctionReturns(source);
   const findings = [];
   const lines = source.split('\n');
   const lineStarts = [0];
@@ -351,7 +521,7 @@ function findUnsafeDataWrites(source) {
         // dozen characters apart at most, and a declaration between them
         // would be a false split-scope anyway (no real code declares a
         // variable in the middle of a call's argument list).
-        if (isUnsafeDataPathExpr(trimmed, m.index, decls)) {
+        if (isUnsafeDataPathExpr(trimmed, m.index, decls, fnReturns)) {
           const lineNo = lineNumberAt(m.index);
           if (INLINE_ALLOW_RE.test(lines[lineNo - 1] || '')) continue;
           findings.push({
@@ -377,7 +547,11 @@ module.exports = {
   splitArgs,
   extractCallArgs,
   collectDeclarations,
+  collectFunctionReturns,
   resolveIdentifierRhs,
+  resolveFunctionCallReturn,
+  resolveToLiteralString,
+  resolveTemplateLiteral,
   isTmpSafeExpr,
   isKnownRealRootExpr,
   isUnsafeDataPathExpr,
