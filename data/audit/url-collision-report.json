@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-16T11:25:18.497Z",
+  "generatedAt": "2026-08-16T16:57:34.509Z",
   "summary": {
-    "total": 6,
-    "high": 3,
+    "total": 7,
+    "high": 4,
     "medium": 2,
     "low": 1
   },
@@ -168,6 +168,33 @@
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+      "normalizedUrl": "https://cititour.com/nyc_broadway/two-strangers-carry-a-cake-across-new-york/1344",
+      "candidates": [
+        {
+          "showId": "two-strangers-bway-2025",
+          "file": "cititour--brian-scott-lipton.json",
+          "publishDate": "2025-11-20",
+          "openingDate": "2025-11-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "cititour"
+        },
+        {
+          "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+          "file": "cititour--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-06-02",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "cititour"
+        }
+      ],
+      "suggestedWinner": "two-strangers-bway-2025",
+      "reason": "publishDate 2025-11-20 is 0 days from two-strangers-bway-2025 opening (2025-11-20)",
+      "confidence": "high"
     }
   ]
 }
