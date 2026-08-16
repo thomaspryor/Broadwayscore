@@ -24,6 +24,20 @@
  * matching closes this: only as many occurrences of a given (file, snippet)
  * are excused as were actually baselined; anything beyond that count is new.
  *
+ * KNOWN GAP (final adversarial re-review, task #1665): the multiset fix above
+ * closes unbounded duplicate-collapse growth, but text identity has an
+ * inherent floor — if a baselined occurrence is deleted and a BYTE-IDENTICAL
+ * new occurrence appears elsewhere in the same file, the count is unchanged
+ * (still N in, N out) and it reads as "still baselined." This differs from the
+ * original count-based failure mode above only in that the new occurrence's
+ * TEXT happens to exactly match an already-accepted one — from the auditor's
+ * perspective that is the same class of debt, not a distinct new violation,
+ * so treating it as still-covered is arguably correct, not a false negative.
+ * Closing this fully would mean keying on line number instead of text, which
+ * reintroduces the exact reformatting-brittleness tradeoff (file, snippet)
+ * identity was chosen to avoid. Accepted, same posture as the 160-char
+ * snippet-truncation tradeoff in audit-broadway-category-predicate.js.
+ *
  * Pure functions only — no fs — so both the CLI and the test require() the
  * same logic (CLAUDE.md rule 15).
  */
