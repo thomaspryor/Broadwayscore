@@ -11,8 +11,8 @@
  *   node scripts/audit-critic-outlets.js              # Generate both files
  *   node scripts/audit-critic-outlets.js --report-only # Print report, no file writes
  *   node scripts/audit-critic-outlets.js --json        # Output JSON to stdout
- *   node scripts/audit-critic-outlets.js --strict          # Exit 1 on NEW (non-baselined) flagged reviews
- *   node scripts/audit-critic-outlets.js --update-baseline # Regenerate the baseline from current scan
+ *   node scripts/audit-critic-outlets.js --strict          # Exit 1 on NEW (non-baselined) flagged reviews; read-only
+ *   node scripts/audit-critic-outlets.js --update-baseline # Regenerate the baseline from current scan; read-only
  *
  * Baseline-diff (task #1668), mirrors audit-outlet-registry.js (task #1666):
  * the pre-existing flagged-review backlog is frozen in
@@ -21,10 +21,13 @@
  * Identity is (showId, file) (a plain Set, not a multiset) — see
  * scripts/lib/critic-outlets-baseline.js for why that's safe here.
  *
- * Default/--report-only/--json modes always exit 0 (advisory) — unchanged;
- * production pipelines (rebuild-fast.yml, rebuild-reviews.yml,
- * opening-night-poller.yml) call this bare to regenerate the registry and
- * must never see a non-zero exit from that.
+ * --strict is inherently read-only (never writes data/critic-registry.json
+ * or data/audit/critic-outlet-affinity.json), independent of --report-only —
+ * a gate whose whole purpose is a pass/fail exit code must not depend on the
+ * caller also remembering the write-suppressing flag. Only the truly bare
+ * invocation (no flags at all) writes both files, and always exits 0.
+ * Production pipelines (rebuild-fast.yml, rebuild-reviews.yml,
+ * opening-night-poller.yml) call it that way to regenerate the registry.
  *
  * Wired into .github/workflows/test.yml with --strict, no continue-on-error.
  */
@@ -32,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
@@ -124,9 +128,11 @@ function scanReviewTexts() {
     process.exit(1);
   }
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
-  );
+  // listShowDirs (not raw readdirSync+statSync) — a dangling symlink in the
+  // review-texts checkout throws ENOENT on statSync and would otherwise crash
+  // the whole gate instead of skipping that one entry (task #1668 ship-check,
+  // same hardening audit-outlet-registry.js already has).
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -344,10 +350,16 @@ function main() {
       })),
   };
 
+  // --strict is inherently read-only, regardless of --report-only — a gate
+  // whose entire purpose is a pass/fail exit code must never depend on the
+  // caller also remembering to pass --report-only, or a future CI edit that
+  // drops --report-only (thinking it's redundant with --strict) would start
+  // silently regenerating data/critic-registry.json off whatever review-texts
+  // snapshot that runner has (task #1668 ship-check).
   if (jsonOutput) {
     console.log(JSON.stringify({ registry: registryOutput, audit: auditOutput }, null, 2));
-  } else if (reportOnly) {
-    console.log('\n--report-only: No files written');
+  } else if (reportOnly || STRICT) {
+    console.log('\n--report-only/--strict: No files written');
   } else {
     // Write registry
     fs.writeFileSync(REGISTRY_OUTPUT, JSON.stringify(registryOutput, null, 2));
