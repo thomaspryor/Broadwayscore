@@ -18,26 +18,26 @@ const BROADWAY_ROUNDUP_HTML =
   '<html><head><title>Reviews: What Do Critics Think of The Outsiders on Broadway? | Playbill</title></head>' +
   '<body><h1 style="display:none;"></h1></body></html>';
 
-test('rejects a Broadway roundup for a regional target show (market mismatch)', async () => {
+test('rejects a Broadway roundup for a regional target show (production-category mismatch)', async () => {
   const result = await validatePageMatchesShow(BROADWAY_ROUNDUP_HTML, 'The Outsiders', {
     openingYear: 2023,
-    market: 'regional',
+    category: 'regional',
     skipLlm: true,
   });
   assert.equal(result.valid, false);
-  assert.match(result.reason, /market mismatch/);
+  assert.match(result.reason, /production-category mismatch/);
 });
 
 test('still accepts the same roundup for the actual Broadway show', async () => {
   const result = await validatePageMatchesShow(BROADWAY_ROUNDUP_HTML, 'The Outsiders', {
     openingYear: 2024,
-    market: 'broadway',
+    category: 'broadway',
     skipLlm: true,
   });
   assert.equal(result.valid, true);
 });
 
-test('does not reject on "on Broadway" phrasing when market is unspecified (back-compat)', async () => {
+test('does not reject on "on Broadway" phrasing when category is unspecified (back-compat)', async () => {
   const result = await validatePageMatchesShow(BROADWAY_ROUNDUP_HTML, 'The Outsiders', {
     openingYear: 2023,
     skipLlm: true,
@@ -45,14 +45,14 @@ test('does not reject on "on Broadway" phrasing when market is unspecified (back
   assert.equal(result.valid, true);
 });
 
-test('market mismatch check is case-insensitive on "on Broadway"', async () => {
+test('production-category mismatch check is case-insensitive on "on Broadway"', async () => {
   const html =
     '<html><head><title>THE OUTSIDERS Opens ON BROADWAY — Review Roundup</title></head><body></body></html>';
   const result = await validatePageMatchesShow(html, 'The Outsiders', {
     openingYear: 2023,
-    market: 'off-broadway',
+    category: 'off-broadway',
     skipLlm: true,
   });
   assert.equal(result.valid, false);
-  assert.match(result.reason, /market mismatch/);
+  assert.match(result.reason, /production-category mismatch/);
 });

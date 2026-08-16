@@ -233,6 +233,7 @@ function extractYearFromUrl(url) {
  * @param {number} [options.openingYear] - Show's opening year for year-mismatch detection
  * @param {string} [options.pageUrl] - URL of the fetched page for URL-based date extraction
  * @param {string} [options.pageType] - 'audience-aggregator' broadens the LLM's page-type framing beyond "review" (e.g. Show Score ratings pages)
+ * @param {string} [options.category] - Target show's shows.json `category` ('broadway'/'off-broadway'/'west-end'/'off-west-end'/'regional'). When set and not 'broadway', rejects headings that explicitly say "on Broadway" (same-title Broadway-transfer mismatch, #1650)
  * @returns {Promise<{ valid: boolean, confidence: number, reason: string, provider?: string }>}
  */
 async function validatePageMatchesShow(html, showTitle, options = {}) {
@@ -272,19 +273,27 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
     }
   }
 
-  // Layer 0c: Broadway-transfer market mismatch (fast, pre-word-match).
+  // Layer 0c: Broadway-transfer production-category mismatch (fast, pre-word-match).
   // A regional/off-Broadway/tour production shares its title with a same-title
   // Broadway transfer, and word-match alone can't tell them apart — the title
   // matches either way. But a roundup for the wrong (Broadway) production says
   // so explicitly in its own heading ("What Do Critics Think of TITLE on
   // Broadway?", "Review Roundup: TITLE Opens On Broadway"). When the caller
-  // tells us the target is NOT the Broadway run, that phrase is a same-title,
-  // different-production signal — reject before Layer 1's title match short-
-  // circuits past it. Confirmed: The Outsiders world-premiere-regional-2023 vs
-  // the-outsiders-2024 (#1650) — Playbill's own Broadway verdict roundup was
-  // accepted for the regional show on title match alone.
-  if (options.market && options.market !== 'broadway' && /\bon broadway\b/i.test(headingText)) {
-    return { valid: false, confidence: 0, reason: `market mismatch: headings mention "on Broadway" but target show market is "${options.market}"` };
+  // tells us the target show's own category is NOT 'broadway', that phrase is
+  // a same-title, different-production signal — reject before Layer 1's title
+  // match short-circuits past it. Only scans title/h1/first-h2 (not body prose,
+  // per this function's own headingText scope above), so incidental "belongs
+  // on Broadway" commentary inside review prose can't trigger a false reject.
+  // options.category is the show's own shows.json `category` field
+  // ('broadway'/'off-broadway'/'west-end'/'off-west-end'/'regional') — NOT
+  // the broader "market" grouping used elsewhere (isLondonMarket, NYC market
+  // pool) that lumps off-Broadway in with Broadway; deliberately named
+  // differently to avoid that collision. Confirmed: The Outsiders
+  // world-premiere-regional-2023 vs the-outsiders-2024 (#1650) — Playbill's
+  // own Broadway verdict roundup was accepted for the regional show on title
+  // match alone.
+  if (options.category && options.category !== 'broadway' && /\bon broadway\b/i.test(headingText)) {
+    return { valid: false, confidence: 0, reason: `production-category mismatch: headings mention "on Broadway" but target show category is "${options.category}"` };
   }
 
   // Layer 1: Word-match with confidence
