@@ -3,6 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 
+// The 3 manifests test.yml actually runs tests from (repo-relative paths).
+// Single source of truth for consumers that need to know "every manifest
+// that exists" — scripts/audit-orphan-tests.js's MANIFEST_FILES,
+// tests/unit/test-manifest-integrity.test.mjs's MANIFESTS, and
+// scripts/audit-time-bomb-tests.js's SUITES all derive from this instead of
+// each hardcoding the same 3 paths independently (card #1657: a 4th
+// independent copy is how a manifest gets silently missed again).
+const MANIFESTS = ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt'];
+
 function readManifest(manifestPath) {
   const raw = fs.readFileSync(manifestPath, 'utf8');
   return raw
@@ -54,4 +63,4 @@ function validateManifest(manifestPath, repoRoot) {
   return { entries, errors };
 }
 
-module.exports = { readManifest, validateManifest };
+module.exports = { MANIFESTS, readManifest, validateManifest };
