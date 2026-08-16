@@ -312,6 +312,7 @@ tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
+tests/unit/notion-tasks-sync-dedup.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
 tests/unit/nytheater-openings.test.mjs
@@ -402,6 +403,7 @@ tests/unit/restore-protected-fields-outlet-registry.test.mjs
 tests/unit/restore-protected-fields-stale-checkout.test.mjs
 tests/unit/reverify-clear-guards.test.mjs
 tests/unit/reverify-stale-cv-title-mismatch-guard.test.mjs
+tests/unit/review-file-writer-preserves-flags-on-url-change.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs
 tests/unit/review-gate-merge.test.mjs
 tests/unit/review-gate-scope.test.mjs

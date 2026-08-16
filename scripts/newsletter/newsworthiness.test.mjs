@@ -9,7 +9,7 @@
 // Per CLAUDE.md §15 these import the real functions; no logic is copied here.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildSubjectFromCandidates, trimToWordBoundary, scoreCandidates, formatClosingDay } from './newsworthiness.mjs';
+import { buildSubjectFromCandidates, buildLedeSentences, trimToWordBoundary, scoreCandidates, formatClosingDay } from './newsworthiness.mjs';
 
 const show = (id) => ({ id, slug: id, title: id });
 const cand = (kind, headline, id = kind) => ({ kind, headline, show: show(id) });
@@ -125,4 +125,56 @@ test('formatClosingDay returns empty string for unusable input', () => {
   for (const bad of [null, undefined, '', 'soon', 12345, {}]) {
     assert.equal(formatClosingDay(bad), '', `input: ${JSON.stringify(bad)}`);
   }
+});
+
+// ── two distinct shows opening the same week must both survive dedupe ───────
+// Regression guard for 2026-08-16: two WE openings (Death Note 74/"decent",
+// How the Other Half Loves 79/"strong") tied on weight, so dedupeByKind's
+// per-KIND (not per-show) key kept only the most-reviewed one and dropped the
+// better-reviewed show entirely — the lede's second sentence fell through to
+// an unrelated closing instead of naming the second opening. Opens must
+// outrank closes when both are candidates.
+test('two same-kind openings for different shows both survive dedupe, ahead of a closing', () => {
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'death-note', slug: 'death-note', title: 'Death Note: The Musical' } },
+      { show: { id: 'how-the-other-half-loves', slug: 'how-the-other-half-loves', title: 'How the Other Half Loves' } },
+    ],
+    closingsThisWeek: [{ id: 'enormous-crocodile', slug: 'enormous-crocodile', title: 'The Enormous Crocodile', closingDate: '2026-08-22' }],
+  });
+  const { sentences, kinds } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'closing-final'], kinds.join(', '));
+  assert.ok(sentences.some(s => s.includes('Death Note')), sentences.join(' '));
+  assert.ok(sentences.some(s => s.includes('How the Other Half Loves')), sentences.join(' '));
+});
+
+test('a single recurring kind (recoupment) still dedupes to one — no per-show explosion', () => {
+  const candidates = scoreCandidates({
+    recoupments: [
+      { show: { id: 'a', slug: 'a', title: 'Show A' }, weeksToRecoup: 10 },
+      { show: { id: 'b', slug: 'b', title: 'Show B' }, weeksToRecoup: 20 },
+    ],
+  });
+  const { kinds } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['recoupment']);
+});
+
+// ── Delacorte Theater is Free Shakespeare in the Park, not off-Broadway ─────
+// Regression guard for 2026-08-16: the OB opening headline unconditionally
+// said "opens off-Broadway", which misdescribes an outdoor, seasonal Public
+// Theater production at the Delacorte as a commercial off-Broadway house.
+test('Delacorte Theater openings say Shakespeare in the Park, not off-Broadway', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'winters-tale', slug: 'winters-tale', title: "The Winter's Tale", venue: 'Delacorte Theater' } }],
+  });
+  assert.equal(c.headline, "The Winter's Tale opens at Free Shakespeare in the Park");
+  assert.ok(!/off-Broadway/.test(c.headline), c.headline);
+});
+
+test('other off-Broadway venues are unaffected by the Delacorte special-case', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'x', slug: 'x', title: 'Some Show', venue: 'Lucille Lortel Theatre' } }],
+  });
+  assert.equal(c.headline, 'Some Show opens off-Broadway');
 });
