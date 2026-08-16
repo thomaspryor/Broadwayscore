@@ -41,12 +41,15 @@ test('validateRoundupPageTitle flags a Broadway-qualified archive filed under a 
   assert.equal(result.showCategory, 'regional');
 });
 
-test('validateRoundupPageTitle accepts the same archive filed under the actual Broadway showId', () => {
+test('validateRoundupPageTitle is a no-op for non-regional showCategory even with a qualifying sibling (scope is regional-only)', () => {
+  // A page that legitimately says "(Broadway)" for an ACTUAL Broadway
+  // showId must never be flagged just because a regional sibling exists —
+  // the check only ever fires when THIS show's own category is 'regional'.
   const result = validateRoundupPageTitle(
     SHOW_SCORE_BROADWAY_HTML,
     TWO_STRANGERS_TITLE,
     'broadway',
-    ['regional'] // sibling categories — the regional sibling exists but qualifier matches own category
+    ['regional']
   );
   assert.equal(result.ok, true);
 });
@@ -56,14 +59,27 @@ test('validateRoundupPageTitle is unaffected when no same-title sibling exists (
   assert.equal(result.ok, true, 'omitting showCategory/siblingCategories must preserve pre-fix behavior');
 });
 
-test('validateRoundupPageTitle does not flag when the qualifier has no matching sibling category', () => {
-  // Off-Broadway show, no siblings at all in a different market — qualifier
-  // present but nothing to corroborate a mix-up against.
+test('validateRoundupPageTitle does not flag a regional show when the page carries no qualifier at all', () => {
+  // DTLI-style title has no market qualifier — nothing to corroborate a
+  // mix-up against, even though a Broadway sibling exists.
+  const dtliHtml = '<title>Two Strangers (Carry a Cake Across New York) - Did They Like It?</title>';
+  const result = validateRoundupPageTitle(
+    dtliHtml,
+    TWO_STRANGERS_TITLE,
+    'regional',
+    ['broadway']
+  );
+  assert.equal(result.ok, true);
+});
+
+test('validateRoundupPageTitle does not flag a regional show when the qualifier matches no sibling category', () => {
+  // Broadway-qualified page, but this regional show's only siblings are
+  // off-west-end — the qualifier names a market with no corroborating sibling.
   const result = validateRoundupPageTitle(
     SHOW_SCORE_BROADWAY_HTML,
     TWO_STRANGERS_TITLE,
-    'off-broadway',
-    [] // no siblings on record
+    'regional',
+    ['off-west-end']
   );
   assert.equal(result.ok, true);
 });
