@@ -567,6 +567,15 @@ function cmdPull(args) {
         const blockedBy = (priorTask && priorTask.blockedBy) || existing.blockedBy || [];
         if (!dry) writeTask(dir, { ...mapped, blocks, blockedBy });
         map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+        // Persist the map/hwm right after this write, not just once at the
+        // end of the whole run (adversarial review finding on task #1701):
+        // the ORIGINAL bug was exactly a task file landing on disk while the
+        // sidecar map never learned about it because a crash/error hit
+        // between this write and the end-of-run writeMap. The ground-truth
+        // scan above repairs drift that already happened; this closes the
+        // window that creates it in the first place, for every doCreate()
+        // call, not just the ones a future crash happens to interrupt.
+        if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
         updated.push({ taskId: target.taskId, name: card.name });
         return;
       }
@@ -577,6 +586,7 @@ function cmdPull(args) {
       map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
       created.push({ taskId: task.id, name: card.name });
       id++;
+      if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
     };
 
     for (const { card } of plan.toCreate) doCreate(card);
