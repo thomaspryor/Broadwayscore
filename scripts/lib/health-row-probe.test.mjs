@@ -1,4 +1,4 @@
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -18,6 +18,7 @@ const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const SNAPSHOT_FIXTURE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'health-row-probe-snapshot-'));
 const SNAPSHOT_PATH = path.join(SNAPSHOT_FIXTURE_DIR, 'health-digest-snapshot.json');
 process.env.HEALTH_ROW_ABSENT_SNAPSHOT_PATH = SNAPSHOT_PATH;
+after(() => fs.rmSync(SNAPSHOT_FIXTURE_DIR, { recursive: true, force: true }));
 const { main: checkMain } = require('../check-health-row-absent.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

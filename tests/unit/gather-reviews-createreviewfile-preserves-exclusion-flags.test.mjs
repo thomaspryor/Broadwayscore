@@ -27,7 +27,12 @@ const { createReviewFile } = require('../../scripts/gather-reviews.js');
 // afterEach; the guard's true target (task #1662) is mutating EXISTING
 // tracked content in place, which this pattern never does.
 const REVIEW_TEXTS_DIR = path.join(process.cwd(), 'data', 'review-texts');
-const SHOW_ID = '__test-createreviewfile-816';
+// process.pid-suffixed (ship-check finding, task #1662): a fixed literal
+// here would let two concurrent runs of this file — parallel Claude
+// sessions, or CI + a session, both exercising the real data/review-texts/
+// tree — mkdir/write/rm-rf the SAME directory, which is a real race, not the
+// "never-colliding" property the exemption comment above claims.
+const SHOW_ID = `__test-createreviewfile-816-${process.pid}`;
 const showDir = path.join(REVIEW_TEXTS_DIR, SHOW_ID);
 const filePath = path.join(showDir, 'broadwayworld--some-critic.json');
 

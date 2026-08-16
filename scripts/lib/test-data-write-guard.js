@@ -57,9 +57,22 @@
  *   - the write-call's OBJECT is never checked, only the property/identifier
  *     name — `someUnrelatedThing.writeFileSync(...)` would still be scanned.
  *     Deliberate: false positives here are directory writes, never data loss.
- *   - env is a single flat last-assignment-wins map (no block scoping), so
- *     two unrelated same-named locals in different functions can cross
- *     resolve. Matches audit-delete-without-breadcrumb.js's precedent.
+ *   - a write function reached via an ALIASED import (`import { writeFileSync
+ *     as wfs } from 'fs'; wfs(REAL_PATH, data)`) or COMPUTED member access
+ *     (`fs['writeFileSync'](...)`) is invisible — calleeIdentifierName() only
+ *     reads the literal callee identifier/property name, never traces import
+ *     specifiers. This is a different failure mode than the resolver gaps
+ *     below: the CALL SITE itself is never found, not just its argument
+ *     under-resolved (ship-check adversarial-review finding, task #1662).
+ *     Safe (false-negative) direction; no instance in the current corpus.
+ *   - `funcDefs` (named `function foo() {}` declarations, used for local
+ *     function-return tracing) stays a single flat file-wide map — two
+ *     unrelated same-named function declarations in different scopes can
+ *     cross-resolve. Matches audit-delete-without-breadcrumb.js's precedent.
+ *     Plain-variable `env`, by contrast, IS lexically scoped per call site
+ *     (module scope + each enclosing function's own locals/params, with a
+ *     `beforePos` cutoff so a later reassignment can't leak backward — see
+ *     collectScopeDecls()/shadowParams()).
  *   - dynamic paths built from anything other than string literals,
  *     identifiers, `+` concatenation, template literals, and
  *     `path.join`/`path.resolve` calls are not resolved (e.g. array `.join()`
