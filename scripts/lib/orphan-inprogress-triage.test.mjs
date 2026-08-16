@@ -188,6 +188,19 @@ test('Outcome has only a PAST RECHECK-AFTER date -> corroboration still applies 
   assert.equal(bucketOf(rows, 22), 'FINISHED');
 });
 
+test('Outcome carries VERIFY: owner-judgment -> NEEDS-REVIEW even with strong corroboration', () => {
+  // ship-check adversarial catch (task #1705): this is the codebase's OTHER
+  // "only a human can confirm this" convention (scripts/lib/owner-judgment-
+  // marker.js), same shape as the RECHECK-AFTER trap above — a corroborated
+  // Outcome must not sail past it either.
+  const rows = classify([orphan(23)], {
+    cardOf: () => ({ status: 'Paused', outcome: 'Shipped and verified. VERIFY: owner-judgment — needs the owner to eyeball the result.', lastEditedAt: hAgo(72) }),
+    corroborateOutcomeOf: () => ({ hasEvidence: true, evidence: ['keyFile src/x.ts exists'] }),
+  });
+  assert.equal(bucketOf(rows, 23), 'NEEDS-REVIEW');
+  assert.equal(actionOf(rows, 23), 'owner-judgment-pending');
+});
+
 test('classifies every input exactly once', () => {
   const tasks = [orphan(20), orphan(21), orphan(22)];
   const rows = classify(tasks, { cardOf: () => ({ status: 'Done', lastEditedAt: hAgo(200) }) });

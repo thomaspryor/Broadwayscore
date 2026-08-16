@@ -33,6 +33,7 @@ const {
   TERMINAL_CARD_STATUSES,
   DEFAULT_IDLE_MS,
 } = require('./task-reclaim.js');
+const { hasOwnerJudgmentMarker } = require('./owner-judgment-marker.js');
 
 /**
  * @param {Array<object>} tasks               in_progress tasks with no live workspace match
@@ -162,6 +163,18 @@ function classifyOrphanInProgress(tasks, ctx = {}) {
         push('NEEDS-REVIEW', 'recheck-after-pending', 'card records a completed-looking Outcome, but it names a RECHECK-AFTER date that has not passed yet — the card\'s own words say this cannot be claimed Done until then', { notionId: marker, cardStatus });
         continue;
       }
+    }
+
+    // Same class of guard as RECHECK-AFTER above, ship-check adversarial
+    // catch (task #1705): "VERIFY: owner-judgment" (scripts/lib/owner-
+    // judgment-marker.js) is this codebase's OTHER "only a human can confirm
+    // this" convention — used by verify-gate.js and headless-dispatchability.js
+    // to block an unattended dispatch/completion claim. A corroborated
+    // Outcome carrying that marker must never sail through to FINISHED the
+    // same way an uncaught RECHECK-AFTER almost did.
+    if (hasOutcome && hasOwnerJudgmentMarker(card.outcome)) {
+      push('NEEDS-REVIEW', 'owner-judgment-pending', 'card is marked VERIFY: owner-judgment — its result cannot be machine-checked, needs a human yes/no, not an automatic close', { notionId: marker, cardStatus });
+      continue;
     }
 
     // A card whose own Outcome points at a DIFFERENT card as the record of

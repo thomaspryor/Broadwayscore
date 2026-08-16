@@ -156,7 +156,14 @@ function buildOutcomeCorroborator(repoRoot) {
     const words = text.split(/\s+/);
     for (let i = 0; i < words.length; i++) {
       const hash = words[i].replace(/[^0-9a-f]/gi, '');
-      if (!/^[0-9a-f]{7,40}$/i.test(hash)) continue;
+      // Minimum 8, not git's usual 7 (ship-check adversarial catch, task
+      // #1705): `git cat-file -t` resolves a short hex string as a PREFIX
+      // match, so in a 200k+-commit repo a 7-char token has real collision
+      // odds of accidentally resolving to some UNRELATED commit and reading
+      // as corroboration. Every real hash observed in the actual backlog
+      // this was built against was 8-11 chars (git's own auto-abbreviation
+      // length), so 8 costs nothing in practice while cutting the riskiest case.
+      if (!/^[0-9a-f]{8,40}$/i.test(hash)) continue;
       const windowStart = Math.max(0, i - 3);
       const nearAnchor = words.slice(windowStart, i).some((w) => ANCHOR_WORDS.has(strip(w)));
       if (!nearAnchor) continue;
@@ -262,7 +269,28 @@ function applyDecision(decision, { dir, now, dryRun, cardOfCache }) {
 function run(argv) {
   const dir = tasksDir();
   const orphans = findOrphans({ dir });
-  const startedIds = dispatchedTaskIds(REPO) || new Set();
+  // dispatchedTaskIds returns null (not []) when dispatch-ledger.jsonl is
+  // unreadable — gitignored, so absent by construction in a git worktree
+  // (audit-archived-in-progress.js's own docstring: "absent input must read
+  // as 'cannot answer', never as 'answer is zero'"). ship-check adversarial
+  // review (task #1705) caught this exact bug live: run from a worktree, the
+  // `|| new Set()` fallback silently made EVERY task look never-dispatched,
+  // and task #57 — which had real launch/job-spawned/job-done ledger
+  // history in the main checkout — got reclaimed to LOST/pending on that
+  // false "never started" basis. Refuse rather than mislead, matching
+  // audit-archived-in-progress.js's main()'s exit-2 convention exactly.
+  const startedIdsRaw = dispatchedTaskIds(REPO);
+  if (startedIdsRaw === null) {
+    const msg = `dispatch-ledger.jsonl not readable at ${path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl')}\n`
+      + '  It is gitignored, so it does not exist in a git worktree. Re-run from the main checkout\n'
+      + '  (/Users/tompryor/Broadwayscore). Refusing to classify: with no ledger every task would\n'
+      + '  look never-started, which is a wrong answer, not a cautious one.';
+    if (argv.includes('--json')) console.log(JSON.stringify({ error: msg }, null, 2));
+    else console.error(`[audit-orphan-inprogress] REFUSED — ${msg}`);
+    process.exitCode = 2;
+    return null;
+  }
+  const startedIds = startedIdsRaw;
   const { branches, worktreePaths } = gitRefSources(REPO);
   const gitEvidenceOf = buildGitEvidenceIndex(REPO);
   const cardCache = new Map();
