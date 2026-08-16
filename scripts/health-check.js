@@ -84,6 +84,14 @@ const AUTO_FIX_PLAYBOOK = [
   // dead rate is expensive and worth chasing but never data loss.
   { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
     humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
+  // Task #1648, same #1199 trap: without an explicit entry this row defaults
+  // to urgency 'low' and renders as an anonymous count instead of a named
+  // FAIL — for a check whose whole purpose is ending a silent digest-content
+  // regression, that would ship the exact invisibility the card exists to
+  // close. 'fix-now': a tripped invariant means the LIVE owner-facing email
+  // already shipped wrong content, not a risk of it.
+  { match: /^Digest: content-invariant check$/, urgency: 'fix-now',
+    humanAction: 'The morning digest email failed its own content-invariant check (a forbidden section reappeared, or another assertDigestInvariants() rule broke) — the digest still sent, so this is a live content bug the owner already saw. Open Claude Code and say: "Check the digest content-invariant FAIL named in this check — run send-morning-digest.js --dry-run, compare data/audit/morning-digest-preview.html against scripts/lib/digest-content-invariants.js, and fix the regression."' },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
@@ -2108,6 +2116,21 @@ function checkAutofixThroughput() {
   return [assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries })];
 }
 
+// --- Digest content-invariant FAIL monitor (task #1648) ---
+//
+// Card #1641 upgraded scripts/send-morning-digest.js's content-invariant
+// check from a WARN to `process.exitCode = 1` on violation, but nothing
+// consumed that exit code — this reads the JSONL ledger the sender now
+// writes on every FAIL (scripts/lib/digest-invariant-fail-monitor.js) so a
+// future violation surfaces as a health.errors row instead of hiding behind
+// a launchd stderr log nobody tails. Same null-means-absent contract as the
+// push-retry/autofix-canary ledgers above.
+function checkDigestInvariantFail() {
+  const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
+  const entries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-invariant-fail-ledger.jsonl'));
+  return [assessDigestInvariantFailRow(entries)];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
@@ -4020,6 +4043,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
+    ...checkDigestInvariantFail(),
   ];
 }
 

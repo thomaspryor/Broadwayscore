@@ -272,6 +272,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # health-check.js's "Push-retry deadman" row. Never committed by the helper —
 # ignore so `git add -A` in the ~130 caller workflows can't stage it as churn.
 /data/audit/push-retry-failures.jsonl
+# Runner-local digest content-invariant FAIL telemetry (task #1648). Written
+# by scripts/send-morning-digest.js on assertDigestInvariants() violation,
+# read locally by health-check.js's "Digest: content-invariant check" row.
+/data/audit/digest-invariant-fail-ledger.jsonl
 # Structural #1 — daily exclusion logs (may contain URLs, not committed)
 /data/audit/exclusions-*.jsonl
 /data/audit/exclusion-summary-yesterday.json
