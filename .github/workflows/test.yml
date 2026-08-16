@@ -3480,7 +3480,19 @@ jobs:
     timeout-minutes: 5
     # Only run on schedule (daily) — not every push, to avoid noise
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    continue-on-error: true
+    # continue-on-error removed (2026-08-16): it predates the allowlist
+    # wrapper below (added 2026-07-11, commit b1f018ba240) and silently
+    # defeated it — that commit's own message says the wrapper "fails on any
+    # critical NOT in an expiring allowlist... Failure paths tested
+    # (unallowlisted -> exit 1, expired -> exit 1)", but continue-on-error
+    # swallowed that exit 1 at the job level, so the job always reported
+    # success in the GitHub UI regardless. A genuine unallowlisted critical
+    # (the exact case the wrapper was built to catch, e.g. the 2026-07 axios
+    # SSRF — see memory/roadmap.md) would never have reddened this job or
+    # been visible to test-summary's needs-list check (task #1690). The
+    # wrapper is already the noise-reduction layer (expiring allowlist for
+    # unfixable transitive vulns) — this flag was pure leftover, not a
+    # second, deliberate layer of noise suppression on top of it.
     steps:
       - name: Checkout
         uses: actions/checkout@v5
