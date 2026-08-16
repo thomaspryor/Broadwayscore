@@ -54,15 +54,27 @@ function pidLooksLikeClaude(pid) {
  * Acquire the per-task lease. Returns {ok:true} or {ok:false, reason, holder}.
  * A holder whose recorded PID is dead (or not a claude process) is stale and
  * gets stolen; a live holder wins.
+ *
+ * `isAliveFn` (test-only seam, defaults to the real pidLooksLikeClaude):
+ * faking a genuinely-alive holder process to test the "lease already held"
+ * branch is unsafe to do via real subprocesses (card #1454's own test tried
+ * spawning a process literally named `claude` and it either got killed by
+ * this environment's own process monitoring or raced into looking dead
+ * exactly when runJob's real check ran, which once let a stolen "stale"
+ * lease fall through to a REAL claude-cli spawn). Threading the liveness
+ * predicate through as a parameter — same idiom as this file's own `nowMs`
+ * threading elsewhere in the dispatch subsystem — lets a test drive the real
+ * acquireLease()/runJob() control flow deterministically with zero risk of
+ * an actual process spawn.
  */
-function acquireLease(taskId, meta) {
+function acquireLease(taskId, meta, { isAliveFn = pidLooksLikeClaude } = {}) {
   fs.mkdirSync(LEASE_ROOT, { recursive: true }); // parent first; the LEAF mkdir is the atomic claim
   try {
     fs.mkdirSync(leaseDir(taskId)); // atomic: EEXIST means someone holds it
   } catch (e) {
     if (e.code !== 'EEXIST') return { ok: false, reason: `lease mkdir failed: ${e.message}`, holder: null };
     const holder = readLease(taskId);
-    if (holder && pidLooksLikeClaude(holder.pid)) {
+    if (holder && isAliveFn(holder.pid)) {
       return { ok: false, reason: 'task already has a live job', holder };
     }
     // Stale lease (crashed holder / dead pid): steal.
@@ -152,7 +164,7 @@ function buildBudgetPreamble(timeoutMs) {
 }
 
 async function runJob(opts) {
-  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, graceMs, resumeSessionId, killSwitchEnv = 'BSC_RUNNER_DISABLED' } = opts;
+  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, graceMs, resumeSessionId, killSwitchEnv = 'BSC_RUNNER_DISABLED', isAliveFn } = opts;
   // Each DISPATCHER is governed by its own kill switch at the runner level
   // (BRO-286): bsc-next-path callers keep the default; linear-next.js passes
   // killSwitchEnv:'LINEAR_NEXT_DISABLED'. Without this, the morning-digest
@@ -167,8 +179,26 @@ async function runJob(opts) {
   const jobId = `${taskId}-${Date.now().toString(36)}`;
   const logFile = path.join(LOG_ROOT, `${jobId}.log`);
 
-  const lease = acquireLease(taskId, { jobId, subject, pid: null });
+  // Card #1454: acquireLease() (mkdirSync-based) can throw (e.g. LEASE_ROOT
+  // unwritable) before ever returning ok/not-ok — without this catch, that
+  // exception propagated straight to the caller's own .catch(), which only
+  // console.errors. The launch's ledger row would then have no jobId-bearing
+  // event at all, forever (same invisibility JOB_EVENTS.ABANDONED exists to
+  // close for the lease-held case below).
+  let lease;
+  try {
+    lease = acquireLease(taskId, { jobId, subject, pid: null }, isAliveFn ? { isAliveFn } : undefined);
+  } catch (e) {
+    ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `acquireLease threw: ${String(e.message).slice(0, 200)}` });
+    throw e;
+  }
   if (!lease.ok) {
+    // A DIFFERENT job is already running this task (lease.reason ===
+    // 'task already has a live job') — this attempt did no work, but its own
+    // `launch` ledger row still needs a terminal event or it sits open
+    // forever (card #1454). Not deadlike (see JOB_EVENTS.ABANDONED's own
+    // comment): the task itself is fine, just doubly-dispatched.
+    ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `${lease.reason}${lease.holder && lease.holder.jobId ? ` (held by ${lease.holder.jobId})` : ''}` });
     return { ok: false, jobId, stage: 'lease-held', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false, holder: lease.holder, reason: lease.reason };
   }
 

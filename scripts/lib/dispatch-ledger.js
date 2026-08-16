@@ -227,7 +227,14 @@ function dispatchCapDecision(taskId, entries) {
 // attempt, and are deliberately excluded from this set.
 function isAttemptEvent(event) {
   return event === 'launch' || isDeadlikeEvent(event)
-    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED;
+    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED
+    // ABANDONED is deliberately excluded from isDeadlikeEvent (see its own
+    // comment — a lease-held abandon must not burn a DEAD_ATTEMPT_LIMIT
+    // strike), but it is still very much an ATTEMPT: without this,
+    // latestAttemptForTask skips straight past it to the ORIGINAL launch row,
+    // so isLatestDispatchDead below never sees that the most recent attempt
+    // never actually ran (card #1454 ship-check finding).
+    || event === JOB_EVENTS.ABANDONED;
 }
 
 // The most recent dispatch-attempt entry for a task, or null if it was never
@@ -266,6 +273,11 @@ function isLatestDispatchDead(taskId, entries) {
   if (!latest) return false;
   if (isDeadlikeEvent(latest.event)) return true;
   if (latest.event === 'launch' && latest.unverified === true) return true;
+  // An abandoned attempt (lease-held / pre-spawn exception) never actually
+  // ran, same as a dead cmux launch — a caller checking "did the LATEST
+  // attempt run" (dispatch-dead-launch-guard.js's completion guard) must not
+  // trust a task marked completed off the back of one.
+  if (latest.event === JOB_EVENTS.ABANDONED) return true;
   return false;
 }
 
@@ -815,12 +827,28 @@ const JOB_EVENTS = Object.freeze({
   FAILED: 'job-failed',     // + stage (claude-cli STAGES / autonomous-run-core vocabulary)
   ORPHANED: 'job-orphaned', // appended by bsc-reconcile when pid is dead with no terminal event
   RETRIED: 'job-retried',   // reconciler-initiated resume attempt (capped)
+  // Card #1454: a headless `launch` row (workspaceRef `headless:N`/`linear:N`) can
+  // reach runJob() and still never spawn a job — acquireLease() finds the task's
+  // lease already held (a duplicate-dispatch race), or something throws before the
+  // spawn (e.g. LEASE_ROOT mkdir failure). Before this event existed, that launch
+  // got NO jobId-bearing row at all: foldJobs()/openJobs() are jobId-keyed, so it
+  // was invisible to every job-outcome read, forever. Written ONLY by
+  // bsc-runner.runJob() itself (the jobId is already minted before the lease check,
+  // so it's always available). Deliberately NOT in isDeadlikeEvent below: a
+  // lease-held abandon means a DIFFERENT job for this task is healthy right now —
+  // feeding it into the substantive-dead-attempt count would let two benign
+  // concurrent-dispatch races permanently park a task that never actually failed.
+  ABANDONED: 'job-abandoned',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
 // job (its own spawned→done/failed chain). Leaving it open made the old id a
 // permanent ghost that every tick re-orphaned (ship-check Codex blocker).
-const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED]);
+// ABANDONED joins the set for the same reason (card #1454): without it, a
+// lease-held/pre-spawn-abandoned "job" reads as perpetually open to every
+// TERMINAL_JOB_EVENTS consumer (bsc-status.js, backlog-drain.js,
+// dispatch-card-drift.js, digest-autofix.js, autofix-canary.js).
+const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED]);
 
 // Latest job state per jobId: fold events, last one wins. Returns
 // Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.
