@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T11:14:55.007Z",
+  "generatedAt": "2026-08-16T12:14:43.661Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
@@ -16,9 +16,30 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 574.0551297222222,
+      "fileAgeHours": 575.0429516666667,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 49.24830138888889
+      "nonTerminalAgeHours": 50.24514972222222
+    },
+    {
+      "showId": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "openingDate": "2026-07-30",
+      "file": "slantmagazine--unknown.json",
+      "outletId": "slantmagazine",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.slantmagazine.com/games/beast-of-reincarnation-review/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-vessel-off-broadway-2026 --url=https://www.slantmagazine.com/games/beast-of-reincarnation-review/ --outlet=slantmagazine   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-16T11:17:10.147Z",
+      "fileAgeHours": 0.9587747222222223,
+      "gapSeenAt": "2026-08-16T12:14:43.661Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +54,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 264.49831916666665,
+      "fileAgeHours": 265.49465166666664,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 49.24830138888889
+      "nonTerminalAgeHours": 50.24514972222222
     }
   ],
   "contradictions": []
