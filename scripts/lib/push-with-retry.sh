@@ -1488,6 +1488,21 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     # (e.g. rebuild-fast.yml, rebuild-reviews.yml stage `data/audit/*.json`
     # on every run) until that follow-up audit narrows or clears specific
     # paths — expected and intentional, not a bug in this guard.
+    # ship-check/Codex adversarial finding (2026-08-16): this check MUST diff
+    # against the range push-via-git-api.sh will actually replay, not
+    # SCRIPT_ENTRY_HEAD. The git reset just above lands HEAD at
+    # RESTORE_BASE_HEAD, which — per the BRO-259 comment above — may already
+    # include an adopted foreign commit (deliberately: "it rides along in
+    # the base_sha..HEAD diff push-via-git-api.sh builds next, so it gets
+    # pushed too instead of silently dropped"). push-via-git-api.sh is
+    # invoked below as `push-via-git-api.sh "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE"
+    # ...` — i.e. it diffs SCRIPT_ENTRY_BASE against CURRENT HEAD, not
+    # SCRIPT_ENTRY_HEAD. Checking the stale SCRIPT_ENTRY_HEAD range here let
+    # a foreign commit's MANAGED/data-audit edit bypass this guard entirely
+    # (found before this diff-range mismatch ever shipped to a live
+    # workflow — no incident, but the same bug task #707's own MANAGED
+    # check already had). Use HEAD (current, post-reset) so this check's
+    # range is byte-identical to what actually gets pushed.
     _managed_check_rc=0
     node -e '
         const { MANAGED } = require(process.argv[1]);
@@ -1497,7 +1512,7 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
         const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
         const hit = changed.find((f) => isManaged(f) || (f.startsWith("data/audit/") && !isManaged(f)));
         process.exit(hit ? 1 : 0);
-      ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" 2>/dev/null || _managed_check_rc=$?
+      ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
     if [ "$_managed_check_rc" = "1" ]; then
       echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
       _api_fallback_ok=false

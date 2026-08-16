@@ -3187,8 +3187,16 @@ function pushFallbackUsageResults(entries) {
   const parts = [...byWorkflow.entries()].map(([wf, n]) => `${wf}: ${n}`).join(', ');
   return [{
     // 'pass' (not 'error'/'warn' — those are the only two the digest
-    // renders as alarming lines; this is expected/healthy telemetry, only
-    // meant to be discoverable via the daily passed-count, not flagged).
+    // renders as alarming lines; this is expected/healthy telemetry, not
+    // something to flag). Ship-check finding (2026-08-16): the rendered
+    // digest table only ever shows a category's PASSED/TOTAL count, never
+    // an individual pass-status check's message — so this row surfaces as
+    // its own named "Push" category line (visible, since it's currently the
+    // only check in that category) but the per-workflow breakdown in
+    // `message` only reaches someone who reads data/audit/health-*-snapshot.json
+    // directly. Acceptable for canary-scale telemetry (one workflow, low
+    // volume); a real digest section would be needed before this could
+    // usefully surface per-workflow detail at wider rollout.
     name: 'Push: Git Data API fallback usage (24h)',
     status: 'pass',
     message: `${entries.length} push(es) landed via the API fallback instead of a normal local push in the last 24h — ${parts}.`,
