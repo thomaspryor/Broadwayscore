@@ -165,7 +165,7 @@ function extractShowTitleFromUrl(url) {
 // Extract reviews from roundup HTML
 // ---------------------------------------------------------------------------
 
-function extractReviewsFromLBO(html, showId) {
+function extractReviewsFromLBO(html, showId, sourceUrl) {
   const $ = cheerio.load(html);
   const reviews = [];
   const seenOutlets = new Set();
@@ -376,6 +376,18 @@ function extractReviewsFromLBO(html, showId) {
     const individual = extractIndividualReviewFromLBO(html, showId);
     if (individual && (individual.excerpt || individual.stars !== null)) {
       reviews.push(individual);
+    }
+  }
+
+  // Individual-fallback rows have no per-outlet link (the whole page IS the
+  // review), so extractIndividualReviewFromLBO always returns url: ''.
+  // Backfilling here — not per-caller — means every caller gets a real
+  // citation URL for free; without it, callers that skip URL-less reviews
+  // (opening-night-poller.js's processDiscoveredReviews) silently drop the
+  // recovered review instead of ingesting it (#1708 review finding).
+  if (sourceUrl) {
+    for (const r of reviews) {
+      if (!r.url) r.url = sourceUrl;
     }
   }
 
@@ -832,12 +844,11 @@ async function scrapeLBORoundups() {
     }
 
     // Extract reviews
-    const reviews = extractReviewsFromLBO(html, showId);
+    const reviews = extractReviewsFromLBO(html, showId, url);
     stats.reviewsExtracted += reviews.length;
     console.log(`  Found ${reviews.length} reviews`);
 
     for (const review of reviews) {
-      if (!review.url) review.url = url; // individual-page fallback has no per-outlet link
       const result = saveLBOReview(showId, review);
       const starStr = review.stars !== null ? ` (${review.stars}★ → ${review.score})` : '';
       if (result === 'new') {

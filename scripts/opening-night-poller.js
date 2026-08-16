@@ -796,7 +796,7 @@ async function runAggregators(show) {
       console.log('  Checking London Box Office roundup...');
       const lbo = await discoverLboRoundupHtml(show, { dataDir: DATA_DIR });
       if (lbo) {
-        const lboReviews = extractReviewsFromLBO(lbo.html, show.id);
+        const lboReviews = extractReviewsFromLBO(lbo.html, show.id, lbo.url);
         console.log(`  LBO: ${lboReviews.length} reviews found`);
         for (const r of lboReviews) {
           results.push({
@@ -808,7 +808,7 @@ async function runAggregators(show) {
             excerpt: r.excerpt || '',
             score: r.score,
             scoreSource: r.score !== null ? 'lbo-star-rating' : undefined,
-            source: 'lbo-roundup',
+            source: r.isIndividual ? 'lbo-individual' : 'lbo-roundup',
           });
         }
       } else {

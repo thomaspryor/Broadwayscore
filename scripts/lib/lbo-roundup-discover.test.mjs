@@ -99,6 +99,66 @@ test('individual-review-template page (#1708 fixture) parses 1 row instead of 0'
   assert.ok(rows[0].excerpt.length > 30, 'excerpt is populated from .pctnt/.pmain paragraphs, not empty');
 });
 
+// Real sitemap URLs for Death Note, captured live 2026-08-16 from
+// https://www.londonboxoffice.co.uk/news-sitemap.xml — LBO published BOTH a
+// genuine 6-outlet roundup (review-roundup-death-note-the-musical-barbican-
+// theatre — confirmed live: WhatsOnStage, The Guardian, The Times, Financial
+// Times, The Standard, The Telegraph) AND its own individual review
+// (death-note-review) for the same show. The pre-fix sitemap fallback in
+// discoverLboRoundupHtml had no preference between the two URL shapes and
+// also failed to strip the roundup URL's "-barbican-theatre" venue suffix
+// when matching against the show title, so it fell back to whichever URL
+// happened to satisfy matchTitleToShow first (the individual page, 1
+// citation, not the roundup, 6 citations).
+const DEATH_NOTE_SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://www.londonboxoffice.co.uk/news/post/death-note-review</loc></url>
+<url><loc>https://www.londonboxoffice.co.uk/news/post/review-roundup-death-note-the-musical-barbican-theatre</loc></url>
+</urlset>`;
+
+const DEATH_NOTE_ROUNDUP_HTML = `<!DOCTYPE html><html><head><title>Review Roundup: DEATH NOTE THE MUSICAL at the Barbican Theatre - West End Theatre News and Reviews</title></head>
+<body>
+<h4>WhatsOnStage</h4>
+<p><strong>“A killer spectacle”</strong></p>
+<h4>★★★★</h4>
+<p><strong>Reviewer: Alun Hood</strong></p>
+<p>“Frank Wildhorn's manga musical adaptation lands with real style and confidence, anchored by a magnetic central performance and a score that finally gives this composer room to be genuinely dark.”</p>
+<p><a href="https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/">Read the review here.</a></p>
+<h4>The Guardian</h4>
+<p><strong>“Wildly popular manga mystery is a killer night out”</strong></p>
+<h4>★★★★</h4>
+<p><strong>Reviewer: Andrew Pulver</strong></p>
+<p>“There is a lot to admire in how faithfully this production translates the source material's moral complexity to the stage, even as the songs occasionally strain to carry the weight of the plot.”</p>
+<p><a href="https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out">Read the review here.</a></p>
+</body></html>`;
+
+test('discovery prefers a real "review-roundup-*" URL over an individual review page for the same show (#1708, Death Note)', async () => {
+  const showId = 'death-note-the-musical-west-end-2026';
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lbo-discover-test-'));
+  // No curated URL and no cached archive for this showId in dataDir — forces
+  // the sitemap fallback path.
+  fs.writeFileSync(path.join(dataDir, 'lbo-roundup-urls.json'), JSON.stringify({ shows: {} }));
+
+  const fetchPage = async (url) => {
+    if (url.includes('news-sitemap.xml')) return { content: DEATH_NOTE_SITEMAP_XML };
+    if (url.includes('review-roundup-death-note-the-musical-barbican-theatre')) return { content: DEATH_NOTE_ROUNDUP_HTML };
+    if (url.includes('death-note-review')) return { content: INDIVIDUAL_REVIEW_HTML.replace(/HOW THE OTHER HALF LOVES at the Duke of York's Theatre/g, 'DEATH NOTE at Lyric Shaftesbury Avenue') };
+    throw new Error(`unexpected fetchPage url in test: ${url}`);
+  };
+
+  const discovered = await discoverLboRoundupHtml(
+    { id: showId, title: 'Death Note: The Musical' },
+    { dataDir, fetchPage, log: () => {} },
+  );
+  assert.ok(discovered, 'discovery returned a page');
+  assert.equal(discovered.url, 'https://www.londonboxoffice.co.uk/news/post/review-roundup-death-note-the-musical-barbican-theatre',
+    'picked the real roundup URL, not the individual review page, even though both matched the show');
+
+  const rows = extractReviewsFromLBO(discovered.html, showId);
+  assert.equal(rows.length, 2, 'roundup page yields multiple outlet citations, not the 1-row individual fallback');
+  assert.deepEqual(rows.map((r) => r.outlet).sort(), ['The Guardian', 'WhatsOnStage']);
+});
+
 test('genuine multi-outlet roundup still parses via the <h4>Outlet</h4> path (no regression)', () => {
   const showId = 'im-sorry-prime-minister-west-end-2026';
   const rows = extractReviewsFromLBO(GENUINE_ROUNDUP_HTML, showId);
@@ -128,6 +188,23 @@ test('a genuine roundup page with a real outlet heading that fails to extract st
   </body></html>`;
   const rows = extractReviewsFromLBO(html, 'test-show');
   assert.equal(rows.length, 0, 'stays at 0 rows — does not fabricate a row from boilerplate alone');
+});
+
+test('sourceUrl backfills empty review.url so URL-requiring callers do not silently drop the recovered review', () => {
+  // opening-night-poller.js's processDiscoveredReviews() skips any review
+  // with an empty url. extractIndividualReviewFromLBO always returns
+  // url: '' (the whole LBO page IS the review, there's no per-outlet link),
+  // so without this backfill the #1708 fix would recover the review here
+  // but the poller would still silently discard it downstream.
+  const showId = 'how-the-other-half-loves-west-end-2026';
+  const rows = extractReviewsFromLBO(INDIVIDUAL_REVIEW_HTML, showId, 'https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].url, 'https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review');
+
+  // Multi-outlet rows keep their own real per-outlet link — sourceUrl must
+  // never override an already-populated url.
+  const roundupRows = extractReviewsFromLBO(GENUINE_ROUNDUP_HTML, 'im-sorry-prime-minister-west-end-2026', 'https://www.londonboxoffice.co.uk/news/post/im-sorry-prime-minister-west-end-review');
+  assert.equal(roundupRows.find((r) => r.outlet === 'The Telegraph').url, 'https://www.telegraph.co.uk/theatre/what-to-see/im-sorry-prime-minister-review-west-end/');
 });
 
 test('live archive fixtures for the two #1708 shows, if present locally, parse non-zero', () => {
