@@ -5213,12 +5213,35 @@ jobs:
   test-summary:
     name: Test Summary
     runs-on: ubuntu-latest
-    needs: [unit-tests, data-validation, e2e-tests, visual-regression, design-tokens-lint]
+    # task #1690: this list previously only covered 5 of 9 sibling jobs. On
+    # 2026-08-16 `lint-workflows` (containing the lint-resend-calls.js step)
+    # failed on a push to main while these 5 stayed green — Check results
+    # below saw no failure, took the if:success() branch further down, and
+    # actively RESOLVED the still-open main-is-red alert incident even though
+    # the run's real conclusion was `failure`. `typescript-check` runs on
+    # every push too and had the same blind spot, just not yet observed
+    # causing an incident. `dependency-audit`/`awards-data-freshness` are
+    # gated `if: schedule || workflow_dispatch` (always `skipped`, never
+    # `failure`, on a push) — added anyway so a scheduled/manual full run
+    # gets the same complete picture. ANY job added to this workflow that can
+    # fail on a push to main must be added here too, or it silently
+    # re-creates this exact blind spot (see .github/workflows/CLAUDE.md
+    # "Notification Severity").
+    needs: [unit-tests, data-validation, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check, dependency-audit, awards-data-freshness]
     if: always()
     steps:
       - name: Check results
+        # contains(needs.*.result, 'failure') checks every job listed in
+        # `needs:` above in one expression instead of one hardcoded
+        # `needs.<job>.result == 'failure'` clause per job — adding a job to
+        # `needs:` is now the only place a future job has to be wired in for
+        # this check to see it, instead of two parallel lists that can drift
+        # out of sync with each other (the exact shape of the #1690 bug).
+        # `skipped`/`success`/`cancelled` never match 'failure', so
+        # dependency-audit/awards-data-freshness being skipped on push is a
+        # no-op here, not a false trip.
         run: |
-          if [ "${{ needs.unit-tests.result }}" == "failure" ] || [ "${{ needs.data-validation.result }}" == "failure" ] || [ "${{ needs.e2e-tests.result }}" == "failure" ] || [ "${{ needs.visual-regression.result }}" == "failure" ] || [ "${{ needs.design-tokens-lint.result }}" == "failure" ]; then
+          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ]; then
             echo "Some tests failed"
             exit 1
           else
