@@ -10,24 +10,42 @@
  * - Reviews with outletId that should be normalized to different canonical ID
  *
  * Usage:
- *   node scripts/audit-outlet-registry.js               # Console summary output (default)
+ *   node scripts/audit-outlet-registry.js               # Console summary output, always exits 0 (advisory)
  *   node scripts/audit-outlet-registry.js --json        # Full JSON output to stdout
  *   node scripts/audit-outlet-registry.js --fix         # Audit and fix display name/normalization issues
  *   node scripts/audit-outlet-registry.js --dry-run     # Show what --fix would do
  *   node scripts/audit-outlet-registry.js --update      # Add missing outlets to registry (with confirmation)
- *   node scripts/audit-outlet-registry.js --report-only # Print report + audit JSON, always exit 0 (CI warning gate)
+ *   node scripts/audit-outlet-registry.js --strict          # Exit 1 on NEW (non-baselined) missing outlets
+ *   node scripts/audit-outlet-registry.js --update-baseline # Regenerate the baseline from current scan
+ *
+ * Baseline-diff (task #1666), mirrors audit-broadway-category-predicate.js
+ * (task #1665): the pre-existing missing-outlet backlog is frozen in
+ * data/audit/outlet-registry-baseline.json and never fails CI — only a NEW
+ * outletId not in that baseline fails under --strict. Identity is just
+ * outletId (a plain Set, not a multiset) — see scripts/lib/outlet-registry-
+ * baseline.js for why that's safe here despite the predicate script needing
+ * occurrence-count matching.
+ *
+ * Default mode (no flags) always exits 0 — report only, matching the sibling
+ * gate's advisory-first convention now that test.yml calls --strict directly.
+ * (Prior to task #1666 default mode exited 1 on any missing outlet; nothing
+ * depended on that — the only caller was CI, already run with --report-only.)
+ *
+ * Wired into .github/workflows/test.yml with --strict, no continue-on-error.
  */
 
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_OUTPUT_PATH = path.join(__dirname, '../data/audit/outlet-registry-gaps.json');
 const NORMALIZATION_PATH = path.join(__dirname, './lib/review-normalization.js');
+const BASELINE_PATH = path.join(__dirname, '../data/audit/outlet-registry-baseline.json');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -36,7 +54,16 @@ const DRY_RUN = args.includes('--dry-run');
 const JSON_OUTPUT = args.includes('--json');
 const UPDATE_MODE = args.includes('--update');
 const AUTO_MODE = args.includes('--auto'); // Skip confirmation prompts (for CI)
-const REPORT_ONLY = args.includes('--report-only'); // Always exit 0 — CI warning gate
+const STRICT = args.includes('--strict'); // Exit 1 on NEW (non-baselined) missing outlets
+const UPDATE_BASELINE = args.includes('--update-baseline');
+
+function loadBaseline() {
+  try {
+    return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf-8'));
+  } catch {
+    return { outletIds: [] };
+  }
+}
 
 // Load the outlet registry
 function loadRegistry() {
@@ -689,6 +716,20 @@ function saveAuditResults(jsonOutput) {
 async function main() {
   try {
     const auditResult = auditOutletRegistry();
+
+    // --update-baseline: regenerate the baseline from the current scan and exit,
+    // bypassing --fix/--update/report output (mirrors audit-broadway-category-predicate.js).
+    if (UPDATE_BASELINE) {
+      const baseline = {
+        generatedAt: new Date().toISOString().slice(0, 10),
+        outletIds: auditResult.findings.missingFromRegistry.map(m => m.outletId).sort(),
+      };
+      fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+      console.log(`✅ Baseline updated: ${baseline.outletIds.length} known missing outlet(s) (${BASELINE_PATH})`);
+      process.exit(0);
+    }
+
     const jsonOutput = generateJsonOutput(auditResult);
 
     if (JSON_OUTPUT) {
@@ -712,19 +753,28 @@ async function main() {
       await updateRegistry(auditResult);
     }
 
-    // Exit with appropriate code
-    if (auditResult.findings.missingFromRegistry.length > 0) {
-      if (!JSON_OUTPUT && !UPDATE_MODE) {
-        console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
-      }
-      if (REPORT_ONLY) {
-        if (!JSON_OUTPUT) console.log('--report-only: exiting 0 despite findings (CI warning gate)');
-        process.exit(0);
-      }
-      process.exit(1);
+    const baselineSet = baselineKeySet(loadBaseline().outletIds);
+    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet);
+
+    if (auditResult.findings.missingFromRegistry.length > 0 && !JSON_OUTPUT && !UPDATE_MODE) {
+      console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
+      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length} baselined, ${newViolators.length} new)`);
     }
 
-    process.exit(0);
+    if (STRICT) {
+      if (newViolators.length > 0) {
+        if (!JSON_OUTPUT) {
+          console.log(`\n⚠️  NEW outlet(s) missing from registry, not in the baseline (${BASELINE_PATH}):`);
+          for (const v of newViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
+          console.log(`\nAdd them to data/outlet-registry.json, or if this is deliberate progress, refresh the baseline:`);
+          console.log(`  node scripts/audit-outlet-registry.js --update-baseline`);
+        }
+        process.exit(1);
+      }
+      process.exit(0);
+    }
+
+    process.exit(0); // advisory-first: default mode never fails the build
 
   } catch (e) {
     if (JSON_OUTPUT) {
