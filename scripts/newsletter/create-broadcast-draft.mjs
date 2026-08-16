@@ -56,7 +56,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildFromAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { shallowFetchArgs } = cjsRequire(path.join(repo, 'scripts/lib/shallow-fetch-args.js'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
 // actual SEND wrappers) commits data/email-send.lock to the public repo's main
@@ -101,6 +101,10 @@ const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // thr
 // weekly went to subscribers with the Broadway sender). Shared helper keeps
 // the mapping in one place with send-opening-night-broadcast.js.
 const FROM_EMAIL = buildFromAddress(EDITION);
+// Replies to the weekly go to a mailbox that actually receives (see
+// buildReplyToAddress) — without this header they'd bounce off the send-only
+// `updates@` sender and the owner would never see subscriber replies.
+const REPLY_TO = buildReplyToAddress();
 const audienceKey = (flags.audience || (EDITION === 'west-end' ? 'west-end' : 'general')).toString();
 const audience = AUDIENCES[audienceKey];
 if (!audience) {
@@ -232,6 +236,7 @@ function summary() {
   console.error(`  name      : ${name}`);
   console.error(`  subject   : ${subject}`);
   console.error(`  from      : ${FROM_EMAIL}`);
+  console.error(`  reply-to  : ${REPLY_TO}`);
   console.error(`  html      : ${htmlPath} (${html.length} bytes)`);
 }
 
@@ -307,7 +312,7 @@ function dataRepoStaleness() {
   }
 
   try {
-    const payload = { audience_id: audience.id, from: FROM_EMAIL, subject, html, name };
+    const payload = { audience_id: audience.id, from: FROM_EMAIL, reply_to: REPLY_TO, subject, html, name };
     const { draft, sent } = await lookupByName();
     if (sent.length) {
       // The owner already sent this week's issue — do not create a confusing
