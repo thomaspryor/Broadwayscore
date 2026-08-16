@@ -1,22 +1,35 @@
 {
-  "generatedAt": "2026-08-15T01:35:40.729Z",
+  "generatedAt": "2026-08-16T12:29:53.231Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "82efc932225187833dd71c62df441925948de611",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 14,
-  "greenSince": "2026-08-14T23:34:22Z",
-  "greenForHours": 2.021869166666667,
+  "latestRunHeadSha": "6d3c4e84cc69c206a0b51d36ffdd829c3f1a959a",
+  "state": "RED",
+  "consecutiveFailures": 3,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-08-16T09:57:56Z",
+  "redForHours": 2.5325641666666665,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-15T01:08:25Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 88,
-  "failingJobs": [],
+  "lastSuccessAt": "2026-08-16T09:51:57Z",
+  "latestFailedRunId": "31944659107",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31944659107",
+  "decidedRuns": 100,
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Run data validation"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
   "failingPaths": [],
-  "topFailingJob": null
+  "topFailingJob": "Data Validation"
 }

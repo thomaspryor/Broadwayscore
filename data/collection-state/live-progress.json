@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-08-16T12:05:39.429Z",
-  "processed": 4,
-  "failed": 205,
-  "successRate": "1.9%",
+  "updatedAt": "2026-08-16T12:36:14.319Z",
+  "processed": 12,
+  "failed": 247,
+  "successRate": "4.6%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 10,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-08-16T12:23:31.305Z",
+      "event": "bb-session",
+      "session": "b87fc5ed",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-16T12:23:32.266Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T12:24:03.064Z",
+      "event": "bb-session",
+      "session": "20c5ebfa",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-16T12:24:04.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T12:31:45.769Z",
+      "event": "bb-session",
+      "session": "f6a7587a",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-16T12:31:46.797Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

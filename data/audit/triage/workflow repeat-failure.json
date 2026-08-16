@@ -1,30 +1,30 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-15T01:34:22.966Z",
+  "lastChecked": "2026-08-16T12:27:11.960Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "status": "warn",
-      "message": "Test Suite failed 16 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
       "status": "error",
-      "message": "Rebuild Reviews (Fast) failed 11 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 23 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
       "status": "error",
-      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews Data failed 5 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Opening Night Checklist",
+      "status": "error",
+      "message": "Opening Night Checklist failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Process Feedback Submissions",
@@ -32,9 +32,9 @@
       "message": "Process Feedback Submissions failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
       "status": "warn",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

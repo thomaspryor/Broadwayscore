@@ -1,0 +1,15 @@
+{
+  "system": "digest",
+  "status": "warn",
+  "lastChecked": "2026-08-16T12:27:11.960Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Digest: content-invariant check",
+      "status": "warn",
+      "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
+    }
+  ]
+}

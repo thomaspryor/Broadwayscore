@@ -1,123 +1,24 @@
 [
   {
-    "conditionKey": "opening-night-stale-upcoming-tag-as-you-like-it-globe-west-end-2026",
-    "title": "Stale 'upcoming' tag on As You Like It - Globe",
-    "description": "as-you-like-it-globe-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=as-you-like-it-globe-west-end-2026 --apply",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget",
+    "description": "Day 2026-08-15. Over budget: browserbase $4.8 > $4 (48 sessions); brightdata $11.49 > $2.5 (2661 serp + 4999 unlocker reqs); scrapingbee 60761 credits > 35000; scrapingdog 91297 credits > 45000. 2026-08-15 · Browserbase: $4.8 (48 sessions) · 2026-08-15 · Bright Data: $11.49 (2661 serp / 4999 unlocker) · ScrapingBee: 60761 credits (346494 this cycle) · ScrapingDog: 91297 credits (1613037 this cycle) · Browserbase attribution: 8% attributed — top: collect-review-texts.js 4 · Bright Data attribution: 31% attributed — top: validate-show-venue.js 1213, opening-night-poller.js 772, audit-show-review-gap.js 265, gather-reviews.js 62, ingest-review-from-url.js 21 · ScrapingBee attribution: 2% attributed — top: validate-show-venue.js 535, audit-show-review-gap.js 236, opening-night-poller.js 100, recover-explicit-ratings.js 42, extract-theatre-record.js 27 · ScrapingDog attribution: 5% attributed — top: gather-reviews.js 1439, opening-night-poller.js 1364, collect-outlet-reviews.js 972, audit-show-review-gap.js 382, collect-review-texts.js 80. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": "Scraping spend over budget: browserbase $4.8 > $4 (48 sessions); brightdata $11.49 > $2.5 (2661 serp + 4999 unlocker reqs); scrapingbee 60761 credits > 35000; scrapingdog 91297 credits > 45000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "queuedAt": "2026-08-16T12:27:28.439Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): anansi-the-spider-west-end-2026 (2026-08-15), as-you-like-it-globe-west-end-2026 (2026-08-14)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-15T01:53:16.459Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-house-of-the-negro-insane-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on The House of the Negro Insane",
-    "description": "the-house-of-the-negro-insane-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-house-of-the-negro-insane-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T01:53:16.756Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (2524/2250 reqs)",
-    "description": "Zone serp_api1 billed 2524 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1034), opening-night-poller.js (349), audit-show-review-gap.js (54).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T06:17:10.170Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/155 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nDeath Note: The Musical: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T12:12:24.015Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 9 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31886083800",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-15T13:18:33.984Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4820/2250 reqs)",
-    "description": "Zone web_unlocker2 billed 4820 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1213), opening-night-poller.js (632), audit-show-review-gap.js (264).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T19:25:40.084Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.8% (406/522)\noff-broadway: 46.8% (161/344)\nwest-end: 70% (409/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (568h)\nCelebrity Autobiography — nypost (398h)\nCelebrity Autobiography — thewrap (386h)\nCelebrity Autobiography — timeout (386h)\nCelebrity Autobiography — vulture (386h)\n… 218 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (386h)\nAladdin — ew (34h)\nThe Book of Mormon — usatoday (34h)\nBuena Vista Social Club — broadwaynews (34h)\nHeathers The Musical — dailybeast (34h)\n… 16 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-15T20:11:06.737Z"
-  },
-  {
-    "conditionKey": "tier-skip-drift",
-    "title": "domain-tier-skip.json drift: 1 domain+tier verdict(s) need review",
-    "description": "didtheylikeit.com / scrapingdog (degrade): skip:false but 2% success over 1551 calls (< 30% threshold) — consider flipping to skip:true",
-    "severity": "warn",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T03:54:13.590Z"
-  },
-  {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 35071/30000 credits",
-    "description": "Scrapingdog billed 35071 credits today against a ceiling of 30000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (597), collect-review-texts.js (546), collect-outlet-reviews.js (253).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T08:14:48.588Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 19.4% of shows changed coverage state",
-    "description": "review-gap blast radius 19.4% (6/31 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, horrible-histories-barmy-britain-the-best-bits-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, paddington-the-musical-west-end-2025, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T11:14:54.326Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "214 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T12:14:55.302Z"
+    "queuedAt": "2026-08-16T12:30:01.350Z"
   }
 ]
