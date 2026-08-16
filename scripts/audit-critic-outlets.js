@@ -11,15 +11,34 @@
  *   node scripts/audit-critic-outlets.js              # Generate both files
  *   node scripts/audit-critic-outlets.js --report-only # Print report, no file writes
  *   node scripts/audit-critic-outlets.js --json        # Output JSON to stdout
+ *   node scripts/audit-critic-outlets.js --strict          # Exit 1 on NEW (non-baselined) flagged reviews
+ *   node scripts/audit-critic-outlets.js --update-baseline # Regenerate the baseline from current scan
+ *
+ * Baseline-diff (task #1668), mirrors audit-outlet-registry.js (task #1666):
+ * the pre-existing flagged-review backlog is frozen in
+ * data/audit/critic-outlets-baseline.json and never fails CI — only a NEW
+ * (showId, file) pair not in that baseline fails the build under --strict.
+ * Identity is (showId, file) (a plain Set, not a multiset) — see
+ * scripts/lib/critic-outlets-baseline.js for why that's safe here.
+ *
+ * Default/--report-only/--json modes always exit 0 (advisory) — unchanged;
+ * production pipelines (rebuild-fast.yml, rebuild-reviews.yml,
+ * opening-night-poller.yml) call this bare to regenerate the registry and
+ * must never see a non-zero exit from that.
+ *
+ * Wired into .github/workflows/test.yml with --strict, no continue-on-error.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_OUTPUT = path.join(__dirname, '..', 'data', 'critic-registry.json');
 const AUDIT_OUTPUT = path.join(__dirname, '..', 'data', 'audit', 'critic-outlet-affinity.json');
+const BASELINE_PATH = path.join(__dirname, '..', 'data', 'audit', 'critic-outlets-baseline.json');
 
 // Critics known to work at multiple outlets (not misattributions)
 // Verified 2026-04-12: URL domains match secondary outlets for all entries
@@ -227,13 +246,36 @@ function buildRegistry(rawCritics) {
   return { registry, flaggedReviews };
 }
 
+function loadBaseline() {
+  try {
+    return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf-8'));
+  } catch {
+    return { flags: [] };
+  }
+}
+
 function main() {
   const args = process.argv.slice(2);
   const reportOnly = args.includes('--report-only');
   const jsonOutput = args.includes('--json');
+  const STRICT = args.includes('--strict');
+  const UPDATE_BASELINE = args.includes('--update-baseline');
 
   console.log('Scanning review-texts for critic-outlet affinities...');
   const { critics, totalFiles, skippedFiles } = scanReviewTexts();
+
+  // FAIL LOUD on an empty corpus (task #1668, same pattern as
+  // audit-outlet-registry.js) — a missing/empty data/review-texts checkout
+  // scans 0 files, leaving flaggedReviews empty and both --strict and
+  // --update-baseline would otherwise report a vacuous "0 flagged" instead
+  // of failing closed.
+  try {
+    assertCorpusScanned(totalFiles, { gate: STRICT || UPDATE_BASELINE });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\n❌ ${e.message}`);
+    process.exit(1);
+  }
 
   const criticCount = Object.keys(critics).length;
   console.log(`Scanned ${totalFiles} review files (${skippedFiles} skipped)`);
@@ -252,6 +294,21 @@ function main() {
       console.log(`  ${flag.critic} at ${flag.outlet} (${flag.outletShare}% share) for ${flag.showId}`);
       console.log(`    Primary: ${flag.primaryOutlet} (${flag.primaryShare}%), total: ${flag.totalReviews} reviews`);
     }
+  }
+
+  // --update-baseline: regenerate the baseline from the current scan and exit,
+  // bypassing registry/audit file output (mirrors audit-outlet-registry.js).
+  if (UPDATE_BASELINE) {
+    const baseline = {
+      generatedAt: new Date().toISOString().slice(0, 10),
+      flags: flaggedReviews
+        .map(f => ({ showId: f.showId, file: f.file, criticSlug: f.criticSlug, outlet: f.outlet }))
+        .sort((a, b) => (a.showId + a.file).localeCompare(b.showId + b.file)),
+    };
+    fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+    fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    console.log(`✅ Baseline updated: ${baseline.flags.length} known flagged review(s) (${BASELINE_PATH})`);
+    process.exit(0);
   }
 
   const registryOutput = {
@@ -289,25 +346,45 @@ function main() {
 
   if (jsonOutput) {
     console.log(JSON.stringify({ registry: registryOutput, audit: auditOutput }, null, 2));
-    return;
-  }
-
-  if (reportOnly) {
+  } else if (reportOnly) {
     console.log('\n--report-only: No files written');
-    return;
+  } else {
+    // Write registry
+    fs.writeFileSync(REGISTRY_OUTPUT, JSON.stringify(registryOutput, null, 2));
+    console.log(`\nWrote ${REGISTRY_OUTPUT}`);
+
+    // Write audit report
+    const auditDir = path.dirname(AUDIT_OUTPUT);
+    if (!fs.existsSync(auditDir)) {
+      fs.mkdirSync(auditDir, { recursive: true });
+    }
+    fs.writeFileSync(AUDIT_OUTPUT, JSON.stringify(auditOutput, null, 2));
+    console.log(`Wrote ${AUDIT_OUTPUT}`);
   }
 
-  // Write registry
-  fs.writeFileSync(REGISTRY_OUTPUT, JSON.stringify(registryOutput, null, 2));
-  console.log(`\nWrote ${REGISTRY_OUTPUT}`);
+  const baselineSet = baselineKeySet(loadBaseline().flags);
+  const newViolators = computeNewViolators(flaggedReviews, baselineSet);
 
-  // Write audit report
-  const auditDir = path.dirname(AUDIT_OUTPUT);
-  if (!fs.existsSync(auditDir)) {
-    fs.mkdirSync(auditDir, { recursive: true });
+  if (flaggedReviews.length > 0 && !jsonOutput) {
+    console.log(`\n(${flaggedReviews.length - newViolators.length} baselined, ${newViolators.length} new)`);
   }
-  fs.writeFileSync(AUDIT_OUTPUT, JSON.stringify(auditOutput, null, 2));
-  console.log(`Wrote ${AUDIT_OUTPUT}`);
+
+  if (STRICT) {
+    if (newViolators.length > 0) {
+      if (!jsonOutput) {
+        console.log(`\n⚠️  NEW flagged review(s), not in the baseline (${BASELINE_PATH}):`);
+        for (const v of newViolators) {
+          console.log(`  ${v.critic} at ${v.outlet} (${v.outletShare}% share) for ${v.showId}`);
+        }
+        console.log(`\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:`);
+        console.log(`  node scripts/audit-critic-outlets.js --update-baseline`);
+      }
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+
+  process.exit(0); // advisory-first: default mode never fails the build
 }
 
 main();
