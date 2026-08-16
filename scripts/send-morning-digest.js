@@ -66,6 +66,7 @@ const {
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
+const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -149,6 +150,27 @@ function localLinearDelegationMessage() {
     return `${status.alarm ? `${status.alarm} ` : ''}Linear agents: the delegation check hit its page limit, so older sessions were not examined.`;
   }
   return status.alarm || null;
+}
+
+// Cyrus runner fleet health (BRO-380 Phase 2). Same reasoning as the relay
+// above: the scheduler writes this status file on THIS machine, so CI health
+// checks never see it. The two failure modes are runaway spend (a wedged
+// runner blows the daily API cap) and silence (the scheduler dies and no
+// runner fires) — both invisible until the bill or the stalled backlog shows
+// up. This reader surfaces either in the daily digest. CYRUS_HOME override
+// keeps the alerting path testable without touching the live status file.
+const RUNNER_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'runner-health.json'
+);
+function localRunnerHealthMessage() {
+  let state;
+  try {
+    state = JSON.parse(fs.readFileSync(RUNNER_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // no runners on this machine, or file not written yet — unknown, not dead
+  }
+  return assessRunnerHealth(state).message;
 }
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
@@ -333,6 +355,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const cyrusMsg = localCyrusRelayMessage();
   if (cyrusMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(cyrusMsg)}</p>`);
+  }
+  const runnerMsg = localRunnerHealthMessage();
+  if (runnerMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(runnerMsg)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
