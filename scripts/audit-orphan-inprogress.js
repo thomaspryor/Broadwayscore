@@ -44,6 +44,7 @@ const { taskBranchEvidence, notionMarkerOf } = require('./lib/task-reclaim.js');
 const { classifyOrphanInProgress } = require('./lib/orphan-inprogress-triage.js');
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `audit-orphan-inprogress.js — classify in_progress tasks with no live cmux workspace (task #1705).
 
@@ -144,7 +145,7 @@ function buildOutcomeCorroborator(repoRoot) {
   // line numbers, timestamps, "deed"/"beefed") by requiring one of these
   // words nearby, not by pinning the exact grammar between them.
   const ANCHOR_WORDS = new Set(['commit', 'merged', 'squash-merged', 'landed', 'pushed', 'sha', 'origin']);
-  const strip = (w) => w.toLowerCase().replace(/[^a-z0-9-]/g, '');
+  const strip = (w) => foldDiacritics(w).toLowerCase().replace(/[^a-z0-9-]/g, '');
 
   return (card) => {
     const evidence = [];
