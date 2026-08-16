@@ -27,6 +27,7 @@ const {
   accumulateSitemapArticles,
   extractReviewLinksFromArticle,
   searchPlaybillVerdict,
+  createFallbackTracker,
 } = require('../../scripts/lib/playbill-verdict-discover.js');
 
 // Real Playbill Verdict article URLs observed in `data/review-texts/*/playbill--*.json`
@@ -206,6 +207,40 @@ describe('extractReviewLinksFromArticle — blocklist behavior', () => {
   });
 });
 
+// #1647 — the batch category-page discovery path used to remove a show from
+// its "still needs Google fallback" set as soon as an article TENTATIVELY
+// matched its title, before fetch/page validation ran. A show whose only
+// match that run later failed validation (wrong-market page, fetch error,
+// LLM wrong-show rejection) would silently lose its only discovery attempt,
+// since it was already gone from the pending set by the time Google
+// fallback checked it. createFallbackTracker fixes this: a show stays
+// pending until confirmMatch() is called, which the caller must only do
+// after validation succeeds.
+describe('createFallbackTracker — Google-fallback eligibility (#1647)', () => {
+  it('keeps a show eligible for fallback when its match is never confirmed (validation failure case)', () => {
+    const tracker = createFallbackTracker(['hamilton', 'wicked']);
+    // Simulates: article tentatively matched "hamilton", but its fetched
+    // page later failed Broadway-market validation, so confirmMatch() is
+    // never called for it.
+    assert.strictEqual(tracker.needsFallback('hamilton'), true);
+    assert.deepStrictEqual(tracker.pendingIds().sort(), ['hamilton', 'wicked']);
+  });
+
+  it('removes a show from fallback eligibility only once confirmMatch() is called', () => {
+    const tracker = createFallbackTracker(['hamilton', 'wicked']);
+    assert.strictEqual(tracker.needsFallback('hamilton'), true);
+    tracker.confirmMatch('hamilton');
+    assert.strictEqual(tracker.needsFallback('hamilton'), false);
+    assert.strictEqual(tracker.needsFallback('wicked'), true);
+    assert.deepStrictEqual(tracker.pendingIds(), ['wicked']);
+  });
+
+  it('a show not among the tracked IDs never needs fallback', () => {
+    const tracker = createFallbackTracker(['hamilton']);
+    assert.strictEqual(tracker.needsFallback('not-a-tracked-show'), false);
+  });
+});
+
 describe('module surface', () => {
   it('exports the expected helpers + URL constant', () => {
     assert.strictEqual(typeof VERDICT_CATEGORY_URL, 'string');
@@ -213,6 +248,7 @@ describe('module surface', () => {
     assert.strictEqual(typeof extractArticlesFromCategoryPage, 'function');
     assert.strictEqual(typeof extractReviewLinksFromArticle, 'function');
     assert.strictEqual(typeof searchPlaybillVerdict, 'function');
+    assert.strictEqual(typeof createFallbackTracker, 'function');
   });
 });
 

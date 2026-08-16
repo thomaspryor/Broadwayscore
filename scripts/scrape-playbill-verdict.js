@@ -27,7 +27,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
-const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator } = require('./lib/playbill-verdict-discover');
+const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator, createFallbackTracker } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
 // Paths
@@ -691,7 +691,7 @@ async function scrapePlaybillVerdict() {
   // Step 2: Match articles to shows
   const matchedArticles = [];
   const unmatchedArticles = [];  // dumped to data/audit/playbill-verdict-unmatched.json
-  const unmatchedShows = new Set(shows.map(s => s.id));
+  const fallbackTracker = createFallbackTracker(shows.map(s => s.id));
 
   for (const article of uniqueArticles) {
     // Allow off-Broadway, West End, AND opera articles through at pre-match stage —
@@ -724,7 +724,6 @@ async function scrapePlaybillVerdict() {
       }
 
       matchedArticles.push({ ...article, showId, confidence: match.confidence });
-      unmatchedShows.delete(showId);
       stats.matchedShows++;
     } else {
       // No match — likely a show we don't have in shows.json yet. Surface to
@@ -817,6 +816,14 @@ async function scrapePlaybillVerdict() {
     }
 
     processedArticleUrls.add(article.url);
+    // "Validated" here means passed the market check above (isNotBroadway) —
+    // this batch path does NOT run per-show identity validation
+    // (validatePageMatchesShow, used by processShowViaGoogle below) before
+    // confirming. A market-correct page for the WRONG production can still
+    // confirm the show and suppress Google fallback; that's a separate,
+    // pre-existing gap (batch discovery never identity-checks), not
+    // something #1647's tracker-ordering fix covers.
+    fallbackTracker.confirmMatch(article.showId);
 
     // Extract review links
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
@@ -880,7 +887,7 @@ async function scrapePlaybillVerdict() {
   const showsNeedingSearch = recentShows.filter(s => {
     const showId = s.id;
     const ap = path.join(archiveDir, `${showId}.html`);
-    if (!unmatchedShows.has(showId)) return false;
+    if (!fallbackTracker.needsFallback(showId)) return false;
     if (!fs.existsSync(ap)) return true;
     return (Date.now() - fs.statSync(ap).mtimeMs) / (1000 * 60 * 60 * 24) >= 14;
   });

@@ -28,7 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateRoundupPageTitle } = require('./lib/show-matching');
+const { validateRoundupPageTitle, normalizeTitle } = require('./lib/show-matching');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -61,8 +61,34 @@ function loadShowMap() {
   return byId;
 }
 
+// Groups shows.json entries by normalized title so validateRoundupPageTitle
+// can check a page's market qualifier (e.g. Show Score's "(Broadway)")
+// against the categories of any OTHER show sharing this title — catches an
+// archive filed under a same-title sibling's showId (BRO-363: a Broadway
+// Show Score page archived under a regional show's id).
+function buildSiblingCategoriesByTitle(showById) {
+  const byTitle = new Map();
+  for (const s of Object.values(showById)) {
+    const t = normalizeTitle(s.title || '');
+    if (!t) continue;
+    if (!byTitle.has(t)) byTitle.set(t, []);
+    byTitle.get(t).push(s);
+  }
+  const siblingCategoriesById = {};
+  for (const s of Object.values(showById)) {
+    const t = normalizeTitle(s.title || '');
+    const group = byTitle.get(t) || [];
+    siblingCategoriesById[s.id] = group
+      .filter(x => x.id !== s.id)
+      .map(x => x.category)
+      .filter(Boolean);
+  }
+  return siblingCategoriesById;
+}
+
 function audit() {
   const showById = loadShowMap();
+  const siblingCategoriesById = buildSiblingCategoriesByTitle(showById);
   const bad = [];
   let totalScanned = 0;
   let skippedNoShow = 0;
@@ -77,7 +103,7 @@ function audit() {
       const show = showById[showId];
       if (!show) { skippedNoShow++; continue; }
       const html = fs.readFileSync(path.join(dir, f), 'utf8');
-      const v = validateRoundupPageTitle(html, show.title);
+      const v = validateRoundupPageTitle(html, show.title, show.category, siblingCategoriesById[showId]);
       if (v.ok) continue;
 
       // False-positive guard: HTML-encoded apostrophes / slash-titles where

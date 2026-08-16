@@ -40,11 +40,20 @@
 const fs = require('fs');
 const path = require('path');
 
-// HEALTH_ROW_ABSENT_SNAPSHOT_PATH override (task #1662): lets tests point this
-// at a throwaway fixture instead of racing CI/parallel sessions on the real
-// tracked data/audit/health-digest-snapshot.json.
-const SNAPSHOT = process.env.HEALTH_ROW_ABSENT_SNAPSHOT_PATH
+// HEALTH_SNAPSHOT_OVERRIDE: test-only escape hatch (task #1662 — this file's
+// acceptance test used to back up/mutate/restore the real, tracked
+// data/audit/health-digest-snapshot.json in place, racing ~20 parallel
+// sessions + CI that write it on their own cadence, the same anti-pattern
+// fixed for shows.json/diary-shows.json in b4d6c619317/8bf5f00eb08). Loud,
+// unmissable signal if it ever leaks into a real run — this must be set only
+// by tests, never in a real CI/push/recheck invocation.
+const SNAPSHOT = process.env.HEALTH_SNAPSHOT_OVERRIDE
   || path.join(__dirname, '..', 'data', 'audit', 'health-digest-snapshot.json');
+if (process.env.HEALTH_SNAPSHOT_OVERRIDE) {
+  const warning = `⚠️  HEALTH_SNAPSHOT_OVERRIDE active — reading ${SNAPSHOT}, NOT the real data/audit/health-digest-snapshot.json. This must be set only by tests, never in a real CI/push/recheck run.`;
+  console.warn(warning);
+  console.error(warning);
+}
 const MAX_AGE_H = 48;
 
 function b64urlDecode(s) {
