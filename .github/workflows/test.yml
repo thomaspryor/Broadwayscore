@@ -769,6 +769,16 @@ on:
       - 'scripts/lib/outlet-registry-baseline.js'
       - 'scripts/lib/outlet-registry-baseline.test.mjs'
       - 'data/audit/outlet-registry-baseline.json'
+      # Baseline-diff (task #1668, mirrors #1665/#1666's entries directly
+      # above): a solo edit to any of these four needs CI — without this
+      # entry, audit-critic-outlets.js itself had ZERO push-path coverage
+      # (confirmed by grep before this task), plus the same "--update-baseline
+      # commit touching only the JSON would get zero CI" hazard
+      # (memory/feedback_test_yml_push_path_allowlist.md).
+      - 'scripts/audit-critic-outlets.js'
+      - 'scripts/lib/critic-outlets-baseline.js'
+      - 'scripts/lib/critic-outlets-baseline.test.mjs'
+      - 'data/audit/critic-outlets-baseline.json'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       # Guard + its pin: an edit to either must run CI, or the floor could move
       # in a push whose paths never trigger the job that checks it (#1002).
@@ -4696,8 +4706,16 @@ jobs:
         # bodies (e.g. a cookie-expiry) trips it. That's a real ship-blocker.
 
       - name: Audit critic-outlet affinities
-        run: node scripts/audit-critic-outlets.js --report-only
-        continue-on-error: true  # Informational only
+        run: node scripts/audit-critic-outlets.js --strict
+        # Baseline-diff (task #1668, mirrors #1665/#1666): the pre-existing
+        # 43-flagged-review backlog is frozen in
+        # data/audit/critic-outlets-baseline.json and never fails CI; only a
+        # NEW un-baselined (showId, file) flag fails the build. --strict is
+        # inherently read-only (never regenerates data/critic-registry.json,
+        # the file validateCriticOutlet/review-guards.js consume in
+        # production) — that write only happens via the production pipelines
+        # (rebuild-fast.yml/rebuild-reviews.yml/opening-night-poller.yml)
+        # that call this script bare.
 
       - name: Audit WE sweep verifier wiring
         if: always()
