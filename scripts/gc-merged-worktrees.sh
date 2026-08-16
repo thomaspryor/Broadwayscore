@@ -355,6 +355,29 @@ flush() {
     fi
     path="" branch=""; return
   fi
+  # Liveness guard (task #1709): git's dirty-tree refusal protects
+  # uncommitted changes, but a merged+CLEAN worktree can still be a live
+  # process's cwd (a dev server, a background watcher) — there's nothing
+  # dirty for git to refuse on, so plain `git worktree remove` would happily
+  # pull the rug out from under it. Found 2026-08-16: tony-page-season-guard
+  # was removed while pids 93138/93152 still had it as their cwd. Skip, same
+  # as the dirty-tree skip below, rather than risk that.
+  # Exit-code contract: the CLI wrapper is a 2-way switch, not 3-way — exit 0
+  # means "live, do not remove"; ANYTHING else (1 = clear, 2 = usage error,
+  # or an unanticipated crash) falls through to removal below. Keep it that
+  # way deliberately (an unexpected non-zero must never become a silent KEEP
+  # that masks a real bug in the checker) but don't widen it without
+  # re-reading this comment.
+  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/gc-worktree-liveness.js" ]; then
+    node "$REPO/scripts/lib/gc-worktree-liveness.js" --path="$path" >/dev/null 2>&1
+    if [ "$?" = "0" ]; then
+      log "SKIP  $(basename "$path") — $branch merged but a live process has this worktree as its cwd"
+      skipped=$((skipped+1))
+      path="" branch=""; return
+    fi
+  else
+    log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for $(basename "$path")"
+  fi
   if [ "$DRY_RUN" = "1" ]; then
     if is_safe_dirty "$path"; then
       log "WOULD-FORCE-REMOVE  $(basename "$path") — $branch merged, only generated data/ churn dirty"
