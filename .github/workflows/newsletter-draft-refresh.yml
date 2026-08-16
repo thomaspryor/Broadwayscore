@@ -148,6 +148,17 @@ jobs:
           echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "Draft status for ${{ matrix.edition }} ${{ steps.week.outputs.weekStart }}: $status"
 
+      # Self-heal the ledger against what was ACTUALLY sent before
+      # regenerating — see the "Commit newsletter de-dup state" step below for
+      # why this workflow in particular needs it (it's the last write to the
+      # live draft each week).
+      - name: Verify de-dup state against actually-sent broadcasts
+        if: steps.status.outputs.status == 'draft'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/newsletter/verify-sent-vs-state.mjs --fix --edition="${{ matrix.edition }}"
+
       - name: Generate newsletter HTML + meta.json
         if: steps.status.outputs.status == 'draft'
         run: |
@@ -177,6 +188,30 @@ jobs:
         if: steps.status.outputs.status != 'draft'
         run: |
           echo "No refresh needed for ${{ matrix.edition }} (status=${{ steps.status.outputs.status }})."
+
+      # Persist the cross-issue de-dup state (data/newsletter-state.json).
+      # MISSING until 2026-08-16 (#the-pass duplicate): this workflow is the
+      # LAST thing to PATCH the live Resend draft every Sunday (it runs after
+      # the Saturday creation workflow and any manual reruns), but without
+      # this step its generate.mjs run's featuredShowIds update only ever
+      # existed on the ephemeral runner — discarded at job end. So the ledger
+      # the NEXT week's anti-repeat guard reads never matched what the CURRENT
+      # week's draft (and therefore what got sent) actually contained. Mirrors
+      # newsletter-draft.yml's commit step exactly; success()-gated so a
+      # failed gate above doesn't advance the ledger for a draft that was
+      # never actually refreshed.
+      - name: Commit newsletter de-dup state
+        if: success() && steps.status.outputs.status == 'draft'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/newsletter-state.json
+          if git diff --cached --quiet; then
+            echo "::notice::newsletter-state.json unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }} (Sunday refresh)"
+          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
 
       - name: Notify on failure
         if: failure()

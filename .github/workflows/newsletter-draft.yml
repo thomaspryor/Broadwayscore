@@ -178,6 +178,21 @@ jobs:
             exit 1
           fi
 
+      # Self-heal the anti-repeat ledger against what was ACTUALLY sent in
+      # Resend BEFORE generating anything new (2026-08-16, #the-pass
+      # duplicate). A prior run can advance data/newsletter-state.json's
+      # featuredShowIds without the matching Resend draft ever getting
+      # re-PATCHed with that content — state.json then disagrees with what
+      # subscribers actually received, and the next issue's lastFeaturedIds
+      # guard (generate.mjs) trusts the wrong one and re-airs an already-sent
+      # show. This makes every generation start from ground truth. Any fix it
+      # makes rides the existing "Commit newsletter de-dup state" step below.
+      - name: Verify de-dup state against actually-sent broadcasts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/newsletter/verify-sent-vs-state.mjs --fix
+
       - name: Compute week-start (Monday in America/New_York)
         id: week
         run: |
