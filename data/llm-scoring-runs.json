@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-12T12:10:07.604Z",
-    "completedAt": "2026-08-12T12:10:15.425Z",
-    "totalReviews": 100,
-    "processed": 1,
-    "skipped": 99,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5489,
-      "output": 344,
-      "total": 14042
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-12T12:44:38.988Z",
     "completedAt": "2026-08-12T12:44:45.845Z",
     "totalReviews": 42394,
@@ -466370,6 +466356,46 @@
       "total": 22309
     },
     "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-16T06:41:14.049Z",
+    "completedAt": "2026-08-16T06:41:45.201Z",
+    "totalReviews": 42611,
+    "processed": 4,
+    "skipped": 42598,
+    "errors": 5,
+    "tokensUsed": {
+      "input": 39289,
+      "output": 1725,
+      "total": 104795
+    },
+    "errorDetails": [
+      {
+        "showId": "dinosaur-world-live-off-west-end-2026",
+        "outletId": "dayoutwiththekids",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "dinosaur-world-live-off-west-end-2026",
+        "outletId": "primarytimes",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "twelfth-night-off-west-end-2026",
+        "outletId": "primarytimes",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-enormous-crocodile-west-end-2026",
+        "outletId": "theschooltrip",
+        "error": "input_validation_failed:body_too_short"
+      },
       {
         "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
         "outletId": "london-theatre",
