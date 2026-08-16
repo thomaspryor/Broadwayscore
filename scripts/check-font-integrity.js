@@ -1,105 +1,84 @@
 #!/usr/bin/env node
 /**
- * check-font-integrity.js — post-build gate: does the site actually have its font?
+ * check-font-integrity.js — guard the font wiring at the SOURCE level.
  *
  * WHY THIS EXISTS (2026-08-16 incident)
  * -------------------------------------
- * Production shipped every page in Times New Roman for an unknown length of
- * time and nothing noticed. The mechanism:
+ * Production shipped every page in Times New Roman and nothing noticed.
  *
- *   - next/font/google names its generated class `__variable_<hash>`, where
- *     hash = sha1(the CSS Google Fonts returns at build time).
- *   - Google's Inter response drifts, so two loader runs can yield two hashes.
- *   - `.next/cache` is restored across deploys (vercel-deploy.yml), so the JS
- *     module and the emitted CSS asset could come from *different* runs.
- *   - Result: HTML had `class="__variable_b9631e"`, CSS defined only
+ *   - next/font/google names its class `__variable_<hash>`, where
+ *     hash = sha1(the CSS Google Fonts returns at build time)
+ *     (next-font-loader/index.js:90).
+ *   - Google's Inter response drifts, and `.next/cache` is persisted across
+ *     deploys (vercel-deploy.yml), so the JS module and the emitted CSS asset
+ *     could come from different loader runs.
+ *   - Shipped HTML said `class="__variable_b9631e"`; shipped CSS only defined
  *     `.__variable_d0be19{--font-inter:...}`.
- *   - `--font-inter` was therefore undefined, which makes the whole
- *     `font-family: var(--font-inter), Inter, ...` declaration invalid at
- *     computed-value time. CSS does NOT skip to the next family in that case —
- *     the property falls back to its *initial* value. Every page rendered serif.
+ *   - `--font-inter` was therefore undefined, and a bare `var()` with no
+ *     fallback makes the WHOLE `font-family` declaration invalid at
+ *     computed-value time. CSS does not skip to the next family — the property
+ *     takes its INITIAL value. Every page rendered serif.
  *
- * Every existing gate passed: tsc, lint, the build itself, and the deploy
- * health checks. All of them look at source or at HTTP status; none looked at
- * whether the shipped CSS and the shipped HTML agreed. This does.
+ * The fix removed both halves of that: Inter is self-hosted with literal
+ * @font-face names, and the Tailwind stack uses literal family names with no
+ * var() at all. This script stops either half from creeping back, and checks
+ * that the font filename — deliberately duplicated across globals.css,
+ * layout.tsx and the file on disk — stays in agreement.
  *
- * CHECKS
- *   1. undefined-var       — a font-family uses var(--x) and no CSS defines --x.
- *   2. unreachable-var     — --x is defined, but only under selectors whose
- *                            classes never appear in any shipped HTML (the
- *                            exact 2026-08-16 hash-mismatch shape).
- *   3. var-without-fallback— a font-family uses bare var(--x); one undefined
- *                            property silently poisons the entire stack.
- *                            Write var(--x, Inter) so it degrades gracefully.
- *   4. missing-font-file   — an @font-face src points at a file not in the build.
- *   5. no-font-face        — the first family in the resolved body stack is a
- *                            custom name with no @font-face rule anywhere.
+ * WHY SOURCE-LEVEL AND NOT A BUILD-OUTPUT GATE
+ * -------------------------------------------
+ * The first version of this script parsed `.vercel/output/static`. That does
+ * not work for this app: App Router pages are emitted as prerender functions
+ * (`.vercel/output/functions/**.prerender-fallback.html`), not static HTML —
+ * live app routes carry `vary: RSC, Next-Router-State-Tree` while
+ * `/status.html` does not. `static/` does contain HTML, but only the 37
+ * `public/og/*.html` templates, whose classes (`badge`, `bar`, `title`) have
+ * nothing to do with the app shell. The gate would have gone green on
+ * irrelevant HTML — a placebo — while risking a false positive that blocks the
+ * only path that can ship the site. The real runtime assertion lives in
+ * tests/e2e/smoke.spec.ts, which checks the computed font in a real browser
+ * against production after every deploy.
  *
  * USAGE
- *   node scripts/check-font-integrity.js [buildDir]
+ *   node scripts/check-font-integrity.js          # human-readable
  *   node scripts/check-font-integrity.js --json
+ *   node scripts/check-font-integrity.js --help
  *
- * Exits 1 on any failure. Intended to run right after `vercel build` /
- * `next build`, before the deploy step.
+ * Exits 1 on any failure. Also consumed by tests/unit/font-integrity.test.mjs.
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const CANDIDATE_DIRS = ['.vercel/output/static', 'out', '.next'];
+const DEFAULT_PATHS = {
+  root: process.cwd(),
+  globalsCss: 'src/app/globals.css',
+  tailwindConfig: 'tailwind.config.ts',
+  layout: 'src/app/layout.tsx',
+  publicDir: 'public',
+  srcDir: 'src',
+};
 
-// Families that need no @font-face: CSS generics + fonts that ship with an OS.
+// Families that legitimately need no @font-face: CSS generics + OS-bundled.
 const SYSTEM_FAMILIES = new Set(
   [
     'serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui',
     'ui-sans-serif', 'ui-serif', 'ui-monospace', 'ui-rounded', 'math', 'emoji',
-    'fangsong', 'inherit', 'initial', 'unset', 'revert',
+    'inherit', 'initial', 'unset', 'revert',
     '-apple-system', 'blinkmacsystemfont', 'segoe ui', 'roboto',
     'helvetica neue', 'helvetica', 'arial', 'noto sans', 'liberation sans',
-    'apple color emoji', 'segoe ui emoji', 'segoe ui symbol', 'noto color emoji',
     'sfmono-regular', 'menlo', 'monaco', 'consolas', 'liberation mono',
     'courier new', 'times new roman', 'georgia', 'cambria', 'tahoma', 'verdana',
   ].map((s) => s.toLowerCase())
 );
 
-function walk(dir, exts, out = [], depth = 0) {
-  if (depth > 12) return out;
-  let entries;
-  try {
-    entries = fs.readdirSync(dir, { withFileTypes: true });
-  } catch {
-    return out;
-  }
-  for (const e of entries) {
-    const full = path.join(dir, e.name);
-    if (e.isDirectory()) {
-      // node_modules/cache dirs hold build intermediates, not shipped assets.
-      if (e.name === 'node_modules' || e.name === 'cache') continue;
-      walk(full, exts, out, depth + 1);
-    } else if (exts.some((x) => e.name.endsWith(x))) {
-      out.push(full);
-    }
-  }
-  return out;
-}
+const stripCssComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
+const stripJsComments = (js) =>
+  js.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
 
-function resolveBuildDir(explicit) {
-  if (explicit) return explicit;
-  for (const d of CANDIDATE_DIRS) {
-    if (fs.existsSync(d) && walk(d, ['.html']).length > 0) return d;
-  }
-  return null;
-}
+const normFamily = (raw) => raw.trim().replace(/^['"]|['"]$/g, '').trim().toLowerCase();
 
-/** Strip quotes and normalize a font family token for comparison. */
-function normFamily(raw) {
-  return raw.trim().replace(/^['"]|['"]$/g, '').trim().toLowerCase();
-}
-
-/**
- * Split a font-family value on top-level commas only, so that
- * `var(--a, "X, Y"), Arial` doesn't get shredded inside the var().
- */
+/** Split a font stack on top-level commas so var(--a, "X, Y") stays intact. */
 function splitTopLevel(value) {
   const parts = [];
   let depth = 0;
@@ -118,211 +97,223 @@ function splitTopLevel(value) {
   return parts;
 }
 
-function analyze(buildDir) {
-  const cssFiles = walk(buildDir, ['.css']);
-  const htmlFiles = walk(buildDir, ['.html']);
-  const failures = [];
-  const notes = [];
-
-  if (cssFiles.length === 0) failures.push({ check: 'no-css', detail: `No .css files under ${buildDir}` });
-  if (htmlFiles.length === 0) failures.push({ check: 'no-html', detail: `No .html files under ${buildDir}` });
-  if (failures.length) return { failures, notes, cssFiles, htmlFiles };
-
-  // Strip comments first. Production CSS is minified so they're already gone,
-  // but dev/unminified output keeps them — and prose *about* font-family (like
-  // the incident write-up at the top of globals.css) would otherwise be parsed
-  // as real declarations and reported as failures.
-  const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
-  const cssByFile = new Map(cssFiles.map((f) => [f, stripComments(fs.readFileSync(f, 'utf8'))]));
-  const allCss = [...cssByFile.values()].join('\n');
-
-  // ---- Index every custom property definition and the selector it sits under.
-  // definedProps: '--font-inter' -> Set of selector strings that define it
-  const definedProps = new Map();
-  const propDefRe = /([^{}]+)\{([^{}]*)\}/g;
-  let m;
-  while ((m = propDefRe.exec(allCss)) !== null) {
-    const selector = m[1].trim();
-    const body = m[2];
-    const declRe = /(--[A-Za-z0-9_-]+)\s*:/g;
-    let d;
-    while ((d = declRe.exec(body)) !== null) {
-      if (!definedProps.has(d[1])) definedProps.set(d[1], new Set());
-      definedProps.get(d[1]).add(selector);
-    }
-  }
-
-  // ---- Index @font-face families and their src files.
-  const fontFaceFamilies = new Set();
-  const fontFaceSrcs = [];
+/** Every @font-face in the CSS: family name + local src urls. */
+function parseFontFaces(css) {
+  const faces = [];
   const faceRe = /@font-face\s*\{([^}]*)\}/g;
-  while ((m = faceRe.exec(allCss)) !== null) {
+  let m;
+  while ((m = faceRe.exec(css)) !== null) {
     const body = m[1];
     const fam = body.match(/font-family\s*:\s*([^;]+);?/);
-    if (fam) fontFaceFamilies.add(normFamily(fam[1]));
+    const srcs = [];
     const srcRe = /url\(\s*['"]?([^'")]+)['"]?\s*\)/g;
     let s;
-    while ((s = srcRe.exec(body)) !== null) fontFaceSrcs.push(s[1]);
+    while ((s = srcRe.exec(body)) !== null) srcs.push(s[1]);
+    if (fam) faces.push({ family: normFamily(fam[1]), srcs });
   }
-  notes.push(`@font-face families: ${[...fontFaceFamilies].join(', ') || '(none)'}`);
+  return faces;
+}
 
-  // ---- Class names actually present in shipped HTML.
-  const htmlClasses = new Set();
-  for (const f of htmlFiles) {
-    const html = fs.readFileSync(f, 'utf8');
-    const clsRe = /class="([^"]*)"/g;
-    let c;
-    while ((c = clsRe.exec(html)) !== null) {
-      for (const cls of c[1].split(/\s+/)) if (cls) htmlClasses.add(cls);
+/** The `sans:` array out of tailwind.config.ts fontFamily. */
+function parseTailwindSans(ts) {
+  const block = ts.match(/fontFamily\s*:\s*\{([\s\S]*?)\n\s{4}\}/);
+  const scope = block ? block[1] : ts;
+  const sans = scope.match(/sans\s*:\s*\[([\s\S]*?)\]/);
+  if (!sans) return null;
+  return sans[1]
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => s.replace(/^['"`]|['"`]$/g, ''));
+}
+
+function walk(dir, exts, out = [], depth = 0) {
+  if (depth > 10) return out;
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const e of entries) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) {
+      if (e.name === 'node_modules') continue;
+      walk(full, exts, out, depth + 1);
+    } else if (exts.some((x) => e.name.endsWith(x))) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+/**
+ * @param {object} [paths] override for tests; see DEFAULT_PATHS.
+ * @returns {{failures: {check: string, detail: string}[], notes: string[]}}
+ */
+function analyze(paths = {}) {
+  const p = { ...DEFAULT_PATHS, ...paths };
+  const abs = (rel) => path.join(p.root, rel);
+  const failures = [];
+  const notes = [];
+  const read = (rel) => {
+    try {
+      return fs.readFileSync(abs(rel), 'utf8');
+    } catch {
+      failures.push({ check: 'missing-file', detail: `Expected ${rel} to exist.` });
+      return null;
+    }
+  };
+
+  const cssRaw = read(p.globalsCss);
+  const tw = read(p.tailwindConfig);
+  const layout = read(p.layout);
+  if (cssRaw === null || tw === null || layout === null) return { failures, notes };
+
+  const css = stripCssComments(cssRaw);
+  const faces = parseFontFaces(css);
+  const faceFamilies = new Set(faces.map((f) => f.family));
+  notes.push(`@font-face families: ${[...faceFamilies].join(', ') || '(none)'}`);
+
+  // 1. next/font must not come back — its class name is a hash of a live
+  //    network response, which is what desynced HTML from CSS in the first place.
+  for (const file of walk(abs(p.srcDir), ['.ts', '.tsx', '.js', '.jsx'])) {
+    const body = stripJsComments(fs.readFileSync(file, 'utf8'));
+    if (/from\s+['"]next\/font/.test(body) || /require\(\s*['"]next\/font/.test(body)) {
+      failures.push({
+        check: 'next-font-reintroduced',
+        detail:
+          `${path.relative(p.root, file)} imports next/font. Its generated class is ` +
+          `__variable_<sha1(CSS Google returns at build time)>, so the HTML and the ` +
+          `emitted CSS can disagree across a cached build — the 2026-08-16 serif ` +
+          `incident. Use the self-hosted @font-face rules in ${p.globalsCss}.`,
+      });
     }
   }
 
-  // ---- Walk every font-family declaration in the shipped CSS.
-  const ffRe = /font-family\s*:\s*([^;}]+)/g;
-  const seenVarIssues = new Set();
-  const seenFamilyIssues = new Set();
-  let firstResolvedStack = null;
+  // 2. The Tailwind sans stack must be literal names only.
+  const sans = parseTailwindSans(tw);
+  if (!sans || sans.length === 0) {
+    failures.push({
+      check: 'no-sans-stack',
+      detail: `Could not parse a fontFamily.sans array from ${p.tailwindConfig}.`,
+    });
+  } else {
+    notes.push(`tailwind sans[0]: ${sans[0]}`);
+    for (const entry of sans) {
+      if (entry.includes('var(')) {
+        failures.push({
+          check: 'var-in-font-stack',
+          detail:
+            `${p.tailwindConfig} fontFamily.sans contains "${entry}". If that custom ` +
+            `property is ever undefined the ENTIRE font-family declaration becomes ` +
+            `invalid at computed-value time and the browser uses its initial value ` +
+            `(Times New Roman) — it does NOT fall through to the rest of this stack. ` +
+            `Use a literal family name.`,
+        });
+      }
+    }
+    // 3. The primary family must actually be defined somewhere.
+    const primary = normFamily(sans[0]);
+    if (primary && !SYSTEM_FAMILIES.has(primary) && !faceFamilies.has(primary)) {
+      failures.push({
+        check: 'primary-family-undefined',
+        detail:
+          `"${sans[0]}" is first in the Tailwind sans stack but has no @font-face in ` +
+          `${p.globalsCss} and is not an OS-bundled font, so it renders only for users ` +
+          `who happen to have it installed.`,
+      });
+    }
+  }
 
-  while ((m = ffRe.exec(allCss)) !== null) {
-    const value = m[1].trim();
-    const parts = splitTopLevel(value);
-    if (!firstResolvedStack && /intervariable|font-inter/i.test(value)) firstResolvedStack = value;
-
-    for (const part of parts) {
-      const varMatch = part.match(/var\(\s*(--[A-Za-z0-9_-]+)\s*(,)?/);
-      if (varMatch) {
-        const prop = varMatch[1];
-        const hasFallback = Boolean(varMatch[2]);
-        const defs = definedProps.get(prop);
-
-        if (!defs) {
-          const key = `undefined:${prop}`;
-          if (!seenVarIssues.has(key)) {
-            seenVarIssues.add(key);
-            failures.push({
-              check: 'undefined-var',
-              detail:
-                `font-family uses var(${prop}) but no CSS rule defines ${prop}. ` +
-                `The whole declaration is invalid at computed-value time, so the ` +
-                `browser falls back to its default font (serif), not to the rest ` +
-                `of this stack. Declaration: "${value.slice(0, 120)}"`,
-            });
-          }
-          continue;
-        }
-
-        // Defined — but is any defining selector actually reachable?
-        const classSelectors = [...defs].filter((s) => /^\.[A-Za-z0-9_-]+$/.test(s));
-        const nonClassSelectors = [...defs].filter((s) => !/^\.[A-Za-z0-9_-]+$/.test(s));
-        if (nonClassSelectors.length === 0 && classSelectors.length > 0) {
-          const reachable = classSelectors.some((s) => htmlClasses.has(s.slice(1)));
-          if (!reachable) {
-            const key = `unreachable:${prop}`;
-            if (!seenVarIssues.has(key)) {
-              seenVarIssues.add(key);
-              failures.push({
-                check: 'unreachable-var',
-                detail:
-                  `${prop} is only defined under selector(s) ${classSelectors.join(', ')}, ` +
-                  `and none of those classes appear in any shipped HTML. This is the ` +
-                  `2026-08-16 next/font hash-mismatch signature — CSS and HTML came ` +
-                  `from different builds. The site will render in the browser default font.`,
-              });
-            }
-          }
-        }
-
-        if (!hasFallback) {
-          const key = `nofallback:${prop}`;
-          if (!seenVarIssues.has(key)) {
-            seenVarIssues.add(key);
-            failures.push({
-              check: 'var-without-fallback',
-              detail:
-                `font-family uses bare var(${prop}) with no fallback. Write ` +
-                `var(${prop}, Inter) so an undefined property degrades to the rest ` +
-                `of the stack instead of poisoning the whole declaration.`,
-            });
-          }
-        }
+  // 4. Every @font-face src must exist on disk under public/.
+  const declaredSrcs = new Set();
+  for (const face of faces) {
+    for (const src of face.srcs) {
+      if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) {
+        failures.push({
+          check: 'remote-font-src',
+          detail:
+            `@font-face for "${face.family}" loads ${src} from a remote host. Fonts are ` +
+            `self-hosted on purpose, and the CSP sets font-src 'self'.`,
+        });
         continue;
       }
-
-      // Literal family name.
-      const fam = normFamily(part);
-      if (!fam || SYSTEM_FAMILIES.has(fam)) continue;
-      if (fontFaceFamilies.has(fam)) continue;
-      // Only flag the FIRST (primary) family of a stack — later entries are
-      // intentionally-optional "use it if the user happens to have it" hints.
-      if (normFamily(parts[0]) !== fam) continue;
-      const key = `noface:${fam}`;
-      if (!seenFamilyIssues.has(key)) {
-        seenFamilyIssues.add(key);
+      declaredSrcs.add(src);
+      const onDisk = path.join(abs(p.publicDir), src.replace(/^\//, ''));
+      if (!fs.existsSync(onDisk)) {
         failures.push({
-          check: 'no-font-face',
+          check: 'missing-font-file',
           detail:
-            `Primary font family "${part.trim()}" has no @font-face rule and is not a ` +
-            `system font, so it only renders for users who happen to have it installed.`,
+            `@font-face for "${face.family}" points at ${src}, which does not exist in ` +
+            `${p.publicDir}/. Users would get a 404 and no font.`,
         });
       }
     }
   }
 
-  // ---- Every @font-face src must exist in the build output.
-  for (const src of [...new Set(fontFaceSrcs)]) {
-    if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) continue;
-    const rel = src.split('?')[0].replace(/^\//, '');
-    if (!fs.existsSync(path.join(buildDir, rel))) {
+  // 5. The font filename is deliberately duplicated (globals.css, layout.tsx,
+  //    the file itself) rather than derived — deriving it would reintroduce the
+  //    indirection that caused the incident. So assert the copies agree.
+  const preloads = [...stripJsComments(layout).matchAll(/['"](\/fonts\/[^'"]+\.woff2)['"]/g)].map(
+    (m) => m[1]
+  );
+  if (preloads.length === 0) {
+    failures.push({
+      check: 'no-preload',
+      detail:
+        `${p.layout} references no /fonts/*.woff2 file. The first-paint subset should be ` +
+        `preloaded, and losing the reference silently costs a round trip on every page.`,
+    });
+  }
+  for (const href of preloads) {
+    if (!declaredSrcs.has(href)) {
       failures.push({
-        check: 'missing-font-file',
-        detail: `@font-face src "${src}" is not present in ${buildDir}. Users get a 404 and no font.`,
+        check: 'preload-mismatch',
+        detail:
+          `${p.layout} references ${href} but no @font-face in ${p.globalsCss} uses that ` +
+          `exact file. The duplicated filename has drifted — the browser would preload a ` +
+          `font it never uses (or 404).`,
       });
     }
   }
 
-  if (firstResolvedStack) notes.push(`body font stack: ${firstResolvedStack.slice(0, 160)}`);
-  notes.push(`scanned ${cssFiles.length} CSS file(s), ${htmlFiles.length} HTML file(s)`);
-  return { failures, notes, cssFiles, htmlFiles };
+  return { failures, notes };
 }
 
 function main() {
   const args = process.argv.slice(2);
-  const asJson = args.includes('--json');
-  const explicit = args.find((a) => !a.startsWith('--'));
-  const buildDir = resolveBuildDir(explicit);
-
-  if (!buildDir) {
-    console.error(
-      `[font-integrity] No build output found (looked in: ${CANDIDATE_DIRS.join(', ')}).\n` +
-        `Run a build first, or pass the directory explicitly.`
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(
+      'Usage: node scripts/check-font-integrity.js [--json]\n\n' +
+        'Guards the self-hosted font wiring: no next/font imports, no var() in the\n' +
+        'Tailwind sans stack, @font-face files present, preload href in sync.\n' +
+        'Exits 1 on failure. See the header comment for the 2026-08-16 incident.'
     );
-    process.exit(1);
-  }
-
-  const { failures, notes } = analyze(buildDir);
-
-  if (asJson) {
-    console.log(JSON.stringify({ buildDir, ok: failures.length === 0, failures, notes }, null, 2));
-    process.exit(failures.length === 0 ? 0 : 1);
-  }
-
-  console.log(`[font-integrity] build dir: ${buildDir}`);
-  for (const n of notes) console.log(`[font-integrity]   ${n}`);
-
-  if (failures.length === 0) {
-    console.log('[font-integrity] ✓ fonts resolve correctly in the shipped output');
     process.exit(0);
   }
 
-  console.error(`\n[font-integrity] ✗ ${failures.length} problem(s) — the live site would lose its font:\n`);
+  const { failures, notes } = analyze();
+
+  if (args.includes('--json')) {
+    console.log(JSON.stringify({ ok: failures.length === 0, failures, notes }, null, 2));
+    process.exit(failures.length === 0 ? 0 : 1);
+  }
+
+  for (const n of notes) console.log(`[font-integrity]   ${n}`);
+  if (failures.length === 0) {
+    console.log('[font-integrity] ✓ font wiring is intact');
+    process.exit(0);
+  }
+  console.error(`\n[font-integrity] ✗ ${failures.length} problem(s):\n`);
   for (const f of failures) console.error(`  [${f.check}] ${f.detail}\n`);
   console.error(
-    '[font-integrity] This gate exists because the 2026-08-16 serif incident passed\n' +
-      '[font-integrity] tsc, lint, the build, and every deploy health check. Do not skip it.'
+    '[font-integrity] The 2026-08-16 serif incident passed tsc, lint, the build and\n' +
+      '[font-integrity] every deploy health check. Do not skip this.'
   );
   process.exit(1);
 }
 
 if (require.main === module) main();
 
-module.exports = { analyze, splitTopLevel, normFamily };
+module.exports = { analyze, splitTopLevel, normFamily, parseFontFaces, parseTailwindSans };

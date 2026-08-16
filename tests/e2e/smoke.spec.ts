@@ -145,4 +145,49 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toMatch(/\bundefined\b/);
     expect(visibleText).not.toContain('NaN');
   });
+
+  /**
+   * The site actually renders in its own font.
+   *
+   * On 2026-08-16 production served every page in Times New Roman for an
+   * unknown length of time. next/font/google's generated class is
+   * `__variable_<sha1(the CSS Google returns at build time)>`; Google's Inter
+   * response drifts and `.next/cache` is persisted across deploys, so the HTML
+   * shipped `class="__variable_b9631e"` while the CSS only defined
+   * `.__variable_d0be19{--font-inter:...}`. An undefined custom property makes
+   * the whole `font-family: var(--font-inter), Inter, ...` declaration invalid
+   * at computed-value time, and CSS then uses the property's INITIAL value
+   * rather than the next family in the stack — so the Arial/sans-serif tail
+   * that looked like a safety net never applied.
+   *
+   * Every gate in the pipeline was green throughout, because they all check
+   * source or HTTP status. This checks the thing that was actually wrong: what
+   * a real browser computes, on the real deployed site. Inter is self-hosted
+   * now, but this assertion is deliberately mechanism-agnostic — it catches a
+   * 404 on the woff2, a bad CSP, a broken @font-face, or any future swap.
+   */
+  test('pages render in Inter, not the browser default serif', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+
+    const heading = page.locator('h1').first();
+    await expect(heading).toBeVisible({ timeout: 15000 });
+
+    const computed = await heading.evaluate((el) => window.getComputedStyle(el).fontFamily);
+
+    // The declaration must resolve to our font first, not to a bare fallback.
+    expect(computed).toMatch(/InterVariable/i);
+    // The exact symptom of the incident, asserted directly.
+    expect(computed).not.toMatch(/^["']?Times New Roman/i);
+
+    // ...and the face must really have loaded, not just been asked for. A
+    // 404ing woff2 leaves the computed stack intact while the page paints in
+    // the fallback, so the computed value alone is not sufficient proof.
+    const loaded = await page.evaluate(() =>
+      Array.from(document.fonts)
+        .filter((f) => f.status === 'loaded')
+        .map((f) => f.family)
+    );
+    expect(loaded.join(',')).toMatch(/InterVariable/i);
+  });
 });
