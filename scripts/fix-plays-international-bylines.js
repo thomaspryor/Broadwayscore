@@ -42,6 +42,7 @@ Run from the repo root that owns the canonical data/review-texts store.`);
 
 const { extractPlaysInternationalByline } = require('./lib/byline-from-text');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { foldDiacritics } = require('./lib/title-match');
 
 const APPLY = process.argv.includes('--apply');
 const FETCH = process.argv.includes('--fetch');
@@ -56,7 +57,7 @@ if (!fs.existsSync(REVIEW_TEXTS)) {
 }
 
 function slugify(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return foldDiacritics(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
 function richness(data) {
