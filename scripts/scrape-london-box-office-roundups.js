@@ -184,6 +184,15 @@ function extractReviewsFromLBO(html, showId) {
   let currentCritic = null;
   let currentExcerpt = null;
   let currentUrl = null;
+  // True once any h3/h4 passes the outlet-heading filters below, regardless
+  // of whether a full review later gets flushed for it. Used to gate the
+  // individual-page fallback below on "this page structurally has no outlet
+  // markers at all", not just "0 reviews were extracted" — the latter would
+  // also be true for a genuine roundup page where a real (unrelated) bug
+  // breaks extraction after an outlet heading was found, and silently
+  // masking that as a fabricated 1-row individual review would be worse
+  // than the false "parser drift" alert it replaces (#1708 review).
+  let sawOutletHeading = false;
 
   function flushReview() {
     if (currentOutlet && (currentExcerpt || currentStars !== null)) {
@@ -230,6 +239,7 @@ function extractReviewsFromLBO(html, showId) {
       if (/^★+$/.test(text)) continue;
 
       currentOutlet = text;
+      sawOutletHeading = true;
       continue;
     }
 
@@ -354,7 +364,15 @@ function extractReviewsFromLBO(html, showId) {
   // handled by extractIndividualReviewFromLBO; without this fallback the
   // page reports a false "parser drift" 0-row parse even though it has one
   // citable review (#1708).
-  if (reviews.length === 0 && /100% Honest Reviews/i.test(html)) {
+  //
+  // Gated on !sawOutletHeading (not just reviews.length === 0) deliberately:
+  // "100% Honest Reviews" is LBO boilerplate present on EVERY LBO page,
+  // roundup or individual, so it does not discriminate between templates.
+  // If a genuine multi-outlet roundup's extraction broke for an unrelated
+  // reason after finding real outlet headings, falling back here would
+  // fabricate a bogus "London Box Office" row and mask a real regression
+  // behind a fake success instead of correctly reporting 0 rows.
+  if (reviews.length === 0 && !sawOutletHeading) {
     const individual = extractIndividualReviewFromLBO(html, showId);
     if (individual && (individual.excerpt || individual.stars !== null)) {
       reviews.push(individual);

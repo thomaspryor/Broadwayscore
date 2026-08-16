@@ -112,6 +112,24 @@ test('genuine multi-outlet roundup still parses via the <h4>Outlet</h4> path (no
   assert.ok(!rows.some((r) => r.isIndividual), 'genuine roundup rows are not flagged isIndividual');
 });
 
+test('a genuine roundup page with a real outlet heading that fails to extract stays at 0 rows (fallback does not mask real bugs)', () => {
+  // "100% Honest Reviews" is present on EVERY LBO page (roundup or
+  // individual) — see all 19 real archives, 19/19 contain it — so it cannot
+  // discriminate between templates. This guards the actual discriminator
+  // (sawOutletHeading): a page with one real <h4>Outlet</h4> marker whose
+  // content never satisfies flushReview()'s condition (no excerpt >30 chars
+  // and no star rating — e.g. a genuinely broken/incomplete roundup entry)
+  // must report 0 rows, not silently substitute a fabricated individual
+  // review from the same boilerplate every LBO page carries.
+  const html = `<!DOCTYPE html><html><head><title>Review Round-Up: TEST SHOW</title></head><body>
+    <h4>The Guardian</h4>
+    <p>Too short.</p>
+    <p><strong>100% Honest Reviews.</strong> All show reviews are written by independent theatregoers.</p>
+  </body></html>`;
+  const rows = extractReviewsFromLBO(html, 'test-show');
+  assert.equal(rows.length, 0, 'stays at 0 rows — does not fabricate a row from boilerplate alone');
+});
+
 test('live archive fixtures for the two #1708 shows, if present locally, parse non-zero', () => {
   // Mirrors scripts/test-bww-roundup-parser.js's real-archive-fixture pattern:
   // data/aggregator-archive/ is gitignored (private data), so this check is a
