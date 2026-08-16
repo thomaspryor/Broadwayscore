@@ -179,6 +179,27 @@ async function searchIssues(term, teamKey = TEAM_KEY) {
   return null;
 }
 
+// All open (non-completed, non-canceled) issues for a team, WITH description —
+// used by linear-next.js's cross-dispatch overlap check (task #1696), which
+// needs to compare a new dispatch's title/description against EVERY other
+// live issue, not just search for one term. Reuses searchIssues()'s exact
+// query/pagination shape (buildOpenIssuesWithDescriptionsQuery) but returns
+// every paginated node instead of early-exiting on a term match — a second,
+// hand-rolled query here would silently drift from what searchIssues()
+// already fetches.
+async function listOpenIssuesWithDescriptions(teamKey = TEAM_KEY) {
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await graphql(linearDispatch.buildOpenIssuesWithDescriptionsQuery(), { teamKey, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    issues.push(...(nodes || []));
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return issues;
+}
+
 // Every dispatched issue's completion report (linear-dispatch.js:195) hits
 // createComment + updateIssue on an id that may have been archived out from
 // under it — either a race with the cap-management archival (BRO-285) or a
@@ -310,6 +331,7 @@ module.exports = {
   listIssues,
   getIssue,
   listOpenIssues,
+  listOpenIssuesWithDescriptions,
   searchIssues,
   createComment,
   updateIssue,
