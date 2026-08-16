@@ -138,6 +138,15 @@ const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
 const SCHEDULES_FILE = path.join(DATA_DIR, 'show-schedules.json');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
+// Loud, unmissable signal that the override is active — if VALIDATE_DATA_SHOWS_JSON
+// ever leaked into a real CI/push run, validate-data.js would silently pass on a
+// file that isn't the one push-core-data actually pushes. Print on both streams so
+// it survives stdout-only or stderr-only log capture.
+if (process.env.VALIDATE_DATA_SHOWS_JSON) {
+  const warning = `⚠️  VALIDATE_DATA_SHOWS_JSON override active — validating ${SHOWS_FILE}, NOT the real data/shows.json. This must be set only by tests, never in a real CI/push run.`;
+  console.warn(warning);
+  console.error(warning);
+}
 const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 
 const strictMode = process.argv.includes('--strict');
@@ -612,7 +621,6 @@ function validateDates(shows) {
   }
 
   if (staleStatusFixes > 0) {
-    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -825,7 +833,6 @@ function validateVenueCategory(shows) {
 
   if (autoFixed > 0) {
     // Write back the fixes
-    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -877,7 +884,6 @@ function validateTheaterAddress(shows) {
   }
 
   if (mismatches > 0) {
-    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -1465,6 +1471,13 @@ function validateMinimumCounts(shows) {
 
 function checkForCatastrophicChanges() {
   info('Checking for suspicious changes...');
+
+  // Meaningless (and can error) against a fixture path outside the repo —
+  // this check is about pending changes to the real tracked file.
+  if (process.env.VALIDATE_DATA_SHOWS_JSON) {
+    ok('Skipped git diff check (VALIDATE_DATA_SHOWS_JSON override active)');
+    return;
+  }
 
   try {
     const { execSync } = require('child_process');

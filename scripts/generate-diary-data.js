@@ -17,6 +17,11 @@ const path = require('path');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
+// Override lets the "diary-shows.json missing" e2e test point at a guaranteed-
+// absent path instead of renaming the real symlinked data/diary-shows.json out
+// of place (same class of risk as the validate-data sentinel test — see
+// tests/e2e/diary-generate-script.spec.ts).
+const diaryShowsPath = process.env.DIARY_SHOWS_JSON || path.join(dataDir, 'diary-shows.json');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -26,7 +31,7 @@ if (!fs.existsSync(outputDir)) {
 // Load diary shows — graceful fallback if missing or empty
 let diaryShows = [];
 try {
-  const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'diary-shows.json'), 'utf-8'));
+  const raw = JSON.parse(fs.readFileSync(diaryShowsPath, 'utf-8'));
   diaryShows = raw.shows || [];
 } catch {
   // diary-shows.json doesn't exist yet — generate empty files
