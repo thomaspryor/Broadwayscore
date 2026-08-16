@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-16T14:22:46.418Z",
+  "generatedAt": "2026-08-16T14:47:30.342Z",
   "summary": {
     "totalOutletsInReviews": 1124,
-    "inRegistry": 940,
-    "missing": 184,
+    "inRegistry": 945,
+    "missing": 179,
     "unused": 175
   },
   "missingOutlets": [
@@ -533,14 +533,6 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json"
     },
     {
-      "outletId": "closeupculture",
-      "count": 1,
-      "shows": [
-        "death-note-the-musical-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/death-note-the-musical-west-end-2026/closeupculture--genevieve.json"
-    },
-    {
       "outletId": "shortlist",
       "count": 1,
       "shows": [
@@ -579,14 +571,6 @@
         "dinosaur-world-live-off-west-end-2026"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/dinosaur-world-live-off-west-end-2026/pittsburgh-theater--unknown.json"
-    },
-    {
-      "outletId": "stagetopage",
-      "count": 1,
-      "shows": [
-        "dinosaur-world-live-off-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/dinosaur-world-live-off-west-end-2026/stagetopage--unknown.json"
     },
     {
       "outletId": "troubadourtheatres",
@@ -1085,22 +1069,6 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/tao-of-glass-west-end-2026/staybook--staybook.json"
     },
     {
-      "outletId": "thenerve",
-      "count": 1,
-      "shows": [
-        "tao-of-glass-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/tao-of-glass-west-end-2026/thenerve--dorian-lynskey.json"
-    },
-    {
-      "outletId": "northernartsreview",
-      "count": 1,
-      "shows": [
-        "the-car-man-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-car-man-west-end-2026/northernartsreview--shannaz.json"
-    },
-    {
       "outletId": "buy-tickets-from-the-producers-here",
       "count": 1,
       "shows": [
@@ -1419,14 +1387,6 @@
         "the-seagull-2008"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-seagull-2008/arifa-akbar-found-the-show-hypnotic-in-a-rare--luke-dillon.json"
-    },
-    {
-      "outletId": "the-daily-texan",
-      "count": 1,
-      "shows": [
-        "the-sound-of-music-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-sound-of-music-2026/the-daily-texan--ana-taveira.json"
     },
     {
       "outletId": "the-suburban",
@@ -2721,14 +2681,6 @@
       ]
     },
     {
-      "outletId": "closeupculture",
-      "displayName": "closeupculture",
-      "tier": 3,
-      "aliases": [
-        "closeupculture"
-      ]
-    },
-    {
       "outletId": "shortlist",
       "displayName": "shortlist",
       "tier": 3,
@@ -2766,14 +2718,6 @@
       "tier": 3,
       "aliases": [
         "pittsburgh-theater"
-      ]
-    },
-    {
-      "outletId": "stagetopage",
-      "displayName": "stagetopage",
-      "tier": 3,
-      "aliases": [
-        "stagetopage"
       ]
     },
     {
@@ -3285,22 +3229,6 @@
       ]
     },
     {
-      "outletId": "thenerve",
-      "displayName": "thenerve",
-      "tier": 3,
-      "aliases": [
-        "thenerve"
-      ]
-    },
-    {
-      "outletId": "northernartsreview",
-      "displayName": "northernartsreview",
-      "tier": 3,
-      "aliases": [
-        "northernartsreview"
-      ]
-    },
-    {
       "outletId": "buy-tickets-from-the-producers-here",
       "displayName": "Buy tickets from the producers here.",
       "tier": 3,
@@ -3621,14 +3549,6 @@
       "tier": 3,
       "aliases": [
         "arifa-akbar-found-the-show-hypnotic-in-a-rare"
-      ]
-    },
-    {
-      "outletId": "the-daily-texan",
-      "displayName": "the-daily-texan",
-      "tier": 3,
-      "aliases": [
-        "the-daily-texan"
       ]
     },
     {
@@ -11434,6 +11354,16 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "outletId": "closeupculture",
+      "currentDisplayName": "closeupculture",
+      "expectedDisplayName": "Close-Up Culture",
+      "canonicalId": "closeupculture",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/death-note-the-musical-west-end-2026/closeupculture--genevieve.json"
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "outletId": "stanservice",
       "currentDisplayName": "stanservice",
       "expectedDisplayName": "Stanservice",
@@ -11491,6 +11421,16 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/major-barbara-2001/the-herald--mark-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-goat-or-who-is-sylvia-2002/the-herald--mark-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-gospel-at-colonus-1988/the-herald--swayingshoulder-rollingtambourine-mark-brown.json"
+      ]
+    },
+    {
+      "showId": "dinosaur-world-live-off-west-end-2026",
+      "outletId": "stagetopage",
+      "currentDisplayName": "stagetopage",
+      "expectedDisplayName": "Stage to Page",
+      "canonicalId": "stagetopage",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/dinosaur-world-live-off-west-end-2026/stagetopage--unknown.json"
       ]
     },
     {
@@ -14864,6 +14804,16 @@
       ]
     },
     {
+      "showId": "tao-of-glass-west-end-2026",
+      "outletId": "thenerve",
+      "currentDisplayName": "thenerve",
+      "expectedDisplayName": "The Nerve",
+      "canonicalId": "thenerve",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/tao-of-glass-west-end-2026/thenerve--dorian-lynskey.json"
+      ]
+    },
+    {
       "showId": "tender-off-west-end-2026",
       "outletId": "diva-magazine",
       "currentDisplayName": "diva-magazine",
@@ -14992,6 +14942,16 @@
       "canonicalId": "londonlivinglarge",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-car-man-west-end-2026/londonlivinglarge--unknown.json"
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "outletId": "northernartsreview",
+      "currentDisplayName": "northernartsreview",
+      "expectedDisplayName": "Northern Arts Review",
+      "canonicalId": "northernartsreview",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-car-man-west-end-2026/northernartsreview--shannaz.json"
       ]
     },
     {
@@ -15917,6 +15877,16 @@
       "canonicalId": "unmissabletheatre",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-smile-of-her-off-west-end-2026/unmissabletheatre--megan-oneill.json"
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2026",
+      "outletId": "the-daily-texan",
+      "currentDisplayName": "the-daily-texan",
+      "expectedDisplayName": "The Daily Texan",
+      "canonicalId": "the-daily-texan",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-sound-of-music-2026/the-daily-texan--ana-taveira.json"
       ]
     },
     {

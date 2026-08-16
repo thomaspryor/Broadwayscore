@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-15T10:16:10.733Z",
+    "lastUpdated": "2026-08-16T00:00:00.000Z",
     "version": "2.1.0",
-    "lastChange": "BRO-254: register westend (westend.com, region: london) — was unregistered and falling through the cross-market guard's US-outlet fallback"
+    "lastChange": "task #1679: register 5 legit new outlets (closeupculture, stagetopage, thenerve, northernartsreview, the-daily-texan) that appeared since the --strict baseline was cut; baselined 6 non-outlet junk IDs (UGC diary comment, customer-review widget, venue press release, critic-quote roundup, school-trip booking page, wrong-production SEO blog) instead of registering them as press outlets"
   },
   "outlets": {
     "westendtheatre": {
@@ -10926,6 +10926,61 @@
         "outinjersey"
       ],
       "domain": "outinjersey.net"
+    },
+    "closeupculture": {
+      "displayName": "Close-Up Culture",
+      "tier": 3,
+      "aliases": [
+        "closeupculture"
+      ],
+      "domain": "closeupculture.com",
+      "accessModel": "free",
+      "market": "west-end",
+      "region": "london"
+    },
+    "stagetopage": {
+      "displayName": "Stage to Page",
+      "tier": 3,
+      "aliases": [
+        "stagetopage"
+      ],
+      "domain": "stagetopage.co.uk",
+      "accessModel": "free",
+      "market": "west-end",
+      "region": "london"
+    },
+    "thenerve": {
+      "displayName": "The Nerve",
+      "tier": 3,
+      "aliases": [
+        "thenerve",
+        "the-nerve"
+      ],
+      "domain": "thenerve.news",
+      "accessModel": "free",
+      "market": "west-end",
+      "region": "london"
+    },
+    "northernartsreview": {
+      "displayName": "Northern Arts Review",
+      "tier": 3,
+      "aliases": [
+        "northernartsreview"
+      ],
+      "domain": "northernartsreview.co.uk",
+      "accessModel": "free",
+      "market": "west-end",
+      "region": "london"
+    },
+    "the-daily-texan": {
+      "displayName": "The Daily Texan",
+      "tier": 3,
+      "aliases": [
+        "the-daily-texan",
+        "daily texan"
+      ],
+      "domain": "thedailytexan.com",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
