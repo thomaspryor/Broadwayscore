@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-15T20:18:01.186Z",
+  "timestamp": "2026-08-16T04:50:02.384Z",
   "stats": {
-    "totalReviews": 42310,
-    "alreadyFlagged": 18228,
+    "totalReviews": 42300,
+    "alreadyFlagged": 18231,
     "dateGuardCatches": 144,
-    "directorMismatch": 968,
+    "directorMismatch": 969,
     "tvFilmSignals": 1207,
-    "londonSignals": 900,
+    "londonSignals": 905,
     "offBroadwaySignals": 489,
     "yearMismatch": 88,
-    "noPublishDate": 3617
+    "noPublishDate": 3593
   },
   "findings": [
     {
@@ -4836,6 +4836,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "jonathan-baz--jonathan-baz.json",
+      "score": 95,
+      "publishDate": null,
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
@@ -34704,10 +34718,38 @@
     },
     {
       "showId": "cleansed-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 65,
+      "publishDate": "2026-07-30",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cleansed-almeida-review-sarah-kane-leo-bill-b3024438.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 40,
       "publishDate": "2026-07-30",
       "url": "https://www.londonboxoffice.co.uk/news/post/cleansed-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "score": 63,
+      "publishDate": "2026-07-30",
+      "url": "https://www.londontheatre.co.uk/reviews/cleansed-review-almeida-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -37969,6 +38011,20 @@
       ]
     },
     {
+      "showId": "high-society-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "score": null,
+      "publishDate": "2026-06-03",
+      "url": "https://www.whatsonstage.com/news/high-society-at-the-barbican-theatre-review-a-swellegant-elegant-party-indeed_1723653/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "hillary-and-clinton-2019",
       "file": "dailybeast--tim-teeman.json",
       "score": 61,
@@ -38049,6 +38105,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "all-allam--margaux.json",
+      "score": 88,
+      "publishDate": "2026-08-14",
+      "url": "https://all-allam.com/how-the-other-half-loves-reviews/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -39184,6 +39254,20 @@
       "score": 82,
       "publishDate": "2024-10-07",
       "url": "https://www.londonboxoffice.co.uk/news/post/juno-and-the-paycock-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 38,
+      "publishDate": "2024-10-13",
+      "url": "https://www.thetimes.com/article/b49f1944-20dc-4cfc-a4d6-4016eade5734",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
