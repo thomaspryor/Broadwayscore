@@ -32,7 +32,20 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./lib/no-dispatch-marker.js');
 const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
-const { indexLiveTasks } = require('./lib/task-reclaim.js');
+const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
+const { findLiveWorkspaceForTask } = require('./lib/dispatch-guards.js');
+const cmuxws = require('./lib/cmux-workspaces.js');
+// Reuse task-reclaim.js's constants/helpers rather than re-declaring copies —
+// same idle bar (48h) and same "never make an Archived/Cancelled card
+// dispatchable again" rule as the archive-trapped case (card #1402) this
+// module's own liveness guard mirrors (see planLivenessDowngrade below).
+// indexLiveTasks is task #1701's ground-truth live-marker scan (see
+// buildLiveMarkerIndex below).
+const { indexLiveTasks, TERMINAL_CARD_STATUSES, DEFAULT_IDLE_MS: LIVENESS_IDLE_MS } = require('./lib/task-reclaim.js');
+// cmdPush must never overwrite these with Done — Archived/Cancelled is a
+// deliberate human decision (unlike Done itself, which Done->Done is a
+// harmless idempotent re-confirm, pre-existing behavior, out of scope here).
+const NEVER_OVERWRITE_WITH_DONE = new Set([...TERMINAL_CARD_STATUSES].filter((s) => s !== 'Done'));
 
 // Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
 // (scripts/lib/digest-autofix.js's old matchOpenTask, before that module
@@ -167,6 +180,79 @@ function planStatusDrift(task, card) {
   const merged = mergeStatus(task.status, mapped);
   if (merged === task.status) return null;
   return { newStatus: merged, cardStatus: card.status };
+}
+
+// Task #1697 (residual from #1691): planStatusDrift only ever unsticks the
+// Done case (see its own comment above) — every other Notion status maps to
+// 'pending' via mapStatus()'s default case, and mergeStatus() then refuses
+// the in_progress->pending downgrade on purpose. That refusal is the correct
+// default (protects a genuinely live session from duplicate pickup), but it
+// also means a card that drifted to Paused/Not started/Archived/Cancelled
+// leaves its mirror stuck at in_progress forever unless something checks
+// whether the "live" work is actually still alive. This is that check — same
+// guard order scripts/lib/task-reclaim.js's classifyReclaimable() already
+// uses for the analogous archive-trapped case (card #1402: live lease, then
+// live cmux tab, then the idle-freshness check, then a completed-Outcome
+// guard, then never-reopen for a TERMINAL_CARD_STATUSES card) — applied here
+// to a LIVE-DIR mirror instead of an archived one.
+//
+// Pure aside from the injected ctx (mirrors planStatusDrift's shape): no I/O
+// here, so it's unit-testable without a real lease dir or cmux process.
+// Returns null when this function has nothing to say (task isn't
+// in_progress, no card, or the mapped status isn't the refused 'pending'
+// case — i.e. Done, which is planStatusDrift's job, or In progress, which
+// isn't drift at all). Otherwise always returns a {reason} explaining the
+// decision, even when newStatus stays null, so cmdSyncDrift's unchanged[]
+// report can show WHY a residual entry is still stuck instead of just its
+// raw Notion status.
+function planLivenessDowngrade(task, card, ctx = {}) {
+  const {
+    leaseAliveOf = () => false,
+    liveWorkspaceOf = () => null,
+    now = Date.now(),
+    idleMs = LIVENESS_IDLE_MS,
+  } = ctx;
+  if (!task || task.status !== 'in_progress' || !card) return null;
+  if (mapStatus(card.status) !== 'pending') return null;
+
+  if (leaseAliveOf(task.id)) {
+    return { newStatus: null, cardStatus: card.status, reason: "skip-live: a live claude process still holds this task's lease" };
+  }
+  const ws = liveWorkspaceOf(task);
+  if (ws) {
+    return { newStatus: null, cardStatus: card.status, reason: `skip-live: a live cmux workspace (${(ws && (ws.ref || ws.title)) || 'unknown'}) is titled like this task` };
+  }
+
+  const idle = card.lastEditedAt ? now - Date.parse(card.lastEditedAt) : NaN;
+  if (!Number.isFinite(idle)) {
+    return { newStatus: null, cardStatus: card.status, reason: 'skip: card has no usable lastEditedAt — cannot tell whether anyone is on it' };
+  }
+  if (idle < idleMs) {
+    return { newStatus: null, cardStatus: card.status, reason: `skip-fresh: card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it` };
+  }
+
+  // Same #383 class sweepUntrackedInProgress's has-completed-outcome guard
+  // exists to stop (bsc-reconcile.js): the card already records FINISHED
+  // work, so downgrading to pending would make it re-dispatchable and redo
+  // it. That sweep only ever covers ledger-UNtracked tasks — this is the
+  // only guard standing between a ledger-TRACKED mirror and the same bug.
+  if (String(card.outcome || '').trim()) {
+    return { newStatus: null, cardStatus: card.status, reason: 'skip-outcome: card already records a completed Outcome — needs a human yes/no, not an automatic downgrade' };
+  }
+
+  if (TERMINAL_CARD_STATUSES.has(card.status)) {
+    // Archived/Cancelled must never become dispatchable again — mapStatus()'s
+    // default case would otherwise map them straight to 'pending' just like
+    // Paused/Not started. Close the local mirror to 'completed' instead, the
+    // same terminal treatment task-reclaim.js's parkedTaskShape gives this
+    // exact case. (cmdPush must not read this as "newly completed LOCAL
+    // work" and overwrite the card's Archived/Cancelled status with Done —
+    // see cmdPush's own syncedStatus guard, not a stamp on this entry, so a
+    // later human reopen of the card is never permanently locked out.)
+    return { newStatus: 'completed', cardStatus: card.status, reason: `liveness-checked: no live lease/tab, no Outcome, card idle and Notion says "${card.status}" — closing (terminal status, never re-dispatchable)` };
+  }
+
+  return { newStatus: 'pending', cardStatus: card.status, reason: `liveness-checked: no live lease/tab, no Outcome, card idle and Notion says "${card.status}"` };
 }
 
 // Decide what a pull should do given the eligible cards and the existing map.
@@ -639,7 +725,7 @@ function cmdPush(args) {
   if (!release) { console.error('[sync] a sync holds the lock; skipping push'); return { skipped: true }; }
   try {
     const map = readMap(dir);
-    const done = [], skipped = [], refused = [];
+    const done = [], skipped = [], refused = [], parkedTerminal = [];
     for (const [pageId, entry] of Object.entries(map)) {
       if (entry.pushed) continue;
       const task = readTask(dir, entry.taskId);
@@ -647,6 +733,18 @@ function cmdPush(args) {
       // The integer id may have been reused by a live session for unrelated
       // work. Only close the card if this file still carries our marker.
       if (!taskBelongsTo(dir, entry.taskId, pageId)) { skipped.push({ taskId: entry.taskId, name: entry.name }); continue; }
+      // Task #1697: sync-drift's liveness-checked terminal closure writes a
+      // local 'completed' status for a card whose Notion status is ALREADY
+      // Archived/Cancelled (planLivenessDowngrade) — that reflects Notion's
+      // existing terminal state, not newly-finished local work, so it must
+      // never be read as "ready to markCardDone" and overwrite a deliberate
+      // Archived/Cancelled with Done. Checked off the entry's last-synced
+      // Notion status (not a permanent stamp) so a card a human later
+      // reopens naturally drops out of this guard on its next pull/sync-drift.
+      if (NEVER_OVERWRITE_WITH_DONE.has(entry.syncedStatus)) {
+        parkedTerminal.push({ taskId: entry.taskId, name: entry.name, syncedStatus: entry.syncedStatus });
+        continue;
+      }
       // pushed only when the card ACTUALLY closed — a trunk-gate refusal
       // must stay retryable, never be recorded as a completed close
       // (ship-check finding: the sweep would report "marked Done" for a card
@@ -673,11 +771,12 @@ function cmdPush(args) {
       }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${parkedTerminal.length ? `, ${parkedTerminal.length} skipped (Notion status is Archived/Cancelled — never overwrite with Done)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
     for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);
-    return { listId: listId(args), done, skipped, refused, dry };
+    for (const p of parkedTerminal) console.error(`  · skipped #${p.taskId} (Notion says ${p.syncedStatus} — never overwrite with Done): ${p.name}`);
+    return { listId: listId(args), done, skipped, refused, parkedTerminal, dry };
   } finally { release(); }
 }
 
@@ -698,6 +797,19 @@ function cmdSyncDrift(args) {
     const t = readLiveTask(dir, e.taskId);
     return t && t.status === 'in_progress';
   }).slice(0, limit);
+
+  // Task #1697: liveness primitives for planLivenessDowngrade, fetched once
+  // up front (cmux listing is a subprocess call — same "fetch once, reuse
+  // across the loop" shape bsc-reconcile.js's sweepUntrackedInProgress uses
+  // for its own workspace snapshot). Degrades to "no live workspace found"
+  // if cmux is down, matching that sweep's own try/catch.
+  let workspaces = [];
+  try { workspaces = cmuxws.listWorkspaces() || []; } catch { /* cmux down — liveness guard degrades to skip-none */ }
+  const leaseAliveOf = (taskId) => {
+    const lease = readLease(taskId);
+    return !!(lease && pidLooksLikeClaude(lease.pid));
+  };
+  const liveWorkspaceOf = (t, wsList) => findLiveWorkspaceForTask(t, wsList, cmuxws.isDoneTitle);
 
   const fixed = [];
   const unchanged = [];
@@ -725,9 +837,28 @@ function cmdSyncDrift(args) {
       fetchFailed.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
       continue;
     }
-    const drift = planStatusDrift(task, card);
+    let drift = planStatusDrift(task, card);
+    // Task #1697: planStatusDrift only unsticks the Done case (mergeStatus
+    // never refuses ...->completed). Every other non-"In progress" Notion
+    // status (Paused/Not started/Archived/Cancelled) is the refused
+    // in_progress->pending downgrade — safe only once a liveness check
+    // clears it. viaLiveness tags the fixed[] entry so the in-lock
+    // re-verification below knows to re-run the SAME check, not just
+    // re-check task.status (a lease/tab can be claimed WHILE this run's
+    // slow per-card Notion GETs were in flight).
+    let viaLiveness = false;
+    if (!drift) {
+      const liveness = planLivenessDowngrade(task, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, workspaces) });
+      if (liveness && liveness.newStatus) {
+        drift = { newStatus: liveness.newStatus, cardStatus: liveness.cardStatus, reason: liveness.reason };
+        viaLiveness = true;
+      } else if (liveness) {
+        unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: `${card.status} (${liveness.reason})` });
+        continue;
+      }
+    }
     if (!drift) { unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: card.status }); continue; }
-    fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: card.status });
+    fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: drift.cardStatus, reason: drift.reason });
     if (dry) continue;
     // Ship-check P0 catch (3 independent reviewers): cmdPull/cmdPush hold
     // acquireLock() across their WHOLE read-modify-write cycle because that
@@ -758,6 +889,22 @@ function cmdSyncDrift(args) {
         unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: 'SKIPPED (status changed since this run started)' });
         continue;
       }
+      // Task #1697 correctness fix: a liveness-based downgrade (unlike the
+      // Done case) can be invalidated by a dispatch that claims the lease or
+      // opens a workspace WHILE this run's slow per-card Notion GETs were in
+      // flight. Re-run the SAME liveness check against freshly read
+      // lease/workspace state, inside the lock, right before writing — never
+      // trust the pre-lock snapshot for this path.
+      if (viaLiveness) {
+        let freshWorkspaces = workspaces;
+        try { freshWorkspaces = cmuxws.listWorkspaces() || []; } catch { /* degrade to the pre-lock snapshot */ }
+        const recheck = planLivenessDowngrade(freshTask, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, freshWorkspaces) });
+        if (!recheck || !recheck.newStatus) {
+          fixed.pop();
+          unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: `SKIPPED (became live during this run: ${recheck ? recheck.reason : 'status changed'})` });
+          continue;
+        }
+      }
       // Same shape as cmdPull's toUpdate branch: rebuild the mirrored task
       // from the fresh card, carry blocks/blockedBy forward, apply
       // mergeStatus (via planStatusDrift, already computed above).
@@ -767,6 +914,14 @@ function cmdSyncDrift(args) {
       writeTask(dir, updated);
       const freshMap = readMap(dir);
       if (freshMap[pageId]) {
+        // Deliberately NOT stamping pushed:true here for the Archived/
+        // Cancelled terminal closure — that would be a permanent, never-
+        // reset mark (ship-check catch: nothing anywhere clears `pushed`),
+        // so a card a human later reopens would stay silently un-syncable
+        // to Notion forever. cmdPush's own syncedStatus check below (right
+        // below this comment's write of syncedStatus) re-evaluates fresh
+        // every run instead — a reopened card's next pull/sync-drift updates
+        // syncedStatus off Archived/Cancelled and the guard stops firing.
         freshMap[pageId].syncedStatus = card.status;
         freshMap[pageId].name = card.name;
         freshMap[pageId].fmt = MIRROR_FMT;
@@ -775,9 +930,9 @@ function cmdSyncDrift(args) {
     } finally { release(); }
   }
   console.error(`[sync] sync-drift: checked ${entries.length} in_progress task(s) — ${fixed.length} drifted (mirror corrected)${fetchFailed.length ? `, ${fetchFailed.length} fetch failed` : ''}${dry ? ' (DRY RUN)' : ''}`);
-  for (const f of fixed) console.error(`  ${dry ? '(would fix) ' : '✓ '}#${f.taskId} [${f.from} -> ${f.to}, Notion says "${f.cardStatus}"] ${f.name}`);
+  for (const f of fixed) console.error(`  ${dry ? '(would fix) ' : '✓ '}#${f.taskId} [${f.from} -> ${f.to}, Notion says "${f.cardStatus}"]${f.reason ? ` ${f.reason}` : ''} ${f.name}`);
   for (const e of fetchFailed) console.error(`  ⚠ fetch failed for #${e.taskId}: ${e.error.split('\n')[0]}`);
-  return { listId: listId(args), fixed, unchanged: unchanged.length, fetchFailed, dry };
+  return { listId: listId(args), fixed, unchanged: unchanged.length, unchangedDetail: unchanged, fetchFailed, dry };
 }
 
 function cmdStatus(args) {
@@ -815,4 +970,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };

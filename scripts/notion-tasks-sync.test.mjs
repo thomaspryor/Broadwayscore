@@ -236,6 +236,104 @@ test('#1691: planStatusDrift degrades to no-op on a failed fetch (null card), ne
   assert.equal(planStatusDrift({ id: '42', status: 'in_progress' }, null), null);
 });
 
+// ── #1697: planLivenessDowngrade — the liveness check planStatusDrift's own
+// comment says belongs elsewhere, applied to the residual Paused/Not
+// started/Archived/Cancelled population left stuck by the #1691 fix above.
+
+test('#1697: planLivenessDowngrade is a no-op outside its scope (not in_progress, no card, or Done/In progress)', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'pending' }, { status: 'Paused' }), null);
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, null), null);
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, { status: 'Done' }), null, 'Done is planStatusDrift\'s job');
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, { status: 'In progress' }), null, 'not drift at all');
+});
+
+test('#1697: a live lease always wins — never downgrade a task a live claude process holds', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: new Date(0).toISOString() }; // ancient — idle alone would pass
+  const result = planLivenessDowngrade(task, card, { leaseAliveOf: () => true, now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+test('#1697: a live cmux workspace always wins — never downgrade a task with a live tab', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Not started', lastEditedAt: new Date(0).toISOString() };
+  const result = planLivenessDowngrade(task, card, { liveWorkspaceOf: () => ({ ref: 'ws-1', title: 'x' }), now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+test('#1697: a card with a filled Outcome never auto-downgrades (the #383 class)', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', outcome: 'Shipped the fix already.', lastEditedAt: new Date(0).toISOString() };
+  const result = planLivenessDowngrade(task, card, { now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-outcome/);
+});
+
+test('#1697: a recently-edited card is left alone — someone may still be on it', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const card = { status: 'Paused', lastEditedAt: new Date(now - 3600e3).toISOString() }; // 1h ago
+  const result = planLivenessDowngrade(task, card, { now });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-fresh/);
+});
+
+test('#1697: no live lease/tab/Outcome, card idle past the threshold — Paused/Not started downgrade to pending', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString(); // 72h ago, past the 48h bar
+  for (const status of ['Paused', 'Not started']) {
+    const card = { status, lastEditedAt: stale };
+    const result = planLivenessDowngrade(task, card, { now });
+    assert.deepEqual(result, { newStatus: 'pending', cardStatus: status, reason: result.reason });
+    assert.match(result.reason, /liveness-checked/);
+  }
+});
+
+test('#1697: Archived/Cancelled never become re-dispatchable — close to completed, not reopened to pending', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString();
+  for (const status of ['Archived', 'Cancelled']) {
+    const card = { status, lastEditedAt: stale };
+    const result = planLivenessDowngrade(task, card, { now });
+    assert.equal(result.newStatus, 'completed', `${status} must close, not reopen`);
+    assert.match(result.reason, /closing \(terminal status/);
+  }
+});
+
+// #1697 ship-check catch: sync-drift's liveness-checked terminal closure
+// writes local status:'completed' for a card whose Notion status is ALREADY
+// Archived/Cancelled — that must never be read as "newly-finished local
+// work ready to push to Notion", or cmdPush would overwrite a deliberate
+// Archived/Cancelled with Done. cmdPush checks this off entry.syncedStatus
+// (re-evaluated every run) rather than a permanent unresettable stamp, so a
+// card a human later reopens is never locked out forever.
+test('#1697: NEVER_OVERWRITE_WITH_DONE covers Archived/Cancelled but not Done', () => {
+  const { NEVER_OVERWRITE_WITH_DONE } = require('./notion-tasks-sync.js');
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Archived'), true);
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Cancelled'), true);
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Done'), false, 'Done->Done is a harmless idempotent re-confirm, must stay pushable');
+});
+
+test('#1697: an unusable lastEditedAt skips rather than guessing', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: null };
+  const result = planLivenessDowngrade(task, card, { now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /no usable lastEditedAt/);
+});
+
 // ── #485: .sync-lock staleness must use its own acquiredAt, not fs mtime ────
 // Same bug class as json-write-guard.js and #476's monitor.lock: mtime is
 // trivially reset by any unrelated process touching the lock file.
