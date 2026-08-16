@@ -228,8 +228,19 @@ test('isWithinWindow: ±N day window', () => {
 });
 
 // ─── Integration: synthetic show directory ──────────────────────────────────
+//
+// test-data-write-guard-ok: writes a brand-new, never-colliding synthetic
+// show dir under the real data/review-texts/ tree, not an existing tracked
+// file — verify-all-scored.js resolves review-texts paths internally, no
+// injectable tmp root. rm -rf'd after each integration test; the guard's
+// true target (task #1662) is mutating EXISTING tracked content in place.
 
-const SYNTHETIC_SHOW_ID = '__synthetic-orphan-test-show__';
+// process.pid-suffixed (ship-check finding, task #1662): a fixed literal
+// here would let two concurrent runs of this file — parallel Claude
+// sessions, or CI + a session, both exercising the real data/review-texts/
+// tree — mkdir/write/rm-rf the SAME directory, which is a real race, not the
+// "never-colliding" property the exemption comment above claims.
+const SYNTHETIC_SHOW_ID = `__synthetic-orphan-test-show-${process.pid}__`;
 const REPO_ROOT = path.resolve(path.dirname(verifyAllScoredPath), '..');
 const SYNTHETIC_SHOW_DIR = path.join(REPO_ROOT, 'data', 'review-texts', SYNTHETIC_SHOW_ID);
 

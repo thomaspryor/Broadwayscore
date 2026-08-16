@@ -14,7 +14,7 @@
  * 4. File is capped at 10,000 entries (oldest dropped).
  * 5. Entries have the expected schema fields.
  */
-import { test, describe, beforeEach, afterEach } from 'node:test';
+import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -23,50 +23,20 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 
-// We need to override the audit path so the test writes to a temp dir, not the
-// actual data/audit/ directory. The helper uses a module-level constant, so we
-// have to monkey-patch the path after require. Instead, we call recordUrlMismatch
-// and then redirect via a temp dir by temporarily rewriting the constant via
-// module internals — but since the constant is not exported, easiest approach is
-// to just exercise the real path in a temp sub-directory by symlinking or by
-// calling the real exported function and verifying data/audit/ gets the file.
-//
-// For isolation we use a different approach: write to /tmp and verify the helper
-// itself works correctly by requiring the module with a patched __dirname alias.
-// Since that's complex with CJS modules, we call the real function and then clean
-// up the real audit file in afterEach.
-
+// Task #1662: scraper.js's URL_MISMATCH_AUDIT_PATH constant is read at
+// module-load time, so the env override must be set BEFORE requiring it — a
+// throwaway mkdtemp fixture instead of unlinking/mutating/restoring the real
+// tracked data/audit/url-mismatch-suspects.json (which raced CI/~20 parallel
+// sessions writing that same file on their own cadence).
+const AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'url-mismatch-audit-'));
+const AUDIT_PATH = path.join(AUDIT_DIR, 'url-mismatch-suspects.json');
+process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH = AUDIT_PATH;
 const scraper = require('../../scripts/lib/scraper');
-
-// Locate the real audit file path so we can clean up
-const AUDIT_PATH = path.join(
-  path.dirname(path.dirname(path.dirname(new URL(import.meta.url).pathname))),
-  'data', 'audit', 'url-mismatch-suspects.json'
-);
-
-// Save any pre-existing contents so tests don't destroy real data
-let _preExistingContents = null;
 
 describe('recordUrlMismatch audit log', () => {
   beforeEach(() => {
-    // Preserve whatever exists before the test
-    try {
-      _preExistingContents = fs.readFileSync(AUDIT_PATH, 'utf8');
-    } catch {
-      _preExistingContents = null;
-    }
-    // Remove the audit file so each test starts clean
+    // Remove the audit file so each test starts clean.
     try { fs.unlinkSync(AUDIT_PATH); } catch { /* ok if not found */ }
-  });
-
-  afterEach(() => {
-    // Restore pre-existing contents (or remove the file if it didn't exist before)
-    if (_preExistingContents !== null) {
-      fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-      fs.writeFileSync(AUDIT_PATH, _preExistingContents);
-    } else {
-      try { fs.unlinkSync(AUDIT_PATH); } catch { /* ok */ }
-    }
   });
 
   test('creates the file and appends one record when missing', () => {

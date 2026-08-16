@@ -1336,7 +1336,11 @@ function verifyFetchedUrl(html, expectedUrl) {
 // redirects ARE sometimes legitimate (CMS restructuring), so we record each rejection
 // here for human review. A human can then decide which are safe to allowlist.
 // The rejection behavior itself is NOT changed — this is purely telemetry.
-const URL_MISMATCH_AUDIT_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'url-mismatch-suspects.json');
+// SCRAPER_URL_MISMATCH_AUDIT_PATH override (task #1662): lets tests point
+// recordUrlMismatch() at a throwaway fixture instead of racing CI/parallel
+// sessions on the real tracked data/audit/url-mismatch-suspects.json.
+const URL_MISMATCH_AUDIT_PATH = process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH
+  || path.join(__dirname, '..', '..', 'data', 'audit', 'url-mismatch-suspects.json');
 const URL_MISMATCH_MAX_ENTRIES = 10000;
 
 /**

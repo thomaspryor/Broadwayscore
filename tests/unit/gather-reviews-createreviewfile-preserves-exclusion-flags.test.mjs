@@ -20,8 +20,19 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { createReviewFile } = require('../../scripts/gather-reviews.js');
 
+// test-data-write-guard-ok: writes a brand-new, never-colliding show dir
+// (SHOW_ID below) under the real data/review-texts/ tree, not an existing
+// tracked file — createReviewFile() resolves review-texts paths internally,
+// so there's no injectable root to redirect to a tmp fixture. rm -rf'd in
+// afterEach; the guard's true target (task #1662) is mutating EXISTING
+// tracked content in place, which this pattern never does.
 const REVIEW_TEXTS_DIR = path.join(process.cwd(), 'data', 'review-texts');
-const SHOW_ID = '__test-createreviewfile-816';
+// process.pid-suffixed (ship-check finding, task #1662): a fixed literal
+// here would let two concurrent runs of this file — parallel Claude
+// sessions, or CI + a session, both exercising the real data/review-texts/
+// tree — mkdir/write/rm-rf the SAME directory, which is a real race, not the
+// "never-colliding" property the exemption comment above claims.
+const SHOW_ID = `__test-createreviewfile-816-${process.pid}`;
 const showDir = path.join(REVIEW_TEXTS_DIR, SHOW_ID);
 const filePath = path.join(showDir, 'broadwayworld--some-critic.json');
 

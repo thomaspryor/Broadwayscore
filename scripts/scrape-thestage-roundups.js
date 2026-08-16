@@ -27,8 +27,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
-const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -47,7 +46,7 @@ const EXTRACT_ONLY = process.argv.includes('--extract-only');
 const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 
-const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, errors: 0 };
+const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0 };
 
 // ─── Browser Setup ───────────────────────────────────────────────────────────
 
@@ -271,52 +270,44 @@ const { extractReviews } = require('./lib/thestage-extract');
  * Create or update review files from extracted reviews
  */
 function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
-  const showDir = path.join(reviewTextsDir, showId);
-  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
-
-  let created = 0, updated = 0;
+  let created = 0, updated = 0, skipped = 0;
 
   for (const review of reviews) {
-    const criticSlug = normalizeCritic(review.critic);
     const outletId = resolveArchiveRowOutletId({ url: review.url, outletLabel: review.outlet, cachedOutletId: review.outletId, sourceOutletId: 'thestage' });
 
-    const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
-    const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
-
-    let data = {};
-    if (existingMatch && existingMatch.data) {
-      data = existingMatch.data;
-    }
-
-    data.showId = data.showId || showId;
-    data.outlet = data.outlet || review.outlet;
-    data.outletId = data.outletId || outletId;
-    data.criticName = data.criticName || review.critic;
-    if (review.url && !data.url) data.url = review.url;
-    if (review.excerpt) data.theStageExcerpt = review.excerpt;
-
+    const fields = {};
+    if (review.excerpt) fields.theStageExcerpt = review.excerpt;
     // Star rating from roundup — aggregator score, store as metadata only
-    if (review.stars && !data.aggregatorStars) {
-      data.aggregatorStars = `${review.stars}/${review.starsOutOf}`;
-      data.scoreSource = 'thestage-roundup-star-rating';
+    if (review.stars) {
+      fields.aggregatorStars = `${review.stars}/${review.starsOutOf}`;
+      fields.scoreSource = 'thestage-roundup-star-rating';
     }
 
-    if (!DRY_RUN) {
-      // Task #653/#816: findExistingReviewFile() above deliberately skips
-      // wrongProduction/duplicateOf files, so `existingMatch` can be null even
-      // though a flagged file already lives at this exact canonical path —
-      // `data` starts from {} in that case, so a raw write would clobber the
-      // flagged file with a near-empty object. safeWriteReview's merge restores
-      // every field the flagged file carries (not just PROTECTED_FIELDS);
-      // preserveFlaggedFields keeps its own url so the write doesn't trip
-      // applyUrlChangeInvariant and strip publishDate along with it.
-      data = preserveFlaggedFields(filePath, data);
-      safeWriteReview(filePath, data);
-      if (existingMatch) { updated++; } else { created++; }
-    }
+    const result = createOrMergeReviewFile(showId, {
+      outlet: review.outlet,
+      outletId,
+      criticName: review.critic,
+      url: review.url,
+      source: review.source || 'thestage-roundup',
+      fields,
+    }, {
+      dryRun: DRY_RUN,
+      reviewTextsDir,
+      onMerge(existing) {
+        // Upgrade critic name if incoming has one and existing is 'Unknown' —
+        // same pattern as scrape-london-box-office-roundups.js's saveLBOReview.
+        if (review.critic && review.critic !== 'Unknown' && (!existing.criticName || existing.criticName === 'Unknown')) {
+          existing.criticName = review.critic;
+        }
+      },
+    });
+
+    if (result.action === 'new') created++;
+    else if (result.action === 'updated') updated++;
+    else if (result.action === 'skipped') skipped++;
   }
 
-  return { created, updated };
+  return { created, updated, skipped };
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
@@ -354,10 +345,11 @@ async function main() {
         const reviews = extractReviews(html, showId);
         console.log(`  ${showId}: ${reviews.length} reviews`);
 
-        const { created, updated } = writeReviewFiles(reviews, showId);
+        const { created, updated, skipped } = writeReviewFiles(reviews, showId);
         stats.reviewsExtracted += reviews.length;
         stats.filesCreated += created;
         stats.filesUpdated += updated;
+        stats.filesSkipped += skipped;
       }
     } finally {
       await browser.close();
@@ -373,10 +365,11 @@ async function main() {
       const reviews = extractReviews(html, showId);
       console.log(`  ${showId}: ${reviews.length} reviews`);
 
-      const { created, updated } = writeReviewFiles(reviews, showId);
+      const { created, updated, skipped } = writeReviewFiles(reviews, showId);
       stats.reviewsExtracted += reviews.length;
       stats.filesCreated += created;
       stats.filesUpdated += updated;
+      stats.filesSkipped += skipped;
     }
   }
 
@@ -385,6 +378,7 @@ async function main() {
   console.log(`  Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`  Files created: ${stats.filesCreated}`);
   console.log(`  Files updated: ${stats.filesUpdated}`);
+  console.log(`  Files skipped (guard-rejected): ${stats.filesSkipped}`);
   console.log(`  Errors: ${stats.errors}`);
 
   // Zero-data guard: if no pages were checked, the scraper couldn't reach The Stage
