@@ -20,10 +20,10 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
+const { normalizeCritic } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
-const { setExtractedScore } = require('./lib/score-routing');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -272,68 +272,45 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
+// Routes through the shared writer so Guard A (classifyMarketRouting
+// same-title-sibling reroute) runs on this scraper's title-matched creates —
+// showId here comes from matchTitleToShow(), the same cross-show-ambiguous
+// shape as scrape-theatre-reviews.js/scrape-thestage-roundups.js (task #1676,
+// commit e103b463a6f). Mirrors that migration's onMerge critic-name-upgrade
+// behavior and skip-count observability.
 function saveReviewFile(showId, outletId, criticSlug, reviewData) {
-  const showDir = path.join(reviewTextsDir, showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
+  const fields = {};
+  if (reviewData.fullText) fields.fullText = reviewData.fullText;
+  if (reviewData.wordCount) fields.wordCount = reviewData.wordCount;
+  if (reviewData.contentTier) fields.contentTier = reviewData.contentTier;
+  if (reviewData.tierReason) fields.tierReason = reviewData.tierReason;
+  if (reviewData.originalScore) fields.originalScore = reviewData.originalScore;
+  if (reviewData.publishDate) fields.publishDate = reviewData.publishDate;
 
-  const filename = `${outletId}--${criticSlug}.json`;
-  const filepath = path.join(showDir, filename);
-
-  if (fs.existsSync(filepath)) {
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-
-    // Skip if existing is already complete with longer text
-    if (existing.contentTier === 'complete' && (existing.fullText || '').length >= (reviewData.fullText || '').length) {
-      return 'skipped';
-    }
-
-    // Update if we have better data
-    let updated = false;
-
-    if (reviewData.fullText && (!existing.fullText || reviewData.fullText.length > existing.fullText.length)) {
-      existing.fullText = reviewData.fullText;
-      existing.contentTier = reviewData.contentTier;
-      existing.tierReason = reviewData.tierReason;
-      existing.wordCount = reviewData.wordCount;
-      updated = true;
-    }
-    if (reviewData.originalScore && !existing.originalScore) {
-      const routed = setExtractedScore(existing, {
-        value: reviewData.originalScore,
-        normalizedValue: reviewData.originalScoreNormalized || null,
-        source: reviewData.scoreSource || 'wp-api',
-      });
-      if (!routed.wasAggregator) {
-        existing.scoreSource = reviewData.scoreSource || 'wp-api';
+  const result = createOrMergeReviewFile(showId, {
+    outlet: reviewData.outlet,
+    outletId,
+    criticName: reviewData.criticName,
+    url: reviewData.url,
+    source: reviewData.source,
+    fullText: reviewData.fullText,
+    fields,
+  }, {
+    onMerge(existing) {
+      // Skip if existing is already complete with longer text — mirrors the
+      // pre-migration guard so a shorter re-scrape never regresses a good body.
+      if (existing.contentTier === 'complete' && (existing.fullText || '').length >= (reviewData.fullText || '').length) {
+        return false;
       }
-      updated = true;
-    }
-    if (reviewData.url && !existing.url) {
-      existing.url = reviewData.url;
-      updated = true;
-    }
-    if (reviewData.publishDate && !existing.publishDate) {
-      existing.publishDate = reviewData.publishDate;
-      updated = true;
-    }
+      if (reviewData.criticName && reviewData.criticName !== 'Unknown' && (!existing.criticName || existing.criticName === 'Unknown')) {
+        existing.criticName = reviewData.criticName;
+      }
+    },
+  });
 
-    // Track source
-    const sources = new Set(existing.sources || [existing.source || '']);
-    sources.add(reviewData.source);
-    existing.sources = Array.from(sources).filter(Boolean);
-
-    if (updated) {
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
-      return 'updated';
-    }
-    return 'skipped';
-  }
-
-  // Create new review file
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
-  return 'new';
+  if (result.action === 'new') return 'new';
+  if (result.action === 'updated') return 'updated';
+  return 'skipped';
 }
 
 // ---------------------------------------------------------------------------
