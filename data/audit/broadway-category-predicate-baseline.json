@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-08-16",
+  "hits": [
+    {
+      "file": "scripts/audit-opening-night-coverage.js",
+      "snippet": "const noPressNight = category === 'broadway' && isNoPressNightShow(successAgeHours, scoredDispatchTier);"
+    },
+    {
+      "file": "scripts/audit-opening-night-coverage.js",
+      "snippet": "const applyStanding = standingCtx && category === 'broadway' && !noPressNight;"
+    },
+    {
+      "file": "scripts/audit-opening-night-coverage.js",
+      "snippet": "const isBroadway = category === 'broadway';"
+    },
+    {
+      "file": "scripts/backfill-cast-web.js",
+      "snippet": "if (category === 'broadway') return 'Broadway';"
+    },
+    {
+      "file": "scripts/backfill-market.js",
+      "snippet": "if (category === 'broadway' || category === 'off-broadway') return 'broadway';"
+    },
+    {
+      "file": "scripts/check-broadway-source-coverage.js",
+      "snippet": "const shows = allShows.filter(s => s.category === 'broadway');"
+    },
+    {
+      "file": "scripts/check-opening-night-readiness.js",
+      "snippet": "} else if (show.category === 'broadway' || show.category === 'west-end') {"
+    },
+    {
+      "file": "scripts/check-opening-night-scored.js",
+      "snippet": "&& (s.category === 'broadway' || s.category === 'west-end'),"
+    },
+    {
+      "file": "scripts/count-pool.ts",
+      "snippet": "const bw = all.filter(s => s.category === 'broadway');"
+    },
+    {
+      "file": "scripts/fetch-aggregator-pages.ts",
+      "snippet": "const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';"
+    },
+    {
+      "file": "scripts/fetch-aggregator-pages.ts",
+      "snippet": "const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';"
+    },
+    {
+      "file": "scripts/generate-fantasy-config.js",
+      "snippet": "const bwPrices = Object.values(showsConfig).filter(s => s.category === 'broadway').map(s => s.price);"
+    },
+    {
+      "file": "scripts/import-mezzanine-historical.js",
+      "snippet": "if (category === 'broadway') { stats.broadway++; continue; }"
+    },
+    {
+      "file": "scripts/lib/cast-extraction-guards.js",
+      "snippet": "const isBroadway = category === 'broadway' || category === 'off-broadway';"
+    },
+    {
+      "file": "scripts/lib/mezzanine-classify.js",
+      "snippet": "if (category === 'broadway') return null;"
+    },
+    {
+      "file": "scripts/lib/production-verifier.js",
+      "snippet": "const isUSShow = category === 'broadway' || category === 'off-broadway';"
+    },
+    {
+      "file": "scripts/lib/ticket-link-discovery.js",
+      "snippet": ": show.category === 'broadway' ? 'broadway new york' : 'off broadway new york';"
+    },
+    {
+      "file": "scripts/migrations/bulk-ingest-historical-recoveries-2026-05.js",
+      "snippet": "const broadway = matches.filter((s) => s.category === 'broadway');"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "if (category === 'broadway') return 'Bway';"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "const label = (category === 'broadway' ? 'BWAY'"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "_upcomingHasBroadway = top.some(it => it.show.category === 'broadway');"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "const minReviewsForMover = show.category === 'broadway' ? 15 : 50;"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "isBroadway: show.category === 'broadway',"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "if (show && (show.category === 'broadway' || show.category === 'off-broadway') && !isOperaShow(show)) {"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "shows.forEach(s => { if (s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "s.category === 'broadway'"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "const trendingMin = show.category === 'broadway' ? 5 : 5; // OB default is 3, too low for Trending"
+    },
+    {
+      "file": "scripts/newsletter/generate.mjs",
+      "snippet": "const show = shows.find(s => s.slug === slug && s.category === 'broadway');"
+    },
+    {
+      "file": "scripts/validate-data.js",
+      "snippet": "const broadwayOpen = shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));"
+    }
+  ]
+}

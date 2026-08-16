@@ -753,6 +753,12 @@ on:
       - 'scripts/lib/commercial-scope.test.mjs'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-broadway-category-predicate.js'
+      # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
+      # without this entry a --update-baseline commit touching only the JSON
+      # (or a lib-only fix) would get ZERO CI (memory/feedback_test_yml_push_path_allowlist.md).
+      - 'scripts/lib/broadway-category-predicate-baseline.js'
+      - 'scripts/lib/broadway-category-predicate-baseline.test.mjs'
+      - 'data/audit/broadway-category-predicate-baseline.json'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       # Guard + its pin: an edit to either must run CI, or the floor could move
       # in a push whose paths never trigger the job that checks it (#1002).
@@ -4694,13 +4700,15 @@ jobs:
         # while we work through the backlog. Promote to failure once count is <5.
 
       - name: Audit Broadway-category predicate re-derivations
-        run: node scripts/audit-broadway-category-predicate.js
-        continue-on-error: true  # Informational only — pre-existing backlog (task #1496, ~17 files).
+        run: node scripts/audit-broadway-category-predicate.js --strict
         # Flags raw `category === 'broadway'` literals that should call
         # isBroadwayCategory() (scripts/lib/venue-classification.js) instead —
         # 3rd wave of the same reimplementation pattern #1471/#1484 deduped.
-        # Wired as warning so the pre-existing backlog doesn't block merges;
-        # promote to blocking once it's drained file-by-file.
+        # Baseline-diff (task #1665, mirrors audit-direct-provider-calls.js and
+        # audit-sibling-title-misroute.js): the pre-existing 30-hit/17-file
+        # backlog is frozen in data/audit/broadway-category-predicate-baseline.json
+        # and never fails CI; only a NEW (file, snippet) hit not in that
+        # baseline fails the build.
 
       - name: Validate mobile-shows.json integrity
         if: always()
