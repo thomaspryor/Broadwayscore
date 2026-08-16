@@ -227,7 +227,14 @@ function dispatchCapDecision(taskId, entries) {
 // attempt, and are deliberately excluded from this set.
 function isAttemptEvent(event) {
   return event === 'launch' || isDeadlikeEvent(event)
-    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED;
+    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED
+    // ABANDONED is deliberately excluded from isDeadlikeEvent (see its own
+    // comment — a lease-held abandon must not burn a DEAD_ATTEMPT_LIMIT
+    // strike), but it is still very much an ATTEMPT: without this,
+    // latestAttemptForTask skips straight past it to the ORIGINAL launch row,
+    // so isLatestDispatchDead below never sees that the most recent attempt
+    // never actually ran (card #1454 ship-check finding).
+    || event === JOB_EVENTS.ABANDONED;
 }
 
 // The most recent dispatch-attempt entry for a task, or null if it was never
@@ -266,6 +273,11 @@ function isLatestDispatchDead(taskId, entries) {
   if (!latest) return false;
   if (isDeadlikeEvent(latest.event)) return true;
   if (latest.event === 'launch' && latest.unverified === true) return true;
+  // An abandoned attempt (lease-held / pre-spawn exception) never actually
+  // ran, same as a dead cmux launch — a caller checking "did the LATEST
+  // attempt run" (dispatch-dead-launch-guard.js's completion guard) must not
+  // trust a task marked completed off the back of one.
+  if (latest.event === JOB_EVENTS.ABANDONED) return true;
   return false;
 }
 

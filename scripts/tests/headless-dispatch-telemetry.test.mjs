@@ -14,14 +14,28 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const dispatchLedger = require('../lib/dispatch-ledger.js');
 const dispatchHealth = require('../lib/dispatch-health.js');
 const bscRunner = require('../lib/bsc-runner.js');
 
-const { JOB_EVENTS, TERMINAL_JOB_EVENTS, isDeadlikeEvent } = dispatchLedger;
+const { JOB_EVENTS, TERMINAL_JOB_EVENTS, isDeadlikeEvent, isAttemptEvent, isLatestDispatchDead } = dispatchLedger;
 const { computeJobLaneOutcomeRate, JOB_LANE } = dispatchHealth;
+
+// bsc-runner.js hardcodes LEASE_ROOT to a Mac-only absolute path (same
+// pattern as dispatch-ledger.js's REPO — see that file's header), so a real
+// acquireLease() call is only safe where that path is writable. On CI
+// (ubuntu-latest, checked out at $GITHUB_WORKSPACE) it is not — a non-root
+// user cannot mkdir under /Users. Skip the two runJob/acquireLease tests
+// there rather than let an uncaught ENOENT/EACCES fail the whole file
+// (ship-check finding, 2026-08-16): the LEASE_ROOT-independent tests above
+// still give real coverage on every platform.
+const leaseRootUsable = (() => {
+  try { fs.mkdirSync(bscRunner.LEASE_ROOT, { recursive: true }); return true; }
+  catch { return false; }
+})();
 
 // ── JOB_EVENTS.ABANDONED plumbing ───────────────────────────────────────────
 
@@ -146,55 +160,95 @@ test('computeJobLaneOutcomeRate: throws without nowMs (no clock of its own, matc
 // process can never be spawned by construction, not merely by luck.
 const FAKE_PID = 999999; // never checked against a real process — isAliveFn always answers directly
 
-test('runJob: lease-held (another job already running this task) writes job-abandoned, not silence', async () => {
-  const taskId = `test-1454-lease-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
-  const holderJobId = `${taskId}-holder`;
-  const alwaysAlive = () => true;
+test('runJob: lease-held (another job already running this task) writes job-abandoned, not silence',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  async () => {
+    const taskId = `test-1454-lease-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const holderJobId = `${taskId}-holder`;
+    const alwaysAlive = () => true;
+    let claimed = false;
 
-  const claim = bscRunner.acquireLease(taskId, { jobId: holderJobId, subject: 'test-holder', pid: FAKE_PID }, { isAliveFn: alwaysAlive });
-  assert.equal(claim.ok, true, 'setup: the fake holder must actually claim the lease');
+    const appended = [];
+    const originalAppendEntry = dispatchLedger.appendEntry;
+    dispatchLedger.appendEntry = (entry) => {
+      appended.push(entry);
+      return { ts: new Date().toISOString(), ...entry };
+    };
 
-  const appended = [];
-  const originalAppendEntry = dispatchLedger.appendEntry;
-  dispatchLedger.appendEntry = (entry) => {
-    appended.push(entry);
-    return { ts: new Date().toISOString(), ...entry };
-  };
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: holderJobId, subject: 'test-holder', pid: FAKE_PID }, { isAliveFn: alwaysAlive });
+      assert.equal(claim.ok, true, 'setup: the fake holder must actually claim the lease');
+      claimed = true;
 
-  try {
-    const res = await bscRunner.runJob({ taskId, subject: 'test dispatch', prompt: 'irrelevant — must never spawn', isAliveFn: alwaysAlive });
-    assert.equal(res.ok, false);
-    assert.equal(res.stage, 'lease-held');
+      const res = await bscRunner.runJob({ taskId, subject: 'test dispatch', prompt: 'irrelevant — must never spawn', isAliveFn: alwaysAlive });
+      assert.equal(res.ok, false);
+      assert.equal(res.stage, 'lease-held');
 
-    const abandonedEntries = appended.filter((e) => e.event === JOB_EVENTS.ABANDONED && String(e.taskId) === taskId);
-    assert.equal(abandonedEntries.length, 1, 'expected exactly one job-abandoned entry for this attempt — not silence, not a duplicate');
-    assert.equal(abandonedEntries[0].jobId, res.jobId, 'the abandoned entry must carry the SAME jobId runJob() minted for this attempt, so it is attributable');
-    assert.match(String(abandonedEntries[0].reason || ''), /already has a live job/);
-  } finally {
-    dispatchLedger.appendEntry = originalAppendEntry;
-    bscRunner.releaseLease(taskId, holderJobId);
-  }
+      const abandonedEntries = appended.filter((e) => e.event === JOB_EVENTS.ABANDONED && String(e.taskId) === taskId);
+      assert.equal(abandonedEntries.length, 1, 'expected exactly one job-abandoned entry for this attempt — not silence, not a duplicate');
+      assert.equal(abandonedEntries[0].jobId, res.jobId, 'the abandoned entry must carry the SAME jobId runJob() minted for this attempt, so it is attributable');
+      assert.match(String(abandonedEntries[0].reason || ''), /already has a live job/);
+    } finally {
+      dispatchLedger.appendEntry = originalAppendEntry;
+      if (claimed) bscRunner.releaseLease(taskId, holderJobId);
+    }
+  });
+
+test('runJob: a STALE lease (holder not alive) is stolen normally — no job-abandoned, no false positive',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  async () => {
+    const taskId = `test-1454-stale-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const staleHolderJobId = `${taskId}-stale-holder`;
+    const neverAlive = () => false;
+    let claimed = false;
+
+    const appended = [];
+    const originalAppendEntry = dispatchLedger.appendEntry;
+    dispatchLedger.appendEntry = (entry) => { appended.push(entry); return { ts: new Date().toISOString(), ...entry }; };
+
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: staleHolderJobId, subject: 'stale-holder', pid: FAKE_PID }, { isAliveFn: neverAlive });
+      assert.equal(claim.ok, true, 'setup: the stale holder must claim the lease first');
+      claimed = true;
+
+      const claimAttempt = bscRunner.acquireLease(taskId, { jobId: 'new-claimant', subject: 'x', pid: FAKE_PID }, { isAliveFn: neverAlive });
+      assert.equal(claimAttempt.ok, true, 'a stale (not-alive) holder must be stolen, not treated as held');
+      const abandonedEntries = appended.filter((e) => e.event === JOB_EVENTS.ABANDONED);
+      assert.equal(abandonedEntries.length, 0, 'a successful steal is not an abandonment — nothing to write');
+    } finally {
+      dispatchLedger.appendEntry = originalAppendEntry;
+      if (claimed) bscRunner.releaseLease(taskId, 'new-claimant');
+    }
+  });
+
+// ── ABANDONED must be visible to the completion guard (ship-check finding) ──
+// dispatch-dead-launch-guard.js's guardTaskCompletion trusts
+// isLatestDispatchDead() to decide "did the task's most recent dispatch
+// attempt actually run" before letting a task be marked completed. Without
+// isAttemptEvent/isLatestDispatchDead recognizing ABANDONED, that guard would
+// skip straight past an abandoned attempt to the ORIGINAL launch row and
+// never notice the dispatch never ran — reopening the exact invisibility
+// class this card exists to close, just at a different consumer.
+
+test('isAttemptEvent recognizes JOB_EVENTS.ABANDONED as an attempt', () => {
+  assert.equal(isAttemptEvent(JOB_EVENTS.ABANDONED), true);
 });
 
-test('runJob: a STALE lease (holder not alive) is stolen normally — no job-abandoned, no false positive', async () => {
-  const taskId = `test-1454-stale-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
-  const staleHolderJobId = `${taskId}-stale-holder`;
-  const neverAlive = () => false;
+test('isLatestDispatchDead: an abandoned latest attempt reads as dead (completion guard must not trust it)', () => {
+  const entries = [
+    { ts: '2026-08-10T00:00:00.000Z', event: 'launch', taskId: 't-guard', workspaceRef: 'headless:t-guard' },
+    { ts: '2026-08-10T00:00:01.000Z', event: JOB_EVENTS.ABANDONED, taskId: 't-guard', jobId: 'j-guard', reason: 'task already has a live job' },
+  ];
+  assert.equal(isLatestDispatchDead('t-guard', entries), true);
+});
 
-  const claim = bscRunner.acquireLease(taskId, { jobId: staleHolderJobId, subject: 'stale-holder', pid: FAKE_PID }, { isAliveFn: neverAlive });
-  assert.equal(claim.ok, true, 'setup: the stale holder must claim the lease first');
-
-  const appended = [];
-  const originalAppendEntry = dispatchLedger.appendEntry;
-  dispatchLedger.appendEntry = (entry) => { appended.push(entry); return { ts: new Date().toISOString(), ...entry }; };
-
-  try {
-    const claimAttempt = bscRunner.acquireLease(taskId, { jobId: 'new-claimant', subject: 'x', pid: FAKE_PID }, { isAliveFn: neverAlive });
-    assert.equal(claimAttempt.ok, true, 'a stale (not-alive) holder must be stolen, not treated as held');
-    const abandonedEntries = appended.filter((e) => e.event === JOB_EVENTS.ABANDONED);
-    assert.equal(abandonedEntries.length, 0, 'a successful steal is not an abandonment — nothing to write');
-  } finally {
-    dispatchLedger.appendEntry = originalAppendEntry;
-    bscRunner.releaseLease(taskId, 'new-claimant');
-  }
+test('isLatestDispatchDead: a SUBSEQUENT successful redispatch after an abandon is trusted again', () => {
+  const entries = [
+    { ts: '2026-08-10T00:00:00.000Z', event: 'launch', taskId: 't-guard2', workspaceRef: 'headless:t-guard2' },
+    { ts: '2026-08-10T00:00:01.000Z', event: JOB_EVENTS.ABANDONED, taskId: 't-guard2', jobId: 'j-guard2a', reason: 'task already has a live job' },
+    { ts: '2026-08-10T01:00:00.000Z', event: 'launch', taskId: 't-guard2', workspaceRef: 'headless:t-guard2' },
+    { ts: '2026-08-10T01:01:00.000Z', event: JOB_EVENTS.SPAWNED, taskId: 't-guard2', jobId: 'j-guard2b' },
+    { ts: '2026-08-10T01:10:00.000Z', event: JOB_EVENTS.DONE, taskId: 't-guard2', jobId: 'j-guard2b' },
+  ];
+  assert.equal(isLatestDispatchDead('t-guard2', entries), false);
 });
