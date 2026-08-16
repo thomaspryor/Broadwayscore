@@ -146,12 +146,57 @@ function listTestFiles() {
     .sort((a, b) => a.rel.localeCompare(b.rel));
 }
 
+// Task #1643: a bare filename mention anywhere in a workflow's raw text used
+// to count as "referenced", including inside a `#` comment, a `paths:`
+// trigger-list entry (`- 'tests/unit/foo.test.mjs'`), or (adversarial review
+// caught this before it shipped) a `name:`/`env:`/`with:` scalar that merely
+// NAMES a test file without running it — none of which mean the file
+// actually executes. That let 5 real orphans hide behind this exact audit.
+//
+// A first pass tried "drop lines starting with `#` or `-`", which fixed the
+// 5 known orphans but left the name:/env:/with: shape open — the same
+// false-negative direction (a mentioned-but-not-run file reads as covered)
+// that created this bug in the first place. The precise fix: a real
+// invocation in this repo's workflow files always lives inside a step's
+// `run:` value — either the single-line form (`run: cmd ... file.test.mjs`)
+// or the block-scalar form (`run: |`, followed by lines indented deeper than
+// the `run:` key itself, per standard YAML block-scalar semantics). Extract
+// ONLY that text and match against it; every other YAML key (comments,
+// paths:, name:, env:, with:, etc.) is excluded by construction, not by
+// guessing at punctuation.
+function extractRunBlocks(content) {
+  const lines = content.split('\n');
+  const out = [];
+  const singleLineRunRe = /^(\s*)run:\s*(.+)$/;
+  const blockRunRe = /^(\s*)run:\s*[|>][+-]?\s*$/;
+  let blockIndent = null; // indentation (char count) of an open `run: |` key, or null
+  for (const line of lines) {
+    if (blockIndent !== null) {
+      const indent = line.match(/^ */)[0].length;
+      // Blank lines don't end a block scalar; anything indented no deeper
+      // than the `run:` key itself does (next step, next key, dedent).
+      if (line.trim() === '' || indent > blockIndent) {
+        out.push(line);
+        continue;
+      }
+      blockIndent = null; // fall through — this line starts a new key
+    }
+    const block = line.match(blockRunRe);
+    if (block) { blockIndent = block[1].length; continue; }
+    const single = line.match(singleLineRunRe);
+    if (single) out.push(single[2]);
+  }
+  return out.join('\n');
+}
+
 function collectReferencedTests() {
   const referenced = new Set();
   for (const file of fs.readdirSync(WORKFLOWS_DIR).filter(f => f.endsWith('.yml'))) {
     const content = fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf8');
-    for (const match of content.matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
+    for (const match of extractRunBlocks(content).matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
   }
+  // Manifest files are plain newline-separated path lists — no comments, no
+  // YAML list syntax — so stripping is a deliberate no-op here, not applied.
   for (const manifestPath of MANIFEST_FILES) {
     if (!fs.existsSync(manifestPath)) continue;
     const content = fs.readFileSync(manifestPath, 'utf8');
@@ -251,4 +296,8 @@ function main() {
   process.exit(blocking.length > 0 ? 1 : 0);
 }
 
-main();
+// Guarded so `require()`-ing this file from a test (CLAUDE.md rule 15) doesn't
+// also execute the CLI against the real repo and process.exit() the test run.
+if (require.main === module) main();
+
+module.exports = { extractRunBlocks };

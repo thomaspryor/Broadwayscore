@@ -24,6 +24,7 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
+const { foldDiacritics } = require('./lib/title-match');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
@@ -56,7 +57,7 @@ const CANDIDATES_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-candidat
 const LOG_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-promotion-log.jsonl');
 
 function slugify(s) {
-  return String(s || '').toLowerCase()
+  return foldDiacritics(String(s || '')).toLowerCase()
     .replace(/[''""''""]/g, '')
     .replace(/[&]/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
