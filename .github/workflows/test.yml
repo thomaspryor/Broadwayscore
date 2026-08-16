@@ -1683,6 +1683,19 @@ on:
       - 'scripts/lib/invisible-verification-scan.test.mjs'
       - 'scripts/lib/observable-before-absence.js'
       - 'scripts/tests/observable-before-absence.test.mjs'
+      # Headless dispatch lane telemetry (card #1454) — JOB_EVENTS.ABANDONED,
+      # the headless success-rate reader, and the lease-held ledger-write fix
+      # span dispatch-ledger.js/dispatch-health.js/bsc-runner.js/
+      # autofix-canary.js. No scripts/lib/** broad glob (see this file's own
+      # repeated convention note, e.g. line 31/118/290) — each needs explicit
+      # listing so a solo edit doesn't get zero CI. Plus its own scripts/tests/
+      # file (registered in tests/unit-test-manifest.txt, but scripts/tests/ is
+      # not auto-globbed either) and the new CLI reader.
+      - 'scripts/lib/dispatch-health.js'
+      - 'scripts/lib/autofix-canary.js'
+      - 'scripts/lib/autofix-canary.test.mjs'
+      - 'scripts/audit-headless-outcome-rate.js'
+      - 'scripts/tests/headless-dispatch-telemetry.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
