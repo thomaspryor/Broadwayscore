@@ -178,3 +178,37 @@ test('other off-Broadway venues are unaffected by the Delacorte special-case', (
   });
   assert.equal(c.headline, 'Some Show opens off-Broadway');
 });
+
+// The canonical festival-venue check (scripts/lib/review-guards.js
+// FESTIVAL_VENUE_SHOW_RE) also matches "Shakespeare in the Park" without the
+// word "Delacorte" — proving this uses the shared predicate, not a narrower
+// local reinvention (second-opinion review, 2026-08-16: a local /delacorte/i
+// regex would have missed this).
+test('a venue string saying "Shakespeare in the Park" (no "Delacorte") also gets the festival phrasing', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'y', slug: 'y', title: 'Some Play', venue: 'Free Shakespeare in the Park' } }],
+  });
+  assert.equal(c.headline, 'Some Play opens at Free Shakespeare in the Park');
+});
+
+// ── 3+ same-week openings must not silently crowd out the whole lede ────────
+// weOpeningStories() is uncapped and generate.mjs already has dedicated
+// _weOpener logic for 3+-opening weeks, so this is a real scenario, not a
+// hypothetical. With the per-show dedupe fix, three tied-weight WE openings
+// now all survive dedupeByKind — confirm the lede's maxSentences cap still
+// applies (openings fill it; that's the intended "opens > closes" behavior,
+// not a bug — see the closing-final loses-out assertion below).
+test('3 same-week openings fill the lede cap; a same-week closing does not displace them', () => {
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'a', slug: 'a', title: 'Show A' } },
+      { show: { id: 'b', slug: 'b', title: 'Show B' } },
+      { show: { id: 'c', slug: 'c', title: 'Show C' } },
+    ],
+    closingsThisWeek: [{ id: 'd', slug: 'd', title: 'Show D', closingDate: '2026-08-22' }],
+  });
+  const { kinds, showRefs } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'we-gold-opening']);
+  assert.deepEqual(showRefs.map(s => s.id), ['a', 'b', 'c']);
+});
