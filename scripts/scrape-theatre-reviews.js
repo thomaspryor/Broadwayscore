@@ -30,10 +30,10 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { normalizeOutlet } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'theatre-reviews');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -45,7 +45,7 @@ const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 
 // Stats
-const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, errors: 0 };
+const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0 };
 
 /**
  * Fetch a URL via plain HTTPS (no API key needed — static HTML site)
@@ -295,55 +295,43 @@ function parseReviewParagraph($, $p, text, stars) {
  * Create or update review files from extracted reviews
  */
 function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
-  const showDir = path.join(reviewTextsDir, showId);
-  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
-
-  let created = 0, updated = 0;
+  let created = 0, updated = 0, skipped = 0;
 
   for (const review of reviews) {
-    const criticSlug = normalizeCritic(review.critic);
     const outletId = resolveArchiveRowOutletId({ url: review.url, outletLabel: review.outlet, cachedOutletId: review.outletId });
 
-    // Check for existing file
-    const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
-    const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
-
-    let data = {};
-    if (existingMatch && existingMatch.data) {
-      data = existingMatch.data;
-    }
-
-    // Update with theatre.reviews data
-    data.showId = data.showId || showId;
-    data.outlet = data.outlet || review.outlet;
-    data.outletId = data.outletId || outletId;
-    data.criticName = data.criticName || review.critic;
-    if (review.url && !data.url) data.url = review.url;
-    if (review.excerpt) data.theatreReviewsExcerpt = review.excerpt;
-
+    const fields = {};
+    if (review.excerpt) fields.theatreReviewsExcerpt = review.excerpt;
     // Store theatre.reviews' star rating as metadata only — NOT as the outlet's
     // originalScore. TR rates shows independently; attributing TR's rating to
     // the listed outlet causes wrong scores (e.g. TR gives 3/5, outlet gave 5/5).
-    if (review.stars) {
-      data.theatreReviewsStars = `${review.stars}/${review.starsOutOf}`;
-    }
+    if (review.stars) fields.theatreReviewsStars = `${review.stars}/${review.starsOutOf}`;
 
-    if (!DRY_RUN) {
-      // Task #653/#816: findExistingReviewFile() above deliberately skips
-      // wrongProduction/duplicateOf files, so `existingMatch` can be null even
-      // though a flagged file already lives at this exact canonical path —
-      // `data` starts from {} in that case, so a raw write would clobber the
-      // flagged file with a near-empty object. safeWriteReview's merge restores
-      // every field the flagged file carries (not just PROTECTED_FIELDS);
-      // preserveFlaggedFields keeps its own url so the write doesn't trip
-      // applyUrlChangeInvariant and strip publishDate along with it.
-      data = preserveFlaggedFields(filePath, data);
-      safeWriteReview(filePath, data);
-      if (existingMatch) { updated++; } else { created++; }
-    }
+    const result = createOrMergeReviewFile(showId, {
+      outlet: review.outlet,
+      outletId,
+      criticName: review.critic,
+      url: review.url,
+      source: review.source || 'theatre-reviews',
+      fields,
+    }, {
+      dryRun: DRY_RUN,
+      reviewTextsDir,
+      onMerge(existing) {
+        // Upgrade critic name if incoming has one and existing is 'Unknown' —
+        // same pattern as scrape-london-box-office-roundups.js's saveLBOReview.
+        if (review.critic && review.critic !== 'Unknown' && (!existing.criticName || existing.criticName === 'Unknown')) {
+          existing.criticName = review.critic;
+        }
+      },
+    });
+
+    if (result.action === 'new') created++;
+    else if (result.action === 'updated') updated++;
+    else if (result.action === 'skipped') skipped++;
   }
 
-  return { created, updated };
+  return { created, updated, skipped };
 }
 
 async function main() {
@@ -387,10 +375,11 @@ async function main() {
       console.log(`  [CACHED] ${show.title}`);
       const html = fs.readFileSync(archivePath, 'utf8');
       const reviews = extractReviews(html, show.id);
-      const { created, updated } = writeReviewFiles(reviews, show.id);
+      const { created, updated, skipped } = writeReviewFiles(reviews, show.id);
       stats.reviewsExtracted += reviews.length;
       stats.filesCreated += created;
       stats.filesUpdated += updated;
+      stats.filesSkipped += skipped;
       continue;
     }
 
@@ -419,10 +408,11 @@ async function main() {
       const reviews = extractReviews(html, show.id);
       console.log(`    ✓ ${reviews.length} reviews extracted`);
 
-      const { created, updated } = writeReviewFiles(reviews, show.id);
+      const { created, updated, skipped } = writeReviewFiles(reviews, show.id);
       stats.reviewsExtracted += reviews.length;
       stats.filesCreated += created;
       stats.filesUpdated += updated;
+      stats.filesSkipped += skipped;
       stats.pagesChecked++;
 
       // Rate limit
@@ -438,6 +428,7 @@ async function main() {
   console.log(`  Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`  Files created: ${stats.filesCreated}`);
   console.log(`  Files updated: ${stats.filesUpdated}`);
+  console.log(`  Files skipped (guard-rejected): ${stats.filesSkipped}`);
   console.log(`  Errors: ${stats.errors}`);
 }
 
