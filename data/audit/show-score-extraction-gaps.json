@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-15T09:24:25.728Z",
+    "generatedAt": "2026-08-16T15:49:36.965Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 497,
-  "errorSeverity": 393,
-  "warningSeverity": 104,
+  "totalGaps": 347,
+  "errorSeverity": 259,
+  "warningSeverity": 88,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -35,42 +35,6 @@
       "severity": "error"
     },
     {
-      "showId": "a-christmas-carol-1991",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "a-christmas-carol-1994",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "a-christmas-carol-2001",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "a-christmas-carol-2019",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
       "showId": "a-christmas-carol-2022",
       "category": "broadway",
       "expected": 21,
@@ -78,15 +42,6 @@
       "gap": 13,
       "ratio": 0.38,
       "severity": "error"
-    },
-    {
-      "showId": "a-delicate-balance-1996",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
     },
     {
       "showId": "a-delicate-balance-2014",
@@ -104,24 +59,6 @@
       "extracted": 8,
       "gap": 13,
       "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "a-view-from-the-bridge-1983",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "a-view-from-the-bridge-2010",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
       "severity": "error"
     },
     {
@@ -170,24 +107,6 @@
       "severity": "warning"
     },
     {
-      "showId": "all-my-sons-1987",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
-      "showId": "all-my-sons-2008",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
       "showId": "all-my-sons-2019",
       "category": "broadway",
       "expected": 43,
@@ -230,33 +149,6 @@
       "extracted": 8,
       "gap": 60,
       "ratio": 0.12,
-      "severity": "error"
-    },
-    {
-      "showId": "american-buffalo-1977",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "american-buffalo-1983",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
       "severity": "error"
     },
     {
@@ -305,24 +197,6 @@
       "severity": "error"
     },
     {
-      "showId": "an-enemy-of-the-people-1971",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
       "showId": "an-enemy-of-the-people-2024",
       "category": "broadway",
       "expected": 19,
@@ -365,15 +239,6 @@
       "extracted": 8,
       "gap": 21,
       "ratio": 0.28,
-      "severity": "error"
-    },
-    {
-      "showId": "art-1998",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
       "severity": "error"
     },
     {
@@ -440,66 +305,12 @@
       "severity": "error"
     },
     {
-      "showId": "beetlejuice-2022",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "beetlejuice-2025",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "beetlejuice-west-end-2026",
-      "category": "west-end",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
       "showId": "bernhardthamlet-2018",
       "category": "broadway",
       "expected": 48,
       "extracted": 0,
       "gap": 48,
       "ratio": 0,
-      "severity": "error"
-    },
-    {
-      "showId": "betrayal-1980",
-      "category": "broadway",
-      "expected": 35,
-      "extracted": 8,
-      "gap": 27,
-      "ratio": 0.23,
-      "severity": "error"
-    },
-    {
-      "showId": "betrayal-2000",
-      "category": "broadway",
-      "expected": 35,
-      "extracted": 8,
-      "gap": 27,
-      "ratio": 0.23,
-      "severity": "error"
-    },
-    {
-      "showId": "betrayal-2013",
-      "category": "broadway",
-      "expected": 35,
-      "extracted": 8,
-      "gap": 27,
-      "ratio": 0.23,
       "severity": "error"
     },
     {
@@ -602,15 +413,6 @@
       "severity": "error"
     },
     {
-      "showId": "burn-this-1987",
-      "category": "broadway",
-      "expected": 50,
-      "extracted": 8,
-      "gap": 42,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
       "showId": "burn-this-2019",
       "category": "broadway",
       "expected": 50,
@@ -618,15 +420,6 @@
       "gap": 42,
       "ratio": 0.16,
       "severity": "error"
-    },
-    {
-      "showId": "cabaret-1987",
-      "category": "broadway",
-      "expected": 11,
-      "extracted": 8,
-      "gap": 3,
-      "ratio": 0.73,
-      "severity": "warning"
     },
     {
       "showId": "cabaret-2014",
@@ -665,24 +458,6 @@
       "severity": "error"
     },
     {
-      "showId": "camelot-1981",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
-      "severity": "error"
-    },
-    {
-      "showId": "camelot-1993",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
-      "severity": "error"
-    },
-    {
       "showId": "camelot-2023",
       "category": "broadway",
       "expected": 27,
@@ -701,15 +476,6 @@
       "severity": "warning"
     },
     {
-      "showId": "caroline-or-change-2004",
-      "category": "broadway",
-      "expected": 13,
-      "extracted": 8,
-      "gap": 5,
-      "ratio": 0.62,
-      "severity": "warning"
-    },
-    {
       "showId": "caroline-or-change-2021",
       "category": "broadway",
       "expected": 13,
@@ -719,30 +485,12 @@
       "severity": "warning"
     },
     {
-      "showId": "carousel-1994",
-      "category": "broadway",
-      "expected": 60,
-      "extracted": 8,
-      "gap": 52,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
       "showId": "carousel-2018",
       "category": "broadway",
       "expected": 60,
       "extracted": 8,
       "gap": 52,
       "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "cats-1982",
-      "category": "broadway",
-      "expected": 47,
-      "extracted": 8,
-      "gap": 39,
-      "ratio": 0.17,
       "severity": "error"
     },
     {
@@ -773,39 +521,12 @@
       "severity": "error"
     },
     {
-      "showId": "chess-1988",
-      "category": "broadway",
-      "expected": 16,
-      "extracted": 8,
-      "gap": 8,
-      "ratio": 0.5,
-      "severity": "warning"
-    },
-    {
-      "showId": "chess-2003",
-      "category": "broadway",
-      "expected": 16,
-      "extracted": 8,
-      "gap": 8,
-      "ratio": 0.5,
-      "severity": "warning"
-    },
-    {
       "showId": "chess-2025",
       "category": "broadway",
       "expected": 16,
       "extracted": 8,
       "gap": 8,
       "ratio": 0.5,
-      "severity": "warning"
-    },
-    {
-      "showId": "chicago-1975",
-      "category": "broadway",
-      "expected": 10,
-      "extracted": 8,
-      "gap": 2,
-      "ratio": 0.8,
       "severity": "warning"
     },
     {
@@ -825,15 +546,6 @@
       "gap": 6,
       "ratio": 0.57,
       "severity": "warning"
-    },
-    {
-      "showId": "children-of-a-lesser-god-1980",
-      "category": "broadway",
-      "expected": 46,
-      "extracted": 8,
-      "gap": 38,
-      "ratio": 0.17,
-      "severity": "error"
     },
     {
       "showId": "children-of-a-lesser-god-2018",
@@ -869,24 +581,6 @@
       "extracted": 8,
       "gap": 55,
       "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "company-1993",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
-      "severity": "error"
-    },
-    {
-      "showId": "company-2006",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
       "severity": "error"
     },
     {
@@ -980,52 +674,7 @@
       "severity": "warning"
     },
     {
-      "showId": "death-of-a-salesman-1975",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "death-of-a-salesman-1984",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "death-of-a-salesman-1999",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
       "showId": "death-of-a-salesman-2022",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
       "category": "broadway",
       "expected": 24,
       "extracted": 8,
@@ -1059,15 +708,6 @@
       "gap": 57,
       "ratio": 0.12,
       "severity": "error"
-    },
-    {
-      "showId": "elf-2012",
-      "category": "broadway",
-      "expected": 11,
-      "extracted": 8,
-      "gap": 3,
-      "ratio": 0.73,
-      "severity": "warning"
     },
     {
       "showId": "elf-2024",
@@ -1115,15 +755,6 @@
       "severity": "warning"
     },
     {
-      "showId": "falsettos-1992",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
       "showId": "falsettos-2016",
       "category": "broadway",
       "expected": 49,
@@ -1148,33 +779,6 @@
       "extracted": 8,
       "gap": 14,
       "ratio": 0.36,
-      "severity": "error"
-    },
-    {
-      "showId": "fiddler-on-the-roof-1976",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "fiddler-on-the-roof-1990",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "fiddler-on-the-roof-2004",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
       "severity": "error"
     },
     {
@@ -1232,15 +836,6 @@
       "severity": "error"
     },
     {
-      "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
-      "category": "broadway",
-      "expected": 44,
-      "extracted": 8,
-      "gap": 36,
-      "ratio": 0.18,
-      "severity": "error"
-    },
-    {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
       "category": "broadway",
       "expected": 44,
@@ -1257,15 +852,6 @@
       "gap": 1,
       "ratio": 0.89,
       "severity": "warning"
-    },
-    {
-      "showId": "frozen-2004",
-      "category": "broadway",
-      "expected": 62,
-      "extracted": 8,
-      "gap": 54,
-      "ratio": 0.13,
-      "severity": "error"
     },
     {
       "showId": "frozen-2018",
@@ -1292,15 +878,6 @@
       "extracted": 8,
       "gap": 42,
       "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "funny-girl-2002",
-      "category": "broadway",
-      "expected": 30,
-      "extracted": 8,
-      "gap": 22,
-      "ratio": 0.27,
       "severity": "error"
     },
     {
@@ -1337,33 +914,6 @@
       "extracted": 8,
       "gap": 19,
       "ratio": 0.3,
-      "severity": "error"
-    },
-    {
-      "showId": "glengarry-glen-ross-1984",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
-      "severity": "error"
-    },
-    {
-      "showId": "glengarry-glen-ross-2005",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
-      "severity": "error"
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
       "severity": "error"
     },
     {
@@ -1436,42 +986,6 @@
       "extracted": 8,
       "gap": 16,
       "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "gypsy-1974",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "gypsy-1989",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "gypsy-2003",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "gypsy-2008",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
       "severity": "error"
     },
     {
@@ -1610,33 +1124,6 @@
       "severity": "error"
     },
     {
-      "showId": "hello-dolly-1975",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "hello-dolly-1995",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
       "showId": "hello-dolly-2017",
       "category": "broadway",
       "expected": 64,
@@ -1682,24 +1169,6 @@
       "severity": "error"
     },
     {
-      "showId": "home-1970",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "home-1980",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
       "showId": "home-2024",
       "category": "broadway",
       "expected": 14,
@@ -1733,24 +1202,6 @@
       "extracted": 8,
       "gap": 18,
       "ratio": 0.31,
-      "severity": "error"
-    },
-    {
-      "showId": "hughie-1975",
-      "category": "broadway",
-      "expected": 50,
-      "extracted": 8,
-      "gap": 42,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "hughie-1996",
-      "category": "broadway",
-      "expected": 50,
-      "extracted": 8,
-      "gap": 42,
-      "ratio": 0.16,
       "severity": "error"
     },
     {
@@ -1805,33 +1256,6 @@
       "extracted": 8,
       "gap": 43,
       "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "into-the-woods-1987",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "into-the-woods-1997",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "into-the-woods-2002",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
       "severity": "error"
     },
     {
@@ -1961,15 +1385,6 @@
       "severity": "error"
     },
     {
-      "showId": "king-lear-2004",
-      "category": "broadway",
-      "expected": 46,
-      "extracted": 8,
-      "gap": 38,
-      "ratio": 0.17,
-      "severity": "error"
-    },
-    {
       "showId": "king-lear-2019",
       "category": "broadway",
       "expected": 46,
@@ -1985,15 +1400,6 @@
       "extracted": 8,
       "gap": 21,
       "ratio": 0.28,
-      "severity": "error"
-    },
-    {
-      "showId": "kiss-me-kate-1999",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
       "severity": "error"
     },
     {
@@ -2051,24 +1457,6 @@
       "severity": "error"
     },
     {
-      "showId": "les-liaisons-dangereuses-1987",
-      "category": "broadway",
-      "expected": 63,
-      "extracted": 8,
-      "gap": 55,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
-      "category": "broadway",
-      "expected": 63,
-      "extracted": 8,
-      "gap": 55,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
       "showId": "les-liaisons-dangereuses-2016",
       "category": "broadway",
       "expected": 63,
@@ -2076,15 +1464,6 @@
       "gap": 55,
       "ratio": 0.13,
       "severity": "error"
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "category": "west-end",
-      "expected": 63,
-      "extracted": 48,
-      "gap": 15,
-      "ratio": 0.76,
-      "severity": "warning"
     },
     {
       "showId": "les-miserables-1987",
@@ -2132,15 +1511,6 @@
       "severity": "error"
     },
     {
-      "showId": "little-bear-ridge-road-regional-2024",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
       "showId": "living-on-love-2015",
       "category": "broadway",
       "expected": 27,
@@ -2159,75 +1529,12 @@
       "severity": "error"
     },
     {
-      "showId": "m-butterfly-1988",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
       "showId": "m-butterfly-2017",
       "category": "broadway",
       "expected": 53,
       "extracted": 8,
       "gap": 45,
       "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-1981",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-1982",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-1988",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-2000",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-2008",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
-      "severity": "error"
-    },
-    {
-      "showId": "macbeth-2013",
-      "category": "broadway",
-      "expected": 25,
-      "extracted": 8,
-      "gap": 17,
-      "ratio": 0.32,
       "severity": "error"
     },
     {
@@ -2238,15 +1545,6 @@
       "gap": 17,
       "ratio": 0.32,
       "severity": "error"
-    },
-    {
-      "showId": "mamma-mia-2001",
-      "category": "broadway",
-      "expected": 13,
-      "extracted": 8,
-      "gap": 5,
-      "ratio": 0.62,
-      "severity": "warning"
     },
     {
       "showId": "mamma-mia-2025",
@@ -2312,15 +1610,6 @@
       "severity": "error"
     },
     {
-      "showId": "merrily-we-roll-along-1981",
-      "category": "broadway",
-      "expected": 20,
-      "extracted": 8,
-      "gap": 12,
-      "ratio": 0.4,
-      "severity": "error"
-    },
-    {
       "showId": "merrily-we-roll-along-2023",
       "category": "broadway",
       "expected": 20,
@@ -2366,15 +1655,6 @@
       "severity": "error"
     },
     {
-      "showId": "miss-saigon-1991",
-      "category": "broadway",
-      "expected": 46,
-      "extracted": 8,
-      "gap": 38,
-      "ratio": 0.17,
-      "severity": "error"
-    },
-    {
       "showId": "miss-saigon-2017",
       "category": "broadway",
       "expected": 46,
@@ -2400,15 +1680,6 @@
       "gap": 6,
       "ratio": 0.57,
       "severity": "warning"
-    },
-    {
-      "showId": "motown-the-musical-2013",
-      "category": "broadway",
-      "expected": 23,
-      "extracted": 8,
-      "gap": 15,
-      "ratio": 0.35,
-      "severity": "error"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -2444,33 +1715,6 @@
       "extracted": 8,
       "gap": 13,
       "ratio": 0.38,
-      "severity": "error"
-    },
-    {
-      "showId": "my-fair-lady-1976",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
-      "showId": "my-fair-lady-1981",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
-      "showId": "my-fair-lady-1993",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
       "severity": "error"
     },
     {
@@ -2519,24 +1763,6 @@
       "severity": "error"
     },
     {
-      "showId": "noises-off-1983",
-      "category": "broadway",
-      "expected": 54,
-      "extracted": 8,
-      "gap": 46,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "noises-off-2001",
-      "category": "broadway",
-      "expected": 54,
-      "extracted": 8,
-      "gap": 46,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
       "showId": "noises-off-2016",
       "category": "broadway",
       "expected": 54,
@@ -2582,39 +1808,12 @@
       "severity": "error"
     },
     {
-      "showId": "oklahoma-1979",
-      "category": "broadway",
-      "expected": 48,
-      "extracted": 8,
-      "gap": 40,
-      "ratio": 0.17,
-      "severity": "error"
-    },
-    {
-      "showId": "oklahoma-2002",
-      "category": "broadway",
-      "expected": 48,
-      "extracted": 8,
-      "gap": 40,
-      "ratio": 0.17,
-      "severity": "error"
-    },
-    {
       "showId": "oklahoma-2019",
       "category": "broadway",
       "expected": 48,
       "extracted": 8,
       "gap": 40,
       "ratio": 0.17,
-      "severity": "error"
-    },
-    {
-      "showId": "old-times-1971",
-      "category": "broadway",
-      "expected": 38,
-      "extracted": 8,
-      "gap": 30,
-      "ratio": 0.21,
       "severity": "error"
     },
     {
@@ -2627,39 +1826,12 @@
       "severity": "error"
     },
     {
-      "showId": "on-the-town-1971",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "on-the-town-1998",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
       "showId": "on-the-town-2014",
       "category": "broadway",
       "expected": 19,
       "extracted": 8,
       "gap": 11,
       "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "on-the-twentieth-century-1978",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
       "severity": "error"
     },
     {
@@ -2681,39 +1853,12 @@
       "severity": "error"
     },
     {
-      "showId": "once-on-this-island-1990",
-      "category": "broadway",
-      "expected": 60,
-      "extracted": 8,
-      "gap": 52,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "once-on-this-island-2002",
-      "category": "broadway",
-      "expected": 60,
-      "extracted": 8,
-      "gap": 52,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
       "showId": "once-on-this-island-2017",
       "category": "broadway",
       "expected": 60,
       "extracted": 8,
       "gap": 52,
       "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "once-upon-a-mattress-1996",
-      "category": "broadway",
-      "expected": 18,
-      "extracted": 8,
-      "gap": 10,
-      "ratio": 0.44,
       "severity": "error"
     },
     {
@@ -2771,39 +1916,12 @@
       "severity": "error"
     },
     {
-      "showId": "our-town-1988",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "our-town-2002",
-      "category": "broadway",
-      "expected": 19,
-      "extracted": 8,
-      "gap": 11,
-      "ratio": 0.42,
-      "severity": "error"
-    },
-    {
       "showId": "our-town-2024",
       "category": "broadway",
       "expected": 19,
       "extracted": 8,
       "gap": 11,
       "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "parade-1998",
-      "category": "broadway",
-      "expected": 30,
-      "extracted": 8,
-      "gap": 22,
-      "ratio": 0.27,
       "severity": "error"
     },
     {
@@ -2888,33 +2006,6 @@
       "severity": "error"
     },
     {
-      "showId": "present-laughter-1982",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
-      "showId": "present-laughter-1996",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
-      "showId": "present-laughter-2010",
-      "category": "broadway",
-      "expected": 56,
-      "extracted": 8,
-      "gap": 48,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
       "showId": "present-laughter-2017",
       "category": "broadway",
       "expected": 56,
@@ -2978,24 +2069,6 @@
       "severity": "error"
     },
     {
-      "showId": "ragtime-1998",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "ragtime-2009",
-      "category": "broadway",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
       "showId": "ragtime-2025",
       "category": "broadway",
       "expected": 17,
@@ -3023,38 +2096,11 @@
       "severity": "error"
     },
     {
-      "showId": "saint-joan-1977",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "saint-joan-1993",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
       "showId": "saint-joan-2018",
       "category": "broadway",
       "expected": 53,
       "extracted": 8,
       "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "she-loves-me-1994",
-      "category": "broadway",
-      "expected": 52,
-      "extracted": 8,
-      "gap": 44,
       "ratio": 0.15,
       "severity": "error"
     },
@@ -3095,15 +2141,6 @@
       "severity": "warning"
     },
     {
-      "showId": "six-degrees-of-separation-1990",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
       "showId": "six-degrees-of-separation-2017",
       "category": "broadway",
       "expected": 53,
@@ -3120,15 +2157,6 @@
       "gap": 5,
       "ratio": 0.62,
       "severity": "warning"
-    },
-    {
-      "showId": "skylight-1996",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
-      "severity": "error"
     },
     {
       "showId": "skylight-2015",
@@ -3173,15 +2201,6 @@
       "extracted": 8,
       "gap": 34,
       "ratio": 0.19,
-      "severity": "error"
-    },
-    {
-      "showId": "spamalot-2005",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
       "severity": "error"
     },
     {
@@ -3248,15 +2267,6 @@
       "severity": "error"
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "category": "west-end",
-      "expected": 17,
-      "extracted": 8,
-      "gap": 9,
-      "ratio": 0.47,
-      "severity": "error"
-    },
-    {
       "showId": "suffs-2024",
       "category": "broadway",
       "expected": 13,
@@ -3272,33 +2282,6 @@
       "extracted": 8,
       "gap": 16,
       "ratio": 0.33,
-      "severity": "error"
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-1984",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-1994",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "category": "broadway",
-      "expected": 64,
-      "extracted": 8,
-      "gap": 56,
-      "ratio": 0.13,
       "severity": "error"
     },
     {
@@ -3318,24 +2301,6 @@
       "gap": 7,
       "ratio": 0.53,
       "severity": "warning"
-    },
-    {
-      "showId": "sunset-boulevard-1994",
-      "category": "broadway",
-      "expected": 20,
-      "extracted": 8,
-      "gap": 12,
-      "ratio": 0.4,
-      "severity": "error"
-    },
-    {
-      "showId": "sunset-boulevard-2017",
-      "category": "broadway",
-      "expected": 20,
-      "extracted": 8,
-      "gap": 12,
-      "ratio": 0.4,
-      "severity": "error"
     },
     {
       "showId": "sunset-boulevard-2024",
@@ -3371,15 +2336,6 @@
       "extracted": 8,
       "gap": 41,
       "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "take-me-out-2003",
-      "category": "broadway",
-      "expected": 26,
-      "extracted": 8,
-      "gap": 18,
-      "ratio": 0.31,
       "severity": "error"
     },
     {
@@ -3437,15 +2393,6 @@
       "severity": "error"
     },
     {
-      "showId": "the-color-purple-2005",
-      "category": "broadway",
-      "expected": 59,
-      "extracted": 8,
-      "gap": 51,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
       "showId": "the-color-purple-2015",
       "category": "broadway",
       "expected": 59,
@@ -3470,33 +2417,6 @@
       "extracted": 8,
       "gap": 18,
       "ratio": 0.31,
-      "severity": "error"
-    },
-    {
-      "showId": "the-crucible-1972",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "the-crucible-1991",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "the-crucible-2002",
-      "category": "broadway",
-      "expected": 49,
-      "extracted": 8,
-      "gap": 41,
-      "ratio": 0.16,
       "severity": "error"
     },
     {
@@ -3545,15 +2465,6 @@
       "severity": "error"
     },
     {
-      "showId": "the-father-1981",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
       "showId": "the-father-2016",
       "category": "broadway",
       "expected": 43,
@@ -3572,39 +2483,12 @@
       "severity": "error"
     },
     {
-      "showId": "the-front-page-1986",
-      "category": "broadway",
-      "expected": 50,
-      "extracted": 8,
-      "gap": 42,
-      "ratio": 0.16,
-      "severity": "error"
-    },
-    {
       "showId": "the-front-page-2016",
       "category": "broadway",
       "expected": 50,
       "extracted": 8,
       "gap": 42,
       "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "category": "broadway",
-      "expected": 40,
-      "extracted": 8,
-      "gap": 32,
-      "ratio": 0.2,
-      "severity": "error"
-    },
-    {
-      "showId": "the-gin-game-1997",
-      "category": "broadway",
-      "expected": 40,
-      "extracted": 8,
-      "gap": 32,
-      "ratio": 0.2,
       "severity": "error"
     },
     {
@@ -3662,33 +2546,6 @@
       "severity": "error"
     },
     {
-      "showId": "the-iceman-cometh-1973",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
-      "showId": "the-iceman-cometh-1985",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
-      "showId": "the-iceman-cometh-1999",
-      "category": "broadway",
-      "expected": 43,
-      "extracted": 8,
-      "gap": 35,
-      "ratio": 0.19,
-      "severity": "error"
-    },
-    {
       "showId": "the-iceman-cometh-2018",
       "category": "broadway",
       "expected": 43,
@@ -3699,33 +2556,6 @@
     },
     {
       "showId": "the-inheritance-2019",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
-      "severity": "error"
-    },
-    {
-      "showId": "the-king-and-i-1977",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
-      "severity": "error"
-    },
-    {
-      "showId": "the-king-and-i-1985",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
-      "severity": "error"
-    },
-    {
-      "showId": "the-king-and-i-1996",
       "category": "broadway",
       "expected": 31,
       "extracted": 8,
@@ -3788,24 +2618,6 @@
       "severity": "error"
     },
     {
-      "showId": "the-little-foxes-1981",
-      "category": "broadway",
-      "expected": 59,
-      "extracted": 8,
-      "gap": 51,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
-      "showId": "the-little-foxes-1997",
-      "category": "broadway",
-      "expected": 59,
-      "extracted": 8,
-      "gap": 51,
-      "ratio": 0.14,
-      "severity": "error"
-    },
-    {
       "showId": "the-little-foxes-2017",
       "category": "broadway",
       "expected": 59,
@@ -3849,15 +2661,6 @@
       "gap": 2,
       "ratio": 0.8,
       "severity": "warning"
-    },
-    {
-      "showId": "the-music-man-2000",
-      "category": "broadway",
-      "expected": 24,
-      "extracted": 8,
-      "gap": 16,
-      "ratio": 0.33,
-      "severity": "error"
     },
     {
       "showId": "the-music-man-2022",
@@ -3923,15 +2726,6 @@
       "severity": "warning"
     },
     {
-      "showId": "the-piano-lesson-1990",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
-      "severity": "error"
-    },
-    {
       "showId": "the-piano-lesson-2022",
       "category": "broadway",
       "expected": 21,
@@ -3977,30 +2771,12 @@
       "severity": "warning"
     },
     {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "category": "off-broadway",
-      "expected": 77,
-      "extracted": 8,
-      "gap": 69,
-      "ratio": 0.1,
-      "severity": "error"
-    },
-    {
       "showId": "the-present-2017",
       "category": "broadway",
       "expected": 60,
       "extracted": 8,
       "gap": 52,
       "ratio": 0.13,
-      "severity": "error"
-    },
-    {
-      "showId": "the-price-1999",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
       "severity": "error"
     },
     {
@@ -4031,15 +2807,6 @@
       "severity": "error"
     },
     {
-      "showId": "the-rose-tattoo-1995",
-      "category": "broadway",
-      "expected": 26,
-      "extracted": 8,
-      "gap": 18,
-      "ratio": 0.31,
-      "severity": "error"
-    },
-    {
       "showId": "the-rose-tattoo-2019",
       "category": "broadway",
       "expected": 26,
@@ -4055,15 +2822,6 @@
       "extracted": 8,
       "gap": 23,
       "ratio": 0.26,
-      "severity": "error"
-    },
-    {
-      "showId": "the-skin-of-our-teeth-1975",
-      "category": "broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
       "severity": "error"
     },
     {
@@ -4112,15 +2870,6 @@
       "severity": "warning"
     },
     {
-      "showId": "the-visit-1973",
-      "category": "broadway",
-      "expected": 37,
-      "extracted": 8,
-      "gap": 29,
-      "ratio": 0.22,
-      "severity": "error"
-    },
-    {
       "showId": "the-visit-2015",
       "category": "broadway",
       "expected": 37,
@@ -4145,24 +2894,6 @@
       "extracted": 8,
       "gap": 6,
       "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "the-wiz-1975",
-      "category": "broadway",
-      "expected": 12,
-      "extracted": 8,
-      "gap": 4,
-      "ratio": 0.67,
-      "severity": "warning"
-    },
-    {
-      "showId": "the-wiz-1984",
-      "category": "broadway",
-      "expected": 12,
-      "extracted": 8,
-      "gap": 4,
-      "ratio": 0.67,
       "severity": "warning"
     },
     {
@@ -4256,15 +2987,6 @@
       "severity": "error"
     },
     {
-      "showId": "travesties-1975",
-      "category": "broadway",
-      "expected": 41,
-      "extracted": 8,
-      "gap": 33,
-      "ratio": 0.2,
-      "severity": "error"
-    },
-    {
       "showId": "travesties-2018",
       "category": "broadway",
       "expected": 41,
@@ -4319,33 +3041,6 @@
       "severity": "warning"
     },
     {
-      "showId": "uncle-vanya-1973",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "uncle-vanya-1995",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "uncle-vanya-2000",
-      "category": "broadway",
-      "expected": 14,
-      "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
       "showId": "uncle-vanya-2024",
       "category": "broadway",
       "expected": 14,
@@ -4353,24 +3048,6 @@
       "gap": 6,
       "ratio": 0.57,
       "severity": "warning"
-    },
-    {
-      "showId": "waiting-for-godot-2009",
-      "category": "broadway",
-      "expected": 20,
-      "extracted": 8,
-      "gap": 12,
-      "ratio": 0.4,
-      "severity": "error"
-    },
-    {
-      "showId": "waiting-for-godot-2013",
-      "category": "broadway",
-      "expected": 20,
-      "extracted": 8,
-      "gap": 12,
-      "ratio": 0.4,
-      "severity": "error"
     },
     {
       "showId": "waiting-for-godot-2025",
@@ -4383,15 +3060,6 @@
     },
     {
       "showId": "waitress-2016",
-      "category": "broadway",
-      "expected": 53,
-      "extracted": 8,
-      "gap": 45,
-      "ratio": 0.15,
-      "severity": "error"
-    },
-    {
-      "showId": "waitress-2021",
       "category": "broadway",
       "expected": 53,
       "extracted": 8,
@@ -4424,24 +3092,6 @@
       "extracted": 8,
       "gap": 9,
       "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "west-side-story-1980",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
-      "severity": "error"
-    },
-    {
-      "showId": "west-side-story-2009",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
       "severity": "error"
     },
     {
