@@ -24,6 +24,8 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { generateReviewFilename } = require('./lib/review-normalization');
+const { sanitizeCriticName } = require('./lib/byline-normalization');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -253,6 +255,28 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
+// Task #653/#816: if a wrongProduction/wrongShow/duplicateOf-flagged file
+// already sits at the canonical path, a re-scrape's URL must never reach the
+// writer — createOrMergeReviewFile's maybeUpgradeUrl() treats the flagged
+// file's contentTier ('invalid', because it's flag-driven not quality-driven)
+// as "bad content" and upgrades the URL, which clears wrongProduction and
+// every other old-URL-derived field along with it (applyUrlChangeInvariant).
+// Withholding url/publishDate reproduces the old preserveFlaggedFields()
+// behavior: maybeUpgradeUrl's very first check (`!newUrl`) short-circuits, so
+// the flagged file's own url/publishDate — and everything else, since the
+// generic field merge below only fills falsy fields — survives untouched.
+function isFlaggedOnDisk(showId, outletId, criticName, dir) {
+  const sanitized = sanitizeCriticName(criticName) || 'Unknown';
+  const filepath = path.join(dir, showId, generateReviewFilename(outletId, sanitized));
+  if (!fs.existsSync(filepath)) return false;
+  try {
+    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    return !!(data.wrongProduction || data.wrongShow || data.duplicateOf);
+  } catch {
+    return false;
+  }
+}
+
 // Task #1687: routed through the shared writer (scripts/lib/review-file-writer.js)
 // instead of a hand-rolled fs read/merge/write — that hand-rolled path bypassed
 // Guard A (classifyMarketRouting, same-title cross-market sibling reroute), the
@@ -264,8 +288,10 @@ function isWrongProduction(reviewDate, openingDate) {
 // a single WP REST API fetch of the complete post body, not an incremental
 // paywall/retry fetch, so there is no shorter-then-longer sequence to compare.
 function saveReviewFile(showId, reviewData, dir = reviewTextsDir) {
+  const flagged = isFlaggedOnDisk(showId, 'nysr', reviewData.criticName, dir);
+
   const fields = {
-    publishDate: reviewData.publishDate,
+    publishDate: flagged ? undefined : reviewData.publishDate,
     fullText: reviewData.fullText,
     isFullReview: reviewData.isFullReview,
     wordCount: reviewData.wordCount,
@@ -284,8 +310,8 @@ function saveReviewFile(showId, reviewData, dir = reviewTextsDir) {
     outlet: 'New York Stage Review',
     outletId: 'nysr',
     criticName: reviewData.criticName,
-    url: reviewData.url,
-    publishDate: reviewData.publishDate,
+    url: flagged ? undefined : reviewData.url,
+    publishDate: flagged ? undefined : reviewData.publishDate,
     source: 'nysr-api',
     fields,
   }, { reviewTextsDir: dir });

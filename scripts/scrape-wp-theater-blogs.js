@@ -24,6 +24,8 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
 const { setExtractedScore } = require('./lib/score-routing');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { generateReviewFilename } = require('./lib/review-normalization');
+const { sanitizeCriticName } = require('./lib/byline-normalization');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -272,6 +274,26 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
+// Guards against createOrMergeReviewFile's maybeUpgradeUrl() treating a
+// wrongProduction/wrongShow/duplicateOf-flagged file's contentTier ('invalid',
+// because it's flag-driven not quality-driven) as "bad content" worth
+// URL-upgrading — which would clear wrongProduction and every other
+// old-URL-derived field along with it (applyUrlChangeInvariant). Withholding
+// url/publishDate makes maybeUpgradeUrl's first check (`!newUrl`)
+// short-circuit, so the flagged file survives untouched (same fix as
+// scrape-nysr-reviews.js, task #1687 ship-check finding).
+function isFlaggedOnDisk(showId, outletId, criticName) {
+  const sanitized = sanitizeCriticName(criticName) || 'Unknown';
+  const filepath = path.join(reviewTextsDir, showId, generateReviewFilename(outletId, sanitized));
+  if (!fs.existsSync(filepath)) return false;
+  try {
+    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    return !!(data.wrongProduction || data.wrongShow || data.duplicateOf);
+  } catch {
+    return false;
+  }
+}
+
 // Task #1687: routed through the shared writer (scripts/lib/review-file-writer.js)
 // instead of a hand-rolled fs read/merge/write — that hand-rolled path bypassed
 // Guard A (classifyMarketRouting, same-title cross-market sibling reroute), the
@@ -287,8 +309,10 @@ function isWrongProduction(reviewDate, openingDate) {
 // body, not an incremental paywall/retry fetch, so there's no shorter-then-
 // longer sequence to compare.
 function saveReviewFile(showId, outletId, outletName, reviewData) {
+  const flagged = isFlaggedOnDisk(showId, outletId, reviewData.criticName);
+
   const fields = {
-    publishDate: reviewData.publishDate,
+    publishDate: flagged ? undefined : reviewData.publishDate,
     fullText: reviewData.fullText,
     wordCount: reviewData.wordCount,
   };
@@ -305,8 +329,8 @@ function saveReviewFile(showId, outletId, outletName, reviewData) {
     outlet: outletName,
     outletId,
     criticName: reviewData.criticName,
-    url: reviewData.url,
-    publishDate: reviewData.publishDate,
+    url: flagged ? undefined : reviewData.url,
+    publishDate: flagged ? undefined : reviewData.publishDate,
     source: reviewData.source,
     fields,
   }, { reviewTextsDir });
