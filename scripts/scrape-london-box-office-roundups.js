@@ -347,6 +347,20 @@ function extractReviewsFromLBO(html, showId) {
     }
   });
 
+  // Fallback: some URLs discovered as "roundups" (loose sitemap slug match,
+  // or a stale curated/archive entry) are actually LBO's own single-critic
+  // review page — a different template with no <h4>Outlet</h4> markers, so
+  // the loop above legitimately finds nothing. That template is already
+  // handled by extractIndividualReviewFromLBO; without this fallback the
+  // page reports a false "parser drift" 0-row parse even though it has one
+  // citable review (#1708).
+  if (reviews.length === 0 && /100% Honest Reviews/i.test(html)) {
+    const individual = extractIndividualReviewFromLBO(html, showId);
+    if (individual && (individual.excerpt || individual.stars !== null)) {
+      reviews.push(individual);
+    }
+  }
+
   return reviews;
 }
 
@@ -394,11 +408,16 @@ function extractIndividualReviewFromLBO(html, showId) {
   }
   const score = stars !== null ? Math.round((stars / 5) * 100) : null;
 
-  // Extract first 500 chars of body text as excerpt
+  // Extract first 500 chars of body text as excerpt. LBO's current template
+  // wraps review paragraphs in .pctnt/.pmain, not article/.post-content/
+  // .entry-content (those selectors matched an older template and silently
+  // returned zero paragraphs — #1708 parser drift). Boilerplate disclaimer
+  // paragraphs are >30 chars too, so they must be excluded explicitly.
+  const boilerplateRe = /^100% Honest Reviews|^If you're interested in more|^Not every review published/i;
   const paragraphs = [];
-  $('article p, .post-content p, .entry-content p').each((_, el) => {
+  $('article p, .post-content p, .entry-content p, .pmain p, .pctnt p').each((_, el) => {
     const text = $(el).text().trim();
-    if (text.length > 30) paragraphs.push(text);
+    if (text.length > 30 && !boilerplateRe.test(text)) paragraphs.push(text);
   });
   const excerpt = paragraphs.slice(0, 3).join(' ').substring(0, 500);
 
@@ -800,6 +819,7 @@ async function scrapeLBORoundups() {
     console.log(`  Found ${reviews.length} reviews`);
 
     for (const review of reviews) {
+      if (!review.url) review.url = url; // individual-page fallback has no per-outlet link
       const result = saveLBOReview(showId, review);
       const starStr = review.stars !== null ? ` (${review.stars}★ → ${review.score})` : '';
       if (result === 'new') {
