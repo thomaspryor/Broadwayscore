@@ -16,13 +16,16 @@
  * closed shows where category can be null. See venue-classification.js's
  * doc comment for the full CONVENTION rationale.
  *
- * Two ways to opt a file out of the guard:
+ * Two ways to opt out of the guard:
  *   - Explicit allowlist below (the canonical predicate definitions
  *     themselves — nothing else belongs here)
- *   - A `// Intentionally NOT isBroadwayCategory` comment anywhere in the
- *     file, documenting why THIS file needs the strict/raw form (established
- *     convention, see scripts/lib/opening-signal.js and
- *     scripts/lib/commercial-queue.js)
+ *   - A `// Intentionally NOT isBroadwayCategory` comment within
+ *     MARKER_LOOKBACK_LINES above the specific occurrence, documenting why
+ *     THAT occurrence needs the strict/raw form (established convention, see
+ *     scripts/lib/opening-signal.js and scripts/lib/commercial-queue.js).
+ *     Per-occurrence, not per-file — a multi-occurrence file (e.g.
+ *     newsletter/generate.mjs, 12 hits) needs each one justified separately,
+ *     not silenced wholesale by one marker anywhere in the file.
  *
  * Heuristic raw-text scan, not AST-aware: skips lines that are JSDoc/comment
  * continuations (trimmed line starts with `*` or `//`) so prose mentioning
@@ -99,13 +102,28 @@ function isCommentLine(line) {
   return trimmed.startsWith('*') || trimmed.startsWith('//');
 }
 
+// How many lines above a match to look for the opt-out marker. Per-hit, not
+// per-file (ship-check finding, task #1496): a file-wide exemption would let
+// one documented occurrence (e.g. opening-signal.js) silently cover every
+// OTHER raw literal in a multi-occurrence file like newsletter/generate.mjs
+// (12 hits) without each one being individually justified.
+const MARKER_LOOKBACK_LINES = 6;
+
+function hasNearbyMarker(lines, matchIndex) {
+  const start = Math.max(0, matchIndex - MARKER_LOOKBACK_LINES);
+  for (let i = start; i <= matchIndex; i++) {
+    if (lines[i].includes(INLINE_MARKER)) return true;
+  }
+  return false;
+}
+
 function scanFile(rel, source) {
   const hits = [];
   const lines = source.split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (isCommentLine(line)) continue;
-    if (PATTERN_RE.test(line)) {
+    if (PATTERN_RE.test(line) && !hasNearbyMarker(lines, i)) {
       hits.push({ line: i + 1, snippet: line.trim().slice(0, 160) });
     }
   }
@@ -120,7 +138,6 @@ function scanRepo() {
     if (rel === SELF_PATH) continue;
     if (ALLOWLIST_FILES.has(rel)) continue;
     const source = fs.readFileSync(abs, 'utf8');
-    if (source.includes(INLINE_MARKER)) continue;
     const hits = scanFile(rel, source);
     if (hits.length === 0) continue;
     violators.push({ file: rel, hits });
