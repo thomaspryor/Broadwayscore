@@ -99,28 +99,28 @@ const TITLED_MSG = [
   'THIS SESSION: CLOSE ME — everything verified; follow-up continues in workspace:257 ("Data·Some Title")',
 ].join('\n');
 
-test({ skip: skipIfNoHook }, 'Gate T BLOCKS a final message with "task #1152" and no nearby title', () => {
+test('Gate T BLOCKS a final message with "task #1152" and no nearby title', { skip: skipIfNoHook }, () => {
   const { status, stderr } = runGate(NO_TITLE_MSG);
   assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
   assert.match(stderr, /task\/card by bare number/i);
 });
 
-test({ skip: skipIfNoHook }, 'Gate T PASSES the same message once a quoted title is added on that line', () => {
+test('Gate T PASSES the same message once a quoted title is added on that line', { skip: skipIfNoHook }, () => {
   const { status, stderr } = runGate(TITLED_MSG);
   assert.equal(status, 0, `expected pass (exit 0), got ${status}\nstderr:\n${stderr}`);
 });
 
-test({ skip: skipIfNoHook }, 'Gate T ignores ordinal prose ("Step #3") with no task keyword', () => {
+test('Gate T ignores ordinal prose ("Step #3") with no task keyword', { skip: skipIfNoHook }, () => {
   const { status } = runGate('Here is the plan: Step #3 handles the schema migration.');
   assert.equal(status, 0);
 });
 
-test({ skip: skipIfNoHook }, 'Gate T ignores enumeration refs ("issue #1 of 5")', () => {
+test('Gate T ignores enumeration refs ("issue #1 of 5")', { skip: skipIfNoHook }, () => {
   const { status } = runGate('Progress note: issue #1 of 5 sub-tasks is done.');
   assert.equal(status, 0);
 });
 
-test({ skip: skipIfNoHook }, 'Gate T exempts EXECUTED: lines (they quote a literal verification command)', () => {
+test('Gate T exempts EXECUTED: lines (they quote a literal verification command)', { skip: skipIfNoHook }, () => {
   const msg = [
     'Fixed and verified.',
     '',
@@ -132,7 +132,7 @@ test({ skip: skipIfNoHook }, 'Gate T exempts EXECUTED: lines (they quote a liter
   assert.equal(status, 0);
 });
 
-test({ skip: skipIfNoHook }, 'Gate T surfaces a title for a task that only exists under archive/ (task-store-archive.js layout)', () => {
+test('Gate T surfaces a title for a task that only exists under archive/ (task-store-archive.js layout)', { skip: skipIfNoHook }, () => {
   // task-store-archive.js moves (not copies) tasks completed >24h ago out of
   // ~/.claude/tasks/<slug>/<id>.json into a sibling archive/<id>.json — the
   // hook's title-hint lookup must check both, or every reference to an

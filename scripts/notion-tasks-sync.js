@@ -30,6 +30,7 @@ const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
+const { hasNoDispatchMarker } = require('./lib/no-dispatch-marker.js');
 const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
 
 // Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
@@ -128,6 +129,45 @@ function mergeStatus(existingStatus, mappedStatus) {
   return mappedStatus;
 }
 
+// Task #1691 (P0 supersedes #1402): `pull`'s own fetch filter only ever
+// queries Notion cards with Status "In progress" or "Not started" — the
+// moment a card flips to Done (or Archived/Cancelled), it drops out of
+// every future pull, and mergeStatus() above is never even called for it
+// again. A mirrored task that was `in_progress` when the card finished
+// stays `in_progress` in the LOCAL mirror forever, a claimed slot
+// `bsc-next --list` never re-offers — even though the real work SHIPPED.
+// Measured on the live backlog 2026-08-16: of 139 in_progress tasks with no
+// live cmux workspace, 99 (71%) were already Done in Notion; this was the
+// DOMINANT contributor to the incident this task fixes, not the --no-spawn
+// misuse Part 1 covers (only 4 cards).
+//
+// This is deliberately narrower than a full pull: it only ever asks "does
+// mergeStatus(), given the CARD'S CURRENT status, produce something other
+// than what the mirror already has" — the exact same decision `cmdPull`'s
+// `toUpdate` branch already makes, just fed from a direct per-page fetch
+// instead of a status-filtered search. Status "Done" always wins via
+// mergeStatus()'s own fallthrough (mapStatus('done') -> 'completed', and
+// mergeStatus never refuses in_progress->completed, only in_progress-
+// >pending) — no special case needed here. Every OTHER Notion status
+// (In progress, Not started, Paused, Archived, Cancelled, or anything
+// unrecognised) maps to 'pending' via mapStatus()'s default case, and
+// mergeStatus() then refuses the in_progress->pending downgrade on purpose
+// (2026-07-12 finding — a live session's card can lag reality). So this
+// function only ever unsticks the Done case; Paused/Not-started/Archived/
+// Cancelled drift needs a liveness check (cmux/lease) before it's safe to
+// override that protection — that is bsc-reconcile.js's job
+// (sweepUntrackedInProgress / reconcileStalledTasks), not this function's.
+//
+// Pure: card is already-fetched data, no I/O here. Returns null when there
+// is nothing to do (fetch failed, or no drift).
+function planStatusDrift(task, card) {
+  if (!task || !card) return null;
+  const mapped = mapStatus(card.status);
+  const merged = mergeStatus(task.status, mapped);
+  if (merged === task.status) return null;
+  return { newStatus: merged, cardStatus: card.status };
+}
+
 // Decide what a pull should do given the eligible cards and the existing map.
 // Returns { toCreate:[{card}], toUpdate:[{card, taskId}], unchanged:[pageId] }.
 // Pure: no filesystem or network access, so it is unit-testable.
@@ -174,8 +214,20 @@ function planPull(cards, existingMap) {
 // exclusion (e.g. a marker embedded by the filer) would be more robust but is
 // a larger change than this fix warrants; revisit if a real false-positive
 // title collision is ever observed.
+// Task #1691: a card created with `notion-brain.js create --dispatch
+// --no-spawn "<reason>"` carries a NO-DISPATCH marker in its Notes (written
+// by notion-brain.js, read here via the shared leaf
+// scripts/lib/no-dispatch-marker.js — see that module's header for why the
+// exclusion happens here rather than by forcing the card's Notion Status).
+// Such a card is EXCLUDED from the mirror entirely, the same way a BSC Daily
+// card is above: it can never occupy a claimed (`in_progress`) slot in the
+// shared task list, regardless of what Status the card shows on the Notion
+// board. This is the actual fix for the "DISPATCHED without spawning"
+// incident — a card that never enters `cards`/`cardsById` has no claimed
+// state to leak.
 function isMirrorableCard(card) {
   const name = (card && card.name) || '';
+  if (hasNoDispatchMarker(card && card.notes)) return false;
   return !BSC_DAILY_TITLE_RE.test(name) && !FIX_BSC_DAILY_TITLE_RE.test(name);
 }
 
@@ -539,6 +591,105 @@ function cmdPush(args) {
   } finally { release(); }
 }
 
+// Task #1691: fix the DOMINANT contributor to "in_progress with no live
+// session" — a card whose Notion Status moved past In progress/Not started
+// (Done, most often) never gets re-fetched by `pull`, so the local mirror
+// never learns. Scoped to `in_progress` local tasks only, one direct GET per
+// mapped card (not a search), capped per run so a large backlog doesn't
+// burn the Notion API quota in one call — same "capped, reportable, dry-run
+// by default" shape sweepUntrackedInProgress uses (bsc-reconcile.js).
+const DEFAULT_DRIFT_LIMIT = 250;
+function cmdSyncDrift(args) {
+  const dir = listDir(args);
+  const dry = !!args['dry-run'];
+  const limit = parseInt(args.limit, 10) || DEFAULT_DRIFT_LIMIT;
+  const map = readMap(dir);
+  const entries = Object.entries(map).filter(([, e]) => {
+    const t = readLiveTask(dir, e.taskId);
+    return t && t.status === 'in_progress';
+  }).slice(0, limit);
+
+  const fixed = [];
+  const unchanged = [];
+  const fetchFailed = [];
+  for (const [pageId, entry] of entries) {
+    const task = readLiveTask(dir, entry.taskId);
+    if (!task) continue; // vanished between the filter above and here — next run catches it
+    // Same ownership guard cmdPull's toUpdate branch uses (task #1410): if
+    // this task id was reused by an unrelated live task since the map was
+    // last synced, this entry's mapping is stale — never overwrite a
+    // stranger's task. Unlike cmdPull, sync-drift isn't in the business of
+    // minting a replacement id (it only fixes an EXISTING claimed slot), so
+    // the safe action here is just to skip, not doCreate. Checked in BOTH
+    // dry-run and real runs (ship-check catch) — a dry-run that skips this
+    // check reports "would fix" for an entry a real run would actually
+    // refuse, which makes the dry-run report useless as an approval signal.
+    if (!taskBelongsTo(dir, entry.taskId, pageId, { liveOnly: true })) {
+      unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: 'SKIPPED (stale map entry — task id reused)' });
+      continue;
+    }
+    let card;
+    try {
+      card = JSON.parse(notionBrain(['get', pageId]));
+    } catch (e) {
+      fetchFailed.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
+      continue;
+    }
+    const drift = planStatusDrift(task, card);
+    if (!drift) { unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: card.status }); continue; }
+    fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: card.status });
+    if (dry) continue;
+    // Ship-check P0 catch (3 independent reviewers): cmdPull/cmdPush hold
+    // acquireLock() across their WHOLE read-modify-write cycle because that
+    // cycle is fast (one bulk search). sync-drift's cycle is NOT fast — up
+    // to `limit` sequential Notion GETs, minutes in practice — so holding
+    // the lock for the whole loop would starve every concurrent pull/push
+    // for that whole time (worse than no lock: acquireLock() auto-steals
+    // locks older than 120s, so a long hold gets silently stolen anyway).
+    // Instead: lock only the actual write (fast, milliseconds), and re-read
+    // BOTH the task and the on-disk map fresh inside the lock — same
+    // check-then-act shape bsc-reconcile.js's sweepUntrackedInProgress
+    // flipFn already uses ("a session can claim or complete this task
+    // between the sweep's snapshot and this write — the re-read is the
+    // last word, never the stale snapshot"). Re-reading the map (not
+    // reusing the `map` object captured at function start) is what stops a
+    // concurrent pull/push's unrelated entries from being silently
+    // reverted by this function's own eventual writeMap.
+    const release = acquireLock(dir);
+    if (!release) {
+      fetchFailed.push({ taskId: entry.taskId, name: entry.name, pageId, error: 'another sync (pull/push/sync-drift) holds the lock — retry next run' });
+      fixed.pop();
+      continue;
+    }
+    try {
+      const freshTask = readLiveTask(dir, entry.taskId);
+      if (!freshTask || freshTask.status !== 'in_progress') {
+        fixed.pop();
+        unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: 'SKIPPED (status changed since this run started)' });
+        continue;
+      }
+      // Same shape as cmdPull's toUpdate branch: rebuild the mirrored task
+      // from the fresh card, carry blocks/blockedBy forward, apply
+      // mergeStatus (via planStatusDrift, already computed above).
+      const mapped = mapCardToTask(card, entry.taskId);
+      mapped.status = drift.newStatus;
+      const updated = { ...mapped, blocks: freshTask.blocks || [], blockedBy: freshTask.blockedBy || [] };
+      writeTask(dir, updated);
+      const freshMap = readMap(dir);
+      if (freshMap[pageId]) {
+        freshMap[pageId].syncedStatus = card.status;
+        freshMap[pageId].name = card.name;
+        freshMap[pageId].fmt = MIRROR_FMT;
+        writeMap(dir, freshMap);
+      }
+    } finally { release(); }
+  }
+  console.error(`[sync] sync-drift: checked ${entries.length} in_progress task(s) — ${fixed.length} drifted (mirror corrected)${fetchFailed.length ? `, ${fetchFailed.length} fetch failed` : ''}${dry ? ' (DRY RUN)' : ''}`);
+  for (const f of fixed) console.error(`  ${dry ? '(would fix) ' : '✓ '}#${f.taskId} [${f.from} -> ${f.to}, Notion says "${f.cardStatus}"] ${f.name}`);
+  for (const e of fetchFailed) console.error(`  ⚠ fetch failed for #${e.taskId}: ${e.error.split('\n')[0]}`);
+  return { listId: listId(args), fixed, unchanged: unchanged.length, fetchFailed, dry };
+}
+
 function cmdStatus(args) {
   const dir = listDir(args);
   const map = readMap(dir);
@@ -561,10 +712,12 @@ function main() {
   switch (cmd) {
     case 'pull': result = cmdPull(args); break;
     case 'push': result = cmdPush(args); break;
+    case 'sync-drift': result = cmdSyncDrift(args); break;
     case 'status': result = cmdStatus(args); break;
     default:
-      console.error('usage: notion-tasks-sync.js <pull|push|status> [--list-id ID] [--dry-run] [--json]');
+      console.error('usage: notion-tasks-sync.js <pull|push|sync-drift|status> [--list-id ID] [--dry-run] [--json]');
       console.error('  [--statuses "In progress,Not started"] [--priorities "P0 Now,P1 Next"] [--limit 25]');
+      console.error('  sync-drift: fix in_progress tasks whose Notion card already moved on (task #1691)');
       process.exit(2);
   }
   if (args.json) console.log(JSON.stringify(result, null, 2));
@@ -572,4 +725,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };
