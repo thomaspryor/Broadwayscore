@@ -108,5 +108,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-15T20:11:06.737Z"
+  },
+  {
+    "conditionKey": "tier-skip-drift",
+    "title": "domain-tier-skip.json drift: 1 domain+tier verdict(s) need review",
+    "description": "didtheylikeit.com / scrapingdog (degrade): skip:false but 2% success over 1551 calls (< 30% threshold) — consider flipping to skip:true",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-16T03:54:13.590Z"
   }
 ]
