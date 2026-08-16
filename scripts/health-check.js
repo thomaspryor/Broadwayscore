@@ -2108,6 +2108,21 @@ function checkAutofixThroughput() {
   return [assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries })];
 }
 
+// --- Digest content-invariant FAIL monitor (task #1648) ---
+//
+// Card #1641 upgraded scripts/send-morning-digest.js's content-invariant
+// check from a WARN to `process.exitCode = 1` on violation, but nothing
+// consumed that exit code — this reads the JSONL ledger the sender now
+// writes on every FAIL (scripts/lib/digest-invariant-fail-monitor.js) so a
+// future violation surfaces as a health.errors row instead of hiding behind
+// a launchd stderr log nobody tails. Same null-means-absent contract as the
+// push-retry/autofix-canary ledgers above.
+function checkDigestInvariantFail() {
+  const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
+  const entries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-invariant-fail-ledger.jsonl'));
+  return [assessDigestInvariantFailRow(entries)];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
@@ -4020,6 +4035,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
+    ...checkDigestInvariantFail(),
   ];
 }
 

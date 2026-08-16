@@ -587,6 +587,14 @@ async function main() {
   // on composeDigestEmail() missed, so it must not be able to hide behind a
   // WARN nobody reads — set the process exit code so callers (cron, CI, a
   // manual --dry-run) see it fail even though the email still went out.
+  //
+  // Card #1648: the exit code alone had no consumer — the launchd job has no
+  // failure semantics and nothing else reads this process's exit code — so a
+  // future FAIL was exactly as invisible as the WARN it replaced. Append a
+  // JSONL record on every FAIL; scripts/health-check.js's
+  // checkDigestInvariantFail() (scripts/lib/digest-invariant-fail-monitor.js)
+  // reads it and turns a FAIL into a health.errors row tomorrow's digest
+  // carries forward, closing the loop without making the SEND itself fail.
   let invariantViolations = [];
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
@@ -594,6 +602,13 @@ async function main() {
     if (!ok) {
       invariantViolations = violations;
       console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+      try {
+        const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
+        fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations, subject, dryRun: !!dryRun }) + '\n');
+      } catch (ledgerErr) {
+        console.error(`[digest] WARN could not persist invariant-fail ledger record: ${String(ledgerErr.message).slice(0, 120)}`);
+      }
     }
   } catch (err) {
     console.error(`[digest] WARN content invariant check failed to run: ${String(err.message).slice(0, 120)}`);

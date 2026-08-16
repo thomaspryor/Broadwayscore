@@ -95,6 +95,11 @@ on:
       # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-retry-deadman.js'
       - 'scripts/lib/push-retry-deadman.test.mjs'
+      # Digest invariant FAIL monitor (task #1648): colocated *.test.mjs runs
+      # in the scripts/lib/*.test.mjs glob; path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/lib/digest-invariant-fail-monitor.js'
+      - 'scripts/lib/digest-invariant-fail-monitor.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
