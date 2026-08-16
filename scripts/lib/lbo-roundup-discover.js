@@ -89,15 +89,41 @@ async function discoverLboRoundupHtml(show, opts = {}) {
             const slug = url.split('/').pop().toLowerCase();
             return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
           });
-        const match = reviewUrls.find(url => {
+        const findHighConfidence = (urls) => urls.find(url => {
           const slug = url.split('/').pop()
             .replace(/^review-(?:round-?up-)?/i, '')
             .replace(/-review(?:-[\w-]+)?$/i, '')
             .replace(/-/g, ' ')
             .toLowerCase();
-          const r = matchTitleToShow(slug, [show], { market: 'west-end' });
-          return r && r.show && r.confidence === 'high';
+          // Roundup URLs often carry a trailing venue name that isn't in the
+          // show title (e.g. "death note the musical barbican theatre" for
+          // review-roundup-death-note-the-musical-barbican-theatre) — LBO's
+          // theatre-name suffix list (scrape-london-box-office-roundups.js's
+          // stripTheatreFromSlug) doesn't cover every venue-name variant, so
+          // instead of maintaining a second list here, progressively drop
+          // trailing words and take the first high-confidence match. Capped
+          // at 3 words: further trimming only degrades match confidence in
+          // practice (verified against the Death Note roundup slug — 2
+          // dropped words: high; 3: medium), so it doesn't risk false
+          // positives on an unrelated short show title.
+          const words = slug.split(' ').filter(Boolean);
+          for (let drop = 0; drop <= 3 && drop < words.length; drop++) {
+            const candidate = words.slice(0, words.length - drop).join(' ');
+            const r = matchTitleToShow(candidate, [show], { market: 'west-end' });
+            if (r && r.show && r.confidence === 'high') return true;
+          }
+          return false;
         });
+        // Prefer a genuine multi-outlet "review-roundup-*" URL over a
+        // single-critic individual review page when both exist for the same
+        // show (#1708 — the loose "contains review" filter above treats
+        // both URL shapes as equally valid candidates, but a real roundup
+        // typically has several more citations than the individual page
+        // alone; verified live for Death Note: 6 outlet citations on the
+        // roundup vs. 1 on the individual page).
+        const isRoundupSlug = (url) => /round-?up/i.test(url.split('/').pop());
+        const match = findHighConfidence(reviewUrls.filter(isRoundupSlug))
+          || findHighConfidence(reviewUrls.filter((u) => !isRoundupSlug(u)));
         if (match) {
           log(`    Sitemap match: ${match}`);
           try {
