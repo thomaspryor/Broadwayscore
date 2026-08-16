@@ -419,6 +419,39 @@ async function main() {
     sections.health.queued = filterForbiddenQueued(sections.health.queued);
   }
 
+  // Task #1648: health-check.js's own "Digest: content-invariant check" row
+  // (checkDigestInvariantFail(), scripts/lib/digest-invariant-fail-monitor.js)
+  // can only see this ledger when IT runs on this same Mac. In the normal
+  // case health-check.js runs in GitHub Actions (data-health-check.yml,
+  // ubuntu-latest) — the gitignored, per-machine ledger doesn't exist there,
+  // so that CI-produced row would always read 'warn' ("absent here"), never
+  // 'error'. This is the exact cross-machine gap #1220/BRO-230 already
+  // documented above for the autofix-loop-dead ledger (see
+  // localLoopDeadMessage()) — this sender runs LOCALLY (launchd, the same
+  // machine that just wrote the ledger a few lines up), so fold the local
+  // read straight into sections.health.errors here, the one place every
+  // downstream consumer (subject line, top verdict, autofix planning)
+  // already reads from — instead of trusting the CI snapshot to ever carry it.
+  try {
+    const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
+    const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
+    let entries = null;
+    if (fs.existsSync(ledgerPath)) {
+      entries = fs.readFileSync(ledgerPath, 'utf8').split('\n')
+        .map((l) => l.trim()).filter(Boolean)
+        .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean);
+    }
+    const row = assessDigestInvariantFailRow(entries);
+    if (row.status === 'error') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not read local digest-invariant-fail ledger: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).
@@ -587,6 +620,14 @@ async function main() {
   // on composeDigestEmail() missed, so it must not be able to hide behind a
   // WARN nobody reads — set the process exit code so callers (cron, CI, a
   // manual --dry-run) see it fail even though the email still went out.
+  //
+  // Card #1648: the exit code alone had no consumer — the launchd job has no
+  // failure semantics and nothing else reads this process's exit code — so a
+  // future FAIL was exactly as invisible as the WARN it replaced. Append a
+  // JSONL record on every FAIL; scripts/health-check.js's
+  // checkDigestInvariantFail() (scripts/lib/digest-invariant-fail-monitor.js)
+  // reads it and turns a FAIL into a health.errors row tomorrow's digest
+  // carries forward, closing the loop without making the SEND itself fail.
   let invariantViolations = [];
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
@@ -594,6 +635,13 @@ async function main() {
     if (!ok) {
       invariantViolations = violations;
       console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+      try {
+        const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
+        fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations, subject, dryRun: !!dryRun }) + '\n');
+      } catch (ledgerErr) {
+        console.error(`[digest] WARN could not persist invariant-fail ledger record: ${String(ledgerErr.message).slice(0, 120)}`);
+      }
     }
   } catch (err) {
     console.error(`[digest] WARN content invariant check failed to run: ${String(err.message).slice(0, 120)}`);
