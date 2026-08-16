@@ -1857,6 +1857,20 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (existingData._locked === true || existingData.urlVerified === true || existingData.urlManualOverride === true) {
     return false;
   }
+  // Task #1695: contentTier is only ever 'invalid' when a wrongProduction/
+  // wrongShow/duplicateOf verdict was reached (content-quality.js's T5 check) —
+  // it's flag-driven, not a genuine content-quality gap. badContent below would
+  // otherwise treat that flagged file as "bad content" worth a URL swap, and
+  // the swap's applyUrlChangeInvariant(force:true) call clears wrongProduction/
+  // wrongShow right along with it — silently un-excluding a deliberately
+  // flagged review. This is narrower than refusing on the flags alone: a file
+  // flagged via an unrelated auto-guard but with genuinely missing/stub content
+  // (contentTier !== 'invalid', e.g. 'stub') still needs to be upgradeable —
+  // see url-change-invariant.test.mjs's STALE_FLAGS fixture.
+  if (existingData.contentTier === 'invalid'
+    && (existingData.wrongProduction || existingData.wrongShow || existingData.duplicateOf)) {
+    return false;
+  }
   // Only upgrade if current content is bad
   const badContent = !existingData.fullText
     || (existingData.contentTier && existingData.contentTier !== 'complete')

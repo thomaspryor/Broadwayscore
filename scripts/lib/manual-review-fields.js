@@ -98,6 +98,16 @@ function buildManualReviewFields(opts = {}) {
     fields.wrongProductionOverride = true;
     fields.wrongShow = false;
     fields.wrongShowManualClear = true;
+    // Task #1695 fast-follow: maybeUpgradeUrl() now refuses a URL swap on any
+    // contentTier:'invalid' file that still carries duplicateOf (protects a
+    // legitimate flag-driven exclusion from being silently un-set — see
+    // review-normalization.js). An operator vouching for this review via
+    // manual ingest is asserting it's NOT a duplicate, so duplicateOf must be
+    // force-cleared here or the operator has no escape hatch: the new guard
+    // would keep refusing their corrected URL forever.
+    fields.duplicateOf = null;
+    fields.duplicateReason = null;
+    fields.duplicateClearReason = 'Manual ingest: operator vouched for this review as independent (not a duplicate)';
     fields.isNonReview = false;
     fields.nonReviewManualClear = true;
     fields.wrongArticleManualClear = true;
@@ -126,6 +136,9 @@ function buildManualReviewFields(opts = {}) {
       'wrongProductionOverride',
       'wrongShow',
       'wrongShowManualClear',
+      'duplicateOf',
+      'duplicateReason',
+      'duplicateClearReason',
       'isNonReview',
       'nonReviewManualClear',
       'wrongArticleManualClear',
