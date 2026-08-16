@@ -27,6 +27,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer.js');
+const { buildManualReviewFields } = require('../../scripts/lib/manual-review-fields.js');
 
 const quiet = (fn) => {
   const w = console.warn, l = console.log;
@@ -139,6 +140,34 @@ describe('maybeUpgradeUrl preserves flag-driven exclusion verdicts on URL change
     const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
     assert.equal(after.wrongProduction, undefined, 'auto-guard flag on genuinely stub content must still clear on a real url upgrade');
     assert.equal(after.url, 'https://www.vulture.com/some-review-refetched');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('manual-entry ingest is the escape hatch: operator vouching for a duplicateOf-flagged file clears it and lands the corrected url', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-flags-manual-dup-'));
+    const showDir = path.join(dir, 'flagged-show-5');
+    fs.mkdirSync(showDir, { recursive: true });
+    fs.writeFileSync(path.join(showDir, 'vulture--jesse-green-other.json'), JSON.stringify({
+      showId: 'flagged-show-5', outletId: 'vulture', outlet: 'Vulture', criticName: 'Jesse Green Other',
+      url: 'https://www.vulture.com/some-review-old', fullText: 'canonical body', contentTier: 'complete',
+    }, null, 2));
+    const fp = writeFlaggedFile(dir, 'flagged-show-5', 'vulture--jesse-green.json', {
+      duplicateOf: 'vulture--jesse-green-other.json',
+    });
+    const fields = buildManualReviewFields({
+      humanScore: 84,
+      fullText: 'An independently verified review of the actual current production. '.repeat(10),
+    });
+    const res = quiet(() => createOrMergeReviewFile('flagged-show-5', {
+      outletId: 'vulture', outlet: 'Vulture', criticName: 'Jesse Green',
+      url: 'https://www.vulture.com/some-review-refetched',
+      source: 'manual-entry',
+      fields,
+    }, { reviewTextsDir: dir }));
+    const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.ok(!after.duplicateOf, 'operator override must clear duplicateOf — the new guard must not trap manual corrections');
+    assert.equal(after.url, 'https://www.vulture.com/some-review-refetched', "operator's corrected url must land");
+    assert.ok(res);
     fs.rmSync(dir, { recursive: true, force: true });
   });
 });
