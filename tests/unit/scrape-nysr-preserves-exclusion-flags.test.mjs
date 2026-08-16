@@ -4,7 +4,13 @@
 // findExistingReviewFile(), which deliberately skips wrongProduction/
 // duplicateOf files — so a flagged file at the canonical path used to be
 // silently clobbered by a raw write of the freshly-scraped NYSR post. It now
-// routes through safeWriteReview + preserveFlaggedFields.
+// routes through the shared writer (scripts/lib/review-file-writer.js's
+// createOrMergeReviewFile, task #1687), whose own findExistingReviewFile call
+// has the identical wrongProduction/duplicateOf skip, and whose "exact
+// filename fallback" then re-reads the flagged file directly and merges via
+// _mergeIntoExisting — which only fills FALSY fields, so wrongProduction,
+// contentTier, and fullText (already truthy on the flagged file) are never
+// overwritten. Same protection, different mechanism.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -39,19 +45,13 @@ function flaggedOnDisk() {
 
 function freshFromNysrApi() {
   return {
-    showId: SHOW_ID,
-    outletId: 'nysr',
-    outlet: 'New York Stage Review',
     criticName: 'Jane Critic',
     url: 'https://nystagereview.com/some-show-review-refetched',
     publishDate: 'January 1, 2009',
     fullText: 'y'.repeat(3000),
     isFullReview: true,
     wordCount: 500,
-    contentTier: 'complete',
     textQuality: 'full',
-    source: 'nysr-api',
-    sources: ['nysr-api'],
   };
 }
 
@@ -71,22 +71,27 @@ test('re-scraping NYSR does not resurrect a wrongProduction-flagged review', () 
     const filePath = path.join(showDir, `nysr--${CRITIC_SLUG}.json`);
     fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
 
-    const result = saveReviewFile(SHOW_ID, CRITIC_SLUG, freshFromNysrApi(), dir);
+    const result = saveReviewFile(SHOW_ID, freshFromNysrApi(), dir);
 
     const after = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     assert.equal(after.wrongProduction, true, 'wrongProduction was dropped — the flagged review will re-enter reviews.json');
     assert.equal(after.contentTier, 'invalid', 'contentTier was downgraded away from its excluded state');
     assert.equal(after.fullText, flaggedOnDisk().fullText, 'scored fullText was lost');
     assert.equal(after.url, flaggedOnDisk().url, "the flagged file's own url must survive");
-    assert.notEqual(result, 'updated', 'findExistingReviewFile should have skipped the flagged file (existingFile null)');
+    // The shared writer's exact-filename fallback (task #1687) does find this
+    // file — unlike the old findExistingReviewFile-only lookup — and legitimately
+    // appends 'nysr-api' to its sources array, so the action is 'updated' rather
+    // than the old code's 'new'. That's a harmless label/metadata difference;
+    // the assertions above are what actually prove the flag survived.
+    assert.equal(result, 'updated');
   });
 });
 
 test('a brand-new NYSR post still gets written', () => {
   withTempDir((dir) => {
-    const result = saveReviewFile(SHOW_ID, CRITIC_SLUG, freshFromNysrApi(), dir);
+    const result = saveReviewFile(SHOW_ID, freshFromNysrApi(), dir);
     assert.equal(result, 'new');
     const after = JSON.parse(fs.readFileSync(path.join(dir, SHOW_ID, `nysr--${CRITIC_SLUG}.json`), 'utf-8'));
-    assert.equal(after.contentTier, 'complete');
+    assert.equal(after.fullText, freshFromNysrApi().fullText);
   });
 });
