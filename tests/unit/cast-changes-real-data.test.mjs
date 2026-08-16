@@ -13,6 +13,17 @@
  * Plus a specific regression: chess-2025 must never re-introduce a
  * 'Nicholas Christopher departs' style event while JoJo's arrival run is
  * still in the data.
+ *
+ * timebomb-audit-exempt: the two 30-day-window tests read the LIVE data file
+ * and measure age against real "today" by design — that's the whole point
+ * (catch entries the daily auto-clear job failed to remove). Under
+ * audit-time-bomb-tests.js's synthetic clock shift, TODAY jumps +Nd but the
+ * file's addedDate/endDate values don't (the shift can't simulate the real
+ * auto-clear job running for those N days), so every entry looks aged-out —
+ * confirmed by reproducing: +30d flags ~260 unrelated entries, not one stale
+ * literal. The real safety net is the daily unshifted test.yml run against
+ * the actual current file; see scripts/audit-time-bomb-tests.js's own
+ * "KNOWN LIMITATION" note for the same class of false positive.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

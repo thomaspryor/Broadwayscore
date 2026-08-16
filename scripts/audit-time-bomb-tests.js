@@ -83,6 +83,12 @@
  * production both readings come from the same real clock. Confirmed instances:
  *   scripts/lib/ttl-cache.js:52                   Date.now() - stat.mtimeMs > ttlMs
  *   scripts/lib/infra-gate-registration-check.js  checkGuardHeartbeat via statSync
+ *   scripts/validate-added-review-ownership.js:173  MERGE_HEAD staleness check
+ *     (variant: the test writes a shim-backdated mtime, then execSync spawns
+ *     the CLI as a separate node process with no clock-shift preload of its
+ *     own — that child's real Date.now() vs the artificially-future on-disk
+ *     mtime goes negative instead of stale. See the timebomb-audit-exempt
+ *     marker in tests/unit/validate-added-review-ownership.test.mjs.)
  * The better long-term fix is to give those an injectable clock (the way
  * detectCWVAnomalies now takes `today`) so they can be tested honestly, rather
  * than exempting their tests forever.
