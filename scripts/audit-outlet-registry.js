@@ -39,6 +39,7 @@ const path = require('path');
 const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -716,6 +717,19 @@ function saveAuditResults(jsonOutput) {
 async function main() {
   try {
     const auditResult = auditOutletRegistry();
+
+    // FAIL LOUD on an empty corpus (task #1666, same pattern as
+    // audit-review-contamination.js's GATE check) — a missing/empty
+    // data/review-texts checkout scans 0 files, leaving missingFromRegistry
+    // empty and both --strict and --update-baseline would otherwise report a
+    // vacuous "0 missing outlets" instead of failing closed.
+    try {
+      assertCorpusScanned(auditResult.totalReviewFiles, { gate: STRICT || UPDATE_BASELINE });
+    } catch (e) {
+      if (!(e instanceof CorpusNotScannedError)) throw e;
+      console.error(`\n❌ ${e.message}`);
+      process.exit(1);
+    }
 
     // --update-baseline: regenerate the baseline from the current scan and exit,
     // bypassing --fix/--update/report output (mirrors audit-broadway-category-predicate.js).
