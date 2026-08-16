@@ -272,6 +272,21 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
     }
   }
 
+  // Layer 0c: Broadway-transfer market mismatch (fast, pre-word-match).
+  // A regional/off-Broadway/tour production shares its title with a same-title
+  // Broadway transfer, and word-match alone can't tell them apart — the title
+  // matches either way. But a roundup for the wrong (Broadway) production says
+  // so explicitly in its own heading ("What Do Critics Think of TITLE on
+  // Broadway?", "Review Roundup: TITLE Opens On Broadway"). When the caller
+  // tells us the target is NOT the Broadway run, that phrase is a same-title,
+  // different-production signal — reject before Layer 1's title match short-
+  // circuits past it. Confirmed: The Outsiders world-premiere-regional-2023 vs
+  // the-outsiders-2024 (#1650) — Playbill's own Broadway verdict roundup was
+  // accepted for the regional show on title match alone.
+  if (options.market && options.market !== 'broadway' && /\bon broadway\b/i.test(headingText)) {
+    return { valid: false, confidence: 0, reason: `market mismatch: headings mention "on Broadway" but target show market is "${options.market}"` };
+  }
+
   // Layer 1: Word-match with confidence
   const match = titleWordsMatchWithConfidence(showTitle, headingText);
 
