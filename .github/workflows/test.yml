@@ -95,6 +95,11 @@ on:
       # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-retry-deadman.js'
       - 'scripts/lib/push-retry-deadman.test.mjs'
+      # Digest invariant FAIL monitor (task #1648): colocated *.test.mjs runs
+      # in the scripts/lib/*.test.mjs glob; path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/lib/digest-invariant-fail-monitor.js'
+      - 'scripts/lib/digest-invariant-fail-monitor.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
@@ -157,6 +162,14 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      # Broadway-transfer production-category mismatch (#1650): a same-title Broadway
+      # transfer's own review roundup was accepted as a match for its
+      # regional predecessor on title-word match alone (heading never
+      # mentions a year, so the existing year-mismatch layers never fire).
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/page-validator.js'
+      - 'scripts/lib/page-validator.test.mjs'
       # Shared host-suffix source of truth: which dot-label of a hostname is the
       # outlet identity. provisionalOutletIdFromHost (registration),
       # normalizeHostSlug (domain-move detection) and registrableHost (review-gap
@@ -739,6 +752,7 @@ on:
       - 'scripts/lib/commercial-scope.js'
       - 'scripts/lib/commercial-scope.test.mjs'
       - 'scripts/audit-regex-patterns.js'
+      - 'scripts/audit-broadway-category-predicate.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       # Guard + its pin: an edit to either must run CI, or the floor could move
       # in a push whose paths never trigger the job that checks it (#1002).
@@ -4678,6 +4692,15 @@ jobs:
         # Surfaces unregistered outletIds + display-name + normalization mismatches.
         # Wired as warning so the 53+ pre-existing missing outlets don't block merges
         # while we work through the backlog. Promote to failure once count is <5.
+
+      - name: Audit Broadway-category predicate re-derivations
+        run: node scripts/audit-broadway-category-predicate.js
+        continue-on-error: true  # Informational only — pre-existing backlog (task #1496, ~17 files).
+        # Flags raw `category === 'broadway'` literals that should call
+        # isBroadwayCategory() (scripts/lib/venue-classification.js) instead —
+        # 3rd wave of the same reimplementation pattern #1471/#1484 deduped.
+        # Wired as warning so the pre-existing backlog doesn't block merges;
+        # promote to blocking once it's drained file-by-file.
 
       - name: Validate mobile-shows.json integrity
         if: always()
