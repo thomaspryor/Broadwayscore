@@ -39,6 +39,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
+const { MANIFESTS } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
@@ -50,11 +51,7 @@ const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 // listing test filenames inline. A registration now lives in the manifest,
 // not literally inside test.yml, so it must be scanned too or every
 // manifest-registered test reads as an orphan.
-const MANIFEST_FILES = [
-  path.join(ROOT, 'tests', 'unit-test-manifest.txt'),
-  path.join(ROOT, 'tests', 'unit-test-manifest-tsx.txt'),
-  path.join(ROOT, 'tests', 'e2e-unit-test-manifest.txt'),
-];
+const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 
 // Known-broken tests that need investigation before they can be wired into CI.
 // Each entry MUST have a Notion card so the exemption can be unwound. Audit will

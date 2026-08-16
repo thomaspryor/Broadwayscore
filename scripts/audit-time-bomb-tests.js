@@ -17,9 +17,21 @@
  * "main breaks constantly".
  *
  * METHOD
- *   1. Run the unit manifest normally      → baseline failing set
- *   2. Run it again with the clock at +Nd  → shifted failing set
+ *   1. Run each manifest normally          → baseline failing set (per suite)
+ *   2. Run it again with the clock at +Nd  → shifted failing set (per suite)
  *   3. Report (shifted \ baseline) — tests that ONLY fail once time moves.
+ *
+ * Covers all three manifests test.yml runs, each with the runner test.yml
+ * actually uses for it: tests/unit-test-manifest.txt (node --test),
+ * tests/unit-test-manifest-tsx.txt and tests/e2e-unit-test-manifest.txt (both
+ * tsx's --test, invoked via its resolved CLI entry point rather than `npx
+ * tsx` — see resolveTsxCli() — since plain node fails to load files that
+ * import TypeScript directly). A test registered in only one manifest used
+ * to be invisible to this audit (card #1657); it no longer is. The three suites are diffed
+ * independently, not merged into one failure set, because a file can appear
+ * in more than one manifest (e.g. a sanity test run under both node and tsx)
+ * and a shared `<file>::<name>` key could then mask a real finding in one
+ * runner behind an unrelated baseline failure in the other.
  *
  * Step 1 is what keeps this honest: tests already failing for unrelated reasons
  * (missing local .env, data drift) are subtracted out rather than reported as
@@ -80,11 +92,67 @@ const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { parseTapOutput } = require('./lib/tap-failure-parser.js');
+const { MANIFESTS, readManifest } = require('./lib/test-manifest.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
-const MANIFEST = path.join(REPO_ROOT, 'tests', 'unit-test-manifest.txt');
 const PRELOAD = path.join(REPO_ROOT, 'tests', 'helpers', 'clock-shift.mjs');
 const EXEMPT_MARKER = 'timebomb-audit-exempt:';
+
+/**
+ * tsx's own CLI entry point, resolved via node's normal module resolution
+ * (walks up from __dirname same as `require`) rather than shelling out to
+ * `npx tsx`. Two reasons:
+ *   1. `npx` forks and re-execs internally, so a SIGKILL'd child reports
+ *      status:137/signal:null instead of propagating the signal the way a
+ *      directly-exec'd node process does (verified empirically) — that broke
+ *      this file's own "OOM/timeout is a hard error" check for both tsx
+ *      suites. Invoking the CLI script directly via `process.execPath` keeps
+ *      every suite a single-hop child process, node and tsx alike.
+ *   2. It still resolves correctly from a git worktree that has no
+ *      node_modules of its own (this repo's normal setup — worktrees share
+ *      the main checkout's node_modules via directory walk-up), same as npx.
+ */
+function resolveTsxCli() {
+  const pkgPath = require.resolve('tsx/package.json');
+  const pkg = require(pkgPath);
+  const binRel = typeof pkg.bin === 'string' ? pkg.bin : pkg.bin.tsx;
+  return path.join(path.dirname(pkgPath), binRel);
+}
+
+/**
+ * Every manifest test.yml actually runs tests from, paired with the runner
+ * test.yml uses for it (card #1657 — this audit used to read only the node
+ * manifest, so a test registered ONLY in the tsx or e2e-unit manifest was
+ * invisible to it). Plain `node --test` fails to load files that import
+ * TypeScript directly, so the tsx/e2e-unit manifests need tsx's loader, not
+ * just a longer file list. Manifest paths come from scripts/lib/test-manifest.js's
+ * MANIFESTS (shared with audit-orphan-tests.js and test-manifest-integrity.test.mjs)
+ * instead of being hardcoded a 4th time here — see that file for why.
+ */
+const TSX_CLI = resolveTsxCli();
+const SUITES = [
+  {
+    key: 'unit',
+    label: 'unit (node --test)',
+    manifest: path.join(REPO_ROOT, MANIFESTS[0]),
+    command: process.execPath,
+    baseArgs: [],
+  },
+  {
+    key: 'unit-tsx',
+    label: 'unit-tsx (tsx --test)',
+    manifest: path.join(REPO_ROOT, MANIFESTS[1]),
+    command: process.execPath,
+    baseArgs: [TSX_CLI],
+  },
+  {
+    key: 'e2e-unit',
+    label: 'e2e-unit (tsx --test)',
+    manifest: path.join(REPO_ROOT, MANIFESTS[2]),
+    command: process.execPath,
+    baseArgs: [TSX_CLI],
+  },
+];
 
 // A shifted run that executed fewer than this fraction of baseline's tests is
 // treated as "did not really run" rather than "found nothing".
@@ -106,16 +174,15 @@ function parseArgs(argv) {
   return opts;
 }
 
-function readManifest() {
-  if (!fs.existsSync(MANIFEST)) {
-    console.error(`Manifest not found: ${MANIFEST}`);
+// Thin wrapper over the shared lib readManifest(): adds the "fail loud on a
+// missing manifest" guard this script wants (the lib version, shared with the
+// CI integrity test which checks existence itself, doesn't do this).
+function readManifestOrExit(manifestPath) {
+  if (!fs.existsSync(manifestPath)) {
+    console.error(`Manifest not found: ${manifestPath}`);
     process.exit(2);
   }
-  return fs
-    .readFileSync(MANIFEST, 'utf8')
-    .split('\n')
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith('#'));
+  return readManifest(manifestPath);
 }
 
 /**
@@ -150,29 +217,38 @@ function readExemptFiles(files) {
 }
 
 /**
- * Run the suite and return { failures, totals, status, sawTap, unlocated }.
+ * Run one suite (a manifest + its runner) and return
+ * { failures, totals, status, sawTap, unlocated }.
  *
  * TAP parsing itself lives in scripts/lib/tap-failure-parser.js (shared with
  * scripts/lib/merge-post-merge-test-gate.js, card #1433, which needs the
  * identical before/after failing-set-diff technique) — this function owns
  * only the spawn (clock-shift env/preload) and result plumbing.
  */
-function runSuite(files, shiftDays) {
-  const args = [];
+function runSuite(command, baseArgs, files, shiftDays) {
+  const args = [...baseArgs];
   if (shiftDays) args.push('--import', PRELOAD);
   args.push('--test', '--test-reporter=tap', ...files);
 
-  const res = spawnSync(process.execPath, args, {
+  // NODE_TEST_CONTEXT (set by node's own --test runner on itself) makes a
+  // NESTED `node --test` child assume it's a subtest reporting results back
+  // over an inherited IPC channel rather than a standalone run — it then
+  // exits 0 regardless of failures. This script isn't normally invoked from
+  // inside another `node --test` run, but scripts/lib/merge-post-merge-test-gate.js
+  // strips it for the identical spawn shape for exactly that reason, and this
+  // now has 3x the spawn call sites that would silently inherit the gap.
+  const env = { ...process.env };
+  delete env.NODE_TEST_CONTEXT;
+  env.BSC_CLOCK_SHIFT_DAYS = String(shiftDays || 0);
+  // Matches test.yml: keeps unit fixtures out of the committed prod
+  // stage-latency telemetry.
+  env.BSC_STAGE_LATENCY_MUTE = '1';
+
+  const res = spawnSync(command, args, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
     maxBuffer: 512 * 1024 * 1024,
-    env: {
-      ...process.env,
-      BSC_CLOCK_SHIFT_DAYS: String(shiftDays || 0),
-      // Matches test.yml: keeps unit fixtures out of the committed prod
-      // stage-latency telemetry.
-      BSC_STAGE_LATENCY_MUTE: '1',
-    },
+    env,
   });
 
   if (res.error) {
@@ -191,72 +267,121 @@ function main() {
     return;
   }
 
-  const files = readManifest();
-  if (files.length === 0) {
-    console.error('Manifest is empty — refusing to report "no time bombs".');
-    process.exit(2);
+  const suites = SUITES.map((s) => ({ ...s, files: readManifestOrExit(s.manifest) }));
+  for (const s of suites) {
+    if (s.files.length === 0) {
+      console.error(`Manifest is empty — refusing to report "no time bombs": ${s.manifest}`);
+      process.exit(2);
+    }
   }
-  const exemptFiles = readExemptFiles(files);
+
+  // Files can legitimately appear in more than one manifest (e.g. a sanity
+  // test registered in both the node and tsx batches) — dedup both for the
+  // exemption-marker scan (only cares about file content, not runner) and for
+  // the file count report (a shared file is still one file, not two).
+  const allFiles = [...new Set(suites.flatMap((s) => s.files))];
+  const exemptFiles = readExemptFiles(allFiles);
 
   if (!opts.json) {
-    console.log(`Time-bomb audit: ${files.length} test files, clock shift +${opts.days}d`);
-    if (exemptFiles.size) console.log(`  ${exemptFiles.size} file(s) carry an in-file exemption marker`);
-    console.log('\n  [1/2] baseline run (current clock)...');
-  }
-  const base = runSuite(files, 0);
-
-  if (!opts.json) console.log(`  [2/2] shifted run (+${opts.days}d)...`);
-  const shifted = runSuite(files, opts.days);
-
-  // Fail loud rather than reporting a clean sheet off a run that died early.
-  const problems = [];
-  if (!base.sawTap) problems.push('baseline run produced no TAP output at all');
-  if (!shifted.sawTap) problems.push('shifted run produced no TAP output at all');
-  // status === null means killed by a signal (OOM, timeout). A plain non-zero
-  // exit is EXPECTED here — node --test exits 1 whenever any test fails, and
-  // this repo's suite is not currently green — so only the signal case is a
-  // reliable "the run was destroyed" signal.
-  if (base.status === null) problems.push('baseline run was killed by a signal (OOM/timeout?)');
-  if (shifted.status === null) problems.push('shifted run was killed by a signal (OOM/timeout?)');
-  if (base.totals.tests == null) problems.push('baseline run never printed a "# tests" total');
-  if (shifted.totals.tests == null) problems.push('shifted run never printed a "# tests" total');
-  if (
-    base.totals.tests != null &&
-    shifted.totals.tests != null &&
-    shifted.totals.tests < base.totals.tests * MIN_SHIFTED_TEST_RATIO
-  ) {
-    problems.push(
-      `shifted run executed ${shifted.totals.tests} tests vs baseline ${base.totals.tests} ` +
-        `(<${Math.round(MIN_SHIFTED_TEST_RATIO * 100)}%) — it died early, so "no findings" would be meaningless`
+    console.log(
+      `Time-bomb audit: ${allFiles.length} test files across ${suites.length} manifests, clock shift +${opts.days}d`
     );
+    if (exemptFiles.size) console.log(`  ${exemptFiles.size} file(s) carry an in-file exemption marker`);
   }
+
+  // Each suite is run baseline+shifted independently — NOT merged into one
+  // failure set — because the same file can appear in more than one manifest
+  // (see allFiles above), so a bare `<file>::<name>` key could otherwise
+  // collide across suites and mask a real finding in one runner behind an
+  // unrelated baseline failure in the other. Bombs/exemptions are also
+  // computed per-suite as soon as that suite finishes, rather than only after
+  // ALL suites finish — so a reliability problem in one suite (below) can
+  // never discard an already-computed real finding from a suite that ran fine.
+  const problems = [];
+  const results = [];
+  const exempted = [];
+  const bombs = [];
+  for (const s of suites) {
+    if (!opts.json) console.log(`\n  [${s.key}] baseline run (current clock)...`);
+    const base = runSuite(s.command, s.baseArgs, s.files, 0);
+
+    if (!opts.json) console.log(`  [${s.key}] shifted run (+${opts.days}d)...`);
+    const shifted = runSuite(s.command, s.baseArgs, s.files, opts.days);
+
+    // Fail loud rather than reporting a clean sheet off a run that died early.
+    const suiteProblems = [];
+    if (!base.sawTap) suiteProblems.push(`[${s.key}] baseline run produced no TAP output at all`);
+    if (!shifted.sawTap) suiteProblems.push(`[${s.key}] shifted run produced no TAP output at all`);
+    // status === null means killed by a signal (OOM, timeout). A plain
+    // non-zero exit is EXPECTED here — the test runner exits 1 whenever any
+    // test fails, and this repo's suite is not currently green — so only the
+    // signal case is a reliable "the run was destroyed" signal.
+    if (base.status === null) suiteProblems.push(`[${s.key}] baseline run was killed by a signal (OOM/timeout?)`);
+    if (shifted.status === null) suiteProblems.push(`[${s.key}] shifted run was killed by a signal (OOM/timeout?)`);
+    if (base.totals.tests == null) suiteProblems.push(`[${s.key}] baseline run never printed a "# tests" total`);
+    if (shifted.totals.tests == null) suiteProblems.push(`[${s.key}] shifted run never printed a "# tests" total`);
+    if (
+      base.totals.tests != null &&
+      shifted.totals.tests != null &&
+      shifted.totals.tests < base.totals.tests * MIN_SHIFTED_TEST_RATIO
+    ) {
+      suiteProblems.push(
+        `[${s.key}] shifted run executed ${shifted.totals.tests} tests vs baseline ${base.totals.tests} ` +
+          `(<${Math.round(MIN_SHIFTED_TEST_RATIO * 100)}%) — it died early, so "no findings" would be meaningless`
+      );
+    }
+
+    problems.push(...suiteProblems);
+    results.push({ suite: s.key, label: s.label, base, shifted });
+
+    if (suiteProblems.length === 0) {
+      for (const [key, { file, name }] of shifted.failures) {
+        if (base.failures.has(key)) continue;
+        if (exemptFiles.has(file)) {
+          exempted.push({ suite: s.key, file, name, reason: exemptFiles.get(file) });
+          continue;
+        }
+        bombs.push({ suite: s.key, file, name });
+      }
+    }
+  }
+
   if (problems.length) {
     console.error('TIME-BOMB AUDIT COULD NOT RUN RELIABLY:');
     for (const p of problems) console.error(`  - ${p}`);
-    console.error(`  baseline exit=${base.status}  shifted exit=${shifted.status}`);
+    for (const r of results) {
+      console.error(`  [${r.suite}] baseline exit=${r.base.status}  shifted exit=${r.shifted.status}`);
+    }
+    if (bombs.length) {
+      console.error(
+        `\n${bombs.length} time-bomb(s) WERE found in suite(s) that ran reliably before the failure ` +
+          'above — fix these even though the run overall is untrusted:'
+      );
+      for (const b of bombs) console.error(`  ✗ [${b.suite}] ${b.file} — ${b.name}`);
+    }
     process.exit(2);
   }
 
-  const exempted = [];
-  const bombs = [];
-  for (const [key, { file, name }] of shifted.failures) {
-    if (base.failures.has(key)) continue;
-    if (exemptFiles.has(file)) {
-      exempted.push({ file, name, reason: exemptFiles.get(file) });
-      continue;
-    }
-    bombs.push({ file, name });
-  }
   bombs.sort((a, b) => (a.file + a.name).localeCompare(b.file + b.name));
+
+  const totalUnlocated = results.reduce((n, r) => n + r.base.unlocated + r.shifted.unlocated, 0);
 
   if (opts.json) {
     console.log(
       JSON.stringify(
         {
           shiftDays: opts.days,
-          filesChecked: files.length,
-          baseline: { tests: base.totals.tests, fail: base.totals.fail, unlocatedFailures: base.unlocated },
-          shifted: { tests: shifted.totals.tests, fail: shifted.totals.fail, unlocatedFailures: shifted.unlocated },
+          filesChecked: allFiles.length,
+          suites: results.map((r) => ({
+            suite: r.suite,
+            label: r.label,
+            baseline: { tests: r.base.totals.tests, fail: r.base.totals.fail, unlocatedFailures: r.base.unlocated },
+            shifted: {
+              tests: r.shifted.totals.tests,
+              fail: r.shifted.totals.fail,
+              unlocatedFailures: r.shifted.unlocated,
+            },
+          })),
           exempted,
           timeBombs: bombs,
         },
@@ -265,23 +390,25 @@ function main() {
       )
     );
   } else {
-    console.log(
-      `\nBaseline: ${base.totals.fail} failing of ${base.totals.tests}   ` +
-        `Shifted: ${shifted.totals.fail} failing of ${shifted.totals.tests}` +
-        (exempted.length ? `   (${exempted.length} exempted)` : '') +
-        '\n'
-    );
-    if (shifted.unlocated || base.unlocated) {
+    console.log('');
+    for (const r of results) {
       console.log(
-        `  note: ${base.unlocated} baseline / ${shifted.unlocated} shifted failure(s) had no location: line,\n` +
+        `[${r.suite}] Baseline: ${r.base.totals.fail} failing of ${r.base.totals.tests}   ` +
+          `Shifted: ${r.shifted.totals.fail} failing of ${r.shifted.totals.tests}`
+      );
+    }
+    if (exempted.length) console.log(`(${exempted.length} exempted across all suites)`);
+    if (totalUnlocated) {
+      console.log(
+        `\n  note: ${totalUnlocated} failure(s) across all suites had no location: line,\n` +
           '        so they are matched by test NAME only — same-titled ones collapse and could mask a finding.\n'
       );
     }
     if (bombs.length === 0) {
-      console.log(`PASS — no test changes outcome when the clock moves +${opts.days}d.`);
+      console.log(`\nPASS — no test changes outcome when the clock moves +${opts.days}d.`);
     } else {
-      console.log(`FOUND ${bombs.length} time-bomb test(s) — pass now, fail at +${opts.days}d:\n`);
-      for (const b of bombs) console.log(`  ✗ ${b.file} — ${b.name}`);
+      console.log(`\nFOUND ${bombs.length} time-bomb test(s) — pass now, fail at +${opts.days}d:\n`);
+      for (const b of bombs) console.log(`  ✗ [${b.suite}] ${b.file} — ${b.name}`);
       console.log(
         '\nFix: make the stamp relative to run time (daysAgoISO(1)), not a hardcoded literal.'
       );
