@@ -12,7 +12,8 @@
     "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
     "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -111,7 +112,16 @@
     "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
-    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -125,10 +135,7 @@
       "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
-      "the-importance-of-being-oscar-off-west-end-2026/british-theatre--keith-mckenna.json",
-      "the-car-man-west-end-2026/balletcoforum--unknown.json",
-      "the-enormous-crocodile-west-end-2026/theschooltrip--unknown.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -141,7 +148,8 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
-      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+      "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -151,7 +159,7 @@
     "amp": []
   },
   "startTime": "2026-08-16T09:36:20.403Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
   "log": [
     {
       "t": "2026-08-16T09:40:09.238Z",
@@ -207,6 +215,40 @@
       "t": "2026-08-16T10:10:08.714Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-16T10:11:23.062Z",
+      "event": "bb-session",
+      "session": "acb1bcb5",
+      "url": "https://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-16T10:11:43.268Z",
+      "event": "bb-session",
+      "session": "2ca35809",
+      "url": "https://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-16T10:13:52.877Z",
+      "event": "bb-session",
+      "session": "695e0dfa",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-16T10:13:53.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-16T10:14:12.483Z",
+      "event": "bb-session",
+      "session": "d8ee09ed",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-16T10:14:13.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
