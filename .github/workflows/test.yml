@@ -2082,6 +2082,18 @@ on:
       # Path-listed so a solo edit to either triggers CI.
       - 'scripts/lib/task-reclaim.js'
       - 'scripts/lib/task-reclaim.test.mjs'
+      # Task #1705: the LIVE-population sibling of the audit-archived-in-
+      # progress.js recovery above — classifies in_progress tasks with no
+      # matching cmux workspace (FINISHED/LOST/STALE/NEEDS-REVIEW) and reuses
+      # task-reclaim.js's leaf predicates rather than reimplementing them.
+      # Pure decision logic's colocated test runs in the lib-test glob; the
+      # acceptance probe lives in tests/unit-test-manifest.txt (scripts/tests/
+      # is NOT globbed). Path-listed so a solo edit to any of the three
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-orphan-inprogress.js'
+      - 'scripts/lib/orphan-inprogress-triage.js'
+      - 'scripts/lib/orphan-inprogress-triage.test.mjs'
+      - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
