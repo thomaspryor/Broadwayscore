@@ -60,7 +60,7 @@ async function resendGet(url) {
 // Every /show/{slug} link in the sent HTML, query-string stripped, deduped.
 function extractSentSlugs(html) {
   const slugs = new Set();
-  const re = /\/show\/([a-z0-9-]+)(?:[?"])/gi;
+  const re = /\/show\/([a-z0-9-]+)(?:[?"'\/>])/gi;
   let m;
   while ((m = re.exec(html))) slugs.add(m[1].toLowerCase());
   return slugs;
