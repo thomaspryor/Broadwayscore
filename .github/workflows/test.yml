@@ -759,6 +759,16 @@ on:
       - 'scripts/lib/broadway-category-predicate-baseline.js'
       - 'scripts/lib/broadway-category-predicate-baseline.test.mjs'
       - 'data/audit/broadway-category-predicate-baseline.json'
+      # Baseline-diff (task #1666, mirrors #1665's entries directly above): a
+      # solo edit to any of these four needs CI — without this entry,
+      # audit-outlet-registry.js itself had ZERO push-path coverage (confirmed
+      # by grep before this task), plus the same "--update-baseline commit
+      # touching only the JSON would get zero CI" hazard as #1665
+      # (memory/feedback_test_yml_push_path_allowlist.md).
+      - 'scripts/audit-outlet-registry.js'
+      - 'scripts/lib/outlet-registry-baseline.js'
+      - 'scripts/lib/outlet-registry-baseline.test.mjs'
+      - 'data/audit/outlet-registry-baseline.json'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       # Guard + its pin: an edit to either must run CI, or the floor could move
       # in a push whose paths never trigger the job that checks it (#1002).
@@ -4693,11 +4703,12 @@ jobs:
         run: node scripts/audit-verifier-wiring.js
 
       - name: Audit outlet-registry gaps
-        run: node scripts/audit-outlet-registry.js --report-only
-        continue-on-error: true  # Informational only — exit 0 even with missing outlets.
+        run: node scripts/audit-outlet-registry.js --strict
         # Surfaces unregistered outletIds + display-name + normalization mismatches.
-        # Wired as warning so the 53+ pre-existing missing outlets don't block merges
-        # while we work through the backlog. Promote to failure once count is <5.
+        # Baseline-diff (task #1666, mirrors #1665/audit-broadway-category-predicate.js):
+        # the pre-existing 182-outlet backlog is frozen in
+        # data/audit/outlet-registry-baseline.json and never fails CI; only a NEW
+        # un-baselined missing outlet fails the build.
 
       - name: Audit Broadway-category predicate re-derivations
         run: node scripts/audit-broadway-category-predicate.js --strict
