@@ -2,17 +2,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { probeHealthRowLive } = require('./health-row-probe.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+
+// Task #1662: check-health-row-absent.js's SNAPSHOT constant is read at
+// module-load time, so the env override must be set BEFORE requiring it — a
+// throwaway mkdtemp fixture instead of mutating the real tracked
+// data/audit/health-digest-snapshot.json (which CI/~20 parallel sessions
+// write on their own cadence).
+const SNAPSHOT_FIXTURE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'health-row-probe-snapshot-'));
+const SNAPSHOT_PATH = path.join(SNAPSHOT_FIXTURE_DIR, 'health-digest-snapshot.json');
+process.env.HEALTH_ROW_ABSENT_SNAPSHOT_PATH = SNAPSHOT_PATH;
 const { main: checkMain } = require('../check-health-row-absent.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HEALTH_CHECK_PATH = require.resolve('../health-check.js');
-const SNAPSHOT_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'health-digest-snapshot.json');
 const DISPATCH_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'dispatch-outcome-digest-state.json');
 
 function b64url(s) {
@@ -136,30 +145,23 @@ test('check-health-row-absent.js: --live reports fixed even while a stale/fake s
   const row = `Probe test: acceptance fixture ${process.pid}`;
   const token = b64url(row);
 
-  const backup = fs.existsSync(SNAPSHOT_PATH) ? fs.readFileSync(SNAPSHOT_PATH, 'utf8') : null;
-  try {
-    fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
-    fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify({
-      generatedAt: new Date().toISOString(),
-      errors: [],
-      warns: [{ name: row, status: 'warn', message: 'still broken (fixture)' }],
-    }, null, 2));
+  fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    errors: [],
+    warns: [{ name: row, status: 'warn', message: 'still broken (fixture)' }],
+  }, null, 2));
 
-    // Non-live: reads the (fixture) snapshot, which still lists the row -> FAIL.
-    const staleCode = await checkMain(['node', 'check-health-row-absent.js', '--row-b64', token]);
-    assert.equal(staleCode, 1, 'non-live path should still see the fixture snapshot as present');
+  // Non-live: reads the (fixture) snapshot, which still lists the row -> FAIL.
+  const staleCode = await checkMain(['node', 'check-health-row-absent.js', '--row-b64', token]);
+  assert.equal(staleCode, 1, 'non-live path should still see the fixture snapshot as present');
 
-    // Live: the fix already landed (stubbed as status pass) -> PASS, despite
-    // the snapshot file on disk not having caught up yet.
-    const liveCode = await withStubbedCoreResults(
-      [{ name: row, status: 'pass', message: 'fixed' }],
-      () => checkMain(['node', 'check-health-row-absent.js', '--row-b64', token, '--live']),
-    );
-    assert.equal(liveCode, 0, '--live should report the row fixed despite the stale snapshot');
-  } finally {
-    if (backup !== null) fs.writeFileSync(SNAPSHOT_PATH, backup);
-    else fs.rmSync(SNAPSHOT_PATH, { force: true });
-  }
+  // Live: the fix already landed (stubbed as status pass) -> PASS, despite
+  // the snapshot file on disk not having caught up yet.
+  const liveCode = await withStubbedCoreResults(
+    [{ name: row, status: 'pass', message: 'fixed' }],
+    () => checkMain(['node', 'check-health-row-absent.js', '--row-b64', token, '--live']),
+  );
+  assert.equal(liveCode, 0, '--live should report the row fixed despite the stale snapshot');
 });
 
 test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)', async () => {

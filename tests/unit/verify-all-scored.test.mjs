@@ -228,6 +228,12 @@ test('isWithinWindow: ±N day window', () => {
 });
 
 // ─── Integration: synthetic show directory ──────────────────────────────────
+//
+// test-data-write-guard-ok: writes a brand-new, never-colliding synthetic
+// show dir under the real data/review-texts/ tree, not an existing tracked
+// file — verify-all-scored.js resolves review-texts paths internally, no
+// injectable tmp root. rm -rf'd after each integration test; the guard's
+// true target (task #1662) is mutating EXISTING tracked content in place.
 
 const SYNTHETIC_SHOW_ID = '__synthetic-orphan-test-show__';
 const REPO_ROOT = path.resolve(path.dirname(verifyAllScoredPath), '..');

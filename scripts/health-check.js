@@ -882,7 +882,11 @@ function checkPipelines() {
 // needed scoring". Vendors expire batches at 24h; BATCH_STATE_MAX_AGE_HOURS in
 // index.ts discards at 48h, so an error at 24h gives a full day of lead time
 // before the state is silently dropped.
-const SCORING_BATCH_STATE_PATH = path.join(DATA_DIR, 'collection-state', 'scoring-batch-state.json');
+// HEALTH_CHECK_BATCH_STATE_PATH override (task #1662): lets tests point
+// checkBatchState() at a throwaway fixture instead of racing CI/parallel
+// sessions on the real tracked data/collection-state/scoring-batch-state.json.
+const SCORING_BATCH_STATE_PATH = process.env.HEALTH_CHECK_BATCH_STATE_PATH
+  || path.join(DATA_DIR, 'collection-state', 'scoring-batch-state.json');
 
 /**
  * Pure so the age thresholds are testable without touching the filesystem.

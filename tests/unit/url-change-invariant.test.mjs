@@ -544,6 +544,11 @@ describe('updateFileUrlWithInvariant (raw-writer helper)', () => {
       'publishDate must NOT be blanket-preserved — pre-fetch dates are the old article\u2019s');
   });
 
+  // test-data-write-guard-ok: writes to a brand-new, process.pid-namespaced
+  // show dir under the real data/llm-scores|review-texts/ tree, never an
+  // existing tracked path — sidecar resolution is derived from repo root
+  // internally, no injectable tmp root. rm -rf'd in a finally block; the
+  // guard's true target (task #1662) is mutating EXISTING tracked content.
   test('sidecar unlink is scoped to data/review-texts — external paths never unlink', () => {
     const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
     const showId = `zz-test-scope-${process.pid}`;

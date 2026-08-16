@@ -20,6 +20,12 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { createReviewFile } = require('../../scripts/gather-reviews.js');
 
+// test-data-write-guard-ok: writes a brand-new, never-colliding show dir
+// (SHOW_ID below) under the real data/review-texts/ tree, not an existing
+// tracked file — createReviewFile() resolves review-texts paths internally,
+// so there's no injectable root to redirect to a tmp fixture. rm -rf'd in
+// afterEach; the guard's true target (task #1662) is mutating EXISTING
+// tracked content in place, which this pattern never does.
 const REVIEW_TEXTS_DIR = path.join(process.cwd(), 'data', 'review-texts');
 const SHOW_ID = '__test-createreviewfile-816';
 const showDir = path.join(REVIEW_TEXTS_DIR, SHOW_ID);

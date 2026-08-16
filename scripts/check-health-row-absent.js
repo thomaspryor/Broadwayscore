@@ -40,7 +40,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const SNAPSHOT = path.join(__dirname, '..', 'data', 'audit', 'health-digest-snapshot.json');
+// HEALTH_ROW_ABSENT_SNAPSHOT_PATH override (task #1662): lets tests point this
+// at a throwaway fixture instead of racing CI/parallel sessions on the real
+// tracked data/audit/health-digest-snapshot.json.
+const SNAPSHOT = process.env.HEALTH_ROW_ABSENT_SNAPSHOT_PATH
+  || path.join(__dirname, '..', 'data', 'audit', 'health-digest-snapshot.json');
 const MAX_AGE_H = 48;
 
 function b64urlDecode(s) {

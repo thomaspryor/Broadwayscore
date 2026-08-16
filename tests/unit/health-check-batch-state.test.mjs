@@ -8,8 +8,18 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
 const require = createRequire(import.meta.url);
+
+// Task #1662: health-check.js's SCORING_BATCH_STATE_PATH constant is read at
+// module-load time, so the env override must be set BEFORE requiring it — a
+// throwaway mkdtemp fixture instead of backing up/mutating/restoring the real
+// tracked data/collection-state/scoring-batch-state.json (which raced CI/~20
+// parallel sessions writing that same file on their own cadence).
+const STATE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'health-check-batch-state-'));
+const STATE_PATH = path.join(STATE_DIR, 'scoring-batch-state.json');
+process.env.HEALTH_CHECK_BATCH_STATE_PATH = STATE_PATH;
 const { batchStateResult, checkBatchState } = require('../../scripts/health-check.js');
 
 function hoursAgoIso(hours) {
@@ -93,43 +103,30 @@ test('batchStateResult: state without a manifest array is treated as no batch (m
   assert.match(result.message, /no batch in flight/i);
 });
 
-test('checkBatchState: reads the real file path — absent file is pass', () => {
+test('checkBatchState: absent fixture file is pass', () => {
   const [result] = checkBatchState();
-  // Whatever the actual local dev checkout has (present or absent) must not throw.
-  assert.ok(['pass', 'warn', 'error'].includes(result.status));
+  assert.equal(result.status, 'pass');
   assert.equal(result.name, 'Scoring: batch state');
 });
 
 test('checkBatchState: seeded 14h-old file on disk is read and flows through batchStateResult', () => {
-  const stateDir = path.join(process.cwd(), 'data', 'collection-state');
-  const statePath = path.join(stateDir, 'scoring-batch-state.json');
-  const existed = fs.existsSync(statePath);
-  const backup = existed ? fs.readFileSync(statePath, 'utf8') : null;
-  fs.mkdirSync(stateDir, { recursive: true });
   try {
-    fs.writeFileSync(statePath, JSON.stringify(validState({ submittedAt: hoursAgoIso(14) })));
+    fs.writeFileSync(STATE_PATH, JSON.stringify(validState({ submittedAt: hoursAgoIso(14) })));
     const [result] = checkBatchState();
     assert.equal(result.status, 'warn');
     assert.match(result.message, /14h/);
   } finally {
-    if (existed) fs.writeFileSync(statePath, backup);
-    else fs.rmSync(statePath, { force: true });
+    fs.rmSync(STATE_PATH, { force: true });
   }
 });
 
 test('checkBatchState: malformed JSON on disk is warn, not a crash', () => {
-  const stateDir = path.join(process.cwd(), 'data', 'collection-state');
-  const statePath = path.join(stateDir, 'scoring-batch-state.json');
-  const existed = fs.existsSync(statePath);
-  const backup = existed ? fs.readFileSync(statePath, 'utf8') : null;
-  fs.mkdirSync(stateDir, { recursive: true });
   try {
-    fs.writeFileSync(statePath, '{not valid json');
+    fs.writeFileSync(STATE_PATH, '{not valid json');
     const [result] = checkBatchState();
     assert.equal(result.status, 'warn');
     assert.match(result.message, /unparseable/i);
   } finally {
-    if (existed) fs.writeFileSync(statePath, backup);
-    else fs.rmSync(statePath, { force: true });
+    fs.rmSync(STATE_PATH, { force: true });
   }
 });
