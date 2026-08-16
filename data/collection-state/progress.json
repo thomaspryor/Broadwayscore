@@ -66,9 +66,7 @@
     "the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json",
     "cleansed-off-west-end-2026/independent--alice-saville.json",
     "cleansed-off-west-end-2026/london-theatre--unknown.json",
-    "cleansed-off-west-end-2026/whatsonstage--unknown.json",
-    "how-the-other-half-loves-west-end-2026/all-allam--margaux.json",
-    "cats-west-end-2026/nytimes--helen-shaw.json"
+    "cleansed-off-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -1246,7 +1244,17 @@
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
-    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json"
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1296,17 +1304,13 @@
       "the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json",
       "cleansed-off-west-end-2026/independent--alice-saville.json",
       "cleansed-off-west-end-2026/london-theatre--unknown.json",
-      "cleansed-off-west-end-2026/whatsonstage--unknown.json",
-      "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
+      "cleansed-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/la-cage-aux-folles-2010/variety--steven-suskin.json",
       "data/review-texts/la-cage-aux-folles-2010/variety--steven-suskin.json"
     ],
-    "browserbase": [
-      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
-      "cats-west-end-2026/nytimes--helen-shaw.json"
-    ],
+    "browserbase": [],
     "directCookies": [
       "twelfth-night-off-west-end-2026/times-uk--unknown.json",
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1341,7 +1345,7 @@
     ]
   },
   "startTime": "2026-08-15T17:50:36.480Z",
-  "lastProcessed": "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
   "log": [
     {
       "t": "2026-08-15T17:55:38.665Z",
@@ -1387,29 +1391,6 @@
       "t": "2026-08-16T01:13:08.659Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-08-16T03:01:57.630Z",
-      "event": "bb-session",
-      "session": "f109287c",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-16T03:02:17.614Z",
-      "event": "bb-session",
-      "session": "4a574444",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-16T03:06:09.459Z",
-      "event": "bb-session",
-      "session": "4a6f1db7",
-      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
-    },
-    {
-      "t": "2026-08-16T03:06:10.356Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
