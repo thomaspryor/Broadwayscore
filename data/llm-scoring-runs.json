@@ -466356,5 +466356,25 @@
         "error": "Review text too short or missing"
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-16T06:21:59.955Z",
+    "completedAt": "2026-08-16T06:22:06.415Z",
+    "totalReviews": 42599,
+    "processed": 1,
+    "skipped": 42596,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 7352,
+      "output": 399,
+      "total": 22309
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
   }
 ]
