@@ -1036,6 +1036,13 @@ on:
       # the ~70 pre-existing violations are triaged — follow-up card exists.
       - 'scripts/lib/swallowed-audit-writer-check.js'
       - 'scripts/lib/swallowed-audit-writer-check.test.mjs'
+      # Test-data-write-guard (task #1662): pure decision lib + CLI wrapper +
+      # colocated acceptance test (registered in tests/unit-test-manifest.txt).
+      # Path-listed so a solo edit triggers CI (same "scripts/tests/ is not
+      # scripts/lib/" gap the comment above warns about).
+      - 'scripts/lib/test-data-write-guard.js'
+      - 'scripts/test-data-write-guard.js'
+      - 'scripts/tests/test-data-write-guard.test.mjs'
       - '.review-write-guard-exempt.txt'
       - '.reviews-json-write-exempt.txt'
       - '.shows-json-write-exempt.txt'
@@ -3440,6 +3447,16 @@ jobs:
           # re-read merge-by-id). Logic lives in scripts/lint-write-routing.sh
           # — shared with the local pre-push hook.
           bash scripts/lint-write-routing.sh audience-buzz-json
+
+      - name: Check tests don't write to a real tracked data/*.json path
+        run: |
+          # Task #1662: two tests independently mutated a real, symlinked,
+          # tracked data/*.json file in place as a fixture (backup/restore or
+          # rename-out-of-place), racing ~20 parallel sessions + CI that write
+          # those files on their own cadence (fixed in b4d6c619317 and
+          # 8bf5f00eb08, task #1649). Both were only caught by a manual grep
+          # sweep. Logic lives in scripts/lib/test-data-write-guard.js.
+          node scripts/test-data-write-guard.js
 
   dependency-audit:
     name: Dependency Audit
