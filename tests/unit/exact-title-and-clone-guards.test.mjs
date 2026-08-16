@@ -168,3 +168,17 @@ test('sessionTrackingCloneGuard: a self-referential parent id is not treated as 
   };
   assert.equal(sessionTrackingCloneGuard(task, [task], {}), null);
 });
+
+// Ship-check Codex finding, 2026-08-16: notion-tasks-sync.js's mapStatus()
+// collapses BOTH "Not started" and "Paused" into 'pending' — a 'pending'
+// parent has no live session on it (nobody has started it, or someone
+// explicitly stopped), so it must NOT count as "already tracking" this work.
+test('sessionTrackingCloneGuard: a "pending" parent (Not-started/Paused) is NOT treated as live', () => {
+  const task = {
+    id: '1701',
+    subject: 'Session tracking card for task #1702',
+    description: 'Session tracking card for task #1702, currently paused awaiting owner input.',
+  };
+  const tasks = [task, { id: '1702', subject: 'Paused parent work', status: 'pending' }];
+  assert.equal(sessionTrackingCloneGuard(task, tasks, {}), null);
+});
