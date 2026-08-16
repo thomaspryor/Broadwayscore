@@ -106,6 +106,22 @@ if ! git pull --rebase --autostash --quiet; then
   exit 1
 fi
 
+# Self-heal the anti-repeat ledger against what was ACTUALLY sent in Resend
+# BEFORE generating anything new (2026-08-16, #the-pass duplicate). A prior
+# regeneration can update data/newsletter-state.json without the matching
+# Resend draft ever getting re-PATCHed (or the PATCH silently failing) —
+# state.json then disagrees with what subscribers actually received, and the
+# next issue's lastFeaturedIds guard trusts the wrong one. Fixing it here
+# means every regeneration starts from ground truth, not from whatever the
+# last run happened to write.
+echo "== Verifying de-dup state against actually-sent broadcasts"
+node scripts/newsletter/verify-sent-vs-state.mjs --fix
+if ! git diff --quiet -- data/newsletter-state.json; then
+  git add data/newsletter-state.json
+  git commit -m "chore(newsletter): reconcile de-dup state with actually-sent broadcasts" --quiet
+  bash scripts/lib/push-with-retry.sh 3 main
+fi
+
 for EDITION in broadway west-end; do
   AUDIENCE=general
   [ "$EDITION" = "west-end" ] && AUDIENCE=west-end
