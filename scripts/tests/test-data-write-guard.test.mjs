@@ -435,4 +435,42 @@ describe('findUnsafeDataWrites — template-literal interpolation and function-r
     `;
     assert.deepEqual(findUnsafeDataWrites(source), []);
   });
+
+  // /code-review (task #1685 follow-up) caught that a function's return
+  // expression was resolved against the CALL SITE's position instead of the
+  // return statement's own position, letting an unrelated same-named
+  // declaration elsewhere in the file shadow the function's real local
+  // variable — in both directions. Compact single-line function bodies
+  // additionally exposed a second bug in collectDeclarations (RHS capture
+  // used to run to end-of-line, swallowing a same-line trailing statement).
+  test('an unsafe function-local var is still flagged despite a later same-named tmp-safe module-level var (shadowing, task #1685 follow-up)', () => {
+    const source = `
+      import { writeFileSync, mkdtempSync } from 'node:fs';
+      import { join } from 'node:path';
+      import { tmpdir } from 'node:os';
+      function unsafePath() {
+        const ROOT = 'data';
+        return join(ROOT, 'shows.json');
+      }
+      const ROOT = mkdtempSync(tmpdir());
+      writeFileSync(unsafePath(), '{}');
+    `;
+    const findings = findUnsafeDataWrites(source);
+    assert.equal(findings.length, 1, `expected the function-local unsafe path to be flagged despite the later module-level ROOT, got ${JSON.stringify(findings)}`);
+  });
+
+  test('a tmp-safe function-local var is not flagged despite a later same-named literal module-level var (mirror of the shadowing case)', () => {
+    const source = `
+      import { writeFileSync, mkdtempSync } from 'node:fs';
+      import { join } from 'node:path';
+      import { tmpdir } from 'node:os';
+      function safePath() {
+        const BASE = mkdtempSync(tmpdir());
+        return join(BASE, 'shows.json');
+      }
+      const BASE = 'data';
+      writeFileSync(safePath(), '{}');
+    `;
+    assert.deepEqual(findUnsafeDataWrites(source), []);
+  });
 });
