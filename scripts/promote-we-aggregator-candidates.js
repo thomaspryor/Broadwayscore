@@ -41,6 +41,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
 const { WEST_END_VENUES, normalizeVenueName } = require('./lib/venue-classification');
+const { foldDiacritics } = require('./lib/title-match');
 const {
   fetchWetRecentRoundups,
   fetchWetPostVenue,
@@ -162,7 +163,7 @@ function buildWestEndAggregatorShowEntry(candidate) {
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / DAY_MS : 0;
-  const slugBase = (candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  const slugBase = (candidate.slug || foldDiacritics(candidate.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   const slug = `${slugBase}-west-end`;
   const id = `${slug}-${year}`;
   return {

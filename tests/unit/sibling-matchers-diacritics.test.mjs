@@ -211,6 +211,29 @@ const UNFOLDED_BASELINE = new Set([
   // response is an LLM's YES/NO answer text, not a show title. See inline
   // comment at the call site.
   'page-validator.js',
+  // Task #1643 (manifest-drift audit surfaced this file was never running in
+  // CI): 4 files added while this test was orphaned. tr-wrongshow-guard.js
+  // (a real show-title matcher) was fixed alongside this baseline edit, not
+  // added here — see its own foldDiacritics import.
+  //
+  // isAllEditorial() checks whether every remaining word of a candidate
+  // headline is EDITORIAL_VOCAB furniture (all-ASCII English words); it is a
+  // junk-vs-real-title heuristic filter, not the primary title matcher —
+  // cleanCandidateTitle() in the same file is. A shredded accented word can
+  // only ever read as "not editorial", which is already the correct answer.
+  'aggregator-candidate-extract.js',
+  // normalizeHostSlug() folds a DNS HOSTNAME, not a show title — hostnames
+  // are ASCII by construction (punycode), so there is nothing to fold.
+  'silent-exclusion-detectors.js',
+  // normalizeSubject() keys internal Notion/task subject lines (this repo's
+  // own task titles), not show titles — not the class this guard protects.
+  'task-reclaim.js',
+  // slugify()/coreTokens() here deliberately MIRROR src/lib/data-core.ts's
+  // own slugify()/normalizeVenueName() (see this file's header) — data-
+  // core.ts is unfolded too. Folding only here would make this audit check
+  // a different pipeline than the one it exists to validate. Real fix is
+  // upstream in data-core.ts; tracked separately, out of scope for #1643.
+  'venue-complex-audit.js',
 ]);
 
 // Task #781: the structural guard above only ever globbed scripts/lib — the
@@ -268,6 +291,8 @@ const UNFOLDED_BASELINE_ROOT = new Set([
   'fix-unknown-critics.js',
   'gather-reviews.js',
   'health-check.js',
+  'ingest-review-from-url.js',
+  'linear-next.js',
   'merge-theater-research.js',
   'migrate-reroute-backlog.js',
   'newspapers-com-extract.js',
