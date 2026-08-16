@@ -174,5 +174,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-16T20:42:02.771Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "3/151 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nThe Winter's Tale: score-drift\nGame of Thrones: The Mad King: score-drift\nNow You See Me Live: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-16T23:13:49.495Z"
   }
 ]
