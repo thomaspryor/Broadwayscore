@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 // Canonical "would rebuild include this review-text file?" predicate, shared
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
@@ -130,11 +130,15 @@ try {
 }
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
-const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
+// Override lets tests point validate-data.js at a throwaway fixture instead of
+// the real data/shows.json (Notion — validate-data sentinel test corruption risk).
+// Every other data file still resolves under the real DATA_DIR.
+const SHOWS_FILE = process.env.VALIDATE_DATA_SHOWS_JSON || path.join(DATA_DIR, 'shows.json');
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
 const SCHEDULES_FILE = path.join(DATA_DIR, 'show-schedules.json');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
+const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 
 const strictMode = process.argv.includes('--strict');
 
@@ -608,7 +612,7 @@ function validateDates(shows) {
   }
 
   if (staleStatusFixes > 0) {
-    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -821,7 +825,7 @@ function validateVenueCategory(shows) {
 
   if (autoFixed > 0) {
     // Write back the fixes
-    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -873,7 +877,7 @@ function validateTheaterAddress(shows) {
   }
 
   if (mismatches > 0) {
-    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsPath = SHOWS_FILE;
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
@@ -1623,7 +1627,7 @@ function validateReviewsJson() {
   ok(`Loaded ${reviews.length} reviews from reviews.json`);
 
   // Orphan review check: every showId in reviews.json must exist in shows.json
-  const showsFile = path.join(DATA_DIR, 'shows.json');
+  const showsFile = SHOWS_FILE;
   if (fs.existsSync(showsFile)) {
     try {
       const showsJson = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
@@ -3218,7 +3222,7 @@ function validateUnscoredReviewTexts() {
   // Load shows.json once so isIncludableForRebuild can apply the
   // isLikelyStaleWrongShow override consistently with the rebuild gate
   // (Notion 34e637c5-416f-8121).
-  const showsJsonPath = path.join(DATA_DIR, 'shows.json');
+  const showsJsonPath = SHOWS_FILE;
   const showById = {};
   try {
     const showsData = JSON.parse(fs.readFileSync(showsJsonPath, 'utf8'));
@@ -4475,7 +4479,7 @@ function validateCrossMarketContamination() {
   } catch { return; }
 
   const reviews = data.reviews || [];
-  const showsFile = path.join(DATA_DIR, 'shows.json');
+  const showsFile = SHOWS_FILE;
   let shows;
   try {
     const sd = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
