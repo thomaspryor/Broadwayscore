@@ -2723,6 +2723,16 @@ on:
       - 'scripts/linear-next.js'
       - 'scripts/lib/linear-dispatch.js'
       - 'scripts/lib/dispatch-guards.js'
+      # Task #1696: wired dispatch-guards.js's exactTitleOverlapGuard +
+      # sessionTrackingCloneGuard (added for bsc-next.js by task #1672) into
+      # linear-next.js's main(), via listOpenIssuesWithDescriptions()
+      # (scripts/lib/linear-client.js — already listed above) and a new
+      # dispatch-overlap-check.js require. Its colocated test lives in
+      # scripts/tests/ (NOT covered by the 'tests/**' glob — same
+      # "scripts/tests/ is not scripts/lib/" gap as this block's siblings,
+      # feedback_test_yml_push_path_allowlist), so it needs its own explicit
+      # line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/linear-next-overlap-guards.test.mjs'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are

@@ -69,6 +69,10 @@
 
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
 require('./lib/load-env').loadEnv();
 
 const linear = require('./lib/linear-client.js');
@@ -84,7 +88,9 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
+  exactTitleOverlapGuard, sessionTrackingCloneGuard,
 } = require('./lib/dispatch-guards.js');
+const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 
 // Hardcoded, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
@@ -130,6 +136,71 @@ function parseArgs(argv) {
 
 function ledgerTaskId(identifier) { return `linear:${identifier}`; }
 
+// Notion-mirror task dir (~/.claude/tasks/<list-id>/*.json) — the SAME
+// directory bsc-next.js's loadTasks() reads (task #1696). Duplicated here
+// (not required from bsc-next.js) rather than importing a CLI entry point
+// whose main() runs under `require.main === module` — every other dispatcher
+// script in this repo (autonomous-triage.js, notion-tasks-sync.js, etc.)
+// re-derives this same small block instead of cross-requiring bsc-next.js.
+const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
+const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
+
+function loadNotionMirrorTasks(dir = TASKS_DIR) {
+  let files;
+  try { files = fs.readdirSync(dir); } catch { return []; }
+  return files
+    .filter((f) => /^\d+\.json$/.test(f))
+    .map((f) => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
+    .filter(Boolean);
+}
+
+// Cross-task/cross-system overlap check (task #1696 — the #917/#1672 class,
+// extended to the Linear side). bsc-next.js's own overlap check only ever
+// compared its dispatch against OTHER Notion-mirror tasks; a Linear-issue
+// dispatch can duplicate work already live on EITHER side of the Notion<->
+// Linear mirror, so the comparison pool combines both:
+//   - live Linear issues (state.type === 'started' — Linear's "in progress"
+//     workflow-state type, the same one reportDispatchOnIssue() above moves
+//     an issue INTO), excluding this dispatch's own issue
+//   - in_progress Notion-mirror tasks (the exact pool bsc-next.js's own
+//     overlap check builds from tasksWithArchive)
+// Pure — no I/O — so it's directly unit-testable against fixture data
+// (CLAUDE.md rule 15) without a live Linear/Notion round trip.
+function buildOverlapComparisonPool(openLinearIssuesWithDesc, notionMirrorTasks, selfIdentifier) {
+  const linearPool = (openLinearIssuesWithDesc || [])
+    .filter((iss) => iss && iss.identifier !== selfIdentifier && iss.state && iss.state.type === 'started')
+    .map((iss) => ({ id: iss.identifier, subject: iss.title, description: iss.description || '', status: 'in_progress' }));
+  const notionPool = (notionMirrorTasks || [])
+    .filter((t) => t && t.status === 'in_progress')
+    .map((t) => ({ id: t.id, subject: t.subject, description: t.description || '', status: t.status }));
+  return linearPool.concat(notionPool);
+}
+
+// Pure: runs dispatch-guards.js's sessionTrackingCloneGuard + exactTitleOverlapGuard
+// over a pre-built comparison pool (see buildOverlapComparisonPool above),
+// same shape/ordering bsc-next.js's main() uses (clone check first, then the
+// exact-title refusal, then non-blocking warnings for the rest). Returns
+// { refusal, warnings } — refusal is a string or null (caller exits on it),
+// warnings is an array of printable strings for non-blocking overlaps.
+function checkLinearOverlapGuards(pseudoTask, pool, opts) {
+  const cloneErr = sessionTrackingCloneGuard(pseudoTask, pool, opts);
+  if (cloneErr) return { refusal: cloneErr, warnings: [] };
+
+  const overlapCards = pool.map((t) => ({ id: t.id, subject: t.subject, notes: t.description }));
+  const targetCard = { id: pseudoTask.id, subject: pseudoTask.subject, notes: pseudoTask.description };
+  const overlaps = findOverlappingCards(targetCard, overlapCards);
+  const overlapErr = exactTitleOverlapGuard(pseudoTask, overlaps, opts);
+  if (overlapErr) return { refusal: overlapErr, warnings: [] };
+
+  const warnings = overlaps.map((o) => {
+    const why = o.reason === 'exact-title-match'
+      ? 'has an exact title match (refusal bypassed via --force/--dry-run/--print-prompt)'
+      : o.reason === 'shared-file-path' ? `shares file(s) ${o.sharedPaths.join(', ')}` : 'has a near-identical title';
+    return `${pseudoTask.id} ${why} with in_progress work ${o.card.id} ("${o.card.subject}") — check it isn't already being worked before dispatching a duplicate.`;
+  });
+  return { refusal: null, warnings };
+}
+
 async function runList() {
   const issues = await linear.listOpenIssues();
   const sorted = ld.sortIssuesByPriority(issues);
@@ -174,6 +245,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    // Cross-task/cross-system overlap check (task #1696) I/O seams — same
+    // convention as the rest of this list: real implementation by default,
+    // injectable so tests never make a live Linear API call or read this
+    // machine's actual ~/.claude/tasks mirror (this file's sibling test,
+    // tests/unit/linear-next.test.mjs, states "no live Linear API calls" as
+    // an explicit invariant).
+    listOpenIssuesWithDescriptions: listOpenIssuesWithDescriptionsFn = linear.listOpenIssuesWithDescriptions,
+    loadNotionMirrorTasks: loadNotionMirrorTasksFn = loadNotionMirrorTasks,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -205,7 +284,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   }
 
   const taskId = ledgerTaskId(issue.identifier);
-  const pseudoTask = { id: taskId, subject: `${issue.identifier} ${issue.title}` };
+  const pseudoTask = { id: taskId, subject: `${issue.identifier} ${issue.title}`, description: issue.description || '' };
   const explicitModel = typeof args.model === 'string' ? args.model : null;
   // resolveModel's task/card shape is generic ({description, ...} / {notes,
   // ...}) — reused as-is (an issue description carries the same "Model: Opus"
@@ -223,7 +302,47 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     url: issue.url, model, project, mode: routing.mode,
   });
 
+  // Cross-task/cross-system overlap check (task #1696, the #917/#1672 class
+  // extended to the Linear side): findLiveWorkspaceForTask further below only
+  // ever catches a SECOND dispatch of THIS SAME issue — it has no way to
+  // catch a DIFFERENT Linear issue, or a Notion-mirror task, whose notes
+  // describe the same underlying work. See buildOverlapComparisonPool /
+  // checkLinearOverlapGuards above for the pool + guard wiring (reuses
+  // dispatch-guards.js's exactTitleOverlapGuard + sessionTrackingCloneGuard
+  // unchanged — no new guard logic, matching task #1672's own suggested
+  // approach). Defined as a local closure (not called yet) so it can run in
+  // BOTH the --dry-run/--print-prompt preview branch below AND the normal
+  // launch path AFTER the terminal-state guard/kill switch (second-opinion
+  // review, task #1696: a Done/Canceled issue or a LINEAR_NEXT_DISABLED=1 run
+  // should refuse on THAT cheaper, more specific reason first, not burn a
+  // live paginated Linear fetch deciding whether it's also a duplicate) — but
+  // --dry-run must still preview it (bsc-next.js's own "runs before the
+  // dry-run bail" contract), and this file's dry-run branch returns before
+  // ever reaching the terminal-state guard.
+  async function runOverlapCheck() {
+    try {
+      const openIssuesWithDesc = await listOpenIssuesWithDescriptionsFn();
+      const notionMirrorTasks = loadNotionMirrorTasksFn();
+      const pool = buildOverlapComparisonPool(openIssuesWithDesc, notionMirrorTasks, issue.identifier);
+      // Bare issue.title, NOT pseudoTask.subject: the pool's title fields
+      // (both the Linear and Notion-mirror halves) are unprefixed, but
+      // pseudoTask.subject carries the "<identifier> <title>" launch-title
+      // prefix (used for cmux/workspace matching elsewhere in this file) —
+      // comparing that prefixed form against unprefixed pool titles would
+      // make normalizeTitle() never match even a byte-for-byte duplicate.
+      const overlapTarget = { id: taskId, subject: issue.title, description: issue.description || '' };
+      const { refusal, warnings } = checkLinearOverlapGuards(overlapTarget, pool, args);
+      if (refusal) { console.error(`[linear-next] ${refusal}`); process.exit(1); }
+      warnings.forEach((w) => console.error(`[linear-next] WARNING: ${w}`));
+    } catch (e) { console.error(`[linear-next] WARN overlap check failed (continuing): ${e.message}`); }
+  }
+
   if (args['dry-run'] || args['print-prompt']) {
+    // The guards themselves self-exempt the hard refusal under
+    // --dry-run/--print-prompt/--force, so this only ever surfaces the
+    // non-blocking warnings — never a process.exit — matching bsc-next.js's
+    // "--dry-run previews the overlap check too" contract.
+    await runOverlapCheck();
     console.log(`# would launch (${routing.mode} — ${routing.reason}) on: ${identifier} ${issue.title}\n`);
     console.log(seed);
     return;
@@ -254,6 +373,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('[linear-next] LINEAR_NEXT_DISABLED=1 — this dispatcher is switched off (cmux and headless both); rerun once it is re-enabled.');
     process.exit(1);
   }
+
+  await runOverlapCheck();
 
   // Verify gate (mirrors bsc-next.js's dispatch gate exactly): a Linear
   // issue's description carries its own "## Acceptance criteria" section by
@@ -445,4 +566,10 @@ if (require.main === module) {
   main().catch((e) => { console.error(`[linear-next] fatal: ${e.stack || e.message}`); process.exit(1); });
 }
 
-module.exports = { parseArgs, ledgerTaskId, runList, main, USAGE };
+module.exports = {
+  parseArgs, ledgerTaskId, runList, main, USAGE,
+  // Task #1696: pure overlap-guard wiring, exported for
+  // scripts/tests/linear-next-overlap-guards.test.mjs (CLAUDE.md rule 15 —
+  // the test require()s these real functions rather than restating them).
+  buildOverlapComparisonPool, checkLinearOverlapGuards, loadNotionMirrorTasks, TASKS_DIR,
+};
