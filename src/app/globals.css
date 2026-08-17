@@ -594,6 +594,17 @@ img {
     min-width: auto;
   }
 
+  /* Exception for the showtime picker's icon row (matinee/evening/custom/clear)
+     and the compact Add-to-Calendar icon on the My Shows grid card — same
+     "N adjacent icons must fit a ~100px card" problem as .star-compact above.
+     44px minimums on 4 adjacent icons overflowed the card (visual QA, 2026-08-17). */
+  .showtime-compact,
+  .showtime-compact button,
+  .showtime-compact a {
+    min-height: auto;
+    min-width: auto;
+  }
+
   /* iOS zooms the page when focusing any text control under 16px — on the
      Create List sheet this zoomed past the right edge and, combined with the
      modal scroll lock, read as a frozen page (owner, 2026-07-20). A 16px

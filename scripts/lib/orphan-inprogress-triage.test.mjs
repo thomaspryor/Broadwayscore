@@ -180,6 +180,20 @@ test('Outcome has a FUTURE RECHECK-AFTER date -> NEEDS-REVIEW even with strong c
   assert.equal(actionOf(rows, 21), 'recheck-after-pending');
 });
 
+test('RECHECK-AFTER date whose UTC midnight has passed but is <24h old -> still NEEDS-REVIEW (task #1722)', () => {
+  // Card #1226 in the real backlog: RECHECK-AFTER: 2026-08-16 parses to
+  // 2026-08-16T00:00:00Z, which is already "past" by NOW (2026-08-16T12:00Z)
+  // in raw UTC terms even though it is still the SAME calendar day for the
+  // owner (US-Eastern). Un-padded, this fell through to corroboration and
+  // force-closed a card whose own words said not to. The 24h pad must hold.
+  const rows = classify([orphan(23)], {
+    cardOf: () => ({ status: 'Paused', outcome: 'RECHECK-AFTER: 2026-08-16\n\nShipped and verified. keyFiles all exist.', lastEditedAt: hAgo(72) }),
+    corroborateOutcomeOf: () => ({ hasEvidence: true, evidence: ['keyFile src/x.ts exists'] }),
+  });
+  assert.equal(bucketOf(rows, 23), 'NEEDS-REVIEW');
+  assert.equal(actionOf(rows, 23), 'recheck-after-pending');
+});
+
 test('Outcome has only a PAST RECHECK-AFTER date -> corroboration still applies normally', () => {
   const rows = classify([orphan(22)], {
     cardOf: () => ({ status: 'Paused', outcome: 'RECHECK-AFTER: 2026-08-01\n\nShipped and verified.', lastEditedAt: hAgo(72) }),

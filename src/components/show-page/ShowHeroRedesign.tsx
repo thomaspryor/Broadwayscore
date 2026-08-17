@@ -43,6 +43,9 @@ import {
 } from '@/components/show-cards';
 import StarRating from '@/components/user/StarRating';
 import DatePickerButton from '@/components/user/DatePickerButton';
+import ShowtimePicker from '@/components/user/ShowtimePicker';
+import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
+import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -125,7 +128,7 @@ function Inner({
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { lists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
   const searchParams = useSearchParams();
@@ -158,7 +161,9 @@ function Inner({
   const hasRating = ratingCount > 0;
   const isMulti = ratingCount > 1;
   const onWatchlist = isWatchlisted(show.id);
-  const watchlistDate = watchlist.find(w => w.show_id === show.id)?.planned_date || null;
+  const watchlistEntry = watchlist.find(w => w.show_id === show.id);
+  const watchlistDate = watchlistEntry?.planned_date || null;
+  const plannedShowEvent = watchlistEntry ? buildPlannedShowEvent(show, watchlistEntry) : null;
 
   // Lists containing this show — caption only, no button on show page.
   const listsWithShow = lists.filter(l =>
@@ -617,6 +622,20 @@ function Inner({
                       : 'Add date'}
                   </span>
                 </DatePickerButton>
+                {watchlistDate && watchlistEntry && (
+                  <>
+                    {' '}
+                    <ShowtimePicker
+                      showId={show.id}
+                      date={watchlistDate}
+                      timeSlot={watchlistEntry.time_slot}
+                      curtainTime={watchlistEntry.curtain_time}
+                      onSave={(fields) => updatePerformance(show.id, fields).catch(() => showToast?.('Failed to save showtime.', 'error'))}
+                    />
+                  </>
+                )}
+                {' '}
+                <AddToCalendarButtons event={plannedShowEvent} />
               </>
             )}
             {onWatchlist && firstListContainingShow && ' · '}

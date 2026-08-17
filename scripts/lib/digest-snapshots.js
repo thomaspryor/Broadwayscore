@@ -86,6 +86,15 @@ const SNAPSHOTS = [
   // Mac both have but a partial checkout may not — a missing file must not
   // become a permanent false "didn't update overnight" banner.
   { key: 'trunk', label: 'trunk status', file: 'trunk-status-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/audit-card-relevance.js (task #1719) — the P1 backlog relevance
+  // sweep: is this open P1 still real, or LIKELY-DONE/DUPLICATE/STALE.
+  // Shadow mode, run on demand (not cron-wired yet — the owner reviews the
+  // first pass before any automation touches Notion), so maxAgeH is wide
+  // (14 days) rather than the 36h every nightly producer uses; a narrower
+  // window would falsely flag "didn't update overnight" for a report that
+  // was never meant to run overnight. optionalIfMissing until the first run
+  // lands the snapshot file.
+  { key: 'p1RelevanceAudit', label: 'P1 backlog relevance audit', file: 'card-relevance-digest-snapshot.json', maxAgeH: 336, optionalIfMissing: true },
 ];
 
 /**
