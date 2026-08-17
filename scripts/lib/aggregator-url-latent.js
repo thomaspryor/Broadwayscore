@@ -79,6 +79,23 @@ const VALIDATOR_EXCLUSION_FLAGS = Object.freeze([
   'wrongAttribution',
   'isRoundupArticle',
   'rejectionReason',
+  // isNotReview is the DURABLE form of rejectionReason. The note in
+  // review-write-guard.js explains why rejectionReason is deliberately NOT in
+  // PROTECTED_FIELDS (it is CI-derived and two scripts must be able to clear it) —
+  // but that also means any re-scrape can silently strip it. On 2026-08-17 the LBO
+  // roundup scrape did exactly that to
+  // christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json: a 0-word LBO
+  // boilerplate disclaimer that three LLMs had unanimously rejected as "not a
+  // review" lost its rejectionReason, re-entered the validated population carrying
+  // the aggregator URL, and failed the trunk on a zero-tolerance gate.
+  // isNotReview + its Reason/SetAt/SetBy siblings ARE protected and are already
+  // honoured by review-guards.js:2939 to exclude a file from the rebuild, so a
+  // record marked "this is not a review" was already outside the review population
+  // everywhere EXCEPT here. Adding it closes that gap.
+  // Blast radius when added: 4 files carry isNotReview:true corpus-wide and all 4
+  // were already excluded by another flag, so the validated population is unchanged
+  // today (measured 2026-08-17). This is a durability guarantee, not a relaxation.
+  'isNotReview',
   'suspectedMisattribution',
 ]);
 
@@ -87,9 +104,29 @@ const VALIDATOR_EXCLUSION_FLAGS = Object.freeze([
  * @param {object} data - parsed review JSON
  * @returns {boolean}
  */
+/**
+ * Flags whose exclusion requires STRICT `=== true`, not truthiness.
+ *
+ * The historical flags here are truthy-tested and must stay that way — several
+ * carry a reason STRING rather than a boolean (rejectionReason is literally
+ * "not_a_review"), so tightening them would silently re-admit thousands of files.
+ *
+ * isNotReview is different and must be strict. Every OTHER consumer tests it
+ * `=== true` (review-guards.js:2939, rebuild-all-reviews.js:2873,
+ * merge-review-fields.js:75). A truthy test here would create a divergence an
+ * adversarial review named precisely: `isNotReview: "false"` — a string, and so
+ * truthy — would silence this zero-tolerance validator while the record stayed
+ * fully live for rebuild and scoring. Any process that can write a review JSON
+ * could set it. Strict equality keeps this predicate in lockstep with everything
+ * else that reads the flag, so it can never hide a record the rebuild still uses.
+ */
+const STRICT_TRUE_FLAGS = Object.freeze(['isNotReview']);
+
 function isSkippedByValidator(data) {
   if (!data || typeof data !== 'object') return false;
-  return VALIDATOR_EXCLUSION_FLAGS.some((flag) => Boolean(data[flag]));
+  return VALIDATOR_EXCLUSION_FLAGS.some((flag) => (STRICT_TRUE_FLAGS.includes(flag)
+    ? data[flag] === true
+    : Boolean(data[flag])));
 }
 
 /**
@@ -250,6 +287,7 @@ function evaluateScanIntegrity(scanned, scanErrors, limits = {}) {
 module.exports = {
   DEFAULT_GRACE_BAND,
   VALIDATOR_EXCLUSION_FLAGS,
+  STRICT_TRUE_FLAGS,
   resolveOutletId,
   isSkippedByValidator,
   hasAggregatorUrlMismatch,

@@ -77,6 +77,28 @@ test('every documented exclusion flag, on its own, excludes the review', () => {
   }
 });
 
+test('isNotReview excludes — the durable form of a stripped rejectionReason', () => {
+  // 2026-08-17: the LBO roundup scrape stripped rejectionReason (deliberately NOT
+  // in PROTECTED_FIELDS, see review-write-guard.js) from a 0-word LBO boilerplate
+  // disclaimer that three LLMs had unanimously rejected. It re-entered the
+  // validated population carrying an aggregator URL under outletId "telegraph" and
+  // failed a zero-tolerance trunk gate. isNotReview IS protected, so it survives a
+  // re-scrape; before this it was honoured by review-guards.js but not here.
+  const resurrected = {
+    outletId: 'telegraph',
+    url: 'https://www.londonboxoffice.co.uk/news/post/review-round-up-christmas-carol-goes-wrong-apollo-theatre',
+    isNotReview: true,
+    isNotReviewReason: 'LBO boilerplate disclaimer, not a review',
+  };
+  assert.equal(isSkippedByValidator(resurrected), true,
+    'a record explicitly marked "not a review" must not be validated as a review');
+  // ...and it must still be a mismatch on its own facts, so removing the flag
+  // brings the error straight back rather than the flag masking a fixed bug.
+  const { isNotReview, isNotReviewReason, ...unflagged } = resurrected;
+  assert.equal(isSkippedByValidator(unflagged), false);
+  assert.equal(hasAggregatorUrlMismatch(unflagged), true);
+});
+
 test('falsy flag values do NOT exclude — a cleared flag means the file is live again', () => {
   // This is the auto-clear path that caused the incident: wrongProduction goes
   // truthy -> falsy and the file rejoins the validated population.
