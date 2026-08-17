@@ -274,7 +274,17 @@
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -290,7 +300,7 @@
     "archive": []
   },
   "startTime": "2026-08-17T16:43:11.334Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-08-17T19:33:04.839Z",
@@ -313,6 +323,17 @@
       "t": "2026-08-17T19:46:12.655Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-17T21:09:36.389Z",
+      "event": "bb-session",
+      "session": "24fa813c",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-17T21:09:37.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
