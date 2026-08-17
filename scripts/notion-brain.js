@@ -214,23 +214,15 @@ function formatCard(page) {
 
 const PROP_CHUNK = 1800;       // safe under Notion's 2000-char property cap
 const BODY_CHUNK = 1900;       // safe under Notion's 2000-char rich_text object cap
-const BODY_HEADING_PREFIX = '[auto:';
-const BODY_HEADING_SUFFIX = '] full content';
 
-function bodyHeadingText(field) {
-  return `${BODY_HEADING_PREFIX}${field}${BODY_HEADING_SUFFIX}`;
-}
-
-function getHeadingText(block) {
-  if (!block || block.type !== 'heading_2') return null;
-  const rt = block.heading_2?.rich_text || [];
-  return rt.map(t => t.plain_text).join('');
-}
-
-function isAutoHeading(block) {
-  const t = getHeadingText(block);
-  return !!(t && t.startsWith(BODY_HEADING_PREFIX) && t.endsWith(BODY_HEADING_SUFFIX));
-}
+// The body-section heading vocabulary and the reader half of the overflow
+// round-trip now live in scripts/lib/notion-corpus.js, which the Sprint 2
+// corpus exporter also requires. It has to read exactly what this file writes
+// — 2,183 cards have most of their text in the body — so a second copy over
+// there would be the drift that silently truncates the archive
+// (CLAUDE.md rule 15: require the real function, never restate it).
+const notionCorpus = require('./lib/notion-corpus');
+const { bodyHeadingText, getHeadingText, isAutoHeading } = notionCorpus;
 
 // Break text into chunks <= size, preferring newline boundaries.
 function chunkText(text, size) {
@@ -341,20 +333,12 @@ async function writeBodySection(pageId, field, text, opts = {}) {
 // `propertyText` is the already-joined rich_text string for the field.
 async function readFieldWithOverflow(pageId, propertyText, field, opts = {}) {
   const s = String(propertyText || '');
+  // Cheap short-circuit BEFORE the network call: no marker means the property
+  // already holds everything, and fetching the body would be a wasted request
+  // on every one of the ~2,800 cards that never overflowed.
   if (!s.includes(OVERFLOW_MARKER_SUBSTR)) return s;
   const children = opts.children || await listAllChildren(pageId);
-  const targetHeading = bodyHeadingText(field);
-  const startIdx = children.findIndex(b => getHeadingText(b) === targetHeading);
-  if (startIdx === -1) return s;
-  const parts = [];
-  for (let i = startIdx + 1; i < children.length; i++) {
-    const b = children[i];
-    if (isAutoHeading(b)) break;
-    if (b.type === 'paragraph') {
-      parts.push((b.paragraph.rich_text || []).map(t => t.plain_text).join(''));
-    }
-  }
-  return parts.length ? parts.join('\n') : s;
+  return notionCorpus.reassembleField(s, children, field);
 }
 
 // Truncate to Notion's 2000-char rich_text limit

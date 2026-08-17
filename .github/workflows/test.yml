@@ -2284,6 +2284,17 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
       # was never path-listed before — its bsc-next/tasks-sync consumers were.
       - 'scripts/notion-brain.js'
+      # Notion corpus export (Sprint 2, notion→linear cutover). notion-corpus.js
+      # holds the overflow-reassembly that notion-brain.js ALSO reads through —
+      # 2,183 cards keep most of their text in the page body, so a break here
+      # silently truncates both the live CLI and the one-shot archive taken
+      # before Notion is deleted. tests/unit/notion-corpus.test.mjs is
+      # registered in tests/unit-test-manifest.txt (tests/** globbed above);
+      # these scripts/ files need explicit listing
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/notion-corpus.js'
+      - 'scripts/export-notion-corpus.js'
+      - 'scripts/verify-notion-corpus.js'
       # Owner alert router (Notion 3a4637c5-416f-81eb, #279) — path-listed for
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'

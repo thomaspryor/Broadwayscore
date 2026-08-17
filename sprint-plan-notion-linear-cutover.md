@@ -164,7 +164,13 @@ defence. Notion must be fully live throughout.
 - **Description:** Walk all pages, write NDJSON, checkpoint per page so a crash resumes rather than restarts.
   Named "corpus" not "archive" — "Archive" already means the Linear Archive project.
 - **Acceptance criteria:**
-  - VERIFY: a run exports exactly 4,775 page records
+  - VERIFY: ~~a run exports exactly 4,775 page records~~
+    `[CHANGED: 4,775 is stale and hardcoding it makes this criterion unpassable — the board had 4,981 pages on
+    2026-08-17 and gains cards continuously (this session alone added 2). Replaced with a criterion that cannot
+    go stale: the run exports one record per page the query enumerated, and a fresh count taken at verify time
+    agrees. — source: Sprint 2 execution]`
+    VERIFY: `manifest.pagesExported` equals the live page count from an independent re-count, and equals
+    `wc -l corpus.ndjson`
   - VERIFY: killing the run mid-way and restarting resumes from the checkpoint, not from zero
 
 ### Task S2-T2: Add unconditional recursive block descent
@@ -175,7 +181,13 @@ defence. Notion must be fully live throughout.
 - **Description:** Call `blocks.children.list` for every page regardless of `has_children` (which is false for all
   4,775 rows and is unreliable), and recurse to the depth S0-T3 recorded. Paginate block lists past 100.
 - **Acceptance criteria:**
-  - VERIFY: zero exported records contain the string `[Full content in page body below ↓]`
+  - VERIFY: zero exported records contain the string `[Full content in page body below ↓]` **in their
+    reassembled `fields`**
+    `[CHANGED: scoped to `fields`. A record keeps the raw property values and the raw Notion property objects
+    alongside the stitched text, deliberately — they are the recovery path if any extraction rule here turns out
+    to be wrong after Notion is gone — and the raw property of an overflowed card contains the marker BY
+    DEFINITION, because that is what is on the board. The unscoped criterion would fail on a correct export and
+    could only be satisfied by discarding the raw data. — source: Sprint 2 execution]`
   - VERIFY: the export recovers block children for the card used in S0-T1, matching that hand run
 
 ### Task S2-T3: Best-effort comment sweep (downgraded)
@@ -206,8 +218,16 @@ defence. Notion must be fully live throughout.
 - **Depends on:** S2-T4
 - **Parallel:** No
 - **Files:** `scripts/verify-notion-corpus.js` (new)
-- **Description:** Assert exported per-field character totals against the measured baselines (Notes ≈5.26M,
-  Outcome ≈2.92M, Key Files ≈271K) within a stated tolerance. Card counts pass on truncated bodies; volume does not.
+- **Description:** Assert exported per-field character totals against the measured baselines within a stated
+  tolerance. Card counts pass on truncated bodies; volume does not.
+  `[CHANGED: do NOT assert against the "Notes ≈5.26M, Outcome ≈2.92M, Key Files ≈271K" figures carried here.
+  They were almost certainly computed the same way as Sprint 0's per-card "reassembled total", which
+  double-counts the property preview on top of the body that already contains it (see the Correction block in
+  notion-cutover-edge-cases.md §2 — re-measured 4,547, not 6,251). Asserting a correct export against an
+  inflated baseline reports data loss that did not happen, which is worse than no assertion because it trains
+  the next session to wave the verifier through. The verifier measures the baseline from the export it is
+  given, records it in a committed baseline file, and thereafter asserts against THAT.
+  — source: Sprint 2 execution]`
 - **Acceptance criteria:**
   - VERIFY: the verifier passes on the real export and reports the actual per-field totals
   - VERIFY: artificially truncating one large card's Notes makes the verifier fail
@@ -339,6 +359,31 @@ half-migrated board; notification flood to the owner's phone.
 ---
 
 ## Sprint 4: Rewrite the hooks once, against a flippable switch
+
+> `[CHANGED: the hook inventory this sprint is written against is WRONG, and every "the four gate hooks" /
+> "all five gate hooks" line below and in the Sprint 8 notes should be read as SEVEN. Verified 2026-08-17 by
+> reading ~/.claude/settings.json directly:
+>   :11  notion-mcp-block.sh            :38  notion-create-block.sh
+>   :47  notion-card-required-commit.sh  :188 notion-create-verify.sh
+>   :192 linear-issue-verify.sh          :230 notion-card-required-stop.sh
+>   :234 linear-issue-required-stop.sh
+> The two LINEAR-side hooks (:192, :234) are not in the plan at all. They are BRO-387 Phase 1 and they are LIVE:
+> `linear-issue-required-stop.sh` blocks session end for any session that edited tracked code and never ran
+> `scripts/linear-session.js report`, satisfied only by `NO-LINEAR-ISSUE: <reason>`. `linear-issue-verify.sh`
+> writes /tmp/linear-issue-{claimed,reported}-$session_id from a THIRD marker, `__LINEAR_ISSUE_ID__=`, which is
+> neither of the two markers S1-T4/T5 unified. Also note the line numbers in the Sprint 8 note (11, 38, 47, 188,
+> 226) have drifted — 226 is now 230 — so re-read settings.json before editing rather than trusting any number
+> written here.
+>
+> Consequences to fold in before S4-T3a starts:
+>   * S4-T3a's escape hatch must cover all SEVEN, or `BOARD_GATE_DISABLED` leaves the Linear stop gate armed and
+>     the owner's off switch does not actually switch everything off — the one thing it exists to guarantee.
+>   * S4-T3c's "switch the sentinel to __BOARD_CARD_ID__" has a third marker to reconcile, and
+>     linear-session.js's claim/report lifecycle is a different shape from create-a-card. Do not assume S1-T5's
+>     marker subsumes it; read scripts/lib/linear-session-reporting.js first.
+>   * A session doing this work is itself gated by linear-issue-required-stop.sh. Claim/report a real issue or
+>     emit NO-LINEAR-ISSUE:.
+> — source: Sprint 1 execution]`
 **Demo:** Set `~/.claude/board=linear`, create a Linear issue, commit, end the session — all clean. Set it back to
 `notion` and the old path still works. Rollback proven, not asserted.
 **Risks:** This sprint edits the hooks that gate the session doing the editing. A half-applied change wedges the
