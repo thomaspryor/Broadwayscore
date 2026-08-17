@@ -1,59 +1,11 @@
 {
-  "generatedAt": "2026-08-16T23:13:49.488Z",
+  "generatedAt": "2026-08-17T02:28:07.796Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 151,
-  "clean": 148,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "the-winters-tale-off-broadway-2026",
-      "title": "The Winter's Tale",
-      "openingDate": "2026-08-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.11 vs local 80.56 (Δ0.55)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13
-    },
-    {
-      "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "title": "Game of Thrones: The Mad King",
-      "openingDate": "2026-08-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.33 vs local 84.61 (Δ0.72)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12
-    },
-    {
-      "showId": "now-you-see-me-live-west-end-2026",
-      "title": "Now You See Me Live",
-      "openingDate": "2026-08-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.43 vs local 73.1 (Δ1.67)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21
-    }
-  ]
+  "clean": 151,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
