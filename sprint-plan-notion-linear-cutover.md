@@ -285,7 +285,12 @@ half-migrated board; notification flood to the owner's phone.
 - **Complexity:** M
 - **Depends on:** None
 - **Parallel:** No
-- **Files:** `scripts/linear-import.js` (modify), `data/linear-import-mapping.jsonl` (new)
+- **Files:** `scripts/lib/import-ledger.js` (new), `scripts/migrate-import-ledger.js` (new),
+  `data/linear-import-mapping.jsonl` (new), `scripts/linear-import.js` (modify — wiring, lands with S3-T3)
+  `[CHANGED: the migration is its own script rather than a flag on linear-import.js. A one-shot data migration
+  and a repeatable importer have different failure modes — this runs once, must be idempotent, and must be
+  auditable line by line, while the importer runs for hours against a live board. Separated so a bug in one can
+  never be reached by the other. — source: Sprint 3 execution]`
 - **Description:** The current mapping is keyed by local mirror task id, so the 1,716 cards with no mirror record
   have no key at all. Re-key to Notion pageId and make it append-only JSONL so a multi-hour run interleaving with
   CI commits every ~30 min cannot lose entries. Migrate the existing 255 entries.
