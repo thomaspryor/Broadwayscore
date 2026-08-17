@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-17T20:58:45.375Z",
-  "processed": 1,
-  "failed": 4,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-17T21:09:14.102Z",
+  "processed": 45,
+  "failed": 272,
+  "successRate": "14.2%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
@@ -14,5 +14,28 @@
     "archive": 0
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-08-17T19:33:04.839Z",
+      "event": "bb-session",
+      "session": "0c6c55be",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-17T19:33:05.915Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T19:46:11.603Z",
+      "event": "bb-session",
+      "session": "f4d56fe3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-"
+    },
+    {
+      "t": "2026-08-17T19:46:12.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
