@@ -96,16 +96,29 @@ async function main() {
     process.exit(1);
   }
 
-  const corpusPath = path.join(args.dir, 'corpus.ndjson');
+  // The PUBLISHED corpus is gzipped (95MB raw would break GitHub's 100MB blob
+  // limit on the next export). Read either form, so the archive can be verified
+  // as published rather than only in its working directory — a verifier that
+  // cannot read the artifact it certifies is not much of a verifier.
+  const rawPath = path.join(args.dir, 'corpus.ndjson');
+  const gzPath = path.join(args.dir, 'corpus.ndjson.gz');
   const manifestPath = path.join(args.dir, 'manifest.json');
-  if (!fs.existsSync(corpusPath)) {
-    console.error(`❌ no corpus at ${corpusPath}`);
+  let corpusPath;
+  let corpusText;
+  if (fs.existsSync(rawPath)) {
+    corpusPath = rawPath;
+    corpusText = fs.readFileSync(rawPath, 'utf8');
+  } else if (fs.existsSync(gzPath)) {
+    corpusPath = gzPath;
+    corpusText = require('node:zlib').gunzipSync(fs.readFileSync(gzPath)).toString('utf8');
+  } else {
+    console.error(`❌ no corpus at ${rawPath} or ${gzPath}`);
     process.exit(1);
   }
 
   const records = [];
   let malformed = 0;
-  for (const line of fs.readFileSync(corpusPath, 'utf8').split('\n')) {
+  for (const line of corpusText.split('\n')) {
     if (!line.trim()) continue;
     try {
       records.push(JSON.parse(line));
