@@ -371,6 +371,24 @@ test('tier3: scoring watchlists stay refused (drift-mirrored set)', () => {
   }
 });
 
+test('tier3: the scoring GATES themselves are refused, not just what they guard', () => {
+  // Every watchlist file is refused because rule 12.7 requires these gates to
+  // run first — but the gates were self-servable, so an unattended agent could
+  // weaken the check protecting all of them. The drift guard asserts
+  // watchlist ⊆ refused, so it structurally cannot catch the gate's absence;
+  // only probing the predicate did.
+  for (const p of ['scripts/scoring-delta.js', 'scripts/test-temporal-override-regression.js']) {
+    assert.equal(isCodePathAllowed(p), false, `${p} must not be self-servable`);
+  }
+});
+
+test('tier3: the canonical critic-score reader is refused', () => {
+  // CLAUDE.md rule 3: the ONLY sanctioned source for external score claims.
+  // Changing it changes what the site tells people its scores are without
+  // altering any computation, so no scoring watchlist covers it.
+  assert.equal(isCodePathAllowed('scripts/lib/canonical-critic-scores.ts'), false);
+});
+
 test('tier3: email senders, brain, dispatcher, audit, self, scraper, gates refused', () => {
   for (const p of ['scripts/send-opening-night-broadcast.js', 'scripts/lib/email-worker.js',
     'scripts/notion-brain.js', 'scripts/notion-tasks-sync.js', 'scripts/bsc-prune.js',
