@@ -975,3 +975,95 @@ test('pickTask: --id falls back to a point lookup in archive/ when the dir is pa
   assert.equal(pickTask(tasks, { id: '2' }), null, 'no dir passed — pre-#854 behavior, archived id not found');
   assert.equal(pickTask(tasks, { id: '999' }, dir), null, 'dir passed but id truly does not exist anywhere');
 });
+
+
+// ── Candidate query must agree with the dispatch guard (2026-08-17) ──────────
+// Verified before fixing: actionable() filtered only on status and category, so
+// tasks already owned by Linear kept being offered and dispatch refused every
+// one. Measured on the live mirror: 122 of 400 candidates (30%) in that state,
+// resurfacing every cycle and never actionable.
+const { linearOwned, liveLinearCounterpart } = require('./bsc-next.js');
+
+const MIRROR_TASKS = [
+  { id: '100', status: 'pending', subject: 'plain pending task', priority: 'P1 Now' },
+  { id: '101', status: 'pending', subject: 'owned by linear', priority: 'P1 Now' },
+  { id: '102', status: 'in_progress', subject: 'archived counterpart', priority: 'P1 Now' },
+  { id: '103', status: 'pending', subject: 'mapping entry with no identifier', priority: 'P1 Now' },
+];
+const MIRROR_MAPPING = {
+  101: { linearId: 'u1', identifier: 'BRO-501', title: 'x', project: 'Infrastructure' },
+  102: { linearId: 'u2', identifier: 'BRO-502', title: 'x', project: 'Archive', retiredReason: 'notion_done' },
+  103: { linearId: 'u3', title: 'x', project: 'Infrastructure' },
+};
+
+test('actionable: a task with a LIVE Linear counterpart is not a candidate', () => {
+  const ids = actionable(MIRROR_TASKS, false, MIRROR_MAPPING).map(t => t.id);
+  assert.ok(!ids.includes('101'), 'the Linear-owned task must not be offered');
+  assert.deepEqual(ids.slice().sort(), ['100', '102', '103'], 'everything else stays eligible');
+});
+
+test('actionable: an ARCHIVED counterpart is still eligible — parked is not live work', () => {
+  assert.ok(actionable(MIRROR_TASKS, false, MIRROR_MAPPING).some(t => t.id === '102'));
+});
+
+test('actionable: a mapping entry with no identifier is not a counterpart', () => {
+  assert.ok(actionable(MIRROR_TASKS, false, MIRROR_MAPPING).some(t => t.id === '103'));
+});
+
+test('actionable: MISSING or corrupt mapping fails OPEN — nothing silently disappears', () => {
+  // loadLinearMirrorMapping returns {} on any read/parse error. A lost mapping
+  // file must make tasks dispatchable again, never delete them from the queue.
+  for (const bad of [undefined, {}, null]) {
+    const ids = actionable(MIRROR_TASKS, false, bad).map(t => t.id);
+    assert.deepEqual(ids.slice().sort(), ['100', '101', '102', '103'], `mapping ${JSON.stringify(bad)} must hide nothing`);
+  }
+  // ...and the two-argument callers that predate this parameter are unchanged.
+  assert.equal(actionable(MIRROR_TASKS).length, 4);
+});
+
+test('actionable: the filter uses the SAME predicate as the dispatch guard', () => {
+  // Not a second hand-rolled "is it live" rule — that drift is the documented
+  // failure mode (feedback_includability_predicates_must_be_canonical).
+  for (const t of MIRROR_TASKS) {
+    const hidden = !actionable(MIRROR_TASKS, false, MIRROR_MAPPING).some(x => x.id === t.id);
+    const guarded = linearMirrorGuard(t, MIRROR_MAPPING, {}) !== null;
+    assert.equal(hidden, guarded, `#${t.id}: candidate filter and dispatch guard must agree`);
+    assert.equal(hidden, liveLinearCounterpart(t, MIRROR_MAPPING) !== null);
+  }
+});
+
+test('pickTask: auto-pick skips a Linear-owned task instead of handing back one dispatch will refuse', () => {
+  // The review caught this: filtering only actionable() would leave the DEFAULT
+  // dispatch path still selecting an un-dispatchable task and exiting 1.
+  // Same priority, so the tie breaks on ascending id: #200 sorts FIRST. #200 is
+  // the Linear-owned one, so an unfiltered auto-pick hands back exactly the task
+  // dispatch will refuse — which is the bug.
+  const owned = [
+    { id: '200', status: 'pending', subject: 'owned by linear' },
+    { id: '201', status: 'pending', subject: 'plain pending task' },
+  ];
+  const mapping = { 200: { linearId: 'u9', identifier: 'BRO-900', title: 'x', project: 'Infrastructure' } };
+  assert.equal(pickTask(owned, {}, undefined).id, '200',
+    'baseline: unfiltered, auto-pick returns the un-dispatchable task');
+  assert.equal(pickTask(owned, {}, undefined, mapping).id, '201',
+    'filtered, auto-pick skips it and returns the next eligible task');
+  // --pick N indexes into the FILTERED list, so ordinals stay consistent.
+  assert.equal(pickTask(owned, { pick: '1' }, undefined, mapping).id, '201');
+  assert.equal(pickTask(owned, { pick: '2' }, undefined, mapping), null,
+    'there is no second candidate once the owned task is filtered out');
+});
+
+test('pickTask: an explicit --id is NOT filtered — naming a task is a decision, and the guard still refuses it', () => {
+  const found = pickTask(MIRROR_TASKS, { id: '101' }, undefined, MIRROR_MAPPING);
+  assert.equal(found.id, '101', '--id must still resolve a Linear-owned task');
+  assert.match(linearMirrorGuard(found, MIRROR_MAPPING, {}), /BRO-501/,
+    'and dispatch must still refuse it, naming the identifier');
+  assert.equal(linearMirrorGuard(found, MIRROR_MAPPING, { force: true }), null, '--force still bypasses');
+});
+
+test('linearOwned: names the hidden work so 122 tasks do not become invisible', () => {
+  const owned = linearOwned(MIRROR_TASKS, MIRROR_MAPPING);
+  assert.deepEqual(owned.map(o => o.task.id), ['101'], 'only genuinely live counterparts');
+  assert.equal(owned[0].entry.identifier, 'BRO-501', 'the identifier travels with it for the --list line');
+  assert.deepEqual(linearOwned(MIRROR_TASKS, {}), [], 'no mapping means nothing is owned elsewhere');
+});
