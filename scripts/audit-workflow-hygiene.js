@@ -103,6 +103,22 @@
  *     this job's checkout. Found by hand twice (task #1460's audit gap fix,
  *     then a 6-workflow cousin sweep) before being generalized here.
  *
+ * (i) SHORT-PUSH-TIMEOUT (BRO-386): a step whose `run:` block calls
+ *     push-with-retry.sh but sets its own `timeout-minutes:` at or below the
+ *     script's PUSH_DEADLINE_SEC budget (240s = 4min default, or an inline
+ *     `PUSH_DEADLINE_SEC=N` override on the same line if present) — with NO
+ *     buffer left for a step-level SIGTERM/SIGKILL to land mid-`git rebase`.
+ *     A step killed mid-rebase can leave a stale REBASE_HEAD/MERGE_HEAD
+ *     marker behind, which push-with-retry.sh's own BRO-142 guard then
+ *     refuses to run on top of on the NEXT push in the same job — turning
+ *     one tight timeout into a hard failure for every later push step too.
+ *     Reproduced live: BRO-386's own first draft shipped a 3-minute
+ *     "Commit acceptance recheck ledger" step against the 4-minute default
+ *     deadline, caught only by ship-check review before it merged. Same
+ *     buffer convention as the pre-existing "Acceptance recheck (shadow
+ *     mode)" step in data-health-check.yml (5-min step timeout deliberately
+ *     outlives its own 3-min script budget).
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -111,6 +127,7 @@
  *   # hygiene-echo-exitcode-ok: <reason>   — skip pipefail-dead-echo check for this workflow
  *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
+ *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -486,6 +503,57 @@ function findDeadCommitSteps(raw) {
   return violations;
 }
 
+const DEFAULT_PUSH_DEADLINE_SEC = 240; // push-with-retry.sh's own PUSH_DEADLINE_SEC default
+
+/**
+ * Rule (i): a step whose `run:` block calls push-with-retry.sh but declares
+ * `timeout-minutes:` at or below the script's own internal push deadline —
+ * zero buffer for the step to be killed BEFORE the script's own graceful
+ * exit, risking a mid-rebase SIGKILL that leaves a stale REBASE_HEAD marker
+ * for the next push step in the job to trip over. Step-scoped (name-indent
+ * 6, matching this file's other step-level rules) rather than job-scoped —
+ * `timeout-minutes:` is a per-step key, and a single job can legitimately mix
+ * a tight-timeout non-push step with a properly-buffered push step.
+ */
+function findShortPushTimeoutSteps(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+
+  const stepStarts = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^ {6}- name:\s*(.+?)\s*$/);
+    if (m) stepStarts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i });
+  }
+
+  for (let idx = 0; idx < stepStarts.length; idx++) {
+    const { name, startLine } = stepStarts[idx];
+    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const bodyLines = lines.slice(startLine, endLine);
+    const bodyText = bodyLines.join('\n');
+
+    const pushLine = bodyLines.find((l) => /push-with-retry\.sh/.test(l) && !l.trimStart().startsWith('#'));
+    if (!pushLine) continue;
+
+    const timeoutMatch = bodyText.match(/^\s*timeout-minutes:\s*(\d+)\s*$/m);
+    if (!timeoutMatch) continue; // no explicit step timeout — inherits job-level, a different (already-known) concern
+    const timeoutSec = parseInt(timeoutMatch[1], 10) * 60;
+
+    const deadlineMatch = pushLine.match(/PUSH_DEADLINE_SEC=(\d+)/);
+    const deadlineSec = deadlineMatch ? parseInt(deadlineMatch[1], 10) : DEFAULT_PUSH_DEADLINE_SEC;
+
+    if (timeoutSec <= deadlineSec) {
+      violations.push({
+        name,
+        lineNum: startLine + 1,
+        timeoutMin: parseInt(timeoutMatch[1], 10),
+        deadlineSec,
+      });
+    }
+  }
+
+  return violations;
+}
+
 /**
  * Split a workflow file into its `run:` block-scalar bodies (one entry per
  * step's `run: |`/`run: >` block). Inline `run: <cmd>` steps are single
@@ -719,6 +787,7 @@ async function main() {
     echoExitcode: [],
     coreDataPush: [],
     deadCommit: [],
+    shortPushTimeout: [],
   };
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
@@ -795,6 +864,14 @@ async function main() {
         violations.deadCommit.push({ file, hits });
       }
     }
+
+    // ── Rule (i): short push timeout — timeout-minutes ≤ push-with-retry.sh's own deadline ─
+    if (!raw.includes('hygiene-push-timeout-ok:')) {
+      const hits = findShortPushTimeoutSteps(raw);
+      if (hits.length > 0) {
+        violations.shortPushTimeout.push({ file, hits });
+      }
+    }
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
@@ -826,7 +903,8 @@ async function main() {
     violations.gitIdentity.length +
     violations.echoExitcode.length +
     violations.coreDataPush.length +
-    violations.deadCommit.length;
+    violations.deadCommit.length +
+    violations.shortPushTimeout.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -948,6 +1026,25 @@ async function main() {
     console.error("Exempt (legitimate): add  # hygiene-dead-commit-ok: <reason>  anywhere in the file.\n");
   }
 
+  if (violations.shortPushTimeout.length) {
+    console.error('── (i) Short push timeout — timeout-minutes ≤ push-with-retry.sh deadline ─');
+    console.error('This step calls push-with-retry.sh but its own `timeout-minutes:` leaves no');
+    console.error('buffer over the script\'s internal push deadline (240s default, or an inline');
+    console.error('PUSH_DEADLINE_SEC=N override) — a step-level kill can land mid-`git rebase`,');
+    console.error('leaving a stale REBASE_HEAD marker the NEXT push step in the job then');
+    console.error('refuses to run on top of (BRO-386, reproduced by BRO-386\'s own first draft).\n');
+    for (const { file, hits } of violations.shortPushTimeout) {
+      console.error(`  • ${file}`);
+      for (const h of hits) {
+        console.error(`      "${h.name}" line ${h.lineNum}: timeout-minutes: ${h.timeoutMin} (push deadline ${h.deadlineSec}s = ${h.deadlineSec / 60}min)`);
+      }
+    }
+    console.error('\nFix: raise the step\'s timeout-minutes above the push deadline (leave a real');
+    console.error('buffer, not just +1) — see "Acceptance recheck (shadow mode)" in');
+    console.error('data-health-check.yml for the established buffer convention.');
+    console.error("Exempt (legitimate): add  # hygiene-push-timeout-ok: <reason>  anywhere in the file.\n");
+  }
+
   process.exit(1);
 }
 
@@ -961,6 +1058,7 @@ module.exports = {
   runLineMatches,
   findMissingGitIdentityCommits,
   findPipefailDeadExitCodeEcho,
+  findShortPushTimeoutSteps,
 };
 
 if (require.main === module) {
