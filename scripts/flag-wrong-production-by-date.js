@@ -39,8 +39,12 @@ function buildMultiProductionTitleIds(showMap) {
   return ids;
 }
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+// Overridable via env so tests can point at a temp fixture dir/file instead
+// of real data (same pattern as scripts/audit-show-review-gap.js).
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
+  || path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = process.env.SHOWS_PATH
+  || path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = !process.argv.includes('--apply');
 
 // Grace periods are defined in scripts/lib/date-guard.js and exported for
