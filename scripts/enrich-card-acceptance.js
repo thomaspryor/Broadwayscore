@@ -221,6 +221,11 @@ function callOpenRouter(prompt, apiKey) {
 // maxOutputTokens and truncates the visible response (2026-06-07 incident:
 // 1,296 pull quotes shipped cut off).
 function callGemini(prompt, apiKey) {
+  // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this,
+  // thinking tokens can eat the whole response budget and truncate the reply
+  // (same pattern as buzz-classifier.js/content-verifier.js/
+  // llm-score-extractor.js — CI's gemini-thinking-budget-guard test enforces
+  // every gemini-2.5-flash generateContent caller sets this).
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: { thinkingConfig: { thinkingBudget: 0 } },
