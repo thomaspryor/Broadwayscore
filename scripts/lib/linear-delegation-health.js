@@ -49,6 +49,13 @@ const TWIN_WINDOW_MS = 60 * 1000;
 // Linear marks a session `stale` itself. Believe it.
 const DEAD_SESSION_STATUSES = new Set(['stale', 'error', 'cancelled', 'canceled']);
 
+// An agent that FINISHED is not stalled. Missing this produced false positives
+// within minutes of shipping: BRO-374 completed its task and opened PR #596,
+// and the alarm still said "started work then stopped". A false alarm on
+// successful work is worse than no alarm — it teaches the owner to ignore the
+// real ones, which is the entire failure this file exists to prevent.
+const FINISHED_SESSION_STATUSES = new Set(['complete', 'completed']);
+
 function isSubstantive(activity) {
   const body = String(activity?.body ?? '').trim();
   // Empty bodies come from activity types the query does not spread (error,
@@ -107,7 +114,13 @@ function assessDelegations(issues, nowMs = Date.now()) {
     const declaredDead = attempt.some((s) => DEAD_SESSION_STATUSES.has(String(s.status || '').toLowerCase()))
       && !attempt.some((s) => String(s.status || '').toLowerCase() === 'active');
 
-    if (blockedOnly) {
+    const finished = attempt.some((s) => FINISHED_SESSION_STATUSES.has(String(s.status || '').toLowerCase()));
+
+    if (finished) {
+      // Handing the result to a human is Loop 5's job, not this alarm's.
+      verdicts.push({ identifier: issue.identifier, verdict: 'finished',
+        detail: `agent completed${real.length ? ` after ${real.length} substantive activity/activities` : ''}` });
+    } else if (blockedOnly) {
       verdicts.push({ identifier: issue.identifier, verdict: 'blocked',
         detail: String(real[0].body).split('\n')[0].slice(0, 120) });
     } else if (real.length > 0 && workAgeMs !== null && workAgeMs <= WORK_IS_STALE_AFTER_MS && !declaredDead) {
