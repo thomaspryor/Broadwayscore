@@ -12,6 +12,10 @@ const { readEnvKeys } = require('./load-env');
 // 15: "never copies"). No cycle: linear-dispatch.js has zero requires back
 // into this file.
 const linearDispatch = require('./linear-dispatch');
+// Pure 429/5xx decisions (S1-T1). Kept out of this file for the same reason
+// linear-dispatch.js is: the interesting cases are unit-testable without a
+// network stub only if they are pure.
+const retryPolicy = require('./linear-retry-policy');
 
 const API_URL = 'https://api.linear.app/graphql';
 const TEAM_KEY = 'BRO';
@@ -23,23 +27,120 @@ function getApiKey() {
   return key;
 }
 
-async function graphql(query, variables) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: getApiKey() },
-    body: JSON.stringify({ query, variables }),
-    signal: AbortSignal.timeout(30_000),
-  });
-  const json = await res.json();
-  if (json.errors && json.errors.length) {
-    const err = new Error(`Linear GraphQL error: ${json.errors.map((e) => e.message).join('; ')}`);
-    // Raw errors attached (not just flattened into the message) so callers that
-    // need to branch on a specific error code — e.g. USAGE_LIMIT_EXCEEDED, the
-    // free-tier 250-issue cap — don't have to string-match the human message.
-    err.linearErrors = json.errors;
-    throw err;
+const defaultSleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * The one Linear transport. Every read and mutation in this file goes through
+ * it, so 429/5xx handling added here is inherited by every consumer.
+ *
+ * Retry behaviour lives in scripts/lib/linear-retry-policy.js as pure
+ * functions — see that file's header for why 5xx is NOT retried for mutations
+ * (an issueCreate that got a 502 may already have been applied, and Sprint 3
+ * pushes 1,831 creates through here).
+ *
+ * @param {string} query
+ * @param {object} [variables]
+ * @param {object} [opts]
+ * @param {number} [opts.maxAttempts]  total attempts including the first
+ * @param {number} [opts.baseMs]       exponential backoff base
+ * @param {(ms:number)=>Promise} [opts.sleepFn]  injected so tests don't wait
+ * @param {(info:object)=>void} [opts.onRetry]   observability hook
+ * @param {boolean} [opts.retryMutationsOn5xx]   opt-in, for idempotent callers
+ * @param {number} [opts.timeoutMs]              per-attempt abort budget
+ *
+ * Options are INJECTED rather than read from env: that is this repo's
+ * established retry shape (scripts/lib/autonomous-triage-core.js:451-455
+ * fetchCardWithRetry takes {retries, delayMs, sleepFn}), and env knobs whose
+ * only purpose is making a test fast outlive the test as undocumented global
+ * config. The third argument is optional and additive — check-linear-cap.js
+ * and every other direct graphql() caller are unaffected.
+ */
+async function graphql(query, variables, opts = {}) {
+  const maxAttempts = Number.isInteger(opts.maxAttempts) ? opts.maxAttempts : retryPolicy.DEFAULT_MAX_ATTEMPTS;
+  const sleepFn = typeof opts.sleepFn === 'function' ? opts.sleepFn : defaultSleep;
+  const onRetry =
+    typeof opts.onRetry === 'function'
+      ? opts.onRetry
+      : (info) =>
+          console.error(
+            `⏳ Linear HTTP ${info.status} (${info.reason}) — attempt ${info.attempt}/${info.maxAttempts}, retrying in ${info.delayMs}ms`
+          );
+  const mutation = opts.retryMutationsOn5xx ? false : retryPolicy.isMutation(query);
+  // 30s is right for a bulk migration and far too slow for a gate hook probe:
+  // the commit gate budgets ~4s per check and runs on every `git commit`
+  // fleet-wide, so a hung board would cost 30s per commit rather than fail
+  // open promptly. Callers that are latency-sensitive pass their own budget.
+  const timeoutMs = Number.isFinite(opts.timeoutMs) ? opts.timeoutMs : 30_000;
+
+  let attempt = 0;
+  for (;;) {
+    attempt++;
+    let res;
+    try {
+      res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: getApiKey() },
+        body: JSON.stringify({ query, variables }),
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+    } catch (err) {
+      // A 30s AbortSignal timeout, a DNS failure or a socket reset REJECTS
+      // rather than returning a response, so no status check downstream would
+      // ever see it. Same partial-apply ambiguity as a 5xx, so it is gated on
+      // the same `mutation` answer.
+      if (!retryPolicy.isTransientNetworkError(err) || mutation || attempt >= maxAttempts) throw err;
+      const delayMs = retryPolicy.retryDelayMs(attempt, null, { baseMs: opts.baseMs });
+      onRetry({ status: err.name || 'network', reason: 'transient-network', attempt, maxAttempts, delayMs });
+      await sleepFn(delayMs);
+      continue;
+    }
+
+    // POSITIVE comparisons only, inside retryPolicy.isRetryableStatus. The
+    // existing stubs in tests/unit/linear-client-archived-issue.test.mjs return
+    // a bare `{ json }` with no `status`, `ok` or `headers` — an `!res.ok`
+    // check here would route all seven of those tests down the retry path.
+    if (retryPolicy.isRetryableStatus(res.status)) {
+      // Parse the body even on a retryable status. Linear can return a
+      // GraphQL-level error (notably USAGE_LIMIT_EXCEEDED, the free-tier cap)
+      // under one, and linear-issue-create.js's isUsageLimitExceeded() reads
+      // err.linearErrors — discarding the body here would make that loud cap
+      // message go silent exactly during a bulk migration.
+      const body = await res.json().catch(() => null);
+      const verdict = retryPolicy.shouldRetry({ status: res.status, body, mutation });
+      if (verdict.retry && attempt < maxAttempts) {
+        const delayMs = retryPolicy.retryDelayMs(attempt, res.headers, { baseMs: opts.baseMs });
+        onRetry({ status: res.status, reason: verdict.reason, attempt, maxAttempts, delayMs });
+        await sleepFn(delayMs);
+        continue;
+      }
+      // "HTTP <code>" keeps the code in STATUS POSITION, which is what the
+      // fleet's transient classifier matches on
+      // (autonomous-triage-core.js TRANSIENT_FETCH_ERROR_RE). A bare
+      // "Linear API 429 ..." would not match and the error would be graded
+      // permanent.
+      const suffix = verdict.retry ? `after ${attempt} attempts` : `not retried (${verdict.reason})`;
+      const graphqlDetail =
+        body && Array.isArray(body.errors) && body.errors.length
+          ? `: ${body.errors.map((e) => e && e.message).filter(Boolean).join('; ')}`
+          : '';
+      const err = new Error(`Linear API HTTP ${res.status} ${suffix}${graphqlDetail}`);
+      err.status = res.status;
+      err.retryable = verdict.retry;
+      if (body && Array.isArray(body.errors) && body.errors.length) err.linearErrors = body.errors;
+      throw err;
+    }
+
+    const json = await res.json();
+    if (json.errors && json.errors.length) {
+      const err = new Error(`Linear GraphQL error: ${json.errors.map((e) => e.message).join('; ')}`);
+      // Raw errors attached (not just flattened into the message) so callers that
+      // need to branch on a specific error code — e.g. USAGE_LIMIT_EXCEEDED, the
+      // free-tier 250-issue cap — don't have to string-match the human message.
+      err.linearErrors = json.errors;
+      throw err;
+    }
+    return json.data;
   }
-  return json.data;
 }
 
 async function getTeam() {

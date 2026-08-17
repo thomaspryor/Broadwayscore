@@ -36,25 +36,17 @@ if (hasHelpFlag(args)) {
 const STATUS_PATH = path.join(process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
   'linear-delegation-status.json');
 
-function linearKey() {
-  if (process.env.LINEAR_API_KEY) return process.env.LINEAR_API_KEY;
-  const envPath = path.join(os.homedir(), 'Broadwayscore', '.env');
-  const m = fs.readFileSync(envPath, 'utf8').match(/^LINEAR_API_KEY=(.+)$/m);
-  if (!m) throw new Error(`LINEAR_API_KEY not found in env or ${envPath}`);
-  return m[1].trim().replace(/^"|"$/g, '');
-}
+// Goes through the shared transport rather than its own fetch (S1-T1). This
+// used to hand-roll a POST to the GraphQL endpoint with its own key lookup,
+// which made it the one Linear consumer that did NOT inherit the 429/5xx
+// backoff added to scripts/lib/linear-client.js — and it pages through
+// agentSessions in a loop, so it is exactly the shape that trips a rate limit.
+// Its old key lookup also hard-coded ~/Broadwayscore/.env, which resolves to
+// the wrong file when this runs from a worktree; linear-client's readEnvKeys
+// finds the repo's .env either way.
+const linear = require('./lib/linear-client.js');
 
-async function gql(query) {
-  const res = await fetch('https://api.linear.app/graphql', {
-    method: 'POST',
-    headers: { authorization: linearKey(), 'content-type': 'application/json' },
-    body: JSON.stringify({ query }),
-    signal: AbortSignal.timeout(30000),
-  });
-  const out = await res.json();
-  if (out.errors) throw new Error(JSON.stringify(out.errors).slice(0, 300));
-  return out.data;
-}
+const gql = (query) => linear.graphql(query);
 
 // Sessions come back newest-first, so WITHOUT paging the longest-stalled
 // delegations are the first to fall off the page — the alarm would go quiet
