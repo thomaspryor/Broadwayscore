@@ -48,7 +48,7 @@ const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1
 const CONCURRENCY = parseInt((args.find(a => a.startsWith('--concurrency=')) || '').split('=')[1]) || 10;
 const PROVIDER = (args.find(a => a.startsWith('--provider=')) || '').split('=')[1] || 'gemini';
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../data/review-texts');
 const CHECKPOINT_INTERVAL = 50;
 
 // --- Stats ---
@@ -438,20 +438,34 @@ async function processReview(entry) {
       return;
     }
 
+    // Length check: a too-short/too-long candidate that gives up here falls
+    // through to the raw-fullText heuristic scrape, which tends to grab an
+    // awkward parenthetical aside or plot-summary sentence instead of a real
+    // verdict (Les Mis Arena Concert / Cititour: LLM's best pick was "Yes,
+    // they're spectacular!" — vivid but only 25 chars — so the review shipped
+    // with a fullText scrape instead). Retry once with a hint before giving up,
+    // same pattern as the promo-teaser/hedge retries above.
+    if (quote.length < 30 || quote.length > 300) {
+      if (attempt === 1) {
+        stats.lengthRetried = (stats.lengthRetried || 0) + 1;
+        const problem = quote.length < 30 ? 'too short to stand alone out of context' : 'too long';
+        if (VERBOSE) console.log(`  LENGTH (${quote.length}, ${problem}): "${quote.slice(0, 80)}..." — retrying`);
+        hint = `Your previous attempt ("${quote}") was ${problem}. Pick a different, complete sentence between 50-180 characters that stands on its own.`;
+        continue;
+      }
+      // Second attempt still bad length — give up, same as before.
+      if (quote.length < 30) {
+        stats.tooShort++;
+        if (VERBOSE) console.log(`  Too short (rejected after retry, ${quote.length}): "${quote}" — ${path.basename(filePath)}`);
+      } else {
+        stats.tooLong++;
+        if (VERBOSE) console.log(`  Too long (rejected after retry, ${quote.length}): "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+      }
+      return;
+    }
+
     // Accepted.
     break;
-  }
-
-  // Validate length
-  if (quote.length < 30) {
-    stats.tooShort++;
-    if (VERBOSE) console.log(`  Too short (${quote.length}): "${quote}"`);
-    return;
-  }
-  if (quote.length > 300) {
-    stats.tooLong++;
-    if (VERBOSE) console.log(`  Too long (${quote.length}): "${quote.slice(0, 80)}..."`);
-    return;
   }
 
   // Verify the quote actually appears in the review text
