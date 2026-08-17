@@ -35,7 +35,14 @@ jobs:
     # recheck" step below without more headroom risked GitHub Actions killing
     # the WHOLE job mid-run — losing health-check-history.json and every other
     # step's commit, not just the new step's. See that step's own budget.
-    timeout-minutes: 15
+    # Raised 15->20 (BRO-386 ship-check finding): the two new steps this
+    # fix adds ("Upload acceptance recheck ledger" + "Commit acceptance
+    # recheck ledger") push the sum of this job's per-step timeout-minutes
+    # budgets past the prior 15-min ceiling even before the uncapped steps
+    # (Run health check, E2E canary, bulk commit) are counted — a job-level
+    # kill mid-git-operation on ANY step carries the same stale-REBASE_HEAD
+    # risk documented on the ledger-commit step below.
+    timeout-minutes: 20
     permissions:
       contents: write
       issues: write
@@ -193,6 +200,92 @@ jobs:
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
         run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 3
 
+      # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
+      # below, so this run's recheck verdicts are recoverable from the Actions
+      # run page (90-day retention) even if the commit step that follows
+      # crashes outright or its push loses a rebase race with nothing else in
+      # this run to carry it. Concretely this is the ONLY safety net when the
+      # isolated push fails AND none of the 15 other data/audit/* files in the
+      # bulk commit below happen to have changed that run — the bulk step's
+      # own `git diff --staged --quiet` would then be true for ITS staged set
+      # and it never calls push-with-retry.sh at all, so there is no second
+      # chance to carry the stranded local ledger commit along.
+      # if-no-files-found: ignore — a run where nothing changed writes no new
+      # ledger lines (the file may not exist yet on a fresh checkout).
+      - name: Upload acceptance recheck ledger (artifact backup)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: autonomous-recheck-ledger-${{ github.run_id }}
+          path: data/audit/autonomous-recheck-ledger.jsonl
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # Commit acceptance recheck ledger in its OWN small commit+push (BRO-386),
+      # separate from the bulk "Commit health check + triage data" step below.
+      # Root cause of the bug this fixes: run 31871526977 (2026-08-15T07:19Z)
+      # evaluated 10+ cards correctly — including the owner's 24h-green
+      # headline bar — but the bulk commit bundled this file with 15 OTHER
+      # data/audit/* files into ONE commit, and that commit's push lost its
+      # push-with-retry.sh race ("Rebase had conflicts, attempting
+      # auto-resolution..." x2, "overall deadline 240s exceeded"). The whole
+      # 16-file commit failed to push together, and because the GitHub Actions
+      # runner filesystem is ephemeral, every recheck verdict from that run —
+      # including the ledger lines already correctly written to disk by the
+      # step above — vanished with it. RECHECK-AFTER exists to be the durable
+      # answer to "did this fix actually hold"; losing a run's verdicts this
+      # way is indistinguishable from the recheck never having run at all.
+      #
+      # Isolating this one file does NOT make a conflict less LIKELY —
+      # push-with-retry.sh's data/audit/* auto-resolution (resolve_conflicts(),
+      # keep-local) applies per-file regardless of how many files are in the
+      # commit. What it actually buys: (1) far less wall-clock spent resolving
+      # a conflict once one occurs (one file's checkout/add per rebase attempt
+      # instead of up to 16), improving the odds of finishing inside
+      # push-with-retry.sh's fixed 240s deadline, and (2) blast-radius
+      # isolation — a still-failing push here no longer takes the other 15
+      # audit files down with it, and a failure in THAT bulk step can no
+      # longer take this ledger down with it either (today they fail as one
+      # unit).
+      #
+      # continue-on-error: true, matching every other shadow-mode step in this
+      # job (including "Acceptance recheck" itself, two steps up) — this
+      # ledger is explicitly non-enforcing shadow-mode telemetry (see that
+      # step's own header comment: "never reopens a card"), so a push failure
+      # here should degrade silently rather than trip this workflow's
+      # severity:critical failure() steps below. The artifact upload above is
+      # what makes that silent degrade survivable instead of a second silent
+      # loss. "Silent" here means "doesn't page" — a push failure still isn't
+      # invisible: push-with-retry.sh's own record_push_failure() logs every
+      # exhausted retry to data/audit/push-retry-failures.jsonl regardless of
+      # continue-on-error, and health-check.js surfaces that as the "Push-retry
+      # deadman" digest row.
+      #
+      # timeout-minutes: 5, NOT push-with-retry.sh's own PUSH_DEADLINE_SEC=240s
+      # (4 min) rounded up (ship-check finding): a step timeout tighter than
+      # the script's own internal deadline can SIGKILL it mid-`git rebase`,
+      # leaving a stale REBASE_HEAD marker behind — which the very next
+      # "Commit health check + triage data" step's own push-with-retry.sh call
+      # then refuses to run on top of (the BRO-142 stale-marker guard) and
+      # hard-fails the WHOLE job, reproducing this exact bug's failure class.
+      # Same reasoning as "Acceptance recheck (shadow mode)" above: its
+      # 5-minute step timeout deliberately outlives its own 3-minute script
+      # budget so the step "dies with time for the commit step after it."
+      - name: Commit acceptance recheck ledger
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/autonomous-recheck-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No recheck ledger changes"
+          else
+            git commit -m "data: Update acceptance recheck ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
       # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
       # only CI-gated when someone edited the audited script itself (test.yml
@@ -281,7 +374,10 @@ jobs:
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
-          git add data/audit/autonomous-recheck-ledger.jsonl 2>/dev/null || true
+          # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
+          # earlier step (BRO-386, "Commit acceptance recheck ledger") — NOT
+          # added here, so a bulk-commit push failure can never take the
+          # recheck verdicts down with it again.
           # Card #364: without this the runner-local snapshot never leaves
           # the GitHub Actions filesystem — the Mac Studio (a different
           # machine) would never see it, and the whole merged-email feature
