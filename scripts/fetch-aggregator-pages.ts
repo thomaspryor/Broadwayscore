@@ -21,6 +21,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { validateRoundupPageTitle } = require('./lib/show-matching');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {
+  loadNotFoundForAggregator: loadNotFoundForAggregatorLib,
+  saveNotFoundForAggregator: saveNotFoundForAggregatorLib,
+  shouldSkipAsKnownNotFound,
+  applyFetchResultToCache,
+} = require('./lib/not-found-cache');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '../data');
@@ -29,23 +36,15 @@ const SHOW_SCORE_URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
 const DTLI_SLUG_MAP_PATH = path.join(DATA_DIR, 'dtli-slug-map.json');
 const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive');
 
-// Not-found cache: per-aggregator files tracking shows confirmed absent
-function notFoundCachePath(aggregator: string): string {
-  return path.join(ARCHIVE_DIR, aggregator, '_not-found.json');
-}
-
+// Not-found cache: per-aggregator files tracking shows confirmed absent.
+// Decision logic lives in scripts/lib/not-found-cache.js (CLAUDE.md rule 15
+// — shared with scripts/tests/not-found-cache-backfill.test.mjs).
 function loadNotFoundForAggregator(aggregator: string): Record<string, string> {
-  try {
-    return JSON.parse(fs.readFileSync(notFoundCachePath(aggregator), 'utf8'));
-  } catch {
-    return {};
-  }
+  return loadNotFoundForAggregatorLib(ARCHIVE_DIR, aggregator);
 }
 
 function saveNotFoundForAggregator(aggregator: string, cache: Record<string, string>): void {
-  const dir = path.join(ARCHIVE_DIR, aggregator);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(notFoundCachePath(aggregator), JSON.stringify(cache, null, 2));
+  saveNotFoundForAggregatorLib(ARCHIVE_DIR, aggregator, cache);
 }
 
 // Types
@@ -595,7 +594,7 @@ async function main() {
   try {
     for (const aggregator of aggregators) {
       console.log(`\n--- ${aggregator.toUpperCase()} ---`);
-      const notFound = loadNotFoundForAggregator(aggregator);
+      let notFound = loadNotFoundForAggregator(aggregator);
       let skippedNotFound = 0;
       let skippedMarket = 0;
       let fetchCount = 0;
@@ -615,7 +614,7 @@ async function main() {
         }
 
         // Skip if previously confirmed not found (unless forcing)
-        if (!force && notFound[showId]) {
+        if (shouldSkipAsKnownNotFound(notFound, showId, force)) {
           skippedNotFound++;
           continue;
         }
@@ -628,14 +627,12 @@ async function main() {
         if (result.success) {
           console.log(`[${showId}] Success`);
           if (aggregator === 'show-score') fetchedShowScore = true;
-          delete notFound[showId];
         } else {
           console.log(`[${showId}] Failed: ${result.error}`);
-          // Cache "not found" failures (not transient errors like timeouts/network)
-          if (result.notFoundReason) {
-            notFound[showId] = new Date().toISOString().split('T')[0];
-          }
         }
+        // Cache "not found" failures (not transient errors like timeouts/network);
+        // clear any stale entry on success.
+        notFound = applyFetchResultToCache(notFound, showId, result, new Date().toISOString().split('T')[0]);
 
         // Checkpoint not-found cache every 50 fetches (survives timeouts)
         if (fetchCount % 50 === 0) {
