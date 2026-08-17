@@ -12,6 +12,7 @@
  *   bsc-next --pick 3        launch on the 3rd task in the actionable list
  *   bsc-next --id 12         launch on task #12 specifically
  *   bsc-next --list          show the top actionable tasks, launch nothing
+ *   bsc-next --linear-owned  list EVERY task whose work has moved to Linear
  *   bsc-next --dry-run       print the chosen task + seed prompt, launch nothing
  *   bsc-next --exec          run `claude` in THIS terminal instead of a Cmux workspace
  *
@@ -39,6 +40,9 @@ Usage:
   bsc-next --pick 3        launch on the 3rd task in the actionable list
   bsc-next --id 12         launch on task #12 specifically
   bsc-next --list          show the top actionable tasks, launch nothing
+  bsc-next --linear-owned  list EVERY task whose work has moved to Linear
+                           (never auto-picked here; dispatch those with
+                            scripts/linear-next.js --id <BRO-N>)
   bsc-next --dry-run       print the chosen task + seed prompt, launch nothing
   bsc-next --exec          run \`claude\` in THIS terminal instead of a Cmux workspace
   bsc-next --headless      run as a supervised background job (bsc-runner) — no tab;
@@ -193,11 +197,18 @@ const { parseRecheckAfter } = require('./lib/recheck-stamp.js');
 // Kept pure: the mapping is passed in (main() loads it once through the existing
 // loadLinearMirrorMappingFn injection seam), so this stays fixture-testable and
 // the default `{}` preserves every existing two-argument caller and test.
-function actionable(tasks, includeExcluded = false, mapping = {}) {
+function actionable(tasks, includeExcluded = false, mapping = {}, opts = {}) {
+  // EXACT agreement with linearMirrorGuard, including its bypasses. The guard
+  // exempts --force / --dry-run / --print-prompt; if the candidate filter did
+  // not, `--force --pick 1` would silently select a DIFFERENT task than it used
+  // to instead of the Linear-owned one the operator deliberately forced.
+  // (Adversarial review, 2026-08-17 — the two must agree in every mode, not just
+  // the default one.)
+  const guardBypassed = !!(opts.force || opts['dry-run'] || opts['print-prompt']);
   return tasks
     .filter(t => t.status === 'pending' || t.status === 'in_progress')
     .filter(t => includeExcluded || !isExcludedCategory(t))
-    .filter(t => !liveLinearCounterpart(t, mapping))
+    .filter(t => guardBypassed || !liveLinearCounterpart(t, mapping))
     .sort((a, b) =>
       priorityRank(a) - priorityRank(b) ||
       (a.status === 'pending' ? 0 : 1) - (b.status === 'pending' ? 0 : 1) ||
@@ -224,16 +235,22 @@ function linearOwned(tasks, mapping = {}) {
 // `mapping` must reach here too, not just actionable(): auto-pick and --pick N
 // index into the candidate list, so without it the default dispatch path would
 // still hand back a Linear-owned task and exit 1 (the review caught this — the
-// filter is worthless if only --list gets it). An explicit --id is deliberately
-// NOT filtered: naming a task by id is a decision, and linearMirrorGuard still
-// refuses it at dispatch with the identifier and the linear-next command.
+// filter is worthless if only --list gets it).
+//
+// An explicit --id is deliberately NOT filtered: naming a task by id is a
+// decision. On the normal dispatch path linearMirrorGuard then refuses it,
+// naming the identifier and the linear-next command. NOTE it does not refuse on
+// every path — runAmend() returns before the guard, so `--id N --amend` still
+// re-delivers a corrected card to an already-running session regardless of
+// ownership. That is pre-existing and arguably right (amend launches nothing),
+// but it is not "the guard always refuses an --id", so do not claim that.
 function pickTask(tasks, opts, dir, mapping = {}) {
   if (opts.id) {
     const live = tasks.find(t => String(t.id) === String(opts.id));
     if (live) return live;
     return dir ? readArchivedTask(dir, String(opts.id)) : null;
   }
-  const list = actionable(tasks, false, mapping);
+  const list = actionable(tasks, false, mapping, opts);
   // `--pick` with no value (=== true) or non-numeric → default to the top task.
   const parsed = parseInt(opts.pick, 10);
   const idx = Number.isInteger(parsed) ? parsed - 1 : 0;
@@ -751,7 +768,23 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   // Loaded ONCE and threaded into both selection paths, so the candidate list
   // and the dispatch guard agree about which tasks Linear already owns.
-  const linearMapping = loadLinearMirrorMappingFn() || {};
+  // Fails open on ANY error, matching loadLinearMirrorMapping's own contract:
+  // a mapping that cannot be read must make tasks dispatchable again, never
+  // erase them from the queue. Wrapped because this now runs on every path
+  // (including --list/--dry-run), not only where the guard used to call it.
+  let linearMapping = {};
+  try { linearMapping = loadLinearMirrorMappingFn() || {}; } catch { linearMapping = {}; }
+
+  // Full, un-truncated listing of everything the Linear side owns. Exists so the
+  // --list summary can stay short WITHOUT making 139 tasks unreachable.
+  if (args['linear-owned']) {
+    const owned = linearOwned(tasks, linearMapping);
+    if (!owned.length) { console.log('No Notion-mirror tasks currently have a live Linear counterpart.'); return; }
+    console.log(`Linear-owned tasks (${owned.length}) — dispatch from Linear, not here:`);
+    owned.forEach(({ task: t, entry }) => console.log(`  #${t.id} -> ${entry.identifier}  ${t.subject}`));
+    console.log(`\n  node scripts/linear-next.js --id <BRO-N>`);
+    return;
+  }
 
   if (args.list) {
     const list = actionable(tasks, false, linearMapping);
@@ -799,7 +832,13 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (owned.length) {
       console.log(`\nLinear-owned (${owned.length} — worked from Linear, never auto-picked here):`);
       owned.slice(0, 6).forEach(({ task: t, entry }) => console.log(`     #${t.id} -> ${entry.identifier}  ${t.subject}`));
-      if (owned.length > 6) console.log(`     …and ${owned.length - 6} more`);
+      if (owned.length > 6) {
+        // A truncated list with no way to see the rest would leave 139 of 145
+        // tasks with no printed identifier, and `linear-next --id <BRO-N>` is
+        // useless without one — the review's blocker. --linear-owned prints
+        // every row, so nothing is merely alluded to.
+        console.log(`     …and ${owned.length - 6} more — see them all: node scripts/bsc-next.js --linear-owned`);
+      }
       console.log(`  Dispatch these with: node scripts/linear-next.js --id <BRO-N>`);
     }
     return;

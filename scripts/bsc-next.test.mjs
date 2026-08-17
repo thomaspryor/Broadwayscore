@@ -46,7 +46,7 @@ test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', (
 });
 
 test('USAGE documents the flags this CLI accepts', () => {
-  for (const flag of ['--pick', '--id', '--list', '--dry-run', '--exec', '--model', '--force', '--succession', '--handoff', '--help, -h']) {
+  for (const flag of ['--pick', '--id', '--list', '--linear-owned', '--dry-run', '--exec', '--model', '--force', '--succession', '--handoff', '--help, -h']) {
     assert.ok(USAGE.includes(flag), `USAGE missing ${flag}`);
   }
 });
@@ -1066,4 +1066,31 @@ test('linearOwned: names the hidden work so 122 tasks do not become invisible', 
   assert.deepEqual(owned.map(o => o.task.id), ['101'], 'only genuinely live counterparts');
   assert.equal(owned[0].entry.identifier, 'BRO-501', 'the identifier travels with it for the --list line');
   assert.deepEqual(linearOwned(MIRROR_TASKS, {}), [], 'no mapping means nothing is owned elsewhere');
+});
+
+test('actionable: --force / --dry-run / --print-prompt bypass the filter EXACTLY as the guard does', () => {
+  // Adversarial review: the guard exempts these three modes. If the candidate
+  // filter did not, `--force --pick 1` would silently select a DIFFERENT task
+  // instead of the Linear-owned one the operator deliberately forced.
+  for (const mode of ['force', 'dry-run', 'print-prompt']) {
+    const ids = actionable(MIRROR_TASKS, false, MIRROR_MAPPING, { [mode]: true }).map(t => t.id);
+    assert.ok(ids.includes('101'), `--${mode} must not hide the Linear-owned task`);
+    // ...and the guard agrees: it returns null (no refusal) in the same mode.
+    assert.equal(linearMirrorGuard({ id: '101' }, MIRROR_MAPPING, { [mode]: true }), null,
+      `--${mode} must also bypass the dispatch guard`);
+  }
+  // With no bypass flag, both filter and guard act.
+  assert.ok(!actionable(MIRROR_TASKS, false, MIRROR_MAPPING, {}).some(t => t.id === '101'));
+  assert.ok(linearMirrorGuard({ id: '101' }, MIRROR_MAPPING, {}) !== null);
+});
+
+test('pickTask: --force reaches the Linear-owned task by ordinal again', () => {
+  const owned = [
+    { id: '200', status: 'pending', subject: 'owned by linear' },
+    { id: '201', status: 'pending', subject: 'plain pending task' },
+  ];
+  const mapping = { 200: { linearId: 'u9', identifier: 'BRO-900', title: 'x', project: 'Infrastructure' } };
+  assert.equal(pickTask(owned, { pick: '1' }, undefined, mapping).id, '201', 'filtered by default');
+  assert.equal(pickTask(owned, { pick: '1', force: true }, undefined, mapping).id, '200',
+    '--force restores the unfiltered ordinal, matching the guard bypass');
 });
