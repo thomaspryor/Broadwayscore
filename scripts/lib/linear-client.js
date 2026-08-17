@@ -46,6 +46,7 @@ const defaultSleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * @param {(ms:number)=>Promise} [opts.sleepFn]  injected so tests don't wait
  * @param {(info:object)=>void} [opts.onRetry]   observability hook
  * @param {boolean} [opts.retryMutationsOn5xx]   opt-in, for idempotent callers
+ * @param {number} [opts.timeoutMs]              per-attempt abort budget
  *
  * Options are INJECTED rather than read from env: that is this repo's
  * established retry shape (scripts/lib/autonomous-triage-core.js:451-455
@@ -65,6 +66,11 @@ async function graphql(query, variables, opts = {}) {
             `⏳ Linear HTTP ${info.status} (${info.reason}) — attempt ${info.attempt}/${info.maxAttempts}, retrying in ${info.delayMs}ms`
           );
   const mutation = opts.retryMutationsOn5xx ? false : retryPolicy.isMutation(query);
+  // 30s is right for a bulk migration and far too slow for a gate hook probe:
+  // the commit gate budgets ~4s per check and runs on every `git commit`
+  // fleet-wide, so a hung board would cost 30s per commit rather than fail
+  // open promptly. Callers that are latency-sensitive pass their own budget.
+  const timeoutMs = Number.isFinite(opts.timeoutMs) ? opts.timeoutMs : 30_000;
 
   let attempt = 0;
   for (;;) {
@@ -75,7 +81,7 @@ async function graphql(query, variables, opts = {}) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: getApiKey() },
         body: JSON.stringify({ query, variables }),
-        signal: AbortSignal.timeout(30_000),
+        signal: AbortSignal.timeout(timeoutMs),
       });
     } catch (err) {
       // A 30s AbortSignal timeout, a DNS failure or a socket reset REJECTS
