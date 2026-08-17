@@ -29,7 +29,7 @@ process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(os.tmpdir(), `scraper-spend-le
 // fetchWithScrapingdog before it reached https.get. This test exercises the
 // stealth-mode escalation logic, not the breaker, so disable it here the same
 // way brightdata-caps.test.mjs isolates BD's breaker via BD_BREAKER_STATE_PATH
-// (task #1312).
+// (task #1312). Verified green + gate re-tested 2026-08-17 (task #1312 close-out).
 process.env.SD_CAPS_DISABLED = '1';
 
 const STEALTH_400_BODY = JSON.stringify({
