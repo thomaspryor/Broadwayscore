@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-17T04:30:28.239Z",
-  "processed": 5,
-  "failed": 112,
-  "successRate": "4.3%",
+  "updatedAt": "2026-08-17T05:43:49.716Z",
+  "processed": 16,
+  "failed": 151,
+  "successRate": "9.6%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-17T03:29:03.785Z",
@@ -26,6 +26,29 @@
       "event": "bb-session",
       "session": "f871ea3b",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-17T05:36:12.507Z",
+      "event": "bb-session",
+      "session": "e5fb2df3",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-17T05:36:13.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T05:37:21.198Z",
+      "event": "bb-session",
+      "session": "c4f2cd8c",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-17T05:37:30.354Z",
+      "event": "bb-session",
+      "session": "3dbd6923",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }

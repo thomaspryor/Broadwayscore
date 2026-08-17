@@ -632,8 +632,16 @@ async function createCard(args) {
   const card = formatCard(page);
   // If anything overflowed, expand the in-memory card so stdout shows the
   // full value (not the property preview).
-  for (const field of Object.keys(overflow)) {
-    card[field] = overflow[field];
+  //
+  // `overflow` is keyed by SECTION key ('key-files'), `card` by FIELD name
+  // ('keyFiles'). This loop used to assign card[field] directly, which is only
+  // correct today because the create path can overflow Notes and nothing else —
+  // the moment Outcome or Key Files could overflow here it would have written a
+  // bogus `card['key-files']` while leaving card.keyFiles truncated. Same
+  // writer/reader key drift that made the corpus exporter archive Key Files
+  // truncated, one layer up. One shared table now, not three restatements.
+  for (const [sectionKey, text] of Object.entries(overflow)) {
+    card[notionCorpus.SECTION_KEY_TO_FIELD[sectionKey] || sectionKey] = text;
   }
 
   console.log(JSON.stringify(card, null, 2));
@@ -1019,9 +1027,9 @@ async function updateCard(args) {
   const card = formatCard(page);
   // Expand the in-memory card so stdout shows the full value for any field
   // that overflowed (keyed to the formatCard field names).
-  const fieldToCardKey = { notes: 'notes', outcome: 'outcome', 'key-files': 'keyFiles' };
-  for (const [field, text] of Object.entries(overflow)) {
-    card[fieldToCardKey[field]] = text;
+  // Shared table, not a second hand-written copy (see the create path above).
+  for (const [sectionKey, text] of Object.entries(overflow)) {
+    card[notionCorpus.SECTION_KEY_TO_FIELD[sectionKey] || sectionKey] = text;
   }
   console.log(JSON.stringify(card, null, 2));
   return card;
