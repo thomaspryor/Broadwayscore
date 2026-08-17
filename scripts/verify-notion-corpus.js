@@ -61,22 +61,25 @@ function parseArgs(argv) {
   return args;
 }
 
-async function livePageCount() {
+// IDs, not a count. A count can only be compared by equality, and equality
+// against a board that gains cards during the ~60-minute export can never
+// hold. Containment answers the question that actually matters.
+async function livePageIds() {
   const { Client } = require('@notionhq/client');
   const { BRAIN_DATABASE_ID, NOTION_VERSION } = require('./lib/notion-constants');
   const notion = new Client({ auth: process.env.NOTION_API_KEY, notionVersion: NOTION_VERSION });
   let cursor;
-  let n = 0;
+  const ids = [];
   do {
     const r = await notion.dataSources.query({
       data_source_id: BRAIN_DATABASE_ID,
       page_size: 100,
       start_cursor: cursor,
     });
-    n += r.results.length;
+    for (const p of r.results) ids.push(p.id);
     cursor = r.has_more ? r.next_cursor : undefined;
   } while (cursor);
-  return n;
+  return ids;
 }
 
 async function main() {
@@ -135,14 +138,14 @@ async function main() {
   }
 
   const baseline = fs.existsSync(baselinePath) ? JSON.parse(fs.readFileSync(baselinePath, 'utf8')) : null;
-  const live = args.live ? await livePageCount() : null;
+  const live = args.live ? await livePageIds() : null;
 
   const result = corpus.verifyCorpus({
     records,
     manifest,
     baseline,
     tolerance: args.tolerance ? Number(args.tolerance) : 0.02,
-    livePageCount: live,
+    livePageIds: live,
   });
   if (malformed) {
     result.checks.unshift({ name: 'every line parses as JSON', ok: false, detail: `${malformed} malformed` });
