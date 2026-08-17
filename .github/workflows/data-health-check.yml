@@ -326,6 +326,42 @@ jobs:
         timeout-minutes: 5
         run: node scripts/audit-cv-wrongproduction-lifetime.js
 
+      # 4 more lifetime corpus sweeps (task #1746), extending #1731's pattern
+      # above to the other opening-night-checks plugins with the exact same
+      # structural risk: wrong/mismatched content shipped into reviews.json,
+      # only ever checked within opening-night-checklist.js's ±2-day window,
+      # never re-checked once a show ages out of that window. Same reasoning
+      # as the cv-wrongproduction step: SHADOW MODE, non-blocking — these are
+      # measurements of an unknown-precision population (temporal-override
+      # near-opening reasoning, intentional priorRuns cross-links, and similar
+      # legitimate-but-check-can't-tell cases), not a regression gate. The
+      # digest checks in health-check.js key off each snapshot's
+      # newSinceLastRun, not totalViolations, for the same alert-fatigue
+      # reason documented on the cv-wrongproduction digest check below.
+      - name: fulltext-mentions-show lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-fulltext-mentions-show-lifetime.js
+
+      - name: slug-mismatch lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-slug-mismatch-lifetime.js
+
+      - name: roundup-url-mismatch lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-roundup-url-mismatch-lifetime.js
+
+      - name: revival-unverified lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-revival-unverified-lifetime.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -432,6 +468,14 @@ jobs:
           # runner and health-check.js's digest check reads a stale/missing
           # file forever.
           git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
+          # 4 more lifetime-sweep snapshots (task #1746) — same reason as the
+          # cv-wrongproduction snapshot above: single writer (this cron),
+          # without this line the snapshot never leaves the runner and
+          # health-check.js's digest check reads a stale/missing file forever.
+          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
+          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

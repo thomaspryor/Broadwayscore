@@ -1308,6 +1308,58 @@ function checkQuality() {
       return { name, status: 'pass', message: `No new unhandled violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
     }),
 
+    // 4 more lifetime-sweep digest checks (task #1746), extending the
+    // cv-wrongproduction pattern immediately above to the other
+    // opening-night-checks plugins with the same ±2-day-window blind spot:
+    // fulltext-mentions-show, slug-mismatch, roundup-url-mismatch,
+    // revival-unverified. Same reasoning throughout — warn (never error
+    // except detector staleness), keyed off newSinceLastRun not
+    // totalViolations, for the identical alert-fatigue reason.
+    ...[
+      {
+        name: 'Data quality: fulltext-mentions-show lifetime sweep',
+        snapFile: 'fulltext-mentions-show-lifetime.json',
+        scriptName: 'audit-fulltext-mentions-show-lifetime.js',
+        stepName: 'fulltext-mentions-show lifetime sweep',
+        unit: 'unmatched review(s)',
+      },
+      {
+        name: 'Data quality: slug-mismatch lifetime sweep',
+        snapFile: 'slug-mismatch-lifetime.json',
+        scriptName: 'audit-slug-mismatch-lifetime.js',
+        stepName: 'slug-mismatch lifetime sweep',
+        unit: 'cross-show URL mismatch(es)',
+      },
+      {
+        name: 'Data quality: roundup-url-mismatch lifetime sweep',
+        snapFile: 'roundup-url-mismatch-lifetime.json',
+        scriptName: 'audit-roundup-url-mismatch-lifetime.js',
+        stepName: 'roundup-url-mismatch lifetime sweep',
+        unit: 'roundup attribution mismatch(es)',
+      },
+      {
+        name: 'Data quality: revival-unverified lifetime sweep',
+        snapFile: 'revival-unverified-lifetime.json',
+        scriptName: 'audit-revival-unverified-lifetime.js',
+        stepName: 'revival-unverified lifetime sweep',
+        unit: 'unverified revival flag(s)',
+      },
+    ].map(({ name, snapFile, scriptName, stepName, unit }) => runCheck(name, () => {
+      const snapPath = path.join(AUDIT_DIR, snapFile);
+      if (!fs.existsSync(snapPath)) {
+        return { name, status: 'warn', message: 'No lifetime-sweep snapshot yet (cron not yet run)', hint: `node scripts/${scriptName}` };
+      }
+      const snap = readJSON(snapPath);
+      const age = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Lifetime-sweep snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: `Check the "${stepName}" step in data-health-check.yml` };
+      }
+      if (snap.newSinceLastRun > 0) {
+        return { name, status: 'warn', message: `${snap.newSinceLastRun} NEW ${unit} since last run (${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${formatAge(age)} ago)`, hint: `node scripts/${scriptName} --json to triage; check newViolationKeys in the snapshot for which ones are new` };
+      }
+      return { name, status: 'pass', message: `No new violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
+    })),
+
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
     // once, after four owner spot-checks in a row found published reviews the
     // census reported absent — then nothing measured it again, so the next arm
