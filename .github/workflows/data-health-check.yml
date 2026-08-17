@@ -304,6 +304,28 @@ jobs:
         timeout-minutes: 3
         run: node scripts/check-cross-outlet-attribution-drift.js
 
+      # cv-wrongproduction-unhandled lifetime sweep (task #1731). The check
+      # module (scripts/lib/opening-night-checks/cv-wrongproduction-unhandled.check.js)
+      # only ever runs via opening-night-checklist.js, gated to shows within
+      # ±2 days of openingDate — a show past that window is never re-checked
+      # for the juan-a-ramirez bypass class again. Task #1712's corpus audit
+      # found 3 live instances reintroduced weeks post-opening via an
+      # unrelated bug, outside that window. This step runs the SAME check
+      # against the full corpus. SHADOW MODE (matches the pattern immediately
+      # above): a real run against production data found 800+ hits, the large
+      # majority shaped like intentional priorRuns coverage (pre-Broadway
+      # tryouts, prior runs) the check has no way to recognize — a hard CI
+      # gate here would redden main on legitimate data, not a regression,
+      # exactly the reasoning that keeps the cross-outlet check above
+      # non-blocking too. The digest check in health-check.js surfaces the
+      # count; the script's own exit code (1 on any hit) is for manual/local
+      # triage runs, not this cron.
+      - name: cv-wrongproduction lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-cv-wrongproduction-lifetime.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -405,6 +427,11 @@ jobs:
           # runner and health-check.js's digest check reads a stale/missing
           # file forever.
           git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
+          # cv-wrongproduction lifetime sweep snapshot (task #1731) — single
+          # writer (this cron); without this the snapshot never leaves the
+          # runner and health-check.js's digest check reads a stale/missing
+          # file forever.
+          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

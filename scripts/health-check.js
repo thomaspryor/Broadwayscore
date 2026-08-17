@@ -1268,6 +1268,38 @@ function checkQuality() {
       return { name, status: 'pass', message: `No unreviewed suspects (${formatAge(age)} ago)` };
     }),
 
+    // Opening-night bypass check lifetime coverage (task #1731). The check
+    // itself (cv-wrongproduction-unhandled.check.js) only ran within
+    // opening-night-checklist.js's ±2-day-of-opening window, so an older show
+    // could re-trip the exact juan-a-ramirez bypass class (task #1712's 3
+    // confirmed cases, all reintroduced weeks post-opening) with nothing ever
+    // looking again. scripts/audit-cv-wrongproduction-lifetime.js runs the
+    // SAME check against the full corpus. A warn, not an error, and never a
+    // real-time page: a real test run found 800+ hits, the large majority
+    // shaped like intentional prior-run coverage (priorRuns cross-links —
+    // Kennedy Center/Lincoln Center/West End tryouts) the check has no way to
+    // recognize, mirroring how the ±2-day version of this same check already
+    // routes to a low-urgency 'digest' disposition in alert-ledger.json
+    // rather than paging. An error is reserved for the detector itself going
+    // dark (stale/missing snapshot) — see that script's header for the full
+    // false-positive-rate discussion before tightening this to 'error'.
+    runCheck('Data quality: cv-wrongproduction lifetime sweep', () => {
+      const name = 'Data quality: cv-wrongproduction lifetime sweep';
+      const snapFile = path.join(AUDIT_DIR, 'cv-wrongproduction-lifetime.json');
+      if (!fs.existsSync(snapFile)) {
+        return { name, status: 'warn', message: 'No lifetime-sweep snapshot yet (cron not yet run)', hint: 'node scripts/audit-cv-wrongproduction-lifetime.js' };
+      }
+      const snap = readJSON(snapFile);
+      const age = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Lifetime-sweep snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: 'Check the "cv-wrongproduction lifetime sweep" step in data-health-check.yml' };
+      }
+      if (snap.totalViolations > 0) {
+        return { name, status: 'warn', message: `${snap.totalViolations} unhandled CV.wrongProduction review(s) across ${snap.showsWithViolations} show(s) (${formatAge(age)} ago)`, hint: 'node scripts/audit-cv-wrongproduction-lifetime.js --json to triage; most will be intentional priorRuns coverage, but spot-check for real bypasses' };
+      }
+      return { name, status: 'pass', message: `No unhandled violations across ${snap.scanned} show(s) (${formatAge(age)} ago)` };
+    }),
+
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
     // once, after four owner spot-checks in a row found published reviews the
     // census reported absent — then nothing measured it again, so the next arm
