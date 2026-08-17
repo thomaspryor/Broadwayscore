@@ -2378,19 +2378,30 @@ function checkDispatchHealth() {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   const { CHECK_NAME, HEADLESS_CHECK_NAME } = require('./lib/dispatch-health.js');
   if (!fs.existsSync(ledgerPath)) {
-    // Two named rows, not one — each has its own AUTO_FIX_PLAYBOOK entry
-    // (matched by exact `name`), so collapsing this branch to a single
-    // CHECK_NAME row would silently drop the headless row's visibility on
-    // any environment where the ledger is missing.
+    // Card #1714 ship-check finding: dispatch-ledger.jsonl is gitignored and
+    // per-machine, and this function only ever executes for real (i.e. feeds
+    // history/alerts/the digest snapshot, not just a local console run) from
+    // data-health-check.yml on ubuntu-latest — an environment that can NEVER
+    // have this file. Giving these rows the SAME name as the real-measurement
+    // rows below would make them match CHECK_NAME/HEADLESS_CHECK_NAME's
+    // AUTO_FIX_PLAYBOOK entries (urgency 'this-week', has humanAction) and
+    // file a permanently-open, permanently-unresolvable "cannot measure" card
+    // via routeAlert on every single CI run, forever — since the condition
+    // that would close it (the ledger existing on that runner) can never
+    // become true. Suffixed name deliberately does NOT match either playbook
+    // regex (both are `^...$`-anchored), so this falls back to the default
+    // urgency 'low': still visible in the category summary and full check
+    // list, never actionable, never card-spammed. The unsuffixed names stay
+    // reserved for a real local run where the ledger IS present.
     return [
       {
-        name: CHECK_NAME,
+        name: `${CHECK_NAME} (unmeasurable here)`,
         status: 'warn',
         message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
         hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
       },
       {
-        name: HEADLESS_CHECK_NAME,
+        name: `${HEADLESS_CHECK_NAME} (unmeasurable here)`,
         status: 'warn',
         message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The headless success rate cannot be measured from here.',
         hint: 'Run `node scripts/audit-headless-outcome-rate.js` on the machine where dispatches launch to see the real rate.',
@@ -2398,12 +2409,15 @@ function checkDispatchHealth() {
     ];
   }
 
+  // Parsed once and shared by both rows below (ship-check finding: two
+  // separate reads of the same concurrently-appended JSONL file could
+  // describe two different populations if a writer appends between them).
+  const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+    .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean);
+
   return [runCheck(CHECK_NAME, () => {
     const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
-    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
-      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
-      .filter(Boolean);
-
     // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
     // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
     // a RATE above the floor is a live defect every day it holds, and
@@ -2417,10 +2431,6 @@ function checkDispatchHealth() {
     return hint ? { name, status, message, hint } : { name, status, message };
   }), runCheck(HEADLESS_CHECK_NAME, () => {
     const { computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
-    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
-      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
-      .filter(Boolean);
-
     // Same no-suppression reasoning as the cmux row above — card #1714.
     const { name, status, message, hint } = computeHeadlessDispatchDigest({
       entries, nowMs: Date.now(),
