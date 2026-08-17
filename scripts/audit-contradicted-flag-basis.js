@@ -47,11 +47,16 @@ Usage:
   node scripts/audit-contradicted-flag-basis.js [--gate] [--max=N] [--json] [--review-texts-dir=PATH] [--shows-path=PATH]
 
   --gate                exit 1 when the match count exceeds --max
-  --max=N               gate ceiling (default 0). CI passes a ceiling with
-                        headroom: the rebuild bots rewrite this corpus every
-                        ~30 min, so a hard-equality baseline flaps main red for
-                        non-code reasons
-                        (memory/feedback_test_yml_push_path_allowlist.md).
+  --max=N               gate ceiling (default 0). Unlike the rebuild-bot-churn
+                        gates that need headroom above their live count
+                        (memory/feedback_test_yml_push_path_allowlist.md),
+                        this population has no expected steady-state backlog:
+                        a hit only appears when some OTHER writer changes a
+                        record's publishDate after a date-guard already
+                        flagged it, without re-running/clearing that guard —
+                        a narrow, compound event. CI runs with --max=0 (all 13
+                        known records hand-adjudicated 2026-08-17, card
+                        #1589); any new hit is real signal, not noise.
   --json                machine-readable output
   --review-texts-dir=   override the corpus path (default data/review-texts)
   --shows-path=         override shows.json path (default data/shows.json)

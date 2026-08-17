@@ -4621,7 +4621,7 @@ jobs:
 
       - name: Audit contradicted flag basis (stale exclusion flags)
         if: always()
-        run: node scripts/audit-contradicted-flag-basis.js --gate --max=16
+        run: node scripts/audit-contradicted-flag-basis.js --gate --max=0
         # BLOCKING replacement for the retired #483 step above. Fires only on
         # POSITIVE evidence that a flag's own stated basis is contradicted: the
         # flag rests ONLY on a date-guard claim, that claim cites a date the
@@ -4629,23 +4629,23 @@ jobs:
         # inside the show's own run window. Detector (with the full derivation):
         # scripts/lib/contradicted-flag-basis.js.
         #
-        # PRECISION 13/13, hand-verified 2026-08-14 — every match is a real
-        # review of the show it is filed under, suppressed from live Critic
-        # Scores on a date it no longer has. Examples: the Vulture review of
-        # the 2018 Carousel (vulture.com/2018/04/…, dated 2018-04-12, inside
-        # the 2018-02-28..2018-09-16 run) flagged on a cited date of
-        # 2019-04-24; the Deadline 2017 Miss Saigon revival review dated
-        # 2017-03-23 flagged on a cited date of 1974-04-08; Jesse Green's NYT
-        # review of Home 2024 flagged on 2024-12-19.
+        # All 13 records this gate found on 2026-08-14 were hand-adjudicated
+        # and cleared 2026-08-17 (card #1589) via
+        # scripts/clear-contradicted-flag-basis.js — a fixed, explicit
+        # allowlist re-verified against this same detector before each clear,
+        # never a predicate-driven drain. Live count is 0.
         #
-        # --max=16 against a live count of 13 is deliberate headroom, the same
-        # ratchet the sibling data gates use: the rebuild bots rewrite this
-        # corpus every ~30 min, and a ceiling equal to the live count makes the
-        # SAME code pass and fail minutes apart
-        # (memory/feedback_test_yml_push_path_allowlist.md). RATCHET IT DOWN as
-        # the 13 known records are hand-adjudicated — but never raise it to
-        # make a red build pass, and never clear a flag in bulk to reach a
-        # lower number. There is no --fix on the audit for exactly that reason.
+        # --max=0, not a headroom ceiling like the original 16-vs-13, and
+        # unlike the sibling gates below (which moved to a committed-baseline
+        # diff on 2026-08-14 for large STABLE backlogs that legitimately churn
+        # every rebuild): this population has no expected steady-state
+        # backlog. A NEW hit here means some OTHER writer changed a record's
+        # publishDate after a date-guard already flagged it, without
+        # re-running or clearing that guard — a narrow, compound event, not
+        # routine corpus churn. Any hit is real signal. RATCHET DOWN as
+        # records are hand-adjudicated — never raise it to make a red build
+        # pass, and never clear a flag in bulk to reach a lower number. There
+        # is no --fix on the audit for exactly that reason.
 
       - name: Audit URL-swap regression (#1416)
         if: always()
