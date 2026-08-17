@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-04T01:34:56.685Z",
-    "showId": "the-smile-of-her-off-west-end-2026",
-    "newFile": "guardian--arifa-akbar.json",
-    "ok": false,
-    "file": "guardian-uk--arifa-akbar.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.aol.co.uk/articles/smile-her-review-actor-autobiographical-160033000.html",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-07-17",
-      "incomingUrl": "https://www.westendtheatre.com/346642/news/reviews/review-round-up-teeth-n-smiles-starring-rebecca-lucy-taylor-at-the-duke-of-yorks-theatre/",
-      "incomingPublishDate": "2026-03-26"
-    }
-  },
-  {
-    "recordedAt": "2026-08-04T01:35:31.605Z",
-    "showId": "the-importance-of-being-oscar-off-west-end-2026",
-    "newFile": "times-uk--unknown.json",
-    "ok": false,
-    "file": "times-uk--dominic-maxwell.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs?eafs_enabled=false",
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": true
-      },
-      "existingPublishDate": "2026-08-01",
-      "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-04T01:35:33.515Z",
     "showId": "the-importance-of-being-oscar-off-west-end-2026",
     "newFile": "times-uk--dominic-maxwell.json",
@@ -9397,6 +9359,40 @@
       "existingPublishDate": null,
       "incomingUrl": "https://www.theguardian.com/stage/2024/dec/01/twelfth-night-review-orange-tree-theatre",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-17T10:13:49.647Z",
+    "showId": "disruption-off-broadway-2026",
+    "newFile": "broadwayworld--cindy-marcolina.json",
+    "ok": false,
+    "file": "broadwayworld--cindy-marcolina.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803",
+      "existingFlags": {
+        "wrongProduction": false,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": true
+      },
+      "existingPublishDate": "2026-08-03",
+      "incomingUrl": "https://www.broadwayworld.com/westend/article/Review-DISRUPTION-Park-Theatre-20230714",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-17T10:18:35.126Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
     }
   }
 ]
