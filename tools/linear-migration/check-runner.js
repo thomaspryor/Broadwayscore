@@ -139,8 +139,12 @@ async function main() {
         })),
       }]);
       last = { status: mine[0].status, verdict: verdicts[0]?.verdict || 'none' };
-      if (last.verdict === 'working') {
-        console.log(`ALIVE — ${RUNNER} is doing real work (${verdicts[0].detail}, status ${last.status})`);
+      // 'finished' is the probe's SUCCESS case, not a miss: it asks for a
+      // one-word reply, so a healthy runner answers and ends its session
+      // almost immediately. Accepting only 'working' meant the faster a runner
+      // completed, the more certainly this reported it DEAD.
+      if (last.verdict === 'working' || last.verdict === 'finished') {
+        console.log(`ALIVE — ${RUNNER} ${last.verdict === 'finished' ? 'answered and completed' : 'is doing real work'} (${verdicts[0].detail}, status ${last.status})`);
         process.exit(0);
       }
       if (last.verdict === 'blocked') {

@@ -114,15 +114,32 @@ function assessDelegations(issues, nowMs = Date.now()) {
     const declaredDead = attempt.some((s) => DEAD_SESSION_STATUSES.has(String(s.status || '').toLowerCase()))
       && !attempt.some((s) => String(s.status || '').toLowerCase() === 'active');
 
-    const finished = attempt.some((s) => FINISHED_SESSION_STATUSES.has(String(s.status || '').toLowerCase()));
+    // `finished` is the one FAVOURABLE status here, so it needs the strictest
+    // guards — every loophole in it is an agent that silently never alarms.
+    //   - a live sibling outranks a completed twin (mirrors declaredDead)
+    //   - an undateable session may make things look WORSE, never better, or a
+    //     stale session with a malformed createdAt grants permanent immunity
+    //   - completing without producing work is not success; that is precisely
+    //     the 2026-08-16 failure wearing a green hat
+    const finished = attempt.some((s) => s._ms !== null
+        && FINISHED_SESSION_STATUSES.has(String(s.status || '').toLowerCase()))
+      && !attempt.some((s) => String(s.status || '').toLowerCase() === 'active')
+      && real.length > 0;
 
-    if (finished) {
-      // Handing the result to a human is Loop 5's job, not this alarm's.
-      verdicts.push({ identifier: issue.identifier, verdict: 'finished',
-        detail: `agent completed${real.length ? ` after ${real.length} substantive activity/activities` : ''}` });
-    } else if (blockedOnly) {
+    // blockedOnly is checked FIRST: an agent posts "Blocked by X", ends its
+    // turn, and Linear marks the session complete. Treating that as finished
+    // makes a permanently parked delegation read as done — it will never
+    // resume on its own, which is the whole reason the blocked verdict exists.
+    if (blockedOnly) {
       verdicts.push({ identifier: issue.identifier, verdict: 'blocked',
         detail: String(real[0].body).split('\n')[0].slice(0, 120) });
+    } else if (finished) {
+      // Handing the result to a human is Loop 5's job, not this alarm's.
+      verdicts.push({ identifier: issue.identifier, verdict: 'finished',
+        detail: `agent completed after ${real.length} substantive activity/activities` });
+    } else if (attempt.some((s) => FINISHED_SESSION_STATUSES.has(String(s.status || '').toLowerCase())) && real.length === 0) {
+      verdicts.push({ identifier: issue.identifier, verdict: 'stalled',
+        detail: 'session completed without producing any work' });
     } else if (real.length > 0 && workAgeMs !== null && workAgeMs <= WORK_IS_STALE_AFTER_MS && !declaredDead) {
       verdicts.push({ identifier: issue.identifier, verdict: 'working',
         detail: `${real.length} substantive activity/activities, last ${Math.round(workAgeMs / 60000)} min ago` });
