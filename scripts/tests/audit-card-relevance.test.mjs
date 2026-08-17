@@ -112,6 +112,19 @@ test('checkRecheckAfterDueAndVerified: null when date not yet due, outcome empty
   ), null); // no runnable command at all
 });
 
+test('checkRecheckAfterDueAndVerified: same-day UTC-midnight boundary stays not-due (task #1722, code-review catch)', () => {
+  // RECHECK-AFTER: 2026-08-16 parses to 2026-08-16T00:00:00Z. Unpadded, that
+  // reads as "due" against a same-day 12:00 UTC `now` even though it is still
+  // 2026-08-16 in the owner's US-Eastern timezone — the identical bug fixed
+  // in scripts/lib/orphan-inprogress-triage.js for card #1226.
+  const c = card({
+    notes: 'RECHECK-AFTER: 2026-08-16\n## Acceptance criteria\n`node --test scripts/lib/thing.test.mjs`',
+    outcome: 'Held for 10 days straight.',
+  });
+  const opts = { now: new Date('2026-08-16T12:00:00Z'), runAcceptanceCmd: () => ({ status: 'pass' }) };
+  assert.equal(checkRecheckAfterDueAndVerified(c, opts), null);
+});
+
 // ── Required case 3: duplicate pair → LIKELY-DUPLICATE ────────────────────
 test('classifyCard: high title-token overlap with another open card -> LIKELY-DUPLICATE', () => {
   const a = card({ id: 'a', name: 'Scraping v2: T4 was a yield regression' });
@@ -182,6 +195,14 @@ test('checkStaleFiles: mixed live/dead paths stay ambiguous (null), not stale', 
 
 test('checkStaleFiles: a missing *.test.mjs alone is a planned deliverable, not stale (live false-positive fixed 2026-08-16)', () => {
   const c = card({ notes: 'Acceptance: `node --test scripts/tests/not-written-yet.test.mjs`' });
+  const opts = { fileExists: () => false };
+  assert.equal(checkStaleFiles(c, opts), null);
+});
+
+test('checkStaleFiles: a missing *.test.ts alone is a planned deliverable, not stale (task #1722, code-review catch)', () => {
+  // tests/unit/*.test.ts is this repo's dominant unit-test extension
+  // (tests/unit-test-manifest-tsx.txt) — the .mjs-only regex missed it.
+  const c = card({ notes: 'Acceptance: `npx tsx --test tests/unit/not-written-yet.test.ts`' });
   const opts = { fileExists: () => false };
   assert.equal(checkStaleFiles(c, opts), null);
 });
