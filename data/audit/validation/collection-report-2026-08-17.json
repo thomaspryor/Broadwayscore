@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-08-17T14:58:13.916Z",
+  "runDate": "2026-08-17T16:09:40.024Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "as-you-like-it-globe-west-end-2026",
+    "showFilter": "as-you-like-it-globe-west-end-2026,anansi-the-spider-west-end-2026,the-house-of-the-negro-insane-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 7,
+    "processed": 1,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,31 +27,37 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 7,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 6,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+  ],
   "failed": [
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
@@ -61,7 +67,9 @@
     "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -71,6 +79,13 @@
     "archive": []
   },
   "failuresByOutlet": {
+    "theatremonkey": {
+      "count": 1,
+      "domain": "theatremonkey.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "myreviewer": {
       "count": 1,
       "domain": "myreviewer.com",
