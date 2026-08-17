@@ -36,6 +36,10 @@ const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { venueSlug } = require('./lib/venue-classification');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const {
+  planCanonicalPointerClear,
+  applyCanonicalPointerClear,
+} = require('./lib/canonical-duplicate-pointers');
 let isIncludableForRebuild = () => false;
 try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
 
@@ -235,6 +239,15 @@ function applyRecover(clusterCtx, decision) {
     duplicateReason: null,
     duplicateClearReason: `byline-explosion-canonical (${STAMP})`,
   };
+  // A canonical must not point back at a file it is the canonical FOR. Clearing
+  // only duplicateOf (as this did until 2026-08-17) leaves duplicateTextOf as a
+  // mutual cycle, and review-guards.js keeps BOTH sides of a circular pair whose
+  // fullText fingerprints differ — so one scrape artifact re-admits the collapsed
+  // byline under the same URL and validate-data.js fails the trunk.
+  applyCanonicalPointerClear(
+    merged,
+    planCanonicalPointerClear(canonData, { self: canonical, clusterFiles: cluster.files, siblings: parsed }),
+  );
   const prot = new Set(canonData.protectedFields || []);
   // Clear a stale wrongShow ONLY when the body named the venue (decideClusterAction
   // already required venueMatch to keep a wrongShow file as a candidate).
@@ -291,10 +304,15 @@ function applySkip(clusterCtx) {
     || cluster.files.find((f) => (parsed[f] || {}).humanReviewScore == null)
     || cluster.files[0];
   const t = parsed[tombstone];
-  if (t.duplicateOf) {
+  // Same invariant as applyRecover: clear EVERY duplicate pointer aimed back into
+  // the cluster, not just duplicateOf — a surviving duplicateTextOf leaves the
+  // tombstone in a mutual cycle that re-admits a collapsed member.
+  const tombPlan = planCanonicalPointerClear(t, { self: tombstone, clusterFiles: cluster.files, siblings: parsed });
+  if (t.duplicateOf || tombPlan.drop.length) {
     t.duplicateOf = null;
     t.duplicateReason = null;
     t.duplicateClearReason = `byline-explosion-tombstone (${STAMP})`;
+    applyCanonicalPointerClear(t, tombPlan);
     writePlain(path.join(dir, tombstone), t);
   }
   for (const f of cluster.files) {
