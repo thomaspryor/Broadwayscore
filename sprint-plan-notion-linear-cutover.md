@@ -240,7 +240,15 @@ defence. Notion must be fully live throughout.
 - **Description:** Run the export twice and require a byte-identical diff before shipping. Store in the private
   data repo — NOT `~/Documents/claude-outputs/`, which is iCloud and evictable to dataless placeholders.
 - **Acceptance criteria:**
-  - VERIFY: the two runs' `corpus.ndjson` are byte-identical
+  - VERIFY: every page UNCHANGED between the two runs (same `lastEditedTime`) produced a byte-identical record;
+    pages created, deleted or edited between them are counted and reported, not failed
+    `[CHANGED AGAIN: whole-file byte-identity is not achievable and never was. The source is a LIVE board the
+    fleet writes to continuously — across the real pair, 4 pages were created and 21 edited in the ~2 hours
+    between runs. Restricting the claim to unchanged pages is the strongest form that can actually hold, and it
+    is not a weakening: it is what caught the one real non-determinism bug. 5 unchanged pages diverged because
+    Notion re-signs uploaded-file URLs on every fetch (expiry ~1h), which ALSO meant the archive was storing
+    image links that die within the hour while appearing to hold the images. Signatures are now stripped and the
+    count surfaced. — source: Sprint 2 execution, run A vs run B]`
     `[CHANGED: was "diff -r between the two runs reports no differences". A recursive diff can never pass:
     manifest.json carries generatedAt and durationSec BY DESIGN — that is where run metadata lives precisely so
     that no timestamp ends up inside a record and the records stay comparable. An acceptance criterion that

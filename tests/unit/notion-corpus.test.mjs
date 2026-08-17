@@ -191,6 +191,49 @@ test('every property type on the brain board extracts to text', () => {
   }
 });
 
+test('a pre-signed Notion file URL is stripped, so two runs of an unchanged page agree', () => {
+  // Found by diffing two real full exports: 5 pages with identical content
+  // produced different records, because Notion re-signs uploaded-file URLs on
+  // every fetch (observed expiry_time ~1h out). Two problems in one — the
+  // records could never be byte-identical, AND the archive was storing links
+  // that die within the hour while looking like it held the images.
+  const signed = (sig) => ({
+    type: 'image',
+    image: {
+      caption: [],
+      type: 'file',
+      file: {
+        url: `https://prod-files-secure.s3.us-west-2.amazonaws.com/abc/def/pic.png?X-Amz-Signature=${sig}&X-Amz-Expires=3600`,
+        expiry_time: `2026-08-17T0${sig}:39:30.044Z`,
+      },
+    },
+  });
+
+  const runA = corpus.normalizeExpiringFileUrls([signed('1')]);
+  const runB = corpus.normalizeExpiringFileUrls([signed('9')]);
+  assert.deepEqual(runA, runB, 'the same image fetched twice must normalise to the same record');
+
+  const f = runA[0].image.file;
+  assert.equal(f.url, 'https://prod-files-secure.s3.us-west-2.amazonaws.com/abc/def/pic.png');
+  assert.equal(f.expiry_time, undefined, 'an expiry is meaningless in an archive');
+  assert.equal(f._signatureStripped, true);
+  assert.match(f._note, /NOT in this archive/, 'the reader must be told the image itself is absent');
+
+  // Counted, and surfaced on the record + in charVolume, so "this archive does
+  // not contain the images" is recorded rather than rediscovered later.
+  const stats = { count: 0 };
+  corpus.normalizeExpiringFileUrls([signed('1'), { ...para('text'), _children: [signed('2')] }], stats);
+  assert.equal(stats.count, 2, 'nested file blocks are counted too');
+
+  const rec = corpus.buildRecord({ id: 'p1', properties: {} }, [signed('1')], []);
+  assert.equal(rec.body.expiringFileBlocks, 1);
+  assert.equal(corpus.charVolume([rec]).expiringFileBlocks, 1);
+  // And the caller's blocks are not mutated.
+  const original = [signed('1')];
+  corpus.normalizeExpiringFileUrls(original);
+  assert.match(original[0].image.file.url, /X-Amz-Signature/, 'input must be deep-cloned, not edited');
+});
+
 test('a record is deterministic — no timestamps, stable key order', () => {
   // S2-T6 requires two independent runs to diff byte-clean. One Date.now()
   // anywhere in buildRecord makes that impossible, and the failure would only
