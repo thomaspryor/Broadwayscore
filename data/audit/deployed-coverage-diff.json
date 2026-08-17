@@ -1,72 +1,29 @@
 {
-  "generatedAt": "2026-08-17T15:17:34.047Z",
+  "generatedAt": "2026-08-17T17:21:28.333Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 151,
-  "clean": 148,
-  "defective": 3,
+  "clean": 150,
+  "defective": 1,
   "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "pride-west-end-2026",
-      "title": "Pride",
-      "openingDate": "2026-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: london-box-office"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.32 vs local 84.63 (Δ0.31)"
-        }
-      ],
-      "missingFromProd": [
-        "london-box-office"
-      ],
-      "localCount": 21,
-      "deployedCount": 20
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: thestage"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.12 vs local 76.34 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [
-        "thestage"
-      ],
-      "localCount": 28,
-      "deployedCount": 27
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "title": "White Rabbit Red Rabbit",
-      "openingDate": "2026-06-09",
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.34 vs local 77.72 (Δ0.38)"
+          "detail": "deployed cs 77.87 vs local 76.72 (Δ1.15)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5
+      "localCount": 15,
+      "deployedCount": 15
     }
   ]
 }

@@ -110,17 +110,6 @@
     "queuedAt": "2026-08-16T14:51:04.859Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.6% (405/522)\noff-broadway: 47.9% (160/334)\nwest-end: 69.6% (412/592)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (591h)\nCelebrity Autobiography — nypost (421h)\nCelebrity Autobiography — thewrap (409h)\nCelebrity Autobiography — timeout (409h)\nCelebrity Autobiography — vulture (409h)\n… 230 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (409h)\nAladdin — ew (57h)\nThe Book of Mormon — usatoday (57h)\nBuena Vista Social Club — broadwaynews (57h)\nHeathers The Musical — dailybeast (57h)\n… 14 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T19:19:59.195Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:jeeves-takes-charge-west-end-2026",
     "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jeeves-takes-charge-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
@@ -218,5 +207,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-17T13:10:08.867Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 78.3% (398/508)\noff-broadway: 46.9% (160/341)\nwest-end: 69.8% (410/587)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (79h)\nA Midsummer Night's Dream - Globe — telegraph (79h)\nA Midsummer Night's Dream - Globe — thestage (79h)\nA Midsummer Night's Dream - Globe — times-uk (79h)\nA Midsummer Night's Dream — financialtimes (79h)\n… 205 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (79h)\n& Juliet — nydailynews (79h)\nThe Book of Mormon — usatoday (79h)\nBuena Vista Social Club — broadwaynews (79h)\nBuena Vista Social Club — nydailynews (79h)\n… 30 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-17T17:21:25.972Z"
   }
 ]
