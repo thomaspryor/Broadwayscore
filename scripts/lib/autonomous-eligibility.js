@@ -189,6 +189,33 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  // The gate itself (2026-08-17). Every file above is refused because
+  // CLAUDE.md rule 12.7 requires scoring-delta.js to run before the change
+  // ships — but scoring-delta.js was itself self-servable, so an unattended
+  // agent could weaken the check that guards all of them. Found by executing
+  // isCodeDiffAllowed() against each path rather than reading the list; the
+  // drift guard below only asserts watchlist ⊆ refused, so it could never have
+  // caught the gate's own absence.
+  'scripts/scoring-delta.js',
+  'scripts/test-temporal-override-regression.js',
+  // The single sanctioned reader for external score claims (CLAUDE.md rule 3).
+  // Divergence here changes what the site TELLS people its scores are, without
+  // touching how any score is computed — so none of the watchlists above cover
+  // it, and shipped copy has silently diverged through this path before.
+  'scripts/lib/canonical-critic-scores.ts',
+  // Rule 18's own scope definition (code-review, 2026-08-17). infra-review-scope.js
+  // is the single list of paths requiring /second-opinion before a first edit,
+  // enforced by infra-plan-review-gate.sh. An agent that shrinks it exempts the
+  // dispatch layer, spend guards and the review gates from pre-implementation
+  // review — the same self-serving class as the gates above.
+  'scripts/lib/infra-review-scope.js',
+  // Neutering a gate without editing it (code-review, 2026-08-17). Denying
+  // scoring-delta.js protects the entry point, not its helpers. scoring-delta.js
+  // opens with `if (hasHelpFlag(process.argv.slice(2))) { print USAGE; return; }`
+  // and hasHelpFlag lives here. Widen that predicate — say, to match empty argv —
+  // and the rule-12.7 command `node scripts/scoring-delta.js` prints usage and
+  // exits 0: a green gate that ran nothing, with no denied path touched.
+  'scripts/lib/cli-help.js',
 ]);
 
 // Prefix/pattern exclusions.
@@ -215,7 +242,7 @@ function isPathAllowed(file) {
   // Exclusions always win.
   if (EXCLUDED_FILES.has(f)) return false;
   if (EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
-  if (/-gate\.js$/.test(f)) return false; // CI catastrophe-floor gates
+  if (/-gate\.(js|mjs|cjs|ts)$/.test(f)) return false; // CI catastrophe-floor gates (any ext)
   // Allows.
   if (TIER1_ALLOW_FILES.has(f)) return true;
   return TIER1_ALLOW_PREFIXES.some(p => f.startsWith(p));
@@ -311,7 +338,7 @@ function isCodePathAllowed(file) {
   if (TIER3_EXCLUDED_FILES.has(f)) return false;
   if (TIER3_EXCLUDED_EXTRA_FILES.has(f)) return false;
   if (TIER3_EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
-  if (/-gate\.js$/.test(f)) return false;         // CI catastrophe-floor gates
+  if (/-gate\.(js|mjs|cjs|ts)$/.test(f)) return false; // CI catastrophe-floor gates (any ext)
   const base = f.slice(f.lastIndexOf('/') + 1);
   if (base.endsWith('.js') && TIER3_EXCLUDED_BASENAME_RE.test(base)) return false;
   // Manifests are refused by BASENAME anywhere, not just repo root — the
@@ -334,7 +361,7 @@ function isCodeDiffAllowed(files) {
 // module as the predicates so they cannot drift.
 function describeScope(tier) {
   if (tier === 3) {
-    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). Under scripts/, only .js/.mjs/.cjs/.ts/.tsx files are in scope — other extensions (.py, .sh, .json, ...) have no check the loop can ever run, so they're refused before anything is spent, not failed after. EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; the scoring watchlist files, scripts/lib/scraper.js, and any *-gate.js CI gate. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
+    return `Tier 3 (code): may edit src/** and scripts/**, plus everything Tier 1 allows (tests/**, docs/**, memory/**, and the enumerated leaf files incl. scripts/bsc-next.js + its test, which stay editable despite the scripts/bsc- exclusion below). Under scripts/, only .js/.mjs/.cjs/.ts/.tsx files are in scope — other extensions (.py, .sh, .json, ...) have no check the loop can ever run, so they're refused before anything is spent, not failed after. EXCLUDED no matter what a card says — prefixes: ${TIER3_EXCLUDED_PREFIXES.join(', ')}; dependency/deploy manifests anywhere (package.json, package-lock.json, next.config.js, tsconfig.json, vercel.json, middleware.ts); files: ${[...TIER3_EXCLUDED_EXTRA_FILES].join(', ')}, tests/fixtures/triage-calibration.json; any scripts file whose name mentions email/broadcast/send-; any *-gate.{js,mjs,cjs,ts} CI gate; and these exact files: ${[...EXCLUDED_FILES].join(', ')}. It also cannot: make product or business decisions; send email; talk to humans; run expensive backfills.`;
   }
   const allowed = [...TIER1_ALLOW_PREFIXES.map(p => `${p}**`), ...TIER1_ALLOW_FILES];
   return `Tier 1: may only edit ${allowed.join(', ')}. It cannot: touch src/, data/, workflows, scraping/scoring/audit infra; make product or business decisions; send email; talk to humans; run expensive backfills.`;
