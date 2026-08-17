@@ -404,7 +404,11 @@ async function main() {
   console.error(`  chars outcome      ${volume.totals.outcome.toLocaleString()}`);
   console.error(`  chars keyFiles     ${volume.totals.keyFiles.toLocaleString()}`);
   console.error(`  chars body         ${volume.totals.body.toLocaleString()}`);
-  console.error(`  overflow markers left in stitched fields: ${volume.withOverflowMarker}`);
+  console.error(`  fields the EXPORTER left truncated: ${volume.exportBugs.length}`);
+  console.error(
+    `  fields truncated ON THE BOARD (no body section exists to recover): ${volume.sourceMissing.length}` +
+      (volume.sourceMissing.length ? ' — see manifest.volume.sourceMissing' : '')
+  );
   if (unknownBlockTypes.size) {
     console.error(`  ⚠ unknown block types: ${[...unknownBlockTypes].join(', ')}`);
   }

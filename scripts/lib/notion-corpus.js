@@ -95,9 +95,22 @@ function reassembleField(propertyText, children, field) {
   for (let i = startIdx + 1; i < list.length; i++) {
     const b = list[i];
     if (isAutoHeading(b)) break;
-    if (b && b.type === 'paragraph') {
-      parts.push(((b.paragraph && b.paragraph.rich_text) || []).map((t) => t.plain_text).join(''));
-    }
+    // EVERY text-bearing block, not just `paragraph`.
+    //
+    // notion-brain.js writes these sections as paragraphs, so paragraph-only
+    // matched what it produces — but the real board disagrees. On the 4,985-page
+    // export, cards edited in the Notion UI (or written before the current
+    // chunker) carry heading_2 / heading_3 / bulleted_list_item /
+    // numbered_list_item inside an auto section. e.g.
+    // 34b637c5-416f-81b7-9f44-fa620825d128's [auto:notes] section is one 1,870-char
+    // heading_2 plus a 956-char bulleted_list_item and NOT ONE paragraph — so the
+    // paragraph-only pass collected nothing, fell back to the truncated preview,
+    // and the archive silently lost the whole section.
+    //
+    // blockPlainText also descends nothing here on purpose: children are handled
+    // by the caller's tree, and an auto section is flat in practice.
+    const text = blockPlainText(b);
+    if (text) parts.push(text);
   }
   return parts.length ? parts.join('\n') : s;
 }
@@ -286,18 +299,83 @@ function countBlocks(blocks) {
  * still exports the right NUMBER of cards, and only the character volume
  * moves. Counts the stitched `fields` values, not the property previews.
  */
+/**
+ * Is this value STILL a truncated preview?
+ *
+ * ENDS-with, not contains. notion-brain.js appends OVERFLOW_NOTE to the end of
+ * the preview, so a truncated value always terminates in it — while a fully
+ * reassembled value can legitimately CONTAIN the string anywhere, because this
+ * board has cards that discuss the overflow mechanism itself and quote the
+ * marker in their prose. Measured on the real 4,985-page export: a `contains`
+ * test flagged 14 fields, of which 4 were complete cards ending in ordinary
+ * sentences. Those 4 false alarms would have failed a correct export — the
+ * kind of cry-wolf that teaches the next reader to wave the verifier through.
+ */
+function isStillTruncated(text) {
+  const s = String(text || '').trimEnd();
+  if (!s) return false;
+  const at = s.lastIndexOf(OVERFLOW_MARKER_SUBSTR);
+  if (at === -1) return false;
+  // Nothing but the marker's own closing bracket may follow it.
+  return /^[^\]]*\]?$/.test(s.slice(at + OVERFLOW_MARKER_SUBSTR.length));
+}
+
+/**
+ * Why is a field still truncated?
+ *
+ *   'export-bug'     — the page body HAS the matching `[auto:<key>] full
+ *                      content` section and we failed to stitch it. Our fault,
+ *                      recoverable, must fail the run.
+ *   'source-missing' — no such section exists on the page. notion-brain wrote
+ *                      the preview+marker into the property and its body write
+ *                      never landed, so the full text is not on the board at
+ *                      all. No exporter can recover it; failing the run over it
+ *                      would make the export permanently unverifiable.
+ *
+ * Confirmed against the live board: of the 10 genuinely-truncated fields in the
+ * real export, some pages have an entirely empty body and others carry only the
+ * OTHER field's section.
+ */
+function classifyTruncation(record, field) {
+  const stored = (record.fields || {})[field];
+  if (!isStillTruncated(stored)) return null;
+  const sectionKey = FIELD_TO_SECTION_KEY[field];
+  const blocks = (record.body && record.body.blocks) || [];
+
+  // The precise question is not "does a section heading exist" — a section can
+  // exist and its own content can itself be a marked, truncated value (a
+  // prepend cycle that read a preview and wrote it back). The question is
+  // whether ANY better text is recoverable from the blocks we archived. If
+  // re-deriving from the record's own raw body produces something that is no
+  // longer truncated, we stored the wrong thing and that is our bug. If it does
+  // not, the board's own copy is truncated and no exporter can do better.
+  const rederived = reassembleField(stored, blocks, sectionKey);
+  return isStillTruncated(rederived) ? 'source-missing' : 'export-bug';
+}
+
 function charVolume(records) {
   const totals = { notes: 0, outcome: 0, keyFiles: 0, body: 0, properties: 0 };
-  let withOverflowMarker = 0;
+  const exportBugs = [];
+  const sourceMissing = [];
   for (const r of records) {
-    for (const f of OVERFLOWABLE_FIELDS) totals[f] += ((r.fields || {})[f] || '').length;
+    for (const f of OVERFLOWABLE_FIELDS) {
+      totals[f] += ((r.fields || {})[f] || '').length;
+      const why = classifyTruncation(r, f);
+      if (why === 'export-bug') exportBugs.push({ id: r.id, field: f });
+      else if (why === 'source-missing') sourceMissing.push({ id: r.id, field: f });
+    }
     totals.body += (((r.body || {}).text) || '').length;
     for (const v of Object.values(r.properties || {})) totals.properties += String(v || '').length;
-    if (OVERFLOWABLE_FIELDS.some((f) => String((r.fields || {})[f] || '').includes(OVERFLOW_MARKER_SUBSTR))) {
-      withOverflowMarker++;
-    }
   }
-  return { totals, records: records.length, withOverflowMarker };
+  return {
+    totals,
+    records: records.length,
+    // Kept as the headline number, but it now counts only genuine truncation we
+    // could have prevented.
+    withOverflowMarker: exportBugs.length,
+    exportBugs,
+    sourceMissing,
+  };
 }
 
 // --- verification -----------------------------------------------------------
@@ -317,7 +395,7 @@ function charVolume(records) {
  *
  * @returns {{ok: boolean, checks: Array<{name, ok, detail}>, volume: object}}
  */
-function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0.02, livePageCount = null }) {
+function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0.02, livePageIds = null }) {
   const checks = [];
   const add = (name, ok, detail) => checks.push({ name, ok, detail });
   const volume = charVolume(records);
@@ -337,9 +415,25 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
   // contains the marker by definition, and keeping the raw values is the
   // recovery path if any extraction rule here turns out to be wrong.
   add(
-    'no reassembled field is still a truncated preview',
-    volume.withOverflowMarker === 0,
-    `${volume.withOverflowMarker} record(s) still carry the overflow marker in fields`
+    'no field was left truncated by the exporter',
+    volume.exportBugs.length === 0,
+    volume.exportBugs.length
+      ? `${volume.exportBugs.length}: ${volume.exportBugs.slice(0, 5).map((e) => `${e.id}/${e.field}`).join(', ')}`
+      : 'none — every page with a body section had it stitched'
+  );
+  // Reported, never failed. These are fields whose overflow text is not on the
+  // Notion board at all (the property carries the marker but no matching body
+  // section exists), so no export can recover them and failing here would make
+  // the corpus permanently unverifiable for a loss that predates it. The
+  // operator still needs the list: it is the definitive record of what Notion
+  // itself lost before being retired.
+  add(
+    'unrecoverable-at-source fields are listed, not hidden',
+    true,
+    volume.sourceMissing.length
+      ? `${volume.sourceMissing.length} field(s) truncated on the BOARD with no body section to recover from: ` +
+        volume.sourceMissing.map((e) => `${e.id}/${e.field}`).join(', ')
+      : 'none'
   );
 
   if (manifest) {
@@ -357,11 +451,25 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
     );
   }
 
-  if (livePageCount !== null) {
+  if (livePageIds !== null) {
+    // Set containment, NOT equality. The export takes ~60 minutes against a
+    // board that gains cards continuously (5 appeared during the real run, four
+    // of them filed by the session doing the export), so `live === exported`
+    // can never hold and asserting it would make the corpus permanently
+    // unverifiable. What actually matters is that nothing the export CLAIMED
+    // has since vanished — a page in the corpus that no longer exists live
+    // would mean the export invented or misread it.
+    const live = new Set(livePageIds);
+    const missing = records.map((r) => r.id).filter((id) => !live.has(id));
     add(
-      'record count matches a live re-count of the board',
-      livePageCount === records.length,
-      `live ${livePageCount} vs exported ${records.length}`
+      'every exported page still exists on the board',
+      missing.length === 0,
+      missing.length ? `${missing.length} exported id(s) not found live: ${missing.slice(0, 5).join(', ')}` : 'all present'
+    );
+    add(
+      'cards created after the export are reported, not failed',
+      true,
+      `${live.size - records.filter((r) => live.has(r.id)).length} card(s) added to the board since the export started`
     );
   }
 
@@ -390,6 +498,8 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
 
 module.exports = {
   verifyCorpus,
+  isStillTruncated,
+  classifyTruncation,
   BODY_HEADING_PREFIX,
   BODY_HEADING_SUFFIX,
   OVERFLOWABLE,
