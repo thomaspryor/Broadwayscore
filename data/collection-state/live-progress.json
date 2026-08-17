@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-17T09:15:28.400Z",
-  "processed": 23,
-  "failed": 77,
-  "successRate": "23.0%",
+  "updatedAt": "2026-08-17T09:20:07.080Z",
+  "processed": 28,
+  "failed": 122,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-17T08:56:52.570Z",
@@ -25,6 +25,12 @@
       "t": "2026-08-17T08:56:53.046Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T09:17:27.933Z",
+      "event": "bb-session",
+      "session": "276da75f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
