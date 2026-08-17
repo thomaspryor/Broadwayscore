@@ -335,3 +335,34 @@ test('PR supervisor — every verdict carries the facts it rests on', async (t) 
     }
   });
 });
+
+test('PR supervisor — the digest names the reason that DROVE the verdict', async (t) => {
+  await t.test('a draft that also escalates does not headline "draft"', () => {
+    // Found by running the tool against all 22 live PRs: #597 is a draft AND a
+    // mixed diff. It escalated, but the digest printed reasons[0] — "draft" — so
+    // the owner saw a hold-level reason presented as the decision they must make.
+    const pr = green(PR592, { isDraft: true, evidence: pass(PR592.headSha) });
+    const r = only(assessPullRequests([pr], { allOpenPrs: ALL_OPEN }), 592);
+    assert.equal(r.verdict, 'escalate');
+    assert.ok(r.reasons.some((x) => /draft/.test(x)), 'draft is still reported');
+    assert.ok(!r.decidingReasons.some((x) => /^draft$/.test(x)),
+      'but draft is not a DECIDING reason — it only raised a hold');
+    assert.ok(r.decidingReasons.every((x) => /mixed diff|same file/.test(x)));
+
+    const text = renderSupervisorDigest([r], { dryRun: true });
+    assert.ok(!/#592 — draft/.test(text), 'the digest line must not headline the hold-level reason');
+    assert.match(text, /#592 — mixed diff/);
+  });
+
+  await t.test('decidingReasons is always a non-empty subset of reasons', () => {
+    const rows = assessPullRequests(
+      [green(PR596, { evidence: pass(PR596.headSha) }), green(PR594),
+        green(PR593, { evidence: pass(PR593.headSha) }), green(PR592, { evidence: pass(PR592.headSha) })],
+      { allOpenPrs: ALL_OPEN },
+    );
+    for (const r of rows) {
+      for (const d of r.decidingReasons) assert.ok(r.reasons.includes(d));
+      if (r.verdict !== 'merge') assert.ok(r.decidingReasons.length >= 1, `#${r.number} has no deciding reason`);
+    }
+  });
+});

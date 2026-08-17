@@ -211,9 +211,16 @@ function assessPullRequests(prs, opts = {}) {
   for (const pr of prs || []) {
     const files = pr.files || [];
     const reasons = [];
+    const graded = [];
     let verdict = 'merge';
+    // Each reason remembers the severity it raised. The digest shows only the
+    // reasons that actually DROVE the verdict: printing reasons[0] surfaced
+    // "draft" (a hold) as the thing needing an owner decision on an escalated
+    // PR — a lesser reason wearing the headline. Caught by running the tool
+    // against all 22 live PRs, 2026-08-17.
     const raise = (v, reason) => {
       reasons.push(reason);
+      graded.push({ verdict: v, reason });
       if (severityOf(v) > severityOf(verdict)) verdict = v;
     };
 
@@ -286,6 +293,12 @@ function assessPullRequests(prs, opts = {}) {
       files: files.slice(),
       verdict,
       reasons,
+      // Every reason recorded AT the final verdict's severity — i.e. any of the
+      // findings that could have produced this verdict, not lower-severity noise.
+      // (Not "the single cause": two mixed-diff/collision findings can both sit at
+      // escalate, and either is a legitimate headline.) Guaranteed non-empty for
+      // any non-merge verdict, since the verdict can only come from a raise().
+      decidingReasons: graded.filter((g) => g.verdict === verdict).map((g) => g.reason),
       detail: reasons.length ? reasons.join(' | ') : 'all files allowed, checks green, evidence bound to this commit',
       refused: elig.refused || [],
       collidesWith,
@@ -319,7 +332,12 @@ function renderSupervisorDigest(verdicts, opts = {}) {
   }
   if (escalate.length) {
     lines.push(`  NEEDS A DECISION (${escalate.length}):`);
-    for (const r of escalate) lines.push(`    #${r.number} — ${r.reasons[0]}`);
+    for (const r of escalate) {
+      // decidingReasons is non-empty for every escalate (asserted in the tests);
+      // the fallback only covers a verdict object built by an older caller.
+      const headline = (r.decidingReasons && r.decidingReasons[0]) || r.reasons[0];
+      lines.push(`    #${r.number} — ${headline}`);
+    }
   }
   if (refuse.length) {
     lines.push(`  should be closed (${refuse.length}): ${refuse.map((r) => `#${r.number}`).join(', ')}`);
