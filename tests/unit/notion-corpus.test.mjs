@@ -388,7 +388,7 @@ test('verifyCorpus catches a board-side truncation, a duplicate id and a live-co
   });
   assert.equal(r4.ok, true, JSON.stringify(r4.checks.filter((c) => !c.ok), null, 1));
   assert.ok(
-    r4.checks.find((c) => c.name === 'cards created after the export are reported, not failed' && c.detail.includes('2'))
+    r4.checks.find((c) => c.name === 'live cards absent from this export are reported, not failed' && c.detail.includes('2'))
   );
 });
 

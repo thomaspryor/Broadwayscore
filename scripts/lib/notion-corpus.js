@@ -466,10 +466,15 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
       missing.length === 0,
       missing.length ? `${missing.length} exported id(s) not found live: ${missing.slice(0, 5).join(', ')}` : 'all present'
     );
+    // Reported, never failed — but named accurately. On a FULL run these are
+    // cards created during the ~60-minute export (five appeared during the real
+    // one). On a --limit run they are simply everything the run never reached.
+    // Calling both "created since" would misdescribe a smoke test by 4,980.
     add(
-      'cards created after the export are reported, not failed',
+      'live cards absent from this export are reported, not failed',
       true,
-      `${live.size - records.filter((r) => live.has(r.id)).length} card(s) added to the board since the export started`
+      `${live.size - records.filter((r) => live.has(r.id)).length} live card(s) not in this export` +
+        (manifest && manifest.partial ? ' (expected — partial run)' : ' (created during the export)')
     );
   }
 
