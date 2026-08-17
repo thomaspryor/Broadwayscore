@@ -36,6 +36,16 @@ const path = require('path');
 const { detectContradictedFlagBasis } = require('./lib/contradicted-flag-basis');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `clear-contradicted-flag-basis.js — hand-adjudicated clear for card #1589's 13 records
+
+Usage:
+  node scripts/clear-contradicted-flag-basis.js              # dry-run
+  node scripts/clear-contradicted-flag-basis.js --apply      # write to disk
+`;
+
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const APPLY = process.argv.includes('--apply');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
