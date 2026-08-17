@@ -56,32 +56,66 @@ async function gql(query) {
   return out.data;
 }
 
-// Sessions are the authoritative view: an issue can carry a delegate with no
-// session at all, which is its own failure mode.
-const QUERY = `query {
-  agentSessions(first: 50) {
+// Sessions come back newest-first, so WITHOUT paging the longest-stalled
+// delegations are the first to fall off the page — the alarm would go quiet
+// exactly as a problem got worse. BRO-263, stalled five days, was already the
+// last node on a 50-item page when this was written.
+//
+// The activity fragments must cover every union member. Any type not spread
+// here arrives with an empty body, and an empty body used to be scored as
+// substantive work, so a crashed agent read as healthy.
+const SESSION_PAGE = (after) => `query {
+  agentSessions(first: 50${after ? `, after: "${after}"` : ''}) {
+    pageInfo { hasNextPage endCursor }
     nodes {
       createdAt status
-      issue { identifier state { name } delegate { displayName } }
+      issue { identifier state { name type } delegate { displayName } }
       activities { nodes { createdAt content {
         __typename
         ... on AgentActivityThoughtContent { body }
         ... on AgentActivityResponseContent { body }
         ... on AgentActivityActionContent { action }
+        ... on AgentActivityElicitationContent { body }
+        ... on AgentActivityErrorContent { body }
       } } }
     }
   }
 }`;
 
+// Bounded so a runaway workspace cannot loop forever; 10 pages = 500 sessions.
+const MAX_PAGES = 10;
+
+async function fetchAllSessions() {
+  const nodes = [];
+  let after = null;
+  let pages = 0;
+  let truncated = false;
+  for (;;) {
+    const page = (await gql(SESSION_PAGE(after))).agentSessions;
+    nodes.push(...page.nodes);
+    pages += 1;
+    if (!page.pageInfo.hasNextPage) break;
+    if (pages >= MAX_PAGES) { truncated = true; break; }
+    after = page.pageInfo.endCursor;
+  }
+  return { nodes, truncated };
+}
+
 async function main() {
-  const data = await gql(QUERY);
+  const { nodes: sessionNodes, truncated } = await fetchAllSessions();
+  if (truncated) {
+    console.warn(`WARN stopped after ${MAX_PAGES} pages — older sessions were not examined`);
+  }
 
   // Group sessions by issue, keeping only issues still delegated and open.
   const byIssue = new Map();
-  for (const s of data.agentSessions.nodes) {
+  for (const s of sessionNodes) {
     const iss = s.issue;
     if (!iss || !iss.delegate) continue;
-    if (['Done', 'Canceled', 'Duplicate'].includes(iss.state?.name)) continue;
+    // Filter on state.TYPE, not name: names are user-editable in Linear, so
+    // renaming "Done" to "Shipped" would drag every finished issue back into
+    // scope and alarm on it every morning forever.
+    if (['completed', 'canceled', 'duplicate'].includes(iss.state?.type)) continue;
     if (!byIssue.has(iss.identifier)) {
       byIssue.set(iss.identifier, { identifier: iss.identifier, delegateName: iss.delegate.displayName, sessions: [] });
     }
@@ -98,8 +132,13 @@ async function main() {
 
   const { verdicts, alarm } = assessDelegations([...byIssue.values()]);
 
+  // Atomic write: writeFileSync truncates in place, so the digest reading at
+  // 07:30 could catch a torn file — and unparseable status renders as silence,
+  // which is the failure this whole script exists to prevent.
   fs.mkdirSync(path.dirname(STATUS_PATH), { recursive: true });
-  fs.writeFileSync(STATUS_PATH, `${JSON.stringify({ at: new Date().toISOString(), alarm, verdicts }, null, 2)}\n`);
+  const tmp = `${STATUS_PATH}.tmp`;
+  fs.writeFileSync(tmp, `${JSON.stringify({ at: new Date().toISOString(), alarm, truncated, verdicts }, null, 2)}\n`);
+  fs.renameSync(tmp, STATUS_PATH);
 
   if (args.includes('--json')) {
     console.log(JSON.stringify({ alarm, verdicts }, null, 2));
