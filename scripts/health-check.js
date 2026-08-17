@@ -1283,6 +1283,14 @@ function checkQuality() {
     // rather than paging. An error is reserved for the detector itself going
     // dark (stale/missing snapshot) — see that script's header for the full
     // false-positive-rate discussion before tightening this to 'error'.
+    //
+    // Keys off newSinceLastRun, NOT totalViolations (ship-check/Codex
+    // adversarial finding): with an 800+ known baseline, a raw-total-driven
+    // digest would warn every single day forever — indistinguishable from
+    // always passing, and trains the owner to ignore it. The script diffs
+    // each run's violation-key set against the previous snapshot; only a
+    // NEW (showId+filename) hit since last run trips the warn. totalViolations
+    // still rides in the message as informational context, not the trigger.
     runCheck('Data quality: cv-wrongproduction lifetime sweep', () => {
       const name = 'Data quality: cv-wrongproduction lifetime sweep';
       const snapFile = path.join(AUDIT_DIR, 'cv-wrongproduction-lifetime.json');
@@ -1294,10 +1302,10 @@ function checkQuality() {
       if (age > 48) {
         return { name, status: 'error', message: `Lifetime-sweep snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: 'Check the "cv-wrongproduction lifetime sweep" step in data-health-check.yml' };
       }
-      if (snap.totalViolations > 0) {
-        return { name, status: 'warn', message: `${snap.totalViolations} unhandled CV.wrongProduction review(s) across ${snap.showsWithViolations} show(s) (${formatAge(age)} ago)`, hint: 'node scripts/audit-cv-wrongproduction-lifetime.js --json to triage; most will be intentional priorRuns coverage, but spot-check for real bypasses' };
+      if (snap.newSinceLastRun > 0) {
+        return { name, status: 'warn', message: `${snap.newSinceLastRun} NEW unhandled CV.wrongProduction review(s) since last run (${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${formatAge(age)} ago)`, hint: 'node scripts/audit-cv-wrongproduction-lifetime.js --json to triage; check newViolationKeys in the snapshot for which ones are new' };
       }
-      return { name, status: 'pass', message: `No unhandled violations across ${snap.scanned} show(s) (${formatAge(age)} ago)` };
+      return { name, status: 'pass', message: `No new unhandled violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
     }),
 
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall

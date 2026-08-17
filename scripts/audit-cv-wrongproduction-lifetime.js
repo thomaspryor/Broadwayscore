@@ -38,6 +38,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
 const cvWrongProductionUnhandled = require('./lib/opening-night-checks/cv-wrongproduction-unhandled.check.js');
 
@@ -73,6 +74,14 @@ version of this check already surfaces as a low-urgency digest-disposition
 alert (see data/audit/alert-ledger.json), not a real-time page. This script
 runs it corpus-wide so that population is visible at all for older shows, but
 does not hard-fail CI on it (see data-health-check.yml step comment).
+
+The digest's own warn/pass verdict (health-check.js) keys off newSinceLastRun
+in the snapshot below, not totalViolations — with 800+ known-baseline hits, a
+raw-total-driven digest would warn every single day forever and train the
+owner to ignore it (the exact alert-fatigue failure this design is trying to
+avoid at the paging layer). Delta-vs-previous-snapshot is what keeps the
+signal meaningful: silence when nothing changed, a warn only when a violation
+key (showId+filename) that wasn't in the last run's snapshot shows up.
 `;
 
 const ROOT = path.resolve(__dirname, '..');
@@ -80,17 +89,20 @@ const SNAPSHOT_PATH = path.join(ROOT, 'data', 'audit', 'cv-wrongproduction-lifet
 
 function loadReviewsDoc(reviewsPath) {
   const doc = {};
-  let raw;
-  try {
-    raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
-  } catch {
-    return doc;
-  }
+  const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
   for (const r of raw.reviews || []) {
     if (!doc[r.showId]) doc[r.showId] = [];
     doc[r.showId].push(r);
   }
   return doc;
+}
+
+function violationKeys(hits) {
+  const keys = new Set();
+  for (const h of hits) {
+    for (const v of h.violations) keys.add(`${h.showId}::${v.filename}`);
+  }
+  return keys;
 }
 
 function main() {
@@ -114,13 +126,28 @@ function main() {
   }
   if (showArg) shows = shows.filter((s) => s.id === showArg);
 
-  const reviewsDoc = loadReviewsDoc(REVIEWS_PATH);
+  let reviewsDoc;
+  try {
+    reviewsDoc = loadReviewsDoc(REVIEWS_PATH);
+  } catch (e) {
+    // Fail loud, not vacuously pass: a missing/malformed reviews.json makes
+    // every show read as "No shipped reviews — skipping" in the underlying
+    // check, which would silently report a clean corpus-wide scan.
+    console.error(`FAIL: could not read ${REVIEWS_PATH}: ${e.message}`);
+    process.exit(1);
+  }
   const context = { reviewTextsRoot: REVIEW_TEXTS_DIR, reviewsDoc };
 
-  let scanned = 0;
+  // "scanned" reflects directories actually present on disk (mirrors
+  // audit-flag-wipe-signature.js), not how many shows.json entries happen to
+  // match one — a near-empty review-texts checkout with a single matching
+  // dir would otherwise satisfy the zero-only corpus-scan guard below.
+  const scanned = showArg
+    ? (fs.existsSync(path.join(REVIEW_TEXTS_DIR, showArg)) ? 1 : 0)
+    : listShowDirs(REVIEW_TEXTS_DIR, { silent: true }).length;
+
   const hits = [];
   for (const show of shows) {
-    if (fs.existsSync(path.join(REVIEW_TEXTS_DIR, show.id))) scanned++;
     const result = cvWrongProductionUnhandled.run(show, context);
     if (result.severity === 'error') {
       hits.push({
@@ -142,8 +169,21 @@ function main() {
   }
 
   const totalViolations = hits.reduce((n, h) => n + h.violations.length, 0);
+  const currentKeys = violationKeys(hits);
 
+  let newSinceLastRun = currentKeys.size;
+  let newViolationKeys = [...currentKeys];
   if (!showArg && !argv.includes('--no-snapshot')) {
+    let previousKeys = new Set();
+    try {
+      const prev = JSON.parse(fs.readFileSync(SNAPSHOT_PATH, 'utf8'));
+      previousKeys = new Set(prev.violationKeys || []);
+    } catch {
+      // No prior snapshot (first run) — every current hit counts as "new".
+    }
+    newViolationKeys = [...currentKeys].filter((k) => !previousKeys.has(k));
+    newSinceLastRun = newViolationKeys.length;
+
     try {
       fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
       fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify({
@@ -151,6 +191,9 @@ function main() {
         scanned,
         showsWithViolations: hits.length,
         totalViolations,
+        newSinceLastRun,
+        newViolationKeys: newViolationKeys.slice(0, 50),
+        violationKeys: [...currentKeys],
         hits,
       }, null, 2) + '\n');
     } catch (e) {
@@ -163,10 +206,11 @@ function main() {
       scanned,
       showsWithViolations: hits.length,
       totalViolations,
+      newSinceLastRun,
       hits,
     }, null, 2));
   } else {
-    console.log(`cv-wrongproduction-unhandled lifetime sweep (#1731): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s)).`);
+    console.log(`cv-wrongproduction-unhandled lifetime sweep (#1731): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
     for (const h of hits) {
       console.log(`\n-- ${h.title} (${h.showId}), opened ${h.openingDate || 'unknown'} --`);
       console.log(`  ${h.message.split('\n').join('\n  ')}`);
