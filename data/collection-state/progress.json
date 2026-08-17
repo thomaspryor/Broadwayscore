@@ -14,7 +14,9 @@
     "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
     "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
-    "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json"
+    "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
+    "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -118,7 +120,15 @@
     "twelfth-night-off-west-end-2026/standard--unknown.json",
     "twelfth-night-off-west-end-2026/telegraph--claire-allfree.json",
     "twelfth-night-off-west-end-2026/theatrecat--unknown.json",
-    "twelfth-night-off-west-end-2026/times-uk--rachel-halliburton.json"
+    "twelfth-night-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "twelfth-night-off-west-end-2026/times-uk--unknown.json",
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--alex-wood.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--alun-hood.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "tao-of-glass-west-end-2026/tribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -134,10 +144,14 @@
       "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
       "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
-      "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json"
+      "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
+      "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
+      "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/twelfth-night-off-west-end-2026/times-uk--unknown.json"
+    ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
     ],
@@ -152,7 +166,7 @@
     ]
   },
   "startTime": "2026-08-17T16:43:11.334Z",
-  "lastProcessed": "twelfth-night-off-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "tao-of-glass-west-end-2026/tribune--unknown.json",
   "log": [
     {
       "t": "2026-08-17T19:33:04.839Z",
@@ -164,6 +178,17 @@
       "t": "2026-08-17T19:33:05.915Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T19:46:11.603Z",
+      "event": "bb-session",
+      "session": "f4d56fe3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-"
+    },
+    {
+      "t": "2026-08-17T19:46:12.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

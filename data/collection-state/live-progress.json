@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-17T19:45:14.161Z",
-  "processed": 15,
-  "failed": 102,
-  "successRate": "12.8%",
+  "updatedAt": "2026-08-17T19:47:42.125Z",
+  "processed": 17,
+  "failed": 110,
+  "successRate": "13.4%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-17T19:33:04.839Z",
@@ -25,6 +25,17 @@
       "t": "2026-08-17T19:33:05.915Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T19:46:11.603Z",
+      "event": "bb-session",
+      "session": "f4d56fe3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-"
+    },
+    {
+      "t": "2026-08-17T19:46:12.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
