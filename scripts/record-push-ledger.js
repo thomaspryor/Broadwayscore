@@ -64,6 +64,14 @@ const MAX_ATTEMPTS = 4;
 // CANONICAL-REPO GATE note. Matches https/ssh forms of the origin URL.
 const CANONICAL_ORIGIN_RE = /[:/]Broadwayscore(\.git)?$/i;
 
+// Data-repo clones embed a live GitHub token in the remote URL
+// (https://x-access-token:<token>@github.com/...) — strip the userinfo
+// segment before any origin URL reaches a log. task #1742.
+function redactRemoteUrl(url) {
+  if (!url) return url;
+  return url.replace(/\/\/[^@/]+@/, '//');
+}
+
 function originUrl(cwd) {
   try {
     return execFileSync('git', ['config', '--get', 'remote.origin.url'],
@@ -116,7 +124,7 @@ async function main() {
 
   const cwd = process.cwd();
   if (process.env.PUSH_LEDGER_ANY_ORIGIN !== '1' && !CANONICAL_ORIGIN_RE.test(originUrl(cwd))) {
-    console.log(`record-push-ledger: skipping — cwd origin (${originUrl(cwd) || 'none'}) is not the canonical Broadwayscore repo (data-repo/fixture pushes are not ledgered; the checker only monitors the main repo)`);
+    console.log(`record-push-ledger: skipping — cwd origin (${redactRemoteUrl(originUrl(cwd)) || 'none'}) is not the canonical Broadwayscore repo (data-repo/fixture pushes are not ledgered; the checker only monitors the main repo)`);
     process.exit(0);
   }
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -137,7 +145,11 @@ async function main() {
   process.exit(0); // always fail open — this is best-effort telemetry, not the payload push
 }
 
-main().catch(err => {
-  console.error(`record-push-ledger: fatal: ${err.message}`);
-  process.exit(0); // fail open
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error(`record-push-ledger: fatal: ${err.message}`);
+    process.exit(0); // fail open
+  });
+}
+
+module.exports = { redactRemoteUrl };
