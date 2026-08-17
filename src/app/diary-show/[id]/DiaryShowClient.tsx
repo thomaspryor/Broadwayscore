@@ -202,7 +202,14 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         )}
       </div>
 
-      <ShowPageWatchlistButton showId={show.id} />
+      <ShowPageWatchlistButton
+        showId={show.id}
+        title={show.title}
+        slug={show.slug}
+        diaryOnly
+        category={show.category}
+        venue={show.venue}
+      />
 
       {ratePanelOpen && (
         <RatingEditor
