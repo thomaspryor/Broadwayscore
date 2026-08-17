@@ -6,6 +6,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   resolveShowtimeDefault,
+  isKnownDarkForSlot,
   mondayOfWeekYyyymmdd,
   weekdayIndexMonFirst,
 } from '../../src/lib/data-showtimes';
@@ -56,6 +57,43 @@ test('resolveShowtimeDefault reads the real scheduled time when the date IS cove
   }
   assert.ok(found, 'expected at least one scheduled performance in show-schedules.json');
   assert.equal(resolveShowtimeDefault(found!.showId, found!.date, found!.slot), found!.time);
+});
+
+test('isKnownDarkForSlot is false for an unknown show or an uncovered date', () => {
+  assert.equal(isKnownDarkForSlot('not-a-real-show-id', '2026-09-14', 'matinee'), false);
+  const anyShowId = Object.keys((scheduleData as { shows: Record<string, unknown> }).shows)[0];
+  assert.equal(isKnownDarkForSlot(anyShowId, '2031-01-06', 'evening'), false);
+});
+
+test('isKnownDarkForSlot is true only for a covered date whose slot is explicitly null — never for a slot that is actually scheduled', () => {
+  // resolveShowtimeDefault must never fabricate a curtain time for a
+  // confirmed-dark slot (e.g. the near-universal dark Monday) — that would
+  // silently export a calendar event for a performance that isn't happening.
+  const shows = (scheduleData as { shows: Record<string, { weeks: Record<string, { m: string | null; e: string | null }[]> }> }).shows;
+  let dark: { showId: string; date: string; slot: 'matinee' | 'evening' } | null = null;
+  let scheduledOnSameDay: { showId: string; date: string; slot: 'matinee' | 'evening' } | null = null;
+  outer:
+  for (const [showId, sched] of Object.entries(shows)) {
+    for (const [monday, week] of Object.entries(sched.weeks)) {
+      for (let i = 0; i < 7; i++) {
+        const day = week[i];
+        const date = addDaysToYyyymmdd(monday, i);
+        if (!dark) {
+          if (day.m === null) dark = { showId, date, slot: 'matinee' };
+          else if (day.e === null) dark = { showId, date, slot: 'evening' };
+        }
+        if (!scheduledOnSameDay) {
+          if (day.m) scheduledOnSameDay = { showId, date, slot: 'matinee' };
+          else if (day.e) scheduledOnSameDay = { showId, date, slot: 'evening' };
+        }
+        if (dark && scheduledOnSameDay) break outer;
+      }
+    }
+  }
+  assert.ok(dark, 'expected at least one explicitly-dark slot in show-schedules.json');
+  assert.equal(isKnownDarkForSlot(dark!.showId, dark!.date, dark!.slot), true);
+  assert.ok(scheduledOnSameDay, 'expected at least one actually-scheduled slot in show-schedules.json');
+  assert.equal(isKnownDarkForSlot(scheduledOnSameDay!.showId, scheduledOnSameDay!.date, scheduledOnSameDay!.slot), false);
 });
 
 const SHOW = {

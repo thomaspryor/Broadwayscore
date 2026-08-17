@@ -217,7 +217,10 @@ export default function MyShowsClient() {
   const mockUpdatePlannedDate = useCallback(async (showId: string, date: string | null) => {
     setMockData(prev => prev ? {
       ...prev,
-      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date } : w),
+      // Mirrors the real updatePlannedDate: always clears time_slot/curtain_time,
+      // not just on a clear-to-null — a resolved showtime carries a DIFFERENT
+      // date's schedule and must not survive a re-date (BRO-221 fix).
+      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date, time_slot: null, curtain_time: null } : w),
     } : prev);
   }, []);
   const mockUpdatePerformance = useCallback(async (showId: string, fields: Partial<Pick<WatchlistEntry, 'planned_date' | 'time_slot' | 'curtain_time'>>) => {

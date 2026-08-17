@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import DatePickerButton from './DatePickerButton';
-import { resolveShowtimeDefault } from '@/lib/data-showtimes';
+import { resolveShowtimeDefault, isKnownDarkForSlot } from '@/lib/data-showtimes';
 import { formatTime } from '@/lib/calendar';
 import type { WatchlistEntry } from '@/types/user';
 
@@ -37,17 +38,41 @@ interface ShowtimePickerProps {
  */
 export default function ShowtimePicker(props: ShowtimePickerProps) {
   const { showId, date, timeSlot, curtainTime, onSave, compact } = props;
-  const pickSlot = (slot: 'matinee' | 'evening') => {
-    const time = resolveShowtimeDefault(showId, date, slot);
-    onSave({ time_slot: slot, curtain_time: `${time}:00` });
+  // Guards against rapid Matinee→Evening→Custom taps racing each other —
+  // updatePerformance has no request sequencing, so 3 quick clicks fire 3
+  // concurrent PATCHes and whichever resolves last wins, not whichever was
+  // clicked last (ship-check finding, 2026-08-17). Blocking input for the
+  // duration of one save is simpler and safer than sequencing at the hook
+  // layer, which every other write in useWatchlist shares this same gap with.
+  const [saving, setSaving] = useState(false);
+  const guardedSave = async (fields: TimeFields) => {
+    setSaving(true);
+    try {
+      await onSave(fields);
+    } finally {
+      setSaving(false);
+    }
   };
-  const clear = () => onSave({ time_slot: null, curtain_time: null });
+  // "No data for this date" (common — bwayrush only covers a few weeks out)
+  // must NOT be treated the same as "confirmed no performance" (e.g. the
+  // near-universal dark Monday) — the former still gets a sensible generic
+  // default, the latter must not silently fabricate a fake curtain time for
+  // a show that isn't playing that day (ship-check finding, 2026-08-17).
+  const darkMatinee = isKnownDarkForSlot(showId, date, 'matinee');
+  const darkEvening = isKnownDarkForSlot(showId, date, 'evening');
+  const pickSlot = (slot: 'matinee' | 'evening') => {
+    if (slot === 'matinee' ? darkMatinee : darkEvening) return;
+    const time = resolveShowtimeDefault(showId, date, slot);
+    guardedSave({ time_slot: slot, curtain_time: `${time}:00` });
+  };
+  const clear = () => guardedSave({ time_slot: null, curtain_time: null });
 
   const compactPicker = (
     <CompactShowtimePicker
       timeSlot={timeSlot} curtainTime={curtainTime}
-      onPick={pickSlot} onSave={onSave} onClear={clear}
-      responsiveOnly={!compact}
+      onPick={pickSlot} onSave={guardedSave} onClear={clear}
+      responsiveOnly={!compact} saving={saving}
+      darkMatinee={darkMatinee} darkEvening={darkEvening}
     />
   );
   if (compact) return compactPicker;
@@ -56,23 +81,29 @@ export default function ShowtimePicker(props: ShowtimePickerProps) {
     <>
       <FullShowtimePicker
         timeSlot={timeSlot} curtainTime={curtainTime}
-        onPick={pickSlot} onSave={onSave} onClear={clear}
+        onPick={pickSlot} onSave={guardedSave} onClear={clear} saving={saving}
+        darkMatinee={darkMatinee} darkEvening={darkEvening}
       />
       {compactPicker}
     </>
   );
 }
 
-function FullShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear }: {
+function FullShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear, saving, darkMatinee, darkEvening }: {
   timeSlot: WatchlistEntry['time_slot'];
   curtainTime: string | null;
   onPick: (slot: 'matinee' | 'evening') => void;
   onSave: (fields: TimeFields) => void | Promise<void>;
   onClear: () => void;
+  saving: boolean;
+  darkMatinee: boolean;
+  darkEvening: boolean;
 }) {
   const pillBase = 'px-1.5 py-0.5 rounded text-[10px] font-medium border transition-colors whitespace-nowrap';
-  const pillClass = (active: boolean) =>
-    active
+  const pillClass = (active: boolean, dark: boolean) =>
+    dark
+      ? `${pillBase} text-gray-700 border-white/5 cursor-not-allowed line-through`
+      : active
       ? `${pillBase} bg-amber-400/20 text-amber-300 border-amber-400/40`
       : `${pillBase} text-gray-500 hover:text-gray-300 border-white/10 hover:border-white/20`;
 
@@ -82,25 +113,25 @@ function FullShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear }: 
 
   return (
     <div
-      className="hidden sm:flex items-center flex-wrap gap-1"
+      className={`hidden sm:flex items-center flex-wrap gap-1 transition-opacity ${saving ? 'opacity-50 pointer-events-none' : ''}`}
       // Scoped stopPropagation — these controls live inside link-wrapped
       // cards elsewhere in this feature; an unscoped one on the wrapping div
       // would also swallow clicks meant for other children.
       onClick={e => e.stopPropagation()}
     >
-      <button type="button" className={pillClass(timeSlot === 'matinee')} onClick={(e) => { e.preventDefault(); onPick('matinee'); }}>
+      <button type="button" disabled={darkMatinee} title={darkMatinee ? 'No matinee scheduled this day' : undefined} className={pillClass(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }}>
         Matinee
       </button>
-      <button type="button" className={pillClass(timeSlot === 'evening')} onClick={(e) => { e.preventDefault(); onPick('evening'); }}>
+      <button type="button" disabled={darkEvening} title={darkEvening ? 'No evening performance scheduled this day' : undefined} className={pillClass(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }}>
         Evening
       </button>
       <DatePickerButton
         type="time"
         value={timeSlot === 'custom' && curtainTime ? curtainTime.slice(0, 5) : ''}
         onChange={(val) => { if (val) onSave({ time_slot: 'custom', curtain_time: `${val}:00` }); }}
-        ariaLabel="Custom showtime"
+        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ' (selected)' : ''}`}
         wrapClassName="relative inline-block"
-        className={pillClass(timeSlot === 'custom')}
+        className={pillClass(timeSlot === 'custom', false)}
       >
         {customLabel}
       </DatePickerButton>
@@ -119,7 +150,7 @@ function FullShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear }: 
 }
 
 /** Icon-only row: sun (matinee) / moon (evening) / clock (custom) / clear. */
-function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear, responsiveOnly }: {
+function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear, responsiveOnly, saving, darkMatinee, darkEvening }: {
   timeSlot: WatchlistEntry['time_slot'];
   curtainTime: string | null;
   onPick: (slot: 'matinee' | 'evening') => void;
@@ -127,10 +158,13 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
   onClear: () => void;
   /** Only shown below `sm` — the sibling FullShowtimePicker takes over at `sm`+. */
   responsiveOnly?: boolean;
+  saving: boolean;
+  darkMatinee: boolean;
+  darkEvening: boolean;
 }) {
-  const iconBtn = (active: boolean) =>
+  const iconBtn = (active: boolean, dark: boolean) =>
     `w-4 h-4 flex items-center justify-center rounded transition-colors ${
-      active ? 'bg-amber-400/20 text-amber-300' : 'text-gray-500 hover:text-gray-300'
+      dark ? 'text-gray-700 cursor-not-allowed' : active ? 'bg-amber-400/20 text-amber-300' : 'text-gray-500 hover:text-gray-300'
     }`;
   const timeLabel = curtainTime
     ? formatTime(curtainTime.slice(0, 5))
@@ -138,27 +172,27 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
 
   return (
     <div
-      className={`showtime-compact flex items-center gap-0.5 mt-1 ${responsiveOnly ? 'sm:hidden' : ''}`}
+      className={`showtime-compact flex items-center gap-0.5 mt-1 transition-opacity ${responsiveOnly ? 'sm:hidden' : ''} ${saving ? 'opacity-50 pointer-events-none' : ''}`}
       onClick={e => e.stopPropagation()}
     >
-      <button type="button" className={iconBtn(timeSlot === 'matinee')} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={`Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={`Matinee${timeSlot === 'matinee' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkMatinee} className={iconBtn(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={darkMatinee ? 'Matinee (none scheduled this day)' : `Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={darkMatinee ? 'No matinee scheduled this day' : `Matinee${timeSlot === 'matinee' && curtainTime ? ` — ${timeLabel}` : ''}`}>
         <SunIcon />
       </button>
-      <button type="button" className={iconBtn(timeSlot === 'evening')} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={`Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={`Evening${timeSlot === 'evening' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkEvening} className={iconBtn(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={darkEvening ? 'Evening (none scheduled this day)' : `Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={darkEvening ? 'No evening performance scheduled this day' : `Evening${timeSlot === 'evening' && curtainTime ? ` — ${timeLabel}` : ''}`}>
         <MoonIcon />
       </button>
       <DatePickerButton
         type="time"
         value={timeSlot === 'custom' && curtainTime ? curtainTime.slice(0, 5) : ''}
         onChange={(val) => { if (val) onSave({ time_slot: 'custom', curtain_time: `${val}:00` }); }}
-        ariaLabel="Custom showtime"
+        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ` (selected${curtainTime ? ` — ${timeLabel}` : ''})` : ''}`}
         wrapClassName="relative inline-block"
-        className={iconBtn(timeSlot === 'custom')}
+        className={iconBtn(timeSlot === 'custom', false)}
       >
         <ClockIcon />
       </DatePickerButton>
       {timeSlot && (
-        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClear(); }} aria-label={`Clear showtime (${timeLabel})`} className={iconBtn(false)}>
+        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClear(); }} aria-label={`Clear showtime (${timeLabel})`} className={iconBtn(false, false)}>
           <ClearIcon />
         </button>
       )}

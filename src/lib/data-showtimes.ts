@@ -87,12 +87,35 @@ const GENERIC_SLOT_TIME: Record<'matinee' | 'evening', string> = {
  * publishes a few weeks out, so most far-future dates miss and fall back to a
  * generic convention) — either way the picker still saves a real curtain_time,
  * and the user can always override via the custom-time tier.
+ *
+ * Callers that can act on it should check isKnownDarkForSlot() first — this
+ * function alone can't distinguish "no schedule data" from "the show is
+ * confirmed dark that day" (e.g. the near-universal Broadway Monday dark
+ * night), so used blindly it would fabricate a plausible-looking time for a
+ * performance that isn't happening.
  */
 export function resolveShowtimeDefault(showId: string, date: string, slot: 'matinee' | 'evening'): string {
+  const scheduled = scheduledTime(showId, date, slot);
+  return scheduled || GENERIC_SLOT_TIME[slot];
+}
+
+/**
+ * True only when we have real schedule coverage for this exact date AND that
+ * slot is explicitly dark — never true for an uncovered date (bwayrush's
+ * rolling few-week window means "no data" is the common case, not "dark").
+ */
+export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee' | 'evening'): boolean {
   const schedule = getShowSchedule(showId);
   const week = schedule?.weeks[mondayOfWeekYyyymmdd(date)];
   const day = week?.[weekdayIndexMonFirst(date)];
-  const scheduled = slot === 'matinee' ? day?.m : day?.e;
-  return scheduled || GENERIC_SLOT_TIME[slot];
+  if (!day) return false;
+  return (slot === 'matinee' ? day.m : day.e) === null;
+}
+
+function scheduledTime(showId: string, date: string, slot: 'matinee' | 'evening'): string | null {
+  const schedule = getShowSchedule(showId);
+  const week = schedule?.weeks[mondayOfWeekYyyymmdd(date)];
+  const day = week?.[weekdayIndexMonFirst(date)];
+  return (slot === 'matinee' ? day?.m : day?.e) ?? null;
 }
 
