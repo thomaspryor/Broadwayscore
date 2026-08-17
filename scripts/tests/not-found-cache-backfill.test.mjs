@@ -78,18 +78,18 @@ test('applyFetchResultToCache is pure — it does not mutate the input cache', (
 
 // ── Integration: load → decide → apply → save round-trips through real files ──
 
-test('end-to-end: a cached not-found show is skipped across a save/load cycle', () => {
+test('end-to-end: a cached not-found show is skipped across a save/load cycle', (t) => {
   const archiveDir = makeArchiveDir();
+  t.after(() => fs.rmSync(archiveDir, { recursive: true, force: true }));
   saveNotFoundForAggregator(archiveDir, 'bww-rr', { 'known-absent-2018': '2026-08-01' });
 
   const reloaded = loadNotFoundForAggregator(archiveDir, 'bww-rr');
   assert.equal(shouldSkipAsKnownNotFound(reloaded, 'known-absent-2018', false), true);
-
-  fs.rmSync(archiveDir, { recursive: true, force: true });
 });
 
-test('end-to-end: a show that now has a real page is removed from the persisted cache', () => {
+test('end-to-end: a show that now has a real page is removed from the persisted cache', (t) => {
   const archiveDir = makeArchiveDir();
+  t.after(() => fs.rmSync(archiveDir, { recursive: true, force: true }));
   saveNotFoundForAggregator(archiveDir, 'show-score', { 'reopened-show-2024': '2026-07-01' });
 
   let cache = loadNotFoundForAggregator(archiveDir, 'show-score');
@@ -100,12 +100,10 @@ test('end-to-end: a show that now has a real page is removed from the persisted 
   const reloaded = loadNotFoundForAggregator(archiveDir, 'show-score');
   assert.equal('reopened-show-2024' in reloaded, false);
   assert.equal(shouldSkipAsKnownNotFound(reloaded, 'reopened-show-2024', false), false);
-
-  fs.rmSync(archiveDir, { recursive: true, force: true });
 });
 
-test('loadNotFoundForAggregator returns {} for a missing/never-written cache file (no crash)', () => {
+test('loadNotFoundForAggregator returns {} for a missing/never-written cache file (no crash)', (t) => {
   const archiveDir = makeArchiveDir();
+  t.after(() => fs.rmSync(archiveDir, { recursive: true, force: true }));
   assert.deepEqual(loadNotFoundForAggregator(archiveDir, 'dtli'), {});
-  fs.rmSync(archiveDir, { recursive: true, force: true });
 });
