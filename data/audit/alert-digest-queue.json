@@ -22,17 +22,6 @@
     "queuedAt": "2026-08-16T12:30:01.350Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31952315484",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-16T14:40:48.715Z"
-  },
-  {
     "conditionKey": "we-aggregator-go-live:pride-theatre-dorfman-west-end-2026",
     "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
     "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
@@ -185,5 +174,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-16T23:13:49.495Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31986372848",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-17T02:11:29.983Z"
   }
 ]
