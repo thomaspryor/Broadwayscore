@@ -8,6 +8,8 @@
  * (bucket D, data-flow race).
  *
  * This script runs post-opening and alerts when it sees that failure signature.
+ * Covers broadway/off-broadway and west-end/off-west-end (task #1737 — off-Broadway
+ * and off-West-End were originally excluded, matching #1735's category-exclusion bug).
  *
  * Exit codes:
  *   0 = healthy (or no openings today)
@@ -16,62 +18,33 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  etDateToday, etDateYesterday, selectOpeningWindowShows, scoredShowIds, findMissingScored,
+} = require('./lib/opening-night-scored-check.js');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const LATENCY_FILE = path.join(__dirname, '..', 'data', 'audit', 'stage-latency.jsonl');
-
-// ET calendar day is what "opening night" means — not UTC.
-function etDateToday() {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(new Date());
-  const get = (t) => parts.find((p) => p.type === t).value;
-  return `${get('year')}-${get('month')}-${get('day')}`;
-}
-
-function etDateYesterday() {
-  const d = new Date();
-  d.setUTCHours(d.getUTCHours() - 24);
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(d);
-  const get = (t) => parts.find((p) => p.type === t).value;
-  return `${get('year')}-${get('month')}-${get('day')}`;
-}
 
 const today = etDateToday();
 const yesterday = etDateYesterday();
 
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
 const shows = data.shows || data;
-// Covered window: shows that opened today OR yesterday (accounts for late-evening ET
-// openings where reviews don't stage-latency-log until the next UTC day).
-const openingShows = shows.filter(
-  (s) => (s.openingDate === today || s.openingDate === yesterday)
-    && (s.category === 'broadway' || s.category === 'west-end'),
-);
+const openingShows = selectOpeningWindowShows(shows, { today, yesterday });
 
 if (openingShows.length === 0) {
-  console.log(`No Broadway/West End openings on ${yesterday} or ${today} — nothing to check.`);
+  console.log(`No openings on ${yesterday} or ${today} — nothing to check.`);
   process.exit(0);
 }
 
 // Which of those shows have a "scored" entry within the last 48h?
 const cutoffMs = Date.now() - 48 * 60 * 60 * 1000;
-const scoredSet = new Set();
-if (fs.existsSync(LATENCY_FILE)) {
-  const lines = fs.readFileSync(LATENCY_FILE, 'utf8').split('\n').filter(Boolean);
-  for (const line of lines) {
-    try {
-      const e = JSON.parse(line);
-      if (e.stage !== 'scored') continue;
-      if (!e.at || new Date(e.at).getTime() < cutoffMs) continue;
-      scoredSet.add(e.showId);
-    } catch { /* skip malformed line */ }
-  }
-}
+const latencyLines = fs.existsSync(LATENCY_FILE)
+  ? fs.readFileSync(LATENCY_FILE, 'utf8').split('\n').filter(Boolean)
+  : [];
+const scoredSet = scoredShowIds(latencyLines, cutoffMs);
 
-const missing = openingShows.filter((s) => !scoredSet.has(s.id));
+const missing = findMissingScored(openingShows, scoredSet);
 console.log(`Opening window: ${yesterday} → ${today}`);
 console.log(`Shows in window: ${openingShows.map((s) => s.id).join(', ')}`);
 console.log(`Shows with a "scored" entry in the last 48h: ${openingShows.filter((s) => scoredSet.has(s.id)).map((s) => s.id).join(', ') || '(none)'}`);
