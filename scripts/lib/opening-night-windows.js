@@ -59,12 +59,22 @@ function isLockGenerationOwner(lockDir, token) {
   }
 }
 
-// Press-night markets only: OB/OWE open "cold" (no press night; the
-// orchestrator anchors them to previewsStartDate) so there is no single
-// curtain time to babysit — the standing pipeline + gap audits own those.
+// off-broadway/off-west-end share their parent market's timezone —
+// opening-night-selection.js documents the same broadway-includes-off-broadway,
+// west-end-includes-off-west-end equivalence (see its marketMatches()). Many
+// OB/OWE shows DO open cold with no formal press night (previewsStartDate is
+// their only date, per selectOpeningNightShows' isColdOpenMarket fallback) —
+// those never reach computeWindow's storedAnchor/evidenceAnchor checks below
+// and correctly get no window either way. But ~40% of OB/OWE shows in
+// shows.json carry a real openingDate distinct from previewsStartDate
+// (ibdb/playbill-sourced press nights, same as Broadway/West End) — those were
+// wrongly excluded from the monitor entirely by this map having no entry for
+// their category, regardless of how real their press night was (#1735).
 const MARKET_TZ = {
   broadway: 'America/New_York',
   'west-end': 'Europe/London',
+  'off-broadway': 'America/New_York',
+  'off-west-end': 'Europe/London',
 };
 
 // Window shape: reviews for a press night drop from early evening local time
