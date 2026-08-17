@@ -597,6 +597,10 @@ on:
       - 'scripts/opening-night-prompts/monitor-v2.md'
       - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/cmux-launch.test.mjs'
+      # Task #1706: cross-invocation launch-journal reclaim. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt, not
+      # globbed) — path-listed so a solo edit triggers CI.
+      - 'scripts/tests/cmux-launch-reclaim.test.mjs'
       # Card #705: the launch wait/retry decision (pure state machine) — a
       # relaunch while attempt 1's wrapper process is still alive is the
       # duplicate-session factory. Test runs in the scripts/lib/*.test.mjs
