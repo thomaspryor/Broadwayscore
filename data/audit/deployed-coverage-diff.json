@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-17T11:23:24.307Z",
+  "generatedAt": "2026-08-17T12:16:16.749Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 151,
-  "clean": 151,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 150,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "title": "White Rabbit Red Rabbit",
+      "openingDate": "2026-06-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.72 vs local 78.37 (Δ0.65)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6
+    }
+  ]
 }
