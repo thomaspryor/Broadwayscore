@@ -8,6 +8,9 @@ import {
   classifyNoise,
   classifyProject,
   isIdleArchive,
+  PRIORITY_SPELLINGS,
+  normalizePriorityTier,
+  isLivePriorityTier,
 } from './linear-import-rules.js';
 
 test('extractNotionId finds the tag anywhere in the description, not just line 1', () => {
@@ -33,12 +36,88 @@ test('extractPriorityTag reads P0/P1/P2 from anywhere in the description', () =>
   assert.equal(extractPriorityTag('no priority tag'), null);
 });
 
-test('mapPriorityToLinear: P0->Urgent(1), P1->High(2), P2->Medium(3), else->Low(4)', () => {
+test('mapPriorityToLinear: P0->Urgent(1), P1->High(2), P2->Medium(3), P3->Low(4)', () => {
   assert.equal(mapPriorityToLinear('P0 Now'), 1);
   assert.equal(mapPriorityToLinear('P1 Next'), 2);
   assert.equal(mapPriorityToLinear('P2 Later'), 3);
-  assert.equal(mapPriorityToLinear(null), 4);
-  assert.equal(mapPriorityToLinear('garbage'), 4);
+  assert.equal(mapPriorityToLinear('P3 Backlog'), 4);
+  // No usable priority maps to 0 (No priority), not 4 (Low). Low asserts
+  // something the data never said, and across 1,831 imported cards that is the
+  // difference between a triageable backlog and a uniformly-grey one.
+  assert.equal(mapPriorityToLinear(null), 0);
+  assert.equal(mapPriorityToLinear('garbage'), 0);
+});
+
+// --- S3-T1: every legacy spelling on the board -----------------------------
+
+// The complete Priority vocabulary, read off the data source schema on
+// 2026-08-17 (properties.Priority.select.options) — 26 values, not the 17 the
+// sprint plan assumed. Each is asserted INDIVIDUALLY rather than by rerunning
+// the implementation's own regex over the list, so a rule change that silently
+// reclassifies one spelling fails here.
+const EXPECTED_TIERS = {
+  'P0 Now': 'P0', 'P0 Urgent': 'P0', P0: 'P0',
+  'P1 Next': 'P1', 'P1 Now': 'P1', 'P1 Soon': 'P1', P1: 'P1',
+  'P2 Later': 'P2', 'P2 Soon': 'P2', 'P2 Next': 'P2', 'P2 Future': 'P2', 'P2 Backlog': 'P2', P2: 'P2',
+  'P3 Backlog': 'P3', 'P3 Low': 'P3', 'P3 Eventually': 'P3', 'P3 Someday': 'P3',
+  'P3 Future': 'P3', 'P3 Later': 'P3', P3: 'P3',
+  P4: 'P3', P9: 'P3',
+  High: 'P1', Medium: 'P2', Low: 'P3',
+  // 'Done' is a STATUS someone set in the Priority column. It carries no
+  // priority information, so it must not become Low by accident.
+  Done: null,
+};
+
+test('every one of the 26 board Priority spellings normalises to a tier', () => {
+  assert.equal(PRIORITY_SPELLINGS.length, 26, 'the vocabulary changed — re-read the schema');
+  for (const spelling of PRIORITY_SPELLINGS) {
+    assert.ok(spelling in EXPECTED_TIERS, `no expectation recorded for ${JSON.stringify(spelling)}`);
+    assert.equal(
+      normalizePriorityTier(spelling),
+      EXPECTED_TIERS[spelling],
+      `${JSON.stringify(spelling)} normalised wrong`
+    );
+  }
+  for (const spelling of Object.keys(EXPECTED_TIERS)) {
+    assert.ok(PRIORITY_SPELLINGS.includes(spelling), `${spelling} is expected but not in the vocabulary`);
+  }
+});
+
+test('the P0/P1 tiers map to Linear Urgent/High across every legacy spelling', () => {
+  // The Sprint 3 acceptance criterion: legacy-spelling P0/P1-tier cards must
+  // land on Urgent/High, not fall through to Low.
+  for (const [spelling, tier] of Object.entries(EXPECTED_TIERS)) {
+    const got = mapPriorityToLinear(spelling);
+    const want = { P0: 1, P1: 2, P2: 3, P3: 4 }[tier] ?? 0;
+    assert.equal(got, want, `${spelling} -> ${got}, expected ${want}`);
+  }
+});
+
+test('isLivePriorityTier splits the board exactly at P1/P2', () => {
+  // P0/P1 import live; P2/P3 import Canceled + notion-archive. An
+  // unprioritised card is NOT live work — routing it into the dispatchable
+  // half is how the invisible backlog gets recreated.
+  for (const [spelling, tier] of Object.entries(EXPECTED_TIERS)) {
+    assert.equal(isLivePriorityTier(spelling), tier === 'P0' || tier === 'P1', spelling);
+  }
+  assert.equal(isLivePriorityTier(null), false);
+  assert.equal(isLivePriorityTier(''), false);
+  assert.equal(isLivePriorityTier('nonsense'), false);
+});
+
+test('extractPriorityTag prefers the longest spelling and does not invent one from prose', () => {
+  assert.equal(extractPriorityTag('[notion:x] P0 Urgent · Not started'), 'P0 Urgent');
+  assert.equal(extractPriorityTag('[notion:x] P3 Eventually · Not started'), 'P3 Eventually');
+  // 'P1 Next' must win over the bare 'P1' that prefixes it.
+  assert.equal(extractPriorityTag('[notion:x] P1 Next · Not started'), 'P1 Next');
+  // A bare spelling still matches when that is genuinely what the card says.
+  assert.equal(extractPriorityTag('[notion:x] P2 · Not started'), 'P2');
+  assert.equal(extractPriorityTag('[notion:x] High · Not started'), 'High');
+  // But a loose /P\d/ pattern would read a priority out of ordinary prose, and
+  // the mirror descriptions are full of it.
+  assert.equal(extractPriorityTag('drain the P1 backlog'), 'P1', 'a real word-boundary hit is still a hit');
+  assert.equal(extractPriorityTag('see PR1234 and P10 notes'), null, 'no partial-word matches');
+  assert.equal(extractPriorityTag('no priority tag'), null);
 });
 
 test('mapStatusToLinearState: in_progress stays In Progress, everything else is Backlog', () => {

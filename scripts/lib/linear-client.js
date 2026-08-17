@@ -88,7 +88,15 @@ async function graphql(query, variables, opts = {}) {
       // rather than returning a response, so no status check downstream would
       // ever see it. Same partial-apply ambiguity as a 5xx, so it is gated on
       // the same `mutation` answer.
-      if (!retryPolicy.isTransientNetworkError(err) || mutation || attempt >= maxAttempts) throw err;
+      //
+      // Gated on `isMutation(query)` directly, NOT on the `mutation` variable
+      // above: `retryMutationsOn5xx` is named for 5xx and means "this caller
+      // made its creates idempotent (client-supplied ids), so a replayed 5xx is
+      // safe". A network timeout is a different claim — the request may have
+      // been applied AND the response lost — and an opt-in about HTTP status
+      // codes must not silently also authorise replaying those.
+      const writeOp = retryPolicy.isMutation(query);
+      if (!retryPolicy.isTransientNetworkError(err) || writeOp || attempt >= maxAttempts) throw err;
       const delayMs = retryPolicy.retryDelayMs(attempt, null, { baseMs: opts.baseMs });
       onRetry({ status: err.name || 'network', reason: 'transient-network', attempt, maxAttempts, delayMs });
       await sleepFn(delayMs);
