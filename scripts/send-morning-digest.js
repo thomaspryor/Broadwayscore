@@ -110,6 +110,30 @@ function localCyrusRelayMessage() {
   return assessCyrusRelay(status).message;
 }
 
+// A delegated Linear agent that accepted work and is doing nothing is invisible
+// on the board — it looks identical to one that is working. On 2026-08-16 ten
+// issues sat that way and it surfaced only because the owner asked. Written by
+// scripts/check-linear-delegations.js; this is the reader that closes the loop.
+const LINEAR_DELEGATION_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'linear-delegation-status.json'
+);
+function localLinearDelegationMessage() {
+  let status;
+  try {
+    status = JSON.parse(fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // never run on this machine — unknown, not an alarm
+  }
+  // Stale status is itself a failure: the checker stopped running.
+  const ageH = (Date.now() - Date.parse(status.at)) / 3600000;
+  if (!Number.isFinite(ageH)) return null;
+  if (ageH > 26) {
+    return `Linear agents: the delegation check has not run for ${Math.round(ageH)}h, so nobody is watching whether delegated work is actually running.`;
+  }
+  return status.alarm || null;
+}
+
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
 // digest, get a session dispatched on the issue, no laptop required").
 // Signed dispatch links are NOT the approval-loop links this sender
@@ -284,6 +308,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
   } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
+  }
+  const delegationMsg = localLinearDelegationMessage();
+  if (delegationMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(delegationMsg)}</p>`);
   }
   const cyrusMsg = localCyrusRelayMessage();
   if (cyrusMsg) {
