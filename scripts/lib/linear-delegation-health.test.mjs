@@ -125,12 +125,46 @@ test('an agent that FINISHED is not stalled', () => {
   assert.equal(r.alarm, null);
 });
 
-test('a completed session with only boilerplate still counts as finished', () => {
-  // The smoke-test probe legitimately answers and completes with little output.
+test('completing WITHOUT producing work is stalled, not finished', () => {
+  // The 2026-08-16 failure wearing a green hat: accept the issue, emit the
+  // three boilerplate lines, terminate. A `complete` status must not silence it.
   const r = assessDelegations(
     [issue('BRO-338', [{ createdAt: ago(120), status: 'complete', activities: boilerplate(120) }])], NOW);
-  assert.equal(r.verdicts[0].verdict, 'finished');
-  assert.equal(r.alarm, null);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+  assert.match(r.verdicts[0].detail, /completed without producing any work/);
+  assert.match(r.alarm, /BRO-338/);
+});
+
+test('a blocked agent that ended its turn is still blocked, not finished', () => {
+  // The agent posts "Blocked by …", ends its turn, Linear marks it complete.
+  // Ordering `finished` first made a permanently parked delegation read as done.
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: ago(40), status: 'complete',
+      activities: [{ createdAt: ago(40), body: 'Blocked by **BRO-379** — will start automatically when they are resolved.' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'blocked');
+  assert.match(r.alarm, /will not start/);
+});
+
+test('a completed twin cannot mask a still-active sibling', () => {
+  const base = Date.parse(ago(50));
+  const r = assessDelegations([issue('BRO-379', [
+    { createdAt: new Date(base).toISOString(), status: 'complete',
+      activities: [...boilerplate(50), { createdAt: ago(50), body: 'Did a thing.' }] },
+    { createdAt: new Date(base + 400).toISOString(), status: 'active', activities: boilerplate(50) },
+  ])], NOW);
+  assert.notEqual(r.verdicts[0].verdict, 'finished');
+  assert.match(r.alarm, /BRO-379/);
+});
+
+test('an undateable completed session does not grant permanent immunity', () => {
+  // A stale session with a malformed createdAt stays in every future attempt;
+  // it must not be allowed to contribute the favourable signal.
+  const r = assessDelegations([issue('BRO-374', [
+    { createdAt: null, status: 'complete', activities: [{ createdAt: ago(9000), body: 'Old work.' }] },
+    { createdAt: ago(60), status: 'active', activities: boilerplate(60) },
+  ])], NOW);
+  assert.notEqual(r.verdicts[0].verdict, 'finished');
+  assert.match(r.alarm, /BRO-374/);
 });
 
 test('a freshly started session is given grace, not alarmed on', () => {
