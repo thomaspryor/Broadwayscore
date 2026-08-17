@@ -77,6 +77,7 @@ require('./lib/load-env').loadEnv();
 
 const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
+const lsr = require('./lib/linear-session-reporting.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { launchCmuxSession } = require('./lib/cmux-launch.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -223,8 +224,17 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
   } catch (e) { console.error(`[linear-next] WARN could not post dispatch comment on ${issue.identifier}: ${e.message}`); }
   try {
     const team = await linear.getTeam();
+    // Team BRO has TWO states of type 'started' (In Progress, In Review) —
+    // the old `.find(s => s.type === 'started')` picked whichever one the
+    // API happened to return first, order-dependent and unverified against a
+    // name. That silently landed dispatched issues in "In Review" instead of
+    // "In Progress" (caught reviewing BRO-387 itself, which was sitting in
+    // "In Review" with zero work done on it). Prefer the literal "In
+    // Progress" name; fall back to the first started-type state only if that
+    // exact name doesn't exist on this team.
     const stateList = Array.isArray(team.states) ? team.states : (team.states && team.states.nodes) || []; // getTeam() returns the GraphQL {nodes} connection shape (same class as linear-issue-create's 2026-08-12 fix)
-    const started = stateList.find((s) => s.type === 'started');
+    const started =
+      lsr.pickStateByName(stateList, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(stateList, 'started');
     if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linear.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
     await linear.updateIssue(issue.id, { stateId: started.id });
   } catch (e) { console.error(`[linear-next] WARN could not move ${issue.identifier} to In Progress: ${e.message}`); }
