@@ -1,203 +1,101 @@
 {
-  "generatedAt": "2026-08-10T12:32:28.852Z",
+  "generatedAt": "2026-08-17T13:05:27.209Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "the-family-album-regional-2026",
-    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-    "midnight-at-the-never-get-west-end-2026",
-    "shifters-off-broadway-2026",
-    "les-miserables-arena-concert-spectacular-off-broadway-2026"
+    "rosie-odonnell-common-knowledge-off-broadway-2026",
+    "anansi-the-spider-west-end-2026",
+    "matilda-the-musical-theatre-row-off-broadway-2026",
+    "hungry-women-off-broadway-2026",
+    "the-smile-of-her-off-west-end-2026"
   ],
   "shows": [
     {
-      "showId": "the-family-album-regional-2026",
-      "title": "The Family Album",
-      "openingDate": "2026-07-24",
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "title": "Rosie O'Donnell: Common Knowledge",
+      "openingDate": "2026-07-25",
       "sampleState": "measured",
-      "sampleReason": "opened 18d ago",
-      "naiveQuery": "The Family Album Sheila and Hughes Potiker Theatre, La Jolla Playhouse, San Diego, CA review",
-      "candidates": [
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
-          "state": "gap",
-          "reason": null
-        }
-      ],
+      "sampleReason": "opened 24d ago",
+      "naiveQuery": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
+      "candidates": [],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 0
+        }
+      ],
+      "onDiskCount": 12
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "title": "Anansi the Spider",
+      "openingDate": "2026-08-15",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 0
+        }
+      ],
+      "onDiskCount": 15
+    },
+    {
+      "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "title": "Matilda The Musical (Theatre Row)",
+      "openingDate": "2026-08-06",
+      "sampleState": "measured",
+      "sampleReason": "opened 12d ago",
+      "naiveQuery": "Matilda The Musical (Theatre Row) Theatre Row review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 0
         }
       ],
       "onDiskCount": 8
     },
     {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
+      "showId": "hungry-women-off-broadway-2026",
+      "title": "Hungry Women",
       "openingDate": "2026-07-25",
       "sampleState": "measured",
-      "sampleReason": "opened 17d ago",
-      "naiveQuery": "The Wind in the Willows - Theatre On Kew Theatre on Kew review",
-      "candidates": [
-        {
-          "url": "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
-          "state": "gap",
-          "reason": null
-        }
-      ],
+      "sampleReason": "opened 24d ago",
+      "naiveQuery": "Hungry Women SoHo Playhouse review",
+      "candidates": [],
       "queries": [
         {
           "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 6
-    },
-    {
-      "showId": "midnight-at-the-never-get-west-end-2026",
-      "title": "Midnight at the Never Get",
-      "openingDate": "2026-07-20",
-      "sampleState": "measured",
-      "sampleReason": "opened 22d ago",
-      "naiveQuery": "Midnight at the Never Get Menier Chocolate Factory review",
-      "candidates": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/jul/21/midnight-at-the-never-get-review-ben-platt-menier-chocolate-factory-london-",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory",
-          "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-          "state": "excluded",
-          "reason": "blockedReviewUrl"
-        },
-        {
-          "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 29
-    },
-    {
-      "showId": "shifters-off-broadway-2026",
-      "title": "Shifters",
-      "openingDate": "2026-07-16",
-      "sampleState": "measured",
-      "sampleReason": "opened 26d ago",
-      "naiveQuery": "Shifters Cherry Lane Theatre review",
-      "candidates": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://newyorktheater.me/2026/07/15/shifters-review/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 27
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 14d ago",
-      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-      "candidates": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-          "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
+          "raw": 0
         }
       ],
       "onDiskCount": 15
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
+      "openingDate": "2026-07-16",
+      "sampleState": "measured",
+      "sampleReason": "opened 33d ago",
+      "naiveQuery": "The Smile Of Her Marylebone Theatre review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 0
+        }
+      ],
+      "onDiskCount": 18
     }
   ],
   "summary": {
-    "verdict": "gaps-found",
+    "verdict": "inconclusive",
     "measured": 5,
-    "gapCount": 4,
-    "gapShows": [
-      "the-family-album-regional-2026",
-      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
-    ]
+    "gapCount": 0,
+    "gapShows": [],
+    "reason": "provider outage — only 0/5 naive-query attempt(s) returned any raw result; the SERP chain is down, not the pipeline"
   }
 }
