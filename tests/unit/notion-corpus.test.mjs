@@ -249,6 +249,87 @@ test('a card that QUOTES the overflow marker is not treated as truncated', () =>
   assert.equal(corpus.isStillTruncated(null), false);
 });
 
+test('the marker appearing twice does not defeat the ends-with test', () => {
+  // Adversarial case raised in review: a card that both QUOTES the marker and
+  // is itself truncated, and one that quotes it twice while being complete.
+  const quotedThenTruncated = `we look for ${OVERFLOW_MARKER_SUBSTR} ↓] in the text${OVERFLOW_NOTE}`;
+  assert.equal(corpus.isStillTruncated(quotedThenTruncated), true, 'a real truncation after a quote must still be caught');
+
+  const quotedTwiceComplete =
+    `first ${OVERFLOW_MARKER_SUBSTR} ↓] mention, then a second ${OVERFLOW_MARKER_SUBSTR} ↓] mention, ` +
+    'and the card ends with an ordinary sentence.';
+  assert.equal(corpus.isStillTruncated(quotedTwiceComplete), false);
+});
+
+test('classifyTruncation is unaffected by being handed the stored value', () => {
+  // Review flagged that classifyTruncation passes the STORED field rather than
+  // the raw property into reassembleField. It cannot matter: the function is
+  // only reached when the stored value is truncated, so it always carries the
+  // marker and always takes the find-the-section path; and when no section is
+  // found it falls back to its input, which in that case IS the raw property.
+  // Asserted rather than argued.
+  const raw = `preview${OVERFLOW_NOTE}`;
+  const blocks = [heading('[auto:notes] full content'), para('recoverable body')];
+  assert.equal(
+    corpus.reassembleField(raw, blocks, 'notes'),
+    corpus.reassembleField(`different preview${OVERFLOW_NOTE}`, blocks, 'notes'),
+    'with a section present the property text is irrelevant to the result'
+  );
+  assert.equal(corpus.reassembleField(raw, [], 'notes'), raw, 'with no section it returns its input unchanged');
+});
+
+test('a live page that predates the export but is missing from it fails the run', () => {
+  // Containment alone proves nothing was invented, not that nothing was
+  // MISSED — which is the failure that matters for a one-shot archive.
+  const records = [makeRecord('a', 10)];
+  const baseline = { records: 1, totals: corpus.charVolume(records).totals };
+  const manifest = { ...cleanManifest(1), startedAt: '2026-08-17T02:00:00.000Z' };
+
+  const skipped = corpus.verifyCorpus({
+    records,
+    manifest,
+    baseline,
+    livePageIds: [
+      { id: 'a', createdTime: '2026-01-01T00:00:00.000Z' },
+      { id: 'older-and-missed', createdTime: '2026-01-01T00:00:00.000Z' },
+    ],
+  });
+  assert.equal(skipped.ok, false);
+  assert.ok(
+    skipped.checks.find((c) => c.name === 'no page that predates the export is missing from it' && !c.ok)
+  );
+
+  // A card created DURING the run is not a hole — five appeared during the real
+  // 62-minute export.
+  const duringRun = corpus.verifyCorpus({
+    records,
+    manifest,
+    baseline,
+    livePageIds: [
+      { id: 'a', createdTime: '2026-01-01T00:00:00.000Z' },
+      { id: 'made-mid-run', createdTime: '2026-08-17T02:30:00.000Z' },
+    ],
+  });
+  assert.equal(duringRun.ok, true, JSON.stringify(duringRun.checks.filter((c) => !c.ok), null, 1));
+
+  // A manifest with no startedAt (any export taken before the field existed)
+  // must still run the check, derived from generatedAt minus durationSec —
+  // otherwise it silently no-ops and reports a ✅ it did not earn.
+  const derived = corpus.verifyCorpus({
+    records,
+    manifest: { ...cleanManifest(1), generatedAt: '2026-08-17T03:00:00.000Z', durationSec: 3600 },
+    baseline,
+    livePageIds: [
+      { id: 'a', createdTime: '2026-01-01T00:00:00.000Z' },
+      { id: 'older-and-missed', createdTime: '2026-01-01T00:00:00.000Z' },
+    ],
+  });
+  assert.ok(
+    derived.checks.find((c) => c.name === 'no page that predates the export is missing from it' && !c.ok),
+    'the check must still fire when startedAt is absent'
+  );
+});
+
 test('truncation is classified as our bug only when the body section exists', () => {
   const page = {
     id: 'p1',

@@ -69,17 +69,19 @@ async function livePageIds() {
   const { BRAIN_DATABASE_ID, NOTION_VERSION } = require('./lib/notion-constants');
   const notion = new Client({ auth: process.env.NOTION_API_KEY, notionVersion: NOTION_VERSION });
   let cursor;
-  const ids = [];
+  const rows = [];
   do {
     const r = await notion.dataSources.query({
       data_source_id: BRAIN_DATABASE_ID,
       page_size: 100,
       start_cursor: cursor,
     });
-    for (const p of r.results) ids.push(p.id);
+    // created_time as well as id: it is what lets the verifier separate "made
+    // while the export was running" from "existed and got skipped".
+    for (const p of r.results) rows.push({ id: p.id, createdTime: p.created_time || null });
     cursor = r.has_more ? r.next_cursor : undefined;
   } while (cursor);
-  return ids;
+  return rows;
 }
 
 async function main() {
