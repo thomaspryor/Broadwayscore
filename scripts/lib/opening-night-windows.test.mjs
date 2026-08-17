@@ -44,11 +44,26 @@ test('computeWindow: WE window spans openingDate 17:00 UK → next day 23:59 UK'
   assert.equal(w.windowEnd.toISOString(), '2026-07-31T22:59:00.000Z');
 });
 
-test('computeWindow: null for OB/regional/missing/malformed openingDate', () => {
-  assert.equal(computeWindow({ id: 'x', category: 'off-broadway', openingDate: '2026-07-30' }), null);
+test('computeWindow: null for regional/missing/malformed openingDate', () => {
   assert.equal(computeWindow({ id: 'x', category: 'broadway', openingDate: null }), null);
   assert.equal(computeWindow({ id: 'x', category: 'broadway', openingDate: 'TBD' }), null);
   assert.equal(computeWindow({ id: 'x', category: 'regional', openingDate: '2026-07-30' }), null);
+});
+
+test('computeWindow: off-broadway with a real openingDate gets an ET window, same as Broadway (#1735)', () => {
+  const w = computeWindow({ id: 'x', category: 'off-broadway', openingDate: '2026-07-30' });
+  assert.equal(w.windowStart.toISOString(), '2026-07-30T21:00:00.000Z');
+  assert.equal(w.windowEnd.toISOString(), '2026-08-01T03:59:00.000Z');
+});
+
+test('computeWindow: off-west-end with a real openingDate gets a UK window, same as West End (#1735)', () => {
+  const w = computeWindow({ id: 'x', category: 'off-west-end', openingDate: '2026-07-30' });
+  assert.equal(w.windowStart.toISOString(), '2026-07-30T16:00:00.000Z');
+  assert.equal(w.windowEnd.toISOString(), '2026-07-31T22:59:00.000Z');
+});
+
+test('computeWindow: off-broadway with no openingDate (cold open, previews only) still gets no window', () => {
+  assert.equal(computeWindow({ id: 'x', category: 'off-broadway', openingDate: null, previewsStartDate: '2026-07-20' }), null);
 });
 
 test('activeWindows: selects only shows whose window contains now — ignores status/trust fields entirely', () => {

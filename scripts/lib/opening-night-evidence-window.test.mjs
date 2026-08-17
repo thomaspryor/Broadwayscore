@@ -74,8 +74,11 @@ test('a stored openingDate always wins, and no-evidence behavior is untouched', 
   const w = computeWindow(withDate, { evidence: EVIDENCE, now: new Date('2026-08-12T16:00:00Z') });
   assert.equal(w.anchor, 'openingDate');
   assert.equal(w.openingDate, '2026-08-12');
-  // Broadway/west-end only; OB and OWE open cold and are not monitored.
-  assert.equal(computeWindow({ ...SHOW_NO_DATE, category: 'off-broadway' }, { evidence: EVIDENCE, now: new Date('2026-08-12T16:00:00Z') }), null);
+  // off-broadway/off-west-end share their parent market's window logic (#1735)
+  // — a show with a real press night still gets watched even in those markets.
+  const obWindow = computeWindow({ ...SHOW_NO_DATE, category: 'off-broadway' }, { evidence: EVIDENCE, now: new Date('2026-08-12T16:00:00Z') });
+  assert.ok(obWindow, 'off-broadway with fresh review evidence must still get a window');
+  assert.equal(obWindow.anchor, 'evidence');
 });
 
 test('the evidence anchor cannot slide: too-old items and pre-previews items are refused', () => {
