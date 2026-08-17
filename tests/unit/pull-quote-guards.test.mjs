@@ -24,6 +24,9 @@ const {
   hasCopyrightChrome,
   isOffTopicExcerpt,
   isPromoTeaser,
+  isBadCandidateLength,
+  MIN_QUOTE_LENGTH,
+  MAX_QUOTE_LENGTH,
 } = require('../../scripts/lib/pull-quote-guards.js');
 
 describe('isHedgeOpener', () => {
@@ -582,5 +585,32 @@ describe('isMidWordTruncation — normalized-source cache', () => {
   test('tolerates a frozen sources array', () => {
     const frozen = Object.freeze([STANDARD_COMPLETE]);
     assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, frozen), true);
+  });
+});
+
+describe('isBadCandidateLength', () => {
+  test('rejects a real, on-topic, but too-short candidate', () => {
+    // The exact string that shipped the Les Mis Arena Concert / Cititour bug
+    // (em-20260801-000455): vivid, verbatim in the source text, but 25 chars —
+    // the LLM's only viable pick gave up instead of retrying for a longer one.
+    assert.strictEqual(isBadCandidateLength("Yes, they're spectacular!"), true);
+  });
+  test('accepts the real replacement quote extract-pull-quotes.js picked on retry', () => {
+    assert.strictEqual(
+      isBadCandidateLength('Finally, the ensemble numbers, most notably "One Day More" and "Can You Hear the People Sing" (led by the dashing Christian Mark Gibbs as revolutionary leader Enjolras) fill the heart, fill the ears, and fill the Hall.'),
+      false
+    );
+  });
+  test('boundary: exactly MIN_QUOTE_LENGTH chars is accepted, one under is not', () => {
+    assert.strictEqual(isBadCandidateLength('x'.repeat(MIN_QUOTE_LENGTH)), false);
+    assert.strictEqual(isBadCandidateLength('x'.repeat(MIN_QUOTE_LENGTH - 1)), true);
+  });
+  test('boundary: exactly MAX_QUOTE_LENGTH chars is accepted, one over is not', () => {
+    assert.strictEqual(isBadCandidateLength('x'.repeat(MAX_QUOTE_LENGTH)), false);
+    assert.strictEqual(isBadCandidateLength('x'.repeat(MAX_QUOTE_LENGTH + 1)), true);
+  });
+  test('empty/null-ish input is not flagged as a length problem (caller rejects it earlier)', () => {
+    assert.strictEqual(isBadCandidateLength(''), false);
+    assert.strictEqual(isBadCandidateLength(null), false);
   });
 });

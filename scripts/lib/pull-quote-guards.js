@@ -21,6 +21,24 @@ const HEDGE_OPENER_RE = /^\s*(but|yet|still|though|although|however|despite|whil
 // 'Giant'" — reads as a withdrawal of endorsement on a 77-scoring review.
 const MID_SENTENCE_PIVOT_RE = /,\s+(but|yet|though|although|however|despite)\b/i;
 
+// A candidate outside this range is rejected: too short to stand alone out of
+// context ("Yes, they're spectacular!" — real, on-topic, but only 25 chars),
+// or too long to read as a pull quote.
+const MIN_QUOTE_LENGTH = 30;
+const MAX_QUOTE_LENGTH = 300;
+
+/**
+ * Is this candidate too short or too long to ship as a pull quote?
+ * extract-pull-quotes.js retries once with a hint before giving up on a
+ * length rejection — see processReview()'s length-check branch — instead of
+ * falling through to the raw-fullText heuristic scrape (Les Mis Arena
+ * Concert / Cititour, card em-20260801-000455).
+ */
+function isBadCandidateLength(quote) {
+  if (!quote || typeof quote !== 'string') return false;
+  return quote.length < MIN_QUOTE_LENGTH || quote.length > MAX_QUOTE_LENGTH;
+}
+
 /**
  * Does this sentence open with a hedge word? Case-insensitive, tolerates
  * leading quote marks (some LLM responses are wrapped in quotes the caller
@@ -561,6 +579,9 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
 module.exports = {
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
+  MIN_QUOTE_LENGTH,
+  MAX_QUOTE_LENGTH,
+  isBadCandidateLength,
   isHedgeOpener,
   hasMidSentencePivot,
   shouldRejectAsReservation,
