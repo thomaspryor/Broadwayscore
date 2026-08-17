@@ -68,6 +68,20 @@ const AUDITS = [
     crashCodes: [],            // 0 ok / 1 definite-duplicate drift
   },
   {
+    name: 'pull-quote-quality',
+    label: 'shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc)',
+    script: 'audit-pull-quotes.js',
+    // Card em-20260801-000455/#727/#728 (second-opinion review 2026-08-17):
+    // a corpus-wide 0-hits assertion belongs here, not in the blocking
+    // test.yml unit-test manifest — new reviews land continuously via
+    // automated ingestion, so a single bad pick on an unrelated push would
+    // red main for non-code reasons, the exact flap this file exists to
+    // absorb (see file header). scripts/tests/pull-quote-quality.test.mjs
+    // keeps only the pinned Les Mis/Cititour regression as a blocking test.
+    args: ['--fail-on-hit'],
+    crashCodes: [],            // 0 clean / 1 = hard-guard hit (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
+  },
+  {
     name: 'regex-fp',
     label: 'content-quality regex false-positive rate',
     script: 'audit-regex-patterns.js',

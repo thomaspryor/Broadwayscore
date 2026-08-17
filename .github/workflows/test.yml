@@ -1422,6 +1422,16 @@ on:
       # tests/unit/pull-quote-guards.test.mjs (tests/** trigger).
       - 'scripts/lib/pull-quote-guards.js'
       - 'scripts/audit-pull-quotes.js'
+      # Card re-armed 2026-08-16 (#727/#728): the LLM extraction side of the
+      # same bug class — a too-short/too-long candidate gave up after one try
+      # and fell through to the raw-fullText scrape instead of retrying with a
+      # hint, which is how the Les Mis Arena Concert / Cititour review shipped
+      # a plot-summary parenthetical instead of a verdict quote. Its regression
+      # test is scripts/tests/pull-quote-quality.test.mjs (registered in
+      # tests/unit-test-manifest.txt, scripts/tests/ is not scripts/lib/ so
+      # not covered by any glob above).
+      - 'scripts/extract-pull-quotes.js'
+      - 'scripts/tests/pull-quote-quality.test.mjs'
       # extractDateFromUrl (URL-date fallback for rebuild + backfill-review-dates.js)
       # lives here; covered by tests/unit/rebuild-helpers.test.mjs (tests/** trigger)
       # and the colocated scripts/lib/*.test.mjs glob — but rebuild-helpers.js itself
