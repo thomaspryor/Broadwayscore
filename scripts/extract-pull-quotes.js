@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser, isBadCandidateLength, MIN_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser, isBadCandidateLength, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -454,7 +454,11 @@ async function processReview(entry) {
         stats.lengthRetried = (stats.lengthRetried || 0) + 1;
         const problem = quote.length < MIN_QUOTE_LENGTH ? 'too short to stand alone out of context' : 'too long';
         if (VERBOSE) console.log(`  LENGTH (${quote.length}, ${problem}): "${quote.slice(0, 80)}..." — retrying`);
-        hint = `Your previous attempt ("${quote}") was ${problem}. Pick a different, complete sentence between 50-180 characters that stands on its own.`;
+        // Hint the model toward the enforced bounds themselves (not a
+        // narrower "ideal" range) — code-review 2026-08-17: a hint narrower
+        // than what isBadCandidateLength() actually accepts can steer a
+        // valid-length retry (e.g. 35 or 250 chars) away from acceptance.
+        hint = `Your previous attempt ("${quote}") was ${problem}. Pick a different, complete sentence between ${MIN_QUOTE_LENGTH}-${MAX_QUOTE_LENGTH} characters that stands on its own.`;
         continue;
       }
       // Second attempt still bad length — give up, same as before.
