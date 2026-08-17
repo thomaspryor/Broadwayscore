@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-08-17T12:44:51.582Z",
-  "processed": 63,
-  "failed": 732,
-  "successRate": "7.9%",
+  "updatedAt": "2026-08-17T13:03:57.251Z",
+  "processed": 61,
+  "failed": 989,
+  "successRate": "5.8%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 47,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 3,
     "scrapingbee": 7,
-    "brightdata": 5,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-17T10:35:53.065Z",
+      "event": "bb-session",
+      "session": "73b620ef",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-17T10:35:54.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-08-17T11:31:58.779Z",
       "event": "bb-session",
@@ -60,74 +71,6 @@
       "event": "bb-session",
       "session": "1e26724c",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-08-17T12:33:49.762Z",
-      "event": "bb-session",
-      "session": "84615b24",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-17T12:34:09.820Z",
-      "event": "bb-session",
-      "session": "dbb9445b",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-17T12:34:37.544Z",
-      "event": "bb-session",
-      "session": "d242c18a",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-17T12:34:38.334Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-17T12:39:20.795Z",
-      "event": "bb-session",
-      "session": "f1eb1b55",
-      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
-    },
-    {
-      "t": "2026-08-17T12:39:21.612Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-17T12:39:39.449Z",
-      "event": "bb-session",
-      "session": "ee377765",
-      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
-    },
-    {
-      "t": "2026-08-17T12:39:40.170Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-17T12:40:24.628Z",
-      "event": "bb-session",
-      "session": "8e2d1584",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-17T12:40:25.397Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-17T12:43:17.944Z",
-      "event": "bb-session",
-      "session": "98d58658",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
-    },
-    {
-      "t": "2026-08-17T12:43:26.102Z",
-      "event": "bb-session",
-      "session": "0d76d0a5",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
