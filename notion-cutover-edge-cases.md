@@ -20,10 +20,35 @@ For that same card:
 | -- | -- |
 | `Notes` property | 1,712 |
 | Page body blocks | 4,573 |
-| Reassembled total | 6,251 |
+| ~~Reassembled total~~ | ~~6,251~~ — **wrong, see below** |
 
 **73% of that card's notes live only in the body.** A property-only export keeps the 27% that fits under
 `PROP_CHUNK = 1800` and silently discards the rest. 2,183 cards carry the truncation marker.
+
+> **Correction (Sprint 2 execution, 2026-08-17).** The "reassembled total" of 6,251 is a double-count and must
+> not be used as a baseline. It was computed as property + body, but the body section holds the **complete**
+> original text, not the overflow tail: `notion-brain.js buildRichTextWithOverflow` returns
+> `{ propertyValue: preview + marker, bodyText: s }` where `s` is the whole string, and `writeBodySection` writes
+> all of it. So `readFieldWithOverflow` — and `notion-corpus.js reassembleField`, which is now the same code —
+> returns the BODY only, and concatenating re-adds the first 1,712 chars a second time.
+>
+> Re-measured against the live page on 2026-08-17 through the real exporter:
+>
+> | Source | Characters |
+> | -- | -- |
+> | `Notes` property (a truncated preview) | 1,712 |
+> | Page body, all blocks incl. the `[auto:notes] full content` heading | 4,573 |
+> | **Reassembled `fields.notes` (correct)** | **4,547** |
+>
+> 4,547 + 26 (the auto heading) = 4,573 exactly, which is what confirms both numbers.
+>
+> Two consequences:
+> 1. The Sprint 0 Linear round-trip measured a 6,251-char string that contained the preview twice. The
+>    token-preservation conclusion still holds (a duplicated prefix cannot hide a missing token), but the
+>    character figures in §4 describe that doubled string, not a real card.
+> 2. **Any per-field volume baseline computed the same way is inflated.** Sprint 2's verifier must measure its
+>    own baselines from the real export rather than asserting against numbers carried in the plan, or a correct
+>    export will look like data loss.
 
 ## 3. Observed nesting depth: 0
 
