@@ -1683,6 +1683,14 @@ on:
       - 'scripts/lib/invisible-verification-scan.test.mjs'
       - 'scripts/lib/observable-before-absence.js'
       - 'scripts/tests/observable-before-absence.test.mjs'
+      # not-found cache backfill (card 3bd637c5-416f-8142-8b78-c7405c71bd98):
+      # shouldSkipAsKnownNotFound/applyFetchResultToCache decide whether a
+      # Show Score / BWW-RR fetch is served from cache. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt); the lib
+      # and its caller need explicit listing — no scripts/lib/** broad glob.
+      - 'scripts/lib/not-found-cache.js'
+      - 'scripts/tests/not-found-cache-backfill.test.mjs'
+      - 'scripts/fetch-aggregator-pages.ts'
       # Headless dispatch lane telemetry (card #1454) — JOB_EVENTS.ABANDONED,
       # the headless success-rate reader, and the lease-held ledger-write fix
       # span dispatch-ledger.js/dispatch-health.js/bsc-runner.js/
