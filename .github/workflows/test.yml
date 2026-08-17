@@ -2342,6 +2342,17 @@ on:
       # the leaf or to verify-gate triggers CI instead of silently getting none.
       - 'scripts/lib/owner-judgment-marker.js'
       - 'scripts/lib/verify-gate.js'
+      # Task #1713: enrich-card-acceptance.js draft path + its provider
+      # fallback, and the SAFE_CHECK_FORMS widening in autonomous-triage-core.js
+      # above. Colocated scripts/enrich-card-acceptance.test.mjs runs via the
+      # tests/unit node --test invocation below (top-level scripts/*.test.mjs
+      # is NOT globbed); the fallback-specific test lives in scripts/tests/
+      # (also not globbed) — both path-listed here so a solo edit triggers CI.
+      - 'scripts/enrich-card-acceptance.js'
+      - 'scripts/enrich-card-acceptance.test.mjs'
+      - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
+      - 'scripts/audit-card-verifiability.js'
+      - 'scripts/audit-card-verifiability.test.mjs'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'

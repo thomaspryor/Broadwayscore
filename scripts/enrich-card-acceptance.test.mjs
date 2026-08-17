@@ -190,6 +190,30 @@ test('eligible card: LLM drafts a SAFE primary command but a mutating command ri
   assert.equal(calls.length, 0);
 });
 
+// task #1713: a narrower guardrail-3 filter (only flag backtick spans with
+// whitespace or /) was tried to reduce false-positive rejections of bare
+// identifiers like `wrongProduction`, then REVERTED after adversarial review
+// pointed out a single PATH executable (e.g. `make`) is a valid unsafe
+// command with neither — so a bare-identifier-shaped extra command must
+// still be rejected, same as any other unsanctioned command in the prose.
+test('eligible card: LLM draft mentions an unsafe SINGLE-TOKEN command in backticks — still rejected (guardrail-3 stays conservative)', async () => {
+  const calls = [];
+  const card = {
+    id: 'c7', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nSomething scores wrong.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\nRun `make` to rebuild first, then verify with `npx tsc --noEmit`.',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /names an additional unsafe command/);
+  assert.equal(calls.length, 0);
+});
+
 test('eligible card: LLM call throws — failed, zero writes', async () => {
   const calls = [];
   const card = { id: 'c4', name: 'Fix scoring bug', category: 'Product', tags: [], notes: '## Problem\nBug.' };
