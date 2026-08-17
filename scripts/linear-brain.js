@@ -119,6 +119,15 @@ async function main() {
       projectId: args['project-id'],
     });
     console.log(JSON.stringify(result.issue, null, 2));
+    // Board-neutral marker (S1-T5, notion→linear cutover). Emitted BEFORE the
+    // mode branch and in both modes, exactly like notion-brain.js emits
+    // __NOTION_CARD_ID__ ahead of its own dispatch/park branch: the gate hooks
+    // ask "does a card exist for this session", not "is it being worked", so
+    // parking must satisfy the marker contract too or `--park` would wedge the
+    // commit gate. Carries the human identifier (BRO-123) rather than the UUID
+    // because that is what every Linear-side reader — linear-brain find,
+    // linear-client getIssue, the issue URL — already keys on.
+    console.error(`__BOARD_CARD_ID__=${result.issue.identifier}`);
     if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else {

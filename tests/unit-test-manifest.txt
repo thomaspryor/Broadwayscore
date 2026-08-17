@@ -121,6 +121,7 @@ tests/unit/backfill-lbo-help-safety.test.mjs
 tests/unit/backfill-unknown-critics-locked.test.mjs
 tests/unit/bd-telemetry.test.mjs
 tests/unit/block-review-cli.test.mjs
+tests/unit/board-card-marker.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
 tests/unit/brand-mention-serp-bd-first.test.mjs
 tests/unit/broadcast-state.test.mjs
@@ -294,6 +295,7 @@ tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
 tests/unit/linear-cap.test.mjs
 tests/unit/linear-client-archived-issue.test.mjs
+tests/unit/linear-client-backoff.test.mjs
 tests/unit/linear-next.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/live-rc-missing-drift.test.mjs

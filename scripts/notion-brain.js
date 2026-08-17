@@ -664,6 +664,17 @@ async function createCard(args) {
   // CLAUDE_SESSION_ID env var, which is a DIFFERENT UUID from the hook
   // stdin's session_id — so the sentinel existed but under the wrong name.
   console.error(`__NOTION_CARD_ID__=${page.id}`);
+  // Board-neutral twin of the line above (S1-T4, notion→linear cutover).
+  // Purely additive: __NOTION_CARD_ID__ stays until Sprint 8 retires Notion,
+  // so every existing reader (notion-create-verify.sh:46,
+  // audit-opening-dates.js:144, audit-closing-dates.js:335) is untouched.
+  // The point is that the GATE HOOKS get one marker contract covering both
+  // boards, so Sprint 4 rewrites them once and a third board migration ever
+  // after touches zero hooks. linear-brain.js emits the same line (S1-T5).
+  // Value shape differs by board on purpose — a Notion page UUID here, a
+  // `BRO-123` identifier there — because the only thing a reader does with
+  // it is write it into a sentinel file as opaque proof that a card exists.
+  console.error(`__BOARD_CARD_ID__=${page.id}`);
 
   if (disposition.mode === 'dispatch') {
     if (noSpawnReason) {
