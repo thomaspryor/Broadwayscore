@@ -139,6 +139,16 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // to stdout. Doesn't touch existing on-disk files; no manual-clear breadcrumb
       // to honor. (Verified: only writes via console.log JSON.stringify on line 248.)
       'extract-bww-reviews.js',
+      // audit-cv-wrongproduction-lifetime.js — READ-ONLY lifetime sweep for
+      // contentVerification.wrongProduction violations. It never writes a review
+      // file at all: its only write is the snapshot JSON at SNAPSHOT_PATH
+      // (verified 2026-08-17 — the sole writeFileSync in the file). It matches this
+      // suite's grep because it names the field in its docstring and messages, so
+      // there is no setter to guard. Landed on main unregistered and turned the
+      // Unit Tests job red; registering it here rather than weakening the grep,
+      // because the grep catching a read-only auditor is a false positive, not a
+      // reason to catch fewer real setters.
+      'audit-cv-wrongproduction-lifetime.js',
       // fix-aggregator-gap-override-contamination.js — by design OVERRIDES poison
       // wrongProductionOverride/manualClear breadcrumbs that automated ingest stamped
       // onto cross-production-contaminated files (it sets a durable wrongProductionReason
