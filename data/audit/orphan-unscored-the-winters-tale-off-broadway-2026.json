@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "the-winters-tale-off-broadway-2026",
   "openingDate": "2026-08-12",
-  "detectedAt": "2026-08-17T12:09:05.547Z",
+  "detectedAt": "2026-08-17T12:29:37.094Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "amny--matt-windman.json",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "url": "https://www.amny.com/entertainment/theater/review-the-winters-tale-public-theater/",
+      "fullTextLen": 4890,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -20,8 +34,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-17T12:09:05.547Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
