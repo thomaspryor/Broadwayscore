@@ -28,10 +28,33 @@ const BODY_HEADING_PREFIX = '[auto:';
 const BODY_HEADING_SUFFIX = '] full content';
 
 // The three long-text fields notion-brain.js can push into the page body.
-const OVERFLOWABLE_FIELDS = ['notes', 'outcome', 'keyFiles'];
+//
+// `sectionKey` is NOT decorative and NOT free choice: it is the exact string
+// notion-brain.js puts inside `[auto:<key>] full content` when it WRITES the
+// body section, so it is the only thing that makes the section findable again.
+// The writer is scripts/notion-brain.js's `overflow` object — `overflow.notes`
+// (:620, :946), `overflow.outcome` (:975) and, note the hyphen,
+// `overflow['key-files']` (:981) — and its own reader passes the same
+// `'key-files'` at :1338.
+//
+// This is exactly where the first version of this file was WRONG. It used
+// `keyFiles` as the section key, so `[auto:keyFiles] full content` never
+// matched the `[auto:key-files] full content` heading actually on the page, and
+// `reassembleField` fell back to the truncated property preview. Every card
+// whose Key Files overflowed would have been archived truncated — the precise
+// silent-data-loss failure this whole sprint exists to prevent — and the unit
+// test hand-built the wrong heading, so it certified the bug as correct.
+// tests/unit/notion-corpus.test.mjs now derives its headings from this table
+// AND asserts the table against notion-brain.js's source.
+const OVERFLOWABLE = [
+  { field: 'notes', sectionKey: 'notes', property: 'Notes' },
+  { field: 'outcome', sectionKey: 'outcome', property: 'Outcome' },
+  { field: 'keyFiles', sectionKey: 'key-files', property: 'Key Files' },
+];
 
-// Property name on the board <-> the field key notion-brain uses in headings.
-const FIELD_TO_PROPERTY = { notes: 'Notes', outcome: 'Outcome', keyFiles: 'Key Files' };
+const OVERFLOWABLE_FIELDS = OVERFLOWABLE.map((o) => o.field);
+const FIELD_TO_PROPERTY = Object.fromEntries(OVERFLOWABLE.map((o) => [o.field, o.property]));
+const FIELD_TO_SECTION_KEY = Object.fromEntries(OVERFLOWABLE.map((o) => [o.field, o.sectionKey]));
 
 function bodyHeadingText(field) {
   return `${BODY_HEADING_PREFIX}${field}${BODY_HEADING_SUFFIX}`;
@@ -209,9 +232,10 @@ function buildRecord(page, blocks, comments) {
   for (const k of Object.keys(propText).sort()) sortedProps[k] = propText[k];
 
   const fields = {};
-  for (const field of OVERFLOWABLE_FIELDS) {
-    const propName = FIELD_TO_PROPERTY[field];
-    fields[field] = reassembleField(propText[propName] || '', blocks, field);
+  for (const { field, sectionKey, property } of OVERFLOWABLE) {
+    // sectionKey, not field: `keyFiles` is how the record names it, but
+    // `key-files` is what notion-brain.js wrote into the page heading.
+    fields[field] = reassembleField(propText[property] || '', blocks, sectionKey);
   }
 
   return {
@@ -361,8 +385,10 @@ module.exports = {
   verifyCorpus,
   BODY_HEADING_PREFIX,
   BODY_HEADING_SUFFIX,
+  OVERFLOWABLE,
   OVERFLOWABLE_FIELDS,
   FIELD_TO_PROPERTY,
+  FIELD_TO_SECTION_KEY,
   RICH_TEXT_BLOCK_TYPES,
   KNOWN_TEXTLESS_BLOCK_TYPES,
   bodyHeadingText,

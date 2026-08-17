@@ -60,13 +60,25 @@ else
   exit 1
 fi
 
-mkdir -p "$DEST"
-cp "$A/corpus.ndjson" "$DEST/corpus.ndjson"
-cp "$A/manifest.json" "$DEST/manifest.json"
-cp "$A/errors.json" "$DEST/errors.json" 2>/dev/null || true
-[ -f "$RUNS_DIR/corpus-baseline.json" ] && cp "$RUNS_DIR/corpus-baseline.json" "$DEST/corpus-baseline.json"
+mkdir -p "$DEST" || die "could not create $DEST"
 
-( cd "$DEST" && shasum -a 256 corpus.ndjson manifest.json > SHA256SUMS )
+# Every copy is checked. This script runs with `set -uo pipefail` and NOT -e
+# (deliberately — the diff step needs to inspect a non-zero diff), so an
+# unchecked `cp` that fails leaves the PREVIOUS run's corpus.ndjson sitting in
+# $DEST, and the shasum step below then mints a perfectly valid SHA256SUMS over
+# the stale file. `shasum -c` passes, the script prints "published", and the
+# archive is silently the wrong one — with a hash manifest vouching for it.
+cp "$A/corpus.ndjson" "$DEST/corpus.ndjson" || die "failed to copy corpus.ndjson into $DEST"
+cp "$A/manifest.json" "$DEST/manifest.json" || die "failed to copy manifest.json into $DEST"
+cp "$A/errors.json" "$DEST/errors.json" 2>/dev/null || true   # optional, absent on older runs
+if [ -f "$RUNS_DIR/corpus-baseline.json" ]; then
+  cp "$RUNS_DIR/corpus-baseline.json" "$DEST/corpus-baseline.json" || die "failed to copy corpus-baseline.json"
+fi
+
+# Prove the published file is the one we just diffed, not a leftover.
+cmp -s "$A/corpus.ndjson" "$DEST/corpus.ndjson" || die "published corpus.ndjson differs from $A — refusing to hash it"
+
+( cd "$DEST" && shasum -a 256 corpus.ndjson manifest.json > SHA256SUMS ) || die "failed to write SHA256SUMS"
 echo "── hash manifest ──"
 cat "$DEST/SHA256SUMS"
 ( cd "$DEST" && shasum -c SHA256SUMS ) || die "shasum -c failed immediately after writing it"

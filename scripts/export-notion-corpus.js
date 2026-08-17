@@ -51,7 +51,10 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const USAGE = `export-notion-corpus.js — complete, reproducible export of the Notion brain.
 
   --out=<dir>            output directory (required)
-  --limit=N              stop after N pages (smoke test; marks the run partial)
+  --limit=N              stop after N NEWLY EXPORTED pages (smoke test; marks
+                         the run partial). Pages skipped by --resume do not
+                         count toward it, so --resume --limit=N always makes N
+                         pages of progress instead of silently doing nothing.
   --rate=N               max Notion requests/sec (default 3)
   --no-comments          skip the best-effort comment sweep
   --resume               continue a previous run in --out
@@ -157,13 +160,26 @@ async function main() {
       process.exit(1);
     }
     if (args.resume) {
+      // TRUNCATE to the last complete line FIRST. Appending onto a torn tail
+      // does not "get cleaned up at finalize": the next record concatenates
+      // onto the partial line, the join is unparseable, and that page is
+      // silently dropped from corpus.ndjson while `exported` still counted it.
+      // A killed run is the normal way to reach --resume, so this is the
+      // expected state, not an exotic one.
+      const raw = fs.readFileSync(partialPath, 'utf8');
+      const lastNewline = raw.lastIndexOf('\n');
+      if (lastNewline !== raw.length - 1) {
+        const kept = lastNewline === -1 ? '' : raw.slice(0, lastNewline + 1);
+        fs.writeFileSync(partialPath, kept);
+        console.error(`↻ discarded a torn final line (${raw.length - kept.length} bytes) before resuming`);
+      }
       for (const line of fs.readFileSync(partialPath, 'utf8').split('\n')) {
         if (!line.trim()) continue;
         try {
           done.add(JSON.parse(line).id);
         } catch {
-          // A torn last line from a kill mid-write. Dropped here and re-fetched
-          // below; the sort-and-dedupe at finalize keeps the output clean.
+          // Any OTHER unparseable line: leave it out of `done` so the page is
+          // re-fetched, and let the finalize dedupe drop the bad copy.
         }
       }
       console.error(`↻ resuming: ${done.size} page(s) already exported`);
@@ -217,6 +233,14 @@ async function main() {
     return all;
   }
 
+  // Everything from here to the stream close is wrapped so that a throw
+  // OUTSIDE the two per-page catch blocks — corpus.buildRecord, the pacer, the
+  // checkpoint write — still flushes what has been buffered. Without this the
+  // error escapes to main().catch → process.exit(1), and process.exit does not
+  // drain a WriteStream: an hour of fetching would be lost with the run
+  // reporting nothing but the exception.
+  let fatal = null;
+  try {
   let cursor;
   outer: do {
     await pace();
@@ -238,11 +262,15 @@ async function main() {
     }
 
     for (const page of resp.results) {
-      // Limit checked BEFORE counting the page as seen. The other way round,
-      // the page that trips the limit is counted in `seen` but never exported,
-      // so pagesSeen drifts from pagesExported + pagesSkippedAlreadyDone and an
-      // operator reading the manifest sees a phantom missing record.
-      if (limit !== null && exported + skipped >= limit) break outer;
+      // --limit bounds NEWLY EXPORTED pages, not pages processed. Counting
+      // `skipped` too meant `--resume --limit=N` against a run that already had
+      // N pages done broke out immediately and exported nothing, while
+      // reporting a clean partial run.
+      // Checked BEFORE `seen++` as well: the other way round, the page that
+      // trips the limit counts as seen but is never exported, so pagesSeen
+      // drifts from pagesExported + pagesSkippedAlreadyDone and the manifest
+      // shows a phantom missing record.
+      if (limit !== null && exported >= limit) break outer;
       seen++;
       if (done.has(page.id)) {
         skipped++;
@@ -309,8 +337,14 @@ async function main() {
 
     cursor = resp.has_more ? resp.next_cursor : undefined;
   } while (cursor);
-
-  await new Promise((resolve) => out.end(resolve));
+  } catch (err) {
+    fatal = err;
+    errors.push(toErrorEntry(null, 'run', err));
+    console.error(`\n❌ run aborted: ${err.message} — flushing ${exported} exported record(s) before exiting`);
+  } finally {
+    await new Promise((resolve) => out.end(resolve));
+  }
+  void fatal; // recorded in `errors`, which forces the non-zero exit below
 
   // --- finalize: sort by id, dedupe, write the canonical file ---------------
   // Sorting is what makes S2-T6's double-run diff possible at all: a resumed
