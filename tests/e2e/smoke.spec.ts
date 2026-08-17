@@ -162,32 +162,52 @@ test.describe('Post-deploy smoke tests', () => {
    *
    * Every gate in the pipeline was green throughout, because they all check
    * source or HTTP status. This checks the thing that was actually wrong: what
-   * a real browser computes, on the real deployed site. Inter is self-hosted
-   * now, but this assertion is deliberately mechanism-agnostic — it catches a
-   * 404 on the woff2, a bad CSP, a broken @font-face, or any future swap.
+   * a real browser computes, on the real deployed site.
+   *
+   * It deliberately does NOT name the font. This spec runs against production
+   * (TEST_BASE_URL, test.yml e2e-tests) on PRs too, so a build that renames the
+   * family — exactly what the self-hosting fix does, `__Inter_<hash>` becoming
+   * `InterVariable` — must not fail here before it has shipped. Naming the
+   * family would also make this a spelling check rather than a health check.
+   * Instead it asserts the property that was violated and that any healthy
+   * build satisfies: the family the browser actually paints with is a webfont
+   * this site loaded, not a fallback the browser reached for on its own. That
+   * holds for the old next/font build and the self-hosted one alike, and it
+   * still catches a 404ing woff2, a bad CSP, a broken @font-face, or a future
+   * font swap.
    */
-  test('pages render in Inter, not the browser default serif', async ({ page }) => {
+  test('pages render in a real loaded webfont, not the browser default', async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
 
     const heading = page.locator('h1').first();
     await expect(heading).toBeVisible({ timeout: 15000 });
 
-    const computed = await heading.evaluate((el) => window.getComputedStyle(el).fontFamily);
+    const { primary, loadedFamilies } = await heading.evaluate((el) => {
+      const stack = window.getComputedStyle(el).fontFamily;
+      // First entry of the stack, unquoted — what the browser paints with.
+      const first = (stack.split(',')[0] || '').trim().replace(/^["']|["']$/g, '');
+      return {
+        primary: first,
+        loadedFamilies: Array.from(document.fonts)
+          .filter((f) => f.status === 'loaded')
+          .map((f) => f.family.replace(/^["']|["']$/g, '')),
+      };
+    });
 
-    // The declaration must resolve to our font first, not to a bare fallback.
-    expect(computed).toMatch(/InterVariable/i);
-    // The exact symptom of the incident, asserted directly.
-    expect(computed).not.toMatch(/^["']?Times New Roman/i);
+    // The incident symptom, stated directly: an invalid font-family declaration
+    // drops to the property's initial value, which is the browser default serif.
+    expect(primary).not.toMatch(/^(Times New Roman|Times|serif)$/i);
 
-    // ...and the face must really have loaded, not just been asked for. A
-    // 404ing woff2 leaves the computed stack intact while the page paints in
-    // the fallback, so the computed value alone is not sufficient proof.
-    const loaded = await page.evaluate(() =>
-      Array.from(document.fonts)
-        .filter((f) => f.status === 'loaded')
-        .map((f) => f.family)
-    );
-    expect(loaded.join(',')).toMatch(/InterVariable/i);
+    // And the primary family must be one this site actually fetched. This is
+    // what separates a healthy build from every failure mode: if the CSS var
+    // was undefined, or the woff2 404'd, or the CSP blocked it, the painted
+    // family is a system font that appears nowhere in document.fonts.
+    expect(
+      loadedFamilies,
+      `computed primary family "${primary}" is not among the webfonts this page ` +
+        `loaded (${JSON.stringify(loadedFamilies)}) — the page is painting in a ` +
+        `browser fallback, not the site's font`
+    ).toContain(primary);
   });
 });
