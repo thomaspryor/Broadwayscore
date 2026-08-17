@@ -246,7 +246,7 @@ function applyRecover(clusterCtx, decision) {
   // byline under the same URL and validate-data.js fails the trunk.
   applyCanonicalPointerClear(
     merged,
-    planCanonicalPointerClear(canonData, { self: canonical, clusterFiles: cluster.files }),
+    planCanonicalPointerClear(canonData, { self: canonical, clusterFiles: cluster.files, siblings: parsed }),
   );
   const prot = new Set(canonData.protectedFields || []);
   // Clear a stale wrongShow ONLY when the body named the venue (decideClusterAction
@@ -307,7 +307,7 @@ function applySkip(clusterCtx) {
   // Same invariant as applyRecover: clear EVERY duplicate pointer aimed back into
   // the cluster, not just duplicateOf — a surviving duplicateTextOf leaves the
   // tombstone in a mutual cycle that re-admits a collapsed member.
-  const tombPlan = planCanonicalPointerClear(t, { self: tombstone, clusterFiles: cluster.files });
+  const tombPlan = planCanonicalPointerClear(t, { self: tombstone, clusterFiles: cluster.files, siblings: parsed });
   if (t.duplicateOf || tombPlan.drop.length) {
     t.duplicateOf = null;
     t.duplicateReason = null;

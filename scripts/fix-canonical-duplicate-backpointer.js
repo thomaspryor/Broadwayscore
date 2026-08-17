@@ -78,8 +78,13 @@ for (const show of shows) {
   let files;
   try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')); } catch { continue; }
   const parsed = {};
+  const rawAtScan = {};
   for (const f of files) {
-    try { parsed[f] = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* unreadable sibling */ }
+    try {
+      const raw = fs.readFileSync(path.join(dir, f), 'utf8');
+      parsed[f] = JSON.parse(raw);
+      rawAtScan[f] = raw; // exact bytes, for the compare-and-swap below
+    } catch { /* unreadable sibling */ }
   }
 
   for (const [self, data] of Object.entries(parsed)) {
@@ -88,24 +93,48 @@ for (const show of shows) {
     // This file must be the CANONICAL: not itself collapsed into something else.
     if (data.duplicateOf) continue;
     if (data.humanReviewScore != null) continue;
+    // Never touch a file a human or another process has locked. safeWriteReview
+    // enforces this for normal writes; this script writes plainly (see below), so
+    // it has to enforce it itself.
+    if (data._locked) continue;
     const other = parsed[back];
-    // The pointer must be part of a mutual cycle — a one-way syndication link is legitimate.
+    // The pointer must be part of a mutual cycle — a one-way syndication link
+    // (same text, DIFFERENT url) is a legitimate claim and must survive.
     if (!other || !pointerTargets(other).includes(self)) continue;
+    // Belt and braces: only collapse pointers between files PROVEN to share a url.
+    // Cross-url duplicateTextOf is syndication, never a byline-explosion artifact,
+    // and a missing url on either side is not proof of anything — require both.
+    if (!data.url || !other.url || data.url !== other.url) continue;
 
     found++;
-    const plan = planCanonicalPointerClear(data, { self, clusterFiles: [back] });
+    const plan = planCanonicalPointerClear(data, { self, clusterFiles: [back], siblings: parsed });
     if (!plan.drop.length) continue;
     console.log(`${show}: ${self} —X-> ${back}  (drop ${plan.drop.join('+')})`);
     if (!apply) continue;
 
+    const target = path.join(dir, self);
+    // Compare-and-swap. The scan above is a snapshot, and CI rebuilds/collects into
+    // this same tree every ~30 min; a whole-object write from a stale read would
+    // silently clobber a score or fullText written since. Compare against the EXACT
+    // bytes read at scan time — re-serialising `data` instead would false-negative
+    // on any file whose on-disk key order or whitespace differs from ours, silently
+    // refusing to repair it.
+    let onDisk;
+    try { onDisk = fs.readFileSync(target, 'utf8'); } catch { onDisk = null; }
+    if (onDisk === null || onDisk !== rawAtScan[self]) {
+      console.log(`  skipped ${self}: changed on disk since the scan (re-run to pick it up)`);
+      continue;
+    }
+
     const next = { ...data };
-    // The push-restore breadcrumb: without duplicateClearReason the CI push action
-    // reverts the clear (review-write-guard.js PROTECTED_FIELDS exception).
+    // The push-restore breadcrumb: without duplicateClearReason a later
+    // safeWriteReview(merge) would fold the old pointer back in
+    // (review-write-guard.js:586).
     next.duplicateClearReason = `canonical-backpointer-cleared: ${plan.reason} (${STAMP})`;
     if (!applyCanonicalPointerClear(next, plan)) continue;
     // Plain write, matching audit-review-url-clusters.js:126-131 — safeWriteReview's
     // URL-collision detector would immediately re-set the pointer we are clearing.
-    fs.writeFileSync(path.join(dir, self), `${JSON.stringify(next, null, 2)}\n`);
+    fs.writeFileSync(target, `${JSON.stringify(next, null, 2)}\n`);
     parsed[self] = next;
     written++;
   }

@@ -40,22 +40,46 @@ const POINTER_CLEAR_MODE = { duplicateOf: 'null', duplicateTextOf: 'delete' };
 /**
  * Decide which duplicate pointers on a canonical/tombstone must be cleared.
  *
+ * IMPORTANT — what this must NOT do. `duplicateTextOf` is a real claim ("this
+ * file's text duplicates that sibling's"), and across DIFFERENT urls it encodes
+ * syndication. Clearing one of those would promote a syndicated copy into
+ * reviews.json as a second scored review. Two independent things keep that from
+ * happening here:
+ *   - `clusterFiles` is a SAME-URL cluster (scripts/lib/review-url-clusters.js
+ *     groups by url), so a pointer at a member is by construction a same-review
+ *     duplicate, never cross-url syndication; and
+ *   - when `siblings` is supplied, the target must point BACK at `self` — i.e. an
+ *     actual mutual cycle. A one-way pointer is left completely alone.
+ * Callers that cannot supply same-URL cluster membership MUST pass `siblings`.
+ *
  * @param {object} data          the canonical's parsed review-text JSON
  * @param {object} opts
  * @param {string} opts.self     the canonical's own filename (e.g. "times-uk--clive-davis.json")
- * @param {string[]} opts.clusterFiles filenames in the cluster this file is canonical for
+ * @param {string[]} opts.clusterFiles filenames in the same-URL cluster this file is canonical for
+ * @param {Record<string, object>} [opts.siblings] filename -> parsed JSON. When given,
+ *   a pointer is dropped only if its target reciprocates (a genuine cycle).
  * @returns {{drop: string[], reason: string|null}}
  */
 function planCanonicalPointerClear(data, opts = {}) {
   const self = opts.self;
   const members = new Set(Array.isArray(opts.clusterFiles) ? opts.clusterFiles : []);
+  const siblings = opts.siblings || null;
+  const pointsBackAtSelf = (target) => {
+    const other = siblings[target];
+    if (!other) return false; // target unreadable/absent — not provably a cycle, leave it
+    return DUPLICATE_POINTER_FIELDS.some((f) => other[f] === self);
+  };
   const drop = [];
   for (const field of DUPLICATE_POINTER_FIELDS) {
     const target = data ? data[field] : null;
     if (!target || typeof target !== 'string') continue;
-    // Self-reference, or a pointer at a file this one is the canonical FOR.
-    // Either way the canonical would sit inside a duplicate cycle.
-    if (target === self || members.has(target)) drop.push(field);
+    // Self-reference is always a cycle, whatever the siblings say.
+    if (target === self) { drop.push(field); continue; }
+    if (!members.has(target)) continue;
+    // Reciprocity check when the caller can prove it. Without `siblings` we fall
+    // back to same-URL cluster membership, which is itself sufficient evidence.
+    if (siblings && !pointsBackAtSelf(target)) continue;
+    drop.push(field);
   }
   return {
     drop,

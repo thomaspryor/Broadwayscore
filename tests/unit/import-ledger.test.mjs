@@ -116,15 +116,20 @@ test('two concurrent writers both land — no last-writer-wins', async () => {
   const barrier = `${p}.barrier`;
   const readyFile = (tag) => `${p}.ready-${tag}`;
   const other = (tag) => (tag === 'a' ? 'b' : 'a');
+  // Both waits YIELD rather than spin. A tight `while(!existsSync)` loop pins a
+  // core, and on a CPU-starved CI runner two spinning children can starve each
+  // other (and the parent) into the very timeout they are meant to prevent.
+  // Atomics.wait is the only synchronous sleep available inside `node -e`.
+  const sleep1ms = `const _b=new Int32Array(new SharedArrayBuffer(4));const nap=()=>Atomics.wait(_b,0,0,1);`;
   const child = (tag) =>
-    `const fs=require('fs');` +
+    `const fs=require('fs');${sleep1ms}` +
     `const l=require(${JSON.stringify(path.join(REPO, 'scripts/lib/import-ledger.js'))});` +
     `fs.writeFileSync(${JSON.stringify(readyFile(tag))},'1');` +
-    `while(!fs.existsSync(${JSON.stringify(barrier)})){}` +
+    `while(!fs.existsSync(${JSON.stringify(barrier)})) nap();` +
     `l.appendRow(${JSON.stringify(p)}, l.makeRow({pageId:'${tag}-0',identifier:'${tag}-0'}));` +
     `const dl=Date.now()+20000;` +
-    `while(!fs.readFileSync(${JSON.stringify(p)},'utf8').includes('"${other(tag)}-0"')){` +
-    `if(Date.now()>dl) process.exit(3);}` +
+    `const saw=()=>{try{return fs.readFileSync(${JSON.stringify(p)},'utf8').includes('"${other(tag)}-0"')}catch(e){return false}};` +
+    `while(!saw()){if(Date.now()>dl) process.exit(3); nap();}` +
     `for(let i=1;i<${N};i++) l.appendRow(${JSON.stringify(p)}, l.makeRow({pageId:'${tag}-'+i,identifier:'${tag}-'+i}));`;
 
   const running = ['a', 'b'].map(

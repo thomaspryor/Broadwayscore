@@ -61,6 +61,47 @@ test('canonical-duplicate-pointers — canonical pointer clearing', async (t) =>
     assert.deepEqual(plan.drop, ['duplicateTextOf']);
   });
 
+  await t.test('with siblings: a ONE-WAY pointer into the cluster survives (syndication claim)', () => {
+    // The reviewer's P0: clearing on cluster membership alone could promote a
+    // genuine content-duplicate into reviews.json as a second scored review.
+    // With siblings supplied, only a reciprocated pointer is a cycle.
+    const siblings = {
+      [CANONICAL]: { duplicateTextOf: COLLAPSED },
+      [COLLAPSED]: { duplicateOf: null, duplicateTextOf: null }, // does NOT point back
+    };
+    const plan = planCanonicalPointerClear(siblings[CANONICAL], {
+      self: CANONICAL, clusterFiles: CLUSTER, siblings,
+    });
+    assert.deepEqual(plan.drop, [], 'a one-way duplicateTextOf must not be cleared');
+  });
+
+  await t.test('with siblings: a RECIPROCATED pointer is cleared', () => {
+    const siblings = {
+      [CANONICAL]: { duplicateTextOf: COLLAPSED },
+      [COLLAPSED]: { duplicateOf: CANONICAL },
+    };
+    const plan = planCanonicalPointerClear(siblings[CANONICAL], {
+      self: CANONICAL, clusterFiles: CLUSTER, siblings,
+    });
+    assert.deepEqual(plan.drop, ['duplicateTextOf']);
+  });
+
+  await t.test('with siblings: an unreadable target is left alone, not assumed circular', () => {
+    const siblings = { [CANONICAL]: { duplicateTextOf: COLLAPSED } }; // COLLAPSED absent
+    const plan = planCanonicalPointerClear(siblings[CANONICAL], {
+      self: CANONICAL, clusterFiles: CLUSTER, siblings,
+    });
+    assert.deepEqual(plan.drop, []);
+  });
+
+  await t.test('with siblings: a self-reference is still cleared even without reciprocity', () => {
+    const siblings = { [CANONICAL]: { duplicateTextOf: CANONICAL } };
+    const plan = planCanonicalPointerClear(siblings[CANONICAL], {
+      self: CANONICAL, clusterFiles: CLUSTER, siblings,
+    });
+    assert.deepEqual(plan.drop, ['duplicateTextOf']);
+  });
+
   await t.test('a pointer OUTSIDE the cluster is left alone (real syndication link)', () => {
     const canon = { duplicateTextOf: 'guardian--other-critic.json' };
     const plan = planCanonicalPointerClear(canon, { self: CANONICAL, clusterFiles: CLUSTER });
