@@ -27,6 +27,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { classifyPool } = require('./lib/audit-card-relevance.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
+const { repoDepthArgs } = require('./lib/shallow-fetch-args.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT_DIR = path.join(REPO, 'data', 'audit');
@@ -104,9 +105,16 @@ function makeRunAcceptanceCmd(wt, prepared) {
 // last synced would read as "not an ancestor" — a false negative (fails
 // safe toward REAL, never a false LIKELY-DONE, but still worth fixing since
 // it's one cheap call).
+// unbounded-fetch-ok would be wrong here: depthArgs bounds it. Statically
+// reachable from every shallow (fetch-depth: 1) CI checkout, so an unbounded
+// `git fetch origin main` would ask upload-pack for the WHOLE ~2.1GB/165k-
+// commit history instead of the delta (push-audit guard, task #466 class —
+// same fix makeFreshCheckout in acceptance-check-core.js already applies).
 function fetchOriginMain(repo) {
+  const depthArgs = repoDepthArgs({ repoRoot: repo });
   try {
-    execFileSync('git', ['fetch', 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (e) {
     console.error(`[audit-card-relevance] WARN git fetch origin main failed, commit-ancestry checks may use stale refs: ${e.message.slice(0, 160)}`);
   }
