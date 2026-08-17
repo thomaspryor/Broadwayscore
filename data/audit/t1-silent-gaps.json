@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T03:50:43.364Z",
+  "generatedAt": "2026-08-17T04:43:12.577Z",
   "windowDays": 45,
   "showsScanned": 73,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 590.651895,
+      "fileAgeHours": 591.5266775,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 65.84506722222223
+      "nonTerminalAgeHours": 66.71984833333333
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 281.0950847222222,
+      "fileAgeHours": 281.96986583333336,
       "gapSeenAt": "2026-08-14T10:00:01.122Z",
-      "nonTerminalAgeHours": 65.84506722222223
+      "nonTerminalAgeHours": 66.71984833333333
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 90.33552916666666,
+      "fileAgeHours": 91.21031027777778,
       "gapSeenAt": "2026-08-17T02:27:56.229Z",
-      "nonTerminalAgeHours": 1.3797597222222222
+      "nonTerminalAgeHours": 2.2545408333333334
     },
     {
       "showId": "the-winters-tale-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 89.03656305555556,
+      "fileAgeHours": 89.9113438888889,
       "gapSeenAt": "2026-08-16T23:13:36.123Z",
-      "nonTerminalAgeHours": 4.618678055555556
+      "nonTerminalAgeHours": 5.493459166666667
     }
   ],
   "contradictions": []
