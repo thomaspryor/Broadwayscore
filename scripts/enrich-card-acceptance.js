@@ -216,7 +216,15 @@ function callOpenRouter(prompt, apiKey) {
 
 // Same endpoint shape scripts/lib/buzz-classifier.js's Gemini call uses.
 function callGemini(prompt, apiKey) {
-  const body = JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] });
+  // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this,
+  // thinking tokens can eat the whole response budget and truncate the reply
+  // (same pattern as buzz-classifier.js/content-verifier.js/
+  // llm-score-extractor.js — CI's gemini-thinking-budget-guard test enforces
+  // every gemini-2.5-flash generateContent caller sets this).
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
