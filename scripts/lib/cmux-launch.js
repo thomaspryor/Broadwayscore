@@ -101,6 +101,98 @@ const IDLE_GATE_SEC = 120;
 // matters here.
 const LAST_LAUNCH_MARKER = path.join(os.tmpdir(), 'bsc-cmux-last-launch');
 
+// Cross-INVOCATION reclaim journal (task #1706). lateAdoptSec's watch is
+// scoped to a single launchCmuxSession() call: once its grace window expires
+// with the workspace still not verified, the function returns `failed` and
+// forgets the workspace ever existed. If that workspace registers claude a
+// few seconds later — the exact "genuinely started late" case this session's
+// live BRO-343 crown handoff reproduced (three concurrently-live dispatcher
+// sessions on one mandate, 2026-08-16) — nothing links the next, separate
+// launchCmuxSession() call for the same work back to it, so the retry opens a
+// second real session. This file is that link: a failed launch with a real
+// workspaceRef writes an entry here keyed by the caller's work identity
+// (workKey opt, defaulting to seedKey — see its @param note below for why
+// they're kept distinct); the next launchCmuxSession() call for that same key
+// checks the entry BEFORE creating anything and adopts it if strictlyAliveWorkspace()
+// (the fail-closed, both-signals-required probe already used by the in-call
+// lateAdoptSec watch) confirms it live.
+//
+// A flat per-workKey object (latest-outstanding-failure, not an event log) —
+// deliberately NOT appended to dispatch-ledger.js, which many other
+// consumers (checkDeadDispatch, parkedGuard, ...) already scan with their own
+// assumptions about what a ledger row means; conflating "current unresolved
+// orphan" with that audit trail would risk perturbing them. Self-clearing
+// (below) keeps this bounded in practice: an entry only survives if its
+// workKey is NEVER dispatched again, and at a few hundred bytes each even
+// thousands of abandoned entries are noise.
+//
+// Concurrency: read-modify-write, not locked or fsync'd. Two
+// launchCmuxSession() calls racing for the SAME workKey can both read "no
+// entry", both launch, and the loser's write can clobber the winner's — this
+// does not protect the truly-concurrent case (only sequential retries, which
+// is what the reproducing incident was). Crucially, every failure mode here
+// degrades to PRE-FIX behavior (a launch attempted with no reclaim), never to
+// a WRONG reclaim: reclaim only fires when a read finds an entry AND
+// strictlyAliveWorkspace() independently confirms it live right now, so a
+// lost/never-written/corrupt entry just means "nothing to reclaim", the
+// status quo before this file existed. writeFileSync is a single syscall (no
+// separate truncate+write), so a reader never observes a half-written file;
+// JSON.parse failure is treated as "no entries" for the same reason.
+// CMUX_LAUNCH_RECLAIM_DISABLED=1 fully disables reads AND writes (kill
+// switch, matching the CMUX_AUTH_PREFLIGHT_DISABLED convention below) if this
+// ever needs to be pulled — it reverts every call to exactly pre-#1706
+// behavior with no manual tmpfile cleanup required.
+const LAUNCH_JOURNAL_PATH = path.join(os.tmpdir(), 'bsc-cmux-launch-journal.json');
+
+function launchReclaimDisabled() {
+  return process.env.CMUX_LAUNCH_RECLAIM_DISABLED === '1';
+}
+
+function readLaunchJournal(journalPath = LAUNCH_JOURNAL_PATH) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(journalPath, 'utf8'));
+    return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
+  } catch { return {}; } // missing/corrupt journal is "no prior failure on record", not an error
+}
+
+function readLaunchJournalEntry(workKey, journalPath = LAUNCH_JOURNAL_PATH) {
+  if (launchReclaimDisabled()) return null;
+  return readLaunchJournal(journalPath)[String(workKey)] || null;
+}
+
+// Best-effort — a journal write failure must never block reporting the real
+// launch failure it's trying to record (same posture as noteLaunchAttempt
+// above). Losing an entry only means the NEXT retry misses reclaim and falls
+// back to today's behavior; it can never cause a false adoption. Written via
+// a same-directory temp file + atomic rename (not a direct writeFileSync) so
+// a crash or a colliding writer mid-write can never leave a truncated/partial
+// JSON file for a concurrent reader to trip over.
+function writeLaunchJournalEntry(workKey, entry, journalPath = LAUNCH_JOURNAL_PATH) {
+  if (launchReclaimDisabled()) return;
+  try {
+    const journal = readLaunchJournal(journalPath);
+    journal[String(workKey)] = entry;
+    const tmpPath = `${journalPath}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(journal));
+    fs.renameSync(tmpPath, journalPath);
+  } catch (e) {
+    console.error(`[cmux-launch] WARN could not persist launch journal entry for "${workKey}" (${e.message}) — cross-invocation reclaim will miss this failure`);
+  }
+}
+
+// Dropped once found dead (not alive) or successfully reclaimed — either way
+// it must not keep answering future lookups for a workspace that's already
+// been dealt with.
+function clearLaunchJournalEntry(workKey, journalPath = LAUNCH_JOURNAL_PATH) {
+  try {
+    const journal = readLaunchJournal(journalPath);
+    if (String(workKey) in journal) {
+      delete journal[String(workKey)];
+      fs.writeFileSync(journalPath, JSON.stringify(journal));
+    }
+  } catch { /* best-effort cleanup only */ }
+}
+
 // Seconds since the last launch attempt on this host, or Infinity when the
 // marker is missing (first launch after a reboot/tmp clear — treat as idle,
 // which is what it is).
@@ -436,11 +528,13 @@ function shouldRefuseForAuth(auth) {
  *                                 Never triggers a relaunch — a live wrapper
  *                                 means a live boot (card #705). Default 360.
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
- *                                 wake, intervalSec, now} — never set in real
- *                                 use. Tests calling waitForLaunchOutcome
- *                                 directly MUST pass probes.wake (a no-op),
- *                                 or a local test run fires a REAL
- *                                 `set-app-focus active` with no clear.
+ *                                 wake, intervalSec, now, idleSec,
+ *                                 strictlyAlive, cmuxExists, newWorkspace} —
+ *                                 never set in real use. Tests calling
+ *                                 waitForLaunchOutcome directly MUST pass
+ *                                 probes.wake (a no-op), or a local test run
+ *                                 fires a REAL `set-app-focus active` with no
+ *                                 clear.
  * @param {number}  [opts.lateAdoptSec] seconds to keep watching a FAILED
  *                                 launch's leftover workspace before calling
  *                                 it dead. A claude that registers here is
@@ -449,7 +543,32 @@ function shouldRefuseForAuth(auth) {
  *                                 reporting a false failure the caller then
  *                                 "fixes" by dispatching a duplicate.
  *                                 0 = off (legacy behavior).
- * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string, command: string}}
+ * @param {string}  [opts.workKey] identity of the WORK this launch is for
+ *                                 (task id / handoff subject) — defaults to
+ *                                 seedKey, which is exactly what every
+ *                                 in-repo caller passes today (bsc-next.js's
+ *                                 seedKey is task.id, stable across retries),
+ *                                 so reclaim applies to them with no caller
+ *                                 changes. Kept as a SEPARATE opt rather than
+ *                                 folding reclaim onto seedKey outright
+ *                                 because the card #1706 incident report
+ *                                 describes an ad-hoc/manual handoff dispatch
+ *                                 that varied its seedKey between attempts
+ *                                 (a "-b" suffix) — that exact path is not a
+ *                                 caller in this repo as of this fix, but a
+ *                                 future or external caller with the same
+ *                                 pattern can still opt in to reclaim by
+ *                                 passing a workKey that stays stable when
+ *                                 seedKey doesn't, without this file having
+ *                                 to guess at what "the same work" means.
+ * @param {boolean} [opts.force]  caller intends to bypass ITS OWN duplicate
+ *                                 guards (e.g. bsc-next.js's title-collision
+ *                                 check) and launch anyway. Accepted but never
+ *                                 consulted before the reclaim check below —
+ *                                 force means "I've confirmed the orphan is
+ *                                 dead", never "skip checking whether it's
+ *                                 alive" (card #1706 suggested approach).
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string, command: string}}
  */
 function launchCmuxSession(opts) {
   // The deferred-render wake (setAppFocus 'active') is a PERSISTENT override;
@@ -484,7 +603,13 @@ function pageAuthPreflightFailure(detail) {
   } catch { /* alerting must never block reporting the real launch failure */ }
 }
 
-function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, probes = {} }, wakeState = { woke: false }) {
+function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
+  // force is intentionally unread here — see the @param note above. It exists
+  // as an explicit opt (rather than callers threading arbitrary extra fields
+  // through) so a test can assert the reclaim check below runs the same way
+  // whether or not it's set.
+  void force;
+  const effectiveWorkKey = String(workKey || seedKey);
   // Naming-convention floor (owner escalation 2026-08-06): a glyphless bare
   // title is decorated with 🤖 + the model glyph; titles that already lead
   // with a glyph (🤖/👑/✅/…) pass through untouched — see ensureAutoTitle.
@@ -518,7 +643,33 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   const cmdMarker = path.basename(cmdFile);
   fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
-  if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
+  const cmuxExists = probes.cmuxExists || (() => fs.existsSync(CMUX));
+  if (!cmuxExists()) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
+
+  // Cross-invocation reclaim (task #1706) — BEFORE anything else, including
+  // the auth preflight below: if a PRIOR, SEPARATE launchCmuxSession() call
+  // for this same work failed verification but left a workspace that is now
+  // demonstrably alive, adopt it instead of opening a second real session.
+  // strictlyAliveWorkspace (or probes.strictlyAlive — same test seam pattern
+  // as the wrapperAlive/claudeTagAlive probes waitForLaunchOutcome already
+  // uses for this exact class of OS-liveness check) is the same fail-closed,
+  // both-signals-required probe the in-call lateAdoptSec watch trusts (a
+  // listed workspace ref AND cmux's claude tag AND a live OS process for that
+  // launch's exact marker) — a transient socket error or a stale registry
+  // entry reads as "not alive", never as license to adopt a corpse.
+  const strictlyAlive = probes.strictlyAlive || strictlyAliveWorkspace;
+  const journalEntry = readLaunchJournalEntry(effectiveWorkKey, journalPath);
+  if (journalEntry && strictlyAlive(journalEntry.workspaceRef, journalEntry.marker)) {
+    console.error(`[cmux-launch] reclaiming ${journalEntry.workspaceRef} for "${effectiveWorkKey}" — a prior launch (${journalEntry.state || 'unverified'}, recorded ${journalEntry.timestamp}) is now confirmed alive; not opening a second session`);
+    // Resolved — a live reclaim is no longer an outstanding failure to track.
+    // Leaving the entry would just mean the next call re-verifies liveness
+    // again (harmless), but clearing keeps the journal's contents meaning
+    // exactly "unresolved failures", matching the dead-orphan clear below.
+    clearLaunchJournalEntry(effectiveWorkKey, journalPath);
+    if (autoColor) setAutoColor(journalEntry.workspaceRef);
+    return { ok: true, ref: journalEntry.workspaceRef, adoptedLate: true, reclaimedAcrossInvocation: true, seedFile, command };
+  }
+  if (journalEntry) clearLaunchJournalEntry(effectiveWorkKey, journalPath); // recorded failure is now confirmed dead (or unreachable) — stop tracking it
 
   // Launcher auth pre-check (card #856, Session-system overhaul S3): 7 cmux
   // launches died to "Not logged in" in the 5 days before this fix, and
@@ -569,8 +720,8 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       wakeState.woke = true;
       (probes.wake || (() => setAppFocus('active')))(true);
     }
-    const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)],
-      { encoding: 'utf8' });
+    const r = (probes.newWorkspace || (args => spawnSync(CMUX, args, { encoding: 'utf8' })))(
+      ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)]);
     if (r.stdout) process.stdout.write(r.stdout);
     if (r.status !== 0) {
       if (r.stderr) process.stderr.write(r.stderr);
@@ -669,6 +820,23 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       return { ok: true, ref: failed.workspaceRef, adoptedLate: true, seedFile, command };
     }
   }
+  // The in-call grace (if any) is exhausted and the workspace is still
+  // unverified. Record it so a LATER, separate launchCmuxSession() call for
+  // this same work — the retry the caller's own duplicate-title guard will
+  // otherwise wave through once someone reasonably concludes this one is dead
+  // — checks the reclaim path above before opening a second session. Recorded
+  // even for a deadConfirmed failure: this session's live BRO-343 repro
+  // (2026-08-16) showed a workspace registering claude well after
+  // INJECTION_NEVER_RAN, so "confirmed dead" here is not proof the workspace
+  // stays dead.
+  if (failed.workspaceRef) {
+    writeLaunchJournalEntry(effectiveWorkKey, {
+      workspaceRef: failed.workspaceRef,
+      marker: cmdMarker,
+      state: failed.state,
+      timestamp: new Date().toISOString(),
+    }, journalPath);
+  }
   return failed;
 }
 
@@ -680,4 +848,6 @@ module.exports = {
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, LAST_LAUNCH_MARKER,
+  readLaunchJournal, readLaunchJournalEntry, writeLaunchJournalEntry, clearLaunchJournalEntry,
+  LAUNCH_JOURNAL_PATH,
 };
