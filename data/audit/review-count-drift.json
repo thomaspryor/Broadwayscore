@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-14T07:06:42.083Z",
+  "generatedAt": "2026-08-17T06:30:58.765Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-08-14T06:50:10.191Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-08-17T06:09:37.067Z",
+    "reviewsJsonAgeHours": 0.4,
     "freshnessBreach": false,
-    "showsScanned": 9,
-    "filesScanned": 163,
+    "showsScanned": 8,
+    "filesScanned": 187,
     "showsOverThreshold": 0,
     "orphanReviews": 2
   },
@@ -28,34 +28,48 @@
   "perShow": [
     {
       "showDir": "an-american-daughter-off-broadway-2026",
-      "actual": 13,
-      "scanned": 24,
+      "actual": 18,
+      "scanned": 28,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "death-note-the-musical-west-end-2026",
-      "actual": 26,
-      "scanned": 45,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "game-of-thrones-the-mad-king-regional-2026",
-      "actual": 8,
-      "scanned": 11,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "actual": 32,
+      "scanned": 55,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "artsdesk--unknown.json",
+          "outletId": "artsdesk",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-12",
+          "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show"
+        },
+        {
+          "file": "thereviewshub--unknown.json",
+          "outletId": "thereviewshub",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-13",
+          "url": "https://www.thereviewshub.com/death-note-the-musical-barbican-theatre-london/"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "how-the-other-half-loves-west-end-2026",
-      "actual": 20,
-      "scanned": 30,
-      "suppressedCount": 2,
+      "actual": 25,
+      "scanned": 37,
+      "suppressedCount": 3,
       "suppressed": [
+        {
+          "file": "british-theatre--unknown.json",
+          "outletId": "british-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-08-13",
+          "url": "https://www.britishtheatreguide.info/reviews/how-the-other-h-old-vic-theatre-25823"
+        },
         {
           "file": "london-theatre--unknown.json",
           "outletId": "london-theatre",
@@ -75,8 +89,8 @@
     },
     {
       "showDir": "the-winters-tale-off-broadway-2026",
-      "actual": 10,
-      "scanned": 26,
+      "actual": 13,
+      "scanned": 28,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
