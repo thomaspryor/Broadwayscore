@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T12:37:48.491Z",
+  "timestamp": "2026-08-17T15:03:36.115Z",
   "stats": {
-    "totalReviews": 42382,
-    "alreadyFlagged": 18257,
+    "totalReviews": 42390,
+    "alreadyFlagged": 18258,
     "dateGuardCatches": 144,
     "directorMismatch": 975,
-    "tvFilmSignals": 1210,
+    "tvFilmSignals": 1211,
     "londonSignals": 909,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3611
+    "noPublishDate": 3620
   },
   "findings": [
     {
@@ -4232,6 +4232,19 @@
       "file": "seatplan--unknown.json",
       "publishDate": "2026-07-21",
       "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "theater-scene--archive.json",
+      "publishDate": "2026-08-14",
+      "url": "https://www.theaterscene.net/plays/solo-plays/broad-strokes/tony-marinelli/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
