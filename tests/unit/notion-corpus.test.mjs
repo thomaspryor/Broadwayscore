@@ -229,6 +229,72 @@ test('a record keeps the raw property objects as the recovery path', () => {
   assert.equal(rec.propertiesRaw.Notes.type, 'rich_text');
 });
 
+// --- truncation detection ---------------------------------------------------
+
+test('a card that QUOTES the overflow marker is not treated as truncated', () => {
+  // Found on the real 4,985-page export: a `contains` test flagged 14 fields,
+  // 4 of which were complete cards that merely discuss the overflow mechanism
+  // and quote the marker mid-prose. Failing a correct export over those is the
+  // cry-wolf that teaches the next reader to skip the verifier.
+  const quoting =
+    'We check for the string [Full content in page body below ↓] to detect truncation.\n' +
+    'Observed 1-char variance on 5000-char round-trip is acceptable.';
+  assert.equal(corpus.isStillTruncated(quoting), false);
+
+  const truncated = `the first 1800 chars${OVERFLOW_NOTE}`;
+  assert.equal(corpus.isStillTruncated(truncated), true);
+  // Trailing whitespace must not defeat it.
+  assert.equal(corpus.isStillTruncated(`${truncated}\n\n  `), true);
+  assert.equal(corpus.isStillTruncated(''), false);
+  assert.equal(corpus.isStillTruncated(null), false);
+});
+
+test('truncation is classified as our bug only when the body section exists', () => {
+  const page = {
+    id: 'p1',
+    properties: { Notes: { type: 'rich_text', rich_text: [{ plain_text: `pre${OVERFLOW_NOTE}` }] } },
+  };
+
+  // Body has the section but the field came back truncated ⇒ the exporter
+  // failed to stitch it. Our fault; must fail the run.
+  const ourBug = corpus.buildRecord(page, [heading('[auto:notes] full content'), para('real text')], []);
+  ourBug.fields.notes = `pre${OVERFLOW_NOTE}`; // simulate a stitch failure
+  assert.equal(corpus.classifyTruncation(ourBug, 'notes'), 'export-bug');
+
+  // No section on the page at all ⇒ notion-brain's body write never landed and
+  // the text is not on the board. Confirmed live on real pages: one had a
+  // completely empty body, another carried only the OTHER field's section.
+  assert.equal(corpus.classifyTruncation(corpus.buildRecord(page, [], []), 'notes'), 'source-missing');
+  assert.equal(
+    corpus.classifyTruncation(corpus.buildRecord(page, [heading('[auto:outcome] full content'), para('x')], []), 'notes'),
+    'source-missing'
+  );
+
+  // A healthy field classifies as neither.
+  const fine = corpus.buildRecord(page, [heading('[auto:notes] full content'), para('the whole thing')], []);
+  assert.equal(corpus.classifyTruncation(fine, 'notes'), null);
+});
+
+test('verifyCorpus fails an exporter truncation but only REPORTS a board-side one', () => {
+  const page = {
+    id: 'p1',
+    properties: { Notes: { type: 'rich_text', rich_text: [{ plain_text: `pre${OVERFLOW_NOTE}` }] } },
+  };
+  const boardLoss = corpus.buildRecord(page, [], []); // no section to recover from
+  const rBoard = corpus.verifyCorpus({ records: [boardLoss], manifest: cleanManifest(1) });
+  assert.ok(
+    rBoard.checks.find((c) => c.name === 'no field was left truncated by the exporter' && c.ok),
+    'a loss that predates the export must not make the corpus permanently unverifiable'
+  );
+  const listed = rBoard.checks.find((c) => c.name === 'unrecoverable-at-source fields are listed, not hidden');
+  assert.ok(listed.detail.includes('p1/notes'), 'but it must be named, not hidden');
+
+  const ourBug = corpus.buildRecord(page, [heading('[auto:notes] full content'), para('real text')], []);
+  ourBug.fields.notes = `pre${OVERFLOW_NOTE}`;
+  const rBug = corpus.verifyCorpus({ records: [ourBug], manifest: cleanManifest(1) });
+  assert.ok(rBug.checks.find((c) => c.name === 'no field was left truncated by the exporter' && !c.ok));
+});
+
 // --- verifyCorpus (S2-T5) ---------------------------------------------------
 
 function makeRecord(id, notesLen, { stitched = true } = {}) {
@@ -291,18 +357,39 @@ test('verifyCorpus fails a partial run, a non-empty error manifest, and unknown 
   assert.equal(failing({ pagesExported: 99 }).ok, false, 'manifest and file must agree');
 });
 
-test('verifyCorpus catches a still-truncated field, a duplicate id and a live-count mismatch', () => {
+test('verifyCorpus catches a board-side truncation, a duplicate id and a live-count mismatch', () => {
+  // makeRecord(..., {stitched:false}) builds a record with no body blocks, so
+  // this is board-side loss: listed, not failed (see the dedicated test above).
   const unstitched = [makeRecord('a', 0, { stitched: false })];
   const r1 = corpus.verifyCorpus({ records: unstitched, manifest: cleanManifest(1) });
-  const marker = r1.checks.find((c) => c.name === 'no reassembled field is still a truncated preview');
-  assert.ok(marker && !marker.ok);
+  const listed = r1.checks.find((c) => c.name === 'unrecoverable-at-source fields are listed, not hidden');
+  assert.ok(listed && listed.detail.includes('a/notes'));
 
   const dupes = [makeRecord('a', 10), makeRecord('a', 10)];
   const r2 = corpus.verifyCorpus({ records: dupes, manifest: cleanManifest(2) });
   assert.ok(r2.checks.find((c) => c.name === 'no duplicate page ids' && !c.ok));
 
-  const r3 = corpus.verifyCorpus({ records: [makeRecord('a', 10)], manifest: cleanManifest(1), livePageCount: 4981 });
-  assert.ok(r3.checks.find((c) => c.name === 'record count matches a live re-count of the board' && !c.ok));
+  // Live containment: a page in the corpus that no longer exists on the board
+  // means the export invented or misread it — that fails.
+  const r3 = corpus.verifyCorpus({
+    records: [makeRecord('a', 10)],
+    manifest: cleanManifest(1),
+    livePageIds: ['someone-else', 'another'],
+  });
+  assert.ok(r3.checks.find((c) => c.name === 'every exported page still exists on the board' && !c.ok));
+
+  // But cards CREATED during the ~60-minute export must not fail it — five
+  // appeared during the real run, four of them filed by the exporting session.
+  const r4 = corpus.verifyCorpus({
+    records: [makeRecord('a', 10)],
+    manifest: cleanManifest(1),
+    baseline: { records: 1, totals: corpus.charVolume([makeRecord('a', 10)]).totals },
+    livePageIds: ['a', 'brand-new-1', 'brand-new-2'],
+  });
+  assert.equal(r4.ok, true, JSON.stringify(r4.checks.filter((c) => !c.ok), null, 1));
+  assert.ok(
+    r4.checks.find((c) => c.name === 'cards created after the export are reported, not failed' && c.detail.includes('2'))
+  );
 });
 
 test('charVolume measures the stitched fields, not the previews', () => {
@@ -321,5 +408,9 @@ test('charVolume measures the stitched fields, not the previews', () => {
   const v = corpus.charVolume([stitched, truncated]);
   assert.equal(v.records, 2);
   assert.equal(v.totals.notes, 5000 + `pre${OVERFLOW_NOTE}`.length);
-  assert.equal(v.withOverflowMarker, 1, 'the un-stitched card must be counted as still-truncated');
+  // The un-stitched card here has NO body blocks at all, so its truncation is
+  // board-side loss, not an export bug — counted separately and not fatal.
+  assert.equal(v.withOverflowMarker, 0, 'nothing here is the exporter\'s fault');
+  assert.deepEqual(v.sourceMissing, [{ id: 'p2', field: 'notes' }]);
+  assert.deepEqual(v.exportBugs, []);
 });
