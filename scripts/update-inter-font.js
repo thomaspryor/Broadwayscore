@@ -26,6 +26,23 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `update-inter-font.js — refresh the self-hosted Inter subsets from Google Fonts.
+
+Downloads the latin + latin-ext variable subsets, content-hashes them into
+public/fonts/, and prints the @font-face blocks and preload constant to paste
+into src/app/globals.css and src/app/layout.tsx. It does not edit those files:
+the bytes and the CSS naming them must change together in one reviewed commit.
+
+Usage:
+  node scripts/update-inter-font.js              download + report
+  node scripts/update-inter-font.js --check      report drift, change nothing
+  node scripts/update-inter-font.js --help, -h   print this usage and exit
+`;
+// --help/-h checked before any real work — this script fetches from the network
+// and unlinks the superseded font files (see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const CSS_URL = 'https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap';
 // A woff2-capable desktop UA. Google serves ttf to unrecognised agents.

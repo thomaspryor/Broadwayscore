@@ -49,6 +49,20 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `check-font-integrity.js — guard the self-hosted font wiring at the source level.
+
+Checks: no next/font imports in src/, no var() in the Tailwind sans stack,
+every @font-face src present in public/, and the deliberately-duplicated font
+filename in sync between globals.css and layout.tsx. Exits 1 on failure.
+See the header comment for the 2026-08-16 Times New Roman incident.
+
+Usage:
+  node scripts/check-font-integrity.js           human-readable report
+  node scripts/check-font-integrity.js --json    machine-readable report
+  node scripts/check-font-integrity.js --help, -h  print this usage and exit
+`;
 
 const DEFAULT_PATHS = {
   root: process.cwd(),
@@ -283,16 +297,6 @@ function analyze(paths = {}) {
 
 function main() {
   const args = process.argv.slice(2);
-  if (args.includes('--help') || args.includes('-h')) {
-    console.log(
-      'Usage: node scripts/check-font-integrity.js [--json]\n\n' +
-        'Guards the self-hosted font wiring: no next/font imports, no var() in the\n' +
-        'Tailwind sans stack, @font-face files present, preload href in sync.\n' +
-        'Exits 1 on failure. See the header comment for the 2026-08-16 incident.'
-    );
-    process.exit(0);
-  }
-
   const { failures, notes } = analyze();
 
   if (args.includes('--json')) {
@@ -314,6 +318,14 @@ function main() {
   process.exit(1);
 }
 
-if (require.main === module) main();
+// --help/-h checked before any real work, matching the repo-wide convention
+// (scripts/lib/cli-help.js). This script only reads, but the guard is uniform.
+if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    process.exit(0);
+  }
+  main();
+}
 
 module.exports = { analyze, splitTopLevel, normFamily, parseFontFaces, parseTailwindSans };
