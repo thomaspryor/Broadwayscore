@@ -568,11 +568,37 @@ function sessionTrackingCloneGuard(task, tasks, opts) {
     `directly instead. Re-run with --force to dispatch anyway.`;
 }
 
-function linearMirrorGuard(task, mapping, opts) {
-  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const entry = mapping && mapping[String(task.id)];
+/**
+ * The single definition of "this task is owned by the Linear side right now".
+ *
+ * Extracted so the CANDIDATE QUERY and the DISPATCH GUARD cannot disagree.
+ * Before this, linearMirrorGuard ran only at dispatch time, so bsc-next.js's
+ * actionable() kept offering tasks that dispatch would always refuse: measured
+ * 2026-08-17, 122 of 400 actionable candidates (30%) were in that state — they
+ * resurfaced every cycle and could never be actioned. Filtering them out of the
+ * candidate list with a second, hand-rolled "is it live" test would have been the
+ * classic drift bug (memory/feedback_includability_predicates_must_be_canonical),
+ * so both callers ask this one function.
+ *
+ * Returns the mapping entry when the task is live on the Linear side, else null,
+ * so callers can name the identifier without re-reading the mapping.
+ *
+ * Fails OPEN (returns null) on missing/!corrupt mapping data, matching every
+ * other guard in this file: loadLinearMirrorMapping() yields {} on any read or
+ * parse error, so a lost mapping makes tasks dispatchable again rather than
+ * silently deleting 122 tasks from the queue.
+ */
+function liveLinearCounterpart(task, mapping) {
+  const entry = mapping && task ? mapping[String(task.id)] : null;
   if (!entry || !entry.identifier) return null;
   if (entry.retiredReason || entry.project === 'Archive') return null; // parked, not live work
+  return entry;
+}
+
+function linearMirrorGuard(task, mapping, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const entry = liveLinearCounterpart(task, mapping);
+  if (!entry) return null;
   return `task #${task.id} already has a live Linear counterpart (${entry.identifier}) — dispatching it from Notion risks two sessions working the same card. Use the Linear-side dispatcher instead:\n` +
     `  node scripts/linear-next.js --id ${entry.identifier}`;
 }
@@ -586,6 +612,7 @@ module.exports = {
   checkDeadDispatch,
   notionIdOf,
   loadLinearMirrorMapping,
+  liveLinearCounterpart,
   linearMirrorGuard,
   exactTitleOverlapGuard,
   sessionTrackingCloneGuard,
