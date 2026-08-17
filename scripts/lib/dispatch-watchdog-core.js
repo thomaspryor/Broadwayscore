@@ -41,6 +41,27 @@ const WATCHDOG_EVENTS = Object.freeze({
   PARK: 'watchdog-park',
 });
 
+// How long the dispatch-watchdog-off kill switch can sit engaged before
+// --health pages the owner ("is this still intentional?") — distinct from
+// the stale-HEARTBEAT page in health(), which only fires while the watchdog
+// is enabled. Sibling pattern: scripts/lib/monitor-lock-staleness.js (same
+// mtime/injectable-now/exported-threshold shape, one file earlier). Picked
+// at the midpoint of the card's suggested 6-24h range: long enough that a
+// deliberate short maintenance window doesn't false-page, short enough to
+// catch a forgotten switch well inside the ~66h the 2026-08-14 incident ran.
+const KILL_SWITCH_STALE_MS = 24 * 3600 * 1000;
+
+// Pure: the CLI shell (dispatch-watchdog.js) stats the kill-switch file and
+// passes its mtime in. offFileMtimeMs is null when there's nothing to check
+// (e.g. disabled via the DISPATCH_WATCHDOG_DISABLED env var, which has no
+// backing file) — never stale in that case, since there's no "how long has
+// this sat here" to measure.
+function killSwitchStaleness(offFileMtimeMs, now) {
+  if (offFileMtimeMs == null || !Number.isFinite(offFileMtimeMs)) return { stale: false, ageMs: null };
+  const ageMs = now - offFileMtimeMs;
+  return { stale: ageMs > KILL_SWITCH_STALE_MS, ageMs };
+}
+
 // Spend caps (plan-review consensus): small per-sweep step, bounded day
 // budget, bounded watchdog-origin concurrency, and a global ceiling on
 // auto-dispatched tabs so the watchdog can never be the thing that floods
@@ -350,6 +371,7 @@ function renderNarrative(plan) {
 
 module.exports = {
   WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER,
+  KILL_SWITCH_STALE_MS, killSwitchStaleness,
   taskPriority, notionIdOf,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,

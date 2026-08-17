@@ -483,10 +483,49 @@ async function dashboardLoop() {
   }
 }
 
+// Pages when a kill-switch FILE has sat engaged past core.KILL_SWITCH_STALE_MS
+// — reusable so the next kill switch that wants this (e.g. NO_DISPATCH_FILE)
+// calls this instead of copy-pasting health()'s branch (plan-review
+// suggestion). Returns {stale, ageMs} for the caller's own log line; a
+// missing file (already cleared, or env-var-only disable) is never stale.
+// Known scope limit (ship-check/codex review, task #1543): a *persistent*
+// DISPATCH_WATCHDOG_DISABLED=1 env var (no backing file — e.g. set in a
+// launchd plist's EnvironmentVariables) has no mtime and stays invisible to
+// this check forever. The card's own acceptance criteria scope this to the
+// kill-switch FILE; env-var persistence would need a different mechanism
+// (there's nothing to stat) and is out of scope here.
+function pageIfKillSwitchStale(filePath, { conditionKey, label, clearHint, now = Date.now() }) {
+  let mtimeMs = null;
+  try { mtimeMs = fs.statSync(filePath).mtimeMs; } catch { /* env-var disable or already cleared */ }
+  const { stale, ageMs } = core.killSwitchStaleness(mtimeMs, now);
+  if (!stale) return { stale, ageMs };
+  const hours = Math.round(ageMs / 3600000);
+  pageOwner({
+    conditionKey,
+    title: `${label} has been ON for ${hours}h — intentional?`,
+    description: `${filePath} has been in place for ${hours}h (bar: ${core.KILL_SWITCH_STALE_MS / 3600000}h). While it's set, --health cannot page on a dead watchdog either — this is the ONE mechanism meant to catch that, blind exactly here. If this is a deliberate maintenance window, ignore; otherwise clear it: ${clearHint}`,
+    severity: 'error',
+    cooldownHours: 24,
+  });
+  return { stale, ageMs };
+}
+
 function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
-    // owner to ignore the pager (ship-check P0).
+    // owner to ignore the pager (ship-check P0). But a disable left engaged
+    // past the staleness bar gets its own distinct page (task #1543) — the
+    // ONE thing that's supposed to catch "the watchdog died" must not also
+    // go blind while it's off.
+    const { stale, ageMs } = pageIfKillSwitchStale(OFF_FILE, {
+      conditionKey: 'watchdog-kill-switch-stale',
+      label: 'Dispatch watchdog kill switch',
+      clearHint: `rm ${OFF_FILE}`,
+    });
+    if (stale) {
+      console.log(`watchdog: disabled by kill switch — STALE (${Math.round(ageMs / 3600000)}h), owner paged`);
+      return 1;
+    }
     console.log('watchdog: disabled by kill switch — health check skipped');
     return 0;
   }
@@ -532,4 +571,7 @@ if (require.main === module) {
   main().then(code => { if (code) process.exitCode = code; })
     .catch(e => { console.error(`watchdog fatal: ${e.message}`); process.exitCode = 1; });
 }
-module.exports = { main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH };
+module.exports = {
+  main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
+  pageIfKillSwitchStale,
+};
