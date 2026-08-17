@@ -87,7 +87,12 @@ function checkRecheckAfterDueAndVerified(card, opts) {
   if (!date) return null;
   const now = opts.now instanceof Date ? opts.now : new Date();
   const dueAt = new Date(`${date}T00:00:00Z`).getTime();
-  if (!Number.isFinite(dueAt) || dueAt > now.getTime()) return null; // not due yet, or unparsable
+  // +24h pad, same convention as autonomous-recheck-core.js's `cd + 24 * 3600 *
+  // 1000`: a date-only stamp parses to UTC midnight, which is still the
+  // PRIOR evening in US-Eastern — unpadded, this reads a RECHECK-AFTER date
+  // as due up to ~5h before it actually arrives locally (card #1226, task
+  // #1722 — the same bug, independently found here by /code-review).
+  if (!Number.isFinite(dueAt) || dueAt + 24 * 3600e3 > now.getTime()) return null; // not due yet, or unparsable
   if (!card.outcome || !String(card.outcome).trim()) return null; // no filled Outcome — nothing to hold
   // "the acceptance still holds" is answered by the SAME acceptance-command
   // check as checkAcceptanceHolds — a RECHECK-AFTER stamp with no runnable
@@ -231,7 +236,13 @@ function extractReferencedPaths(text) {
 // exactly this class. Confirmed live on this classifier's first real run
 // (task #1719): both initial LIKELY-STALE hits were in-progress/paused
 // cards naming their own not-yet-written test file, not deleted code.
-const PLANNED_TEST_RE = /\.test\.(m|c)?js$/i;
+// .ts included alongside .js/.mjs/.cjs: tests/unit/*.test.ts is this repo's
+// dominant unit-test extension (tests/unit-test-manifest-tsx.txt), so a card
+// naming its own not-yet-written *.test.ts is exactly the same "planned
+// deliverable" case as *.test.js — omitting it reintroduced the false-STALE
+// this regex exists to prevent, just for the .ts case (found by /code-review,
+// task #1722).
+const PLANNED_TEST_RE = /\.test\.(m|c)?(j|t)s$/i;
 
 function checkStaleFiles(card, opts) {
   const allPaths = extractReferencedPaths(card.notes);
