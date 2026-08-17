@@ -106,17 +106,32 @@ mkdir -p "$DEST" || die "could not create $DEST"
 # $DEST, and the shasum step below then mints a perfectly valid SHA256SUMS over
 # the stale file. `shasum -c` passes, the script prints "published", and the
 # archive is silently the wrong one — with a hash manifest vouching for it.
-cp "$A/corpus.ndjson" "$DEST/corpus.ndjson" || die "failed to copy corpus.ndjson into $DEST"
+# GZIPPED, with -n. The raw corpus is 95MB and grows with the board; GitHub
+# hard-rejects a blob over 100MB, so committing it raw works today and breaks
+# the next time someone re-exports. gzip takes it to 9.5MB.
+#
+# -n is load-bearing, not a flourish: without it gzip stamps the source mtime
+# and original filename into the header, so compressing identical bytes twice
+# yields different files and SHA256SUMS stops being reproducible — which is the
+# whole point of shipping a hash manifest.
+#
+# Read it with:  gunzip -c corpus.ndjson.gz | head -1 | jq .
+gzip -nc "$A/corpus.ndjson" > "$DEST/corpus.ndjson.gz" || die "failed to write corpus.ndjson.gz into $DEST"
 cp "$A/manifest.json" "$DEST/manifest.json" || die "failed to copy manifest.json into $DEST"
+# A previously-published raw copy would otherwise sit there unhashed and stale.
+rm -f "$DEST/corpus.ndjson"
 cp "$A/errors.json" "$DEST/errors.json" 2>/dev/null || true   # optional, absent on older runs
 if [ -f "$RUNS_DIR/corpus-baseline.json" ]; then
   cp "$RUNS_DIR/corpus-baseline.json" "$DEST/corpus-baseline.json" || die "failed to copy corpus-baseline.json"
 fi
 
-# Prove the published file is the one we just diffed, not a leftover.
-cmp -s "$A/corpus.ndjson" "$DEST/corpus.ndjson" || die "published corpus.ndjson differs from $A — refusing to hash it"
+# Prove the published artifact decompresses back to exactly what we diffed —
+# not a leftover, and not a corrupted compression. Checked against the source
+# bytes rather than trusting gzip's exit code.
+gunzip -c "$DEST/corpus.ndjson.gz" | cmp -s - "$A/corpus.ndjson" \
+  || die "published corpus.ndjson.gz does not decompress to $A/corpus.ndjson — refusing to hash it"
 
-( cd "$DEST" && shasum -a 256 corpus.ndjson manifest.json > SHA256SUMS ) || die "failed to write SHA256SUMS"
+( cd "$DEST" && shasum -a 256 corpus.ndjson.gz manifest.json > SHA256SUMS ) || die "failed to write SHA256SUMS"
 echo "── hash manifest ──"
 cat "$DEST/SHA256SUMS"
 ( cd "$DEST" && shasum -c SHA256SUMS ) || die "shasum -c failed immediately after writing it"
