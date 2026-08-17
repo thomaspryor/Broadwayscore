@@ -112,13 +112,18 @@ a one-file escape hatch documented in plain English.
 - **Complexity:** S
 - **Depends on:** None
 - **Parallel:** Yes
-- **Files:** `docs/board-gate-escape-hatch.md` (new)
+- **Files:** `board-gate-escape-hatch.md` (new, repo ROOT)
+  `[CHANGED: was docs/board-gate-escape-hatch.md. .gitignore:236 excludes /docs/* with only two committed
+  negations, so the doc would have been written, never committed, and silently absent for every other session and
+  for the owner. Verified: git check-ignore -v docs/board-gate-escape-hatch.md → matched; repo root → not
+  matched. — source: Sprint 1 execution]`
 - **Description:** Define `~/.claude/BOARD_GATE_DISABLED` as a file the gate hooks check first and honour
   unconditionally. Write the instructions for creating it in plain English, no terminal required (Finder → New
   File). This is handed to the owner before Sprint 4 touches a hook.
 - **Acceptance criteria:**
   - VERIFY: the doc states the exact filename and path, and requires no command line
-  - VERIFY: `test -f docs/board-gate-escape-hatch.md`
+  - VERIFY: `test -f board-gate-escape-hatch.md` AND `git check-ignore board-gate-escape-hatch.md` exits 1
+    (not ignored — the doc is worthless if it cannot be committed)
 
 ### Task S1-T4: Emit the neutral board marker from notion-brain.js
 - **Complexity:** S
@@ -374,10 +379,17 @@ owner out of committing. The escape hatch (S1-T3) must be in his hands before th
   in the unapplied half — the hatch would not exist until the thing it protects was already finished. This commit
   does **nothing except** make all four hooks honour `~/.claude/BOARD_GATE_DISABLED` before any other logic.
   Nothing else in Sprint 4 may start until this is committed and proven.
+  `[CHANGED: the check must be a PREFIX match on the filename, not equality — TextEdit appends .txt whether the
+  user wants it or not, and the owner-facing instructions are a TextEdit save. An exact-name check makes the
+  documented no-terminal path silently fail. Also: five hooks are registered, not four (notion-mcp-block.sh too),
+  plus the repo-scoped cloud copy .claude/hooks/notion-create-block.sh handled in S4-T4. — source: Sprint 1
+  execution, board-gate-escape-hatch.md]`
 - **Acceptance criteria:**
   - VERIFY: with the hatch file present, `git commit` succeeds and no board API call is made (check with a
     deliberately invalid key)
+  - VERIFY: a file named `BOARD_GATE_DISABLED.txt` (TextEdit's default save) works identically
   - VERIFY: with the hatch absent, existing Notion behaviour is byte-for-byte unchanged
+  - VERIFY: the "Status:" bullet at the end of `board-gate-escape-hatch.md` is deleted in this same commit
 
 ### Task S4-T3b: Make the gates fail open on any non-2xx
 - **Complexity:** M

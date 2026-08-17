@@ -2761,6 +2761,22 @@ on:
       - 'scripts/lib/linear-client.js'
       - 'scripts/lib/linear-import-rules.js'
       - 'scripts/lib/linear-import-rules.test.mjs'
+      # 429/5xx backoff for the Linear transport (S1-T1, notion→linear cutover).
+      # linear-retry-policy.js holds the pure retry decisions graphql() consumes;
+      # check-linear-delegations.js was migrated off its own hand-rolled fetch in
+      # the same change so it inherits the backoff, and had NO CI trigger at all
+      # before this (it runs from a launchd plist). Colocated coverage lives in
+      # tests/unit/linear-client-backoff.test.mjs, registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); these
+      # scripts/ files need explicit listing
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/linear-retry-policy.js'
+      - 'scripts/check-linear-delegations.js'
+      # Three-way board health verdict for the gate hooks (S1-T2). Sprint 4
+      # rewrites five hooks to branch on it, so a change to the verdict words
+      # or exit codes must trigger CI. tests/unit/board-probe.test.mjs is
+      # registered in tests/unit-test-manifest.txt (tests/** globbed above).
+      - 'scripts/lib/board-probe.js'
       # Card/issue creation disposition gate (task #1310): resolveDisposition is
       # the shared pure gate notion-brain.js create and linear-brain.js create
       # both go through — no card files without deciding --dispatch or --park.
