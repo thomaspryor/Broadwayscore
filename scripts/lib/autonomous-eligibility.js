@@ -189,6 +189,20 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  // The gate itself (2026-08-17). Every file above is refused because
+  // CLAUDE.md rule 12.7 requires scoring-delta.js to run before the change
+  // ships — but scoring-delta.js was itself self-servable, so an unattended
+  // agent could weaken the check that guards all of them. Found by executing
+  // isCodeDiffAllowed() against each path rather than reading the list; the
+  // drift guard below only asserts watchlist ⊆ refused, so it could never have
+  // caught the gate's own absence.
+  'scripts/scoring-delta.js',
+  'scripts/test-temporal-override-regression.js',
+  // The single sanctioned reader for external score claims (CLAUDE.md rule 3).
+  // Divergence here changes what the site TELLS people its scores are, without
+  // touching how any score is computed — so none of the watchlists above cover
+  // it, and shipped copy has silently diverged through this path before.
+  'scripts/lib/canonical-critic-scores.ts',
 ]);
 
 // Prefix/pattern exclusions.
