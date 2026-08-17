@@ -1795,6 +1795,13 @@ on:
       # above: without these entries a push touching only them runs ZERO CI.
       - 'scripts/lib/dispatch-card-drift.js'
       - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # P1 backlog relevance classifier (task #1719) — is an open P1 still
+      # real, or LIKELY-DONE/DUPLICATE/STALE. Same "scripts/tests/ is not
+      # scripts/lib/" gap as the block above: without these entries a push
+      # touching only them runs ZERO CI.
+      - 'scripts/lib/audit-card-relevance.js'
+      - 'scripts/audit-card-relevance.js'
+      - 'scripts/tests/audit-card-relevance.test.mjs'
       # Pre-implementation infra review gate (card #1079, owner decision
       # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
       # not scripts/lib/" gap: without these entries a push touching only them

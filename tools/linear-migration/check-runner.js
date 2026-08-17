@@ -29,6 +29,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { hasHelpFlag } = require('../../scripts/lib/cli-help.js');
+const { assessDelegations } = require('../../scripts/lib/linear-delegation-health.js');
 
 const USAGE = `check-runner.js — prove a Linear agent runner actually executes.
 
@@ -104,29 +105,60 @@ async function main() {
   console.log(`probing ${RUNNER} on ${issue.identifier} (up to ${TIMEOUT_S}s)…`);
 
   const deadline = Date.now() + TIMEOUT_S * 1000;
-  let last = { status: 'none', count: 0 };
+  let last = { status: 'none', verdict: 'none' };
   while (Date.now() < deadline) {
     await sleep(10000);
+    // Read the activity BODIES, not just the count. Counting alone reports a
+    // session whose only activity is "Blocked by …" as ALIVE — which is exactly
+    // how BRO-374 was mistaken for running on 2026-08-17. assessDelegations()
+    // is the shared judge, so this probe and the digest alarm cannot disagree.
     const { agentSessions } = await gql(
-      'query{ agentSessions(first:6){ nodes { createdAt status appUser { displayName } activities { nodes { id } } } } }'
+      `query{ agentSessions(first:6){ nodes { createdAt status appUser { displayName }
+        activities { nodes { createdAt content {
+          __typename
+          ... on AgentActivityThoughtContent { body }
+          ... on AgentActivityResponseContent { body }
+          ... on AgentActivityActionContent { action }
+        } } } } } }`
     );
     const mine = agentSessions.nodes.filter(
       (s) => s.appUser.displayName === RUNNER && s.createdAt >= startedAt
     );
     if (mine.length) {
-      last = { status: mine[0].status, count: Math.max(...mine.map((s) => s.activities.nodes.length)) };
-      if (last.count > 0) {
-        console.log(`ALIVE — ${RUNNER} produced ${last.count} activity/activities (status ${last.status})`);
+      const { verdicts } = assessDelegations([{
+        identifier: issue.identifier,
+        delegateName: RUNNER,
+        sessions: mine.map((s) => ({
+          createdAt: s.createdAt,
+          status: s.status,
+          activities: s.activities.nodes.map((a) => ({
+            createdAt: a.createdAt,
+            typename: a.content.__typename,
+            body: a.content.body || a.content.action || '',
+          })),
+        })),
+      }]);
+      last = { status: mine[0].status, verdict: verdicts[0]?.verdict || 'none' };
+      // 'finished' is the probe's SUCCESS case, not a miss: it asks for a
+      // one-word reply, so a healthy runner answers and ends its session
+      // almost immediately. Accepting only 'working' meant the faster a runner
+      // completed, the more certainly this reported it DEAD.
+      if (last.verdict === 'working' || last.verdict === 'finished') {
+        console.log(`ALIVE — ${RUNNER} ${last.verdict === 'finished' ? 'answered and completed' : 'is doing real work'} (${verdicts[0].detail}, status ${last.status})`);
         process.exit(0);
+      }
+      if (last.verdict === 'blocked') {
+        console.log(`\nNOT RUNNING — ${RUNNER} accepted the work but is blocked: ${verdicts[0].detail}`);
+        process.exit(1);
       }
     }
     process.stdout.write('.');
   }
 
   console.log(
-    `\nDEAD — ${RUNNER} accepted the delegation but produced 0 activities in ${TIMEOUT_S}s ` +
-      `(last status: ${last.status}). A session with no activities is a runner that is not executing, ` +
-      `whatever the board shows.`
+    `\nDEAD — ${RUNNER} accepted the delegation but produced no real work in ${TIMEOUT_S}s ` +
+      `(last status: ${last.status}, verdict: ${last.verdict}). Boilerplate openers are not work; ` +
+      `a session that only greets you is a runner that is not executing, whatever the board shows.`
   );
   process.exit(1);
 }

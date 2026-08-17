@@ -34,6 +34,7 @@ const ALLOWLIST = new Set([
   'scripts/lib/linear-issue-create.js', // the chokepoint this gate protects
   'scripts/linear-import.js', // existing bulk-migration script, pre-dates the chokepoint
   'scripts/audit-linear-issuecreate-chokepoint.js', // this file's own doc comment mentions the strings
+  'scripts/check-linear-delegations.js', // read-only gql() helper, no issueCreate — monitors delegated issue status, never creates issues
 ]);
 
 const PATTERNS = [/issueCreate/, /api\.linear\.app/];

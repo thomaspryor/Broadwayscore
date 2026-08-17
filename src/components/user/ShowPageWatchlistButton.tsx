@@ -4,6 +4,9 @@ import { useEffect, useCallback, useState } from 'react';
 import Link from 'next/link';
 import WatchlistButton from './WatchlistButton';
 import DatePickerButton from './DatePickerButton';
+import ShowtimePicker from './ShowtimePicker';
+import AddToCalendarButtons from './AddToCalendarButtons';
+import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
@@ -12,15 +15,27 @@ import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageWatchlistButtonProps {
   showId: string;
+  /** Fields for the "Add to Calendar" event — optional so callers that only
+   *  have a bare id (none currently) still render the toggle + date picker. */
+  title?: string;
+  slug?: string;
+  diaryOnly?: boolean;
+  category?: string | null;
+  venue?: string | null;
+  theaterAddress?: string | null;
+  runtime?: string | null;
+  runtimeMin?: number | null;
 }
 
 /**
  * Self-contained watchlist button for the show page links row.
  * Handles auth, toggle, planned date, and "See Watchlist" link.
  */
-export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistButtonProps) {
+export default function ShowPageWatchlistButton({
+  showId, title, slug, diaryOnly, category, venue, theaterAddress, runtime, runtimeMin,
+}: ShowPageWatchlistButtonProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, watchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
 
@@ -63,30 +78,52 @@ export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistBut
   const watchlistEntry = watchlist.find(w => w.show_id === showId);
   const watchlistDate = watchlistEntry?.planned_date || null;
 
+  const handleShowtimeSave = (fields: { time_slot: 'matinee' | 'evening' | 'custom' | null; curtain_time: string | null }) =>
+    updatePerformance(showId, fields).catch(() => showToast?.('Failed to save showtime.', 'error'));
+
+  const event = watchlistEntry
+    ? buildPlannedShowEvent(
+        { id: showId, title: title || showId, slug: slug || showId, diaryOnly, category, venue, theaterAddress, runtime, runtimeMin },
+        watchlistEntry,
+      )
+    : null;
+
   return (
-    <div className="flex items-center gap-2 flex-shrink-0">
-      {watched && (
-        <DatePickerButton
-          value={watchlistDate || ''}
-          onChange={val => updatePlannedDate(showId, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
-          ariaLabel="Planned date"
-          className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors min-h-[36px] px-2 -mx-2"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span>
-            {watchlistDate
-              ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-              : 'Add date'}
-          </span>
-        </DatePickerButton>
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {watched && (
+          <DatePickerButton
+            value={watchlistDate || ''}
+            onChange={val => updatePlannedDate(showId, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
+            ariaLabel="Planned date"
+            className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors min-h-[36px] px-2 -mx-2"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>
+              {watchlistDate
+                ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : 'Add date'}
+            </span>
+          </DatePickerButton>
+        )}
+        <WatchlistButton
+          isWatchlisted={watched}
+          onToggle={handleToggle}
+          loading={loading}
+        />
+      </div>
+      {watched && watchlistDate && watchlistEntry && (
+        <ShowtimePicker
+          showId={showId}
+          date={watchlistDate}
+          timeSlot={watchlistEntry.time_slot}
+          curtainTime={watchlistEntry.curtain_time}
+          onSave={handleShowtimeSave}
+        />
       )}
-      <WatchlistButton
-        isWatchlisted={watched}
-        onToggle={handleToggle}
-        loading={loading}
-      />
+      <AddToCalendarButtons event={event} />
     </div>
   );
 }

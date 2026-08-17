@@ -221,13 +221,16 @@ export function useWatchlist(userId: string | null) {
    * two copies would drift on the cache/broadcast handling, which is precisely
    * the bug that made this refactor necessary.
    *
-   * Clearing the date also clears the time: a curtain time with no date is not
-   * something the UI can render or the user can act on.
+   * ALWAYS clears time_slot/curtain_time, including when setting a new
+   * non-null date over an existing one. A curtain time with no date makes no
+   * sense (the original reason for this); a curtain time resolved for a
+   * DIFFERENT date makes just as little sense — matinee/evening times are
+   * resolved per-date (see resolveShowtimeDefault), so re-dating a show would
+   * otherwise silently carry the old date's showtime forward, including into
+   * the Add to Calendar event (BRO-221 review finding, 2026-08-17).
    */
   const updatePlannedDate = useCallback(async (showId: string, plannedDate: string | null): Promise<void> => {
-    return plannedDate === null
-      ? updatePerformance(showId, { planned_date: null, time_slot: null, curtain_time: null })
-      : updatePerformance(showId, { planned_date: plannedDate });
+    return updatePerformance(showId, { planned_date: plannedDate, time_slot: null, curtain_time: null });
   }, [updatePerformance]);
 
   return {
