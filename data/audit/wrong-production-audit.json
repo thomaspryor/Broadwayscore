@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T10:56:37.499Z",
+  "timestamp": "2026-08-17T12:09:22.286Z",
   "stats": {
-    "totalReviews": 42377,
-    "alreadyFlagged": 18257,
+    "totalReviews": 42381,
+    "alreadyFlagged": 18255,
     "dateGuardCatches": 144,
-    "directorMismatch": 973,
+    "directorMismatch": 975,
     "tvFilmSignals": 1210,
     "londonSignals": 909,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3611
+    "noPublishDate": 3612
   },
   "findings": [
     {
@@ -23153,10 +23153,38 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
+      "file": "off-off-online--stanford-friedman.json",
+      "score": 76,
+      "publishDate": "2023-10-30",
+      "url": "https://www.offoffonline.com/offoffonline/2023/10/17/stereophonic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
       "file": "talkinbroadway--marc-miller.json",
       "score": 64,
       "publishDate": "October 29, 2023",
       "url": "https://www.talkinbroadway.com/page/ob/10_29_23b.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "theater-life--unknown.json",
+      "score": 88,
+      "publishDate": "2023-11-24",
+      "url": "https://theaterlife.com/scene-partners-stereophonic/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
