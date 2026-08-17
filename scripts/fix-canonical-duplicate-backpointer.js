@@ -35,14 +35,23 @@
  */
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const {
   planCanonicalPointerClear,
   applyCanonicalPointerClear,
 } = require('./lib/canonical-duplicate-pointers');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
-const RT = process.env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts');
+// WHICH CLONE. Two review-texts checkouts exist on a dev machine: the nested
+// data/review-texts the repo actually reads (validate-review-texts.js,
+// review-guards.js, autonomous-data-workdir.js:39 all resolve there), and a
+// legacy ~/broadway-review-texts that several older scripts still default to.
+// On 2026-08-17 those two were 143+ commits apart. This script WRITES, so
+// defaulting to the legacy clone means silently repairing the wrong copy and
+// reporting success — it found a cycle in the stale clone that had already been
+// fixed in the real one. Prefer the repo's own checkout, fall back to the legacy
+// path, and always PRINT the directory so the target is never ambiguous.
+const RT = resolveReviewTextsDir();
 const args = process.argv.slice(2);
 const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
 const all = args.includes('--all');
@@ -61,6 +70,7 @@ if (!fs.existsSync(RT)) {
   console.error(`review-texts dir not found: ${RT}`);
   process.exit(2);
 }
+console.log(`[fix-canonical-duplicate-backpointer] review-texts: ${RT}`);
 
 const pointerTargets = (d) => ['duplicateOf', 'duplicateTextOf']
   .map((k) => d && d[k])
