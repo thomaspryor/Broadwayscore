@@ -1850,6 +1850,16 @@ on:
       # test would run ZERO CI.
       - 'scripts/lib/infra-review-digest.js'
       - 'scripts/tests/infra-review-digest.test.mjs'
+      # Worktree-gc liveness guard (task #1709) — gc-merged-worktrees.sh calls
+      # hasLiveProcessInDir() via a CLI wrapper before every `git worktree
+      # remove` on a merged worktree, so a dev server/watcher left running in
+      # a clean-but-merged worktree isn't pulled out from under it. Same
+      # "scripts/tests/ is not scripts/lib/" gap as the blocks above: without
+      # these entries a push touching only the lib + test would run ZERO CI.
+      # Test is also registered in tests/unit-test-manifest.txt.
+      - 'scripts/lib/gc-worktree-liveness.js'
+      - 'scripts/tests/gc-merged-worktrees-liveness.test.mjs'
+      - 'scripts/gc-merged-worktrees.sh'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send
