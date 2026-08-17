@@ -155,10 +155,17 @@ function classifyOrphanInProgress(tasks, ctx = {}) {
     // checked even ahead of the duplicate/superseded guard below, and skips
     // corroboration entirely.
     if (hasOutcome) {
+      // Date.parse('YYYY-MM-DD') lands on UTC midnight, which is still the
+      // PRIOR calendar day across the owner's US-Eastern timezone (UTC-4/-5)
+      // for several hours — a RECHECK-AFTER date would read as "passed" up to
+      // ~5h before it actually arrives locally. Card #1226 in the real backlog
+      // was force-closed this way: task #1705's live run landed inside that
+      // gap. Padding by a full day covers any timezone west of UTC and errs
+      // toward the conservative bucket, matching this module's stated posture.
       const recheckDates = [...String(card.outcome).matchAll(/RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/gi)]
         .map((m) => Date.parse(m[1]))
         .filter(Number.isFinite);
-      const pending = recheckDates.some((d) => d > now);
+      const pending = recheckDates.some((d) => d + 24 * 3600e3 > now);
       if (pending) {
         push('NEEDS-REVIEW', 'recheck-after-pending', 'card records a completed-looking Outcome, but it names a RECHECK-AFTER date that has not passed yet — the card\'s own words say this cannot be claimed Done until then', { notionId: marker, cardStatus });
         continue;
