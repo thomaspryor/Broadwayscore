@@ -590,6 +590,13 @@ on:
       - 'scripts/lib/opening-night-selection.test.mjs'
       - 'scripts/lib/opening-night-windows.js'
       - 'scripts/lib/opening-night-windows.test.mjs'
+      # Opening-night scored-stage alert (task #1737, 2026-08-17): shared
+      # filter/date/scored-lookup predicate + the script that calls it.
+      # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/check-opening-night-scored.js'
+      - 'scripts/lib/opening-night-scored-check.js'
+      - 'scripts/lib/opening-night-scored-check.test.mjs'
       # Card #1413: coverage-complete stop extracted from opening-night-poller.js
       # so the launcher can check "is this show done?" without requiring that
       # file's scraper dependency block on every 20-min tick. No colocated test
