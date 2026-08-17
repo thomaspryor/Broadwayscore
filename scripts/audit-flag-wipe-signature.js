@@ -155,7 +155,23 @@ function main() {
 
       if (data.contentTier === 'invalid') continue;
 
-      const hasOverride = !!(data.wrongProductionOverride || data.wrongShowOverride || data.duplicateClearReason);
+      // duplicateClearReason is NOT a reliable override signal on its own:
+      // applyUrlChangeInvariant (url-change-invariant.js:289-291) stamps the
+      // generic template `auto-cleared at write: url changed X -> Y`
+      // UNCONDITIONALLY whenever duplicateOf/duplicateTextOf clears — including
+      // when it's called from maybeUpgradeUrl itself (force:true), i.e. the
+      // exact bug path. Treating that generic stamp as "legitimate" would make
+      // every duplicateOf/duplicateTextOf hit of this exact bug invisible (a
+      // systematic false negative caught in code review). Genuine manual/
+      // structural clears (manual-review-fields.js, heal-duplicate-of-direction.js,
+      // audit-duplicate-of-url-mismatch.js, cascade-clear-duplicate-refs.js,
+      // review-write-guard.js's sibling-integrity clears) all stamp a specific,
+      // non-generic reason — only the url-change-invariant template is excluded.
+      const isMechanicalUrlChangeStamp = typeof data.duplicateClearReason === 'string'
+        && data.duplicateClearReason.startsWith('auto-cleared at write: url changed ');
+      const hasOverride = !!(data.wrongProductionOverride
+        || data.wrongShowOverride
+        || (data.duplicateClearReason && !isMechanicalUrlChangeStamp));
       if (hasOverride) continue;
 
       let cosmetic = false;
