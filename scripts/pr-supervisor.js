@@ -105,10 +105,11 @@ async function loadEvidence() {
   const supervised = (only.length ? allOpenPrs.filter((p) => only.includes(p.number)) : allOpenPrs)
     .map((p) => ({
       ...p,
-      // Ledger rows carry {head, reviewer, result}. Matching happens in the core.
-      // Prefilter only — the core requires an EXACT head match, so a short-prefix
-      // collision here cannot clear a PR. Kept narrow anyway.
-      evidence: ledger.filter((e) => e && e.head && p.headSha && e.head.startsWith(p.headSha.slice(0, 9))),
+      // Ledger rows carry {head, reviewer, result}. Match on the FULL sha here,
+      // the same equality the core applies. A prefix prefilter was correct only
+      // because the core re-checked exactly; using the same rule in both places
+      // removes the question entirely and cannot drift if the ledger format changes.
+      evidence: ledger.filter((e) => e && e.head && p.headSha && e.head === p.headSha),
     }));
 
   const verdicts = assessPullRequests(supervised, { allOpenPrs });

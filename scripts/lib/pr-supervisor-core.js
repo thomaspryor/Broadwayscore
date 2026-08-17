@@ -264,6 +264,10 @@ function assessPullRequests(prs, opts = {}) {
     // Evidence, bound to the SHA. Deterministic-green diffs (tests/docs/fixtures
     // only) are exempt for the same reason autonomous-merge.yml exempts them:
     // nothing in those paths can change site or data behaviour.
+    // EXEMPT FROM EVIDENCE, NOT FROM CI — the check-state hold above still applies
+    // to a deterministic-green PR. A docs-only change can still break the build
+    // (a bad fence, a lint rule, a link checker), so green checks are required of
+    // everything; only the human-review-shaped requirement is waived here.
     if (!deterministicGreen) {
       const ev = evidenceForSha(pr.evidence, pr.headSha, strongReviewers);
       if (!ev) {
