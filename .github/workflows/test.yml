@@ -2811,6 +2811,16 @@ on:
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/linear-next-overlap-guards.test.mjs'
+      # Linear session reporting (BRO-387 Phase 1): the Linear twin of
+      # Notion's 13-hook session-tracking loop — claim-or-create at start,
+      # outcome comment + state update at end, Stop-hook enforcement.
+      # scripts/lib/linear-session-reporting.js's pure logic is colocated-
+      # tested (scripts/lib/linear-session-reporting.test.mjs, registered in
+      # tests/unit-test-manifest.txt — tests/** already globbed above), but
+      # a solo edit to either the lib or the CLI needs explicit listing here
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/linear-session-reporting.js'
+      - 'scripts/linear-session.js'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are

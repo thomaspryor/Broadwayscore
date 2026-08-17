@@ -382,6 +382,47 @@ test('tier3: the scoring GATES themselves are refused, not just what they guard'
   }
 });
 
+test('tier3: gate libs are refused regardless of extension', () => {
+  // The rule was /-gate\.js$/, so review-gate.mjs — the push-boundary review
+  // enforcement lib, which decides whether a diff needed a review at all — was
+  // self-servable. A gate an agent can edit is not a gate.
+  for (const p of ['scripts/lib/review-gate.mjs', 'scripts/lib/verify-gate.js']) {
+    assert.equal(isCodePathAllowed(p), false, `${p} must not be self-servable`);
+  }
+});
+
+test('tier3: rule-18 scope and the help-flag predicate are refused', () => {
+  // infra-review-scope.js defines which paths need /second-opinion first;
+  // shrinking it exempts the dispatch layer from review.
+  // cli-help.js supplies hasHelpFlag, which every gate script calls FIRST —
+  // widening it makes `node scripts/scoring-delta.js` print usage and exit 0,
+  // a green gate that ran nothing, without touching a denied path.
+  for (const p of ['scripts/lib/infra-review-scope.js', 'scripts/lib/cli-help.js']) {
+    assert.equal(isCodePathAllowed(p), false, `${p} must not be self-servable`);
+  }
+});
+
+test('every EXCLUDED_FILES entry still exists on disk', async () => {
+  // A deny for a path that moved is a silent no-op, and a string-equality test
+  // keeps passing forever after the file is gone. Nothing else notices.
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const url = await import('node:url');
+  const here = path.dirname(url.fileURLToPath(import.meta.url));
+  const src = fs.readFileSync(path.join(here, 'autonomous-eligibility.js'), 'utf8');
+  const block = /const EXCLUDED_FILES = new Set\(\[([\s\S]*?)\]\);/.exec(src);
+  assert.ok(block, 'could not locate EXCLUDED_FILES — update this guard');
+  // Strip // comments FIRST. Apostrophes in prose ("the gate's own absence")
+  // otherwise open a bogus string and the extractor yields comment fragments —
+  // this guard failed on its own first run for exactly that reason.
+  const body = block[1].replace(/^\s*\/\/.*$/gm, '');
+  const entries = [...body.matchAll(/'([^'\n]+)'/g)].map(m => m[1]);
+  assert.ok(entries.length >= 15, `expected the full deny list, got ${entries.length}`);
+  for (const rel of entries) {
+    assert.ok(fs.existsSync(path.join(here, '..', '..', rel)), `${rel} is denied but no longer exists — the deny is a no-op`);
+  }
+});
+
 test('tier3: the canonical critic-score reader is refused', () => {
   // CLAUDE.md rule 3: the ONLY sanctioned source for external score claims.
   // Changing it changes what the site tells people its scores are without
