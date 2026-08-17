@@ -113,6 +113,26 @@ test('the alarm tells the owner what to do about it', () => {
   assert.match(r.alarm, /Reply in the issue thread/);
 });
 
+// --- false positive found in production within minutes of shipping ---
+test('an agent that FINISHED is not stalled', () => {
+  // BRO-374 completed its task and opened PR #596; the alarm still said
+  // "started work then stopped". A false alarm on successful work teaches the
+  // owner to ignore the real ones.
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: ago(90), status: 'complete',
+      activities: [...boilerplate(90), { createdAt: ago(85), body: 'Writing the client module.' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'finished');
+  assert.equal(r.alarm, null);
+});
+
+test('a completed session with only boilerplate still counts as finished', () => {
+  // The smoke-test probe legitimately answers and completes with little output.
+  const r = assessDelegations(
+    [issue('BRO-338', [{ createdAt: ago(120), status: 'complete', activities: boilerplate(120) }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'finished');
+  assert.equal(r.alarm, null);
+});
+
 test('a freshly started session is given grace, not alarmed on', () => {
   const r = assessDelegations(
     [issue('BRO-374', [{ createdAt: ago(1), status: 'active', activities: boilerplate(1) }])], NOW);
