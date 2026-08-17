@@ -2445,6 +2445,14 @@ on:
       - 'scripts/lib/recheck-stamp.test.mjs'
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
+      # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
+      # bulk health-check commit in data-health-check.yml (a lost bulk-commit
+      # push race was silently discarding every RECHECK-AFTER verdict for the
+      # run). data-health-check.yml itself is already covered by the
+      # '.github/workflows/**' glob above; this test lives in scripts/tests/
+      # (registered in tests/unit-test-manifest.txt, not globbed), so it's
+      # path-listed here so a solo edit to just the test still triggers CI.
+      - 'scripts/tests/recheck-ledger-persistence.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
