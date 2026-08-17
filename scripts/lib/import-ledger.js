@@ -106,11 +106,30 @@ function ledgerStats(ledgerPath) {
 }
 
 /**
- * Append one row. Deliberately ONE appendFileSync of a single line: on macOS
- * and Linux an O_APPEND write smaller than PIPE_BUF is atomic with respect to
- * other appenders, so two processes writing concurrently interleave whole lines
- * rather than corrupting each other. Building the string first and writing once
- * is what preserves that — two writes (payload, then '\n') would not.
+ * Append one row as ONE appendFileSync of one already-newline-terminated
+ * string. Building the string first and writing once is load-bearing: two
+ * writes (payload, then '\n') would let another appender's line land between
+ * them.
+ *
+ * What that actually buys, stated precisely — the earlier version of this
+ * comment invoked PIPE_BUF, which is the guarantee for PIPES and says nothing
+ * about regular files:
+ *
+ *   * POSIX says an O_APPEND write seeks to end-of-file and writes as one
+ *     operation, and on a LOCAL filesystem (APFS, ext4 — what this repo runs
+ *     on) a single write() of a few hundred bytes is not split, so concurrent
+ *     appenders interleave whole lines rather than shredding each other's.
+ *   * That is a property of the local kernel and filesystem, NOT a portable
+ *     guarantee. Over NFS/SMB, O_APPEND is emulated and lines can tear.
+ *   * Node's appendFileSync opens with 'a' (O_APPEND) and issues one write for
+ *     a string this size, so the above applies — but it is not something Node
+ *     itself promises.
+ *
+ * This is why readRows() tolerates a torn line and ledgerStats() reports
+ * `malformed` rather than either crashing or pretending: the atomicity above is
+ * the common case, not a contract, and the ledger has to stay readable when it
+ * does not hold. tests/unit/import-ledger.test.mjs races two real processes and
+ * asserts both that all rows land and that they genuinely interleave.
  */
 function appendRow(ledgerPath, row) {
   fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });

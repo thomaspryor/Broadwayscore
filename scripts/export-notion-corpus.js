@@ -181,6 +181,7 @@ async function main() {
   let blockRequests = 0;
   let commentRequests = 0;
   let totalComments = 0;
+  let commentFailures = 0;
   const unknownBlockTypes = new Set();
   let maxDepthSeen = 0;
   const startedAt = Date.now();
@@ -200,7 +201,11 @@ async function main() {
       cursor = resp.has_more ? resp.next_cursor : undefined;
     } while (cursor);
 
-    if (depth + 1 > maxDepthSeen && all.length) maxDepthSeen = Math.max(maxDepthSeen, depth);
+    // Depth is NOT tracked here. An earlier version did, and got it off by one
+    // (it stored `depth` under a `depth + 1` condition). The authoritative value
+    // is corpus.maxBlockDepth() over the assembled tree, folded in at the call
+    // site below — one implementation, unit-tested, instead of two that
+    // disagree.
     for (const b of all) {
       // has_children IS reliable at BLOCK level (unlike page level, where it is
       // false or absent for every one of the 4,981 rows) — so this recursion is
@@ -233,8 +238,12 @@ async function main() {
     }
 
     for (const page of resp.results) {
-      seen++;
+      // Limit checked BEFORE counting the page as seen. The other way round,
+      // the page that trips the limit is counted in `seen` but never exported,
+      // so pagesSeen drifts from pagesExported + pagesSkippedAlreadyDone and an
+      // operator reading the manifest sees a phantom missing record.
       if (limit !== null && exported + skipped >= limit) break outer;
+      seen++;
       if (done.has(page.id)) {
         skipped++;
         continue;
@@ -268,9 +277,14 @@ async function main() {
         } catch (err) {
           // BEST EFFORT (S2-T3): Sprint 0 found zero comments across 100 pages,
           // so this is a sweep for completeness, not a dependency. A failure
-          // here is recorded for visibility but does NOT enter `errors` and
-          // does NOT fail the run — blocking a 4,981-page export on an optional
-          // field would be the wrong trade.
+          // here does NOT enter `errors` and does NOT fail the run — blocking a
+          // 4,981-page export on an optional field would be the wrong trade.
+          //
+          // But it IS counted. Without the counter, a comment sweep that 429'd
+          // on half the board still reports `commentSweep: run` and a low
+          // commentsFound, which reads as "there are almost no comments" —
+          // a silently wrong answer to the exact question S2-T3 exists to ask.
+          commentFailures++;
           console.error(`  ~ comments ${page.id} (non-fatal): ${err.message}`);
         }
       }
@@ -333,6 +347,7 @@ async function main() {
     blockRequests,
     commentRequests,
     commentsFound: totalComments,
+    commentSweepFailures: commentFailures,
     commentSweep: withComments ? 'run' : 'skipped',
     maxBlockDepth: maxDepthSeen,
     unknownBlockTypes: [...unknownBlockTypes].sort(),
@@ -346,7 +361,10 @@ async function main() {
   console.error(`── corpus export ${partial ? '(PARTIAL — --limit was set)' : ''} ──`);
   console.error(`  pages exported     ${records.length}`);
   console.error(`  block requests     ${blockRequests}`);
-  console.error(`  comments found     ${totalComments} (${withComments ? 'sweep run' : 'sweep skipped'})`);
+  console.error(
+    `  comments found     ${totalComments} (${withComments ? 'sweep run' : 'sweep skipped'}` +
+      `${commentFailures ? `, ${commentFailures} page(s) FAILED — the count is a floor, not a total` : ''})`
+  );
   console.error(`  max block depth    ${maxDepthSeen}`);
   console.error(`  chars notes        ${volume.totals.notes.toLocaleString()}`);
   console.error(`  chars outcome      ${volume.totals.outcome.toLocaleString()}`);
