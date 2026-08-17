@@ -8,43 +8,134 @@ const { assessDelegations } = require('./linear-delegation-health.js');
 const NOW = Date.parse('2026-08-17T02:00:00.000Z');
 const ago = (min) => new Date(NOW - min * 60000).toISOString();
 
-const BOILERPLATE = [
-  { body: "I've received your request and I'm starting to work on it. Let me analyze the issue and prepare my approach." },
-  { body: '**Routing**\n- **Broadwayscore** → `main` (default)' },
-  { body: 'Using model: claude-opus-4-8' },
+const boilerplate = (min) => [
+  { createdAt: ago(min), body: "I've received your request and I'm starting to work on it. Let me analyze the issue and prepare my approach." },
+  { createdAt: ago(min), body: '**Routing**\n- **Broadwayscore** → `main` (default)' },
+  { createdAt: ago(min), body: 'Using model: claude-opus-4-8' },
 ];
 
 const issue = (identifier, sessions, delegateName = 'cyrus') => ({ identifier, delegateName, sessions });
 
 test('the 2026-08-16 failure is caught: delegated, active, boilerplate only', () => {
-  // Ten issues looked exactly like this on the board and produced nothing.
   const r = assessDelegations(
-    [issue('BRO-374', [{ createdAt: ago(30), status: 'active', activities: BOILERPLATE }])], NOW);
+    [issue('BRO-374', [{ createdAt: ago(30), status: 'active', activities: boilerplate(30) }])], NOW);
   assert.equal(r.verdicts[0].verdict, 'stalled');
-  assert.match(r.alarm, /accepted work and produced nothing/);
+  assert.match(r.alarm, /not running/);
   assert.match(r.alarm, /BRO-374/);
 });
 
 test('a blocked-notice session is not counted as working', () => {
-  // BRO-374 sat like this for 20 minutes while being reported as running.
   const r = assessDelegations(
     [issue('BRO-374', [{ createdAt: ago(20), status: 'active',
-      activities: [{ body: 'Blocked by **BRO-379**, **BRO-376** — will start automatically when they are resolved.' }] }])], NOW);
+      activities: [{ createdAt: ago(20), body: 'Blocked by **BRO-379** — will start automatically when they are resolved.' }] }])], NOW);
   assert.equal(r.verdicts[0].verdict, 'blocked');
-  assert.match(r.alarm, /will not start by themselves/);
+  assert.match(r.alarm, /will not start/);
 });
 
-test('real work is recognised and raises no alarm', () => {
+test('recent real work is recognised and raises no alarm', () => {
   const r = assessDelegations(
     [issue('BRO-374', [{ createdAt: ago(10), status: 'active',
-      activities: [...BOILERPLATE, { body: "I'll start by exploring the existing code structure." }] }])], NOW);
+      activities: [...boilerplate(10), { createdAt: ago(2), body: "I'll start by exploring the existing code structure." }] }])], NOW);
   assert.equal(r.verdicts[0].verdict, 'working');
+  assert.equal(r.alarm, null);
+});
+
+// --- review finding 1: empty-body activities are not work ---
+test('an agent that errored and died is NOT working (empty-body activity)', () => {
+  // AgentActivityErrorContent has no `body` in the query, so it arrived as ''.
+  // The first version scored that as substantive and reported healthy.
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: ago(60), status: 'active',
+      activities: [...boilerplate(60), { createdAt: ago(59), typename: 'AgentActivityErrorContent', body: '' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+  assert.match(r.alarm, /BRO-374/);
+});
+
+test('whitespace-only bodies are not work either', () => {
+  const r = assessDelegations(
+    [issue('BRO-9', [{ createdAt: ago(60), status: 'active',
+      activities: [...boilerplate(60), { createdAt: ago(59), body: '   \n  ' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+});
+
+// --- review finding 2: "working" must expire ---
+test('one real thought hours ago is stalled, not working forever', () => {
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: ago(360), status: 'active',
+      activities: [...boilerplate(360), { createdAt: ago(355), body: 'Exploring the code structure.' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+  assert.match(r.verdicts[0].detail, /started work then stopped/);
+});
+
+test('a session Linear itself marked stale is not working, however much it did', () => {
+  const r = assessDelegations(
+    [issue('BRO-381', [{ createdAt: ago(3), status: 'stale',
+      activities: [...boilerplate(3), { createdAt: ago(1), body: 'Enumerating dispatcher safety behaviours.' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+  assert.match(r.verdicts[0].detail, /Linear marked the session dead/);
+});
+
+// --- review finding 9: duplicate concurrent sessions ---
+test('a dead twin created 400ms later does not mask a working session', () => {
+  // Observed live: BRO-379 sessions at 14:16:38.811 and .178.
+  const base = Date.parse(ago(4));
+  const r = assessDelegations([issue('BRO-379', [
+    { createdAt: new Date(base).toISOString(), status: 'active',
+      activities: [...boilerplate(4), { createdAt: ago(1), body: 'Writing the client module.' }] },
+    { createdAt: new Date(base + 400).toISOString(), status: 'active', activities: boilerplate(4) },
+  ])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'working');
+  assert.equal(r.alarm, null);
+});
+
+// --- review finding 10: malformed createdAt must not buy immunity ---
+test('a session with an unparseable createdAt is stalled, not permanently starting', () => {
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: null, status: 'active', activities: boilerplate(1) }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'stalled');
+  assert.doesNotMatch(r.verdicts[0].detail, /NaN/);
+});
+
+// --- review finding 8: blocked must not vanish behind stalled ---
+test('stalled and blocked are BOTH reported in the same alarm', () => {
+  const r = assessDelegations([
+    issue('BRO-1', [{ createdAt: ago(30), status: 'active', activities: boilerplate(30) }]),
+    issue('BRO-2', [{ createdAt: ago(30), status: 'active',
+      activities: [{ createdAt: ago(30), body: 'Blocked by **BRO-1**' }] }]),
+  ], NOW);
+  assert.match(r.alarm, /BRO-1/);
+  assert.match(r.alarm, /BRO-2/);
+});
+
+test('the alarm tells the owner what to do about it', () => {
+  const r = assessDelegations(
+    [issue('BRO-1', [{ createdAt: ago(30), status: 'active', activities: boilerplate(30) }])], NOW);
+  assert.match(r.alarm, /Reply in the issue thread/);
+});
+
+// --- false positive found in production within minutes of shipping ---
+test('an agent that FINISHED is not stalled', () => {
+  // BRO-374 completed its task and opened PR #596; the alarm still said
+  // "started work then stopped". A false alarm on successful work teaches the
+  // owner to ignore the real ones.
+  const r = assessDelegations(
+    [issue('BRO-374', [{ createdAt: ago(90), status: 'complete',
+      activities: [...boilerplate(90), { createdAt: ago(85), body: 'Writing the client module.' }] }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'finished');
+  assert.equal(r.alarm, null);
+});
+
+test('a completed session with only boilerplate still counts as finished', () => {
+  // The smoke-test probe legitimately answers and completes with little output.
+  const r = assessDelegations(
+    [issue('BRO-338', [{ createdAt: ago(120), status: 'complete', activities: boilerplate(120) }])], NOW);
+  assert.equal(r.verdicts[0].verdict, 'finished');
   assert.equal(r.alarm, null);
 });
 
 test('a freshly started session is given grace, not alarmed on', () => {
   const r = assessDelegations(
-    [issue('BRO-374', [{ createdAt: ago(1), status: 'active', activities: BOILERPLATE }])], NOW);
+    [issue('BRO-374', [{ createdAt: ago(1), status: 'active', activities: boilerplate(1) }])], NOW);
   assert.equal(r.verdicts[0].verdict, 'starting');
   assert.equal(r.alarm, null);
 });
@@ -52,31 +143,11 @@ test('a freshly started session is given grace, not alarmed on', () => {
 test('delegated with no session at all is never-started', () => {
   const r = assessDelegations([issue('BRO-374', [])], NOW);
   assert.equal(r.verdicts[0].verdict, 'never-started');
-  assert.match(r.alarm, /produced nothing/);
+  assert.match(r.alarm, /not running/);
 });
 
 test('undelegated issues are ignored entirely', () => {
-  // Most of the board is not delegated; it must not generate noise.
   const r = assessDelegations([{ identifier: 'BRO-999', delegateName: null, sessions: [] }], NOW);
   assert.equal(r.verdicts.length, 0);
   assert.equal(r.alarm, null);
-});
-
-test('the newest session decides, not a stale earlier one', () => {
-  // BRO-374 really had a stale 00:51 session alongside a live 01:18 one.
-  const r = assessDelegations([issue('BRO-374', [
-    { createdAt: ago(90), status: 'stale', activities: BOILERPLATE },
-    { createdAt: ago(5), status: 'active', activities: [...BOILERPLATE, { body: 'Writing the client module.' }] },
-  ])], NOW);
-  assert.equal(r.verdicts[0].verdict, 'working');
-  assert.equal(r.alarm, null);
-});
-
-test('stalled outranks blocked in the alarm text', () => {
-  const r = assessDelegations([
-    issue('BRO-1', [{ createdAt: ago(30), status: 'active', activities: BOILERPLATE }]),
-    issue('BRO-2', [{ createdAt: ago(30), status: 'active', activities: [{ body: 'Blocked by **BRO-1**' }] }]),
-  ], NOW);
-  assert.match(r.alarm, /BRO-1/);
-  assert.match(r.alarm, /produced nothing/);
 });
