@@ -302,15 +302,91 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
   };
 }
 
+/**
+ * The daily-digest row for the headless (job) lane — card #1714. Same
+ * windowDays=14 as audit-headless-outcome-rate.js's own default (a shorter
+ * window flips on too little headless volume to read a rate off). The
+ * "enough sample" guard gates on `resolved` (done+failed), not raw
+ * `launches` — an in-flight/never-spawned launch has no verdict yet, so
+ * gating on resolved count is what stops a pile of still-running jobs from
+ * faking a big-enough sample.
+ */
+const HEADLESS_CHECK_NAME = 'Headless dispatch: success rate';
+const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10 };
+
+const HEADLESS_HINT = 'Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown of failed launches. '
+  + 'Judge any fix by this rate over the window, never by one clean dispatch (same doctrine as the tab-lane dead-launch rate, card #1199).';
+
+function computeHeadlessDispatchDigest({
+  entries,
+  nowMs,
+  windowDays = HEADLESS_DEFAULTS.windowDays,
+  successRateFloor = HEADLESS_DEFAULTS.successRateFloor,
+  minResolved = HEADLESS_DEFAULTS.minResolved,
+  lane = JOB_LANE,
+} = {}) {
+  const stats = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane });
+  const span = `last ${windowDays}d`;
+  const floorPct = (successRateFloor * 100).toFixed(0);
+  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+
+  // Vacuous-gate class (#1063/#1069/#1075): no resolved launches is not a
+  // pass, it's "nothing to measure yet". Guard BEFORE any .toFixed() call —
+  // successRate/failureRate are null (not 0) at this point.
+  if (stats.resolved === 0) {
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'warn',
+      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight or unspawned).`,
+      hint: 'data/audit/dispatch-ledger.jsonl is per-machine and gitignored; run this where headless dispatches actually launch.',
+      ...stats,
+    };
+  }
+
+  const pct = (stats.successRate * 100).toFixed(0);
+
+  if (stats.successRate >= successRateFloor) {
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'pass',
+      message: `Success rate ${pct}% — ${detail}, at or over the ${floorPct}% floor.`,
+      ...stats,
+    };
+  }
+
+  // Under the floor but too few resolved launches to tell a real regression
+  // from one unlucky run. Still visible (warn), never a silent pass.
+  if (stats.resolved < minResolved) {
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'warn',
+      message: `Success rate ${pct}% (${detail}) is under the ${floorPct}% floor, but only ${stats.resolved} resolved launches — below the ${minResolved}-launch minimum to call it.`,
+      hint: HEADLESS_HINT,
+      ...stats,
+    };
+  }
+
+  return {
+    name: HEADLESS_CHECK_NAME,
+    status: 'error',
+    message: `Success rate ${pct}% is under the ${floorPct}% floor — ${detail}. ${stats.failedTaskIds.length} task(s) affected.`,
+    hint: HEADLESS_HINT,
+    ...stats,
+  };
+}
+
 module.exports = {
   foldAttempts,
   computeDeadRate,
   computeDispatchHealthDigest,
   computeJobLaneOutcomeRate,
+  computeHeadlessDispatchDigest,
   JOB_LANE,
   CHECK_NAME,
+  HEADLESS_CHECK_NAME,
   CMUX_LANE,
   OTHER_LANE,
   DEFAULTS,
+  HEADLESS_DEFAULTS,
   PAIR_WINDOW_MS,
 };
