@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
-  foldAttempts, computeDeadRate, computeDispatchHealthDigest, CMUX_LANE,
+  foldAttempts, computeDeadRate, computeDispatchHealthDigest, computeHeadlessDispatchDigest, CMUX_LANE,
 } = require('./dispatch-health.js');
+const { JOB_EVENTS } = require('./dispatch-ledger.js');
 // Rule 15: the REAL producer of the shape-1 dead pair, not a hand-copied
 // literal — a future change to failedLaunchEntries()'s output shape must fail
 // THIS test rather than silently stop being counted.
@@ -288,4 +289,69 @@ test('supersededByRemapCount is window-scoped like every other figure on the row
   const wide = computeDeadRate(old, { nowMs: NOW, windowDays: 120 });
   assert.equal(wide.launches, 1);
   assert.equal(wide.supersededByRemapCount, 1);
+});
+
+// ── computeHeadlessDispatchDigest (card #1714) ──────────────────────────────
+// Same NOW anchor; window is 14d by default here, so 2026-07-27T12:00Z →.
+
+const hlLaunch = (ts, taskId) => ({ ts, event: 'launch', taskId, workspaceRef: `headless:${taskId}` });
+const hlSpawn = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.SPAWNED, taskId, jobId });
+const hlDone = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.DONE, taskId, jobId });
+const hlFailed = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.FAILED, taskId, jobId });
+
+function headlessRun(taskId, launchTs, outcome) {
+  const jobId = `j-${taskId}`;
+  const spawnTs = new Date(Date.parse(launchTs) + 1000).toISOString();
+  const rows = [hlLaunch(launchTs, taskId), hlSpawn(spawnTs, taskId, jobId)];
+  if (outcome === 'done' || outcome === 'failed') {
+    const termTs = new Date(Date.parse(launchTs) + 60000).toISOString();
+    rows.push((outcome === 'done' ? hlDone : hlFailed)(termTs, taskId, jobId));
+  }
+  return rows;
+}
+
+test('headless digest passes when the success rate is at or over the floor', () => {
+  const entries = [];
+  for (let i = 0; i < 9; i++) entries.push(...headlessRun(`h-ok-${i}`, `2026-08-0${(i % 5) + 1}T00:0${i}:00.000Z`, 'done'));
+  entries.push(...headlessRun('h-bad-0', '2026-08-05T00:00:00.000Z', 'failed'));
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'pass');
+  assert.equal(row.resolved, 10);
+  assert.equal(row.done, 9);
+});
+
+test('headless digest warns "cannot measure" on zero resolved launches — never a vacuous pass', () => {
+  const entries = [...headlessRun('h-inflight', '2026-08-05T00:00:00.000Z', 'inFlight')];
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /cannot be measured/);
+  assert.notEqual(row.status, 'pass');
+});
+
+test('headless digest warns (not errors) when under the floor but the sample is too small', () => {
+  const entries = [...headlessRun('h-bad-1', '2026-08-05T00:00:00.000Z', 'failed'), ...headlessRun('h-bad-2', '2026-08-06T00:00:00.000Z', 'failed')];
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW, minResolved: 10 });
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /minimum/);
+});
+
+test('headless digest errors when under the floor on a large enough sample', () => {
+  const entries = [];
+  for (let i = 0; i < 8; i++) entries.push(...headlessRun(`h-fail-${i}`, `2026-08-0${(i % 5) + 1}T0${i}:00:00.000Z`, 'failed'));
+  for (let i = 0; i < 2; i++) entries.push(...headlessRun(`h-ok-${i}`, `2026-08-0${i + 6}T00:00:00.000Z`, 'done'));
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW, minResolved: 10 });
+  assert.equal(row.status, 'error');
+  assert.equal(row.resolved, 10);
+  assert.equal(row.failed, 8);
+  assert.match(row.message, /20%/);
+  assert.ok(row.hint, 'a paging row must tell the owner what to do');
+});
+
+test('the headless digest row is shaped for health-check.js (name/status/message)', () => {
+  const entries = [...headlessRun('h-x', '2026-08-05T00:00:00.000Z', 'done')];
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW, minResolved: 1 });
+  assert.equal(typeof row.name, 'string');
+  assert.equal(row.name, 'Headless dispatch: success rate');
+  assert.ok(['pass', 'warn', 'error'].includes(row.status));
+  assert.equal(typeof row.message, 'string');
 });
