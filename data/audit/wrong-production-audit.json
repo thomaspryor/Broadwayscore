@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T09:26:39.898Z",
+  "timestamp": "2026-08-17T10:56:37.499Z",
   "stats": {
-    "totalReviews": 42370,
-    "alreadyFlagged": 18254,
+    "totalReviews": 42377,
+    "alreadyFlagged": 18257,
     "dateGuardCatches": 144,
-    "directorMismatch": 970,
-    "tvFilmSignals": 1208,
-    "londonSignals": 908,
+    "directorMismatch": 973,
+    "tvFilmSignals": 1210,
+    "londonSignals": 909,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3610
+    "noPublishDate": 3611
   },
   "findings": [
     {
@@ -1469,6 +1469,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "file": "birmingham-rep--unknown.json",
+      "publishDate": null,
+      "url": "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -23069,6 +23087,39 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
+      "file": "cititour--brian-scott.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Stereophonic/1176",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "exeunt-magazine--read-more-articles-by-loren-noveck.json",
+      "score": 67,
+      "publishDate": "2023-10-30",
+      "url": "https://exeuntnyc.com/reviews/review-stereophonic-at-playwrights-horizons/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 74,
       "publishDate": "October 31, 2023",
@@ -23106,6 +23157,20 @@
       "score": 64,
       "publishDate": "October 29, 2023",
       "url": "https://www.talkinbroadway.com/page/ob/10_29_23b.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "theater-scene--archive.json",
+      "score": 91,
+      "publishDate": "2023-11-07",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/stereophonic/tony-marinelli/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
