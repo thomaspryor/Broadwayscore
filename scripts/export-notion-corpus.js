@@ -371,6 +371,11 @@ async function main() {
     // byte-identical across runs, and a timestamp inside it would guarantee
     // it never is.
     generatedAt: new Date().toISOString(),
+    // When the run BEGAN. The verifier needs it to tell "this card was created
+    // while we were exporting" (fine) from "this card existed and we skipped
+    // it" (a hole in a one-shot archive). generatedAt is the end, which cannot
+    // answer that.
+    startedAt: new Date(startedAt).toISOString(),
     durationSec: Math.round((Date.now() - startedAt) / 10) / 100,
     partial,
     dataSourceId: BRAIN_DATABASE_ID,

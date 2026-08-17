@@ -452,6 +452,8 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
   }
 
   if (livePageIds !== null) {
+    // `livePageIds` may be plain ids or {id, createdTime} — the latter turns a
+    // weak containment check into a real completeness check, see below.
     // Set containment, NOT equality. The export takes ~60 minutes against a
     // board that gains cards continuously (5 appeared during the real run, four
     // of them filed by the session doing the export), so `live === exported`
@@ -459,13 +461,45 @@ function verifyCorpus({ records, manifest = null, baseline = null, tolerance = 0
     // unverifiable. What actually matters is that nothing the export CLAIMED
     // has since vanished — a page in the corpus that no longer exists live
     // would mean the export invented or misread it.
-    const live = new Set(livePageIds);
+    const liveRows = livePageIds.map((x) => (typeof x === 'string' ? { id: x, createdTime: null } : x));
+    const live = new Set(liveRows.map((r) => r.id));
     const missing = records.map((r) => r.id).filter((id) => !live.has(id));
     add(
       'every exported page still exists on the board',
       missing.length === 0,
       missing.length ? `${missing.length} exported id(s) not found live: ${missing.slice(0, 5).join(', ')}` : 'all present'
     );
+
+    // Containment alone is a WEAK signal — it proves nothing was invented, but
+    // not that nothing was MISSED, which is the failure that actually matters
+    // for a one-shot archive. Closed here: every live page absent from the
+    // export must have been CREATED AFTER the export started. One that predates
+    // the run and is not in the corpus was skipped, and that is a hole in the
+    // archive. Needs createdTime, so it only runs when the caller supplied it.
+    const exported = new Set(records.map((r) => r.id));
+    // startedAt, or derived exactly from the two fields every manifest has
+    // already carried (end minus duration). Without the fallback this check
+    // would silently do nothing against any export taken before the field
+    // existed — a check that quietly no-ops is worse than no check, because it
+    // reports a ✅.
+    const startedAt = manifest
+      ? manifest.startedAt
+        ? Date.parse(manifest.startedAt)
+        : manifest.generatedAt && Number.isFinite(manifest.durationSec)
+          ? Date.parse(manifest.generatedAt) - manifest.durationSec * 1000
+          : null
+      : null;
+    const datedRows = liveRows.filter((r) => r.createdTime);
+    if (startedAt && datedRows.length && !(manifest && manifest.partial)) {
+      const skipped = datedRows.filter((r) => !exported.has(r.id) && Date.parse(r.createdTime) < startedAt);
+      add(
+        'no page that predates the export is missing from it',
+        skipped.length === 0,
+        skipped.length
+          ? `${skipped.length} page(s) existed before the run and were never exported: ${skipped.slice(0, 5).map((r) => r.id).join(', ')}`
+          : 'the export is a complete snapshot of the board as it was at start'
+      );
+    }
     // Reported, never failed — but named accurately. On a FULL run these are
     // cards created during the ~60-minute export (five appeared during the real
     // one). On a --limit run they are simply everything the run never reached.
