@@ -1380,6 +1380,7 @@ on:
       - 'scripts/lib/wrong-production-corroboration.js'
       - 'scripts/lib/wrong-production-corroboration.test.mjs'
       - 'scripts/flag-wrong-production-by-date.js'
+      - 'scripts/flag-wrong-production-by-date.test.mjs'
       - 'scripts/rebuild-all-reviews.js'
       # Time-to-publish SLA (task #388): how long a review takes to go from
       # published by the outlet to live on the site, and the 90%-within-15-min
