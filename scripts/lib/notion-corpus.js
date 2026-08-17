@@ -55,6 +55,13 @@ const OVERFLOWABLE = [
 const OVERFLOWABLE_FIELDS = OVERFLOWABLE.map((o) => o.field);
 const FIELD_TO_PROPERTY = Object.fromEntries(OVERFLOWABLE.map((o) => [o.field, o.property]));
 const FIELD_TO_SECTION_KEY = Object.fromEntries(OVERFLOWABLE.map((o) => [o.field, o.sectionKey]));
+// The inverse. notion-brain.js keys its in-flight `overflow` object by SECTION
+// key and has to write the result back onto a card keyed by FIELD name; it had
+// two separate hand-written versions of this mapping (an explicit map on the
+// update path, an implicit identity on the create path that is only correct
+// because create can currently overflow Notes alone). Both now come from here,
+// so there is one table and the same drift cannot happen a third time.
+const SECTION_KEY_TO_FIELD = Object.fromEntries(OVERFLOWABLE.map((o) => [o.sectionKey, o.field]));
 
 function bodyHeadingText(field) {
   return `${BODY_HEADING_PREFIX}${field}${BODY_HEADING_SUFFIX}`;
@@ -389,6 +396,7 @@ module.exports = {
   OVERFLOWABLE_FIELDS,
   FIELD_TO_PROPERTY,
   FIELD_TO_SECTION_KEY,
+  SECTION_KEY_TO_FIELD,
   RICH_TEXT_BLOCK_TYPES,
   KNOWN_TEXTLESS_BLOCK_TYPES,
   bodyHeadingText,
