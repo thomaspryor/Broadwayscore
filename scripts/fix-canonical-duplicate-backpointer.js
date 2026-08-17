@@ -76,10 +76,31 @@ const pointerTargets = (d) => ['duplicateOf', 'duplicateTextOf']
   .map((k) => d && d[k])
   .filter((v) => typeof v === 'string' && v.endsWith('.json'));
 
+// A named --show that is not present under RT is a WRONG-CORPUS error, never
+// "no cycles". Without this, filtering a missing dir away left shows=[] and the
+// run printed "0 canonical back-pointer cycle(s) found" and exited 0 — making a
+// wrong/empty/stale target indistinguishable from a clean corpus (code review,
+// 2026-08-17). Silence is the failure mode this whole change exists to remove.
+if (showFilter) {
+  let ok = false;
+  try { ok = fs.statSync(path.join(RT, showFilter)).isDirectory(); } catch { ok = false; }
+  if (!ok) {
+    console.error(`ERROR: show '${showFilter}' not found under ${RT}. Wrong review-texts checkout, or a typo — refusing to report a clean result for a corpus this tool cannot see.`);
+    process.exit(2);
+  }
+}
+
 const shows = (showFilter ? [showFilter] : fs.readdirSync(RT)).filter((d) => {
   if (d.startsWith('.') || d.startsWith('_')) return false;
   try { return fs.statSync(path.join(RT, d)).isDirectory(); } catch { return false; }
 });
+
+// A full-corpus run over an empty/near-empty tree is the same failure wearing a
+// different hat: report it instead of exiting 0 with a reassuring zero.
+if (!shows.length) {
+  console.error(`ERROR: no show directories under ${RT} — that is an empty or wrong review-texts checkout, not a clean corpus.`);
+  process.exit(2);
+}
 
 let found = 0;
 let written = 0;
