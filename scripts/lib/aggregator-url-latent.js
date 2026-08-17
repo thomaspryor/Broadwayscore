@@ -79,6 +79,23 @@ const VALIDATOR_EXCLUSION_FLAGS = Object.freeze([
   'wrongAttribution',
   'isRoundupArticle',
   'rejectionReason',
+  // isNotReview is the DURABLE form of rejectionReason. The note in
+  // review-write-guard.js explains why rejectionReason is deliberately NOT in
+  // PROTECTED_FIELDS (it is CI-derived and two scripts must be able to clear it) —
+  // but that also means any re-scrape can silently strip it. On 2026-08-17 the LBO
+  // roundup scrape did exactly that to
+  // christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json: a 0-word LBO
+  // boilerplate disclaimer that three LLMs had unanimously rejected as "not a
+  // review" lost its rejectionReason, re-entered the validated population carrying
+  // the aggregator URL, and failed the trunk on a zero-tolerance gate.
+  // isNotReview + its Reason/SetAt/SetBy siblings ARE protected and are already
+  // honoured by review-guards.js:2939 to exclude a file from the rebuild, so a
+  // record marked "this is not a review" was already outside the review population
+  // everywhere EXCEPT here. Adding it closes that gap.
+  // Blast radius when added: 4 files carry isNotReview:true corpus-wide and all 4
+  // were already excluded by another flag, so the validated population is unchanged
+  // today (measured 2026-08-17). This is a durability guarantee, not a relaxation.
+  'isNotReview',
   'suspectedMisattribution',
 ]);
 
