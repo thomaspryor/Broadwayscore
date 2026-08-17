@@ -261,8 +261,18 @@ half-migrated board; notification flood to the owner's phone.
   `High` etc. Import-time only — do NOT write normalised priorities back to Notion, which would both corrupt the
   Sprint 2 corpus and edit a system being deleted.
 - **Acceptance criteria:**
-  - VERIFY: `node --test scripts/lib/linear-import-rules.test.mjs` covers all 17 observed legacy spellings
-  - VERIFY: the 79 P0/P1-tier legacy-spelling cards map to Linear Urgent/High
+  - VERIFY: `node --test scripts/lib/linear-import-rules.test.mjs` covers all ~~17 observed~~ **26** legacy
+    spellings
+    `[CHANGED: 17 was an undercount from sampling live cards. Read the complete vocabulary off the schema
+    instead — dataSources.retrieve → properties.Priority.select.options — which returns every option whether or
+    not a card currently uses it: 26 values. Three do not behave like priorities at all: "Done" (a status set in
+    the Priority column, which must NOT become Low), "P9", and the Linear-vocabulary "High"/"Medium"/"Low".
+    — source: Sprint 3 execution]`
+  - VERIFY: every P0/P1-tier legacy spelling maps to Linear Urgent(1)/High(2)
+    `[CHANGED: was "the 79 P0/P1-tier legacy-spelling cards". Counting CARDS makes this criterion expire the
+    moment the board changes, and it changes hourly. Asserting the SPELLINGS is the durable form, and the
+    per-card counts belong in the S3-T6 dry-run disposition report where they are measured, not asserted.
+    — source: Sprint 3 execution]`
 
 ### Task S3-T2: Re-key the import ledger to pageId, append-only
 - **Complexity:** M
