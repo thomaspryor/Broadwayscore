@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T16:25:21.883Z",
+  "timestamp": "2026-08-17T19:42:00.410Z",
   "stats": {
     "totalReviews": 42390,
-    "alreadyFlagged": 18258,
-    "dateGuardCatches": 144,
+    "alreadyFlagged": 18263,
+    "dateGuardCatches": 145,
     "directorMismatch": 975,
     "tvFilmSignals": 1210,
     "londonSignals": 908,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3618
+    "noPublishDate": 3612
   },
   "findings": [
     {
@@ -3816,6 +3816,20 @@
     },
     {
       "showId": "carmen-off-broadway-2025",
+      "file": "vulture--justin-davidson.json",
+      "score": 41,
+      "publishDate": "2024-01-04",
+      "url": "https://www.vulture.com/2024/01/review-metropolitan-opera-rust-belt-carmen.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 663d before show (2024-01-04 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
       "file": "washpost--justin-davidson.json",
       "score": 77,
       "publishDate": "2024-01-01",
@@ -4225,6 +4239,7 @@
     {
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
       "file": "theater-scene--archive.json",
+      "score": 92,
       "publishDate": "2026-08-14",
       "url": "https://www.theaterscene.net/plays/solo-plays/broad-strokes/tony-marinelli/",
       "findings": [
@@ -24258,6 +24273,7 @@
     {
       "showId": "sylvia-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 77,
       "findings": [
         {
           "type": "DATE_GUARD",
