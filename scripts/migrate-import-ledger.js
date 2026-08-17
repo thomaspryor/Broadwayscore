@@ -178,7 +178,10 @@ function main() {
   })();
 
   const summary = {
-    legacyEntries: Object.keys(legacy).length,
+    // Counts the entries migrateLegacy actually consumes (it skips falsy
+    // values), so `legacyEntries` and `rowsWritten` are comparable rather than
+    // differing by however many null slots the old file happens to carry.
+    legacyEntries: Object.values(legacy || {}).filter(Boolean).length,
     legacyIdentifiers: legacyIdents.size,
     rowsWritten: rows.length,
     identifiersLost: lost,
@@ -213,6 +216,17 @@ function main() {
 
   if (lost.length) {
     console.error('\n❌ refusing to write: the migration would lose Linear issues.');
+    process.exit(1);
+  }
+
+  if (dupPageIds.length) {
+    // Fatal, not a warning. indexByPageId keeps ONE row per pageId, so a page
+    // claimed by two Linear issues silently reads as accounted-for in the
+    // Sprint 3 anti-join while one of the two issues is orphaned — the exact
+    // "looks complete, isn't" failure the anti-join exists to catch. Either the
+    // title recovery bound the wrong page or the board really does have two
+    // issues for one card; both need a human before this ledger is trusted.
+    console.error('\n❌ refusing to write: a pageId is claimed by more than one Linear issue (listed above).');
     process.exit(1);
   }
 
