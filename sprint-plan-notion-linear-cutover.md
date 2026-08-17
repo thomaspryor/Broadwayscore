@@ -363,6 +363,17 @@ half-migrated board; notification flood to the owner's phone.
   1,831 cards into a live board that has NO bulk delete — source: decomposition critique]` Chunk into batches of
   ~100, abort on the first unexpected disposition rather than continuing, and add `--rollback` which Cancels and
   labels `import-rollback` every issue in the ledger.
+  `[ADDED: make the write IDEMPOTENT rather than only recoverable. Linear's IssueCreateInput accepts a
+  client-supplied `id` — verified by live introspection 2026-08-17, it is a String field on the input type — so
+  deriving a deterministic UUIDv5 from the Notion pageId makes a replayed create a server-side no-op instead of a
+  duplicate. This is load-bearing for two reasons: S3-T3 removes the exact-title dedupe, which is currently the
+  ONLY thing preventing duplicates; and scripts/lib/linear-retry-policy.js deliberately refuses to retry
+  mutations on 5xx (S1-T1) precisely because a replayed create cannot be assumed safe. Supply the id here and
+  the importer may then opt in with `graphql(..., { retryMutationsOn5xx: true })`, which is the difference
+  between a 502 mid-run costing one card and costing the run.
+  Also add minimum inter-request SPACING here, not in the transport: the importer currently fires creates
+  back-to-back with none, and without it the S1-T1 backoff becomes the de-facto pacer — up to 5 sleeps per
+  request, which looks identical to a hang across 1,831 items. — source: Sprint 1 review + Sprint 3 execution]`
 - **Acceptance criteria:**
   - VERIFY: a fixture with one unexpected disposition aborts after its batch, leaving prior batches intact
   - VERIFY: `--rollback` against a 3-issue test ledger Cancels and labels exactly those 3
