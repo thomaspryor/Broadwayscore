@@ -31,6 +31,7 @@ const SCRIPTS_DIR = path.join(REPO_ROOT, 'scripts');
 // Files allowed to reference issueCreate / api.linear.app directly.
 const ALLOWLIST = new Set([
   'scripts/lib/linear-client.js', // the low-level GraphQL client itself
+  'scripts/lib/linear.js', // BRO-374 single injectable client — low-level, builds the mutation TEXT itself
   'scripts/lib/linear-issue-create.js', // the chokepoint this gate protects
   'scripts/linear-import.js', // existing bulk-migration script, pre-dates the chokepoint
   'scripts/audit-linear-issuecreate-chokepoint.js', // this file's own doc comment mentions the strings
