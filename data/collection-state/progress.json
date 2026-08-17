@@ -22,7 +22,11 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -121,7 +125,13 @@
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
     "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json",
-    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -144,23 +154,29 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-17T08:55:40.382Z",
-  "lastProcessed": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+  "lastProcessed": "medea-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-17T08:56:52.570Z",
@@ -172,6 +188,12 @@
       "t": "2026-08-17T08:56:53.046Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T09:17:27.933Z",
+      "event": "bb-session",
+      "session": "276da75f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
