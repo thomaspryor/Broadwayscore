@@ -35,6 +35,7 @@ const fs = require('fs');
 const path = require('path');
 const { detectContradictedFlagBasis } = require('./lib/contradicted-flag-basis');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const APPLY = process.argv.includes('--apply');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -93,13 +94,11 @@ for (const rel of TARGETS) {
 
   if (!APPLY) continue;
 
-  const orig = fs.readFileSync(filePath, 'utf8');
-  const hadTrailingNewline = orig.endsWith('\n');
   const clearNote = `[2026-08-17 cleared contradicted wrongProduction — flag basis cited ${verdict.citedDates.join(',')} but record is dated ${verdict.currentDate}, inside run ${verdict.windowStart}..${verdict.windowEnd || 'open'} — card #1589]`;
   clearWrongProductionFlags(data, { source: 'clear-contradicted-flag-basis.js', reason: clearNote });
   data.wrongProductionManualClear = true;
   data.wrongProductionClearedNote = clearNote;
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
+  safeWriteReview(filePath, data);
 }
 
 console.log('');
