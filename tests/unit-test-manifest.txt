@@ -37,11 +37,11 @@ scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
-scripts/lib/linear-delegation-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs
+scripts/lib/linear-delegation-health.test.mjs
 scripts/lib/pre-send-banner.test.mjs
 scripts/lib/push-content-survival.test.mjs
 scripts/lib/serp-review-census.test.mjs
@@ -59,6 +59,7 @@ scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
+scripts/tests/audit-card-relevance.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
