@@ -29,6 +29,7 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { RECHECK_AFTER_RE } = require('./recheck-stamp.js');
+const { foldDiacritics } = require('./title-match.js');
 
 // ── LIKELY-DONE: acceptance command ─────────────────────────────────────
 // Reuses the SAME extractor bsc-next.js's dispatch gate uses (verify-gate.js
@@ -113,8 +114,14 @@ const STOPWORDS = new Set([
   'task', 'still', 'this', 'that', 'never', 'not', 'has', 'have', 'it', 'its',
 ]);
 
+// Fold diacritics BEFORE stripping non-ASCII (task #648 class, structural
+// guard: tests/unit/sibling-matchers-diacritics.test.mjs) — cards are titled
+// after real shows, and this repo has a documented history of title-matching
+// bugs from exactly this order (Schmigadoon!, O'Hara). An unfolded strip
+// would turn "Café" into "caf" instead of "cafe", silently splitting a
+// duplicate pair that should have matched.
 function tokenizeTitle(name) {
-  return String(name || '')
+  return foldDiacritics(String(name || ''))
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
