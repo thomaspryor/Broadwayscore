@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-17T17:21:28.333Z",
+  "generatedAt": "2026-08-17T20:16:35.061Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 151,
-  "clean": 150,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.87 vs local 76.72 (Δ1.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15
-    }
-  ]
+  "clean": 151,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
