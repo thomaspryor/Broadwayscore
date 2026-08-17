@@ -1,87 +1,111 @@
 {
-  "generatedAt": "2026-08-10T11:59:49.436Z",
+  "generatedAt": "2026-08-17T11:59:00.900Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
     "shows": 5,
     "excluded": [],
     "undatedCandidates": 2,
-    "truthUrls": 121,
-    "scopedUrls": 19,
-    "naiveUrls": 21,
-    "onDiskUrls": 116,
-    "newFromNaive": 1,
+    "truthUrls": 54,
+    "scopedUrls": 0,
+    "naiveUrls": 0,
+    "onDiskUrls": 54,
+    "newFromNaive": 0,
     "perArm": {
       "naive-p0": {
-        "found": 12,
+        "found": 0,
         "queries": 5,
         "failed": 0,
-        "recall": 0.099
+        "recall": 0
       },
       "naive-p1": {
-        "found": 10,
+        "found": 0,
         "queries": 5,
         "failed": 0,
-        "recall": 0.083
+        "recall": 0
       },
       "onDisk": {
-        "found": 116,
+        "found": 54,
         "queries": 5,
         "failed": 0,
-        "recall": 0.959
+        "recall": 1
       },
       "scoped-q0": {
-        "found": 9,
+        "found": 0,
         "queries": 5,
         "failed": 0,
-        "recall": 0.074
+        "recall": 0
       },
       "scoped-q1": {
-        "found": 14,
-        "queries": 4,
+        "found": 0,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.116
+        "recall": 0
       },
       "scoped-q2": {
-        "found": 3,
+        "found": 0,
         "queries": 1,
         "failed": 0,
-        "recall": 0.025
+        "recall": 0
       }
     },
     "perFamily": {
       "naive": {
-        "found": 21,
+        "found": 0,
         "arms": 2,
         "failed": 0,
-        "recall": 0.174
+        "recall": 0
       },
       "onDisk": {
-        "found": 116,
+        "found": 54,
         "arms": 1,
         "failed": 0,
-        "recall": 0.959
+        "recall": 1
       },
       "scoped": {
-        "found": 19,
+        "found": 0,
         "arms": 3,
         "failed": 0,
-        "recall": 0.157
+        "recall": 0
       }
     },
     "byCategory": {
       "off-broadway": {
         "shows": 3,
-        "truthUrls": 4,
+        "truthUrls": 26,
         "families": {
           "naive": {
-            "found": 1,
+            "found": 0,
             "arms": 2,
             "failed": 0,
-            "recall": 0.25
+            "recall": 0
           },
           "onDisk": {
-            "found": 4,
+            "found": 26,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 2,
+        "truthUrls": 28,
+        "families": {
+          "naive": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          },
+          "onDisk": {
+            "found": 28,
             "arms": 1,
             "failed": 0,
             "recall": 1
@@ -93,70 +117,64 @@
             "recall": 0
           }
         }
-      },
-      "off-west-end": {
-        "shows": 2,
-        "truthUrls": 117,
-        "families": {
-          "naive": {
-            "found": 20,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.171
-          },
-          "onDisk": {
-            "found": 112,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.957
-          },
-          "scoped": {
-            "found": 19,
-            "arms": 3,
-            "failed": 0,
-            "recall": 0.162
-          }
-        }
       }
     },
-    "scopedRecall": 0.157,
-    "naiveRecall": 0.174
+    "scopedRecall": 0,
+    "naiveRecall": 0
   },
   "shows": [
     {
-      "showId": "isla-off-broadway-2026",
-      "title": "ISLA",
-      "market": "off-broadway",
-      "openingDate": "2026-08-08",
+      "showId": "anansi-the-spider-west-end-2026",
+      "title": "Anansi the Spider",
+      "market": "off-west-end",
+      "openingDate": "2026-08-15",
       "sampleState": "measured",
       "sampleReason": "opened 2d ago",
-      "geo": "us",
-      "naiveQuery": "ISLA WP Theater review",
+      "geo": "gb",
+      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
       "counts": {
-        "truth": 3,
+        "truth": 10,
         "scoped": 0,
-        "naive": 1,
-        "onDisk": 3
+        "naive": 0,
+        "onDisk": 10
       },
       "recall": {
         "scoped": 0,
-        "naive": 0.333,
+        "naive": 0,
         "onDisk": 1,
         "censusPlusDisk": 1
       },
       "newFromNaive": [],
       "missedByCensus": [
-        "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/",
-        "https://www.show-score.com/off-broadway-shows/isla",
-        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+        "https://www.bestoftheatre.co.uk/anansi-the-spider",
+        "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+        "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
+        "https://openairtheatre.com/production/anansi-the-spider",
+        "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
+        "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+        "https://www.theatremonkey.com/show/anansi-the-spider-2/",
+        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
+        "https://www.unicorntheatre.com/archived-events/anansi-the-spider-2-2",
+        "https://www.whatsonstage.com/news/review-anansi-the-spider-unicorn-theatre_49987/"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"ISLA\" Off-Broadway review 2026",
+          "query": "\"Anansi the Spider\" West End review 2026",
           "page": 0,
           "geo": null,
-          "raw": 10,
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Anansi the Spider\" review regent",
+          "page": 0,
+          "geo": null,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -164,23 +182,21 @@
         },
         {
           "arm": "naive-p0",
-          "query": "ISLA WP Theater review",
+          "query": "Anansi the Spider Regent's Park Open Air Theatre review",
           "page": 0,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/"
-          ],
+          "geo": "gb",
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "ISLA WP Theater review",
+          "query": "Anansi the Spider Regent's Park Open Air Theatre review",
           "page": 1,
-          "geo": "us",
-          "raw": 10,
+          "geo": "gb",
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -191,12 +207,19 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 3,
-          "accepted": 3,
+          "raw": 10,
+          "accepted": 10,
           "urls": [
-            "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/",
-            "https://www.show-score.com/off-broadway-shows/isla",
-            "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+            "https://www.bestoftheatre.co.uk/anansi-the-spider",
+            "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+            "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
+            "https://openairtheatre.com/production/anansi-the-spider",
+            "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
+            "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+            "https://www.theatremonkey.com/show/anansi-the-spider-2/",
+            "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
+            "https://www.unicorntheatre.com/archived-events/anansi-the-spider-2-2",
+            "https://www.whatsonstage.com/news/review-anansi-the-spider-unicorn-theatre_49987/"
           ],
           "ok": true,
           "error": null
@@ -204,14 +227,14 @@
       ]
     },
     {
-      "showId": "masticate-off-broadway-2026",
-      "title": "Masticate",
+      "showId": "the-house-of-the-negro-insane-off-broadway-2026",
+      "title": "The House of the Negro Insane",
       "market": "off-broadway",
-      "openingDate": "2026-08-06",
+      "openingDate": "2026-08-14",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
+      "sampleReason": "opened 3d ago",
       "geo": "us",
-      "naiveQuery": "Masticate The Players Theatre review",
+      "naiveQuery": "The House of the Negro Insane 59E59 Theaters review",
       "counts": {
         "truth": 0,
         "scoped": 0,
@@ -229,10 +252,10 @@
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Masticate\" Off-Broadway review 2026",
+          "query": "\"The House of the Negro Insane\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -240,10 +263,10 @@
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Masticate\" review players",
+          "query": "\"The House of the Negro Insane\" review 59e59",
           "page": 0,
           "geo": null,
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -251,10 +274,10 @@
         },
         {
           "arm": "naive-p0",
-          "query": "Masticate The Players Theatre review",
+          "query": "The House of the Negro Insane 59E59 Theaters review",
           "page": 0,
           "geo": "us",
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -262,10 +285,10 @@
         },
         {
           "arm": "naive-p1",
-          "query": "Masticate The Players Theatre review",
+          "query": "The House of the Negro Insane 59E59 Theaters review",
           "page": 1,
           "geo": "us",
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -285,14 +308,133 @@
       ]
     },
     {
-      "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
-      "title": "Matilda The Musical (Theatre Row)",
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "market": "off-west-end",
+      "openingDate": "2026-08-14",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "As You Like It - Globe Shakespeare's Globe review",
+      "counts": {
+        "truth": 18,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 18
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
+        "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
+        "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
+        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
+        "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-shakespeares-globe",
+        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
+        "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
+        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+        "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+        "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
+        "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+        "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+        "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
+        "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
+        "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"As You Like It - Globe\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"As You Like It - Globe\" review shakespeare",
+          "page": 0,
+          "geo": null,
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "As You Like It - Globe Shakespeare's Globe review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "As You Like It - Globe Shakespeare's Globe review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 18,
+          "accepted": 18,
+          "urls": [
+            "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
+            "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
+            "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
+            "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
+            "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-shakespeares-globe",
+            "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
+            "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+            "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+            "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+            "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+            "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
+            "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
+            "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+            "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+            "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
+            "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
+            "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "marlise-off-broadway-2026",
+      "title": "Marlise",
       "market": "off-broadway",
-      "openingDate": "2026-08-06",
+      "openingDate": "2026-08-13",
       "sampleState": "measured",
       "sampleReason": "opened 4d ago",
       "geo": "us",
-      "naiveQuery": "Matilda The Musical (Theatre Row) Theatre Row review",
+      "naiveQuery": "Marlise The Players Theatre review",
       "counts": {
         "truth": 1,
         "scoped": 0,
@@ -307,15 +449,15 @@
       },
       "newFromNaive": [],
       "missedByCensus": [
-        "https://t2conline.com/matilda-or-miss-trunchbull/"
+        "https://donyc.com/events/2026/8/6/marlise-tickets"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Matilda The Musical (Theatre Row)\" Off-Broadway review 2026",
+          "query": "\"Marlise\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
-          "raw": 8,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -323,10 +465,10 @@
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Matilda The Musical (Theatre Row)\" Kelly review",
+          "query": "\"Marlise\" review players",
           "page": 0,
           "geo": null,
-          "raw": 6,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -334,10 +476,10 @@
         },
         {
           "arm": "naive-p0",
-          "query": "Matilda The Musical (Theatre Row) Theatre Row review",
+          "query": "Marlise The Players Theatre review",
           "page": 0,
           "geo": "us",
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -345,10 +487,10 @@
         },
         {
           "arm": "naive-p1",
-          "query": "Matilda The Musical (Theatre Row) Theatre Row review",
+          "query": "Marlise The Players Theatre review",
           "page": 1,
           "geo": "us",
-          "raw": 10,
+          "raw": 0,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -362,7 +504,7 @@
           "raw": 1,
           "accepted": 1,
           "urls": [
-            "https://t2conline.com/matilda-or-miss-trunchbull/"
+            "https://donyc.com/events/2026/8/6/marlise-tickets"
           ],
           "ok": true,
           "error": null
@@ -370,361 +512,107 @@
       ]
     },
     {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "title": "The Comedy About Spies",
-      "market": "off-west-end",
-      "openingDate": "2026-08-06",
+      "showId": "the-winters-tale-off-broadway-2026",
+      "title": "The Winter's Tale",
+      "market": "off-broadway",
+      "openingDate": "2026-08-12",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "geo": "gb",
-      "naiveQuery": "The Comedy About Spies West End review",
+      "sampleReason": "opened 5d ago",
+      "geo": "us",
+      "naiveQuery": "The Winter's Tale Delacorte Theater review",
       "counts": {
-        "truth": 43,
-        "scoped": 11,
-        "naive": 10,
-        "onDisk": 40
+        "truth": 25,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 25
       },
       "recall": {
-        "scoped": 0.256,
-        "naive": 0.233,
-        "onDisk": 0.93,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 1,
         "censusPlusDisk": 1
       },
       "newFromNaive": [],
       "missedByCensus": [
-        "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
-        "https://westendwilma.com/the-comedy-about-spies-noel-coward-theatre/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
-        "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
-        "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/",
-        "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
-        "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
-        "https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html",
-        "https://www.elementaltheatre.com/post/comedy-about-spies",
-        "https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604",
-        "http://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html",
-        "https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/",
-        "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
-        "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
-        "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
-        "https://lovelondonloveculture.com/2025/05/21/review-the-comedy-about-spies-noel-coward-theatre/",
-        "https://lwtheatres.co.uk/whats-on/the-comedy-about-spies/",
-        "https://www.noelcowardtheatre.co.uk/whats-on/the-comedy-about-spies",
-        "https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/",
-        "https://www.show-score.com/uk/london/west-end-shows/the-comedy-about-spies-west-end",
-        "https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/",
-        "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-comedy-about-spies-noel-coward-theatre-review/",
-        "https://theatreweekly.com/review-the-comedy-about-spies-at-noel-coward-theatre/",
-        "https://theatreandtonic.co.uk/theatre-news/the-comedy-about-spies-to-return-to-the-west-end",
-        "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
-        "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre-mischief-theatre",
-        "https://www.theupcoming.co.uk/2025/05/14/the-comedy-about-spies-at-noel-coward-theatre-theatre-review/",
-        "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
-        "https://www.thetimes.com/article/eaafd29a-2398-4612-9a87-370d891587ee",
-        "https://www.westendbestfriend.co.uk/news/original-west-end-cast-return-mischief-the-comedy-about-spies-adelphi",
-        "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/"
+        "https://www.amny.com/entertainment/theater/review-the-winters-tale-public-theater/",
+        "https://cititour.com/NYC_Broadway/The-Winters-Tale/1390",
+        "https://culturesauce.com/winters-tale-central-park-2026-off-broadway-review/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-11814823/Now-Shylocks-East-End-matriarch-PATRICK-MARMION-reviews-Merchant-Venice-1936.html",
+        "https://www.theguardian.com/stage/2023/feb/23/the-winters-tale-review-sam-wanamaker-playhouse-shakespeares-globe",
+        "https://www.independent.co.uk/independentpremium/culture/winters-tale-shakespeares-globe-review-b2288077.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNU91",
+        "https://www.nysun.com/article/lily-rabe-brings-summer-magic-to-shakespeares-winters-tale",
+        "https://nystagereview.com/2026/08/14/the-winters-tale-shakespeares-romance-right-for-summer/",
+        "https://www.newyorktheatreguide.com/reviews/the-winters-tale-off-broadway-review-lily-rabe-raul-esparza",
+        "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-the-park.html",
+        "https://www.offoffonline.com/offoffonline/2026/8/6/the-winters-tale",
+        "https://1minutecritic.com/winters-tale-public-theater-central-park-review-2026/",
+        "https://stageandcinema.com/2026/08/11/winters-tale-shakespeare-in-the-park-review/",
+        "https://www.talkinbroadway.com/page/ob/08_12_26.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/winters-tale-sam-wanamaker-playhouse-shakespeares-globe-review/",
+        "https://therecs.co.uk/the-winters-tale-shakespeare-in-the-park/",
+        "https://theaterlife.com/the-winters-tale/",
+        "https://theaterpizzazz.com/the-winters-tale-second-chances/",
+        "https://www.theatermania.com/news/review-a-problem-play-not-this-winters-tale-starring-raul-esparza-and-lily-rabe_1848887/",
+        "https://www.thestage.co.uk/reviews/reviews/the-winters-tale-review-at-sam-wanamaker-playhouse-and-globe-theatre-london",
+        "https://www.timeout.com/london/theatre/the-winters-tale-review-1",
+        "https://www.thetimes.co.uk/article/the-winters-tale-review-a-jolly-caper-that-needs-to-find-its-heart-qnkv8jlnk",
+        "https://www.vulture.com/article/theater-review-the-winters-tale-in-central-park.html",
+        "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shakespeare-in-the-park-5b36a9da"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"The Comedy About Spies\" West End review 2026",
+          "query": "\"The Winter's Tale\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
-          "raw": 8,
-          "accepted": 4,
-          "urls": [
-            "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
-            "https://www.whatsonstage.com/news/the-comedy-about-spies-announces-cast-for-west-end-return_1722914/",
-            "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
-            "https://www.groupleisureandtravel.com/features/london-theatre-review-the-comedy-about-spies/84769.article"
-          ],
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"The Comedy About Spies\" Lewis review",
+          "query": "\"The Winter's Tale\" review delacorte",
           "page": 0,
           "geo": null,
-          "raw": 9,
-          "accepted": 8,
-          "urls": [
-            "https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show",
-            "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
-            "https://1883magazine.com/the-comedy-about-spies-review/",
-            "https://theatresoutheast.com/the-comedy-about-spies-noel-coward-theatre-review/",
-            "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-no%C3%ABl-coward-theatre",
-            "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
-            "https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/",
-            "https://www.londontheatre1.com/reviews/the-comedy-about-spies-noel-coward-theatre-review/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Comedy About Spies West End review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 9,
-          "accepted": 5,
-          "urls": [
-            "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
-            "https://theatresoutheast.com/the-comedy-about-spies-noel-coward-theatre-review/",
-            "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
-            "https://1883magazine.com/the-comedy-about-spies-review/",
-            "https://www.londontheatre1.com/reviews/the-comedy-about-spies-noel-coward-theatre-review/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Comedy About Spies West End review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 6,
-          "urls": [
-            "https://1883magazine.com/the-comedy-about-spies-review/",
-            "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
-            "https://westendwilma.com/the-comedy-about-spies-noel-coward-theatre/",
-            "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
-            "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
-            "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 40,
-          "accepted": 40,
-          "urls": [
-            "https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/",
-            "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-no%C3%ABl-coward-theatre",
-            "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
-            "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
-            "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
-            "https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html",
-            "https://www.elementaltheatre.com/post/comedy-about-spies",
-            "https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show",
-            "https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604",
-            "http://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html",
-            "https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/",
-            "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
-            "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
-            "https://www.londontheatre1.com/reviews/the-comedy-about-spies-noel-coward-theatre-review/",
-            "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
-            "https://lovelondonloveculture.com/2025/05/21/review-the-comedy-about-spies-noel-coward-theatre/",
-            "https://lwtheatres.co.uk/whats-on/the-comedy-about-spies/",
-            "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
-            "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/",
-            "https://www.noelcowardtheatre.co.uk/whats-on/the-comedy-about-spies",
-            "https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/",
-            "https://www.show-score.com/uk/london/west-end-shows/the-comedy-about-spies-west-end",
-            "https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/",
-            "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
-            "https://www.telegraph.co.uk/theatre/what-to-see/the-comedy-about-spies-noel-coward-theatre-review/",
-            "https://theatresoutheast.com/the-comedy-about-spies-noel-coward-theatre-review/",
-            "https://theatreweekly.com/review-the-comedy-about-spies-at-noel-coward-theatre/",
-            "https://theatreandtonic.co.uk/theatre-news/the-comedy-about-spies-to-return-to-the-west-end",
-            "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
-            "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
-            "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
-            "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre-mischief-theatre",
-            "https://www.theupcoming.co.uk/2025/05/14/the-comedy-about-spies-at-noel-coward-theatre-theatre-review/",
-            "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
-            "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
-            "https://www.thetimes.com/article/eaafd29a-2398-4612-9a87-370d891587ee",
-            "https://www.westendbestfriend.co.uk/news/original-west-end-cast-return-mischief-the-comedy-about-spies-adelphi",
-            "https://westendwilma.com/the-comedy-about-spies-noel-coward-theatre/",
-            "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/",
-            "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "market": "off-west-end",
-      "openingDate": "2026-08-06",
-      "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "geo": "gb",
-      "naiveQuery": "Cats Regent's Park Open Air Theatre review",
-      "counts": {
-        "truth": 74,
-        "scoped": 8,
-        "naive": 10,
-        "onDisk": 72
-      },
-      "recall": {
-        "scoped": 0.108,
-        "naive": 0.135,
-        "onDisk": 0.973,
-        "censusPlusDisk": 0.986
-      },
-      "newFromNaive": [
-        "https://openairtheatre.com/production/cats"
-      ],
-      "missedByCensus": [
-        "https://openairtheatre.com/production/cats",
-        "https://www.thereviewshub.com/cats-regents-park-open-air-theatre-london/",
-        "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
-        "https://theatreweekly.com/review-cats-at-regents-park-open-air-theatre/",
-        "http://www.washingtontimes.com/news/2016/jul/31/review-the-hairball-that-is-cats-returns-to-broadw/",
-        "http://www.theartsdesk.com/theatre/cats-regents-park-open-air-theatre-review-contemporary-makeover-gives-classic-added-lustre",
-        "https://www.bestoftheatre.co.uk/cats",
-        "https://www.britishtheatreguide.info/reviews/cats-regent-s-park-o-25793",
-        "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
-        "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
-        "https://www.cityam.com/cats-musical-review-regents-park-purrrfectly-exquisite-nonsense/",
-        "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
-        "http://www.curtainup.com/cats16.html",
-        "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
-        "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
-        "https://everything-theatre.co.uk/2026/08/review-cats-regents-park-open-air-theatre/",
-        "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
-        "https://fairypoweredproductions.com/first-tour-casting-announced-for-the-brand-new-production-of-andrew-lloyd-webbers-multi-award-winning-musical-cats/",
-        "https://frontmezzjunkies.com/2016/07/31/cats-forever-again-but-probably-not/",
-        "https://www.gramilano.com/2026/08/review-cats-drew-mconie/",
-        "https://www.hollywoodreporter.com/tv/tv-reviews/alley-cats-review-ricky-gervais-netflix-1236665348/",
-        "http://www.hollywoodreporter.com/review/cats-theater-review-915947",
-        "http://www.huffingtonpost.com/david-finkle/first-nighter-you-better_b_11290354.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
-        "https://www.jonathanbaz.com/2026/08/cats-review.html",
-        "https://liamodell.com/2026/08/09/cats-review-musical-regents-park-open-air-theatre-london-uk-ireland-tour-andrew-lloyd-webber/",
-        "https://www.londonboxoffice.co.uk/news/post/cats-regents-park-open-air-theatre-review",
-        "https://www.london-unattached.com/cats-regents-park-open-air-theatre/",
-        "https://www.londontheatre1.com/reviews/cats-regents-park-open-air-theatre/",
-        "https://monstagigz.com/2026/08/02/theatre-review-cats-starring-melanie-la-barrie-gary-wilmot-at-regents-park-open-air-theatre/",
-        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Cats-Leona-Lewis-Lloyd-Webber-388745092.html",
-        "https://www.nysun.com/article/cats-the-jellicle-ball-milks-exuberant-new-life-from-andrew-lloyd-webbers-musical-mainstay",
-        "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball",
-        "https://northwestend.com/cats-regents-park-open-air-theatre/",
-        "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339",
-        "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
-        "http://nypost.com/2016/08/02/retract-your-claws-haters-cats-is-terrific/",
-        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
-        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
-        "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
-        "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-shields.html",
-        "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
-        "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/",
-        "https://www.seeingdance.com/cats-260807/",
-        "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/cats-review-regent-s-park-open-air-theatre",
-        "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
-        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
-        "https://www.theatre-news.com/news/UK/128180/CATS-opens-brand-new-production-at-Regent-s-Park-Open-Air-Theatre",
-        "https://theatrevibe.co.uk/2026/08/08/review-cats-regents-park-open-air-2026/",
-        "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
-        "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
-        "https://www.thestage.co.uk/reviews/cats-review-regents-park-open-air-theatre-london",
-        "https://www.thewrap.com/creative-content/theater/andrew-lloyd-webber-cats-the-jellicle-ball-closing-night-broadway/",
-        "https://www.thetimes.co.uk/culture/tv-radio/article/alley-cats-review-ricky-gervais-netflix-nnjzk96v8",
-        "https://www.thetimes.com/culture/theatre-dance/article/cats-review-forget-the-execrable-film-this-is-a-triumph-89cl5x8g5",
-        "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
-        "https://variety.com/2026/tv/reviews/alley-cats-review-ricky-gervais-netflix-1236829439/",
-        "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
-        "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
-        "https://www.westendbestfriend.co.uk/news/review-cats-regents-park-open-air-theatre",
-        "https://www.whatsonstage.com/news/cats-returns-and-the-memory-lives-on-under-the-moonlight-opening-night-highlights_1728864/",
-        "https://www.whatsonstage.com/news/cats-review-a-new-day-has-begun-with-drew-mconies-magical-revival_1728800/",
-        "http://www.wolfentertainmentguide.com/viewpage.aspx"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Cats\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 5,
-          "urls": [
-            "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
-            "https://www.theguardian.com/stage/2026/aug/07/cats-review-andrew-lloyd-webber-regents-park-open-air-theatre-london-review",
-            "https://www.allthatdazzles.co.uk/post/review-cats-regent-s-park-open-air-theatre",
-            "https://rolandcat.substack.com/p/preview-review-cats-regents-park",
-            "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Cats\" review regent",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 6,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-cats-regent-s-park-open-air-theatre",
-            "https://rolandcat.substack.com/p/preview-review-cats-regents-park",
-            "https://www.theguardian.com/stage/2026/aug/07/cats-review-andrew-lloyd-webber-regents-park-open-air-theatre-london-review",
-            "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
-            "https://juliarank.substack.com/p/review-cats-regents-park-open-air",
-            "https://www.broadwayworld.com/westend/article/Review-CATS-Regents-Park-Open-Air-Theatre-20260807"
-          ],
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q2",
-          "query": "\"Cats\" Webber review",
+          "query": "\"The Winter's Tale\" Shakespeare review",
           "page": 0,
           "geo": null,
-          "raw": 9,
-          "accepted": 3,
-          "urls": [
-            "https://www.theguardian.com/stage/2026/aug/07/cats-review-andrew-lloyd-webber-regents-park-open-air-theatre-london-review",
-            "https://www.allthatdazzles.co.uk/post/review-cats-regent-s-park-open-air-theatre",
-            "https://www.londontheatre.co.uk/reviews/cats-review-regents-park-open-air-theatre"
-          ],
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Cats Regent's Park Open Air Theatre review",
+          "query": "The Winter's Tale Delacorte Theater review",
           "page": 0,
-          "geo": "gb",
-          "raw": 9,
-          "accepted": 6,
-          "urls": [
-            "https://openairtheatre.com/production/cats",
-            "https://www.londontheatre.co.uk/reviews/cats-review-regents-park-open-air-theatre",
-            "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
-            "https://rolandcat.substack.com/p/preview-review-cats-regents-park",
-            "https://www.theguardian.com/stage/2026/aug/07/cats-review-andrew-lloyd-webber-regents-park-open-air-theatre-london-review",
-            "https://www.thereviewshub.com/cats-regents-park-open-air-theatre-london/"
-          ],
+          "geo": "us",
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Cats Regent's Park Open Air Theatre review",
+          "query": "The Winter's Tale Delacorte Theater review",
           "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-cats-regent-s-park-open-air-theatre",
-            "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
-            "https://theatreweekly.com/review-cats-at-regents-park-open-air-theatre/",
-            "https://www.broadwayworld.com/westend/article/Review-CATS-Regents-Park-Open-Air-Theatre-20260807"
-          ],
+          "geo": "us",
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
@@ -733,81 +621,34 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 72,
-          "accepted": 72,
+          "raw": 25,
+          "accepted": 25,
           "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-cats-regent-s-park-open-air-theatre",
-            "http://www.washingtontimes.com/news/2016/jul/31/review-the-hairball-that-is-cats-returns-to-broadw/",
-            "http://www.theartsdesk.com/theatre/cats-regents-park-open-air-theatre-review-contemporary-makeover-gives-classic-added-lustre",
-            "https://www.bestoftheatre.co.uk/cats",
-            "https://www.britishtheatreguide.info/reviews/cats-regent-s-park-o-25793",
-            "https://www.broadwayworld.com/westend/article/Review-CATS-Regents-Park-Open-Air-Theatre-20260807",
-            "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
-            "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
-            "https://www.cityam.com/cats-musical-review-regents-park-purrrfectly-exquisite-nonsense/",
-            "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
-            "http://www.curtainup.com/cats16.html",
-            "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
-            "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
-            "https://everything-theatre.co.uk/2026/08/review-cats-regents-park-open-air-theatre/",
-            "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
-            "https://fairypoweredproductions.com/first-tour-casting-announced-for-the-brand-new-production-of-andrew-lloyd-webbers-multi-award-winning-musical-cats/",
-            "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/",
-            "https://frontmezzjunkies.com/2016/07/31/cats-forever-again-but-probably-not/",
-            "https://www.gramilano.com/2026/08/review-cats-drew-mconie/",
-            "https://www.theguardian.com/stage/2026/aug/07/cats-review-andrew-lloyd-webber-regents-park-open-air-theatre-london-review",
-            "https://www.hollywoodreporter.com/tv/tv-reviews/alley-cats-review-ricky-gervais-netflix-1236665348/",
-            "http://www.hollywoodreporter.com/review/cats-theater-review-915947",
-            "http://www.huffingtonpost.com/david-finkle/first-nighter-you-better_b_11290354.html",
-            "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
-            "https://www.jonathanbaz.com/2026/08/cats-review.html",
-            "https://liamodell.com/2026/08/09/cats-review-musical-regents-park-open-air-theatre-london-uk-ireland-tour-andrew-lloyd-webber/",
-            "https://www.londonboxoffice.co.uk/news/post/cats-regents-park-open-air-theatre-review",
-            "https://www.londontheatre.co.uk/reviews/cats-review-regents-park-open-air-theatre",
-            "https://www.london-unattached.com/cats-regents-park-open-air-theatre/",
-            "https://www.londontheatre1.com/reviews/cats-regents-park-open-air-theatre/",
-            "https://monstagigz.com/2026/08/02/theatre-review-cats-starring-melanie-la-barrie-gary-wilmot-at-regents-park-open-air-theatre/",
-            "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
-            "http://www.nbcnewyork.com/entertainment/the-scene/Review-Cats-Leona-Lewis-Lloyd-Webber-388745092.html",
-            "https://www.nysun.com/article/cats-the-jellicle-ball-milks-exuberant-new-life-from-andrew-lloyd-webbers-musical-mainstay",
-            "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball",
-            "https://northwestend.com/cats-regents-park-open-air-theatre/",
-            "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339",
-            "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
-            "http://nypost.com/2016/08/02/retract-your-claws-haters-cats-is-terrific/",
-            "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
-            "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
-            "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
-            "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
-            "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-shields.html",
-            "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
-            "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/",
-            "https://rolandcat.substack.com/p/preview-review-cats-regents-park",
-            "https://www.seeingdance.com/cats-260807/",
-            "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
-            "https://stagedtheatre.co.uk/blogs/theatre-reviews/cats-review-regent-s-park-open-air-theatre",
-            "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
-            "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
-            "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
-            "https://www.theatre-news.com/news/UK/128180/CATS-opens-brand-new-production-at-Regent-s-Park-Open-Air-Theatre",
-            "https://theatrevibe.co.uk/2026/08/08/review-cats-regents-park-open-air-2026/",
-            "https://theatreweekly.com/review-cats-at-regents-park-open-air-theatre/",
-            "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
-            "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
-            "https://www.thereviewshub.com/cats-regents-park-open-air-theatre-london/",
-            "https://www.thestage.co.uk/reviews/cats-review-regents-park-open-air-theatre-london",
-            "https://www.thewrap.com/creative-content/theater/andrew-lloyd-webber-cats-the-jellicle-ball-closing-night-broadway/",
-            "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
-            "https://www.thetimes.co.uk/culture/tv-radio/article/alley-cats-review-ricky-gervais-netflix-nnjzk96v8",
-            "https://www.thetimes.com/culture/theatre-dance/article/cats-review-forget-the-execrable-film-this-is-a-triumph-89cl5x8g5",
-            "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
-            "https://variety.com/2026/tv/reviews/alley-cats-review-ricky-gervais-netflix-1236829439/",
-            "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
-            "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
-            "https://www.westendbestfriend.co.uk/news/review-cats-regents-park-open-air-theatre",
-            "https://www.whatsonstage.com/news/cats-returns-and-the-memory-lives-on-under-the-moonlight-opening-night-highlights_1728864/",
-            "https://www.whatsonstage.com/news/cats-review-a-new-day-has-begun-with-drew-mconies-magical-revival_1728800/",
-            "http://www.wolfentertainmentguide.com/viewpage.aspx"
+            "https://www.amny.com/entertainment/theater/review-the-winters-tale-public-theater/",
+            "https://cititour.com/NYC_Broadway/The-Winters-Tale/1390",
+            "https://culturesauce.com/winters-tale-central-park-2026-off-broadway-review/",
+            "https://www.dailymail.co.uk/tvshowbiz/article-11814823/Now-Shylocks-East-End-matriarch-PATRICK-MARMION-reviews-Merchant-Venice-1936.html",
+            "https://www.theguardian.com/stage/2023/feb/23/the-winters-tale-review-sam-wanamaker-playhouse-shakespeares-globe",
+            "https://www.independent.co.uk/independentpremium/culture/winters-tale-shakespeares-globe-review-b2288077.html",
+            "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNU91",
+            "https://www.nysun.com/article/lily-rabe-brings-summer-magic-to-shakespeares-winters-tale",
+            "https://nystagereview.com/2026/08/14/the-winters-tale-shakespeares-romance-right-for-summer/",
+            "https://www.newyorktheatreguide.com/reviews/the-winters-tale-off-broadway-review-lily-rabe-raul-esparza",
+            "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-the-park.html",
+            "https://www.offoffonline.com/offoffonline/2026/8/6/the-winters-tale",
+            "https://1minutecritic.com/winters-tale-public-theater-central-park-review-2026/",
+            "https://stageandcinema.com/2026/08/11/winters-tale-shakespeare-in-the-park-review/",
+            "https://www.talkinbroadway.com/page/ob/08_12_26.html",
+            "https://www.telegraph.co.uk/theatre/what-to-see/winters-tale-sam-wanamaker-playhouse-shakespeares-globe-review/",
+            "https://therecs.co.uk/the-winters-tale-shakespeare-in-the-park/",
+            "https://theaterlife.com/the-winters-tale/",
+            "https://theaterpizzazz.com/the-winters-tale-second-chances/",
+            "https://www.theatermania.com/news/review-a-problem-play-not-this-winters-tale-starring-raul-esparza-and-lily-rabe_1848887/",
+            "https://www.thestage.co.uk/reviews/reviews/the-winters-tale-review-at-sam-wanamaker-playhouse-and-globe-theatre-london",
+            "https://www.timeout.com/london/theatre/the-winters-tale-review-1",
+            "https://www.thetimes.co.uk/article/the-winters-tale-review-a-jolly-caper-that-needs-to-find-its-heart-qnkv8jlnk",
+            "https://www.vulture.com/article/theater-review-the-winters-tale-in-central-park.html",
+            "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shakespeare-in-the-park-5b36a9da"
           ],
           "ok": true,
           "error": null
@@ -815,44 +656,44 @@
       ]
     }
   ],
-  "providerOutage": false,
+  "providerOutage": true,
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-08-10",
-      "generatedAt": "2026-08-10T11:59:49.436Z",
+      "date": "2026-08-17",
+      "generatedAt": "2026-08-17T11:59:00.900Z",
       "naivePages": 2,
       "shows": 5,
       "excluded": {},
-      "truthUrls": 121,
-      "onDiskUrls": 116,
-      "newFromNaive": 1,
+      "truthUrls": 54,
+      "onDiskUrls": 54,
+      "newFromNaive": 0,
       "families": {
-        "naive": 0.174,
-        "onDisk": 0.959,
-        "scoped": 0.157
+        "naive": 0,
+        "onDisk": 1,
+        "scoped": 0
       },
       "arms": {
-        "naive-p0": 0.099,
-        "naive-p1": 0.083,
-        "onDisk": 0.959,
-        "scoped-q0": 0.074,
-        "scoped-q1": 0.116,
-        "scoped-q2": 0.025
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 1,
+        "scoped-q0": 0,
+        "scoped-q1": 0,
+        "scoped-q2": 0
       },
-      "combinedRecall": 0.992,
+      "combinedRecall": 1,
       "familyYield": {
-        "naive": 4.2,
-        "onDisk": 23.2,
-        "scoped": 3.8
+        "naive": 0,
+        "onDisk": 10.8,
+        "scoped": 0
       },
       "armYield": {
-        "naive-p0": 2.4,
-        "naive-p1": 2,
-        "onDisk": 23.2,
-        "scoped-q0": 1.8,
-        "scoped-q1": 2.8,
-        "scoped-q2": 0.6
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 10.8,
+        "scoped-q0": 0,
+        "scoped-q1": 0,
+        "scoped-q2": 0
       },
       "armsFailed": {
         "naive-p0": 0,
@@ -866,108 +707,36 @@
       "byCategory": {
         "off-broadway": {
           "shows": 3,
-          "truthUrls": 4,
+          "truthUrls": 26,
           "families": {
-            "naive": 0.25,
+            "naive": 0,
             "onDisk": 1,
             "scoped": 0
           }
         },
         "off-west-end": {
           "shows": 2,
-          "truthUrls": 117,
+          "truthUrls": 28,
           "families": {
-            "naive": 0.171,
-            "onDisk": 0.957,
-            "scoped": 0.162
+            "naive": 0,
+            "onDisk": 1,
+            "scoped": 0
           }
         }
       },
       "sampleIds": [
-        "isla-off-broadway-2026",
-        "masticate-off-broadway-2026",
-        "matilda-the-musical-theatre-row-off-broadway-2026",
-        "the-comedy-about-spies-west-end-2026",
-        "cats-west-end-2026"
+        "anansi-the-spider-west-end-2026",
+        "the-house-of-the-negro-insane-off-broadway-2026",
+        "as-you-like-it-globe-west-end-2026",
+        "marlise-off-broadway-2026",
+        "the-winters-tale-off-broadway-2026"
       ]
     },
     "judgement": {
       "verdict": "blind",
-      "reason": "only 1 prior run(s) on record (need 2) — no baseline to judge against yet",
+      "reason": "0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend",
       "regressions": [],
-      "latest": {
-        "date": "2026-08-10",
-        "generatedAt": "2026-08-10T11:59:49.436Z",
-        "naivePages": 2,
-        "shows": 5,
-        "excluded": {},
-        "truthUrls": 121,
-        "onDiskUrls": 116,
-        "newFromNaive": 1,
-        "families": {
-          "naive": 0.174,
-          "onDisk": 0.959,
-          "scoped": 0.157
-        },
-        "arms": {
-          "naive-p0": 0.099,
-          "naive-p1": 0.083,
-          "onDisk": 0.959,
-          "scoped-q0": 0.074,
-          "scoped-q1": 0.116,
-          "scoped-q2": 0.025
-        },
-        "combinedRecall": 0.992,
-        "familyYield": {
-          "naive": 4.2,
-          "onDisk": 23.2,
-          "scoped": 3.8
-        },
-        "armYield": {
-          "naive-p0": 2.4,
-          "naive-p1": 2,
-          "onDisk": 23.2,
-          "scoped-q0": 1.8,
-          "scoped-q1": 2.8,
-          "scoped-q2": 0.6
-        },
-        "armsFailed": {
-          "naive-p0": 0,
-          "naive-p1": 0,
-          "onDisk": 0,
-          "scoped-q0": 0,
-          "scoped-q1": 0,
-          "scoped-q2": 0
-        },
-        "unavailableArms": [],
-        "byCategory": {
-          "off-broadway": {
-            "shows": 3,
-            "truthUrls": 4,
-            "families": {
-              "naive": 0.25,
-              "onDisk": 1,
-              "scoped": 0
-            }
-          },
-          "off-west-end": {
-            "shows": 2,
-            "truthUrls": 117,
-            "families": {
-              "naive": 0.171,
-              "onDisk": 0.957,
-              "scoped": 0.162
-            }
-          }
-        },
-        "sampleIds": [
-          "isla-off-broadway-2026",
-          "masticate-off-broadway-2026",
-          "matilda-the-musical-theatre-row-off-broadway-2026",
-          "the-comedy-about-spies-west-end-2026",
-          "cats-west-end-2026"
-        ]
-      },
+      "latest": null,
       "comparedArms": 0
     }
   }

@@ -1,45 +1,45 @@
 {
-  "generatedAt": "2026-08-10T11:59:49.436Z",
+  "generatedAt": "2026-08-17T11:59:00.900Z",
   "verdict": "blind",
-  "reason": "only 1 prior run(s) on record (need 2) — no baseline to judge against yet",
+  "reason": "0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend",
   "regressions": [],
   "comparedArms": 0,
   "trendEntries": 2,
   "latest": {
-    "date": "2026-08-10",
-    "generatedAt": "2026-08-10T11:59:49.436Z",
+    "date": "2026-08-17",
+    "generatedAt": "2026-08-17T11:59:00.900Z",
     "naivePages": 2,
     "shows": 5,
     "excluded": {},
-    "truthUrls": 121,
-    "onDiskUrls": 116,
-    "newFromNaive": 1,
+    "truthUrls": 54,
+    "onDiskUrls": 54,
+    "newFromNaive": 0,
     "families": {
-      "naive": 0.174,
-      "onDisk": 0.959,
-      "scoped": 0.157
+      "naive": 0,
+      "onDisk": 1,
+      "scoped": 0
     },
     "arms": {
-      "naive-p0": 0.099,
-      "naive-p1": 0.083,
-      "onDisk": 0.959,
-      "scoped-q0": 0.074,
-      "scoped-q1": 0.116,
-      "scoped-q2": 0.025
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 1,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
     },
-    "combinedRecall": 0.992,
+    "combinedRecall": 1,
     "familyYield": {
-      "naive": 4.2,
-      "onDisk": 23.2,
-      "scoped": 3.8
+      "naive": 0,
+      "onDisk": 10.8,
+      "scoped": 0
     },
     "armYield": {
-      "naive-p0": 2.4,
-      "naive-p1": 2,
-      "onDisk": 23.2,
-      "scoped-q0": 1.8,
-      "scoped-q1": 2.8,
-      "scoped-q2": 0.6
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 10.8,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
     },
     "armsFailed": {
       "naive-p0": 0,
@@ -53,29 +53,29 @@
     "byCategory": {
       "off-broadway": {
         "shows": 3,
-        "truthUrls": 4,
+        "truthUrls": 26,
         "families": {
-          "naive": 0.25,
+          "naive": 0,
           "onDisk": 1,
           "scoped": 0
         }
       },
       "off-west-end": {
         "shows": 2,
-        "truthUrls": 117,
+        "truthUrls": 28,
         "families": {
-          "naive": 0.171,
-          "onDisk": 0.957,
-          "scoped": 0.162
+          "naive": 0,
+          "onDisk": 1,
+          "scoped": 0
         }
       }
     },
     "sampleIds": [
-      "isla-off-broadway-2026",
-      "masticate-off-broadway-2026",
-      "matilda-the-musical-theatre-row-off-broadway-2026",
-      "the-comedy-about-spies-west-end-2026",
-      "cats-west-end-2026"
+      "anansi-the-spider-west-end-2026",
+      "the-house-of-the-negro-insane-off-broadway-2026",
+      "as-you-like-it-globe-west-end-2026",
+      "marlise-off-broadway-2026",
+      "the-winters-tale-off-broadway-2026"
     ]
   }
 }
