@@ -148,6 +148,22 @@ test('titleOverlapScore / tokenizeTitle: stopwords and short tokens dropped, Jac
   assert.ok(titleOverlapScore('scraping yield regression telegraph', 'scraping yield regression telegraph two') > 0.6);
 });
 
+// Structural guard: tests/unit/sibling-matchers-diacritics.test.mjs (task
+// #648 class) — diacritics must fold BEFORE the non-ASCII strip, or a card
+// titled after a show with an accented name silently fails to match its own
+// duplicate. Crown-input catch on this classifier's own first review pass.
+test('tokenizeTitle: folds diacritics before stripping non-ASCII (Café -> cafe, not caf)', () => {
+  assert.deepEqual(tokenizeTitle('Café Society revival tracking'), ['cafe', 'society', 'revival', 'tracking']);
+});
+
+test('classifyCard: duplicate detection still matches titles that differ only by diacritics', () => {
+  const a = card({ id: 'a', name: 'Café Society revival tracking issue' });
+  const b = card({ id: 'b', name: 'Cafe Society revival tracking issue two' });
+  const result = classifyCard(a, [a, b], {});
+  assert.equal(result.verdict, 'LIKELY-DUPLICATE');
+  assert.equal(result.evidence.otherId, 'b');
+});
+
 // ── Required case 4: card naming a deleted file → LIKELY-STALE ───────────
 test('classifyCard: card naming only a deleted file -> LIKELY-STALE', () => {
   const c = card({ notes: 'The bug lives in scripts/this-file-was-deleted-long-ago.js — fix it there.' });
