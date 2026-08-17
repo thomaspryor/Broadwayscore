@@ -37,6 +37,7 @@ scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
+scripts/lib/linear-delegation-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
@@ -59,11 +60,14 @@ scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
+scripts/tests/cmux-launch-reclaim.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
 scripts/tests/dispatch-claim-requires-workspace.test.mjs
 scripts/tests/dispatch-outcome-digest.test.mjs
 scripts/tests/dispatch-outcome.test.mjs
 scripts/tests/dispatch-watchdog-core.test.mjs
+scripts/tests/dispatch-watchdog-staleness.test.mjs
+scripts/tests/enrich-card-acceptance-fallback.test.mjs
 scripts/tests/gc-merged-worktrees-liveness.test.mjs
 scripts/tests/headless-dispatch-telemetry.test.mjs
 scripts/tests/headless-dispatchability.test.mjs
@@ -74,9 +78,11 @@ scripts/tests/infra-review-digest.test.mjs
 scripts/tests/infra-review-gate.test.mjs
 scripts/tests/linear-next-overlap-guards.test.mjs
 scripts/tests/merge-gate-hook.test.mjs
+scripts/tests/not-found-cache-backfill.test.mjs
 scripts/tests/observable-before-absence.test.mjs
 scripts/tests/orphan-task-reconciliation.test.mjs
 scripts/tests/recheck-ledger-persistence.test.mjs
+scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
@@ -103,6 +109,7 @@ tests/unit/audit-pre2005-reviews-locked.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-workflow-hygiene-core-data-push.test.mjs
 tests/unit/audit-workflow-hygiene-dead-commit.test.mjs
+tests/unit/audit-workflow-hygiene-push-timeout.test.mjs
 tests/unit/audit-workflow-hygiene-run-shorthand.test.mjs
 tests/unit/award-category-canonical.test.mjs
 tests/unit/award-score-link-slug.test.mjs

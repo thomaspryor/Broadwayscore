@@ -597,6 +597,10 @@ on:
       - 'scripts/opening-night-prompts/monitor-v2.md'
       - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/cmux-launch.test.mjs'
+      # Task #1706: cross-invocation launch-journal reclaim. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt, not
+      # globbed) — path-listed so a solo edit triggers CI.
+      - 'scripts/tests/cmux-launch-reclaim.test.mjs'
       # Card #705: the launch wait/retry decision (pure state machine) — a
       # relaunch while attempt 1's wrapper process is still alive is the
       # duplicate-session factory. Test runs in the scripts/lib/*.test.mjs
@@ -1683,6 +1687,14 @@ on:
       - 'scripts/lib/invisible-verification-scan.test.mjs'
       - 'scripts/lib/observable-before-absence.js'
       - 'scripts/tests/observable-before-absence.test.mjs'
+      # not-found cache backfill (card 3bd637c5-416f-8142-8b78-c7405c71bd98):
+      # shouldSkipAsKnownNotFound/applyFetchResultToCache decide whether a
+      # Show Score / BWW-RR fetch is served from cache. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt); the lib
+      # and its caller need explicit listing — no scripts/lib/** broad glob.
+      - 'scripts/lib/not-found-cache.js'
+      - 'scripts/tests/not-found-cache-backfill.test.mjs'
+      - 'scripts/fetch-aggregator-pages.ts'
       # Headless dispatch lane telemetry (card #1454) — JOB_EVENTS.ABANDONED,
       # the headless success-rate reader, and the lease-held ledger-write fix
       # span dispatch-ledger.js/dispatch-health.js/bsc-runner.js/
@@ -2334,6 +2346,17 @@ on:
       # the leaf or to verify-gate triggers CI instead of silently getting none.
       - 'scripts/lib/owner-judgment-marker.js'
       - 'scripts/lib/verify-gate.js'
+      # Task #1713: enrich-card-acceptance.js draft path + its provider
+      # fallback, and the SAFE_CHECK_FORMS widening in autonomous-triage-core.js
+      # above. Colocated scripts/enrich-card-acceptance.test.mjs runs via the
+      # tests/unit node --test invocation below (top-level scripts/*.test.mjs
+      # is NOT globbed); the fallback-specific test lives in scripts/tests/
+      # (also not globbed) — both path-listed here so a solo edit triggers CI.
+      - 'scripts/enrich-card-acceptance.js'
+      - 'scripts/enrich-card-acceptance.test.mjs'
+      - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
+      - 'scripts/audit-card-verifiability.js'
+      - 'scripts/audit-card-verifiability.test.mjs'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'
@@ -4621,7 +4644,7 @@ jobs:
 
       - name: Audit contradicted flag basis (stale exclusion flags)
         if: always()
-        run: node scripts/audit-contradicted-flag-basis.js --gate --max=16
+        run: node scripts/audit-contradicted-flag-basis.js --gate --max=0
         # BLOCKING replacement for the retired #483 step above. Fires only on
         # POSITIVE evidence that a flag's own stated basis is contradicted: the
         # flag rests ONLY on a date-guard claim, that claim cites a date the
@@ -4629,23 +4652,23 @@ jobs:
         # inside the show's own run window. Detector (with the full derivation):
         # scripts/lib/contradicted-flag-basis.js.
         #
-        # PRECISION 13/13, hand-verified 2026-08-14 — every match is a real
-        # review of the show it is filed under, suppressed from live Critic
-        # Scores on a date it no longer has. Examples: the Vulture review of
-        # the 2018 Carousel (vulture.com/2018/04/…, dated 2018-04-12, inside
-        # the 2018-02-28..2018-09-16 run) flagged on a cited date of
-        # 2019-04-24; the Deadline 2017 Miss Saigon revival review dated
-        # 2017-03-23 flagged on a cited date of 1974-04-08; Jesse Green's NYT
-        # review of Home 2024 flagged on 2024-12-19.
+        # All 13 records this gate found on 2026-08-14 were hand-adjudicated
+        # and cleared 2026-08-17 (card #1589) via
+        # scripts/clear-contradicted-flag-basis.js — a fixed, explicit
+        # allowlist re-verified against this same detector before each clear,
+        # never a predicate-driven drain. Live count is 0.
         #
-        # --max=16 against a live count of 13 is deliberate headroom, the same
-        # ratchet the sibling data gates use: the rebuild bots rewrite this
-        # corpus every ~30 min, and a ceiling equal to the live count makes the
-        # SAME code pass and fail minutes apart
-        # (memory/feedback_test_yml_push_path_allowlist.md). RATCHET IT DOWN as
-        # the 13 known records are hand-adjudicated — but never raise it to
-        # make a red build pass, and never clear a flag in bulk to reach a
-        # lower number. There is no --fix on the audit for exactly that reason.
+        # --max=0, not a headroom ceiling like the original 16-vs-13, and
+        # unlike the sibling gates below (which moved to a committed-baseline
+        # diff on 2026-08-14 for large STABLE backlogs that legitimately churn
+        # every rebuild): this population has no expected steady-state
+        # backlog. A NEW hit here means some OTHER writer changed a record's
+        # publishDate after a date-guard already flagged it, without
+        # re-running or clearing that guard — a narrow, compound event, not
+        # routine corpus churn. Any hit is real signal. RATCHET DOWN as
+        # records are hand-adjudicated — never raise it to make a red build
+        # pass, and never clear a flag in bulk to reach a lower number. There
+        # is no --fix on the audit for exactly that reason.
 
       - name: Audit URL-swap regression (#1416)
         if: always()

@@ -19,6 +19,10 @@ paths = [
   '''(^|/)tests/unit/.*\.m?(j|t)s$''',
   # Colocated scripts/lib tests reference the same slug-string fixtures (e.g. idKey: 'becky-shaw-2026')
   '''(^|/)scripts/lib/.*\.test\.mjs$''',
+  # scripts/tests/ fixtures reference launchCmuxSession's seedKey/workKey opts
+  # with short dash-suffixed test values (e.g. seedKey: 'reclaim-1706-a') —
+  # same "Key: '<string>'" entropy false positive as the scripts/lib/ entry above.
+  '''(^|/)scripts/tests/.*\.test\.mjs$''',
   # Colocated scripts/newsletter tests reference env VAR NAMES (e.g. 'no-access: GA4_PROPERTY_ID
   # missing') that trip generic-api-key on entropy alone — no actual key values, just identifiers
   '''(^|/)scripts/newsletter/.*\.test\.mjs$''',

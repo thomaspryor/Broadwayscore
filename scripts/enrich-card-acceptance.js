@@ -59,9 +59,10 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
+const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 
 const REPO = path.join(__dirname, '..');
-const MODEL = process.env.ENRICH_CARD_MODEL || 'claude-haiku-4-5-20251001';
+const MODEL = process.env.ENRICH_CARD_MODEL || CLAUDE_HAIKU;
 const DEFAULT_LIMIT = 100; // spend cap (~100 cards x 1 cheap call, per card #646)
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
@@ -116,9 +117,37 @@ function notionBrain(args) {
   return JSON.parse(out);
 }
 
-function callHaiku(prompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+// task #1713: this machine has no ANTHROPIC_API_KEY, so the enricher failed
+// 100% of cards with "LLM call failed: ANTHROPIC_API_KEY not set" — the tool
+// built to thaw the undispatchable backlog was itself dead. OPENROUTER_API_KEY
+// and GEMINI_API_KEY are both present (scripts/lib/buzz-classifier.js already
+// calls both from this repo), so callLLM now tries providers in order and
+// only throws when NONE of the three keys are set.
+// KIMI (moonshotai/kimi-k2.5), not an Anthropic model routed through
+// OpenRouter — this repo's OpenRouter account is funded for the models it
+// already calls in production (scripts/lib/buzz-classifier.js's callKimi()),
+// and an anthropic/* route through OpenRouter 402'd ("requires more
+// credits") in live testing even though the key itself is valid.
+const OPENROUTER_MODEL = process.env.ENRICH_CARD_OPENROUTER_MODEL || KIMI;
+const GEMINI_MODEL = process.env.ENRICH_CARD_GEMINI_MODEL || GEMINI_FLASH;
+
+// Pure — no I/O — so tests can assert fallback order without live network
+// calls or real API keys.
+function selectProvider(env = process.env) {
+  if (env.ANTHROPIC_API_KEY) return 'anthropic';
+  if (env.OPENROUTER_API_KEY) return 'openrouter';
+  if (env.GEMINI_API_KEY) return 'gemini';
+  return null;
+}
+
+// Adversarial-review finding (task #1713): none of these https.request calls
+// had a timeout, so a hung connection to whichever provider is tried first
+// would block callLLM's cross-provider fallback indefinitely — the exact
+// "provider N failed, fall through to N+1" resilience this was built for
+// never kicks in if provider N simply never responds.
+const LLM_REQUEST_TIMEOUT_MS = 60_000;
+
+function callAnthropic(prompt, apiKey) {
   const body = JSON.stringify({
     model: MODEL,
     max_tokens: 600,
@@ -141,10 +170,99 @@ function callHaiku(prompt) {
         } catch (e) { reject(new Error(`Anthropic parse error: ${e.message}`)); }
       });
     });
+    req.setTimeout(LLM_REQUEST_TIMEOUT_MS, () => req.destroy(new Error(`request timed out after ${LLM_REQUEST_TIMEOUT_MS}ms`)));
     req.on('error', reject);
     req.write(body);
     req.end();
   });
+}
+
+// Same OpenRouter chat-completions shape scripts/lib/buzz-classifier.js's
+// callKimi() already uses — pointed at a Claude model so drafted acceptance
+// criteria stay consistent with the Anthropic-direct path.
+function callOpenRouter(prompt, apiKey) {
+  const body = JSON.stringify({
+    model: OPENROUTER_MODEL,
+    temperature: 0.1,
+    messages: [{ role: 'user', content: prompt }],
+  });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://broadwayscorecard.com',
+        'X-Title': 'Broadway Scorecard Card Enrichment',
+      },
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(new Error(`OpenRouter HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        try {
+          const json = JSON.parse(data);
+          const text = json.choices?.[0]?.message?.content || '';
+          resolve(text);
+        } catch (e) { reject(new Error(`OpenRouter parse error: ${e.message}`)); }
+      });
+    });
+    req.setTimeout(LLM_REQUEST_TIMEOUT_MS, () => req.destroy(new Error(`request timed out after ${LLM_REQUEST_TIMEOUT_MS}ms`)));
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// Same endpoint shape scripts/lib/buzz-classifier.js's Gemini call uses.
+function callGemini(prompt, apiKey) {
+  const body = JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] });
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(new Error(`Gemini HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        try {
+          const json = JSON.parse(data);
+          const text = json.candidates?.[0]?.content?.parts?.map(p => p.text).join('') || '';
+          resolve(text);
+        } catch (e) { reject(new Error(`Gemini parse error: ${e.message}`)); }
+      });
+    });
+    req.setTimeout(LLM_REQUEST_TIMEOUT_MS, () => req.destroy(new Error(`request timed out after ${LLM_REQUEST_TIMEOUT_MS}ms`)));
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// Ordered the same as selectProvider(). opts.callers lets tests substitute
+// fake network functions to exercise "provider N failed, provider N+1
+// succeeds" without a live API call — the exact scenario that showed up in
+// real testing (OpenRouter key valid but out of funded credits, 402).
+const DEFAULT_CALLERS = { anthropic: callAnthropic, openrouter: callOpenRouter, gemini: callGemini };
+const PROVIDER_ENV_KEY = { anthropic: 'ANTHROPIC_API_KEY', openrouter: 'OPENROUTER_API_KEY', gemini: 'GEMINI_API_KEY' };
+const PROVIDER_ORDER = ['anthropic', 'openrouter', 'gemini'];
+
+async function callLLM(prompt, opts = {}) {
+  const env = opts.env || process.env;
+  const callers = opts.callers || DEFAULT_CALLERS;
+  const providers = PROVIDER_ORDER.filter(p => env[PROVIDER_ENV_KEY[p]]);
+  if (!providers.length) throw new Error('no LLM provider API key set (checked ANTHROPIC_API_KEY, OPENROUTER_API_KEY, GEMINI_API_KEY)');
+  const errors = [];
+  for (const provider of providers) {
+    try {
+      return await callers[provider](prompt, env[PROVIDER_ENV_KEY[provider]]);
+    } catch (e) {
+      errors.push(`${provider}: ${e.message}`);
+    }
+  }
+  throw new Error(`all ${providers.length} available provider(s) failed — ${errors.join(' | ')}`);
 }
 
 function buildEnrichPrompt(card) {
@@ -165,6 +283,7 @@ Rules:
   - NEVER name a command that runs a script which writes/mutates data (rebuild-all-reviews.js, gather-reviews.js, collect-review-texts.js, or anything starting with push- or send-).
   - If the card's Problem describes a bug in EXISTING code, prefer naming a NEW colocated test that would prove the fix (this repo's convention — see CLAUDE.md §15) — do not claim an existing test already covers it unless the notes explicitly name that test file.
   - If you genuinely cannot infer what to test, fall back to \`npx tsc --noEmit\` — it is always a valid, safe, real check.
+  - acceptanceCriteria must contain EXACTLY ONE backticked span: the command itself. Do NOT put any other script name, file path, or shell command inside backticks anywhere in acceptanceCriteria — not as background, not as "first fix X", not as an alternative. Mention such things in plain prose with no backticks, or omit them entirely.
 
 Respond with ONLY this JSON, no markdown fences, no commentary:
 {
@@ -207,6 +326,24 @@ function mergeTags(tags, add) {
   return [...set].join(',');
 }
 
+// task #1713: a run that fails 100% of cards printed per-card "failed" lines
+// and a summary that reads like a normal report, then exited 0 — a scheduled
+// run of this tool would look like it was working while doing nothing. An
+// empty batch (--limit resolves to 0 refused cards) is NOT a failure — that
+// means the backlog is already clean, not that the tool broke.
+// Adversarial-review finding (task #1713): the first version required EVERY
+// result to be 'failed', so 99 failed + 1 pre-armed 'skipped' exited 0 —
+// exactly the "silently looks like a normal run" failure this exists to
+// catch, just at 99% instead of 100%. 'skipped'/'owner-judgment' never
+// invoke the LLM at all, so they can't prove or disprove the provider
+// chain works — only look at cards where an LLM call was actually attempted
+// ('llm-enriched' or 'failed'); if every one of THOSE failed, the LLM path
+// is dead. A batch that was all skipped (nothing attempted) is not a failure.
+function allFailed(results) {
+  const attempted = results.filter(r => r.action === 'failed' || r.action === 'llm-enriched');
+  return attempted.length > 0 && attempted.every(r => r.action === 'failed');
+}
+
 // Splice draftedSection into notes, replacing an existing (unarmed) Acceptance
 // criteria section if one exists, otherwise appending. Uses the CANONICAL
 // SECTION_RE (autonomous-verify-cmd.js) so this never drifts from what
@@ -221,7 +358,7 @@ function spliceNotes(notes, draftedSection) {
 /**
  * Enrich one card. Returns { id, name, action, detail }.
  * action: 'skipped' | 'owner-judgment' | 'llm-enriched' | 'failed'
- * opts.callLLM is injected (real Haiku in the CLI, a stub in tests).
+ * opts.callLLM is injected (real provider-fallback callLLM in the CLI, a stub in tests).
  */
 async function enrichOneCard(card, opts = {}) {
   const gate = evaluateVerifiability(card.notes || '');
@@ -307,6 +444,19 @@ async function enrichOneCard(card, opts = {}) {
   // arm. Reject the whole draft if any candidate besides the validated one
   // isn't itself safe-shaped — never write a card whose own notes document
   // an unsanctioned command, even if it isn't the one that gets executed.
+  // task #1713 (considered and reverted): Gemini, the fallback provider on a
+  // machine with no funded ANTHROPIC_API_KEY/OPENROUTER_API_KEY credits,
+  // sometimes wraps a bare identifier in backticks as Markdown inline code
+  // (`wrongProduction`), which used to trip this guardrail even though it
+  // isn't a real command. A narrowed "only flag spans with whitespace or /"
+  // filter was tried and reverted after adversarial review (Codex) pointed
+  // out a single PATH executable IS a valid unsafe command with neither
+  // (e.g. `make`) — this guardrail is deliberately conservative defense in
+  // depth (never write a card whose own notes document an unsanctioned
+  // command, even one nothing today would execute), and that margin is worth
+  // more than a slightly higher enrichment hit-rate against the odd
+  // false-positive rejection, which just falls through to the un-mutating,
+  // zero-write 'failed' outcome anyway.
   const allCandidates = candidatesFrom(draftedSection);
   const unsafeExtra = allCandidates.find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
   if (unsafeExtra) {
@@ -362,7 +512,7 @@ async function main() {
   const results = [];
   for (const [i, id] of ids.entries()) {
     const card = notionBrain(['get', id]);
-    const result = await enrichOneCard(card, { callLLM: callHaiku, notionBrain, dryRun, force: !!args.force });
+    const result = await enrichOneCard(card, { callLLM, notionBrain, dryRun, force: !!args.force });
     results.push(result);
     console.error(`[enrich-card-acceptance] ${i + 1}/${ids.length} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
     // Rate limiting — same 1s spacing adjudicate-review-queue.js uses between LLM calls.
@@ -394,6 +544,11 @@ async function main() {
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
   }
 
+  if (allFailed(results)) {
+    console.error(`[enrich-card-acceptance] fatal: all ${results.length} card(s) failed — exiting non-zero so this doesn't look like a normal run`);
+    process.exitCode = 1;
+  }
+
   return results;
 }
 
@@ -401,4 +556,9 @@ if (require.main === module) {
   main().catch(err => { console.error(`[enrich-card-acceptance] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { enrichOneCard, buildEnrichPrompt, parseEnrichResponse, mergeTags, spliceNotes, logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE };
+module.exports = {
+  enrichOneCard, buildEnrichPrompt, parseEnrichResponse, mergeTags, spliceNotes, allFailed,
+  logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
+  selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
+  OPENROUTER_MODEL, GEMINI_MODEL,
+};

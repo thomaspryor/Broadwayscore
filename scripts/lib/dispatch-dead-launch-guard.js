@@ -50,6 +50,24 @@ function guardTaskCompletion({ taskId, status, entries }) {
   };
 }
 
+// A task a human/session has explicitly certified done by out-of-band means
+// (task #1697: e.g. its own Notion page 404s permanently, but the
+// underlying work was independently confirmed complete under a different
+// card) rather than through a normal dispatch. Requires BOTH fields (not
+// either alone) — same all-or-nothing shape as the manual review-protection
+// fields (memory: feedback_manual_review_protection_fields.md): Reason alone
+// has no timestamp to hang a future staleness check on, At alone has no
+// audit trail for why the safety net was bypassed. Deliberately NOT
+// consulted by guardTaskCompletion() — that guard has no task object, only
+// {taskId, status, entries}, so it can't see these fields; manual resolution
+// stays a JSON-hand-edit side channel, not a first-class TaskUpdate path.
+function isManuallyResolved(task) {
+  return Boolean(
+    String(task?.manuallyResolvedReason || '').trim()
+    && String(task?.manuallyResolvedAt || '').trim()
+  );
+}
+
 // Tasks that are ALREADY marked 'completed' but whose latest dispatch is
 // dead — the reconciler's input. `tasks` is the shape loadTasks() already
 // produces ({id, status, subject, ...}). notionId (card #1157) lets the
@@ -59,7 +77,7 @@ function guardTaskCompletion({ taskId, status, entries }) {
 // dead dispatch was discovered; null for native (non-mirrored) tasks.
 function reconcileDeadCompletions(tasks, entries) {
   return (tasks || [])
-    .filter((t) => t && t.status === 'completed' && isLatestDispatchDead(t.id, entries))
+    .filter((t) => t && t.status === 'completed' && !isManuallyResolved(t) && isLatestDispatchDead(t.id, entries))
     .map((t) => ({ id: t.id, subject: t.subject || null, notionId: notionIdOf(t) }));
 }
 
@@ -71,4 +89,4 @@ function shouldCorrectNotionStatus(currentStatus) {
   return currentStatus === 'Done';
 }
 
-module.exports = { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus };
+module.exports = { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus, isManuallyResolved };
