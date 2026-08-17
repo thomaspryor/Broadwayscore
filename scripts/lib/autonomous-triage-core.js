@@ -68,6 +68,41 @@ const SAFE_CHECK_FORMS = [
   // strict YYYY-MM-DD token (no shell metachars, no path segments), so this
   // cannot reference or mutate anything outside data/audit/canary-*.marker.
   { re: /^node scripts\/check-canary-marker\.js --date=(\d{4}-\d{2}-\d{2})$/ },
+  // Task #1713: this repo's own standard validation entry points were
+  // excluded from every form above, so a card author who correctly named
+  // `node scripts/validate-data.js` as the acceptance check got REFUSED
+  // anyway (audit-card-verifiability.js "shape 2" — a real command rejected
+  // by safe-form). Each entry below is a script vetted read-only w.r.t.
+  // shows.json/reviews.json/review-texts (the corpus MUTATING_SCRIPT_RE
+  // exists to protect) — never NEVER assumed to be side-effect-free in
+  // general. Two of them DO write outside data/audit/: validate-data.js
+  // writes/clears a RUNNER_TEMP-or-/tmp push-refusal sentinel (consumed by
+  // the push-core-data composite action in the SAME CI job, not read by a
+  // standalone re-verification run), and scoring-delta.js writes into its
+  // own self-cleaned os.tmpdir() mkdtemp scratch dir to diff HEAD vs the
+  // working tree. Neither touches a tracked/shared path (ship-check finding).
+  // Bare invocation only, plus flags individually confirmed report/gate-mode
+  // (never a --fix/--update-baseline/--force mutation flag) by reading each
+  // script before adding it here — this is a curated allowlist, not a
+  // `scripts/(audit|check)-*.js` prefix match, because a prefix match would
+  // silently admit any FUTURE script sharing the naming convention without
+  // the same review.
+  { re: /^node scripts\/validate-data\.js( --strict)?$/ },
+  // Bare only — no --base= capture. scoring-delta.js interpolates --base
+  // straight into `execSync(`git show ${BASE_REF}:...`)` (shell string
+  // concatenation, not execFile array-args), so accepting an LLM- or
+  // card-author-supplied --base value here would be a genuine shell-injection
+  // hole. Bare invocation defaults BASE_REF to HEAD and needs no such value.
+  { re: /^node scripts\/scoring-delta\.js$/ },
+  { re: /^node scripts\/test-temporal-override-regression\.js$/ },
+  // --review-texts-dir= deliberately excluded (arbitrary path arg, no need
+  // for it in a re-verification context).
+  { re: /^node scripts\/audit-stale-flag-after-url-correction\.js(?: --gate)?(?: --max=\d+)?(?: --json)?$/ },
+  { re: /^node scripts\/audit-help-flag-safety\.js$/ }, // bare only — --update-baseline writes BASELINE_PATH
+  { re: /^node scripts\/audit-workflow-hygiene\.js$/ },
+  { re: /^node scripts\/audit-aggregator-archive-integrity\.js(?: --strict)?$/ },
+  { re: /^node scripts\/audit-sibling-title-misroute\.js$/ }, // bare only — NEVER --fix (moves/deletes review-text files)
+  { re: /^node scripts\/audit-orphan-tests\.js$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -97,7 +132,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), or `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance)';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), or `node scripts/audit-orphan-tests.js`';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
