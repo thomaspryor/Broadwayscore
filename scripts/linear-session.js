@@ -85,21 +85,40 @@ function splitKeyFiles(raw) {
 }
 
 async function cmdClaim(args) {
+  const team = await linear.getTeam();
   let issue = null;
   if (args.issue) {
     issue = await linear.getIssue(args.issue);
     if (!issue) throw new Error(`No Linear issue found for "${args.issue}"`);
   } else if (args.title) {
-    // Exact-title dedup, not linear-client.js's searchIssues() — that helper
-    // is built for the alert router's substring conditionKey scan and would
-    // false-match a different issue whose title merely contains this one.
-    const openIssues = await linear.listOpenIssues();
-    issue = lsr.findIssueByExactTitle(openIssues, args.title);
+    // Exact-title dedup over ALL issues (open + closed) via linear.listIssues,
+    // not linear-client.js's listOpenIssues() — that query filters OUT
+    // completed/canceled issues AND its nodes don't even carry `id` (only
+    // identifier/title/priority/url/updatedAt/state/labels — see
+    // buildOpenIssuesQuery), so an "activate"/"noop" plan built from it would
+    // pass `updateIssue(undefined, ...)`. Not linear-client.js's
+    // searchIssues() either — that's built for the alert router's substring
+    // conditionKey scan and would false-match a title that's merely a
+    // substring of another.
+    //
+    // listIssues() itself returns `state` FLATTENED to a bare name string
+    // plus a separate `stateType` field (see its mapping in linear-client.js)
+    // — a different shape from getIssue()/listOpenIssues()'s `state:{name,
+    // type}` object that planClaim expects. Verified live against BRO-387
+    // (task notes: state comes back as "In Progress", stateType as
+    // "started"). Re-nest before handing to findIssueByExactTitle/planClaim
+    // so a Done/Canceled issue with a matching title is found and correctly
+    // REOPENED, and an already-active one is correctly left as a noop
+    // instead of every match being forced through 'activate'.
+    const allIssues = (await linear.listIssues(team.id)).map((iss) => ({
+      ...iss,
+      state: { name: iss.state, type: iss.stateType },
+    }));
+    issue = lsr.findIssueByExactTitle(allIssues, args.title);
   } else {
     throw new Error(`claim requires --issue=BRO-N or --title="..."\n\n${USAGE}`);
   }
 
-  const team = await linear.getTeam();
   const plan = lsr.planClaim({
     issue,
     states: team.states,
@@ -125,6 +144,13 @@ async function cmdClaim(args) {
     });
     await linear.updateIssue(created.id, { stateId: plan.stateId });
     result = await linear.getIssue(created.identifier);
+    if (!result) {
+      // Read-after-write isn't guaranteed instant; the issue WAS created and
+      // activated (both mutations above succeeded) — fall back to what
+      // createIssue's own response gave us rather than crashing on
+      // result.id below with an unhelpful TypeError.
+      result = { id: created.id, identifier: created.identifier, url: null };
+    }
   } else if (plan.action === 'activate') {
     await linear.updateIssue(plan.issueId, { stateId: plan.stateId });
     result = issue;
@@ -148,6 +174,16 @@ async function cmdReport(args) {
   if (!args.issue) throw new Error(`report requires --issue=<id-or-identifier>\n\n${USAGE}`);
   if (!args.status) throw new Error(`report requires --status=<done|in-review|paused|blocked>\n\n${USAGE}`);
   if (!args.summary) throw new Error(`report requires --summary="..."\n\n${USAGE}`);
+  // Validate the STATUS VALUE (not just presence) before anything below runs
+  // an I/O side effect — planCompletion() also validates, but only after
+  // createComment() would already have posted. A typo'd --status previously
+  // posted a real comment, then threw with no marker printed, leaving the
+  // Stop-hook sentinel unwritten and a retry double-posting the comment.
+  if (!lsr.VALID_STATUSES.has(args.status)) {
+    throw new Error(
+      `report: unknown --status "${args.status}" — expected one of ${[...lsr.VALID_STATUSES].join(', ')}\n\n${USAGE}`
+    );
+  }
 
   const issue = await linear.getIssue(args.issue);
   if (!issue) throw new Error(`No Linear issue found for "${args.issue}"`);

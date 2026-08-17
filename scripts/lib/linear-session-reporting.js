@@ -280,6 +280,7 @@ module.exports = {
   buildIssueIdMarker,
   extractIssueId,
   buildOutcomeCommentBody,
+  VALID_STATUSES,
   planCompletion,
   hasBypass,
   evaluateSessionClose,
