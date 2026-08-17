@@ -103,8 +103,8 @@ function sourcesForReview(data) {
 }
 
 /** Load every review-texts JSON for a show, keyed by outletId. */
-function loadShowTexts(showId) {
-  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+function loadShowTexts(showId, reviewTextsDir) {
+  const dir = path.join(reviewTextsDir || REVIEW_TEXTS_DIR, showId);
   const out = [];
   let files;
   try {
@@ -119,6 +119,37 @@ function loadShowTexts(showId) {
     } catch { /* unreadable file — the rebuild reports these separately */ }
   }
   return out;
+}
+
+/**
+ * The corpus-wide quality scan, extracted so a test can require() it
+ * directly instead of re-implementing the guard-check loop (CLAUDE.md
+ * rule 15). Same logic main() runs; main() below is a thin CLI wrapper.
+ */
+function findBadPullQuotes(reviews, reviewTextsDir) {
+  const textsByShow = new Map();
+  function textsFor(showId) {
+    if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId, reviewTextsDir));
+    return textsByShow.get(showId);
+  }
+  function fileForReview(r) {
+    return textsFor(r.showId).find(({ data }) => data.outletId === r.outletId
+      && (!r.criticName || !data.criticName || data.criticName === r.criticName));
+  }
+
+  const badQuotes = [];
+  for (const r of reviews) {
+    if (!r.pullQuote) continue;
+    const entry = fileForReview(r);
+    const reason = classifyBadQuote(r.pullQuote, sourcesForReview(entry && entry.data));
+    if (reason) {
+      badQuotes.push({
+        showId: r.showId, outletId: r.outletId, criticName: r.criticName,
+        reason, url: r.url, pullQuote: r.pullQuote.slice(0, 200),
+      });
+    }
+  }
+  return badQuotes;
 }
 
 function main() {
@@ -156,18 +187,7 @@ function main() {
   }
 
   // --- 1. QUALITY ---------------------------------------------------------
-  const badQuotes = [];
-  for (const r of scoped) {
-    if (!r.pullQuote) continue;
-    const entry = fileForReview(r);
-    const reason = classifyBadQuote(r.pullQuote, sourcesForReview(entry && entry.data));
-    if (reason) {
-      badQuotes.push({
-        showId: r.showId, outletId: r.outletId, criticName: r.criticName,
-        reason, url: r.url, pullQuote: r.pullQuote.slice(0, 200),
-      });
-    }
-  }
+  const badQuotes = findBadPullQuotes(scoped, REVIEW_TEXTS_DIR);
 
   console.log(`\n[quality] ${badQuotes.length} shipped pull quote(s) trip a hard guard`);
   const byReason = {};
@@ -244,4 +264,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { classifyBadQuote, sourcesForReview, hasHelpFlag };
+module.exports = { classifyBadQuote, sourcesForReview, findBadPullQuotes, loadShowTexts, hasHelpFlag };
