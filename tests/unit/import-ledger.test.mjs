@@ -9,7 +9,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -100,20 +100,57 @@ test('two concurrent writers both land — no last-writer-wins', async () => {
   // looks exactly like a real one.
   const p = tmp();
   const N = 200;
+  // The interleave assertion at the bottom used to be a bet on the scheduler, and
+  // the house won on 2026-08-17: node's startup is ~40ms while 200 appends take
+  // ~2ms, so writer `a` finished before writer `b` had booted, `switches` came back
+  // 1, and CI went red on a run where nothing was actually broken. Two mechanisms
+  // make that precondition STRUCTURAL rather than probabilistic:
+  //   1. a start barrier — neither child appends until both are live and released;
+  //   2. a first-row handshake — each child writes row 0, then blocks until the
+  //      OTHER tag's row is on disk before writing rows 1..N-1.
+  // (2) guarantees at least two tag switches whenever both children actually run,
+  // so the assertion can no longer fail for timing reasons alone. If the writers
+  // were ever serialized again (the execFileSync regression this test exists to
+  // catch), the handshake cannot be satisfied and the child exits 3 — a loud,
+  // specific failure instead of the silent false pass that started all this.
+  const barrier = `${p}.barrier`;
+  const readyFile = (tag) => `${p}.ready-${tag}`;
+  const other = (tag) => (tag === 'a' ? 'b' : 'a');
+  // Both waits YIELD rather than spin. A tight `while(!existsSync)` loop pins a
+  // core, and on a CPU-starved CI runner two spinning children can starve each
+  // other (and the parent) into the very timeout they are meant to prevent.
+  // Atomics.wait is the only synchronous sleep available inside `node -e`.
+  const sleep1ms = `const _b=new Int32Array(new SharedArrayBuffer(4));const nap=()=>Atomics.wait(_b,0,0,1);`;
   const child = (tag) =>
+    `const fs=require('fs');${sleep1ms}` +
     `const l=require(${JSON.stringify(path.join(REPO, 'scripts/lib/import-ledger.js'))});` +
-    `for(let i=0;i<${N};i++) l.appendRow(${JSON.stringify(p)}, l.makeRow({pageId:'${tag}-'+i,identifier:'${tag}-'+i}));`;
+    `fs.writeFileSync(${JSON.stringify(readyFile(tag))},'1');` +
+    `while(!fs.existsSync(${JSON.stringify(barrier)})) nap();` +
+    `l.appendRow(${JSON.stringify(p)}, l.makeRow({pageId:'${tag}-0',identifier:'${tag}-0'}));` +
+    `const dl=Date.now()+20000;` +
+    `const saw=()=>{try{return fs.readFileSync(${JSON.stringify(p)},'utf8').includes('"${other(tag)}-0"')}catch(e){return false}};` +
+    `while(!saw()){if(Date.now()>dl) process.exit(3); nap();}` +
+    `for(let i=1;i<${N};i++) l.appendRow(${JSON.stringify(p)}, l.makeRow({pageId:'${tag}-'+i,identifier:'${tag}-'+i}));`;
 
   const running = ['a', 'b'].map(
     (tag) =>
       new Promise((resolve, reject) => {
         const proc = spawn(process.execPath, ['-e', child(tag)], { stdio: 'ignore' });
         proc.on('error', reject);
-        proc.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`${tag} exited ${code}`))));
+        proc.on('exit', (code) => (code === 0
+          ? resolve()
+          : reject(new Error(code === 3
+            ? `${tag} never saw the other writer's first row — the writers were serialized, so this test raced nothing`
+            : `${tag} exited ${code}`))));
       })
   );
-  // Both processes are live before either is awaited, so their appends really
-  // do interleave in the kernel.
+  // Release only once BOTH children are spinning on the barrier.
+  const deadline = Date.now() + 30_000;
+  while (!(existsSync(readyFile('a')) && existsSync(readyFile('b')))) {
+    if (Date.now() > deadline) throw new Error('writers never signalled ready — race harness broken');
+    await new Promise((r) => setTimeout(r, 5));
+  }
+  writeFileSync(barrier, '1');
   await Promise.all(running);
 
   const rows = ledger.readRows(p);
