@@ -247,6 +247,10 @@ function propertiesPlainText(page) {
  * recoverable rather than a permanent silent loss.
  */
 function buildRecord(page, blocks, comments) {
+  // Before anything reads them: strip the per-fetch S3 signatures, or two runs
+  // of an unchanged page can never agree.
+  const fileStats = { count: 0 };
+  blocks = normalizeExpiringFileUrls(blocks, fileStats);
   const propText = propertiesPlainText(page);
   const sortedProps = {};
   for (const k of Object.keys(propText).sort()) sortedProps[k] = propText[k];
@@ -275,6 +279,9 @@ function buildRecord(page, blocks, comments) {
       blockCount: countBlocks(blocks),
       maxDepth: maxBlockDepth(blocks),
       text: blocksPlainText(blocks),
+      // Non-zero means this page references uploaded files the archive does
+      // NOT contain — see normalizeExpiringFileUrls.
+      expiringFileBlocks: fileStats.count,
       blocks: blocks || [],
     },
     comments: {
@@ -282,6 +289,53 @@ function buildRecord(page, blocks, comments) {
       items: Array.isArray(comments) ? comments : [],
     },
   };
+}
+
+/**
+ * Notion serves uploaded files (image/file/pdf/video blocks) as PRE-SIGNED S3
+ * URLs that carry an AWS signature and an `expiry_time` about an hour out. Two
+ * consequences, both discovered by diffing two real full exports:
+ *
+ *   1. The signature differs on EVERY fetch, so a record containing one can
+ *      never be byte-identical across runs. Five pages in the real corpus
+ *      diverged for this reason alone, with identical content.
+ *   2. More seriously, storing the signed URL in an archive is a lie of
+ *      omission. It looks like the archive references the image; the link is
+ *      dead within the hour, and the bare S3 path is not publicly fetchable.
+ *
+ * So the signature is stripped (keeping the stable path, which at least
+ * identifies the object) and the expiry is dropped, with a breadcrumb on the
+ * block. The COUNT is surfaced in the manifest so "this archive does not
+ * contain the images" is a recorded fact rather than something a future reader
+ * has to rediscover. Deep-clones: the caller's blocks are not mutated.
+ */
+function normalizeExpiringFileUrls(blocks, stats = { count: 0 }) {
+  const out = [];
+  for (const b of Array.isArray(blocks) ? blocks : []) {
+    if (!b || typeof b !== 'object') {
+      out.push(b);
+      continue;
+    }
+    const copy = { ...b };
+    const payload = copy[copy.type];
+    if (payload && payload.file && typeof payload.file.url === 'string') {
+      stats.count++;
+      const { url } = payload.file;
+      copy[copy.type] = {
+        ...payload,
+        file: {
+          ...payload.file,
+          url: url.split('?')[0],
+          expiry_time: undefined,
+          _signatureStripped: true,
+          _note: 'Notion pre-signed S3 URL; signature removed (expires ~1h). The image is NOT in this archive.',
+        },
+      };
+    }
+    if (Array.isArray(b._children)) copy._children = normalizeExpiringFileUrls(b._children, stats);
+    out.push(copy);
+  }
+  return out;
 }
 
 function countBlocks(blocks) {
@@ -357,7 +411,9 @@ function charVolume(records) {
   const totals = { notes: 0, outcome: 0, keyFiles: 0, body: 0, properties: 0 };
   const exportBugs = [];
   const sourceMissing = [];
+  let expiringFileBlocks = 0;
   for (const r of records) {
+    expiringFileBlocks += ((r.body || {}).expiringFileBlocks) || 0;
     for (const f of OVERFLOWABLE_FIELDS) {
       totals[f] += ((r.fields || {})[f] || '').length;
       const why = classifyTruncation(r, f);
@@ -375,6 +431,8 @@ function charVolume(records) {
     withOverflowMarker: exportBugs.length,
     exportBugs,
     sourceMissing,
+    // Uploaded files this archive references but does not contain.
+    expiringFileBlocks,
   };
 }
 
@@ -539,6 +597,7 @@ module.exports = {
   verifyCorpus,
   isStillTruncated,
   classifyTruncation,
+  normalizeExpiringFileUrls,
   BODY_HEADING_PREFIX,
   BODY_HEADING_SUFFIX,
   OVERFLOWABLE,

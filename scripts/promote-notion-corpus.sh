@@ -48,17 +48,55 @@ for d in "$A" "$B"; do
   ' "$d" || die "manifest check failed for $d"
 done
 
-echo "── double-run diff (corpus.ndjson only; manifest.json carries run metadata by design) ──"
-if diff -q "$A/corpus.ndjson" "$B/corpus.ndjson" >/dev/null; then
-  echo "  ✅ byte-identical across two independent runs"
-else
-  echo "  ❌ the two runs DISAGREE — the export is not deterministic. Investigate before publishing:"
-  diff <(cut -c1-60 "$A/corpus.ndjson") <(cut -c1-60 "$B/corpus.ndjson") | head -20
-  # Cards genuinely edited between the two runs show up here too, and that is a
-  # real signal, not noise: it means the corpus is a moving target and the two
-  # runs must be taken closer together (or the board frozen) before publishing.
-  exit 1
-fi
+# DETERMINISM, scoped to what determinism can actually mean here.
+#
+# A whole-file `diff` between two runs cannot pass. The source is a LIVE board
+# that the fleet writes to continuously: across the real pair of runs, 4 pages
+# were created and 21 edited in the ~2 hours between them. A criterion that can
+# only ever fail is worse than none, because the next reader learns to skip it.
+#
+# The determinism claim that IS testable and IS what matters: a page that did
+# not change between the two runs must produce a byte-identical record. Any
+# difference there is a genuine non-determinism bug in the exporter — which is
+# exactly how the pre-signed-S3-URL defect was found (5 unchanged pages
+# diverged because Notion re-signs image URLs on every fetch, so the archive
+# was storing links that die within the hour).
+echo "── double-run determinism (records for pages UNCHANGED between the two runs) ──"
+node -e '
+const fs = require("fs");
+const load = (p) => {
+  const m = new Map();
+  for (const l of fs.readFileSync(p, "utf8").split("\n")) {
+    if (!l.trim()) continue;
+    const r = JSON.parse(l);
+    m.set(r.id, { raw: l, editedAt: r.lastEditedTime });
+  }
+  return m;
+};
+const A = load(process.argv[1]), B = load(process.argv[2]);
+let identical = 0, diverged = 0, edited = 0, createdInB = 0, deleted = 0;
+const offenders = [];
+for (const [id, a] of A) {
+  const b = B.get(id);
+  if (!b) { deleted++; continue; }
+  if (a.editedAt !== b.editedAt) { edited++; continue; }
+  if (a.raw === b.raw) identical++;
+  else { diverged++; if (offenders.length < 10) offenders.push(id); }
+}
+for (const id of B.keys()) if (!A.has(id)) createdInB++;
+console.log(`  pages in A / B                      ${A.size} / ${B.size}`);
+console.log(`  created between the runs            ${createdInB}`);
+console.log(`  deleted between the runs            ${deleted}`);
+console.log(`  edited between the runs             ${edited}`);
+console.log(`  UNCHANGED and byte-identical        ${identical}`);
+console.log(`  UNCHANGED but DIVERGED              ${diverged}`);
+if (diverged) {
+  console.log("  ❌ non-determinism: " + offenders.join(", "));
+  process.exit(1);
+}
+if (identical === 0) { console.log("  ❌ nothing was comparable — the two runs share no unchanged page"); process.exit(1); }
+console.log("  ✅ every page unchanged between the runs produced an identical record");
+' "$A/corpus.ndjson" "$B/corpus.ndjson" || die "the export is not deterministic — investigate before publishing"
 
 mkdir -p "$DEST" || die "could not create $DEST"
 
