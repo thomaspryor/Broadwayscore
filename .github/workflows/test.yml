@@ -2793,6 +2793,14 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/linear-retry-policy.js'
       - 'scripts/check-linear-delegations.js'
+      # Import ledger re-keyed to Notion pageId, append-only (S3-T2). It is the
+      # only thing that can answer "is every un-Done Notion page accounted
+      # for?" after Notion is deleted, and its concurrency contract (one
+      # O_APPEND write per row) is what keeps a multi-hour import from losing
+      # entries against CI's ~30-minute commits. tests/unit/import-ledger.test.mjs
+      # is registered in tests/unit-test-manifest.txt (tests/** globbed above).
+      - 'scripts/lib/import-ledger.js'
+      - 'scripts/migrate-import-ledger.js'
       # Three-way board health verdict for the gate hooks (S1-T2). Sprint 4
       # rewrites five hooks to branch on it, so a change to the verdict words
       # or exit codes must trigger CI. tests/unit/board-probe.test.mjs is

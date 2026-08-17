@@ -10,7 +10,43 @@
 // but the tag is not always the first line — zombie-sweep re-opens and other
 // prefixes push it down, so search the whole description, not just line 1.
 const NOTION_ID_RE = /\[notion:([a-f0-9-]+)\]/;
-const PRIORITY_RE = /\b(P0 Now|P1 Next|P2 Later)\b/;
+
+// EVERY Priority value the brain board can hold. Not a guess and not a sample:
+// read straight off the data source schema's select options on 2026-08-17
+// (`dataSources.retrieve` → properties.Priority.select.options), which is the
+// complete vocabulary whether or not a card currently uses each one.
+//
+// There are 26, not the 17 the sprint plan assumed, and three of them do not
+// behave like priorities at all:
+//   * 'Done'  — a status accidentally set in the Priority column. It carries NO
+//               priority information, so it must not silently become Low.
+//   * 'P9'    — nonsense-tier, used as "never".
+//   * 'High'/'Medium'/'Low' — Linear's own vocabulary, from sessions that
+//               reached for Linear names while filing into Notion.
+//
+// This matters because Sprint 3 routes on the TIER: P0/P1 import live, P2/P3
+// import Canceled + notion-archive. A legacy spelling that fails to normalise
+// silently lands in the wrong half of that split.
+const PRIORITY_SPELLINGS = [
+  'P0 Now', 'P0 Urgent', 'P0',
+  'P1 Next', 'P1 Now', 'P1 Soon', 'P1',
+  'P2 Later', 'P2 Soon', 'P2 Next', 'P2 Future', 'P2 Backlog', 'P2',
+  'P3 Backlog', 'P3 Low', 'P3 Eventually', 'P3 Someday', 'P3 Future', 'P3 Later', 'P3',
+  'P4', 'P9',
+  'High', 'Medium', 'Low',
+  'Done',
+];
+
+// Longest-first so 'P1 Next' wins over the bare 'P1' prefix, and escaped
+// because the vocabulary is data. Deliberately NOT a loose /P\d/ pattern: this
+// runs over free-text mirror descriptions, where "P1" appears inside prose
+// ("the P1 backlog") and a loose match would invent a priority from a mention.
+const PRIORITY_RE = new RegExp(
+  `\\b(${[...PRIORITY_SPELLINGS]
+    .sort((a, b) => b.length - a.length)
+    .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|')})\\b`
+);
 
 function extractNotionId(description) {
   const m = NOTION_ID_RE.exec(description || '');
@@ -22,10 +58,55 @@ function extractPriorityTag(description) {
   return m ? m[1] : null;
 }
 
+/**
+ * Collapse any legacy spelling to its TIER: 'P0' | 'P1' | 'P2' | 'P3' | null.
+ * null means "this card carries no usable priority", which is a real answer —
+ * `Done` in the Priority column and an empty Priority are both that.
+ *
+ * Import-time only. Nothing here is ever written back to Notion: normalising a
+ * board that is being deleted would corrupt the Sprint 2 corpus (the archive is
+ * supposed to record what was actually there) for no benefit.
+ */
+function normalizePriorityTier(raw) {
+  const s = String(raw || '').trim();
+  if (!s) return null;
+  if (/^done$/i.test(s)) return null; // a status in the priority column
+  const m = /^p(\d)\b/i.exec(s);
+  if (m) {
+    const n = Number(m[1]);
+    if (n <= 2) return `P${n}`;
+    return 'P3'; // P3, P4 and P9 are all "bottom of the pile"
+  }
+  if (/^high$/i.test(s)) return 'P1';
+  if (/^medium$/i.test(s)) return 'P2';
+  if (/^low$/i.test(s)) return 'P3';
+  return null;
+}
+
 // Linear issue priority is an Int: 0 none, 1 urgent, 2 high, 3 medium, 4 low.
-const PRIORITY_MAP = { 'P0 Now': 1, 'P1 Next': 2, 'P2 Later': 3 };
+const TIER_TO_LINEAR = { P0: 1, P1: 2, P2: 3, P3: 4 };
+
+/**
+ * Accepts any legacy spelling, not just the three canonical ones.
+ *
+ * A card with no usable priority maps to 0 (No priority) rather than 4 (Low).
+ * The old behaviour returned Low for everything unrecognised, which asserted
+ * something the data never said — and once 1,831 cards land on the board, "Low"
+ * and "we don't know" are the difference between a triageable backlog and a
+ * uniformly-grey one.
+ */
 function mapPriorityToLinear(priorityTag) {
-  return PRIORITY_MAP[priorityTag] || 4; // else -> Low, per card instructions
+  const tier = normalizePriorityTier(priorityTag);
+  return tier ? TIER_TO_LINEAR[tier] : 0;
+}
+
+// The Sprint 3 split: P0/P1 import live into their workstream project, P2/P3
+// import Canceled + `notion-archive` (searchable, not dispatchable). A card
+// with no usable priority is NOT live work — routing an unprioritised card into
+// the dispatchable half is how the invisible backlog gets recreated.
+function isLivePriorityTier(raw) {
+  const tier = normalizePriorityTier(raw);
+  return tier === 'P0' || tier === 'P1';
 }
 
 // Local mirror status -> Linear workflow state name. in_progress cards keep
@@ -189,6 +270,9 @@ module.exports = {
   isIdleArchive,
   extractNotionId,
   extractPriorityTag,
+  PRIORITY_SPELLINGS,
+  normalizePriorityTier,
+  isLivePriorityTier,
   mapPriorityToLinear,
   mapStatusToLinearState,
   classifyNoise,

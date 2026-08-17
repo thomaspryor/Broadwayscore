@@ -240,8 +240,15 @@ defence. Notion must be fully live throughout.
 - **Description:** Run the export twice and require a byte-identical diff before shipping. Store in the private
   data repo — NOT `~/Documents/claude-outputs/`, which is iCloud and evictable to dataless placeholders.
 - **Acceptance criteria:**
-  - VERIFY: `diff -r` between the two runs reports no differences
+  - VERIFY: the two runs' `corpus.ndjson` are byte-identical
+    `[CHANGED: was "diff -r between the two runs reports no differences". A recursive diff can never pass:
+    manifest.json carries generatedAt and durationSec BY DESIGN — that is where run metadata lives precisely so
+    that no timestamp ends up inside a record and the records stay comparable. An acceptance criterion that
+    always fails trains the next reader to wave the diff through, which is worse than not having it. Scoped to
+    the file the determinism claim is actually about. — source: Sprint 2 execution]`
   - VERIFY: `shasum -c SHA256SUMS` passes from a fresh clone of the data repo
+  - VERIFY: both runs' manifests report `partial: false` and `errorCount: 0` — two partial runs agreeing with
+    each other prove nothing
 
 ---
 
@@ -261,14 +268,29 @@ half-migrated board; notification flood to the owner's phone.
   `High` etc. Import-time only — do NOT write normalised priorities back to Notion, which would both corrupt the
   Sprint 2 corpus and edit a system being deleted.
 - **Acceptance criteria:**
-  - VERIFY: `node --test scripts/lib/linear-import-rules.test.mjs` covers all 17 observed legacy spellings
-  - VERIFY: the 79 P0/P1-tier legacy-spelling cards map to Linear Urgent/High
+  - VERIFY: `node --test scripts/lib/linear-import-rules.test.mjs` covers all ~~17 observed~~ **26** legacy
+    spellings
+    `[CHANGED: 17 was an undercount from sampling live cards. Read the complete vocabulary off the schema
+    instead — dataSources.retrieve → properties.Priority.select.options — which returns every option whether or
+    not a card currently uses it: 26 values. Three do not behave like priorities at all: "Done" (a status set in
+    the Priority column, which must NOT become Low), "P9", and the Linear-vocabulary "High"/"Medium"/"Low".
+    — source: Sprint 3 execution]`
+  - VERIFY: every P0/P1-tier legacy spelling maps to Linear Urgent(1)/High(2)
+    `[CHANGED: was "the 79 P0/P1-tier legacy-spelling cards". Counting CARDS makes this criterion expire the
+    moment the board changes, and it changes hourly. Asserting the SPELLINGS is the durable form, and the
+    per-card counts belong in the S3-T6 dry-run disposition report where they are measured, not asserted.
+    — source: Sprint 3 execution]`
 
 ### Task S3-T2: Re-key the import ledger to pageId, append-only
 - **Complexity:** M
 - **Depends on:** None
 - **Parallel:** No
-- **Files:** `scripts/linear-import.js` (modify), `data/linear-import-mapping.jsonl` (new)
+- **Files:** `scripts/lib/import-ledger.js` (new), `scripts/migrate-import-ledger.js` (new),
+  `data/linear-import-mapping.jsonl` (new), `scripts/linear-import.js` (modify — wiring, lands with S3-T3)
+  `[CHANGED: the migration is its own script rather than a flag on linear-import.js. A one-shot data migration
+  and a repeatable importer have different failure modes — this runs once, must be idempotent, and must be
+  auditable line by line, while the importer runs for hours against a live board. Separated so a bug in one can
+  never be reached by the other. — source: Sprint 3 execution]`
 - **Description:** The current mapping is keyed by local mirror task id, so the 1,716 cards with no mirror record
   have no key at all. Re-key to Notion pageId and make it append-only JSONL so a multi-hour run interleaving with
   CI commits every ~30 min cannot lose entries. Migrate the existing 255 entries.
@@ -341,6 +363,17 @@ half-migrated board; notification flood to the owner's phone.
   1,831 cards into a live board that has NO bulk delete — source: decomposition critique]` Chunk into batches of
   ~100, abort on the first unexpected disposition rather than continuing, and add `--rollback` which Cancels and
   labels `import-rollback` every issue in the ledger.
+  `[ADDED: make the write IDEMPOTENT rather than only recoverable. Linear's IssueCreateInput accepts a
+  client-supplied `id` — verified by live introspection 2026-08-17, it is a String field on the input type — so
+  deriving a deterministic UUIDv5 from the Notion pageId makes a replayed create a server-side no-op instead of a
+  duplicate. This is load-bearing for two reasons: S3-T3 removes the exact-title dedupe, which is currently the
+  ONLY thing preventing duplicates; and scripts/lib/linear-retry-policy.js deliberately refuses to retry
+  mutations on 5xx (S1-T1) precisely because a replayed create cannot be assumed safe. Supply the id here and
+  the importer may then opt in with `graphql(..., { retryMutationsOn5xx: true })`, which is the difference
+  between a 502 mid-run costing one card and costing the run.
+  Also add minimum inter-request SPACING here, not in the transport: the importer currently fires creates
+  back-to-back with none, and without it the S1-T1 backoff becomes the de-facto pacer — up to 5 sleeps per
+  request, which looks identical to a hang across 1,831 items. — source: Sprint 1 review + Sprint 3 execution]`
 - **Acceptance criteria:**
   - VERIFY: a fixture with one unexpected disposition aborts after its batch, leaving prior batches intact
   - VERIFY: `--rollback` against a 3-issue test ledger Cancels and labels exactly those 3
