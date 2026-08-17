@@ -34,7 +34,10 @@ const ALLOWLIST = new Set([
   'scripts/lib/linear-issue-create.js', // the chokepoint this gate protects
   'scripts/linear-import.js', // existing bulk-migration script, pre-dates the chokepoint
   'scripts/audit-linear-issuecreate-chokepoint.js', // this file's own doc comment mentions the strings
-  'scripts/check-linear-delegations.js', // read-only gql() helper, no issueCreate — monitors delegated issue status, never creates issues
+  // scripts/check-linear-delegations.js was here until 2026-08-17 (S1-T1). It
+  // had its own fetch to api.linear.app, which made it the one Linear consumer
+  // that did not inherit the transport's new 429/5xx backoff. It now calls
+  // linear-client.graphql(), so it no longer needs — or gets — an exemption.
 ]);
 
 const PATTERNS = [/issueCreate/, /api\.linear\.app/];
