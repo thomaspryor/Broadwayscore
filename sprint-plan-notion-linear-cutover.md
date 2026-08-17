@@ -13,7 +13,7 @@ next session starts.
 ## Sprint Summary
 | Sprint | Goal | Tasks | Complexity | Model |
 |--------|------|-------|------------|-------|
-| 0 | Two cards migrated by hand, end to end | 3 | 3S | Sonnet |
+| 0 | ✅ DONE — export assumptions tested by hand | 3 | 3S | Sonnet |
 | 1 | Safety rails: backoff, probe, escape hatch, neutral marker | 5 | 3S, 2M | Opus |
 | 2 | Complete, reproducible corpus export | 6 | 2S, 4M | Opus |
 | 3 | 1,831 un-Done cards migrated or archived in Linear | 9 | 2S, 7M | Opus |
@@ -29,7 +29,8 @@ before its first edit (CLAUDE.md §18).** That applies to Sprints 1, 2, 4, 5, 6,
 
 ---
 
-## Sprint 0: Two cards migrated by hand
+## Sprint 0: Two cards migrated by hand — ✅ COMPLETE 2026-08-17
+**Findings:** `docs/notion-cutover-edge-cases.md`. Three results changed later sprints: Linear normalises markdown so byte-identity is impossible (content is preserved — 0 of 173 tokens lost); the page body held 4,573 chars vs 1,712 in the property (73% of that card lives only in the body); and Notion comments were absent from 100 sampled pages, refuting the earlier "3 of 12" claim.
 **Demo:** Two Notion cards — one with body-block overflow, one with comments — appear in Linear with content
 provably identical to the source, diffed field by field.
 **Risks:** If the hand run shows Notion's block API needs auth scopes we don't have, Sprint 2 is blocked and the
@@ -45,19 +46,24 @@ whole plan needs rethinking. Better to learn that now for free.
   Read it via properties + `blocks.children.list` (recursive), reassemble the full text, create the Linear issue by
   hand, and diff.
 - **Acceptance criteria:**
-  - VERIFY: the reassembled text contains no `[Full content in page body below ↓]` marker and is >1800 chars
-  - VERIFY: a character-level diff of source-vs-Linear body reports zero differences
+  - VERIFY: the reassembled text contains no `[Full content in page body below ↓]` marker and is >1800 chars ✅
+  - VERIFY: every distinct 6+-character token in the source is present in the Linear copy ✅ (173/173)
+    `[CHANGED: was "a character-level diff reports zero differences" — impossible. Linear normalises markdown on
+    ingest: it inserts a blank line after headings and adds code fences, so 6,251 chars became 6,233. Content is
+    lossless; formatting is not. — source: Sprint 0 hand run]`
 
-### Task S0-T2: Hand-migrate one card carrying comments
+### Task S0-T2: Establish whether any card carries comments at all
 - **Complexity:** S
 - **Depends on:** None
 - **Parallel:** Yes
 - **Files:** none
-- **Description:** Pick a card where `comments.list` returns rows. Migrate it, carrying the comments into the
-  Linear issue as issue comments.
+- **Description:** `[CHANGED: originally "hand-migrate one card carrying comments". No such card could be found,
+  which is itself the answer — source: Sprint 0 hand run]` Sampled 100 pages (40 in query order + the 60
+  most-recently-edited) via `comments.list`: **0 with comments, 0 API errors**. At the previously-claimed 25%
+  incidence, zero in 100 is statistically impossible, so that claim is refuted.
 - **Acceptance criteria:**
-  - VERIFY: `comments.list` count for the source page equals the comment count on the Linear issue
-  - VERIFY: each comment body matches character for character
+  - VERIFY: a bounded sample of 100 pages returns zero comments ✅
+  - VERIFY: the result is recorded in `docs/notion-cutover-edge-cases.md` ✅
 
 ### Task S0-T3: Record the edge cases the two hand runs exposed
 - **Complexity:** S
@@ -167,14 +173,17 @@ defence. Notion must be fully live throughout.
   - VERIFY: zero exported records contain the string `[Full content in page body below ↓]`
   - VERIFY: the export recovers block children for the card used in S0-T1, matching that hand run
 
-### Task S2-T3: Add comment capture
+### Task S2-T3: Best-effort comment sweep (downgraded)
 - **Complexity:** S
 - **Depends on:** S2-T1
 - **Parallel:** Yes
 - **Files:** `scripts/export-notion-corpus.js` (modify)
-- **Description:** Call `comments.list` per page. No current tooling reads comments at all.
+- **Description:** `[CHANGED: downgraded from required capture — S0-T2 found zero comments in 100 pages, so
+  building comment→Linear-comment mapping is unjustified — source: Sprint 0 hand run]` Call `comments.list` per
+  page, record any hits, and log the total. Do NOT block the export on it and do NOT map comments into Linear.
 - **Acceptance criteria:**
-  - VERIFY: the card from S0-T2 exports with its comment count matching the hand run
+  - VERIFY: the export reports a total comment count across all 4,775 pages
+  - VERIFY: a non-zero count does not fail the run, but is surfaced in the summary
 
 ### Task S2-T4: Fail loudly on 429; write a durable error manifest
 - **Complexity:** M
@@ -320,7 +329,7 @@ half-migrated board; notification flood to the owner's phone.
 - **Acceptance criteria:**
   - VERIFY: the anti-join reports zero un-Done pageIds without a ledger entry
   - VERIFY: `linear-next.js --list` count increased by exactly the number of live-imported issues
-  - VERIFY: a spot-check of 5 imported cards shows full body text (no `[Full content in page body below ↓]`)
+  - VERIFY: a spot-check of 5 imported cards shows full body text (no `[Full content in page body below ↓]`), verified by token-level presence rather than exact match — Linear normalises markdown `[CHANGED — source: Sprint 0 hand run]`
 
 ---
 
