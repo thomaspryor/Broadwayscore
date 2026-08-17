@@ -171,7 +171,17 @@
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
     "an-american-daughter-off-broadway-2026/playbill--unknown.json",
     "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -217,7 +227,7 @@
     "archive": []
   },
   "startTime": "2026-08-17T09:47:29.779Z",
-  "lastProcessed": "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
   "log": [
     {
       "t": "2026-08-17T09:48:31.549Z",
@@ -244,6 +254,17 @@
     },
     {
       "t": "2026-08-17T10:22:11.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T10:25:56.763Z",
+      "event": "bb-session",
+      "session": "5d0e541a",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-17T10:25:57.364Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
