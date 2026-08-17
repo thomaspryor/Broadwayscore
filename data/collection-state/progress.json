@@ -5,7 +5,9 @@
     "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
     "cats-west-end-2026/london-box-office--phil-willmott.json",
     "cats-west-end-2026/north-west-end--michelle-knight.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -128,7 +130,15 @@
     "abigails-party-west-end-2026/thestage--paul-vale.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
-    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json"
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -144,14 +154,17 @@
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
     ],
     "scrapingbee": [
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-17T03:28:19.620Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
   "log": [
     {
       "t": "2026-08-17T03:29:03.785Z",
@@ -164,6 +177,29 @@
       "event": "bb-session",
       "session": "f871ea3b",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-17T05:36:12.507Z",
+      "event": "bb-session",
+      "session": "e5fb2df3",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-17T05:36:13.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-17T05:37:21.198Z",
+      "event": "bb-session",
+      "session": "c4f2cd8c",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-17T05:37:30.354Z",
+      "event": "bb-session",
+      "session": "3dbd6923",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
