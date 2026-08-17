@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T07:45:54.405Z",
+  "timestamp": "2026-08-17T08:05:38.367Z",
   "stats": {
-    "totalReviews": 42368,
-    "alreadyFlagged": 18251,
+    "totalReviews": 42370,
+    "alreadyFlagged": 18254,
     "dateGuardCatches": 144,
     "directorMismatch": 970,
-    "tvFilmSignals": 1209,
+    "tvFilmSignals": 1208,
     "londonSignals": 908,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3605
+    "noPublishDate": 3610
   },
   "findings": [
     {
@@ -7752,20 +7752,6 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "score": 96,
-      "publishDate": "2026-05-19",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -14823,7 +14809,7 @@
       "file": "london-theatre--marianka-swain.json",
       "score": 76,
       "publishDate": "2024-10-07",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/juno-and-the-paycock-review-gielgud-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38265,7 +38251,7 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--cheryl-markoski.json",
       "score": 87,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
@@ -40489,7 +40475,7 @@
     },
     {
       "showId": "mass-west-end-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 82,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
