@@ -13,6 +13,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -82,9 +83,46 @@ test('a marked property with NO matching body section falls back to the preview'
   assert.equal(corpus.reassembleField(preview, [para('unrelated')], 'notes'), preview);
 });
 
-test('keyFiles uses its own heading key, not the property name', () => {
-  const blocks = [heading('[auto:keyFiles] full content'), para('a.js\nb.js')];
-  assert.equal(corpus.reassembleField(`k${OVERFLOW_NOTE}`, blocks, 'keyFiles'), 'a.js\nb.js');
+test('the section keys match what notion-brain.js actually WRITES', () => {
+  // THE test in this file. The section key is the only thing that makes an
+  // overflowed body section findable again, and the first version of
+  // notion-corpus.js got `keyFiles` wrong — notion-brain.js writes
+  // `overflow['key-files']`, so `[auto:keyFiles] full content` matched nothing
+  // and every card with overflowed Key Files would have been archived
+  // truncated. The old version of this test hand-built `[auto:keyFiles]` and
+  // therefore CERTIFIED the bug.
+  //
+  // So this reads the writer's own source instead of restating it. If someone
+  // renames an overflow key in notion-brain.js, this fails — which is the only
+  // mechanism that makes writer/reader drift visible before the archive is
+  // taken and Notion is deleted.
+  const src = readFileSync(path.join(REPO, 'scripts/notion-brain.js'), 'utf8');
+  const written = new Set(
+    [...src.matchAll(/overflow(?:\.([A-Za-z0-9_]+)|\['([^']+)'\])\s*=/g)].map((m) => m[1] || m[2])
+  );
+  assert.ok(written.size >= 3, `expected to find notion-brain's overflow writes, found ${[...written]}`);
+  const declared = new Set(corpus.OVERFLOWABLE.map((o) => o.sectionKey));
+  assert.deepEqual(
+    [...declared].sort(),
+    [...written].sort(),
+    'notion-corpus.js section keys have drifted from the keys notion-brain.js writes'
+  );
+});
+
+test('an overflowed Key Files section is reassembled, not left truncated', () => {
+  // Regression test for the P0. The heading is built from the table, so it
+  // cannot silently agree with a wrong implementation.
+  const key = corpus.FIELD_TO_SECTION_KEY.keyFiles;
+  assert.equal(key, 'key-files');
+  const page = {
+    id: 'p1',
+    properties: { 'Key Files': { type: 'rich_text', rich_text: [{ plain_text: `a.js${OVERFLOW_NOTE}` }] } },
+  };
+  const blocks = [heading(corpus.bodyHeadingText(key)), para('a.js\nb.js\nc.js')];
+  const rec = corpus.buildRecord(page, blocks, []);
+  assert.equal(rec.fields.keyFiles, 'a.js\nb.js\nc.js');
+  assert.ok(!rec.fields.keyFiles.includes(OVERFLOW_MARKER_SUBSTR));
+  assert.equal(corpus.charVolume([rec]).withOverflowMarker, 0);
   assert.equal(corpus.FIELD_TO_PROPERTY.keyFiles, 'Key Files');
 });
 

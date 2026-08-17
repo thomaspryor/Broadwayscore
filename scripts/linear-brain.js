@@ -48,6 +48,16 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     if (argv[i].startsWith('--')) {
       const raw = argv[i].slice(2);
+      // `--flag=value` as well as `--flag value`. Without this the equals form
+      // parses as a flag literally named "timeout-ms=4000" whose value is true,
+      // so args['timeout-ms'] is undefined and the option is SILENTLY ignored —
+      // the caller sees a successful run that did not do what they asked.
+      // Caught by a probe guard that failed to fire on `--timeout-ms=abc`.
+      const eq = raw.indexOf('=');
+      if (eq > 0) {
+        args[raw.slice(0, eq)] = raw.slice(eq + 1);
+        continue;
+      }
       const next = argv[i + 1];
       if (next !== undefined && !next.startsWith('--')) {
         args[raw] = next;
@@ -82,7 +92,16 @@ function parseArgs(argv) {
  */
 async function runProbe(args) {
   const probe = require('./lib/board-probe');
-  const timeoutMs = args['timeout-ms'] !== undefined ? Number(args['timeout-ms']) : 4000;
+  // A non-numeric --timeout-ms used to become NaN, which graphql() rejects as
+  // not-finite and replaces with its 30s default — silently blowing the 4s hook
+  // budget this probe exists to respect, on every gated command.
+  const rawTimeout = args['timeout-ms'];
+  const parsedTimeout = rawTimeout === undefined ? 4000 : Number(rawTimeout);
+  if (!Number.isFinite(parsedTimeout) || parsedTimeout <= 0) {
+    console.error(`BOARD_PROBE: erroring board=linear reason=bad-timeout-ms — --timeout-ms=${rawTimeout} is not a positive number`);
+    process.exit(require('./lib/board-probe').EXIT_CODES.erroring);
+  }
+  const timeoutMs = parsedTimeout;
   let verdict = probe.VERDICTS.HEALTHY;
   let reason = 'ok';
   let detail = '';
