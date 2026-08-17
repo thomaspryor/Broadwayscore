@@ -38,7 +38,7 @@ done
 
 echo ""
 echo "--- github auth (does the built-in proxy reach the private data repo WITHOUT a token?) ---"
-echo "origin remote:      $(git remote get-url origin 2>/dev/null || echo '(none)')"
+echo "origin remote:      $(git remote get-url origin 2>/dev/null | sed -E 's#//[^@/]+@#//#' || echo '(none)')"
 echo "credential.helper:  $(git config --get-regexp 'credential.*helper' 2>/dev/null | tr '\n' ';' || echo '(none set)')"
 echo "url.*.insteadOf:    $(git config --get-regexp 'url.*insteadof' 2>/dev/null | tr '\n' ';' || echo '(none)')"
 echo "http.extraheader:   $([ -n "$(git config --get-regexp 'http.*extraheader' 2>/dev/null)" ] && echo 'present (proxy token header)' || echo '(none)')"
