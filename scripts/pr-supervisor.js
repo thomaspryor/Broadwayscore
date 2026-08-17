@@ -29,7 +29,7 @@
 const { execFileSync } = require('child_process');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { assessPullRequests, renderSupervisorDigest } = require('./lib/pr-supervisor-core.js');
+const { assessPullRequests, renderSupervisorDigest, rollupCheckState } = require('./lib/pr-supervisor-core.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 
@@ -73,9 +73,17 @@ async function loadEvidence() {
   let raw;
   try {
     raw = JSON.parse(gh(['pr', 'list', '--state', 'open', '--limit', String(limit),
-      '--json', 'number,title,headRefName,headRefOid,isDraft,files,mergeStateStatus']));
+      '--json', 'number,title,headRefName,headRefOid,isDraft,files,mergeStateStatus,statusCheckRollup']));
   } catch (err) {
     console.error(`[pr-supervisor] gh pr list failed: ${err.message}`);
+    process.exit(2);
+  }
+
+  // NO SILENT CAPS. Collision detection is only correct over the WHOLE open set —
+  // if the fetch was truncated, a PR outside the window is invisible and its
+  // collisions are never reported, which would turn an escalate into a merge.
+  if (raw.length >= limit) {
+    console.error(`[pr-supervisor] refusing: fetched ${raw.length} open PRs, which is the --limit=${limit} cap, so the list may be truncated. Collision detection needs every open PR. Re-run with a higher --limit.`);
     process.exit(2);
   }
 
@@ -85,7 +93,12 @@ async function loadEvidence() {
     headSha: p.headRefOid,
     isDraft: p.isDraft,
     files: (p.files || []).map((f) => f.path),
+    // Per-file additions/deletions: the additive-registry collision exemption is
+    // only granted to an edit PROVEN to delete nothing.
+    fileStats: Object.fromEntries((p.files || []).map((f) => [f.path,
+      { additions: f.additions, deletions: f.deletions }])),
     mergeStateStatus: p.mergeStateStatus,
+    checksState: rollupCheckState(p.statusCheckRollup),
   }));
 
   const ledger = await loadEvidence();
@@ -93,10 +106,9 @@ async function loadEvidence() {
     .map((p) => ({
       ...p,
       // Ledger rows carry {head, reviewer, result}. Matching happens in the core.
+      // Prefilter only — the core requires an EXACT head match, so a short-prefix
+      // collision here cannot clear a PR. Kept narrow anyway.
       evidence: ledger.filter((e) => e && e.head && p.headSha && e.head.startsWith(p.headSha.slice(0, 9))),
-      // checksState is deliberately left undefined here: `gh pr list` does not
-      // return it, and inventing a value would make "unknown" look green. A later
-      // increment fetches real check state per PR before merge rights exist.
     }));
 
   const verdicts = assessPullRequests(supervised, { allOpenPrs });

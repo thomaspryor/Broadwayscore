@@ -22,6 +22,8 @@ const {
   buildCollisionIndex,
   evidenceForSha,
   renderSupervisorDigest,
+  isAdditiveEdit,
+  rollupCheckState,
 } = require('../../scripts/lib/pr-supervisor-core.js');
 
 // Real file lists, 2026-08-17.
@@ -48,8 +50,10 @@ const PR591 = {
   number: 591, headSha: 'ffb0326cd', title: 'docs(dispatcher): port-or-delete table (twin)',
   files: ['.gitignore', 'docs/dispatcher-safety-port-table.md'],
 };
-const ALL_OPEN = [PR596, PR594, PR593, PR592, PR591];
-const green = (pr, extra = {}) => ({ ...pr, checksState: 'SUCCESS', ...extra });
+// Real per-file stats (all four PRs only ADD to the manifest / .gitignore).
+const additive = (pr) => ({ ...pr, fileStats: Object.fromEntries(pr.files.map((f) => [f, { additions: 1, deletions: 0 }])) });
+const ALL_OPEN = [PR596, PR594, PR593, PR592, PR591].map(additive);
+const green = (pr, extra = {}) => ({ ...additive(pr), checksState: 'SUCCESS', ...extra });
 const pass = (head) => [{ reviewer: 'ship-check', result: 'pass', head }];
 
 const only = (rows, n) => rows.find((r) => r.number === n);
@@ -132,12 +136,22 @@ test('PR supervisor — evidence must be bound to the commit', async (t) => {
 });
 
 test('PR supervisor — refusing to guess', async (t) => {
-  await t.test('unknown CI state is NOT green', () => {
-    const pr = { ...PR594, checksState: null };
-    // null/undefined means "not supplied"; an explicit unknown string must hold.
-    assert.equal(only(assessPullRequests([{ ...PR594, checksState: 'FAILURE' }], { allOpenPrs: [] }), 594).verdict, 'hold');
-    assert.equal(only(assessPullRequests([{ ...PR594, checksState: 'PENDING' }], { allOpenPrs: [] }), 594).verdict, 'hold');
-    assert.equal(only(assessPullRequests([pr], { allOpenPrs: [] }), 594).verdict, 'merge', 'unsupplied state is not asserted on');
+  await t.test('unknown CI state is NOT green — and neither is UNFETCHED', () => {
+    // The original version only held when checksState was PRESENT and non-green,
+    // so a caller that never fetched check state got `merge` with CI unexamined —
+    // this module preaching "unknown is not green" while its own boundary treated
+    // unfetched as green. Found by adversarial review, 2026-08-17.
+    for (const state of ['FAILURE', 'PENDING', 'ERROR', '']) {
+      assert.equal(only(assessPullRequests([{ ...additive(PR594), checksState: state }], { allOpenPrs: [] }), 594).verdict,
+        'hold', `checksState ${JSON.stringify(state)} must hold`);
+    }
+    for (const missing of [null, undefined]) {
+      const r = only(assessPullRequests([{ ...additive(PR594), checksState: missing }], { allOpenPrs: [] }), 594);
+      assert.equal(r.verdict, 'hold', 'unfetched CI must hold, not merge');
+      assert.match(r.detail, /not supplied/);
+    }
+    // Only an actually-green state merges.
+    assert.equal(only(assessPullRequests([{ ...additive(PR594), checksState: 'SUCCESS' }], { allOpenPrs: [] }), 594).verdict, 'merge');
   });
 
   await t.test('an empty file list holds instead of passing as clean', () => {
@@ -214,6 +228,89 @@ test('PR supervisor — owner digest', async (t) => {
 
   await t.test('empty input does not render a broken section', () => {
     assert.match(renderSupervisorDigest([]), /no open agent PRs/);
+  });
+});
+
+test('PR supervisor — the additive exemption must be EARNED', async (t) => {
+  // Adversarial review: the manifest is the explicit list of which tests CI runs.
+  // One PR deleting a line while another adds one merges cleanly and silently
+  // stops running a test. Exempting the file unconditionally hides that.
+  const MANIFEST = 'tests/unit-test-manifest.txt';
+  const adder = {
+    number: 10, headSha: 'aaa', files: [MANIFEST],
+    fileStats: { [MANIFEST]: { additions: 1, deletions: 0 } },
+  };
+  const deleter = {
+    number: 11, headSha: 'bbb', files: [MANIFEST],
+    fileStats: { [MANIFEST]: { additions: 0, deletions: 1 } },
+  };
+
+  await t.test('two purely-additive edits do NOT collide', () => {
+    const other = { ...adder, number: 12, headSha: 'ccc' };
+    assert.deepEqual(buildCollisionIndex([adder, other]).get(10), []);
+  });
+
+  await t.test('an edit that DELETES from the registry collides', () => {
+    const idx = buildCollisionIndex([adder, deleter]);
+    assert.deepEqual(idx.get(11).map((c) => c.number), [10],
+      'the deleting PR must be flagged against the adder');
+    assert.deepEqual(idx.get(10).map((c) => c.number), [11],
+      'and the adder must see it too — a silently-dropped test affects both');
+  });
+
+  await t.test('unprovable additivity is NOT exempt — missing stats collide', () => {
+    const noStats = { number: 13, headSha: 'ddd', files: [MANIFEST] }; // no fileStats
+    const idx = buildCollisionIndex([adder, noStats]);
+    assert.deepEqual(idx.get(13).map((c) => c.number), [10],
+      'absence of evidence is not evidence of additivity');
+  });
+
+  await t.test('isAdditiveEdit never exempts a file outside the registry list', () => {
+    assert.equal(isAdditiveEdit({ fileStats: { 'src/app/page.tsx': { deletions: 0 } } }, 'src/app/page.tsx'), false);
+  });
+});
+
+test('PR supervisor — rollupCheckState fails toward red, never toward green', async (t) => {
+  const run = (conclusion, status = 'COMPLETED') => ({ __typename: 'CheckRun', status, conclusion });
+
+  await t.test('no checks at all is PENDING, not green', () => {
+    assert.equal(rollupCheckState([]), 'PENDING');
+    assert.equal(rollupCheckState(null), 'PENDING');
+    assert.equal(rollupCheckState(undefined), 'PENDING');
+  });
+
+  await t.test('SKIPPED and NEUTRAL are green — this repo reports non-applicable jobs that way', () => {
+    assert.equal(rollupCheckState([run('SUCCESS'), run('SKIPPED'), run('NEUTRAL')]), 'SUCCESS');
+  });
+
+  await t.test('one FAILURE among many successes is FAILURE', () => {
+    assert.equal(rollupCheckState([run('SUCCESS'), run('FAILURE'), run('SUCCESS')]), 'FAILURE');
+  });
+
+  await t.test('an in-flight check is PENDING even if everything finished green', () => {
+    assert.equal(rollupCheckState([run('SUCCESS'), run(null, 'IN_PROGRESS')]), 'PENDING');
+  });
+
+  await t.test('an UNRECOGNISED conclusion is a failure, not silently ignored', () => {
+    assert.equal(rollupCheckState([run('SUCCESS'), run('TIMED_OUT')]), 'FAILURE');
+    assert.equal(rollupCheckState([run('SUCCESS'), run('ACTION_REQUIRED')]), 'FAILURE');
+    assert.equal(rollupCheckState([run('SUCCESS'), run('CANCELLED')]), 'FAILURE');
+  });
+
+  await t.test('StatusContext entries (state, no conclusion) are handled', () => {
+    assert.equal(rollupCheckState([{ __typename: 'StatusContext', state: 'SUCCESS' }]), 'SUCCESS');
+    assert.equal(rollupCheckState([{ __typename: 'StatusContext', state: 'FAILURE' }]), 'FAILURE');
+    assert.equal(rollupCheckState([{ __typename: 'StatusContext', state: 'PENDING' }]), 'PENDING');
+  });
+
+  await t.test('a malformed entry is a failure, not a skip', () => {
+    assert.equal(rollupCheckState([run('SUCCESS'), null]), 'FAILURE');
+    assert.equal(rollupCheckState(['nope']), 'FAILURE');
+  });
+
+  await t.test('feeds straight into a hold', () => {
+    const pr = { ...additive(PR594), checksState: rollupCheckState([run('FAILURE')]) };
+    assert.equal(only(assessPullRequests([pr], { allOpenPrs: [] }), 594).verdict, 'hold');
   });
 });
 

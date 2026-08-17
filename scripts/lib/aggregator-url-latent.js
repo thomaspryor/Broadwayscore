@@ -104,9 +104,29 @@ const VALIDATOR_EXCLUSION_FLAGS = Object.freeze([
  * @param {object} data - parsed review JSON
  * @returns {boolean}
  */
+/**
+ * Flags whose exclusion requires STRICT `=== true`, not truthiness.
+ *
+ * The historical flags here are truthy-tested and must stay that way — several
+ * carry a reason STRING rather than a boolean (rejectionReason is literally
+ * "not_a_review"), so tightening them would silently re-admit thousands of files.
+ *
+ * isNotReview is different and must be strict. Every OTHER consumer tests it
+ * `=== true` (review-guards.js:2939, rebuild-all-reviews.js:2873,
+ * merge-review-fields.js:75). A truthy test here would create a divergence an
+ * adversarial review named precisely: `isNotReview: "false"` — a string, and so
+ * truthy — would silence this zero-tolerance validator while the record stayed
+ * fully live for rebuild and scoring. Any process that can write a review JSON
+ * could set it. Strict equality keeps this predicate in lockstep with everything
+ * else that reads the flag, so it can never hide a record the rebuild still uses.
+ */
+const STRICT_TRUE_FLAGS = Object.freeze(['isNotReview']);
+
 function isSkippedByValidator(data) {
   if (!data || typeof data !== 'object') return false;
-  return VALIDATOR_EXCLUSION_FLAGS.some((flag) => Boolean(data[flag]));
+  return VALIDATOR_EXCLUSION_FLAGS.some((flag) => (STRICT_TRUE_FLAGS.includes(flag)
+    ? data[flag] === true
+    : Boolean(data[flag])));
 }
 
 /**
@@ -267,6 +287,7 @@ function evaluateScanIntegrity(scanned, scanErrors, limits = {}) {
 module.exports = {
   DEFAULT_GRACE_BAND,
   VALIDATOR_EXCLUSION_FLAGS,
+  STRICT_TRUE_FLAGS,
   resolveOutletId,
   isSkippedByValidator,
   hasAggregatorUrlMismatch,
