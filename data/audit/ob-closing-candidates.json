@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-10T12:16:40.756Z",
+  "generatedAt": "2026-08-17T12:29:34.150Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 37,
-    "showsWithNoTexts": 4,
+    "scanned": 38,
+    "showsWithNoTexts": 5,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -113,6 +113,19 @@
             "quote": "run through Sunday August 2, 2026"
           }
         ]
+      },
+      {
+        "showId": "marlise-off-broadway-2026",
+        "proposedClosingDate": "2026-09-06",
+        "confidence": "medium",
+        "reason": "single review, 3.4wk implied run length",
+        "evidence": [
+          {
+            "reviewId": "marlise-off-broadway-2026/playbill--unknown.json",
+            "isoDate": "2026-09-06",
+            "quote": "through September 6"
+          }
+        ]
       }
     ],
     "unconfirmed": [
@@ -173,6 +186,11 @@
             "reviewId": "masquerade-off-broadway-2025/nyt-theater--unknown.json",
             "isoDate": "2027-02-01",
             "quote": "through February 1"
+          },
+          {
+            "reviewId": "masquerade-off-broadway-2025/off-off-online--james-wilson.json",
+            "isoDate": "2026-09-27",
+            "quote": "through Sept. 27, 2026"
           },
           {
             "reviewId": "masquerade-off-broadway-2025/wsj--dominic-green.json",
@@ -269,11 +287,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "the-saviors-off-broadway-2026",
-        "proposedClosingDate": "2026-08-15",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "birthright-off-broadway-2026",
         "proposedClosingDate": "2026-07-26",
         "reason": "already-has-closing-date"
@@ -296,6 +309,11 @@
       {
         "showId": "labelless-off-broadway-2026",
         "proposedClosingDate": "2026-08-29",
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
+        "proposedClosingDate": "2026-08-23",
         "reason": "already-has-closing-date"
       },
       {
@@ -324,6 +342,11 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "the-winters-tale-off-broadway-2026",
+        "proposedClosingDate": "2026-08-23",
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "hungry-women-off-broadway-2026",
         "proposedClosingDate": "2026-08-30",
         "reason": "already-has-closing-date"
@@ -332,51 +355,61 @@
         "showId": "the-pass-off-broadway-2026",
         "proposedClosingDate": "2026-09-04",
         "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "an-american-daughter-off-broadway-2026",
+        "proposedClosingDate": "2026-09-20",
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "isla-off-broadway-2026",
+        "proposedClosingDate": "2026-08-29",
+        "reason": "already-has-closing-date"
       }
     ]
   },
   "todaytixStaleness": {
-    "checked": 35,
+    "checked": 36,
     "skipped": false,
     "candidates": [
       {
         "showId": "pied-a-terre-off-broadway-2026",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-08-03"
       },
       {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 6,
+        "consecutiveMissingChecks": 7,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-07-13"
       },
       {
         "showId": "age-is-a-feeling-off-broadway-2024",
-        "consecutiveMissingChecks": 6,
+        "consecutiveMissingChecks": 7,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "the-whoopi-monologues-off-broadway-2026",
-        "consecutiveMissingChecks": 4,
+        "consecutiveMissingChecks": 5,
         "firstMissingDate": "2026-07-20"
       },
       {
         "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-08-03"
       },
       {
         "showId": "the-black-mirror-experience-off-broadway-2026",
-        "consecutiveMissingChecks": 6,
+        "consecutiveMissingChecks": 7,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "hungry-women-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-27"
       }
     ]
