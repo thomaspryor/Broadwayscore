@@ -215,8 +215,16 @@ function callOpenRouter(prompt, apiKey) {
 }
 
 // Same endpoint shape scripts/lib/buzz-classifier.js's Gemini call uses.
+// thinkingConfig: { thinkingBudget: 0 } is required for every GEMINI_FLASH
+// caller (tests/unit/gemini-thinking-budget-guard.test.mjs) — without it,
+// gemini-2.5-flash spends "thinking" tokens that count against
+// maxOutputTokens and truncates the visible response (2026-06-07 incident:
+// 1,296 pull quotes shipped cut off).
 function callGemini(prompt, apiKey) {
-  const body = JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] });
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
