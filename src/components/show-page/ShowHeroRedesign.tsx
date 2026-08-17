@@ -631,12 +631,11 @@ function Inner({
                       timeSlot={watchlistEntry.time_slot}
                       curtainTime={watchlistEntry.curtain_time}
                       onSave={(fields) => updatePerformance(show.id, fields).catch(() => showToast?.('Failed to save showtime.', 'error'))}
-                      compact
                     />
                   </>
                 )}
                 {' '}
-                <AddToCalendarButtons event={plannedShowEvent} compact />
+                <AddToCalendarButtons event={plannedShowEvent} />
               </>
             )}
             {onWatchlist && firstListContainingShow && ' · '}
