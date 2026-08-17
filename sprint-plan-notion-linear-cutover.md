@@ -30,7 +30,7 @@ before its first edit (CLAUDE.md §18).** That applies to Sprints 1, 2, 4, 5, 6,
 ---
 
 ## Sprint 0: Two cards migrated by hand — ✅ COMPLETE 2026-08-17
-**Findings:** `docs/notion-cutover-edge-cases.md`. Three results changed later sprints: Linear normalises markdown so byte-identity is impossible (content is preserved — 0 of 173 tokens lost); the page body held 4,573 chars vs 1,712 in the property (73% of that card lives only in the body); and Notion comments were absent from 100 sampled pages, refuting the earlier "3 of 12" claim.
+**Findings:** `notion-cutover-edge-cases.md`. Three results changed later sprints: Linear normalises markdown so byte-identity is impossible (content is preserved — 0 of 173 tokens lost); the page body held 4,573 chars vs 1,712 in the property (73% of that card lives only in the body); and Notion comments were absent from 100 sampled pages, refuting the earlier "3 of 12" claim.
 **Demo:** Two Notion cards — one with body-block overflow, one with comments — appear in Linear with content
 provably identical to the source, diffed field by field.
 **Risks:** If the hand run shows Notion's block API needs auth scopes we don't have, Sprint 2 is blocked and the
@@ -63,13 +63,13 @@ whole plan needs rethinking. Better to learn that now for free.
   incidence, zero in 100 is statistically impossible, so that claim is refuted.
 - **Acceptance criteria:**
   - VERIFY: a bounded sample of 100 pages returns zero comments ✅
-  - VERIFY: the result is recorded in `docs/notion-cutover-edge-cases.md` ✅
+  - VERIFY: the result is recorded in `notion-cutover-edge-cases.md` ✅
 
 ### Task S0-T3: Record the edge cases the two hand runs exposed
 - **Complexity:** S
 - **Depends on:** S0-T1, S0-T2
 - **Parallel:** No
-- **Files:** `docs/notion-cutover-edge-cases.md` (new)
+- **Files:** `notion-cutover-edge-cases.md` (new)
 - **Description:** Write down every surprise: nesting depth needed, rate-limit behaviour observed, field mappings
   that had no clean Linear equivalent. Sprint 2 is built from this file.
 - **Acceptance criteria:**
