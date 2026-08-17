@@ -201,9 +201,12 @@ function classifyOrphanInProgress(tasks, ctx = {}) {
     // yet a commit elsewhere in the same Outcome corroborated fine and this
     // classifier closed it FINISHED anyway. RECHECK-AFTER and VERIFY:
     // owner-judgment are structured markers for "not done yet"; this is the
-    // unstructured-prose equivalent other cards actually use in this backlog
-    // (see the #1159/#586 precedent in this file's other comments). Same
-    // conservative posture as isSuperseded above: an imperfect prose match
+    // unstructured-prose equivalent, same idea as isSuperseded below scanning
+    // for "Duplicate of"/"deprioritised" prose instead of a structured field.
+    // (#1159/#586, cited elsewhere in this file, are precedent for "prose
+    // beats corroboration" as a principle, not for this specific "### Remaining"
+    // heading shape — that pattern is confirmed only in card #1185 so far.)
+    // Same conservative posture as isSuperseded above: an imperfect prose match
     // that over-parks beats a corroboration hit that force-closes real
     // leftover scope.
     const hasUnbuiltScopeMarker = /(?:^|\n)#{1,4}\s*remaining\b|(?:^|\n)\s*remaining\s*:|deferred to (?:a\s+)?(?:fresh|new) session/i.test(card.outcome || '');
