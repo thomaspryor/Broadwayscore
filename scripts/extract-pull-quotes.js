@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser, isBadCandidateLength, MIN_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -374,8 +374,12 @@ async function processReview(entry) {
   const score = typeof data.assignedScore === 'number' ? data.assignedScore : null;
   const hadPrevious = !!data.llmPullQuote;
 
-  // Try up to 2 times: if the first response is a hedge-opener on a
-  // positive review, retry with a stronger hint.
+  // Try up to 2 times. Attempt 1's response can fail for three independent
+  // reasons — a promo-teaser standfirst, a hedge-opener on a positive review,
+  // or bad length — and each gets exactly one retry with a stronger hint
+  // drawn from that specific failure. All three share this single retry
+  // budget: if attempt 2 fails a *different* check than attempt 1 triggered,
+  // it's rejected under whichever check it tripped, not retried again.
   let quote = null;
   let responseText = null;
   let attempt = 0;
@@ -445,16 +449,16 @@ async function processReview(entry) {
     // they're spectacular!" — vivid but only 25 chars — so the review shipped
     // with a fullText scrape instead). Retry once with a hint before giving up,
     // same pattern as the promo-teaser/hedge retries above.
-    if (quote.length < 30 || quote.length > 300) {
+    if (isBadCandidateLength(quote)) {
       if (attempt === 1) {
         stats.lengthRetried = (stats.lengthRetried || 0) + 1;
-        const problem = quote.length < 30 ? 'too short to stand alone out of context' : 'too long';
+        const problem = quote.length < MIN_QUOTE_LENGTH ? 'too short to stand alone out of context' : 'too long';
         if (VERBOSE) console.log(`  LENGTH (${quote.length}, ${problem}): "${quote.slice(0, 80)}..." — retrying`);
         hint = `Your previous attempt ("${quote}") was ${problem}. Pick a different, complete sentence between 50-180 characters that stands on its own.`;
         continue;
       }
       // Second attempt still bad length — give up, same as before.
-      if (quote.length < 30) {
+      if (quote.length < MIN_QUOTE_LENGTH) {
         stats.tooShort++;
         if (VERBOSE) console.log(`  Too short (rejected after retry, ${quote.length}): "${quote}" — ${path.basename(filePath)}`);
       } else {

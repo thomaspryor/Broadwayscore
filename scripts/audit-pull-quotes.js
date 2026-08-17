@@ -125,9 +125,13 @@ function loadShowTexts(showId, reviewTextsDir) {
  * The corpus-wide quality scan, extracted so a test can require() it
  * directly instead of re-implementing the guard-check loop (CLAUDE.md
  * rule 15). Same logic main() runs; main() below is a thin CLI wrapper.
+ *
+ * `textsByShow` is an optional shared cache (showId -> loadShowTexts result).
+ * main()'s --parity path needs the same per-show file listing this function
+ * does; passing its map in means a show's review-texts directory is only
+ * read from disk once per run, not once for quality and again for parity.
  */
-function findBadPullQuotes(reviews, reviewTextsDir) {
-  const textsByShow = new Map();
+function findBadPullQuotes(reviews, reviewTextsDir, textsByShow = new Map()) {
   function textsFor(showId) {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId, reviewTextsDir));
     return textsByShow.get(showId);
@@ -174,8 +178,9 @@ function main() {
   const scoped = reviews.filter(r => inScope.has(r.showId));
   console.log(`audit-pull-quotes: ${scoped.length} reviews across ${inScope.size} show(s)${since ? ` (opened >= ${since})` : ''}`);
 
-  // Index review-texts per show once — parity needs the full file, quality only
-  // needs the source strings.
+  // Index review-texts per show once — shared between the quality scan below
+  // and the parity loop further down, so each show's directory is only read
+  // from disk once per run.
   const textsByShow = new Map();
   function textsFor(showId) {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId));
@@ -187,7 +192,7 @@ function main() {
   }
 
   // --- 1. QUALITY ---------------------------------------------------------
-  const badQuotes = findBadPullQuotes(scoped, REVIEW_TEXTS_DIR);
+  const badQuotes = findBadPullQuotes(scoped, REVIEW_TEXTS_DIR, textsByShow);
 
   console.log(`\n[quality] ${badQuotes.length} shipped pull quote(s) trip a hard guard`);
   const byReason = {};
