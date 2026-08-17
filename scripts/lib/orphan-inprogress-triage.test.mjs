@@ -201,6 +201,32 @@ test('Outcome carries VERIFY: owner-judgment -> NEEDS-REVIEW even with strong co
   assert.equal(actionOf(rows, 23), 'owner-judgment-pending');
 });
 
+test('Outcome names "### Remaining" scope, even several entries back -> NEEDS-REVIEW even with corroboration', () => {
+  // Real-backlog incident, card #1185 (2026-08-16): the newest Outcome entry
+  // corroborated fine, but an OLDER entry a few paragraphs down said "###
+  // Remaining: showtime picker + entry-card wiring ... Deferred to a fresh
+  // session" — that scope was never built, yet the card force-closed FINISHED.
+  const outcome = [
+    'Auto-closed today by some sweep: task sat in_progress; verified finished.',
+    '### updatePerformance landed (2026-08-10, cf8bb9a)\n7 of 8 Phase 0 tasks done.',
+    '### Remaining: showtime picker + entry-card wiring\nDeferred to a fresh session on scope (>2h).',
+  ].join('\n\n---\n\n');
+  const rows = classify([orphan(24)], {
+    cardOf: () => ({ status: 'Paused', outcome, lastEditedAt: hAgo(72) }),
+    corroborateOutcomeOf: () => ({ hasEvidence: true, evidence: ['commit cf8bb9a exists'] }),
+  });
+  assert.equal(bucketOf(rows, 24), 'NEEDS-REVIEW');
+  assert.equal(actionOf(rows, 24), 'unbuilt-scope-marker');
+});
+
+test('Outcome mentioning "remaining" only in unrelated prose (no header/label/deferred phrase) -> corroboration still applies', () => {
+  const rows = classify([orphan(25)], {
+    cardOf: () => ({ status: 'Paused', outcome: 'Fixed the remaining edge case in the parser. Shipped and verified.', lastEditedAt: hAgo(72) }),
+    corroborateOutcomeOf: () => ({ hasEvidence: true, evidence: ['keyFile src/x.ts exists'] }),
+  });
+  assert.equal(bucketOf(rows, 25), 'FINISHED');
+});
+
 test('classifies every input exactly once', () => {
   const tasks = [orphan(20), orphan(21), orphan(22)];
   const rows = classify(tasks, { cardOf: () => ({ status: 'Done', lastEditedAt: hAgo(200) }) });

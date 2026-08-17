@@ -193,6 +193,25 @@ function classifyOrphanInProgress(tasks, ctx = {}) {
       continue;
     }
 
+    // Card #1185 in the real backlog (2026-08-16): the Outcome text itself
+    // named unbuilt scope ("### Remaining: showtime picker + entry-card
+    // wiring ... Deferred to a fresh session") several entries back (outcome
+    // entries are prepended newest-first, so this is NOT necessarily the
+    // first paragraph — the scan below covers the whole field on purpose),
+    // yet a commit elsewhere in the same Outcome corroborated fine and this
+    // classifier closed it FINISHED anyway. RECHECK-AFTER and VERIFY:
+    // owner-judgment are structured markers for "not done yet"; this is the
+    // unstructured-prose equivalent other cards actually use in this backlog
+    // (see the #1159/#586 precedent in this file's other comments). Same
+    // conservative posture as isSuperseded above: an imperfect prose match
+    // that over-parks beats a corroboration hit that force-closes real
+    // leftover scope.
+    const hasUnbuiltScopeMarker = /(?:^|\n)#{1,4}\s*remaining\b|(?:^|\n)\s*remaining\s*:|deferred to (?:a\s+)?(?:fresh|new) session/i.test(card.outcome || '');
+    if (hasOutcome && hasUnbuiltScopeMarker) {
+      push('NEEDS-REVIEW', 'unbuilt-scope-marker', 'card\'s own Outcome names remaining/deferred scope ("Remaining:"/"Deferred to a fresh session") even though something in it corroborates — needs a human yes/no, not an automatic close', { notionId: marker, cardStatus });
+      continue;
+    }
+
     if (hasOutcome) {
       const corroboration = corroborateOutcomeOf(card);
       if (git.hasEvidence || corroboration.hasEvidence) {
