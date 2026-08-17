@@ -84,6 +84,13 @@ const AUTO_FIX_PLAYBOOK = [
   // dead rate is expensive and worth chasing but never data loss.
   { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
     humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
+  // Card #1714, same #1199 trap: an unregistered check name defaults to
+  // urgency 'low' and never files a card even on 'error'. 'this-week' to
+  // match its sibling dead-launch row — a low headless success rate is
+  // expensive (burned launches, stuck tasks) but the retry/reconcile layer
+  // means nothing is silently lost.
+  { match: /^Headless dispatch: success rate$/, urgency: 'this-week',
+    humanAction: 'Headless (job-lane) dispatches are failing more often than the 80% success floor. Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then open Claude Code and say: "Investigate the headless dispatch success rate (card #1714) — judge any fix by this rate over the window, never by one clean dispatch."' },
   // Task #1648, same #1199 trap: without an explicit entry this row defaults
   // to urgency 'low' and renders as an anonymous count instead of a named
   // FAIL — for a check whose whole purpose is ending a silent digest-content
@@ -2369,22 +2376,48 @@ function checkDispatchOutcomes(dryRun) {
 
 function checkDispatchHealth() {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
-  const { CHECK_NAME } = require('./lib/dispatch-health.js');
+  const { CHECK_NAME, HEADLESS_CHECK_NAME } = require('./lib/dispatch-health.js');
   if (!fs.existsSync(ledgerPath)) {
-    return [{
-      name: CHECK_NAME,
-      status: 'warn',
-      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
-      hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
-    }];
+    // Card #1714 ship-check finding: dispatch-ledger.jsonl is gitignored and
+    // per-machine, and this function only ever executes for real (i.e. feeds
+    // history/alerts/the digest snapshot, not just a local console run) from
+    // data-health-check.yml on ubuntu-latest — an environment that can NEVER
+    // have this file. Giving these rows the SAME name as the real-measurement
+    // rows below would make them match CHECK_NAME/HEADLESS_CHECK_NAME's
+    // AUTO_FIX_PLAYBOOK entries (urgency 'this-week', has humanAction) and
+    // file a permanently-open, permanently-unresolvable "cannot measure" card
+    // via routeAlert on every single CI run, forever — since the condition
+    // that would close it (the ledger existing on that runner) can never
+    // become true. Suffixed name deliberately does NOT match either playbook
+    // regex (both are `^...$`-anchored), so this falls back to the default
+    // urgency 'low': still visible in the category summary and full check
+    // list, never actionable, never card-spammed. The unsuffixed names stay
+    // reserved for a real local run where the ledger IS present.
+    return [
+      {
+        name: `${CHECK_NAME} (unmeasurable here)`,
+        status: 'warn',
+        message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
+        hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
+      },
+      {
+        name: `${HEADLESS_CHECK_NAME} (unmeasurable here)`,
+        status: 'warn',
+        message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The headless success rate cannot be measured from here.',
+        hint: 'Run `node scripts/audit-headless-outcome-rate.js` on the machine where dispatches launch to see the real rate.',
+      },
+    ];
   }
+
+  // Parsed once and shared by both rows below (ship-check finding: two
+  // separate reads of the same concurrently-appended JSONL file could
+  // describe two different populations if a writer appends between them).
+  const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+    .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean);
 
   return [runCheck(CHECK_NAME, () => {
     const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
-    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
-      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
-      .filter(Boolean);
-
     // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
     // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
     // a RATE above the floor is a live defect every day it holds, and
@@ -2393,6 +2426,13 @@ function checkDispatchHealth() {
     // owner-alert-router's conditionKey, which files one card per OPEN
     // incident rather than one per run.
     const { name, status, message, hint } = computeDispatchHealthDigest({
+      entries, nowMs: Date.now(),
+    });
+    return hint ? { name, status, message, hint } : { name, status, message };
+  }), runCheck(HEADLESS_CHECK_NAME, () => {
+    const { computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
+    // Same no-suppression reasoning as the cmux row above — card #1714.
+    const { name, status, message, hint } = computeHeadlessDispatchDigest({
       entries, nowMs: Date.now(),
     });
     return hint ? { name, status, message, hint } : { name, status, message };
@@ -4077,6 +4117,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(dryRun),
+    ...checkDispatchHealth(),
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
