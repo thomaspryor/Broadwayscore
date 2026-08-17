@@ -50,6 +50,7 @@ test('every audience-facing sender sets reply_to on its Resend payload', () => {
     ['scripts/newsletter/send-test.mjs', 1],              // weekly round-up test send
     ['scripts/send-opening-night-broadcast.js', 2],       // opening-night broadcast + preview
     ['scripts/send-follow-notifications.js', 1],          // per-show follower alerts
+    ['scripts/fantasy-weekly-email.js', 1],               // Broadway Fantasy League weekly broadcast (2026-08-16 cousin fix)
   ];
   for (const [rel, minPayloads] of senders) {
     const src = fs.readFileSync(path.join(repoRoot, rel), 'utf8');

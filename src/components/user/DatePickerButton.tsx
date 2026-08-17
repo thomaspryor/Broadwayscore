@@ -3,9 +3,12 @@
 import { useRef, type ReactNode } from 'react';
 
 interface DatePickerButtonProps {
-  /** YYYY-MM-DD, or '' when unset. */
+  /** YYYY-MM-DD (type='date') or HH:MM (type='time'), or '' when unset. */
   value: string;
   onChange: (val: string) => void;
+  /** Native input type. Defaults to 'date'; 'time' reuses the same
+   *  wheel-safe mechanics for the showtime picker's custom-time tier. */
+  type?: 'date' | 'time';
   min?: string;
   max?: string;
   ariaLabel: string;
@@ -39,6 +42,7 @@ interface DatePickerButtonProps {
 export default function DatePickerButton({
   value,
   onChange,
+  type = 'date',
   min,
   max,
   ariaLabel,
@@ -63,7 +67,7 @@ export default function DatePickerButton({
     <div className={wrapClassName}>
       <input
         ref={inputRef}
-        type="date"
+        type={type}
         aria-hidden="true"
         tabIndex={-1}
         autoComplete="off"

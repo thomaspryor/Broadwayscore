@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-16T18:34:40.266Z",
+  "timestamp": "2026-08-17T01:57:14.271Z",
   "stats": {
-    "totalReviews": 42364,
-    "alreadyFlagged": 18264,
+    "totalReviews": 42368,
+    "alreadyFlagged": 18248,
     "dateGuardCatches": 144,
-    "directorMismatch": 969,
-    "tvFilmSignals": 1208,
-    "londonSignals": 906,
+    "directorMismatch": 970,
+    "tvFilmSignals": 1209,
+    "londonSignals": 908,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3608
+    "noPublishDate": 3612
   },
   "findings": [
     {
@@ -5238,6 +5238,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "chinese-republicans-off-broadway-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 61,
+      "publishDate": "2026-02-26",
+      "url": "https://www.vulture.com/article/theater-review-alex-lin-chinese-republicans.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -17338,6 +17352,20 @@
       "score": 66,
       "publishDate": "2017-03-23",
       "url": "https://dctheatrescene.com/2017/03/23/miss-saigon-review-back-broadway-helicopter/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-2017",
+      "file": "deadline--jeremy-gerard.json",
+      "score": 78,
+      "publishDate": "March 23rd, 2017",
+      "url": "http://deadline.com/2017/03/broadway-review-miss-saigon-the-new-yorkers-1202049622/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34290,6 +34318,20 @@
       ]
     },
     {
+      "showId": "caroline-or-change-2021",
+      "file": "nytg--naveen-kumar.json",
+      "score": 62,
+      "publishDate": "October 27th, 2021",
+      "url": "https://www.newyorktheatreguide.com/reviews/caroline-or-change-broadway-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "carousel-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 88,
@@ -34363,6 +34405,19 @@
       "file": "musical-theatre-review--ron-cohen.json",
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "openairtheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://openairtheatre.com/production/cats",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

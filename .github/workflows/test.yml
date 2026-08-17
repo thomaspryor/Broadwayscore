@@ -597,6 +597,10 @@ on:
       - 'scripts/opening-night-prompts/monitor-v2.md'
       - 'scripts/lib/cmux-launch.js'
       - 'scripts/lib/cmux-launch.test.mjs'
+      # Task #1706: cross-invocation launch-journal reclaim. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt, not
+      # globbed) — path-listed so a solo edit triggers CI.
+      - 'scripts/tests/cmux-launch-reclaim.test.mjs'
       # Card #705: the launch wait/retry decision (pure state machine) — a
       # relaunch while attempt 1's wrapper process is still alive is the
       # duplicate-session factory. Test runs in the scripts/lib/*.test.mjs
@@ -1683,6 +1687,27 @@ on:
       - 'scripts/lib/invisible-verification-scan.test.mjs'
       - 'scripts/lib/observable-before-absence.js'
       - 'scripts/tests/observable-before-absence.test.mjs'
+      # not-found cache backfill (card 3bd637c5-416f-8142-8b78-c7405c71bd98):
+      # shouldSkipAsKnownNotFound/applyFetchResultToCache decide whether a
+      # Show Score / BWW-RR fetch is served from cache. Test lives in
+      # scripts/tests/ (registered in tests/unit-test-manifest.txt); the lib
+      # and its caller need explicit listing — no scripts/lib/** broad glob.
+      - 'scripts/lib/not-found-cache.js'
+      - 'scripts/tests/not-found-cache-backfill.test.mjs'
+      - 'scripts/fetch-aggregator-pages.ts'
+      # Headless dispatch lane telemetry (card #1454) — JOB_EVENTS.ABANDONED,
+      # the headless success-rate reader, and the lease-held ledger-write fix
+      # span dispatch-ledger.js/dispatch-health.js/bsc-runner.js/
+      # autofix-canary.js. No scripts/lib/** broad glob (see this file's own
+      # repeated convention note, e.g. line 31/118/290) — each needs explicit
+      # listing so a solo edit doesn't get zero CI. Plus its own scripts/tests/
+      # file (registered in tests/unit-test-manifest.txt, but scripts/tests/ is
+      # not auto-globbed either) and the new CLI reader.
+      - 'scripts/lib/dispatch-health.js'
+      - 'scripts/lib/autofix-canary.js'
+      - 'scripts/lib/autofix-canary.test.mjs'
+      - 'scripts/audit-headless-outcome-rate.js'
+      - 'scripts/tests/headless-dispatch-telemetry.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
@@ -1770,6 +1795,13 @@ on:
       # above: without these entries a push touching only them runs ZERO CI.
       - 'scripts/lib/dispatch-card-drift.js'
       - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # P1 backlog relevance classifier (task #1719) — is an open P1 still
+      # real, or LIKELY-DONE/DUPLICATE/STALE. Same "scripts/tests/ is not
+      # scripts/lib/" gap as the block above: without these entries a push
+      # touching only them runs ZERO CI.
+      - 'scripts/lib/audit-card-relevance.js'
+      - 'scripts/audit-card-relevance.js'
+      - 'scripts/tests/audit-card-relevance.test.mjs'
       # Pre-implementation infra review gate (card #1079, owner decision
       # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
       # not scripts/lib/" gap: without these entries a push touching only them
@@ -1837,6 +1869,16 @@ on:
       # test would run ZERO CI.
       - 'scripts/lib/infra-review-digest.js'
       - 'scripts/tests/infra-review-digest.test.mjs'
+      # Worktree-gc liveness guard (task #1709) — gc-merged-worktrees.sh calls
+      # hasLiveProcessInDir() via a CLI wrapper before every `git worktree
+      # remove` on a merged worktree, so a dev server/watcher left running in
+      # a clean-but-merged worktree isn't pulled out from under it. Same
+      # "scripts/tests/ is not scripts/lib/" gap as the blocks above: without
+      # these entries a push touching only the lib + test would run ZERO CI.
+      # Test is also registered in tests/unit-test-manifest.txt.
+      - 'scripts/lib/gc-worktree-liveness.js'
+      - 'scripts/tests/gc-merged-worktrees-liveness.test.mjs'
+      - 'scripts/gc-merged-worktrees.sh'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send
@@ -2057,6 +2099,11 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
       - 'scripts/notion-tasks-sync.test.mjs'
+      # Task #1701: pull-time dedup regression test lives in tests/unit/ (node
+      # --test batch, not globbed — see tests/unit-test-manifest.txt) and is
+      # registered explicitly in the tests/unit node --test invocation below.
+      # Path-listed here too so a solo edit to just this test triggers CI.
+      - 'tests/unit/notion-tasks-sync-dedup.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
       # Card #854: task-store archiver — moves completed tasks >48h old to
@@ -2077,6 +2124,18 @@ on:
       # Path-listed so a solo edit to either triggers CI.
       - 'scripts/lib/task-reclaim.js'
       - 'scripts/lib/task-reclaim.test.mjs'
+      # Task #1705: the LIVE-population sibling of the audit-archived-in-
+      # progress.js recovery above — classifies in_progress tasks with no
+      # matching cmux workspace (FINISHED/LOST/STALE/NEEDS-REVIEW) and reuses
+      # task-reclaim.js's leaf predicates rather than reimplementing them.
+      # Pure decision logic's colocated test runs in the lib-test glob; the
+      # acceptance probe lives in tests/unit-test-manifest.txt (scripts/tests/
+      # is NOT globbed). Path-listed so a solo edit to any of the three
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-orphan-inprogress.js'
+      - 'scripts/lib/orphan-inprogress-triage.js'
+      - 'scripts/lib/orphan-inprogress-triage.test.mjs'
+      - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
@@ -2294,6 +2353,17 @@ on:
       # the leaf or to verify-gate triggers CI instead of silently getting none.
       - 'scripts/lib/owner-judgment-marker.js'
       - 'scripts/lib/verify-gate.js'
+      # Task #1713: enrich-card-acceptance.js draft path + its provider
+      # fallback, and the SAFE_CHECK_FORMS widening in autonomous-triage-core.js
+      # above. Colocated scripts/enrich-card-acceptance.test.mjs runs via the
+      # tests/unit node --test invocation below (top-level scripts/*.test.mjs
+      # is NOT globbed); the fallback-specific test lives in scripts/tests/
+      # (also not globbed) — both path-listed here so a solo edit triggers CI.
+      - 'scripts/enrich-card-acceptance.js'
+      - 'scripts/enrich-card-acceptance.test.mjs'
+      - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
+      - 'scripts/audit-card-verifiability.js'
+      - 'scripts/audit-card-verifiability.test.mjs'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'
@@ -2405,6 +2475,14 @@ on:
       - 'scripts/lib/recheck-stamp.test.mjs'
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
+      # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
+      # bulk health-check commit in data-health-check.yml (a lost bulk-commit
+      # push race was silently discarding every RECHECK-AFTER verdict for the
+      # run). data-health-check.yml itself is already covered by the
+      # '.github/workflows/**' glob above; this test lives in scripts/tests/
+      # (registered in tests/unit-test-manifest.txt, not globbed), so it's
+      # path-listed here so a solo edit to just the test still triggers CI.
+      - 'scripts/tests/recheck-ledger-persistence.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
@@ -2706,6 +2784,16 @@ on:
       - 'scripts/linear-next.js'
       - 'scripts/lib/linear-dispatch.js'
       - 'scripts/lib/dispatch-guards.js'
+      # Task #1696: wired dispatch-guards.js's exactTitleOverlapGuard +
+      # sessionTrackingCloneGuard (added for bsc-next.js by task #1672) into
+      # linear-next.js's main(), via listOpenIssuesWithDescriptions()
+      # (scripts/lib/linear-client.js — already listed above) and a new
+      # dispatch-overlap-check.js require. Its colocated test lives in
+      # scripts/tests/ (NOT covered by the 'tests/**' glob — same
+      # "scripts/tests/ is not scripts/lib/" gap as this block's siblings,
+      # feedback_test_yml_push_path_allowlist), so it needs its own explicit
+      # line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/linear-next-overlap-guards.test.mjs'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are
@@ -3475,7 +3563,19 @@ jobs:
     timeout-minutes: 5
     # Only run on schedule (daily) — not every push, to avoid noise
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    continue-on-error: true
+    # continue-on-error removed (2026-08-16): it predates the allowlist
+    # wrapper below (added 2026-07-11, commit b1f018ba240) and silently
+    # defeated it — that commit's own message says the wrapper "fails on any
+    # critical NOT in an expiring allowlist... Failure paths tested
+    # (unallowlisted -> exit 1, expired -> exit 1)", but continue-on-error
+    # swallowed that exit 1 at the job level, so the job always reported
+    # success in the GitHub UI regardless. A genuine unallowlisted critical
+    # (the exact case the wrapper was built to catch, e.g. the 2026-07 axios
+    # SSRF — see memory/roadmap.md) would never have reddened this job or
+    # been visible to test-summary's needs-list check (task #1690). The
+    # wrapper is already the noise-reduction layer (expiring allowlist for
+    # unfixable transitive vulns) — this flag was pure leftover, not a
+    # second, deliberate layer of noise suppression on top of it.
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -4551,7 +4651,7 @@ jobs:
 
       - name: Audit contradicted flag basis (stale exclusion flags)
         if: always()
-        run: node scripts/audit-contradicted-flag-basis.js --gate --max=16
+        run: node scripts/audit-contradicted-flag-basis.js --gate --max=0
         # BLOCKING replacement for the retired #483 step above. Fires only on
         # POSITIVE evidence that a flag's own stated basis is contradicted: the
         # flag rests ONLY on a date-guard claim, that claim cites a date the
@@ -4559,23 +4659,23 @@ jobs:
         # inside the show's own run window. Detector (with the full derivation):
         # scripts/lib/contradicted-flag-basis.js.
         #
-        # PRECISION 13/13, hand-verified 2026-08-14 — every match is a real
-        # review of the show it is filed under, suppressed from live Critic
-        # Scores on a date it no longer has. Examples: the Vulture review of
-        # the 2018 Carousel (vulture.com/2018/04/…, dated 2018-04-12, inside
-        # the 2018-02-28..2018-09-16 run) flagged on a cited date of
-        # 2019-04-24; the Deadline 2017 Miss Saigon revival review dated
-        # 2017-03-23 flagged on a cited date of 1974-04-08; Jesse Green's NYT
-        # review of Home 2024 flagged on 2024-12-19.
+        # All 13 records this gate found on 2026-08-14 were hand-adjudicated
+        # and cleared 2026-08-17 (card #1589) via
+        # scripts/clear-contradicted-flag-basis.js — a fixed, explicit
+        # allowlist re-verified against this same detector before each clear,
+        # never a predicate-driven drain. Live count is 0.
         #
-        # --max=16 against a live count of 13 is deliberate headroom, the same
-        # ratchet the sibling data gates use: the rebuild bots rewrite this
-        # corpus every ~30 min, and a ceiling equal to the live count makes the
-        # SAME code pass and fail minutes apart
-        # (memory/feedback_test_yml_push_path_allowlist.md). RATCHET IT DOWN as
-        # the 13 known records are hand-adjudicated — but never raise it to
-        # make a red build pass, and never clear a flag in bulk to reach a
-        # lower number. There is no --fix on the audit for exactly that reason.
+        # --max=0, not a headroom ceiling like the original 16-vs-13, and
+        # unlike the sibling gates below (which moved to a committed-baseline
+        # diff on 2026-08-14 for large STABLE backlogs that legitimately churn
+        # every rebuild): this population has no expected steady-state
+        # backlog. A NEW hit here means some OTHER writer changed a record's
+        # publishDate after a date-guard already flagged it, without
+        # re-running or clearing that guard — a narrow, compound event, not
+        # routine corpus churn. Any hit is real signal. RATCHET DOWN as
+        # records are hand-adjudicated — never raise it to make a red build
+        # pass, and never clear a flag in bulk to reach a lower number. There
+        # is no --fix on the audit for exactly that reason.
 
       - name: Audit URL-swap regression (#1416)
         if: always()

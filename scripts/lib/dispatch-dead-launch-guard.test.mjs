@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus } = require('./dispatch-dead-launch-guard.js');
+const { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus, isManuallyResolved } = require('./dispatch-dead-launch-guard.js');
 const { isLatestDispatchDead, latestAttemptForTask, failedLaunchEntries } = require('./dispatch-ledger.js');
 
 // Ship-check adversarial finding (card #1144): isLatestDispatchDead's
@@ -151,4 +151,48 @@ test('reconcileDeadCompletions: never flags a completed task with a healthy disp
   const tasks = [{ id: '1140', status: 'completed', subject: 'x' }];
   const entries = [{ ts: '2026-08-09T19:15:41.266Z', event: 'launch', taskId: '1140', workspaceRef: 'workspace:252' }];
   assert.deepEqual(reconcileDeadCompletions(tasks, entries), []);
+});
+
+// Real ledger shape from task #1627's incident (card #1697 follow-up): two
+// dead+unverified launch attempts, exactly the dead-dispatch pattern this
+// guard exists to catch — except #1627 was deliberately marked completed
+// out-of-band (its own Notion page 404s permanently; the underlying work
+// was independently verified done under a different card) via hand-written
+// manuallyResolvedReason/manuallyResolvedAt fields, not through a real
+// dispatch. Without the override below, this exact ledger shape reopened a
+// legitimately-resolved task (the live 2026-08-17 incident this test guards
+// against).
+const DEAD_LAUNCH_1627 = [
+  { ts: '2026-08-15T11:11:03.908Z', event: 'dead', taskId: '1627', workspaceRef: 'workspace:605', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:605' },
+  { ts: '2026-08-15T11:11:03.909Z', event: 'launch', taskId: '1627', workspaceRef: 'workspace:605', model: 'sonnet', unverified: true },
+  { ts: '2026-08-15T11:15:43.912Z', event: 'dead', taskId: '1627', workspaceRef: 'workspace:606', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:606' },
+  { ts: '2026-08-15T11:15:43.912Z', event: 'launch', taskId: '1627', workspaceRef: 'workspace:606', model: 'sonnet', unverified: true },
+];
+
+test('isManuallyResolved: true only when BOTH manuallyResolvedReason and manuallyResolvedAt are non-empty', () => {
+  assert.equal(isManuallyResolved({ manuallyResolvedReason: 'x', manuallyResolvedAt: '2026-08-16' }), true);
+  assert.equal(isManuallyResolved({ manuallyResolvedReason: 'x' }), false);
+  assert.equal(isManuallyResolved({ manuallyResolvedAt: '2026-08-16' }), false);
+  assert.equal(isManuallyResolved({ manuallyResolvedReason: '  ', manuallyResolvedAt: '2026-08-16' }), false);
+  assert.equal(isManuallyResolved({}), false);
+  assert.equal(isManuallyResolved(undefined), false);
+});
+
+test('#1697: reconcileDeadCompletions never flags a manually-resolved task, even with a genuinely dead ledger (the #1627 incident)', () => {
+  const tasks = [{
+    id: '1627', status: 'completed', subject: 'Sweep byline-explosion clusters at threshold=3',
+    manuallyResolvedAt: '2026-08-16',
+    manuallyResolvedReason: "task #1697: this task's Notion page 404s permanently; underlying work independently completed under a different card",
+  }];
+  // Sanity: this ledger shape IS dead on its own — proves the override, not
+  // an unrelated ledger quirk, is what suppresses the flag.
+  assert.equal(isLatestDispatchDead('1627', DEAD_LAUNCH_1627), true);
+  assert.deepEqual(reconcileDeadCompletions(tasks, DEAD_LAUNCH_1627), []);
+});
+
+test('#1697: reconcileDeadCompletions still flags a dead-dispatch completion with only ONE of the two manual-resolution fields', () => {
+  const withReasonOnly = [{ id: '1627', status: 'completed', subject: 'x', manuallyResolvedReason: 'x' }];
+  const withAtOnly = [{ id: '1627', status: 'completed', subject: 'x', manuallyResolvedAt: '2026-08-16' }];
+  assert.equal(reconcileDeadCompletions(withReasonOnly, DEAD_LAUNCH_1627).length, 1);
+  assert.equal(reconcileDeadCompletions(withAtOnly, DEAD_LAUNCH_1627).length, 1);
 });

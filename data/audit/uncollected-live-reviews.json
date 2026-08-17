@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-16T15:15:18.357Z",
+  "generatedAt": "2026-08-17T02:27:57.650Z",
   "maxAgeHours": 12,
-  "showsAffected": 8,
-  "strandedFiles": 8,
+  "showsAffected": 10,
+  "strandedFiles": 10,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -25,7 +25,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 312.15524944444445
+          "ageHours": 323.3661641666667
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -79,7 +79,7 @@
           "file": "reviews--william-russell.json",
           "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
           "outlet": "Reviews",
-          "ageHours": 2523.2945436111113
+          "ageHours": 2534.5054583333335
         }
       ],
       "usable": 43,
@@ -119,6 +119,22 @@
       "totalBlackout": false
     },
     {
+      "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "title": "Austentatious: An Improvised Jane Austen Novel",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "thereviewshub--unknown.json",
+          "url": "https://www.thereviewshub.com/edinburgh-fringe-2026-austentatious-an-improvised-jane-austen-novel-underbelly-bristo-square-mcewan-hall-edinburgh/",
+          "outlet": "The Reviews Hub",
+          "ageHours": 15.259077222222222
+        }
+      ],
+      "usable": 1,
+      "discovered": 4,
+      "totalBlackout": false
+    },
+    {
       "showId": "burlesque-west-end-2026",
       "title": "Burlesque",
       "status": "open",
@@ -127,11 +143,27 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/the-best-of-burlesque-assembly-rooms/",
           "outlet": "North West End",
-          "ageHours": 123.60462138888889
+          "ageHours": 134.8155361111111
         }
       ],
       "usable": 21,
       "discovered": 30,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "slantmagazine--unknown.json",
+          "url": "https://www.slantmagazine.com/games/beast-of-reincarnation-review/",
+          "outlet": "Slant Magazine",
+          "ageHours": 15.179861944444445
+        }
+      ],
+      "usable": 9,
+      "discovered": 10,
       "totalBlackout": false
     }
   ]

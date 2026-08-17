@@ -22,17 +22,6 @@
     "queuedAt": "2026-08-16T12:30:01.350Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31952315484",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-16T14:40:48.715Z"
-  },
-  {
     "conditionKey": "we-aggregator-go-live:pride-theatre-dorfman-west-end-2026",
     "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
     "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
@@ -141,5 +130,49 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-16T15:10:08.036Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.6% (405/522)\noff-broadway: 47.9% (160/334)\nwest-end: 69.6% (412/592)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (591h)\nCelebrity Autobiography — nypost (421h)\nCelebrity Autobiography — thewrap (409h)\nCelebrity Autobiography — timeout (409h)\nCelebrity Autobiography — vulture (409h)\n… 230 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (409h)\nAladdin — ew (57h)\nThe Book of Mormon — usatoday (57h)\nBuena Vista Social Club — broadwaynews (57h)\nHeathers The Musical — dailybeast (57h)\n… 14 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-16T19:19:59.195Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jeeves-takes-charge-west-end-2026",
+    "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jeeves-takes-charge-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-16T20:42:02.771Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "3/151 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nThe Winter's Tale: score-drift\nGame of Thrones: The Mad King: score-drift\nNow You See Me Live: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-16T23:13:49.495Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 28.6% of shows changed coverage state",
+    "description": "review-gap blast radius 28.6% (6/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: an-american-daughter-off-broadway-2026, horrible-histories-barmy-britain-the-best-bits-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, paranormal-activity-west-end-2025, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-17T02:27:52.322Z"
   }
 ]

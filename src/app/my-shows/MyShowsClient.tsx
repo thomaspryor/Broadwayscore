@@ -14,6 +14,9 @@ import RatingEditor, { type RatingEditorSaveData } from '@/components/user/Ratin
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
+import ShowtimePicker from '@/components/user/ShowtimePicker';
+import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
+import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { localToday } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
@@ -160,7 +163,7 @@ export default function MyShowsClient() {
 
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, updatePerformance, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   // Count-only lists instance for the tab badge (ListsTab owns its own full
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
@@ -214,7 +217,16 @@ export default function MyShowsClient() {
   const mockUpdatePlannedDate = useCallback(async (showId: string, date: string | null) => {
     setMockData(prev => prev ? {
       ...prev,
-      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date } : w),
+      // Mirrors the real updatePlannedDate: always clears time_slot/curtain_time,
+      // not just on a clear-to-null — a resolved showtime carries a DIFFERENT
+      // date's schedule and must not survive a re-date (BRO-221 fix).
+      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date, time_slot: null, curtain_time: null } : w),
+    } : prev);
+  }, []);
+  const mockUpdatePerformance = useCallback(async (showId: string, fields: Partial<Pick<WatchlistEntry, 'planned_date' | 'time_slot' | 'curtain_time'>>) => {
+    setMockData(prev => prev ? {
+      ...prev,
+      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, ...fields } : w),
     } : prev);
   }, []);
   const mockAddToWatchlist = useCallback(async (showId: string) => {
@@ -239,6 +251,7 @@ export default function MyShowsClient() {
   }, [effectiveDeleteReview, showToast]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
+  const effectiveUpdatePerformance = isMockMode ? mockUpdatePerformance : updatePerformance;
 
   // Just-added-from-search prompt: confirms the add and offers the planned
   // date IN PLACE — quick-add previously required finding the new entry on
@@ -255,6 +268,16 @@ export default function MyShowsClient() {
       showToast?.('Failed to save date.', 'error');
     }
   }, [effectiveUpdatePlannedDate, showToast]);
+
+  // Showtime tier (matinee/evening/custom) — same rethrow-and-toast shape as
+  // handlePlannedDateChange, kept separate because it writes different fields.
+  const handleShowtimeChange = useCallback(async (showId: string, fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => {
+    try {
+      await effectiveUpdatePerformance(showId, fields);
+    } catch {
+      showToast?.('Failed to save showtime.', 'error');
+    }
+  }, [effectiveUpdatePerformance, showToast]);
   const effectiveAddToWatchlist = isMockMode ? mockAddToWatchlist : addToWatchlist;
 
   // Save handler for the inline rating modal (diary-only shows). Simpler than
@@ -1157,6 +1180,7 @@ export default function MyShowsClient() {
                     entry={entry}
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                    onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                     onRate={openRatingEditor}
                   />
@@ -1174,6 +1198,7 @@ export default function MyShowsClient() {
                     entry={entry}
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                    onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                     onRate={openRatingEditor}
                   />
@@ -1199,6 +1224,7 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                           onRate={openRatingEditor}
                         />
@@ -1218,6 +1244,7 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                           onRate={openRatingEditor}
                         />
@@ -1247,6 +1274,7 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                           onRate={openRatingEditor}
                         />
@@ -1264,6 +1292,7 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
+                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                           onRate={openRatingEditor}
                         />
@@ -1632,10 +1661,11 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
   );
 }
 
-function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
+function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
+  onShowtimeChange: (fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => void;
   onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
@@ -1755,6 +1785,17 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
           hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
+        {entry.planned_date && (
+          <ShowtimePicker
+            showId={entry.show_id}
+            date={entry.planned_date}
+            timeSlot={entry.time_slot}
+            curtainTime={entry.curtain_time}
+            onSave={onShowtimeChange}
+            compact
+          />
+        )}
+        <AddToCalendarButtons event={buildPlannedShowEvent(show ?? { id: entry.show_id, title, slug }, entry)} compact />
       </div>
     </div>
   );
@@ -1837,10 +1878,11 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
   );
 }
 
-function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
+function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemove, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
+  onShowtimeChange: (fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => void;
   onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
@@ -1902,6 +1944,16 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
           hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
+        {entry.planned_date && (
+          <ShowtimePicker
+            showId={entry.show_id}
+            date={entry.planned_date}
+            timeSlot={entry.time_slot}
+            curtainTime={entry.curtain_time}
+            onSave={onShowtimeChange}
+          />
+        )}
+        <AddToCalendarButtons event={buildPlannedShowEvent(show ?? { id: entry.show_id, title, slug }, entry)} />
         {/* Rate + Remove row — same tappable 5-star affordance as the grid
             strip and To-Be-Rated rows; the old '☆ Rate' text link was a
             second visual treatment for the identical action (flagged by the

@@ -7,13 +7,16 @@
 # this comment used to carry; fixed after an adversarial review caught the
 # doc drift.
 #
-# SAFETY: never uses --force. `git worktree remove` (plain) refuses to remove a
-# worktree that has uncommitted changes OR a branch with unmerged commits — that
-# refusal IS the safety property we want. The job only ever removes worktrees
-# that are both (a) on a branch whose every commit already landed in origin/main
-# (squash-merges included, via `git cherry`) and (b) clean enough that git is
-# willing to remove them. Branches are KEPT (never `branch -d`) so no history is
-# lost. Installed via launchd: ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist
+# SAFETY: `git worktree remove` (plain, no --force) is the default and only path
+# for most worktrees — it refuses to remove one with uncommitted changes OR a
+# branch with unmerged commits, and that refusal IS the safety property we want.
+# The one narrow exception (task #1682) is --force on a worktree that is BOTH (a)
+# on a branch whose every commit already landed in origin/main (squash-merges
+# included, via `git cherry`) AND (b) is_safe_dirty() — every uncommitted path is
+# generated data/ churn, never real source. That combination cannot lose
+# committed work (already in origin/main) or real uncommitted work (excluded by
+# the allowlist). Branches are KEPT (never `branch -d`) so no history is lost.
+# Installed via launchd: ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist
 #
 # node_modules/.next stripping (untouched >STALE_DAYS) never touches worktrees
 # with recent file activity, and never touches action-*/detached worktrees —
@@ -95,6 +98,39 @@ is_stale() {
     \( -path '*/node_modules' -o -path '*/.next' -o -path '*/.git' \) -prune -o \
     -type f -newermt "-${days} days" -print -quit 2>/dev/null)
   [ -z "$hit" ]
+}
+
+# True (exit 0) iff every dirty (modified/untracked) path under worktree $1
+# is script-written audit/telemetry churn, never real source or real data —
+# data/audit/** only. Deliberately narrower than "any data/*" (an earlier cut
+# of this function): data/ also holds data/finances/, data/subscribers.json,
+# data/review-texts/ and other real/PII-bearing content (see .gitignore) that
+# a session could legitimately leave uncommitted — a blanket data/* allowlist
+# would rubber-stamp discarding that (adversarial review, task #1682). Renames
+# and oddly-quoted paths are treated conservatively (unsafe) rather than
+# parsed. Callers only reach this after the branch is already confirmed fully
+# merged into origin/main, so nothing here risks losing committed work — only
+# whether it's safe to discard whatever LOCAL uncommitted noise is blocking
+# `git worktree remove`. Note: this only sees paths `git status --porcelain`
+# reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
+# content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
+# it either way and is deleted by ANY worktree removal, force or plain; that
+# exposure predates this function and is unchanged by it.
+is_safe_dirty() {
+  local p="$1" status line f
+  status=$(git -C "$p" status --porcelain 2>/dev/null)
+  [ -z "$status" ] && return 1
+  while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    f="${line:3}"
+    case "$f" in
+      *' -> '*) return 1 ;;
+      \"*) return 1 ;;
+      data/audit/*) ;;
+      *) return 1 ;;
+    esac
+  done <<< "$status"
+  return 0
 }
 
 human_kb() {
@@ -225,7 +261,7 @@ fi
 check_disk_floor
 floor_freed_kb=$LAST_FLOOR_FREED_KB
 
-removed=0 kept=0 skipped=0 strip_freed_kb=0
+removed=0 kept=0 skipped=0 strip_freed_kb=0 removed_freed_kb=0
 stale_unmerged=()
 
 # Parse `git worktree list --porcelain` into (path, branch) pairs.
@@ -319,14 +355,61 @@ flush() {
     fi
     path="" branch=""; return
   fi
+  # Liveness guard (task #1709): git's dirty-tree refusal protects
+  # uncommitted changes, but a merged+CLEAN worktree can still be a live
+  # process's cwd (a dev server, a background watcher) — there's nothing
+  # dirty for git to refuse on, so plain `git worktree remove` would happily
+  # pull the rug out from under it. Found 2026-08-16: tony-page-season-guard
+  # was removed while pids 93138/93152 still had it as their cwd. Skip, same
+  # as the dirty-tree skip below, rather than risk that.
+  # Exit-code contract: the CLI wrapper is a 2-way switch, not 3-way — exit 0
+  # means "live, do not remove"; ANYTHING else (1 = clear, 2 = usage error,
+  # or an unanticipated crash) falls through to removal below. Keep it that
+  # way deliberately (an unexpected non-zero must never become a silent KEEP
+  # that masks a real bug in the checker) but don't widen it without
+  # re-reading this comment.
+  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/gc-worktree-liveness.js" ]; then
+    node "$REPO/scripts/lib/gc-worktree-liveness.js" --path="$path" >/dev/null 2>&1
+    if [ "$?" = "0" ]; then
+      log "SKIP  $(basename "$path") — $branch merged but a live process has this worktree as its cwd"
+      skipped=$((skipped+1))
+      path="" branch=""; return
+    fi
+  else
+    log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for $(basename "$path")"
+  fi
   if [ "$DRY_RUN" = "1" ]; then
-    log "WOULD-REMOVE  $(basename "$path") — $branch fully merged"
+    if is_safe_dirty "$path"; then
+      log "WOULD-FORCE-REMOVE  $(basename "$path") — $branch merged, only generated data/ churn dirty"
+    else
+      log "WOULD-REMOVE  $(basename "$path") — $branch fully merged"
+    fi
     removed=$((removed+1)); path="" branch=""; return
   fi
+  # Measured before removal so the DONE summary's freed= reflects what
+  # actually left disk, not just the floor/strip/orphan side-cleanups (task
+  # #1682: a run that reclaimed 26GB across dozens of worktree removals
+  # logged "freed=797.9MB" because this size was never captured — accurate
+  # for the wrong reason next time someone reads this log to judge impact).
+  local removal_sz
+  removal_sz=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
+  removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
   if git worktree remove "$path" 2>/dev/null; then
     log "REMOVE $(basename "$path") — $branch merged, worktree removed (branch kept)"
     removed=$((removed+1))
+    removed_freed_kb=$((removed_freed_kb + removal_sz))
+  elif is_safe_dirty "$path" && git worktree remove --force "$path" 2>/dev/null; then
+    # Only reached when the branch is already fully merged AND every dirty
+    # path is generated data/ churn (is_safe_dirty) — this is what makes
+    # --force safe here despite the file header's "never uses --force" claim
+    # for the general case. Without this, merged branches sit forever behind
+    # trivial cron-written diffs to data/audit/*.json (task #1682: 51/56
+    # dirty worktrees were stuck this way, gc reporting freed=0KB run after
+    # run while disk hit 99% full).
+    log "FORCE-REMOVE $(basename "$path") — $branch merged, discarded uncommitted data/ churn (branch kept)"
+    removed=$((removed+1))
+    removed_freed_kb=$((removed_freed_kb + removal_sz))
   else
     log "SKIP  $(basename "$path") — merged but worktree dirty; not forcing"
     skipped=$((skipped+1))
@@ -351,11 +434,68 @@ flush
 
 git worktree prune 2>/dev/null
 
+# Orphaned worktree directories: present on disk under .claude/worktrees but
+# NOT registered with git (left behind by an interrupted `rm -rf` or a partial
+# force-remove elsewhere). `git worktree prune` only clears git's OWN
+# bookkeeping for a worktree whose directory went missing — the opposite case,
+# a directory git has no record of at all — is invisible to it, so these
+# silently accumulate disk forever (task #1682: found 5 such dirs, ~800MB,
+# sitting untouched for 3+ weeks).
+#
+# Two independent guards before deleting (adversarial review, task #1682):
+#  1. action-* excluded, same as the main loop — notion-action-poll.js manages
+#     these with its own --force lifecycle; one could be unregistered for a
+#     moment mid-cycle and this sweep must not race that.
+#  2. Any trace of `.git` (file or dir) inside the candidate — even a broken
+#     one pointing at a gitdir that no longer exists — means WARN-only, not
+#     delete. A directory with zero git artifacts at all can hold no commit
+#     unreachable from a branch ref; one that once had a `.git` might, and
+#     "the commits live on via their branch ref" is not something this loop
+#     can verify from a dead gitdir pointer. Left for manual triage.
+# A 15-minute freshness guard on top avoids racing a worktree that's
+# mid-creation (directory written before git's registration step completes).
+orphan_freed_kb=0
+if [ -d "$REPO/.claude/worktrees" ]; then
+  registered_paths=()
+  while IFS= read -r reg_line; do
+    case "$reg_line" in
+      "worktree "*) registered_paths+=("${reg_line#worktree }") ;;
+    esac
+  done < <(git worktree list --porcelain)
+  is_registered() {
+    local d="$1" r
+    for r in "${registered_paths[@]}"; do [ "$r" = "$d" ] && return 0; done
+    return 1
+  }
+  while IFS= read -r dir; do
+    [ -z "$dir" ] && continue
+    orphan_name="$(basename "$dir")"
+    is_registered "$dir" && continue
+    case "$orphan_name" in
+      action-*) continue ;;
+    esac
+    if [ -e "$dir/.git" ]; then
+      log "WARN  $orphan_name — unregistered but has a .git artifact; leaving for manual triage (not auto-deleted)"
+      continue
+    fi
+    find "$dir" -newermt '-15 minutes' -print -quit 2>/dev/null | grep -q . && continue
+    orphan_sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
+    orphan_sz=${orphan_sz:-0}
+    if [ "$DRY_RUN" = "1" ]; then
+      log "WOULD-REMOVE-ORPHAN  $orphan_name — $(human_kb "$orphan_sz"), not registered with git worktree list"
+    else
+      rm -rf "${dir:?}"
+      log "REMOVE-ORPHAN  $orphan_name — freed $(human_kb "$orphan_sz"), not registered with git worktree list"
+    fi
+    orphan_freed_kb=$((orphan_freed_kb + orphan_sz))
+  done < <(find "$REPO/.claude/worktrees" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+fi
+
 if [ "${#stale_unmerged[@]}" -gt 0 ]; then
   log "DIGEST: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]}"
 else
   log "DIGEST: no stale-unmerged worktrees (>${STALE_DAYS}d untouched)"
 fi
 
-total_freed_kb=$((floor_freed_kb + strip_freed_kb))
+total_freed_kb=$((floor_freed_kb + strip_freed_kb + orphan_freed_kb + removed_freed_kb))
 log "DONE  removed=$removed kept=$kept skipped=$skipped freed=$(human_kb "$total_freed_kb") (dry_run=$DRY_RUN)"

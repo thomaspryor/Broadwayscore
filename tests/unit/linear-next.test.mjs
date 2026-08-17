@@ -424,6 +424,10 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
       terminalSurfaceAliveIn: () => true,
       readLedgerEntries: () => [],
       appendLedgerEntry: () => {},
+      // task #1696's overlap check — no live Linear API call, no real
+      // ~/.claude/tasks read, from a test subprocess.
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     });
   `;
   const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
@@ -463,6 +467,8 @@ test('main(): refuses to dispatch a completed issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     }), /EXIT/);
   } finally {
     process.exit = origExit;
@@ -482,6 +488,8 @@ test('main(): refuses to dispatch a canceled issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('canceled', 'Canceled'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     }), /EXIT/);
   } finally {
     process.exit = origExit;
@@ -501,6 +509,8 @@ test('main(): --force overrides the terminal-state refusal and proceeds to launc
       cmuxAvailable: () => false,
       readLedgerEntries: () => [],
       appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     });
   } finally {
     console.error = origError;
@@ -515,6 +525,8 @@ test('main(): a non-terminal issue is unaffected by the guard (dry-run reaches t
   try {
     await main(['--id', 'BRO-1517', '--dry-run'], {
       getIssue: async () => makeTerminalIssue('unstarted', 'Todo'),
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     });
   } finally {
     console.log = origLog;
@@ -534,6 +546,8 @@ test('main(): --dry-run on a completed issue still previews (terminal-state guar
   try {
     await main(['--id', 'BRO-1517', '--dry-run'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
     });
   } finally {
     console.log = origLog;

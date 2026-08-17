@@ -791,7 +791,17 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
             {/* Watchlist + List buttons — right-aligned */}
             <Suspense fallback={null}><ShowPageAddToListButton showId={show.id} /></Suspense>
-            <Suspense fallback={null}><ShowPageWatchlistButton showId={show.id} /></Suspense>
+            <Suspense fallback={null}>
+              <ShowPageWatchlistButton
+                showId={show.id}
+                title={show.title}
+                slug={show.slug}
+                category={show.category}
+                venue={show.venue}
+                theaterAddress={show.theaterAddress}
+                runtime={show.runtime}
+              />
+            </Suspense>
           </div>
 
           {/* Rating on the legacy (redesign-off) layout is handled by ShowHeroRedesign

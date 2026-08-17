@@ -141,7 +141,8 @@ function foldCanaryStage({ dateStr, canaryLedgerEntries, dispatchLedgerEntries, 
   if (job.event === dispatchLedger.JOB_EVENTS.DONE) {
     return { stage: 'job-done', taskId: filed.taskId, jobId: job.jobId };
   }
-  if (job.event === dispatchLedger.JOB_EVENTS.FAILED || job.event === dispatchLedger.JOB_EVENTS.ORPHANED) {
+  if (job.event === dispatchLedger.JOB_EVENTS.FAILED || job.event === dispatchLedger.JOB_EVENTS.ORPHANED
+    || job.event === dispatchLedger.JOB_EVENTS.ABANDONED) {
     return { stage: 'job-failed', taskId: filed.taskId, jobId: job.jobId };
   }
   return { stage: 'dispatched', taskId: filed.taskId, jobId: job.jobId };

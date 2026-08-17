@@ -19,6 +19,13 @@
 // re-anchor on the review-driven content the audience actually subscribes for.
 import { createRequire } from 'node:module';
 const { pluralize } = createRequire(import.meta.url)('../lib/pluralize.js');
+// Canonical Delacorte/Free-Shakespeare-in-the-Park venue check — do not
+// reinvent this as a local regex. review-guards.js already carries the
+// scoped-to-outdoor-festival-stage definition (ship-check P0, 2026-06-16);
+// duplicating it here as `/delacorte/i` would silently mislabel a future show
+// venue'd as "Shakespeare in the Park" without the word "Delacorte" (second-
+// opinion review, 2026-08-16).
+const { showHasFestivalVenue } = createRequire(import.meta.url)('../lib/review-guards.js');
 
 export const WEIGHTS = {
   BW_OPENING_BASE: 85,                // openings ARE the news — what subscribers wait for
@@ -159,11 +166,19 @@ export function scoreCandidates(input) {
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.OB_OPENING_GOLD_BUMP : 0;
     const verb = isReopen ? 'reopens' : 'opens';
+    // The Delacorte is Free Shakespeare in the Park — an outdoor, seasonal
+    // Public Theater production, not a commercial off-Broadway house. "Opens
+    // off-Broadway" reads as a category error to anyone who knows the venue
+    // (user, 2026-08-16). shows.json still carries category:'off-broadway'
+    // for market-routing/scoring purposes (out of scope here) — this only
+    // changes the newsletter's editorial phrasing, shared by both editions.
+    const isShakespeareInThePark = showHasFestivalVenue(s);
+    const loc = isShakespeareInThePark ? 'at Free Shakespeare in the Park' : 'off-Broadway';
     const headline = verdict
-      ? `${s.title} ${verb} off-Broadway to ${verdict}`
-      : `${s.title} ${verb} off-Broadway`;
+      ? `${s.title} ${verb} ${loc} to ${verdict}`
+      : `${s.title} ${verb} ${loc}`;
     out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} ${verb} off-Broadway to `, openingVenue: 'off-Broadway' });
+      verdictTier: tier, verdictPrefix: `${s.title} ${verb} ${loc} to `, openingVenue: isShakespeareInThePark ? 'Free Shakespeare in the Park' : 'off-Broadway' });
   }
 
   // 3. Recoupment announcements (rarest biz news — high weight)
@@ -258,14 +273,29 @@ export function scoreCandidates(input) {
   return out;
 }
 
-// Dedupe by `kind` so the subject doesn't read "Show A recoups, Show B recoups, …".
-// Keeps the highest-weighted candidate per kind (input is already sorted desc).
+// Opening kinds name a SPECIFIC show — two different shows opening the same
+// week are two different pieces of news, not a repeated one. Deduping these
+// by bare `kind` silently dropped the second WE (or BW/OB) opening whenever
+// two shows opened together, so the lede paired the surviving opening with an
+// unrelated closing instead — even when the dropped show reviewed BETTER
+// (user, 2026-08-16: How the Other Half Loves at 79 got dropped in favor of
+// Death Note at 74, purely on review-count tiebreak, and the lede's second
+// sentence went to an unrelated closing). Non-opening kinds (recoupment,
+// closing, mover, tony, buzz) are still one-example-per-kind — those really
+// do read repetitive/low-value as multiple near-identical sentences.
+const PER_SHOW_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening', 'we-gold-opening']);
+
+// Dedupe by `kind` so the subject doesn't read "Show A recoups, Show B recoups, …"
+// — except opening kinds, which dedupe per show (see PER_SHOW_KINDS above) so
+// multiple distinct openings in the same week can all surface. Keeps the
+// highest-weighted candidate per key (input is already sorted desc).
 function dedupeByKind(candidates) {
   const seen = new Set();
   const out = [];
   for (const c of candidates) {
-    if (seen.has(c.kind)) continue;
-    seen.add(c.kind);
+    const key = PER_SHOW_KINDS.has(c.kind) ? `${c.kind}:${c.show?.id ?? c.headline}` : c.kind;
+    if (seen.has(key)) continue;
+    seen.add(key);
     out.push(c);
   }
   return out;
