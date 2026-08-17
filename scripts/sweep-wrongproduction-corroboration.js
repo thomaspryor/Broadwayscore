@@ -62,7 +62,7 @@ function loadShows() {
 
 function run() {
   const outArg = process.argv.find(a => a.startsWith('--out='));
-  const outPath = outArg
+  const reportPath = outArg
     ? outArg.split('=')[1]
     : path.join(__dirname, '..', 'data', 'audit', 'wrongproduction-corroboration-sweep.json');
 
@@ -136,14 +136,14 @@ function run() {
     cvOnlyInformational,
   };
 
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   console.log(`Scanned ${scanned} review files (${flaggedTotal} wrongProduction:true, ${dateGuardFlagged} from the date guard).`);
   console.log(`STRONG candidates (theatre-record-month, before_preview only): ${strong.length}`);
   console.log(`WEAK candidates (roundup excerpt only — flag as usual, warn for review): ${weak.length}`);
   console.log(`Informational only (cv-affirms-production / after_close TR-month — not sweep-actionable): ${cvOnlyInformational.length}`);
-  console.log(`Report written to ${outPath}`);
+  console.log(`Report written to ${reportPath}`);
   if (strong.length) {
     console.log('\n--- STRONG candidates (verify live page before correcting) ---');
     for (const h of strong) {
