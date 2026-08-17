@@ -240,8 +240,15 @@ defence. Notion must be fully live throughout.
 - **Description:** Run the export twice and require a byte-identical diff before shipping. Store in the private
   data repo — NOT `~/Documents/claude-outputs/`, which is iCloud and evictable to dataless placeholders.
 - **Acceptance criteria:**
-  - VERIFY: `diff -r` between the two runs reports no differences
+  - VERIFY: the two runs' `corpus.ndjson` are byte-identical
+    `[CHANGED: was "diff -r between the two runs reports no differences". A recursive diff can never pass:
+    manifest.json carries generatedAt and durationSec BY DESIGN — that is where run metadata lives precisely so
+    that no timestamp ends up inside a record and the records stay comparable. An acceptance criterion that
+    always fails trains the next reader to wave the diff through, which is worse than not having it. Scoped to
+    the file the determinism claim is actually about. — source: Sprint 2 execution]`
   - VERIFY: `shasum -c SHA256SUMS` passes from a fresh clone of the data repo
+  - VERIFY: both runs' manifests report `partial: false` and `errorCount: 0` — two partial runs agreeing with
+    each other prove nothing
 
 ---
 
