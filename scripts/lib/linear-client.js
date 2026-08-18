@@ -4,6 +4,8 @@
  * would be a bigger footprint than a fetch() wrapper.
  */
 
+const fs = require('fs');
+const path = require('path');
 const { readEnvKeys } = require('./load-env');
 // Query/mutation TEXT for the dispatcher's calls (getIssue/listOpenIssues/
 // createComment below) lives in linear-dispatch.js as pure, no-I/O builder
@@ -432,6 +434,127 @@ async function createIssue({ teamId, title, description, priority, stateId, proj
   return data.issueCreate.issue;
 }
 
+// ── attachments (BRO-282: the thing to approve must live WITH the ask, not
+// on a local path on one machine) ──────────────────────────────────────────
+//
+// Linear's upload flow is two calls: fileUpload() gets a signed PUT URL +
+// the public assetUrl it will resolve to, then attachmentCreate() points the
+// issue at that assetUrl. The PUT itself is a plain (non-GraphQL) request to
+// Linear's asset storage, so it goes through the bare fetch(), not graphql().
+
+async function requestFileUpload({ contentType, filename, size }) {
+  const data = await graphql(
+    `mutation($contentType: String!, $filename: String!, $size: Int!) {
+      fileUpload(contentType: $contentType, filename: $filename, size: $size) {
+        success
+        uploadFile { assetUrl uploadUrl headers { key value } }
+      }
+    }`,
+    { contentType, filename, size }
+  );
+  if (!data.fileUpload || !data.fileUpload.success || !data.fileUpload.uploadFile) {
+    throw new Error(`fileUpload failed for ${filename}`);
+  }
+  return data.fileUpload.uploadFile;
+}
+
+async function createAttachment({ issueId, url, title, subtitle }) {
+  const data = await graphql(
+    `mutation($input: AttachmentCreateInput!) {
+      attachmentCreate(input: $input) { success attachment { id url title } }
+    }`,
+    { input: { issueId, url, title, subtitle } }
+  );
+  if (!data.attachmentCreate || !data.attachmentCreate.success) {
+    throw new Error(`attachmentCreate failed for issue ${issueId}`);
+  }
+  return data.attachmentCreate.attachment;
+}
+
+// Reads filePath off disk, uploads it to Linear's asset storage, and attaches
+// it to issueId. Returns the created attachment ({id, url, title}).
+//
+// The PUT is a plain fetch, not graphql() — so unlike every mutation in this
+// file it gets no retry and no timeout for free. 30s matches graphql()'s own
+// default per-attempt budget (see that function's header) so a hung asset
+// upload fails in the same order of magnitude as a hung GraphQL call, instead
+// of hanging the caller's crop-upload loop indefinitely (ship-check finding,
+// BRO-282).
+async function attachFileToIssue({ issueId, filePath, title, contentType = 'image/png' }) {
+  const buffer = fs.readFileSync(filePath);
+  const filename = path.basename(filePath);
+  const uploadFile = await requestFileUpload({ contentType, filename, size: buffer.length });
+  const headers = { 'Content-Type': contentType };
+  for (const h of uploadFile.headers || []) headers[h.key] = h.value;
+  const res = await fetch(uploadFile.uploadUrl, {
+    method: 'PUT',
+    headers,
+    body: buffer,
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!res.ok) throw new Error(`Linear file PUT failed: HTTP ${res.status}`);
+  return createAttachment({ issueId, url: uploadFile.assetUrl, title: title || filename });
+}
+
+// ── labels (awaiting-owner marker) ──────────────────────────────────────────
+
+async function lookupLabel(teamId, name) {
+  const data = await graphql(
+    `query($teamId: ID!, $name: String!) {
+      issueLabels(filter: { team: { id: { eq: $teamId } }, name: { eq: $name } }) {
+        nodes { id name }
+      }
+    }`,
+    { teamId, name }
+  );
+  return (data.issueLabels && data.issueLabels.nodes || [])[0] || null;
+}
+
+async function findOrCreateLabel(teamId, name) {
+  const existing = await lookupLabel(teamId, name);
+  if (existing) return existing;
+  try {
+    const created = await graphql(
+      `mutation($input: IssueLabelCreateInput!) {
+        issueLabelCreate(input: $input) { success issueLabel { id name } }
+      }`,
+      { input: { teamId, name } }
+    );
+    if (!created.issueLabelCreate || !created.issueLabelCreate.success) {
+      throw new Error(`issueLabelCreate failed for "${name}"`);
+    }
+    return created.issueLabelCreate.issueLabel;
+  } catch (err) {
+    // Two callers racing to create the label for the first time: the loser's
+    // create can fail on Linear's uniqueness constraint. Re-check once before
+    // giving up — the winner's label already satisfies this call.
+    const winner = await lookupLabel(teamId, name);
+    if (winner) return winner;
+    throw err;
+  }
+}
+
+// Additive — merges labelId into whatever labels the issue already carries,
+// since issueUpdate's labelIds input is a full overwrite (a caller who
+// naively passed `[labelId]` would silently strip every other label off the
+// issue). Reads the CURRENT label set itself, immediately before the write,
+// rather than trusting a caller-supplied snapshot from an earlier getIssue()
+// call — a snapshot taken before a slow operation (e.g. a multi-file upload
+// loop) widens the window for a concurrent labeler's change to get clobbered
+// by this overwrite (ship-check finding, BRO-282). first: 50 here (vs. 20 on
+// the general-purpose issue queries in linear-dispatch.js) because dropping a
+// label on THIS specific read-modify-write would silently delete it from the
+// issue, not just hide it from one report.
+async function addLabelToIssue(issueId, labelId) {
+  const data = await graphql(
+    `query($id: String!) { issue(id: $id) { labels(first: 50) { nodes { id } } } }`,
+    { id: issueId }
+  );
+  const currentLabelIds = ((data.issue && data.issue.labels && data.issue.labels.nodes) || []).map((l) => l.id);
+  const labelIds = Array.from(new Set([...currentLabelIds, labelId]));
+  return updateIssue(issueId, { labelIds });
+}
+
 module.exports = {
   TEAM_KEY,
   graphql,
@@ -449,4 +572,9 @@ module.exports = {
   listProjects,
   createProject,
   createIssue,
+  requestFileUpload,
+  createAttachment,
+  attachFileToIssue,
+  findOrCreateLabel,
+  addLabelToIssue,
 };
