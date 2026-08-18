@@ -11,6 +11,13 @@ import {
   PRIORITY_SPELLINGS,
   normalizePriorityTier,
   isLivePriorityTier,
+  deriveIssueId,
+  deterministicUuidV4,
+  isAlreadyExistsError,
+  NOTION_ISSUE_NAMESPACE,
+  classifyCorpusRecord,
+  mapNotionStatusToLinearState,
+  normalizeLabelName,
 } from './linear-import-rules.js';
 
 test('extractNotionId finds the tag anywhere in the description, not just line 1', () => {
@@ -249,4 +256,140 @@ test('push-with-retry cards are production bugs, not fleet self-reference', () =
     classifyNoise('Session-system v2 subtraction V1: queue-first migration'),
     'fleet_selfref'
   );
+});
+
+// ── Sprint 3: corpus-sourced import ────────────────────────────────────────
+
+test('deriveIssueId is deterministic and namespaced per source', () => {
+  const page = '3b2637c5-416f-81b5-9040-c95cf463ba19';
+  const a = deriveIssueId(page);
+  const b = deriveIssueId(page);
+  assert.equal(a, b, 'the SAME pageId must always yield the SAME issue id — this is the entire idempotency guarantee');
+  assert.notEqual(a, deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba18'), 'different pages must not collide');
+  assert.notEqual(a, deriveIssueId(page, 'mirror-task'), 'the two id spaces must not overlap');
+  assert.equal(deriveIssueId(null), null);
+  assert.equal(deriveIssueId(''), null);
+});
+
+test('the derived id is formatted as v4, because Linear REJECTS v5', () => {
+  // Measured live 2026-08-18: issueCreate with a v5 id fails
+  //   constraints: { isUuid: "id must be a UUID" }
+  // and the identical request succeeds with a v4 id. The plan and the Sprint 3
+  // handoff both specify UUIDv5; both are wrong against the real API. If this
+  // assertion is ever "fixed" back to /5[0-9a-f]{3}/, every create in the bulk
+  // import fails argument validation.
+  const id = deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba19');
+  assert.match(id, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+});
+
+test('the id namespace is FROZEN — changing it re-imports the whole board', () => {
+  // A new namespace makes every already-imported card look un-imported, and a
+  // replay would then duplicate 1,949 issues into a board with no bulk delete.
+  // If this assertion fails, someone regenerated the constant; do not "fix" the
+  // test.
+  assert.equal(NOTION_ISSUE_NAMESPACE, '6f1a7d9c-3b52-4e18-9a24-8c0f5d6e7b31');
+  assert.equal(
+    deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba19'),
+    deterministicUuidV4('notion-page:3b2637c5-416f-81b5-9040-c95cf463ba19')
+  );
+  // A pinned value, so a change to the hash, the namespace, or the key format
+  // is caught here rather than by a duplicate import discovered on the board.
+  assert.equal(deriveIssueId('page-a'), deterministicUuidV4('notion-page:page-a'));
+});
+
+test('the already-exists conflict is recognised as success, other input errors are not', () => {
+  // The REAL replay semantics, measured live 2026-08-18. A create replayed with
+  // an id that exists does not silently no-op (as the plan assumed) — it comes
+  // back as this. The importer counts it as "already imported" and continues;
+  // anything else must still abort the run.
+  const conflict = Object.assign(new Error('Linear GraphQL error: conflict on insert of Issue'), {
+    linearErrors: [{
+      message: 'conflict on insert of Issue',
+      extensions: {
+        code: 'INPUT_ERROR',
+        userPresentableMessage: 'Entity Issue with id 2edea22f-f030-4e2e-bcc0-fd60bbea2c02 already exists.',
+      },
+    }],
+  });
+  assert.equal(isAlreadyExistsError(conflict), true);
+
+  const otherInputError = Object.assign(new Error('bad state'), {
+    linearErrors: [{ message: 'Argument Validation Error', extensions: { code: 'INPUT_ERROR', userPresentableMessage: 'id must be a UUID.' } }],
+  });
+  assert.equal(isAlreadyExistsError(otherInputError), false, 'a malformed request must NOT be mistaken for an existing issue');
+  assert.equal(isAlreadyExistsError(new Error('network')), false);
+  assert.equal(isAlreadyExistsError(null), false);
+});
+
+const rec = (props) => ({ id: 'p1', properties: props });
+
+test('every corpus record gets exactly one NAMED disposition — no "other" bucket', () => {
+  const done = classifyCorpusRecord(rec({ Name: 'x', Status: 'Done' }));
+  assert.equal(done.disposition, 'skip');
+  assert.equal(done.reason, 'notion_done');
+  assert.equal(classifyCorpusRecord(rec({ Name: '  ', Status: 'Not started' })).reason, 'blank_title');
+  assert.equal(
+    classifyCorpusRecord(rec({ Name: 'BSC Daily: Credits: ScrapingBee', Status: 'Not started' })).reason,
+    'noise:bsc_daily'
+  );
+  // Done outranks noise, so the reason names the real cause.
+  assert.equal(classifyCorpusRecord(rec({ Name: 'BSC Daily: x', Status: 'Done' })).reason, 'notion_done');
+});
+
+test('the live/archive split routes on the priority TIER, legacy spellings included', () => {
+  for (const p of ['P0 Now', 'P0 Urgent', 'P0', 'P1 Next', 'P1 Now', 'P1 Soon', 'P1', 'High']) {
+    const c = classifyCorpusRecord(rec({ Name: 'real work', Status: 'Not started', Priority: p }));
+    assert.equal(c.disposition, 'live', `${p} must import live`);
+    assert.notEqual(c.project, 'Archive');
+  }
+  for (const p of ['P2 Later', 'P2', 'P3 Backlog', 'P3', 'P4', 'P9', 'Medium', 'Low', 'Done', '']) {
+    const c = classifyCorpusRecord(rec({ Name: 'real work', Status: 'Not started', Priority: p }));
+    assert.equal(c.disposition, 'archive', `${p} must import archived`);
+    assert.equal(c.project, 'Archive');
+  }
+});
+
+test('an unprioritised card archives rather than landing on the dispatchable side', () => {
+  const c = classifyCorpusRecord(rec({ Name: 'no priority set', Status: 'Not started' }));
+  assert.equal(c.disposition, 'archive');
+  assert.equal(c.linearPriority, 0, 'no priority is 0 (No priority), never 4 (Low)');
+});
+
+test('Notion status maps to a Linear state; only In progress keeps its state', () => {
+  assert.equal(mapNotionStatusToLinearState('In progress'), 'In Progress');
+  assert.equal(mapNotionStatusToLinearState('Not started'), 'Backlog');
+  assert.equal(mapNotionStatusToLinearState('Paused'), 'Backlog');
+  assert.equal(mapNotionStatusToLinearState(''), 'Backlog');
+});
+
+test('tag labels are normalised so one idea is one label', () => {
+  assert.equal(normalizeLabelName('Opening Night'), 'opening-night');
+  assert.equal(normalizeLabelName('opening-night'), 'opening-night');
+  assert.equal(normalizeLabelName('  Scoring_Quality  '), 'scoring-quality');
+  assert.equal(normalizeLabelName('CI/CD'), 'cicd');
+  assert.equal(normalizeLabelName('x'), null, 'one character is not a useful label');
+  assert.equal(normalizeLabelName(''), null);
+  assert.equal(normalizeLabelName('!!!'), null);
+  assert.equal(normalizeLabelName('a'.repeat(41)), null);
+});
+
+test('tags come back deduped from either a string or an array', () => {
+  const c = classifyCorpusRecord(
+    rec({ Name: 'w', Status: 'Not started', Priority: 'P1', Tags: 'CI, ci, Opening Night' })
+  );
+  assert.deepEqual(c.labels, ['ci', 'opening-night']);
+  const c2 = classifyCorpusRecord(
+    rec({ Name: 'w', Status: 'Not started', Priority: 'P1', Tags: ['CI', 'Opening Night'] })
+  );
+  assert.deepEqual(c2.labels, ['ci', 'opening-night']);
+});
+
+test('two distinct pages sharing one title both survive classification (S3-T3)', () => {
+  // The fact that killed the exact-title dedupe: 28 titles are shared by 69
+  // distinct un-Done cards, so deduping on title silently collapses 41 of them.
+  const a = { id: 'page-a', properties: { Name: 'main red', Status: 'Not started', Priority: 'P0 Now' } };
+  const b = { id: 'page-b', properties: { Name: 'main red', Status: 'Not started', Priority: 'P0 Now' } };
+  assert.equal(classifyCorpusRecord(a).disposition, 'live');
+  assert.equal(classifyCorpusRecord(b).disposition, 'live');
+  assert.notEqual(deriveIssueId(a.id), deriveIssueId(b.id), 'same title, different pages, different issue ids');
 });
