@@ -224,23 +224,24 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-18T14:31:02.697Z",
+      "lastSeen": "2026-08-18T15:25:58.854Z",
       "lastNotifiedAt": "2026-08-18T14:31:02.697Z",
       "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-18T14:31:02.768Z",
+      "lastSeen": "2026-08-18T15:25:58.927Z",
       "lastNotifiedAt": "2026-08-18T14:30:57.778Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 3
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -389,12 +390,12 @@
       "requestedDisposition": "human",
       "title": "Review-gap audit refused to write — 17.2% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-18T14:30:49.736Z",
+      "lastSeen": "2026-08-18T15:25:45.767Z",
       "lastNotifiedAt": "2026-08-18T11:19:50.045Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -905,12 +906,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-18T14:30:53.096Z",
+      "lastSeen": "2026-08-18T15:25:49.014Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 42
+      "silentRefires": 43
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
