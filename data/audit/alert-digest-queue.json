@@ -143,17 +143,6 @@
     "queuedAt": "2026-08-17T13:10:08.867Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 78.3% (398/508)\noff-broadway: 46.9% (160/341)\nwest-end: 69.8% (410/587)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (79h)\nA Midsummer Night's Dream - Globe — telegraph (79h)\nA Midsummer Night's Dream - Globe — thestage (79h)\nA Midsummer Night's Dream - Globe — times-uk (79h)\nA Midsummer Night's Dream — financialtimes (79h)\n… 205 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (79h)\n& Juliet — nydailynews (79h)\nThe Book of Mormon — usatoday (79h)\nBuena Vista Social Club — broadwaynews (79h)\nBuena Vista Social Club — nydailynews (79h)\n… 30 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-17T17:21:25.972Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -231,25 +220,25 @@
     "queuedAt": "2026-08-18T13:14:46.580Z"
   },
   {
-    "conditionKey": "feedback-outcomes:2026-08-18T13:13:20.604143+00:00",
-    "title": "Feedback: 1 of 1 needs you",
-    "description": "1 message from users came in. 1 of them stalled and needs a person.\n\nStarstruck (Regional) — The site deliberately did not act on this: show \"Starstruck\" (regional) already in catalog as starstruck-regional-2026; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Ben West’s review from The Musical Theatre Report to the Scorecard page for Starstruck. PS: add picture the scorecards for both The Apple Boys and Starstruck, and please add an Audience Grade for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/605",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32146704345",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-18T14:12:41.682Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2501/2250 reqs)",
-    "description": "Zone web_unlocker2 billed 2501 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n3 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1633), opening-night-poller.js (425), audit-show-review-gap.js (84).",
-    "severity": "critical",
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.7% (380/489)\noff-broadway: 45.3% (148/327)\nwest-end: 70.1% (391/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (101h)\nA Midsummer Night's Dream - Globe — telegraph (101h)\nA Midsummer Night's Dream - Globe — thestage (101h)\nA Midsummer Night's Dream - Globe — times-uk (101h)\nA Midsummer Night's Dream — financialtimes (101h)\n… 210 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (101h)\nThe Book of Mormon — usatoday (101h)\nHeathers The Musical — dailybeast (101h)\nHeathers The Musical — ew (101h)\nOthello — dailybeast (101h)\n… 4 more circuit-open cell(s)",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-18T14:21:26.182Z"
+    "queuedAt": "2026-08-18T14:30:57.779Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "179 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T14:31:02.697Z"
   }
 ]
