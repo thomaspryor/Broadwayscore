@@ -181,7 +181,12 @@ function pathWithClaudeBinDir(pathValue = process.env.PATH) {
 }
 
 function strippedEnv(extra = {}) {
-  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', ...AUTH_KEYS];
+  // CLAUDE_BIN must survive the strip: task #1780 made the spawn call resolve
+  // the binary against this merged env (not bare process.env), so dropping it
+  // here would silently break the documented operator-pin mechanism for
+  // anyone who sets CLAUDE_BIN as a real env var rather than passing it via
+  // the `extra` (opts.env) override.
+  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'CLAUDE_BIN', ...AUTH_KEYS];
   const env = {};
   for (const k of keep) { if (process.env[k] !== undefined) env[k] = process.env[k]; }
   env.HOME = env.HOME || os.homedir();
@@ -210,12 +215,17 @@ function strippedEnv(extra = {}) {
 // successful run. Probe the actual auth shape BEFORE spawning the real session
 // so a doomed pass never silently "succeeds" with a login prompt as its output.
 function authPing(extraEnv) {
-  const r = spawnSync(resolveClaudeBin(), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+  // Same effective-env-before-resolve fix as runClaudeCli (task #1780): probe
+  // the SAME binary the real spawn would use, including any CLAUDE_BIN pin
+  // passed via extraEnv — resolving against bare process.env would silently
+  // ping a different binary than the one the pass actually runs.
+  const pingEnv = { ...process.env, ...resolveAuthEnv(), ...extraEnv };
+  const r = spawnSync(resolveClaudeBin(pingEnv), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
     // resolveAuthEnv() sits above process.env for the same reason as in
     // strippedEnv: under launchd the keys are absent, and the probe has to
     // exercise the SAME credentials the real spawn will get or it proves
     // nothing. extraEnv still wins so probe 1 can force the no-API-key shape.
-    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...resolveAuthEnv(), ...extraEnv } });
+    { encoding: 'utf8', timeout: 120000, env: pingEnv });
   // A spawn error (e.g. ENOENT) sets r.error and leaves status/stdout/stderr
   // null — falling through to `exit ${r.status}` would print the
   // uninformative "exit null" for exactly the failure this module exists to
@@ -436,8 +446,15 @@ function runClaudeCli(opts) {
 
   return new Promise((resolve) => {
     let child;
+    // Resolve against the EFFECTIVE (post-merge) env, not bare process.env —
+    // otherwise a caller's env.CLAUDE_BIN override (the documented operator
+    // pin, and the test seam for substituting a fake binary) never takes
+    // effect: resolveClaudeBin() would silently probe the real candidate
+    // list instead (task #1780 — this exact gap invoking the real installed
+    // `claude` under opening-night-monitor.test.mjs's fixtures).
+    const spawnEnv = strippedEnv(env);
     try {
-      child = spawn(resolveClaudeBin(), args, { cwd, env: strippedEnv(env), stdio: ['pipe', 'pipe', 'pipe'] });
+      child = spawn(resolveClaudeBin(spawnEnv), args, { cwd, env: spawnEnv, stdio: ['pipe', 'pipe', 'pipe'] });
     } catch (e) {
       return resolve(done({ stage: STAGES.ERROR, errorDetail: `spawn failed: ${e.message}` }));
     }
