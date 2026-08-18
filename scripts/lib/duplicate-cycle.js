@@ -1,5 +1,7 @@
+const { DUPLICATE_POINTER_FIELDS } = require('./canonical-duplicate-pointers');
+
 /**
- * Shared duplicateOf cycle-walk, used by both the write-time guard
+ * Shared duplicate-pointer cycle-walk, used by both the write-time guard
  * (review-write-guard.js — would writing this edge COMPLETE a cycle?) and the
  * post-hoc audit + rebuild tiebreak (audit-duplicate-of-url-mismatch.js,
  * rebuild-all-reviews.js — does the corpus already CONTAIN one?).
@@ -11,16 +13,39 @@
  * N-hop walk was added). One walk, reused everywhere, means write-time
  * refusal and audit-time detection can never disagree about what counts as a
  * cycle.
+ *
+ * duplicateTextOf blind spot (Notion #1750, 2026-08-17 — loves-labours-lost
+ * times-uk--clive-davis): the walk originally followed `duplicateOf` only.
+ * A corpus scan the same day found 386 mutual cycles, every one of the shape
+ * A.duplicateOf=B + B.duplicateTextOf=A — none refusable at write time
+ * because the walk went cold the moment it reached a node whose only pointer
+ * was duplicateTextOf. Each hop now checks every field in
+ * DUPLICATE_POINTER_FIELDS (canonical-duplicate-pointers.js), taking the
+ * first one present on that node. A single edge per node (not a branch per
+ * field) keeps this O(maxHops) — safe to run on every review write — and
+ * matches every observed real-world case, where a node carries at most one
+ * of the two pointers.
  */
 
+/** First valid duplicate-pointer target on `data`, or null. */
+function pointerTarget(data) {
+  if (!data) return null;
+  for (const field of DUPLICATE_POINTER_FIELDS) {
+    const val = data[field];
+    if (typeof val === 'string' && val.endsWith('.json')) return val;
+  }
+  return null;
+}
+
 /**
- * Walk the duplicateOf chain starting at `startBasename` looking for a cycle.
+ * Walk the duplicate-pointer chain (duplicateOf, duplicateTextOf — see
+ * DUPLICATE_POINTER_FIELDS) starting at `startBasename` looking for a cycle.
  * Bounded by maxHops, not a fixed constant elsewhere — callers should pass
  * the show dir's own file count (or similar) since a cycle can't be longer
  * than the number of files that could participate in it.
  *
  * @param {string} startBasename
- * @param {(basename: string) => ({duplicateOf?: string}|null)} load
+ * @param {(basename: string) => ({duplicateOf?: string, duplicateTextOf?: string}|null)} load
  * @param {number} maxHops
  * @returns {{cycleFound: boolean, chain: string[]}} chain includes every
  *   node visited; when cycleFound, the last entry duplicates an earlier one.
@@ -29,19 +54,18 @@ function findDuplicateOfCycle(startBasename, load, maxHops) {
   const chain = [startBasename];
   const seen = new Set([startBasename]);
   const startData = load(startBasename);
-  let cursor = startData && typeof startData.duplicateOf === 'string' && startData.duplicateOf.endsWith('.json')
-    ? startData.duplicateOf
-    : null;
+  let cursor = pointerTarget(startData);
   for (let hop = 0; hop < maxHops && cursor; hop++) {
     if (seen.has(cursor)) {
       chain.push(cursor);
       return { cycleFound: true, chain };
     }
     const cursorData = load(cursor);
-    if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
+    const next = pointerTarget(cursorData);
+    if (!cursorData || !next) break;
     chain.push(cursor);
     seen.add(cursor);
-    cursor = cursorData.duplicateOf;
+    cursor = next;
   }
   return { cycleFound: false, chain };
 }
