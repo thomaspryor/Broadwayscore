@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-16T00:00:00.000Z",
+    "lastUpdated": "2026-08-17T04:00:00.000Z",
     "version": "2.1.0",
     "lastChange": "task #1679: register 5 legit new outlets (closeupculture, stagetopage, thenerve, northernartsreview, the-daily-texan) that appeared since the --strict baseline was cut; baselined 6 non-outlet junk IDs (UGC diary comment, customer-review widget, venue press release, critic-quote roundup, school-trip booking page, wrong-production SEO blog) instead of registering them as press outlets"
   },
@@ -7040,7 +7040,8 @@
         "sunday-herald"
       ],
       "accessModel": "defunct",
-      "region": "london"
+      "region": "london",
+      "domain": "heraldscotland.com"
     },
     "arkansas-democrat-gazette": {
       "displayName": "Arkansas Democrat Gazette",
@@ -8471,7 +8472,8 @@
         "daily-echo"
       ],
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domain": "dailyecho.co.uk"
     },
     "midhurst-and-petworth-observer": {
       "displayName": "Midhurst and Petworth Observer",
@@ -8489,7 +8491,8 @@
         "the-bucks-herald"
       ],
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domain": "bucksherald.co.uk"
     },
     "click-liverpool": {
       "displayName": "Click Liverpool",
@@ -8498,7 +8501,8 @@
         "click-liverpool"
       ],
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domain": "clickliverpool.com"
     },
     "evening-chronicle": {
       "displayName": "Evening Chronicle",
@@ -8507,7 +8511,8 @@
         "evening-chronicle"
       ],
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domain": "chroniclelive.co.uk"
     },
     "liverpool-echo": {
       "displayName": "Liverpool Echo",
@@ -8536,7 +8541,8 @@
         "nottingham-confidential"
       ],
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domain": "nottinghamconfidential.blogspot.com"
     },
     "the-journal": {
       "displayName": "The Journal",
@@ -8562,7 +8568,8 @@
         "western-mail"
       ],
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domain": "walesonline.co.uk"
     },
     "mountain-xpress": {
       "displayName": "Mountain Xpress",
@@ -9549,7 +9556,8 @@
     "oxfordshire-guardian": {
       "displayName": "Oxfordshire Guardian",
       "region": "london",
-      "tier": 3
+      "tier": 3,
+      "domain": "oxfordshireguardian.co.uk"
     },
     "herald": {
       "displayName": "The Herald (Glasgow)",
@@ -9572,7 +9580,8 @@
     "tribune": {
       "displayName": "Tribune Magazine",
       "region": "london",
-      "tier": 3
+      "tier": 3,
+      "domain": "tribunemag.co.uk"
     },
     "sunday-telegraph": {
       "displayName": "Sunday Telegraph",
