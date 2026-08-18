@@ -113,12 +113,13 @@ describe('findUndeclaredDomainCollisions', () => {
     assert.deepStrictEqual(collisions, []);
   });
 
-  test('DECLARED_ALIAS_OVERLAPS is exactly the four known domain/domainAlias overlaps', () => {
+  test('DECLARED_ALIAS_OVERLAPS is exactly the five known domain/domainAlias overlaps', () => {
     assert.deepStrictEqual(DECLARED_ALIAS_OVERLAPS.map((p) => [...p].sort()), [
       ['abc-news', 'ap'],
       ['bobs-theater-blog', 'gotham-playgoer'],
       ['dc-metro-theater-arts', 'dctheatrescene'],
       ['chicago-sun-times', 'suntimes'],
+      ['herald', 'the-herald'],
     ]);
   });
 });
