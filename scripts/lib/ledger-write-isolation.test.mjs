@@ -35,11 +35,30 @@ const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 // Modules whose main() reaches a dispatch-ledger append site. Matched without
 // the extension too, so `require('./bsc-next')` is not a blind spot.
-// linear-next.js is here because it defaults appendLedgerEntry the same way
-// (scripts/linear-next.js:257) with append sites at :453/:504/:551/:564. Its
-// calls happen to be safe today, but it had ZERO guard coverage — the next edit
-// would have reintroduced the identical bug silently.
-const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'bsc-reconcile', 'dispatch-watchdog', 'linear-next'];
+// SCOPE, stated honestly: this guard covers modules whose ledger write is
+// reachable through an INJECTABLE dep on `main(argv, deps)`. That is the only
+// shape it can check, because stubbing that dep is the only remediation it can
+// recommend.
+//
+// linear-next.js belongs here — it defaults appendLedgerEntry the same way
+// (scripts/linear-next.js:257) with append sites at :453/:504/:551/:564.
+//
+// bsc-reconcile and dispatch-watchdog were listed here and have been REMOVED,
+// because listing them was worse than omitting them — it advertised coverage
+// the guard cannot provide, and the offender message would have taught a fix
+// that does nothing:
+//   - scripts/bsc-reconcile.js:812 is `async function main()` with ZERO params.
+//     Its `appendLedgerFn` dep (:360) belongs to `reconcileStalledTasks` (:355),
+//     which this guard never scans. Listing it caused a measured false negative:
+//     the alias was accepted at 0 sites where it was correct and 23 where it was
+//     wrong, so a bsc-next test stubbing only `appendLedgerFn` passed while
+//     writing the real ledger.
+//   - scripts/dispatch-watchdog.js:549 is likewise `async function main()` with
+//     no params, and :281/:295/:408 call dispatchLedger.appendEntry DIRECTLY,
+//     with no seam to stub at all.
+// Neither leaks today (verified by running their suites against the real ledger
+// line count). Covering them needs a different mechanism, tracked separately.
+const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'linear-next'];
 
 const MAX_SPREAD_DEPTH = 8;
 
@@ -169,17 +188,17 @@ function resolveBinding(masked, name) {
   return masked.slice(start, end + 1);
 }
 
-// The dep is not named identically across writers: bsc-next.js:749,
-// bsc-prune.js:71 and linear-next.js:257 call it `appendLedgerEntry`, but
-// bsc-reconcile.js:360 calls it `appendLedgerFn`. Checking only the first name
-// would report a correctly-stubbed bsc-reconcile test as an offender and red
-// main CI — the exact false-positive class an adversarial review flagged.
-const STUB_NAMES = ['appendLedgerEntry', 'appendLedgerFn'];
+// Anchored to KEY position on purpose. A bare `text.includes('appendLedgerEntry')`
+// also matches the key `appendLedgerEntryFn:` — which is the LOCAL alias the
+// writer modules destructure into (scripts/bsc-next.js:749), not the dep key.
+// A deps object carrying `appendLedgerEntryFn:` overrides nothing, so the
+// substring form judged a real ledger write as safe.
+const STUB_KEY = /[{,]\s*appendLedgerEntry\s*[:,}]/;
 
 // Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
   if (!text) return false;
-  if (STUB_NAMES.some(n => text.includes(n))) return true;
+  if (STUB_KEY.test(text)) return true;
   if (depth > MAX_SPREAD_DEPTH) return false;
 
   const names = new Set();
@@ -270,9 +289,7 @@ test('guard parser: resolves legitimate stubs through helpers, and ignores comme
   const viaFunction = "function baseDeps() { return { appendLedgerEntry: () => {} }; }\nmain(['--id','1'], { ...baseDeps() });";
   const viaArrow = "const baseDeps = () => ({ appendLedgerEntry: () => {} });\nmain(['--id','1'], { ...baseDeps() });";
   const viaVariable = "const base = { appendLedgerEntry: () => {} };\nconst deps = { ...base };\nmain(['--id','1'], deps);";
-  // bsc-reconcile.js names the same dep appendLedgerFn — must also count as stubbed.
-  const viaAltName = "main(['--id','1'], { appendLedgerFn: () => {} });";
-  for (const [label, src] of [['function', viaFunction], ['arrow', viaArrow], ['variable chain', viaVariable], ['appendLedgerFn alias', viaAltName]]) {
+  for (const [label, src] of [['function', viaFunction], ['arrow', viaArrow], ['variable chain', viaVariable]]) {
     const masked = maskSource(src);
     for (const s of callSlices(masked)) {
       const d = depsText(masked, s);
@@ -284,4 +301,25 @@ test('guard parser: resolves legitimate stubs through helpers, and ignores comme
   // the per-line quote-parity draft red-lit CI on exactly this shape.
   const commented = "// don't call main( here\nconst x = 1;";
   assert.equal(callSlices(maskSource(commented)).length, 0, 'comment text was parsed as code');
+});
+
+// These two NEGATIVE cases each correspond to a real defect that shipped and had
+// to be reverted. Without them the guard silently stops protecting.
+test('guard parser: near-miss names do NOT count as stubbing the writer', () => {
+  const cases = [
+    // Shipped 2026-08-18 and reverted: `appendLedgerFn` is bsc-reconcile's dep for
+    // reconcileStalledTasks, NOT for main(). Accepting it globally meant a bsc-next
+    // test could stub the wrong name and still write the real ledger.
+    ['appendLedgerFn on a main() call', "main(['--id','1'], { appendLedgerFn: () => {} });"],
+    // `appendLedgerEntryFn` is the LOCAL alias the writer destructures into
+    // (bsc-next.js:749). As a deps key it overrides nothing, so it must not pass.
+    ['appendLedgerEntryFn as a deps key', "main(['--id','1'], { appendLedgerEntryFn: () => {} });"],
+  ];
+  for (const [label, src] of cases) {
+    const masked = maskSource(src);
+    const slices = callSlices(masked).filter(s => depsText(masked, s) !== null);
+    assert.ok(slices.length > 0, `${label}: parser found no deps-bearing call`);
+    assert.ok(slices.every(s => !stubsLedgerWrite(masked, depsText(masked, s))),
+      `${label}: was accepted as a stub, but it does not override the real dep`);
+  }
 });
