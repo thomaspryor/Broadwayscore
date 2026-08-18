@@ -42,6 +42,15 @@ test('does NOT rescue a genuinely different show (wrong-show poisoning)', () => 
   );
 });
 
+test('does NOT rescue via substring collision (a leftover subtitle word inside an unrelated word)', () => {
+  // "Frankenstein" contains "frank" as a literal substring — a plain
+  // .includes() check (the pre-fix bug, #1763 code review) let this pass.
+  assert.equal(
+    isPunctuationFalsePositive('Frankenstein - Did They Like It?', 'Morgan Bassichis: Can I Be Frank?'),
+    false
+  );
+});
+
 test('does NOT rescue a generic aggregator homepage title (soft-404)', () => {
   assert.equal(
     isPunctuationFalsePositive(

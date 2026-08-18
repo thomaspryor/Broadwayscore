@@ -1054,19 +1054,32 @@ function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategori
  */
 function isPunctuationFalsePositive(pageTitle, showTitle) {
   const decoded = (pageTitle || '')
-    .replace(/&#039;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+    .replace(/&#039;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, ' ');
+  // Slash/underscore/parens/apostrophe become word breaks — "Bernhardt/Hamlet"
+  // needs to split into two words, and "Loop's"/"Star's" need the possessive
+  // 's' peeled off as its own (filtered-out) token rather than fused onto the
+  // real word, or a legitimate whole-word match ("loop" vs "loops") fails.
+  // Remaining punctuation (periods, etc.) is dropped with no space so dotted
+  // acronyms ("Q.E.D.") still collapse to "qed".
   const stripPunct = s => s.toLowerCase()
-    .replace(/[/\\_]+/g, ' ')
+    .replace(/[‘’‚′]/g, "'")
+    .replace(/[/\\_()']+/g, ' ')
     .replace(/[^a-z0-9\s]+/g, '')
     .replace(/\s+/g, ' ').trim();
   const decodedStripped = stripPunct(decoded);
+  // Whole-word match, not substring — a substring check here previously let
+  // a short leftover word ("frank") false-rescue a page about a wholly
+  // different, unrelated show ("Frankenstein") — found in review of #1763.
+  const hasWholeWord = (text, word) =>
+    new RegExp(`(?:^|\\s)${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\s|$)`).test(text);
   const titleCandidates = [showTitle];
   const colonIdx = showTitle.indexOf(':');
   if (colonIdx !== -1) titleCandidates.push(showTitle.slice(colonIdx + 1));
   return titleCandidates.some(t => {
     const titleWords = stripPunct(t)
       .split(/\s+/).filter(w => w.length > 1 && !TITLE_GENERIC_WORDS.has(w));
-    const ownHits = titleWords.filter(w => decodedStripped.includes(w)).length;
+    const ownHits = titleWords.filter(w => hasWholeWord(decodedStripped, w)).length;
     return titleWords.length > 0 && ownHits >= Math.min(2, titleWords.length);
   });
 }
