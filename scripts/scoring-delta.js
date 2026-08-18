@@ -176,6 +176,14 @@ const INCLUSION_FILES = [
   // watched, so the dateSource: 'llm-scoring' exemption landed with this gate
   // reporting "nothing to check".
   'scripts/lib/date-plausibility.js',
+  // Fourth of this exact shape (task #1678): the block in review-write-guard.js
+  // that CALLS evaluateDatePlausibility/classifyClassAContamination is itself an
+  // inclusion decision — whether a late-arriving implausible date on an
+  // already-scored record gets stamped wrongProduction (excluded) or written
+  // live. date-plausibility.js/cross-market-contamination.js were already
+  // watched, but the caller wasn't, so a change to WHEN/WHETHER those checks
+  // fire (not what they return) would have run this gate to "nothing to check".
+  'scripts/lib/review-write-guard.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but
