@@ -86,6 +86,21 @@ function extractQuotedTokens(text) {
 // the minority of error sites that quote the id itself, and every other
 // per-show error in this file falls through to allAttributed=false — the
 // discovery gate's own error surface (task #1439).
+// Same-title-sibling errors (validate-data.js ~608) interpolate the OTHER
+// show's id directly into prose — "... has openingDate identical to
+// same-title sibling ${inherited.siblingId} — date was cloned..." — with no
+// quotes or parens around it. Card #1786: this left the error naming the
+// PRE-EXISTING show (id in parens, not itself a discovery candidate) with no
+// extractable reference to the actual candidate (the sibling id, mentioned
+// only in free text), so allAttributed came back false and blocked the
+// entire batch — every unrelated opening-night status flip in the run —
+// even though the mirror-direction error (fired from the candidate's own
+// iteration) WAS attributable on its own. A bare show-id-shaped token
+// (kebab-case ending in a 4-digit year) catches these regardless of
+// surrounding punctuation, so at least one of the pair's two errors always
+// resolves to the real candidate.
+const BARE_SHOW_ID_RE = /\b[a-z0-9]+(?:-[a-z0-9]+)+-\d{4}\b/g;
+
 function extractCandidateTokens(text) {
   const out = extractQuotedTokens(text);
   let m;
@@ -93,6 +108,8 @@ function extractCandidateTokens(text) {
   while ((m = PAREN_GROUP_RE.exec(text)) !== null) {
     for (const part of m[1].split(',')) out.push(part.trim());
   }
+  BARE_SHOW_ID_RE.lastIndex = 0;
+  while ((m = BARE_SHOW_ID_RE.exec(text)) !== null) out.push(m[0]);
   return out;
 }
 
