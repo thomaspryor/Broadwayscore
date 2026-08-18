@@ -242,6 +242,15 @@ function auditOutletRegistry() {
 
       if (!reviewOutletId) continue;
 
+      // Files already flagged by the content-quality pipeline as not being a
+      // review at all (ticket/hotel-booking/venue pages ingested by mistake,
+      // isNonReviewReason explains why) never need a registry entry — that's
+      // the outlet-registration equivalent of registering a 404 page. Without
+      // this, every new junk URL the aggregator-gap ingester picks up trips
+      // --strict again (task #1756, main red 9h+: charingcrosstheatre,
+      // londontopia, hoteldirect all hit this in one show in under a day).
+      if (review.isNonReview === true) continue;
+
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {
         outletsInReviews.set(reviewOutletId, {
