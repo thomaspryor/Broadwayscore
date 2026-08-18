@@ -45,6 +45,19 @@ const { indexLiveTasks, TERMINAL_CARD_STATUSES, DEFAULT_IDLE_MS: LIVENESS_IDLE_M
 // cmdPush must never overwrite these with Done — Archived/Cancelled is a
 // deliberate human decision (unlike Done itself, which Done->Done is a
 // harmless idempotent re-confirm, pre-existing behavior, out of scope here).
+// Task #1778 considered adding 'Paused' here too (planPendingClosure writes a
+// local 'completed' for a pending mirror whose card is Paused) and rejected
+// it after adversarial review (gpt-5.4-mini, ship-check): 'Paused' is NOT a
+// terminal status like Archived/Cancelled — an entry can legitimately carry
+// syncedStatus:'Paused' from planLivenessDowngrade's OWN non-terminal
+// liveness downgrade (in_progress -> pending while Notion says Paused, same
+// write path sets syncedStatus off card.status) and LATER be genuinely
+// completed by a session, independent of this task's reconciliation path.
+// Blocking ALL Paused-tagged entries here would silently block that
+// legitimate future push too. The narrower, correct fix — stamping
+// `pushed:true` only on the specific entries THIS reconciliation closes — is
+// in reconcileStaleMirrors's write path below, scoped to exactly the risk it
+// creates rather than to every entry that happens to carry 'Paused'.
 const NEVER_OVERWRITE_WITH_DONE = new Set([...TERMINAL_CARD_STATUSES].filter((s) => s !== 'Done'));
 
 // Card #1410 what-else follow-up: the pre-BRO-286 "Fix this" digest button
@@ -608,6 +621,7 @@ function cmdPull(args) {
 
   const release = dry ? (() => {}) : acquireLock(dir);
   if (!release) { console.error('[sync] another pull holds the lock; skipping'); return { skipped: true }; }
+  let summary;
   try {
     // isMirrorableCard filters BEFORE cardsById is built (card #1410) — a
     // "BSC Daily:" card must never enter toCreate/toUpdate/self-heal, not
@@ -707,12 +721,41 @@ function cmdPull(args) {
 
     if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
 
-    const summary = { listId: listId(args), dir, created, updated, unchanged: stillUnchanged.length, dry };
+    summary = { listId: listId(args), dir, created, updated, unchanged: stillUnchanged.length, dry };
     console.error(`[sync] pull: ${created.length} created, ${updated.length} updated, ${stillUnchanged.length} unchanged (list=${listId(args)}${dry ? ', DRY RUN' : ''})`);
     for (const c of created) console.error(`  + #${c.taskId} ${c.name}`);
     for (const u of updated) console.error(`  ~ #${u.taskId} ${u.name}`);
-    return summary;
   } finally { release(); }
+  // Task #1778: reconcile stale in_progress/pending mirrors right after
+  // pull's own bulk-search pass, using pull's OWN lock cycle (already
+  // released above — reconcileStaleMirrors acquires its own per-write locks,
+  // never nested inside pull's). This is deliberately a SEPARATE pass with
+  // its own per-card-GET mechanism, not a wider pull `statuses` fetch — pull
+  // structurally can't see Done/Paused cards via search (see
+  // reconcileStaleMirrors's own severity comment for why folding this in
+  // here, not just leaving it in `sync-drift`, is what makes the fix take
+  // effect on `pull`'s actual invocation cadence instead of waiting on
+  // task #1700's still-open scheduling). Opt out with --no-reconcile for a
+  // caller that only wants pull's original fast bulk-search behavior.
+  //
+  // Default limit is intentionally MUCH smaller than sync-drift's own
+  // (DEFAULT_PULL_RECONCILE_LIMIT vs DEFAULT_DRIFT_LIMIT): three real
+  // callers invoke `pull` synchronously via execFileSync with a 120s
+  // timeout — notion-brain.js's dispatchCreatedCard (the P0/P1
+  // dispatch-at-creation path, CLAUDE.md's own "dispatch at creation" rule),
+  // digest-autofix.js's syncTasks, and generate-remediation-plan.js's
+  // escalatePlanRefusal. Each per-card GET is its own `notion-brain.js get`
+  // subprocess; a few hundred of them sequentially would blow that budget
+  // and turn "pull" into a dispatch-blocking failure — worse than the
+  // staleness this task fixes. A small bounded slice still converges the
+  // stale population over repeated pull calls (which happen often, per
+  // CLAUDE.md's own dispatch pattern), without risking a caller timeout.
+  const DEFAULT_PULL_RECONCILE_LIMIT = 25;
+  let driftReconciled = null;
+  if (!args['no-reconcile']) {
+    driftReconciled = reconcileStaleMirrors(dir, { limit: parseInt(args['reconcile-limit'], 10) || DEFAULT_PULL_RECONCILE_LIMIT, dry });
+  }
+  return { ...summary, driftReconciled };
 }
 
 function cmdPush(args) {
@@ -780,6 +823,41 @@ function cmdPush(args) {
   } finally { release(); }
 }
 
+// Task #1778: planStatusDrift already unsticks a PENDING mirror when Notion
+// says Done — mapStatus('done')->'completed' beats mergeStatus's fallthrough
+// even from 'pending' (see planStatusDrift's own comment above). It
+// structurally can't see Paused though: mapStatus()'s default case collapses
+// Paused into the same 'pending' bucket as Not started, so
+// mergeStatus('pending','pending') never reports drift — a pending mirror
+// whose card moved to Paused stays 'pending' (and bsc-next-dispatchable)
+// forever. This is the narrow fix for exactly that gap: the one case
+// planStatusDrift can't already handle for a pending mirror.
+//
+// KNOWN LIMITATION (self-reviewed per CLAUDE.md rule 18, task #1778): writing
+// 'completed' here trades one stale-forever direction for another. The
+// native task schema has no fourth "on hold" state, so 'completed' is the
+// only way to pull this out of actionable()'s pending|in_progress filter
+// (scripts/bsc-next.js) — but mergeStatus's sticky-completed rule (line
+// ~141) means a card the owner later UN-pauses will never re-enter the
+// mirror: pull's toUpdate always calls mergeStatus(existing='completed',
+// mapped), which short-circuits back to 'completed' regardless of the
+// card's new status. This is the SAME tradeoff planLivenessDowngrade already
+// accepts for Archived/Cancelled (never re-dispatchable by design there);
+// Paused is not in TERMINAL_CARD_STATUSES because it genuinely is meant to
+// be resumed, so this is a real, accepted gap, not a false equivalence.
+// Accepted anyway because the alternative — a closed/finished card mirrored
+// as 'pending' forever — is the exact dispatch-storm incident this task
+// exists to fix, and stuck-not-dispatchable is a strictly safer failure mode
+// than stuck-dispatchable. Revisit with a real repair path (e.g. a marker
+// that lets pull's toUpdate bypass mergeStatus's stickiness for a
+// reconciliation-closed entry specifically) if resumed-Paused invisibility
+// is ever reported as a live problem — out of scope for this P1.
+function planPendingClosure(task, card) {
+  if (!task || task.status !== 'pending' || !card) return null;
+  if (card.status !== 'Paused') return null; // Done is planStatusDrift's job
+  return { newStatus: 'completed', cardStatus: 'Paused' };
+}
+
 // Task #1691: fix the DOMINANT contributor to "in_progress with no live
 // session" — a card whose Notion Status moved past In progress/Not started
 // (Done, most often) never gets re-fetched by `pull`, so the local mirror
@@ -787,15 +865,37 @@ function cmdPush(args) {
 // mapped card (not a search), capped per run so a large backlog doesn't
 // burn the Notion API quota in one call — same "capped, reportable, dry-run
 // by default" shape sweepUntrackedInProgress uses (bsc-reconcile.js).
+// Task #1778 broadened the scope to ALSO cover 'pending' mirrors (see
+// planPendingClosure above) — the sibling gap in the same bug class: a
+// pending mirror's card can move to Done/Paused and never get re-fetched by
+// `pull` either, for the same "pull's own fetch filter only asks for In
+// progress/Not started" reason.
+//
+// SEVERITY NOTE (task #1778, live incident 2026-08-18): a stale in_progress
+// mirror isn't just a wasted dispatch RANKING (pending's failure mode) — it
+// is an active RE-DISPATCH candidate. scripts/bsc-reconcile.js's stall sweep
+// (reconcileStalledTasks) selects `tasks.filter(t => t.status ===
+// 'in_progress')` straight off the LOCAL mirror and never consults Notion at
+// all in that path, on a 5-minute launchd cron (com.broadwayscore.
+// bsc-reconcile.plist). A verified-Done card (#1773, closed ~14:10Z) was
+// stall-redispatched by that sweep 24 minutes later because its mirror
+// still read in_progress. This function is exported as reconcileStaleMirrors
+// and called from BOTH cmdSyncDrift (this command) AND cmdPull (below) —
+// `pull` is what CLAUDE.md's own P0/P1 dispatch pattern actually invokes
+// before every ranking round, and nothing currently schedules `sync-drift`
+// on its own (task #1700), so folding this into `pull` is what makes the
+// fix take effect on a realistic cadence instead of waiting on that
+// still-open scheduling task. The residual 5-minute window between a
+// card closing and the next `pull`/`sync-drift` invocation is real but not
+// closed here — closing it fully means either #1700 landing or
+// bsc-reconcile.js's own stall sweep consulting Notion directly, and both
+// are a different file/task's scope than this one.
 const DEFAULT_DRIFT_LIMIT = 250;
-function cmdSyncDrift(args) {
-  const dir = listDir(args);
-  const dry = !!args['dry-run'];
-  const limit = parseInt(args.limit, 10) || DEFAULT_DRIFT_LIMIT;
+function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false } = {}) {
   const map = readMap(dir);
   const entries = Object.entries(map).filter(([, e]) => {
     const t = readLiveTask(dir, e.taskId);
-    return t && t.status === 'in_progress';
+    return t && (t.status === 'in_progress' || t.status === 'pending');
   }).slice(0, limit);
 
   // Task #1697: liveness primitives for planLivenessDowngrade, fetched once
@@ -845,9 +945,12 @@ function cmdSyncDrift(args) {
     // clears it. viaLiveness tags the fixed[] entry so the in-lock
     // re-verification below knows to re-run the SAME check, not just
     // re-check task.status (a lease/tab can be claimed WHILE this run's
-    // slow per-card Notion GETs were in flight).
+    // slow per-card Notion GETs were in flight). Liveness only ever applies
+    // to a task.status === 'in_progress' entry (planLivenessDowngrade's own
+    // guard) — for a 'pending' entry this call is a harmless no-op, so it's
+    // gated on task.status here purely for clarity, not correctness.
     let viaLiveness = false;
-    if (!drift) {
+    if (!drift && task.status === 'in_progress') {
       const liveness = planLivenessDowngrade(task, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, workspaces) });
       if (liveness && liveness.newStatus) {
         drift = { newStatus: liveness.newStatus, cardStatus: liveness.cardStatus, reason: liveness.reason };
@@ -856,6 +959,16 @@ function cmdSyncDrift(args) {
         unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: `${card.status} (${liveness.reason})` });
         continue;
       }
+    }
+    // Task #1778: the pending-mirror cousin of the liveness check above —
+    // unlike in_progress, a pending task was never claimed, so there's no
+    // lease/workspace/idle/Outcome liveness to protect; planPendingClosure
+    // only needs the card's raw status (it can't go through
+    // mapStatus/mergeStatus at all — see its own comment above).
+    let viaPausedClosure = false;
+    if (!drift && task.status === 'pending') {
+      drift = planPendingClosure(task, card);
+      if (drift) viaPausedClosure = true;
     }
     if (!drift) { unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: card.status }); continue; }
     fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: drift.cardStatus, reason: drift.reason });
@@ -884,7 +997,14 @@ function cmdSyncDrift(args) {
     }
     try {
       const freshTask = readLiveTask(dir, entry.taskId);
-      if (!freshTask || freshTask.status !== 'in_progress') {
+      // Task #1778: compare against THIS entry's own snapshot status
+      // (task.status — 'in_progress' or 'pending'), not a hardcoded
+      // 'in_progress' literal. A hardcoded check here would make every
+      // pending-mirror closure fail this guard unconditionally (freshTask
+      // .status is 'pending', never 'in_progress') and get silently popped
+      // from fixed[] as a false "status changed" — the entire pending path
+      // would no-op every single run.
+      if (!freshTask || freshTask.status !== task.status) {
         fixed.pop();
         unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: 'SKIPPED (status changed since this run started)' });
         continue;
@@ -925,14 +1045,41 @@ function cmdSyncDrift(args) {
         freshMap[pageId].syncedStatus = card.status;
         freshMap[pageId].name = card.name;
         freshMap[pageId].fmt = MIRROR_FMT;
+        // Task #1778: unlike the Archived/Cancelled case just above,
+        // planPendingClosure's Paused branch DOES stamp pushed:true here —
+        // deliberately scoped to only the entries THIS reconciliation just
+        // closed (not a global rule like NEVER_OVERWRITE_WITH_DONE, which an
+        // adversarial ship-check review — gpt-5.4-mini — flagged as unsafe:
+        // an UNRELATED entry can carry syncedStatus:'Paused' from
+        // planLivenessDowngrade's own non-terminal downgrade, and blocking
+        // Notion pushes for every such entry would also block a later
+        // GENUINE completion of that unrelated task). It's safe specifically
+        // here because mergeStatus's sticky-completed rule already means
+        // THIS entry's local status can never usefully change again
+        // regardless of `pushed` (see planPendingClosure's own KNOWN
+        // LIMITATION comment) — there is no future "reopened, resumed,
+        // legitimately completed, needs pushing" story this could block,
+        // only a wrongful auto-push of the card we just verified is Paused.
+        if (viaPausedClosure) freshMap[pageId].pushed = true;
         writeMap(dir, freshMap);
       }
     } finally { release(); }
   }
-  console.error(`[sync] sync-drift: checked ${entries.length} in_progress task(s) — ${fixed.length} drifted (mirror corrected)${fetchFailed.length ? `, ${fetchFailed.length} fetch failed` : ''}${dry ? ' (DRY RUN)' : ''}`);
+  console.error(`[sync] reconcile: checked ${entries.length} stale-candidate task(s) (in_progress+pending) — ${fixed.length} drifted (mirror corrected)${fetchFailed.length ? `, ${fetchFailed.length} fetch failed` : ''}${dry ? ' (DRY RUN)' : ''}`);
   for (const f of fixed) console.error(`  ${dry ? '(would fix) ' : '✓ '}#${f.taskId} [${f.from} -> ${f.to}, Notion says "${f.cardStatus}"]${f.reason ? ` ${f.reason}` : ''} ${f.name}`);
   for (const e of fetchFailed) console.error(`  ⚠ fetch failed for #${e.taskId}: ${e.error.split('\n')[0]}`);
-  return { listId: listId(args), fixed, unchanged: unchanged.length, unchangedDetail: unchanged, fetchFailed, dry };
+  return { fixed, unchanged: unchanged.length, unchangedDetail: unchanged, fetchFailed, dry };
+}
+
+// Thin CLI wrapper: `sync-drift` is the standalone, explicitly-invoked form
+// of reconcileStaleMirrors (task #1700 will eventually schedule this). See
+// that function's own comment for why cmdPull ALSO calls it directly rather
+// than waiting for a session to run `sync-drift` separately.
+function cmdSyncDrift(args) {
+  const dir = listDir(args);
+  const dry = !!args['dry-run'];
+  const limit = parseInt(args.limit, 10) || DEFAULT_DRIFT_LIMIT;
+  return { listId: listId(args), ...reconcileStaleMirrors(dir, { limit, dry }) };
 }
 
 function cmdStatus(args) {
@@ -970,4 +1117,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
