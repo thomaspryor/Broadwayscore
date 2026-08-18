@@ -975,7 +975,7 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
   const fetchFailed = [];
   for (const [pageId, entry] of entries) {
     const task = readLiveTask(dir, entry.taskId);
-    if (!task) continue; // vanished between the filter above and here — next run catches it
+    if (!task) { stampReconciled(pageId); continue; } // vanished between the filter above and here — stamped too (final ship-check pass, task #1790): a genuine deletion self-limits (drops out of the outer filter next call anyway), but a null readLiveTask racing a concurrent local writer on the SAME entry, run after run, would otherwise sit at lastReconciledAt=0 and starve the rest of the pool through a third gate alongside GET-failure and array-index
     // Same ownership guard cmdPull's toUpdate branch uses (task #1410): if
     // this task id was reused by an unrelated live task since the map was
     // last synced, this entry's mapping is stale — never overwrite a
