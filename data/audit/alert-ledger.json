@@ -222,24 +222,24 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-18T06:20:11.466Z",
+      "lastSeen": "2026-08-18T11:20:01.815Z",
       "lastNotifiedAt": "2026-08-17T12:16:16.840Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-18T06:20:11.531Z",
+      "lastSeen": "2026-08-18T11:20:01.888Z",
       "lastNotifiedAt": "2026-08-17T17:21:25.971Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 11
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -386,14 +386,13 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 15.6% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 17.2% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-18T06:19:59.291Z",
-      "lastNotifiedAt": "2026-08-18T02:23:43.455Z",
-      "notifyCount": 19,
+      "lastSeen": "2026-08-18T11:19:50.045Z",
+      "lastNotifiedAt": "2026-08-18T11:19:50.045Z",
+      "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -733,11 +732,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Scrapingdog daily breaker TRIPPED: 45998/33000 credits",
+      "title": "Scrapingdog daily breaker TRIPPED: 45736/30000 credits",
       "firstSeen": "2026-08-12T14:11:05.654Z",
-      "lastSeen": "2026-08-17T07:41:52.812Z",
-      "lastNotifiedAt": "2026-08-17T07:41:52.812Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-08-18T11:16:03.820Z",
+      "lastNotifiedAt": "2026-08-18T11:16:03.820Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -757,11 +756,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2760/2500 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2519/2250 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-08-17T09:28:14.976Z",
-      "lastNotifiedAt": "2026-08-17T09:28:14.976Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-08-18T11:16:03.362Z",
+      "lastNotifiedAt": "2026-08-18T11:16:03.362Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -903,12 +902,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-18T06:20:02.443Z",
+      "lastSeen": "2026-08-18T11:19:53.466Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 40
+      "silentRefires": 41
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1155,12 +1154,12 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
       "firstSeen": "2026-08-16T20:42:02.771Z",
-      "lastSeen": "2026-08-18T09:54:53.018Z",
+      "lastSeen": "2026-08-18T10:50:12.443Z",
       "lastNotifiedAt": "2026-08-16T20:42:02.771Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "cron-health:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1179,48 +1178,48 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on abigails-party-west-end-2026",
       "firstSeen": "2026-08-17T13:10:08.865Z",
-      "lastSeen": "2026-08-18T09:54:53.021Z",
+      "lastSeen": "2026-08-18T10:50:12.445Z",
       "lastNotifiedAt": "2026-08-17T13:10:08.865Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-remediation-exhausted-empty-cast:spellbound-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on spellbound-off-broadway-2026",
       "firstSeen": "2026-08-17T13:10:08.866Z",
-      "lastSeen": "2026-08-18T09:54:53.021Z",
+      "lastSeen": "2026-08-18T10:50:12.445Z",
       "lastNotifiedAt": "2026-08-17T13:10:08.866Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-fulltext-mentions-show:short:jeeves-takes-charge-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review too short to verify on Jeeves Takes Charge",
       "firstSeen": "2026-08-18T08:56:58.831Z",
-      "lastSeen": "2026-08-18T09:54:53.019Z",
+      "lastSeen": "2026-08-18T10:50:12.444Z",
       "lastNotifiedAt": "2026-08-18T08:56:58.831Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:jeeves-takes-charge-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Jeeves Takes Charge",
       "firstSeen": "2026-08-18T08:56:58.833Z",
-      "lastSeen": "2026-08-18T09:54:53.020Z",
+      "lastSeen": "2026-08-18T10:50:12.444Z",
       "lastNotifiedAt": "2026-08-18T08:56:58.833Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     }
   }
 }
