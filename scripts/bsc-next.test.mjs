@@ -395,7 +395,7 @@ test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth
 // hand-constructed ledger entries with successionOf pre-populated, which is
 // exactly why this slipped through: nothing drove runSuccessionDispatch()
 // itself against a real read/append round-trip. This test does.
-function runSuccessionHarness() {
+function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
   const { runSuccessionDispatch } = require('./bsc-next.js');
   const ledger = [];
   const launched = [];
@@ -406,7 +406,7 @@ function runSuccessionHarness() {
     launchCmux: () => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; },
     readLedgerEntries: () => ledger.slice(),
     appendLedgerEntry: (e) => { const w = { ts: new Date().toISOString(), ...e }; ledger.push(w); return w; },
-    fetchCard: () => null,
+    fetchCard: fetchCardOverride || (() => null),
     // Injected so this end-to-end test never writes to the real, shared
     // data/audit/alert-digest-queue.json (it did, before this seam existed
     // — see pageSuccessionCapExceeded's injection comment in bsc-next.js).
@@ -459,6 +459,80 @@ test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, th
   assert.equal(paged.length, 1, 'the injected pager (not the real routeAlert) sees exactly the one refusal');
 
   fs.unlinkSync(handoffPath);
+});
+
+// Task #1790: succession deliberately skips the fresh-dispatch machinery
+// (overlap / verify gate / duplicate-workspace) because it CONTINUES a task
+// rather than deciding to start one — but it still OPENS A SESSION, which is
+// exactly why linearMirrorGuard is placed before the --succession branch in
+// main(). A successor sent to continue a card that closed mid-flight is the
+// same relaunch-closed-work bug the stall sweep hits, so closedCardGuard runs
+// on this path too. Driven through the REAL runSuccessionDispatch, not the
+// pure guard, so the wiring itself is what's under test.
+test('runSuccessionDispatch: a card Notion says is Done is refused before any workspace opens', () => {
+  const { launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  // The [notion:...] marker is load-bearing: notionIdOf() returns null without
+  // it, so bsc-next never fetches a card and the guard correctly sees nothing.
+  const task = { id: '857', subject: 'succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1, 'a Done card must refuse the succession dispatch');
+  assert.equal(launched.length, 0, 'no workspace may open for a closed card');
+
+  fs.unlinkSync(handoffPath);
+});
+
+test('runSuccessionDispatch: --allow-closed-card dispatches AND is recorded in the ledger', () => {
+  const { ledger, launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  const task = { id: '858', subject: 'deliberate succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-ok-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath, 'allow-closed-card': true });
+  assert.equal(r.exitCode, null, 'the explicit override must not be refused');
+  assert.equal(launched.length, 1, 'the override actually dispatches');
+  // The refusal message promises the override is "recorded in the ledger".
+  // It was not, until this test existed — nothing wrote the field at all.
+  const launch = ledger.filter(e => e.event === 'launch').slice(-1)[0];
+  assert.equal(launch.allowClosedCard, true, 'deliberately dispatching onto a closed card must be auditable');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// Task #1790: fetchCard had no retry — a single execFileSync, and ANY throw
+// (a Notion 429/500/timeout) returned null. Several callers degrade on null,
+// including closedCardGuard, which ALLOWS dispatch when the card is null so a
+// Notion outage cannot livelock the stall sweep. Two adversarial reviews
+// independently flagged that this makes the guard most permissive exactly when
+// a fetch is flaky. Refusing on null would livelock, so the fix makes null
+// RARER instead of changing its meaning.
+test('fetchCard: a transient failure is retried once and recovers', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', {
+    sleepMs: 1,
+    fetchOnce: () => { calls += 1; if (calls === 1) throw new Error('transient 500'); return { status: 'Done' }; },
+  });
+  assert.deepEqual(card, { status: 'Done' }, 'the retry must return the real card, not null');
+  assert.equal(calls, 2, 'exactly one retry');
+});
+
+test('fetchCard: a permanent failure still degrades to null (honest unknown, never a throw)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; throw new Error('gone'); } });
+  assert.equal(card, null);
+  assert.equal(calls, 2, 'bounded — never retries forever');
+});
+
+test('fetchCard: the happy path costs exactly one call (no added latency)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; return { status: 'In progress' }; } });
+  assert.deepEqual(card, { status: 'In progress' });
+  assert.equal(calls, 1);
 });
 
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
