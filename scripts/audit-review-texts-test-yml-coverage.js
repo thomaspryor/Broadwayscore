@@ -69,8 +69,19 @@ function findGaps({ testSource, ymlSource } = {}) {
 }
 
 function main() {
-  const gaps = findGaps();
   const asJson = process.argv.includes('--json');
+  let gaps;
+  try {
+    gaps = findGaps();
+  } catch (err) {
+    // The MIGRATED_SCRIPTS/push-paths parsing is a regex heuristic, not a JS
+    // parser (see file header) — a hand-edit outside its usual shape must
+    // degrade to a warning, not an uncaught throw, or this "always exits 0"
+    // advisory guard would itself start failing CI on the exact class of
+    // future edit it exists to catch elsewhere.
+    console.log(`::warning::audit-review-texts-test-yml-coverage: could not parse (${err.message}) — skipping this run.`);
+    process.exit(0);
+  }
 
   if (asJson) {
     console.log(JSON.stringify({ gaps }, null, 2));

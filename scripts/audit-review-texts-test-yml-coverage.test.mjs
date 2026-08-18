@@ -67,3 +67,7 @@ test('findGaps: the real repo has zero gaps against the current test.yml and MIG
   const gaps = findGaps();
   assert.deepEqual(gaps, []);
 });
+
+test('parseMigratedScripts: throws (not silently returns []) when the MIGRATED_SCRIPTS declaration is reformatted away — this is the exact failure main() must catch and degrade to a warning, not an uncaught crash', () => {
+  assert.throws(() => parseMigratedScripts('const RENAMED = [\n  \'audit-foo.js\',\n];'), /could not find/);
+});
