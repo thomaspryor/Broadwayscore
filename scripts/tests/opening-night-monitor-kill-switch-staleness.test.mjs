@@ -54,6 +54,21 @@ test('the staleness check is skipped on --dry-run (documented as printing the de
   assert.ok(guardIdx > -1 && guardIdx < stalenessIdx, "pageIfKillSwitchStale call must be inside an `if (!opts['dry-run'])` block");
 });
 
+// Follow-up fix (Codex adversarial review, task #1773): the first cut ran
+// the staleness check before the --heartbeat and --active-shows early
+// returns, so those documented side-effect-free utility modes ("print
+// in-window show ids") could write to the real alert ledger. Source-text-
+// locks the check running AFTER both early returns.
+test('the staleness check runs after the --heartbeat and --active-shows early returns', () => {
+  const src = fs.readFileSync(path.join(SCRIPTS_DIR, 'opening-night-monitor-launch.js'), 'utf8');
+  const heartbeatIdx = src.indexOf('if (opts.heartbeat) {');
+  const activeShowsIdx = src.indexOf("if (opts['active-shows']) {");
+  const stalenessIdx = src.indexOf('pageIfKillSwitchStale(');
+  assert.ok(heartbeatIdx > -1 && activeShowsIdx > -1 && stalenessIdx > -1, 'expected all three markers to be present');
+  assert.ok(heartbeatIdx < stalenessIdx, '--heartbeat must stay side-effect-free — its early return must precede the staleness check');
+  assert.ok(activeShowsIdx < stalenessIdx, '--active-shows must stay side-effect-free — its early return must precede the staleness check');
+});
+
 test('KILL_FILE just inside the staleness bar stays silent', () => {
   const mtimeMs = NOW - (core.KILL_SWITCH_STALE_MS - 60 * 1000);
   const { stale, ageMs } = core.killSwitchStaleness(mtimeMs, NOW);
