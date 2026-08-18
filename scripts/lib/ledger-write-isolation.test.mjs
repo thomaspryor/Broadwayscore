@@ -35,13 +35,20 @@ const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 // Modules whose main() reaches a dispatch-ledger append site. Matched without
 // the extension too, so `require('./bsc-next')` is not a blind spot.
-const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'bsc-reconcile', 'dispatch-watchdog'];
+// linear-next.js is here because it defaults appendLedgerEntry the same way
+// (scripts/linear-next.js:257) with append sites at :453/:504/:551/:564. Its
+// calls happen to be safe today, but it had ZERO guard coverage — the next edit
+// would have reintroduced the identical bug silently.
+const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'bsc-reconcile', 'dispatch-watchdog', 'linear-next'];
 
 const MAX_SPREAD_DEPTH = 8;
 
 function testFiles() {
   const out = [];
-  for (const dir of [SCRIPTS, path.join(SCRIPTS, 'lib'), path.join(SCRIPTS, 'tests')]) {
+  // tests/unit is included because linear-next's test lives there — scanning
+  // only scripts/** left a ledger writer completely uncovered.
+  const REPO_TESTS = path.join(SCRIPTS, '..', 'tests', 'unit');
+  for (const dir of [SCRIPTS, path.join(SCRIPTS, 'lib'), path.join(SCRIPTS, 'tests'), REPO_TESTS]) {
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
       if (f.endsWith('.test.mjs') || f.endsWith('.test.js')) out.push(path.join(dir, f));
