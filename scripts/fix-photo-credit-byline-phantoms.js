@@ -34,6 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 function hasHelpFlag(argv) {
   return argv.includes('--help') || argv.includes('-h');
@@ -52,7 +53,10 @@ absorbed a photographer surname from a BWW roundup photo credit.
 }
 
 const APPLY = process.argv.includes('--apply');
-const ROOT = process.env.REVIEW_TEXTS_DIR || path.join(process.env.HOME, 'broadway-review-texts');
+// WRITES under --apply (safeWriteReview repairs criticName / duplicateOf) —
+// see scripts/lib/review-texts-dir.js.
+const ROOT = resolveReviewTextsDir();
+console.log(`[fix-photo-credit-byline-phantoms] review-texts: ${ROOT}`);
 
 /** Tail after a 2+ whitespace run, when that tail is itself a full name. */
 function blockBoundaryTail(name) {

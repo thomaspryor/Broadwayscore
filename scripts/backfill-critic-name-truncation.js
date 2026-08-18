@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const USAGE = `backfill-critic-name-truncation.js — One-shot backfill for critic names that the BWW Review Roundup parser.
 
@@ -37,7 +38,10 @@ Usage:
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const APPLY = process.argv.includes('--apply');
-const REVIEW_TEXTS_DIR = '/Users/tompryor/broadway-review-texts';
+// WRITES under --apply (renames + unlinkSync duplicate siblings) — see
+// scripts/lib/review-texts-dir.js.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+console.log(`[backfill-critic-name-truncation] review-texts: ${REVIEW_TEXTS_DIR}`);
 
 const TRUNCATIONS = [
   // outletId, truncated criticName, fixed criticName, truncated slug, fixed slug
