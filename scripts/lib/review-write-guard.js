@@ -859,6 +859,7 @@ function safeWriteReview(filePath, newData, options = {}) {
     const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
     let priorPublishDate = null;
     let hadProtectedContent = false;
+    let onDiskHadLiveScore = false;
     const fileExists = fs.existsSync(filePath);
     if (fileExists) {
       try {
@@ -866,27 +867,88 @@ function safeWriteReview(filePath, newData, options = {}) {
         priorPublishDate = onDiskForDateCheck.publishDate || null;
         hadProtectedContent = getEffectiveProtectedFields(onDiskForDateCheck)
           .some(k => onDiskForDateCheck[k] !== undefined && onDiskForDateCheck[k] !== null && onDiskForDateCheck[k] !== '');
+        onDiskHadLiveScore = onDiskForDateCheck.assignedScore !== undefined
+          && onDiskForDateCheck.assignedScore !== null && onDiskForDateCheck.assignedScore !== '';
       } catch { /* unreadable existing file — treat as dateless, still gate below */ }
     }
-    const isDateFirstArriving = (!fileExists || !priorPublishDate) && !hadProtectedContent;
+    // Card #1678: a review can be assigned a LIVE score (assignedScore, in
+    // PROTECTED_FIELDS) while publishDate is still null — show-score-sourced
+    // records routinely are. The date, arriving later, is the ONLY signal
+    // that decides which production the review belongs to. hadProtectedContent
+    // alone must not disable this guard for that case: quarantining an
+    // EXISTING file is a no-op on the record itself (it only writes the
+    // rejected payload to _pending/ and leaves the on-disk file untouched —
+    // see the "stale dateless stub...must stay untouched" test below), which
+    // is harmless for an unscored stub (nothing depends on its date yet) but
+    // for an already-scored record means the bad-dated, live-scored file
+    // just sits there forever, unflagged, until validate-data.js's
+    // [wrong-production-by-date] CHECK 0 catches it at push-time CI as a red
+    // main — the anansi-the-spider incident this card is about.
+    //
+    // Two different questions, two different flags:
+    //  - Should the guard fire AT ALL (isDateFirstArriving, below)? Yes
+    //    whenever a score is live on disk OR this very write is introducing
+    //    one (a caller may set assignedScore and publishDate in the same
+    //    call on a previously-dateless, previously-unscored file) — either
+    //    way a score is about to be (or already is) live.
+    //  - Should an implausible verdict STAMP instead of quarantine (below,
+    //    at the two call sites)? Only onDiskHadLiveScore matters there:
+    //    quarantining is a no-op ONLY when a scored record already sits live
+    //    on disk from a PRIOR write — the original file is left untouched by
+    //    the pendingDir write in that case. When nothing was live before
+    //    this write (fileExists false, or existed without a score),
+    //    quarantining is fully effective: it prevents this write — including
+    //    any score it carries — from ever landing at filePath at all, which
+    //    is strictly safer than stamping.
+    const incomingHasScore = !!(newData && newData.assignedScore !== undefined
+      && newData.assignedScore !== null && newData.assignedScore !== '');
+    // Every OTHER protected field (contentTier, fullText, llmScore, etc. on an
+    // unscored stub) keeps the original behavior unchanged — deliberately not
+    // widened beyond the scored case the card measured (2,861 currently-live
+    // scored+dateless+unflagged reviews carry this exposure today; the far
+    // larger population of protected-but-unscored stubs does not, and nothing
+    // downstream depends on an unscored stub's date).
+    const isDateFirstArriving = (!fileExists || !priorPublishDate)
+      && (!hadProtectedContent || onDiskHadLiveScore || incomingHasScore);
     if (isDateFirstArriving && grandparentDirName !== '_pending' && parentDirName
       && !parentDirName.startsWith('_') && !parentDirName.startsWith('.')) {
       const show = _getShowById(parentDirName);
       if (show) {
+        let alreadyFlaggedThisWrite = false;
+        // Shared stamp path for a live-scored record with an implausible
+        // late-arriving date: flag it in place rather than quarantine (see
+        // comment above — quarantining an existing scored file is a no-op).
+        // Both call sites below (date-plausibility, cross-market) route
+        // through this one helper so they can't drift out of sync with each
+        // other the way two independently-inlined copies eventually would.
+        const stampWrongProductionFromGuard = (note, reason) => {
+          newData = { ...newData, wrongProduction: true, wrongProductionNote: note, wrongProductionReason: reason, wrongProductionReasonAt: new Date().toISOString() };
+          invalidateWrongProductionAutoClear(newData);
+          alreadyFlaggedThisWrite = true;
+          console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongProduction (live score, date arrived after scoring): ${note}`);
+        };
+
         const { evaluateDatePlausibility } = require('./date-plausibility');
         const verdict = evaluateDatePlausibility({ review: newData, show });
         if (verdict.implausible) {
-          const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
-          fs.mkdirSync(pendingDir, { recursive: true });
-          const pendingPath = path.join(pendingDir, path.basename(filePath));
-          const quarantined = {
-            ...newData,
-            pendingReason: 'date_implausible',
-            _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
-          };
-          fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
-          console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
-          return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
+          if (onDiskHadLiveScore) {
+            stampWrongProductionFromGuard(
+              `Date guard: publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate} (date arrived after scoring)`,
+              'date_implausible_after_score'
+            );
+          } else {
+            const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+            fs.mkdirSync(pendingDir, { recursive: true });
+            const pendingPath = path.join(pendingDir, path.basename(filePath));
+            const quarantined = {
+              ...newData,
+              pendingReason: 'date_implausible',
+              _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
+            };
+            fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+            console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
+            return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
+          }
         }
 
         // Cross-market class-A quarantine (card #1085). The mirror of the check
@@ -909,7 +971,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         // Quarantines rather than drops: _pending/ is recoverable if a human
         // disagrees, and `_auditAllowCrossMarket` (the audit's own manual
         // allowlist) opts a file out here too.
-        if (newData && newData.publishDate && !newData._auditAllowCrossMarket) {
+        if (!alreadyFlaggedThisWrite && newData && newData.publishDate && !newData._auditAllowCrossMarket) {
           const sibOpenings = _getSiblingOpenings(parentDirName);
           if (sibOpenings.length) {
             const { classifyClassAContamination } = require('./cross-market-contamination');
@@ -919,23 +981,27 @@ function safeWriteReview(filePath, newData, options = {}) {
               sibOpenings
             );
             if (xv.isClassA) {
-              const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
-              fs.mkdirSync(pendingDir, { recursive: true });
-              const pendingPath = path.join(pendingDir, path.basename(filePath));
               const detail = `publishDate ${newData.publishDate} is ${Math.round(xv.sibDiff)}d from a same-title sibling production's opening but ${Math.round(xv.thisDiff)}d from this show's — it belongs to the sibling`;
-              fs.writeFileSync(pendingPath, JSON.stringify({
-                ...newData,
-                pendingReason: 'cross_market_contamination',
-                _crossMarketDetail: detail,
-              }, null, 2) + '\n');
-              console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
-              return {
-                wrote: false,
-                skipped: 'cross_market_contamination',
-                quarantinedPath: pendingPath,
-                sibDiff: xv.sibDiff,
-                thisDiff: xv.thisDiff,
-              };
+              if (onDiskHadLiveScore) {
+                stampWrongProductionFromGuard(`Auto-flagged (cross-market): ${detail}`, 'cross_market_contamination_after_score');
+              } else {
+                const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+                fs.mkdirSync(pendingDir, { recursive: true });
+                const pendingPath = path.join(pendingDir, path.basename(filePath));
+                fs.writeFileSync(pendingPath, JSON.stringify({
+                  ...newData,
+                  pendingReason: 'cross_market_contamination',
+                  _crossMarketDetail: detail,
+                }, null, 2) + '\n');
+                console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
+                return {
+                  wrote: false,
+                  skipped: 'cross_market_contamination',
+                  quarantinedPath: pendingPath,
+                  sibDiff: xv.sibDiff,
+                  thisDiff: xv.thisDiff,
+                };
+              }
             }
           }
         }

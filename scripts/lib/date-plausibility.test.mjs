@@ -251,18 +251,69 @@ test('#832 an existing dateless stub getting a PLAUSIBLE publishDate for the fir
   assert.equal(onDisk.publishDate, '2026-04-13');
 });
 
-test('#832 a file that already carries scored/protected content is exempt — a date correction on an already-vetted review is a deliberate fixup, not new ingest', () => {
+test('#832 a file that already carries NON-score protected content (e.g. a contentTier stub) is exempt — a date correction there is a deliberate fixup, not new ingest', () => {
   const root = mkReviewTextsRoot();
   const showId = 'some-show-2026';
   _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
 
   const targetPath = path.join(root, showId, 'outlet--critic.json');
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  // Scored review with no date yet recorded on disk (edge case: assignedScore
-  // present but publishDate somehow missing) — still must not be quarantined.
-  fs.writeFileSync(targetPath, JSON.stringify({ criticName: 'Critic', assignedScore: 85 }));
+  // Protected but UNSCORED — contentTier only, no assignedScore.
+  fs.writeFileSync(targetPath, JSON.stringify({ criticName: 'Critic', contentTier: 'stub' }));
 
-  const result = safeWriteReview(targetPath, { criticName: 'Critic', assignedScore: 85, publishDate: '2020-01-01' });
+  const result = safeWriteReview(targetPath, { criticName: 'Critic', contentTier: 'stub', publishDate: '2020-01-01' });
   assert.equal(result.wrote, true);
   assert.equal(result.skipped, undefined);
+  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+  assert.equal(onDisk.wrongProduction, undefined, 'unscored protected content keeps the old no-fire behavior — no new blast radius beyond scored records');
+});
+
+// --- #1678: a review scored WHILE dateless, then the real (implausible) date arrives ---
+
+test('#1678 anansi-the-spider replay: dateless review gets scored, THEN an implausible publishDate arrives — auto-excluded, not silently written live', () => {
+  const root = mkReviewTextsRoot();
+  const showId = 'anansi-the-spider-west-end-2026';
+  _setShowsCacheForTest(new Map([[showId, { id: showId, previewsStartDate: '2026-08-01', openingDate: '2026-08-20' }]]));
+
+  const targetPath = path.join(root, showId, 'thestage--anna-james.json');
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+
+  // 1. created dateless (show-score source)
+  let r = safeWriteReview(targetPath, { criticName: 'Anna James', outlet: 'The Stage', url: 'https://example.com/anansi' });
+  assert.equal(r.wrote, true);
+
+  // 2. SCORED — assignedScore lands while publishDate is still null.
+  r = safeWriteReview(targetPath, { criticName: 'Anna James', outlet: 'The Stage', url: 'https://example.com/anansi', assignedScore: 97 });
+  assert.equal(r.wrote, true);
+  assert.equal(JSON.parse(fs.readFileSync(targetPath, 'utf-8')).publishDate, undefined);
+
+  // 3. The real date arrives, 1297 days before the show's earliest date —
+  // exactly the anansi-the-spider incident.
+  r = safeWriteReview(targetPath, { criticName: 'Anna James', outlet: 'The Stage', url: 'https://example.com/anansi', assignedScore: 97, publishDate: '2023-01-26' });
+
+  assert.notEqual(r.wrote, false, 'must not be silently quarantined — quarantining an existing scored file is a no-op that leaves it live and unflagged');
+  assert.equal(r.skipped, undefined);
+
+  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+  assert.equal(onDisk.wrongProduction, true, 'the record must end up excluded WITHOUT a human touching it');
+  assert.equal(onDisk.wrongProductionReason, 'date_implausible_after_score');
+  assert.ok(onDisk.wrongProductionReasonAt, 'provenance timestamp required (wrongProduction provenance lint)');
+  assert.ok(onDisk.wrongProductionNote.startsWith('Date guard:'), 'note must carry a DATE_GUARD_PREFIXES-recognized prefix so priorRuns auto-clear can still find it');
+  assert.equal(onDisk.assignedScore, 97, 'the score itself is preserved — only excluded from scoring, not deleted');
+
+  assert.equal(fs.existsSync(path.join(root, '_pending', showId, 'thestage--anna-james.json')), false, 'must not ALSO land in _pending — one outcome, not two');
+});
+
+test('#1678 a combined write that sets assignedScore AND an implausible publishDate in the SAME call, on a previously-dateless-and-unscored file, still quarantines (unchanged behavior — hadProtectedContent is computed from on-disk state before this write)', () => {
+  const root = mkReviewTextsRoot();
+  const showId = 'some-show-2026-combined';
+  _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
+
+  const targetPath = path.join(root, showId, 'outlet--critic.json');
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  fs.writeFileSync(targetPath, JSON.stringify({ criticName: 'Critic' }));
+
+  const result = safeWriteReview(targetPath, { criticName: 'Critic', assignedScore: 85, publishDate: '2020-01-01' });
+  assert.equal(result.wrote, false);
+  assert.equal(result.skipped, 'date_implausible');
 });
