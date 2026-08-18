@@ -14,6 +14,7 @@ scripts/audit-standing-coverage.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
+scripts/autonomous-merge-core-data-guard.test.mjs
 scripts/autonomous-merge-parity.test.mjs
 scripts/autonomous-merge.test.mjs
 scripts/autonomous-probe.test.mjs
@@ -328,6 +329,7 @@ tests/unit/merge-feedback-ledger.test.mjs
 tests/unit/merge-owner-email-log.test.mjs
 tests/unit/merge-review-fields.test.mjs
 tests/unit/merge-social-post-history.test.mjs
+tests/unit/merge-worktree-push-verification.test.mjs
 tests/unit/mezzanine-search-classify.test.mjs
 tests/unit/mezzanine-sibling-year-gate.test.mjs
 tests/unit/model-default-guard.test.mjs
@@ -339,6 +341,7 @@ tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
+tests/unit/notion-corpus-io.test.mjs
 tests/unit/notion-corpus.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs

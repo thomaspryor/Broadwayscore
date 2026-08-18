@@ -112,6 +112,42 @@ test('exactly at the 180-day boundary is plausible; one day past is implausible'
   assert.equal(pastBoundary.implausible, true);
 });
 
+test('#1463 deadlock fix: a record awaiting URL-correction refetch (breadcrumb + no fullText) with an implausible date is NOT implausible', () => {
+  // This is the exact deadlock: audit-contradicted-flag-basis / the producer
+  // guard (shouldWithholdStaleExclusionFlag) refuses to WRITE wrongProduction
+  // on this record because it is mid-URL-correction, while CHECK 0 used to
+  // demand it be set — no value passed both. The old publishDate here is not
+  // evidence about this article; the body that would confirm it hasn't been
+  // refetched yet.
+  const show = { id: 'a-christmas-carol-west-end-2026', previewsStartDate: '2026-11-01', openingDate: '2026-11-20' };
+  const review = {
+    publishDate: '2025-01-01',
+    wrongProduction: false,
+    _urlChangedClear: { at: '2026-08-01T00:00:00Z', cleared: ['publishDate'] },
+  };
+  const verdict = evaluateDatePlausibility({ review, show });
+  assert.equal(verdict.implausible, false);
+});
+
+test('#1463 deadlock fix: the SAME record once fullText has landed (refetch complete) is judged normally — still implausible', () => {
+  const show = { id: 'a-christmas-carol-west-end-2026', previewsStartDate: '2026-11-01', openingDate: '2026-11-20' };
+  const review = {
+    publishDate: '2025-01-01',
+    wrongProduction: false,
+    fullText: 'The refetched article body, confirming this really is the old date.',
+    _urlChangedClear: { at: '2026-08-01T00:00:00Z', cleared: ['publishDate'] },
+  };
+  const verdict = evaluateDatePlausibility({ review, show });
+  assert.equal(verdict.implausible, true);
+});
+
+test('#1463 deadlock fix: an implausible date with NO breadcrumb at all is still implausible (carve-out is narrowly scoped)', () => {
+  const show = { id: 'a-christmas-carol-west-end-2026', previewsStartDate: '2026-11-01', openingDate: '2026-11-20' };
+  const review = { publishDate: '2025-01-01', wrongProduction: false };
+  const verdict = evaluateDatePlausibility({ review, show });
+  assert.equal(verdict.implausible, true);
+});
+
 // --- safeWriteReview() ingest-time quarantine routing -----------------------
 
 test('safeWriteReview quarantines a brand-new date-implausible review to _pending/{showId}/ instead of the show dir', () => {

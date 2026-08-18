@@ -106,6 +106,94 @@ function gitOrNull(args, opts = {}) {
   try { return git(args, opts); } catch { return null; }
 }
 
+/**
+ * Every tracked path with uncommitted changes in `repo`, as repo-relative paths.
+ * Reported before a forced checkout so the discard is never silent.
+ */
+function dirtyTrackedPaths(repo = REPO) {
+  const out = gitOrNull(['status', '--porcelain', '--untracked-files=no'], { cwd: repo }) || '';
+  return out.split('\n')
+    .map((l) => l.slice(3).trim())
+    .filter(Boolean);
+}
+
+/**
+ * The ONLY way this file may run `git checkout` to move HEAD.
+ *
+ * WHY IT FORCES: this script runs in CI *after* two steps that both dirty TRACKED
+ * files, and an ordinary `git checkout` refuses rather than proceeding:
+ *
+ *   1. .github/actions/checkout-core-data ends with
+ *      `cp -f /tmp/core-data-checkout/*.json data/`, and one shipped file —
+ *      data/outlet-registry.json — is tracked here (it is also in .gitignore,
+ *      which is the underlying accident).
+ *   2. the re-verify itself runs `next build`, whose `prebuild` regenerates seven
+ *      more tracked files from that same private data: data/slug-redirects.json,
+ *      data/gold-lists-computed.json, data/blog-reviews-for-scoring.json,
+ *      public/data/{mobile-shows,search-shows}.json,
+ *      src/config/outlet-logos-generated.json and public/brand-tokens.json.
+ *
+ * (1) killed run 32086045215 at the very first checkout — "Your local changes to
+ * the following files would be overwritten by checkout" — and because
+ * autonomous-merge.yml is the only path a branch has to main, that one file
+ * blocked EVERY agent PR rather than one. Four sat green and unmerged for a day.
+ * (2) is the same failure one step later and was never reached, so fixing only (1)
+ * would have moved the outage rather than ended it (adversarial review, 2026-08-17).
+ *
+ * WHY FORCING IS SAFE, NOT LOSSY. Everything it can discard is regenerable and
+ * unmergeable:
+ *   - `data/` is in EXCLUDED_PREFIXES for Tier-1 and TIER3_EXCLUDED_PREFIXES for
+ *     Tier-3 (autonomous-eligibility.js), and exclusions are checked BEFORE the
+ *     allow-lists, so a diff touching data/ is refused long before it could merge.
+ *   - the prebuild outputs are derived artifacts, rebuilt by the next build.
+ *   - UNTRACKED files are never touched by `checkout -f`, so the private repo's
+ *     shows.json / reviews.json / audience-buzz.json survive for the re-verify.
+ * Nothing this script pushes can depend on the discarded bytes.
+ *
+ * The discard is logged, never silent — a fix that quietly throws files away is how
+ * the next person loses a day.
+ *
+ * OUTSIDE CI IT REFUSES INSTEAD OF FORCING. In CI the checkout is disposable; on a
+ * developer's machine `-f` would destroy real uncommitted work. Rather than trust
+ * that nobody runs this by hand, the force is gated on GITHUB_ACTIONS and a local
+ * run with a dirty tracked tree stops with an explanation.
+ *
+ * `opts.cwd` pointing anywhere other than this repo means approveDataCard()'s flat
+ * mkdtemp clone of a private data repo: checkout-core-data never touched it, it has
+ * no data/ directory, and forcing there could discard the very rebased data being
+ * merged. The discriminator is repo IDENTITY, not "was a cwd passed" — keying off
+ * the mere presence of opts.cwd is a footgun, since a future caller passing
+ * `{ cwd: REPO }` would silently lose the guard.
+ */
+function gitCheckout(args, opts = {}) {
+  const target = path.resolve(opts.cwd || REPO);
+  if (target !== path.resolve(REPO)) return git(['checkout', ...args], opts);
+
+  // Kill switch, same idiom as DEPLOY_GATE_DISABLED / CMUX_AUTH_PREFLIGHT_DISABLED.
+  // This sits on the only path to main, so an operator needs a way back at 2am
+  // without waiting for a code deploy. Disabling restores the previous behaviour,
+  // which fails loudly at the checkout rather than doing anything clever.
+  const disabled = process.env.AUTONOMOUS_MERGE_FORCE_CHECKOUT_DISABLED === '1';
+  const dirty = dirtyTrackedPaths(target);
+
+  if (dirty.length && !disabled) {
+    if (!process.env.GITHUB_ACTIONS) {
+      throw new Error(
+        `refusing to force a checkout over ${dirty.length} modified tracked file(s) outside CI: `
+        + `${dirty.slice(0, 5).join(', ')}${dirty.length > 5 ? ', …' : ''}. `
+        + 'In CI these are core-data copies and prebuild artifacts and are safe to discard; '
+        + 'on a working machine they may be real edits. Commit or stash them, or set '
+        + 'AUTONOMOUS_MERGE_FORCE_CHECKOUT_DISABLED=1 to use a plain checkout.'
+      );
+    }
+    console.error(`[merge] discarding ${dirty.length} regenerated tracked file(s) so the checkout can proceed: ${dirty.join(', ')}`);
+  }
+
+  const force = dirty.length > 0 && !disabled;
+  return git(['checkout', ...(force ? ['-f'] : []), ...args], opts);
+}
+
+
 // Tier-2 (Sprint 4): a data card's branch lives on one of these private
 // repos' own origin, never this repo's. Same repoKey vocabulary as
 // scripts/lib/autonomous-eligibility.js DATA_CLASS_REPO.
@@ -426,12 +514,12 @@ async function approve(cardId, branch) {
     return;
   }
 
-  git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`]);
+  gitCheckout(['-B', 'auto-merge-work', `origin/${branch}`]);
 
   for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
     if (attempt > 1) {
       git(['fetch', 'origin', 'main']);
-      git(['checkout', 'auto-merge-work']);
+      gitCheckout(['auto-merge-work']);
     }
     const verified = verifyRebase(evidence);
     if (!verified.ok) {
@@ -449,7 +537,7 @@ async function approve(cardId, branch) {
     git(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}\n${BASE_TRAILER_PREFIX}${baseSha}`]);
     const sha = git(['rev-parse', 'HEAD']).trim();
 
-    git(['checkout', 'main']);
+    gitCheckout(['main']);
     git(['reset', '--hard', 'origin/main']);
     try {
       git(['merge', '--ff-only', 'auto-merge-work']);
@@ -459,7 +547,7 @@ async function approve(cardId, branch) {
         return;
       }
       console.error(`[merge] attempt ${attempt} fast-forward lost a race against origin/main — retrying`);
-      git(['checkout', 'auto-merge-work']);
+      gitCheckout(['auto-merge-work']);
       continue;
     }
 
@@ -492,7 +580,7 @@ async function revert(cardId, branch) {
   const mergeMsg = git(['log', '-1', '--format=%B', mergeSha]);
   const baseSha = parseBaseTrailer(mergeMsg);
 
-  git(['checkout', 'main']);
+  gitCheckout(['main']);
   git(['reset', '--hard', 'origin/main']);
   let revertSha;
   try {
@@ -569,12 +657,12 @@ async function approveDataCard(cardId, branch, card, evidence) {
   };
 
   git(['fetch', 'origin', branch], { cwd: dir });
-  git(['checkout', '-B', 'auto-merge-work', `origin/${branch}`], { cwd: dir });
+  gitCheckout(['-B', 'auto-merge-work', `origin/${branch}`], { cwd: dir });
 
   for (let attempt = 1; attempt <= MAX_MERGE_ATTEMPTS; attempt++) {
     if (attempt > 1) {
       git(['fetch', 'origin', 'main'], { cwd: dir });
-      git(['checkout', 'auto-merge-work'], { cwd: dir });
+      gitCheckout(['auto-merge-work'], { cwd: dir });
     }
     const verified = verifyRebaseData(dir, repoKey, cls, evidence);
     if (!verified.ok) {
@@ -588,7 +676,7 @@ async function approveDataCard(cardId, branch, card, evidence) {
     git(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}\n${BASE_TRAILER_PREFIX}${baseSha}`], { cwd: dir });
     const sha = git(['rev-parse', 'HEAD'], { cwd: dir }).trim();
 
-    git(['checkout', 'main'], { cwd: dir });
+    gitCheckout(['main'], { cwd: dir });
     git(['reset', '--hard', 'origin/main'], { cwd: dir });
     try {
       git(['merge', '--ff-only', 'auto-merge-work'], { cwd: dir });
@@ -598,7 +686,7 @@ async function approveDataCard(cardId, branch, card, evidence) {
         return;
       }
       console.error(`[merge] attempt ${attempt} fast-forward lost a race against ${repoKey}'s origin/main — retrying`);
-      git(['checkout', 'auto-merge-work'], { cwd: dir });
+      gitCheckout(['auto-merge-work'], { cwd: dir });
       continue;
     }
 
@@ -607,7 +695,7 @@ async function approveDataCard(cardId, branch, card, evidence) {
     } catch (err) {
       if (attempt === MAX_MERGE_ATTEMPTS) { reverifyFail(`push to ${repoKey} failed after a clean fast-forward merge: ${redactSecrets(String(err.message).slice(0, 300))}`); return; }
       console.error(`[merge] attempt ${attempt} push race on ${repoKey} — retrying`);
-      git(['checkout', 'auto-merge-work'], { cwd: dir });
+      gitCheckout(['auto-merge-work'], { cwd: dir });
       continue;
     }
 
@@ -648,7 +736,7 @@ async function revertDataCard(cardId, evidence) {
     const mergeMsg = git(['log', '-1', '--format=%B', mergeSha], { cwd: dir });
     const baseSha = parseBaseTrailer(mergeMsg);
 
-    git(['checkout', 'main'], { cwd: dir });
+    gitCheckout(['main'], { cwd: dir });
     git(['reset', '--hard', 'origin/main'], { cwd: dir });
     let revertSha;
     try {
@@ -716,4 +804,7 @@ module.exports = {
   approve, revert, verifyRebase, countPriorMerges, runChecks,
   approveDataCard, revertDataCard, verifyRebaseData, cloneDataRepo, dispatchRebuildFast, DATA_REPO_URLS,
   redactSecrets,
+  // Exported so the guard test drives the real function against a throwaway git
+  // repo rather than restating the rule (CLAUDE.md rule 15).
+  gitCheckout, dirtyTrackedPaths,
 };

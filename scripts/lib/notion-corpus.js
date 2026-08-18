@@ -158,6 +158,48 @@ function blockPlainText(block) {
 }
 
 /** Depth-first plain text over a block tree whose children are on `_children`. */
+/**
+ * The page body text that is NOT one of the `[auto:<field>] full content`
+ * sections — i.e. what a human actually typed on the page, as opposed to the
+ * overflow notion-brain.js wrote there on their behalf.
+ *
+ * WHY THIS IS NEEDED. reassembleField() already recovers the auto sections into
+ * `record.fields`, so a consumer that renders `fields` has the long text. But a
+ * FREE-FORM page — one where someone wrote into the page body instead of the
+ * Notes property — has no auto section at all, so it has empty `fields` and all
+ * of its content sits here. Measured on the Sprint 2 corpus: 67 un-Done pages
+ * have >500 characters of body text and nothing in notes/outcome/keyFiles, and
+ * a consumer reading only `fields` renders them as an empty stub. That is
+ * 86,388 characters of real work, and after Notion is deleted there is nowhere
+ * to get it back.
+ *
+ * Returning ONLY the non-auto part is what makes this safe to concatenate with
+ * `fields`: the auto sections would otherwise be rendered twice, which is the
+ * double-count that inflated Sprint 0's volume baseline.
+ */
+function nonAutoBodyText(body) {
+  const blocks = (body && body.blocks) || [];
+  const out = [];
+  let inAuto = false;
+  for (const b of blocks) {
+    const heading = getHeadingText(b);
+    if (heading !== null) {
+      // Any heading ends the previous auto section; an auto heading starts a
+      // new one. A human heading is real content and is kept.
+      inAuto = isAutoHeading(b);
+      if (inAuto) continue;
+    }
+    if (inAuto) continue;
+    const t = blockPlainText(b);
+    if (t) out.push(t);
+    if (Array.isArray(b && b._children) && b._children.length) {
+      const child = blocksPlainText(b._children);
+      if (child) out.push(child);
+    }
+  }
+  return out.join('\n').trim();
+}
+
 function blocksPlainText(blocks) {
   const out = [];
   const walk = (list) => {
@@ -613,6 +655,7 @@ module.exports = {
   reassembleField,
   blockPlainText,
   blocksPlainText,
+  nonAutoBodyText,
   collectUnknownBlockTypes,
   maxBlockDepth,
   countBlocks,
