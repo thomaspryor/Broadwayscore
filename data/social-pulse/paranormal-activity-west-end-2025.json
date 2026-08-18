@@ -3,49 +3,63 @@
   "showId": "paranormal-activity-west-end-2025",
   "showTitle": "Paranormal Activity",
   "market": "West End",
-  "fetchedAt": "2026-08-10T06:53:54.870Z",
+  "fetchedAt": "2026-08-18T13:39:59.789Z",
   "tier": "Hidden",
-  "volume": 7,
-  "effectiveVolume": 0,
+  "volume": 11,
+  "effectiveVolume": 0.7,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0
+      "reddit": 0.2,
+      "bluesky": 1
     },
-    "overall": 0,
-    "classified": 7
+    "overall": 0.2727272727272727,
+    "classified": 11
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -36,
-  "baselineMultiple": 0.76,
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": 57,
+  "baselineMultiple": 1.25,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 2,
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "The audience of Paranormal Activity on the West End that sat down for the 7pm showing today have now all gone to buy…",
+      "platform": "bluesky",
+      "author": "@feedthedrummer.bsky.social",
+      "url": "https://bsky.app/profile/feedthedrummer.bsky.social/post/3mt2qtxaekc2j"
+    },
+    {
+      "text": "Paranormal Activity on Broadway I’m not sure if this post is allowed so remove if not, but I’m wondering if anyone…",
+      "platform": "reddit",
+      "author": "u/Physical_Ranger6786",
+      "url": "https://www.reddit.com/r/horror/comments/1vqax7b/paranormal_activity_on_broadway/"
+    }
+  ],
   "counters": {
-    "reddit": 7,
-    "bluesky": 0,
+    "reddit": 10,
+    "bluesky": 1,
     "x": 0,
-    "wikipedia": 1079
+    "wikipedia": 2051
   },
   "wikipediaTitle": "Paranormal Activity (play)",
   "baseline": {
-    "mean": 8.8,
-    "weeksOfHistory": 5
+    "mean": 9.166666666666666,
+    "weeksOfHistory": 6
   },
   "rawCounts": {
-    "reddit": 7,
-    "bluesky": 0
+    "reddit": 10,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 36,
-    "total": 50,
-    "text": "36/50 West End"
+    "position": 19,
+    "total": 46,
+    "text": "19/46 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.35
 }

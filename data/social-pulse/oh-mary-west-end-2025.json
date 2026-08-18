@@ -3,49 +3,57 @@
   "showId": "oh-mary-west-end-2025",
   "showTitle": "Oh, Mary!",
   "market": "West End",
-  "fetchedAt": "2026-08-10T06:51:56.588Z",
-  "tier": "Hidden",
-  "volume": 2,
-  "effectiveVolume": 0.7,
+  "fetchedAt": "2026-08-18T13:37:34.886Z",
+  "tier": "Buzzing",
+  "volume": 38,
+  "effectiveVolume": 5.2,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 1
+      "reddit": 0.5,
+      "bluesky": 1
     },
-    "overall": 1,
-    "classified": 1
+    "overall": 0.6666666666666666,
+    "classified": 3
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -87,
-  "baselineMultiple": 0.04,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 1800,
+  "baselineMultiple": 1.01,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 1,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "OH, MARY!: \"Cole Escola interpret their own writing... worth it. The finale now makes complete sense\" \"author is…",
+      "platform": "bluesky",
+      "author": "@theatremonkey1.bsky.social",
+      "url": "https://bsky.app/profile/theatremonkey1.bsky.social/post/3mszt4em2e22s"
+    }
+  ],
   "counters": {
-    "reddit": 1,
-    "bluesky": 0,
-    "x": 1,
-    "wikipedia": 18690
+    "reddit": 2,
+    "bluesky": 1,
+    "x": 35,
+    "wikipedia": 10616
   },
   "wikipediaTitle": "Oh, Mary!",
   "baseline": {
-    "mean": 37.6,
-    "weeksOfHistory": 5
+    "mean": 37.666666666666664,
+    "weeksOfHistory": 6
   },
   "rawCounts": {
-    "reddit": 1,
-    "bluesky": 0
+    "reddit": 2,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 26,
-    "total": 50,
-    "text": "26/50 West End"
+    "position": 3,
+    "total": 46,
+    "text": "3/46 West End"
   },
-  "compositeScore": 0.35
+  "compositeScore": 2.6
 }
