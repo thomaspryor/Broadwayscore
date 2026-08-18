@@ -179,3 +179,8 @@ coverage-adversarial-probe.yml
 # a user could notice missing — real-time paging on push already covers the
 # case that matters. Digest-only for the weekly leg.
 verify-schema.yml
+
+# Card #1766: a stale baseline just means test.yml's outlet-registry --strict
+# gate can flap red again on the next new critic outlet — visible immediately
+# via a red main build, not a silent staleness a user would notice. Digest-only.
+outlet-registry-baseline-maintenance.yml
