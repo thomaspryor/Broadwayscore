@@ -68,6 +68,27 @@ function isManuallyResolved(task) {
   );
 }
 
+// Card #1770/task #1701 incident: a task completed via an earlier healthy
+// dispatch, then got mistakenly re-dispatched — that redispatch died, and
+// isLatestDispatchDead("latest attempt ever") read the death as proof the
+// COMPLETION never ran, reopening real, already-verified work. Fix: only a
+// dead/unverified attempt AT OR BEFORE the task's own completion time can
+// invalidate the completion; a later one is a stale redispatch of already-
+// finished work, not evidence against it.
+//
+// `t.completedAtEstimate` is a synthetic, per-process field the CALLER
+// attaches (see attachCompletedAtEstimates below) — it is NEVER persisted
+// to the task's JSON file and must not be confused with a real schema
+// field the way isManuallyResolved's fields above are (those ARE persisted,
+// hand-written). Absent → identical to pre-fix behavior (latest-attempt-ever).
+function attachCompletedAtEstimates(tasks) {
+  return (tasks || []).map((t) => (
+    t && t.status === 'completed' && Number.isFinite(t.mtimeMs)
+      ? { ...t, completedAtEstimate: new Date(t.mtimeMs).toISOString() }
+      : t
+  ));
+}
+
 // Tasks that are ALREADY marked 'completed' but whose latest dispatch is
 // dead — the reconciler's input. `tasks` is the shape loadTasks() already
 // produces ({id, status, subject, ...}). notionId (card #1157) lets the
@@ -77,7 +98,8 @@ function isManuallyResolved(task) {
 // dead dispatch was discovered; null for native (non-mirrored) tasks.
 function reconcileDeadCompletions(tasks, entries) {
   return (tasks || [])
-    .filter((t) => t && t.status === 'completed' && !isManuallyResolved(t) && isLatestDispatchDead(t.id, entries))
+    .filter((t) => t && t.status === 'completed' && !isManuallyResolved(t)
+      && isLatestDispatchDead(t.id, entries, { beforeTs: t.completedAtEstimate }))
     .map((t) => ({ id: t.id, subject: t.subject || null, notionId: notionIdOf(t) }));
 }
 
@@ -89,4 +111,4 @@ function shouldCorrectNotionStatus(currentStatus) {
   return currentStatus === 'Done';
 }
 
-module.exports = { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus, isManuallyResolved };
+module.exports = { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus, isManuallyResolved, attachCompletedAtEstimates };
