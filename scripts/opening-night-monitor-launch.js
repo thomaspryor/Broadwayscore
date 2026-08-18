@@ -367,6 +367,27 @@ async function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   const now = new Date();
 
+  // Kill-switch staleness alarm (task #1773): checked BEFORE the auth
+  // preflight and lock mkdir gates further down, so a KILL_FILE left engaged
+  // for days can't also blind the ONE mechanism meant to catch that — mirrors
+  // #1720's fix in notion-action-poll.js exactly, reusing dispatch-watchdog.js's
+  // own pager (task #1543) rather than a third copy-paste. Skipped on
+  // --dry-run: dry-run is documented as printing the decision and launching
+  // nothing, and must not have the side effect of writing to the real alert
+  // ledger. Known scope limit (inherited from #1543): this only sees the
+  // KILL_FILE case — a persistent ON_MONITOR_DISABLED=1 env var has no mtime
+  // and stays invisible to this check.
+  if (!opts['dry-run']) {
+    try {
+      const { pageIfKillSwitchStale } = require('./dispatch-watchdog.js');
+      pageIfKillSwitchStale(KILL_FILE, {
+        conditionKey: 'on-monitor-kill-switch-stale',
+        label: 'Opening-night monitor kill switch',
+        clearHint: `rm ${KILL_FILE}`,
+      });
+    } catch (err) { log(`  kill-switch staleness check failed (non-fatal): ${err.message}`); }
+  }
+
   if (opts.heartbeat) {
     fs.mkdirSync(MON_DIR, { recursive: true });
     fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString() }));

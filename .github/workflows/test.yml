@@ -345,6 +345,12 @@ on:
       # logic + shared cmux launch primitive. Colocated tests run in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/opening-night-monitor-launch.js'
+      # Kill-switch staleness alarm (task #1777, 2026-08-18): reuses
+      # dispatch-watchdog.js's pageIfKillSwitchStale (task #1543) — mirrors
+      # #1720's fix in notion-action-poll.js. Test lives in scripts/tests/
+      # (registered in tests/unit-test-manifest.txt, not globbed) —
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs'
       # Opening-night scored-stage alert (task #1737, 2026-08-17): shared
       # filter/date/scored-lookup predicate + the script that calls it.
       # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
