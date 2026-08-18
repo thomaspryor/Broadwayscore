@@ -44,7 +44,10 @@ const MIN_FILED_RATIO = Number(arg('min-filed-ratio', '0.25'));
 
 // WRITES under --apply (wrongShow flags + duplicateOf pointers) — see
 // scripts/lib/review-texts-dir.js. --review-texts-dir= still overrides explicitly.
-const REVIEW_TEXTS_DIR = arg('review-texts-dir', resolveReviewTextsDir());
+// Lazy: arg(..., fallback) is a plain function call, so a fallback expression
+// passed inline would evaluate (and pay resolveReviewTextsDir()'s fs/git work)
+// on every run even when --review-texts-dir= makes it unnecessary.
+const REVIEW_TEXTS_DIR = arg('review-texts-dir', null) || resolveReviewTextsDir();
 console.log(`[audit-cross-attribution-by-critic] review-texts: ${REVIEW_TEXTS_DIR}`);
 const SHOWS_PATH = arg('shows-path',
   path.join(__dirname, '..', 'data', 'shows.json'));

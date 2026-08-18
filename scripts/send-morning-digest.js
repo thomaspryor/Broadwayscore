@@ -67,6 +67,7 @@ const {
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
+const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -163,6 +164,25 @@ const RUNNER_STATUS_PATH = path.join(
   process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
   'runner-health.json'
 );
+// Loop 5: finished agent pull requests pile up unmerged because no actor decides,
+// and until now nothing told the owner it was happening — four green PRs sat for a
+// day and it surfaced only because someone went looking. scripts/pr-supervisor.js
+// publishes its verdicts here on a schedule; this renders them. Same shape as the
+// relay and delegation readers above: the file's absence is unknown, never an alarm.
+const PR_SUPERVISOR_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'pr-supervisor-status.json'
+);
+function localPrSupervisorMessage() {
+  let payload;
+  try {
+    payload = JSON.parse(fs.readFileSync(PR_SUPERVISOR_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // never published on this machine — unknown, not an alarm
+  }
+  return assessSupervisorStatus(payload).message;
+}
+
 function localRunnerHealthMessage() {
   let state;
   try {
@@ -359,6 +379,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const runnerMsg = localRunnerHealthMessage();
   if (runnerMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(runnerMsg)}</p>`);
+  }
+  const supervisorMsg = localPrSupervisorMessage();
+  if (supervisorMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);

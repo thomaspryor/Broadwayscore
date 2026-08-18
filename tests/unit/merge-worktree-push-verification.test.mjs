@@ -53,6 +53,16 @@ function setupRepo(dir) {
   const originDir = path.join(dir, 'origin.git');
   const repoDir = path.join(dir, 'repo');
   execFileSync('git', ['init', '-q', '--bare', originDir], { env: GIT_ENV });
+  // A bare repo's HEAD symref is set at `init` time from the runner's
+  // init.defaultBranch — which may not be "main" (CI failure, 2026-08-18:
+  // this repo's dev machines default to main, masking it locally, but a
+  // GitHub Actions runner defaulting elsewhere left origin's HEAD pointing
+  // at a branch that's never pushed here, so `git clone` of it "appears
+  // empty" and the clone checks out no local branch at all — breaking any
+  // later `git push origin main` from that clone with "src refspec main
+  // does not match any"). Force it explicitly so the fixture is portable
+  // regardless of the runner's git config.
+  execFileSync('git', ['-C', originDir, 'symbolic-ref', 'HEAD', 'refs/heads/main'], { env: GIT_ENV });
   execFileSync('git', ['init', '-q', repoDir], { env: GIT_ENV });
   git(repoDir, ['config', 'user.email', 't@t']);
   git(repoDir, ['config', 'user.name', 't']);
