@@ -218,5 +218,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-18T11:19:50.046Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-09 and 2026-08-18.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T13:14:46.577Z"
+  },
+  {
+    "conditionKey": "arm-yield:outlet:newsday",
+    "title": "Newsday (reviews collected) has stopped updating (9 days)",
+    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-09, 9 days ago. It has never before gone quiet for more than 7 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 9d, from 6 productive day(s) / 9 item(s) between 2026-07-11 and 2026-08-09.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T13:14:46.580Z"
   }
 ]
