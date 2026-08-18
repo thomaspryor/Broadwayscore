@@ -3,7 +3,9 @@
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
     "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
-    "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
+    "how-the-other-half-loves-west-end-2026/all-allam--margaux.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "an-american-daughter-off-broadway-2026/off-off-online--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -36,13 +38,23 @@
     "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
-    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
-      "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
+      "how-the-other-half-loves-west-end-2026/all-allam--margaux.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "an-american-daughter-off-broadway-2026/off-off-online--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -59,7 +71,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -94,6 +106,28 @@
       "t": "2026-08-18T16:34:41.933Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-18T16:37:20.442Z",
+      "event": "bb-session",
+      "session": "90bd676b",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-18T16:37:20.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-18T16:37:38.436Z",
+      "event": "bb-session",
+      "session": "3622de4a",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-18T16:37:38.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
