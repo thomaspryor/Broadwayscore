@@ -218,5 +218,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-18T06:20:11.395Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:jeeves-takes-charge-west-end-2026",
+    "title": "Shipped review too short to verify on Jeeves Takes Charge",
+    "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-at-ustinov-studio-bath-from-director-hugh-wooldridge-starring-sam-harrison",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T08:56:58.832Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:jeeves-takes-charge-west-end-2026",
+    "title": "Shipped review missing publishDate on Jeeves Takes Charge",
+    "description": "thestage/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-at-ustinov-studio-bath-from-director-hugh-wooldridge-starring-sam-harrison",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T08:56:58.834Z"
   }
 ]
