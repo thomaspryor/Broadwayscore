@@ -28,7 +28,7 @@
  * test require()s this directly instead of copying the decision logic in).
  */
 
-const { isLatestDispatchDead } = require('./dispatch-ledger.js');
+const { isLatestDispatchDead, resolveDeadAttempt } = require('./dispatch-ledger.js');
 // notionIdOf already parses the "[notion:<id>] ..." marker notion-tasks-sync
 // writes into a mirrored task's description (dispatch-watchdog-core.js) —
 // reused rather than re-implementing the same regex a third place (card #1157).
@@ -96,11 +96,24 @@ function attachCompletedAtEstimates(tasks) {
 // task whose description carries notion-tasks-sync's "[notion:<id>] ..."
 // marker had its card pushed to "Done" by notion-tasks-sync push BEFORE the
 // dead dispatch was discovered; null for native (non-mirrored) tasks.
+// deadAttemptTs (card #1795) is the dead ledger entry's own `ts` — the
+// caller (reconcile-dead-completions.js's reopenTask) uses it to key its
+// REOPEN_MARKER idempotency to THIS SPECIFIC dead-dispatch event instead of
+// "any reopen ever happened", so a genuine SECOND dead completion isn't
+// silently blocked by the marker a first reopen already left behind.
+// resolveDeadAttempt() called once per candidate (not isLatestDispatchDead
+// + a second lookup) — same two-phase beforeTs decision, single pass.
 function reconcileDeadCompletions(tasks, entries) {
   return (tasks || [])
-    .filter((t) => t && t.status === 'completed' && !isManuallyResolved(t)
-      && isLatestDispatchDead(t.id, entries, { beforeTs: t.completedAtEstimate }))
-    .map((t) => ({ id: t.id, subject: t.subject || null, notionId: notionIdOf(t) }));
+    .filter((t) => t && t.status === 'completed' && !isManuallyResolved(t))
+    .map((t) => ({ t, deadAttempt: resolveDeadAttempt(t.id, entries, { beforeTs: t.completedAtEstimate }) }))
+    .filter(({ deadAttempt }) => Boolean(deadAttempt))
+    .map(({ t, deadAttempt }) => ({
+      id: t.id,
+      subject: t.subject || null,
+      notionId: notionIdOf(t),
+      deadAttemptTs: deadAttempt.ts || null,
+    }));
 }
 
 // Whether a Notion card's CURRENT status should be corrected back off "Done"

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus, isManuallyResolved, attachCompletedAtEstimates } = require('./dispatch-dead-launch-guard.js');
-const { isLatestDispatchDead, latestAttemptForTask, failedLaunchEntries } = require('./dispatch-ledger.js');
+const { isLatestDispatchDead, resolveDeadAttempt, latestAttemptForTask, failedLaunchEntries } = require('./dispatch-ledger.js');
 
 // Ship-check adversarial finding (card #1144): isLatestDispatchDead's
 // unverified-launch check only works because it matches failedLaunchEntries()'s
@@ -110,6 +110,24 @@ test('reconcileDeadCompletions: flags a completed task whose latest dispatch is 
   assert.equal(flagged.length, 1);
   assert.equal(flagged[0].id, '1140');
   assert.equal(flagged[0].notionId, null);
+  // Card #1795: deadAttemptTs is the dead entry's own ts — reconcile-dead-
+  // completions.js's reopenTask() keys its idempotency marker off this.
+  assert.equal(flagged[0].deadAttemptTs, '2026-08-09T12:18:12.910Z');
+});
+
+// Card #1795: resolveDeadAttempt is the entry-returning half of
+// isLatestDispatchDead — must return the SAME entry that governs the
+// boolean, across all three of this file's real-incident ledger shapes.
+test('resolveDeadAttempt: returns the dead+unverified-launch entry for the #1140 shape', () => {
+  const entry = resolveDeadAttempt('1140', DEAD_LAUNCH_1140);
+  assert.equal(entry.ts, '2026-08-09T12:18:12.910Z');
+  assert.equal(entry.event, 'launch');
+  assert.equal(entry.unverified, true);
+});
+
+test('resolveDeadAttempt: null for a healthy latest attempt', () => {
+  const entries = [{ ts: '2026-08-09T19:15:41.266Z', event: 'launch', taskId: '1140', workspaceRef: 'workspace:252' }];
+  assert.equal(resolveDeadAttempt('1140', entries), null);
 });
 
 // Card #1157: reopening the local task-store copy doesn't correct the
@@ -226,6 +244,16 @@ test('isLatestDispatchDead: a dead redispatch AFTER the beforeTs cutoff does not
   assert.equal(isLatestDispatchDead('1701', HEALTHY_THEN_STALE_DEAD_REDISPATCH), true);
 });
 
+test('resolveDeadAttempt: no cutoff returns the stale dead redispatch entry itself (the ts reopenTask keys off)', () => {
+  const entry = resolveDeadAttempt('1701', HEALTHY_THEN_STALE_DEAD_REDISPATCH);
+  assert.equal(entry.ts, '2026-08-17T09:00:00.001Z');
+  assert.equal(entry.workspaceRef, 'workspace:301');
+});
+
+test('resolveDeadAttempt: with the beforeTs cutoff before the redispatch, null (governing attempt is healthy)', () => {
+  assert.equal(resolveDeadAttempt('1701', HEALTHY_THEN_STALE_DEAD_REDISPATCH, { beforeTs: '2026-08-16T12:00:00.000Z' }), null);
+});
+
 test('#1770/#1701: reconcileDeadCompletions never reopens a task whose completion predates a later dead redispatch', () => {
   const tasks = attachCompletedAtEstimates([
     { id: '1701', status: 'completed', subject: 'real shipped work', mtimeMs: Date.parse('2026-08-16T10:05:00.000Z') },
@@ -270,6 +298,11 @@ const REMAP_CHURN_THEN_HEALTHY_FINISH = [
 test('isLatestDispatchDead: a remap-rewritten healthy attempt AFTER beforeTs is trusted, not discarded for an earlier dead one inside the cutoff', () => {
   const beforeTs = '2026-08-18T04:28:27.043Z'; // between the 04:26 dead entry and the 04:28:40 remap
   assert.equal(isLatestDispatchDead('1115', REMAP_CHURN_THEN_HEALTHY_FINISH, { beforeTs }), false);
+});
+
+test('resolveDeadAttempt: null for the remap-then-healthy-finish shape — never manufactures a deadAttemptTs for real work', () => {
+  const beforeTs = '2026-08-18T04:28:27.043Z';
+  assert.equal(resolveDeadAttempt('1115', REMAP_CHURN_THEN_HEALTHY_FINISH, { beforeTs }), null);
 });
 
 test('#1115/#1709: reconcileDeadCompletions never reopens a task whose real latest-ever attempt is healthy, even if a remap pushed its ts past completedAt', () => {

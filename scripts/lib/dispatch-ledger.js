@@ -306,20 +306,31 @@ function isDeadShapedAttempt(e) {
 // and only when the real latest-ever attempt is itself dead-shaped AND its
 // own ts is after the cutoff — i.e. only for a stale re-dispatch of already-
 // finished work (the #1701 shape), never for an in-progress/remapped one.
-function isLatestDispatchDead(taskId, entries, opts = {}) {
+// Returns the actual dead-shaped attempt ENTRY that isLatestDispatchDead's
+// decision is based on (or null if the latest attempt isn't dead) — same
+// two-phase beforeTs/cutoff logic as that function, factored out so a
+// caller that needs to know WHICH ledger event was dead (not just true/
+// false) can key off its own `ts` (card #1795: reconcile-dead-completions.js's
+// REOPEN_MARKER idempotency needs to distinguish "this exact dead-dispatch
+// event was already handled" from "a NEW dead completion happened since").
+function resolveDeadAttempt(taskId, entries, opts = {}) {
   const latest = latestAttemptForTask(taskId, entries);
-  if (!latest) return false;
-  if (!isDeadShapedAttempt(latest)) return false;
+  if (!latest) return null;
+  if (!isDeadShapedAttempt(latest)) return null;
 
   if (opts.beforeTs) {
     const cutoffTs = Date.parse(opts.beforeTs);
     const latestTs = Date.parse(latest.ts || '');
     if (Number.isFinite(cutoffTs) && Number.isFinite(latestTs) && latestTs > cutoffTs) {
       const atCutoff = latestAttemptForTask(taskId, entries, opts);
-      return Boolean(atCutoff) && isDeadShapedAttempt(atCutoff);
+      return (atCutoff && isDeadShapedAttempt(atCutoff)) ? atCutoff : null;
     }
   }
-  return true;
+  return latest;
+}
+
+function isLatestDispatchDead(taskId, entries, opts = {}) {
+  return Boolean(resolveDeadAttempt(taskId, entries, opts));
 }
 
 // LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
@@ -955,7 +966,7 @@ module.exports = {
   // bsc-next, dispatch-watchdog, the S6 canary) died on load. Do not re-add
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
-  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
+  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
