@@ -2164,7 +2164,13 @@ async function checkMainRedStreak(isCI) {
 
     if (candidateCount > 0 && !hasLowHeadroom()) {
       let fetched = 0;
-      for (let idx = 0; idx < candidateCount && fetched < MAX_JOB_DETAIL_CALLS; idx++) {
+      // OLDEST candidate first (code-review finding): the oldest run in the
+      // streak becomes `firstRedSha` — the exact commit named in the alarm —
+      // so it must not be the one MAX_JOB_DETAIL_CALLS leaves without
+      // evidence on a streak longer than the cap. The newest runs matter
+      // less individually; their raw conclusion already proves the streak
+      // exists even without job detail.
+      for (let idx = candidateCount - 1; idx >= 0 && fetched < MAX_JOB_DETAIL_CALLS; idx--) {
         if (!rawRuns[idx].conclusion) continue; // still running (gh reports '', not null) — no job evidence to fetch yet
         fetched++;
         try {
@@ -2183,8 +2189,15 @@ async function checkMainRedStreak(isCI) {
     const assessment = assessMainRedStreak(runs, Date.now(), THRESHOLD_HOURS);
 
     if (!assessment.alarm) {
+      // redStreakHours can be null even with redRunCount > 0 (the anchor
+      // run's createdAt failed to parse) — code-review finding: reporting
+      // 'pass' with a garbled "undefinedh" message would silently hide a
+      // real data-quality problem instead of surfacing it.
+      if (assessment.redRunCount > 0 && assessment.redStreakHours === null) {
+        return [{ name: NAME, status: 'warn', message: `${assessment.redRunCount} red run(s) but could not compute time since last green (unparseable createdAt) — check gh run list output` }];
+      }
       const msg = assessment.redRunCount > 0
-        ? `${assessment.redRunCount} red run(s), ${assessment.redStreakHours?.toFixed(1)}h since last green — under the ${THRESHOLD_HOURS}h threshold`
+        ? `${assessment.redRunCount} red run(s), ${assessment.redStreakHours.toFixed(1)}h since last green — under the ${THRESHOLD_HOURS}h threshold`
         : 'Last run green';
       return [{ name: NAME, status: 'pass', message: msg }];
     }
@@ -4300,7 +4313,7 @@ function saveHistory(history) {
 
 // --- Main ---
 
-// The 23 checks that make up the CORE digest (isCI-gated side effects, plus
+// The checks that make up the CORE digest (isCI-gated side effects, plus
 // checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
 // this same list can be re-run live and read-only by
 // scripts/lib/health-row-probe.js — see its header for why check-health-row-

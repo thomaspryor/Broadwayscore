@@ -148,3 +148,19 @@ test('an in-progress run reported with conclusion "" (not null) does not fire a 
   assert.equal(r.alarm, null);
   assert.equal(r.redRunCount, 0);
 });
+
+test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {
+  // A version of the health-check.js caller rendered this as
+  // "N red run(s), undefinedh since last green" and returned status 'pass' —
+  // silently hiding a real data-quality problem instead of surfacing it.
+  // The predicate's job is just to make this state distinguishable: redRunCount
+  // > 0 with redStreakHours === null.
+  const runs = [
+    { headSha: 'badcreatedat', createdAt: 'not-a-date', conclusion: 'failure',
+      jobs: [testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run tests')])] },
+  ];
+  const r = assessMainRedStreak(runs, NOW, 2);
+  assert.equal(r.redRunCount, 1);
+  assert.equal(r.redStreakHours, null);
+  assert.equal(r.alarm, null);
+});
