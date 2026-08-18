@@ -1553,6 +1553,13 @@ on:
       # AND path-listed here so a solo edit triggers CI.
       - 'scripts/telegraph-reviews-index.test.mjs'
       - 'tests/fixtures/telegraph-theatre-reviews-index.html'
+      # scripts/lib/site-search-discovery.js, found-outlet-ids.js,
+      # url-discovery.js, domain-filters.js, domainless-outlet-guard.test.mjs,
+      # outlet-domain-hint.js/.test.mjs (task #766 re-triage, 2026-08-17),
+      # domain-validation-guard.test.mjs, t1-silent-gap.js,
+      # refetch-circuit-breaker.js, flag-contradiction.js and their colocated
+      # tests were previously path-listed individually here; all now covered
+      # by the scripts/lib/** glob above (task #1745, 2026-08-17).
       # Baseline-diff (task #1673, mirrors the entries directly below for
       # #1668): a solo edit to any of these four needs CI — without this
       # entry, audit-cv-flag-contradiction.js's own baseline files had ZERO

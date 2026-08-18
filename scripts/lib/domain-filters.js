@@ -30,6 +30,13 @@ const TICKET_DOMAINS = new Set([
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
+  // 2026-08-16 (task #766 re-triage): skiddle.com is a UK gigs/events ticketing
+  // and listings platform, not a review outlet — it was the majority host in
+  // click-liverpool's own review-texts archive (2 of the outlet's real domain's
+  // 1), which would have made it the auto-inferred "domain" for that outlet had
+  // the domain-hint heuristic run unblocked. Verified zero hits across every
+  // scored review URL in reviews.json before adding.
+  'skiddle.com',
   // 2026-08-09: both were counted as MISSING REVIEWS for
   // disruption-off-broadway-2026 by the SERP census. Two of the three openings
   // the newsletter gate deleted from the 2026-08-03 issue were dropped over
@@ -59,6 +66,12 @@ const AGGREGATOR_DOMAINS = new Set([
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',
   'stagedoor.com', // WE aggregator — critic-reviews pages are not outlet reviews
+  // Not a registered outlet under any outletId — surfaced twice as a wrong-host
+  // review filed under a domainless outlet (daily-echo, western-mail), the
+  // exact failure mode task #766 exists to close (data/audit re-triage,
+  // 2026-08-16). Block outright rather than let a domainless outlet's SERP
+  // guard or domain-hint inference ever accept it.
+  'theatreandartreviews.com',
 ]);
 
 // Reference sites — not reviews
