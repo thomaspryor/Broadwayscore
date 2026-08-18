@@ -466,6 +466,8 @@ on:
       # explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
       # files are NOT globbed) — path-listed so a solo edit triggers CI.
       - 'scripts/audit-audience-buzz-contamination.test.mjs'
+      # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
+      - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test

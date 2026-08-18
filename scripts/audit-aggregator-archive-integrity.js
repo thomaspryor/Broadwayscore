@@ -28,7 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateRoundupPageTitle, normalizeTitle } = require('./lib/show-matching');
+const { validateRoundupPageTitle, normalizeTitle, isPunctuationFalsePositive } = require('./lib/show-matching');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -106,17 +106,11 @@ function audit() {
       const v = validateRoundupPageTitle(html, show.title, show.category, siblingCategoriesById[showId]);
       if (v.ok) continue;
 
-      // False-positive guard: HTML-encoded apostrophes / slash-titles where
-      // the validator misfires. Decode entities and re-test informally.
-      if (v.reason === 'page-title-mismatch') {
-        const decoded = (v.pageTitle || '').toLowerCase()
-          .replace(/&#039;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
-        const titleWords = show.title.toLowerCase()
-          .split(/[\s,'/]+/).filter(w => w.length > 2);
-        const ownHits = titleWords.filter(w => decoded.includes(w)).length;
-        if (titleWords.length > 0 && ownHits >= Math.min(2, titleWords.length)) {
-          continue; // Punctuation false positive — accept.
-        }
+      // False-positive guard: see isPunctuationFalsePositive() jsdoc for the
+      // cases it rescues (trailing punctuation, dotted acronyms, slash-joined
+      // titles, byline-prefixed subtitles).
+      if (v.reason === 'page-title-mismatch' && isPunctuationFalsePositive(v.pageTitle, show.title)) {
+        continue;
       }
 
       bad.push({

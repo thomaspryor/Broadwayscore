@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { pageTitleConfirmsShow } = require('./lib/show-matching');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -82,16 +83,32 @@ function validateDtliArchive(showId, htmlPath) {
 
   results.checked++;
 
+  // DTLI publishes one page per SHOW TITLE, not per production/revival — a
+  // re-fetch of a "mismatched" archive returns byte-identical content (found
+  // while fixing #1763: re-fetching all 90 flagged shows changed nothing).
+  // So a year/venue difference from a page whose own <title> still confirms
+  // the correct show is DTLI showing a different revival of the same title,
+  // not a poisoned cache — it only becomes a real (blocking) problem when the
+  // page's title doesn't corroborate the show at all.
+  const titleTagMatch = html.match(/<title>([^<]+)<\/title>/i);
+  const titleConfirmsShow = pageTitleConfirmsShow(titleTagMatch ? titleTagMatch[1] : '', show.title);
+
   // Check for year mismatch (ignore 1970 which is Unix epoch placeholder for missing data)
   if (pageYear && pageYear !== 1970 && expectedYear && Math.abs(pageYear - expectedYear) > 1) {
-    results.mismatches.push({
+    const entry = {
       showId,
       source: 'dtli',
       file: path.basename(htmlPath),
       expected: { year: expectedYear, venue: show.venue },
       found: { year: pageYear, theater: pageTheater },
       issue: `Year mismatch: expected ${expectedYear}, found ${pageYear}`
-    });
+    };
+    if (titleConfirmsShow) {
+      entry.issue += ' (title confirms show — likely a different DTLI-covered revival, not a wrong page)';
+      results.warnings.push(entry);
+    } else {
+      results.mismatches.push(entry);
+    }
     return;
   }
 
@@ -101,14 +118,20 @@ function validateDtliArchive(showId, htmlPath) {
       !expectedVenue.includes(pageTheater.split(' ')[0])) {
     // Only flag if years also don't match or we're confident it's wrong
     if (pageYear && expectedYear && pageYear !== expectedYear) {
-      results.mismatches.push({
+      const entry = {
         showId,
         source: 'dtli',
         file: path.basename(htmlPath),
         expected: { year: expectedYear, venue: show.venue },
         found: { year: pageYear, theater: pageTheater },
         issue: `Venue mismatch: expected ${show.venue}, found ${pageTheater}`
-      });
+      };
+      if (titleConfirmsShow) {
+        entry.issue += ' (title confirms show — likely a different DTLI-covered revival, not a wrong page)';
+        results.warnings.push(entry);
+      } else {
+        results.mismatches.push(entry);
+      }
       return;
     }
   }

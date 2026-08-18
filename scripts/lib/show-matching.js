@@ -1034,6 +1034,66 @@ function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategori
   };
 }
 
+/**
+ * Rescue a validateRoundupPageTitle() 'page-title-mismatch' verdict that's
+ * actually a punctuation/formatting artifact rather than a real mismatch:
+ * trailing title punctuation ("On Your Feet!", "Fela!"), dotted acronyms
+ * ("Q.E.D." vs "QED"), slash-joined titles ("Bernhardt/Hamlet"), or a
+ * byline-prefixed subtitle the aggregator drops ("Morgan Bassichis: Can I
+ * Be Frank?" cached simply as "Can I Be Frank?"). Slashes/underscores become
+ * word breaks (compound titles); remaining punctuation is dropped with no
+ * space so dotted acronyms collapse correctly.
+ *
+ * Used by scripts/audit-aggregator-archive-integrity.js as a second-pass
+ * check after validateRoundupPageTitle flags 'page-title-mismatch' — NOT
+ * called for 'cross-market-sibling', which is a distinct, deliberate check.
+ *
+ * @param {string} pageTitle - the archive's <title> text (HTML-entity encoded)
+ * @param {string} showTitle - the show's title from shows.json
+ * @returns {boolean} true if this is a punctuation/subtitle false positive
+ */
+function isPunctuationFalsePositive(pageTitle, showTitle) {
+  const decoded = (pageTitle || '')
+    .replace(/&#039;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+  const stripPunct = s => s.toLowerCase()
+    .replace(/[/\\_]+/g, ' ')
+    .replace(/[^a-z0-9\s]+/g, '')
+    .replace(/\s+/g, ' ').trim();
+  const decodedStripped = stripPunct(decoded);
+  const titleCandidates = [showTitle];
+  const colonIdx = showTitle.indexOf(':');
+  if (colonIdx !== -1) titleCandidates.push(showTitle.slice(colonIdx + 1));
+  return titleCandidates.some(t => {
+    const titleWords = stripPunct(t)
+      .split(/\s+/).filter(w => w.length > 1 && !TITLE_GENERIC_WORDS.has(w));
+    const ownHits = titleWords.filter(w => decodedStripped.includes(w)).length;
+    return titleWords.length > 0 && ownHits >= Math.min(2, titleWords.length);
+  });
+}
+
+/**
+ * Does an archive page's <title> text actually name this show? Combines
+ * titleWordsMatchWithConfidence (handles short/numeric titles like "13")
+ * with isPunctuationFalsePositive (handles trailing punctuation like
+ * "Fela!" that the confidence matcher's strict word-boundary check misses).
+ *
+ * Used by scripts/validate-archive-productions.js to distinguish "DTLI page
+ * genuinely doesn't mention this show" (real problem — DTLI's URL structure
+ * is one page per title, so a mismatch here means the wrong title was
+ * fetched) from "DTLI's single page for this title just describes a
+ * different revival's year/venue" (not a caching bug — a re-fetch is a
+ * no-op, confirmed while fixing #1763).
+ *
+ * @param {string} pageTitle - the archive's <title> text
+ * @param {string} showTitle - the show's title from shows.json
+ * @returns {boolean}
+ */
+function pageTitleConfirmsShow(pageTitle, showTitle) {
+  if (!pageTitle) return false;
+  return titleWordsMatchWithConfidence(showTitle, pageTitle).matched
+    || isPunctuationFalsePositive(pageTitle, showTitle);
+}
+
 // ---------------------------------------------------------------------------
 // Playbill-Verdict slug helpers
 //
@@ -1460,6 +1520,8 @@ module.exports = {
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
   detectPageMarketQualifier,
+  isPunctuationFalsePositive,
+  pageTitleConfirmsShow,
   cleanSlugTitle,
   isVerdictReviewSlug,
   matchSlugToShow,
