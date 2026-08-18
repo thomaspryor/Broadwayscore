@@ -50,8 +50,9 @@ Usage:
   bsc-next --model <m>     override the resolved model for this dispatch
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
   bsc-next --allow-unverifiable  dispatch a card with no runnable verify command
-  bsc-next --allow-closed-card   dispatch even though the Notion card is already Done
                            (recorded in the dispatch ledger; recheck lists it as unverifiable)
+  bsc-next --allow-closed-card   dispatch even though Notion says the card is already
+                           Done/Archived/Cancelled (recorded in the dispatch ledger)
   bsc-next --allow-human-gated   dispatch --headless even when the card needs a human
                            to finish it (owner visual-qa approval, an owner decision,
                            a long external wait). Refused by default — see task #1004.
