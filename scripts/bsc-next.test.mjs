@@ -767,6 +767,7 @@ test('main(): a task mapped to a live Linear issue is refused before launching a
       loadTasks: () => loadTasks(dir),
       loadLinearMirrorMapping: () => ({ '1341': { linearId: 'x', identifier: 'BRO-500', title: 'y', project: 'Infrastructure' } }),
       launchCmux: () => { throw new Error('launchCmux must never be called once the Linear guard refuses'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the Linear guard refuses'); },
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -873,6 +874,7 @@ test('main(): --id refuses to dispatch when a local worktree branch already carr
       listWorkBranchStatuses: () => [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }],
       launchCmux: () => { throw new Error('launchCmux must never be called once the worktree-branch guard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the worktree-branch guard refuses'); },
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -912,6 +914,12 @@ test('main(): --id --force bypasses the worktree-branch guard and proceeds to th
       cmuxAvailable: () => false, // sidestep the cmux path entirely once past this guard
       fetchCard: () => null,
       launchCmux: () => ({ ok: true, ref: 'workspace:1' }),
+      // MUST be stubbed: this path reaches the real launch-journal site
+      // (bsc-next.js:1213). Unstubbed it defaults to dispatchLedger.appendEntry,
+      // whose LEDGER_PATH is hardcoded to /Users/tompryor/Broadwayscore — the
+      // mkdtempSync above isolates only the TASKS dir, so the write escaped and
+      // put 77 junk 'workspace:1' launch rows in the production ledger.
+      appendLedgerEntry: () => {},
     });
   } catch (e) {
     assert.equal(e.message, '__EXIT__');
@@ -943,6 +951,7 @@ test('main(): --id --dry-run also skips the git I/O entirely (ship-check finding
     main(['--id', '1233', '--dry-run'], {
       loadTasks: () => require('./bsc-next.js').loadTasks(dir),
       listWorkBranchStatuses: () => { listWorkBranchStatusesCalled = true; return []; },
+      appendLedgerEntry: () => {},
       fetchCard: () => null,
     });
   } finally {
