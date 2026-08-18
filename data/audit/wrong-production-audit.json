@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-18T03:28:10.171Z",
+  "timestamp": "2026-08-18T08:08:29.115Z",
   "stats": {
-    "totalReviews": 42399,
-    "alreadyFlagged": 18264,
+    "totalReviews": 42403,
+    "alreadyFlagged": 18267,
     "dateGuardCatches": 145,
     "directorMismatch": 975,
     "tvFilmSignals": 1211,
-    "londonSignals": 909,
+    "londonSignals": 910,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3617
+    "noPublishDate": 3618
   },
   "findings": [
     {
@@ -6294,7 +6294,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 97,
+      "score": 99,
       "publishDate": "2026-08-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
       "findings": [
@@ -9209,7 +9209,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -35390,7 +35390,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 64,
+      "score": 61,
       "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
@@ -36252,7 +36252,7 @@
     {
       "showId": "evita-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2025-07-01",
       "url": "https://www.londontheatre.co.uk/reviews/evita-review-london-palladium",
       "findings": [
@@ -38081,7 +38081,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "everything-theatre--unknown.json",
-      "score": 74,
+      "score": 60,
       "publishDate": "2026-06-05",
       "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
       "findings": [
@@ -38137,7 +38137,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "2026-06-04",
       "url": "https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html",
       "findings": [
@@ -38249,7 +38249,7 @@
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
       "file": "broadwayworld--christiana-rose.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2025-08-04",
       "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
       "findings": [
@@ -38277,7 +38277,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-allam--margaux.json",
-      "score": 88,
+      "score": 81,
       "publishDate": "2026-08-14",
       "url": "https://all-allam.com/how-the-other-half-loves-reviews/",
       "findings": [
@@ -38291,7 +38291,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 89,
+      "score": 80,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
@@ -38321,6 +38321,19 @@
       "score": 71,
       "publishDate": "2026-08-13",
       "url": "https://www.britishtheatreguide.info/reviews/how-the-other-h-old-vic-theatre-25823",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "cherylmarkosky--cherylmarkosky.json",
+      "publishDate": "2026-08-12",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-loves-the-old-vic/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -38444,7 +38457,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "whatsonstage--aliya-al-hassan.json",
-      "score": 87,
+      "score": 82,
       "publishDate": "2026-08-12",
       "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
       "findings": [
