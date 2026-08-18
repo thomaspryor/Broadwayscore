@@ -109,6 +109,20 @@ test('findDuplicateOfCycle: mixed-field 2-node cycle — A.duplicateOf=B, B.dupl
   assert.deepEqual(result.chain, ['times-uk--clive-davis.json', 'loves-labours-lost--clive-davis.json', 'times-uk--clive-davis.json']);
 });
 
+test('findDuplicateOfCycle: a node with BOTH pointer fields set to DIFFERENT targets — the cycle is only reachable via the second field (adversarial ship-check finding, live case: the-lion-king-west-end-2021 timeout-london--ben-walters.json)', () => {
+  const records = {
+    // A's duplicateOf points to a dead end; its duplicateTextOf is the one
+    // that actually closes a loop back to A via B. An earlier "first field
+    // wins" walk followed duplicateOf only and never found this.
+    'a.json': { duplicateOf: 'dead-end.json', duplicateTextOf: 'b.json' },
+    'dead-end.json': {},
+    'b.json': { duplicateOf: 'a.json' },
+  };
+  const load = (name) => records[name] || null;
+  const result = findDuplicateOfCycle('a.json', load, 10);
+  assert.equal(result.cycleFound, true, 'must find the cycle reachable only through the second pointer field');
+});
+
 test('findDuplicateOfCycle: mixed-field chain that does NOT cycle back (B.duplicateTextOf points to a third file, not A)', () => {
   const records = {
     'a.json': { duplicateOf: 'b.json' },
