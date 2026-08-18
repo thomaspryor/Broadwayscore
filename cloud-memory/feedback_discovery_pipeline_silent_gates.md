@@ -47,3 +47,9 @@ When auditing a blocked pipeline, distinguish "gate found a problem" from "gate 
 Check that every workflow running repo scripts installs deps BEFORE the first script step, not just
 before the step that happens to have needed them when the workflow was written.
 Card: 3bb637c5-416f-8172-93ce-ec312113add0.
+
+## Gate: a bad discovery row blocks the whole update-show-status commit → no opening-night flip, no poller (found 2026-08-18, card #1786)
+`opening-night-poller.yml` has **no cron** — its only dispatcher is `update-show-status.yml`, which flips `previews`→`open`. So any failure of update-show-status silently disables ALL opening-night review discovery, for every show, with no alert.
+On 2026-08-18 it had failed **4 consecutive daily runs**: discovery re-created a duplicate `the-sound-of-music-2027` colliding with the misnamed `the-sound-of-music-2026` (id says 2026, openingDate 2027-04-15 LCT), tripping validate-data.js's same-title-sibling date guard → `refusing to commit or push` → exit 1. The offending row is never committed, so it is regenerated every run: **permanent, self-regenerating, never self-heals.** The held-back-show attribution that should have isolated it logged `Revert of held-back show(s) [] did not clear the new error(s)` — an EMPTY attribution set that fell through to blocking everything.
+**Check this FIRST when an opening night shows zero discovered reviews:** `gh run list --workflow=update-show-status.yml --limit 4 --json createdAt,conclusion`. Red for days = the chain never armed; the show is still `previews` and the poller was never dispatched.
+**Manual bypass (do this on the night, don't wait for the fix):** after press night, flip `status` to `open` in shows.json, commit+push, then `gh workflow run opening-night-poller.yml -f show_id=<id>`. Always pass `-f show_id=` — per-show concurrency; the shared `auto` group cancel-cascades (8 of 10 recent poller runs concluded `cancelled`).
