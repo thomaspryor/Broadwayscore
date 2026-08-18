@@ -90,6 +90,10 @@ function claudeBinCandidates(env) {
   return [
     path.join(home, '.local/bin/claude'),
     '/Applications/cmux.app/Contents/Resources/bin/claude',
+    '/opt/homebrew/bin/claude',   // Apple Silicon Homebrew — absent from the
+                                  // original list, so a brew-only machine fell
+                                  // through to bare 'claude' and kept the ENOENT
+                                  // exposure this resolver exists to close.
     '/usr/local/bin/claude',
   ];
 }
@@ -134,11 +138,46 @@ function isExecutablePath(p) {
  * @returns {string} an absolute path, or 'claude' if nothing resolved.
  */
 function resolveClaudeBin(env = process.env, candidates = claudeBinCandidates(env)) {
-  if (env.CLAUDE_BIN && isExecutablePath(env.CLAUDE_BIN)) return env.CLAUDE_BIN;
+  if (env.CLAUDE_BIN) {
+    // CLAUDE_BIN is an OPERATOR PIN — the documented way to force a specific
+    // build for a rollback. Silently discarding a bad pin and running some
+    // other candidate is the worst outcome: the operator believes they rolled
+    // back, the run says Done, and the wrong binary produced it. Both
+    // ship-check reviewers (Codex + gpt-5.4-mini) flagged this independently.
+    // Still fail OPEN so a typo can never take the whole dispatcher down —
+    // but never fail SILENT.
+    if (!path.isAbsolute(env.CLAUDE_BIN)) {
+      console.error(`[claude-cli] IGNORING CLAUDE_BIN="${env.CLAUDE_BIN}": not an absolute path (it would resolve against the cwd, which differs per dispatch). Falling back to candidate probing.`);
+    } else if (!isExecutablePath(env.CLAUDE_BIN)) {
+      console.error(`[claude-cli] IGNORING CLAUDE_BIN="${env.CLAUDE_BIN}": not an executable file. Falling back to candidate probing — if you set this to pin a version for a rollback, that pin is NOT in effect.`);
+    } else {
+      return env.CLAUDE_BIN;
+    }
+  }
   for (const c of candidates) {
     if (isExecutablePath(c)) return c;
   }
   return 'claude';
+}
+
+/**
+ * Prepend the resolved binary's directory to a PATH string, so a nested
+ * `claude` the child itself invokes resolves under the same minimal-PATH
+ * parent that made the outer spawn need an absolute path (task #1768).
+ *
+ * Shared so callers building their own env (notion-action-poll.js's runEnv)
+ * get the identical treatment instead of re-deriving it — CLAUDE.md rule 15.
+ *
+ * @param {string} [pathValue] the PATH being forwarded to the child.
+ * @returns {string} PATH with the resolved binary's dir first (deduped).
+ */
+function pathWithClaudeBinDir(pathValue = process.env.PATH) {
+  const bin = resolveClaudeBin();
+  if (!path.isAbsolute(bin)) return pathValue || '';
+  const dir = path.dirname(bin);
+  const parts = (pathValue || '').split(path.delimiter).filter(Boolean);
+  if (parts.includes(dir)) return parts.join(path.delimiter);
+  return [dir, ...parts].join(path.delimiter);
 }
 
 function strippedEnv(extra = {}) {
@@ -150,12 +189,7 @@ function strippedEnv(extra = {}) {
   // path, put its directory on the forwarded PATH too, so a nested `claude`
   // invocation the child itself makes (not just this module's own spawns)
   // also resolves under the same minimal-PATH parent.
-  const claudeBin = resolveClaudeBin(process.env);
-  if (path.isAbsolute(claudeBin)) {
-    const dir = path.dirname(claudeBin);
-    const parts = (env.PATH || '').split(path.delimiter).filter(Boolean);
-    if (!parts.includes(dir)) env.PATH = [dir, ...parts].join(path.delimiter);
-  }
+  env.PATH = pathWithClaudeBinDir(env.PATH);
   // Precedence, weakest first: process.env < .env top-up < caller's `extra`.
   // The top-up sits ABOVE `env` on purpose: readEnvKeys only returns keys the
   // environment left absent OR EMPTY, and an inherited `FOO=` empty string
@@ -545,5 +579,5 @@ module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
-  resolveClaudeBin,
+  resolveClaudeBin, pathWithClaudeBinDir,
 };

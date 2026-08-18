@@ -303,3 +303,41 @@ test('resolveClaudeBin: HOME missing from env still resolves (same os.homedir() 
   const got = resolveClaudeBin({});
   assert.ok(typeof got === 'string' && got.length > 0);
 });
+
+// ── task #1768 ship-check follow-ups (Codex + gpt-5.4-mini, 2026-08-18) ─────
+import { pathWithClaudeBinDir } from './claude-cli.js';
+
+test('resolveClaudeBin: a RELATIVE CLAUDE_BIN is rejected, not silently honoured', () => {
+  // A relative pin resolves against the cwd, which differs per dispatch —
+  // honouring it would run a different binary depending on where the job ran.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-rel-'));
+  const real = path.join(dir, 'claude');
+  fs.writeFileSync(real, '#!/bin/sh\necho ok\n');
+  fs.chmodSync(real, 0o755);
+
+  const got = resolveClaudeBin({ HOME: dir, CLAUDE_BIN: './claude' }, [real]);
+
+  assert.equal(got, real, 'relative CLAUDE_BIN must fall through to candidate probing');
+});
+
+test('resolveClaudeBin: an unusable CLAUDE_BIN pin still falls through (fail open, never fail closed)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-stale-'));
+  const real = path.join(dir, 'claude');
+  fs.writeFileSync(real, '#!/bin/sh\necho ok\n');
+  fs.chmodSync(real, 0o755);
+
+  const got = resolveClaudeBin({ HOME: dir, CLAUDE_BIN: '/nonexistent/claude' }, [real]);
+
+  assert.equal(got, real, 'a stale pin must not take the dispatcher down');
+});
+
+test('pathWithClaudeBinDir: prepends the resolved binary dir and never duplicates it', () => {
+  const out = pathWithClaudeBinDir('/usr/bin:/bin');
+  const parts = out.split(path.delimiter).filter(Boolean);
+
+  assert.ok(parts.includes('/usr/bin'), 'existing PATH entries are preserved');
+  assert.equal(parts.length, new Set(parts).size, 'no duplicate PATH entries');
+
+  // Idempotent: feeding its own output back must not grow the PATH.
+  assert.equal(pathWithClaudeBinDir(out), out, 'must be idempotent');
+});
