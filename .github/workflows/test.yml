@@ -1433,9 +1433,11 @@ on:
       - 'scripts/audit-outlet-stub-rate.test.mjs'
       # Dead-dispatch completion guard (card #1144): a task whose latest
       # dispatch is journaled dead must not be marked completed. Colocated
-      # test runs in the lib-test glob; path-listed so a solo edit triggers
-      # CI (feedback_test_yml_push_path_allowlist).
+      # test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/reconcile-dead-completions.js'
+      - 'scripts/reconcile-dead-completions.test.mjs'
       # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
       # renders a terminal surface, so the injected command never runs. The
       # retry layer hides it from every individual session, so only the

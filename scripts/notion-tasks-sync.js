@@ -758,6 +758,15 @@ function cmdPull(args) {
   return { ...summary, driftReconciled };
 }
 
+// cmdPush's own push-eligibility check (card #1779 test-extraction): pulled
+// out of the loop below so it can be require()'d directly in tests instead
+// of reimplementing "if (entry.pushed) continue; ...task.status..." as
+// parallel test logic (CLAUDE.md rule 15). Behavior-preserving — both
+// original inline checks were bare `continue` with no differing side effect.
+function isPushEligible(entry, task) {
+  return !!entry && !entry.pushed && !!task && task.status === 'completed';
+}
+
 function cmdPush(args) {
   const dir = listDir(args);
   const dry = !!args['dry-run'];
@@ -770,9 +779,8 @@ function cmdPush(args) {
     const map = readMap(dir);
     const done = [], skipped = [], refused = [], parkedTerminal = [];
     for (const [pageId, entry] of Object.entries(map)) {
-      if (entry.pushed) continue;
       const task = readTask(dir, entry.taskId);
-      if (!task || task.status !== 'completed') continue;
+      if (!isPushEligible(entry, task)) continue;
       // The integer id may have been reused by a live session for unrelated
       // work. Only close the card if this file still carries our marker.
       if (!taskBelongsTo(dir, entry.taskId, pageId)) { skipped.push({ taskId: entry.taskId, name: entry.name }); continue; }
@@ -1179,4 +1187,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible };
