@@ -169,10 +169,17 @@ function resolveBinding(masked, name) {
   return masked.slice(start, end + 1);
 }
 
-// Does this text stub appendLedgerEntry, directly or via anything it inherits?
+// The dep is not named identically across writers: bsc-next.js:749,
+// bsc-prune.js:71 and linear-next.js:257 call it `appendLedgerEntry`, but
+// bsc-reconcile.js:360 calls it `appendLedgerFn`. Checking only the first name
+// would report a correctly-stubbed bsc-reconcile test as an offender and red
+// main CI — the exact false-positive class an adversarial review flagged.
+const STUB_NAMES = ['appendLedgerEntry', 'appendLedgerFn'];
+
+// Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
   if (!text) return false;
-  if (text.includes('appendLedgerEntry')) return true;
+  if (STUB_NAMES.some(n => text.includes(n))) return true;
   if (depth > MAX_SPREAD_DEPTH) return false;
 
   const names = new Set();
@@ -263,7 +270,9 @@ test('guard parser: resolves legitimate stubs through helpers, and ignores comme
   const viaFunction = "function baseDeps() { return { appendLedgerEntry: () => {} }; }\nmain(['--id','1'], { ...baseDeps() });";
   const viaArrow = "const baseDeps = () => ({ appendLedgerEntry: () => {} });\nmain(['--id','1'], { ...baseDeps() });";
   const viaVariable = "const base = { appendLedgerEntry: () => {} };\nconst deps = { ...base };\nmain(['--id','1'], deps);";
-  for (const [label, src] of [['function', viaFunction], ['arrow', viaArrow], ['variable chain', viaVariable]]) {
+  // bsc-reconcile.js names the same dep appendLedgerFn — must also count as stubbed.
+  const viaAltName = "main(['--id','1'], { appendLedgerFn: () => {} });";
+  for (const [label, src] of [['function', viaFunction], ['arrow', viaArrow], ['variable chain', viaVariable], ['appendLedgerFn alias', viaAltName]]) {
     const masked = maskSource(src);
     for (const s of callSlices(masked)) {
       const d = depsText(masked, s);
