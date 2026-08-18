@@ -1400,7 +1400,7 @@ on:
       # #1795). Registered explicitly in tests/unit-test-manifest.txt
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'scripts/bsc-reconcile.reopen-idempotency.test.mjs'
+      - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'
