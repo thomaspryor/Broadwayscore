@@ -240,5 +240,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-18T14:31:02.697Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-jeeves-takes-charge-west-end-2026",
+    "title": "Stale 'upcoming' tag on Jeeves Takes Charge",
+    "description": "jeeves-takes-charge-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jeeves-takes-charge-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T19:00:26.757Z"
   }
 ]
