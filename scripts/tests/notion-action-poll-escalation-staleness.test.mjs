@@ -36,6 +36,33 @@ test('notion-action-poll.js wires the escalation-off file through pageIfKillSwit
   assert.match(src, /conditionKey:\s*['"]escalation-kill-switch-stale['"]/, 'must use a conditionKey distinct from watchdog-kill-switch-stale');
 });
 
+// Codex adversarial review (task #1720) caught two regressions in the first
+// cut: the check ran after acquireLock()/NOTION_API_KEY (so a Fix pipeline
+// holding poll.lock for hours, or a broken auth env, silently blinded the
+// one mechanism meant to catch the switch going stale), and it wasn't
+// DRY_RUN-guarded (so the documented "safe ... preview" flag could write to
+// the real alert ledger). Source-text-locks both fixes so they can't
+// regress silently the way the original gap did.
+test('the staleness check runs before acquireLock() and the NOTION_API_KEY gate', () => {
+  const src = fs.readFileSync(path.join(SCRIPTS_DIR, 'notion-action-poll.js'), 'utf8');
+  const stalenessIdx = src.indexOf('pageIfKillSwitchStale(');
+  // indexOf('acquireLock()') would match the function DEFINITION (much
+  // earlier in the file) rather than its call site in main() — anchor on
+  // the actual call, `!DRY_RUN && !acquireLock()`.
+  const lockIdx = src.indexOf('!acquireLock()');
+  const apiKeyIdx = src.indexOf('NOTION_API_KEY not set');
+  assert.ok(stalenessIdx > -1 && lockIdx > -1 && apiKeyIdx > -1, 'expected all three markers to be present');
+  assert.ok(stalenessIdx < lockIdx, 'staleness check must run before acquireLock() — a long-held lock must not blind the alarm');
+  assert.ok(stalenessIdx < apiKeyIdx, 'staleness check must run before the NOTION_API_KEY gate — a broken auth env must not blind the alarm');
+});
+
+test('the staleness check is skipped on --dry-run (documented as a safe preview)', () => {
+  const src = fs.readFileSync(path.join(SCRIPTS_DIR, 'notion-action-poll.js'), 'utf8');
+  const guardIdx = src.indexOf('if (!DRY_RUN) {');
+  const stalenessIdx = src.indexOf('pageIfKillSwitchStale(');
+  assert.ok(guardIdx > -1 && guardIdx < stalenessIdx, 'pageIfKillSwitchStale call must be inside an `if (!DRY_RUN)` block');
+});
+
 test('escalation-off kill switch just inside the staleness bar stays silent', () => {
   const mtimeMs = NOW - (core.KILL_SWITCH_STALE_MS - 60 * 1000);
   const { stale, ageMs } = core.killSwitchStaleness(mtimeMs, NOW);

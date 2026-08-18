@@ -976,6 +976,30 @@ async function main() {
     console.error('--card requires a value, e.g. --card 3af637c5-416f-8199-810c-e68f50c33b8d or --card=<id>');
     process.exit(1);
   }
+  // Kill-switch staleness alarm: checked BEFORE the NOTION_API_KEY gate and
+  // BEFORE acquireLock() (deliberately, not "ride along" further down) — a
+  // broken NOTION_API_KEY or a Fix pipeline holding poll.lock for hours
+  // (up to ~2h: 4 stages x 30 min, see acquireLock()'s own comment) must not
+  // also blind the ONE mechanism meant to catch the switch going stale
+  // (Codex adversarial review, task #1720: dispatch-watchdog.js's equivalent
+  // is a standalone --health invocation for exactly this reason). Skipped
+  // on --dry-run: DRY_RUN is documented as a "safe ... preview" (see USAGE)
+  // and must not have the side effect of writing to the real alert ledger.
+  // Best-effort: alerting must never break the poll itself.
+  if (!DRY_RUN) {
+    const escalationOffFile = path.join(STATE_DIR, 'escalation-off');
+    try {
+      // Not awaited: pageIfKillSwitchStale is synchronous and its own
+      // pageOwner() already fire-and-forgets routeAlert() internally (same
+      // shape as dispatch-watchdog.js's own non-awaited call site) — an
+      // await here would misleadingly imply it blocks on alert delivery.
+      pageIfKillSwitchStale(escalationOffFile, {
+        conditionKey: 'escalation-kill-switch-stale',
+        label: 'Investigate→Fix escalation kill switch',
+        clearHint: `rm ${escalationOffFile}`,
+      });
+    } catch (err) { log(`  escalation kill-switch staleness check failed (non-fatal): ${err.message}`); }
+  }
   if (!process.env.NOTION_API_KEY) {
     console.error('NOTION_API_KEY not set in .env');
     process.exit(1);
@@ -998,21 +1022,8 @@ async function main() {
   // ALL auto-escalation immediately, no deploy needed. Checked once per run
   // (not per card) — cheap fs.existsSync, and a mid-run toggle taking effect
   // next cycle rather than mid-cycle is fine for a rate-limited safety valve.
-  const escalationOffFile = path.join(STATE_DIR, 'escalation-off');
-  const escalationKillSwitch = fs.existsSync(escalationOffFile);
-  // Same no-staleness-alarm gap as dispatch-watchdog-off (card #1543, merged
-  // ba347437efe): if this file is left touched by accident, P0/P1 auto-fixes
-  // silently stop escalating and nothing tells the owner it's been off for
-  // days. This script already runs every 5 min via launchd — no separate
-  // --health entry point needed, the staleness check just rides along here.
-  // Best-effort: alerting must never break the poll itself.
-  try {
-    await pageIfKillSwitchStale(escalationOffFile, {
-      conditionKey: 'escalation-kill-switch-stale',
-      label: 'Investigate→Fix escalation kill switch',
-      clearHint: `rm ${escalationOffFile}`,
-    });
-  } catch (err) { log(`  escalation kill-switch staleness check failed (non-fatal): ${err.message}`); }
+  // (Staleness is alarmed on above, before the API-key/lock gates.)
+  const escalationKillSwitch = fs.existsSync(path.join(STATE_DIR, 'escalation-off'));
 
   // Reply loop FIRST: replies are quick and a Fix pipeline can hold this
   // process for hours — the owner's follow-up comments must not wait for it.
