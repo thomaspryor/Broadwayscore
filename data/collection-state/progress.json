@@ -54,7 +54,9 @@
     "paranormal-activity-2026/frontmezzjunkies--unknown.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "two-strangers-bway-2025/deadline--greg-evans.json",
+    "two-strangers-bway-2025/new-york-city-theatre--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -646,7 +648,15 @@
     "paranormal-activity-west-end-2025/nysr--unknown.json",
     "paranormal-activity-west-end-2025/times-square-chronicles--unknown.json",
     "paranormal-activity-west-end-2025/variety--peter-debruge.json",
-    "paddington-the-musical-west-end-2025/nyt-theater--unknown.json"
+    "paddington-the-musical-west-end-2025/nyt-theater--unknown.json",
+    "paddington-the-musical-west-end-2025/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/here--unknown.json",
+    "paddington-the-musical-west-end-2025/talkinbroadway--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
+    "two-strangers-bway-2025/thereviewshub--unknown.json",
+    "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
+    "two-strangers-bway-2025/financialtimes--sarah-hemming.json",
+    "two-strangers-bway-2025/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -689,11 +699,14 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "paranormal-activity-2026/frontmezzjunkies--unknown.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "two-strangers-bway-2025/new-york-city-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/two-strangers-bway-2025/deadline--greg-evans.json",
+      "two-strangers-bway-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -725,7 +738,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "paddington-the-musical-west-end-2025/nyt-theater--unknown.json",
+  "lastProcessed": "two-strangers-bway-2025/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -782,6 +795,12 @@
       "t": "2026-08-18T16:37:38.865Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-18T20:10:57.631Z",
+      "event": "bb-session",
+      "session": "c22be0c8",
+      "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
     }
   ]
 }
