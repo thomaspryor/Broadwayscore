@@ -248,23 +248,41 @@ function stubsTopLevelKey(text, fromIndex = 0) {
   return false;
 }
 
-// At depth 0 the text IS the deps bag, so only its own top-level key counts —
-// that is what stops a nested fixture object from being read as a stub.
-// At depth > 0 we are looking at a RESOLVED helper body or variable initialiser
-// (`function baseDeps() { return { ... }; }`, `() => ({ ... })`), where the
-// object we care about is necessarily nested, so each object literal is checked
-// at its own top level instead.
-function stubsAnyObjectTopLevel(text) {
-  for (let i = text.indexOf('{'); i !== -1; i = text.indexOf('{', i + 1)) {
-    if (stubsTopLevelKey(text, i)) return true;
+// Reduce a resolved binding to the object it actually PRODUCES, so the same
+// strict top-level rule applies everywhere. An earlier draft instead relaxed the
+// rule for resolved helpers ("check every object literal"), which reintroduced
+// the nested-fixture false negative one level down — a helper whose body merely
+// MENTIONS the key inside a fixture was accepted as a stub (review finding).
+//   `function f() { return { ... }; }` -> the returned object
+//   `() => ({ ... })`                  -> the parenthesised object
+//   `{ ...base }`                      -> itself
+function producedObject(text) {
+  if (!text) return text;
+  const t = text.trim();
+  if (t.startsWith('(')) {
+    const end = matchFrom(t, 0, '(', ')');
+    if (end !== -1) return producedObject(t.slice(1, end));
   }
-  return false;
+  const ret = text.indexOf('return');
+  if (ret !== -1) {
+    const b = text.indexOf('{', ret);
+    if (b !== -1) {
+      const e = matchFrom(text, b, '{', '}');
+      if (e !== -1) return text.slice(b, e + 1);
+    }
+  }
+  return text;
 }
 
 // Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
   if (!text) return false;
-  if (depth === 0 ? stubsTopLevelKey(text) : stubsAnyObjectTopLevel(text)) return true;
+  // depth 0: `text` IS the deps object already — do NOT run producedObject on
+  // it, or a `return` inside one of its arrow VALUES hijacks the extraction and
+  // the real deps object never gets inspected (caught by this file's own
+  // whole-repo scan, which flagged four correctly-stubbed call sites).
+  // depth > 0: `text` is a resolved binding, so reduce it to what it produces.
+  if (stubsTopLevelKey(depth === 0 ? text : producedObject(text))) return true;
   if (depth > MAX_SPREAD_DEPTH) return false;
 
   const names = new Set();
@@ -417,6 +435,11 @@ test('guard parser: near-miss names do NOT count as stubbing the writer', () => 
     // written. An anchored-anywhere regex accepted this (code-review finding).
     ['nested inside a fixture object', "main(['--id','1'], { tasksDir: d, expected: { 'appendLedgerEntry': 3 } });"],
     ['nested unquoted', "main(['--id','1'], { expected: { appendLedgerEntry: 3 } });"],
+    // Same hole one level down: a HELPER whose body only mentions the key inside
+    // a fixture must not count. The "check every object literal in a resolved
+    // helper" draft accepted this (review finding).
+    ['nested inside a resolved helper',
+      "function baseDeps() { const expected = { appendLedgerEntry: 3 }; return { launchCmux: () => ({}) }; }\nmain(['--id','1'], { ...baseDeps() });"],
   ];
   for (const [label, src] of cases) {
     const masked = maskSource(src);
