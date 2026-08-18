@@ -199,3 +199,69 @@ test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimate
   assert.ok(opus > sonnet, 'opus rate must exceed sonnet');
   assert.equal(estimateCostUSD(usage, 'mystery-model'), sonnet, 'unknown model falls back to sonnet rates');
 });
+
+// ---------------------------------------------------------------------------
+// Task #1768: spawn('claude', ...) resolved the binary by bare name through
+// PATH, and launchd-parented plists carry a minimal PATH with no
+// ~/.local/bin — 9 ENOENT spawn failures across 8 days. resolveClaudeBin()
+// replaces PATH lookup with explicit resolution. These tests build FAKE
+// candidate locations under a tmpdir (never assert against this machine's
+// real ~/.local/bin/claude) so they hold on CI runners too, where no
+// `claude` binary is installed at all.
+// ---------------------------------------------------------------------------
+import { resolveClaudeBin } from './claude-cli.js';
+
+function fakeExecutable(dir, relPath) {
+  const full = path.join(dir, relPath);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, '#!/bin/sh\necho fake\n');
+  fs.chmodSync(full, 0o755);
+  return full;
+}
+
+test('resolveClaudeBin: returns an absolute, existing, executable path under a minimal-PATH env with only ~/.local/bin/claude present', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-'));
+  const expected = fakeExecutable(home, '.local/bin/claude');
+
+  const got = resolveClaudeBin({ PATH: '/usr/bin:/bin:/usr/sbin:/sbin', HOME: home });
+
+  assert.equal(got, expected);
+  assert.ok(path.isAbsolute(got), 'must be an absolute path, not a bare name');
+  assert.ok(fs.existsSync(got));
+  assert.doesNotThrow(() => fs.accessSync(got, fs.constants.X_OK));
+});
+
+test('resolveClaudeBin: env.CLAUDE_BIN wins over the candidate list when executable', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-'));
+  fakeExecutable(home, '.local/bin/claude'); // present but should be skipped
+  const override = fakeExecutable(home, 'custom/claude');
+
+  const got = resolveClaudeBin({ HOME: home, CLAUDE_BIN: override });
+
+  assert.equal(got, override);
+});
+
+test('resolveClaudeBin: a stale/garbage CLAUDE_BIN fails open — falls through to the candidate list', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-'));
+  const expected = fakeExecutable(home, '.local/bin/claude');
+
+  const got = resolveClaudeBin({ HOME: home, CLAUDE_BIN: '/no/such/binary' });
+
+  assert.equal(got, expected);
+});
+
+test('resolveClaudeBin: falls back to the bare string "claude" when nothing resolves (never regress a working PATH)', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-empty-'));
+
+  // Empty candidate list injected explicitly — this machine's real global
+  // candidates (e.g. /Applications/cmux.app/.../claude) would otherwise
+  // resolve and make this "nothing found" case untestable in dev.
+  const got = resolveClaudeBin({ HOME: home }, []);
+
+  assert.equal(got, 'claude');
+});
+
+test('resolveClaudeBin: HOME missing from env still resolves (same os.homedir() fallback as strippedEnv)', () => {
+  const got = resolveClaudeBin({});
+  assert.ok(typeof got === 'string' && got.length > 0);
+});

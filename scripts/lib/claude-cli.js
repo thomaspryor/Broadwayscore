@@ -81,11 +81,73 @@ function resolveAuthEnv() {
   return readEnvKeys(AUTH_KEYS);
 }
 
+// Absolute-path candidates for the `claude` binary, in preference order —
+// mirrors BASH5_CANDIDATES/modernBash() in infra-gate-registration-check.js
+// (same launchd-minimal-PATH class of bug, there for bash 5 vs macOS's
+// PATH-resolved bash 3.2). Deliberately not resolved via PATH.
+function claudeBinCandidates(env) {
+  const home = env.HOME || os.homedir();
+  return [
+    path.join(home, '.local/bin/claude'),
+    '/Applications/cmux.app/Contents/Resources/bin/claude',
+    '/usr/local/bin/claude',
+  ];
+}
+
+function isExecutablePath(p) {
+  try {
+    fs.accessSync(p, fs.constants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolve an absolute path to the `claude` binary instead of relying on
+ * spawning the bare name and letting Node resolve it through PATH.
+ *
+ * Task #1768: launchd-parented plists carry only the plist's
+ * EnvironmentVariables PATH (no ~/.local/bin), so bare-name spawn died
+ * `ENOENT` — 9 failures across 8 days, reproduced with a control test:
+ * a bare-name spawn under a minimal PATH fails, the same call with the
+ * absolute path succeeds. Same launchd-minimal-env class as AUTH_KEYS
+ * above (#713), left unaddressed for PATH until now.
+ *
+ * env.CLAUDE_BIN wins if set and executable — a bad/stale value is ignored
+ * (fail open), not thrown on. Otherwise probes the fixed candidate list.
+ * Falls back to the bare 'claude' string, unchanged from today's behavior,
+ * so an environment where PATH already resolves it is never regressed.
+ *
+ * @param {NodeJS.ProcessEnv} [env] injectable for tests; defaults to the
+ *   real process env for actual spawns.
+ * @param {string[]} [candidates] injectable for tests; defaults to
+ *   claudeBinCandidates(env) for actual spawns.
+ * @returns {string} an absolute path, or 'claude' if nothing resolved.
+ */
+function resolveClaudeBin(env = process.env, candidates = claudeBinCandidates(env)) {
+  if (env.CLAUDE_BIN && isExecutablePath(env.CLAUDE_BIN)) return env.CLAUDE_BIN;
+  for (const c of candidates) {
+    if (isExecutablePath(c)) return c;
+  }
+  return 'claude';
+}
+
 function strippedEnv(extra = {}) {
   const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', ...AUTH_KEYS];
   const env = {};
   for (const k of keep) { if (process.env[k] !== undefined) env[k] = process.env[k]; }
   env.HOME = env.HOME || os.homedir();
+  // Same #1768 fix as the spawn call sites: if resolution found an absolute
+  // path, put its directory on the forwarded PATH too, so a nested `claude`
+  // invocation the child itself makes (not just this module's own spawns)
+  // also resolves under the same minimal-PATH parent.
+  const claudeBin = resolveClaudeBin(process.env);
+  if (path.isAbsolute(claudeBin)) {
+    const dir = path.dirname(claudeBin);
+    const parts = (env.PATH || '').split(path.delimiter).filter(Boolean);
+    if (!parts.includes(dir)) env.PATH = [dir, ...parts].join(path.delimiter);
+  }
   // Precedence, weakest first: process.env < .env top-up < caller's `extra`.
   // The top-up sits ABOVE `env` on purpose: readEnvKeys only returns keys the
   // environment left absent OR EMPTY, and an inherited `FOO=` empty string
@@ -106,7 +168,7 @@ function strippedEnv(extra = {}) {
 // successful run. Probe the actual auth shape BEFORE spawning the real session
 // so a doomed pass never silently "succeeds" with a login prompt as its output.
 function authPing(extraEnv) {
-  const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+  const r = spawnSync(resolveClaudeBin(), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
     // resolveAuthEnv() sits above process.env for the same reason as in
     // strippedEnv: under launchd the keys are absent, and the probe has to
     // exercise the SAME credentials the real spawn will get or it proves
@@ -328,7 +390,7 @@ function runClaudeCli(opts) {
   return new Promise((resolve) => {
     let child;
     try {
-      child = spawn('claude', args, { cwd, env: strippedEnv(env), stdio: ['pipe', 'pipe', 'pipe'] });
+      child = spawn(resolveClaudeBin(), args, { cwd, env: strippedEnv(env), stdio: ['pipe', 'pipe', 'pipe'] });
     } catch (e) {
       return resolve(done({ stage: STAGES.ERROR, errorDetail: `spawn failed: ${e.message}` }));
     }
@@ -470,4 +532,5 @@ module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
+  resolveClaudeBin,
 };
