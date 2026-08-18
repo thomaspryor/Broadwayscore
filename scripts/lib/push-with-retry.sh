@@ -982,6 +982,41 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # checkout it can burn a full 90s doing nothing useful on every retry. Set
   # this to skip straight to the bounded fallback below without editing the
   # script mid-incident.
+  # Capture the shallow boundary BEFORE the unshallow attempt below can touch
+  # it — task #1723: 'git fetch --unshallow' can return rc=0 and flip
+  # `git rev-parse --is-shallow-repository` to false even when it did NOT
+  # actually restore ancestry to the remote's current tip (observed: origin
+  # force-rewritten to unrelated history — the unshallow negotiation completes
+  # trivially since the server has nothing to send for a boundary commit that
+  # no longer exists on its side, silently clearing our local shallow marker
+  # without connecting our history to the new tip). This used to be captured
+  # AFTER the unshallow attempt (gated on is-shallow-repository still being
+  # true at that point), which meant a lying unshallow made `_shallow_base_sha`
+  # never get set at all — silently disabling the task #466 ancestry-escalation
+  # abort below for exactly the case it exists to catch. Capturing here, before
+  # the attempt runs, means that check still fires on the ORIGINAL boundary
+  # even when the later unshallow lies about having fixed things.
+  #
+  # Computed ONCE for the whole run, not per iteration. This sits inside the
+  # retry loop and each successful bounded fetch DEEPENS the repo, so the
+  # boundary moves further back in time every pass. Recomputing would subtract
+  # another SHALLOW_SINCE_SLACK_SEC from an already-older boundary each time —
+  # the window would creep wider (and the fetch slower) with every retry, for
+  # no benefit: the original boundary is the commit our outgoing work is built
+  # on, and any later boundary is older, so the first window already covers
+  # what ancestry needs. Memoising also keeps the decision deterministic across
+  # a run, which is what the ancestry assert below reasons about.
+  #
+  # `|| true` on the rev-list is load-bearing under `set -euo pipefail`: with
+  # pipefail a failing `git rev-list` (unborn HEAD) makes the whole pipeline —
+  # and therefore this assignment — non-zero, and `set -e` would abort the
+  # entire push mid-retry. Falling through with an empty value is correct: the
+  # helper then returns the bounded --depth fallback.
+  if [ -z "${_shallow_base_sha:-}" ] && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+    _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
+    _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
+  fi
+
   if [ -z "${GITHUB_ACTIONS:-}" ] && [ -z "${_unshallow_attempted:-}" ] \
      && [ "${PUSH_SKIP_UNSHALLOW:-}" != "1" ] \
      && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
@@ -997,27 +1032,10 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
     # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
     # only a handful of commits). This is the commit that must remain an
-    # ancestor of the fetched tip.
-    #
-    # Computed ONCE for the whole run, not per iteration. This block sits inside
-    # the retry loop and each successful bounded fetch DEEPENS the repo, so the
-    # boundary moves further back in time every pass. Recomputing would subtract
-    # another SHALLOW_SINCE_SLACK_SEC from an already-older boundary each time —
-    # the window would creep wider (and the fetch slower) with every retry, for
-    # no benefit: the original boundary is the commit our outgoing work is built
-    # on, and any later boundary is older, so the first window already covers
-    # what ancestry needs. Memoising also keeps the decision deterministic
-    # across a run, which is what the ancestry assert below reasons about.
-    #
-    # `|| true` on the rev-list is load-bearing under `set -euo pipefail`: with
-    # pipefail a failing `git rev-list` (unborn HEAD) makes the whole pipeline —
-    # and therefore this assignment — non-zero, and `set -e` would abort the
-    # entire push mid-retry. Falling through with an empty value is correct: the
-    # helper then returns the bounded --depth fallback.
-    if [ -z "${_shallow_base_sha:-}" ]; then
-      _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
-      _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
-    fi
+    # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
+    # captured above, before the unshallow attempt — reused here, not
+    # recomputed (still memoized the same way if this repo was never touched
+    # by that block, e.g. inside GITHUB_ACTIONS).
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
       # None of the emitted args can contain whitespace (asserted in the test),
       # so unquoted word-splitting into the array is safe here.
@@ -1095,7 +1113,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # this design rejects. Setting fetch_ok=false routes us down the existing,
   # already-safe "fetch failed" path: no tracking-ref write, no no-op guard,
   # just backoff and retry with a fresh budget.
-  if [ "$fetch_ok" = "true" ] && [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ] && [ -n "${_shallow_base_sha:-}" ]; then
+  #
+  # Gated on `_shallow_base_sha` alone (task #1723) — NOT also on
+  # `${#FETCH_DEPTH_ARGS[@]} -gt 0`. FETCH_DEPTH_ARGS reflects whether the fetch
+  # ABOVE was depth-bounded, which depends on `is-shallow-repository` AFTER the
+  # task #1489 unshallow attempt; that flag can go false even when the
+  # unshallow did not actually connect our history to the new tip (see the
+  # capture comment above). `_shallow_base_sha` is set once, before that
+  # attempt, from whether the checkout WAS shallow at entry — the correct
+  # invariant for "does this run need an ancestry safety check at all".
+  if [ "$fetch_ok" = "true" ] && [ -n "${_shallow_base_sha:-}" ]; then
     if ! git merge-base --is-ancestor "$_shallow_base_sha" FETCH_HEAD 2>/dev/null; then
       # Pick a widening that is actually REACHABLE on both paths. Gating this on
       # a non-empty epoch (as the first cut did) made it dead code precisely
@@ -1107,7 +1134,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       else
         _widen_args=(--deepen=2000)
       fi
-      echo "  ::warning::fetch was depth-bounded but base $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
+      # "fetch could not restore ancestry" not "depth-bounded fetch" (task
+      # #1723): this branch also fires after a post-unshallow fetch that was
+      # NOT depth-bounded (FETCH_DEPTH_ARGS may be empty here) — the invariant
+      # being checked is the shallow checkout's ORIGINAL boundary, not whether
+      # the fetch that just ran happened to carry a --depth/--shallow-since flag.
+      echo "  ::warning::shallow checkout's original boundary $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
       fetch_start=$SECONDS
       if git_fetch "${_widen_args[@]}" \
            origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
@@ -1138,7 +1170,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # logged, non-zero — and leave main untouched. `if: always()` steps and
         # the failure telemetry still run.
         record_push_failure "shallow-ancestry-unrecoverable" "$i"
-        echo "::error::push-with-retry: depth-bounded fetch could not restore ancestry — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        echo "::error::push-with-retry: fetch could not restore ancestry to the shallow checkout's original boundary — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
         restore_head_if_moved "shallow-ancestry-unrecoverable"
         exit 1
       fi

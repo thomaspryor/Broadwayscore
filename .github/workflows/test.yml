@@ -1528,6 +1528,7 @@ on:
       # weaker set than the overnight run. autonomous-checks.test.mjs runs in
       # the scripts/lib/*.test.mjs glob; the top-level parity test is NOT
       # globbed, so it is also listed in the tests/unit node --test invocation.
+      - 'scripts/autonomous-merge-core-data-guard.test.mjs'
       - 'scripts/autonomous-merge-parity.test.mjs'
       # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
       # and the stuck-work digest check. Colocated test runs in the lib-test
