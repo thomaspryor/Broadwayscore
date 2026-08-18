@@ -860,15 +860,37 @@ function safeWriteReview(filePath, newData, options = {}) {
     let priorPublishDate = null;
     let hadProtectedContent = false;
     let onDiskHadLiveScore = false;
+    let onDiskIsLocked = false;
+    let onDiskHasOverrideClear = false;
     const fileExists = fs.existsSync(filePath);
+    // A score is "live" via assignedScore (the common case — ensemble-scorer.ts
+    // always writes it alongside llmScore) OR originalScore (an aggregator star
+    // rating can be scraped and drive getBestScore()'s P0.5 branch in
+    // rebuild-helpers.js BEFORE assignedScore is ever computed from it — Codex
+    // adversarial review, task #1678: checking assignedScore alone missed this).
+    const _hasLiveScoreField = (d) => !!(d && (
+      (d.assignedScore !== undefined && d.assignedScore !== null && d.assignedScore !== '')
+      || (d.originalScore !== undefined && d.originalScore !== null && d.originalScore !== '')
+    ));
     if (fileExists) {
       try {
         const onDiskForDateCheck = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         priorPublishDate = onDiskForDateCheck.publishDate || null;
         hadProtectedContent = getEffectiveProtectedFields(onDiskForDateCheck)
           .some(k => onDiskForDateCheck[k] !== undefined && onDiskForDateCheck[k] !== null && onDiskForDateCheck[k] !== '');
-        onDiskHadLiveScore = onDiskForDateCheck.assignedScore !== undefined
-          && onDiskForDateCheck.assignedScore !== null && onDiskForDateCheck.assignedScore !== '';
+        onDiskHadLiveScore = _hasLiveScoreField(onDiskForDateCheck);
+        onDiskIsLocked = onDiskForDateCheck._locked === true;
+        // These two breadcrumbs are exactly what review-guards.js's inclusion
+        // check treats as "wrongProduction cleared, include anyway" (line
+        // ~2846-2850) — stamping wrongProduction=true over either one would be
+        // silently neutralized for inclusion purposes AND would blind CHECK 0's
+        // push-time safety net (evaluateDatePlausibility exempts any record
+        // that already has wrongProduction===true). Deliberately excludes
+        // humanReviewedWrongProduction===false — that is an actual human
+        // verdict, not a script breadcrumb, and evaluateDatePlausibility never
+        // checked it either (pre-existing, out of this card's scope).
+        onDiskHasOverrideClear = onDiskForDateCheck.wrongProductionOverride === true
+          || onDiskForDateCheck.wrongProductionManualClear === true;
       } catch { /* unreadable existing file — treat as dateless, still gate below */ }
     }
     // Card #1678: a review can be assigned a LIVE score (assignedScore, in
@@ -900,8 +922,7 @@ function safeWriteReview(filePath, newData, options = {}) {
     //    quarantining is fully effective: it prevents this write — including
     //    any score it carries — from ever landing at filePath at all, which
     //    is strictly safer than stamping.
-    const incomingHasScore = !!(newData && newData.assignedScore !== undefined
-      && newData.assignedScore !== null && newData.assignedScore !== '');
+    const incomingHasScore = _hasLiveScoreField(newData);
     // Every OTHER protected field (contentTier, fullText, llmScore, etc. on an
     // unscored stub) keeps the original behavior unchanged — deliberately not
     // widened beyond the scored case the card measured (2,861 currently-live
@@ -921,21 +942,50 @@ function safeWriteReview(filePath, newData, options = {}) {
         // Both call sites below (date-plausibility, cross-market) route
         // through this one helper so they can't drift out of sync with each
         // other the way two independently-inlined copies eventually would.
-        const stampWrongProductionFromGuard = (note, reason) => {
-          newData = { ...newData, wrongProduction: true, wrongProductionNote: note, wrongProductionReason: reason, wrongProductionReasonAt: new Date().toISOString() };
+        // wrongProductionReason/ReasonAt are deliberately NOT stamped here —
+        // established precedent (scripts/flag-wrong-production-by-date.js's
+        // date-guard branch) sets only wrongProductionNote for exactly this
+        // reason: wrong-production-autoclear.js's shouldAutoClearWrongProductionPriorRun
+        // treats ANY non-DATE_GUARD_PREFIXES-matching wrongProductionReason as
+        // a "manual" reason and permanently blocks priorRuns auto-clear, even
+        // though the NOTE alone already satisfies both the auto-clear-eligible
+        // prefix match (DATE_GUARD_PREFIXES) AND the wrongProduction provenance
+        // lint (wrongproduction-provenance.js accepts note OR reason). Setting
+        // both would have silently made this flag permanent — Codex adversarial
+        // review, task #1678.
+        const stampWrongProductionFromGuard = (note) => {
+          newData = { ...newData, wrongProduction: true, wrongProductionNote: note };
           invalidateWrongProductionAutoClear(newData);
           alreadyFlaggedThisWrite = true;
           console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongProduction (live score, date arrived after scoring): ${note}`);
         };
+        // Two reasons NOT to stamp even though a score is live:
+        //  - _locked: the merge/preserve loop further down this function
+        //    restores every PROTECTED field (including wrongProduction) to its
+        //    on-disk value on a locked file regardless of what we stamp here
+        //    (see "Locked override" there) — so stamping would silently revert
+        //    wrongProduction while leaving wrongProductionNote (which had no
+        //    prior on-disk value to restore) set, an internally-inconsistent
+        //    record that is WORSE than doing nothing.
+        //  - wrongProductionOverride/ManualClear already on disk: review-guards.js's
+        //    inclusion check treats either as "cleared, include anyway"
+        //    regardless of wrongProduction — stamping would be silently
+        //    neutralized for inclusion AND would blind CHECK 0's push-time
+        //    safety net (evaluateDatePlausibility exempts wrongProduction===true).
+        // Both are ship-check adversarial findings (task #1678); in both cases
+        // a human or pipeline already made an authoritative decision about this
+        // file, so deferring to the existing push-time CI catch is correct.
+        const shouldStamp = onDiskHadLiveScore && !onDiskIsLocked && !onDiskHasOverrideClear;
 
         const { evaluateDatePlausibility } = require('./date-plausibility');
         const verdict = evaluateDatePlausibility({ review: newData, show });
         if (verdict.implausible) {
-          if (onDiskHadLiveScore) {
+          if (shouldStamp) {
             stampWrongProductionFromGuard(
-              `Date guard: publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate} (date arrived after scoring)`,
-              'date_implausible_after_score'
+              `Date guard: publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate} (date arrived after scoring)`
             );
+          } else if (onDiskHadLiveScore) {
+            console.warn(`[review-write-guard] date-implausible on ${onDiskIsLocked ? 'LOCKED' : 'override-cleared'} live-scored record: ${parentDirName}/${path.basename(filePath)} → deferring to push-time CI catch, not auto-stamping (${verdict.daysBefore}d before earliest date)`);
           } else {
             const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
             fs.mkdirSync(pendingDir, { recursive: true });
@@ -982,8 +1032,10 @@ function safeWriteReview(filePath, newData, options = {}) {
             );
             if (xv.isClassA) {
               const detail = `publishDate ${newData.publishDate} is ${Math.round(xv.sibDiff)}d from a same-title sibling production's opening but ${Math.round(xv.thisDiff)}d from this show's — it belongs to the sibling`;
-              if (onDiskHadLiveScore) {
-                stampWrongProductionFromGuard(`Auto-flagged (cross-market): ${detail}`, 'cross_market_contamination_after_score');
+              if (shouldStamp) {
+                stampWrongProductionFromGuard(`Auto-flagged (cross-market): ${detail}`);
+              } else if (onDiskHadLiveScore) {
+                console.warn(`[review-write-guard] cross-market (class A) on ${onDiskIsLocked ? 'LOCKED' : 'override-cleared'} live-scored record: ${parentDirName}/${path.basename(filePath)} → deferring to push-time CI catch, not auto-stamping (${detail})`);
               } else {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
