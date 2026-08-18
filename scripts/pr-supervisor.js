@@ -27,9 +27,11 @@
  */
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { assessPullRequests, renderSupervisorDigest, rollupCheckState } = require('./lib/pr-supervisor-core.js');
+const { assessPullRequests, renderSupervisorDigest, rollupCheckState, buildStatusPayload } = require('./lib/pr-supervisor-core.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 
@@ -39,6 +41,8 @@ if (hasHelpFlag(process.argv.slice(2))) {
   --pr=N,N     restrict to these PR numbers
   --json       emit the verdict array as JSON
   --digest     emit the one-screen owner summary
+  --write-status  force writing ~/.cyrus/pr-supervisor-status.json even for a
+                  --pr-scoped run (a full run always writes it)
   --limit=N    how many open PRs to fetch (default 60)`);
   process.exit(0);
 }
@@ -48,7 +52,49 @@ const flag = (name) => (args.find((a) => a.startsWith(`--${name}=`)) || '').spli
 const only = (flag('pr') || '').split(',').map((s) => s.trim()).filter(Boolean).map(Number);
 const asJson = args.includes('--json');
 const asDigest = args.includes('--digest');
+const writeStatus = args.includes('--write-status');
+
+// Where the morning digest looks for this verdict, mirroring the delegation alarm
+// (~/.cyrus/linear-delegation-status.json) and the relay.
+//
+// Reader/writer split because the two run on different schedules, not different
+// machines: send-morning-digest.js fires once at 07:30 via launchd, and having it
+// shell out to `gh` for every open PR and re-read the review-gate ledger inline
+// would make the owner's one daily email depend on GitHub being reachable at that
+// instant. A supervisor run publishes; the digest only renders what it finds.
+// CYRUS_HOME override keeps it testable.
+const STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'pr-supervisor-status.json'
+);
 const limit = Number(flag('limit') || 60);
+
+/**
+ * Publish the verdicts for the morning digest.
+ *
+ * Atomic (temp + rename) for the same reason check-linear-delegations.js is:
+ * writeFileSync truncates in place, so a digest reading at the wrong instant
+ * would parse a half-written file and report nonsense — or silently nothing.
+ *
+ * The payload SHAPE is built by buildStatusPayload() in pr-supervisor-core.js,
+ * which is pure and fixture-tested. This function is only the write.
+ */
+function writeStatusFile(verdicts, { scoped = false } = {}) {
+  const payload = buildStatusPayload(verdicts, new Date().toISOString(), { scoped });
+  fs.mkdirSync(path.dirname(STATUS_PATH), { recursive: true });
+  // Same directory, so the rename is a same-filesystem move and therefore atomic;
+  // the temp file is removed if anything between write and rename throws, so a
+  // crash cannot leave .tmp droppings accumulating next to the real file.
+  const tmp = `${STATUS_PATH}.tmp`;
+  try {
+    fs.writeFileSync(tmp, `${JSON.stringify(payload, null, 2)}\n`);
+    fs.renameSync(tmp, STATUS_PATH);
+  } catch (err) {
+    try { fs.unlinkSync(tmp); } catch { /* nothing to clean up */ }
+    throw err;
+  }
+  console.error(`[pr-supervisor] wrote ${STATUS_PATH}`);
+}
 
 function gh(argv) {
   return execFileSync('gh', argv, { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
@@ -113,6 +159,14 @@ async function loadEvidence() {
     }));
 
   const verdicts = assessPullRequests(supervised, { allOpenPrs });
+
+  // Written on EVERY full run, not behind an opt-in flag. check-linear-delegations.js
+  // publishes unconditionally (its scheduled job would otherwise produce nothing),
+  // and an adversarial review caught that an opt-in --write-status which no
+  // scheduler passed meant the file was never written at all — the verdicts still
+  // reached nobody, which was the whole bug being fixed. A --pr-scoped run publishes
+  // too, but flagged `scoped` so the reader can say it was only a partial look.
+  if (writeStatus || !only.length) writeStatusFile(verdicts, { scoped: only.length > 0 });
 
   if (asJson) { console.log(JSON.stringify(verdicts, null, 2)); return; }
   if (asDigest) { console.log(renderSupervisorDigest(verdicts, { dryRun: true })); return; }

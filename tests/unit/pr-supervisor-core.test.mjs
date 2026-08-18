@@ -22,6 +22,10 @@ const {
   buildCollisionIndex,
   evidenceForSha,
   renderSupervisorDigest,
+  buildStatusPayload,
+  assessSupervisorStatus,
+  MAX_LISTED_PRS,
+  STATUS_STALE_AFTER_MS,
   isAdditiveEdit,
   rollupCheckState,
 } = require('../../scripts/lib/pr-supervisor-core.js');
@@ -365,4 +369,223 @@ test('PR supervisor — the digest names the reason that DROVE the verdict', asy
       if (r.verdict !== 'merge') assert.ok(r.decidingReasons.length >= 1, `#${r.number} has no deciding reason`);
     }
   });
+});
+
+// ── buildStatusPayload — the owner-facing sentence ────────────────────────────
+//
+// This is the deliverable of Loop 5 to a person who reads no PRs and no code. If
+// the sentence is wrong or missing he simply never learns that finished work is
+// piling up, which is the exact failure the loop exists to close — so it is
+// tested as carefully as the merge decision itself.
+
+const NOW = '2026-08-18T01:00:00.000Z';
+const NOW_MS_FOR_SCOPE = Date.parse(NOW);
+
+test('buildStatusPayload: says plainly what is waiting to merge and what needs a decision', () => {
+  const payload = buildStatusPayload([
+    { number: 594, title: 'docs', verdict: 'merge', headSha: 'aaa', decidingReasons: [] },
+    { number: 596, title: 'client', verdict: 'escalate', headSha: 'bbb', decidingReasons: ['mixed diff'] },
+    { number: 592, title: 'runner', verdict: 'escalate', headSha: 'ccc', decidingReasons: ['mixed diff'] },
+  ], NOW);
+
+  assert.equal(payload.at, NOW);
+  assert.equal(payload.total, 3);
+  assert.match(payload.alarm, /1 finished agent PR is green and waiting to be merged \(#594\)/);
+  assert.match(payload.alarm, /2 need a decision nobody can make automatically \(#596, #592\)/);
+  // No jargon a non-technical reader would have to decode.
+  assert.ok(!/verdict|escalate|deterministic/i.test(payload.alarm),
+    'the owner-facing line must not leak the supervisor\'s internal vocabulary');
+});
+
+test('buildStatusPayload: alarm is NULL when there is genuinely nothing open, never an empty string', () => {
+  // The digest renders a row only when there is something to say; '' would print
+  // an empty warning banner, which trains the reader to ignore the section.
+  const payload = buildStatusPayload([], NOW);
+  assert.equal(payload.alarm, null);
+  assert.equal(payload.total, 0);
+});
+
+test('buildStatusPayload: a PR parked at hold or refuse REACHES the owner', () => {
+  // The first version counted only merge and escalate. An adversarial review found
+  // a live day where 5 PRs were verdicted "should be closed" and 3 were waiting on
+  // CI, and the alarm was silent. A PR parked at hold forever is verbatim the
+  // Loop 5 failure this whole mechanism exists to end, so silence is the bug.
+  const payload = buildStatusPayload([
+    { number: 1, verdict: 'hold', decidingReasons: ['CI pending'] },
+    { number: 2, verdict: 'refuse', decidingReasons: ['every file forbidden'] },
+  ], NOW);
+  assert.match(payload.alarm, /should be closed rather than merged/);
+  assert.match(payload.alarm, /#2/);
+  assert.match(payload.alarm, /waiting on checks or a review/);
+  assert.match(payload.alarm, /#1/);
+});
+
+test('buildStatusPayload: a scoped (--pr) run is marked, so a partial look cannot read as the whole board', () => {
+  const full = buildStatusPayload([{ number: 1, verdict: 'merge' }], NOW);
+  assert.equal(full.scoped, false);
+  const part = buildStatusPayload([{ number: 1, verdict: 'merge' }], NOW, { scoped: true });
+  assert.equal(part.scoped, true);
+});
+
+test('assessSupervisorStatus: a quiet SCOPED run reports unknown, not "all clear"', () => {
+  // A partial run that found nothing proves nothing about the PRs it skipped.
+  const quietScoped = buildStatusPayload([], new Date(NOW_MS_FOR_SCOPE - 60_000).toISOString(), { scoped: true });
+  assert.deepEqual(assessSupervisorStatus(quietScoped, NOW_MS_FOR_SCOPE), { status: 'unknown', message: null });
+});
+
+test('assessSupervisorStatus: a scoped run with findings says so in the line', () => {
+  const scoped = buildStatusPayload(
+    [{ number: 594, verdict: 'merge' }],
+    new Date(NOW_MS_FOR_SCOPE - 60_000).toISOString(),
+    { scoped: true }
+  );
+  const v = assessSupervisorStatus(scoped, NOW_MS_FOR_SCOPE);
+  assert.equal(v.status, 'warn');
+  assert.match(v.message, /partial check/);
+});
+
+test('assessSupervisorStatus: a FUTURE-dated file is an error, not treated as fresh forever', () => {
+  const future = buildStatusPayload([{ number: 1, verdict: 'merge' }],
+    new Date(NOW_MS_FOR_SCOPE + 48 * 3600 * 1000).toISOString());
+  const v = assessSupervisorStatus(future, NOW_MS_FOR_SCOPE);
+  assert.equal(v.status, 'error');
+  assert.match(v.message, /future/);
+});
+
+test('assessSupervisorStatus: a non-string alarm is an error, not "[object Object]"', () => {
+  const v = assessSupervisorStatus({ at: new Date(NOW_MS_FOR_SCOPE).toISOString(), alarm: { oops: true } }, NOW_MS_FOR_SCOPE);
+  assert.equal(v.status, 'error');
+  assert.ok(!/\[object Object\]/.test(v.message), 'must not leak a stringified object into the owner email');
+});
+
+test('listPrs/phrase: rows with no usable id drop the parenthetical instead of printing "()"', () => {
+  const payload = buildStatusPayload([{ verdict: 'merge' }], NOW);
+  assert.ok(!/\(\)/.test(payload.alarm), `empty parenthetical leaked: ${payload.alarm}`);
+  assert.match(payload.alarm, /1 finished agent PR is green/);
+});
+
+test('buildStatusPayload: no open PRs is quiet, not an alarm', () => {
+  const payload = buildStatusPayload([], NOW);
+  assert.equal(payload.alarm, null);
+  assert.equal(payload.total, 0);
+  assert.deepEqual(payload.verdicts, []);
+});
+
+test('buildStatusPayload: singular/plural read correctly in both halves', () => {
+  const one = buildStatusPayload([{ number: 7, verdict: 'escalate', decidingReasons: ['x'] }], NOW);
+  assert.match(one.alarm, /1 needs a decision/);
+  const many = buildStatusPayload([
+    { number: 7, verdict: 'merge', decidingReasons: [] },
+    { number: 8, verdict: 'merge', decidingReasons: [] },
+  ], NOW);
+  assert.match(many.alarm, /2 finished agent PRs are green/);
+});
+
+test('buildStatusPayload: carries the SHA each verdict was decided against', () => {
+  // Evidence in this system is SHA-bound; a payload that dropped the sha would let
+  // a stale verdict be read as covering a newer push.
+  const payload = buildStatusPayload([
+    { number: 596, title: 't', verdict: 'escalate', headSha: 'f941450917113ee', decidingReasons: ['mixed diff'] },
+  ], NOW);
+  assert.equal(payload.verdicts[0].headSha, 'f941450917113ee');
+  assert.deepEqual(payload.verdicts[0].decidingReasons, ['mixed diff']);
+});
+
+test('buildStatusPayload: tolerates a verdict row missing optional fields', () => {
+  const payload = buildStatusPayload([{ number: 3, verdict: 'merge' }], NOW);
+  assert.equal(payload.verdicts[0].title, null);
+  assert.equal(payload.verdicts[0].headSha, null);
+  assert.deepEqual(payload.verdicts[0].decidingReasons, []);
+});
+
+// ── malformed input (adversarial review, 2026-08-17) ─────────────────────────
+//
+// The first version of these tests only walked the happy path, so a bug in
+// verdict mapping could silently drop every actionable row and the "alarm is
+// null when quiet" test would still pass. These cover the shapes that produce a
+// WRONG owner-facing sentence rather than an obviously broken one.
+
+test('buildStatusPayload: an UNRECOGNISED verdict is surfaced, never silently dropped', () => {
+  // A new verdict added to the core without updating this function must not
+  // vanish from the only line a human reads while still looking handled in JSON.
+  const payload = buildStatusPayload([
+    { number: 10, verdict: 'quarantine', decidingReasons: ['new state'] },
+  ], NOW);
+  assert.match(payload.alarm, /unrecognised verdict/);
+  assert.match(payload.alarm, /#10/);
+  assert.equal(payload.total, 1);
+});
+
+test('buildStatusPayload: a row with no PR number never renders as "#undefined"', () => {
+  const payload = buildStatusPayload([
+    { verdict: 'merge', decidingReasons: [] },
+    { number: 12, verdict: 'merge', decidingReasons: [] },
+  ], NOW);
+  assert.ok(!/#undefined|#null|#NaN/.test(payload.alarm), `leaked a bad id: ${payload.alarm}`);
+  assert.match(payload.alarm, /#12/);
+  assert.equal(payload.verdicts[0].number, null, 'the unusable id is normalised to null in the payload');
+});
+
+test('buildStatusPayload: a long list is truncated so the digest line stays readable', () => {
+  const many = Array.from({ length: MAX_LISTED_PRS + 4 }, (_, i) => ({
+    number: 100 + i, verdict: 'escalate', decidingReasons: ['x'],
+  }));
+  const payload = buildStatusPayload(many, NOW);
+  assert.match(payload.alarm, new RegExp(`${MAX_LISTED_PRS + 4} need`));
+  assert.match(payload.alarm, /and 4 more/);
+  assert.equal((payload.alarm.match(/#\d+/g) || []).length, MAX_LISTED_PRS);
+});
+
+test('buildStatusPayload: null and undefined rows are ignored rather than crashing', () => {
+  const payload = buildStatusPayload([null, undefined, { number: 5, verdict: 'merge' }], NOW);
+  assert.equal(payload.total, 1);
+  assert.match(payload.alarm, /#5/);
+});
+
+// ── assessSupervisorStatus — the reader half ─────────────────────────────────
+//
+// Without this, `at` is written and never read, and a week-old "green and
+// waiting" line renders as current forever.
+
+const NOW_MS = Date.parse(NOW);
+
+test('assessSupervisorStatus: absent status file is unknown, never an alarm', () => {
+  assert.deepEqual(assessSupervisorStatus(null, NOW_MS), { status: 'unknown', message: null });
+  assert.deepEqual(assessSupervisorStatus(undefined, NOW_MS), { status: 'unknown', message: null });
+});
+
+test('assessSupervisorStatus: a STALE payload is an error, not its own cheerful contents', () => {
+  const stale = buildStatusPayload(
+    [{ number: 594, verdict: 'merge', decidingReasons: [] }],
+    new Date(NOW_MS - STATUS_STALE_AFTER_MS - 60_000).toISOString()
+  );
+  const v = assessSupervisorStatus(stale, NOW_MS);
+  assert.equal(v.status, 'error');
+  assert.match(v.message, /not current/);
+  // The stale contents must NOT be presented as the current situation.
+  assert.ok(!/waiting to be merged/.test(v.message),
+    'a stale payload must not render its own contents as though they were current');
+});
+
+test('assessSupervisorStatus: a fresh payload with work waiting warns, in plain English', () => {
+  const fresh = buildStatusPayload(
+    [{ number: 594, verdict: 'merge', decidingReasons: [] }],
+    new Date(NOW_MS - 60_000).toISOString()
+  );
+  const v = assessSupervisorStatus(fresh, NOW_MS);
+  assert.equal(v.status, 'warn');
+  assert.match(v.message, /green and waiting to be merged \(#594\)/);
+  assert.ok(!/verdict|escalate|deterministic/i.test(v.message),
+    'the digest line must not leak internal vocabulary to a non-technical reader');
+});
+
+test('assessSupervisorStatus: a fresh, quiet payload renders nothing at all', () => {
+  const quiet = buildStatusPayload([], new Date(NOW_MS - 60_000).toISOString());
+  assert.deepEqual(assessSupervisorStatus(quiet, NOW_MS), { status: 'ok', message: null });
+});
+
+test('assessSupervisorStatus: an unparseable timestamp is an error, not treated as fresh', () => {
+  const v = assessSupervisorStatus({ at: 'not-a-date', alarm: 'something urgent' }, NOW_MS);
+  assert.equal(v.status, 'error');
+  assert.match(v.message, /unreadable/);
 });

@@ -348,6 +348,158 @@ function renderSupervisorDigest(verdicts, opts = {}) {
   return lines.join('\n');
 }
 
+/** At most this many PR numbers inline before the sentence is truncated. */
+const MAX_LISTED_PRS = 6;
+
+/** How long a published verdict stays trustworthy before the digest disowns it. */
+const STATUS_STALE_AFTER_MS = 6 * 60 * 60 * 1000;
+
+/** A little future-dating is clock skew; a lot is a broken file. */
+const STATUS_CLOCK_SKEW_TOLERANCE_MS = 5 * 60 * 1000;
+
+/**
+ * `#12, #13` — never `#undefined`, never an unbounded wall of numbers.
+ *
+ * Returns null (not '') when nothing is listable, so a caller can drop the
+ * parenthetical entirely rather than emitting "waiting to be merged ()", which
+ * an earlier version did whenever a row had an unusable id.
+ */
+function listPrs(rows) {
+  const nums = (rows || []).map((v) => v && v.number).filter((n) => Number.isFinite(n));
+  if (!nums.length) return null;
+  const shown = nums.slice(0, MAX_LISTED_PRS).map((n) => `#${n}`).join(', ');
+  const extra = nums.length - Math.min(nums.length, MAX_LISTED_PRS);
+  return extra > 0 ? `${shown} and ${extra} more` : shown;
+}
+
+/** "N thing(s) doing X (#1, #2)" — parenthetical omitted when no id is usable. */
+function phrase(count, text, rows) {
+  const ids = listPrs(rows);
+  return ids ? `${count} ${text} (${ids})` : `${count} ${text}`;
+}
+
+/**
+ * The verdict payload the morning digest reads, as a pure function of the
+ * verdicts plus the clock.
+ *
+ * Lives here rather than in pr-supervisor.js for the same reason assessPullRequests
+ * does: the OWNER-FACING SENTENCE is the deliverable of this loop, and a sentence
+ * built inside an I/O script cannot be fixture-tested. The owner reads no PRs and
+ * no code, so if this line is wrong or empty he simply never learns that finished
+ * work is piling up — which is precisely the failure Loop 5 exists to close.
+ *
+ * @param {Array} verdicts output of assessPullRequests
+ * @param {string} nowIso ISO timestamp, injected so the test is deterministic
+ */
+function buildStatusPayload(verdicts, nowIso, { scoped = false } = {}) {
+  const rows = (verdicts || []).filter(Boolean);
+  const readyToMerge = rows.filter((v) => v.verdict === 'merge');
+  const needsDecision = rows.filter((v) => v.verdict === 'escalate');
+  // A verdict this function does not recognise must be SURFACED, not filtered
+  // away. Silently dropping it is how a newly added verdict becomes invisible to
+  // the only human in the loop while still looking handled in the JSON.
+  // (Adversarial review, 2026-08-17.)
+  const unknown = rows.filter((v) => !Object.prototype.hasOwnProperty.call(VERDICT_SEVERITY, v.verdict));
+
+  // EVERY non-merge verdict has to be able to reach the owner, not just escalate.
+  // An adversarial review found a live day where 5 PRs were verdicted "should be
+  // closed" and 3 were waiting on CI, and the alarm was silent — because only
+  // merge and escalate were counted. A PR parked at `hold` forever is verbatim
+  // the Loop 5 failure this whole thing exists to end.
+  const shouldClose = rows.filter((v) => v.verdict === 'refuse');
+  const waiting = rows.filter((v) => v.verdict === 'hold');
+
+  const parts = [
+    readyToMerge.length
+      ? phrase(readyToMerge.length, `finished agent PR${readyToMerge.length === 1 ? ' is' : 's are'} green and waiting to be merged`, readyToMerge)
+      : null,
+    needsDecision.length
+      ? phrase(needsDecision.length, `need${needsDecision.length === 1 ? 's' : ''} a decision nobody can make automatically`, needsDecision)
+      : null,
+    shouldClose.length
+      ? phrase(shouldClose.length, `should be closed rather than merged and ${shouldClose.length === 1 ? 'is' : 'are'} still open`, shouldClose)
+      : null,
+    waiting.length
+      ? phrase(waiting.length, `${waiting.length === 1 ? 'is' : 'are'} waiting on checks or a review`, waiting)
+      : null,
+    unknown.length
+      ? phrase(unknown.length, `came back with an unrecognised verdict and nobody has looked at ${unknown.length === 1 ? 'it' : 'them'}`, unknown)
+      : null,
+  ].filter(Boolean);
+
+  return {
+    at: nowIso,
+    total: rows.length,
+    // True when the run only looked at a subset (`--pr=594`). Without this a
+    // one-PR view publishes as though it were the whole world, and the digest
+    // cheerfully reports "nothing else is waiting" on no evidence.
+    scoped: !!scoped,
+    // Null, not an empty string: the digest renders a row only when there is
+    // something to say, and '' would print an empty warning banner, which trains
+    // the reader to ignore the section.
+    alarm: parts.length ? parts.join('; ') : null,
+    verdicts: rows.map((v) => ({
+      number: Number.isFinite(v.number) ? v.number : null,
+      title: v.title || null,
+      verdict: v.verdict || null,
+      headSha: v.headSha || null,
+      decidingReasons: v.decidingReasons || [],
+    })),
+  };
+}
+
+/**
+ * The digest side: turn a published payload into the one line to render, or null.
+ *
+ * Mirrors assessCyrusRelay's contract exactly ({status, message}, absent means
+ * unknown and never an alarm) so the sender needs no new rendering code.
+ *
+ * THE STALENESS CASE IS THE POINT. A payload carries `at` so a reader can tell
+ * the supervisor stopped running; without this function that timestamp is written
+ * and never read, and a week-old "green and waiting" line renders as current
+ * forever. That is the 2026-08-16 failure with extra steps — a healthy-looking
+ * report over machinery that had stopped. An adversarial review flagged shipping
+ * the timestamp without its consumer, correctly.
+ *
+ * @param {object|null} payload parsed pr-supervisor-status.json, or null if absent
+ * @param {number} nowMs
+ * @returns {{status:'ok'|'warn'|'error'|'unknown', message:string|null}}
+ */
+function assessSupervisorStatus(payload, nowMs = Date.now()) {
+  if (payload === null || payload === undefined) {
+    // Never published on this machine — genuinely unknown, not an alarm.
+    return { status: 'unknown', message: null };
+  }
+  const writtenMs = Date.parse(payload.at);
+  if (!Number.isFinite(writtenMs)) {
+    return { status: 'error', message: 'PR supervisor: its status file is unreadable, so nobody is checking whether finished work is piling up.' };
+  }
+  // The window is two-sided. A clock skew or a hand-edited file dated in the
+  // future would otherwise sail through as "fresh" forever, which is the same
+  // silent-staleness failure wearing the opposite sign.
+  const skewMs = nowMs - writtenMs;
+  if (skewMs < -STATUS_CLOCK_SKEW_TOLERANCE_MS) {
+    return { status: 'error', message: 'PR supervisor: its status file is dated in the future, so it cannot be trusted — the clock or the file is wrong.' };
+  }
+  if (skewMs > STATUS_STALE_AFTER_MS) {
+    const ageH = Math.round(skewMs / 3600000);
+    return {
+      status: 'error',
+      message: `PR supervisor: last checked ${ageH}h ago, so this is not current — finished pull requests could be waiting with nothing watching them.`,
+    };
+  }
+  if (!payload.alarm) {
+    // A partial run that found nothing proves nothing about the PRs it skipped.
+    if (payload.scoped) return { status: 'unknown', message: null };
+    return { status: 'ok', message: null };
+  }
+  if (typeof payload.alarm !== 'string') {
+    return { status: 'error', message: 'PR supervisor: its status file is malformed, so nobody is checking whether finished work is piling up.' };
+  }
+  const scopeNote = payload.scoped ? ' (partial check — not every open PR was looked at)' : '';
+  return { status: 'warn', message: `PR supervisor: ${payload.alarm}${scopeNote}.` };
+}
+
 module.exports = {
   VERDICT_SEVERITY,
   ADDITIVE_REGISTRY_FILES,
@@ -360,4 +512,11 @@ module.exports = {
   evidenceForSha,
   assessPullRequests,
   renderSupervisorDigest,
+  buildStatusPayload,
+  assessSupervisorStatus,
+  listPrs,
+  MAX_LISTED_PRS,
+  STATUS_STALE_AFTER_MS,
+  STATUS_CLOCK_SKEW_TOLERANCE_MS,
+  phrase,
 };
