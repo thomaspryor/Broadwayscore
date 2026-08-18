@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T11:48:09.230Z",
-  "processed": 60,
-  "failed": 360,
-  "successRate": "14.3%",
+  "updatedAt": "2026-08-18T11:50:11.604Z",
+  "processed": 65,
+  "failed": 365,
+  "successRate": "15.1%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 3,
-    "scrapingbee": 9,
-    "brightdata": 3,
+    "scrapingbee": 10,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 13
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-18T10:06:04.164Z",
@@ -59,6 +59,12 @@
       "t": "2026-08-18T11:25:18.297Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-18T11:48:12.032Z",
+      "event": "bb-session",
+      "session": "6af649e6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
     }
   ]
 }
