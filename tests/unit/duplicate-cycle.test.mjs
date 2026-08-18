@@ -24,6 +24,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findDuplicateOfCycle, wouldFormDuplicateCycle, resolveCycleTiebreak } = require('../../scripts/lib/duplicate-cycle.js');
 const { computeContentFingerprint } = require('../../scripts/lib/content-quality.js');
+const { DUPLICATE_POINTER_FIELDS } = require('../../scripts/lib/canonical-duplicate-pointers.js');
 
 // ---------------------------------------------------------------------------
 // findDuplicateOfCycle
@@ -77,6 +78,63 @@ test('findDuplicateOfCycle: stale pointer to a missing sibling is not a cycle', 
 });
 
 // ---------------------------------------------------------------------------
+// duplicateTextOf (Notion #1750, 2026-08-17): the walk used to follow
+// duplicateOf ONLY. A corpus scan the same day found 386 mutual cycles, every
+// one of the shape A.duplicateOf=B + B.duplicateTextOf=A — none refusable at
+// write time. These cover both the mixed-field real-world shape and each
+// field in DUPLICATE_POINTER_FIELDS individually, so a future field added to
+// that canonical list is covered here without a test change.
+// ---------------------------------------------------------------------------
+
+test('findDuplicateOfCycle: 2-node cycle via each canonical pointer field (DUPLICATE_POINTER_FIELDS)', () => {
+  for (const field of DUPLICATE_POINTER_FIELDS) {
+    const records = {
+      'a.json': { [field]: 'b.json' },
+      'b.json': { [field]: 'a.json' },
+    };
+    const load = (name) => records[name] || null;
+    const result = findDuplicateOfCycle('a.json', load, 10);
+    assert.equal(result.cycleFound, true, `cycle via ${field} alone must be detected`);
+  }
+});
+
+test('findDuplicateOfCycle: mixed-field 2-node cycle — A.duplicateOf=B, B.duplicateTextOf=A (the exact corpus-wide 2026-08-17 shape, all 386 mutual cycles)', () => {
+  const records = {
+    'times-uk--clive-davis.json': { duplicateOf: 'loves-labours-lost--clive-davis.json' },
+    'loves-labours-lost--clive-davis.json': { duplicateTextOf: 'times-uk--clive-davis.json' },
+  };
+  const load = (name) => records[name] || null;
+  const result = findDuplicateOfCycle('times-uk--clive-davis.json', load, 10);
+  assert.equal(result.cycleFound, true);
+  assert.deepEqual(result.chain, ['times-uk--clive-davis.json', 'loves-labours-lost--clive-davis.json', 'times-uk--clive-davis.json']);
+});
+
+test('findDuplicateOfCycle: a node with BOTH pointer fields set to DIFFERENT targets — the cycle is only reachable via the second field (adversarial ship-check finding, live case: the-lion-king-west-end-2021 timeout-london--ben-walters.json)', () => {
+  const records = {
+    // A's duplicateOf points to a dead end; its duplicateTextOf is the one
+    // that actually closes a loop back to A via B. An earlier "first field
+    // wins" walk followed duplicateOf only and never found this.
+    'a.json': { duplicateOf: 'dead-end.json', duplicateTextOf: 'b.json' },
+    'dead-end.json': {},
+    'b.json': { duplicateOf: 'a.json' },
+  };
+  const load = (name) => records[name] || null;
+  const result = findDuplicateOfCycle('a.json', load, 10);
+  assert.equal(result.cycleFound, true, 'must find the cycle reachable only through the second pointer field');
+});
+
+test('findDuplicateOfCycle: mixed-field chain that does NOT cycle back (B.duplicateTextOf points to a third file, not A)', () => {
+  const records = {
+    'a.json': { duplicateOf: 'b.json' },
+    'b.json': { duplicateTextOf: 'c.json' },
+    'c.json': {},
+  };
+  const load = (name) => records[name] || null;
+  const result = findDuplicateOfCycle('a.json', load, 10);
+  assert.equal(result.cycleFound, false);
+});
+
+// ---------------------------------------------------------------------------
 // wouldFormDuplicateCycle (write-time; also covered end-to-end via
 // tests/unit/circular-duplicate-pair.test.mjs's safeWriteReview integration tests)
 // ---------------------------------------------------------------------------
@@ -85,6 +143,25 @@ test('wouldFormDuplicateCycle: N-node — writing the edge that closes a 3-cycle
   const records = {
     'a.json': { duplicateOf: 'b.json' },
     'b.json': { duplicateOf: 'c.json' },
+  };
+  const load = (name) => records[name] || null;
+  assert.equal(wouldFormDuplicateCycle('c.json', 'a.json', load), true);
+});
+
+test('wouldFormDuplicateCycle: refuses a write that would complete an A<->B cycle via duplicateTextOf (today only duplicateOf is seen, so all 386 latent corpus cycles are unrefusable)', () => {
+  const records = {
+    'b.json': { duplicateTextOf: 'a.json' },
+  };
+  const load = (name) => records[name] || null;
+  // Writing a.json.duplicateOf = b.json would close the loop: b.json already
+  // points back at a.json via duplicateTextOf.
+  assert.equal(wouldFormDuplicateCycle('a.json', 'b.json', load), true);
+});
+
+test('wouldFormDuplicateCycle: duplicateTextOf 3-node cycle — writing the edge that closes it', () => {
+  const records = {
+    'a.json': { duplicateTextOf: 'b.json' },
+    'b.json': { duplicateTextOf: 'c.json' },
   };
   const load = (name) => records[name] || null;
   assert.equal(wouldFormDuplicateCycle('c.json', 'a.json', load), true);
