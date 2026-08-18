@@ -129,7 +129,7 @@ test('#466 shallow-ancestry-unrecoverable abort leaves local HEAD byte-identical
     const postRunLog = sh('git log --oneline', runnerDir).trim();
 
     assert.notEqual(code, 0, `expected non-zero exit; got 0. Output:\n${stdout}`);
-    assert.match(stdout, /depth-bounded fetch could not restore ancestry/, `expected the #466 abort path to fire. Output:\n${stdout}`);
+    assert.match(stdout, /fetch could not restore ancestry to the shallow checkout's original boundary/, `expected the #466 abort path to fire. Output:\n${stdout}`);
     assert.equal(postRunHead, preRunHead, `HEAD moved from ${preRunHead} to ${postRunHead} during the abort — local commits at risk`);
     assert.equal(postRunLog, preRunLog, 'local commit log changed during the abort');
   } finally {

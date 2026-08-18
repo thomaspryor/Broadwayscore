@@ -1134,7 +1134,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       else
         _widen_args=(--deepen=2000)
       fi
-      echo "  ::warning::fetch was depth-bounded but base $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
+      # "fetch could not restore ancestry" not "depth-bounded fetch" (task
+      # #1723): this branch also fires after a post-unshallow fetch that was
+      # NOT depth-bounded (FETCH_DEPTH_ARGS may be empty here) — the invariant
+      # being checked is the shallow checkout's ORIGINAL boundary, not whether
+      # the fetch that just ran happened to carry a --depth/--shallow-since flag.
+      echo "  ::warning::shallow checkout's original boundary $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
       fetch_start=$SECONDS
       if git_fetch "${_widen_args[@]}" \
            origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
@@ -1165,7 +1170,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # logged, non-zero — and leave main untouched. `if: always()` steps and
         # the failure telemetry still run.
         record_push_failure "shallow-ancestry-unrecoverable" "$i"
-        echo "::error::push-with-retry: depth-bounded fetch could not restore ancestry — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        echo "::error::push-with-retry: fetch could not restore ancestry to the shallow checkout's original boundary — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
         restore_head_if_moved "shallow-ancestry-unrecoverable"
         exit 1
       fi
