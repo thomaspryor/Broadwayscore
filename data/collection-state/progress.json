@@ -1,7 +1,8 @@
 {
   "processed": [
     "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -11,15 +12,28 @@
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json",
     "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -29,6 +43,41 @@
     ]
   },
   "startTime": "2026-08-18T10:03:39.902Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
-  "log": []
+  "lastProcessed": "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+  "log": [
+    {
+      "t": "2026-08-18T10:06:04.164Z",
+      "event": "bb-session",
+      "session": "6aab3003",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-18T10:06:04.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T10:07:31.554Z",
+      "event": "bb-session",
+      "session": "4a795295",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-18T10:07:31.992Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T10:08:31.094Z",
+      "event": "bb-session",
+      "session": "199ab6a7",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-18T10:08:38.313Z",
+      "event": "bb-session",
+      "session": "d17ddb79",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    }
+  ]
 }
