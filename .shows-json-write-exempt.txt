@@ -14,3 +14,4 @@
 # entry here for a script that genuinely writes a DIFFERENT shows.json-shaped
 # file (e.g. a scratch/checkout copy outside data/shows.json) where the lock
 # wouldn't apply anyway, with a one-line reason.
+autonomous-merge-core-data-guard.test.mjs -- writes a data/shows.json inside its OWN mkdtemp throwaway git repo, never the real one; the fixture uses the real basename on purpose because the assertion is that UNTRACKED core-data files are left alone by cleanCoreDataTree
