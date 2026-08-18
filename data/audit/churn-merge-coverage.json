@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-18T09:41:04.664Z",
+    "generatedAt": "2026-08-18T16:05:43.659Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,89 +8,89 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 3,
-    "exemptCount": 17,
+    "flaggedCount": 4,
+    "exemptCount": 16,
     "coveredCount": 22,
     "highChurnTracked": 42
   },
   "flagged": [
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 57
-    },
-    {
-      "path": ".github/workflows/test.yml",
-      "churn": 52
+      "churn": 56
     },
     {
       "path": "data/audit/validation-baseline.json",
+      "churn": 51
+    },
+    {
+      "path": ".github/workflows/test.yml",
       "churn": 50
+    },
+    {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 31
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 144
+      "churn": 148
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 144
+      "churn": 143
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 144
+      "churn": 143
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 144
+      "churn": 143
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 106
+      "churn": 104
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
-      "churn": 83
+      "churn": 80
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 81
-    },
-    {
-      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 60
-    },
-    {
-      "path": "public/data/shows/an-american-daughter-off-broadway-2026.json",
-      "churn": 54
+      "churn": 70
     },
     {
       "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
       "churn": 53
     },
     {
+      "path": "public/data/shows/an-american-daughter-off-broadway-2026.json",
+      "churn": 51
+    },
+    {
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 50
+    },
+    {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 47
+      "churn": 45
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 42
+      "churn": 43
     },
     {
       "path": "public/data/shows/the-winters-tale-off-broadway-2026.json",
       "churn": 35
     },
     {
-      "path": "public/data/shows/cats-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/high-society-west-end-2026.json",
-      "churn": 33
-    },
-    {
       "path": "public/opening-night-status.json",
-      "churn": 33
+      "churn": 32
+    },
+    {
+      "path": "public/data/shows/cats-west-end-2026.json",
+      "churn": 30
     },
     {
       "path": "public/data/shows/the-car-man-west-end-2026.json",
@@ -100,112 +100,112 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 985,
+      "churn": 951,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 940,
+      "churn": 907,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 674,
+      "churn": 645,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 508,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 518,
+      "churn": 507,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 513,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 224,
+      "churn": 228,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 192,
+      "churn": 190,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 192,
+      "churn": 190,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 192,
+      "churn": 190,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 148,
+      "churn": 147,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 144,
+      "churn": 143,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-marlise-off-broadway-2026.json",
-      "churn": 144,
+      "churn": 143,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-winters-tale-off-broadway-2026.json",
-      "churn": 144,
+      "churn": 143,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 144,
+      "churn": 143,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 112,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 61,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 61,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 61,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 33,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 33,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 33,
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
