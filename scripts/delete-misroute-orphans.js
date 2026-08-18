@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeUnlinkReview } = require('./lib/review-write-guard');
-const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -35,9 +35,11 @@ const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 // Adversarial review finding (task #1749): this script never validated the
 // resolved root existed — a missing/wrong dir just made every candidate's
 // per-file existsSync fail closed as a silent skip, reporting a clean
-// "No candidates." run instead of the real error.
-if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
-  console.error(`review-texts dir not found: ${REVIEW_TEXTS_DIR}`);
+// "No candidates." run instead of the real error. isReviewTextsCheckout (not
+// bare existsSync) also rejects a bare/empty resolved dir, the same
+// false-all-clear shape the shared resolver's own hardening targets.
+if (!isReviewTextsCheckout(REVIEW_TEXTS_DIR)) {
+  console.error(`review-texts dir not a real checkout: ${REVIEW_TEXTS_DIR}`);
   process.exit(1);
 }
 
