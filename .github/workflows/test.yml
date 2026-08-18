@@ -3260,6 +3260,19 @@ jobs:
           fi
           node scripts/check-image-aspect.js --changed "$RANGE"
 
+      - name: Dispatch-ledger write isolation (no test may write the real ledger)
+        # Task #1789: a test called the real bsc-next main() without stubbing
+        # appendLedgerEntry, so it fell through to dispatchLedger.appendEntry —
+        # whose LEDGER_PATH is hardcoded to the owner's Mac checkout. 77 junk
+        # "launch" rows landed in the production ledger, every one stamped
+        # workspaceRef "workspace:1" (the test stub's literal return), which
+        # read like a dispatcher storming a live owner workspace. It corrupted
+        # the dead-launch-rate denominator and isLatestDispatchDead().
+        # Static check, so it works on ubuntu even though the polluted path is
+        # macOS-only — the exposure is local, but the defect is authored here.
+        if: always()
+        run: node --test scripts/lib/ledger-write-isolation.test.mjs
+
   data-validation:
     name: Data Validation
     # See unit-tests above — Dependabot can't auth to private data repo.
