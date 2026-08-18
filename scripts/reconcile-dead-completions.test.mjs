@@ -64,13 +64,15 @@ test('resetPushedFlag: no-ops when pushed is already false', () => {
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('resetPushedFlag: string/number taskId mismatch does not false-match (defensive coercion is symmetric, not permissive)', () => {
+test('resetPushedFlag: numeric taskId in the map matches a string taskId argument (type-coercion, not a false match)', () => {
   const dir = tmpDir();
   writeMap(dir, { pg1: { taskId: 7, name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
 
   // taskId stored as a number, looked up as a string — String() coercion on
   // both sides means this SHOULD match (mapCardToTask stores string ids, but
-  // callers elsewhere pass numbers straight from task-store JSON).
+  // callers elsewhere pass numbers straight from task-store JSON) — genuine
+  // mismatches (different underlying ids) are covered by the "reused
+  // pageId guard" test above.
   const result = resetPushedFlag(dir, 'pg1', '7');
 
   assert.equal(result, 'reset');
@@ -108,5 +110,24 @@ test('resetPushedFlag: lock contention reports lock-contention and leaves the ma
 
   assert.equal(result, 'lock-contention');
   assert.equal(readMap(dir).pg1.pushed, true, 'a held lock must never be silently stolen mid-write');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Ship-check adversarial finding (gpt-5.4-mini): an fs error mid-write must
+// report 'write-failed', not throw uncaught — a throw here would surface at
+// correctNotionCard()'s call site as a misleading "Notion correction
+// failed", even though the Notion status update already succeeded by the
+// time resetPushedFlag runs.
+test('resetPushedFlag: an fs write failure reports write-failed instead of throwing', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '7', name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+  // writeMap's atomic write targets '.notion-map.json.tmp' then renames it —
+  // pre-occupying that path with a directory makes the write throw EISDIR.
+  fs.mkdirSync(path.join(dir, '.notion-map.json.tmp'));
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'write-failed');
+  assert.equal(readMap(dir).pg1.pushed, true, 'a failed write must not leave the entry half-updated');
   fs.rmSync(dir, { recursive: true, force: true });
 });

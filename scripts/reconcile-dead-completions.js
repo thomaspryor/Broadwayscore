@@ -95,6 +95,15 @@ function resetPushedFlag(dir, pageId, taskId) {
     entry.pushed = false;
     writeMap(dir, map);
     return 'reset';
+  } catch {
+    // Adversarial ship-check catch (gpt-5.4-mini): an fs error here (e.g.
+    // ENOSPC writing the .tmp file) must not propagate up as an uncaught
+    // throw — correctNotionCard()'s caller (main()) would catch it and log
+    // "Notion correction failed", which is false: the Notion status update
+    // already succeeded by the time this runs. Report it as its own reason
+    // instead so it pages correctly without mislabeling a successful Notion
+    // correction as a failure.
+    return 'write-failed';
   } finally {
     release();
   }
@@ -102,16 +111,19 @@ function resetPushedFlag(dir, pageId, taskId) {
 
 // Mirrors pageNotionCorrectionFailure below: every partial-failure mode in
 // this file is escalated to the digest, never silently swallowed. Scoped to
-// 'lock-contention' only — 'no-entry'/'already-clear' are the common,
-// benign no-op cases (e.g. this card was never pushed via cmdPush in the
-// first place) and would just make the digest noisy.
-function pagePushedFlagResetFailure(taskId, notionId) {
+// 'lock-contention'/'write-failed' — 'no-entry'/'already-clear' are the
+// common, benign no-op cases (e.g. this card was never pushed via cmdPush in
+// the first place) and would just make the digest noisy.
+function pagePushedFlagResetFailure(taskId, notionId, reason) {
   try {
     const { routeAlert } = require('./lib/owner-alert-router.js');
+    const cause = reason === 'write-failed'
+      ? 'writing the sync-map back to disk failed'
+      : 'another sync (pull/push/sync-drift) held the lock';
     routeAlert({
       conditionKey: `reconcile-dead-completions:pushed-flag-reset-failed:${taskId}`,
       title: `Reopened task #${taskId} but its Notion sync-map pushed flag may still be stuck`,
-      description: `reconcile-dead-completions corrected Notion card ${notionId} back off "Done" for task #${taskId}, but could not reset its sync-map entry.pushed flag — another sync (pull/push/sync-drift) held the lock. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e "const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['${notionId}'])m['${notionId}'].pushed=false;writeMap(TASKS_DIR,m);r();"`,
+      description: `reconcile-dead-completions corrected Notion card ${notionId} back off "Done" for task #${taskId}, but could not reset its sync-map entry.pushed flag — ${cause}. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e "const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['${notionId}'])m['${notionId}'].pushed=false;writeMap(TASKS_DIR,m);r();"`,
       severity: 'warning',
       disposition: 'digest',
       cooldownHours: 24,
@@ -144,8 +156,9 @@ function correctNotionCard(notionId, taskId) {
   // The Notion status correction above already succeeded — a failure to
   // reset the sync-map's pushed flag must never undo it or be thrown as an
   // error here (that would falsely mark a successful correction as failed).
-  if (resetPushedFlag(TASKS_DIR, notionId, taskId) === 'lock-contention') {
-    pagePushedFlagResetFailure(taskId, notionId);
+  const resetResult = resetPushedFlag(TASKS_DIR, notionId, taskId);
+  if (resetResult === 'lock-contention' || resetResult === 'write-failed') {
+    pagePushedFlagResetFailure(taskId, notionId, resetResult);
   }
   return true;
 }
