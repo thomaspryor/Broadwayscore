@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T20:17:18.232Z",
-  "processed": 71,
-  "failed": 774,
+  "updatedAt": "2026-08-18T20:18:34.906Z",
+  "processed": 72,
+  "failed": 783,
   "successRate": "8.4%",
   "tierBreakdown": {
     "playwright": 43,
     "amp": 0,
     "browserbase": 5,
-    "directCookies": 7,
+    "directCookies": 8,
     "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 14
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -102,6 +102,17 @@
     },
     {
       "t": "2026-08-18T20:14:46.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-18T20:18:13.612Z",
+      "event": "bb-session",
+      "session": "885a781e",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-08-18T20:18:14.236Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }

@@ -70,7 +70,8 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "and-juliet-2022/newyorker--conde-nast.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -846,7 +847,16 @@
     "operation-mincemeat-west-end-2024/dailybeast--tim-teeman.json",
     "operation-mincemeat-west-end-2024/londontheatre1--unknown.json",
     "operation-mincemeat-west-end-2024/nysr--david-finkle.json",
-    "operation-mincemeat-west-end-2024/nysr--michael-sommers.json"
+    "operation-mincemeat-west-end-2024/nysr--michael-sommers.json",
+    "operation-mincemeat-west-end-2024/whatsonstage--alex-wood.json",
+    "and-juliet-2022/london-theatre-reviews--unknown.json",
+    "and-juliet-2022/loureviews--louise-penn.json",
+    "and-juliet-2022/thereviewshub--rebecca-carter.json",
+    "and-juliet-2022/cititour--unknown.json",
+    "and-juliet-2022/all-that-dazzles-uk--sam-admin.json",
+    "and-juliet-2022/british-theatre--susan-novak.json",
+    "and-juliet-2022/daily-mail--robert-gore-langton.json",
+    "and-juliet-2022/express-uk--stefan-kyriazis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -910,7 +920,8 @@
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "maybe-happy-ending-2024/newyorker--conde-nast.json"
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "and-juliet-2022/newyorker--conde-nast.json"
     ],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -943,7 +954,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "operation-mincemeat-west-end-2024/nysr--michael-sommers.json",
+  "lastProcessed": "and-juliet-2022/express-uk--stefan-kyriazis.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -1032,6 +1043,17 @@
     },
     {
       "t": "2026-08-18T20:14:46.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-18T20:18:13.612Z",
+      "event": "bb-session",
+      "session": "885a781e",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-08-18T20:18:14.236Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
