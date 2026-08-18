@@ -32,6 +32,7 @@ const { TASKS_DIR } = require('./bsc-next.js');
 const { loadTasksWithMtime } = require('./lib/task-store-archive.js');
 const { readEntries } = require('./lib/dispatch-ledger.js');
 const { reconcileDeadCompletions, shouldCorrectNotionStatus, attachCompletedAtEstimates } = require('./lib/dispatch-dead-launch-guard.js');
+const { acquireLock, readMap, writeMap } = require('./notion-tasks-sync.js');
 
 const USAGE = `reconcile-dead-completions — reopen tasks marked 'completed' whose latest dispatch never ran.
 
@@ -69,6 +70,67 @@ function reopenTask(id, dir = TASKS_DIR) {
 // never from the pure lib. Ledger/local reopen above is authoritative and
 // already happened by the time this runs — a failure here is logged and
 // paged, never re-thrown, and never un-reopens the local task.
+// Card #1779: correctNotionCard() flips the card back to "Not started" but
+// never told notion-tasks-sync.js's own bookkeeping — cmdPush's push-
+// eligibility check (notion-tasks-sync.js's isPushEligible/cmdPush) skips
+// any sync-map entry with pushed:true, so the SAME card could never be
+// auto-reclosed again even after the underlying task was genuinely
+// completed a second time (real incident: task #1709 had to be closed by
+// hand via notion-brain.js update). Same acquireLock/writeMap discipline
+// cmdPush/reconcileStaleMirrors already use (notion-tasks-sync.js:1054-1128)
+// — re-read the map fresh inside the lock so this can't clobber a
+// concurrent pull/push's unrelated entries. Returns a reason string instead
+// of a bool so the caller can tell a benign no-op (already clear, no
+// matching entry) from a lock-contention failure worth surfacing — the
+// latter is the exact silent-failure door that would reproduce this same
+// bug through a narrower path.
+function resetPushedFlag(dir, pageId, taskId) {
+  const release = acquireLock(dir);
+  if (!release) return 'lock-contention';
+  try {
+    const map = readMap(dir);
+    const entry = map[pageId];
+    if (!entry || String(entry.taskId) !== String(taskId)) return 'no-entry';
+    if (!entry.pushed) return 'already-clear';
+    entry.pushed = false;
+    writeMap(dir, map);
+    return 'reset';
+  } catch {
+    // Adversarial ship-check catch (gpt-5.4-mini): an fs error here (e.g.
+    // ENOSPC writing the .tmp file) must not propagate up as an uncaught
+    // throw — correctNotionCard()'s caller (main()) would catch it and log
+    // "Notion correction failed", which is false: the Notion status update
+    // already succeeded by the time this runs. Report it as its own reason
+    // instead so it pages correctly without mislabeling a successful Notion
+    // correction as a failure.
+    return 'write-failed';
+  } finally {
+    release();
+  }
+}
+
+// Mirrors pageNotionCorrectionFailure below: every partial-failure mode in
+// this file is escalated to the digest, never silently swallowed. Scoped to
+// 'lock-contention'/'write-failed' — 'no-entry'/'already-clear' are the
+// common, benign no-op cases (e.g. this card was never pushed via cmdPush in
+// the first place) and would just make the digest noisy.
+function pagePushedFlagResetFailure(taskId, notionId, reason) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    const cause = reason === 'write-failed'
+      ? 'writing the sync-map back to disk failed'
+      : 'another sync (pull/push/sync-drift) held the lock';
+    routeAlert({
+      conditionKey: `reconcile-dead-completions:pushed-flag-reset-failed:${taskId}`,
+      title: `Reopened task #${taskId} but its Notion sync-map pushed flag may still be stuck`,
+      description: `reconcile-dead-completions corrected Notion card ${notionId} back off "Done" for task #${taskId}, but could not reset its sync-map entry.pushed flag — ${cause}. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e "const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['${notionId}'])m['${notionId}'].pushed=false;writeMap(TASKS_DIR,m);r();"`,
+      severity: 'warning',
+      disposition: 'digest',
+      cooldownHours: 24,
+    }).catch(() => {});
+  } catch { /* alerting must never mask the reopen/correction that already succeeded */ }
+}
+
 function correctNotionCard(notionId, taskId) {
   const brain = path.join(__dirname, 'notion-brain.js');
   const getRes = spawnSync('node', [brain, 'get', notionId], { encoding: 'utf8', timeout: 60_000 });
@@ -90,6 +152,13 @@ function correctNotionCard(notionId, taskId) {
   ], { encoding: 'utf8', timeout: 60_000 });
   if (updRes.status !== 0) {
     throw new Error(`card update failed: ${(updRes.stderr || updRes.stdout || '').trim().split('\n').slice(-1)[0]}`);
+  }
+  // The Notion status correction above already succeeded — a failure to
+  // reset the sync-map's pushed flag must never undo it or be thrown as an
+  // error here (that would falsely mark a successful correction as failed).
+  const resetResult = resetPushedFlag(TASKS_DIR, notionId, taskId);
+  if (resetResult === 'lock-contention' || resetResult === 'write-failed') {
+    pagePushedFlagResetFailure(taskId, notionId, resetResult);
   }
   return true;
 }
@@ -151,4 +220,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, reopenTask, correctNotionCard };
+module.exports = { main, USAGE, reopenTask, correctNotionCard, resetPushedFlag };

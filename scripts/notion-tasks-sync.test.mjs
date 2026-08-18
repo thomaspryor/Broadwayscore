@@ -5,9 +5,28 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { MIRROR_FMT, mapStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, allocateFreeId, nextId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
+const { MIRROR_FMT, mapStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, allocateFreeId, nextId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock, isPushEligible } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
+
+// cmdPush's own push-eligibility predicate (card #1779 test-extraction),
+// tested directly here since cmdPush itself is never exercised end-to-end
+// (it makes live Notion writes). scripts/reconcile-dead-completions.test.mjs
+// chains this same require()'d function after resetPushedFlag's output for
+// the cross-module regression the card is actually about.
+test('isPushEligible: false when entry.pushed is true, regardless of task status', () => {
+  assert.equal(isPushEligible({ pushed: true }, { status: 'completed' }), false);
+});
+test('isPushEligible: false when the task is missing or not completed', () => {
+  assert.equal(isPushEligible({ pushed: false }, null), false);
+  assert.equal(isPushEligible({ pushed: false }, { status: 'in_progress' }), false);
+});
+test('isPushEligible: false when entry itself is missing', () => {
+  assert.equal(isPushEligible(null, { status: 'completed' }), false);
+});
+test('isPushEligible: true when pushed is false and the task is completed', () => {
+  assert.equal(isPushEligible({ pushed: false }, { status: 'completed' }), true);
+});
 
 test('mapStatus maps Notion → native task status', () => {
   assert.equal(mapStatus('In progress'), 'in_progress');
