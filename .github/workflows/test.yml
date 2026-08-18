@@ -37,6 +37,14 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # Sibling advisory guard (task #1760): catches the same recurrence gap
+      # one level up — a script named in
+      # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
+      # array with no matching entry here. Registered in
+      # tests/unit-test-manifest.txt; needs its own entry (no scripts/**
+      # broad glob) so a solo edit triggers CI.
+      - 'scripts/audit-review-texts-test-yml-coverage.js'
+      - 'scripts/audit-review-texts-test-yml-coverage.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -2020,6 +2028,17 @@ jobs:
         # own. Heuristic (regex require()/import parsing), non-blocking —
         # always exits 0 (see script header for why).
         run: node scripts/audit-test-yml-lib-deps.js
+
+      - name: Audit — review-texts scripts missing from test.yml push-path allowlist (advisory, task #1760)
+        # Sibling guard to the one directly above: catches the same
+        # recurrence gap one level up. Task #1749 migrated 12 scripts to
+        # resolveReviewTextsDir(); 8 of 12 were found missing from this
+        # push-path allow-list (fixed in 808c40b7c6c), and it recurred twice
+        # more mid-task as scripts were added to
+        # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
+        # array without a matching entry here. Heuristic (regex array-literal
+        # parsing), non-blocking — always exits 0 (see script header for why).
+        run: node scripts/audit-review-texts-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
         # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
