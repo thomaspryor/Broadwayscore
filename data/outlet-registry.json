@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-17T04:00:00.000Z",
+    "lastUpdated": "2026-08-17T21:52:12.003Z",
     "version": "2.1.0",
     "lastChange": "task #1679: register 5 legit new outlets (closeupculture, stagetopage, thenerve, northernartsreview, the-daily-texan) that appeared since the --strict baseline was cut; baselined 6 non-outlet junk IDs (UGC diary comment, customer-review widget, venue press release, critic-quote roundup, school-trip booking page, wrong-production SEO blog) instead of registering them as press outlets"
   },
@@ -10990,6 +10990,17 @@
       ],
       "domain": "thedailytexan.com",
       "accessModel": "free"
+    },
+    "all-allam": {
+      "displayName": "All Allam",
+      "tier": 3,
+      "aliases": [
+        "all-allam"
+      ],
+      "domain": "all-allam.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-08-17T21:52:12.003Z"
     }
   },
   "_aliasIndex": {
