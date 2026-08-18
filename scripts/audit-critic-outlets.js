@@ -145,8 +145,15 @@ function scanReviewTexts() {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
 
-        // Skip flagged reviews
-        if (data.wrongAttribution || data.wrongProduction || data.wrongShow) {
+        // Skip flagged reviews. duplicateOf is included alongside the
+        // content-wrongness flags (task #1776): a file that points at
+        // another file as its canonical copy (e.g. a never-scraped stub
+        // superseded by a full-text twin under a different outletId) is not
+        // independent attribution evidence — counting it inflates a critic's
+        // outlet spread with noise from the SAME underlying review, the same
+        // reasoning review-normalization.js already applies when picking
+        // merge targets.
+        if (data.wrongAttribution || data.wrongProduction || data.wrongShow || data.duplicateOf) {
           skippedFiles++;
           continue;
         }
