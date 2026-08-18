@@ -325,6 +325,72 @@ test('#1697: NEVER_OVERWRITE_WITH_DONE covers Archived/Cancelled but not Done', 
   assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Done'), false, 'Done->Done is a harmless idempotent re-confirm, must stay pushable');
 });
 
+// #1778 ship-check catch (gpt-5.4-mini adversarial pass): 'Paused' is
+// deliberately NOT added to NEVER_OVERWRITE_WITH_DONE, unlike Archived/
+// Cancelled. An entry can carry syncedStatus:'Paused' from planLivenessDowngrade's
+// OWN non-terminal downgrade (in_progress -> pending while Notion says
+// Paused) and later be genuinely completed by a real session — a global
+// Paused guard would silently block THAT legitimate push too. The narrower
+// fix (reconcileStaleMirrors stamping pushed:true only on entries it itself
+// closes via planPendingClosure) can't be unit-tested as a pure function
+// since it lives inside the I/O loop — this test documents the contract at
+// the boundary planPendingClosure controls: the shared helper never asserts
+// anything about NEVER_OVERWRITE_WITH_DONE membership for Paused.
+test('#1778: NEVER_OVERWRITE_WITH_DONE does NOT cover Paused — pushed:true at the reconcile write site handles it precisely instead', () => {
+  const { NEVER_OVERWRITE_WITH_DONE } = require('./notion-tasks-sync.js');
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Paused'), false);
+});
+
+// ── #1778: planPendingClosure — sync-drift's `entries` filter was broadened
+// from in_progress-only to also cover 'pending' mirrors (the SAME bug class
+// #1691/#1697 fixed for in_progress: a card whose Notion status moves past
+// In progress/Not started never gets re-fetched by `pull`). planStatusDrift
+// already unsticks the Done case for a pending mirror (mapStatus('done')
+// beats mergeStatus's fallthrough even from 'pending') — this function is
+// the narrow remaining gap: Paused collapses into the same 'pending' bucket
+// as Not started via mapStatus()'s default case, so mergeStatus never
+// reports drift for it. Repro: bash scripts/tests/repro-stale-mirror.sh
+// 1312 1346 1450 1455 1617 1622 1623 1667 1686 1620 (2 of the 9 stale cards,
+// #1455 and #1667, are Paused — the other 7 are Done, already covered).
+
+test('#1778: planStatusDrift already closes a pending mirror when Notion says Done', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '1312', status: 'pending' };
+  const card = { status: 'Done', name: 'Shipped work', notes: '' };
+  assert.deepEqual(planStatusDrift(task, card), { newStatus: 'completed', cardStatus: 'Done' });
+});
+
+test('#1778: planPendingClosure closes a pending mirror when Notion says Paused', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1455', status: 'pending' };
+  const card = { status: 'Paused', name: 'On hold', notes: '' };
+  assert.deepEqual(planPendingClosure(task, card), { newStatus: 'completed', cardStatus: 'Paused' });
+});
+
+test('#1778: planPendingClosure is a no-op when Notion still says Not started', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1620', status: 'pending' };
+  const card = { status: 'Not started', name: 'x', notes: '' };
+  assert.equal(planPendingClosure(task, card), null);
+});
+
+test('#1778: planPendingClosure is a no-op for Done (that\'s planStatusDrift\'s job, not this function\'s)', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  assert.equal(planPendingClosure({ id: '1', status: 'pending' }, { status: 'Done' }), null);
+});
+
+test('#1778: planPendingClosure only ever applies to a pending mirror, never in_progress/completed', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const card = { status: 'Paused', name: 'x', notes: '' };
+  assert.equal(planPendingClosure({ id: '1', status: 'in_progress' }, card), null);
+  assert.equal(planPendingClosure({ id: '1', status: 'completed' }, card), null);
+});
+
+test('#1778: planPendingClosure degrades to no-op on a failed fetch (null card) — same fail-open convention as planStatusDrift, never infers closure from absence', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  assert.equal(planPendingClosure({ id: '1', status: 'pending' }, null), null);
+});
+
 test('#1697: an unusable lastEditedAt skips rather than guessing', () => {
   const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
   const task = { id: '42', status: 'in_progress' };

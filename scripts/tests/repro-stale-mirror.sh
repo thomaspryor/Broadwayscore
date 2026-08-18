@@ -8,9 +8,14 @@ repro-stale-mirror.sh <task-id> [task-id ...]
 Prints each task's LOCAL mirror status (~/.claude/tasks/broadwayscore/<id>.json)
 beside Notion's authoritative status (notion-brain.js get).
 
-Exits 0 when every checked card agrees, 1 when any card is "pending" locally
-while Notion reports Done/Paused — the stale-mirror defect that makes
-bsc-next rank finished cards as dispatchable.
+Exits 0 when every checked card agrees, 1 when any card is stale — "pending"
+locally while Notion reports Done/Paused (bsc-next ranks a finished card as
+dispatchable), OR "in_progress" locally while Notion reports Done/Paused/
+Archived/Cancelled (worse: scripts/bsc-reconcile.js's stall sweep selects
+in_progress mirrors directly, off the local file, with no Notion check in
+that path — a stale in_progress entry is a standing RE-DISPATCH candidate,
+not just a ranking one; task #1778, confirmed live 2026-08-18 via task #1773
+stall-redispatched 24 minutes after its card closed).
 
 Read-only: makes no writes to Notion, the mirror, or the repo.
 USAGE
@@ -30,7 +35,13 @@ for id in "$@"; do
   [ -z "$url" ] && continue
   notion=$(node scripts/notion-brain.js get "$url" 2>/dev/null | python3 -c "import sys,json;print(json.load(sys.stdin).get('status'))")
   checked=$((checked+1))
+  is_stale=0
   if [ "$mirror" = "pending" ] && { [ "$notion" = "Done" ] || [ "$notion" = "Paused" ]; }; then
+    is_stale=1
+  elif [ "$mirror" = "in_progress" ] && { [ "$notion" = "Done" ] || [ "$notion" = "Paused" ] || [ "$notion" = "Archived" ] || [ "$notion" = "Cancelled" ]; }; then
+    is_stale=1
+  fi
+  if [ "$is_stale" -eq 1 ]; then
     stale=$((stale+1)); printf 'STALE  #%-6s mirror=%-9s notion=%s\n' "$id" "$mirror" "$notion"
   else
     printf 'ok     #%-6s mirror=%-9s notion=%s\n' "$id" "$mirror" "$notion"
