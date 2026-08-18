@@ -108,9 +108,16 @@ function maskSource(src) {
       // red-lit main. Only an identifier-shaped literal immediately followed by
       // a colon survives — everything else is still blanked, so ordinary string
       // contents cannot be mistaken for code.
+      // A computed key `['appendLedgerEntry']:` has a `]` before the colon, so
+      // the lookahead tolerates one. Scanned character-by-character rather than
+      // with src.slice(j + 1), which copied the whole remainder of the file for
+      // EVERY string literal — O(n^2) across a ~79KB test file with thousands
+      // of literals (code-review finding).
       const body = src.slice(i + 1, j);
-      const after = src.slice(j + 1).match(/^\s*:/);
-      if (after && /^[A-Za-z_$][\w$]*$/.test(body)) { i = j + 1; continue; }
+      let k = j + 1;
+      while (k < src.length && /\s/.test(src[k])) k++;
+      if (src[k] === ']') { k++; while (k < src.length && /\s/.test(src[k])) k++; }
+      if (src[k] === ':' && /^[A-Za-z_$][\w$]*$/.test(body)) { i = j + 1; continue; }
       blank(i, Math.min(j + 1, src.length)); i = j + 1; continue;
     }
     i++;
@@ -197,20 +204,67 @@ function resolveBinding(masked, name) {
   return masked.slice(start, end + 1);
 }
 
-// Anchored to KEY position on purpose. A bare `text.includes('appendLedgerEntry')`
-// also matches the key `appendLedgerEntryFn:` — which is the LOCAL alias the
-// writer modules destructure into (scripts/bsc-next.js:749), not the dep key.
-// A deps object carrying `appendLedgerEntryFn:` overrides nothing, so the
-// substring form judged a real ledger write as safe.
-// The optional quotes cover `{ 'appendLedgerEntry': ... }` — maskSource now
-// preserves identifier-shaped quoted PROPERTY KEYS, so the quote characters
-// survive and sit between the `{` and the name.
-const STUB_KEY = /[{,]\s*['"]?appendLedgerEntry['"]?\s*[:,}]/;
+// Only a TOP-LEVEL property of the deps object overrides the dep. Earlier drafts
+// matched the key anywhere in the text, which failed in both directions:
+//   - `text.includes('appendLedgerEntry')` also matched `appendLedgerEntryFn:`,
+//     the LOCAL alias the writers destructure into (scripts/bsc-next.js:749),
+//     which as a deps key overrides nothing — a real write judged safe.
+//   - an anchored regex still matched a key nested inside a FIXTURE object,
+//     e.g. `{ tasksDir: d, expected: { 'appendLedgerEntry': 3 } }`, so a test
+//     that never overrides the dep was judged safe and wrote the real ledger
+//     (code-review finding — the dangerous direction).
+// Splitting on top-level commas and inspecting only each segment's own key
+// removes that whole class. Accepts bare, quoted and computed key forms.
+const KEY_FORM = /^\s*\[?\s*['"]?appendLedgerEntry['"]?\s*\]?\s*$/;
+
+function stubsTopLevelKey(text, fromIndex = 0) {
+  const start = text.indexOf('{', fromIndex);
+  if (start === -1) return false;
+  let depth = 0, segStart = -1;
+  const check = (seg) => {
+    // A segment's key is everything before its first colon; shorthand
+    // (`{ appendLedgerEntry, foo }`) has no colon, so test the whole segment.
+    const colon = seg.indexOf(':');
+    return KEY_FORM.test(colon === -1 ? seg : seg.slice(0, colon));
+  };
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '{' || ch === '[' || ch === '(') {
+      depth++;
+      if (depth === 1) segStart = i + 1;
+      continue;
+    }
+    if (ch === '}' || ch === ']' || ch === ')') {
+      if (depth === 1 && segStart !== -1 && check(text.slice(segStart, i))) return true;
+      depth--;
+      if (depth === 0) break;
+      continue;
+    }
+    if (depth === 1 && ch === ',') {
+      if (segStart !== -1 && check(text.slice(segStart, i))) return true;
+      segStart = i + 1;
+    }
+  }
+  return false;
+}
+
+// At depth 0 the text IS the deps bag, so only its own top-level key counts —
+// that is what stops a nested fixture object from being read as a stub.
+// At depth > 0 we are looking at a RESOLVED helper body or variable initialiser
+// (`function baseDeps() { return { ... }; }`, `() => ({ ... })`), where the
+// object we care about is necessarily nested, so each object literal is checked
+// at its own top level instead.
+function stubsAnyObjectTopLevel(text) {
+  for (let i = text.indexOf('{'); i !== -1; i = text.indexOf('{', i + 1)) {
+    if (stubsTopLevelKey(text, i)) return true;
+  }
+  return false;
+}
 
 // Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
   if (!text) return false;
-  if (STUB_KEY.test(text)) return true;
+  if (depth === 0 ? stubsTopLevelKey(text) : stubsAnyObjectTopLevel(text)) return true;
   if (depth > MAX_SPREAD_DEPTH) return false;
 
   const names = new Set();
@@ -330,6 +384,8 @@ test('guard parser: every legitimate stub formatting is recognised', () => {
     ['last property', "{ foo: 1, appendLedgerEntry: () => {} }"],
     ['double-quoted key', '{ "appendLedgerEntry": () => {} }'],
     ['single-quoted key', "{ 'appendLedgerEntry': () => {} }"],
+    ['computed key', "{ ['appendLedgerEntry']: () => {} }"],
+    ['after a nested object', "{ tasksDir: d, opts: { a: 1 }, appendLedgerEntry: () => {} }"],
   ];
   for (const [label, text] of shapes) {
     assert.ok(stubsLedgerWrite(maskSource(text), maskSource(text)),
@@ -356,6 +412,11 @@ test('guard parser: near-miss names do NOT count as stubbing the writer', () => 
     // `appendLedgerEntryFn` is the LOCAL alias the writer destructures into
     // (bsc-next.js:749). As a deps key it overrides nothing, so it must not pass.
     ['appendLedgerEntryFn as a deps key', "main(['--id','1'], { appendLedgerEntryFn: () => {} });"],
+    // The dangerous direction: a fixture/expectation object nested inside deps
+    // carries the key but overrides nothing, so the real ledger still gets
+    // written. An anchored-anywhere regex accepted this (code-review finding).
+    ['nested inside a fixture object', "main(['--id','1'], { tasksDir: d, expected: { 'appendLedgerEntry': 3 } });"],
+    ['nested unquoted', "main(['--id','1'], { expected: { appendLedgerEntry: 3 } });"],
   ];
   for (const [label, src] of cases) {
     const masked = maskSource(src);
