@@ -115,9 +115,9 @@ function applyCanonicalPointerClear(target, plan) {
 
 // NOT provided here on purpose: a general cycle walker. scripts/lib/duplicate-cycle.js
 // already owns that (findDuplicateOfCycle / wouldFormDuplicateCycle) and is wired
-// into review-write-guard.js's write-time refusal. It walks `duplicateOf` ONLY, so
-// a mutual `duplicateTextOf` cycle is still not refused at write time — that gap is
-// real but belongs in that shared guard, not in a second competing walker here.
+// into review-write-guard.js's write-time refusal. It walks every field in
+// DUPLICATE_POINTER_FIELDS (Notion #1750 closed the duplicateTextOf-only gap), so
+// don't add a second competing walker here.
 
 module.exports = {
   DUPLICATE_POINTER_FIELDS,

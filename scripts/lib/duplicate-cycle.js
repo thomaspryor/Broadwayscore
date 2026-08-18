@@ -1,5 +1,7 @@
+const { DUPLICATE_POINTER_FIELDS } = require('./canonical-duplicate-pointers');
+
 /**
- * Shared duplicateOf cycle-walk, used by both the write-time guard
+ * Shared duplicate-pointer cycle-walk, used by both the write-time guard
  * (review-write-guard.js — would writing this edge COMPLETE a cycle?) and the
  * post-hoc audit + rebuild tiebreak (audit-duplicate-of-url-mismatch.js,
  * rebuild-all-reviews.js — does the corpus already CONTAIN one?).
@@ -11,39 +13,83 @@
  * N-hop walk was added). One walk, reused everywhere, means write-time
  * refusal and audit-time detection can never disagree about what counts as a
  * cycle.
+ *
+ * duplicateTextOf blind spot (Notion #1750, 2026-08-17 — loves-labours-lost
+ * times-uk--clive-davis): the walk originally followed `duplicateOf` only.
+ * A corpus scan the same day found 386 mutual cycles, every one of the shape
+ * A.duplicateOf=B + B.duplicateTextOf=A — none refusable at write time
+ * because the walk went cold the moment it reached a node whose only pointer
+ * was duplicateTextOf. Each node's outgoing edges now include EVERY field in
+ * DUPLICATE_POINTER_FIELDS (canonical-duplicate-pointers.js) that's set, not
+ * just the first — an earlier "first field present wins" version shipped
+ * with a confirmed false negative on live data (the-lion-king-west-end-2021
+ * timeout-london--ben-walters.json: duplicateOf and duplicateTextOf point at
+ * DIFFERENT files, and the real cycle only exists through the second one,
+ * which field-priority never visited). The walk is a standard white/gray/black
+ * DFS — each node is fully explored at most once (marked 'done' with no
+ * cycle found under it), so trying every edge stays O(V+E) rather than
+ * exponential, safe to run on every review write.
  */
 
+/** Every valid duplicate-pointer target on `data`, in DUPLICATE_POINTER_FIELDS order, deduped. */
+function outgoingTargets(data) {
+  if (!data) return [];
+  const out = [];
+  for (const field of DUPLICATE_POINTER_FIELDS) {
+    const val = data[field];
+    if (typeof val === 'string' && val.endsWith('.json') && !out.includes(val)) out.push(val);
+  }
+  return out;
+}
+
 /**
- * Walk the duplicateOf chain starting at `startBasename` looking for a cycle.
- * Bounded by maxHops, not a fixed constant elsewhere — callers should pass
- * the show dir's own file count (or similar) since a cycle can't be longer
- * than the number of files that could participate in it.
+ * Walk the duplicate-pointer graph (duplicateOf, duplicateTextOf — see
+ * DUPLICATE_POINTER_FIELDS) starting at `startBasename` looking for a cycle
+ * reachable from it. Every node can have up to DUPLICATE_POINTER_FIELDS.length
+ * outgoing edges; a cycle is any edge that lands back on a node still on the
+ * current DFS stack. Bounded by maxHops (total edges traversed, not path
+ * depth) — callers should pass the show dir's own file count (or similar)
+ * since a cycle can't be longer than the number of files that could
+ * participate in it.
  *
  * @param {string} startBasename
- * @param {(basename: string) => ({duplicateOf?: string}|null)} load
+ * @param {(basename: string) => ({duplicateOf?: string, duplicateTextOf?: string}|null)} load
  * @param {number} maxHops
- * @returns {{cycleFound: boolean, chain: string[]}} chain includes every
- *   node visited; when cycleFound, the last entry duplicates an earlier one.
+ * @returns {{cycleFound: boolean, chain: string[]}} on cycleFound, chain is
+ *   the DFS stack from startBasename down to the cycle, with the closing
+ *   (repeated) node appended. On no cycle, chain is just [startBasename] —
+ *   the DFS explores a tree, not a single path, so there's no one chain to
+ *   report when nothing is found.
  */
 function findDuplicateOfCycle(startBasename, load, maxHops) {
-  const chain = [startBasename];
-  const seen = new Set([startBasename]);
-  const startData = load(startBasename);
-  let cursor = startData && typeof startData.duplicateOf === 'string' && startData.duplicateOf.endsWith('.json')
-    ? startData.duplicateOf
-    : null;
-  for (let hop = 0; hop < maxHops && cursor; hop++) {
-    if (seen.has(cursor)) {
-      chain.push(cursor);
+  const state = new Map(); // basename -> 'stack' | 'done'
+  const stack = []; // {name, edges, idx}
+  const pushFrame = (name) => {
+    state.set(name, 'stack');
+    stack.push({ name, edges: outgoingTargets(load(name)), idx: 0 });
+  };
+  pushFrame(startBasename);
+  let hopsUsed = 0;
+  while (stack.length) {
+    const frame = stack[stack.length - 1];
+    if (frame.idx >= frame.edges.length) {
+      state.set(frame.name, 'done');
+      stack.pop();
+      continue;
+    }
+    if (hopsUsed >= maxHops) break;
+    const next = frame.edges[frame.idx++];
+    hopsUsed++;
+    const nextState = state.get(next);
+    if (nextState === 'stack') {
+      const chain = stack.map((f) => f.name);
+      chain.push(next);
       return { cycleFound: true, chain };
     }
-    const cursorData = load(cursor);
-    if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
-    chain.push(cursor);
-    seen.add(cursor);
-    cursor = cursorData.duplicateOf;
+    if (nextState === 'done') continue;
+    pushFrame(next);
   }
-  return { cycleFound: false, chain };
+  return { cycleFound: false, chain: [startBasename] };
 }
 
 /**
