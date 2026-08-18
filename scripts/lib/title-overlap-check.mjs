@@ -34,14 +34,43 @@ if (subject === undefined || titles.length === 0) {
 }
 
 let titleMatchesSubject;
+let stripAutoPrefix;
 try {
   ({ titleMatchesSubject } = require('./dispatch-ledger.js'));
+  ({ stripAutoPrefix } = require('./workspace-naming.js'));
 } catch (e) {
   console.log(`ERROR: ${e.message}`);
   process.exit(2);
 }
 
-if (titles.some(t => titleMatchesSubject(t, subject))) {
+/**
+ * titleMatchesSubject is ASYMMETRIC by design: it strips the activity-glyph and
+ * auto-dispatch prefix from `title` (a raw cmux workspace title) but not from
+ * `subject`, because every other caller passes a raw TASK SUBJECT there, which
+ * never carries a glyph.
+ *
+ * Gate P is the exception, and the asymmetry made it unsatisfiable. It passes
+ * the title QUOTED IN THE DISPATCHED: LINE as the subject — and Gate W requires
+ * that to be the exact cmux tab title, glyphs included, because that is what the
+ * owner's sidebar shows. So an auto-dispatched workspace ("🤖⚡ Data·P1: …")
+ * compared a glyph-stripped live title against an unstripped claimed one and
+ * could NEVER match: two byte-identical strings returned NOMATCH (verified
+ * 2026-08-17). Gate W demanded the glyph; Gate P rejected it. A truthful
+ * DISPATCHED: claim for any 🤖 workspace was unreportable, which is exactly the
+ * false BLOCK this file's own header says must never happen.
+ *
+ * Fix: also try the subject normalized the same way the title already is. This
+ * cannot weaken the gate — a match still requires >=20 characters of real
+ * overlap with a LIVE workspace title. It only removes a false negative.
+ */
+function normalizedSubjectVariants(s) {
+  const raw = String(s || '');
+  const stripped = stripAutoPrefix(raw.replace(/^[^\p{L}\p{N}[]+/u, ''));
+  return stripped && stripped !== raw ? [raw, stripped] : [raw];
+}
+
+const subjects = normalizedSubjectVariants(subject);
+if (titles.some(t => subjects.some(s => titleMatchesSubject(t, s)))) {
   console.log('MATCH');
   process.exit(0);
 }
