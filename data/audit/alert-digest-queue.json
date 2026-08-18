@@ -121,28 +121,6 @@
     "queuedAt": "2026-08-16T20:42:02.771Z"
   },
   {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 45998/33000 credits",
-    "description": "Scrapingdog billed 45998 credits today against a ceiling of 33000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (1340), audit-show-review-gap.js (677), opening-night-poller.js (561).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-17T07:41:52.813Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (2760/2500 reqs)",
-    "description": "Zone serp_api1 billed 2760 requests today against a ceiling of 2500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n4 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (945), opening-night-poller.js (324), collect-review-texts.js (92).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-17T09:28:14.977Z"
-  },
-  {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
     "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2941/2500 reqs)",
     "description": "Zone web_unlocker2 billed 2941 requests today against a ceiling of 2500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n4 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (945), opening-night-poller.js (482), audit-show-review-gap.js (445).",
