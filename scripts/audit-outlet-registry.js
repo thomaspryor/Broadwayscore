@@ -175,7 +175,7 @@ function suggestDisplayName(outletId, existingDisplayNames = []) {
 }
 
 // Generate a suggested registry entry for a missing outlet
-function suggestRegistryEntry(outletId, displayNames = [], count = 0) {
+function suggestRegistryEntry(outletId, displayNames = [], count = 0, urls = []) {
   const displayName = suggestDisplayName(outletId, displayNames);
 
   // Generate aliases: include the outletId and any variations
@@ -195,11 +195,19 @@ function suggestRegistryEntry(outletId, displayNames = [], count = 0) {
     }
   }
 
+  // Domain hint, majority-voted from this outlet's own review URLs and
+  // filtered through the same blocked-host list as the SERP guard — task
+  // #766. Falls back to null (still surfaced in the printed report so it's
+  // never silently wrong) only when no URL yields a usable host.
+  const { inferOutletDomainHint } = require('./lib/outlet-domain-hint');
+  const domain = inferOutletDomainHint(urls);
+
   return {
     outletId,
     displayName,
     tier: 3, // Default to tier 3 for unknown outlets
-    aliases
+    aliases,
+    domain
   };
 }
 
@@ -240,6 +248,7 @@ function auditOutletRegistry() {
           count: 0,
           displayNames: [],
           files: [],
+          urls: [],
           shows: new Set()
         });
       }
@@ -247,6 +256,7 @@ function auditOutletRegistry() {
       outletData.count++;
       if (reviewOutlet) outletData.displayNames.push(reviewOutlet);
       outletData.files.push(reviewFile.fullPath);
+      if (review.url) outletData.urls.push(review.url);
       outletData.shows.add(reviewFile.showId);
 
       // Check 1: Is this outlet in the registry?
@@ -319,7 +329,8 @@ function auditOutletRegistry() {
           count: data.count,
           shows: Array.from(data.shows),
           exampleFile: data.files[0],
-          displayNames: [...new Set(data.displayNames)] // Unique display names
+          displayNames: [...new Set(data.displayNames)], // Unique display names
+          urls: data.urls
         });
       }
     }
@@ -388,7 +399,7 @@ function auditOutletRegistry() {
 
   // Generate suggested additions for missing outlets
   const suggestedAdditions = findings.missingFromRegistry.map(missing =>
-    suggestRegistryEntry(missing.outletId, missing.displayNames, missing.count)
+    suggestRegistryEntry(missing.outletId, missing.displayNames, missing.count, missing.urls)
   );
 
   // Calculate summary stats
@@ -665,6 +676,7 @@ async function updateRegistry(auditResult) {
     console.log(`    displayName: "${entry.displayName}"`);
     console.log(`    tier: ${entry.tier}`);
     console.log(`    aliases: ${JSON.stringify(entry.aliases)}`);
+    console.log(`    domain: ${entry.domain ? `"${entry.domain}"` : 'null (no usable host in this outlet\'s review URLs — SERP discovery will skip it, task #766)'}`);
     console.log('');
   }
 
@@ -685,7 +697,9 @@ async function updateRegistry(auditResult) {
       displayName: entry.displayName,
       tier: entry.tier,
       aliases: entry.aliases,
-      domain: null // Can be filled in manually later
+      // Inferred from this outlet's own review URLs (task #766) — only null
+      // when no review URL yielded a usable, non-blocked host.
+      domain: entry.domain || null
     };
   }
 

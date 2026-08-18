@@ -2511,6 +2511,11 @@ on:
       # Domainless-outlet SERP guard (task #766): eligibility check colocated
       # test isn't covered by a glob elsewhere, so it's path-listed here too.
       - 'scripts/lib/domainless-outlet-guard.test.mjs'
+      # Shared domain-hint inference (task #766 re-triage, 2026-08-16): used by
+      # both rebuild-all-reviews.js and audit-outlet-registry.js's auto-register
+      # paths so neither writes domain:null when a real domain is derivable.
+      - 'scripts/lib/outlet-domain-hint.js'
+      - 'scripts/lib/outlet-domain-hint.test.mjs'
       # validateUrlDomain() write-path cousin guard (task #782, same class as
       # #766 but on the review-file-writer.js write path). Colocated test runs
       # in the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
