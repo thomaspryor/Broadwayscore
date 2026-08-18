@@ -1529,6 +1529,13 @@ on:
       # the scripts/lib/*.test.mjs glob; the top-level parity test is NOT
       # globbed, so it is also listed in the tests/unit node --test invocation.
       - 'scripts/autonomous-merge-core-data-guard.test.mjs'
+      # Loop 5 PR supervisor: the pure merge-decision function, its CLI, and its
+      # fixture test. Registered in tests/unit-test-manifest.txt, but that only
+      # decides WHICH tests run once this workflow triggers — without these path
+      # entries a push touching only the supervisor triggers no CI at all.
+      - 'scripts/pr-supervisor.js'
+      - 'scripts/lib/pr-supervisor-core.js'
+      - 'tests/unit/pr-supervisor-core.test.mjs'
       - 'scripts/autonomous-merge-parity.test.mjs'
       # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
       # and the stuck-work digest check. Colocated test runs in the lib-test
