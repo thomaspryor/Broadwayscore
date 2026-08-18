@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-08-18T03:20:32.415Z",
+  "runDate": "2026-08-18T03:26:41.494Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "anansi-the-spider-west-end-2026",
+    "showFilter": "as-you-like-it-globe-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 0,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -39,30 +39,29 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 4,
+    "totalFailed": 7,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
-    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
-    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -72,9 +71,9 @@
     "archive": []
   },
   "failuresByOutlet": {
-    "theatremonkey": {
+    "myreviewer": {
       "count": 1,
-      "domain": "theatremonkey.com",
+      "domain": "myreviewer.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
