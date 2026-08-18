@@ -830,7 +830,11 @@ jobs:
               }
               fs.writeFileSync(sentPath, JSON.stringify(data, null, 2));
             "
-            git add -f data/opening-night-sent.json 2>/dev/null || true
+            # opening-night-sent.json is untracked+ignored in the public repo
+            # (task #1759) — persisted to the private repo by "Push core data
+            # to private repo" later in this job, not staged here (staging it
+            # would re-track it via the later "Commit data" step's diff gate,
+            # reproducing the outage this fix exists to prevent).
             # Pass via env, never shell-interpolated into the JS source: a
             # title with an apostrophe (190 shows in the corpus) breaks the
             # single-quoted literal, the step exits 1 with NO alert sent, and
