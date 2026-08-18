@@ -28,6 +28,27 @@ function evaluateDatePlausibility({ review, show }) {
   const empty = { implausible: false, daysBefore: null, earliestDate: null, reason: null };
   if (!review || !show) return empty;
 
+  // Awaiting-URL-correction-refetch carve-out (Notion 3bc637c5, the #483 /
+  // CHECK 0 deadlock). A record mid-URL-correction (`_urlChangedClear`
+  // breadcrumb present, body not yet refetched) still carries the OLD
+  // article's publishDate, which is not evidence about THIS article's
+  // production — the body that would confirm or refute it hasn't been
+  // fetched yet. Producers already refuse to WRITE wrongProduction/wrongShow
+  // onto these records (shouldWithholdStaleExclusionFlag in
+  // stale-flag-after-url-correction.js), so once drained, this guard was the
+  // only thing still demanding that flag — recreating the exact state the
+  // producer-side guard exists to prevent. Checked ahead of the flag
+  // early-return below (not folded into it) because it must also cover
+  // records where the flag is currently false/absent.
+  //
+  // Lazy require: stale-flag-after-url-correction.js is a leaf module today
+  // (no requires of its own), but review-write-guard.js's own use of this
+  // same evaluateDatePlausibility function (line ~876) is itself a lazy
+  // require to dodge a require cycle one edge over — matching that existing
+  // convention here rather than assuming the graph never grows an edge back.
+  const { isAwaitingUrlCorrectionRefetch } = require('./stale-flag-after-url-correction');
+  if (isAwaitingUrlCorrectionRefetch(review)) return empty;
+
   // Already-flagged / operator-scored reviews are out of scope — same
   // carve-out as validate-data.js CHECK 0. An operator-trust override
   // (allowEarlyDate etc.) is deliberately NOT exempted here, matching CHECK 0.
