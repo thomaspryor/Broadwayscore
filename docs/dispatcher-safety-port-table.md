@@ -75,7 +75,7 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 | # | Safety behaviour | Lives today (file : function) | Port or Delete | Rationale / target |
 |---|---|---|---|---|
 | E1 | **Amend — re-deliver a corrected card into the live session running it**, refusing when the workspace is dead/recycled or sitting at a permission dialog (never type into a stranger's session or answer a dialog) | `bsc-next.js : runAmend` / `occupantStillThisTask` + `dispatch-card-drift.js : detectDrift` / `looksUnsafeToType` | **PORT — TODO** | The drift risk (edit the issue after launch; the session keeps running the original seed) exists identically for Linear. Port target: a `--amend` path on `linear-next.js` reusing `dispatch-card-drift.js`, sourcing current text from `linear.getIssue` instead of `notion-brain get`. Lower priority than A5/C6. |
-| E2 | **Cross-task overlap warning** — non-blocking warn when a fresh dispatch shares a `scripts/` path or near-identical title with an in_progress task | `bsc-next.js` main() + `dispatch-overlap-check.js : findOverlappingCards` | **DELETE** | Reads the Notion-mirror task directory (`~/.claude/tasks/…`), which the Linear path does not use. On Linear the same-issue case is covered by the idempotency comment + `hasLiveLedgerEntry` (**G1**); cross-issue overlap is a Linear-board concern, not a dispatcher guard. Delete with the Notion path. |
+| E2 | **Cross-task overlap warning** — non-blocking warn when a fresh dispatch shares a `scripts/` path or near-identical title with in-progress work | `bsc-next.js` main() + `dispatch-overlap-check.js : findOverlappingCards` | **PORT — done** | Superseded by task #1696, which landed after this table's first draft. `linear-next.js` now calls `findOverlappingCards` over a pool built by its own `buildOverlapComparisonPool()`, combining live Linear issues (`state.type === 'started'`) with in_progress Notion-mirror tasks — so the check spans BOTH sides of the mirror rather than only the Notion one. That is why the original **DELETE** verdict no longer holds: the objection was that the guard read a Notion-only task directory, and it no longer does. Keep shared. |
 | E3 | **CI-red claim auto-invocation** — record a CI-red fix claim at dispatch so another session's push-gate sees the symbol is being worked | `bsc-next.js : recordCiRedClaim` + `ci-red-dispatch-heuristic.js : extractCiRedTarget` | **PORT — TODO** (low priority) | Cross-session safety that is genuinely dispatcher-agnostic, but `extractCiRedTarget` reads the Notion task+card shape. Port target: feed it the Linear issue title/description, invoke from `linear-next.js` at its confirmed-dispatch points. Niche; safe to defer. |
 
 ## F. Selection policy & kill switches
@@ -111,9 +111,9 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 
 | Decision | Count | Rows |
 |---|---|---|
-| **PORT — done** (already shared + used by `linear-next.js`) | 13 | A1–A4, A7, B1, B2, B4, C1–C5, F2, G1–G4 |
+| **PORT — done** (already shared + used by `linear-next.js`) | 14 | A1–A4, A7, B1, B2, B4, C1–C5, E2, F2, G1–G4 |
 | **PORT — TODO** (bsc-next-only; needs a Linear equivalent) | 7 | A5, C6, D1–D3, E1, E3, H1 |
-| **DELETE** (Notion/native-shaped; Linear has a native analog or it's moot post-cutover) | 6 | A6, B3, B5, E2, F1, F3 (`BSC_RUNNER_DISABLED`) |
+| **DELETE** (Notion/native-shaped; Linear has a native analog or it's moot post-cutover) | 5 | A6, B3, B5, F1, F3 (`BSC_RUNNER_DISABLED`) |
 | **N/A — inherited** (repo-global / session-side, not dispatcher-owned) | 5 | H2–H5 (+ push family) |
 
 **The load-bearing PORT — TODO items**, ranked:
