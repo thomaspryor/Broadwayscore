@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
 
 const USAGE = `backfill-critic-name-truncation.js — One-shot backfill for critic names that the BWW Review Roundup parser.
 
@@ -42,6 +42,13 @@ const APPLY = process.argv.includes('--apply');
 // scripts/lib/review-texts-dir.js.
 const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 console.log(`[backfill-critic-name-truncation] review-texts: ${REVIEW_TEXTS_DIR}`);
+// Code-review finding: this write script had NO existence/checkout guard,
+// unlike its migrated siblings — a bare/empty resolved dir would silently
+// report "0 updated, 0 renamed, ... 0 errors", a false all-clear.
+if (!isReviewTextsCheckout(REVIEW_TEXTS_DIR)) {
+  console.error(`review-texts dir not a real checkout: ${REVIEW_TEXTS_DIR}`);
+  process.exit(1);
+}
 
 const TRUNCATIONS = [
   // outletId, truncated criticName, fixed criticName, truncated slug, fixed slug
