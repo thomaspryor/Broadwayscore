@@ -159,9 +159,19 @@ unset _bro142_result _bro142_status _bro142_marker
 
 # --- Stash any dirty tracked files (the data-daemon race) ---
 STASHED=0
+STASH_SHA=""
 if ! g diff --quiet 2>/dev/null || ! g diff --cached --quiet 2>/dev/null; then
   log "working tree dirty (likely the data daemon) — stashing"
-  g stash push -m "wt-integ-$$" >/dev/null 2>&1 && STASHED=1
+  if g stash push -m "wt-integ-$$" >/dev/null 2>&1; then
+    STASHED=1
+    # Captured immediately after push, while this stash is unambiguously
+    # stash@{0} — by the time restore_stash() runs, a concurrent session's
+    # own stash push/pop on the SAME shared checkout can have shifted every
+    # index-based reference (ship-check finding, task #888/BRO-253: "git
+    # stash list" alone points at whatever is CURRENTLY top-of-stack, which
+    # may no longer be this run's entry). The SHA is immutable regardless.
+    STASH_SHA=$(g rev-parse -q --verify stash@{0} 2>/dev/null || echo "")
+  fi
 fi
 
 restore_stash() {
@@ -204,7 +214,18 @@ restore_stash() {
     # real content, if any was lost, is still recoverable via `git stash
     # list` / `git stash show -p` instead of gone for good.
     if ! g rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
-      log "⚠ stash pop conflicted with no merge in progress — resetting working tree (reset --hard HEAD) but KEEPING the stash entry in case the conflicting content was real (not daemon churn): git -C $MAIN_DIR stash list"
+      # Same "was there actually a conflict" check the MERGE_HEAD branch
+      # below already does (ship-check finding): `git stash pop` can fail
+      # for reasons that leave nothing unmerged (a lock, a transient ref
+      # error) — reset --hard HEAD is pointless churn there and the stash is
+      # genuinely safe to drop, same as line ~221's parallel case.
+      if [ -z "$(g diff --name-only --diff-filter=U 2>/dev/null)" ]; then
+        g stash drop >/dev/null 2>&1 || true
+        return 0
+      fi
+      local recover_hint="git -C $MAIN_DIR stash list"
+      [ -n "$STASH_SHA" ] && recover_hint="git -C $MAIN_DIR stash show -p $STASH_SHA"
+      log "⚠ stash pop conflicted with no merge in progress — resetting working tree (reset --hard HEAD) but KEEPING the stash entry in case the conflicting content was real (not daemon churn). Recover with: $recover_hint"
       g reset --hard HEAD >/dev/null 2>&1 || true
       return 0
     fi

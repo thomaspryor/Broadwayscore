@@ -186,13 +186,21 @@ test('merge-worktree-to-main.sh: a conflicted stash from a prior failed run is s
     const result = runMergeScript(repoDir, ['feature-branch']);
 
     const fileContent = fs.readFileSync(path.join(repoDir, 'shared-script.js'), 'utf8');
+    // Identify the SPECIFIC stash this run created (by its "wt-integ-<pid>"
+    // message, the same label the script itself pushes with), not just "does
+    // any stash exist" — a stray unrelated stash entry must not make this
+    // assertion pass vacuously.
     const stashList = git(repoDir, ['stash', 'list']);
+    const ourStashLine = stashList.split('\n').find((l) => l.includes('wt-integ-'));
+    const preservedContent = ourStashLine
+      ? git(repoDir, ['stash', 'show', '-p', ourStashLine.split(':')[0]])
+      : '';
 
-    const silentlyDiscarded = !fileContent.includes('ANOTHER SESSION REAL WIP') && stashList === '';
+    const recovered = fileContent.includes('ANOTHER SESSION REAL WIP') || preservedContent.includes('ANOTHER SESSION REAL WIP');
     assert.ok(
-      !silentlyDiscarded,
-      `the other session's real WIP was silently discarded (reset --hard + stash drop) with no trace left for recovery. ` +
-        `script exit=${result.status}\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}\nfinal file:\n${fileContent}`
+      recovered,
+      `the other session's real WIP was silently discarded (reset --hard + stash drop) with no trace left for recovery — neither the working tree nor any "wt-integ-" stash entry contains it. ` +
+        `script exit=${result.status}\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}\nfinal file:\n${fileContent}\nstash list:\n${stashList}`
     );
 
     // Whatever the resolution, it must be LOUD: a script that silently
