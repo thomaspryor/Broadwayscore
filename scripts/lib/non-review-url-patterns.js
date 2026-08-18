@@ -199,6 +199,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // LBO root ticket slugs (/now-you-see-me-tickets); its reviews live under
   // /news/ (e.g. /news/post/cats-review — a real captured review).
   { host: /(^|\.)londonboxoffice\.co\.uk$/, path: /^\/[^/]*-tickets\/?$/, reason: 'ticketing-listing' },
+  // task #1756 (main-red incident): audit-aggregator-gap auto-ingested both
+  // of these as "reviews" for jeeves-takes-charge-west-end-2026 — box-office
+  // pricing text and a broken map widget, 0 usable words, never scored. Same
+  // producer's-own-site shape as mischiefcomedy.com above: a venue never
+  // reviews the show it's hosting. londontopia.net is scoped to its
+  // /london-events/ listing path, not host-wide — unconfirmed whether it
+  // publishes real coverage elsewhere.
+  { host: /(^|\.)charingcrosstheatre\.co\.uk$/, reason: 'venue-production-page' },
+  { host: /(^|\.)londontopia\.net$/, path: /^\/london-events\//, reason: 'event-listing' },
 ];
 
 /**
