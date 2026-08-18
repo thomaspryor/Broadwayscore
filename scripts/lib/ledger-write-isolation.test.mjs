@@ -102,6 +102,15 @@ function maskSource(src) {
         if (src[j] === c) break;
         j++;
       }
+      // Keep QUOTED PROPERTY KEYS readable. Blanking them made
+      // `{ 'appendLedgerEntry': () => {} }` invisible to STUB_KEY, so a
+      // legitimately-stubbed test would have been reported as an offender and
+      // red-lit main. Only an identifier-shaped literal immediately followed by
+      // a colon survives — everything else is still blanked, so ordinary string
+      // contents cannot be mistaken for code.
+      const body = src.slice(i + 1, j);
+      const after = src.slice(j + 1).match(/^\s*:/);
+      if (after && /^[A-Za-z_$][\w$]*$/.test(body)) { i = j + 1; continue; }
       blank(i, Math.min(j + 1, src.length)); i = j + 1; continue;
     }
     i++;
@@ -193,7 +202,10 @@ function resolveBinding(masked, name) {
 // writer modules destructure into (scripts/bsc-next.js:749), not the dep key.
 // A deps object carrying `appendLedgerEntryFn:` overrides nothing, so the
 // substring form judged a real ledger write as safe.
-const STUB_KEY = /[{,]\s*appendLedgerEntry\s*[:,}]/;
+// The optional quotes cover `{ 'appendLedgerEntry': ... }` — maskSource now
+// preserves identifier-shaped quoted PROPERTY KEYS, so the quote characters
+// survive and sit between the `{` and the name.
+const STUB_KEY = /[{,]\s*['"]?appendLedgerEntry['"]?\s*[:,}]/;
 
 // Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
@@ -301,6 +313,36 @@ test('guard parser: resolves legitimate stubs through helpers, and ignores comme
   // the per-line quote-parity draft red-lit CI on exactly this shape.
   const commented = "// don't call main( here\nconst x = 1;";
   assert.equal(callSlices(maskSource(commented)).length, 0, 'comment text was parsed as code');
+});
+
+// Formatting variants that MUST all read as a legitimate stub. An adversarial
+// reviewer claimed the anchored STUB_KEY would miss a first property written on
+// the line after `{` — it does not ([{,] is a character class, not the literal
+// sequence `{,`), and these pin that. The quoted-key rows are the ones that were
+// genuinely broken: maskSource blanked them, so a correctly-stubbed test would
+// have been flagged as an offender.
+test('guard parser: every legitimate stub formatting is recognised', () => {
+  const shapes = [
+    ['newline after brace', "{\n  appendLedgerEntry: () => {},\n}"],
+    ['deep indent', "{\n\n        appendLedgerEntry: (e) => {}\n }"],
+    ['plain inline', "{ appendLedgerEntry: () => {} }"],
+    ['shorthand', "{ appendLedgerEntry, foo: 1 }"],
+    ['last property', "{ foo: 1, appendLedgerEntry: () => {} }"],
+    ['double-quoted key', '{ "appendLedgerEntry": () => {} }'],
+    ['single-quoted key', "{ 'appendLedgerEntry': () => {} }"],
+  ];
+  for (const [label, text] of shapes) {
+    assert.ok(stubsLedgerWrite(maskSource(text), maskSource(text)),
+      `${label}: a legitimate stub was not recognised — this shape would be wrongly flagged and red main`);
+  }
+});
+
+// A quoted string that is NOT a property key must still be blanked, or ordinary
+// prose could be mistaken for a stub.
+test('guard parser: a quoted non-key string is still masked', () => {
+  const text = "{ note: 'appendLedgerEntry is what we forgot' }";
+  assert.ok(!stubsLedgerWrite(maskSource(text), maskSource(text)),
+    'a string VALUE mentioning the dep name was accepted as a stub');
 });
 
 // These two NEGATIVE cases each correspond to a real defect that shipped and had
