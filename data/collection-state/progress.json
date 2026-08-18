@@ -1,7 +1,9 @@
 {
   "processed": [
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
-    "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -26,19 +28,30 @@
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -46,7 +59,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -70,6 +83,17 @@
       "t": "2026-08-18T16:33:20.854Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T16:34:41.423Z",
+      "event": "bb-session",
+      "session": "b1bd5513",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-18T16:34:41.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
