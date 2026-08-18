@@ -752,7 +752,7 @@ function wouldShadowCanonical(outletId, registry) {
 }
 
 // Add missing outlets to registry
-async function updateRegistry(auditResult) {
+async function updateRegistry(auditResult, dryRun = false) {
   const { suggestedAdditions, findings } = auditResult;
 
   if (findings.missingFromRegistry.length === 0) {
@@ -763,9 +763,11 @@ async function updateRegistry(auditResult) {
   // Filter out entries that would shadow existing canonical outlets
   const registry = loadRegistry();
   const normalization = loadNormalization();
+  const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
   const safeAdditions = [];
   const skippedShadows = [];
   const skippedJunk = [];
+  let domainsDropped = 0;
 
   for (const entry of suggestedAdditions) {
     // Defense-in-depth (task #1783): the missingFromRegistry scan already
@@ -779,9 +781,23 @@ async function updateRegistry(auditResult) {
     const shadowsCanonical = wouldShadowCanonical(entry.outletId, registry);
     if (shadowsCanonical) {
       skippedShadows.push({ outletId: entry.outletId, canonical: shadowsCanonical });
-    } else {
-      safeAdditions.push(entry);
+      continue;
     }
+    // A domain hint majority-voted from this outlet's own URLs can still
+    // collide with an already-registered outlet — e.g. a venue-disambiguated
+    // "the-times-barbican" shares thetimes.co.uk with "times-uk" (task
+    // #1776, rebuild-all-reviews.js's AUTO-REGISTER block hit the same bug).
+    // Drop the domain instead of writing it through; check against the
+    // registry AS IT WILL BE after earlier entries in this same batch are
+    // added, so two colliding new outlets in one run don't both claim it.
+    let { domain } = entry;
+    if (domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, domain)) {
+      domainsDropped++;
+      domain = null;
+    }
+    const safeEntry = { ...entry, domain };
+    registry.outlets[entry.outletId] = safeEntry;
+    safeAdditions.push(safeEntry);
   }
 
   if (skippedJunk.length > 0) {
@@ -798,6 +814,10 @@ async function updateRegistry(auditResult) {
     }
   }
 
+  if (domainsDropped > 0) {
+    console.log(`\n${domainsDropped} suggested domain(s) dropped to null (would have collided with an already-registered outlet — task #1776).`);
+  }
+
   if (safeAdditions.length === 0) {
     console.log('\nNo new outlets to add (all were variants of existing canonical outlets).');
     return;
@@ -811,6 +831,11 @@ async function updateRegistry(auditResult) {
     console.log(`    aliases: ${JSON.stringify(entry.aliases)}`);
     console.log(`    domain: ${entry.domain ? `"${entry.domain}"` : 'null (no usable host in this outlet\'s review URLs — SERP discovery will skip it, task #766)'}`);
     console.log('');
+  }
+
+  if (dryRun) {
+    console.log(`\nWould add ${safeAdditions.length} outlet(s) to registry (--dry-run, no write).`);
+    return;
   }
 
   if (!AUTO_MODE) {
@@ -918,7 +943,7 @@ async function main() {
 
     // Handle --update
     if (UPDATE_MODE) {
-      await updateRegistry(auditResult);
+      await updateRegistry(auditResult, DRY_RUN);
     }
 
     const baselineSet = baselineKeySet(loadBaseline().outletIds);
