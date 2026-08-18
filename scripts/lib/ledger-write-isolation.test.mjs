@@ -35,11 +35,30 @@ const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 // Modules whose main() reaches a dispatch-ledger append site. Matched without
 // the extension too, so `require('./bsc-next')` is not a blind spot.
-// linear-next.js is here because it defaults appendLedgerEntry the same way
-// (scripts/linear-next.js:257) with append sites at :453/:504/:551/:564. Its
-// calls happen to be safe today, but it had ZERO guard coverage — the next edit
-// would have reintroduced the identical bug silently.
-const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'bsc-reconcile', 'dispatch-watchdog', 'linear-next'];
+// SCOPE, stated honestly: this guard covers modules whose ledger write is
+// reachable through an INJECTABLE dep on `main(argv, deps)`. That is the only
+// shape it can check, because stubbing that dep is the only remediation it can
+// recommend.
+//
+// linear-next.js belongs here — it defaults appendLedgerEntry the same way
+// (scripts/linear-next.js:257) with append sites at :453/:504/:551/:564.
+//
+// bsc-reconcile and dispatch-watchdog were listed here and have been REMOVED,
+// because listing them was worse than omitting them — it advertised coverage
+// the guard cannot provide, and the offender message would have taught a fix
+// that does nothing:
+//   - scripts/bsc-reconcile.js:812 is `async function main()` with ZERO params.
+//     Its `appendLedgerFn` dep (:360) belongs to `reconcileStalledTasks` (:355),
+//     which this guard never scans. Listing it caused a measured false negative:
+//     the alias was accepted at 0 sites where it was correct and 23 where it was
+//     wrong, so a bsc-next test stubbing only `appendLedgerFn` passed while
+//     writing the real ledger.
+//   - scripts/dispatch-watchdog.js:549 is likewise `async function main()` with
+//     no params, and :281/:295/:408 call dispatchLedger.appendEntry DIRECTLY,
+//     with no seam to stub at all.
+// Neither leaks today (verified by running their suites against the real ledger
+// line count). Covering them needs a different mechanism, tracked separately.
+const LEDGER_WRITERS = ['bsc-next', 'bsc-prune', 'linear-next'];
 
 const MAX_SPREAD_DEPTH = 8;
 
@@ -83,6 +102,22 @@ function maskSource(src) {
         if (src[j] === c) break;
         j++;
       }
+      // Keep QUOTED PROPERTY KEYS readable. Blanking them made
+      // `{ 'appendLedgerEntry': () => {} }` invisible to STUB_KEY, so a
+      // legitimately-stubbed test would have been reported as an offender and
+      // red-lit main. Only an identifier-shaped literal immediately followed by
+      // a colon survives — everything else is still blanked, so ordinary string
+      // contents cannot be mistaken for code.
+      // A computed key `['appendLedgerEntry']:` has a `]` before the colon, so
+      // the lookahead tolerates one. Scanned character-by-character rather than
+      // with src.slice(j + 1), which copied the whole remainder of the file for
+      // EVERY string literal — O(n^2) across a ~79KB test file with thousands
+      // of literals (code-review finding).
+      const body = src.slice(i + 1, j);
+      let k = j + 1;
+      while (k < src.length && /\s/.test(src[k])) k++;
+      if (src[k] === ']') { k++; while (k < src.length && /\s/.test(src[k])) k++; }
+      if (src[k] === ':' && /^[A-Za-z_$][\w$]*$/.test(body)) { i = j + 1; continue; }
       blank(i, Math.min(j + 1, src.length)); i = j + 1; continue;
     }
     i++;
@@ -169,10 +204,103 @@ function resolveBinding(masked, name) {
   return masked.slice(start, end + 1);
 }
 
-// Does this text stub appendLedgerEntry, directly or via anything it inherits?
+// Only a TOP-LEVEL property of the deps object overrides the dep. Earlier drafts
+// matched the key anywhere in the text, which failed in both directions:
+//   - `text.includes('appendLedgerEntry')` also matched `appendLedgerEntryFn:`,
+//     the LOCAL alias the writers destructure into (scripts/bsc-next.js:749),
+//     which as a deps key overrides nothing — a real write judged safe.
+//   - an anchored regex still matched a key nested inside a FIXTURE object,
+//     e.g. `{ tasksDir: d, expected: { 'appendLedgerEntry': 3 } }`, so a test
+//     that never overrides the dep was judged safe and wrote the real ledger
+//     (code-review finding — the dangerous direction).
+// Splitting on top-level commas and inspecting only each segment's own key
+// removes that whole class. Accepts bare, quoted and computed key forms.
+const KEY_FORM = /^\s*\[?\s*['"]?appendLedgerEntry['"]?\s*\]?\s*$/;
+
+function stubsTopLevelKey(text, fromIndex = 0) {
+  const start = text.indexOf('{', fromIndex);
+  if (start === -1) return false;
+  let depth = 0, segStart = -1;
+  const check = (seg) => {
+    // A segment's key is everything before its first colon; shorthand
+    // (`{ appendLedgerEntry, foo }`) has no colon, so test the whole segment.
+    const colon = seg.indexOf(':');
+    return KEY_FORM.test(colon === -1 ? seg : seg.slice(0, colon));
+  };
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '{' || ch === '[' || ch === '(') {
+      depth++;
+      if (depth === 1) segStart = i + 1;
+      continue;
+    }
+    if (ch === '}' || ch === ']' || ch === ')') {
+      if (depth === 1 && segStart !== -1 && check(text.slice(segStart, i))) return true;
+      depth--;
+      if (depth === 0) break;
+      continue;
+    }
+    if (depth === 1 && ch === ',') {
+      if (segStart !== -1 && check(text.slice(segStart, i))) return true;
+      segStart = i + 1;
+    }
+  }
+  return false;
+}
+
+// Reduce a resolved binding to the object it actually PRODUCES, so the same
+// strict top-level rule applies everywhere. An earlier draft instead relaxed the
+// rule for resolved helpers ("check every object literal"), which reintroduced
+// the nested-fixture false negative one level down — a helper whose body merely
+// MENTIONS the key inside a fixture was accepted as a stub (review finding).
+//   `function f() { return { ... }; }` -> the returned object
+//   `() => ({ ... })`                  -> the parenthesised object
+//   `{ ...base }`                      -> itself
+function producedObject(text) {
+  if (!text) return text;
+  const t = text.trim();
+  if (t.startsWith('(')) {
+    const end = matchFrom(t, 0, '(', ')');
+    if (end !== -1) return producedObject(t.slice(1, end));
+  }
+  // Take the LAST return that sits at the body's own top level. Two defects came
+  // from `text.indexOf('return')` (code-review findings, both verified):
+  //   - it is a SUBSTRING match, so `returnedFixture` was read as a return and
+  //     the "produced object" became a nested fixture whose key matched — a real
+  //     ledger write reported SAFE (the dangerous direction).
+  //   - it took the FIRST hit, so a `return` inside an arrow VALUE
+  //     (`const f = () => { return { ok: true }; }`) won over the helper's own
+  //     return, and a correctly-stubbed helper was reported as an offender.
+  const body = t.startsWith('{') ? t : text;
+  let depth = 0, best = -1;
+  for (let i = 0; i < body.length; i++) {
+    const ch = body[i];
+    if (ch === '{' || ch === '[' || ch === '(') { depth++; continue; }
+    if (ch === '}' || ch === ']' || ch === ')') { depth--; continue; }
+    if (depth === 1 && body.startsWith('return', i)
+        && !/[\w$]/.test(body[i - 1] || '') && !/[\w$]/.test(body[i + 6] || '')) {
+      best = i;
+    }
+  }
+  if (best !== -1) {
+    const b = body.indexOf('{', best);
+    if (b !== -1) {
+      const e = matchFrom(body, b, '{', '}');
+      if (e !== -1) return body.slice(b, e + 1);
+    }
+  }
+  return text;
+}
+
+// Does this text stub the ledger writer, directly or via anything it inherits?
 function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
   if (!text) return false;
-  if (text.includes('appendLedgerEntry')) return true;
+  // depth 0: `text` IS the deps object already — do NOT run producedObject on
+  // it, or a `return` inside one of its arrow VALUES hijacks the extraction and
+  // the real deps object never gets inspected (caught by this file's own
+  // whole-repo scan, which flagged four correctly-stubbed call sites).
+  // depth > 0: `text` is a resolved binding, so reduce it to what it produces.
+  if (stubsTopLevelKey(depth === 0 ? text : producedObject(text))) return true;
   if (depth > MAX_SPREAD_DEPTH) return false;
 
   const names = new Set();
@@ -194,13 +322,33 @@ function stubsLedgerWrite(masked, text, depth = 0, seen = new Set()) {
 
 // The deps argument of a call: either an inline object literal or an identifier
 // (`main(argv, deps)`), which must then be resolved to its binding.
+// Split an argument list on TOP-LEVEL commas, so nested objects/arrays/calls
+// keep their own commas.
+function splitArgs(inner) {
+  const args = [];
+  let depth = 0, start = 0;
+  for (let i = 0; i < inner.length; i++) {
+    const ch = inner[i];
+    if (ch === '{' || ch === '[' || ch === '(') depth++;
+    else if (ch === '}' || ch === ']' || ch === ')') depth--;
+    else if (ch === ',' && depth === 0) { args.push(inner.slice(start, i)); start = i + 1; }
+  }
+  args.push(inner.slice(start));
+  return args;
+}
+
 function depsText(masked, slice) {
   const inner = slice.text.slice(slice.text.indexOf('(') + 1, slice.text.length - 1);
-  const brace = inner.indexOf('{');
-  if (brace !== -1) return inner.slice(brace);
-  const parts = inner.split(',');
-  if (parts.length < 2) return null; // no deps argument at all
-  const ident = parts[parts.length - 1].trim();
+  const args = splitArgs(inner);
+  if (args.length < 2) return null; // no deps argument at all
+  // The deps bag is the LAST argument. Slicing from the FIRST `{` in the whole
+  // argument list instead made `main({ id: 1 }, { appendLedgerEntry })` resolve
+  // to the first object and report a correctly-stubbed test as an offender
+  // (code-review finding — it would have red-lit main).
+  const last = args[args.length - 1];
+  const brace = last.indexOf('{');
+  if (brace !== -1) return last.slice(brace);
+  const ident = last.trim();
   if (!/^[A-Za-z_$][\w$]*$/.test(ident)) return null;
   // Only an identifier bound to an OBJECT LITERAL is a deps bag. Other main()
   // signatures in this repo take a function in that position (bsc-conductor's
@@ -275,4 +423,97 @@ test('guard parser: resolves legitimate stubs through helpers, and ignores comme
   // the per-line quote-parity draft red-lit CI on exactly this shape.
   const commented = "// don't call main( here\nconst x = 1;";
   assert.equal(callSlices(maskSource(commented)).length, 0, 'comment text was parsed as code');
+});
+
+// Formatting variants that MUST all read as a legitimate stub. An adversarial
+// reviewer claimed the anchored STUB_KEY would miss a first property written on
+// the line after `{` — it does not ([{,] is a character class, not the literal
+// sequence `{,`), and these pin that. The quoted-key rows are the ones that were
+// genuinely broken: maskSource blanked them, so a correctly-stubbed test would
+// have been flagged as an offender.
+test('guard parser: every legitimate stub formatting is recognised', () => {
+  const shapes = [
+    ['newline after brace', "{\n  appendLedgerEntry: () => {},\n}"],
+    ['deep indent', "{\n\n        appendLedgerEntry: (e) => {}\n }"],
+    ['plain inline', "{ appendLedgerEntry: () => {} }"],
+    ['shorthand', "{ appendLedgerEntry, foo: 1 }"],
+    ['last property', "{ foo: 1, appendLedgerEntry: () => {} }"],
+    ['double-quoted key', '{ "appendLedgerEntry": () => {} }'],
+    ['single-quoted key', "{ 'appendLedgerEntry': () => {} }"],
+    ['computed key', "{ ['appendLedgerEntry']: () => {} }"],
+    ['after a nested object', "{ tasksDir: d, opts: { a: 1 }, appendLedgerEntry: () => {} }"],
+  ];
+  for (const [label, text] of shapes) {
+    assert.ok(stubsLedgerWrite(maskSource(text), maskSource(text)),
+      `${label}: a legitimate stub was not recognised — this shape would be wrongly flagged and red main`);
+  }
+});
+
+// A quoted string that is NOT a property key must still be blanked, or ordinary
+// prose could be mistaken for a stub.
+test('guard parser: a quoted non-key string is still masked', () => {
+  const text = "{ note: 'appendLedgerEntry is what we forgot' }";
+  assert.ok(!stubsLedgerWrite(maskSource(text), maskSource(text)),
+    'a string VALUE mentioning the dep name was accepted as a stub');
+});
+
+// Whole-call shapes, exercised through callSlices -> depsText -> stubsLedgerWrite
+// exactly as the repo scan does. Each row is a defect found in review and
+// verified against the shipped code before being fixed.
+test('guard parser: whole-call shapes resolve to the right deps object', () => {
+  const rows = [
+    // FALSE NEGATIVE (dangerous): `returnedFixture` contains the substring
+    // "return", so producedObject extracted the nested fixture and its key
+    // matched — a real ledger write reported safe.
+    [false, 'identifier starting with "return"',
+      "const base = { returnedFixture: { appendLedgerEntry: 3 } };\nconst deps = { ...base };\nmain(argv, deps);"],
+    // FALSE POSITIVE: a `return` inside an arrow VALUE won over the helper's own
+    // return, so the real stub was never seen.
+    [true, 'nested return inside an arrow value',
+      "function baseDeps() {\n  const launchCmux = () => { return { ok: true }; };\n  return { launchCmux, appendLedgerEntry: () => {} };\n}\nmain(['--id','1'], { ...baseDeps() });"],
+    // FALSE POSITIVE: depsText sliced from the FIRST `{` in the argument list,
+    // so an object as the first argument shadowed the real deps bag.
+    [true, 'object literal as the first argument',
+      "main({ id: 1 }, { appendLedgerEntry: () => {} });"],
+    [true, 'control — plain stub', "main(argv, { appendLedgerEntry: () => {} });"],
+    [false, 'control — no stub', "main(argv, { launchCmux: () => ({}) });"],
+  ];
+  for (const [want, label, code] of rows) {
+    const masked = maskSource(code);
+    const slices = callSlices(masked).filter(s => depsText(masked, s) !== null);
+    assert.ok(slices.length > 0, `${label}: no deps-bearing call found`);
+    const got = slices.some(s => stubsLedgerWrite(masked, depsText(masked, s)));
+    assert.equal(got, want, `${label}: expected stubbed=${want}, got ${got}`);
+  }
+});
+
+// These two NEGATIVE cases each correspond to a real defect that shipped and had
+// to be reverted. Without them the guard silently stops protecting.
+test('guard parser: near-miss names do NOT count as stubbing the writer', () => {
+  const cases = [
+    // Shipped 2026-08-18 and reverted: `appendLedgerFn` is bsc-reconcile's dep for
+    // reconcileStalledTasks, NOT for main(). Accepting it globally meant a bsc-next
+    // test could stub the wrong name and still write the real ledger.
+    ['appendLedgerFn on a main() call', "main(['--id','1'], { appendLedgerFn: () => {} });"],
+    // `appendLedgerEntryFn` is the LOCAL alias the writer destructures into
+    // (bsc-next.js:749). As a deps key it overrides nothing, so it must not pass.
+    ['appendLedgerEntryFn as a deps key', "main(['--id','1'], { appendLedgerEntryFn: () => {} });"],
+    // The dangerous direction: a fixture/expectation object nested inside deps
+    // carries the key but overrides nothing, so the real ledger still gets
+    // written. An anchored-anywhere regex accepted this (code-review finding).
+    ['nested inside a fixture object', "main(['--id','1'], { tasksDir: d, expected: { 'appendLedgerEntry': 3 } });"],
+    ['nested unquoted', "main(['--id','1'], { expected: { appendLedgerEntry: 3 } });"],
+    // Same hole one level down: a HELPER whose body only mentions the key inside
+    // a fixture must not count. The "check every object literal in a resolved
+    // helper" draft accepted this (review finding).
+    ['nested inside a resolved helper',
+      "function baseDeps() { const expected = { appendLedgerEntry: 3 }; return { launchCmux: () => ({}) }; }\nmain(['--id','1'], { ...baseDeps() });"],
+  ];
+  for (const [label, src] of cases) {
+    const masked = maskSource(src);
+    const slices = callSlices(masked).filter(s => depsText(masked, s) !== null);
+    assert.ok(slices.length > 0, `${label}: parser found no deps-bearing call`);
+    assert.ok(slices.every(s => !stubsLedgerWrite(masked, depsText(masked, s))),
+      `${label}: was accepted as a stub, but it does not override the real dep`);
+  }
 });
