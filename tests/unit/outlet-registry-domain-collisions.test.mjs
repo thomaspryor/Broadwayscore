@@ -152,6 +152,17 @@ describe('wouldCauseDomainCollision', () => {
     );
   });
 
+  test('flags a candidate whose primary domain is claimed by an existing outlet only via domainAliases (task #1270 pattern)', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision(
+        { squatter: { domain: 'squatter.com', domainAliases: ['thetimes.co.uk'] } },
+        'the-times-barbican',
+        'thetimes.co.uk'
+      ),
+      true
+    );
+  });
+
   test('an empty registry never collides', () => {
     assert.strictEqual(wouldCauseDomainCollision({}, 'the-times-barbican', 'thetimes.co.uk'), false);
   });
