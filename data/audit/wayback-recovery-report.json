@@ -1,20 +1,22 @@
 {
-  "totalCandidates": 7,
-  "cdxFound": 5,
-  "cdxNotFound": 1,
-  "recovered": 0,
+  "totalCandidates": 11,
+  "cdxFound": 7,
+  "cdxNotFound": 3,
+  "recovered": 4,
   "recoveredByTier": {
-    "1": 0,
+    "1": 4,
     "2": 0,
     "3": 0
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "timeout.com": 4
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
   "errors": 1,
-  "notInArchive": 1,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
