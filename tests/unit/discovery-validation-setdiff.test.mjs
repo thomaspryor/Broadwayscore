@@ -303,6 +303,43 @@ describe('discovery gate partial-block (card #1439)', () => {
   });
 });
 
+// Card #1786 — root cause of update-show-status.yml being blocked 4
+// consecutive days: the same-title-sibling guard (validate-data.js ~608)
+// names the PRE-EXISTING show in parens and the actual new-this-run
+// candidate only as free prose ("...same-title sibling ${siblingId}...",
+// no quotes/parens). The pre-existing show is never a candidate (it wasn't
+// touched this run), so the paren-captured id can't attribute either — the
+// only extractable reference to the real candidate was the bare sibling id,
+// which the old extractCandidateTokens dropped entirely, making the whole
+// error unattributable and blocking every unrelated status flip in the run.
+describe('extractCandidateTokens — bare sibling id (card #1786)', () => {
+  test('extracts an unquoted, unparenthesized sibling id from prose', () => {
+    const err = 'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling the-sound-of-music-2027 — date was cloned from the wrong production. Set this production\'s real dates.';
+    const tokens = extractCandidateTokens(err);
+    assert.ok(tokens.includes('the-sound-of-music-2026'), 'still captures the parenthesized id');
+    assert.ok(tokens.includes('the-sound-of-music-2027'), 'now also captures the bare prose sibling id');
+  });
+});
+
+describe('evaluatePerShowCommitDecision — reproduces card #1786', () => {
+  test('discovery-created duplicate held back; unrelated status flips still commit', () => {
+    const preErrors = [];
+    // The real pair validate-data.js emits: the pre-existing show's error
+    // names the new candidate only in prose; the new candidate's own
+    // (mirrored) error names itself in parens. Neither the-sound-of-
+    // music-2026 nor any other pre-existing show is a candidate this run —
+    // only the freshly-discovered -2027 duplicate is.
+    const postErrors = [
+      'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling the-sound-of-music-2027 — date was cloned from the wrong production. Set this production\'s real dates.',
+      'Show "The Sound of Music" (the-sound-of-music-2027) has openingDate identical to same-title sibling the-sound-of-music-2026 — date was cloned from the wrong production. Set this production\'s real dates.',
+    ];
+    const candidateIds = ['the-sound-of-music-2027', 'jeeves-takes-charge-west-end-2026', 'some-other-show-that-opened-2026'];
+    const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds });
+    assert.equal(result.shouldCommit, true, 'unrelated status flips must still commit, not be blocked by an unrelated duplicate');
+    assert.deepEqual([...result.blockedIds], ['the-sound-of-music-2027']);
+  });
+});
+
 describe('computeChangedShowIds (scripts/lib/shows-since-checkout-diff.js)', () => {
   test('flags added, changed, and removed ids; leaves untouched ids out', () => {
     const baseline = [
