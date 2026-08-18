@@ -78,6 +78,18 @@ GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
 PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min); override per-caller for measured high-churn cost
 
+# Task #1792: how many failed local fetch+rebase+push attempts to tolerate
+# before trying the Git Data API fallback (below), instead of waiting for the
+# full $MAX_RETRIES/deadline exhaustion. Default floors at 3 — the backoff
+# comment further down notes pushes against busy main "almost always succeed
+# within 2-3 attempts", so a lower floor would fire on ordinary transient
+# contention, not just the sustained-loss case this exists for — and scales
+# with MAX_RETRIES so a caller overriding it to e.g. 30 doesn't get an
+# early-trigger that fires at the same fixed attempt 3 every time.
+_default_fallback_after=$(( (MAX_RETRIES + 1) / 2 ))
+[ "$_default_fallback_after" -lt 3 ] && _default_fallback_after=3
+PUSH_API_FALLBACK_AFTER_ATTEMPTS=${PUSH_API_FALLBACK_AFTER_ATTEMPTS:-$_default_fallback_after}
+
 # coreutils `timeout` on Linux/CI, `gtimeout` on macOS+coreutils, else absent.
 _TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
 _timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no binary
@@ -319,6 +331,41 @@ SCRIPT_ENTRY_HEAD="$(git rev-parse HEAD 2>/dev/null || true)"
 SCRIPT_ENTRY_BASE=""
 if [ -n "$SCRIPT_ENTRY_HEAD" ] && git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1; then
   SCRIPT_ENTRY_BASE="$(git merge-base "$SCRIPT_ENTRY_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)"
+fi
+
+# Task #1792: is the Git Data API fallback (below) eligible for THIS run at
+# all? Shared by both the early-trigger break (inside the retry loop) and the
+# full-exhaustion fallback block, so the two can't drift onto different
+# conditions. Eligible when:
+#   - not explicitly disabled (PUSH_API_FALLBACK_DISABLE=1, the escape hatch
+#     for any caller this rollout causes trouble for), AND
+#   - the caller explicitly opted in (PUSH_VIA_API_FALLBACK=1 — unchanged from
+#     task #707's original opt-in, e.g. weekly-grosses.yml's staged-rollout
+#     repo var), AND
+#   - the fallback script's own prerequisites are met (a resolvable merge
+#     base, and push-via-git-api.sh present).
+#
+# NOT default-on for non-CI callers, despite both motivating incidents
+# (2026-08-14, 2026-08-18/#1791, data/audit/push-retry-failures.jsonl) being
+# ci:false local sessions that never had a way to opt in — an earlier attempt
+# at that (gating on `[ -z "${GITHUB_ACTIONS:-}" ]` in addition to the opt-in
+# flag) broke tests/unit/push-with-retry-abort-preserves-head.test.mjs's
+# "#769"/"BRO-259" cases: the fallback's pre-diff reset (below) can discard a
+# legitimately-preserved concurrent commit when this SAME iteration's rebase
+# was a genuine no-op that nonetheless flips HEAD_TRUSTED_CLEAN false (line
+# ~1261: `git rebase -X theirs` exits 0 — and sets history_changed=true —
+# whether or not anything actually needed rebasing, so a no-op is
+# indistinguishable from a real rewrite by that signal alone). That's a
+# pre-existing gap in task #707/BRO-259's own fallback safety net (already
+# live today for the 2 CI-canary opt-in callers), not something safe to
+# widen onto the much larger non-CI population without fixing it first — see
+# the follow-up card this session filed. Keeping eligibility scoped to the
+# explicit opt-in for now; the early-trigger/discoverability changes below
+# still land real value against the CURRENT opt-in population.
+_PUSH_API_FALLBACK_ELIGIBLE=false
+if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
+     && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
+  _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
 
 # Shared ancestor predicate (BRO-259) — used by both sync_restore_base_head()
@@ -1420,6 +1467,19 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
+  # Task #1792: auto-trigger the Git Data API fallback sooner than full
+  # $MAX_RETRIES/deadline exhaustion, instead of burning the whole local
+  # budget on a flow that's already lost $PUSH_API_FALLBACK_AFTER_ATTEMPTS
+  # attempts in a row. Only reached on a failed-attempt path (never
+  # short-circuits a successful push, which already `break`s above). Falls
+  # through to the SAME fallback block below as ordinary exhaustion — this is
+  # strictly an earlier entry point into existing logic, not new fallback
+  # behavior.
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
+    echo "::warning::push-with-retry: $i failed local attempt(s) reached (PUSH_API_FALLBACK_AFTER_ATTEMPTS=$PUSH_API_FALLBACK_AFTER_ATTEMPTS) — breaking out of the local fetch+rebase+push loop early to try the Git Data API fallback instead of waiting for full exhaustion"
+    break
+  fi
+
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
   # 10-44s: pushes against the busy public main almost always succeed within
   # 2-3 attempts (a single bot commit landed between our fetch and push, so a
@@ -1448,20 +1508,38 @@ done
 # instead of a full rebase. On the incident this generalizes, it won on the
 # FIRST attempt after 20 failed local-flow attempts.
 #
-# Opt-in (PUSH_VIA_API_FALLBACK=1), mirroring PUSH_RECONCILE_MERGED_JSON's
-# convention: this changes push semantics for the fallback attempt only —
-# every file OUR outgoing commit(s) touched wins outright over whatever's
-# on the remote tip (no per-line JSON merge; see the script's own header
-# for why that's the right call for the state/audit-ledger files this
-# targets). ~130 workflows push through this helper, so the fallback stays
-# opt-in until more callers have exercised it. Requires SCRIPT_ENTRY_BASE
-# (computed near the top of this script) to know what our outgoing diff is
-# relative to — skips silently if that's unavailable (e.g. no origin ref
-# resolvable at script start).
+# This changes push semantics for the fallback attempt only — every file OUR
+# outgoing commit(s) touched wins outright over whatever's on the remote tip
+# (no per-line JSON merge; see the script's own header for why that's the
+# right call for the state/audit-ledger files this targets). Requires
+# SCRIPT_ENTRY_BASE (computed near the top of this script) to know what our
+# outgoing diff is relative to — skips silently if that's unavailable (e.g.
+# no origin ref resolvable at script start).
+#
+# Eligibility is `$_PUSH_API_FALLBACK_ELIGIBLE` (computed near the top of this
+# script, right after SCRIPT_ENTRY_BASE — see that comment for the full
+# rationale, including why task #1792 stopped short of defaulting this on for
+# non-CI callers): unchanged from task #707's original opt-in
+# (PUSH_VIA_API_FALLBACK=1, e.g. weekly-grosses.yml's staged-rollout repo
+# var). Task #1792 adds the early-trigger threshold and shows.json/
+# reviews.json carve-out below, plus points a caller that hits full
+# exhaustion at this flag if it never fired (see the final failure message).
 _api_fallback_ok=false
-if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
-     && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
+if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
   _api_fallback_ok=true
+
+  # Task #1792 fix (bug found by widening fallback eligibility onto the
+  # existing #769/BRO-259 test fixtures): this call was documented as one of
+  # BRO-259's three protected call sites (see HEAD_TRUSTED_CLEAN's own
+  # comment above, "the Git-Data-API fallback's pre-diff reset") but was
+  # never actually wired in here — a concurrent writer's commit landing on
+  # this shared local checkout between loop exhaustion and this point (e.g.
+  # exactly the scenario a `git push` side effect can trigger, per
+  # tests/unit/push-with-retry-abort-preserves-head.test.mjs's "#769:
+  # abort-restore preserves commits made DURING the run" fixture) was
+  # silently discarded by the unconditional reset below instead of being
+  # adopted into RESTORE_BASE_HEAD first. Same gate as the other two sites.
+  [ "$HEAD_TRUSTED_CLEAN" = "true" ] && sync_restore_base_head
 
   # Force local HEAD back to the pristine original commit before diffing
   # (ship-check/Codex adversarial-review finding). The retry loop above may
@@ -1520,6 +1598,20 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     # (e.g. rebuild-fast.yml, rebuild-reviews.yml stage `data/audit/*.json`
     # on every run) until that follow-up audit narrows or clears specific
     # paths — expected and intentional, not a bug in this guard.
+    #
+    # data/shows.json + data/reviews.json fail-closed (task #1792 round-2
+    # review finding): the two hottest, most-concurrently-written files in
+    # the repo, written by 60+ non-canary workflows through this script, and
+    # NOT in MANAGED or under data/audit/ — so neither existing check above
+    # disqualifies them. "Ours wins outright" on a whole-file basis would
+    # silently discard a concurrent writer's edit to a DIFFERENT show/review
+    # entry in the same file, not just a real conflict on the same key — the
+    # local rebase flow's actual line-level merge doesn't have this failure
+    # mode. Named explicitly rather than folded into MANAGED because they
+    # need no reconciliation LOGIC (nothing to merge them with here) — they
+    # just need the fallback to never touch them; PUSH_RECONCILE_MERGED_JSON
+    # is not applicable, and the local fetch+rebase+push path (unaffected by
+    # this change) remains the only route for these two files.
     # ship-check/Codex adversarial finding (2026-08-16): this check MUST diff
     # against the range push-via-git-api.sh will actually replay, not
     # SCRIPT_ENTRY_HEAD. The git reset just above lands HEAD at
@@ -1538,21 +1630,23 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     _managed_check_rc=0
     node -e '
         const { MANAGED } = require(process.argv[1]);
+        const NEVER_FALLBACK = ["data/shows.json", "data/reviews.json"];
         const changed = require("child_process")
           .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
           .split("\n").filter(Boolean);
         const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const hit = changed.find((f) => isManaged(f) || (f.startsWith("data/audit/") && !isManaged(f)));
+        const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith("/" + p));
+        const hit = changed.find((f) => isManaged(f) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f)));
         process.exit(hit ? 1 : 0);
       ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
     if [ "$_managed_check_rc" = "1" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json, or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
       _api_fallback_ok=false
     fi
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
-  echo "::warning::push-with-retry: local fetch+rebase+push exhausted $MAX_RETRIES attempts — trying the Git Data API fallback (task #707)"
+  echo "::warning::push-with-retry: local fetch+rebase+push failed after up to $i of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
   # Command substitution only captures stdout — push-via-git-api.sh writes
   # ONLY the new commit sha there on success, so API_NEW_SHA is clean.
   # Its progress/diagnostic lines go to stderr, which flows through here
@@ -1588,6 +1682,16 @@ fi
 if [ "$pushed" != "true" ]; then
   record_push_failure "retries-exhausted" "$MAX_RETRIES"
   echo "::error::All push attempts failed after $MAX_RETRIES attempts"
+  # Task #1792 (discoverability): a session hitting this had no way to know
+  # PUSH_VIA_API_FALLBACK / this run's own eligibility existed unless it
+  # already knew to look. Only add the pointer when the fallback did NOT run
+  # (_api_fallback_ok never true) — if it DID run and also failed, that's
+  # already logged above ("Git Data API fallback also failed" / the
+  # content-dropped error) and repeating the pointer here would read as "try
+  # the thing that was just tried and failed."
+  if [ "$_api_fallback_ok" != "true" ]; then
+    echo "::error::push-with-retry: the Git Data API fallback did NOT run this attempt — either PUSH_VIA_API_FALLBACK was not set to 1, PUSH_API_FALLBACK_DISABLE=1 was set, no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/data-audit path (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — re-run with PUSH_VIA_API_FALLBACK=1 if none of the disqualifying reasons apply, or see scripts/lib/push-via-git-api.sh."
+  fi
   restore_head_if_moved "retries-exhausted"
   exit 1
 fi

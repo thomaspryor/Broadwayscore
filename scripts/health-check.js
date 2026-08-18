@@ -3442,7 +3442,15 @@ function bwwRoundupMissBacklogResults(summary) {
 // problem. This exists so the owner can tell "fallback fixed an occasional
 // race" (a few entries) from "normal pushes are now always exhausting
 // first" (most/all of a workflow's entries) BEFORE deciding whether to
-// widen PUSH_VIA_API_FALLBACK's rollout past the canary.
+// widen PUSH_VIA_API_FALLBACK's rollout past the canary. Eligibility is
+// still opt-in-only after task #1792 (2026-08-18) — that task added an
+// earlier-trigger threshold and a failure-message pointer for the same
+// opted-in population, but stopped short of a non-CI default-on after
+// testing surfaced a pre-existing gap in the fallback's own concurrent-
+// commit safety net (see push-with-retry.sh's `_PUSH_API_FALLBACK_ELIGIBLE`
+// comment and the task #1792 follow-up card). `workflow: ''` (rendered
+// '(unknown workflow)' below) would be a local/headless caller that
+// manually set PUSH_VIA_API_FALLBACK=1 itself — not expected at volume.
 function pushFallbackUsageResults(entries) {
   if (!entries || entries.length === 0) return [];
   const byWorkflow = new Map();
