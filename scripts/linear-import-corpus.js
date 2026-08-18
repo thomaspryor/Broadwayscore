@@ -69,13 +69,13 @@
 
 require('./lib/load-env').loadEnv();
 
-const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 
 const rules = require('./lib/linear-import-rules');
 const ledgerLib = require('./lib/import-ledger');
 const corpusIo = require('./lib/notion-corpus-io');
+const corpus = require('./lib/notion-corpus');
 const { runBatched } = require('./lib/batch-runner');
 const linear = require('./lib/linear-client');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -103,6 +103,34 @@ function parseArgs(argv) {
     if (m) args[m[1]] = m[2] === undefined ? true : m[2];
   }
   return args;
+}
+
+/**
+ * A flag must be OFF unless it is unambiguously on. `--apply=false` parses to
+ * the string "false", which is truthy, so a plain `!!args.apply` would perform
+ * an irreversible 1,705-issue import for someone who typed the opposite of what
+ * they meant. Fail closed, and reject anything that is neither.
+ */
+function boolFlag(value, name) {
+  if (value === undefined) return false;
+  if (value === true || value === 'true' || value === '1' || value === '') return true;
+  if (value === 'false' || value === '0') return false;
+  throw new Error(`--${name} takes no value (or true/false), got ${JSON.stringify(value)}`);
+}
+
+/**
+ * A numeric option must be a real number. `--limit=abc` becoming NaN silently
+ * imports ZERO items and reports success, and `--limit 50` (space-separated)
+ * leaves limit === true, which Number() turns into 1 — a "run" that imports one
+ * card and looks like it worked.
+ */
+function numFlag(value, name, fallback) {
+  if (value === undefined) return fallback;
+  const n = Number(value);
+  if (value === true || !Number.isFinite(n) || n < 0) {
+    throw new Error(`--${name} needs a number, e.g. --${name}=100 (got ${JSON.stringify(value)})`);
+  }
+  return n;
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -138,6 +166,20 @@ function buildDescription(record) {
   if (notes) parts.push(`## Notes\n\n${notes}`);
   if (outcome) parts.push(`## Outcome\n\n${outcome}`);
   if (keyFiles) parts.push(`## Key Files\n\n${keyFiles}`);
+
+  // The FREE-FORM page body — what someone typed on the page itself rather than
+  // into a property. `fields` above only ever holds the `[auto:*]` overflow
+  // sections, so a page written directly in the body has EMPTY fields and all
+  // its content here. Measured on the corpus: 67 obligations have >500 chars of
+  // body and nothing in notes/outcome/keyFiles, and without this they import as
+  // a three-line provenance stub — 86,388 characters dropped, unrecoverable
+  // after Sprint 8 deletes Notion. This is the same silent-truncation failure
+  // Sprint 2 was built to prevent, one step further down the pipeline.
+  //
+  // nonAutoBodyText() excludes the auto sections specifically so this cannot
+  // double-render the text `fields` already carries.
+  const body = corpus.nonAutoBodyText(record.body);
+  if (body) parts.push(`## Page body\n\n${body}`);
 
   const comments = (record.comments && record.comments.items) || [];
   if (comments.length) {
@@ -346,13 +388,18 @@ async function main() {
     return;
   }
   const args = parseArgs(argv);
-  const apply = !!args.apply;
+  const apply = boolFlag(args.apply, 'apply');
   const dryRun = !apply;
   const ledgerPath = args.ledger || path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER);
-  const spacingMs = args['spacing-ms'] ? Number(args['spacing-ms']) : 350;
-  const batchSize = args.batch ? Number(args.batch) : 100;
+  const spacingMs = numFlag(args['spacing-ms'], 'spacing-ms', 350);
+  const batchSize = numFlag(args.batch, 'batch', 100);
+  if (batchSize <= 0) throw new Error('--batch must be positive');
+  // Parsed HERE, with every other flag, and not at its point of use — that sits
+  // after ensureLabels() and the project pre-flight, so a typo'd --limit would
+  // reject only AFTER the run had already created labels on the board.
+  const limitArg = args.limit === undefined ? null : numFlag(args.limit, 'limit', null);
 
-  if (args.rollback) {
+  if (boolFlag(args.rollback, 'rollback')) {
     await runRollback({ ledgerPath, apply, spacingMs });
     return;
   }
@@ -416,7 +463,7 @@ async function main() {
   }
 
   // ── the real write ──────────────────────────────────────────────────────
-  const limit = args.limit ? Number(args.limit) : candidates.length;
+  const limit = limitArg === null ? candidates.length : limitArg;
   const work = candidates.slice(0, limit);
   console.error(`importing ${work.length} of ${candidates.length} candidate(s), batches of ${batchSize}, ${spacingMs}ms spacing`);
 
@@ -434,7 +481,15 @@ async function main() {
   // that gets rediscovered at 3am rather than caught. Create what is missing
   // (linear-import.js's ensureProjects does the same) and fail loudly if that
   // does not work, before anything is written.
-  const projectsByName = new Map((await linear.listProjects()).map((p) => [p.name, p]));
+  const allProjects = await linear.listProjects();
+  // listProjects() asks for `first: 100` and does not paginate. At 13 projects
+  // that is fine, but if it ever returns exactly the page size the list may be
+  // truncated — and a project that exists but is not in the list would be
+  // CREATED again as a duplicate by the pre-flight below.
+  if (allProjects.length >= 100) {
+    throw new Error('listProjects returned a full page — it may be truncated; paginate before importing');
+  }
+  const projectsByName = new Map(allProjects.map((p) => [p.name, p]));
   const neededProjects = [...new Set(work.map(({ c }) => c.project))];
   for (const name of neededProjects) {
     if (projectsByName.has(name)) continue;

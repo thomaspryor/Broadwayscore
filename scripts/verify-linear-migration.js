@@ -103,6 +103,41 @@ function main() {
   const unaccounted = mustAccount.filter((p) => !accounted.has(p.id));
   const projected = !!args.projected;
 
+  // PROJECTED MODE IS A REAL CHECK, NOT A RUBBER STAMP.
+  //
+  // The first version of this set `ok: projected ? true : …`, which printed
+  // "plan covers every obligation" and exited 0 while listing 1,705 unaccounted
+  // pages. The only pre-write gate on an irreversible import proved nothing.
+  //
+  // What it asserts now is an ARITHMETIC CROSS-CHECK against the importer's own
+  // disposition report, computed by the importer's buildReport rather than
+  // re-derived here: the pages this verifier says must be accounted for must
+  // equal the ones the importer says it has already imported plus the ones it
+  // plans to create. The two agree only if the ledger read, the
+  // already-imported partition, and the candidate list all line up. If the
+  // importer ever drops a page from its work list — the failure that would
+  // otherwise be discovered as a hole in the board — these numbers separate.
+  //
+  // It is NOT a substitute for the post-import run. Classification is shared
+  // between both sides by design (one source of truth for what gets imported),
+  // so this cannot catch a classification mistake. Only the ledger-only mode
+  // can, and that is the criterion that matters.
+  let projection = null;
+  if (projected) {
+    const { buildReport } = require('./linear-import-corpus.js');
+    const report = buildReport(records, accounted);
+    const planned = report.counts.live + report.counts.archive;
+    const claimed = planned + report.counts.alreadyImported;
+    projection = {
+      importerPlansToCreate: planned,
+      importerSaysAlreadyImported: report.counts.alreadyImported,
+      importerTotal: claimed,
+      verifierObligations: mustAccount.length,
+      agrees: claimed === mustAccount.length,
+      unaccountedMatchesPlanned: unaccounted.length === planned,
+    };
+  }
+
   // Rows naming a Linear issue whose Notion page could not be recovered. These
   // are excluded from the anti-join BY DEFINITION (they have no pageId to join
   // on), so they are reported rather than left to look like clean data.
@@ -120,10 +155,8 @@ function main() {
     unaccounted: unaccounted.length,
     skippedByReason: skipped,
     mode: projected ? 'projected (pre-import)' : 'ledger-only (post-import)',
-    // In projected mode every un-imported obligation is, by construction, a
-    // planned create — so what is being asserted is that the plan covers the
-    // obligation set, not that the board does.
-    ok: projected ? true : unaccounted.length === 0,
+    projection,
+    ok: projected ? !!(projection && projection.agrees && projection.unaccountedMatchesPlanned) : unaccounted.length === 0,
   };
 
   if (args.json) {
@@ -144,18 +177,29 @@ function main() {
       console.log(`      ${p.id}  [${p.disposition}]  ${String(p.title).slice(0, 60)}`);
     }
     if (unaccounted.length > printLimit) console.log(`      … and ${unaccounted.length - printLimit} more`);
-    if (projected) {
-      console.log('\n  PROJECTED MODE: the un-imported obligations above are the planned');
-      console.log('  creates. This proves the plan covers the obligation set; it does NOT');
-      console.log('  prove the board does. Re-run without --projected after the import.');
+    if (projected && projection) {
+      console.log('\n  PROJECTED MODE — cross-check against the importer\'s own report:');
+      console.log(`    importer plans to create      ${projection.importerPlansToCreate}`);
+      console.log(`    importer already imported     ${projection.importerSaysAlreadyImported}`);
+      console.log(`    importer total                ${projection.importerTotal}`);
+      console.log(`    verifier obligations          ${projection.verifierObligations}`);
+      console.log(`    the two agree                 ${projection.agrees ? '✅' : '❌'}`);
+      console.log(`    unaccounted == planned        ${projection.unaccountedMatchesPlanned ? '✅' : '❌'}`);
+      console.log('  This proves the importer\'s work list covers the obligation set. It does');
+      console.log('  NOT prove the board does — classification is shared, so only the');
+      console.log('  ledger-only run after the import can prove that.');
     }
   }
 
   if (!result.ok) {
-    console.error(`\n❌ ${unaccounted.length} un-Done Notion page(s) have no ledger row.`);
+    if (projected) {
+      console.error('\n❌ the importer\'s work list does NOT cover the obligation set (see the cross-check above).');
+    } else {
+      console.error(`\n❌ ${unaccounted.length} un-Done Notion page(s) have no ledger row.`);
+    }
     process.exit(1);
   }
-  console.log(`\n✅ ${projected ? 'plan covers every obligation' : 'every un-Done Notion page is accounted for'}.`);
+  console.log(`\n✅ ${projected ? "the importer's work list covers every obligation" : 'every un-Done Notion page is accounted for'}.`);
 }
 
 if (require.main === module) main();

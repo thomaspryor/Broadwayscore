@@ -49,6 +49,7 @@ const {
   isIdleArchive,
 } = rules;
 const linear = require('./lib/linear-client');
+const ledgerLib = require('./lib/import-ledger');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `linear-import.js — Day 1 of the Linear migration: additive, resumable import of the local task mirror into Linear team BRO.
@@ -96,6 +97,42 @@ function saveMapping(mapping) {
   const tmp = `${MAPPING_PATH}.tmp`;
   fs.writeFileSync(tmp, JSON.stringify(mapping, null, 2) + '\n');
   fs.renameSync(tmp, MAPPING_PATH);
+}
+
+/**
+ * Also append to the pageId ledger (S3-T2's data/linear-import-mapping.jsonl).
+ *
+ * WHY BOTH. This script's own idempotency key is the local mirror task id, and
+ * that stays in the legacy JSON — nothing about --reconcile changes. But the
+ * Sprint 3 anti-join joins on NOTION PAGE ID, and it reads the JSONL. An issue
+ * this script creates without leaving a JSONL row is invisible to the
+ * completeness check: verify-linear-migration.js would report its Notion page
+ * as unaccounted and the corpus importer would try to create it again (getting
+ * an id conflict, harmless but noisy). Two ledgers that disagree about what is
+ * on the board is exactly the state Sprint 3 exists to leave behind.
+ *
+ * A task with no [notion:] marker has no pageId and is skipped here on purpose:
+ * a row with pageId null cannot be joined on and the ledger already reports how
+ * many of those it holds.
+ */
+function appendPageLedger(c, linearId, identifier) {
+  if (!c.notionId) return;
+  try {
+    ledgerLib.appendRow(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER), ledgerLib.makeRow({
+      pageId: c.notionId,
+      taskId: c.taskId,
+      linearId,
+      identifier,
+      title: c.subject,
+      project: c.project,
+      source: 'mirror-import',
+    }));
+  } catch (err) {
+    // Never fail a create over a bookkeeping write — the issue already exists
+    // on the board at this point, and losing the run would be worse than losing
+    // the row (which the anti-join will surface anyway).
+    console.error(`warning: could not append pageId ledger row: ${err.message}`);
+  }
 }
 
 // Every board mutation, appended before it is applied: the issue, the field,
@@ -467,7 +504,6 @@ async function main() {
   // than a new one, so this counts replays that the ledger did not know about
   // — the crash-recovery case, now visible instead of silent.
   let alreadyOnBoard = 0;
-  const mintedIds = new Set();
 
   for (const c of candidates) {
     const stateId = stateByName.get(c.stateName);
@@ -495,13 +531,25 @@ async function main() {
       // title check was for, and the server now answers it definitively —
       // by page identity rather than by a title that other cards may share.
       if (rules.isAlreadyExistsError(err)) {
+        // RECORD IT. Skipping the mapping write here means the mapping never
+        // converges: every future run re-attempts a create for this card
+        // forever, and --reconcile's mapping[task.id] lookups cannot retire or
+        // revive it because there is no row. The issue id is deterministic, so
+        // it is already in hand — there is nothing to look up.
         alreadyOnBoard++;
+        mapping[c.taskId] = {
+          linearId: issueId,
+          identifier: (mapping[c.taskId] || {}).identifier || null,
+          title: c.subject,
+          project: c.project,
+        };
+        saveMapping(mapping);
+        appendPageLedger(c, issueId, null);
         console.error(`already on board (id ${issueId}): ${c.subject}`);
         continue;
       }
       throw err;
     }
-    mintedIds.add(issueId);
     mapping[c.taskId] = {
       linearId: issue.id,
       identifier: issue.identifier,
@@ -509,13 +557,14 @@ async function main() {
       project: c.project,
     };
     saveMapping(mapping); // after EVERY create — a killed run resumes, never double-creates
+    appendPageLedger(c, issue.id, issue.identifier);
     created++;
     console.error(`created ${issue.identifier}: ${issue.title}`);
   }
 
   console.log(
     JSON.stringify(
-      { ...summary, created, alreadyOnBoard, mintedIds: mintedIds.size, mappingTotal: Object.keys(mapping).length },
+      { ...summary, created, alreadyOnBoard, mappingTotal: Object.keys(mapping).length },
       null,
       2
     )
