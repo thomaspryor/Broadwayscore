@@ -109,6 +109,13 @@ jobs:
 
       - name: Commit updated baseline
         if: always()
+        env:
+          # Opt-in Git Data API fallback for push-with-retry.sh's local
+          # fetch+rebase+push flow, which has lost 20-100+ consecutive
+          # attempts under heavy write contention on this repo (tasks #707,
+          # #1791). No-op unless the repo var is set — same rollout gating as
+          # weekly-grosses.yml.
+          PUSH_VIA_API_FALLBACK: ${{ vars.PUSH_VIA_API_FALLBACK }}
         run: |
           git add data/audit/outlet-registry-baseline.json data/audit/outlet-registry-junk-baseline.json
           if git diff --staged --quiet; then
