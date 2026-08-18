@@ -567,8 +567,12 @@ jobs:
             echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo "══════════════════════════════════════════════════"
 
-            # Early exit: stop if all shows have already been broadcast
-            SENT_JSON=$(gh api repos/${{ github.repository }}/contents/data/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
+            # Early exit: stop if all shows have already been broadcast.
+            # opening-night-sent.json is untracked+ignored in THIS repo as of
+            # task #1759 (no longer readable via this repo's Contents API) —
+            # the private data repo is the authoritative, continuously-synced
+            # copy (checkout-core-data/push-core-data), so read it there.
+            SENT_JSON=$(GH_TOKEN="${{ secrets.REVIEW_TEXTS_TOKEN }}" gh api repos/thomaspryor/broadway-scorecard-data/contents/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
             ALL_DONE=true
             IFS=',' read -ra CHECK_SHOWS <<< "$SHOWS"
             for SID in "${CHECK_SHOWS[@]}"; do
