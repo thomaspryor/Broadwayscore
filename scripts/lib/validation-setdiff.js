@@ -86,20 +86,23 @@ function extractQuotedTokens(text) {
 // the minority of error sites that quote the id itself, and every other
 // per-show error in this file falls through to allAttributed=false — the
 // discovery gate's own error surface (task #1439).
-// Same-title-sibling errors (validate-data.js ~608) interpolate the OTHER
-// show's id directly into prose — "... has openingDate identical to
-// same-title sibling ${inherited.siblingId} — date was cloned..." — with no
-// quotes or parens around it. Card #1786: this left the error naming the
-// PRE-EXISTING show (id in parens, not itself a discovery candidate) with no
-// extractable reference to the actual candidate (the sibling id, mentioned
-// only in free text), so allAttributed came back false and blocked the
-// entire batch — every unrelated opening-night status flip in the run —
-// even though the mirror-direction error (fired from the candidate's own
-// iteration) WAS attributable on its own. A bare show-id-shaped token
-// (kebab-case ending in a 4-digit year) catches these regardless of
-// surrounding punctuation, so at least one of the pair's two errors always
-// resolves to the real candidate.
-const BARE_SHOW_ID_RE = /\b[a-z0-9]+(?:-[a-z0-9]+)+-\d{4}\b/g;
+// Card #1786: same-title-sibling errors (validate-data.js ~608) used to
+// interpolate the OTHER show's id directly into prose with no quotes or
+// parens — "... same-title sibling ${inherited.siblingId} — date was
+// cloned...". When the pre-existing show (not itself a discovery candidate)
+// was the one named in parens, the real candidate's id was unextractable
+// and the whole error came back unattributable, collapsing the per-show
+// partial-block gate to block-everything. Fixed at the source instead of
+// here: validate-data.js now parenthesizes siblingId too, so the existing
+// PAREN_GROUP_RE extraction below already catches it. (An earlier version
+// of this fix added a generic bare show-id-shaped regex over all error
+// text instead — reverted: validate-data.js's corpus has other id-shaped
+// substrings that aren't show ids at all, e.g. outlet-registry.json keys
+// like "the-times-2022" appearing unquoted in outlet-collision errors, and
+// image/duplicate-review URLs containing a show id as a path segment. A
+// global regex would false-positive-attribute an error to an unrelated
+// candidate whose id merely appears in incidental text, silently letting
+// the real cause through unblocked.)
 
 function extractCandidateTokens(text) {
   const out = extractQuotedTokens(text);
@@ -108,8 +111,6 @@ function extractCandidateTokens(text) {
   while ((m = PAREN_GROUP_RE.exec(text)) !== null) {
     for (const part of m[1].split(',')) out.push(part.trim());
   }
-  BARE_SHOW_ID_RE.lastIndex = 0;
-  while ((m = BARE_SHOW_ID_RE.exec(text)) !== null) out.push(m[0]);
   return out;
 }
 
