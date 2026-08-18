@@ -56,6 +56,10 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady, shouldEscalateToFix, parseVerifiedOutcomeLine } = require('./lib/plan-ready.js');
 const { preflightAuth, resolveAuthEnv, resolveClaudeBin, pathWithClaudeBinDir } = require('./lib/claude-cli.js');
 const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
+// Reuse dispatch-watchdog's kill-switch staleness pager (task #1543) rather
+// than reimplementing it — same bug class (a file-based kill switch that
+// silently stops P0/P1 auto-fixes has no alarm of its own), same fix.
+const { pageIfKillSwitchStale } = require('./dispatch-watchdog.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
 
@@ -994,7 +998,21 @@ async function main() {
   // ALL auto-escalation immediately, no deploy needed. Checked once per run
   // (not per card) — cheap fs.existsSync, and a mid-run toggle taking effect
   // next cycle rather than mid-cycle is fine for a rate-limited safety valve.
-  const escalationKillSwitch = fs.existsSync(path.join(STATE_DIR, 'escalation-off'));
+  const escalationOffFile = path.join(STATE_DIR, 'escalation-off');
+  const escalationKillSwitch = fs.existsSync(escalationOffFile);
+  // Same no-staleness-alarm gap as dispatch-watchdog-off (card #1543, merged
+  // ba347437efe): if this file is left touched by accident, P0/P1 auto-fixes
+  // silently stop escalating and nothing tells the owner it's been off for
+  // days. This script already runs every 5 min via launchd — no separate
+  // --health entry point needed, the staleness check just rides along here.
+  // Best-effort: alerting must never break the poll itself.
+  try {
+    await pageIfKillSwitchStale(escalationOffFile, {
+      conditionKey: 'escalation-kill-switch-stale',
+      label: 'Investigate→Fix escalation kill switch',
+      clearHint: `rm ${escalationOffFile}`,
+    });
+  } catch (err) { log(`  escalation kill-switch staleness check failed (non-fatal): ${err.message}`); }
 
   // Reply loop FIRST: replies are quick and a Fix pipeline can hold this
   // process for hours — the owner's follow-up comments must not wait for it.
