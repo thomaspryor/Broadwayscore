@@ -296,9 +296,12 @@ test('#1678 anansi-the-spider replay: dateless review gets scored, THEN an impla
 
   const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
   assert.equal(onDisk.wrongProduction, true, 'the record must end up excluded WITHOUT a human touching it');
-  assert.equal(onDisk.wrongProductionReason, 'date_implausible_after_score');
-  assert.ok(onDisk.wrongProductionReasonAt, 'provenance timestamp required (wrongProduction provenance lint)');
   assert.ok(onDisk.wrongProductionNote.startsWith('Date guard:'), 'note must carry a DATE_GUARD_PREFIXES-recognized prefix so priorRuns auto-clear can still find it');
+  // wrongProductionReason is deliberately NOT set — wrong-production-autoclear.js
+  // treats any non-DATE_GUARD_PREFIXES reason as "manual" and permanently blocks
+  // priorRuns auto-clear eligibility even though the note alone already grants it
+  // (Codex adversarial review, task #1678).
+  assert.equal(onDisk.wrongProductionReason, undefined);
   assert.equal(onDisk.assignedScore, 97, 'the score itself is preserved — only excluded from scoring, not deleted');
 
   assert.equal(fs.existsSync(path.join(root, '_pending', showId, 'thestage--anna-james.json')), false, 'must not ALSO land in _pending — one outcome, not two');
@@ -316,4 +319,67 @@ test('#1678 a combined write that sets assignedScore AND an implausible publishD
   const result = safeWriteReview(targetPath, { criticName: 'Critic', assignedScore: 85, publishDate: '2020-01-01' });
   assert.equal(result.wrote, false);
   assert.equal(result.skipped, 'date_implausible');
+});
+
+test('#1678 ship-check finding: a LOCKED live-scored record with a stale wrongProductionManualClear breadcrumb must NOT end up in an inconsistent state (wrongProduction reverted false by the locked-preserve loop, but wrongProductionReason/Note left stamped) — defer to CI instead of writing a self-contradictory record', () => {
+  const root = mkReviewTextsRoot();
+  const showId = 'locked-show-2026';
+  _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
+
+  const targetPath = path.join(root, showId, 'outlet--critic.json');
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  // Locked + live-scored + a PRIOR manual clear of wrongProduction (so the
+  // preserve loop's lockedOverride branch has a real existingVal=false to
+  // restore, which is what silently reverts an unguarded stamp).
+  fs.writeFileSync(targetPath, JSON.stringify({
+    criticName: 'Critic', assignedScore: 80, _locked: true,
+    wrongProduction: false, wrongProductionManualClear: true,
+  }));
+
+  const result = safeWriteReview(targetPath, { criticName: 'Critic', assignedScore: 80, publishDate: '2020-01-01' });
+  assert.equal(result.wrote, true, 'locked files still accept the write itself — only the flag stamp is withheld');
+
+  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+  assert.equal(onDisk.wrongProduction, false, 'the lock wins — a human/pipeline already declared this canonical');
+  assert.equal(onDisk.wrongProductionNote, undefined, 'must NOT be stamped when the flag itself will be reverted — no note-without-a-flag inconsistency');
+});
+
+test('#1678 ship-check finding: an UNLOCKED live-scored record with a stale wrongProductionOverride breadcrumb (from an earlier, unrelated clear) must NOT be stamped — the override would silently neutralize the fresh flag for inclusion AND blind CHECK 0 (evaluateDatePlausibility exempts wrongProduction===true)', () => {
+  const root = mkReviewTextsRoot();
+  const showId = 'override-cleared-show-2026';
+  _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
+
+  const targetPath = path.join(root, showId, 'outlet--critic.json');
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  // NOT locked — isolates the override-clear carve-out from the locked one.
+  fs.writeFileSync(targetPath, JSON.stringify({
+    criticName: 'Critic', assignedScore: 80,
+    wrongProductionOverride: true, wrongProductionOverrideReason: 'unrelated-prior-clear',
+  }));
+
+  const result = safeWriteReview(targetPath, { criticName: 'Critic', assignedScore: 80, publishDate: '2020-01-01' });
+  assert.equal(result.wrote, true);
+
+  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+  assert.equal(onDisk.wrongProduction, undefined, 'not stamped — CHECK 0 must still independently see this record as unflagged and catch it at push time');
+  assert.equal(onDisk.wrongProductionNote, undefined);
+  assert.equal(onDisk.wrongProductionOverride, true, 'the pre-existing breadcrumb survives untouched');
+});
+
+test('#1678 ship-check finding: originalScore (aggregator star rating) alone — no assignedScore field yet — is ALSO a live score; rebuild-helpers.js getBestScore() can derive a published score from it before assignedScore is ever computed (Codex adversarial review)', () => {
+  const root = mkReviewTextsRoot();
+  const showId = 'star-rated-show-2026';
+  _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
+
+  const targetPath = path.join(root, showId, 'outlet--critic.json');
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  fs.writeFileSync(targetPath, JSON.stringify({ criticName: 'Critic', originalScore: '4/5' }));
+
+  const result = safeWriteReview(targetPath, { criticName: 'Critic', originalScore: '4/5', publishDate: '2020-01-01' });
+  assert.equal(result.wrote, true);
+  assert.equal(result.skipped, undefined, 'must be stamped, not quarantined — originalScore alone counts as a live score');
+
+  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+  assert.equal(onDisk.wrongProduction, true);
+  assert.equal(onDisk.originalScore, '4/5', 'the star rating is preserved');
 });
