@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T15:16:28.313Z",
-  "processed": 1,
-  "failed": 4,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-18T16:59:41.624Z",
+  "processed": 34,
+  "failed": 221,
+  "successRate": "13.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "browserbase": 1,
+    "directCookies": 3,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -26,6 +26,50 @@
       "event": "bb-session",
       "session": "1767057c",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-18T16:33:20.334Z",
+      "event": "bb-session",
+      "session": "a4361c4c",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-18T16:33:20.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T16:34:41.423Z",
+      "event": "bb-session",
+      "session": "b1bd5513",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-18T16:34:41.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-18T16:37:20.442Z",
+      "event": "bb-session",
+      "session": "90bd676b",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-18T16:37:20.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-18T16:37:38.436Z",
+      "event": "bb-session",
+      "session": "3622de4a",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-18T16:37:38.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
