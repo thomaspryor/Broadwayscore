@@ -228,7 +228,17 @@ function staleOutcomeGuard(task, card, opts) {
 //   * "Paused" is NOT closed. mapStatus (notion-tasks-sync.js:104-110) folds
 //     Paused into the dispatchable 'pending' lane, so treating it as closed
 //     would be a policy change about which cards are workable, not a
-//     stale-mirror fix.
+//     stale-mirror fix. This is not a fresh judgement call: task #1778 already
+//     considered adding 'Paused' to the terminal pair and REJECTED it after
+//     adversarial review (see notion-tasks-sync.js:48-55). Two reviewers of
+//     THIS change argued the opposite; the prior decision stands, and reopening
+//     it belongs on its own card rather than riding in on a mirror fix.
+//   * Diverges deliberately from scripts/linear-next.js's checkTerminalStateGuard
+//     (~:361), which DOES bypass on --force. That guard protects the Linear
+//     lane, which has no --force-carrying reconciler aimed at it;
+//     bsc-reconcile.js's redispatchArgv does exactly that here. Same intent,
+//     different blast radius — do not "harmonise" the two without re-reading
+//     redispatchArgv:176-178 first.
 //   * `--force` does NOT bypass this. --force exists to override the
 //     duplicate-workspace guard; a closed card is never something it should
 //     override, and bsc-reconcile.js's #853 path (redispatchArgv:176-178) is

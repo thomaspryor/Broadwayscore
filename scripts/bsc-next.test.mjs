@@ -497,6 +497,40 @@ test('runSuccessionDispatch: --allow-closed-card still lets a deliberate success
   fs.unlinkSync(handoffPath);
 });
 
+// Task #1790: fetchCard had no retry — a single execFileSync, and ANY throw
+// (a Notion 429/500/timeout) returned null. Several callers degrade on null,
+// including closedCardGuard, which ALLOWS dispatch when the card is null so a
+// Notion outage cannot livelock the stall sweep. Two adversarial reviews
+// independently flagged that this makes the guard most permissive exactly when
+// a fetch is flaky. Refusing on null would livelock, so the fix makes null
+// RARER instead of changing its meaning.
+test('fetchCard: a transient failure is retried once and recovers', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', {
+    sleepMs: 1,
+    fetchOnce: () => { calls += 1; if (calls === 1) throw new Error('transient 500'); return { status: 'Done' }; },
+  });
+  assert.deepEqual(card, { status: 'Done' }, 'the retry must return the real card, not null');
+  assert.equal(calls, 2, 'exactly one retry');
+});
+
+test('fetchCard: a permanent failure still degrades to null (honest unknown, never a throw)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; throw new Error('gone'); } });
+  assert.equal(card, null);
+  assert.equal(calls, 2, 'bounded — never retries forever');
+});
+
+test('fetchCard: the happy path costs exactly one call (no added latency)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; return { status: 'In progress' }; } });
+  assert.deepEqual(card, { status: 'In progress' });
+  assert.equal(calls, 1);
+});
+
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
   const { categoryOf, isExcludedCategory } = require('./bsc-next.js');
   const T = [
