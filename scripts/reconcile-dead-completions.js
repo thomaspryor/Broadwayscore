@@ -47,16 +47,37 @@ Usage:
 // would stack duplicate banners onto `description` forever. The marker
 // prefix makes the reopen idempotent — a task already carrying it is left
 // untouched on a repeat run.
+//
+// Card #1795: that any-marker check was too coarse — it can't tell "this
+// SAME dead-dispatch event already reopened this task, don't restack" from
+// "a task reopened once for an EARLIER dead event was genuinely re-
+// completed via a SECOND dead dispatch and needs reopening again". A task
+// stuck in the latter shape kept the marker forever and reconcileDeadCompletions()
+// flagged it every run with no way to ever actually fix it (live incidents:
+// tasks #1756/#1763). Fix: key idempotency to task.lastReopenedForEventTs, a
+// structured field stamped with the dead ledger entry's own `ts`
+// (deadAttemptTs, threaded from dispatch-dead-launch-guard.js's
+// reconcileDeadCompletions -> dispatch-ledger.js's resolveDeadAttempt) —
+// only a repeat of THAT EXACT event is a no-op. A structured field (not
+// substring-matching prose) mirrors this file's own manuallyResolvedReason/
+// manuallyResolvedAt convention rather than adding a second text-matching
+// scheme. deadAttemptTs absent (malformed/legacy ledger data) falls back to
+// the original any-marker guard — conservative, matches pre-fix behavior.
 const REOPEN_MARKER = '[reconcile-dead-completions ';
 
-function reopenTask(id, dir = TASKS_DIR) {
+function reopenTask(id, dir = TASKS_DIR, deadAttemptTs = null) {
   const file = path.join(dir, `${id}.json`);
   const task = JSON.parse(fs.readFileSync(file, 'utf8'));
-  if (String(task.description || '').startsWith(REOPEN_MARKER)) return; // already reopened, no-op
+  if (deadAttemptTs) {
+    if (task.lastReopenedForEventTs === deadAttemptTs) return; // this exact dead-dispatch event was already handled, no-op
+  } else if (String(task.description || '').startsWith(REOPEN_MARKER)) {
+    return; // no event id to key off of — fall back to the old any-marker no-op
+  }
   const note = `${REOPEN_MARKER}${new Date().toISOString().slice(0, 10)}] `
     + `reopened — marked completed while its most recent dispatch was journaled dead in dispatch-ledger.jsonl (card #1144).\n\n`;
   task.status = 'pending';
   task.owner = null;
+  task.lastReopenedForEventTs = deadAttemptTs || null;
   task.description = note + (task.description || '');
   fs.writeFileSync(file, JSON.stringify(task, null, 2));
 }
@@ -202,7 +223,7 @@ function main(argv = process.argv.slice(2)) {
   for (const t of flagged) {
     console.log(`  #${t.id}  ${t.subject || '(no subject)'}${t.notionId ? `  [notion:${t.notionId}]` : ''}`);
     if (fix) {
-      try { reopenTask(t.id); }
+      try { reopenTask(t.id, TASKS_DIR, t.deadAttemptTs); }
       catch (e) { console.error(`    WARN reopen failed for #${t.id}: ${e.message}`); }
       if (t.notionId) {
         try {

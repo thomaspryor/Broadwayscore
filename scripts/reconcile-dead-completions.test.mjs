@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { resetPushedFlag } = require('./reconcile-dead-completions.js');
+const { resetPushedFlag, reopenTask } = require('./reconcile-dead-completions.js');
 const { readMap, writeMap, isPushEligible } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-')); }
@@ -129,5 +129,88 @@ test('resetPushedFlag: an fs write failure reports write-failed instead of throw
 
   assert.equal(result, 'write-failed');
   assert.equal(readMap(dir).pg1.pushed, true, 'a failed write must not leave the entry half-updated');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+function writeTask(dir, id, task) {
+  fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify({ id, ...task }, null, 2));
+}
+function readTask(dir, id) {
+  return JSON.parse(fs.readFileSync(path.join(dir, `${id}.json`), 'utf8'));
+}
+
+// Card #1795: the actual regression this card is about. reopenTask()'s old
+// any-marker no-op couldn't distinguish "this exact dead-dispatch event was
+// already handled" from "a NEW dead completion happened since a previous
+// reopen" — a task reopened once, redispatched, and genuinely re-completed
+// via a SECOND dead session stayed stuck 'completed' forever (live
+// incidents: tasks #1756/#1763).
+test('#1795: reopenTask reopens a task that already carries an OLD marker (different dead-dispatch event)', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'completed',
+    owner: 'someone',
+    description: '[reconcile-dead-completions 2026-08-17] reopened — marked completed while its most recent dispatch was journaled dead in dispatch-ledger.jsonl (card #1144).\n\noriginal task text',
+    lastReopenedForEventTs: '2026-08-17T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'pending');
+  assert.equal(task.owner, null);
+  assert.equal(task.lastReopenedForEventTs, '2026-08-18T09:00:00.000Z');
+  assert.ok(task.description.startsWith('[reconcile-dead-completions '), 'new banner is stacked, not skipped');
+  assert.ok(task.description.includes('original task text'), 'original description survives');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// The behavior the original marker was protecting: a repeat --fix run for
+// the SAME dead-dispatch event (e.g. a scheduled job firing twice before
+// the reopened task is re-dispatched) must still no-op, not stack a second
+// banner or re-touch status/owner.
+test('#1795: reopenTask still no-ops on a repeat call for the SAME dead-dispatch event', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'pending', // already reopened by a first call
+    owner: null,
+    description: '[reconcile-dead-completions 2026-08-18] reopened — ...\n\noriginal',
+    lastReopenedForEventTs: '2026-08-18T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'pending');
+  assert.equal((task.description.match(/\[reconcile-dead-completions /g) || []).length, 1, 'no second banner stacked');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#1795: reopenTask on a task with no prior marker reopens and stamps lastReopenedForEventTs', () => {
+  const dir = tmpDir();
+  writeTask(dir, '999', { status: 'completed', owner: 'x', description: 'plain task, never reopened' });
+
+  reopenTask('999', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '999');
+  assert.equal(task.status, 'pending');
+  assert.equal(task.lastReopenedForEventTs, '2026-08-18T09:00:00.000Z');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Conservative fallback for malformed/legacy ledger data with no ts to key
+// off — preserves the original any-marker guard rather than risk stacking.
+test('#1795: reopenTask falls back to the old any-marker no-op when deadAttemptTs is unknown', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'completed',
+    description: '[reconcile-dead-completions 2026-08-17] reopened — ...\n\noriginal',
+    lastReopenedForEventTs: '2026-08-17T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, null);
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'completed', 'no deadAttemptTs to key off of, so the legacy any-marker guard applies');
   fs.rmSync(dir, { recursive: true, force: true });
 });

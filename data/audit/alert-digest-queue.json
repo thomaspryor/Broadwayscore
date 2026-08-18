@@ -251,5 +251,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-18T19:00:26.757Z"
+  },
+  {
+    "conditionKey": "reconcile-dead-completions:pushed-flag-reset-failed:1757",
+    "title": "Reopened task #1757 but its Notion sync-map pushed flag may still be stuck",
+    "description": "reconcile-dead-completions corrected Notion card 3c0637c5-416f-815d-834d-f7eac525ca4d back off \"Done\" for task #1757, but could not reset its sync-map entry.pushed flag — another sync (pull/push/sync-drift) held the lock. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e \"const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['3c0637c5-416f-815d-834d-f7eac525ca4d'])m['3c0637c5-416f-815d-834d-f7eac525ca4d'].pushed=false;writeMap(TASKS_DIR,m);r();\"",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T23:03:31.940Z"
   }
 ]
