@@ -802,6 +802,14 @@ function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   const preserved = [];
   let lockedSkipped = false;
+  // Set true by the date-plausibility/cross-market write-time guard (card
+  // #1678) when it silently added wrongProduction to what the caller thought
+  // was a plain write — surfaced on the return value so a caller that cares
+  // (an audit script, a batch summary) can tell "wrote what I sent" apart
+  // from "wrote, but I also excluded it" without having to re-read the file.
+  // Existing callers that only check `wrote`/`skipped` are unaffected — this
+  // is purely additive (Codex adversarial review, task #1678).
+  let autoFlaggedWrongProduction = false;
 
   // Google-redirect unwrap at the write choke point. Enrichment writers that
   // fill `url` from SERP results can store the google.com/url?q=... WRAPPER
@@ -957,6 +965,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           newData = { ...newData, wrongProduction: true, wrongProductionNote: note };
           invalidateWrongProductionAutoClear(newData);
           alreadyFlaggedThisWrite = true;
+          autoFlaggedWrongProduction = true;
           console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongProduction (live score, date arrived after scoring): ${note}`);
         };
         // Two reasons NOT to stamp even though a score is live:
@@ -1454,7 +1463,7 @@ function safeWriteReview(filePath, newData, options = {}) {
   }
 
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
-  return { wrote: true, preserved, lockedSkipped };
+  return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
 
 /**
