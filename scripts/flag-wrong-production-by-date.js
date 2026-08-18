@@ -22,6 +22,7 @@ const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -88,10 +89,11 @@ function run() {
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
   let priorRunSkipped = 0, datelessRevivalFlagged = 0;
   let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
-  let awaitingRefetchSkipped = 0;
+  let awaitingRefetchSkipped = 0, overrideClearSkipped = 0;
   const flaggedDetails = [];
   const heldDetails = [];
   const stuckCiBlockingDetails = [];
+  const overrideClearDetails = [];
 
   for (const showDir of showDirs) {
     const show = showMap[showDir];
@@ -164,15 +166,21 @@ function run() {
           show,
         });
         if (verdict.flag && data.humanReviewedWrongProduction !== false) {
-          datelessRevivalFlagged++;
-          flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
-          if (!DRY_RUN) {
-            data.wrongProduction = true;
-            invalidateWrongProductionAutoClear(data);
-            data.wrongProductionReason = 'dateless-revival';
-            data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
-            const r = safeWriteReview(filePath, data);
-            if (r.lockedSkipped) lockedSkipCount++;
+          if (shouldSkipWrongProductionAudit(data)) {
+            overrideClearSkipped++;
+            overrideClearDetails.push({ showId: showDir, file, date: '(none)', issue: 'dateless_revival' });
+            console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (dateless revival): existing wrongProductionOverride/ManualClear/humanReviewedWrongProduction/allowCrossMarket breadcrumb`);
+          } else {
+            datelessRevivalFlagged++;
+            flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
+            if (!DRY_RUN) {
+              data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
+              data.wrongProductionReason = 'dateless-revival';
+              data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
+              const r = safeWriteReview(filePath, data);
+              if (r.lockedSkipped) lockedSkipCount++;
+            }
           }
         } else {
           noDate++;
@@ -213,6 +221,13 @@ function run() {
           continue;
         }
         if (corrob.strength === 'weak') corroborationWarned++;
+      }
+
+      if (shouldSkipWrongProductionAudit(data)) {
+        overrideClearSkipped++;
+        overrideClearDetails.push({ showId: showDir, file, date: data.publishDate, issue, diffDays });
+        console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (${issue}, ${diffDays}d): existing wrongProductionOverride/ManualClear/humanReviewedWrongProduction/allowCrossMarket breadcrumb`);
+        continue;
       }
 
       const note = issue === 'before_preview'
@@ -273,6 +288,19 @@ function run() {
     }
   }
 
+  // Task #1775: reviews the date guard would otherwise stamp wrongProduction
+  // over, but a pre-existing wrongProductionOverride/ManualClear/
+  // humanReviewedWrongProduction/allowCrossMarket breadcrumb means a human
+  // (or an earlier automated clear) already made an authoritative call on
+  // this file. Printed for audit trail — nothing to action unless the
+  // breadcrumb itself looks stale/wrong.
+  if (overrideClearDetails.length > 0) {
+    console.log(`\n--- Skipped: pre-existing override/manual-clear breadcrumb ---`);
+    for (const o of overrideClearDetails) {
+      console.log(`  ${o.showId}/${o.file}  pub=${o.date}  ${o.issue}${o.diffDays !== undefined ? ` ${o.diffDays}d` : ''}`);
+    }
+  }
+
   // Awaiting-refetch files that ALSO fail validate-data.js CHECK 0 (the
   // 180-day backstop, which does not know about isAwaitingUrlCorrectionRefetch)
   // are stuck: this script will never flag them and nothing will ever
@@ -292,6 +320,7 @@ function run() {
   console.log(`OK (within window):    ${ok}`);
   console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);
+  console.log(`Skipped (override/manual clear breadcrumb): ${overrideClearSkipped}`);
   console.log(`Awaiting URL refetch:  ${awaitingRefetchSkipped}`);
   console.log(`  ...of which STUCK (also fails CI's date check): ${stuckCiBlockingDetails.length}`);
   console.log(`No publishDate:        ${noDate}`);

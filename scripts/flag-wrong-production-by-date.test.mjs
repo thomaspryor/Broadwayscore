@@ -111,3 +111,111 @@ test('control: same stale date WITHOUT corroboration is flagged as before', () =
     fs.rmSync(fx.tmp, { recursive: true, force: true });
   }
 });
+
+// Task #1775: a stale wrongProductionOverride breadcrumb (from an earlier,
+// unrelated clear — e.g. a false-positive recovery) must not be silently
+// neutralized by a later re-flag. review-guards.js's canonical inclusion
+// check treats wrongProductionOverride===true as "cleared, include anyway"
+// regardless of wrongProduction, and evaluateDatePlausibility's CI backstop
+// exempts any record where wrongProduction is already true — so stamping
+// over the breadcrumb would both fail to suppress the review AND blind the
+// push-time safety net. Fixed by calling review-guards.js's existing
+// shouldSkipWrongProductionAudit() (the canonical helper ~25 other
+// wrongProduction=true writer sites already use — rebuild-all-reviews.js,
+// gather-reviews.js, etc.) before each stamp site, instead of a hand-rolled
+// duplicate — ship-check adversarial finding, task #1775.
+test('stale wrongProductionOverride breadcrumb blocks the wrongProduction stamp (date-guard branch)', () => {
+  const fx = makeFixture();
+  try {
+    const data = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    delete data.theatreRecordUrl; // no corroboration — would otherwise be flagged (control test above)
+    data.wrongProductionOverride = true;
+    data.wrongProductionOverrideReason = 'false-positive recovery (fixture)';
+    fs.writeFileSync(fx.reviewPath, JSON.stringify(data, null, 2));
+
+    const out = runFlagger(fx, ['--apply']);
+    assert.doesNotMatch(out, /Flagged \(early\):\s*1/, 'must not count this as a flagged review');
+    assert.match(out, /Skipped \(override\/manual clear breadcrumb\):\s*1/);
+
+    const after = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    assert.notEqual(after.wrongProduction, true, 'wrongProduction must stay unset — the stamp must not neutralize the override breadcrumb');
+    assert.equal(after.wrongProductionOverride, true, 'the breadcrumb itself must survive untouched');
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});
+
+// Bonus coverage from switching to the canonical shouldSkipWrongProductionAudit()
+// helper (vs. the narrower wrongProductionOverride/ManualClear-only check this
+// card's acceptance criteria named): humanReviewedWrongProduction===false — an
+// explicit human verification — is also part of that canonical predicate and
+// was previously unguarded at both stamp sites in this file.
+test('humanReviewedWrongProduction===false blocks the wrongProduction stamp (date-guard branch)', () => {
+  const fx = makeFixture();
+  try {
+    const data = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    delete data.theatreRecordUrl;
+    data.humanReviewedWrongProduction = false;
+    fs.writeFileSync(fx.reviewPath, JSON.stringify(data, null, 2));
+
+    const out = runFlagger(fx, ['--apply']);
+    assert.doesNotMatch(out, /Flagged \(early\):\s*1/, 'must not count this as a flagged review');
+    assert.match(out, /Skipped \(override\/manual clear breadcrumb\):\s*1/);
+
+    const after = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    assert.notEqual(after.wrongProduction, true, 'wrongProduction must stay unset — a human verification must not be overridden');
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});
+
+test('stale wrongProductionOverride breadcrumb blocks the wrongProduction stamp (dateless-revival branch)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'flag-wrong-production-by-date-'));
+  try {
+    const reviewTextsDir = path.join(tmp, 'review-texts');
+    // Multi-production title: two show ids sharing the same base title, so
+    // buildMultiProductionTitleIds() flags showId as a revival candidate.
+    const showId = 'anansi-the-spider-revival-2027-fixture';
+    const showDir = path.join(reviewTextsDir, showId);
+    fs.mkdirSync(showDir, { recursive: true });
+
+    const fixtureShowsFile = path.join(tmp, 'fixture-shows.json');
+    fs.writeFileSync(fixtureShowsFile, JSON.stringify({
+      shows: {
+        [showId]: {
+          id: showId,
+          title: 'Anansi the Spider (Revival)',
+          category: 'off-broadway',
+          previewsStartDate: '2099-05-11',
+          openingDate: '2099-05-20',
+        },
+        [`${showId}-orig`]: {
+          id: `${showId}-orig`,
+          title: 'Anansi the Spider',
+          category: 'off-broadway',
+          previewsStartDate: '2020-05-11',
+          openingDate: '2020-05-20',
+          closingDate: '2020-06-20',
+        },
+      },
+    }));
+
+    const reviewPath = path.join(showDir, 'outlet--critic.json');
+    fs.writeFileSync(reviewPath, JSON.stringify({
+      outlet: 'Fixture Outlet',
+      outletId: 'fixture-outlet',
+      wrongProductionOverride: true,
+      wrongProductionOverrideReason: 'verified correct production (fixture)',
+      fullText: 'A four-star review with no publish date.',
+    }, null, 2));
+
+    const out = runFlagger({ reviewTextsDir, fixtureShowsFile }, ['--apply']);
+    assert.doesNotMatch(out, /Held \(dateless revival\):\s*1/, 'must not count this as a dateless-revival flag');
+    assert.match(out, /Skipped \(override\/manual clear breadcrumb\):\s*1/);
+
+    const after = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+    assert.notEqual(after.wrongProduction, true, 'wrongProduction must stay unset');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
