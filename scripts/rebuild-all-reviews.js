@@ -5645,15 +5645,24 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     }
   }
 
-  // Build a URL → domain map from existing reviews to auto-populate domain field
-  const outletDomainHints = {};
+  // Build a URL → domain map from existing reviews to auto-populate domain field.
+  // Collects ALL urls per outletId (not just the first) so a blocked/junk host
+  // (facebook.com, an aggregator) encountered before the real outlet URL can't
+  // win the hint — inferOutletDomainHint filters those out and majority-votes
+  // the rest (task #766: a wrong "first URL wins" hint is how a domainless
+  // outlet's registry entry could get seeded with the wrong domain).
+  const { inferOutletDomainHint } = require('./lib/outlet-domain-hint');
+  const outletUrlsSeen = {};
   for (const r of allReviews) {
-    if (r.outletId && r.url && !outletDomainHints[r.outletId]) {
-      try {
-        const hostname = new URL(r.url).hostname.replace(/^www\./, '');
-        if (hostname) outletDomainHints[r.outletId] = hostname;
-      } catch (e) { /* ignore invalid URLs */ }
+    if (r.outletId && r.url) {
+      if (!outletUrlsSeen[r.outletId]) outletUrlsSeen[r.outletId] = [];
+      outletUrlsSeen[r.outletId].push(r.url);
     }
+  }
+  const outletDomainHints = {};
+  for (const [outletId, urls] of Object.entries(outletUrlsSeen)) {
+    const hint = inferOutletDomainHint(urls);
+    if (hint) outletDomainHints[outletId] = hint;
   }
 
   // Show-category evidence per outlet, for inferOutletRegionFromCategories — both

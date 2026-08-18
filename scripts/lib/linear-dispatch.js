@@ -73,6 +73,11 @@ function buildIssueQuery() {
 // truncation. Revisit the live-fetch choice itself only if a caller needs
 // --list fast enough to run in a tight loop (a live GraphQL round trip every
 // call does not scale to that).
+// labels(first: 20): matches buildIssueQuery's cap above — an issue with
+// more labels than that silently drops the extras from mac-only routing and
+// (BRO-282) the awaiting-owner digest check. Realistic label counts on this
+// board are 1-3; this is a cheap ceiling raise, not a guarantee for
+// pathological cases (ship-check finding, BRO-282).
 function buildOpenIssuesQuery() {
   return `query($teamKey: String!, $after: String) {
     issues(
@@ -88,7 +93,7 @@ function buildOpenIssuesQuery() {
         url
         updatedAt
         state { name type }
-        labels(first: 10) { nodes { name } }
+        labels(first: 20) { nodes { name } }
       }
       pageInfo { hasNextPage endCursor }
     }

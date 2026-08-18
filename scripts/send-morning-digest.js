@@ -369,6 +369,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       : `<p style="font-size:12px;color:#15803d;margin:0 0 12px;">${esc(trunkLine.text)}</p>`);
   }
   if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
+  // Waiting on your approval (BRO-282) — Linear issues carrying the
+  // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
+  // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
+  // above (session-scoped cmux state, dies with the tab): this is
+  // issue-scoped and survives the originating session closing.
+  if (sections.awaitingOwner) blocks.push(renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
@@ -546,6 +552,27 @@ async function main() {
     if (snap && snap.items.length) sections.needsYou = snap;
   } catch (err) {
     console.error(`[digest] WARN needs-you snapshot failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Waiting on your approval (BRO-282) — Linear issues carrying the
+  // 'awaiting-owner' label (see scripts/lib/owner-approval-channel.js for why
+  // this is a distinct label from "In Review"). Live fetch, fail-soft: a
+  // Linear outage must never block the digest. Raced against a 15s timeout
+  // rather than relying on listOpenIssues()'s own retry budget (up to 5
+  // attempts, each capable of a 60s backoff — fine for a human waiting on a
+  // CLI list, but a degraded Linear API must not delay the whole 7:30am send
+  // by minutes; ship-check finding, BRO-282). The race is local to this call
+  // site, not a change to listOpenIssues()'s shared retry defaults, which
+  // other callers (linear-next.js --list) still want in full.
+  try {
+    const linear = require('./lib/linear-client.js');
+    const { buildAwaitingOwnerSection } = require('./lib/owner-approval-channel.js');
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
+    const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
+    const section = buildAwaitingOwnerSection(issues);
+    if (section) sections.awaitingOwner = section;
+  } catch (err) {
+    console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
   }
 
   const problemsNote = describeProblems(problems);

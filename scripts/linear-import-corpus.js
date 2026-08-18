@@ -296,22 +296,14 @@ async function ensureLabels(names, teamId, { apply }) {
       created.push(name);
       continue;
     }
-    try {
-      const label = await linear.createLabel(name, teamId);
-      byLower.set(name.toLowerCase(), label);
-      byName.set(name, label);
-      created.push(name);
-    } catch (err) {
-      // Another session (or a partially-applied earlier run) created it between
-      // the read and the write. Re-read and use it rather than dying: a label
-      // that exists is the post-condition we wanted.
-      if (!/duplicate label name/i.test(err.message || '')) throw err;
-      const refreshed = await linear.listLabels(teamId);
-      const found = refreshed.find((l) => l.name.toLowerCase() === name.toLowerCase());
-      if (!found) throw err;
-      byLower.set(name.toLowerCase(), found);
-      byName.set(name, found);
-    }
+    // findOrCreateLabel already owns the create-race retry (BRO-282) — reused
+    // rather than reimplemented. The case-insensitive matching above is what it
+    // does NOT do: it looks names up by exact match, which is why `bug` against
+    // an existing `Bug` has to be resolved here before it is ever called.
+    const label = await linear.findOrCreateLabel(teamId, name);
+    byLower.set(name.toLowerCase(), label);
+    byName.set(name, label);
+    created.push(name);
   }
   return { byName, created, reusedWithDifferentCase };
 }
@@ -352,25 +344,19 @@ async function runRollback({ ledgerPath, apply, spacingMs }) {
   const stateByName = new Map(team.states.nodes.map((s) => [s.name, s.id]));
   const canceledId = stateByName.get('Canceled') || stateByName.get('Cancelled');
   if (!canceledId) throw new Error('no Canceled workflow state in this team');
-  const { byName } = await ensureLabels([rules.ROLLBACK_LABEL], team.id, { apply: true });
-  const rollbackLabelId = byName.get(rules.ROLLBACK_LABEL).id;
+  const rollbackLabelId = (await linear.findOrCreateLabel(team.id, rules.ROLLBACK_LABEL)).id;
 
   let cancelled = 0;
   for (const r of mine) {
     // labelIds REPLACES the label set, it does not add to it. Passing only the
     // rollback label strips `notion-archive` off every archived card, so a
     // rolled-back import stops being findable by the filter it was imported
-    // under — the rehearsal on BRO-416 showed exactly that. Read the current
-    // labels and append.
-    const current = await linear.graphql(
-      `query($id: String!) { issue(id: $id) { labels { nodes { id } } } }`,
-      { id: r.linearId }
-    );
-    const keep = ((current.issue && current.issue.labels.nodes) || []).map((l) => l.id);
-    await linear.updateIssue(r.linearId, {
-      stateId: canceledId,
-      labelIds: [...new Set([...keep, rollbackLabelId])],
-    });
+    // under — the rehearsal on BRO-416 showed exactly that. addLabelToIssue is
+    // the repo's existing additive primitive (BRO-282): it re-reads the current
+    // labels immediately before the write, so it is used here rather than a
+    // second hand-rolled read-modify-write.
+    await linear.updateIssue(r.linearId, { stateId: canceledId });
+    await linear.addLabelToIssue(r.linearId, rollbackLabelId);
     ledgerLib.appendRow(ledgerPath, ledgerLib.makeRow({
       pageId: r.pageId, linearId: r.linearId, identifier: r.identifier, title: r.title,
       source: 'corpus-import-rollback', retiredReason: 'rollback',

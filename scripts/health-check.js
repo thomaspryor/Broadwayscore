@@ -41,6 +41,7 @@ const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -2112,6 +2113,139 @@ async function checkAlertRouterDeadman(isCI) {
   }];
 }
 
+// --- Category I4: Main Red Streak (task #1748) ---
+//
+// On 2026-08-17, main's Test Suite failed continuously from 04:05 to ~15:40 —
+// roughly eight hours across dozens of pushes by many sessions — and nothing
+// alarmed. checkCronHealth()'s existing test.yml row only asks "has ANY run
+// succeeded in the last 48h" — an 8h streak never crosses that window, so it
+// stayed silent the whole time. This asks a different question: how long has
+// it been since main was last green, and alarms well inside that window.
+//
+// Predicate lives in scripts/lib/main-red-streak.js (pure, fixture-tested);
+// this function does the `gh` I/O only. Job/step detail (needed to tell a
+// real failure from an infra-only "Set up job" flake) is fetched ONLY for
+// runs that look red at the run-list level — bounded, so a long-healthy main
+// costs one API call, and a real incident costs a handful, not one per run.
+async function checkMainRedStreak(isCI) {
+  const NAME = 'Main: red streak';
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+
+  const THRESHOLD_HOURS = 2;
+  const RUN_LIMIT = 30; // "dozens of pushes" during the 2026-08-17 incident
+  const MAX_JOB_DETAIL_CALLS = 10; // cap gh run view calls even on a very long streak
+
+  try {
+    const listResult = cachedShell(
+      'main-red-streak:test.yml',
+      `gh run list --workflow="test.yml" --branch=main --limit=${RUN_LIMIT} --json databaseId,headSha,createdAt,conclusion`
+    );
+    const rawRuns = listResult ? JSON.parse(listResult) : [];
+    if (!rawRuns.length) {
+      return [{ name: NAME, status: 'warn', message: 'No Test Suite runs found on main' }];
+    }
+
+    // First pass with no job detail: find the contiguous non-success streak
+    // from the newest run backward, so job-detail fetches are bounded to
+    // runs that are actually candidates, not all RUN_LIMIT of them. A
+    // still-running run (conclusion null) doesn't end the scan — a real red
+    // run can sit behind it — but it also isn't a fetch candidate: classify()
+    // treats null as neutral with zero job evidence needed.
+    let candidateCount = 0;
+    while (candidateCount < rawRuns.length && rawRuns[candidateCount].conclusion !== 'success') candidateCount++;
+
+    const runs = rawRuns.map((r, idx) => ({
+      headSha: r.headSha,
+      createdAt: r.createdAt,
+      conclusion: r.conclusion,
+    }));
+
+    if (candidateCount > 0 && !hasLowHeadroom()) {
+      let fetched = 0;
+      // OLDEST candidate first (code-review finding): the oldest run in the
+      // streak becomes `firstRedSha` — the exact commit named in the alarm —
+      // so it must not be the one MAX_JOB_DETAIL_CALLS leaves without
+      // evidence on a streak longer than the cap. The newest runs matter
+      // less individually; their raw conclusion already proves the streak
+      // exists even without job detail.
+      for (let idx = candidateCount - 1; idx >= 0 && fetched < MAX_JOB_DETAIL_CALLS; idx--) {
+        if (!rawRuns[idx].conclusion) continue; // still running (gh reports '', not null) — no job evidence to fetch yet
+        fetched++;
+        try {
+          const jobsResult = cachedShell(
+            `main-red-streak:jobs:${rawRuns[idx].databaseId}`,
+            `gh run view ${rawRuns[idx].databaseId} --json jobs`
+          );
+          const parsed = jobsResult ? JSON.parse(jobsResult) : null;
+          if (parsed?.jobs) runs[idx].jobs = parsed.jobs;
+        } catch (err) {
+          console.error(`[Main red streak] gh run view failed for ${rawRuns[idx].databaseId}: ${err.message}`);
+        }
+      }
+    }
+
+    const assessment = assessMainRedStreak(runs, Date.now(), THRESHOLD_HOURS);
+
+    if (!assessment.alarm) {
+      // redStreakHours can be null even with redRunCount > 0 (the anchor
+      // run's createdAt failed to parse) — code-review finding: reporting
+      // 'pass' with a garbled "undefinedh" message would silently hide a
+      // real data-quality problem instead of surfacing it.
+      if (assessment.redRunCount > 0 && assessment.redStreakHours === null) {
+        return [{ name: NAME, status: 'warn', message: `${assessment.redRunCount} red run(s) but could not compute time since last green (unparseable createdAt) — check gh run list output` }];
+      }
+      const msg = assessment.redRunCount > 0
+        ? `${assessment.redRunCount} red run(s), ${assessment.redStreakHours.toFixed(1)}h since last green — under the ${THRESHOLD_HOURS}h threshold`
+        : 'Last run green';
+      return [{ name: NAME, status: 'pass', message: msg }];
+    }
+
+    // Actionable, not just "main is red" — the alarm string already names
+    // the failing job and the FIRST red commit (CLAUDE.md: alerts must be
+    // ACTION-only). File through the alert router rather than a new email
+    // path (task #1748's suggested approach) — 'auto' because diagnosing a
+    // failing test is machine-investigable, same tier as Cron failed:/etc.
+    //
+    // conditionKey is deliberately the SAME 'test-yml:main-streak' key
+    // test.yml's own "Detect consecutive main test failures" step uses
+    // (.github/workflows/test.yml) — not a new one keyed on firstRedSha.
+    // Sharing it means both detectors track ONE incident: routeAlert's
+    // findLinearDuplicate + ledger cooldown (scripts/lib/owner-alert-
+    // router.js) refuse to double-file a tracked issue that's already open,
+    // whichever mechanism opened it. This check exists specifically as a
+    // BACKSTOP for that push-triggered mechanism (it depends on a push
+    // landing on main and on its `needs:` list covering every job that can
+    // fail — task #1690 was exactly that gap) — reusing its key means this
+    // check still closes the loop even when the other one is the one that
+    // missed. A shorter cooldownHours here (vs its 7-day default) makes this
+    // the higher-cadence "is this still open" nag between health-check.js
+    // runs, which happen far more often than pushes to main.
+    if (isCI) {
+      try {
+        await routeAlert({
+          conditionKey: 'test-yml:main-streak',
+          title: `Main test.yml red — no confirmed-green run in ${assessment.redStreakHours.toFixed(1)}h`,
+          description: assessment.alarm,
+          hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
+          severity: 'error',
+          disposition: 'auto',
+          cardAction: 'Fix',
+          fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
+          cooldownHours: 6,
+        });
+      } catch (err) {
+        console.error(`[Main red streak] routeAlert failed: ${err.message}`);
+      }
+    }
+
+    return [{ name: NAME, status: 'error', message: assessment.alarm }];
+  } catch (err) {
+    return [{ name: NAME, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` }];
+  }
+}
+
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
 //
 // The owner received a near-identical morning digest 13 days running. Cause: the
@@ -4179,7 +4313,7 @@ function saveHistory(history) {
 
 // --- Main ---
 
-// The 22 checks that make up the CORE digest (isCI-gated side effects, plus
+// The checks that make up the CORE digest (isCI-gated side effects, plus
 // checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
 // this same list can be re-run live and read-only by
 // scripts/lib/health-row-probe.js — see its header for why check-health-row-
@@ -4201,6 +4335,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCWV(),
     ...checkSEO(),
     ...checkCronHealth(),
+    ...(await checkMainRedStreak(isCI)),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
@@ -4447,4 +4582,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };

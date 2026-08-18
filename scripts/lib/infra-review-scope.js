@@ -149,6 +149,13 @@ const SHARED_INFRA_RULES = [
     why: 'gates merges and deploys for every branch and session; a defect here lands main red, blocks prod, or merges a bad branch unattended',
   },
   {
+    id: 'branch-protection',
+    tier: 'critical',
+    label: 'branch protection config',
+    re: /^scripts\/setup-branch-protection\.js$/,
+    why: 'changes what GitHub allows onto main fleet-wide; BRO-378 found the literal "required PR" ask breaks ~300 direct-push workflows — a defect here is a repo-wide outage or a silently unenforced gate',
+  },
+  {
     id: 'ci',
     tier: 'shared',
     label: 'CI workflow',

@@ -69,9 +69,21 @@ test('title-overlap-check — a fabricated claim against zero real overlap is NO
   assert.equal(check('🤖⚡ Infra·P1: a card nobody ever launched a tab for', 'some other tab').out, 'NOMATCH');
 });
 
-test('title-overlap-check — the <20-char bar is preserved, glyph or not', () => {
-  // Short titles must not match on a few incidental characters.
-  assert.equal(check('🤖⚡ Data·ab', '🤖⚡ Data·ab').out, 'NOMATCH');
+test('title-overlap-check — a SHORT title can still claim itself (residual false block)', () => {
+  // Reviewer finding: the >=20-char floor meant a legitimately short tab could
+  // not claim itself either — the same false-block class, just rarer. An exact
+  // post-normalization match is the strongest evidence the tab exists, so the
+  // floor has nothing to protect against there.
+  const SHORT = '🤖⚡ Infra·P0: CI is red';
+  assert.equal(check(SHORT, SHORT).out, 'MATCH');
+});
+
+test('title-overlap-check — the <20-char floor still blocks NON-exact short matches', () => {
+  // The floor exists so a few incidental characters cannot pass. Two DIFFERENT
+  // short titles must still be NOMATCH — the exact-match arm must not become a
+  // general escape hatch.
+  assert.equal(check('🤖⚡ Data·ab', '🤖⚡ Data·zz').out, 'NOMATCH');
+  assert.equal(check('🤖⚡ Data·ab', '🤖⚡ Data·abc').out, 'NOMATCH');
 });
 
 test('title-overlap-check — a missing argument still exits 2, never 1', () => {
