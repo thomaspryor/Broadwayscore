@@ -96,6 +96,14 @@ function claudeBinCandidates(env) {
 
 function isExecutablePath(p) {
   try {
+    // statSync BEFORE accessSync: a DIRECTORY passes X_OK whenever it has
+    // search permission (verified 2026-08-18 — `fs.accessSync(dir, X_OK)`
+    // returns cleanly, then spawning it fails EACCES). Without the isFile
+    // guard a directory named `claude` at an earlier candidate path would
+    // shadow the real binary later in the list, and the resulting EACCES
+    // would point at the wrong cause — the exact silent-misresolution this
+    // resolver exists to prevent (ship-check finding, gpt-5.4-mini).
+    if (!fs.statSync(p).isFile()) return false;
     fs.accessSync(p, fs.constants.X_OK);
     return true;
   } catch {

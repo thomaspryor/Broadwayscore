@@ -281,6 +281,24 @@ test('resolveClaudeBin: falls back to the bare string "claude" when nothing reso
   assert.equal(got, 'claude');
 });
 
+test('resolveClaudeBin: a DIRECTORY named claude never shadows a real binary later in the list', () => {
+  // fs.accessSync(dir, X_OK) succeeds on any directory with search permission,
+  // so an accessSync-only check selects the directory and then dies EACCES at
+  // spawn — pointing at the wrong cause. Verified 2026-08-18; regression guard
+  // for the ship-check finding on task #1768.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-bin-dir-'));
+  const decoy = path.join(dir, 'claude');
+  fs.mkdirSync(decoy);                       // a DIRECTORY, not a file
+  const real = path.join(dir, 'real-claude');
+  fs.writeFileSync(real, '#!/bin/sh\necho ok\n');
+  fs.chmodSync(real, 0o755);
+
+  // Decoy first in preference order — it must be skipped, not selected.
+  const got = resolveClaudeBin({ HOME: dir }, [decoy, real]);
+
+  assert.equal(got, real, 'directory candidate must be skipped in favour of the real executable');
+});
+
 test('resolveClaudeBin: HOME missing from env still resolves (same os.homedir() fallback as strippedEnv)', () => {
   const got = resolveClaudeBin({});
   assert.ok(typeof got === 'string' && got.length > 0);
