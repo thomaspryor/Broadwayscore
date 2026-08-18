@@ -199,15 +199,19 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // LBO root ticket slugs (/now-you-see-me-tickets); its reviews live under
   // /news/ (e.g. /news/post/cats-review — a real captured review).
   { host: /(^|\.)londonboxoffice\.co\.uk$/, path: /^\/[^/]*-tickets\/?$/, reason: 'ticketing-listing' },
-  // task #1756 (main-red incident): audit-aggregator-gap auto-ingested both
-  // of these as "reviews" for jeeves-takes-charge-west-end-2026 — box-office
-  // pricing text and a broken map widget, 0 usable words, never scored. Same
-  // producer's-own-site shape as mischiefcomedy.com above: a venue never
-  // reviews the show it's hosting. londontopia.net is scoped to its
-  // /london-events/ listing path, not host-wide — unconfirmed whether it
-  // publishes real coverage elsewhere.
+  // task #1756 (main-red incident): audit-aggregator-gap auto-ingested all
+  // three of these as "reviews" for jeeves-takes-charge-west-end-2026 —
+  // box-office pricing text, a broken map widget, and a hotel-break booking
+  // affiliate page, 0 usable words, never scored. Same producer's-own-site
+  // shape as mischiefcomedy.com above: a venue/hotel-package reseller never
+  // reviews the show it's hosting/selling. Deleting the ingested files alone
+  // didn't stick — the next Gather Review Data run re-ingested hoteldirect
+  // within the hour — so these are excluded at discovery time, host-wide.
+  // londontopia.net is scoped to its /london-events/ listing path, not
+  // host-wide — unconfirmed whether it publishes real coverage elsewhere.
   { host: /(^|\.)charingcrosstheatre\.co\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)londontopia\.net$/, path: /^\/london-events\//, reason: 'event-listing' },
+  { host: /(^|\.)hoteldirect\.co\.uk$/, reason: 'ticketing-reseller' },
 ];
 
 /**
