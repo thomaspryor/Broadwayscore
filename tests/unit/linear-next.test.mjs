@@ -467,6 +467,7 @@ test('main(): refuses to dispatch a completed issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
     }), /EXIT/);
@@ -488,6 +489,7 @@ test('main(): refuses to dispatch a canceled issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('canceled', 'Canceled'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
     }), /EXIT/);
@@ -525,6 +527,7 @@ test('main(): a non-terminal issue is unaffected by the guard (dry-run reaches t
   try {
     await main(['--id', 'BRO-1517', '--dry-run'], {
       getIssue: async () => makeTerminalIssue('unstarted', 'Todo'),
+      appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
     });
@@ -546,6 +549,7 @@ test('main(): --dry-run on a completed issue still previews (terminal-state guar
   try {
     await main(['--id', 'BRO-1517', '--dry-run'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
+      appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
     });

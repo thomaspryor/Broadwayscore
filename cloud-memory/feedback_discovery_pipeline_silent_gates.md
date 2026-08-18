@@ -61,3 +61,21 @@ Concretely: The Stage's review of the **Ustinov Studio Bath** run (URL literally
 **Detect:** on any opening night, before trusting a score, list the show's reviews.json rows and read their **URL slugs for a venue name**. A slug naming a venue that is not the show's venue is the tell — `contentTier: stub` + `publishDate: null` + `originalScore` present is the high-risk shape, because it bypasses body-based guards entirely.
 **Fix applied:** set `wrongProduction: true` + `wrongProductionReason` (manual prose, so the dateless-revival auto-clear respects it) + `manualWrongProductionFlag/FlaggedAt/FlaggedBy`. review-texts `6de3154ff68`.
 **Systemic prevention wanted:** a validate-data/CI gate that fails when a show's scored rows include a URL whose venue token does not match the show's venue and the show declares no `priorRuns`.
+
+---
+
+## Gate: an alerting exit code gates the commit that carries the data (2 instances in one night, 2026-08-18)
+
+Not a discovery gate — a **delivery** gate, and it hides as a deploy problem. A workflow runs an audit/validation script, then commits the data the script produced. The script exits non-zero on a *condition it is designed to report* (residual review gaps, validation errors), and that exit takes down the commit step with it. The workflow "fails", the data never lands, and the last-good file stays live indefinitely.
+
+**Instance 1 — `update-show-status.yml`:** `validate-data.js` exited 2 on a duplicate same-title show pair, blocking the commit, so NO status flips persisted — including `previews`→`open` for opening-night shows. Self-regenerating: the offending entry was recreated by discovery each run and died with each blocked commit. 4 consecutive daily failures (task #1786, fixed by dedupe).
+
+**Instance 2 — `audit-aggregator-gap.yml`:** `audit-opening-night-coverage.js --write-ledger` exits 1 when it finds residual review gaps — which is the *normal* state (31 shows had them). Steps "Run gap audit" and "Commit audit JSON (public repo)" both fail, so the coverage/census ledger never commits. 3+ consecutive failures 2026-08-18 (32163322625, 32168356295, 32174979536). Task #1791.
+
+**The tell that saves the most time:** prod slim JSON `cov.computedAt` frozen days back *while deploys are landing fresh*. Run `set -a && . ./.env; set +a && node scripts/check-prod-deploy.js HEAD` — if it reports a READY production deployment minutes old, the deploy leg is innocent and the writer upstream is the break. Then `git log -- data/audit/` (or the relevant data path): no commits from that workflow = confirmed. Do not spend a pass suspecting Vercel.
+
+**Detect generally:** grep `.github/workflows` for a commit/push step that follows a script exiting non-zero on a data-quality condition, and that lacks `if: always()`.
+
+**Prevention shape:** alert conditions set a step *output*, never the process exit code; the commit step is `if: always()`; a dedicated final step reads the output and decides whether to fail the run, AFTER the commit has landed.
+
+**Launchd gotcha that masks all of this:** under launchd the shell has no env, so `check-prod-deploy.js` prints "VERCEL_TOKEN not set" and **exits 0** — it looks like a pass. Always `set -a && . ./.env; set +a` first in a headless pass.
