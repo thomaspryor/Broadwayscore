@@ -59,9 +59,25 @@ try {
  * DISPATCHED: claim for any 🤖 workspace was unreportable, which is exactly the
  * false BLOCK this file's own header says must never happen.
  *
- * Fix: also try the subject normalized the same way the title already is. This
- * cannot weaken the gate — a match still requires >=20 characters of real
- * overlap with a LIVE workspace title. It only removes a false negative.
+ * Fix: also try the subject normalized the same way the title already is, and
+ * accept an EXACT post-normalization equality regardless of length.
+ *
+ * Why the exact-match arm: titleMatchesSubject enforces a >=20-char floor, so a
+ * legitimately short tab ("🤖⚡ Infra·P0: CI is red") still could not claim
+ * itself — the same false-block class, just rarer. A claim that is byte-identical
+ * to a live title after the SAME normalization is the strongest possible
+ * evidence the tab exists, so the length floor has nothing left to protect
+ * against there. The floor still applies to every non-exact comparison, which is
+ * what stops a few incidental characters from matching.
+ *
+ * Honest limit (a reviewer corrected an earlier, overconfident comment here):
+ * this does NOT leave the gate exactly as strict. Normalization removes the
+ * activity glyph and the "<Project>·" prefix from BOTH sides, so a claim that
+ * misnames the project or model glyph — "🤖⚡ Infra·P1: …" against a live
+ * "🤖🔮 Data·P1: …" — now matches. That is acceptable for what Gate P actually
+ * asserts ("a workspace with this work in it is running"), but it does mean Gate
+ * P no longer proves the quoted string is character-for-character some live
+ * tab's title. Gate W is what enforces the exact-title rule.
  */
 function normalizedSubjectVariants(s) {
   const raw = String(s || '');
@@ -70,7 +86,14 @@ function normalizedSubjectVariants(s) {
 }
 
 const subjects = normalizedSubjectVariants(subject);
-if (titles.some(t => subjects.some(s => titleMatchesSubject(t, s)))) {
+const normalizedTitle = (t) => stripAutoPrefix(String(t || '').replace(/^[^\p{L}\p{N}[]+/u, ''));
+const claimedNormalized = subjects.map(normalizedTitle);
+const exactAfterNormalization = (t) => {
+  const n = normalizedTitle(t);
+  return n.length > 0 && claimedNormalized.includes(n);
+};
+
+if (titles.some(t => exactAfterNormalization(t) || subjects.some(s => titleMatchesSubject(t, s)))) {
   console.log('MATCH');
   process.exit(0);
 }
