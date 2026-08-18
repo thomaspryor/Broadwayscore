@@ -484,8 +484,8 @@ test('runSuccessionDispatch: a card Notion says is Done is refused before any wo
   fs.unlinkSync(handoffPath);
 });
 
-test('runSuccessionDispatch: --allow-closed-card still lets a deliberate succession through', () => {
-  const { launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+test('runSuccessionDispatch: --allow-closed-card dispatches AND is recorded in the ledger', () => {
+  const { ledger, launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
   const task = { id: '858', subject: 'deliberate succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
   const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-ok-${process.pid}.md`);
   fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
@@ -493,6 +493,10 @@ test('runSuccessionDispatch: --allow-closed-card still lets a deliberate success
   const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath, 'allow-closed-card': true });
   assert.equal(r.exitCode, null, 'the explicit override must not be refused');
   assert.equal(launched.length, 1, 'the override actually dispatches');
+  // The refusal message promises the override is "recorded in the ledger".
+  // It was not, until this test existed — nothing wrote the field at all.
+  const launch = ledger.filter(e => e.event === 'launch').slice(-1)[0];
+  assert.equal(launch.allowClosedCard, true, 'deliberately dispatching onto a closed card must be auditable');
 
   fs.unlinkSync(handoffPath);
 });

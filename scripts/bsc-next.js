@@ -538,6 +538,9 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
     try {
       appendLedgerEntryFn({
         event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
+        // Task #1790: the closed-card override is auditable, as its refusal
+        // message promises. Null unless someone deliberately passed the flag.
+        allowClosedCard: args['allow-closed-card'] || null,
         verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
         notionId: pid || null, adoptedLate: res.adoptedLate || null,
         // Card #1009: hash of the card body this session was seeded with, so a
@@ -1162,7 +1165,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1253,7 +1256,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     // Card #705: report WHICH failure this is. "LAUNCH NOT VERIFIED" for a
