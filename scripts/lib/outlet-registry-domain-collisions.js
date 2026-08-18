@@ -59,18 +59,6 @@ const DECLARED_ALIAS_OVERLAPS = [
   // review-texts-WIP reason as above — see Notion card for the follow-up
   // merge.
   ['chicago-sun-times', 'suntimes'],
-  // CONFIRMED accidental registry duplicate, not yet merged. the-herald and
-  // herald are both The Herald (Glasgow/Herald Scotland): same host
-  // (heraldscotland.com), overlapping critic roster (Neil Cooper, William
-  // Russell appear under both outletIds in data/review-texts). the-herald
-  // (aliases sundayherald/sunday-herald, accessModel defunct) carries the
-  // active corpus — 21+ review-text files vs. herald's 27, both real, split
-  // across the same critics' bylines — but zero live reviews.json rows
-  // currently resolve to outletId "herald" specifically. Predates task #766;
-  // surfaced only once the-herald was given a real domain (2026-08-17) and
-  // the collision gate could see them share one host for the first time.
-  // Declared (not merged) — see Notion card #766 for the follow-up merge.
-  ['the-herald', 'herald'],
 ];
 
 function normalizeDomain(d) {
