@@ -199,6 +199,59 @@ function staleOutcomeGuard(task, card, opts) {
     `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
 }
 
+// ── Closed-card guard (task #1790, the stall-sweep half of the mirror problem) ──
+// The local task mirror is NOT authoritative about whether a card is still
+// open. `notion-tasks-sync.js pull` only teaches the mirror about cards it
+// pulls, and a Done card drops out of that set entirely, so a card closed in
+// Notion can sit at status 'in_progress' locally indefinitely.
+// reconcileStaleMirrors (notion-tasks-sync.js:923) rotates through the
+// backlog and eventually corrects each entry, but bsc-reconcile.js's stall
+// sweep fires faster than rotation reaches any given entry — measured live
+// 2026-08-18, a card closed at 20:08 was relaunched at 20:43 and pruned again
+// at 20:45, twice inside 40 minutes.
+//
+// The fix belongs HERE rather than in the sweep because bsc-next.js already
+// fetches the authoritative card on every dispatch (`fetchCardFn(pid)`, just
+// above staleOutcomeGuard's call site) — so this costs ZERO extra Notion
+// calls and covers every dispatcher at once: the stall sweep, a hand-run
+// `--id`, digest-autofix, and the #853 dead-tab redispatch. Putting a second
+// Notion client inside the sweep would have fixed exactly one caller.
+//
+// Deliberate scope decisions, each pinned by a test:
+//   * `card == null` (the Notion fetch degraded) ALLOWS. This guard only ever
+//     fires on a POSITIVE closed reading. A refusal-on-unknown would let a
+//     Notion outage starve the sweep's 2-per-tick budget and block genuinely
+//     stalled tasks from ever healing — and it matches bsc-next.js's existing
+//     "refuse only when the full card is in hand" precedent.
+//   * "Paused" is NOT closed. mapStatus (notion-tasks-sync.js:104-110) folds
+//     Paused into the dispatchable 'pending' lane, so treating it as closed
+//     would be a policy change about which cards are workable, not a
+//     stale-mirror fix.
+//   * `--force` does NOT bypass this. --force exists to override the
+//     duplicate-workspace guard; a closed card is never something it should
+//     override, and bsc-reconcile.js's #853 path (redispatchArgv:176-178) is
+//     precisely where the stale-mirror bug also bites. The escape hatch is its
+//     own explicit, ledger-visible flag, mirroring --allow-unverifiable.
+const CLOSED_CARD_STATUSES = new Set(['done', 'cancelled', 'canceled']);
+
+function closedCardGuard(task, card, opts) {
+  const o = opts || {};
+  if (o['allow-closed-card'] || o['dry-run'] || o['print-prompt']) return null;
+  if (!card) return null; // degraded fetch — honest unknown, never a refusal
+  const status = String(card.status || '').trim().toLowerCase();
+  if (!CLOSED_CARD_STATUSES.has(status)) return null;
+  const pid = notionIdOf(task);
+  return `REFUSING to dispatch #${task.id}: its Notion card is already ${card.status} — the local task ` +
+    `mirror still reads "${(task && task.status) || 'unknown'}", but Notion is the source of truth and the ` +
+    `mirror has not caught up yet (a Done card drops out of the pull set, so \`notion-tasks-sync.js pull\` ` +
+    `alone never corrects it). Dispatching would relaunch closed work.\n` +
+    `  Fix one of:\n` +
+    `    1. Nothing — the work is done. Correct the mirror: node scripts/notion-tasks-sync.js pull` +
+      `${pid ? ` (or re-open the card: node scripts/notion-brain.js update ${pid} --status "In progress")` : ''}.\n` +
+    `    2. Re-open the card in Notion if there is genuinely more to do, then dispatch again.\n` +
+    `    3. Re-run with --allow-closed-card to dispatch anyway (recorded in the ledger).`;
+}
+
 // Pure composition of the self-heal + refusal check (no I/O — the caller does
 // the actual ledger append and process.exit). Split out so the burst scenario
 // that motivated task #334 is directly unit-testable: waiting for a 'dead'
@@ -609,6 +662,8 @@ module.exports = {
   parkedGuard,
   staleOutcomeGuard,
   isNativeTaskDoneWithoutCard,
+  closedCardGuard,
+  CLOSED_CARD_STATUSES,
   checkDeadDispatch,
   notionIdOf,
   loadLinearMirrorMapping,

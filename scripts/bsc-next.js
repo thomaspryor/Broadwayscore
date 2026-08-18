@@ -50,6 +50,7 @@ Usage:
   bsc-next --model <m>     override the resolved model for this dispatch
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
   bsc-next --allow-unverifiable  dispatch a card with no runnable verify command
+  bsc-next --allow-closed-card   dispatch even though the Notion card is already Done
                            (recorded in the dispatch ledger; recheck lists it as unverifiable)
   bsc-next --allow-human-gated   dispatch --headless even when the card needs a human
                            to finish it (owner visual-qa approval, an owner decision,
@@ -159,6 +160,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 // from the shared lib. See dispatch-guards.js's header for the full rationale.
 const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
+  closedCardGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
@@ -1012,6 +1014,13 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // explicit, ledger-visible per-dispatch override.
   const staleOutcomeErr = staleOutcomeGuard(task, card, args);
   if (staleOutcomeErr) { console.error(staleOutcomeErr); process.exit(1); }
+  // Task #1790: Notion, not the local mirror, decides whether this card is
+  // still open. `card` is the authoritative copy fetched a few lines above, so
+  // this costs nothing extra — and because bsc-reconcile.js's stall sweep
+  // dispatches through here WITHOUT --force (stallRedispatchArgv:186-188),
+  // this single call site is what stops that sweep relaunching closed work.
+  const closedCardErr = closedCardGuard(task, card, args);
+  if (closedCardErr) { console.error(closedCardErr); process.exit(1); }
 
   const gateNotes = (card && card.notes) || task.description || '';
   const gate = evaluateVerifiability(gateNotes);
@@ -1270,4 +1279,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
