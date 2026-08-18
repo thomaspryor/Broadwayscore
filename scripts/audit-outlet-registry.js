@@ -345,6 +345,13 @@ function auditOutletRegistry() {
   for (const [outletId, data] of outletsInReviews) {
     const registryCanonical = registryAliasMap[outletId.toLowerCase()];
     if (!registryCanonical) {
+      // Never suggest a scraping-artifact/sentinel outletId (e.g. "unknown")
+      // for registration — task #1783: an "unknown" registry entry hijacked
+      // every Unknown-prefixed fallback outlet via normalizeOutlet's
+      // concatenated outlet-critic prefix match.
+      if (normalization && normalization.isJunkOutlet && normalization.isJunkOutlet(outletId)) {
+        continue;
+      }
       // Check if the normalization module can resolve this to a known outlet
       let resolvedByNorm = false;
       if (normalization) {
@@ -676,15 +683,32 @@ async function updateRegistry(auditResult) {
 
   // Filter out entries that would shadow existing canonical outlets
   const registry = loadRegistry();
+  const normalization = loadNormalization();
   const safeAdditions = [];
   const skippedShadows = [];
+  const skippedJunk = [];
 
   for (const entry of suggestedAdditions) {
+    // Defense-in-depth (task #1783): the missingFromRegistry scan already
+    // excludes junk/sentinel outletIds like "unknown", but never write one
+    // here either — a poisoned "unknown" entry hijacks every Unknown-prefixed
+    // outlet via normalizeOutlet's concatenated outlet-critic prefix match.
+    if (normalization && normalization.isJunkOutlet && normalization.isJunkOutlet(entry.outletId)) {
+      skippedJunk.push(entry.outletId);
+      continue;
+    }
     const shadowsCanonical = wouldShadowCanonical(entry.outletId, registry);
     if (shadowsCanonical) {
       skippedShadows.push({ outletId: entry.outletId, canonical: shadowsCanonical });
     } else {
       safeAdditions.push(entry);
+    }
+  }
+
+  if (skippedJunk.length > 0) {
+    console.log('\n=== SKIPPED (junk/sentinel outletId, never registered) ===\n');
+    for (const outletId of skippedJunk) {
+      console.log(`  ✗ "${outletId}" → refused, matches isJunkOutlet()`);
     }
   }
 
