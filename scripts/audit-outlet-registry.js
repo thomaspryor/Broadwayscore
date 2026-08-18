@@ -40,6 +40,7 @@ const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -249,7 +250,27 @@ function auditOutletRegistry() {
       // this, every new junk URL the aggregator-gap ingester picks up trips
       // --strict again (task #1756, main red 9h+: charingcrosstheatre,
       // londontopia, hoteldirect all hit this in one show in under a day).
-      if (review.isNonReview === true) continue;
+      //
+      // isNonReviewDemotedByFreshCV guard (task #1756 ship-check finding):
+      // isNonReview:true is NOT a reliable "never scored" signal on its own —
+      // rebuild-all-reviews.js's canonical inclusion predicate (review-guards.js)
+      // ignores a stale isNonReview flag when a newer content-verification pass
+      // affirms the article IS a review (the Telegraph class, #1255), and
+      // nothing re-clears the on-disk flag when that happens. Re-deriving
+      // "isNonReview means excluded" here instead of calling the same function
+      // rebuild-all-reviews.js uses would silently hide a real registry gap for
+      // an outlet that's actually being scored (memory: includability
+      // predicates must be canonical).
+      if (review.isNonReview === true && !isNonReviewDemotedByFreshCV(review)) continue;
+
+      // Same purpose, the OTHER exclusion pipeline: ensemble-scoreability-check
+      // rejects ingest-time junk (ticket-vendor/venue/aggregator/preview pages)
+      // via rejectionReason/contentVerification/contentTier rather than
+      // isNonReview. audit-unknown-outlets.js already treats isRejectedNonReview
+      // as the canonical "this outletId never needs a registry entry" check
+      // (scripts/audit-unknown-outlets.js:55) — mirrored here so this audit
+      // doesn't re-derive its own narrower version of the same predicate.
+      if (isRejectedNonReview(review)) continue;
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {
