@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-16T14:47:30.342Z",
+  "generatedAt": "2026-08-18T04:34:35.172Z",
   "summary": {
-    "totalOutletsInReviews": 1124,
+    "totalOutletsInReviews": 1126,
     "inRegistry": 945,
-    "missing": 179,
-    "unused": 175
+    "missing": 181,
+    "unused": 176
   },
   "missingOutlets": [
     {
@@ -193,6 +193,24 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/allegra-west-end-2026/lovetheatre--unknown.json"
     },
     {
+      "outletId": "openairtheatre",
+      "count": 2,
+      "shows": [
+        "anansi-the-spider-west-end-2026",
+        "cats-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/openairtheatre--unknown.json"
+    },
+    {
+      "outletId": "theatremonkey",
+      "count": 2,
+      "shows": [
+        "anansi-the-spider-west-end-2026",
+        "jeeves-takes-charge-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/theatremonkey--unknown.json"
+    },
+    {
       "outletId": "marquee",
       "count": 2,
       "shows": [
@@ -273,6 +291,15 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/now-you-see-me-live-west-end-2026/theatrebookings--unknown.json"
     },
     {
+      "outletId": "theunforgettableline",
+      "count": 2,
+      "shows": [
+        "sunset-baby-off-broadway-2026",
+        "trophy-boys-off-broadway-2025"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/sunset-baby-off-broadway-2026/theunforgettableline--unknown.json"
+    },
+    {
       "outletId": "lyric",
       "count": 2,
       "shows": [
@@ -349,6 +376,14 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/allegra-west-end-2026/wwwallegraplaycom--unknown.json"
     },
     {
+      "outletId": "birmingham-rep",
+      "count": 1,
+      "shows": [
+        "anansi-the-spider-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/birmingham-rep--unknown.json"
+    },
+    {
       "outletId": "makeitmarylebone",
       "count": 1,
       "shows": [
@@ -357,28 +392,12 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/makeitmarylebone--unknown.json"
     },
     {
-      "outletId": "openairtheatre",
-      "count": 1,
-      "shows": [
-        "anansi-the-spider-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/openairtheatre--unknown.json"
-    },
-    {
       "outletId": "openairtheatreheritage",
       "count": 1,
       "shows": [
         "anansi-the-spider-west-end-2026"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json"
-    },
-    {
-      "outletId": "theatremonkey",
-      "count": 1,
-      "shows": [
-        "anansi-the-spider-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/anansi-the-spider-west-end-2026/theatremonkey--unknown.json"
     },
     {
       "outletId": "unicorntheatre",
@@ -749,14 +768,6 @@
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/hit-machine-off-west-end-2026/sohotheatre--hannah.json"
     },
     {
-      "outletId": "all-allam",
-      "count": 1,
-      "shows": [
-        "how-the-other-half-loves-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
-    },
-    {
       "outletId": "countryandtownhouse",
       "count": 1,
       "shows": [
@@ -811,6 +822,14 @@
         "into-the-woods-west-end-2025"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/the-straits-times--boon-chan.json"
+    },
+    {
+      "outletId": "hoteldirect",
+      "count": 1,
+      "shows": [
+        "jeeves-takes-charge-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/jeeves-takes-charge-west-end-2026/hoteldirect--unknown.json"
     },
     {
       "outletId": "lw-theatres",
@@ -1915,6 +1934,10 @@
       "displayName": "Rnal"
     },
     {
+      "outletId": "the-herald",
+      "displayName": "The Herald"
+    },
+    {
       "outletId": "arkansas-democrat-gazette",
       "displayName": "Arkansas Democrat Gazette"
     },
@@ -2215,8 +2238,8 @@
       "displayName": "Popculturepress"
     },
     {
-      "outletId": "outinjersey",
-      "displayName": "Outinjersey"
+      "outletId": "the-daily-texan",
+      "displayName": "The Daily Texan"
     }
   ],
   "suggestedAdditions": [
@@ -2227,7 +2250,8 @@
       "aliases": [
         "camden-new-journal",
         "camden new journal"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "show-score",
@@ -2235,7 +2259,8 @@
       "tier": 3,
       "aliases": [
         "show-score"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "news-of-the-world",
@@ -2244,7 +2269,8 @@
       "aliases": [
         "news-of-the-world",
         "news of the world"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "tickpick",
@@ -2252,7 +2278,8 @@
       "tier": 3,
       "aliases": [
         "tickpick"
-      ]
+      ],
+      "domain": "tickpick.com"
     },
     {
       "outletId": "bestoftheatre",
@@ -2260,7 +2287,8 @@
       "tier": 3,
       "aliases": [
         "bestoftheatre"
-      ]
+      ],
+      "domain": "bestoftheatre.co.uk"
     },
     {
       "outletId": "eventticketscenter",
@@ -2268,7 +2296,8 @@
       "tier": 3,
       "aliases": [
         "eventticketscenter"
-      ]
+      ],
+      "domain": "eventticketscenter.com"
     },
     {
       "outletId": "primarytimes",
@@ -2276,7 +2305,8 @@
       "tier": 3,
       "aliases": [
         "primarytimes"
-      ]
+      ],
+      "domain": "primarytimes.co.uk"
     },
     {
       "outletId": "buy-tickets",
@@ -2285,7 +2315,8 @@
       "aliases": [
         "buy-tickets",
         "buy tickets"
-      ]
+      ],
+      "domain": "nycitycenter.queue-it.net"
     },
     {
       "outletId": "buy-tickets-directly-from-the-theatre",
@@ -2294,7 +2325,8 @@
       "aliases": [
         "buy-tickets-directly-from-the-theatre",
         "buy tickets directly from the theatre"
-      ]
+      ],
+      "domain": "wyndhamstheatre.co.uk"
     },
     {
       "outletId": "today",
@@ -2302,7 +2334,8 @@
       "tier": 3,
       "aliases": [
         "today"
-      ]
+      ],
+      "domain": "today.com"
     },
     {
       "outletId": "seetickets",
@@ -2310,7 +2343,8 @@
       "tier": 3,
       "aliases": [
         "seetickets"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "broadwayscorecard",
@@ -2318,7 +2352,8 @@
       "tier": 3,
       "aliases": [
         "broadwayscorecard"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "unknown",
@@ -2326,7 +2361,8 @@
       "tier": 3,
       "aliases": [
         "unknown"
-      ]
+      ],
+      "domain": "flyingthenest.tv"
     },
     {
       "outletId": "city-limits",
@@ -2335,7 +2371,8 @@
       "aliases": [
         "city-limits",
         "city limits"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "lovetheatre",
@@ -2343,7 +2380,26 @@
       "tier": 3,
       "aliases": [
         "lovetheatre"
-      ]
+      ],
+      "domain": null
+    },
+    {
+      "outletId": "openairtheatre",
+      "displayName": "openairtheatre",
+      "tier": 3,
+      "aliases": [
+        "openairtheatre"
+      ],
+      "domain": "openairtheatre.com"
+    },
+    {
+      "outletId": "theatremonkey",
+      "displayName": "theatremonkey",
+      "tier": 3,
+      "aliases": [
+        "theatremonkey"
+      ],
+      "domain": "theatremonkey.com"
     },
     {
       "outletId": "marquee",
@@ -2351,7 +2407,8 @@
       "tier": 3,
       "aliases": [
         "marquee"
-      ]
+      ],
+      "domain": "marquee.tv"
     },
     {
       "outletId": "liam-odellcom",
@@ -2360,7 +2417,8 @@
       "aliases": [
         "liam-odellcom",
         "liam o'dell.com"
-      ]
+      ],
+      "domain": "liamodell.com"
     },
     {
       "outletId": "visitlondon",
@@ -2368,7 +2426,8 @@
       "tier": 3,
       "aliases": [
         "visitlondon"
-      ]
+      ],
+      "domain": "visitlondon.com"
     },
     {
       "outletId": "muddystilettos",
@@ -2376,7 +2435,8 @@
       "tier": 3,
       "aliases": [
         "muddystilettos"
-      ]
+      ],
+      "domain": "london.muddystilettos.co.uk"
     },
     {
       "outletId": "laexcites",
@@ -2384,7 +2444,8 @@
       "tier": 3,
       "aliases": [
         "laexcites"
-      ]
+      ],
+      "domain": "laexcites.com"
     },
     {
       "outletId": "wwwandrewlloydwebbercomshowjesus-christ-superstar",
@@ -2393,7 +2454,8 @@
       "aliases": [
         "wwwandrewlloydwebbercomshowjesus-christ-superstar",
         "www.andrewlloydwebber.com/show/jesus-christ-superstar"
-      ]
+      ],
+      "domain": "andrewlloydwebber.com"
     },
     {
       "outletId": "timesofsandiego",
@@ -2401,7 +2463,8 @@
       "tier": 3,
       "aliases": [
         "timesofsandiego"
-      ]
+      ],
+      "domain": "timesofsandiego.com"
     },
     {
       "outletId": "theatreboard",
@@ -2409,7 +2472,8 @@
       "tier": 3,
       "aliases": [
         "theatreboard"
-      ]
+      ],
+      "domain": "theatreboard.com"
     },
     {
       "outletId": "theatrebookings",
@@ -2417,7 +2481,17 @@
       "tier": 3,
       "aliases": [
         "theatrebookings"
-      ]
+      ],
+      "domain": "theatrebookings.com"
+    },
+    {
+      "outletId": "theunforgettableline",
+      "displayName": "theunforgettableline",
+      "tier": 3,
+      "aliases": [
+        "theunforgettableline"
+      ],
+      "domain": "theunforgettableline.com"
     },
     {
       "outletId": "lyric",
@@ -2425,7 +2499,8 @@
       "tier": 3,
       "aliases": [
         "lyric"
-      ]
+      ],
+      "domain": "lyric.co.uk"
     },
     {
       "outletId": "raring2go",
@@ -2433,7 +2508,8 @@
       "tier": 3,
       "aliases": [
         "raring2go"
-      ]
+      ],
+      "domain": "raring2go.co.uk"
     },
     {
       "outletId": "houstonchronicle",
@@ -2441,7 +2517,8 @@
       "tier": 3,
       "aliases": [
         "houstonchronicle"
-      ]
+      ],
+      "domain": "houstonchronicle.com"
     },
     {
       "outletId": "clevescene",
@@ -2449,7 +2526,8 @@
       "tier": 3,
       "aliases": [
         "clevescene"
-      ]
+      ],
+      "domain": "clevescene.com"
     },
     {
       "outletId": "houstonpress",
@@ -2457,7 +2535,8 @@
       "tier": 3,
       "aliases": [
         "houstonpress"
-      ]
+      ],
+      "domain": "houstonpress.com"
     },
     {
       "outletId": "olivier",
@@ -2465,7 +2544,8 @@
       "tier": 3,
       "aliases": [
         "olivier"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "andrzej-lukowski",
@@ -2474,7 +2554,8 @@
       "aliases": [
         "andrzej-lukowski",
         "andrzej lukowski"
-      ]
+      ],
+      "domain": "timeout.com"
     },
     {
       "outletId": "swindon-avertiser",
@@ -2483,7 +2564,8 @@
       "aliases": [
         "swindon-avertiser",
         "swindon avertiser"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "wwwallegraplaycom",
@@ -2492,7 +2574,17 @@
       "aliases": [
         "wwwallegraplaycom",
         "www.allegraplay.com"
-      ]
+      ],
+      "domain": "allegraplay.com"
+    },
+    {
+      "outletId": "birmingham-rep",
+      "displayName": "birmingham-rep",
+      "tier": 3,
+      "aliases": [
+        "birmingham-rep"
+      ],
+      "domain": "birmingham-rep.co.uk"
     },
     {
       "outletId": "makeitmarylebone",
@@ -2500,15 +2592,8 @@
       "tier": 3,
       "aliases": [
         "makeitmarylebone"
-      ]
-    },
-    {
-      "outletId": "openairtheatre",
-      "displayName": "openairtheatre",
-      "tier": 3,
-      "aliases": [
-        "openairtheatre"
-      ]
+      ],
+      "domain": "makeitmarylebone.co.uk"
     },
     {
       "outletId": "openairtheatreheritage",
@@ -2516,15 +2601,8 @@
       "tier": 3,
       "aliases": [
         "openairtheatreheritage"
-      ]
-    },
-    {
-      "outletId": "theatremonkey",
-      "displayName": "theatremonkey",
-      "tier": 3,
-      "aliases": [
-        "theatremonkey"
-      ]
+      ],
+      "domain": "openairtheatreheritage.com"
     },
     {
       "outletId": "unicorntheatre",
@@ -2532,7 +2610,8 @@
       "tier": 3,
       "aliases": [
         "unicorntheatre"
-      ]
+      ],
+      "domain": "unicorntheatre.com"
     },
     {
       "outletId": "amazon",
@@ -2540,7 +2619,8 @@
       "tier": 3,
       "aliases": [
         "amazon"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "letterboxd",
@@ -2548,7 +2628,8 @@
       "tier": 3,
       "aliases": [
         "letterboxd"
-      ]
+      ],
+      "domain": "letterboxd.com"
     },
     {
       "outletId": "myreviewer",
@@ -2556,7 +2637,8 @@
       "tier": 3,
       "aliases": [
         "myreviewer"
-      ]
+      ],
+      "domain": "myreviewer.com"
     },
     {
       "outletId": "shakespearesglobe",
@@ -2564,7 +2646,8 @@
       "tier": 3,
       "aliases": [
         "shakespearesglobe"
-      ]
+      ],
+      "domain": "shakespearesglobe.com"
     },
     {
       "outletId": "1883-magazine",
@@ -2572,7 +2655,8 @@
       "tier": 3,
       "aliases": [
         "1883-magazine"
-      ]
+      ],
+      "domain": "1883magazine.com"
     },
     {
       "outletId": "valentine-dsides",
@@ -2580,7 +2664,8 @@
       "tier": 3,
       "aliases": [
         "valentine-dsides"
-      ]
+      ],
+      "domain": "valentinedsides.com"
     },
     {
       "outletId": "the-canadian-talent-who-first-rose-to-fame-ondegrassi",
@@ -2588,7 +2673,8 @@
       "tier": 3,
       "aliases": [
         "the-canadian-talent-who-first-rose-to-fame-ondegrassi"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "chicagoconcertreviews",
@@ -2596,7 +2682,8 @@
       "tier": 3,
       "aliases": [
         "chicagoconcertreviews"
-      ]
+      ],
+      "domain": "chicagoconcertreviews.com"
     },
     {
       "outletId": "chicagocultureauthority",
@@ -2604,7 +2691,8 @@
       "tier": 3,
       "aliases": [
         "chicagocultureauthority"
-      ]
+      ],
+      "domain": "chicagocultureauthority.com"
     },
     {
       "outletId": "newcitystage",
@@ -2612,7 +2700,8 @@
       "tier": 3,
       "aliases": [
         "newcitystage"
-      ]
+      ],
+      "domain": "newcitystage.com"
     },
     {
       "outletId": "chelmsfordtheatre",
@@ -2620,7 +2709,8 @@
       "tier": 3,
       "aliases": [
         "chelmsfordtheatre"
-      ]
+      ],
+      "domain": "chelmsfordtheatre.co.uk"
     },
     {
       "outletId": "groupline",
@@ -2628,7 +2718,8 @@
       "tier": 3,
       "aliases": [
         "groupline"
-      ]
+      ],
+      "domain": "groupline.com"
     },
     {
       "outletId": "newcastle-under-lyme-new-vic",
@@ -2637,7 +2728,8 @@
       "aliases": [
         "newcastle-under-lyme-new-vic",
         "newcastle-under-lyme, new vic"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "the-insider",
@@ -2645,7 +2737,8 @@
       "tier": 3,
       "aliases": [
         "the-insider"
-      ]
+      ],
+      "domain": "theinsider.com"
     },
     {
       "outletId": "guide4moms",
@@ -2653,7 +2746,8 @@
       "tier": 3,
       "aliases": [
         "guide4moms"
-      ]
+      ],
+      "domain": "guide4moms.com"
     },
     {
       "outletId": "renew-here",
@@ -2662,7 +2756,8 @@
       "aliases": [
         "renew-here",
         "renew here"
-      ]
+      ],
+      "domain": "simplecirc.com"
     },
     {
       "outletId": "bakchormeeboy",
@@ -2670,7 +2765,8 @@
       "tier": 3,
       "aliases": [
         "bakchormeeboy"
-      ]
+      ],
+      "domain": "bakchormeeboy.com"
     },
     {
       "outletId": "barbican",
@@ -2678,7 +2774,8 @@
       "tier": 3,
       "aliases": [
         "barbican"
-      ]
+      ],
+      "domain": "barbican.org.uk"
     },
     {
       "outletId": "shortlist",
@@ -2686,7 +2783,8 @@
       "tier": 3,
       "aliases": [
         "shortlist"
-      ]
+      ],
+      "domain": "shortlist.com"
     },
     {
       "outletId": "google",
@@ -2694,7 +2792,8 @@
       "tier": 3,
       "aliases": [
         "google"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "dayoutwiththekids",
@@ -2702,7 +2801,8 @@
       "tier": 3,
       "aliases": [
         "dayoutwiththekids"
-      ]
+      ],
+      "domain": "dayoutwiththekids.co.uk"
     },
     {
       "outletId": "inyougo",
@@ -2710,7 +2810,8 @@
       "tier": 3,
       "aliases": [
         "inyougo"
-      ]
+      ],
+      "domain": "inyougo.com"
     },
     {
       "outletId": "pittsburgh-theater",
@@ -2718,7 +2819,8 @@
       "tier": 3,
       "aliases": [
         "pittsburgh-theater"
-      ]
+      ],
+      "domain": "pittsburgh-theater.com"
     },
     {
       "outletId": "troubadourtheatres",
@@ -2726,7 +2828,8 @@
       "tier": 3,
       "aliases": [
         "troubadourtheatres"
-      ]
+      ],
+      "domain": "troubadourtheatres.com"
     },
     {
       "outletId": "wembleypark",
@@ -2734,7 +2837,8 @@
       "tier": 3,
       "aliases": [
         "wembleypark"
-      ]
+      ],
+      "domain": "wembleypark.com"
     },
     {
       "outletId": "sunday",
@@ -2742,7 +2846,8 @@
       "tier": 3,
       "aliases": [
         "sunday"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "boxofficeticketsales",
@@ -2750,7 +2855,8 @@
       "tier": 3,
       "aliases": [
         "boxofficeticketsales"
-      ]
+      ],
+      "domain": "boxofficeticketsales.com"
     },
     {
       "outletId": "scorebig",
@@ -2758,7 +2864,8 @@
       "tier": 3,
       "aliases": [
         "scorebig"
-      ]
+      ],
+      "domain": "scorebig.com"
     },
     {
       "outletId": "stageandstreetnyc",
@@ -2766,7 +2873,8 @@
       "tier": 3,
       "aliases": [
         "stageandstreetnyc"
-      ]
+      ],
+      "domain": "stageandstreetnyc.com"
     },
     {
       "outletId": "southbank",
@@ -2774,7 +2882,8 @@
       "tier": 3,
       "aliases": [
         "southbank"
-      ]
+      ],
+      "domain": "southbank.london"
     },
     {
       "outletId": "southbankcentre",
@@ -2782,7 +2891,8 @@
       "tier": 3,
       "aliases": [
         "southbankcentre"
-      ]
+      ],
+      "domain": "southbankcentre.co.uk"
     },
     {
       "outletId": "westwaleschronicle",
@@ -2790,7 +2900,8 @@
       "tier": 3,
       "aliases": [
         "westwaleschronicle"
-      ]
+      ],
+      "domain": "westwaleschronicle.co.uk"
     },
     {
       "outletId": "draculawestendcom",
@@ -2799,7 +2910,8 @@
       "aliases": [
         "draculawestendcom",
         "draculawestend.com"
-      ]
+      ],
+      "domain": "draculawestend.com"
     },
     {
       "outletId": "oklahoman",
@@ -2807,7 +2919,8 @@
       "tier": 3,
       "aliases": [
         "oklahoman"
-      ]
+      ],
+      "domain": "oklahoman.com"
     },
     {
       "outletId": "curtaincallbway",
@@ -2815,7 +2928,8 @@
       "tier": 3,
       "aliases": [
         "curtaincallbway"
-      ]
+      ],
+      "domain": "curtaincallbway.com"
     },
     {
       "outletId": "the-washington-post",
@@ -2824,7 +2938,8 @@
       "aliases": [
         "the-washington-post",
         "the washington post"
-      ]
+      ],
+      "domain": "washingtonpost.com"
     },
     {
       "outletId": "rsc",
@@ -2832,7 +2947,8 @@
       "tier": 3,
       "aliases": [
         "rsc"
-      ]
+      ],
+      "domain": "rsc.org.uk"
     },
     {
       "outletId": "purlie-victorious",
@@ -2840,7 +2956,8 @@
       "tier": 3,
       "aliases": [
         "purlie-victorious"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "culturemap",
@@ -2848,7 +2965,8 @@
       "tier": 3,
       "aliases": [
         "culturemap"
-      ]
+      ],
+      "domain": "dallas.culturemap.com"
     },
     {
       "outletId": "postcrescent",
@@ -2856,7 +2974,8 @@
       "tier": 3,
       "aliases": [
         "postcrescent"
-      ]
+      ],
+      "domain": "postcrescent.com"
     },
     {
       "outletId": "theatrecriticism",
@@ -2864,7 +2983,8 @@
       "tier": 3,
       "aliases": [
         "theatrecriticism"
-      ]
+      ],
+      "domain": "theatrecriticism.com"
     },
     {
       "outletId": "wearegreenbay",
@@ -2872,7 +2992,8 @@
       "tier": 3,
       "aliases": [
         "wearegreenbay"
-      ]
+      ],
+      "domain": "wearegreenbay.com"
     },
     {
       "outletId": "whereyat",
@@ -2880,7 +3001,8 @@
       "tier": 3,
       "aliases": [
         "whereyat"
-      ]
+      ],
+      "domain": "whereyat.com"
     },
     {
       "outletId": "notesfromrowh",
@@ -2888,7 +3010,8 @@
       "tier": 3,
       "aliases": [
         "notesfromrowh"
-      ]
+      ],
+      "domain": "notesfromrowh.com"
     },
     {
       "outletId": "sohotheatre",
@@ -2896,15 +3019,8 @@
       "tier": 3,
       "aliases": [
         "sohotheatre"
-      ]
-    },
-    {
-      "outletId": "all-allam",
-      "displayName": "all-allam",
-      "tier": 3,
-      "aliases": [
-        "all-allam"
-      ]
+      ],
+      "domain": "sohotheatre.com"
     },
     {
       "outletId": "countryandtownhouse",
@@ -2912,7 +3028,8 @@
       "tier": 3,
       "aliases": [
         "countryandtownhouse"
-      ]
+      ],
+      "domain": "countryandtownhouse.com"
     },
     {
       "outletId": "iloveny",
@@ -2920,7 +3037,8 @@
       "tier": 3,
       "aliases": [
         "iloveny"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "melissamaney",
@@ -2928,7 +3046,8 @@
       "tier": 3,
       "aliases": [
         "melissamaney"
-      ]
+      ],
+      "domain": "melissamaney.com"
     },
     {
       "outletId": "sohoplayhouse",
@@ -2936,7 +3055,8 @@
       "tier": 3,
       "aliases": [
         "sohoplayhouse"
-      ]
+      ],
+      "domain": "sohoplayhouse.com"
     },
     {
       "outletId": "he-mail",
@@ -2945,7 +3065,8 @@
       "aliases": [
         "he-mail",
         "he mail"
-      ]
+      ],
+      "domain": "dailymail.co.uk"
     },
     {
       "outletId": "southpasadenan",
@@ -2953,7 +3074,8 @@
       "tier": 3,
       "aliases": [
         "southpasadenan"
-      ]
+      ],
+      "domain": "southpasadenan.com"
     },
     {
       "outletId": "the-straits-times",
@@ -2962,7 +3084,17 @@
       "aliases": [
         "the-straits-times",
         "the straits times"
-      ]
+      ],
+      "domain": "straitstimes.com"
+    },
+    {
+      "outletId": "hoteldirect",
+      "displayName": "hoteldirect",
+      "tier": 3,
+      "aliases": [
+        "hoteldirect"
+      ],
+      "domain": "hoteldirect.co.uk"
     },
     {
       "outletId": "lw-theatres",
@@ -2971,7 +3103,8 @@
       "aliases": [
         "lw-theatres",
         "lw theatres"
-      ]
+      ],
+      "domain": "lwtheatres.co.uk"
     },
     {
       "outletId": "teenvogue",
@@ -2979,7 +3112,8 @@
       "tier": 3,
       "aliases": [
         "teenvogue"
-      ]
+      ],
+      "domain": "teenvogue.com"
     },
     {
       "outletId": "was-along-for-the-ride",
@@ -2987,7 +3121,8 @@
       "tier": 3,
       "aliases": [
         "was-along-for-the-ride"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "daily-telegra-h",
@@ -2996,7 +3131,8 @@
       "aliases": [
         "daily-telegra-h",
         "daily telegra]?h"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "theatlantic",
@@ -3004,7 +3140,8 @@
       "tier": 3,
       "aliases": [
         "theatlantic"
-      ]
+      ],
+      "domain": "theatlantic.com"
     },
     {
       "outletId": "press-herald",
@@ -3013,7 +3150,8 @@
       "aliases": [
         "press-herald",
         "press herald"
-      ]
+      ],
+      "domain": "pressherald.com"
     },
     {
       "outletId": "donyc",
@@ -3021,7 +3159,8 @@
       "tier": 3,
       "aliases": [
         "donyc"
-      ]
+      ],
+      "domain": "donyc.com"
     },
     {
       "outletId": "cambridge",
@@ -3029,7 +3168,8 @@
       "tier": 3,
       "aliases": [
         "cambridge"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "goaheadsumi",
@@ -3037,7 +3177,8 @@
       "tier": 3,
       "aliases": [
         "goaheadsumi"
-      ]
+      ],
+      "domain": "goaheadsumi.com"
     },
     {
       "outletId": "culturebot",
@@ -3045,7 +3186,8 @@
       "tier": 3,
       "aliases": [
         "culturebot"
-      ]
+      ],
+      "domain": "culturebot.org"
     },
     {
       "outletId": "buy-tickets-directly-from-the-theatre-wwwshakespearesglobecom",
@@ -3054,7 +3196,8 @@
       "aliases": [
         "buy-tickets-directly-from-the-theatre-wwwshakespearesglobecom",
         "buy tickets directly from the theatre www.shakespearesglobe.com"
-      ]
+      ],
+      "domain": "shakespearesglobe.com"
     },
     {
       "outletId": "nytworg",
@@ -3063,7 +3206,8 @@
       "aliases": [
         "nytworg",
         "nytw.org"
-      ]
+      ],
+      "domain": "nytw.org"
     },
     {
       "outletId": "visit-london",
@@ -3072,7 +3216,8 @@
       "aliases": [
         "visit-london",
         "visit london"
-      ]
+      ],
+      "domain": "visitlondon.com"
     },
     {
       "outletId": "groupon",
@@ -3080,7 +3225,8 @@
       "tier": 3,
       "aliases": [
         "groupon"
-      ]
+      ],
+      "domain": "groupon.co.uk"
     },
     {
       "outletId": "indiependent",
@@ -3088,7 +3234,8 @@
       "tier": 3,
       "aliases": [
         "indiependent"
-      ]
+      ],
+      "domain": "indiependent.co.uk"
     },
     {
       "outletId": "wall-street-jocrnal",
@@ -3097,7 +3244,8 @@
       "aliases": [
         "wall-street-jocrnal",
         "wall street jocrnal"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "callmeadam",
@@ -3105,7 +3253,8 @@
       "tier": 3,
       "aliases": [
         "callmeadam"
-      ]
+      ],
+      "domain": "callmeadam.com"
     },
     {
       "outletId": "darylroththeatre",
@@ -3113,7 +3262,8 @@
       "tier": 3,
       "aliases": [
         "darylroththeatre"
-      ]
+      ],
+      "domain": "darylroththeatre.com"
     },
     {
       "outletId": "neurodiversereview",
@@ -3121,7 +3271,8 @@
       "tier": 3,
       "aliases": [
         "neurodiversereview"
-      ]
+      ],
+      "domain": "neurodiversereview.co.uk"
     },
     {
       "outletId": "sparkhamptons",
@@ -3129,7 +3280,8 @@
       "tier": 3,
       "aliases": [
         "sparkhamptons"
-      ]
+      ],
+      "domain": "sparkhamptons.com"
     },
     {
       "outletId": "citylimits",
@@ -3137,7 +3289,8 @@
       "tier": 3,
       "aliases": [
         "citylimits"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "eveningstandard",
@@ -3145,7 +3298,8 @@
       "tier": 3,
       "aliases": [
         "eveningstandard"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "jewishchronicle",
@@ -3153,7 +3307,8 @@
       "tier": 3,
       "aliases": [
         "jewishchronicle"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "incluvie",
@@ -3161,7 +3316,8 @@
       "tier": 3,
       "aliases": [
         "incluvie"
-      ]
+      ],
+      "domain": "incluvie.com"
     },
     {
       "outletId": "trinitytripod",
@@ -3169,7 +3325,8 @@
       "tier": 3,
       "aliases": [
         "trinitytripod"
-      ]
+      ],
+      "domain": "trinitytripod.com"
     },
     {
       "outletId": "fortworthbusiness",
@@ -3177,7 +3334,8 @@
       "tier": 3,
       "aliases": [
         "fortworthbusiness"
-      ]
+      ],
+      "domain": "fortworthbusiness.com"
     },
     {
       "outletId": "laduenews",
@@ -3185,7 +3343,8 @@
       "tier": 3,
       "aliases": [
         "laduenews"
-      ]
+      ],
+      "domain": "laduenews.com"
     },
     {
       "outletId": "gephardtdaily",
@@ -3193,7 +3352,8 @@
       "tier": 3,
       "aliases": [
         "gephardtdaily"
-      ]
+      ],
+      "domain": "gephardtdaily.com"
     },
     {
       "outletId": "socalthrills",
@@ -3201,7 +3361,8 @@
       "tier": 3,
       "aliases": [
         "socalthrills"
-      ]
+      ],
+      "domain": "socalthrills.com"
     },
     {
       "outletId": "spect-ator",
@@ -3210,7 +3371,8 @@
       "aliases": [
         "spect-ator",
         "spect ator"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "prettykosher",
@@ -3218,7 +3380,8 @@
       "tier": 3,
       "aliases": [
         "prettykosher"
-      ]
+      ],
+      "domain": "prettykosher.com"
     },
     {
       "outletId": "staybook",
@@ -3226,7 +3389,8 @@
       "tier": 3,
       "aliases": [
         "staybook"
-      ]
+      ],
+      "domain": "staybook.in"
     },
     {
       "outletId": "buy-tickets-from-the-producers-here",
@@ -3235,7 +3399,8 @@
       "aliases": [
         "buy-tickets-from-the-producers-here",
         "buy tickets from the producers here."
-      ]
+      ],
+      "domain": "mischiefcomedy.com"
     },
     {
       "outletId": "lwtheatres",
@@ -3243,7 +3408,8 @@
       "tier": 3,
       "aliases": [
         "lwtheatres"
-      ]
+      ],
+      "domain": "lwtheatres.co.uk"
     },
     {
       "outletId": "noelcowardtheatre",
@@ -3251,7 +3417,8 @@
       "tier": 3,
       "aliases": [
         "noelcowardtheatre"
-      ]
+      ],
+      "domain": "noelcowardtheatre.co.uk"
     },
     {
       "outletId": "soundsandstage",
@@ -3259,7 +3426,8 @@
       "tier": 3,
       "aliases": [
         "soundsandstage"
-      ]
+      ],
+      "domain": "soundsandstage.com"
     },
     {
       "outletId": "liam-odell",
@@ -3268,7 +3436,8 @@
       "aliases": [
         "liam-odell",
         "liam o'dell"
-      ]
+      ],
+      "domain": "liamodell.com"
     },
     {
       "outletId": "bristololdvic",
@@ -3276,7 +3445,8 @@
       "tier": 3,
       "aliases": [
         "bristololdvic"
-      ]
+      ],
+      "domain": "bristololdvic.org.uk"
     },
     {
       "outletId": "chiswickcalendar",
@@ -3284,7 +3454,8 @@
       "tier": 3,
       "aliases": [
         "chiswickcalendar"
-      ]
+      ],
+      "domain": "chiswickcalendar.co.uk"
     },
     {
       "outletId": "myshrewsbury",
@@ -3292,7 +3463,8 @@
       "tier": 3,
       "aliases": [
         "myshrewsbury"
-      ]
+      ],
+      "domain": "myshrewsbury.co.uk"
     },
     {
       "outletId": "pleasemindtheblog",
@@ -3300,7 +3472,8 @@
       "tier": 3,
       "aliases": [
         "pleasemindtheblog"
-      ]
+      ],
+      "domain": "pleasemindtheblog.wordpress.com"
     },
     {
       "outletId": "roalddahl",
@@ -3308,7 +3481,8 @@
       "tier": 3,
       "aliases": [
         "roalddahl"
-      ]
+      ],
+      "domain": "roalddahl.com"
     },
     {
       "outletId": "theatreinchicago",
@@ -3316,7 +3490,8 @@
       "tier": 3,
       "aliases": [
         "theatreinchicago"
-      ]
+      ],
+      "domain": "theatreinchicago.com"
     },
     {
       "outletId": "theschooltrip",
@@ -3324,7 +3499,8 @@
       "tier": 3,
       "aliases": [
         "theschooltrip"
-      ]
+      ],
+      "domain": "theschooltrip.co.uk"
     },
     {
       "outletId": "liverpoolsoundandvision",
@@ -3332,7 +3508,8 @@
       "tier": 3,
       "aliases": [
         "liverpoolsoundandvision"
-      ]
+      ],
+      "domain": "liverpoolsoundandvision.co.uk"
     },
     {
       "outletId": "thewordsd",
@@ -3340,7 +3517,8 @@
       "tier": 3,
       "aliases": [
         "thewordsd"
-      ]
+      ],
+      "domain": "thewordsd.news"
     },
     {
       "outletId": "bookevents",
@@ -3348,7 +3526,8 @@
       "tier": 3,
       "aliases": [
         "bookevents"
-      ]
+      ],
+      "domain": "bookevents.nyc"
     },
     {
       "outletId": "eventbrite",
@@ -3356,7 +3535,8 @@
       "tier": 3,
       "aliases": [
         "eventbrite"
-      ]
+      ],
+      "domain": "eventbrite.com"
     },
     {
       "outletId": "stuborder",
@@ -3364,7 +3544,8 @@
       "tier": 3,
       "aliases": [
         "stuborder"
-      ]
+      ],
+      "domain": "stuborder.com"
     },
     {
       "outletId": "triblive",
@@ -3372,7 +3553,8 @@
       "tier": 3,
       "aliases": [
         "triblive"
-      ]
+      ],
+      "domain": "triblive.com"
     },
     {
       "outletId": "twincities",
@@ -3380,7 +3562,8 @@
       "tier": 3,
       "aliases": [
         "twincities"
-      ]
+      ],
+      "domain": "twincities.com"
     },
     {
       "outletId": "britannica",
@@ -3388,7 +3571,8 @@
       "tier": 3,
       "aliases": [
         "britannica"
-      ]
+      ],
+      "domain": "britannica.com"
     },
     {
       "outletId": "exclusivebooks",
@@ -3396,7 +3580,8 @@
       "tier": 3,
       "aliases": [
         "exclusivebooks"
-      ]
+      ],
+      "domain": "exclusivebooks.co.za"
     },
     {
       "outletId": "waterstones",
@@ -3404,7 +3589,8 @@
       "tier": 3,
       "aliases": [
         "waterstones"
-      ]
+      ],
+      "domain": "waterstones.com"
     },
     {
       "outletId": "buy-tickets-direct-from-the-theatre",
@@ -3413,7 +3599,8 @@
       "aliases": [
         "buy-tickets-direct-from-the-theatre",
         "buy tickets direct from the theatre"
-      ]
+      ],
+      "domain": "thehungergamesonstage.com"
     },
     {
       "outletId": "islingtontribune",
@@ -3421,7 +3608,8 @@
       "tier": 3,
       "aliases": [
         "islingtontribune"
-      ]
+      ],
+      "domain": "islingtontribune.co.uk"
     },
     {
       "outletId": "parktheatre",
@@ -3429,7 +3617,8 @@
       "tier": 3,
       "aliases": [
         "parktheatre"
-      ]
+      ],
+      "domain": "parktheatre.co.uk"
     },
     {
       "outletId": "stagesideuk",
@@ -3437,7 +3626,8 @@
       "tier": 3,
       "aliases": [
         "stagesideuk"
-      ]
+      ],
+      "domain": "stagesideuk.co.uk"
     },
     {
       "outletId": "unknownkentandsussex",
@@ -3445,7 +3635,8 @@
       "tier": 3,
       "aliases": [
         "unknownkentandsussex"
-      ]
+      ],
+      "domain": "unknownkentandsussex.co.uk"
     },
     {
       "outletId": "lyceum",
@@ -3453,7 +3644,8 @@
       "tier": 3,
       "aliases": [
         "lyceum"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "2urbangirls",
@@ -3461,7 +3653,8 @@
       "tier": 3,
       "aliases": [
         "2urbangirls"
-      ]
+      ],
+      "domain": "2urbangirls.com"
     },
     {
       "outletId": "bridgetheatre",
@@ -3469,7 +3662,8 @@
       "tier": 3,
       "aliases": [
         "bridgetheatre"
-      ]
+      ],
+      "domain": "bridgetheatre.co.uk"
     },
     {
       "outletId": "axios",
@@ -3477,7 +3671,8 @@
       "tier": 3,
       "aliases": [
         "axios"
-      ]
+      ],
+      "domain": "axios.com"
     },
     {
       "outletId": "columbusunderground",
@@ -3485,7 +3680,8 @@
       "tier": 3,
       "aliases": [
         "columbusunderground"
-      ]
+      ],
+      "domain": "columbusunderground.com"
     },
     {
       "outletId": "theoaklandpress",
@@ -3493,7 +3689,8 @@
       "tier": 3,
       "aliases": [
         "theoaklandpress"
-      ]
+      ],
+      "domain": "theoaklandpress.com"
     },
     {
       "outletId": "warwickpost",
@@ -3501,7 +3698,8 @@
       "tier": 3,
       "aliases": [
         "warwickpost"
-      ]
+      ],
+      "domain": "warwickpost.com"
     },
     {
       "outletId": "amsterdam-news",
@@ -3509,7 +3707,8 @@
       "tier": 3,
       "aliases": [
         "amsterdam-news"
-      ]
+      ],
+      "domain": "amsterdamnews.com"
     },
     {
       "outletId": "politeonsociety",
@@ -3517,7 +3716,8 @@
       "tier": 3,
       "aliases": [
         "politeonsociety"
-      ]
+      ],
+      "domain": "politeonsociety.com"
     },
     {
       "outletId": "criterionticketing",
@@ -3525,7 +3725,8 @@
       "tier": 3,
       "aliases": [
         "criterionticketing"
-      ]
+      ],
+      "domain": "criterionticketing.com"
     },
     {
       "outletId": "forum-broadwayworld",
@@ -3533,7 +3734,8 @@
       "tier": 3,
       "aliases": [
         "forum-broadwayworld"
-      ]
+      ],
+      "domain": "forum.broadwayworld.com"
     },
     {
       "outletId": "abouttheartists",
@@ -3541,7 +3743,8 @@
       "tier": 3,
       "aliases": [
         "abouttheartists"
-      ]
+      ],
+      "domain": "abouttheartists.com"
     },
     {
       "outletId": "arifa-akbar-found-the-show-hypnotic-in-a-rare",
@@ -3549,7 +3752,8 @@
       "tier": 3,
       "aliases": [
         "arifa-akbar-found-the-show-hypnotic-in-a-rare"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "the-suburban",
@@ -3557,7 +3761,8 @@
       "tier": 3,
       "aliases": [
         "the-suburban"
-      ]
+      ],
+      "domain": "thesuburban.com"
     },
     {
       "outletId": "twilight-sunday-times",
@@ -3566,7 +3771,8 @@
       "aliases": [
         "twilight-sunday-times",
         "twilight sunday times"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "quardian",
@@ -3574,7 +3780,8 @@
       "tier": 3,
       "aliases": [
         "quardian"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "discovernearme",
@@ -3582,7 +3789,8 @@
       "tier": 3,
       "aliases": [
         "discovernearme"
-      ]
+      ],
+      "domain": "discovernearme.co.uk"
     },
     {
       "outletId": "masslive",
@@ -3590,7 +3798,8 @@
       "tier": 3,
       "aliases": [
         "masslive"
-      ]
+      ],
+      "domain": "masslive.com"
     },
     {
       "outletId": "list",
@@ -3598,7 +3807,8 @@
       "tier": 3,
       "aliases": [
         "list"
-      ]
+      ],
+      "domain": null
     },
     {
       "outletId": "redbulltheater",
@@ -3606,7 +3816,8 @@
       "tier": 3,
       "aliases": [
         "redbulltheater"
-      ]
+      ],
+      "domain": "redbulltheater.com"
     },
     {
       "outletId": "eventslist",
@@ -3614,7 +3825,8 @@
       "tier": 3,
       "aliases": [
         "eventslist"
-      ]
+      ],
+      "domain": "eventslist.co.uk"
     },
     {
       "outletId": "glamorazzi",
@@ -3622,7 +3834,8 @@
       "tier": 3,
       "aliases": [
         "glamorazzi"
-      ]
+      ],
+      "domain": "glamorazzi.com.au"
     },
     {
       "outletId": "intermissionmagazine",
@@ -3630,7 +3843,8 @@
       "tier": 3,
       "aliases": [
         "intermissionmagazine"
-      ]
+      ],
+      "domain": "intermissionmagazine.ca"
     },
     {
       "outletId": "ipswich24",
@@ -3638,7 +3852,8 @@
       "tier": 3,
       "aliases": [
         "ipswich24"
-      ]
+      ],
+      "domain": "ipswich24.co.uk"
     },
     {
       "outletId": "operaramblings",
@@ -3646,7 +3861,8 @@
       "tier": 3,
       "aliases": [
         "operaramblings"
-      ]
+      ],
+      "domain": "operaramblings.blog"
     },
     {
       "outletId": "slotkinletter",
@@ -3654,7 +3870,8 @@
       "tier": 3,
       "aliases": [
         "slotkinletter"
-      ]
+      ],
+      "domain": "slotkinletter.com"
     },
     {
       "outletId": "minnesotamonthly",
@@ -3662,7 +3879,8 @@
       "tier": 3,
       "aliases": [
         "minnesotamonthly"
-      ]
+      ],
+      "domain": "minnesotamonthly.com"
     },
     {
       "outletId": "studioseaviewcom",
@@ -3670,7 +3888,8 @@
       "tier": 3,
       "aliases": [
         "studioseaviewcom"
-      ]
+      ],
+      "domain": "studioseaview.com"
     },
     {
       "outletId": "michael-billington",
@@ -3678,7 +3897,8 @@
       "tier": 3,
       "aliases": [
         "michael-billington"
-      ]
+      ],
+      "domain": null
     }
   ],
   "displayNameMismatches": [
@@ -11410,20 +11630,6 @@
       ]
     },
     {
-      "showId": "defender-of-the-faith-1971",
-      "outletId": "the-herald",
-      "currentDisplayName": "Sundayherald",
-      "expectedDisplayName": "The Herald",
-      "canonicalId": "the-herald",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/defender-of-the-faith-1971/the-herald--markbrown-its-oftensaid-byshrewd.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/major-barbara-1980/the-herald--mark-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/major-barbara-2001/the-herald--mark-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-goat-or-who-is-sylvia-2002/the-herald--mark-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-gospel-at-colonus-1988/the-herald--swayingshoulder-rollingtambourine-mark-brown.json"
-      ]
-    },
-    {
       "showId": "dinosaur-world-live-off-west-end-2026",
       "outletId": "stagetopage",
       "currentDisplayName": "stagetopage",
@@ -12635,15 +12841,13 @@
       ]
     },
     {
-      "showId": "hughie-1975",
-      "outletId": "the-herald",
-      "currentDisplayName": "Sunday Herald",
-      "expectedDisplayName": "The Herald",
-      "canonicalId": "the-herald",
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "outletId": "all-allam",
+      "currentDisplayName": "all-allam",
+      "expectedDisplayName": "All Allam",
+      "canonicalId": "all-allam",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/hughie-1975/the-herald--mark-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hughie-1996/the-herald--mark-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-lonesome-west-1999/the-herald--mark-brown.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/how-the-other-half-loves-west-end-2026/all-allam--margaux.json"
       ]
     },
     {
@@ -15877,16 +16081,6 @@
       "canonicalId": "unmissabletheatre",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-smile-of-her-off-west-end-2026/unmissabletheatre--megan-oneill.json"
-      ]
-    },
-    {
-      "showId": "the-sound-of-music-2026",
-      "outletId": "the-daily-texan",
-      "currentDisplayName": "the-daily-texan",
-      "expectedDisplayName": "The Daily Texan",
-      "canonicalId": "the-daily-texan",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-sound-of-music-2026/the-daily-texan--ana-taveira.json"
       ]
     },
     {
