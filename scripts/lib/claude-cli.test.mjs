@@ -125,6 +125,26 @@ test('strippedEnv: caller `extra` still beats the .env top-up (preflight oauth s
   assert.equal(strippedEnv({ ANTHROPIC_API_KEY: '' }).ANTHROPIC_API_KEY, '');
 });
 
+test('strippedEnv: forwards the resolved claude binary\'s directory on PATH so a nested spawn resolves too', () => {
+  const bin = resolveClaudeBin(process.env);
+  if (!path.isAbsolute(bin)) return; // nothing resolved on this machine — augmentation is a no-op, nothing to assert
+  const dir = path.dirname(bin);
+  const savedPath = process.env.PATH;
+  try {
+    process.env.PATH = '/usr/bin:/bin';
+    const parts = strippedEnv().PATH.split(path.delimiter);
+    assert.ok(parts.includes(dir), `strippedEnv().PATH must include ${dir}: got ${strippedEnv().PATH}`);
+    assert.deepEqual(parts, [dir, '/usr/bin', '/bin'], 'resolved dir is prepended, original PATH order preserved');
+
+    // Already present: must not duplicate.
+    process.env.PATH = `${dir}:/usr/bin`;
+    const parts2 = strippedEnv().PATH.split(path.delimiter);
+    assert.equal(parts2.filter((p) => p === dir).length, 1, 'must not duplicate an already-present dir');
+  } finally {
+    process.env.PATH = savedPath;
+  }
+});
+
 test('resolveAuthEnv returns only auth keys and leaves process.env alone', () => {
   const before = { ...process.env };
   const got = resolveAuthEnv();

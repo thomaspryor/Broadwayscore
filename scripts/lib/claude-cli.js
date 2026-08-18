@@ -174,6 +174,11 @@ function authPing(extraEnv) {
     // exercise the SAME credentials the real spawn will get or it proves
     // nothing. extraEnv still wins so probe 1 can force the no-API-key shape.
     { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...resolveAuthEnv(), ...extraEnv } });
+  // A spawn error (e.g. ENOENT) sets r.error and leaves status/stdout/stderr
+  // null — falling through to `exit ${r.status}` would print the
+  // uninformative "exit null" for exactly the failure this module exists to
+  // make legible (task #1768).
+  if (r.error) return { ok: false, detail: String(r.error.message || r.error).slice(0, 300) };
   if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
   // Positive validation, never a grep for the error string (it may get reworded):
   // require the envelope to actually contain the pong.
