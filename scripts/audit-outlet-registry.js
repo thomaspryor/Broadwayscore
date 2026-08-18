@@ -48,6 +48,23 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_OUTPUT_PATH = path.join(__dirname, '../data/audit/outlet-registry-gaps.json');
 const NORMALIZATION_PATH = path.join(__dirname, './lib/review-normalization.js');
 const BASELINE_PATH = path.join(__dirname, '../data/audit/outlet-registry-baseline.json');
+// Separate baseline for pre-existing exact-sentinel registry entries (task
+// #1783). Same reasoning as BASELINE_PATH: a handful of these (e.g.
+// "lets-note", "lets-go-to-the-theater") carry a manually-curated
+// defaultCritic field, so they may be legitimate outlets that happen to
+// share a literal reserved word, not scraper garbage like "unknown" was —
+// blind deletion risks destroying real curation. Baselined so --strict
+// only fails on a NEWLY introduced sentinel id, not this pre-existing
+// backlog (which needs individual investigation, tracked separately).
+const JUNK_BASELINE_PATH = path.join(__dirname, '../data/audit/outlet-registry-junk-baseline.json');
+
+function loadJunkBaseline() {
+  try {
+    return JSON.parse(fs.readFileSync(JUNK_BASELINE_PATH, 'utf-8'));
+  } catch {
+    return { outletIds: [] };
+  }
+}
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -228,7 +245,42 @@ function auditOutletRegistry() {
     displayNameMismatches: [],    // Reviews where outlet name doesn't match registry
     needsNormalization: [],       // Reviews with non-canonical outletId
     registryNormalizationConflicts: [], // Cases where registry and normalization module disagree
+    junkEntriesInRegistry: [],    // Junk/sentinel ids or aliases already IN the registry (task #1783)
+    skippedJunkOutlets: [],        // outletIds seen in reviews but never suggested — isJunkOutlet (task #1783)
   };
+
+  // A reserved-sentinel id (e.g. "unknown" — literally what
+  // normalizeOutlet()/normalizeCritic() themselves return as a fallback)
+  // must never exist as a registry canonical id OR alias — either one
+  // poisons normalizeOutlet's alias map and hijacks every input that shares
+  // its prefix (task #1783: a poisoned "unknown" entry broke
+  // normalizeOutlet('Unknown Publication 123') and
+  // getOutletDisplayName('unknown-outlet') for months undetected because no
+  // gate ever checked the registry's OWN keys/aliases, only what reviews
+  // were missing from it).
+  //
+  // Deliberately uses isSentinelOutletId (exact reserved-word match), NOT
+  // the broader isJunkOutlet (which also fires on structural fuzz — long
+  // slugs, many hyphens, sentence-fragment regexes). A pre-existing,
+  // separate backlog of sentence-fragment junk ids already lives in the
+  // registry (e.g. "keep-things-speeding-along") — using isJunkOutlet here
+  // would fail --strict on all of them the instant this check landed. Exact
+  // sentinel words are categorically different: there is no legitimate
+  // reading of a registry outlet literally named "unknown".
+  if (normalization && normalization.isSentinelOutletId) {
+    for (const [outletId, data] of Object.entries(registry.outlets || {})) {
+      if (outletId === '_aliasIndex' || outletId === '_meta') continue;
+      if (normalization.isSentinelOutletId(outletId)) {
+        findings.junkEntriesInRegistry.push({ outletId, matchedOn: 'id' });
+        continue;
+      }
+      for (const alias of (data.aliases || [])) {
+        if (normalization.isSentinelOutletId(alias)) {
+          findings.junkEntriesInRegistry.push({ outletId, matchedOn: 'alias', alias });
+        }
+      }
+    }
+  }
 
   // Track all outlets found in reviews
   const outletsInReviews = new Map(); // outletId -> { count, displayNames: Set, files: [], shows: Set }
@@ -350,6 +402,12 @@ function auditOutletRegistry() {
       // every Unknown-prefixed fallback outlet via normalizeOutlet's
       // concatenated outlet-critic prefix match.
       if (normalization && normalization.isJunkOutlet && normalization.isJunkOutlet(outletId)) {
+        // Logged (not silent) — isJunkOutlet's structural heuristics (long
+        // slug, many hyphens, sentence-fragment patterns) are heuristic, not
+        // exact, so a genuinely-missing legit outlet that happens to match
+        // must leave a trace an operator can investigate, matching
+        // updateRegistry()'s skippedJunk logging below.
+        findings.skippedJunkOutlets.push({ outletId, count: data.count });
         continue;
       }
       // Check if the normalization module can resolve this to a known outlet
@@ -466,7 +524,11 @@ function printReport(auditResult) {
   console.log('Registry Coverage:');
   console.log(`  In registry: ${inRegistry} outlets`);
   console.log(`  Missing: ${findings.missingFromRegistry.length} outlets`);
-  console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets\n`);
+  console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets`);
+  if (findings.skippedJunkOutlets.length > 0) {
+    console.log(`  Skipped as junk (never suggested): ${findings.skippedJunkOutlets.length} outlets`);
+  }
+  console.log('');
 
   // Missing from registry
   if (findings.missingFromRegistry.length > 0) {
@@ -476,6 +538,21 @@ function printReport(auditResult) {
     }
     if (findings.missingFromRegistry.length > 20) {
       console.log(`  ... and ${findings.missingFromRegistry.length - 20} more`);
+    }
+    console.log('');
+  }
+
+  // Skipped as junk — never suggested (task #1783 logging-asymmetry fix):
+  // isJunkOutlet's heuristics can false-positive on a genuinely-missing
+  // outlet, so this must leave a visible trace, same as updateRegistry()'s
+  // skippedJunk log.
+  if (findings.skippedJunkOutlets.length > 0) {
+    console.log('Skipped as junk (never suggested for registration):');
+    for (const skipped of findings.skippedJunkOutlets.slice(0, 20)) {
+      console.log(`  ${skipped.outletId} (${skipped.count} reviews) — matches isJunkOutlet()`);
+    }
+    if (findings.skippedJunkOutlets.length > 20) {
+      console.log(`  ... and ${findings.skippedJunkOutlets.length - 20} more`);
     }
     console.log('');
   }
@@ -534,7 +611,9 @@ function generateJsonOutput(auditResult) {
     // Include additional detail sections
     displayNameMismatches: findings.displayNameMismatches,
     needsNormalization: findings.needsNormalization,
-    registryNormalizationConflicts: findings.registryNormalizationConflicts
+    registryNormalizationConflicts: findings.registryNormalizationConflicts,
+    junkEntriesInRegistry: findings.junkEntriesInRegistry,
+    skippedJunkOutlets: findings.skippedJunkOutlets
   };
 }
 
@@ -809,6 +888,13 @@ async function main() {
       fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
       fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
       console.log(`✅ Baseline updated: ${baseline.outletIds.length} known missing outlet(s) (${BASELINE_PATH})`);
+
+      const junkBaseline = {
+        generatedAt: new Date().toISOString().slice(0, 10),
+        outletIds: auditResult.findings.junkEntriesInRegistry.map(j => j.outletId).sort(),
+      };
+      fs.writeFileSync(JUNK_BASELINE_PATH, JSON.stringify(junkBaseline, null, 2) + '\n');
+      console.log(`✅ Junk baseline updated: ${junkBaseline.outletIds.length} known sentinel outletId(s) (${JUNK_BASELINE_PATH})`);
       process.exit(0);
     }
 
@@ -843,13 +929,34 @@ async function main() {
       console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length} baselined, ${newViolators.length} new)`);
     }
 
+    const junkBaselineSet = baselineKeySet(loadJunkBaseline().outletIds);
+    const newJunkViolators = computeNewViolators(auditResult.findings.junkEntriesInRegistry, junkBaselineSet);
+
+    if (auditResult.findings.junkEntriesInRegistry.length > 0 && !JSON_OUTPUT) {
+      console.log(`\n⚠️  Sentinel/reserved-word entries already IN the registry:`);
+      for (const j of auditResult.findings.junkEntriesInRegistry) {
+        const tag = junkBaselineSet.has(j.outletId) ? '(baselined)' : '(NEW)';
+        console.log(j.matchedOn === 'id'
+          ? `  "${j.outletId}" ${tag} — the id itself matches a reserved word`
+          : `  "${j.outletId}" ${tag} — alias "${j.alias}" matches a reserved word`);
+      }
+      console.log(`  A NEW entry must be deleted from data/outlet-registry.json — do not rename or merge.`);
+    }
+
     if (STRICT) {
-      if (newViolators.length > 0) {
+      if (newViolators.length > 0 || newJunkViolators.length > 0) {
         if (!JSON_OUTPUT) {
-          console.log(`\n⚠️  NEW outlet(s) missing from registry, not in the baseline (${BASELINE_PATH}):`);
-          for (const v of newViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
-          console.log(`\nAdd them to data/outlet-registry.json, or if this is deliberate progress, refresh the baseline:`);
-          console.log(`  node scripts/audit-outlet-registry.js --update-baseline`);
+          if (newViolators.length > 0) {
+            console.log(`\n⚠️  NEW outlet(s) missing from registry, not in the baseline (${BASELINE_PATH}):`);
+            for (const v of newViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
+            console.log(`\nAdd them to data/outlet-registry.json, or if this is deliberate progress, refresh the baseline:`);
+            console.log(`  node scripts/audit-outlet-registry.js --update-baseline`);
+          }
+          if (newJunkViolators.length > 0) {
+            console.log(`\n⚠️  NEW sentinel/reserved-word outletId(s) in the registry, not in the junk baseline (${JUNK_BASELINE_PATH}):`);
+            for (const v of newJunkViolators) console.log(`  "${v.outletId}"`);
+            console.log(`  Delete these from data/outlet-registry.json (task #1783 class of bug) — do not rename or merge.`);
+          }
         }
         process.exit(1);
       }
