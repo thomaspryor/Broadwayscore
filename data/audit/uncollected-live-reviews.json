@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-18T06:20:00.070Z",
+  "generatedAt": "2026-08-18T11:19:50.886Z",
   "maxAgeHours": 12,
-  "showsAffected": 11,
-  "strandedFiles": 12,
+  "showsAffected": 17,
+  "strandedFiles": 19,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -25,7 +25,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 351.23350305555556
+          "ageHours": 356.2309519444444
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -47,17 +47,39 @@
           "file": "amny--unknown.json",
           "url": "https://www.amny.com/entertainment/broadway/broadway-sarah-hyland-just-in-time-oh-mary/",
           "outlet": "amNewYork",
-          "ageHours": 15.8609225
+          "ageHours": 20.858371388888887
         },
         {
           "file": "hollywood-reporter--unknown.json",
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-just-in-time-1236359505/",
           "outlet": "The Hollywood Reporter",
-          "ageHours": 15.8731725
+          "ageHours": 20.87062138888889
         }
       ],
       "usable": 37,
       "discovered": 40,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "title": "The Play That Goes Wrong",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "broadwayworld--unknown.json",
+          "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "timeout-london--unknown.json",
+          "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+          "outlet": "Time Out London",
+          "ageHours": null
+        }
+      ],
+      "usable": 42,
+      "discovered": 45,
       "totalBlackout": false
     },
     {
@@ -69,7 +91,7 @@
           "file": "abc-news--unknown.json",
           "url": "https://abcnews.go.com/culture/story/stranger-things-stage-production-shadow-heading-broadway-2025/?id=112621196",
           "outlet": "ABC News",
-          "ageHours": 15.846166111111112
+          "ageHours": 20.843615
         }
       ],
       "usable": 50,
@@ -93,19 +115,35 @@
       "totalBlackout": false
     },
     {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "title": "The Play That Goes Wrong",
+      "showId": "magic-mike-live-west-end-2021",
+      "title": "Magic Mike Live",
       "status": "open",
       "stranded": [
         {
-          "file": "timeout-london--unknown.json",
-          "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/the-tempest-46-review",
           "outlet": "Time Out London",
           "ageHours": null
         }
       ],
-      "usable": 42,
-      "discovered": 45,
+      "usable": 16,
+      "discovered": 28,
+      "totalBlackout": false
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "timeout--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/my-neighbour-totoro-review",
+          "outlet": "Time Out",
+          "ageHours": null
+        }
+      ],
+      "usable": 32,
+      "discovered": 46,
       "totalBlackout": false
     },
     {
@@ -117,11 +155,27 @@
           "file": "reviews--william-russell.json",
           "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
           "outlet": "Reviews",
-          "ageHours": 2562.3727972222223
+          "ageHours": 2567.370246111111
         }
       ],
       "usable": 43,
       "discovered": 56,
+      "totalBlackout": false
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "timeout--unknown.json",
+          "url": "https://www.timeout.com/london/theatre/oliver-2-review",
+          "outlet": "Time Out London",
+          "ageHours": null
+        }
+      ],
+      "usable": 41,
+      "discovered": 47,
       "totalBlackout": false
     },
     {
@@ -157,6 +211,54 @@
       "totalBlackout": false
     },
     {
+      "showId": "the-producers-west-end-2025",
+      "title": "The Producers",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "timeout-london--only-andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
+          "outlet": "Time Out London",
+          "ageHours": null
+        }
+      ],
+      "usable": 32,
+      "discovered": 38,
+      "totalBlackout": false
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "timeout--unknown.json",
+          "url": "https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/",
+          "outlet": "TimeOut",
+          "ageHours": null
+        }
+      ],
+      "usable": 39,
+      "discovered": 61,
+      "totalBlackout": false
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "title": "Hercules",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "timeout--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+          "outlet": "Time Out London",
+          "ageHours": null
+        }
+      ],
+      "usable": 35,
+      "discovered": 36,
+      "totalBlackout": false
+    },
+    {
       "showId": "burlesque-west-end-2026",
       "title": "Burlesque",
       "status": "open",
@@ -165,7 +267,7 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/the-best-of-burlesque-assembly-rooms/",
           "outlet": "North West End",
-          "ageHours": 162.682875
+          "ageHours": 167.6803238888889
         }
       ],
       "usable": 21,
@@ -173,19 +275,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "status": "previews",
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "status": "open",
       "stranded": [
         {
-          "file": "whatsonstage--kris-hallett.json",
-          "url": "https://www.whatsonstage.com/news/jeeves-takes-charge-at-ustinov-studio-bath-review_1657988/",
-          "outlet": "WhatsOnStage",
+          "file": "london-theatre--unknown.json",
+          "url": "https://www.londontheatre.co.uk/reviews/abba-voyage-review-abba-arena",
+          "outlet": "London Theatre",
           "ageHours": null
         }
       ],
-      "usable": 6,
-      "discovered": 8,
+      "usable": 20,
+      "discovered": 28,
       "totalBlackout": false
     }
   ]
