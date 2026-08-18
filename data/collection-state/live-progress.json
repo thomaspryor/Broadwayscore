@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T20:12:40.703Z",
-  "processed": 60,
-  "failed": 625,
-  "successRate": "8.8%",
+  "updatedAt": "2026-08-18T20:13:45.112Z",
+  "processed": 64,
+  "failed": 631,
+  "successRate": "9.2%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
     "browserbase": 5,
-    "directCookies": 5,
+    "directCookies": 6,
     "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -82,6 +82,17 @@
       "event": "bb-session",
       "session": "c7005176",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+    },
+    {
+      "t": "2026-08-18T20:12:56.513Z",
+      "event": "bb-session",
+      "session": "e66a9ac0",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-18T20:12:57.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
