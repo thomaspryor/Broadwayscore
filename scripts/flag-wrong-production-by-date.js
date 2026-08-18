@@ -22,6 +22,7 @@ const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -38,21 +39,6 @@ function buildMultiProductionTitleIds(showMap) {
   const ids = new Set();
   for (const g of Object.values(groups)) if (g.length >= 2) g.forEach(id => ids.add(id));
   return ids;
-}
-
-// Mirrors review-write-guard.js's onDiskHasOverrideClear check exactly (task
-// #1678): review-guards.js's canonical inclusion check treats either
-// breadcrumb as "wrongProduction cleared, include anyway" regardless of
-// wrongProduction being true, and evaluateDatePlausibility's CI backstop
-// exempts any record where wrongProduction is already true — so stamping
-// wrongProduction=true over a record that carries either breadcrumb is
-// silently neutralized for inclusion while blinding the push-time safety
-// net. Line 113's top-level skip already covers wrongProductionManualClear
-// for reviews with a usable date, but not wrongProductionOverride, and
-// neither is re-checked at the two stamp sites below — this closes that gap
-// (task #1775).
-function hasOverrideClearBreadcrumb(data) {
-  return data.wrongProductionOverride === true || data.wrongProductionManualClear === true;
 }
 
 // Overridable via env so tests can point at a temp fixture dir/file instead
@@ -107,6 +93,7 @@ function run() {
   const flaggedDetails = [];
   const heldDetails = [];
   const stuckCiBlockingDetails = [];
+  const overrideClearDetails = [];
 
   for (const showDir of showDirs) {
     const show = showMap[showDir];
@@ -179,9 +166,10 @@ function run() {
           show,
         });
         if (verdict.flag && data.humanReviewedWrongProduction !== false) {
-          if (hasOverrideClearBreadcrumb(data)) {
+          if (shouldSkipWrongProductionAudit(data)) {
             overrideClearSkipped++;
-            console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (dateless revival): existing wrongProductionOverride/ManualClear breadcrumb`);
+            overrideClearDetails.push({ showId: showDir, file, date: '(none)', issue: 'dateless_revival' });
+            console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (dateless revival): existing wrongProductionOverride/ManualClear/humanReviewedWrongProduction/allowCrossMarket breadcrumb`);
           } else {
             datelessRevivalFlagged++;
             flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
@@ -235,9 +223,10 @@ function run() {
         if (corrob.strength === 'weak') corroborationWarned++;
       }
 
-      if (hasOverrideClearBreadcrumb(data)) {
+      if (shouldSkipWrongProductionAudit(data)) {
         overrideClearSkipped++;
-        console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (${issue}, ${diffDays}d): existing wrongProductionOverride/ManualClear breadcrumb`);
+        overrideClearDetails.push({ showId: showDir, file, date: data.publishDate, issue, diffDays });
+        console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (${issue}, ${diffDays}d): existing wrongProductionOverride/ManualClear/humanReviewedWrongProduction/allowCrossMarket breadcrumb`);
         continue;
       }
 
@@ -296,6 +285,19 @@ function run() {
     console.log(`\n--- HELD for human review (current-run corroboration contradicts date) ---`);
     for (const h of heldDetails) {
       console.log(`  ${h.showId}/${h.file}  pub=${h.date}  ${h.issue} ${h.diffDays}d  [${h.signals.join(', ')}]`);
+    }
+  }
+
+  // Task #1775: reviews the date guard would otherwise stamp wrongProduction
+  // over, but a pre-existing wrongProductionOverride/ManualClear/
+  // humanReviewedWrongProduction/allowCrossMarket breadcrumb means a human
+  // (or an earlier automated clear) already made an authoritative call on
+  // this file. Printed for audit trail — nothing to action unless the
+  // breadcrumb itself looks stale/wrong.
+  if (overrideClearDetails.length > 0) {
+    console.log(`\n--- Skipped: pre-existing override/manual-clear breadcrumb ---`);
+    for (const o of overrideClearDetails) {
+      console.log(`  ${o.showId}/${o.file}  pub=${o.date}  ${o.issue}${o.diffDays !== undefined ? ` ${o.diffDays}d` : ''}`);
     }
   }
 

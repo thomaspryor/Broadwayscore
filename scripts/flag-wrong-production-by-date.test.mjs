@@ -119,8 +119,11 @@ test('control: same stale date WITHOUT corroboration is flagged as before', () =
 // regardless of wrongProduction, and evaluateDatePlausibility's CI backstop
 // exempts any record where wrongProduction is already true — so stamping
 // over the breadcrumb would both fail to suppress the review AND blind the
-// push-time safety net. Mirrors review-write-guard.js's onDiskHasOverrideClear
-// check (task #1678).
+// push-time safety net. Fixed by calling review-guards.js's existing
+// shouldSkipWrongProductionAudit() (the canonical helper ~25 other
+// wrongProduction=true writer sites already use — rebuild-all-reviews.js,
+// gather-reviews.js, etc.) before each stamp site, instead of a hand-rolled
+// duplicate — ship-check adversarial finding, task #1775.
 test('stale wrongProductionOverride breadcrumb blocks the wrongProduction stamp (date-guard branch)', () => {
   const fx = makeFixture();
   try {
@@ -137,6 +140,30 @@ test('stale wrongProductionOverride breadcrumb blocks the wrongProduction stamp 
     const after = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
     assert.notEqual(after.wrongProduction, true, 'wrongProduction must stay unset — the stamp must not neutralize the override breadcrumb');
     assert.equal(after.wrongProductionOverride, true, 'the breadcrumb itself must survive untouched');
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});
+
+// Bonus coverage from switching to the canonical shouldSkipWrongProductionAudit()
+// helper (vs. the narrower wrongProductionOverride/ManualClear-only check this
+// card's acceptance criteria named): humanReviewedWrongProduction===false — an
+// explicit human verification — is also part of that canonical predicate and
+// was previously unguarded at both stamp sites in this file.
+test('humanReviewedWrongProduction===false blocks the wrongProduction stamp (date-guard branch)', () => {
+  const fx = makeFixture();
+  try {
+    const data = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    delete data.theatreRecordUrl;
+    data.humanReviewedWrongProduction = false;
+    fs.writeFileSync(fx.reviewPath, JSON.stringify(data, null, 2));
+
+    const out = runFlagger(fx, ['--apply']);
+    assert.doesNotMatch(out, /Flagged \(early\):\s*1/, 'must not count this as a flagged review');
+    assert.match(out, /Skipped \(override\/manual clear breadcrumb\):\s*1/);
+
+    const after = JSON.parse(fs.readFileSync(fx.reviewPath, 'utf8'));
+    assert.notEqual(after.wrongProduction, true, 'wrongProduction must stay unset — a human verification must not be overridden');
   } finally {
     fs.rmSync(fx.tmp, { recursive: true, force: true });
   }
