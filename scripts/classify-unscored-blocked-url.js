@@ -25,7 +25,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -50,7 +49,10 @@ if (hasHelpFlag(args)) {
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 
-const RT = process.env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+// WRITES when not --dry-run (safeWriteReview stamps rejectionReason) — see
+// scripts/lib/review-texts-dir.js.
+const RT = resolveReviewTextsDir();
 
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { safeWriteReview } = require('./lib/review-write-guard');

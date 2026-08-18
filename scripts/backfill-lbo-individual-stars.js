@@ -36,6 +36,13 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : Infinity;
 
+// NOT migrated to scripts/lib/review-texts-dir.js (task #1749): unlike the
+// other review-texts scripts, this one deliberately scans AND WRITES BOTH
+// clones every run (see selectCandidate() below) rather than picking a single
+// default — the "stale legacy default" bug class does not apply here. The
+// main-repo path is hardcoded absolute so it always resolves to the real
+// checkout regardless of cwd/worktree, unlike the bare `os.homedir()` default
+// the other scripts had.
 // `private: true` marks the source-of-truth repo — see selectCandidate().
 const REVIEW_TEXTS_DIRS = [
   { dir: '/Users/tompryor/Broadwayscore/data/review-texts', private: false },

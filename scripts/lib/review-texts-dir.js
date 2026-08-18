@@ -52,7 +52,12 @@ const { execFileSync } = require('child_process');
 /** A directory only counts if it is an actual checkout, not a bare/empty dir. */
 function isReviewTextsCheckout(dir) {
   try {
-    return fs.existsSync(path.join(dir, '.git')) && fs.readdirSync(dir).length > 0;
+    if (!fs.existsSync(path.join(dir, '.git'))) return false;
+    // `.git` itself is an entry, so `readdirSync(dir).length > 0` was true for
+    // a freshly-inited/sparse clone containing NOTHING but `.git` — the exact
+    // false-all-clear shape this function exists to reject, just with `.git`
+    // present instead of absent. Require at least one non-dotfile entry.
+    return fs.readdirSync(dir).some((entry) => !entry.startsWith('.'));
   } catch {
     return false;
   }

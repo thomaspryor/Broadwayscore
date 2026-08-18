@@ -17,12 +17,16 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const OUT = (args.find(a => a.startsWith('--out=')) || '').split('=')[1] ||
   path.join('/tmp', 'wrong-show-staleness-probe.jsonl');
+// Read-only against review-texts (writes only go to OUT) — see
+// scripts/lib/review-texts-dir.js. --review-texts= still overrides explicitly.
 const RT_DIR = (args.find(a => a.startsWith('--review-texts=')) || '').split('=')[1] ||
-  path.join(process.env.HOME || '', 'broadway-review-texts');
+  resolveReviewTextsDir();
+console.log(`[probe-wrong-show-staleness] review-texts: ${RT_DIR}`);
 const SHOWS_JSON = path.join(process.env.HOME || '', 'broadway-scorecard-data', 'shows.json');
 
 // --- show title index ---

@@ -32,12 +32,14 @@
  * Usage:
  *   node scripts/verify-misroute-content.js \
  *     [--whitelist=PATH] [--out=PATH] [--limit=N] [--concurrency=4]
- *   REVIEW_TEXTS_DIR defaults to ~/broadway-review-texts.
+ *   REVIEW_TEXTS_DIR resolves via scripts/lib/review-texts-dir.js (explicit env
+ *   var -> nested repo checkout -> legacy ~/broadway-review-texts).
  */
 
 const fs = require('fs');
 const path = require('path');
 const { callGemini, callOpenAI } = require('./lib/content-verifier');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const flag = (name, def) => {
@@ -62,7 +64,8 @@ const REVERIFY = args.includes('--reverify');
 // is genuinely about the TO show is safe to confirm while the rest are rejected.
 const INCLUDE_FLAGGED = args.includes('--include-flagged');
 const INCLUDE_OOS = args.includes('--include-oos');
-const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+console.log(`[verify-misroute-content] review-texts: ${REVIEW_TEXTS_DIR}`);
 
 if (!fs.existsSync(WHITELIST)) { console.error(`Whitelist not found: ${WHITELIST}`); process.exit(1); }
 if (!process.env.GEMINI_API_KEY || !process.env.OPENAI_API_KEY) {

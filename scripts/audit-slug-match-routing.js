@@ -29,24 +29,23 @@ const {
   matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
   cleanSlugForMatcher, _showDistinctiveTokens, _tokenAppearsInSlug,
 } = require('./lib/show-matching');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
-// Accept either an explicit override, a $HOME/broadway-review-texts checkout
-// (local), or data/review-texts (CI checkout via checkout-review-texts
-// action). Prior version was hardcoded to $HOME → CI failed every run.
-function resolveReviewTextsDir() {
-  const candidates = [
-    process.env.REVIEW_TEXTS_DIR,
-    process.env.HOME ? path.join(process.env.HOME, 'broadway-review-texts') : null,
-    path.resolve(__dirname, '..', 'data', 'review-texts'),
-  ].filter(Boolean);
-  for (const c of candidates) {
-    if (fs.existsSync(c)) return c;
-  }
-  console.error(`review-texts dir not found. Tried:\n  ${candidates.join('\n  ')}`);
+// This script's own local resolver (pre-task #1749) tried the legacy
+// $HOME/broadway-review-texts clone BEFORE data/review-texts — backwards from
+// the canonical order (the legacy clone was found 143+ commits stale on
+// 2026-08-17), so on any machine with both, this read-only audit was silently
+// reading the STALER copy. Read-only against RT (writes go to /tmp and
+// data/audit/), so the failure mode was misleading findings, not corruption —
+// still worth fixing since disposition-misroute.js's runbook quotes this
+// script's output directly.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+  console.error(`review-texts dir not found: ${REVIEW_TEXTS_DIR}`);
   console.error('Set REVIEW_TEXTS_DIR env var to override.');
   process.exit(1);
 }
-const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+console.log(`[audit-slug-match-routing] review-texts: ${REVIEW_TEXTS_DIR}`);
 
 // Helpers are now canonical in scripts/lib/show-matching.js — re-export
 // here as local names to keep audit logic readable. Single source of truth.
