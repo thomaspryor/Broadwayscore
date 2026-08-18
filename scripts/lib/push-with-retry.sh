@@ -36,7 +36,25 @@ source "$SCRIPT_DIR/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
+# BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally
+# named that" — NOT current HEAD. In a worktree checked out on a feature
+# branch, local `main` is a separate ref pinned at worktree-creation time
+# and never advances, so `git push origin main` there pushes that stale ref
+# every single time (always rejected non-fast-forward — indistinguishable
+# from real remote churn; task #1772, ~50 consecutive failures traced to
+# this in a live incident, root-caused to exactly this). Confirmed via a
+# full grep audit of every call site in .github/workflows/ and scripts/
+# (2026-08-18): no caller anywhere in this repo passes a plain branch name
+# other than "main" — every explicit refspec already uses the "HEAD:x" form
+# handled below. So EVERY plain name is normalized to "HEAD:<name>" here,
+# not just the unset-default case: on a normal main-branch checkout HEAD
+# already equals local main's tip, so this is byte-identical to the old
+# behavior for every existing caller; in a worktree on another branch it
+# correctly pushes current HEAD instead of the stale same-named local ref.
 BRANCH=${2:-main}
+if [[ "$BRANCH" != *:* ]]; then
+  BRANCH="HEAD:$BRANCH"
+fi
 
 # ── Hang guards (Notion 39d637c5 / task #183) ────────────────────────────────
 # Under high commit churn on a busy main, a `git fetch`/`git push` can stall on an
