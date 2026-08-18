@@ -35,7 +35,11 @@ const quiet = (fn) => {
 // --- Pure validateUrlDomain() tests ---
 
 test('domainless outlet: URL passes but is flagged unvalidated (not a silent bare pass)', () => {
-  const r = validateUrlDomain('https://www.facebook.com/some/post', 'the-herald');
+  // the-journal is genuinely domainless by design (task #766 re-triage,
+  // 2026-08-17) — its historical domain went 410, and its live content now
+  // sits on evening-chronicle's registered domain, so it's deliberately kept
+  // domainless rather than colliding two outletIds onto one host.
+  const r = validateUrlDomain('https://www.facebook.com/some/post', 'the-journal');
   assert.equal(r.valid, true);
   assert.equal(r.unvalidated, true);
   assert.match(r.reason, /no registered domain/);
@@ -87,8 +91,8 @@ test('createOrMergeReviewFile stamps domainUnvalidated + warns for a domainless 
     const { result, warnings } = quiet(() => createOrMergeReviewFile(
       'some-west-end-show-2026',
       {
-        outlet: 'The Herald',
-        outletId: 'the-herald',
+        outlet: 'The Journal',
+        outletId: 'the-journal',
         criticName: 'Some Critic',
         url: 'https://www.facebook.com/some/post',
         source: 'test',
@@ -99,7 +103,7 @@ test('createOrMergeReviewFile stamps domainUnvalidated + warns for a domainless 
     assert.equal(result.action, 'new');
     const written = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
     assert.equal(written.domainUnvalidated, true);
-    assert.match(written.domainUnvalidatedReason, /no registered domain for outlet "the-herald"/);
+    assert.match(written.domainUnvalidatedReason, /no registered domain for outlet "the-journal"/);
     assert.ok(warnings.some(w => /Unvalidated domain/.test(w)), 'expected a console.warn about the unvalidated domain');
   });
 });

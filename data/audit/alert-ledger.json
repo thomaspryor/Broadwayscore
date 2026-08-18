@@ -129,18 +129,16 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-17T15:51:09.945Z",
-      "lastNotifiedAt": "2026-08-17T04:50:23.637Z",
-      "notifyCount": 36,
+      "lastSeen": "2026-08-18T01:54:53.204Z",
+      "lastNotifiedAt": "2026-08-18T01:54:53.204Z",
+      "notifyCount": 37,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 11,
-      "resolvedAt": "2026-08-17T16:24:58.143Z"
+      "linearIdentifier": null
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -772,7 +770,7 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-18T01:40:10.185Z",
+      "lastSeen": "2026-08-18T01:54:53.203Z",
       "lastNotifiedAt": "2026-08-18T01:21:14.282Z",
       "notifyCount": 13,
       "cardId": null,
@@ -1157,12 +1155,12 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
       "firstSeen": "2026-08-16T20:42:02.771Z",
-      "lastSeen": "2026-08-17T20:55:28.044Z",
+      "lastSeen": "2026-08-18T01:53:57.069Z",
       "lastNotifiedAt": "2026-08-16T20:42:02.771Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "cron-health:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1181,24 +1179,24 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on abigails-party-west-end-2026",
       "firstSeen": "2026-08-17T13:10:08.865Z",
-      "lastSeen": "2026-08-17T20:55:28.044Z",
+      "lastSeen": "2026-08-18T01:53:57.070Z",
       "lastNotifiedAt": "2026-08-17T13:10:08.865Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-empty-cast:spellbound-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on spellbound-off-broadway-2026",
       "firstSeen": "2026-08-17T13:10:08.866Z",
-      "lastSeen": "2026-08-17T20:55:28.045Z",
+      "lastSeen": "2026-08-18T01:53:57.071Z",
       "lastNotifiedAt": "2026-08-17T13:10:08.866Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     }
   }
 }
