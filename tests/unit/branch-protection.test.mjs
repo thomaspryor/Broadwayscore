@@ -42,8 +42,15 @@ test('every required-check context name exists as a job in some workflow file', 
   const allText = files.map((f) => readFileSync(path.join(workflowsDir, f), 'utf8')).join('\n');
 
   for (const context of REQUIRED_CHECK_CONTEXTS) {
-    const nameLine = new RegExp(`name:\\s*${context.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'm');
-    assert.ok(nameLine.test(allText), `required-check context "${context}" is not a job name: (name:) in any .github/workflows/*.yml file`);
+    const escaped = context.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Anchored to 4-space indentation — this repo's `jobs: -> <job-id>: ->
+    // name:` nesting always lands the job's own `name:` at exactly that
+    // depth (verified against test.yml). Anything less specific also matches
+    // a step's `- name:` (6+ spaces, leading dash) or the workflow's
+    // top-level `name:` (0 spaces) — neither is a check-run context GitHub
+    // will ever report, so matching either is false confidence, not safety.
+    const jobNameLine = new RegExp(`^ {4}name:\\s*["']?${escaped}["']?\\s*$`, 'm');
+    assert.ok(jobNameLine.test(allText), `required-check context "${context}" is not a job-level name: (4-space indent) in any .github/workflows/*.yml file`);
   }
 });
 
@@ -52,12 +59,14 @@ test('diffProtection reports no changes when live state already matches target',
     required_status_checks: { strict: false, contexts: [...REQUIRED_CHECK_CONTEXTS] },
     enforce_admins: { enabled: true },
     required_pull_request_reviews: null,
+    restrictions: null,
     allow_force_pushes: { enabled: false },
     allow_deletions: { enabled: false },
     required_conversation_resolution: { enabled: false },
     required_linear_history: { enabled: false },
     lock_branch: { enabled: false },
     allow_fork_syncing: { enabled: false },
+    block_creations: { enabled: false },
   };
   assert.deepEqual(diffProtection(liveEquivalent, TARGET_PROTECTION), []);
 });
@@ -67,16 +76,44 @@ test('diffProtection reports every field that drifts from target', () => {
     required_status_checks: null, // no required checks configured at all
     enforce_admins: { enabled: false },
     required_pull_request_reviews: { required_approving_review_count: 1 },
+    restrictions: null,
     allow_force_pushes: { enabled: true }, // drifted from target's false
     allow_deletions: { enabled: false },
     required_conversation_resolution: { enabled: false },
     required_linear_history: { enabled: false },
     lock_branch: { enabled: false },
     allow_fork_syncing: { enabled: false },
+    block_creations: { enabled: false },
   };
   const changes = diffProtection(driftedLive, TARGET_PROTECTION);
   const fields = changes.map((c) => c.field).sort();
   assert.deepEqual(fields, ['allow_force_pushes', 'enforce_admins', 'required_pull_request_reviews', 'required_status_checks']);
+});
+
+test('diffProtection flags a live push-allowlist as a destructive change, and does not silently apply it', () => {
+  // The bug a ship-check reviewer caught (2026-08-18): TARGET_PROTECTION's
+  // restrictions:null is unconditionally sent by toPutPayload(), so an
+  // existing restrictions allowlist would be silently deleted on --apply
+  // unless the diff surfaces it first.
+  const liveWithRestrictions = {
+    required_status_checks: { strict: false, contexts: [...REQUIRED_CHECK_CONTEXTS] },
+    enforce_admins: { enabled: true },
+    required_pull_request_reviews: null,
+    restrictions: { users: [{ login: 'some-bot' }], teams: [], apps: [] },
+    allow_force_pushes: { enabled: false },
+    allow_deletions: { enabled: false },
+    required_conversation_resolution: { enabled: false },
+    required_linear_history: { enabled: false },
+    lock_branch: { enabled: false },
+    allow_fork_syncing: { enabled: false },
+    block_creations: { enabled: false },
+  };
+  const changes = diffProtection(liveWithRestrictions, TARGET_PROTECTION);
+  const restrictionsChange = changes.find((c) => c.field === 'restrictions');
+  assert.ok(restrictionsChange, 'a live restrictions allowlist must show up as a diffed field');
+  assert.equal(restrictionsChange.destructive, true);
+  assert.equal(restrictionsChange.from, true);
+  assert.equal(restrictionsChange.to, false);
 });
 
 test('diffProtection treats an unprotected branch (null) as fully drifted, not a crash', () => {

@@ -79,6 +79,7 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     // wider shared surface — in scope, but only the observe tier
     ['scripts/lib/title-match.js', 'shared-lib', 'shared'],
     ['scripts/lib/content-quality.js', 'gates', 'critical'],
+    ['scripts/setup-branch-protection.js', 'branch-protection', 'critical'],
   ];
   for (const [path, rule, tier] of cases) {
     const c = classifyPath(path);

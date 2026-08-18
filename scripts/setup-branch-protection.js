@@ -77,6 +77,7 @@ const TARGET_PROTECTION = {
   required_linear_history: false,
   lock_branch: false,
   allow_fork_syncing: false,
+  block_creations: false,
 };
 
 /**
@@ -106,7 +107,21 @@ function diffProtection(current, target) {
     changes.push({ field: 'required_pull_request_reviews', from: currentPrReviews, to: targetPrReviews });
   }
 
-  for (const field of ['allow_force_pushes', 'allow_deletions', 'required_conversation_resolution', 'required_linear_history', 'lock_branch', 'allow_fork_syncing']) {
+  // This script's scope is force-push/deletion/enforce_admins/required-checks
+  // — it never intends to touch a push allowlist (`restrictions`). But
+  // GitHub's PUT is not a partial update: omitting `restrictions` clears it.
+  // toPutPayload() always sends `restrictions: null` (this script's declared
+  // target), so if a live restriction exists it MUST show up here — silently
+  // dropping it on --apply was a real gap a reviewer caught (BRO-378 ship
+  // review, 2026-08-18). main() below refuses to apply this specific change
+  // without an explicit flag.
+  const currentHasRestrictions = !!(current && current.restrictions);
+  const targetHasRestrictions = target.restrictions !== null;
+  if (currentHasRestrictions !== targetHasRestrictions) {
+    changes.push({ field: 'restrictions', from: currentHasRestrictions, to: targetHasRestrictions, destructive: true });
+  }
+
+  for (const field of ['allow_force_pushes', 'allow_deletions', 'required_conversation_resolution', 'required_linear_history', 'lock_branch', 'allow_fork_syncing', 'block_creations']) {
     const currentVal = !!(current && current[field] && current[field].enabled);
     const targetVal = target[field];
     if (currentVal !== targetVal) {
@@ -120,6 +135,14 @@ function diffProtection(current, target) {
 /**
  * The PUT body GitHub's protection endpoint expects — a different shape from
  * both the GET response and TARGET_PROTECTION's diff-friendly shape.
+ *
+ * `block_creations` is deliberately OMITTED here: unlike every other field
+ * TARGET_PROTECTION declares, GitHub's branch-protection PUT does not accept
+ * it in the body — including it returns a bare 500 with an empty response
+ * body (confirmed live against this repo, 2026-08-18; GET still reports it,
+ * which is why diffProtection() still tracks it). If GitHub's API ever
+ * starts accepting it, the empty-payload 500 will surface immediately as a
+ * PUT failure, not a silent no-op — nothing here is relying on it working.
  */
 function toPutPayload(target) {
   return {
@@ -157,9 +180,10 @@ function ghApiPut(repo, branch, payload) {
 }
 
 function parseArgs(argv) {
-  const args = { apply: false, repo: DEFAULT_REPO, branch: DEFAULT_BRANCH };
+  const args = { apply: false, repo: DEFAULT_REPO, branch: DEFAULT_BRANCH, allowRestrictionsChange: false };
   for (const arg of argv) {
     if (arg === '--apply') args.apply = true;
+    else if (arg === '--allow-restrictions-change') args.allowRestrictionsChange = true;
     else if (arg.startsWith('--repo=')) args.repo = arg.slice('--repo='.length);
     else if (arg.startsWith('--branch=')) args.branch = arg.slice('--branch='.length);
   }
@@ -178,7 +202,14 @@ function main() {
 
   console.log(`${args.repo}#${args.branch}: ${changes.length} field(s) differ from target:`);
   for (const c of changes) {
-    console.log(`  ${c.field}: ${JSON.stringify(c.from)} -> ${JSON.stringify(c.to)}`);
+    console.log(`  ${c.field}: ${JSON.stringify(c.from)} -> ${JSON.stringify(c.to)}${c.destructive ? '  [DESTRUCTIVE]' : ''}`);
+  }
+
+  const destructive = changes.find((c) => c.destructive && c.from === true && c.to === false);
+  if (destructive && !args.allowRestrictionsChange) {
+    console.error(`\nRefusing to apply: this repo currently has a "${destructive.field}" push allowlist configured, and this script's target has none. Applying would silently delete it. Re-run with --allow-restrictions-change if that's actually intended.`);
+    process.exitCode = 1;
+    return;
   }
 
   if (!args.apply) {
