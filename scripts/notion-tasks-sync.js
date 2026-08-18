@@ -891,12 +891,42 @@ function planPendingClosure(task, card) {
 // bsc-reconcile.js's own stall sweep consulting Notion directly, and both
 // are a different file/task's scope than this one.
 const DEFAULT_DRIFT_LIMIT = 250;
+
+// Task #1790: reconcileStaleMirrors used to take a stable `.slice(0, limit)`
+// off Object.entries(map) — no offset, no rotation. With a candidate pool
+// bigger than `limit`, entries past index `limit` were never reconciled, not
+// "reconciled less often" (measured live: 196/221 candidates permanently
+// outside the sweep). Fix is identity-keyed, not index-keyed: each map entry
+// carries its own `lastReconciledAt` (stamped below whenever this function
+// actually re-checks it, whether or not drift was found), and every call
+// takes the `limit` entries least recently checked (never-checked = 0, so a
+// brand-new candidate is always picked before one already swept this
+// round). This self-corrects across repeated calls regardless of how the
+// pool's membership or order changes between them — an index/cursor
+// approach doesn't, because Object.entries(map).filter(...) is recomputed
+// fresh every call and shrinks every time an entry near the cursor gets
+// fixed and drops out, desyncing a persisted offset from what it was meant
+// to point at (caught in this task's own plan review). It's also race-free
+// across concurrent callers: two sessions stamping the same entries with
+// `lastReconciledAt = now` converge on the same ordering, unlike a shared
+// cursor file, which has no natural merge and would need its own lock.
+function selectLeastRecentlyReconciled(candidates, limit) {
+  if (!Number.isFinite(limit) || limit <= 0) return [];
+  // Array#sort is a stable sort in Node/V8 (ES2019+), so candidates that tie
+  // on lastReconciledAt (most commonly: all-zero, i.e. never checked) keep
+  // their original map order rather than shuffling on every call.
+  return [...candidates]
+    .sort(([, a], [, b]) => (a.lastReconciledAt || 0) - (b.lastReconciledAt || 0))
+    .slice(0, limit);
+}
+
 function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false } = {}) {
   const map = readMap(dir);
-  const entries = Object.entries(map).filter(([, e]) => {
+  const allCandidates = Object.entries(map).filter(([, e]) => {
     const t = readLiveTask(dir, e.taskId);
     return t && (t.status === 'in_progress' || t.status === 'pending');
-  }).slice(0, limit);
+  });
+  const entries = selectLeastRecentlyReconciled(allCandidates, limit);
 
   // Task #1697: liveness primitives for planLivenessDowngrade, fetched once
   // up front (cmux listing is a subprocess call — same "fetch once, reuse
@@ -910,6 +940,35 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
     return !!(lease && pidLooksLikeClaude(lease.pid));
   };
   const liveWorkspaceOf = (t, wsList) => findLiveWorkspaceForTask(t, wsList, cmuxws.isDoneTitle);
+
+  // Task #1790: stamp lastReconciledAt for a candidate that was genuinely
+  // EXAMINED this round — on a successful GET, a failed one, AND the stale-
+  // ownership skip below — so it rotates to the back of
+  // selectLeastRecentlyReconciled's queue regardless of outcome. Ship-check
+  // adversarial review (2026-08-18) caught the original version of this
+  // function only stamping on success: if >= `limit` candidates fail their
+  // Notion GET simultaneously (permission revoked, pages deleted, an
+  // outage), the unstamped failures would keep winning "least recently
+  // reconciled" forever and starve every other candidate — reproducing this
+  // exact task's bug through a different gate (>= limit persistently-broken
+  // pages instead of >= limit array index). Stamping failures too trades a
+  // slower retry for a genuinely transient blip (next full sweep instead of
+  // next call) for a hard bound on total starvation — worth it given `pull`
+  // runs often (CLAUDE.md's own dispatch cadence) and sync-drift covers up
+  // to 250 candidates at once. A lock loss (another sync mid-write) is a
+  // no-op: the entry simply stays eligible next run, coverage is never lost.
+  function stampReconciled(pageId) {
+    if (dry) return;
+    const stampRelease = acquireLock(dir);
+    if (!stampRelease) return;
+    try {
+      const freshMapForStamp = readMap(dir);
+      if (freshMapForStamp[pageId]) {
+        freshMapForStamp[pageId].lastReconciledAt = Date.now();
+        writeMap(dir, freshMapForStamp);
+      }
+    } finally { stampRelease(); }
+  }
 
   const fixed = [];
   const unchanged = [];
@@ -928,6 +987,7 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
     // refuse, which makes the dry-run report useless as an approval signal.
     if (!taskBelongsTo(dir, entry.taskId, pageId, { liveOnly: true })) {
       unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: 'SKIPPED (stale map entry — task id reused)' });
+      stampReconciled(pageId);
       continue;
     }
     let card;
@@ -935,8 +995,10 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
       card = JSON.parse(notionBrain(['get', pageId]));
     } catch (e) {
       fetchFailed.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
+      stampReconciled(pageId);
       continue;
     }
+    stampReconciled(pageId);
     let drift = planStatusDrift(task, card);
     // Task #1697: planStatusDrift only unsticks the Done case (mergeStatus
     // never refuses ...->completed). Every other non-"In progress" Notion
@@ -1117,4 +1179,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget };
