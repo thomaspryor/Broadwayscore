@@ -62,7 +62,7 @@
 
 ## 📋 Open work
 - [Coverage Verdict APPROVED](project_coverage_verdict_plan.md) — FULL S0-S5 approved 2026-08-02, runs without owner; tasks #901-906; don't re-ask, dispatch stalled cards
-- [Linear migration decision](project_linear_migration_decision.md) — Notion+cmux repair REJECTED 2026-08-11, awaits owner go; never pitch "one more fix"
+- [Linear migration decision](project_linear_migration_decision.md) — approved+underway since 8/12 (Phase 1 mid-flight); never pitch "one more fix" to Notion+cmux
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards point at claude-outputs/repo paths; scratchpad dies
 - [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET; cron map valid
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
