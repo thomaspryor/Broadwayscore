@@ -16,10 +16,25 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const core = require('../lib/dispatch-watchdog-core.js');
 
 const NOW = Date.parse('2026-08-18T12:00:00Z');
+const SCRIPTS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+// notion-action-poll.js calls main() unconditionally at load (no
+// require.main === module guard) — requiring it here would trigger a real
+// Notion poll. A source-text assertion is the same trade-off the file's own
+// notion-action-poll.test.mjs already makes for its review-texts write guard;
+// it catches the wiring itself being silently deleted, which the function-
+// level tests below can't (ship-check finding, task #1720).
+test('notion-action-poll.js wires the escalation-off file through pageIfKillSwitchStale', () => {
+  const src = fs.readFileSync(path.join(SCRIPTS_DIR, 'notion-action-poll.js'), 'utf8');
+  assert.match(src, /require\(['"]\.\/dispatch-watchdog\.js['"]\)/, 'must import pageIfKillSwitchStale from dispatch-watchdog.js');
+  assert.match(src, /pageIfKillSwitchStale\(\s*escalationOffFile/, 'must call pageIfKillSwitchStale with the escalation-off file path');
+  assert.match(src, /conditionKey:\s*['"]escalation-kill-switch-stale['"]/, 'must use a conditionKey distinct from watchdog-kill-switch-stale');
+});
 
 test('escalation-off kill switch just inside the staleness bar stays silent', () => {
   const mtimeMs = NOW - (core.KILL_SWITCH_STALE_MS - 60 * 1000);
