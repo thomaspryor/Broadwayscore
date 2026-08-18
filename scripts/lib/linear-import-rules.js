@@ -9,6 +9,10 @@
 //   "[notion:3b2637c5-...] P1 Next · Not started · Product\nhttps://..."
 // but the tag is not always the first line — zombie-sweep re-opens and other
 // prefixes push it down, so search the whole description, not just line 1.
+// Diacritic folding for label normalisation — see normalizeLabelName below for
+// why stripping non-ASCII without folding first defeats the function's purpose.
+const { foldDiacritics } = require('./title-match');
+
 const NOTION_ID_RE = /\[notion:([a-f0-9-]+)\]/;
 
 // EVERY Priority value the brain board can hold. Not a guess and not a sample:
@@ -403,10 +407,15 @@ const ROLLBACK_LABEL = 'import-rollback';
  * Returns null for anything that cannot be a useful label.
  */
 function normalizeLabelName(tag) {
-  const s = String(tag || '')
+  const s = foldDiacritics(String(tag || ''))
     .trim()
     .toLowerCase()
     .replace(/[\s_]+/g, '-')
+    // Fold FIRST (above), then strip. Stripping non-ASCII without folding turns
+    // "café" into "caf" while "cafe" stays "cafe" — two labels for one idea,
+    // which is the exact problem this function exists to prevent. Caught by
+    // tests/unit/sibling-matchers-diacritics.test.mjs, which fails CLOSED on any
+    // scripts/lib file carrying the shred signature with no fold.
     .replace(/[^a-z0-9-]/g, '')
     .replace(/-{2,}/g, '-')
     .replace(/^-|-$/g, '');
