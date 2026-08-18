@@ -56,6 +56,7 @@ const {
   scorecardDataRoot, reviewTextsRoot,
 } = require('./lib/autonomous-data-workdir.js');
 const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
+const { resolveClaudeBin, pathWithClaudeBinDir } = require('./lib/claude-cli.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -335,6 +336,10 @@ function implementerEnv() {
   const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'ANTHROPIC_API_KEY', 'NODE_ENV'];
   const env = {};
   for (const k of keep) if (process.env[k] !== undefined) env[k] = process.env[k];
+  // #1784: put the resolved claude binary's dir first on PATH, same as
+  // claude-cli.js's strippedEnv(), so a nested `claude` invocation the
+  // implementer itself makes also resolves under a launchd-minimal PATH.
+  env.PATH = pathWithClaudeBinDir(env.PATH);
   return env;
 }
 
@@ -362,7 +367,7 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript, prom
   // prompt (buildDataImplementerPrompt) — Tier-1's buildImplementerPrompt call
   // below is skipped entirely rather than layered under it.
   const prompt = fullPromptOverride || ((promptPrefix ? `${promptPrefix}\n\n---\n\n` : '') + buildImplementerPrompt(card, item, { tier: item.tier === 3 ? 3 : 1 }));
-  const r = spawnSync('claude', [
+  const r = spawnSync(resolveClaudeBin(), [
     '--dangerously-skip-permissions',
     '--settings', SETTINGS_PATH,
     '--model', model,
@@ -394,7 +399,7 @@ function preflightAuth() {
   const model = pickModel(1, null);
   let verdict = null;
   for (let attempt = 1; attempt <= 2; attempt++) {
-    const r = spawnSync('claude', [
+    const r = spawnSync(resolveClaudeBin(), [
       '-p', 'Reply with exactly: pong',
       '--model', model,
       '--output-format', 'json',
