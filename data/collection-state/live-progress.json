@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T05:27:21.348Z",
-  "processed": 7,
-  "failed": 78,
-  "successRate": "8.2%",
+  "updatedAt": "2026-08-18T05:29:17.448Z",
+  "processed": 9,
+  "failed": 86,
+  "successRate": "9.5%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-18T04:19:30.592Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "9ba45781",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-18T05:28:13.383Z",
+      "event": "bb-session",
+      "session": "e0d38257",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-18T05:28:14.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
