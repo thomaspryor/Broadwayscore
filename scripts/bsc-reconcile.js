@@ -45,6 +45,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { spawnSync, execFileSync } = require('child_process');
 const USAGE = `Usage: node scripts/bsc-reconcile.js [--dry-run]
 Marks headless jobs whose process died as orphaned, sweeps stale leases,
@@ -66,6 +67,7 @@ const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
+const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -469,6 +471,45 @@ const UNTRACKED_MARKER = '[zombie-sweep ';
 // a recurring digest nag, not a one-time correction.
 const OUTCOME_PARK_MARKER = '[outcome-park ';
 
+// Ship-check finding (task #1796, gpt-5.4-mini): stripOwnParkNote() used to
+// hardcode this prefix/signature as a second literal copy of the note text
+// built at the correctCardFn call site below — a future prose edit to one
+// without the other would silently break idempotency detection. One shared
+// pair, used at both sites, makes that structurally impossible.
+const AUTO_PARK_NOTE_PREFIX = 'Auto-parked ';
+const AUTO_PARK_NOTE_SIGNATURE = 'by bsc-reconcile zombie sweep:';
+
+// Card #1796: strips exactly one leading auto-park note from a Notion
+// outcome string, if present, to recover the "core" (human-authored)
+// content for idempotency hashing. Mirrors notion-brain.js's own prepend
+// separator (`outcomeText + '\n\n---\n\n' + existingOutcome`,
+// scripts/notion-brain.js:957-983) rather than guessing a format — only the
+// FIRST segment is ever checked/stripped, since a correctly-idempotent sweep
+// never lets its own note stack twice on the same underlying content (see
+// the park branch's coreOutcomeHash guard).
+function stripOwnParkNote(outcome) {
+  let s = String(outcome || '');
+  // Ship-check finding (task #1796): notion-brain.js's --outcome writer runs
+  // hoistRecheckAfterStamp() on the FULL combined text after prepending our
+  // note (scripts/notion-brain.js:972,979) — if the existing outcome
+  // mentions RECHECK-AFTER anywhere, that hoist pushes a canonical
+  // `RECHECK-AFTER: <date>\n\n` stamp in front of EVERYTHING, including our
+  // own note, breaking the "our note is always the literal head" assumption
+  // below. Strip that optional leading stamp first so it can't mask our own
+  // note (and, symmetrically, so a genuinely new dispute hiding under a
+  // stamp isn't mistaken for our own note either).
+  const stampMatch = new RegExp(`^${RECHECK_AFTER_RE.source}\\n\\n`, 'i').exec(s);
+  if (stampMatch) s = s.slice(stampMatch[0].length);
+  const sep = '\n\n---\n\n';
+  const idx = s.indexOf(sep);
+  if (idx === -1) return s;
+  const head = s.slice(0, idx);
+  if (head.startsWith(AUTO_PARK_NOTE_PREFIX) && head.includes(AUTO_PARK_NOTE_SIGNATURE)) {
+    return s.slice(idx + sep.length);
+  }
+  return s;
+}
+
 function notionIdOfTask(task) {
   if (task && task.metadata && task.metadata.notionCard) return String(task.metadata.notionCard);
   const m = /\[notion:([0-9a-f-]{16,})\]/i.exec(String((task && task.description) || ''));
@@ -487,7 +528,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
       if (r.status !== 0) return null;
       try { return JSON.parse(r.stdout); } catch { return null; }
     },
-    flipFn = (task, note) => {
+    flipFn = (task, note, eventTs = null) => {
       const file = path.join(tasksDir, `${task.id}.json`);
       const t = JSON.parse(fs.readFileSync(file, 'utf8'));
       // Check-then-act guard (ship-check Codex finding): a session can claim
@@ -496,16 +537,18 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
       if (t.status !== 'in_progress') return;
       t.status = 'pending';
       t.owner = null;
+      t.lastSweptForEventTs = eventTs; // card #1796: keys idempotency to THIS event, not marker presence
       t.description = note + (t.description || '');
       fs.writeFileSync(file, JSON.stringify(t, null, 2));
     },
     // Stamps OUTCOME_PARK_MARKER without touching status/owner — the park
     // only ever changes the NOTION side, so this exists purely to make the
     // sweep idempotent (same check-then-act shape as flipFn above).
-    markOutcomeParkedFn = (task, note) => {
+    markOutcomeParkedFn = (task, note, outcomeHash = null) => {
       const file = path.join(tasksDir, `${task.id}.json`);
       const t = JSON.parse(fs.readFileSync(file, 'utf8'));
       if (t.status !== 'in_progress') return;
+      t.lastParkedOutcomeHash = outcomeHash; // card #1796: keys idempotency to THIS outcome's content, not marker presence
       t.description = note + (t.description || '');
       fs.writeFileSync(file, JSON.stringify(t, null, 2));
     },
@@ -541,8 +584,39 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     const id = String(task.id);
     if (trackedIds.has(id)) continue;                       // ledger-tracked — the other sweeps own it
     if (task.metadata && task.metadata.recheckAfter) continue; // RECHECK-AFTER parked by process rule, not stuck
-    if (String(task.description || '').includes(UNTRACKED_MARKER)) continue; // already swept once — idempotent
-    if (String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue; // already parked — idempotent
+    // Card #1796 (the #1795 class): a bare marker-substring check can't tell
+    // "this SAME zombie-sweep/outcome-park event already handled this task"
+    // from "a task handled once for an EARLIER event has genuinely hit the
+    // same condition again and needs handling a second time" — flipFn/
+    // markOutcomeParkedFn PREPEND their note and never clear it, so the old
+    // any-marker check blocked every future event forever once stamped once.
+    // Fix (same shape as #1795's lastReopenedForEventTs, adapted since these
+    // tasks are by definition ledger-less): key idempotency to a structured
+    // field per branch, each comparable across occurrences without needing
+    // to re-derive history from ever-growing prose:
+    //   - lastSweptForEventTs (flip branch) = the Notion card's own
+    //     lastEditedAt at detection time. Safe here specifically because a
+    //     flip sets local status to 'pending' (line below), which drops the
+    //     task out of the in_progress candidate pool at the top of this
+    //     function — this sweep never re-evaluates it until something
+    //     external reclaims it back to in_progress, at which point being a
+    //     candidate again is itself evidence of a new occurrence.
+    //   - lastParkedOutcomeHash (park branch) = a hash of the human-authored
+    //     "core" outcome content (our own prior park note stripped first —
+    //     see stripOwnParkNote above and the park branch below). The park
+    //     branch deliberately never flips local status (comment above), so
+    //     it stays a candidate on every future sweep tick forever —
+    //     lastEditedAt would self-invalidate here (our own correction write
+    //     moves it past whatever we stamped), so identity has to be keyed on
+    //     content we control, not on Notion's own edit-tracking metadata.
+    // A task carrying the OLD marker text but neither structured field yet
+    // (pre-fix data) falls back to the original any-marker skip below —
+    // conservative, matches pre-fix behavior, and avoids spending a Notion
+    // fetch a legacy task can't be compared against anyway.
+    const hasSweptField = Object.prototype.hasOwnProperty.call(task, 'lastSweptForEventTs');
+    const hasParkedField = Object.prototype.hasOwnProperty.call(task, 'lastParkedOutcomeHash');
+    if (!hasSweptField && String(task.description || '').includes(UNTRACKED_MARKER)) continue;
+    if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
     if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
     const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
@@ -568,12 +642,34 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     // re-entering the auto-dispatch pool; bsc-next.js's staleOutcomeGuard is
     // the actual dispatch-time backstop regardless of local status.
     if (String(card.outcome || '').trim()) {
+      // Card #1796: identity for THIS branch can't be card.lastEditedAt —
+      // this branch deliberately never flips local status (comment above),
+      // so the task stays a sweep candidate on every future tick forever,
+      // and correctCardFn's OWN write below would move lastEditedAt past
+      // whatever we stamped, self-invalidating the guard into an infinite
+      // re-park loop (the exact failure OUTCOME_PARK_MARKER was built to
+      // stop). Instead, key off the CONTENT of the human-authored outcome,
+      // with our own prior park note (if any) stripped first so our own
+      // write never looks like "new" content: notion-brain.js's --outcome
+      // update always prepends as `note + '\n\n---\n\n' + existingOutcome`
+      // (scripts/notion-brain.js:957-983) — a fixed, date-independent
+      // separator — so stripping one leading `Auto-parked ... by
+      // bsc-reconcile zombie sweep:` note (if present) reliably recovers
+      // the same "core" text across repeated no-op runs of the SAME event,
+      // while any genuinely new content prepended by a human (or a second
+      // real dispute) changes the hash and correctly re-fires.
+      const coreOutcome = stripOwnParkNote(card.outcome);
+      const coreOutcomeHash = crypto.createHash('sha256').update(coreOutcome).digest('hex');
+      if (hasParkedField && task.lastParkedOutcomeHash === coreOutcomeHash) {
+        skipped.push({ id, why: 'already-parked-this-outcome' });
+        continue;
+      }
       skipped.push({ id, why: 'has-completed-outcome' });
       reportFn({ kind: 'zombie-outcome-needs-review', taskId: id, detail: `in_progress task #${id} "${task.subject}" sat In progress ${days}d with no live session, but its Notion card already has a filled Outcome — parking for human review instead of auto-reopening (task #1272, the #383 class).` });
       if (dryRun) continue;
       let parked = false;
       try {
-        parked = correctCardFn(notionId, `Auto-parked ${new Date().toISOString().slice(0, 10)} by bsc-reconcile zombie sweep: card sat In progress ${days}d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272). Resume dispatch with \`node scripts/bsc-next.js --id ${id} --force\` once reviewed.`, 'Paused');
+        parked = correctCardFn(notionId, `${AUTO_PARK_NOTE_PREFIX}${new Date().toISOString().slice(0, 10)} ${AUTO_PARK_NOTE_SIGNATURE} card sat In progress ${days}d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272). Resume dispatch with \`node scripts/bsc-next.js --id ${id} --force\` once reviewed.`, 'Paused');
       } catch (e) {
         reportFn({ kind: 'zombie-outcome-park-failed', taskId: id, detail: `card correction threw for #${id}: ${e.message}` });
         continue;
@@ -588,14 +684,23 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
         continue;
       }
       const parkNote = `${OUTCOME_PARK_MARKER}${new Date().toISOString().slice(0, 10)}] parked — Notion card set to Paused, needs a human yes/no on the recorded Outcome (task #1272).\n\n`;
-      try { markOutcomeParkedFn(task, parkNote); } catch (e) { reportFn({ kind: 'zombie-outcome-park-marker-failed', taskId: id, detail: `local marker write failed: ${e.message}` }); }
+      try { markOutcomeParkedFn(task, parkNote, coreOutcomeHash); } catch (e) { reportFn({ kind: 'zombie-outcome-park-marker-failed', taskId: id, detail: `local marker write failed: ${e.message}` }); }
       continue;
     }
 
+    // Card #1796: the flip branch DOES exit the candidate pool (status →
+    // 'pending' below), so card.lastEditedAt is a safe identity here — no
+    // self-invalidation risk, since this task won't be re-evaluated by this
+    // sweep until something external reclaims it back to in_progress, at
+    // which point being a candidate again already signals a new occurrence.
+    if (hasSweptField && task.lastSweptForEventTs === card.lastEditedAt) {
+      skipped.push({ id, why: 'already-swept-this-event' });
+      continue;
+    }
     reportFn({ kind: 'zombie-flip', taskId: id, detail: `in_progress task #${id} "${task.subject}" — no ledger history, no live lease/tab, card idle ${days}d → flipped back to pending` });
     if (dryRun) { flipped.push(id); continue; }
     const note = `${UNTRACKED_MARKER}${new Date().toISOString().slice(0, 10)}] reopened — sat In progress ${days}d with no live session, workspace, or dispatch record (owning session likely died; task #1184 S2). Re-eligible for dispatch.\n\n`;
-    try { flipFn(task, note); } catch (e) { reportFn({ kind: 'zombie-flip-failed', taskId: id, detail: `local flip failed: ${e.message}` }); continue; }
+    try { flipFn(task, note, card.lastEditedAt); } catch (e) { reportFn({ kind: 'zombie-flip-failed', taskId: id, detail: `local flip failed: ${e.message}` }); continue; }
     flipped.push(id);
     try {
       if (card.status === 'In progress') correctCardFn(notionId, `Auto-corrected ${new Date().toISOString().slice(0, 10)} by bsc-reconcile zombie sweep: card sat In progress ${days}d with no live session (task #1184 S2) — back to Not started, re-eligible for dispatch.`);
@@ -962,4 +1067,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER };

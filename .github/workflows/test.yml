@@ -1395,6 +1395,12 @@ on:
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/bsc-reconcile.js'
       - 'scripts/bsc-reconcile.test.mjs'
+      # Card #1796: reopen-idempotency fix for sweepUntrackedInProgress's
+      # UNTRACKED_MARKER/OUTCOME_PARK_MARKER guards (same bug class as
+      # #1795). Registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'
