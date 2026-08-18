@@ -10,12 +10,19 @@
  *   node scripts/linear-import.js --dry-run     # print counts, no writes
  *   node scripts/linear-import.js                # real run, resumable
  *
- * Idempotency: every created issue is appended to the mapping file
- * (data/linear-import-mapping.json) immediately after creation, keyed by
- * local mirror task id. A run skips any task already in the mapping file, and
- * defensively skips any task whose exact title already exists in team BRO
- * (covers the case where a prior run crashed after issueCreate succeeded but
- * before the mapping write landed).
+ * Idempotency (S3-T3, 2026-08-18): every created issue is appended to the
+ * mapping file (data/linear-import-mapping.json) immediately after creation,
+ * keyed by local mirror task id, and every create carries a DETERMINISTIC
+ * client-supplied id derived from the card's Notion page (or, failing that, its
+ * mirror task id). A run skips any task already in the mapping file; a task the
+ * mapping does not know about — the prior run crashed after issueCreate
+ * succeeded but before the mapping write landed — is refused by the server as
+ * an id conflict and counted, not re-created.
+ *
+ * This REPLACED an exact-title skip. Titles are not identity: measured against
+ * the Sprint 2 corpus, 28 titles are shared by 69 distinct un-Done cards, so
+ * the title check silently collapsed 41 real cards. Page identity does not have
+ * that failure mode.
  *
  * Curation rules live in scripts/lib/linear-import-rules.js (unit tested).
  * Summary:
@@ -31,6 +38,7 @@ const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
 
+const rules = require('./lib/linear-import-rules');
 const {
   extractNotionId,
   extractPriorityTag,
@@ -39,7 +47,7 @@ const {
   classifyNoise,
   classifyProject,
   isIdleArchive,
-} = require('./lib/linear-import-rules');
+} = rules;
 const linear = require('./lib/linear-client');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -433,29 +441,67 @@ async function main() {
   const team = await linear.getTeam();
   const stateByName = new Map(team.states.nodes.map((s) => [s.name, s.id]));
   const projects = await ensureProjects(team.id);
-  const existingTitles = await linear.listAllIssueTitles(team.id);
-  const seenTitles = new Set(existingTitles.keys());
 
+  // S3-T3: the exact-title dedupe is GONE.
+  //
+  // It skipped any candidate whose title already existed anywhere in BRO. That
+  // is wrong on the data: measured against the Sprint 2 corpus, 28 titles are
+  // shared by 69 distinct un-Done cards (four cards named "BSC Daily: Sync:
+  // baseline drift", the three "main red" P0s, and so on), so title-dedupe
+  // silently collapses 41 real cards into one issue each and reports it as a
+  // successful skip.
+  //
+  // It is replaced, NOT merely deleted — it was the only duplicate guard this
+  // script had. The replacement is strictly stronger and has two layers:
+  //
+  //   1. the local ledger (below), which skips anything already imported, and
+  //   2. a client-supplied deterministic id on every create, so even a create
+  //      the ledger did not record — the crash-after-issueCreate-before-write
+  //      case the title check was actually defending against — is a server-side
+  //      no-op on replay rather than a second issue.
+  //
+  // Landing (1) without (2) would leave the board unprotected in between, which
+  // is why these two are one commit and not two.
   let created = 0;
-  let titleCollisions = 0;
+  // A create whose id already exists comes back as the EXISTING issue rather
+  // than a new one, so this counts replays that the ledger did not know about
+  // — the crash-recovery case, now visible instead of silent.
+  let alreadyOnBoard = 0;
+  const mintedIds = new Set();
 
   for (const c of candidates) {
-    if (seenTitles.has(c.subject)) {
-      titleCollisions++;
-      console.error(`skip (title exists in BRO): ${c.subject}`);
-      continue;
-    }
     const stateId = stateByName.get(c.stateName);
     const projectId = projects[c.project].id;
-    const issue = await linear.createIssue({
-      teamId: team.id,
-      title: c.subject,
-      description: c.description,
-      priority: c.linearPriority,
-      stateId,
-      projectId,
-    });
-    seenTitles.add(c.subject);
+    // A mirror task's Notion page id when it has one; otherwise a stable key
+    // from the mirror task id. Both are namespaced so the two id spaces cannot
+    // collide, and both are deterministic, which is the whole point.
+    const issueId = c.notionId
+      ? rules.deriveIssueId(c.notionId)
+      : rules.deriveIssueId(String(c.taskId), 'mirror-task');
+    let issue;
+    try {
+      issue = await linear.createIssue({
+        teamId: team.id,
+        title: c.subject,
+        description: c.description,
+        priority: c.linearPriority,
+        stateId,
+        projectId,
+        id: issueId,
+      });
+    } catch (err) {
+      // The id is already on the board: a previous run created this issue and
+      // died before the mapping write landed. That is the exact case the old
+      // title check was for, and the server now answers it definitively —
+      // by page identity rather than by a title that other cards may share.
+      if (rules.isAlreadyExistsError(err)) {
+        alreadyOnBoard++;
+        console.error(`already on board (id ${issueId}): ${c.subject}`);
+        continue;
+      }
+      throw err;
+    }
+    mintedIds.add(issueId);
     mapping[c.taskId] = {
       linearId: issue.id,
       identifier: issue.identifier,
@@ -468,7 +514,11 @@ async function main() {
   }
 
   console.log(
-    JSON.stringify({ ...summary, created, titleCollisions, mappingTotal: Object.keys(mapping).length }, null, 2)
+    JSON.stringify(
+      { ...summary, created, alreadyOnBoard, mintedIds: mintedIds.size, mappingTotal: Object.keys(mapping).length },
+      null,
+      2
+    )
   );
 }
 

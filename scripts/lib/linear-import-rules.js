@@ -287,18 +287,39 @@ function isIdleArchive(localStatus, ageDays, idleDays = ARCHIVE_IDLE_DAYS) {
 const NOTION_ISSUE_NAMESPACE = '6f1a7d9c-3b52-4e18-9a24-8c0f5d6e7b31';
 
 /**
- * RFC 4122 §4.3 name-based UUIDv5 (SHA-1). Implemented here rather than pulled
- * in as a dependency: it is 15 lines, this repo has no uuid package, and adding
- * one to the runtime dependency set for a single call site is a worse trade.
+ * A DETERMINISTIC UUID, formatted as version 4.
+ *
+ * READ THIS BEFORE CHANGING THE VERSION NIBBLE. The sprint plan and the Sprint 3
+ * handoff both specify UUIDv5 here, and both are wrong against the real API.
+ * Measured live on 2026-08-18, the issue-create mutation rejects a v5 id outright:
+ *
+ *   constraints: { isUuid: "id must be a UUID" }
+ *   userPresentableMessage: "id must be a UUID."
+ *
+ * with the very same request succeeding when the only change is a v4 id.
+ * Linear's validator accepts v4 and nothing else, so a correct v5 UUID cannot
+ * be used no matter how well it is derived.
+ *
+ * What Sprint 3 actually needs from this value is DETERMINISM, not randomness:
+ * the same Notion page must always produce the same issue id. So the bytes come
+ * from SHA-256 over (namespace, name) exactly as a name-based UUID would, and
+ * only the six version/variant bits are stamped to v4 so the value survives
+ * validation. It is a hash wearing a v4 costume, deliberately, and the tests
+ * assert both halves: same input -> same id, and the id passes as v4.
+ *
+ * SHA-256 rather than SHA-1 because nothing here needs RFC 4122 §4.3 byte
+ * compatibility — the version is already a lie, so there is no interop to
+ * preserve, and no reason to reach for the weaker hash. 122 free bits make
+ * collision across 1,949 pages unreachable.
  */
-function uuidv5(name, namespace = NOTION_ISSUE_NAMESPACE) {
+function deterministicUuidV4(name, namespace = NOTION_ISSUE_NAMESPACE) {
   const crypto = require('node:crypto');
   const hex = String(namespace).replace(/-/g, '');
   if (!/^[0-9a-f]{32}$/i.test(hex)) throw new Error(`bad UUID namespace: ${namespace}`);
   const nsBytes = Buffer.from(hex, 'hex');
-  const hash = crypto.createHash('sha1').update(Buffer.concat([nsBytes, Buffer.from(String(name), 'utf8')])).digest();
+  const hash = crypto.createHash('sha256').update(Buffer.concat([nsBytes, Buffer.from(String(name), 'utf8')])).digest();
   const b = Buffer.from(hash.subarray(0, 16));
-  b[6] = (b[6] & 0x0f) | 0x50; // version 5
+  b[6] = (b[6] & 0x0f) | 0x40; // version 4 — required by Linear's isUuid validator
   b[8] = (b[8] & 0x3f) | 0x80; // RFC 4122 variant
   const s = b.toString('hex');
   return `${s.slice(0, 8)}-${s.slice(8, 12)}-${s.slice(12, 16)}-${s.slice(16, 20)}-${s.slice(20)}`;
@@ -307,10 +328,20 @@ function uuidv5(name, namespace = NOTION_ISSUE_NAMESPACE) {
 /**
  * The deterministic Linear issue id for a Notion page.
  *
- * THIS IS THE THING THAT MAKES THE BULK WRITE SAFE. IssueCreateInput accepts a
- * client-supplied `id` (String — confirmed by live introspection against the
- * real API, 2026-08-17), so a replayed create with the same id is a server-side
- * no-op instead of a second issue. Two independent facts make it load-bearing:
+ * THIS IS THE THING THAT MAKES THE BULK WRITE SAFE, though not by the mechanism
+ * the plan describes. Measured live on 2026-08-18, replaying a create with an
+ * id that already exists does NOT silently no-op — it fails with a specific,
+ * recognisable 400:
+ *
+ *   code: INPUT_ERROR
+ *   "Entity Issue with id 2edea22f-… already exists."
+ *
+ * That is still exactly the guarantee Sprint 3 needs, and arguably a better one:
+ * the duplicate is refused BY THE SERVER, loudly, instead of being created. The
+ * importer's job is therefore to classify that one error as "already imported"
+ * and continue — see isAlreadyExistsError() — rather than to assume silence.
+ *
+ * Two independent facts make this load-bearing:
  *
  *   1. S3-T3 deletes the exact-title dedupe, which was the importer's ONLY
  *      duplicate guard. It had to go — 28 titles are shared by 69 distinct
@@ -318,8 +349,10 @@ function uuidv5(name, namespace = NOTION_ISSUE_NAMESPACE) {
  *      removing it without this leaves the board unprotected.
  *   2. scripts/lib/linear-retry-policy.js deliberately refuses to retry
  *      mutations on 5xx (S1-T1), because a replayed create cannot be assumed
- *      safe. Supplying the id is exactly what makes it safe, and is the
- *      precondition for the importer opting into retryMutationsOn5xx.
+ *      safe. A deterministic id is what makes the replay safe: it either
+ *      creates the issue the ambiguous attempt never created, or it comes back
+ *      as the conflict above. That, and only that, is what lets the importer
+ *      opt into retryMutationsOn5xx.
  *
  * `kind` keeps the two sources in separate id spaces. A mirror task with no
  * [notion:] marker still needs a stable key, and hashing its task id under the
@@ -327,7 +360,27 @@ function uuidv5(name, namespace = NOTION_ISSUE_NAMESPACE) {
  */
 function deriveIssueId(key, kind = 'notion-page') {
   if (!key) return null;
-  return uuidv5(`${kind}:${key}`);
+  return deterministicUuidV4(`${kind}:${key}`);
+}
+
+/**
+ * Is this the "an issue with that id already exists" conflict?
+ *
+ * The importer treats it as SUCCESS (the card is on the board, which is the
+ * post-condition it wanted) rather than as a failure. Matched on the stable
+ * parts — the INPUT_ERROR code plus the "already exists" phrasing — and never
+ * on the message alone, so an unrelated INPUT_ERROR (a bad stateId, a malformed
+ * title) still aborts the run the way it should.
+ */
+function isAlreadyExistsError(err) {
+  const errors = (err && err.linearErrors) || [];
+  for (const e of errors) {
+    const ext = (e && e.extensions) || {};
+    const msg = `${e.message || ''} ${ext.userPresentableMessage || ''}`;
+    if (ext.code === 'INPUT_ERROR' && /already exists/i.test(msg)) return true;
+    if (/conflict on insert/i.test(e.message || '')) return true;
+  }
+  return false;
 }
 
 // Notion Status -> Linear workflow state name, for corpus records. Distinct
@@ -417,8 +470,9 @@ module.exports = {
   ARCHIVE_LABEL,
   ROLLBACK_LABEL,
   NOTION_ISSUE_NAMESPACE,
-  uuidv5,
+  deterministicUuidV4,
   deriveIssueId,
+  isAlreadyExistsError,
   mapNotionStatusToLinearState,
   normalizeLabelName,
   recordTags,

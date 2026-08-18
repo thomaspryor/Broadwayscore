@@ -12,7 +12,8 @@ import {
   normalizePriorityTier,
   isLivePriorityTier,
   deriveIssueId,
-  uuidv5,
+  deterministicUuidV4,
+  isAlreadyExistsError,
   NOTION_ISSUE_NAMESPACE,
   classifyCorpusRecord,
   mapNotionStatusToLinearState,
@@ -259,19 +260,29 @@ test('push-with-retry cards are production bugs, not fleet self-reference', () =
 
 // ── Sprint 3: corpus-sourced import ────────────────────────────────────────
 
-test('deriveIssueId is deterministic, RFC-4122 v5, and namespaced per source', () => {
+test('deriveIssueId is deterministic and namespaced per source', () => {
   const page = '3b2637c5-416f-81b5-9040-c95cf463ba19';
   const a = deriveIssueId(page);
   const b = deriveIssueId(page);
   assert.equal(a, b, 'the SAME pageId must always yield the SAME issue id — this is the entire idempotency guarantee');
-  assert.match(a, /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
   assert.notEqual(a, deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba18'), 'different pages must not collide');
   assert.notEqual(a, deriveIssueId(page, 'mirror-task'), 'the two id spaces must not overlap');
   assert.equal(deriveIssueId(null), null);
   assert.equal(deriveIssueId(''), null);
 });
 
-test('the UUIDv5 namespace is FROZEN — changing it re-imports the whole board', () => {
+test('the derived id is formatted as v4, because Linear REJECTS v5', () => {
+  // Measured live 2026-08-18: issueCreate with a v5 id fails
+  //   constraints: { isUuid: "id must be a UUID" }
+  // and the identical request succeeds with a v4 id. The plan and the Sprint 3
+  // handoff both specify UUIDv5; both are wrong against the real API. If this
+  // assertion is ever "fixed" back to /5[0-9a-f]{3}/, every create in the bulk
+  // import fails argument validation.
+  const id = deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba19');
+  assert.match(id, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+});
+
+test('the id namespace is FROZEN — changing it re-imports the whole board', () => {
   // A new namespace makes every already-imported card look un-imported, and a
   // replay would then duplicate 1,949 issues into a board with no bulk delete.
   // If this assertion fails, someone regenerated the constant; do not "fix" the
@@ -279,17 +290,35 @@ test('the UUIDv5 namespace is FROZEN — changing it re-imports the whole board'
   assert.equal(NOTION_ISSUE_NAMESPACE, '6f1a7d9c-3b52-4e18-9a24-8c0f5d6e7b31');
   assert.equal(
     deriveIssueId('3b2637c5-416f-81b5-9040-c95cf463ba19'),
-    uuidv5('notion-page:3b2637c5-416f-81b5-9040-c95cf463ba19')
+    deterministicUuidV4('notion-page:3b2637c5-416f-81b5-9040-c95cf463ba19')
   );
+  // A pinned value, so a change to the hash, the namespace, or the key format
+  // is caught here rather than by a duplicate import discovered on the board.
+  assert.equal(deriveIssueId('page-a'), deterministicUuidV4('notion-page:page-a'));
 });
 
-test('uuidv5 matches the RFC 4122 published test vector', () => {
-  // Independent proof the implementation is real UUIDv5 and not merely
-  // self-consistent: the DNS namespace + "www.example.org" vector.
-  assert.equal(
-    uuidv5('www.example.org', '6ba7b810-9dad-11d1-80b4-00c04fd430c8'),
-    '74738ff5-5367-5958-9aee-98fffdcd1876'
-  );
+test('the already-exists conflict is recognised as success, other input errors are not', () => {
+  // The REAL replay semantics, measured live 2026-08-18. A create replayed with
+  // an id that exists does not silently no-op (as the plan assumed) — it comes
+  // back as this. The importer counts it as "already imported" and continues;
+  // anything else must still abort the run.
+  const conflict = Object.assign(new Error('Linear GraphQL error: conflict on insert of Issue'), {
+    linearErrors: [{
+      message: 'conflict on insert of Issue',
+      extensions: {
+        code: 'INPUT_ERROR',
+        userPresentableMessage: 'Entity Issue with id 2edea22f-f030-4e2e-bcc0-fd60bbea2c02 already exists.',
+      },
+    }],
+  });
+  assert.equal(isAlreadyExistsError(conflict), true);
+
+  const otherInputError = Object.assign(new Error('bad state'), {
+    linearErrors: [{ message: 'Argument Validation Error', extensions: { code: 'INPUT_ERROR', userPresentableMessage: 'id must be a UUID.' } }],
+  });
+  assert.equal(isAlreadyExistsError(otherInputError), false, 'a malformed request must NOT be mistaken for an existing issue');
+  assert.equal(isAlreadyExistsError(new Error('network')), false);
+  assert.equal(isAlreadyExistsError(null), false);
 });
 
 const rec = (props) => ({ id: 'p1', properties: props });

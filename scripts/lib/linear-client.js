@@ -421,15 +421,72 @@ async function createProject(name, teamId) {
   return data.projectCreate.project;
 }
 
-async function createIssue({ teamId, title, description, priority, stateId, projectId }) {
+/**
+ * @param {string} [opts.id]          client-supplied UUID — THE idempotency key.
+ * @param {string[]} [opts.labelIds]  labels to attach at creation.
+ * @param {boolean} [opts.retryMutationsOn5xx]  only safe WITH an id (see below).
+ *
+ * `id` is a real String field on IssueCreateInput (confirmed by live
+ * introspection against the API, twice, rather than from docs). Supplying it
+ * makes a replayed create a server-side no-op instead of a duplicate, which is
+ * the only reason the Sprint 3 bulk write can be retried at all: a board with
+ * no bulk delete does not forgive a double-import of 1,949 cards.
+ *
+ * retryMutationsOn5xx is refused unless an id is supplied. linear-retry-policy.js
+ * withholds 5xx retries from mutations precisely because a replay is ambiguous
+ * (S1-T1), and the id is what resolves the ambiguity — so letting a caller opt
+ * into the retry WITHOUT one would quietly undo that decision. Enforced here
+ * rather than documented, because a comment cannot fail a build.
+ */
+async function createIssue({ teamId, title, description, priority, stateId, projectId, id, labelIds, retryMutationsOn5xx }) {
+  if (retryMutationsOn5xx && !id) {
+    throw new Error('createIssue: retryMutationsOn5xx requires a client-supplied id — a replay without one duplicates the issue');
+  }
+  const input = { teamId, title, description, priority, stateId, projectId };
+  if (id) input.id = id;
+  if (labelIds && labelIds.length) input.labelIds = labelIds;
   const data = await graphql(
     `mutation($input: IssueCreateInput!) {
       issueCreate(input: $input) { success issue { id identifier title } }
     }`,
-    { input: { teamId, title, description, priority, stateId, projectId } }
+    { input },
+    retryMutationsOn5xx ? { retryMutationsOn5xx: true } : {}
   );
   if (!data.issueCreate.success) throw new Error(`issueCreate failed for "${title}"`);
   return data.issueCreate.issue;
+}
+
+async function listLabels(teamId) {
+  const out = [];
+  let cursor;
+  do {
+    const data = await graphql(
+      `query($teamId: String!, $after: String) {
+        team(id: $teamId) {
+          labels(first: 250, after: $after) {
+            nodes { id name }
+            pageInfo { hasNextPage endCursor }
+          }
+        }
+      }`,
+      { teamId, after: cursor }
+    );
+    const page = data.team.labels;
+    out.push(...page.nodes);
+    cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : undefined;
+  } while (cursor);
+  return out;
+}
+
+async function createLabel(name, teamId) {
+  const data = await graphql(
+    `mutation($input: IssueLabelCreateInput!) {
+      issueLabelCreate(input: $input) { success issueLabel { id name } }
+    }`,
+    { input: { name, teamId } }
+  );
+  if (!data.issueLabelCreate.success) throw new Error(`issueLabelCreate failed for "${name}"`);
+  return data.issueLabelCreate.issueLabel;
 }
 
 module.exports = {
@@ -449,4 +506,6 @@ module.exports = {
   listProjects,
   createProject,
   createIssue,
+  listLabels,
+  createLabel,
 };
