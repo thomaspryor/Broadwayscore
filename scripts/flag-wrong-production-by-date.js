@@ -40,6 +40,21 @@ function buildMultiProductionTitleIds(showMap) {
   return ids;
 }
 
+// Mirrors review-write-guard.js's onDiskHasOverrideClear check exactly (task
+// #1678): review-guards.js's canonical inclusion check treats either
+// breadcrumb as "wrongProduction cleared, include anyway" regardless of
+// wrongProduction being true, and evaluateDatePlausibility's CI backstop
+// exempts any record where wrongProduction is already true — so stamping
+// wrongProduction=true over a record that carries either breadcrumb is
+// silently neutralized for inclusion while blinding the push-time safety
+// net. Line 113's top-level skip already covers wrongProductionManualClear
+// for reviews with a usable date, but not wrongProductionOverride, and
+// neither is re-checked at the two stamp sites below — this closes that gap
+// (task #1775).
+function hasOverrideClearBreadcrumb(data) {
+  return data.wrongProductionOverride === true || data.wrongProductionManualClear === true;
+}
+
 // Overridable via env so tests can point at a temp fixture dir/file instead
 // of real data (same pattern as scripts/audit-show-review-gap.js).
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
@@ -88,7 +103,7 @@ function run() {
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
   let priorRunSkipped = 0, datelessRevivalFlagged = 0;
   let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
-  let awaitingRefetchSkipped = 0;
+  let awaitingRefetchSkipped = 0, overrideClearSkipped = 0;
   const flaggedDetails = [];
   const heldDetails = [];
   const stuckCiBlockingDetails = [];
@@ -164,15 +179,20 @@ function run() {
           show,
         });
         if (verdict.flag && data.humanReviewedWrongProduction !== false) {
-          datelessRevivalFlagged++;
-          flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
-          if (!DRY_RUN) {
-            data.wrongProduction = true;
-            invalidateWrongProductionAutoClear(data);
-            data.wrongProductionReason = 'dateless-revival';
-            data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
-            const r = safeWriteReview(filePath, data);
-            if (r.lockedSkipped) lockedSkipCount++;
+          if (hasOverrideClearBreadcrumb(data)) {
+            overrideClearSkipped++;
+            console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (dateless revival): existing wrongProductionOverride/ManualClear breadcrumb`);
+          } else {
+            datelessRevivalFlagged++;
+            flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
+            if (!DRY_RUN) {
+              data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
+              data.wrongProductionReason = 'dateless-revival';
+              data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
+              const r = safeWriteReview(filePath, data);
+              if (r.lockedSkipped) lockedSkipCount++;
+            }
           }
         } else {
           noDate++;
@@ -213,6 +233,12 @@ function run() {
           continue;
         }
         if (corrob.strength === 'weak') corroborationWarned++;
+      }
+
+      if (hasOverrideClearBreadcrumb(data)) {
+        overrideClearSkipped++;
+        console.warn(`[flag-wrong-production-by-date] ${showDir}/${file} → skipping wrongProduction stamp (${issue}, ${diffDays}d): existing wrongProductionOverride/ManualClear breadcrumb`);
+        continue;
       }
 
       const note = issue === 'before_preview'
@@ -292,6 +318,7 @@ function run() {
   console.log(`OK (within window):    ${ok}`);
   console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);
+  console.log(`Skipped (override/manual clear breadcrumb): ${overrideClearSkipped}`);
   console.log(`Awaiting URL refetch:  ${awaitingRefetchSkipped}`);
   console.log(`  ...of which STUCK (also fails CI's date check): ${stuckCiBlockingDetails.length}`);
   console.log(`No publishDate:        ${noDate}`);
