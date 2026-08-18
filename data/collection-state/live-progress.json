@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-18T10:27:54.425Z",
-  "processed": 23,
-  "failed": 127,
-  "successRate": "15.3%",
+  "updatedAt": "2026-08-18T11:26:44.125Z",
+  "processed": 26,
+  "failed": 134,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 17,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 2,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-18T10:06:04.164Z",
@@ -48,6 +48,17 @@
       "event": "bb-session",
       "session": "d17ddb79",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-18T11:25:17.882Z",
+      "event": "bb-session",
+      "session": "dd2a1b14",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-18T11:25:18.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
