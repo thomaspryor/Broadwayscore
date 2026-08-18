@@ -121,17 +121,6 @@
     "queuedAt": "2026-08-16T20:42:02.771Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "3/151 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nThe Winter's Tale: score-drift\nGame of Thrones: The Mad King: score-drift\nNow You See Me Live: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-16T23:13:49.495Z"
-  },
-  {
     "conditionKey": "sd-circuit-breaker",
     "title": "Scrapingdog daily breaker TRIPPED: 45998/33000 credits",
     "description": "Scrapingdog billed 45998 credits today against a ceiling of 33000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (1340), audit-show-review-gap.js (677), opening-night-poller.js (561).",
@@ -218,5 +207,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-18T05:38:22.998Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/151 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nHow the Other Half Loves: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-18T06:20:11.395Z"
   }
 ]
