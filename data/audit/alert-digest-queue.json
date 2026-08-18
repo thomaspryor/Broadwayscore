@@ -132,17 +132,6 @@
     "queuedAt": "2026-08-16T23:13:49.495Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31994885615",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-17T04:50:23.638Z"
-  },
-  {
     "conditionKey": "sd-circuit-breaker",
     "title": "Scrapingdog daily breaker TRIPPED: 45998/33000 credits",
     "description": "Scrapingdog billed 45998 credits today against a ceiling of 33000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (1340), audit-show-review-gap.js (677), opening-night-poller.js (561).",
@@ -218,5 +207,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-17T20:16:21.326Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 10 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32089200643",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-18T02:00:48.548Z"
   }
 ]
