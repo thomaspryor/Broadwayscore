@@ -144,7 +144,6 @@ const PORT_TODO_ABSENT_IN_LINEAR = [
   'successionRefusal',        // D1
   'runAmend',                 // E1
   'recordCiRedClaim',         // E3
-  'findOverlappingCards',     // E2 (DELETE — likewise must not appear)
 ];
 
 test('PORT — TODO / DELETE rows are not yet wired into scripts/linear-next.js', () => {
