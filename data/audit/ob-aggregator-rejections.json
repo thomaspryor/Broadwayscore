@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T14:48:17.637Z",
+  "generatedAt": "2026-08-18T14:29:29.222Z",
   "counts": {
     "accepted": 0,
     "rejected": 14,
@@ -7,7 +7,8 @@
     "byReason": {
       "low-confidence-existing-match": 7,
       "bot-shell": 3,
-      "placeholder-venue-no-theater": 2,
+      "placeholder-venue-no-theater": 1,
+      "fetch-failed": 1,
       "title-mismatch": 2
     }
   },
@@ -82,7 +83,7 @@
       "url": "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
       "slug": "Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
       "source": "bww-roundup",
-      "reason": "placeholder-venue-no-theater"
+      "reason": "fetch-failed"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807",
