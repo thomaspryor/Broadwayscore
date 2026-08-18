@@ -17,6 +17,8 @@ const {
   extractFileRefs,
   extractSymbols,
   extractReferencedPaths,
+  extractTestFileFromCmd,
+  testImportsLocalModule,
   checkAcceptanceHolds,
   checkCommitsOnMain,
   checkRecheckAfterDueAndVerified,
@@ -61,9 +63,15 @@ test('checkAcceptanceHolds: null when card names no runnable command (prose only
 });
 
 // ── Required case 2: referenced commit already on main → LIKELY-DONE ─────
-test('classifyCard: card whose referenced commit is on main -> LIKELY-DONE (commits-on-main)', () => {
-  const c = card({ notes: 'Landed in commit `abc1234` already.' });
-  const opts = { isCommitOnMain: (sha) => sha === 'abc1234' };
+// (task #1724): a commit-on-main SHA is only delivery evidence when the card
+// has started AND the commit demonstrably touches a file the card names —
+// see the dedicated "cited vs delivered" section below for the confirmed FP.
+test('classifyCard: started card whose referenced commit is on main AND touches a file it names -> LIKELY-DONE (commits-on-main)', () => {
+  const c = card({ status: 'In progress', notes: 'Landed in commit `abc1234` already, fixing scripts/lib/thing.js.' });
+  const opts = {
+    isCommitOnMain: (sha) => sha === 'abc1234',
+    getCommitTouchedFiles: (sha) => (sha === 'abc1234' ? ['scripts/lib/thing.js'] : []),
+  };
   const result = classifyCard(c, [c], opts);
   assert.equal(result.verdict, 'LIKELY-DONE');
   assert.equal(result.evidence.type, 'commits-on-main');
@@ -79,12 +87,113 @@ test('extractCommitShas: backticked and labeled forms only, no bare hex-looking 
   assert.deepEqual(extractCommitShas('no shas here'), []);
 });
 
-test('checkCommitsOnMain: null unless EVERY referenced sha is confirmed on main', () => {
-  const c = card({ notes: 'commits `aaaaaaa` and `bbbbbbb` both landed.' });
-  assert.equal(checkCommitsOnMain(c, { isCommitOnMain: (sha) => sha === 'aaaaaaa' }), null);
-  const ok = checkCommitsOnMain(c, { isCommitOnMain: () => true });
+test('checkCommitsOnMain: null unless EVERY referenced sha is confirmed on main (status started, file-touch confirmed)', () => {
+  const c = card({ status: 'In progress', notes: 'commits `aaaaaaa` and `bbbbbbb` both landed, touching scripts/lib/thing.js.' });
+  const touchAll = { getCommitTouchedFiles: () => ['scripts/lib/thing.js'] };
+  assert.equal(checkCommitsOnMain(c, { isCommitOnMain: (sha) => sha === 'aaaaaaa', ...touchAll }), null);
+  const ok = checkCommitsOnMain(c, { isCommitOnMain: () => true, ...touchAll });
   assert.equal(ok.type, 'commits-on-main');
   assert.equal(checkCommitsOnMain(c, {}), null); // not injected -> ambiguous
+});
+
+// ── "cited vs delivered" — task #1724 ──────────────────────────────────────
+test('checkCommitsOnMain: Not-started status alone blocks LIKELY-DONE, even with confirmed touched-file overlap', () => {
+  const c = card({ status: 'Not started', notes: 'commit `abc1234` fixed scripts/lib/thing.js.' });
+  const opts = { isCommitOnMain: () => true, getCommitTouchedFiles: () => ['scripts/lib/thing.js'] };
+  assert.equal(checkCommitsOnMain(c, opts), null);
+});
+
+test('checkCommitsOnMain: started card citing an on-main commit that does not touch a file it names -> null (cited, not delivered)', () => {
+  const c = card({ status: 'In progress', notes: 'commit `abc1234` demonstrates the bug in scripts/lib/other-file.js.' });
+  const opts = { isCommitOnMain: () => true, getCommitTouchedFiles: () => ['scripts/lib/unrelated.js'] };
+  assert.equal(checkCommitsOnMain(c, opts), null);
+});
+
+test('checkCommitsOnMain: no getCommitTouchedFiles injected -> null even on a started card (ambiguous, not evidence)', () => {
+  const c = card({ status: 'In progress', notes: 'commit `abc1234` in scripts/lib/thing.js.' });
+  assert.equal(checkCommitsOnMain(c, { isCommitOnMain: () => true }), null);
+});
+
+test('checkCommitsOnMain: card names its own acceptance command and it is CURRENTLY FAILING -> null, even with a "landed in commit" citation and file-touch overlap (live catch re-verifying task #1724)', () => {
+  const c = card({
+    status: 'Paused',
+    notes: '## Acceptance criteria\n`node --test scripts/verify-thing.test.mjs`\nLanded in commit `d41a6bf` — touches scripts/verify-thing.test.mjs.',
+    outcome: 'Re-checked: STILL BLOCKED, acceptance command fails.',
+  });
+  const opts = {
+    isCommitOnMain: () => true,
+    getCommitTouchedFiles: () => ['scripts/verify-thing.test.mjs'],
+    runAcceptanceCmd: () => ({ status: 'fail' }),
+  };
+  assert.equal(checkCommitsOnMain(c, opts), null);
+});
+
+test('checkCommitsOnMain: card names its own runnable acceptance command but runAcceptanceCmd is not injected -> null, fails closed (adversarial-review catch: checkout-failure fallback wires getCommitTouchedFiles but not runAcceptanceCmd)', () => {
+  const c = card({
+    status: 'In progress',
+    notes: '## Acceptance criteria\n`node --test scripts/verify-thing.test.mjs`\nLanded in commit `abc1234` — touches scripts/verify-thing.test.mjs.',
+  });
+  const opts = { isCommitOnMain: () => true, getCommitTouchedFiles: () => ['scripts/verify-thing.test.mjs'] };
+  assert.equal(checkCommitsOnMain(c, opts), null);
+});
+
+test('classifyCard: Not-started card whose notes CITE an on-main SHA it did not deliver -> REAL, not LIKELY-DONE (task #1724, confirmed FP)', () => {
+  // Live repro, hand-verified 2026-08-16: a card describing a verify-gate bug
+  // quotes a real on-main commit as precedent ("commit 55a5181ee49 is an
+  // ancestor") while illustrating a DIFFERENT, unrelated problem — the card
+  // itself never references the file that commit actually touched.
+  const c = card({
+    id: 'ts-cards-unclosable', status: 'Not started',
+    notes: 'The work SHIPPED — src/lib/show-date-line.ts is on origin/main, commit '
+      + '`55a5181ee49` is an ancestor. See scripts/lib/verify-gate.js for the allowlist this card is actually about.',
+  });
+  const opts = {
+    isCommitOnMain: (sha) => sha === '55a5181ee49',
+    getCommitTouchedFiles: (sha) => (sha === '55a5181ee49' ? ['src/lib/show-date-line.ts'] : []),
+  };
+  const result = classifyCard(c, [c], opts);
+  assert.equal(result.verdict, 'REAL');
+  assert.equal(result.evidence, null);
+});
+
+// ── DATA-SUBJECT weak evidence — task #1724 ────────────────────────────────
+// Demonstrated live: "362 domainless outlets" card's acceptance test imports
+// only node:test/assert/fs/path, passes 7/7, while the live count it claims
+// to fix went UP (362 -> 364). A passing command only counts once its own
+// test imports the module under test.
+test('checkAcceptanceHolds: passing command whose test imports only node builtins -> null (WEAK evidence)', () => {
+  const c = card({ notes: '## Acceptance criteria\n`node --test scripts/tests/guard-only.test.mjs`' });
+  const opts = {
+    runAcceptanceCmd: () => ({ status: 'pass' }),
+    readFile: () => "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\n",
+  };
+  assert.equal(checkAcceptanceHolds(c, opts), null);
+});
+
+test('checkAcceptanceHolds: passing command whose test imports the module under test -> real evidence', () => {
+  const c = card({ notes: '## Acceptance criteria\n`node --test scripts/tests/guard.test.mjs`' });
+  const opts = {
+    runAcceptanceCmd: () => ({ status: 'pass' }),
+    readFile: () => "const { guard } = require('../lib/guard.js');\n",
+  };
+  const result = checkAcceptanceHolds(c, opts);
+  assert.equal(result.type, 'acceptance-command-passes');
+});
+
+test('checkAcceptanceHolds: readFile not injected -> weak-evidence check skipped, passing command still counts (backward compatible)', () => {
+  const c = card({ notes: '## Acceptance criteria\n`node --test scripts/tests/guard.test.mjs`' });
+  const result = checkAcceptanceHolds(c, { runAcceptanceCmd: () => ({ status: 'pass' }) });
+  assert.equal(result.type, 'acceptance-command-passes');
+});
+
+test('extractTestFileFromCmd / testImportsLocalModule: basic extraction', () => {
+  assert.equal(extractTestFileFromCmd('node --test scripts/lib/thing.test.mjs'), 'scripts/lib/thing.test.mjs');
+  assert.equal(extractTestFileFromCmd('npx tsx --test tests/unit/x.test.ts'), 'tests/unit/x.test.ts');
+  assert.equal(extractTestFileFromCmd('npx tsc --noEmit'), null);
+  assert.equal(testImportsLocalModule("require('../lib/x.js')"), true);
+  assert.equal(testImportsLocalModule("import x from './x.js'"), true);
+  assert.equal(testImportsLocalModule("import { test } from 'node:test'"), false);
+  assert.equal(testImportsLocalModule("require('fs')"), false);
 });
 
 test('checkRecheckAfterDueAndVerified: due date passed + filled outcome + passing command -> evidence', () => {

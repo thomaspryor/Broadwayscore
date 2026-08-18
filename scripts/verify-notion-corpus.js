@@ -27,7 +27,7 @@
  *
  *   --dir             export directory (contains corpus.ndjson + manifest.json)
  *   --write-baseline  record this export's volume as the baseline and exit 0
- *   --baseline        baseline file (default <dir>/../corpus-baseline.json)
+ *   --baseline        baseline file (default <dir>/corpus-baseline.json, else <dir>/../)
  *   --tolerance       how far BELOW baseline is tolerated (default 0.02 = 2%)
  *   --live            also re-count pages against the live board
  *   --json            machine-readable output
@@ -40,13 +40,14 @@ require('./lib/load-env').loadEnv();
 const fs = require('node:fs');
 const path = require('node:path');
 const corpus = require('./lib/notion-corpus');
+const corpusIo = require('./lib/notion-corpus-io');
 const { hasHelpFlag } = require('./lib/cli-help');
 
 const USAGE = `verify-notion-corpus.js — assert an export by character volume, not card count.
 
   --dir=<dir>        export directory (corpus.ndjson + manifest.json)
   --write-baseline   record this export's volume as the baseline, then exit 0
-  --baseline=<path>  baseline file (default <dir>/../corpus-baseline.json)
+  --baseline=<path>  baseline file (default <dir>/corpus-baseline.json, else <dir>/../)
   --tolerance=N      fraction BELOW baseline tolerated (default 0.02)
   --live             also re-count pages against the live Notion board
   --json             machine-readable output
@@ -100,35 +101,39 @@ async function main() {
   // limit on the next export). Read either form, so the archive can be verified
   // as published rather than only in its working directory — a verifier that
   // cannot read the artifact it certifies is not much of a verifier.
-  const rawPath = path.join(args.dir, 'corpus.ndjson');
-  const gzPath = path.join(args.dir, 'corpus.ndjson.gz');
   const manifestPath = path.join(args.dir, 'manifest.json');
   let corpusPath;
-  let corpusText;
-  if (fs.existsSync(rawPath)) {
-    corpusPath = rawPath;
-    corpusText = fs.readFileSync(rawPath, 'utf8');
-  } else if (fs.existsSync(gzPath)) {
-    corpusPath = gzPath;
-    corpusText = require('node:zlib').gunzipSync(fs.readFileSync(gzPath)).toString('utf8');
-  } else {
-    console.error(`❌ no corpus at ${rawPath} or ${gzPath}`);
+  let records;
+  let malformed;
+  try {
+    // Same locate-and-read as every other corpus consumer. This logic used to
+    // live here and ONLY here, which is how migrate-import-ledger.js ended up
+    // with a copy that could not see the published gz.
+    ({ file: corpusPath, records, malformed } = corpusIo.readCorpusRecords(args.dir));
+  } catch (err) {
+    console.error(`❌ ${err.message}`);
     process.exit(1);
-  }
-
-  const records = [];
-  let malformed = 0;
-  for (const line of corpusText.split('\n')) {
-    if (!line.trim()) continue;
-    try {
-      records.push(JSON.parse(line));
-    } catch {
-      malformed++;
-    }
   }
   const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
 
-  const baselinePath = args.baseline || path.join(path.dirname(path.resolve(args.dir)), 'corpus-baseline.json');
+  // Two layouts, and the default has to find both.
+  //
+  //   WORKING RUNS  <runs-dir>/run-a/          baseline at <runs-dir>/corpus-baseline.json
+  //                 <runs-dir>/run-b/          (a sibling, shared by both runs)
+  //   PUBLISHED     <dest>/notion-corpus/      baseline INSIDE it — promote-notion-corpus.sh:125
+  //                                            copies it in so the archive is self-contained
+  //
+  // Only the sibling form was resolved, so verifying the PUBLISHED archive —
+  // the thing anyone who is not the exporting session will ever point this at,
+  // including from a fresh clone — looked in the wrong directory, found no
+  // baseline, and failed the run (exit 1) with "none at <path>". The archive was
+  // fine; the lookup was not. In-dir first, because that is the self-contained
+  // one and cannot belong to a different export.
+  const inDirBaseline = path.join(path.resolve(args.dir), 'corpus-baseline.json');
+  const siblingBaseline = path.join(path.dirname(path.resolve(args.dir)), 'corpus-baseline.json');
+  const baselinePath =
+    args.baseline ||
+    (fs.existsSync(inDirBaseline) && !args['write-baseline'] ? inDirBaseline : siblingBaseline);
 
   if (args['write-baseline']) {
     const volume = corpus.charVolume(records);

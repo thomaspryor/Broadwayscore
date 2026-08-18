@@ -93,8 +93,22 @@ function fetchOpenP1Ids(priority, status, limit) {
 // One shared, disposable, detached checkout of origin/main — the same
 // pattern autonomous-acceptance-recheck.js uses, and for the same reason:
 // N cards verifying against the same origin/main is one checkout, not N.
+// Cached per cmd string, same pattern as makeIsCommitOnMain/
+// makeGetCommitTouchedFiles: checkLikelyDone can call opts.runAcceptanceCmd
+// with the SAME command up to 3x for one card (checkAcceptanceHolds, then
+// checkCommitsOnMain's own-command gate, then checkRecheckAfterDueAndVerified
+// all independently derive it via evaluateVerifiability) — without caching,
+// a single slow/failing command re-executes (with its own 2-attempt retry
+// and up to 5min timeout) up to 3 times per card across a sweep of hundreds
+// (adversarial review catch, task #1724 follow-on).
 function makeRunAcceptanceCmd(wt, prepared) {
-  return (cmd) => runVerify(wt, cmd, { prepared });
+  const cache = new Map();
+  return (cmd) => {
+    if (cache.has(cmd)) return cache.get(cmd);
+    const result = runVerify(wt, cmd, { prepared });
+    cache.set(cmd, result);
+    return result;
+  };
 }
 
 // Commit-ancestry checks read origin/main out of the LOCAL repo's refs —
@@ -137,6 +151,45 @@ function makeIsCommitOnMain(repo) {
     }
     cache.set(sha, result);
     return result;
+  };
+}
+
+// Files a commit touched, repo-relative — the "cited vs delivered" evidence
+// checkCommitsOnMain needs (task #1724): a SHA only counts as this card's own
+// delivery once it demonstrably touches a file the card's notes reference,
+// not merely because it's cited as precedent/root-cause prose. Cached per
+// sha like makeIsCommitOnMain, for the same reason (same shas get re-checked
+// across cards that cite the same commit).
+// -m is required: bare `diff-tree --name-only -r <sha>` returns EMPTY for a
+// merge commit (verified live on 21c3b75627a, a real merge in this repo's
+// log) — and this repo's own documented workflow (CLAUDE.md: `git merge
+// <branch> --no-edit && git push`) lands most main-line work as a merge, so
+// omitting -m would make gate 2 unsatisfiable for the common case (adversarial
+// review catch, task #1724 follow-on).
+function makeGetCommitTouchedFiles(repo) {
+  const cache = new Map();
+  return (sha) => {
+    if (cache.has(sha)) return cache.get(sha);
+    let result = [];
+    try {
+      const out = execFileSync('git', ['diff-tree', '--no-commit-id', '--name-only', '-r', '-m', sha], {
+        cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8',
+      });
+      result = [...new Set(out.split('\n').map((l) => l.trim()).filter(Boolean))];
+    } catch (e) {
+      console.error(`[audit-card-relevance] WARN git diff-tree failed for ${sha}: ${e.message.slice(0, 160)}`);
+    }
+    cache.set(sha, result);
+    return result;
+  };
+}
+
+// Test-file source, for checkAcceptanceHolds' DATA-SUBJECT weak-evidence
+// check (task #1724) — a passing acceptance command whose test never imports
+// the module under test can't confirm the underlying DATA actually changed.
+function makeReadFile(repo) {
+  return (relPath) => {
+    try { return fs.readFileSync(path.join(repo, relPath), 'utf8'); } catch { return null; }
   };
 }
 
@@ -245,6 +298,8 @@ function main() {
       checkout = makeFreshCheckout({ repo: REPO, prefix: 'card-relevance-check-' });
       opts.runAcceptanceCmd = makeRunAcceptanceCmd(checkout.wt, checkout.prepared);
       opts.isCommitOnMain = makeIsCommitOnMain(REPO);
+      opts.getCommitTouchedFiles = makeGetCommitTouchedFiles(REPO);
+      opts.readFile = makeReadFile(checkout.wt);
     } catch (e) {
       console.error(`[audit-card-relevance] WARN fresh checkout failed, skipping acceptance-command checks: ${e.message.slice(0, 200)}`);
       // Commit-ancestry checks don't need the checkout worktree at all — they
@@ -254,6 +309,7 @@ function main() {
       if (!skipCheckout) {
         fetchOriginMain(REPO);
         opts.isCommitOnMain = makeIsCommitOnMain(REPO);
+        opts.getCommitTouchedFiles = makeGetCommitTouchedFiles(REPO);
       }
     }
   } else if (!skipCheckout) {
@@ -262,6 +318,7 @@ function main() {
     // (no dedicated worktree checkout needed) so refs are current.
     fetchOriginMain(REPO);
     opts.isCommitOnMain = makeIsCommitOnMain(REPO);
+    opts.getCommitTouchedFiles = makeGetCommitTouchedFiles(REPO);
   }
 
   let evaluated;
