@@ -79,3 +79,21 @@ Not a discovery gate — a **delivery** gate, and it hides as a deploy problem. 
 **Prevention shape:** alert conditions set a step *output*, never the process exit code; the commit step is `if: always()`; a dedicated final step reads the output and decides whether to fail the run, AFTER the commit has landed.
 
 **Launchd gotcha that masks all of this:** under launchd the shell has no env, so `check-prod-deploy.js` prints "VERCEL_TOKEN not set" and **exits 0** — it looks like a pass. Always `set -a && . ./.env; set +a` first in a headless pass.
+
+## Gate: fetchPage url_mismatch guard rejects legitimate site redirects (2026-08-18)
+`fetchPage()` returns "All scraping methods failed" for `britishtheatreguide.info/reviews/index` and
+`thereviewshub.com/category/uk-regional/london/` while a plain desktop-UA curl fetches both (23KB / 79KB)
+in ~12s. Chain trace: SD skipped (breaker) → BD skipped (breaker) → **ScrapingBee HTTP 200 discarded by the
+url_mismatch guard** (asked `/reviews/index`, site redirected to `/reviews?q=index`) → Playwright fails.
+A site-side redirect is being read as "wrong page", so a working provider becomes a chain-wide failure and
+any review published on those index pages is invisible to opening-night discovery.
+Reproduced 3x across 2 monitor passes (jeeves-takes-charge-west-end-2026, attempts 16 + 17).
+Card: "P1: fetchPage url_mismatch guard rejects legitimate site redirects…" (3c0637c5-416f-81e2-bee3-c5672f1393ee, parked).
+
+**Two things that look like this gate but are NOT bugs:**
+- `⚠️ skipping SD/BD for non-opening-night calls` in an ad-hoc census script is correct. The breaker
+  exemption keys on script name / `GITHUB_WORKFLOW` / `BD_OPENING_NIGHT` (scrapingdog-caps.js,
+  brightdata-caps.js) — **not** on fetchPage's `purpose` option. `opening-night-poller.yml` is exempt;
+  `fetchPage(url,{purpose:'opening-night'})` does nothing. Export `BD_OPENING_NIGHT=1` for census scripts.
+- `whatsonstage.com/news/reviews/` returning ~4.2KB is site-side JS rendering — plain curl gets the same
+  shell. Census WhatsOnStage via its `?s=` site-search or a JS-rendering fetch, not that index page.
