@@ -76,6 +76,15 @@ function buildRegistryAliasMap() {
   if (registry) {
     // Add all aliases from outlet definitions
     for (const [outletId, outletData] of Object.entries(registry.outlets || {})) {
+      // Load-time defense-in-depth (task #1783): a junk/sentinel id like
+      // "unknown" reaching the registry via ANY path — not just the write
+      // sites already guarded — must never enter the alias map. This is
+      // what actually broke normalizeOutlet('Unknown Publication 123') and
+      // getOutletDisplayName('unknown-outlet') when a poisoned "unknown"
+      // entry existed: the concatenated-prefix match below trusts every
+      // canonical id/alias unconditionally.
+      if (isSentinelOutletId(outletId)) continue;
+
       // Map the outlet ID itself
       _registryAliasMap.set(outletId.toLowerCase(), outletId);
 
@@ -115,6 +124,8 @@ function buildOutletAliasesFromRegistry() {
   const result = {};
   for (const [outletId, data] of Object.entries(registry.outlets)) {
     if (outletId === '_aliasIndex' || outletId === '_meta') continue;
+    // Load-time defense-in-depth (task #1783) — see buildRegistryAliasMap.
+    if (isSentinelOutletId(outletId)) continue;
     const aliases = new Set();
     aliases.add(outletId.toLowerCase());
     for (const a of (data.aliases || [])) {
@@ -164,6 +175,8 @@ function buildAmbiguousPrefixSlugs() {
   const ownSlugsByCanonical = new Map();
   for (const [canonical, data] of Object.entries((registry && registry.outlets) || {})) {
     if (canonical === '_aliasIndex' || canonical === '_meta') continue;
+    // Load-time defense-in-depth (task #1783) — see buildRegistryAliasMap.
+    if (isSentinelOutletId(canonical)) continue;
     const slugs = new Set([slugify(canonical)]);
     if (data.displayName) {
       const s = slugify(data.displayName);
@@ -1022,6 +1035,11 @@ function getOutletFromRegistry(outletId) {
   // First normalize the outlet ID
   const normalizedId = normalizeOutlet(outletId);
 
+  // Load-time defense-in-depth (task #1783): even if a junk/sentinel id
+  // like "unknown" somehow re-enters the registry data (manual edit, stale
+  // file copy), never surface it as a real outlet entry.
+  if (isSentinelOutletId(normalizedId)) return null;
+
   // Look up in registry
   return registry.outlets[normalizedId] || null;
 }
@@ -1638,6 +1656,25 @@ const JUNK_OUTLETS = new Set([
   'lets-note', 'lets-go-to-the-theater',
 ]);
 
+// Exact reserved-word match only — no structural fuzz (length/hyphen-count/
+// sentence-fragment heuristics). Those heuristics are fine for filtering a
+// NEW candidate before it's written (worst case: a maybe-real outlet stays
+// unregistered a while longer), but wrong for a "must never exist" registry
+// invariant: several genuinely sentence-fragment ids already sit in the
+// live registry as a separate, pre-existing backlog (task #1783 audit), and
+// a fuzzy check would fail --strict on all of them the moment it's added.
+// Reserved literal sentinels like "unknown" are categorically different —
+// they're what normalizeOutlet()/normalizeCritic() themselves return as a
+// fallback, so having one as a REAL registry id is always a bug, never a
+// borderline judgment call.
+function isSentinelOutletId(outletName) {
+  if (!outletName) return true;
+  const normalized = outletName.toLowerCase().trim();
+  if (JUNK_OUTLETS.has(normalized)) return true;
+  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return JUNK_OUTLETS.has(slug);
+}
+
 function isJunkOutlet(outletName) {
   if (!outletName) return true;
   const normalized = outletName.toLowerCase().trim();
@@ -1938,6 +1975,7 @@ module.exports = {
   normalizeOutletFull,
   isRegisteredOutlet,
   isJunkOutlet,
+  isSentinelOutletId,
   normalizeCritic,
   normalizePublishDate,
   normalizeUrl,
