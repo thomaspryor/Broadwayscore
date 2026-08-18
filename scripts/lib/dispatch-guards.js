@@ -65,6 +65,8 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
+// Pure leaf module (no requires of its own), so this cannot cycle back here.
+const { TERMINAL_CARD_STATUSES } = require('./task-reclaim.js');
 
 // scripts/linear-import.js's Notion-mirror <-> Linear-issue join (Phase 0
 // rail 1, plan 2026-08-12). Default path only — linearMirrorGuard() itself
@@ -232,7 +234,16 @@ function staleOutcomeGuard(task, card, opts) {
 //     override, and bsc-reconcile.js's #853 path (redispatchArgv:176-178) is
 //     precisely where the stale-mirror bug also bites. The escape hatch is its
 //     own explicit, ledger-visible flag, mirroring --allow-unverifiable.
-const CLOSED_CARD_STATUSES = new Set(['done', 'cancelled', 'canceled']);
+// Reuses task-reclaim.js's TERMINAL_CARD_STATUSES ({Done, Archived,
+// Cancelled}) rather than declaring a parallel set — notion-tasks-sync.js:44
+// already reuses that same constant for the same "never make an
+// Archived/Cancelled card dispatchable again" rule, and a second copy here is
+// exactly the drift CLAUDE.md rule 15 warns about. A review caught the first
+// version of this guard omitting Archived, which would have let an archived
+// card dispatch: archived pages also refuse ALL Notion writes, so such a card
+// cannot even be corrected card-side. Lowercased once, at module load, so the
+// canonical set stays the single source of truth.
+const CLOSED_CARD_STATUSES = new Set([...TERMINAL_CARD_STATUSES].map(s => s.toLowerCase()));
 
 function closedCardGuard(task, card, opts) {
   const o = opts || {};
@@ -242,13 +253,13 @@ function closedCardGuard(task, card, opts) {
   if (!CLOSED_CARD_STATUSES.has(status)) return null;
   const pid = notionIdOf(task);
   return `REFUSING to dispatch #${task.id}: its Notion card is already ${card.status} — the local task ` +
-    `mirror still reads "${(task && task.status) || 'unknown'}", but Notion is the source of truth and the ` +
-    `mirror has not caught up yet (a Done card drops out of the pull set, so \`notion-tasks-sync.js pull\` ` +
-    `alone never corrects it). Dispatching would relaunch closed work.\n` +
+    `mirror still reads "${(task && task.status) || 'unknown'}", but Notion is the source of truth. ` +
+    `\`notion-tasks-sync.js pull\` does reconcile the mirror, but only a bounded rotation window per run ` +
+    `(reconcileStaleMirrors), so a freshly-closed card can stay stale locally for several runs — ` +
+    `dispatching now would relaunch closed work.\n` +
     `  Fix one of:\n` +
-    `    1. Nothing — the work is done. Correct the mirror: node scripts/notion-tasks-sync.js pull` +
-      `${pid ? ` (or re-open the card: node scripts/notion-brain.js update ${pid} --status "In progress")` : ''}.\n` +
-    `    2. Re-open the card in Notion if there is genuinely more to do, then dispatch again.\n` +
+    `    1. Nothing — the work is done. Re-run node scripts/notion-tasks-sync.js pull until the mirror catches up.\n` +
+    `    2. Re-open the card if there is genuinely more to do${pid ? `: node scripts/notion-brain.js update ${pid} --status "In progress"` : ''}, then dispatch again.\n` +
     `    3. Re-run with --allow-closed-card to dispatch anyway (recorded in the ledger).`;
 }
 

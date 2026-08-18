@@ -16,6 +16,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { closedCardGuard, CLOSED_CARD_STATUSES } = require('../../scripts/lib/dispatch-guards.js');
+const { TERMINAL_CARD_STATUSES } = require('../../scripts/lib/task-reclaim.js');
 
 // The shape the bug actually produced: Notion says Done, the mirror still says in_progress.
 const STALE_TASK = {
@@ -34,11 +35,27 @@ test('a Done card is refused, and the message names the mirror lag and the overr
   assert.match(err, /--allow-closed-card/, 'points at the real escape hatch');
 });
 
-test('Cancelled and Canceled are closed too, case-insensitively', () => {
-  for (const status of ['Cancelled', 'canceled', 'DONE', 'done']) {
+test('every terminal status is closed, case-insensitively, and the set is the canonical one', () => {
+  for (const status of ['Done', 'Archived', 'Cancelled', 'DONE', 'archived', 'cancelled']) {
     assert.ok(closedCardGuard(STALE_TASK, { status }, {}), `${status} must be treated as closed`);
   }
-  assert.deepEqual([...CLOSED_CARD_STATUSES].sort(), ['canceled', 'cancelled', 'done']);
+  // Derived from task-reclaim.js's TERMINAL_CARD_STATUSES, not re-declared —
+  // notion-tasks-sync.js:44 reuses that same constant for the same rule, and a
+  // parallel copy here already caused a real miss (Archived was omitted, so an
+  // archived card would have dispatched — and an archived page refuses ALL
+  // Notion writes, so it cannot even be corrected card-side).
+  assert.deepEqual([...CLOSED_CARD_STATUSES].sort(), ['archived', 'cancelled', 'done']);
+  assert.deepEqual(
+    [...CLOSED_CARD_STATUSES].sort(),
+    [...TERMINAL_CARD_STATUSES].map(s => s.toLowerCase()).sort(),
+    'must stay derived from the canonical set, never re-declared',
+  );
+});
+
+test('an Archived card is refused — it cannot be corrected card-side at all', () => {
+  const err = closedCardGuard(STALE_TASK, { status: 'Archived' }, {});
+  assert.ok(err);
+  assert.match(err, /already Archived/);
 });
 
 test('an open card dispatches exactly as before', () => {
