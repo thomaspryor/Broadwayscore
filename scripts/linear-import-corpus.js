@@ -155,6 +155,7 @@ function buildDescription(record) {
 function buildReport(records, alreadyByPageId) {
   const counts = { live: 0, archive: 0, skip: 0, alreadyImported: 0 };
   const skipReasons = {};
+  const unknownPriorities = {};
   const candidates = [];
   // EVERY live-tier card, whether or not this run will create it. The label
   // vocabulary is derived from this rather than from `candidates`, so a resumed
@@ -169,6 +170,16 @@ function buildReport(records, alreadyByPageId) {
       continue;
     }
     if (c.disposition === 'live') liveAll.push({ record, c });
+    // A Priority string the rules do not recognise normalises to null, which
+    // routes the card to the ARCHIVE side. That default is correct — an unknown
+    // priority is not proven live work — but it must never be SILENT: a new
+    // spelling added to the Notion schema after the corpus export would park
+    // real P0 work in Canceled with nothing to notice it by. Counted here and
+    // printed in the dry-run so it is a decision, not an accident.
+    const rawPriority = String((record.properties && record.properties.Priority) || '').trim();
+    if (rawPriority && !rules.PRIORITY_SPELLINGS.includes(rawPriority)) {
+      unknownPriorities[rawPriority] = (unknownPriorities[rawPriority] || 0) + 1;
+    }
     if (alreadyByPageId.has(record.id)) {
       counts.alreadyImported++;
       continue;
@@ -176,7 +187,7 @@ function buildReport(records, alreadyByPageId) {
     counts[c.disposition]++;
     candidates.push({ record, c });
   }
-  return { counts, skipReasons, candidates, liveAll };
+  return { counts, skipReasons, candidates, liveAll, unknownPriorities };
 }
 
 // A label needs at least this many LIVE cards to be worth existing.
@@ -351,7 +362,7 @@ async function main() {
 
   const rows = ledgerLib.readRows(ledgerPath);
   const alreadyByPageId = ledgerLib.indexByPageId(rows);
-  const { counts, skipReasons, candidates, liveAll } = buildReport(records, alreadyByPageId);
+  const { counts, skipReasons, candidates, liveAll, unknownPriorities } = buildReport(records, alreadyByPageId);
   const { labels, freq } = deriveLabelSet(liveAll);
 
   // S3-T6's acceptance criterion, asserted by the script rather than eyeballed:
@@ -368,6 +379,7 @@ async function main() {
     accounted,
     balanced,
     unaccounted: records.length - accounted,
+    unknownPriorities,
     labelsDerived: labels.length,
     topLabels: [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10),
   };
@@ -392,6 +404,11 @@ async function main() {
         console.log(`       ${String(n).padStart(5)}  ${r}`);
       }
       console.log(`  accounted             ${accounted} / ${records.length}  ${balanced ? '✅ balances' : '❌'}`);
+      const unk = Object.entries(unknownPriorities);
+      if (unk.length) {
+        console.log(`  ⚠ ${unk.length} UNRECOGNISED priority spelling(s) — these archive by default:`);
+        for (const [p, n] of unk.sort((a, b) => b[1] - a[1])) console.log(`       ${String(n).padStart(5)}  ${JSON.stringify(p)}`);
+      }
       console.log(`  labels to ensure      ${labels.length}`);
       console.log(`  to create this run    ${candidates.length}`);
     }
@@ -407,7 +424,27 @@ async function main() {
   const stateByName = new Map(team.states.nodes.map((s) => [s.name, s.id]));
   const canceledId = stateByName.get('Canceled') || stateByName.get('Cancelled');
   if (!canceledId) throw new Error('no Canceled workflow state in this team — the archive half of the import cannot run');
+  // PRE-FLIGHT: every project the run needs must exist BEFORE the first create.
+  //
+  // `projectsByName.get(name)` returning undefined does not throw — it produces
+  // `projectId: undefined`, which Linear accepts, and the card lands with NO
+  // project at all. Silently. Across 1,705 cards that is a board nobody can
+  // triage, discovered only by looking. All nine names happen to exist today,
+  // so this is a latent failure waiting on a rename, which is exactly the kind
+  // that gets rediscovered at 3am rather than caught. Create what is missing
+  // (linear-import.js's ensureProjects does the same) and fail loudly if that
+  // does not work, before anything is written.
   const projectsByName = new Map((await linear.listProjects()).map((p) => [p.name, p]));
+  const neededProjects = [...new Set(work.map(({ c }) => c.project))];
+  for (const name of neededProjects) {
+    if (projectsByName.has(name)) continue;
+    console.error(`project "${name}" does not exist — creating it`);
+    projectsByName.set(name, await linear.createProject(name, team.id));
+  }
+  const stillMissing = neededProjects.filter((n) => !projectsByName.get(n) || !projectsByName.get(n).id);
+  if (stillMissing.length) {
+    throw new Error(`refusing to import: project(s) unavailable — ${stillMissing.join(', ')}`);
+  }
   const { byName: labelByName } = await ensureLabels(labels, team.id, { apply: true });
 
   let created = 0;
