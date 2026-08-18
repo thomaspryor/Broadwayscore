@@ -178,6 +178,34 @@ test('Gate P BLOCKS a DISPATCHED: line whose quoted title matches no live cmux w
   }
 });
 
+test('Gate P PASSES a claim quoting the GLYPH-PREFIXED tab title, as Gate W requires', { skip: skipIfNoHook }, () => {
+  // The 2026-08-17 outage this file did not catch: Gate W requires the quoted
+  // title to be the EXACT cmux tab title (glyphs included, because the owner's
+  // sidebar shows titles), while Gate P normalized only the live side — so a
+  // truthful claim for any auto-dispatched tab was unreportable, and no phrasing
+  // could satisfy both gates. The existing PASS case below quotes a glyph-FREE
+  // card title, so it stayed green throughout the outage. This pins the
+  // interaction end to end against the REAL hook, not just the CLI: a future
+  // change to how Gate P extracts or normalizes the claimed title reintroduces
+  // the false block with the CLI-level test still passing.
+  const dir = mkdtempSync(path.join(tmpdir(), 'esg-dispatch-cmux-glyph-'));
+  try {
+    const liveTitle = '\u{1F916}\u26A1 Infra\u00B7P1: nothing alarms when main has been red for hour';
+    const cmuxBin = makeFakeCmux(dir, liveTitle);
+    const msg = [
+      'Wrapped up.',
+      '',
+      `DISPATCHED: workspace:722 ("${liveTitle}") — build the main-red streak alarm`,
+      '',
+      'THIS SESSION: CLOSE ME — dispatched, follow-up continues elsewhere',
+    ].join('\n');
+    const { status, stderr } = runGate(msg, { CMUX_BIN: cmuxBin });
+    assert.equal(status, 0, `expected pass (exit 0), got ${status}\nstderr:\n${stderr}`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('Gate P PASSES the same claim once a live workspace title actually overlaps it', { skip: skipIfNoHook }, () => {
   const dir = mkdtempSync(path.join(tmpdir(), 'esg-dispatch-cmux-ok-'));
   try {
