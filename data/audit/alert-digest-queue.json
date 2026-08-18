@@ -187,17 +187,6 @@
     "queuedAt": "2026-08-18T08:56:58.834Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 17.2% of shows changed coverage state",
-    "description": "review-gap blast radius 17.2% (5/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: eugene-onegin-off-broadway-2026, jeeves-takes-charge-west-end-2026, marlise-off-broadway-2026, the-house-of-the-negro-insane-off-broadway-2026, three-houses-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-18T11:19:50.046Z"
-  },
-  {
     "conditionKey": "arm-yield:workflow:scoring-audit",
     "title": "Scoring Audit has stopped updating (190 days)",
     "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-09 and 2026-08-18.)",
@@ -253,14 +242,14 @@
     "queuedAt": "2026-08-18T19:00:26.757Z"
   },
   {
-    "conditionKey": "reconcile-dead-completions:pushed-flag-reset-failed:1757",
-    "title": "Reopened task #1757 but its Notion sync-map pushed flag may still be stuck",
-    "description": "reconcile-dead-completions corrected Notion card 3c0637c5-416f-815d-834d-f7eac525ca4d back off \"Done\" for task #1757, but could not reset its sync-map entry.pushed flag — another sync (pull/push/sync-drift) held the lock. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e \"const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['3c0637c5-416f-815d-834d-f7eac525ca4d'])m['3c0637c5-416f-815d-834d-f7eac525ca4d'].pushed=false;writeMap(TASKS_DIR,m);r();\"",
-    "severity": "warning",
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 27.1% of shows changed coverage state",
+    "description": "review-gap blast radius 27.1% (19/70 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, bone-wars-off-broadway-2026, buena-vista-social-club-off-broadway-2023, cat-cohen-broad-strokes-off-broadway-2026, eugene-onegin-off-broadway-2026, eurydice-off-broadway-2026, hungry-women-off-broadway-2026, jeeves-takes-charge-west-end-2026, marlise-off-broadway-2026, music-city-off-broadway-2026, oh-mary-off-broadway-2024, orlando-off-broadway-2026, paranormal-activity-west-end-2025, porgy-and-bess-off-broadway-2025, the-house-of-the-negro-insane-off-broadway-2026, the-jonathan-larson-project-off-west-end-2026, the-lonely-few-off-broadway-2024, the-music-man-off-broadway-2026, trophy-boys-off-broadway-2025\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-18T23:03:31.940Z"
+    "queuedAt": "2026-08-18T23:16:21.929Z"
   }
 ]
