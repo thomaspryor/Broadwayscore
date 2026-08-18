@@ -79,6 +79,14 @@
 'use strict';
 
 const { execFileSync } = require('node:child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `Usage:
+  node scripts/setup-branch-protection.js                            diff SAFE_TARGET vs live, dry run
+  node scripts/setup-branch-protection.js --apply                    apply SAFE_TARGET
+  node scripts/setup-branch-protection.js --target=full-enforcement  diff only — NOT safe to --apply today, see header comment
+  node scripts/setup-branch-protection.js --repo=owner/name --branch=main
+  node scripts/setup-branch-protection.js --allow-restrictions-change   required alongside --apply if live has a push allowlist the target would clear`;
 
 const DEFAULT_REPO = 'thomaspryor/Broadwayscore';
 const DEFAULT_BRANCH = 'main';
@@ -239,6 +247,10 @@ function parseArgs(argv) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   const args = parseArgs(process.argv.slice(2));
   const target = TARGETS[args.target];
   if (!target) {
