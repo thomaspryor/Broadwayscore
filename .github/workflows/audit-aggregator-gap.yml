@@ -43,11 +43,15 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    # 40 (was 25): the audit honors a 25-min soft time budget, then the commit +
-    # review-texts push (5-retry, racing concurrent CI) needs headroom. At 25 the
-    # job was hard-cancelled MID-COMMIT so the checkpoint + ingests never landed
-    # and the backfill stalled (2026-06-07). 40 leaves ~12 min for the commit.
-    timeout-minutes: 40
+    # 48 (was 40, was 25): the audit honors an 18-min soft time budget, then the
+    # commit + review-texts push (5-retry, racing concurrent CI) needs headroom.
+    # At 25 the job was hard-cancelled MID-COMMIT so the checkpoint + ingests
+    # never landed and the backfill stalled (2026-06-07). At 40, the commit
+    # step's own PUSH_DEADLINE_SEC=900 override (task #1791) left only ~2-3min
+    # of job-timeout margin for the trailing steps — raised to 48 to restore
+    # the same proportional buffer update-show-status.yml uses for its own
+    # PUSH_DEADLINE_SEC override (task #458).
+    timeout-minutes: 48
     if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@v4
@@ -341,6 +345,22 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PUSH_DEADLINE_SEC override (task #1791, same class as update-show-status.yml's
+          # task #458 fix). This step already had if: always() — it was NOT skipped by the
+          # gap-audit step's exit code (that step's own exit(1) is a separate, deliberate
+          # blast-radius guard in audit-show-review-gap.js, unrelated to this). The actual
+          # failure on 3 consecutive hourly runs (2026-08-18) was push-with-retry.sh's own
+          # default 240s deadline: it fit only ~2 real fetch->rebase-conflict->cherry-pick
+          # cycles under this repo's heavy main-branch churn, then reverted local HEAD and
+          # exited 1 — discarding the commit before it ever reached origin (runners are
+          # ephemeral, so nothing survived to the next run). Per push-with-retry.sh's own
+          # sizing comment: "DO NOT raise this SHARED default... Callers that measurably
+          # need more real cycles should override... at their own call site, after
+          # confirming their OWN job-timeout headroom." This step starts ~22-23min into the
+          # 48-min job timeout below (checkouts + the audit's own --time-budget-min=18), so
+          # 900s (15min) leaves ~10-11min of headroom for the trailing steps (push-review-texts,
+          # trigger-rebuild, notify), which historically take well under 30s combined.
+          PUSH_DEADLINE_SEC: '900'
           # scraper-spend-ledger.jsonl is now in the file list below (Sprint 3,
           # card 3b1637c5) — opt into the post-rebase union reconcile so a
           # concurrent writer's rows survive `git rebase -X theirs` instead of
