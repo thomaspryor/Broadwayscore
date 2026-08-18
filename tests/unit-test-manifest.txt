@@ -46,6 +46,7 @@ scripts/lib/direct-provider-detector.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs
+scripts/lib/ledger-write-isolation.test.mjs
 scripts/lib/linear-delegation-health.test.mjs
 scripts/lib/linear-issue-create.test.mjs
 scripts/lib/linear-session-reporting.test.mjs
@@ -568,4 +569,3 @@ tests/unit/workflow-run-coverage.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs
 tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
-scripts/lib/ledger-write-isolation.test.mjs
