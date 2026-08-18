@@ -23,9 +23,15 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { loadTasks, TASKS_DIR } = require('./bsc-next.js');
+const { TASKS_DIR } = require('./bsc-next.js');
+// loadTasksWithMtime (not bsc-next.js's loadTasks) — attachCompletedAtEstimates
+// below needs each task's live-file mtime (card #1770/task #1701 incident).
+// Already tested (task-store-archive.test.mjs) and already scoped to the LIVE
+// TASKS_DIR only (never archive/, whose move rewrites mtime — see that file's
+// header on attachCompletedAtEstimates).
+const { loadTasksWithMtime } = require('./lib/task-store-archive.js');
 const { readEntries } = require('./lib/dispatch-ledger.js');
-const { reconcileDeadCompletions, shouldCorrectNotionStatus } = require('./lib/dispatch-dead-launch-guard.js');
+const { reconcileDeadCompletions, shouldCorrectNotionStatus, attachCompletedAtEstimates } = require('./lib/dispatch-dead-launch-guard.js');
 
 const USAGE = `reconcile-dead-completions — reopen tasks marked 'completed' whose latest dispatch never ran.
 
@@ -112,7 +118,7 @@ function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const fix = argv.includes('--fix');
 
-  const tasks = loadTasks(TASKS_DIR);
+  const tasks = attachCompletedAtEstimates(loadTasksWithMtime(TASKS_DIR));
   // readEntries() already fails open (returns [] on any read error) — no
   // try/catch needed here; it can't throw.
   const entries = readEntries();
