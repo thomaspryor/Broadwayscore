@@ -54,7 +54,7 @@ const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady, shouldEscalateToFix, parseVerifiedOutcomeLine } = require('./lib/plan-ready.js');
-const { preflightAuth, resolveAuthEnv } = require('./lib/claude-cli.js');
+const { preflightAuth, resolveAuthEnv, resolveClaudeBin, pathWithClaudeBinDir } = require('./lib/claude-cli.js');
 const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
@@ -612,13 +612,20 @@ function runClaude(prompt, card, opts = {}) {
       // above the spread because an inherited empty value would shadow it.
       ...resolveAuthEnv(),
       HOME: require('os').homedir(),
-      PATH: process.env.PATH,
+      // Task #1768 (ship-check, Codex): the OUTER spawn below uses an absolute
+      // path, but this runEnv forwarded process.env.PATH untouched — so a
+      // nested `claude` the child itself invokes hit the very ENOENT the
+      // absolute-path fix was meant to close. Same helper strippedEnv uses.
+      PATH: pathWithClaudeBinDir(process.env.PATH),
     };
     // Empty string, not `delete` — matches the exact env shape preflightAuth
     // just proved works (authPing probes with `ANTHROPIC_API_KEY: ''`), so
     // the real spawn never diverges from the probed shape.
     Object.assign(runEnv, auth.envForMode || (auth.mode === 'oauth' ? { ANTHROPIC_API_KEY: '' } : {}));
-    const raw = require('child_process').execFileSync('claude', args, {
+    // Task #1768: bare-name 'claude' fails ENOENT under a launchd-minimal
+    // PATH (no ~/.local/bin) — resolveClaudeBin() finds the absolute path
+    // instead of relying on this process's own PATH to contain it.
+    const raw = require('child_process').execFileSync(resolveClaudeBin(), args, {
       cwd: runDir,
       input: prompt,
       timeout: 30 * 60 * 1000, // 30 min max

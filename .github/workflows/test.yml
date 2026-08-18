@@ -474,6 +474,8 @@ on:
       # explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
       # files are NOT globbed) — path-listed so a solo edit triggers CI.
       - 'scripts/audit-audience-buzz-contamination.test.mjs'
+      # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
+      - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
@@ -1555,6 +1557,15 @@ on:
       # the scripts/lib/*.test.mjs glob; the top-level parity test is NOT
       # globbed, so it is also listed in the tests/unit node --test invocation.
       - 'scripts/autonomous-merge-core-data-guard.test.mjs'
+      # Task #1759 — prevention lint for the ROOT accident behind the
+      # 2026-08-17 outage (autonomous-merge-core-data-guard.test.mjs above is
+      # the tactical fix): a data/*.json file that's BOTH git-tracked AND
+      # shipped by checkout-core-data dirties a tracked path on every run.
+      # scripts/lib/tracked-and-ignored-guard.js runs in the lib-test glob;
+      # the colocated scripts/tests/ test is NOT globbed by 'tests/**' (same
+      # "scripts/tests/ is not scripts/lib/" gap as feedback_test_yml_push_path_allowlist),
+      # so it needs its own explicit line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/tracked-and-ignored-guard.test.mjs'
       # Loop 5 PR supervisor: the pure merge-decision function, its CLI, and its
       # fixture test. Registered in tests/unit-test-manifest.txt, but that only
       # decides WHICH tests run once this workflow triggers — without these path
