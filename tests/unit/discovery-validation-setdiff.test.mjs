@@ -305,33 +305,45 @@ describe('discovery gate partial-block (card #1439)', () => {
 
 // Card #1786 — root cause of update-show-status.yml being blocked 4
 // consecutive days: the same-title-sibling guard (validate-data.js ~608)
-// names the PRE-EXISTING show in parens and the actual new-this-run
+// named the PRE-EXISTING show in parens and the actual new-this-run
 // candidate only as free prose ("...same-title sibling ${siblingId}...",
 // no quotes/parens). The pre-existing show is never a candidate (it wasn't
-// touched this run), so the paren-captured id can't attribute either — the
-// only extractable reference to the real candidate was the bare sibling id,
-// which the old extractCandidateTokens dropped entirely, making the whole
-// error unattributable and blocking every unrelated status flip in the run.
-describe('extractCandidateTokens — bare sibling id (card #1786)', () => {
-  test('extracts an unquoted, unparenthesized sibling id from prose', () => {
-    const err = 'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling the-sound-of-music-2027 — date was cloned from the wrong production. Set this production\'s real dates.';
+// touched this run), so the only extractable id in the error didn't match
+// any candidate, making the whole error unattributable and blocking every
+// unrelated status flip in the run. Fixed at the source (validate-data.js
+// now parenthesizes siblingId too) rather than by adding a generic bare-id
+// regex here — an adversarial review (card #1786 ship-check) found a global
+// regex would false-positive-attribute errors naming unrelated show-id-
+// shaped substrings (outlet-registry.json keys, image/duplicate-review
+// URLs containing a show id as a path segment), which risks letting the
+// real cause of an error through unblocked while reverting an innocent show.
+describe('extractCandidateTokens — parenthesized sibling id (card #1786)', () => {
+  test('extracts both ids from a same-title-sibling error once siblingId is parenthesized', () => {
+    const err = 'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling (the-sound-of-music-2027) — date was cloned from the wrong production. Set this production\'s real dates.';
     const tokens = extractCandidateTokens(err);
-    assert.ok(tokens.includes('the-sound-of-music-2026'), 'still captures the parenthesized id');
-    assert.ok(tokens.includes('the-sound-of-music-2027'), 'now also captures the bare prose sibling id');
+    assert.ok(tokens.includes('the-sound-of-music-2026'), 'still captures the first parenthesized id');
+    assert.ok(tokens.includes('the-sound-of-music-2027'), 'now also captures the parenthesized sibling id');
+  });
+
+  test('a bare, unparenthesized sibling id is NOT extracted (guards against the reverted global-regex approach)', () => {
+    const err = 'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling the-sound-of-music-2027 — date was cloned from the wrong production.';
+    const tokens = extractCandidateTokens(err);
+    assert.ok(!tokens.includes('the-sound-of-music-2027'), 'bare prose ids are deliberately not extracted — see validate-data.js:608 for the real fix');
   });
 });
 
 describe('evaluatePerShowCommitDecision — reproduces card #1786', () => {
   test('discovery-created duplicate held back; unrelated status flips still commit', () => {
     const preErrors = [];
-    // The real pair validate-data.js emits: the pre-existing show's error
-    // names the new candidate only in prose; the new candidate's own
-    // (mirrored) error names itself in parens. Neither the-sound-of-
-    // music-2026 nor any other pre-existing show is a candidate this run —
-    // only the freshly-discovered -2027 duplicate is.
+    // The real pair validate-data.js now emits (siblingId parenthesized on
+    // both directions): the pre-existing show's error names the new
+    // candidate in parens; the new candidate's own (mirrored) error names
+    // itself in parens too. Neither the-sound-of-music-2026 nor any other
+    // pre-existing show is a candidate this run — only the freshly-
+    // discovered -2027 duplicate is.
     const postErrors = [
-      'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling the-sound-of-music-2027 — date was cloned from the wrong production. Set this production\'s real dates.',
-      'Show "The Sound of Music" (the-sound-of-music-2027) has openingDate identical to same-title sibling the-sound-of-music-2026 — date was cloned from the wrong production. Set this production\'s real dates.',
+      'Show "The Sound of Music" (the-sound-of-music-2026) has openingDate identical to same-title sibling (the-sound-of-music-2027) — date was cloned from the wrong production. Set this production\'s real dates.',
+      'Show "The Sound of Music" (the-sound-of-music-2027) has openingDate identical to same-title sibling (the-sound-of-music-2026) — date was cloned from the wrong production. Set this production\'s real dates.',
     ];
     const candidateIds = ['the-sound-of-music-2027', 'jeeves-takes-charge-west-end-2026', 'some-other-show-that-opened-2026'];
     const result = evaluatePerShowCommitDecision({ preErrors, postErrors, postExitCode: 1, candidateIds });
