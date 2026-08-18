@@ -3,8 +3,20 @@ name: gh api emergency single-file commit
 description: When local git state is broken, or push-with-retry.sh exhausts every retry under extreme concurrent-push churn (many sessions racing origin/main), commit directly via the GitHub API instead of fighting the local working tree. Single file → Contents PUT; multiple files atomically → Git Data API (blob/tree/commit/ref-update).
 type: feedback
 originSessionId: 7c8b1e1c-5601-47e8-b1c2-586a60403327
-modified: 2026-07-31T04:18:09.905Z
+modified: 2026-08-18T21:07:38.806Z
 ---
+## Check this FIRST before hand-building anything below
+
+`scripts/lib/push-with-retry.sh` already has this exact fallback built in,
+opt-in via `PUSH_VIA_API_FALLBACK=1` (task #707, ~line 1451). Confirmed
+reliable in production twice (2026-08-14, 2026-08-18/task #1791) — both
+times a session didn't know the flag existed and manually replicated the
+blob/tree/commit/ref-update sequence by hand, burning 15-45 minutes to
+rediscover what the flag already does. Try
+`PUSH_VIA_API_FALLBACK=1 bash scripts/lib/push-with-retry.sh <retries> main`
+before hand-rolling the steps below. (Follow-up to make this default-on /
+more discoverable: task #1792.)
+
 ## The situation
 
 Observed 2026-04-24 during WE wrongProduction FP clear. Local
