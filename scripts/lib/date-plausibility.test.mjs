@@ -181,6 +181,7 @@ test('safeWriteReview writes a same-window new review normally (no quarantine)',
   assert.equal(result.wrote, true);
   assert.equal(fs.existsSync(targetPath), true);
   assert.equal(fs.existsSync(path.join(root, '_pending', showId, 'whatsonstage--ron-simpson.json')), false);
+  assert.equal('autoFlaggedWrongProduction' in result, false, 'a plain write never carries this key — purely additive, existing callers unaffected');
 });
 
 test('safeWriteReview writes a priorRun-covered new review normally (no quarantine)', () => {
@@ -293,6 +294,7 @@ test('#1678 anansi-the-spider replay: dateless review gets scored, THEN an impla
 
   assert.notEqual(r.wrote, false, 'must not be silently quarantined — quarantining an existing scored file is a no-op that leaves it live and unflagged');
   assert.equal(r.skipped, undefined);
+  assert.equal(r.autoFlaggedWrongProduction, true, 'callers that care can distinguish "wrote what I sent" from "wrote, but I also excluded it" without re-reading the file');
 
   const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
   assert.equal(onDisk.wrongProduction, true, 'the record must end up excluded WITHOUT a human touching it');
