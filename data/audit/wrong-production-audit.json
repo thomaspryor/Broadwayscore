@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-17T21:31:40.036Z",
+  "timestamp": "2026-08-18T00:27:07.486Z",
   "stats": {
-    "totalReviews": 42390,
-    "alreadyFlagged": 18263,
+    "totalReviews": 42392,
+    "alreadyFlagged": 18262,
     "dateGuardCatches": 145,
     "directorMismatch": 975,
-    "tvFilmSignals": 1210,
-    "londonSignals": 908,
+    "tvFilmSignals": 1211,
+    "londonSignals": 909,
     "offBroadwaySignals": 491,
     "yearMismatch": 88,
-    "noPublishDate": 3612
+    "noPublishDate": 3614
   },
   "findings": [
     {
@@ -1469,6 +1469,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "file": "birmingham-rep--unknown.json",
+      "publishDate": null,
+      "url": "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
