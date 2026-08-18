@@ -23,6 +23,16 @@ const SCRIPT = path.resolve(fileURLToPath(new URL('../../scripts/lib/push-with-r
 const GIT_ENV = {
   GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t.t',
   GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t.t',
+  // Force-unset regardless of host: this file's node --test run is itself
+  // spawned inside GitHub Actions in CI, where GITHUB_ACTIONS=true is ambient
+  // in process.env and would otherwise leak into every fixture's env (spread
+  // below via ...process.env). push-with-retry.sh's task #1489 outside-CI
+  // unshallow block is gated on GITHUB_ACTIONS being unset, and the #466 test
+  // exists specifically to exercise that gate — without this override, that
+  // test silently exercises a different code path in CI than it does locally
+  // and would pass there for the wrong reason regardless of the script's
+  // actual behavior (task #1723).
+  GITHUB_ACTIONS: '',
 };
 
 function sh(cmd, cwd) {
