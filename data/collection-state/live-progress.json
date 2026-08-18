@@ -1,18 +1,53 @@
 {
-  "updatedAt": "2026-08-18T09:35:27.535Z",
+  "updatedAt": "2026-08-18T10:17:34.345Z",
   "processed": 12,
   "failed": 88,
   "successRate": "12.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-08-18T10:06:04.164Z",
+      "event": "bb-session",
+      "session": "6aab3003",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-18T10:06:04.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T10:07:31.554Z",
+      "event": "bb-session",
+      "session": "4a795295",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-18T10:07:31.992Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-18T10:08:31.094Z",
+      "event": "bb-session",
+      "session": "199ab6a7",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-18T10:08:38.313Z",
+      "event": "bb-session",
+      "session": "d17ddb79",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    }
+  ]
 }
