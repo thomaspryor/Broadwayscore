@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T09:07:16.631Z",
+  "generatedAt": "2026-08-18T17:15:51.788Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,24 +13,24 @@
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "0/8 total",
           "T1:0/3",
-          "T2:1/2",
+          "T2:0/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -72,6 +72,10 @@
         },
         {
           "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
