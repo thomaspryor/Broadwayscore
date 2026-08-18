@@ -505,6 +505,14 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
+  // Task #1790: succession skips the fresh-dispatch machinery on purpose (it
+  // continues THIS task rather than deciding to start it), but it still OPENS
+  // A SESSION — the same reason linearMirrorGuard is deliberately placed
+  // before the --succession branch in main(). A successor continuing a card
+  // that closed mid-flight is the same relaunch-closed-work bug the sweep
+  // hits, so this guard runs here too. Free: `card` is already in hand.
+  const closedCardErr = closedCardGuard(task, card, args);
+  if (closedCardErr) { console.error(closedCardErr); process.exit(1); }
   const project = projectOf({ tags: card && card.tags, category: (card && card.category) || categoryOf(task), subject: task.subject });
   const explicitModel = typeof args.model === 'string' ? args.model : null;
   const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });

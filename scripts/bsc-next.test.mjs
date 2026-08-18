@@ -395,7 +395,7 @@ test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth
 // hand-constructed ledger entries with successionOf pre-populated, which is
 // exactly why this slipped through: nothing drove runSuccessionDispatch()
 // itself against a real read/append round-trip. This test does.
-function runSuccessionHarness() {
+function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
   const { runSuccessionDispatch } = require('./bsc-next.js');
   const ledger = [];
   const launched = [];
@@ -406,7 +406,7 @@ function runSuccessionHarness() {
     launchCmux: () => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; },
     readLedgerEntries: () => ledger.slice(),
     appendLedgerEntry: (e) => { const w = { ts: new Date().toISOString(), ...e }; ledger.push(w); return w; },
-    fetchCard: () => null,
+    fetchCard: fetchCardOverride || (() => null),
     // Injected so this end-to-end test never writes to the real, shared
     // data/audit/alert-digest-queue.json (it did, before this seam existed
     // — see pageSuccessionCapExceeded's injection comment in bsc-next.js).
@@ -457,6 +457,42 @@ test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, th
   assert.equal(sixth.exitCode, 1, 'the 6th succession dispatch must be refused by the depth cap');
   assert.equal(sixth.launchedCount, SUCCESSION_DEPTH_CAP, 'no new workspace launched on refusal');
   assert.equal(paged.length, 1, 'the injected pager (not the real routeAlert) sees exactly the one refusal');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// Task #1790: succession deliberately skips the fresh-dispatch machinery
+// (overlap / verify gate / duplicate-workspace) because it CONTINUES a task
+// rather than deciding to start one — but it still OPENS A SESSION, which is
+// exactly why linearMirrorGuard is placed before the --succession branch in
+// main(). A successor sent to continue a card that closed mid-flight is the
+// same relaunch-closed-work bug the stall sweep hits, so closedCardGuard runs
+// on this path too. Driven through the REAL runSuccessionDispatch, not the
+// pure guard, so the wiring itself is what's under test.
+test('runSuccessionDispatch: a card Notion says is Done is refused before any workspace opens', () => {
+  const { launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  // The [notion:...] marker is load-bearing: notionIdOf() returns null without
+  // it, so bsc-next never fetches a card and the guard correctly sees nothing.
+  const task = { id: '857', subject: 'succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1, 'a Done card must refuse the succession dispatch');
+  assert.equal(launched.length, 0, 'no workspace may open for a closed card');
+
+  fs.unlinkSync(handoffPath);
+});
+
+test('runSuccessionDispatch: --allow-closed-card still lets a deliberate succession through', () => {
+  const { launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  const task = { id: '858', subject: 'deliberate succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-ok-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath, 'allow-closed-card': true });
+  assert.equal(r.exitCode, null, 'the explicit override must not be refused');
+  assert.equal(launched.length, 1, 'the override actually dispatches');
 
   fs.unlinkSync(handoffPath);
 });
