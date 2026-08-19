@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-17T00:02:58.046Z",
+    "generatedAt": "2026-08-19T09:33:18.060Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 347,
-  "errorSeverity": 259,
-  "warningSeverity": 88,
+  "totalGaps": 352,
+  "errorSeverity": 262,
+  "warningSeverity": 90,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -231,6 +231,15 @@
       "gap": 55,
       "ratio": 0.13,
       "severity": "error"
+    },
+    {
+      "showId": "animal-wisdom-off-broadway-2022",
+      "category": "off-broadway",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
     },
     {
       "showId": "appropriate-2023",
@@ -683,6 +692,15 @@
       "severity": "error"
     },
     {
+      "showId": "death-of-a-salesman-2026",
+      "category": "broadway",
+      "expected": 15,
+      "extracted": 8,
+      "gap": 7,
+      "ratio": 0.53,
+      "severity": "warning"
+    },
+    {
       "showId": "doubt-2024",
       "category": "broadway",
       "expected": 20,
@@ -748,11 +766,11 @@
     {
       "showId": "every-brilliant-thing-2026",
       "category": "broadway",
-      "expected": 14,
+      "expected": 19,
       "extracted": 8,
-      "gap": 6,
-      "ratio": 0.57,
-      "severity": "warning"
+      "gap": 11,
+      "ratio": 0.42,
+      "severity": "error"
     },
     {
       "showId": "falsettos-2016",
@@ -1526,6 +1544,15 @@
       "extracted": 8,
       "gap": 43,
       "ratio": 0.16,
+      "severity": "error"
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "category": "broadway",
+      "expected": 41,
+      "extracted": 8,
+      "gap": 33,
+      "ratio": 0.2,
       "severity": "error"
     },
     {
@@ -2978,6 +3005,15 @@
       "severity": "error"
     },
     {
+      "showId": "topdog-underdog-2022",
+      "category": "broadway",
+      "expected": 27,
+      "extracted": 8,
+      "gap": 19,
+      "ratio": 0.3,
+      "severity": "error"
+    },
+    {
       "showId": "torch-song-2018",
       "category": "broadway",
       "expected": 34,
@@ -3047,6 +3083,15 @@
       "extracted": 8,
       "gap": 6,
       "ratio": 0.57,
+      "severity": "warning"
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "category": "off-broadway",
+      "expected": 12,
+      "extracted": 8,
+      "gap": 4,
+      "ratio": 0.67,
       "severity": "warning"
     },
     {
