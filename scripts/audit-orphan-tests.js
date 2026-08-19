@@ -91,6 +91,27 @@ const EXEMPT_NEVER_CI = {
   // never be able to redden the very trunk it is measuring. Lives in scripts/,
   // not tests/unit/ (same pattern as the three entries above).
   'verify-main-green-streak.test.mjs': '3bd637c5-416f-81ed',
+  // Deferred-effect acceptance probe (task #1812, BRO-445): asserts the
+  // cmux wrapper-detection fix (96ec6d951d8, merged 2026-08-19T04:05Z)
+  // actually moved the dead-launch rate. EXPECTED to fail/be inconclusive
+  // until >=20 post-fix launches accumulate. Run by
+  // autonomous-acceptance-recheck.js, never by CI. Lives in scripts/, not
+  // tests/unit/ (same pattern as the entries above). Added by BRO-445: this
+  // file's absence from EXEMPT_NEVER_CI blocked every push-with-retry.sh
+  // push repo-wide for 3 days (2026-08-17 through 2026-08-19), including
+  // the daily health-check snapshot commit, which is why the snapshot went
+  // stale and "Stuck pipeline items" got flagged.
+  'verify-dispatch-dead-rate-recovery.test.mjs': 'task-1812',
+  // Deferred-effect acceptance probe (task #1814, BRO-445): asserts
+  // update-show-status.yml stops ending CANCELLED after the timeout raise
+  // (0d3716a9ba8, landed 2026-08-19T10:19:28Z) + the setup-playwright
+  // install-step timeout cap (task #1815). Needs 5 non-cancelled completed
+  // runs post-fix before it can pass. Run by autonomous-acceptance-
+  // recheck.js, never by CI. Lives in scripts/, not tests/unit/ (same
+  // pattern as the entries above). Added by BRO-445 alongside the #1812
+  // entry above — both were left off this map by their authoring sessions
+  // and both blocked every push-with-retry.sh push repo-wide.
+  'verify-update-show-status-no-cancellations.test.mjs': 'task-1814',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
