@@ -22,9 +22,14 @@
  *
  * Fix: only restore a field from remote when the PRE-RUN baseline
  * (/tmp/core-data-snapshot's shows.json, i.e. what this job started from)
- * was ALSO null/undefined for it. If baseline already had a value and our
- * current local doesn't, this run itself intentionally cleared it — never
- * let a stale remote value override a deliberate clear.
+ * was ALSO null/undefined for it, OR remote's current value has genuinely
+ * changed since baseline. If baseline had a value, our current local
+ * doesn't, AND remote's value is still that same baseline value, this run
+ * intentionally cleared it — never let that stale, unchanged remote value
+ * override a deliberate clear. But if remote's value differs from
+ * baseline, a concurrent writer legitimately changed it after our
+ * baseline snapshot, and that new value should still be recovered
+ * (second-opinion review finding, task #1817 follow-up).
  */
 
 const RECONCILABLE_FIELDS = [
@@ -50,9 +55,13 @@ function reconcileShowFields(localShow, remoteShow, baseShow, fields = RECONCILA
     if (isEmpty(remoteVal)) continue;
     if (!isEmpty(localShow[key])) continue; // we already have a value — keep ours
 
-    if (baseShow && !isEmpty(baseShow[key])) {
-      // Baseline (pre-run) had a value but our local doesn't anymore — this
-      // run deliberately cleared it. Do not let remote's stale value back in.
+    if (baseShow && !isEmpty(baseShow[key]) && baseShow[key] === remoteVal) {
+      // Baseline (pre-run) had this exact value, our local doesn't anymore
+      // (this run deliberately cleared it), and remote still has the SAME
+      // stale value — do not let it back in. If remote's value differs from
+      // baseline, a concurrent writer legitimately changed it after our
+      // baseline snapshot was taken, and that genuinely-new value should
+      // still be recovered.
       continue;
     }
 

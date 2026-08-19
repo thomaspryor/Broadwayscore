@@ -46,6 +46,19 @@ test('no base available: falls back to old permissive behavior (documented limit
   assert.strictEqual(recovered, 1);
 });
 
+test('second-opinion follow-up: a genuinely NEW remote value (differs from baseline) is still recovered even though baseline was non-empty', () => {
+  // We nulled the field this run (self-heal-style clear), AND a concurrent
+  // writer legitimately updated it on remote to a value baseline never saw.
+  const base = { officialUrl: 'https://old.example.com' };
+  const local = { id: 'some-show', officialUrl: null };
+  const remote = { id: 'some-show', officialUrl: 'https://new-legit-update.example.com' };
+
+  const recovered = reconcileShowFields(local, remote, base);
+
+  assert.strictEqual(recovered, 1);
+  assert.strictEqual(local.officialUrl, 'https://new-legit-update.example.com');
+});
+
 test('local already has a value: never overwritten regardless of remote/base', () => {
   const base = { venue: null };
   const local = { id: 'some-show', venue: 'Our Venue' };
