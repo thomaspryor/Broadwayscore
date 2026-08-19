@@ -113,7 +113,8 @@
     "the-sound-of-music-2027/broadwayworld--lauren-gienow.json",
     "the-sound-of-music-2027/broadwayworld--michael-quintos.json",
     "the-sound-of-music-2027/broadwayworld--paul-batterson.json",
-    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -1950,7 +1951,16 @@
     "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
     "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
-    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json"
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2062,7 +2072,8 @@
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -2096,7 +2107,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -2284,6 +2295,17 @@
       "event": "bb-session",
       "session": "d9c95894",
       "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
+    },
+    {
+      "t": "2026-08-19T10:49:35.565Z",
+      "event": "bb-session",
+      "session": "db459d53",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T10:49:35.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
