@@ -78,9 +78,10 @@ jobs:
           # the way a full clone can. A full checkout removes that ambiguity, and
           # push-with-retry.sh's shallow-bounding logic (task #466 — a DIFFERENT
           # fix, for slow FETCHES from a shallow client, not this) becomes a no-op
-          # here. Costs extra Checkout-step time transferring this repo's ~2.2GB
-          # history; the job has 15+ min of measured headroom under its 75-min
-          # timeout (see the timeout-minutes comment above).
+          # here. fetch-depth: 0 fetches all branches/tags (its actual documented
+          # semantics — NOT just a deep clone of main), against this repo's ~2.2GB
+          # packed object DB; the job has 15+ min of measured headroom under its
+          # 75-min timeout (see the timeout-minutes comment above).
           fetch-depth: 0
 
 
