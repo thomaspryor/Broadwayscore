@@ -1334,11 +1334,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       try {
         const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
         if (outage.outage) {
-          // Card #1829: cause-specific wording (describeOutageCause), not a
-          // hardcoded "injection never ran" — a pure surface-not-found
-          // cluster never failed injection at all, and that stale wording
-          // would misdiagnose it as cmux refusing commands outright.
-          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) died since ${outage.sinceTs}. This is not specific to #${task.id} — ${dispatchLedger.describeOutageCause(outage.causes)}. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
         }
       } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
     }
