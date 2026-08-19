@@ -103,6 +103,22 @@ const SAFE_CHECK_FORMS = [
   { re: /^node scripts\/audit-aggregator-archive-integrity\.js(?: --strict)?$/ },
   { re: /^node scripts\/audit-sibling-title-misroute\.js$/ }, // bare only — NEVER --fix (moves/deletes review-text files)
   { re: /^node scripts\/audit-orphan-tests\.js$/ },
+  // Task #1713 round 2 (audit-card-verifiability.js's live "shape 2" refusals
+  // after round 1 landed): each entry below was individually read for writes
+  // before being added, same standard as the block above.
+  // --update-baseline is the ONLY branch that writes (to
+  // data/audit/cv-flag-contradiction-baseline.json); --window/--strict only
+  // change what's scanned/reported, never write.
+  { re: /^node scripts\/audit-cv-flag-contradiction\.js(?: --window=\d+)?(?: --strict)?$/ },
+  // fix-shared-ibdb-urls.js mutates data/shows.json via saveShows() UNLESS
+  // --dry-run is passed (scripts/fix-shared-ibdb-urls.js:28,43-51) — the flag
+  // is required here, not optional, unlike the audit-*.js bare forms above.
+  { re: /^node scripts\/fix-shared-ibdb-urls\.js --dry-run$/ },
+  // check-sb-credits.js does one https.get() and prints — no fs writes exist
+  // anywhere in the file (module.exports + CLI wrapper only), so every flag
+  // shape is equally safe; kept bare-only for consistency with the audit-*.js
+  // convention above rather than because a flag would be unsafe.
+  { re: /^node scripts\/lib\/check-sb-credits\.js$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -132,7 +148,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), or `node scripts/audit-orphan-tests.js`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), or `node scripts/lib/check-sb-credits.js`';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
