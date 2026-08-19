@@ -28,6 +28,7 @@ const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { classifyCollisionGroup } = require('./lib/url-collision-classify');
+const { canonicalizeUrlForDedup } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 function arg(name, fallback = null) {
@@ -92,7 +93,12 @@ for (const showId of showDirs) {
     }
     if (!data.url) continue;
     const outletId = data.outletId || file.split('--')[0];
-    const key = `${outletId}:${data.url}`;
+    // Canonicalize the URL (lowercase host, strip hash/tracking params/trailing
+    // slash) so http vs https, trailing slashes, and re-ordered query params
+    // don't split one real collision into separate 1-file "groups" that never
+    // reach classifyCollisionGroup — the same normalization validate-data.js's
+    // own duplicate-URL gate uses (see scripts/lib/review-guards.js).
+    const key = `${outletId}:${canonicalizeUrlForDedup(data.url)}`;
     const arr = byKey.get(key);
     if (arr) arr.push({ file, data, outletId });
     else byKey.set(key, [{ file, data, outletId }]);
