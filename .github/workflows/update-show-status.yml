@@ -551,6 +551,21 @@ jobs:
         # not another deadline bump.
         env:
           PUSH_DEADLINE_SEC: '1200'
+          # TEMPORARY DIAGNOSTIC (task #1810, remove once the real fix lands):
+          # both `git push` calls inside push-with-retry.sh's retry loop have
+          # been observed hanging exactly GIT_NET_TIMEOUT_SEC=90s on every
+          # attempt (run 32177332656) while the fetches in the same loop
+          # consistently complete in 0-4s — ruling out the shallow-fetch class
+          # of problem (already bounded by task #466) and pointing at the push
+          # transport itself. GIT_TRACE_CURL surfaces HTTP/TLS transport detail
+          # (handshake, request/response timing) that plain GIT_TRACE/
+          # GIT_TRACE_PERFORMANCE do not, so a live trace can distinguish a
+          # stalled/idle connection from slow server-side processing from a
+          # genuinely-slow-but-bounded transfer — each implies a different fix.
+          # GIT_TRACE_CURL_NO_DATA suppresses the pack payload dump so the job
+          # log stays readable.
+          GIT_TRACE_CURL: '1'
+          GIT_TRACE_CURL_NO_DATA: '1'
           # scraper-spend-ledger.jsonl is now in this step's git add list
           # (Sprint 3, card 3b1637c5): discover-new-shows.js/enrich-ticket-
           # platform-links.js/discover-playbill-urls.js call url-discovery.js's
