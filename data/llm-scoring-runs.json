@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-15T00:52:42.982Z",
-    "completedAt": "2026-08-15T00:52:43.177Z",
-    "totalReviews": 2,
-    "processed": 0,
-    "skipped": 1,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "marlise-off-broadway-2026",
-        "outletId": "donyc",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-15T02:32:31.220Z",
     "completedAt": "2026-08-15T02:32:42.922Z",
     "totalReviews": 28,
@@ -423403,5 +423383,25 @@
       "total": 13716
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-19T20:08:49.402Z",
+    "completedAt": "2026-08-19T20:08:49.601Z",
+    "totalReviews": 3,
+    "processed": 0,
+    "skipped": 2,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "marlise-off-broadway-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
