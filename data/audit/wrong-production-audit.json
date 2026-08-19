@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-19T16:07:05.749Z",
+  "timestamp": "2026-08-19T17:31:07.868Z",
   "stats": {
-    "totalReviews": 42454,
-    "alreadyFlagged": 18204,
-    "dateGuardCatches": 145,
+    "totalReviews": 42459,
+    "alreadyFlagged": 18198,
+    "dateGuardCatches": 150,
     "directorMismatch": 987,
     "tvFilmSignals": 1215,
-    "londonSignals": 918,
+    "londonSignals": 919,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3641
+    "noPublishDate": 3643
   },
   "findings": [
     {
@@ -673,6 +673,61 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "thestage--paul-vale.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "times-uk--nancy-durrant.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
         }
       ]
     },
@@ -39373,6 +39428,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": 94,
+      "publishDate": "2026-08-19",
+      "url": "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
