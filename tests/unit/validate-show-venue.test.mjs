@@ -35,6 +35,26 @@ test('scorePlaybillUrl accepts the real Bronco Billy Playbill URL for the show',
   assert.ok(score > 0);
 });
 
+test('scorePlaybillUrl hard-rejects a same-titled London URL for a Broadway show (cross-market guard)', () => {
+  // Regression for a P0 the adversarial review caught: adding "london" as a
+  // recognized market segment must not let a same-titled London production
+  // pass as a match for a Broadway/Off-Broadway show via the soft -5 penalty
+  // (+10 title match - 5 = net positive, which findPlaybillUrl's `score > 0`
+  // filter would have accepted).
+  const broadwayShow = { id: 'bronco-billy-broadway-2030', title: 'Bronco Billy – The Musical', venue: 'Some Broadway House', category: 'broadway' };
+  const score = scorePlaybillUrl(broncoBillyPlaybillUrl, broadwayShow);
+  assert.equal(score, null);
+});
+
+test('scorePlaybillUrl hard-rejects a same-titled Broadway/Off-Broadway URL for a West End show (cross-market guard, reverse direction)', () => {
+  const westEndShow = { ...broncoBilly };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/bronco-billy-the-musical-broadway-some-theatre-2030',
+    westEndShow
+  );
+  assert.equal(score, null);
+});
+
 test('scorePlaybillUrl rejects a URL for a different title', () => {
   const score = scorePlaybillUrl(
     'https://playbill.com/production/some-other-show-west-end-charing-cross-theatre-2024',
