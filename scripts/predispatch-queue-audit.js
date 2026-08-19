@@ -129,7 +129,14 @@ function listAllWorkBranchNames(repoDir, defaultBranch) {
   try {
     const raw = execFileSync('git', ['branch', '--list', 'worktree-*', 'job/*', '--format=%(refname:short)'], { cwd: repoDir, encoding: 'utf8' });
     return raw.split('\n').map((s) => s.trim()).filter(Boolean);
-  } catch {
+  } catch (err) {
+    // ship-check adversarial finding: a total `git branch --list` failure
+    // (not offline — a real repo/permissions problem) used to degrade
+    // silently to an empty branch list, which makes workBranchCollisionGuard
+    // report 0 refused for every task — indistinguishable from a genuinely
+    // quiet day. Logged so the launchd job's stderr log (not just the
+    // digest banner) carries the signal.
+    console.error(`[predispatch-queue-audit] git branch --list failed, workBranchCollisionGuard will report 0 collisions this run: ${String(err.message).slice(0, 160)}`);
     return [];
   }
 }
@@ -201,6 +208,11 @@ function main() {
   let fetchErrors = 0;
   for (const task of tasks) {
     const uuid = notionIdOf(task) || resolveNotionUuid(task.description || '');
+    // #1803: card fetch no longer short-circuits with `continue` on a
+    // missing uuid/failed fetch — #1802's 6 non-card guards below still need
+    // to evaluate every task. `id: task.id` on the pushed classification is
+    // #1803's own addition (feeds predispatch-queue-audit.js's named
+    // blocked-card items) — preserved here across the #1802 merge.
     let card = null;
     if (!uuid) {
       skippedNoUuid++;
@@ -209,7 +221,7 @@ function main() {
       catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] fetch failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
     }
     if (card) {
-      try { classifications.push(classifyCandidate({ card, task })); }
+      try { classifications.push({ ...classifyCandidate({ card, task }), id: task.id }); }
       catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] classify failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
     }
 
@@ -221,6 +233,13 @@ function main() {
     // that is genuine "ok" data here, not an audit error.
     const own = { id: task.id, subject: task.subject, notes: task.description };
     const overlaps = findOverlappingCards(own, inProgressCards.filter((c) => String(c.id) !== String(task.id)));
+    // GUARD_NAMES (dispatch-guards.js) is the canonical list every 8 keys
+    // below must match — this object is NOT built by looping over
+    // GUARD_NAMES because each guard needs a different extra argument
+    // (ledgerEntries/card/branchStatuses/overlaps/tasksWithArchive/mapping).
+    // Adding a 9th guard to GUARD_NAMES means adding a matching runGuard()
+    // call here too, or tallyGuardRefusals will report it as 100% "error"
+    // forever (see dispatch-guard-queue-audit.test.mjs's GUARD_NAMES test).
     guardResults.push({
       taskId: task.id,
       guards: {
