@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T06:22:19.946Z",
+  "generatedAt": "2026-08-19T08:29:59.910Z",
   "windowDays": 45,
   "showsScanned": 73,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 641.1787247222222,
+      "fileAgeHours": 643.3064922222222,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 2.1277677777777777
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 331.6219136111111,
+      "fileAgeHours": 333.74968083333334,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 2.1277677777777777
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 140.86235805555555,
+      "fileAgeHours": 142.99012527777776,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 2.1277677777777777
     }
   ],
   "contradictions": []
