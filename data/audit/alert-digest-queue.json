@@ -262,5 +262,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-19T06:22:19.231Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-abigails-party-west-end-2026",
+    "title": "Stale 'upcoming' tag on Abigail’s Party",
+    "description": "abigails-party-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=abigails-party-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-19T07:09:55.864Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-spellbound-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Spellbound",
+    "description": "spellbound-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=spellbound-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-19T07:09:55.865Z"
   }
 ]
