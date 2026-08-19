@@ -59,7 +59,8 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "masquerade-off-broadway-2025/nyt-theater--unknown.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -401,7 +402,16 @@
     "two-strangers-bway-2025/thestage--paul-vale.json",
     "two-strangers-bway-2025/times-uk--clive-davis.json",
     "two-strangers-bway-2025/times-uk--dominic-cavendish.json",
-    "two-strangers-bway-2025/whatsonstage--alex-wood.json"
+    "two-strangers-bway-2025/whatsonstage--alex-wood.json",
+    "masquerade-off-broadway-2025/wsj--dominic-green.json",
+    "masquerade-off-broadway-2025/theater-life--unknown.json",
+    "the-producers-west-end-2025/deadline--unknown.json",
+    "the-producers-west-end-2025/people--unknown.json",
+    "burlesque-west-end-2026/musical-theatre-review--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -443,7 +453,8 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "masquerade-off-broadway-2025/nyt-theater--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -480,7 +491,7 @@
     ]
   },
   "startTime": "2026-08-19T11:41:09.056Z",
-  "lastProcessed": "two-strangers-bway-2025/whatsonstage--alex-wood.json",
+  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
   "log": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -490,6 +501,17 @@
     },
     {
       "t": "2026-08-19T19:33:26.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T19:58:31.808Z",
+      "event": "bb-session",
+      "session": "8afd7488",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-19T19:58:32.298Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
