@@ -95,6 +95,15 @@ const SNAPSHOTS = [
   // was never meant to run overnight. optionalIfMissing until the first run
   // lands the snapshot file.
   { key: 'p1RelevanceAudit', label: 'P1 backlog relevance audit', file: 'card-relevance-digest-snapshot.json', maxAgeH: 336, optionalIfMissing: true },
+  // scripts/predispatch-queue-audit.js (task #1801) — tallies
+  // predispatch-guard's (task #1800) verdicts across every queued card, so a
+  // REOPEN-SUSPECT/DO-NOT-DISPATCH backlog spike (e.g. a
+  // reconcile-dead-completions misfire) is visible in aggregate instead of
+  // only as scattered individual dispatch refusals. Mac-local, same as
+  // backlogDrain above — cron'd via com.broadwayscore.predispatch-queue-audit
+  // (launchd), not committed. optionalIfMissing until the plist's first run
+  // lands the file.
+  { key: 'predispatchQueue', label: 'predispatch queue backlog', file: 'predispatch-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

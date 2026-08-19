@@ -53,6 +53,10 @@ Usage:
                            (recorded in the dispatch ledger; recheck lists it as unverifiable)
   bsc-next --allow-closed-card   dispatch even though Notion says the card is already
                            Done/Archived/Cancelled (recorded in the dispatch ledger)
+  bsc-next --allow-reopen-suspect  dispatch even though predispatch-guard classifies the
+                           card DO-NOT-DISPATCH or REOPEN-SUSPECT (a PARKED: note, a
+                           Paused status, or a completedDate + Outcome + commit sha that
+                           looks like already-finished work) — recorded in the ledger
   bsc-next --allow-human-gated   dispatch --headless even when the card needs a human
                            to finish it (owner visual-qa approval, an owner decision,
                            a long external wait). Refused by default — see task #1004.
@@ -166,6 +170,13 @@ const {
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
 } = require('./lib/dispatch-guards.js');
+// Task #1800: predispatchGuard wires the fleet's REOPEN-SUSPECT/DO-NOT-DISPATCH
+// classifier (predispatch-guard.js) into the real dispatch path — until now
+// classifyCandidate was only reachable by a human running
+// `node scripts/predispatch-check.js --id N` by hand. Lives in
+// predispatch-guard.js, not dispatch-guards.js — see that function's header
+// for why (single caller here, not shared with linear-next.js).
+const { predispatchGuard } = require('./lib/predispatch-guard.js');
 // Real I/O half of the card #1281 cross-session collision guard above:
 // shells out to git to build the {name, unlandedCommits} list
 // workBranchCollisionGuard consumes. See its own header for why this stays
@@ -514,6 +525,12 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   // hits, so this guard runs here too. Free: `card` is already in hand.
   const closedCardErr = closedCardGuard(task, card, args);
   if (closedCardErr) { console.error(closedCardErr); process.exit(1); }
+  // Task #1800: a successor continuing a card that looks REOPEN-SUSPECT
+  // (falsely reopened over completed work) is the same risk closedCardGuard
+  // above already guards against for a plainly-closed card — same rationale,
+  // same free `card` in hand.
+  const predispatchErr = predispatchGuard(task, card, args);
+  if (predispatchErr) { console.error(predispatchErr); process.exit(1); }
   const project = projectOf({ tags: card && card.tags, category: (card && card.category) || categoryOf(task), subject: task.subject });
   const explicitModel = typeof args.model === 'string' ? args.model : null;
   const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
@@ -541,6 +558,8 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         // Task #1790: the closed-card override is auditable, as its refusal
         // message promises. Null unless someone deliberately passed the flag.
         allowClosedCard: args['allow-closed-card'] || null,
+        // Task #1800: same auditability contract as allowClosedCard above.
+        allowReopenSuspect: args['allow-reopen-suspect'] || null,
         verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
         notionId: pid || null, adoptedLate: res.adoptedLate || null,
         // Card #1009: hash of the card body this session was seeded with, so a
@@ -1058,6 +1077,16 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // this single call site is what stops that sweep relaunching closed work.
   const closedCardErr = closedCardGuard(task, card, args);
   if (closedCardErr) { console.error(closedCardErr); process.exit(1); }
+  // Task #1800: closedCardGuard above only catches a card whose Notion
+  // STATUS is already terminal. A card falsely reopened by
+  // reconcile-dead-completions (status flipped back to workable while a
+  // completedDate + substantial Outcome + commit sha still describe
+  // finished work) sails right through that check — classifyCandidate
+  // (predispatch-guard.js) is the fleet's classifier for exactly this, and
+  // until now nothing in this real dispatch path ever called it. `card` is
+  // already fetched above, so this costs nothing extra.
+  const predispatchErr = predispatchGuard(task, card, args);
+  if (predispatchErr) { console.error(predispatchErr); process.exit(1); }
 
   const gateNotes = (card && card.notes) || task.description || '';
   const gate = evaluateVerifiability(gateNotes);
@@ -1165,7 +1194,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1256,7 +1285,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     // Card #705: report WHICH failure this is. "LAUNCH NOT VERIFIED" for a
@@ -1316,4 +1345,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };

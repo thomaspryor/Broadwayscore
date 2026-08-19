@@ -434,6 +434,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // cron-wired), so this only appears the mornings after someone runs
   // scripts/audit-card-relevance.js.
   if (sections.p1RelevanceAudit) blocks.push(renderNamedDigestBlock('P1 backlog relevance audit', sections.p1RelevanceAudit));
+  // Predispatch queue backlog (task #1801) — same {generatedAt, bannerText,
+  // items, moreCount} shape, no new render code. Cron'd Mac-locally before
+  // this digest sends (com.broadwayscore.predispatch-queue-audit plist), so
+  // unlike p1RelevanceAudit above this appears every morning, not only after
+  // an on-demand run.
+  if (sections.predispatchQueue) blocks.push(renderNamedDigestBlock('Predispatch queue backlog', sections.predispatchQueue));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);

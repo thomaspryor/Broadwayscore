@@ -16,6 +16,7 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { TERMINAL_CARD_STATUSES } = require('./task-reclaim.js');
+const { notionIdOf } = require('./dispatch-guards.js');
 
 const PARKED_RE = /^\s*PARKED:/i;
 const SHA_RE = /\b[0-9a-f]{7,40}\b/i;
@@ -120,4 +121,85 @@ function resolveNotionUuid(text) {
   return matches[matches.length - 1].toLowerCase();
 }
 
-module.exports = { classifyCandidate, resolveNotionUuid, REVIEW_STATUSES };
+/**
+ * predispatchGuard — the wired-in dispatch-path caller of classifyCandidate
+ * (task #1800). Until now classifyCandidate was only reachable by a human
+ * running `node scripts/predispatch-check.js --id N` by hand; nothing in the
+ * real dispatch path (bsc-next.js) ever called it, so a falsely-reopened
+ * card sailed straight into a wasted auto-dispatch.
+ *
+ * Lives here, not in scripts/lib/dispatch-guards.js, despite matching that
+ * file's card-reading guard shape (closedCardGuard, staleOutcomeGuard):
+ * dispatch-guards.js is explicitly the SHARED layer between bsc-next.js and
+ * linear-next.js, and linear-next.js's dispatch path never fetches a Notion
+ * card at all — a single-caller function does not belong in the multi-
+ * dispatcher shared file. This file's own header already draws the correct
+ * line: pure decision logic lives here, all I/O in the CLI wrapper — a
+ * thin pure wrapper around classifyCandidate belongs at the same layer.
+ *
+ * Corpus-validated before being wired in as a live blocking refusal (plan
+ * review, task #1800): run against every pending/in_progress card in the
+ * live task mirror (208 cards), 30 classified REOPEN-SUSPECT. Three
+ * spot-checked by hand all shared the identical root cause — Auto-corrected
+ * ... by reconcile-dead-completions: task #N was marked completed while its
+ * dispatch was journaled dead ... this card had been incorrectly pushed to
+ * Done — confirming these are genuine false-reopens (redispatching them
+ * would relaunch already-shipped work), not a heuristic false-positive
+ * problem.
+ *
+ * CHECK-FIRST and OK-TO-DISPATCH are deliberately non-blocking here — this
+ * matches predispatch-check.js's own CLI exit-code contract
+ * (predispatch-check.js:109), which only treats DO-NOT-DISPATCH and
+ * REOPEN-SUSPECT as refusals.
+ *
+ * `--allow-reopen-suspect` (not --force): dispatch-guards.js:242's comment
+ * on closedCardGuard's own --allow-closed-card explains why --force
+ * deliberately never bypasses a closed-card-shaped refusal — a dedicated,
+ * ledger-visible flag is the escape hatch instead. Same philosophy applies
+ * here: a card classified DO-NOT-DISPATCH/REOPEN-SUSPECT needs its own
+ * explicit override, not the general-purpose --force.
+ *
+ * `card == null` (degraded Notion fetch) ALLOWS, same "honest unknown, never
+ * refuse" contract every sibling guard in dispatch-guards.js uses — a
+ * refusal here would let a Notion outage block dispatch entirely.
+ *
+ * Bug caught by bsc-next.test.mjs's existing --allow-closed-card coverage:
+ * when card.status is a plain terminal Done/Archived/Cancelled (no PARKED
+ * marker, not REOPEN-SUSPECT-shaped), classifyCandidate's DO-NOT-DISPATCH
+ * here is the SAME refusal class closedCardGuard already gates on — the
+ * caller who passed --allow-closed-card already authorized dispatching a
+ * closed card and must not be asked for a second, redundant flag. Only that
+ * narrow case defers to --allow-closed-card; a PARKED: note or a Paused
+ * status (which closedCardGuard deliberately never treats as closed) still
+ * needs --allow-reopen-suspect.
+ *
+ * @param {DispatchGuardTask} task
+ * @param {object|null} card - notion-brain.js `get <uuid>` output, or null
+ *   when the fetch degraded
+ * @param {object} opts - CLI args object (checked for allow-reopen-suspect,
+ *   allow-closed-card, dry-run, print-prompt)
+ * @returns {string|null} a refusal message, or null to allow dispatch
+ */
+function predispatchGuard(task, card, opts) {
+  const o = opts || {};
+  if (o['allow-reopen-suspect'] || o['dry-run'] || o['print-prompt']) return null;
+  if (!card) return null;
+  const result = classifyCandidate({ card, task });
+  if (result.verdict !== 'DO-NOT-DISPATCH' && result.verdict !== 'REOPEN-SUSPECT') return null;
+  if (o['allow-closed-card'] && result.verdict === 'DO-NOT-DISPATCH' &&
+    TERMINAL_CARD_STATUSES.has(card.status) && result.flags.includes(`card-status-terminal:${card.status}`)) {
+    return null;
+  }
+  const pid = notionIdOf(task);
+  const flagText = result.flags.length ? ` (${result.flags.join(', ')})` : '';
+  const why = result.verdict === 'REOPEN-SUSPECT'
+    ? 'the card carries a completedDate plus a substantial recorded Outcome and what looks like a commit sha — this looks like real finished work that a dispatch would redo, not a fresh task.'
+    : 'the card is explicitly marked not-dispatchable right now (a PARKED: note, or a terminal/Paused status).';
+  return `REFUSING to dispatch #${task.id}: predispatch-guard classifies its Notion card ${result.verdict}${flagText} — ${why}\n` +
+    `  Fix one of:\n` +
+    `    1. Verify by hand: node scripts/predispatch-check.js --id ${task.id}${pid ? ` (or: node scripts/notion-brain.js get ${pid})` : ''}\n` +
+    `    2. If it's genuinely fresh work, correct the card in Notion (clear the stale Outcome, or un-park it), then dispatch again.\n` +
+    `    3. Re-run with --allow-reopen-suspect to dispatch anyway (recorded in the ledger).`;
+}
+
+module.exports = { classifyCandidate, resolveNotionUuid, REVIEW_STATUSES, predispatchGuard };

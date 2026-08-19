@@ -1035,6 +1035,100 @@ test('main(): --id --dry-run also skips the git I/O entirely (ship-check finding
   assert.equal(listWorkBranchStatusesCalled, false);
 });
 
+// ── Task #1800: predispatch-guard wired into the real dispatch path ─────────
+// scripts/lib/predispatch-guard.js's classifyCandidate existed and was
+// correct, but nothing in the real dispatch path ever called it — only a
+// human running `node scripts/predispatch-check.js --id N` by hand got its
+// protection. This proves the wiring: a task whose Notion card classifies
+// REOPEN-SUSPECT is refused by main() itself, never reaching launchCmux.
+//
+// Notes carries an ARMED acceptance command deliberately — without one,
+// staleOutcomeGuard (which runs BEFORE predispatchGuard in main(), since any
+// filled Outcome with no runnable verify command is refused on its own) would
+// refuse this fixture first, for the wrong reason, and this test would pass
+// without ever exercising predispatchGuard at all.
+test('main(): a REOPEN-SUSPECT card (falsely reopened over completed work) is refused before launchCmux, without a human running predispatch-check.js', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-predispatch-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1800.json'), JSON.stringify({
+    id: '1800', subject: 'falsely reopened card', description: '[notion:3c1637c5416f8124b9fdf6b2f6fdec13] P1 Next',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const card = {
+    status: 'Not started', completedDate: '2026-08-14',
+    outcome: 'Verified complete on current main, commit 4ab855fc30f — no code change needed.'.repeat(2),
+    notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs`',
+  };
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '1800'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => [],
+      fetchCard: () => card,
+      launchCmux: () => { throw new Error('launchCmux must never be called once predispatchGuard refuses'); },
+      cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once predispatchGuard refuses'); },
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #1800/.test(e)), `expected a predispatch-guard refusal, got: ${errors.join(' | ')}`);
+  assert.ok(errors.some(e => /REOPEN-SUSPECT/.test(e)));
+  assert.ok(errors.some(e => /predispatch-check\.js --id 1800/.test(e)));
+});
+
+test('main(): --allow-reopen-suspect dispatches a REOPEN-SUSPECT card anyway, recorded in the ledger', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-predispatch-guard-override-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1801.json'), JSON.stringify({
+    id: '1801', subject: 'falsely reopened card, deliberately overridden', description: '[notion:3c1637c5416f8124b9fdf6b2f6fdec14] P1 Next',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const card = {
+    status: 'Not started', completedDate: '2026-08-14',
+    outcome: 'Verified complete on current main, commit 4ab855fc30f — no code change needed.'.repeat(2),
+    notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs`',
+  };
+  const ledgerEntries = [];
+  const origLog = console.log;
+  console.log = () => {};
+  try {
+    main(['--id', '1801', '--allow-reopen-suspect'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => [],
+      fetchCard: () => card,
+      cmuxAvailable: () => false,
+      launchCmux: () => ({ ok: true, ref: 'workspace:1801' }),
+      appendLedgerEntry: (e) => ledgerEntries.push(e),
+    });
+  } finally {
+    console.log = origLog;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  const launch = ledgerEntries.filter(e => e.event === 'launch').slice(-1)[0];
+  assert.ok(launch, 'the override must actually dispatch and journal a launch entry');
+  assert.equal(launch.allowReopenSuspect, true, 'the override must be auditable in the ledger');
+});
+
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────
 const os = require('os');
 const path = require('path');
