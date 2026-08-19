@@ -70,6 +70,19 @@ test('an empty or missing name is rejected, not treated as a match', () => {
   }
 });
 
+test('accepts getTeam()\'s {nodes: […]} shape, not just a bare array', () => {
+  // The shape getTeam() actually returns. The first version of resolveState
+  // took a bare array only, so this input produced
+  // `unknown state "Done". Valid states: (none found on this team)` —
+  // a confidently WRONG error rather than a crash, which is worse. Delegating
+  // to normalizeStates/pickStateByName is what fixes it, and this is the test
+  // that would have caught it.
+  const r = resolveState('Done', { nodes: STATES });
+  assert.equal(r.ok, true);
+  assert.equal(r.state.id, 's4');
+  assert.deepEqual(resolveState('Nope', { nodes: STATES }).valid, STATES.map((s) => s.name));
+});
+
 test('a team with no states still produces a usable message, not a crash', () => {
   for (const empty of [[], null, undefined]) {
     const r = resolveState('Done', empty);

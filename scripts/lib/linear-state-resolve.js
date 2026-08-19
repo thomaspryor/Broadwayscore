@@ -18,6 +18,8 @@
 
 'use strict';
 
+const { pickStateByName, normalizeStates } = require('./linear-session-reporting');
+
 /**
  * @param {string} wanted            the state name the user typed
  * @param {Array<{id,name,type}>} states  the team's workflow states
@@ -29,14 +31,27 @@
  * has "Doing".
  */
 function resolveState(wanted, states) {
-  const list = Array.isArray(states) ? states.filter((s) => s && s.name) : [];
+  // Matching is DELEGATED, not reimplemented. pickStateByName already does
+  // exact case-insensitive lookup and — the part that matters — runs its input
+  // through normalizeStates, which accepts both a bare array and getTeam()'s
+  // `{nodes: [...]}`. That normalization exists because the missing shape
+  // handling caused a real "states.find is not a function" in
+  // linear-issue-create.js, and linear-next.js:235 carries the same defence.
+  //
+  // The first version of this file hand-rolled the match against a bare array
+  // only. Handed `team.states`, it did not crash — `Array.isArray` was false,
+  // so it reported `unknown state "Done". Valid states: (none found on this
+  // team)`. A confidently wrong error is worse than the crash it replaced, and
+  // it would have been a THIRD copy of this matcher, the only one without the
+  // hardening the other two learned the hard way.
+  const list = normalizeStates(states).filter((s) => s && s.name);
   const valid = list.map((s) => s.name);
   const w = String(wanted == null ? '' : wanted).trim();
 
   if (!w) {
     return { ok: false, error: 'no state name given', valid };
   }
-  const hit = list.find((s) => s.name.toLowerCase() === w.toLowerCase());
+  const hit = pickStateByName(list, w);
   if (!hit) {
     return { ok: false, error: `unknown state "${w}"`, valid };
   }
