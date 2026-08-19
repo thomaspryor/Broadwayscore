@@ -283,17 +283,26 @@ function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
   };
 }
 
-// sync-audit-checkout.sh refusal snapshots (task #1563). One file PER
-// SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit — see
-// scripts/launchd/*.plist), not a single fixed filename, so this can't be a
-// SNAPSHOTS row (readAllSnapshots reads exactly one path per key). Presence
-// alone is the signal: the producer deletes its own file on the next
-// successful sync, so any file that still exists means that job has been
-// running on stale code (or not running at all) since its last refusal —
-// unlike every other row above, there is no "missing = still waiting for
-// the first run" quiet state to special-case; "missing" here IS the quiet
-// day. Never throws — a broken read degrades to "nothing to report", same
-// fail-soft contract as every other reader in this file.
+// sync-audit-checkout.sh blocked-sync snapshots (task #1563). One file PER
+// SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit/nightly —
+// see scripts/launchd/*.plist and scripts/autonomous-nightly.sh), not a
+// single fixed filename, so this can't be a SNAPSHOTS row (readAllSnapshots
+// reads exactly one path per key). Presence alone is the signal: the
+// producer deletes its own file on the next successful sync, so any file
+// that still exists means that job's checkout has been stale since its
+// last blocked sync — unlike every other row above, there is no "missing =
+// still waiting for the first run" quiet state to special-case; "missing"
+// here IS the quiet day. Never throws — a broken read degrades to "nothing
+// to report", same fail-soft contract as every other reader in this file.
+//
+// Wording note (review finding): most callers chain with `&&` and genuinely
+// stop when sync-audit-checkout.sh exits non-zero, but scripts/autonomous-
+// nightly.sh (SYNC_TAG=nightly) deliberately does NOT — it logs a warning
+// and continues, because its triage/executor steps read from Notion and
+// spawn their own isolated worktrees rather than depending on THIS
+// checkout being current. "Refused to run" would be false for that caller,
+// so the copy below says "blocked git sync" instead, which is accurate
+// for every caller regardless of what it does afterward.
 function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   let names;
   try { names = fs.readdirSync(auditDir); } catch { return null; }
@@ -311,7 +320,7 @@ function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   return {
     generatedAt: rows[0].at,
     count: rows.length,
-    bannerText: `${rows.length} launchd sync job(s) refused to run on stale code: ${rows.map((r) => r.tag).join(', ')}`,
+    bannerText: `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`,
     items: rows.slice(0, maxItems).map((r) => ({
       title: r.tag,
       detail: `${r.reason || 'unknown'} — ${Number(r.behindCount) || 0} commit(s) behind origin/main as of ${String(r.at || '').slice(0, 16).replace('T', ' ')} UTC`,

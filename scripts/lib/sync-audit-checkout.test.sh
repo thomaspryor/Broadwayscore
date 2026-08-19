@@ -173,6 +173,74 @@ else
   echo "PASS[5]: real divergence (local commit ahead) is refused, not silently swallowed, alert snapshot written ($rc5)"
 fi
 
+# --- Case 6: UNTRACKED colliding file blocks ff-only → git diff can't see
+# it (never staged), but it's a regenerable non-jsonl audit snapshot, so the
+# script must remove it and recover (review finding: git diff --name-only is
+# untracked-blind, so this path used to be invisible to DIRTY_AUDIT_FILES). ---
+O6="$TMP/o6"; C6="$TMP/c6"
+setup_pair "$O6" "$C6"
+git init -q "$TMP/via6"
+git -C "$TMP/via6" config user.email ci@ci.ci
+git -C "$TMP/via6" config user.name ci
+git -C "$TMP/via6" remote add origin "$O6"
+git -C "$TMP/via6" fetch -q origin main
+git -C "$TMP/via6" checkout -q main
+mkdir -p "$TMP/via6/data/audit"
+echo '{"crashed":false}' > "$TMP/via6/data/audit/new-report.json"
+git -C "$TMP/via6" add -A
+git -C "$TMP/via6" commit -q -m "ci: adds new-report.json"
+git -C "$TMP/via6" push -q origin main
+rm -rf "$TMP/via6"
+mkdir -p "$C6/data/audit"
+echo '{"crashed":true,"partial":"write from a killed run"}' > "$C6/data/audit/new-report.json"
+out6=$(SYNC_TAG=case6 bash "$LIB" "$C6" 2>&1); rc6=$?
+head6=$(git -C "$C6" rev-parse HEAD)
+origin_head6=$(git -C "$C6" rev-parse origin/main)
+content6=$(cat "$C6/data/audit/new-report.json" 2>/dev/null)
+if [ "$rc6" -ne 0 ]; then
+  echo "FAIL[6]: expected exit 0 — an untracked regenerable snapshot should self-heal, got $rc6. Output:"; echo "$out6"; fail=1
+elif [ "$head6" != "$origin_head6" ]; then
+  echo "FAIL[6]: expected HEAD to reach origin/main after untracked-file cleanup"; fail=1
+elif [ "$content6" != '{"crashed":false}' ]; then
+  echo "FAIL[6]: expected origin's new-report.json content after recovery, got: $content6"; fail=1
+else
+  echo "PASS[6]: untracked colliding regenerable snapshot is removed and recovered ($rc6)"
+fi
+
+# --- Case 7: untracked file OUTSIDE data/audit/ blocks ff-only → refuses,
+# reason must NOT be misclassified as "diverged" (review finding: excluding
+# untracked files from REMAINING_DIRTY made this indistinguishable from real
+# commit divergence). ---
+O7="$TMP/o7"; C7="$TMP/c7"
+setup_pair "$O7" "$C7"
+git init -q "$TMP/via7"
+git -C "$TMP/via7" config user.email ci@ci.ci
+git -C "$TMP/via7" config user.name ci
+git -C "$TMP/via7" remote add origin "$O7"
+git -C "$TMP/via7" fetch -q origin main
+git -C "$TMP/via7" checkout -q main
+echo "new from origin" > "$TMP/via7/brand-new.txt"
+git -C "$TMP/via7" add -A
+git -C "$TMP/via7" commit -q -m "ci: adds brand-new.txt"
+git -C "$TMP/via7" push -q origin main
+rm -rf "$TMP/via7"
+echo "local uncommitted work, never staged" > "$C7/brand-new.txt"
+out7=$(SYNC_TAG=case7 bash "$LIB" "$C7" 2>&1); rc7=$?
+snap7="$C7/data/audit/sync-refused-case7.json"
+if [ "$rc7" -eq 0 ]; then
+  echo "FAIL[7]: expected non-zero exit — untracked file outside data/audit/ must not be discarded, got 0. Output:"; echo "$out7"; fail=1
+elif [ ! -f "$snap7" ]; then
+  echo "FAIL[7]: expected an alert snapshot at $snap7"; fail=1
+elif grep -q '"reason": "diverged"' "$snap7"; then
+  echo "FAIL[7]: untracked-file block was misclassified as 'diverged' (the exact bug this case guards), got:"; cat "$snap7"; fail=1
+elif ! grep -q '"reason": "dirty-outside-audit"' "$snap7"; then
+  echo "FAIL[7]: expected reason=dirty-outside-audit in $snap7, got:"; cat "$snap7"; fail=1
+elif ! grep -q "brand-new.txt" "$snap7"; then
+  echo "FAIL[7]: expected the blocking untracked file to be named in $snap7, got:"; cat "$snap7"; fail=1
+else
+  echo "PASS[7]: untracked file outside data/audit/ correctly classified (not misreported as diverged), never discarded ($rc7)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi

@@ -64,7 +64,8 @@ write_refused_snapshot() {
   local reason="$1" dirty="$2"
   local behind
   behind=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
-  TAG="$TAG" REASON="$reason" DIRTY="$dirty" BEHIND="$behind" SNAPSHOT_FILE="$SNAPSHOT_FILE" node -e '
+  local node_err
+  node_err=$(TAG="$TAG" REASON="$reason" DIRTY="$dirty" BEHIND="$behind" SNAPSHOT_FILE="$SNAPSHOT_FILE" node -e '
     const fs = require("fs");
     fs.mkdirSync("data/audit", { recursive: true });
     const payload = {
@@ -75,7 +76,7 @@ write_refused_snapshot() {
       dirtyFiles: (process.env.DIRTY || "").split("\n").filter(Boolean),
     };
     fs.writeFileSync(process.env.SNAPSHOT_FILE, JSON.stringify(payload, null, 2) + "\n");
-  ' 2>/dev/null || true
+  ' 2>&1) || echo "::error::[$TAG] failed to write $SNAPSHOT_FILE (the alert itself failed): $node_err"
 }
 
 clear_refused_snapshot() {
@@ -117,13 +118,34 @@ if [ -n "$DIRTY_AUDIT_FILES" ]; then
   echo "$DIRTY_AUDIT_FILES" | xargs -I{} git checkout HEAD -- "{}"
 fi
 
+# UNTRACKED regenerable snapshots (review finding, task #1563): a crashed
+# prior run can leave a brand-new file under data/audit/ that was never
+# `git add`ed, so `git diff`/`git diff --cached` above never see it. If
+# origin/main is about to add that same path, ff-only fails with "untracked
+# working tree files would be overwritten" — a case `git diff` is blind to
+# by definition. Same safety contract as the tracked case: non-jsonl only.
+UNTRACKED_AUDIT_FILES=$(git status --porcelain --untracked-files=all -- data/audit/ 2>/dev/null \
+  | awk '/^\?\? /{print substr($0,4)}' | grep -v '\.jsonl$' || true)
+if [ -n "$UNTRACKED_AUDIT_FILES" ]; then
+  echo "[$TAG] removing untracked regenerable snapshot(s):"
+  echo "$UNTRACKED_AUDIT_FILES" | sed "s/^/[$TAG]   /"
+  echo "$UNTRACKED_AUDIT_FILES" | xargs -I{} rm -f -- "{}"
+fi
+
 if git merge --ff-only origin/main --quiet 2>/dev/null; then
   echo "[$TAG] recovered — fast-forwarded to origin/main after snapshot reset"
   clear_refused_snapshot
   exit 0
 fi
 
-REMAINING_DIRTY=$(git status --porcelain --untracked-files=no 2>/dev/null | awk '{print $2}')
+# Includes untracked files (review finding: a colliding untracked path
+# blocks ff-only just as surely as a tracked dirty one, and excluding it
+# here mislabeled that case as bare "diverged"). `cut -c4-` strips the
+# porcelain v1 "XY " status prefix rather than `awk '{print $2}'`, which
+# grabbed the wrong token for a rename entry ("R  old -> new" -> $2 is
+# "old", a path that may no longer exist); the trailing sed keeps the NEW
+# side of any rename.
+REMAINING_DIRTY=$(git status --porcelain --untracked-files=all 2>/dev/null | cut -c4- | sed 's/.* -> //')
 if [ -z "$REMAINING_DIRTY" ]; then
   # Clean tree, still can't ff-only — real commit divergence, no dirty file
   # to blame (a bare `echo "" | grep -v` would otherwise false-match here).
