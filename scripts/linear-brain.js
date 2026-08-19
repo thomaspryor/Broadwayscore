@@ -30,6 +30,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
+  node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -41,6 +42,9 @@ Usage:
           issue per day and reset attempt-memory each time.
   --probe: read-only three-way health verdict for the gate hooks. Prints one
           BOARD_PROBE: line and exits 0 healthy / 3 erroring / 4 unreachable.
+  update: moves an issue's workflow state and/or posts a comment. --state takes
+          a REAL Linear state name (not notion-brain's Done|Paused vocabulary);
+          an unknown name exits 1 and lists the team's actual states.
 `;
 
 function parseArgs(argv) {
@@ -171,6 +175,65 @@ async function main() {
         match = await linearClient.searchIssues(term);
       }
       console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url }, null, 2) : 'null');
+    } catch (err) {
+      console.error(`\n❌ ${err.message}\n`);
+      process.exit(2);
+    }
+    return;
+  }
+
+  if (command === 'update') {
+    // S4-T1. Moves an issue's workflow state and/or posts a comment.
+    //
+    // Deliberately NOT a `--status Done|Paused` mirror of notion-brain.js: see
+    // scripts/lib/linear-state-resolve.js for why translating the Notion
+    // vocabulary is a guess that silently files work into the wrong column.
+    // The caller names a real Linear state; an unknown one lists the real set.
+    const identifier = args._positional[1];
+    if (!identifier) {
+      console.error('Usage: linear-brain update <BRO-N> [--state "<name>"] [--comment "<text>"]');
+      process.exit(1);
+    }
+    if (args.state === undefined && args.comment === undefined) {
+      console.error('linear-brain update: nothing to do — pass --state and/or --comment');
+      process.exit(1);
+    }
+
+    const linearClient = require('./lib/linear-client');
+    const { resolveState, formatStateError } = require('./lib/linear-state-resolve');
+    try {
+      const issue = await linearClient.getIssue(identifier);
+      if (!issue) {
+        console.error(`❌ no such issue: ${identifier}`);
+        process.exit(2);
+      }
+
+      let movedTo = null;
+      if (args.state !== undefined) {
+        const team = await linearClient.getTeam();
+        const resolved = resolveState(args.state, team.states.nodes);
+        // Resolve BEFORE any write. A bad state name must not leave a comment
+        // posted and the state unchanged — that half-applied shape is the one
+        // an operator would misread as "it worked".
+        if (!resolved.ok) {
+          console.error(`❌ ${formatStateError(resolved)}`);
+          process.exit(1);
+        }
+        await linearClient.updateIssue(issue.id, { stateId: resolved.state.id });
+        movedTo = resolved.state.name;
+      }
+
+      if (args.comment !== undefined) {
+        await linearClient.createComment(issue.id, String(args.comment));
+      }
+
+      console.log(JSON.stringify({
+        identifier: issue.identifier,
+        url: issue.url,
+        state: movedTo || (issue.state && issue.state.name) || null,
+        commented: args.comment !== undefined,
+      }, null, 2));
+      console.error(`__BOARD_CARD_ID__=${issue.identifier}`);
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);
