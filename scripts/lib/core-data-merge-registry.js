@@ -109,11 +109,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     // with-retry.sh, in addition to calling push-core-data). Same real risk
     // as the private-core-data entry below (two independently-scheduled
     // seasonal writers), same merge fn — registered on both surfaces because
-    // it genuinely pushes through both. Reconciled via push-with-retry.sh's
-    // resolve_conflicts() case arm (unconditional on an actual conflict),
-    // NOT reconcile-merged-json.js's opt-in pass — same reasoning as
-    // audit/feedback-request-ledger.json above.
-    optInReconcile: false,
+    // it genuinely pushes through both. UNLIKE audit/feedback-request-
+    // ledger.json above, this DOES participate in reconcile-merged-json.js's
+    // opt-in pass (both writer workflows set PUSH_RECONCILE_MERGED_JSON=1) —
+    // a case-arm-only registration left the common `-X ours` clean-rebase
+    // path (which never raises a conflict) unprotected (ship-check/Codex
+    // adversarial finding, BRO-76): the case arm in resolve_conflicts() only
+    // fires when git actually reports a conflict, and a nearby non-
+    // overlapping hunk can rebase clean while still discarding one side's
+    // edit.
   },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────

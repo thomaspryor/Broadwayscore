@@ -13,7 +13,13 @@
  * instead of a silent "falls to -X ours" gap.
  *
  * Pure (string/array in, data out) per project rule §15 — the filesystem
- * read lives in scripts/audit-core-data-registry-coverage.js.
+ * read lives in the colocated test's "REGRESSION: every real CORE_FILES
+ * entry..." case (scripts/lib/core-data-registry-coverage.test.mjs), which
+ * reads the real action.yml and CORE_DATA_MERGE_REGISTRY directly. That test
+ * runs on every push touching scripts/lib/** or push-core-data/action.yml
+ * (both are in test.yml's push-path allowlist) — no separate standalone
+ * audit CLI script exists or is needed, same pattern reconcile-coverage.js's
+ * own "every real .github/workflows/*.yml is clean" test already uses.
  */
 
 // Matches the `CORE_FILES="a b c"` bash line in the "Sync core data files to
