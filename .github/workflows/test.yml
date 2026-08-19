@@ -49,6 +49,7 @@ on:
       # covered by the colocated lib test); listed so a solo edit still gets
       # lint/build/tsc.
       - 'scripts/export-notion-outcome-history.js'
+      - 'scripts/export-notion-outcome-history.test.mjs'
       # scripts/linear-import-corpus.js's sibling from the same Sprint 3 work
       # had the identical gap — no path entry, ZERO CI on a solo edit — even
       # though nothing here tests it directly yet. Closed alongside rather
