@@ -703,9 +703,19 @@ test('mutation deny-list covers case variants and .mjs/.cjs (ship-check QA)', ()
   assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
 });
 
-// ── Task #1827: generic audit-/lint- shape + bash *.test.sh form ───────────
+// ── Task #1827: generic audit-/lint- shape (ALLOWLIST) + bash form ─────────
+//
+// Ship-check (Codex adversarial pass) rejected the FIRST version of this
+// widening, which trusted the audit-/lint- naming convention by default and
+// deny-listed two known bad actors: a corpus scan found most of this repo's
+// ~90 audit-*.js scripts write SOME output, several to git-tracked paths
+// (audit-multi-production-titles.js, audit-cross-production.js even under
+// --dry-run, audit-imageless-scored-shows.js which also dispatches a GitHub
+// workflow and sends alerts). The shipped design flips to an ALLOWLIST of
+// individually write-grepped basenames (AUDIT_LINT_GENERIC_FORM_ALLOWED) —
+// these tests assert that allowlist boundary, not a blanket prefix rule.
 
-test('generic audit-/lint- shape accepts uncurated read-only scripts (card #1827)', () => {
+test('generic audit-/lint- shape accepts ONLY the individually-vetted allowlist (card #1827)', () => {
   const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
   for (const ok of [
     'node scripts/audit-review-contamination.js --strict',
@@ -714,51 +724,76 @@ test('generic audit-/lint- shape accepts uncurated read-only scripts (card #1827
     // not existing yet is a separate (execution-time) concern.
     'node scripts/audit-worktree-unpushed.js',
     'node scripts/lint-resend-calls.js',
-    'node scripts/audit-orphan-tests-v2.js --json',
-    'node scripts/lint-something-new.js --dry-run',
-    'node scripts/audit-foo.js --window=30',
-    'node scripts/audit-foo.js --max=5',
-    'node scripts/audit-foo.js --gate',
+    'node scripts/audit-review-contamination.js --window=30',
+    'node scripts/audit-review-contamination.js --max=5',
+    'node scripts/audit-review-contamination.js --gate',
   ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
 });
 
-test('generic audit-/lint- shape denylists the two known tracked-file writers (task #1827)', () => {
+test('generic audit-/lint- shape refuses every basename NOT on the allowlist (ship-check finding, task #1827)', () => {
   const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
   for (const bad of [
+    // The two originally-planned tracked-file writers.
     'node scripts/audit-card-verifiability.js',
-    'node scripts/audit-card-verifiability.js --json',
     'node scripts/audit-outlet-registry.js --strict',
-    'node scripts/audit-outlet-registry.js',
-  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must stay refused`);
+    // Corpus-scan finds from the ship-check adversarial pass: unrelated
+    // audit-*.js scripts that also write shared/tracked state, or worse.
+    'node scripts/audit-multi-production-titles.js',
+    'node scripts/audit-cross-production.js --dry-run', // --dry-run isn't semantic protection here
+    'node scripts/audit-imageless-scored-shows.js', // dispatches a GitHub workflow + sends alerts
+    // Any other plausible-sounding but unvetted audit-/lint- name.
+    'node scripts/audit-foo.js',
+    'node scripts/lint-something-new.js',
+    'node scripts/audit-orphan-tests-v2.js --json',
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must stay refused (not on the allowlist)`);
 });
 
-test('generic audit-/lint- shape does not widen flags for already-curated scripts', () => {
+// ship-check finding: APFS resolves a case-varied basename to the SAME real
+// file (this file's own MUTATING_SCRIPT_RE comment already reasons about
+// APFS being case-insensitive) — an exact-case-only Set.has() would let an
+// LLM-drafted checkableDone dodge the allowlist boundary with a
+// one-character case change and STILL fail to match any real file (the
+// allowlist fails closed on unrecognized names either way, but the
+// case-insensitive compare is kept so a legitimate case-varied match still
+// resolves — see the comment at the call site).
+test('allowBasenames comparison is case-insensitive (ship-check finding, task #1827)', () => {
   const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
-  // audit-workflow-hygiene.js's own curated entry is bare-only — the generic
-  // form must not grant it a flag nothing has vetted for that script.
-  assert.equal(isSafeCheckCommand('node scripts/audit-workflow-hygiene.js --json'), false);
-  assert.equal(isSafeCheckCommand('node scripts/audit-workflow-hygiene.js'), true); // still fine via its own entry
-  assert.equal(isSafeCheckCommand('node scripts/audit-sibling-title-misroute.js --dry-run'), false);
+  // The regex's literal `audit`/`lint` keyword is still case-sensitive
+  // (lowercase only) — only the flexible name-body segment after it varies
+  // in case here, which is the part the allowlist comparison must normalize.
+  assert.equal(isSafeCheckCommand('node scripts/audit-Review-Contamination.js'), true);
+  assert.equal(isSafeCheckCommand('node scripts/lint-RESEND-CALLS.js'), true);
+  for (const bad of [
+    'node scripts/audit-Card-Verifiability.js',
+    'node scripts/audit-CARD-VERIFIABILITY.js',
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must stay refused (not on the allowlist, case-insensitively either)`);
 });
 
 test('generic audit-/lint- shape rejects free-form args, combined flags, and traversal', () => {
   const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
   for (const bad of [
-    'node scripts/audit-foo.js --update',
-    'node scripts/audit-foo.js --strict --json',
-    'node scripts/audit-foo.js --strict; rm -rf /',
+    'node scripts/audit-review-contamination.js --update',
+    'node scripts/audit-review-contamination.js --strict --json',
+    'node scripts/audit-review-contamination.js --strict; rm -rf /',
     'node scripts/audit-../../etc/passwd.js',
-    'node scripts/audit-foo.js extra-arg',
+    'node scripts/audit-review-contamination.js extra-arg',
     'node scripts/audit-.js', // empty name segment
     'node scripts/fix-something.js', // wrong prefix entirely
   ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
 });
 
-test('bash *.test.sh form accepts scripts/tests paths, rejects everything else (task #1827)', () => {
+test('bash form accepts ONLY the individually-vetted sync-audit-checkout.test.sh, not every *.test.sh (ship-check finding, task #1827)', () => {
   const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
   assert.equal(isSafeCheckCommand('bash scripts/lib/sync-audit-checkout.test.sh'), true);
-  assert.equal(isSafeCheckCommand('bash tests/e2e/login.test.sh'), true);
   for (const bad of [
+    // Other REAL .test.sh files in this repo were never individually vetted
+    // for this purpose — a blanket *.test.sh rule would admit them sight
+    // unseen (ship-check/Codex finding: push-with-retry.deadline.test.sh
+    // legitimately uses `git remote add origin "ext::sh -c …"` inside its
+    // own sandbox, which is fine for THAT file but proves the naming
+    // convention alone guarantees nothing about a future file).
+    'bash scripts/lib/push-with-retry.deadline.test.sh',
+    'bash tests/e2e/login.test.sh',
     'bash /tmp/evil.test.sh',
     'bash scripts/lib/../../etc/passwd.test.sh',
     'bash scripts/lib/sync-audit-checkout.sh', // not a .test.sh
