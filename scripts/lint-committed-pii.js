@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Task #1074 (+ #1092: extended to data/audit/*.jsonl). CI lint: no
- * git-tracked data/audit/*.json or *.jsonl file may carry submitter PII
- * (name/email). See scripts/lib/pii-scan.js for the detection rules and
- * why this exists.
+ * Task #1074 (+ #1092: extended to data/audit/*.jsonl; + BRO-376: extended to
+ * data/archive/*.jsonl after a real contest entrant's personal email address
+ * shipped into data/archive/notion-card-history.jsonl — a migrated Notion
+ * Outcome, not audit output, so the original data/audit/-only glob never saw
+ * it). CI lint: no git-tracked data/audit/*.json[l] or data/archive/*.json[l]
+ * file may carry submitter PII (name/email). See scripts/lib/pii-scan.js for
+ * the detection rules and why this exists.
  *
  * Blocking by design — a committed PII leak in a PUBLIC repo is a real
  * exposure, not style debt. ALLOWLIST is an explicit inventory of files
@@ -48,7 +51,7 @@ const ALLOWLIST = new Map([
 function listTrackedAuditFiles() {
   const out = execFileSync(
     'git',
-    ['ls-files', '--', 'data/audit/*.json', 'data/audit/*.jsonl'],
+    ['ls-files', '--', 'data/audit/*.json', 'data/audit/*.jsonl', 'data/archive/*.json', 'data/archive/*.jsonl'],
     { cwd: REPO_ROOT, encoding: 'utf8' }
   );
   return out.split('\n').filter(Boolean);
@@ -75,11 +78,11 @@ function scanFile(relPath) {
   return { error: null, findings: scanJsonValue(parsed) };
 }
 
-const USAGE = `lint-committed-pii.js — no git-tracked data/audit JSON may carry
-submitter PII (task #1074).
+const USAGE = `lint-committed-pii.js — no git-tracked data/audit or data/archive JSON may
+carry submitter PII (task #1074, BRO-376).
 
 Usage:
-  node scripts/lint-committed-pii.js   scan every tracked data/audit/*.json[l]
+  node scripts/lint-committed-pii.js   scan every tracked data/audit + data/archive *.json[l]
   --help, -h                           show this message, do nothing else
 
 Blocking by design: a committed PII leak in a PUBLIC repo is a real exposure.
@@ -127,7 +130,7 @@ function main(argv = process.argv.slice(2)) {
 
   if (violations.length === 0) {
     console.log(
-      `✅ PII lint: ${files.length} committed data/audit/*.json[l] file(s) checked ` +
+      `✅ PII lint: ${files.length} committed data/audit + data/archive *.json[l] file(s) checked ` +
         `(${ALLOWLIST.size} allowlisted), none carry submitter PII.`
     );
     process.exit(0);

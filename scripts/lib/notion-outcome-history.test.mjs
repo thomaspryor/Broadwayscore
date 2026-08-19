@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractOutcomeRow, buildOutcomeHistory } from './notion-outcome-history.js';
+import { extractOutcomeRow, buildOutcomeHistory, redactEmails } from './notion-outcome-history.js';
 
 function record(id, props, fields = {}) {
   return { id, url: `https://notion.so/${id}`, properties: props, fields: { notes: '', outcome: '', keyFiles: '', ...fields } };
@@ -81,4 +81,59 @@ test('buildOutcomeHistory is a pure re-run: identical input yields identical (by
     record('p2', { Name: 'Two', Status: 'Done', Priority: 'P2 Later' }, { outcome: 'two' }),
   ];
   assert.deepEqual(buildOutcomeHistory(records), buildOutcomeHistory(records));
+});
+
+test('a record with Outcome ONLY in properties (no fields at all) still extracts — matches the real importer\'s own fallback', () => {
+  // Not `{ id, url, properties, fields: {...} }` — a record shape that never
+  // went through notion-corpus.js's buildRecord(), e.g. a hand-built fixture
+  // or a lighter-weight future export. linear-import-corpus.js's own
+  // buildDescription() falls back to properties the same way (`f.outcome ||
+  // p.Outcome`); this export must not be less complete than the importer it
+  // exists to double-check.
+  const r = { id: 'p-props-only', url: 'https://notion.so/p-props-only', properties: { Name: 'Legacy card', Status: 'Done', Priority: 'P1 Next', Outcome: 'closed via properties fallback', 'Key Files': 'a.js' } };
+  const row = extractOutcomeRow(r);
+  assert.ok(row);
+  assert.equal(row.outcome, 'closed via properties fallback');
+  assert.equal(row.keyFiles, 'a.js');
+});
+
+test('a record with no id throws rather than silently writing a keyless row', () => {
+  const r = { url: 'https://notion.so/x', properties: { Name: 'No id', Status: 'Done', Priority: 'P1 Next' }, fields: { outcome: 'orphaned', notes: '', keyFiles: '' } };
+  assert.throws(() => extractOutcomeRow(r), /no id/);
+});
+
+test('buildOutcomeHistory throws on a duplicate pageId rather than silently keeping both rows', () => {
+  const records = [
+    record('dup-1', { Name: 'First', Status: 'Done', Priority: 'P1 Next' }, { outcome: 'first version' }),
+    record('dup-1', { Name: 'First (again)', Status: 'Done', Priority: 'P1 Next' }, { outcome: 'second version' }),
+  ];
+  assert.throws(() => buildOutcomeHistory(records), /duplicate pageId/);
+});
+
+// Regression fixture: the real leaked row (pageId 363637c5-416f-818b, "Beat
+// the Critics launch") that shipped a real contest entrant's personal email
+// addresses into a public repo before this redaction existed (adversarial
+// review, BRO-376). Never loosen this without re-reading that incident.
+test('redactEmails strips every email-shaped string, third-party PII included', () => {
+  const text = "Olivia's first attempt (olivia.papa@ekohealth.com) was a genuine storeSubmission failure. Her retry (papa.olivia@gmail.com) stored successfully. Alert sent to thomas.pryor@gmail.com.";
+  const redacted = redactEmails(text);
+  assert.ok(!redacted.includes('olivia.papa@ekohealth.com'));
+  assert.ok(!redacted.includes('papa.olivia@gmail.com'));
+  // Blanket rule — the OWNER's own email is redacted too, no per-address
+  // judgment call at export time.
+  assert.ok(!redacted.includes('thomas.pryor@gmail.com'));
+  assert.ok(redacted.includes('[email-redacted]'));
+  assert.ok(redacted.includes("Olivia's first attempt"), 'surrounding prose survives — only the address is stripped');
+});
+
+test('extractOutcomeRow redacts emails in outcome, title, AND keyFiles', () => {
+  const r = record(
+    'p-pii',
+    { Name: 'Contact jane@example.com about the bug', Status: 'Done', Priority: 'P1 Next' },
+    { outcome: 'Fixed after emailing jane@example.com for repro steps.', keyFiles: 'see thread with jane@example.com' }
+  );
+  const row = extractOutcomeRow(r);
+  assert.ok(!row.title.includes('jane@example.com'));
+  assert.ok(!row.outcome.includes('jane@example.com'));
+  assert.ok(!row.keyFiles.includes('jane@example.com'));
 });
