@@ -84,6 +84,28 @@ test('failure mode 5: Done card with completedDate + long outcome + sha is REOPE
   assert.ok(result.flags.includes('completed-with-outcome-and-sha'));
 });
 
+// ── #1798 regression: the falsely-reopened case, status 'Not started' ──────
+// This is the case the REOPEN-SUSPECT check exists to catch: a card falsely
+// reopened by reconcile-dead-completions (status flipped back to 'Not
+// started') while still carrying completedDate + a substantial outcome + a
+// git sha from when it actually shipped. Gating the check inside the
+// REVIEW_STATUSES branch made it unreachable for this exact case — it only
+// ever fired for cards that were ALREADY terminal, which the next line would
+// have caught anyway.
+test('#1798 regression: Not started card with completedDate + long outcome + sha is REOPEN-SUSPECT', () => {
+  const result = classifyCandidate({
+    card: {
+      name: 'Falsely reopened card',
+      status: 'Not started',
+      notes: '## Problem\nSomething.\n## Acceptance criteria\nShip it.',
+      completedDate: '2026-08-18',
+      outcome: 'Fixed the underlying race condition in the push retry loop and verified with a 20x repeat run. Landed at commit 4d721c8000d.',
+    },
+  });
+  assert.equal(result.verdict, 'REOPEN-SUSPECT');
+  assert.ok(result.flags.includes('completed-with-outcome-and-sha'));
+});
+
 test('failure mode 5 (negative): Done card with no outcome/sha is plain DO-NOT-DISPATCH', () => {
   const result = classifyCandidate({ card: { name: 'Old card', status: 'Done', notes: '', completedDate: '2026-01-01', outcome: '' } });
   assert.equal(result.verdict, 'DO-NOT-DISPATCH');

@@ -62,16 +62,22 @@ function classifyCandidate({ card, task } = {}) {
     return { verdict: 'DO-NOT-DISPATCH', status, name, flags };
   }
 
+  // Failure mode 5 (regression fix, #1798): a card with a completedDate, a
+  // substantial outcome, and a git sha embedded in it looks like real
+  // finished work that a dispatch would re-do — checked BEFORE the
+  // REVIEW_STATUSES branch below, and regardless of status, because the
+  // failure mode this exists to catch is a card whose status was falsely
+  // flipped back to 'Not started' (e.g. by reconcile-dead-completions) while
+  // still carrying that completed-work evidence. Gating this check on
+  // status already being terminal (Done/Paused) made it unreachable for
+  // exactly the cards it was built to catch — those never reach a terminal
+  // branch at all.
+  if (looksLikeReopenSuspect(card)) {
+    flags.push('completed-with-outcome-and-sha');
+    return { verdict: 'REOPEN-SUSPECT', status, name, flags };
+  }
+
   if (REVIEW_STATUSES.has(status)) {
-    // Failure mode 5: a Done/Paused card with a completedDate, a substantial
-    // outcome, and a git sha embedded in it looks like real finished work
-    // that a dispatch would re-do rather than a card genuinely worth
-    // reopening — flag it distinctly instead of silently treating it as
-    // either safe (OK-TO-DISPATCH) or uninteresting (plain DO-NOT-DISPATCH).
-    if (looksLikeReopenSuspect(card)) {
-      flags.push('completed-with-outcome-and-sha');
-      return { verdict: 'REOPEN-SUSPECT', status, name, flags };
-    }
     flags.push(`card-status-terminal:${status}`);
     return { verdict: 'DO-NOT-DISPATCH', status, name, flags };
   }
