@@ -304,6 +304,7 @@ function main() {
     console.error('');
     console.error('Fix: add the file to the appropriate `node --test ...` line in .github/workflows/test.yml.');
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Notion card.');
+    console.error('Opt-out (deferred-effect acceptance probe, run only by autonomous-acceptance-recheck.js): add to EXEMPT_NEVER_CI in scripts/audit-orphan-tests.js — do this in the SAME commit that adds the test file (BRO-445: this was missed 2x in one day and blocked every repo-wide push for 3 days).');
     console.error('Opt-out (intentional): rename to `_skip-${name}.test.mjs`.');
   } else if (informational.length > 0) {
     console.log(`✅ ${files.length - informational.length} of ${files.length} unit test files registered in CI — ${informational.length} pre-existing orphan(s) elsewhere in the repo not touched by this push (not blocking):`);
