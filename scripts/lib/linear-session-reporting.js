@@ -273,6 +273,10 @@ module.exports = {
   CLAIM_STATE_NAME,
   STATUS_TO_STATE_NAME,
   ISSUE_ID_MARKER_PREFIX,
+  // Exported (S4-T1) so callers needing the state LIST — not just a lookup —
+  // reuse this shape handling instead of re-deriving it. Every hand-rolled
+  // copy so far has dropped the `{nodes:[…]}` case that getTeam() returns.
+  normalizeStates,
   pickStateByName,
   pickStateByType,
   planClaim,
