@@ -22,11 +22,15 @@
 //     the real ledger module for the one requirement that CANNOT be exercised
 //     via the CLI in a unit test — a second run creating zero issues — because
 //     proving that for real requires an --apply run against the live Linear
-//     API. buildReport + the ledger IS the exact mechanism main() uses to
-//     decide "already imported" vs "candidate to create", so asserting
-//     candidates.length collapses to 0 on a second pass is asserting the same
-//     invariant a live second run would exhibit, without spending a network
-//     call or a Linear write to prove it.
+//     API. buildReport + the ledger IS the mechanism main() uses to decide
+//     "already imported" vs "candidate to create" WHEN THE LEDGER ALREADY HAS
+//     THE ROW — the common case (a clean prior run). It does NOT reach the
+//     other half of the guarantee: two concurrent --apply runs racing on an
+//     empty ledger, where the loser is refused by Linear's own id-conflict
+//     response and classified by isAlreadyExistsError() instead of a ledger
+//     hit (linear-import-corpus.js's onItem catch block). That path is
+//     covered separately below, against the exact documented error shape,
+//     rather than overclaimed here (codebase review, BRO-376).
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -211,4 +215,48 @@ test('second run of the same fixture creates zero issues', () => {
   assert.equal(cliSummary.disposition.alreadyImported, 4);
   assert.equal(cliSummary.disposition.live, 0);
   assert.equal(cliSummary.disposition.archive, 0);
+});
+
+// The scenario the ledger-replay test above CANNOT reach: two concurrent
+// `--apply` runs both read an EMPTY ledger (neither has recorded the other's
+// in-flight create yet), both call createIssue with the same deterministic
+// id, and the loser gets refused by Linear's server-side id conflict rather
+// than a ledger hit. main()'s onItem classifies that refusal via
+// isAlreadyExistsError() and records it as success (source:
+// 'corpus-import', retiredReason: 'recovered-existing') — see
+// linear-import-corpus.js's onItem catch block. This test proves that
+// classification is correct against the EXACT error shape Linear returns
+// (documented in linear-import-rules.js's deriveIssueId comment, confirmed
+// by live introspection during Sprint 3: `code INPUT_ERROR`, "Entity Issue
+// with id … already exists."), and that it does NOT rubber-stamp every
+// INPUT_ERROR as success — a real misconfiguration (e.g. a bad stateId) must
+// still abort the run rather than being silently swallowed.
+test('the real conflict-classification path recognises a genuine id conflict, and only that', () => {
+  const candidateId = rules.deriveIssueId('page-live-p0');
+  assert.ok(candidateId);
+
+  const realConflictShape = {
+    linearErrors: [
+      {
+        message: `Entity Issue with id ${candidateId} already exists.`,
+        extensions: { code: 'INPUT_ERROR' },
+      },
+    ],
+  };
+  assert.equal(
+    rules.isAlreadyExistsError(realConflictShape),
+    true,
+    'a losing concurrent create must be classified as already-imported, not a failure'
+  );
+
+  const unrelatedInputError = {
+    linearErrors: [
+      { message: 'Argument Validation Error', extensions: { code: 'INPUT_ERROR', userPresentableMessage: 'stateId must be a UUID.' } },
+    ],
+  };
+  assert.equal(
+    rules.isAlreadyExistsError(unrelatedInputError),
+    false,
+    'a real misconfiguration must still abort the run — not every INPUT_ERROR is a safe-to-ignore conflict'
+  );
 });
