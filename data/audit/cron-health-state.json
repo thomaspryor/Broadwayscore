@@ -1,43 +1,31 @@
 {
   "stale": [
+    "Commercial Weekly Orchestrator",
     "Daily Data Health Check (digest snapshot carrier)",
-    "Enrich West End Dates",
     "Refresh Show Score (opening-night)",
-    "Update Show Status",
-    "Update Social Pulse",
-    "Weekly Video Reviews"
+    "Sweep WE Aggregators"
   ],
   "redispatched": [
-    "Daily Data Health Check (digest snapshot carrier)",
-    "Enrich West End Dates",
-    "Update Social Pulse",
-    "Weekly Video Reviews"
+    "Commercial Weekly Orchestrator",
+    "Sweep WE Aggregators"
   ],
   "staleStreak": {
-    "Daily Data Health Check (digest snapshot carrier)": {
+    "Commercial Weekly Orchestrator": {
       "days": 1,
-      "lastCounted": "2026-08-18"
+      "lastCounted": "2026-08-19"
     },
-    "Enrich West End Dates": {
-      "days": 1,
-      "lastCounted": "2026-08-18"
+    "Daily Data Health Check (digest snapshot carrier)": {
+      "days": 2,
+      "lastCounted": "2026-08-19"
     },
     "Refresh Show Score (opening-night)": {
-      "days": 3,
-      "lastCounted": "2026-08-18"
-    },
-    "Update Show Status": {
       "days": 4,
-      "lastCounted": "2026-08-18"
+      "lastCounted": "2026-08-19"
     },
-    "Update Social Pulse": {
+    "Sweep WE Aggregators": {
       "days": 1,
-      "lastCounted": "2026-08-18"
-    },
-    "Weekly Video Reviews": {
-      "days": 1,
-      "lastCounted": "2026-08-18"
+      "lastCounted": "2026-08-19"
     }
   },
-  "updatedAt": "2026-08-18T12:31:38.051Z"
+  "updatedAt": "2026-08-19T12:31:27.985Z"
 }

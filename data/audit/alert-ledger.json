@@ -1294,6 +1294,29 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 2
+    },
+    "cron-health:Daily Data Health Check (digest snapshot carrier)": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
+      "firstSeen": "2026-08-19T12:31:28.109Z",
+      "lastSeen": "2026-08-19T12:31:28.109Z",
+      "lastNotifiedAt": "2026-08-19T12:31:28.109Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Refresh Show Score (opening-night)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Refresh Show Score (opening-night)",
+      "firstSeen": "2026-08-19T12:31:28.188Z",
+      "lastSeen": "2026-08-19T12:31:28.188Z",
+      "lastNotifiedAt": "2026-08-19T12:31:28.188Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-450"
     }
   }
 }
