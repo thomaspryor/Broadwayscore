@@ -1526,7 +1526,17 @@
     "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
     "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json",
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
-    "an-american-daughter-off-broadway-2026/off-off-online--charles-wright.json"
+    "an-american-daughter-off-broadway-2026/off-off-online--charles-wright.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1631,7 +1641,7 @@
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/off-off-online--charles-wright.json",
+  "lastProcessed": "disruption-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -1776,6 +1786,17 @@
     },
     {
       "t": "2026-08-19T01:16:43.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T01:20:07.676Z",
+      "event": "bb-session",
+      "session": "75d22313",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-19T01:20:08.327Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
