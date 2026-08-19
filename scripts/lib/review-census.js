@@ -256,16 +256,19 @@ function unionCensus(perSource) {
     if (!Array.isArray(reviews) || reviews.length === 0) continue;
     sourcesPresent.push(source);
     for (const r of reviews) {
-      // URL-based resolution beats text-based (normalizeOutlet/r.outletId): the
-      // registry's domain map is precise, while byline-text matching is fuzzy and
-      // alias-collision-prone (e.g. a roundup byline "The LA Times" for an article
-      // that was actually re-published under a different registered domain). A
-      // source like parseBwwRoundup never sets r.outletId and always resolved
-      // purely off byline text even when it captured a URL — this is what let a
-      // stale/mismatched text match (e.g. "About Entertainment") override a URL
-      // that resolves cleanly to a different, correct registry outlet (#BRO-90).
-      const urlResolved = r.url ? resolveOutletFromUrl(r.url) : null;
-      const outletId = (urlResolved && urlResolved.outletId) || r.outletId || normalizeOutlet(r.outlet || '');
+      // A source's own r.outletId always wins when present — some sources (e.g.
+      // theatre-reviews) resolve shared-domain edition splits (telegraph vs
+      // sunday-telegraph, timeout vs timeout-london) via byline/section text that
+      // a bare URL domain can never disambiguate (see resolveOutletFromUrl's own
+      // "eponymous wins" collision-rule comment); overriding that with the URL
+      // guess silently mis-routed sunday-telegraph → telegraph (adversarial review
+      // finding, BRO-90). URL resolution only kicks in as a fallback for sources
+      // that DON'T set outletId at all — parseBwwRoundup is exactly that case: it
+      // resolves purely off byline text via normalizeOutlet(r.outlet), which is
+      // what let a stale/mismatched byline (e.g. "About Entertainment") beat a URL
+      // that resolves cleanly to the correct registry outlet (#BRO-90).
+      const urlResolved = (!r.outletId && r.url) ? resolveOutletFromUrl(r.url) : null;
+      const outletId = r.outletId || (urlResolved && urlResolved.outletId) || normalizeOutlet(r.outlet || '');
       if (!outletId || isJunkOutlet(outletId)) continue;
       const existing = byOutlet.get(outletId);
       const entry = {
