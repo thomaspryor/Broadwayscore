@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { classifyCandidate, resolveNotionUuid, REVIEW_STATUSES } = require('./predispatch-guard.js');
+const { classifyCandidate, resolveNotionUuid, REVIEW_STATUSES, predispatchGuard } = require('./predispatch-guard.js');
 
 const MODULE_PATH = fileURLToPath(new URL('./predispatch-guard.js', import.meta.url));
 
@@ -156,4 +156,89 @@ test('resolveNotionUuid takes the LAST 32-hex run when more than one appears', (
 test('classifyCandidate throws on a missing/malformed card', () => {
   assert.throws(() => classifyCandidate({}), TypeError);
   assert.throws(() => classifyCandidate({ card: null }), TypeError);
+});
+
+// ── predispatchGuard (task #1800: the dispatch-path caller) ────────────────
+// classifyCandidate itself is unchanged by task #1800 — these cover the new
+// wrapper's own refusal/bypass contract, independent of bsc-next.js wiring
+// (that integration is covered separately in bsc-next.test.mjs).
+const REOPEN_SUSPECT_CARD = { status: 'Not started', completedDate: '2026-08-14', outcome: 'A'.repeat(50) + ' commit 4ab855fc30f' };
+const PARKED_CARD = { status: 'Not started', notes: 'PARKED: waiting on owner' };
+const OK_CARD = { status: 'Not started', notes: 'do the thing' };
+const TASK = { id: '999', subject: 'test task' };
+
+test('predispatchGuard: refuses a REOPEN-SUSPECT card', () => {
+  const err = predispatchGuard(TASK, REOPEN_SUSPECT_CARD, {});
+  assert.match(err, /REFUSING to dispatch #999/);
+  assert.match(err, /REOPEN-SUSPECT/);
+  assert.match(err, /--allow-reopen-suspect/);
+});
+
+test('predispatchGuard: refuses a PARKED-marker card (DO-NOT-DISPATCH)', () => {
+  const err = predispatchGuard(TASK, PARKED_CARD, {});
+  assert.match(err, /REFUSING to dispatch #999/);
+  assert.match(err, /DO-NOT-DISPATCH/);
+});
+
+test('predispatchGuard: silent for an OK-TO-DISPATCH card', () => {
+  assert.equal(predispatchGuard(TASK, OK_CARD, {}), null);
+});
+
+test('predispatchGuard: silent for a CHECK-FIRST card (advisory only, matches predispatch-check.js exit-code contract)', () => {
+  const card = { status: 'Not started', notes: '## Acceptance criteria\n`node --test scripts/foo.test.mjs`' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'CHECK-FIRST');
+  assert.equal(predispatchGuard(TASK, card, {}), null);
+});
+
+test('predispatchGuard: card == null (degraded fetch) is an honest unknown, never a refusal', () => {
+  assert.equal(predispatchGuard(TASK, null, {}), null);
+});
+
+test('predispatchGuard: --allow-reopen-suspect bypasses a REOPEN-SUSPECT refusal', () => {
+  assert.equal(predispatchGuard(TASK, REOPEN_SUSPECT_CARD, { 'allow-reopen-suspect': true }), null);
+});
+
+test('predispatchGuard: --allow-reopen-suspect bypasses a PARKED-marker refusal too', () => {
+  assert.equal(predispatchGuard(TASK, PARKED_CARD, { 'allow-reopen-suspect': true }), null);
+});
+
+test('predispatchGuard: --dry-run / --print-prompt bypass even a REOPEN-SUSPECT card (no side effects to gate)', () => {
+  assert.equal(predispatchGuard(TASK, REOPEN_SUSPECT_CARD, { 'dry-run': true }), null);
+  assert.equal(predispatchGuard(TASK, REOPEN_SUSPECT_CARD, { 'print-prompt': true }), null);
+});
+
+test('predispatchGuard: --force does NOT bypass — same philosophy as closedCardGuard\'s --allow-closed-card, not the general-purpose flag', () => {
+  const err = predispatchGuard(TASK, REOPEN_SUSPECT_CARD, { force: true });
+  assert.match(err, /REFUSING to dispatch #999/);
+});
+
+// ── --allow-closed-card overlap (regression coverage: this shipped broken —
+// see git history for the fix — --allow-closed-card must ALSO cover the
+// plain-terminal-status DO-NOT-DISPATCH case, since that is the exact same
+// refusal class closedCardGuard already gates behind that flag. A caller who
+// already typed --allow-closed-card must not be asked for a second flag.) ──
+test('predispatchGuard: --allow-closed-card bypasses a plain terminal-status (Done) DO-NOT-DISPATCH', () => {
+  const card = { status: 'Done' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  assert.equal(predispatchGuard(TASK, card, { 'allow-closed-card': true }), null);
+});
+
+test('predispatchGuard: --allow-closed-card does NOT bypass a PARKED-marker refusal (different refusal class)', () => {
+  const err = predispatchGuard(TASK, PARKED_CARD, { 'allow-closed-card': true });
+  assert.match(err, /REFUSING to dispatch #999/);
+});
+
+test('predispatchGuard: --allow-closed-card does NOT bypass a REOPEN-SUSPECT refusal (different refusal class)', () => {
+  const err = predispatchGuard(TASK, REOPEN_SUSPECT_CARD, { 'allow-closed-card': true });
+  assert.match(err, /REFUSING to dispatch #999/);
+});
+
+test('predispatchGuard: --allow-closed-card does NOT bypass a Paused-status DO-NOT-DISPATCH (closedCardGuard never treats Paused as closed either)', () => {
+  const card = { status: 'Paused' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  const err = predispatchGuard(TASK, card, { 'allow-closed-card': true });
+  assert.match(err, /REFUSING to dispatch #999/);
 });
