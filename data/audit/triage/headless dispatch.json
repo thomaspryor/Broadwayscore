@@ -1,0 +1,15 @@
+{
+  "system": "headless dispatch",
+  "status": "warn",
+  "lastChecked": "2026-08-19T14:07:12.822Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Headless dispatch: success rate (unmeasurable here)",
+      "status": "warn",
+      "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The headless success rate cannot be measured from here."
+    }
+  ]
+}

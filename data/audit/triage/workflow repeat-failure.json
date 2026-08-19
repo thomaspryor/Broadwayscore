@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-16T12:27:11.960Z",
+  "lastChecked": "2026-08-19T14:07:12.822Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,32 +9,42 @@
     {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
       "status": "error",
-      "message": "Rebuild Reviews (Fast) failed 23 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 13 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Rebuild Reviews Data",
       "status": "error",
-      "message": "Rebuild Reviews Data failed 5 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Checklist",
-      "status": "error",
-      "message": "Opening Night Checklist failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews Data failed 8 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "status": "error",
+      "message": "Deploy to Vercel failed 4 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Process Feedback Submissions",
-      "status": "warn",
-      "message": "Process Feedback Submissions failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "status": "error",
+      "message": "Process Feedback Submissions failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "status": "error",
+      "message": "Audit Aggregator Review Gap failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Commercial RSS Poll",
       "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Commercial RSS Poll failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
+      "status": "warn",
+      "message": "Collect WE/OB Review Texts failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

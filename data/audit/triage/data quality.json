@@ -1,15 +1,40 @@
 {
   "system": "data quality",
-  "status": "pass",
-  "lastChecked": "2026-08-16T12:27:11.958Z",
+  "status": "error",
+  "lastChecked": "2026-08-19T14:07:12.820Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "status": "pass",
-      "message": "No unreviewed suspects (1d ago)"
+      "status": "error",
+      "message": "Drift-check snapshot is 3d old (>48h) — the daily check itself has stopped running"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "status": "warn",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "status": "warn",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "status": "warn",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: roundup-url-mismatch lifetime sweep",
+      "status": "warn",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "status": "warn",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
     }
   ]
 }

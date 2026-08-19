@@ -1,7 +1,7 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-08-16T12:27:11.958Z",
+  "lastChecked": "2026-08-19T14:07:12.820Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,12 +9,12 @@
     {
       "name": "Coverage: SERP census recall",
       "status": "warn",
-      "message": "Review coverage not judgeable yet: only 1 prior run(s) on record (need 2) — no baseline to judge against yet"
+      "message": "Review coverage not judgeable yet: 0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend"
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: the-family-album-regional-2026, the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+      "message": "This week's sample had nothing measurable (settling/undated shows, or a SERP outage) — no evidence either way"
     }
   ]
 }

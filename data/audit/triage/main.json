@@ -1,0 +1,15 @@
+{
+  "system": "main",
+  "status": "error",
+  "lastChecked": "2026-08-19T14:07:12.821Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Main: red streak",
+      "status": "error",
+      "message": "main's Test Suite has had no confirmed-green run in 10.0h (11 failing runs) — first red commit 8b49be611, job \"Lint Workflows, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+    }
+  ]
+}
