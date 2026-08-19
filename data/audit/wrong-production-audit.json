@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-19T17:55:30.420Z",
+  "timestamp": "2026-08-19T18:49:10.875Z",
   "stats": {
-    "totalReviews": 42458,
-    "alreadyFlagged": 18206,
+    "totalReviews": 42460,
+    "alreadyFlagged": 18205,
     "dateGuardCatches": 156,
     "directorMismatch": 987,
     "tvFilmSignals": 1214,
-    "londonSignals": 919,
+    "londonSignals": 920,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3567
+    "noPublishDate": 3566
   },
   "findings": [
     {
@@ -38817,6 +38817,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "timeout-london--time-out.json",
+      "publishDate": "2026-08-18",
+      "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
