@@ -762,10 +762,15 @@ test('readDispatchAttempts: a successful dispatch is also logged (ok=true)', asy
 test('readDispatchAttempts: sorts by ts even when the file is out of chronological order', async () => {
   const { router, restore, attemptsPath } = loadRouterWithFakes();
   try {
+    // Relative to Date.now() (readDispatchAttempts filters against real wall-clock
+    // time, not a fake clock) so this fixture never drifts outside the `days: 30`
+    // window — a hardcoded absolute date did exactly that (card #1799).
+    const now = Date.now();
+    const daysAgo = n => new Date(now - n * 24 * 60 * 60 * 1000).toISOString();
     const lines = [
-      { ts: '2026-07-20T00:00:00.000Z', conditionKey: 'test:c', title: 'c', ok: true, error: null },
-      { ts: '2026-07-22T00:00:00.000Z', conditionKey: 'test:a', title: 'a', ok: false, error: 'newest' },
-      { ts: '2026-07-21T00:00:00.000Z', conditionKey: 'test:b', title: 'b', ok: true, error: null },
+      { ts: daysAgo(3), conditionKey: 'test:c', title: 'c', ok: true, error: null },
+      { ts: daysAgo(1), conditionKey: 'test:a', title: 'a', ok: false, error: 'newest' },
+      { ts: daysAgo(2), conditionKey: 'test:b', title: 'b', ok: true, error: null },
     ];
     fs.mkdirSync(path.dirname(attemptsPath), { recursive: true });
     fs.writeFileSync(attemptsPath, lines.map(l => JSON.stringify(l)).join('\n') + '\n');
