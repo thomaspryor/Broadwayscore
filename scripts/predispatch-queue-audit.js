@@ -124,6 +124,12 @@ function loadHistory(file = HISTORY_FILE) {
 // worktree-branch-guard.js's own header).
 function listAllWorkBranchNames(repoDir, defaultBranch) {
   try {
+    // unbounded-fetch-ok: this only ever runs from a live launchd cron job on
+    // a full local Mac checkout (com.broadwayscore.predispatch-queue-audit.plist),
+    // never from a CI shallow-checkout workflow — same justification as
+    // worktree-branch-guard.js's identical `git fetch origin <default> -q`
+    // call (listWorkBranchStatuses), which this function's batching is
+    // modeled on.
     execFileSync('git', ['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 });
   } catch { /* offline/timeout — use whatever origin/<defaultBranch> already points at locally */ }
   try {
