@@ -1456,32 +1456,40 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # a successful resolution but before the now-pushable commit is ever pushed
   # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
   # just falls through to the normal backoff + next attempt.
-  if [ "$history_changed" = "true" ] && git_push origin "$BRANCH"; then
-    if verify_content_survived; then
-      echo "Push succeeded after conflict resolution (attempt $i)"
-      pushed=true
-      break
-    else
-      echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
-      record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
-      # BRO-259: resets to RESTORE_BASE_HEAD (the best known-good point as of
-      # the last sync_restore_base_head() call, at loop-top or before the
-      # pre-resolution push above), NOT the stale original SCRIPT_ENTRY_HEAD
-      # — see the "Task #769 residual" this replaces at the pre-resolution
-      # reset above. NOT re-syncing here: HEAD right now is THIS iteration's
-      # own rebase/merge/cherry-pick result, not a clean append, so it isn't
-      # safe to treat as adoptable (a rebase rewrites history — HEAD is
-      # generally not even a descendant of RESTORE_BASE_HEAD any more). A
-      # foreign commit landing during the few seconds this iteration's own
-      # resolution took is a known, accepted residual (see
-      # sync_restore_base_head()'s header). The discard stays LOUD instead of
-      # silent — the SHAs stay recoverable via reflog.
-      git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
-      # landed — see the identical comment at the pre-resolution reset above.
-      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
-        HEAD_TRUSTED_CLEAN=true
+  if [ "$history_changed" = "true" ]; then
+    if git_push origin "$BRANCH"; then
+      if verify_content_survived; then
+        echo "Push succeeded after conflict resolution (attempt $i)"
+        pushed=true
+        break
+      else
+        echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
+        record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
+        # BRO-259: resets to RESTORE_BASE_HEAD (the best known-good point as of
+        # the last sync_restore_base_head() call, at loop-top or before the
+        # pre-resolution push above), NOT the stale original SCRIPT_ENTRY_HEAD
+        # — see the "Task #769 residual" this replaces at the pre-resolution
+        # reset above. NOT re-syncing here: HEAD right now is THIS iteration's
+        # own rebase/merge/cherry-pick result, not a clean append, so it isn't
+        # safe to treat as adoptable (a rebase rewrites history — HEAD is
+        # generally not even a descendant of RESTORE_BASE_HEAD any more). A
+        # foreign commit landing during the few seconds this iteration's own
+        # resolution took is a known, accepted residual (see
+        # sync_restore_base_head()'s header). The discard stays LOUD instead of
+        # silent — the SHAs stay recoverable via reflog.
+        git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
+        # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+        # landed — see the identical comment at the pre-resolution reset above.
+        if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+          HEAD_TRUSTED_CLEAN=true
+        fi
       fi
+    else
+      # task #1810: this branch used to be silent (bare `&&` short-circuit,
+      # no else) — a 90s GIT_NET_TIMEOUT_SEC hang here printed NOTHING,
+      # which is why update-show-status.yml's identical hang on this exact
+      # push call went undiagnosed in CI logs for 4+ days.
+      echo "  Post-resolution push failed (attempt $i) — will retry after backoff"
     fi
   fi
 
