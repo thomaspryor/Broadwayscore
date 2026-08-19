@@ -30,15 +30,16 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
 // use V5 unless the ANCHORED_BANDS_PILOT env flag is set explicitly.
 //
 // Rollout sequence:
-//   2026-05-17: WE + Off-West-End soft-launched
-//   2026-07-20 (this commit): broadway + off-broadway added (NYC rollout,
-//                             Notion card 39a637c5416f8137a105f2c88ea166ee).
-//                             Mirror change: scripts/lib/star-reliability.js
+//   2026-05-17: WE + Off-West-End soft-launched (pilot markets, defined here).
+//   2026-07-20: broadway + off-broadway added (NYC rollout, see
+//               ./ANCHORED_MARKETS_NYC_V6.ts for that market's rollout
+//               history + verified outcome). Mirror change:
+//               scripts/lib/star-reliability.js
+import { ANCHORED_MARKETS_NYC_V6 } from './ANCHORED_MARKETS_NYC_V6';
 export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
   'west-end',
   'off-west-end',
-  'broadway',
-  'off-broadway',
+  ...ANCHORED_MARKETS_NYC_V6,
 ]);
 
 // Shows pre-dating the 2005 cutoff that have been manually curated with
