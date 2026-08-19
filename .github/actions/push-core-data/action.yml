@@ -309,66 +309,47 @@ runs:
           # without reconciliation here, a concurrent -X ours rebase silently
           # drops a just-declared leg/run and the wrongProduction guards it was
           # meant to exempt start re-flagging legitimate reviews again.
+          # Field-level reconcile + whole-show re-add logic lives in
+          # scripts/lib/reconcile-shows-fields.js (colocated *.test.mjs,
+          # runs in the scripts/lib/*.test.mjs glob) — pulled out of this
+          # inline node -e (task #1817) because the old inline version
+          # restored a RECONCILABLE field from remote whenever OUR value was
+          # null, with no way to tell "we never had it" from "we just
+          # deliberately cleared it." fix-shared-ibdb-urls.js's self-heal
+          # nulls a revival's stale shared ibdbUrl earlier in the calling
+          # workflow, but origin/main's copy (never having received a prior
+          # fix either, for the same reason) still had the old shared URL —
+          # so this step read that as "remote added a value we lost" and
+          # restored the exact bug the self-heal had just cleared, on every
+          # push retry. Confirmed live: 2026-07-03 through 2026-08-19, every
+          # run healed its own working tree but no "Update from
+          # update-show-status" commit ever actually touched ibdbUrl.
+          # reconcileShowsJson now also takes /tmp/base-shows.json (the
+          # pre-run snapshot) and only restores a field from remote when the
+          # baseline was ALSO empty for it — if baseline had a value and our
+          # local doesn't, this run itself cleared it, and that must stand.
           if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
             node -e '
               const fs = require("fs");
-              // Only reconcile fields that are manually corrected, never auto-generated
-              const RECONCILABLE = new Set([
-                "venue", "synopsis", "runtime", "intermissions", "ageRecommendation",
-                "officialUrl", "wikipediaUrl", "ibdbUrl",
-                "openingDate", "previewsStartDate", "openingDateSource",
-                "humanCorrectedClosingDate",
-                "tourLegs", "priorRuns",
-              ]);
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const { reconcileShowsJson } = require(path.join(ws, "scripts/lib/reconcile-shows-fields"));
               try {
                 const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
                 const remote = JSON.parse(fs.readFileSync("/tmp/remote-shows.json", "utf8"));
-                const localMap = {};
-                for (const s of (local.shows || [])) localMap[s.id] = s;
-                let recovered = 0;
-                // WHOLE SHOWS remote added while we were running. `git pull
-                // --rebase -X ours` makes our shows.json win outright, and this
-                // loop used to `continue` on any id we did not have — so a show
-                // a CONCURRENT job had just added was silently erased. Observed
-                // 2026-08-05: two add-requested-show runs 20s apart each
-                // promoted a show, both logged "Core data pushed successfully",
-                // and only the later one survived. Green run, vanished data.
-                //
-                // A show missing locally is only re-added when it is ALSO
-                // absent from the merge base — i.e. remote genuinely added it
-                // after we forked. If it IS in the base, our copy dropping it
-                // was a deliberate delete and must be honoured, or every
-                // legitimate removal would resurrect on the next concurrent push.
-                let readded = 0;
-                let baseIds = null;
+                let base = null;
                 try {
-                  const base = JSON.parse(fs.readFileSync("/tmp/base-shows.json", "utf8"));
-                  baseIds = new Set((base.shows || []).map((s) => s && s.id).filter(Boolean));
+                  base = JSON.parse(fs.readFileSync("/tmp/base-shows.json", "utf8"));
                 } catch {
                   // No base (first push, shallow clone, unreadable) — cannot
                   // distinguish add from delete, so do NOT re-add. Silently
                   // losing a show is bad; silently resurrecting a deleted one
                   // is worse, and the stuck-request check will surface the loss.
-                  baseIds = null;
+                  base = null;
                 }
-                for (const rs of (remote.shows || [])) {
-                  const ls = localMap[rs.id];
-                  if (!ls) {
-                    if (baseIds && rs && rs.id && !baseIds.has(rs.id)) {
-                      local.shows.push(rs);
-                      localMap[rs.id] = rs;
-                      readded++;
-                    }
-                    continue;
-                  }
-                  for (const key of RECONCILABLE) {
-                    const val = rs[key];
-                    if (val !== null && val !== undefined && (ls[key] === null || ls[key] === undefined)) {
-                      ls[key] = val;
-                      recovered++;
-                    }
-                  }
-                }
+
+                const { recovered, readded, baseAvailable } = reconcileShowsJson(local, remote, base);
+
                 if (recovered > 0 || readded > 0) {
                   fs.writeFileSync("shows.json", JSON.stringify(local, null, 2) + "\n");
                   console.log(
@@ -376,8 +357,9 @@ runs:
                     (readded > 0 ? "; re-added " + readded + " show(s) a concurrent job created" : "")
                   );
                 }
-                if (readded === 0 && baseIds === null) {
-                  const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localMap[rs.id]).length;
+                if (readded === 0 && !baseAvailable) {
+                  const localIds = new Set((local.shows || []).map((s) => s && s.id).filter(Boolean));
+                  const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localIds.has(rs.id)).length;
                   if (remoteOnly > 0) {
                     console.log(
                       "::warning::" + remoteOnly + " show(s) exist on remote but not locally and no merge base was " +
