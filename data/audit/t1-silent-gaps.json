@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-08-19T18:16:18.333Z",
+  "generatedAt": "2026-08-19T22:17:11.538Z",
   "windowDays": 45,
   "showsScanned": 73,
   "gaps": [
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "title": "Anansi the Spider",
+      "openingDate": "2026-08-15",
+      "file": "thestage--anna-james.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=anansi-the-spider-west-end-2026 --url=https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london --outlet=thestage --critic=\"Anna James\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-15T01:36:03.697Z",
+      "fileAgeHours": 116.68548194444445,
+      "gapSeenAt": "2026-08-19T22:17:11.537Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +33,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 653.0771861111111,
+      "fileAgeHours": 657.0930602777778,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 11.899551944444445
+      "nonTerminalAgeHours": 15.914330833333333
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,26 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 343.5203730555556,
+      "fileAgeHours": 347.53624666666667,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 11.899551944444445
-    },
-    {
-      "showId": "marlise-off-broadway-2026",
-      "title": "Marlise",
-      "openingDate": "2026-08-13",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.broadwayworld.com/off-off-broadway/regional/Marlise-4396485",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
-      "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 152.7619102777778,
-      "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 11.899551944444445
+      "nonTerminalAgeHours": 15.914330833333333
     }
   ],
   "contradictions": []
