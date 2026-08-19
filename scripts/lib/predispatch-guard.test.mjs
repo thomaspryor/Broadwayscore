@@ -321,15 +321,33 @@ test('parity: plain terminal status (Done/Archived/Cancelled) refusal agrees bet
   }
 });
 
-// One-directional implication, not parity: classifyCandidate's REOPEN-SUSPECT
-// is a narrower subset of staleOutcomeGuard's broader unverifiable-Outcome
-// check (completedDate + a long outcome + a sha, vs. any unverifiable
-// Outcome at all) — every REOPEN-SUSPECT card is also stale-outcome-shaped,
-// but not the reverse (see the next test).
-test('one-directional: every REOPEN-SUSPECT classification is also refused by staleOutcomeGuard', () => {
+// One-directional implication, NOT a universal invariant: classifyCandidate's
+// REOPEN-SUSPECT check (looksLikeReopenSuspect) only ever reads
+// completedDate/outcome — it never consults card.notes at all, so it cannot
+// see an armed acceptance command or a RECHECK-AFTER stamp. staleOutcomeGuard
+// DOES check both (evaluateVerifiability(card.notes).armed and
+// parseRecheckAfterFromCard) and bypasses on either. So the implication below
+// only holds for a REOPEN-SUSPECT card whose notes carry neither — which is
+// the common real shape (a falsely-reopened card's notes are whatever the
+// original backlog card had, not a fresh armed acceptance command), but NOT
+// a guarantee; the next test documents the counterexample explicitly rather
+// than leaving it as an unstated precondition.
+test('one-directional (conditional on unarmed notes): a REOPEN-SUSPECT classification with no acceptance command in notes is also refused by staleOutcomeGuard', () => {
   const result = classifyCandidate({ card: REOPEN_SUSPECT_CARD, task: TASK });
   assert.equal(result.verdict, 'REOPEN-SUSPECT');
-  assert.ok(staleOutcomeGuard(TASK, REOPEN_SUSPECT_CARD, {}), 'staleOutcomeGuard should also refuse a REOPEN-SUSPECT-shaped card');
+  assert.ok(staleOutcomeGuard(TASK, REOPEN_SUSPECT_CARD, {}), 'staleOutcomeGuard should also refuse a REOPEN-SUSPECT-shaped card with unarmed notes');
+});
+
+// Documented divergence (intentional, not a bug, and NOT covered by the
+// "one-directional" test above — ship-check adversarial finding, task #1816):
+// classifyCandidate's REOPEN-SUSPECT check never reads card.notes, so a
+// REOPEN-SUSPECT-shaped card whose notes happen to carry an armed acceptance
+// command sails past staleOutcomeGuard's armed-notes bypass entirely.
+test('divergence: a REOPEN-SUSPECT card with an armed acceptance command in notes refuses in classifyCandidate but NOT in staleOutcomeGuard', () => {
+  const card = { ...REOPEN_SUSPECT_CARD, notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs` passes.' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'REOPEN-SUSPECT');
+  assert.equal(staleOutcomeGuard(TASK, card, {}), null, 'staleOutcomeGuard bypasses on an armed acceptance command, even for a REOPEN-SUSPECT-shaped card');
 });
 
 // Documented divergence (intentional, not a bug): a PARKED: note has no
