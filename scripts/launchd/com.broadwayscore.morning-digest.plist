@@ -23,7 +23,16 @@
                    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist
          Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.morning-digest
          Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.morning-digest
-         Manual send (Mac down at 07:30): node scripts/send-morning-digest.js --send-to-owner -->
+         Manual send (Mac down at 07:30): node scripts/send-morning-digest.js --send-to-owner
+
+         BSC_RUNNER_DISABLED=1 (task #1311, added directly to the live plist
+         without ever landing here — task #1563 found the drift while
+         redeploying this template and fixing it here closes that gap): kill
+         switch for scripts/lib/bsc-runner.js's headless spawn path, kept off
+         only for this cron context so a stray digest-triggered auto-fix run
+         never launches a headless bsc-next job from this job. See
+         scripts/resume-headless-job.js:53-54 and bsc-runner.js:167-171 for
+         why this one plist carries it and no other launchd job here does. -->
     <key>Label</key>
     <string>com.broadwayscore.morning-digest</string>
     <key>ProgramArguments</key>
@@ -45,6 +54,8 @@
     <string>/tmp/morning-digest-launchd.log</string>
     <key>EnvironmentVariables</key>
     <dict>
+        <key>BSC_RUNNER_DISABLED</key>
+        <string>1</string>
         <key>PATH</key>
         <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
     </dict>
