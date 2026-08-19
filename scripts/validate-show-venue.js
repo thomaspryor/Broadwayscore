@@ -151,9 +151,19 @@ function scorePlaybillUrl(url, show) {
   // Regional/tour URLs are never a fit for a NYC OB/Broadway entry — they
   // describe a different production (different venue, different cast).
   if ((u.includes('-regional-') || u.includes('-tour-')) && (isOB || !show.category)) return null;
+  // Cross-market hard reject: a same-titled show can have entirely separate
+  // Broadway and West End productions (different venue, cast, often
+  // different score) — the +10 title-match alone must never carry a
+  // cross-market URL past findPlaybillUrl's `score > 0` filter. A soft
+  // penalty isn't enough here: -5 off a +10 title match still nets positive
+  // (adversarial review, card #590 — this was a real false-positive path
+  // introduced by adding "london" as a recognized market segment above).
+  const isLondonUrl = u.includes('-london-');
+  if (isLondonUrl && !isLondon) return null;
+  if (!isLondonUrl && isLondon && (u.includes('-broadway-') || u.includes('-off-broadway-'))) return null;
   if (u.includes('-off-broadway-')) s += isOB ? 5 : -5;
   else if (u.includes('-broadway-')) s += isOB ? -5 : 5;
-  else if (u.includes('-london-')) s += isLondon ? 5 : -5;
+  else if (isLondonUrl) s += 5;
   const cv = canonicalVenue(show.venue || '');
   if (cv) {
     const cvSlug = cv.replace(/\s+/g, '-');
