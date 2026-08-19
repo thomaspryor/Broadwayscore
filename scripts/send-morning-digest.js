@@ -54,7 +54,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -446,6 +446,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // new render code. Same producer/plist as predispatchQueue, so it also
   // appears every morning.
   if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
+  // launchd stale-code refusals (task #1563) — same {generatedAt, bannerText,
+  // items, moreCount} shape, no new render code. Only appears when a job
+  // actually refused (see readSyncRefused's header) — silent on a normal
+  // morning, unlike the always-on blocks above.
+  if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync refused (stale code)', sections.syncRefused));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
@@ -602,6 +607,17 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // sync-audit-checkout.sh refusal snapshots (task #1563) — a launchd job
+  // that refused to run on stale/dirty code writes one of these; presence
+  // is itself the alert (see readSyncRefused's header). Not pushed to
+  // `problems` — that banner is for a producer that's supposed to run and
+  // didn't; this is its own named block instead, same as backlogDrain.
+  try {
+    sections.syncRefused = readSyncRefused();
+  } catch (err) {
+    console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // "Needs You" tab triage (card #870) — cmux tabs with a pending owner

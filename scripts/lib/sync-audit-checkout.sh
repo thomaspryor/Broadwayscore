@@ -34,10 +34,23 @@
 #
 # Usage: bash scripts/lib/sync-audit-checkout.sh [repo-dir]
 # Exits 0 (already fresh, or recovered) or 1 (blocked — investigate).
+#
+# VISIBLE ALERT (task #1563 review finding): the refusal branch used to only
+# print `::error::` lines to a bare `/tmp/<job>-launchd.log` — every other
+# Mac-local launchd job in this repo treats that as equivalent to nobody
+# looking (health-check.js:3371, check-claude-auth-health.js:92,
+# backlog-drain.js:542, reconcile-dead-completions.js:190 all write a
+# monitored data/audit/ snapshot instead of relying on a log tail), so a
+# refusal here was just as silent as the bug this script exists to fix. On
+# refuse, this writes data/audit/sync-refused-<tag>.json (gitignored,
+# Mac-local); send-morning-digest.js renders a block for any snapshot found.
+# Cleared on every successful run (clean or recovered) so a stale refusal
+# doesn't read as "still blocked" forever after the next tick succeeds.
 set -uo pipefail
 
 REPO_DIR="${1:-$(pwd)}"
 TAG="${SYNC_TAG:-sync-audit-checkout}"
+SNAPSHOT_FILE="data/audit/sync-refused-${TAG}.json"
 
 cd "$REPO_DIR" || { echo "::error::[$TAG] cannot cd to $REPO_DIR"; exit 1; }
 
@@ -46,6 +59,28 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/push-mutex.sh"
 push_mutex_acquire
 trap 'push_mutex_release' EXIT
+
+write_refused_snapshot() {
+  local reason="$1" dirty="$2"
+  local behind
+  behind=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  TAG="$TAG" REASON="$reason" DIRTY="$dirty" BEHIND="$behind" SNAPSHOT_FILE="$SNAPSHOT_FILE" node -e '
+    const fs = require("fs");
+    fs.mkdirSync("data/audit", { recursive: true });
+    const payload = {
+      tag: process.env.TAG,
+      at: new Date().toISOString(),
+      reason: process.env.REASON,
+      behindCount: Number(process.env.BEHIND || 0),
+      dirtyFiles: (process.env.DIRTY || "").split("\n").filter(Boolean),
+    };
+    fs.writeFileSync(process.env.SNAPSHOT_FILE, JSON.stringify(payload, null, 2) + "\n");
+  ' 2>/dev/null || true
+}
+
+clear_refused_snapshot() {
+  rm -f "$SNAPSHOT_FILE" 2>/dev/null || true
+}
 
 # unbounded-fetch-ok: this script has NO workflow caller — the guard reaches it
 # only transitively and reports it as "reachable from 166 shallow workflow(s)".
@@ -62,6 +97,7 @@ if ! git fetch origin main --quiet; then
 fi
 
 if git merge --ff-only origin/main --quiet 2>/dev/null; then
+  clear_refused_snapshot
   exit 0
 fi
 
@@ -83,9 +119,24 @@ fi
 
 if git merge --ff-only origin/main --quiet 2>/dev/null; then
   echo "[$TAG] recovered — fast-forwarded to origin/main after snapshot reset"
+  clear_refused_snapshot
   exit 0
+fi
+
+REMAINING_DIRTY=$(git status --porcelain --untracked-files=no 2>/dev/null | awk '{print $2}')
+if [ -z "$REMAINING_DIRTY" ]; then
+  # Clean tree, still can't ff-only — real commit divergence, no dirty file
+  # to blame (a bare `echo "" | grep -v` would otherwise false-match here).
+  REASON="diverged"
+elif echo "$REMAINING_DIRTY" | grep -qv '^data/audit/'; then
+  REASON="dirty-outside-audit"
+elif echo "$REMAINING_DIRTY" | grep -q '\.jsonl$'; then
+  REASON="dirty-jsonl-ledger"
+else
+  REASON="dirty-unresolved"
 fi
 
 echo "::error::[$TAG] ff-only merge still blocked after snapshot reset — real divergence or dirty files outside data/audit/. Refusing to run on stale code."
 echo "::error::[$TAG] investigate: git -C '$REPO_DIR' status --short; git -C '$REPO_DIR' rev-list --count HEAD..origin/main"
+write_refused_snapshot "$REASON" "$REMAINING_DIRTY"
 exit 1

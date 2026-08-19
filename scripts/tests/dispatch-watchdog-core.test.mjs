@@ -209,6 +209,162 @@ test('taskPriority parses bridge line and subject fallback', () => {
   assert.equal(core.taskPriority({ description: 'native', subject: 'fix it' }), null);
 });
 
+// ── Card #1564: the redispatch loop ────────────────────────────────────────
+// executeSweep journals its REDISPATCH claim BEFORE spawning the child
+// bsc-next, but a child REFUSED by a guard (closed card, PARKED, REOPEN-
+// SUSPECT) journals nothing at all. planSweep never read its own claims back,
+// so it re-picked the same task on every ~90s sweep. Live: 2026-08-19
+// 14:02-14:09Z, twelve consecutive claims across only #1759 and #586 spent the
+// entire perDay budget in eight minutes for zero launches.
+test('#1564: a claim that never launched is not re-claimed every sweep, and does not starve the budget', () => {
+  const entries = [];
+  const tasks = new Map([
+    task(20, 'pending', 'P1 Now'),   // the card whose child will always refuse
+    task(21, 'pending', 'P1 Now'),   // a healthy card queued behind it
+  ]);
+  let now = NOW;
+  const claims = {};
+  for (let sweep = 0; sweep < 20; sweep++) {
+    const plan = core.planSweep(entries, tasks, { now, liveTitles: LIVE });
+    for (const d of plan.toDispatch) {
+      claims[d.taskId] = (claims[d.taskId] || 0) + 1;
+      // A refused child writes ONLY the claim — no 'launch', no 'dead'.
+      entries.push({ ts: new Date(now).toISOString(), event: 'watchdog-redispatch', taskId: d.taskId, kind: 'p01-backlog' });
+    }
+    now += 92 * 1000;               // the real sweep period
+  }
+  assert.equal(claims['20'], 1, 'the refused card must be claimed exactly once, not once per sweep');
+  assert.equal(claims['21'], 1, 'and the healthy card behind it must still get its dispatch');
+});
+
+test('#1564: a landed launch re-arms the task — a later dead launch is still retryable', () => {
+  const entries = [
+    { ts: T(120), event: 'watchdog-redispatch', taskId: '22', kind: 'p01-backlog' },
+    { ts: T(118), event: 'launch', taskId: '22', subject: 'Fix thing 22', workspaceRef: 'workspace:8' },
+    { ts: T(30), event: 'dead', taskId: '22', workspaceRef: 'workspace:8' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(22, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 1, 'the claim landed, so the dead session is retryable as before');
+  assert.equal(plan.toDispatch[0].taskId, '22');
+});
+
+test('#1564: an unlanded claim re-arms by itself after REDISPATCH_REARM_MS', () => {
+  const tasks = new Map([task(23, 'pending', 'P1 Now')]);
+  const stale = [{ ts: new Date(NOW - core.REDISPATCH_REARM_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '23', kind: 'p01-backlog' }];
+  assert.equal(core.planSweep(stale, tasks, { now: NOW, liveTitles: LIVE }).toDispatch.length, 1,
+    'a day-old unlanded claim must not suppress forever — a transient failure has to retry');
+
+  const fresh = [{ ts: T(60), event: 'watchdog-redispatch', taskId: '23', kind: 'p01-backlog' }];
+  assert.equal(core.planSweep(fresh, tasks, { now: NOW, liveTitles: LIVE }).toDispatch.length, 0,
+    'but an hour-old one still suppresses');
+});
+
+test('#1564: the retry path is suppressed too, not just the P0/P1 backlog', () => {
+  const entries = [
+    { ts: T(300), event: 'launch', taskId: '24', subject: 'Fix thing 24', workspaceRef: 'workspace:9' },
+    { ts: T(280), event: 'dead', taskId: '24', workspaceRef: 'workspace:9' },
+    { ts: T(60), event: 'watchdog-redispatch', taskId: '24', kind: 'retry' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(24, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.toDispatch.length, 0, 'a retry claim that never landed must not re-fire every sweep');
+  assert.equal(plan.awaitingClaim.length, 1, 'and it must be surfaced to the owner, not silently dropped');
+  assert.match(core.renderNarrative(plan), /could not start/);
+  // Suppressed cards leave p01Queue/retryable, so if they did not also land in
+  // needsYou the tab title would read "0 need you" over a shrinking backlog.
+  assert.ok(plan.needsYou >= 1, 'a suppressed card must count toward needsYou');
+  assert.match(core.renderNarrative(plan), /bsc-next\.js --id 24 --force/, 'and must name the command that re-arms it');
+});
+
+test('#1564: a claim younger than the boot grace suppresses but is NOT labelled a failure', () => {
+  // A launch takes minutes and sweeps run every 92s, so labelling immediately
+  // announced every healthy dispatch as "could not start" first (ship-check P1).
+  const entries = [{ ts: T(2), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
+  const tasks = new Map([task(27, 'pending', 'P1 Now')]);
+  const booting = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(booting.toDispatch.length, 0, 'still suppressed — that is the duplicate guard');
+  assert.equal(booting.awaitingClaim.length, 0, 'but not yet called a failure');
+  assert.equal(booting.needsYou, 0);
+
+  const older = [{ ts: new Date(NOW - core.CLAIM_LABEL_GRACE_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
+  assert.equal(core.planSweep(older, tasks, { now: NOW, liveTitles: LIVE }).awaitingClaim.length, 1,
+    'past the grace window it IS a failure the owner must see');
+});
+
+test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds dispatch instead of stalling silently', () => {
+  // cmux-launch returns ok:false with NO workspaceRef when the CLI is missing,
+  // the auth preflight fails, or new-workspace exits non-zero — and
+  // failedLaunchEntries() returns [] for a ref-less failure, so NOTHING is
+  // journaled. Every claim then looks like a guard refusal and
+  // detectLauncherOutage (which keys on 'dead' rows) is blind. (ship-check P0)
+  const old = m => new Date(NOW - m * 60000).toISOString();
+  const tasks = new Map([
+    task(40, 'pending', 'P1 Now'), task(41, 'pending', 'P1 Now'),
+    task(42, 'pending', 'P1 Now'), task(43, 'pending', 'P1 Now'),
+  ]);
+  const wedged = [
+    { ts: old(90), event: 'watchdog-redispatch', taskId: '40', kind: 'p01-backlog' },
+    { ts: old(80), event: 'watchdog-redispatch', taskId: '41', kind: 'p01-backlog' },
+    { ts: old(70), event: 'watchdog-redispatch', taskId: '42', kind: 'p01-backlog' },
+  ];
+  const plan = core.planSweep(wedged, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.awaitingClaim.length, 3);
+  assert.ok(plan.budgets.holds.some(h => /launcher itself looks wedged/.test(h)),
+    'three claims and zero launches anywhere = the launcher, not the cards');
+  assert.equal(plan.toDispatch.length, 0, 'and dispatching holds rather than burning more claims');
+
+  // Control: the SAME three stuck claims, but other work is still launching —
+  // that is three genuinely refused cards, not an outage. Must not hold.
+  const refusedRun = [
+    ...wedged,
+    { ts: old(5), event: 'launch', taskId: '43', subject: 'Fix thing 43', workspaceRef: 'workspace:1' },
+  ];
+  const plan2 = core.planSweep(refusedRun, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan2.awaitingClaim.length, 3);
+  assert.ok(!plan2.budgets.holds.some(h => /launcher itself looks wedged/.test(h)),
+    'a fresh launch elsewhere proves the launcher works');
+});
+
+test('#1564: out-of-order ledger appends are judged by timestamp, not file position', () => {
+  // Nothing serialises writes to the ledger across processes, so a row can
+  // land after newer ones. Last-in-file-order would read the OLD launch as
+  // "latest" and wrongly suppress a card whose newer launch already landed.
+  const entries = [
+    { ts: T(10), event: 'launch', taskId: '28', subject: 'Fix thing 28', workspaceRef: 'workspace:1' },
+    { ts: T(60), event: 'watchdog-redispatch', taskId: '28', kind: 'retry' },
+    { ts: T(300), event: 'launch', taskId: '28', subject: 'Fix thing 28', workspaceRef: 'workspace:2' }, // stale, appended late
+  ];
+  assert.equal(core.watchdogClaimPending(entries, NOW).has('28'), false,
+    'the T(10) launch is newer than the T(60) claim — the claim landed');
+});
+
+test('#1564: a claim whose child is still booting is not re-picked (duplicate-workspace guard)', () => {
+  // A launch legitimately takes minutes; the next sweep is 92s later. Before
+  // this fix that window re-picked the task and produced the duplicate
+  // workspace PAIRS the card reported (77+81, 78+82, 65+67).
+  const entries = [{ ts: T(1), event: 'watchdog-redispatch', taskId: '25', kind: 'p01-backlog' }];
+  const plan = core.planSweep(entries, new Map([task(25, 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.toDispatch.length, 0, 'no second dispatch while the first child is still booting');
+});
+
+test('#1564: watchdogClaimPending ignores rows with no taskId, the watchdog marker, and unparseable timestamps', () => {
+  const entries = [
+    { ts: T(5), event: 'watchdog-redispatch', taskId: null },
+    { ts: T(5), event: 'watchdog-redispatch' },
+    { ts: T(5), event: 'watchdog-resurrect', taskId: 'watchdog', workspaceRef: 'workspace:537' },
+    { ts: 'not-a-timestamp', event: 'watchdog-redispatch', taskId: '99' },
+    { event: 'watchdog-redispatch', taskId: '98' },            // no ts at all
+    { ts: T(5), event: 'watchdog-redispatch', taskId: 26 },     // numeric id, as some rows carry
+  ];
+  const pending = core.watchdogClaimPending(entries, NOW);
+  // Assert membership, not iteration order — Set/Map order is insertion order
+  // and would make this pass or fail for the wrong reason.
+  assert.equal(pending.size, 1);
+  assert.ok(pending.has('26'), 'numeric task ids are normalised to strings');
+  for (const bad of ['null', 'undefined', 'watchdog', '99', '98']) {
+    assert.ok(!pending.has(bad), `${bad} must never become a task id`);
+  }
+});
+
 test('ensureAutoTitle: bare titles get glyphs, glyphed titles pass through', () => {
   assert.equal(ensureAutoTitle('Fix the thing', 'sonnet'), '🤖⚡ Fix the thing');
   assert.equal(ensureAutoTitle('🤖🧠 Data·already fine', 'fable'), '🤖🧠 Data·already fine');
