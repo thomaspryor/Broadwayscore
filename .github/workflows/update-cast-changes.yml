@@ -48,7 +48,17 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
-
+          # fetch-depth: 0 (task #1813 — same class as task #1810's
+          # update-show-status.yml fix): observed runs go as long as
+          # 52+ min before this job's push-with-retry.sh step, well into
+          # the window where a shallow (fetch-depth 1, the default) local
+          # history makes git's push-pack build against a since-drifted
+          # origin/main pathologically slow (silent 90s+ local-compute
+          # hang, no network activity, until GIT_NET_TIMEOUT_SEC kills it
+          # — see #1810's GIT_TRACE_CURL trace). fetch-depth: 0 removes
+          # the shallow ambiguity; the job has 25+ min of measured
+          # headroom under its 80-min timeout.
+          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
