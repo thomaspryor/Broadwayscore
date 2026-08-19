@@ -37,6 +37,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # fetch-depth: 0 (task #1813 — same class as task #1810's
+          # update-show-status.yml fix): observed runs go as long as
+          # 76 min (and multiple recent failures at ~41-44 min, each
+          # failing specifically at the "Stage and commit pulse data"
+          # push step) before this job's push-with-retry.sh call — deep
+          # into the window where a shallow (fetch-depth 1, the default)
+          # local history makes git's push-pack build against a
+          # since-drifted origin/main pathologically slow (silent 90s+
+          # local-compute hang, no network activity, until
+          # GIT_NET_TIMEOUT_SEC kills it — see #1810's GIT_TRACE_CURL
+          # trace). fetch-depth: 0 removes the shallow ambiguity; the job
+          # still has 10+ min of headroom under its 90-min timeout even
+          # on its longest observed run.
+          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
