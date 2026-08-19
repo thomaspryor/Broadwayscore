@@ -1,47 +1,38 @@
 ---
-name: Stale exclusion flags from removed code persist on disk
-description: When you remove a flag-setter code path, files set by old code keep the flag. Sweep + defensive gate override.
-type: feedback
-originSessionId: e29ab79b-3895-44e3-9331-3255dec6b39b
-archived: true
+name: feedback_stale_exclusion_flags_persist
+description: Card #1610 final decision table for all 10 exclusion flags — which have bulk-override sweeps, which are intentionally out of scope, and the scheduling gap that let wrongProduction/suspectedMisattribution drift back after their one-time April sweeps
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: e8a4a576-0995-4ca5-b9a6-6cdb155935e6
 ---
-When a code path that auto-sets exclusion flags (`isRoundupArticle`,
-`wrongProduction`, `isNonReview`, etc.) on review-text files is later removed
-or tightened, the flags persist on existing files. Future scoring + rebuild
-can't tell "set by removed code" from "set by current code" — they just see
-the flag and exclude.
 
-**Real incidents:**
-- `isRoundupUrl` once matched generic `/review-roundup/` URL patterns. Removed
-  2026-04-01 in d7bf1603b8. By 2026-04-25, 175 files still carried the flag,
-  39 of them clearly individual reviews.
-- gather-reviews `KNOWN_ROUNDUP_OUTLETS` auto-tagged every file from
-  the-clyde-fitch-report and the-interested-bystander, even individual blog
-  posts on the outlets' own per-post URLs. Stuart King's John Proctor LBO
-  review (3953-char fullText, individual URL) was silently dropped from
-  scoring on every rebuild.
+Card #1610 ("Audit other exclusion flags for stale-data drift") closes out the
+multi-flag stale-flag audit series (Notion 34e637c5-416f-814c). Final decision
+per flag, 2026-08-19:
 
-**Why:** A removed line of code is invisible at audit time. The data it wrote
-is durable. `git blame` on the file shows nothing about why a flag is wrong.
+| Flag | Decision | Mechanism |
+|---|---|---|
+| `isRoundupArticle` | Bulk-override (done, prior session) | `isLikelyStaleRoundupFlag` in gate, `clear-stale-roundup-flags.js` |
+| `wrongShow` | Bulk-override (done, prior session) | `isLikelyStaleWrongShow` called directly in `explainExclusion` — continuous, not a one-time sweep |
+| `wrongProduction` | Bulk-override, LLM-gated | `isLikelyStaleWrongProduction` + Sonnet high-confidence second opinion, `clear-stale-wrong-production-flags.js`. See [[feedback_stale_wrong_production_audit_2026-04-26]] |
+| `suspectedMisattribution` | Bulk-override, registry-gated | `isLikelyStaleSuspectedMisattribution` (deterministic, critic-registry knownOutlets), `clear-stale-suspected-misattribution-flags.js`. See [[feedback_stale_misattribution_audit_2026-04-26]] |
+| `wrongAttribution` | Out of scope — no stale cohort | Re-verified 2026-08-19 against the current 325-file corpus: every flagged file traces to a documented reason (`wrongAttributionReason`, `wrongAttributionNote`, `_authorMismatch`, or `_c2FixReason` critic-collision correction) or co-occurs with an independent `wrongProduction`/`wrongShow`/`duplicateOf` exclusion. Zero files are excluded solely by an unexplained `wrongAttribution`. See [[feedback_wrong_attribution_not_stale]] |
+| `isNonReview` | Out of scope — read-time self-heal, not bulk | `isNonReviewDemotedByFreshCV()` (task #1255) re-evaluates against the newest `contentVerification` pass on every rebuild — no sweep needed since it's continuous. Spot-checked 5 of 527 "substantial fullText, not demoted" files 2026-08-19: all 5 were genuinely non-reviews (Wordle puzzle page scraped for show "1536", news roundups, pre-opening interviews/features) — confirms "long fullText = real review" (the heuristic that worked for wrongShow/wrongProduction) does NOT apply to isNonReview, since a long article can just as easily be a long non-review |
+| `isNotReview` | Out of scope — trivially small | 5 files corpus-wide (was 4 in April) |
+| `suspectedMisattribution` false path / `isSyndicatedDuplicate` | Out of scope — intentional dedup | Content is real, file is an intentional wire-syndication duplicate; sample-checked 2026-08-19 (about-entertainment/Ben Brantley syndication, etc.) |
+| `crossOutletDuplicate` | Out of scope — intentional dedup | Same as above; sample-checked 2026-08-19 |
+| `fullTextWrongAuthor` | Already handled | Rebuild deletes `fullText` in memory, falls back to excerpt scoring (`explainExclusion` line ~3118) |
+| `showNotMentioned` | Already handled | Same excerpt-fallback pattern, plus rebuild auto-clear |
 
-**How to apply:**
-- When removing/tightening a flag-setter, write a one-time sweep that clears
-  the flag on files that no longer match the new criteria. Don't rely on
-  "future scrapes will overwrite" — most files are never re-scraped.
-- Add a defensive override at every gate site that reads the flag, with a
-  whitelist-based predicate (`isLikelyStaleRoundupFlag`-style: substantial
-  fullText + isFullReview + per-outlet individual-review URL pattern). The
-  sweep + the gate override are belt-and-suspenders; both are needed because
-  CI can re-set the flag on next gather/scrape if the producing code is still
-  too eager.
-- Whitelist-based, not blacklist-based: NYT/Playbill have multi-show roundup
-  URLs that don't match `isRoundupUrl`; clearing on "URL is not on the
-  roundup list" leaks roundup-as-review files into scoring. Per-outlet
-  individual-post URL pattern (`clydefitchreport.com/YYYY/MM/{slug}/` etc.)
-  is much safer.
-- Update `scoring-delta.js` `guardsIdentical` check to include the new
-  helper — otherwise Phase A skips replay even when your changes affect
-  exclusion (memory `feedback_scoring_delta_blind_to_future_logic.md`).
+**The actual finding this session (the scheduling gap):** `clear-stale-wrong-production-flags.js` and `clear-stale-suspected-misattribution-flags.js` both existed from the April session but were each run EXACTLY ONCE, by hand, with no recurring workflow. Re-running them 2026-08-19 found real reaccumulated drift — 150 new wrongProduction predicate candidates (76 LLM-confirmed high-confidence) and 21 of 30 currently-flagged suspectedMisattribution files. A predicate + sweep script that isn't scheduled is not prevention, it's a one-time cleanup that silently expires. [[feedback_stale_wrongproduction_flag_never_recleared]] documents the same SET-without-CLEAR shape for a different mechanism (rebuild's own dated guard) — this is the sibling bug at the "we built the clear path but never run it" layer instead.
 
-See: scripts/lib/review-guards.js `isLikelyStaleRoundupFlag`,
-scripts/clear-stale-roundup-flags.js, Notion 34e637c5-416f-817b.
+**Fix shipped 2026-08-19 (card #1610):**
+- Both scripts now have a surge guard (`FIX_SURGE_THRESHOLD` + `--force-bulk`, mirroring `audit-duplicate-of-url-mismatch.js`) — neither had one before, meaning a registry regression or a bad LLM day could have mass-cleared hundreds of flags in one unattended run with no circuit breaker.
+- Both scripts' hardcoded `[2026-04-26 cleared...]` breadcrumb dates were dynamic-dated (`new Date().toISOString()`) — the literal April date was being written into every future clear.
+- `clear-stale-suspected-misattribution-flags.yml` — new weekly workflow, `--apply` (deterministic registry check, surge-guarded, low blast radius).
+- `audit-stale-wrong-production.yml` — new weekly workflow, **report-only** (not `--apply`). A second-opinion review flagged that no other weekly-cadence workflow in this repo auto-applies unattended writes to the private corpus, and this flag's LLM-gated sweep has zero track record running in CI — so it reports the candidate + LLM-confirmed count for a human to review before it graduates to an auto-apply workflow. The one-time backlog found today (76 files) was cleared manually this session via an agent panel replicating the script's exact rubric (no `ANTHROPIC_API_KEY` available locally) rather than waiting for the CI-only `--llm` path.
+
+**How to apply:** when a predicate+sweep script for a stale-flag class ships, it needs a SCHEDULE, not just existence — a one-time manual run is not prevention. Before marking a stale-flag card "done," check `.github/workflows/*.yml` for a matching cron; if there isn't one, the "fix" is a snapshot, not a fix. For any sweep that auto-applies to the private review-texts corpus unattended, add a surge guard before scheduling it — see `FIX_SURGE_THRESHOLD` pattern in `scripts/audit-duplicate-of-url-mismatch.js` and the two scripts above.
+
+See also: [[feedback_wrong_show_stale_audit_findings]] (asymmetric gate sites), [[feedback_cross_flag_stale_audit_2026-04-26]] (original 6-flag probe this card followed up on).

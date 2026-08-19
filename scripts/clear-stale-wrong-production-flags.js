@@ -29,6 +29,13 @@
  *
  * Without --llm the predicate is the only gate. NOT RECOMMENDED for
  * apply-mode — the flag's signal is weak and bulk-override is risky.
+ *
+ * Surge guard (card #1610, 2026-08-19): refuses to clear more than
+ * FIX_SURGE_THRESHOLD files in one run without --force-bulk. This flag is
+ * scheduled weekly (clear-stale-wrong-production-flags.yml, currently
+ * report-only pending a track record) and writes unattended to the private
+ * review-texts corpus — a spike this size usually means the predicate or
+ * the LLM verification regressed, not routine catch-up drift.
  */
 const fs = require('fs');
 const path = require('path');
@@ -36,9 +43,18 @@ const { isLikelyStaleWrongProduction } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
+const FIX_SURGE_THRESHOLD = 50;
+// Pre-LLM ceiling — catches a predicate regression BEFORE burning a paid,
+// rate-limited (1/sec) Sonnet call per candidate. Set well above the observed
+// 2026-08-19 baseline (150 candidates) since the predicate's own precision is
+// only ~88% (most legitimate weekly runs will have candidates > FIX_SURGE_THRESHOLD
+// but well under this).
+const PREDICATE_SURGE_THRESHOLD = 400;
+
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const USE_LLM = args.includes('--llm');
+const FORCE_BULK = args.includes('--force-bulk');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const SHOWS_OVERRIDE = (args.find(a => a.startsWith('--shows=')) || '').split('=')[1] || '';
@@ -152,6 +168,11 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
 }
 
 (async () => {
+  if (candidates.length > PREDICATE_SURGE_THRESHOLD && !FORCE_BULK) {
+    console.error(`::error::Refusing to run LLM verification on ${candidates.length} predicate matches (> ${PREDICATE_SURGE_THRESHOLD}). This usually means isLikelyStaleWrongProduction regressed, not routine catch-up drift — burning a paid LLM call per candidate before checking would waste budget on a bad predicate. Investigate the predicate, then re-run with --force-bulk if the matches are legitimate.`);
+    process.exit(1);
+  }
+
   const decisions = [];
   if (USE_LLM) {
     console.log(`Running LLM second-opinion on ${candidates.length} candidates (rate-limited 1/sec)...`);
@@ -196,10 +217,15 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
     return;
   }
 
+  if (toClear.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+    console.error(`::error::Refusing to auto-clear ${toClear.length} stale wrongProduction flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means the predicate or LLM verification regressed, not routine catch-up drift — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
+    process.exit(1);
+  }
+
   for (const d of toClear) {
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
-    const clearNote = `[2026-04-26 cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
+    const clearNote = `[${new Date().toISOString().slice(0, 10)} cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
     clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-production-flags.js', reason: clearNote });
     d.c.data.wrongProductionManualClear = true;
     d.c.data.wrongProductionClearedNote = clearNote;
