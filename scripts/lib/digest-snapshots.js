@@ -104,6 +104,17 @@ const SNAPSHOTS = [
   // (launchd), not committed. optionalIfMissing until the plist's first run
   // lands the file.
   { key: 'predispatchQueue', label: 'predispatch queue backlog', file: 'predispatch-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/predispatch-queue-audit.js's second tally (task #1802) —
+  // generalizes the row above from predispatch-guard alone to all 8 sibling
+  // dispatch-guards.js predicates (deadDispatchGuard, parkedGuard,
+  // staleOutcomeGuard, closedCardGuard, workBranchCollisionGuard,
+  // exactTitleOverlapGuard, sessionTrackingCloneGuard, linearMirrorGuard), so
+  // a spike in any ONE of them (e.g. a bad Linear mirror sync flagging many
+  // cards) is visible instead of only as scattered individual dispatch
+  // refusals. Same producer/run/plist as predispatchQueue above — one script,
+  // two snapshot files. optionalIfMissing until the plist's first run after
+  // this change lands the file.
+  { key: 'dispatchGuardQueue', label: 'dispatch guard queue backlog', file: 'dispatch-guard-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

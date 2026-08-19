@@ -339,6 +339,11 @@ tmp/
 # run on this Mac via launchd).
 /data/audit/predispatch-queue-audit-snapshot.json
 /data/audit/predispatch-queue-audit-history.json
+# Dispatch guard queue backlog digest metric (task #1802) — same producer
+# (scripts/predispatch-queue-audit.js, one script now writes two snapshots),
+# same Mac-local reasoning as the pair directly above.
+/data/audit/dispatch-guard-queue-audit-snapshot.json
+/data/audit/dispatch-guard-queue-audit-history.json
 # Digest-autofix S6 daily canary (task #1225) — Mac-local, same reasoning as
 # backlog-drain-ledger.jsonl above (producer + consumer both run on this Mac).
 # canary-*.marker is DELIBERATELY NOT listed here: close-time-verify.js checks
