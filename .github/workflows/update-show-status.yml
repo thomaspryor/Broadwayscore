@@ -36,17 +36,29 @@ concurrency:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    # Raised 25→45→75. Discovery now runs the full ~30 min (its own cap), so the
-    # whole job legitimately takes ~44-55 min: even the last SUCCESS (2026-06-24)
-    # clocked 44 min, right at the old 45-min wall. From 2026-06-25 it tipped over
-    # every run → cancelled at the timeout before the (fast, ~40s) push could run,
-    # so discovery results were computed but never committed (stale 5+ days). 75
-    # gives headroom over the realistic worst case (discovery 30 + enrichment
-    # ~10 + StubHub ~5 + push retries up to ~10 [task #458: "Commit and push
-    # changes" step overrides PUSH_DEADLINE_SEC=600, ~3 real conflict-
-    # resolution cycles against this workflow's high-churn writes to main]
-    # + setup ~5 = ~60, ~15 min headroom to 75).
-    timeout-minutes: 75
+    # Raised 25→45→75→130 (task #1814, 2026-08-19). At 75, the job was being
+    # CANCELLED (not failed) by GitHub's own timeout-minutes enforcement — job-
+    # level API timing (gh api .../actions/runs/{id}/jobs) on the 4 most recent
+    # cancelled runs showed the job's started_at→completed_at duration landing at
+    # 75.3-75.6 min, exactly the cap. Full step-level timing on those same runs
+    # found two independent causes:
+    #   1. "Setup Playwright" intermittently hung 50-75 min (vs 0-4 min normally)
+    #      on apt `--with-deps` installs — confirmed on a run that PREDATES the
+    #      fetch-depth:0 checkout change below, so this is a pre-existing,
+    #      independent issue, not caused by it. Fixed at the source (task #1815,
+    #      landed concurrently) by wrapping the install in `timeout 480` inside
+    #      .github/actions/setup-playwright/action.yml — composite-action steps
+    #      don't support the `timeout-minutes` key, so a shell-level `timeout` is
+    #      what actually stops a hang from silently eating the whole job's
+    #      budget (it now fails loud within 8 min, with captured output).
+    #   2. Checkout's fetch-depth: 0 (task #1810, see below) adds a real, ongoing
+    #      ~17-25 min per run for the full all-branches/tags fetch.
+    # 130 gives real headroom over the corrected worst case: checkout + misc
+    # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
+    # "Discover new shows" below) + enrichment ~10 min + StubHub 5 min (hard
+    # step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200 below) +
+    # setup-node/misc ~5 min ≈ 100-110 min, ~20-30 min margin to 130.
+    timeout-minutes: 130
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -80,8 +92,11 @@ jobs:
           # fix, for slow FETCHES from a shallow client, not this) becomes a no-op
           # here. fetch-depth: 0 fetches all branches/tags (its actual documented
           # semantics — NOT just a deep clone of main), against this repo's ~2.2GB
-          # packed object DB; the job has 15+ min of measured headroom under its
-          # 75-min timeout (see the timeout-minutes comment above).
+          # packed object DB — measured at ~17-25 min per run. See the
+          # timeout-minutes comment above for current headroom accounting (task
+          # #1814, 2026-08-19, corrected and raised it after finding this
+          # checkout step was a secondary cost, not the dominant driver of the
+          # cancellations that prompted the correction).
           fetch-depth: 0
 
 
@@ -555,13 +570,18 @@ jobs:
         # sustained high churn (root cause: two consecutive 90s
         # GIT_NET_TIMEOUT_SEC fetch timeouts, not rebase/merge compute — see
         # task #464). That same live run's TOTAL job wall-clock was only
-        # ~31.5 min against the 75-min timeout, so there was 40+ min of
+        # ~31.5 min against the then-75-min timeout, so there was 40+ min of
         # measured (not guessed) unused headroom. Raised to 1200s (round 2,
-        # ~6 real cycles) — keeps ~5 min of buffer under the job's own
-        # documented worst-case non-push budget (discovery 30 + enrichment 10
-        # + StubHub 5 + setup 5 = 50 min / 3000s, leaving 1500s for push;
-        # 1200s preserves 300s of that as margin rather than spending all of
-        # it). Scoped to THIS step only (not the shared script default — see
+        # ~6 real cycles) — keeps buffer under the job's own worst-case
+        # non-push budget. [UPDATED 2026-08-19, task #1814]: the job timeout
+        # was since raised 75→130 min after job-level API timing showed runs
+        # being CANCELLED (not failed) exactly at the old 75-min cap, driven
+        # mainly by an intermittent Setup Playwright hang (50-75 min, now
+        # capped at 8 min at the source via task #1815) plus fetch-depth:0 checkout cost
+        # (~17-25 min). Current worst-case non-push budget is ~100-110 min
+        # (checkout+setup ~40 + discovery 45 hard cap + enrichment ~10 +
+        # StubHub 5 hard cap), leaving ~20-30 min of the 130-min ceiling for
+        # push — 1200s (20 min) still preserves real margin. Scoped to THIS step only (not the shared script default — see
         # push-with-retry.sh's PUSH_DEADLINE_SEC comment for why) since the
         # other push-with-retry.sh calls below push much smaller,
         # rarely-conflicting files. If churn persists past this, the real
