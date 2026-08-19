@@ -31,18 +31,10 @@ const {
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
 } = require('./lib/review-guards');
-const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { safeWriteReview } = require('./lib/review-write-guard');
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-
-// Fields fetched/derived from the OLD (wrong-production) url. A rebuild that
-// runs between the URL swap and the next refetch must not admit these as
-// current — mirrors rediscover-review-urls.js's re-scrape reset.
-const STALE_CONTENT_FIELDS = [
-  'fullText', 'isFullReview', 'textQuality', 'contentTier',
-  'llmScore', 'assignedScore', 'humanReviewScore', 'adjudicatedScore',
-  'originalScore', 'originalScoreNormalized',
-];
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -140,7 +132,7 @@ async function main() {
       if (gate.updates && !opts.dryRun) {
         try {
           Object.assign(c.data, gate.updates);
-          fs.writeFileSync(filePath, JSON.stringify(c.data, null, 2) + '\n');
+          safeWriteReview(filePath, c.data);
         } catch (e) { /* non-fatal */ }
       }
       continue;
@@ -157,7 +149,7 @@ async function main() {
         const attemptUpdates = recordSerpAttempt(c.show, reviewObj);
         if (Object.keys(attemptUpdates).length > 0) {
           Object.assign(c.data, attemptUpdates);
-          fs.writeFileSync(filePath, JSON.stringify(c.data, null, 2) + '\n');
+          safeWriteReview(filePath, c.data);
         }
       } catch (e) { /* non-fatal */ }
     }
@@ -171,20 +163,19 @@ async function main() {
       recovered++;
 
       if (!opts.dryRun) {
-        // Canonical helper — also corrects the embedded contentVerification
-        // sub-object, or rebuild-all-reviews.js's CV pre-pass silently
-        // re-flags this file from the stale sub-object on the next rebuild.
-        clearWrongProductionFlags(c.data, {
-          source: 'retry-stale-wrong-production.js',
-          reason: `recovered current review at ${recovery.url} (was ${recovery.oldUrl})`,
+        // Canonical write chokepoint for a url move (scripts/lib/url-change-invariant.js):
+        // re-reads the file fresh, refuses cross-outlet moves, and clears every
+        // old-URL-derived field (wrongProduction/wrongProductionReason/
+        // contentVerification/fullText/llmScore/publishDate/…) whose value
+        // provably rode along from the old record — same chokepoint
+        // rediscover-review-urls.js uses, so a rebuild between this write and
+        // the next refetch can't admit the OLD production's text as current.
+        updateFileUrlWithInvariant(filePath, recovery.url, {
+          staleWrongProductionRecovered: true,
+          staleWrongProductionRecoveredFrom: recovery.oldUrl,
+          staleWrongProductionRecoveredAt: new Date().toISOString(),
+          urlDiscoveryMethod: 'stale-wrong-production-serp-retry',
         });
-        c.data.url = recovery.url;
-        c.data.staleWrongProductionRecovered = true;
-        c.data.staleWrongProductionRecoveredFrom = recovery.oldUrl;
-        c.data.staleWrongProductionRecoveredAt = new Date().toISOString();
-        c.data.needsRefetch = true;
-        for (const field of STALE_CONTENT_FIELDS) delete c.data[field];
-        fs.writeFileSync(filePath, JSON.stringify(c.data, null, 2) + '\n');
       }
     } else {
       console.log('✗');
