@@ -10,6 +10,24 @@
  * Pure functions only — no fs, no child_process, no network. The CLI wrapper
  * (scripts/predispatch-check.js) owns all I/O: reading the local task
  * mirror, calling notion-brain.js get, printing the verdict.
+ *
+ * Deliberately separate from dispatch-guards.js's staleOutcomeGuard/
+ * closedCardGuard (task #1816, owner decision 2026-08-19: keep both, do not
+ * merge into one shared predicate). classifyCandidate/predispatchGuard here
+ * and those two guards check different, only partially-overlapping
+ * predicates — PARKED: notes and the narrow REOPEN-SUSPECT shape
+ * (completedDate + long outcome + a sha, see looksLikeReopenSuspect below)
+ * have no dispatch-guards.js analog at all; staleOutcomeGuard's broader
+ * any-unverifiable-Outcome check has no analog here. They are chained
+ * together as independent defense-in-depth checks at the SAME call sites
+ * (bsc-next.js:536-543 and :1081-1098 run staleOutcomeGuard, closedCardGuard,
+ * and predispatchGuard back to back on the same fetched card; predispatch-
+ * queue-audit.js:230/254-255 runs classifyCandidate and both guards
+ * side-by-side for advisory tallying), not routed to two different callers —
+ * merging them would lose the independent evolution history (task #1794 vs
+ * #1272/#1790) for no reduction in real duplication, since the sets of cards
+ * each one catches are genuinely different. Parity/divergence coverage
+ * between the two lives in predispatch-guard.test.mjs.
  */
 
 'use strict';

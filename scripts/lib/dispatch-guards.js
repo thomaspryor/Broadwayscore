@@ -173,6 +173,15 @@ function isNativeTaskDoneWithoutCard(task, card) {
   return card == null && !!task && task.status === 'completed';
 }
 
+// Deliberately separate from predispatch-guard.js's classifyCandidate (task
+// #1816, owner decision 2026-08-19: keep both, do not merge). This guard
+// catches ANY unverifiable filled Outcome regardless of shape; classifyCandidate's
+// REOPEN-SUSPECT is a narrower subset (completedDate + a long outcome + a
+// sha-shaped substring) built for a different signal (a falsely-reopened
+// card, not merely a stale one) — a card can trip this guard without ever
+// reaching REOPEN-SUSPECT. Both run back to back on the same card at
+// bsc-next.js:1081-1098 (defense-in-depth, not alternate call paths) and
+// together in predispatch-queue-audit.js:230/254 for advisory tallying.
 function staleOutcomeGuard(task, card, opts) {
   if (opts.force || opts['allow-unverifiable'] || opts['dry-run'] || opts['print-prompt']) return null;
   const outcome = card && String(card.outcome || '').trim();
@@ -266,6 +275,18 @@ function staleOutcomeGuard(task, card, opts) {
 // string and the other a page-level boolean with no status value to fake.
 const CLOSED_CARD_STATUSES = new Set([...TERMINAL_CARD_STATUSES].map(s => s.toLowerCase()));
 
+// Deliberately separate from predispatch-guard.js's classifyCandidate (task
+// #1816, owner decision 2026-08-19: keep both, do not merge). The two DO
+// overlap on the archived/trashed-page check (both read card.archived
+// independently — see this file's header, "checked independently rather
+// than merged into one Set"), but diverge everywhere else: this guard never
+// treats 'Paused' as closed (a deliberate, previously-litigated choice — see
+// the block comment above), while classifyCandidate's REVIEW_STATUSES groups
+// Paused with Done on purpose; this guard also has no PARKED:-note check at
+// all. Chained together at the same call sites (bsc-next.js:536-543 and
+// :1088-1098), not routed to different callers — see predispatch-guard.js's
+// own header for the fuller rationale and predispatch-guard.test.mjs for the
+// parity/divergence coverage between the two.
 function closedCardGuard(task, card, opts) {
   const o = opts || {};
   if (o['allow-closed-card'] || o['dry-run'] || o['print-prompt']) return null;
