@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-19T19:59:44.748Z",
-  "processed": 62,
-  "failed": 358,
-  "successRate": "14.8%",
+  "updatedAt": "2026-08-19T20:00:30.883Z",
+  "processed": 63,
+  "failed": 367,
+  "successRate": "14.7%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 3,
+    "directCookies": 4,
     "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -36,6 +36,17 @@
       "t": "2026-08-19T19:58:32.298Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T20:00:16.813Z",
+      "event": "bb-session",
+      "session": "e72ae12a",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-19T20:00:17.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

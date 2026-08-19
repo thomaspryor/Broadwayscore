@@ -61,7 +61,8 @@
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "masquerade-off-broadway-2025/nyt-theater--unknown.json",
-    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -421,7 +422,16 @@
     "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
-    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json"
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
+    "just-in-time-2025/hollywood-reporter--caitlin-huston.json",
+    "just-in-time-2025/amny--matt-windman.json",
+    "stranger-things-2024/abc-news--stephen-iervolino.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -472,7 +482,8 @@
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "scrapingbee": [
       "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -502,7 +513,7 @@
     ]
   },
   "startTime": "2026-08-19T11:41:09.056Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+  "lastProcessed": "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
   "log": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -525,6 +536,17 @@
       "t": "2026-08-19T19:58:32.298Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T20:00:16.813Z",
+      "event": "bb-session",
+      "session": "e72ae12a",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-19T20:00:17.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
