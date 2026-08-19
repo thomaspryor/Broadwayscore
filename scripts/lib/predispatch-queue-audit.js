@@ -26,6 +26,13 @@
 
 const VERDICTS = ['OK-TO-DISPATCH', 'CHECK-FIRST', 'REOPEN-SUSPECT', 'DO-NOT-DISPATCH'];
 
+// Only these two verdicts represent cards actually blocked from
+// auto-dispatch — the ones task #1803 exists to name (previously the digest
+// only showed a 4-bucket tally, with no way to tell WHICH cards were stuck
+// without running --dry-run by hand).
+const BLOCKED_VERDICTS = ['REOPEN-SUSPECT', 'DO-NOT-DISPATCH'];
+const DEFAULT_MAX_ITEMS = 8;
+
 // Owner's own suggested-approach threshold ("alert only on a meaningful
 // jump ... not on the raw count — 30-ish is apparently normal steady-state",
 // task #1801 card body).
@@ -83,7 +90,10 @@ function findWeekAgoEntry(history, now) {
 
 /**
  * @param {object} a
- * @param {Array<{verdict?: string}|null|undefined>} a.classifications
+ * @param {Array<{verdict?: string, name?: string, id?: string}|null|undefined>} a.classifications
+ *   classifyCandidate() results — `id` (the task mirror id, e.g. "1803") is
+ *   optional and attached by the CLI wrapper since classifyCandidate itself
+ *   doesn't know the task id, only the card
  * @param {Array<{at:string, blockedCount:number}>} [a.history] past runs,
  *   oldest-first or any order — findWeekAgoEntry scans all of them
  * @param {number} [a.now] epoch ms, defaults to Date.now() (CLI wrapper
@@ -95,6 +105,9 @@ function findWeekAgoEntry(history, now) {
  *   are surfaced in bannerText/items (ship-check adversarial finding): a run
  *   with real skips must not read identically to a genuinely quiet day, or
  *   the blocked-count banner silently understates the true backlog.
+ * @param {number} [a.maxItems] cap on named blocked-card rows in `items`
+ *   (task #1803) — same truncate-and-count pattern as
+ *   digest-snapshots.js's summarizeFreshnessHighSeverity
  * @returns {{generatedAt:string, bannerText:string,
  *   items:Array<{title:string, detail:string}>, moreCount:number,
  *   tally:object, blockedCount:number, skippedCount:number,
@@ -102,6 +115,7 @@ function findWeekAgoEntry(history, now) {
  */
 function buildQueueAuditSnapshot({
   classifications, history = [], now = Date.now(), skippedNoUuid = 0, fetchErrors = 0,
+  maxItems = DEFAULT_MAX_ITEMS,
 } = {}) {
   const tally = tallyVerdicts(classifications);
   const blockedCount = tally['REOPEN-SUSPECT'] + tally['DO-NOT-DISPATCH'];
@@ -119,17 +133,31 @@ function buildQueueAuditSnapshot({
   const skippedSuffix = skippedCount > 0
     ? ` [${skippedCount} queued task${skippedCount === 1 ? '' : 's'} not counted — ${skippedNoUuid} no Notion id, ${fetchErrors} fetch/classify error]`
     : '';
+  // The 4-bucket tally still matters (task #1801's original aggregate
+  // signal) — reopen-suspect/do-not-dispatch are already in the lead
+  // clause below, so only ok-to-dispatch/check-first need folding in here
+  // to keep the full breakdown in bannerText without duplicating counts.
+  const tallyFooter = ` · ${tally['OK-TO-DISPATCH']} ok-to-dispatch, ${tally['CHECK-FIRST']} check-first`;
   const bannerText = (jump
     ? `⚠ blocked backlog jumped to ${blockedCount} (${tally['REOPEN-SUSPECT']} reopen-suspect, ${tally['DO-NOT-DISPATCH']} do-not-dispatch) — up ${Math.round(jump.pctChange * 100)}% from ${jump.previousCount} a week ago`
     : `${blockedCount} of ${tally.total} queued card${tally.total === 1 ? '' : 's'} blocked from auto-dispatch (${tally['REOPEN-SUSPECT']} reopen-suspect, ${tally['DO-NOT-DISPATCH']} do-not-dispatch)`
-  ) + skippedSuffix;
+  ) + tallyFooter + skippedSuffix;
 
-  const items = [
-    { title: 'OK-TO-DISPATCH', detail: String(tally['OK-TO-DISPATCH']) },
-    { title: 'CHECK-FIRST', detail: String(tally['CHECK-FIRST']) },
-    { title: 'REOPEN-SUSPECT', detail: String(tally['REOPEN-SUSPECT']) },
-    { title: 'DO-NOT-DISPATCH', detail: String(tally['DO-NOT-DISPATCH']) },
-  ];
+  // Named blocked-card items (task #1803): REOPEN-SUSPECT first — it's the
+  // anomalous signal (a completed card reopened without explanation) the
+  // owner most needs to see; DO-NOT-DISPATCH is usually just terminal-status
+  // noise. Array#sort is stable, so relative order within each verdict group
+  // is preserved.
+  const blockedCards = (classifications || []).filter((c) => c && BLOCKED_VERDICTS.includes(c.verdict));
+  blockedCards.sort((a, b) => {
+    if (a.verdict === b.verdict) return 0;
+    return a.verdict === 'REOPEN-SUSPECT' ? -1 : 1;
+  });
+  const items = blockedCards.slice(0, maxItems).map((c) => ({
+    title: c.name ? String(c.name) : (c.id ? `#${c.id}` : '(untitled card)'),
+    detail: `${c.id ? `#${c.id} — ` : ''}${c.verdict}`,
+  }));
+  const moreCount = Math.max(0, blockedCards.length - items.length);
   if (skippedCount > 0) {
     items.push({ title: 'NOT COUNTED', detail: `${skippedCount} (${skippedNoUuid} no id, ${fetchErrors} fetch error)` });
   }
@@ -146,7 +174,7 @@ function buildQueueAuditSnapshot({
     generatedAt: new Date(now).toISOString(),
     bannerText,
     items,
-    moreCount: 0,
+    moreCount,
     tally,
     blockedCount,
     skippedCount,
@@ -157,4 +185,5 @@ function buildQueueAuditSnapshot({
 module.exports = {
   tallyVerdicts, findWeekAgoEntry, buildQueueAuditSnapshot,
   JUMP_THRESHOLD_PCT, WOW_MIN_AGE_MS, WOW_MAX_AGE_MS, VERDICTS,
+  BLOCKED_VERDICTS, DEFAULT_MAX_ITEMS,
 };
