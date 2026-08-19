@@ -1,3 +1,5 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check only (no title collides with
+// another show's title in shows.json) — never pins facts about specific shows.
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
