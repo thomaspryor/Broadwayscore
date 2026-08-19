@@ -96,6 +96,22 @@ test('a rescore-blocked review self-heals once its excerpt state changes since t
   assert.equal(isExcerptOnlyBackfillCandidate(file), true);
 });
 
+test('excludes a review in manual-clear fallback cooldown — delegated gate, not reimplemented', () => {
+  const file = baseFile({
+    manualClearFallbackFailedAt: '2026-08-01T00:00:00.000Z',
+    manualClearFallbackAbandoned: true, // never auto-retries
+  });
+  assert.equal(isExcerptOnlyBackfillCandidate(file), false);
+});
+
+test('excludes a review whose score is an authoritative manually-extracted star rating', () => {
+  const file = baseFile({
+    assignedScore: 80,
+    scoreSource: 'manual_extracted_star_rating',
+  });
+  assert.equal(isExcerptOnlyBackfillCandidate(file), false);
+});
+
 test('returns false for null/undefined input', () => {
   assert.equal(isExcerptOnlyBackfillCandidate(null), false);
   assert.equal(isExcerptOnlyBackfillCandidate(undefined), false);

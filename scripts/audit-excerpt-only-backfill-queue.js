@@ -7,11 +7,15 @@
  * isIncludableForRebuild fix.
  *
  * The standing daily scoring pipeline (llm-ensemble-score.yml, cron
- * '--unscored-only') already delegates to the same canonical isScoreable()
- * gate #501 fixed, so it has been draining this backlog automatically since
- * the fix landed — this script does not re-implement scoring, it just
- * reports what is left so the backlog can be verified closed (or a residual
- * investigated) without re-running the corpus-wide sweep by hand.
+ * '--unscored-only') selects files via the same canonical isActionableUnscored()
+ * gate this script's predicate delegates to, so anything reported here is, at
+ * minimum, in that run's selection set. This script does NOT prove those
+ * files have actually been scored yet or will be in the next run alone — the
+ * cron caps how much it processes per run and can batch asynchronously, so a
+ * nonzero count here is a snapshot of current eligibility, not a completion
+ * or dispatch guarantee. Verify actual scoring by re-running this script (or
+ * checking llmScore on the specific files) after the next cron run, not by
+ * reading this report's exit code alone.
  *
  * Usage:
  *   node scripts/audit-excerpt-only-backfill-queue.js              # report, exit 0
@@ -57,18 +61,31 @@ function loadShowsById() {
 // Pure-ish scan (reads files): returns the candidate list. Kept separate from
 // the CLI's I/O side effects so the queue logic stays testable via the
 // predicate directly (see tests/unit/review-scoring-backfill.test.mjs).
+//
+// Read/parse failures are COUNTED, not swallowed (scoring-queue-counts.js's
+// own pattern) — a spike in malformed/unreadable entries means this scan is
+// under-reporting real work, and a caller trusting `candidates.length === 0`
+// as "queue is empty" needs to see that the scan itself was incomplete.
 function findBackfillCandidates(reviewTextsDir, showsById) {
   const candidates = [];
   let scanned = 0;
-  const showDirs = listShowDirs(reviewTextsDir).filter((f) =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  let malformed = 0;
+  let unreadableDirs = 0;
+  const showDirs = listShowDirs(reviewTextsDir).filter((f) => {
+    try {
+      return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
+    } catch {
+      unreadableDirs++;
+      return false;
+    }
+  });
   for (const showDir of showDirs) {
     const showPath = path.join(reviewTextsDir, showDir);
     let files;
     try {
       files = fs.readdirSync(showPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
     } catch {
+      unreadableDirs++;
       continue;
     }
     const show = showsById.get(showDir);
@@ -78,6 +95,7 @@ function findBackfillCandidates(reviewTextsDir, showsById) {
       try {
         data = JSON.parse(fs.readFileSync(fp, 'utf8'));
       } catch {
+        malformed++;
         continue;
       }
       scanned++;
@@ -87,7 +105,7 @@ function findBackfillCandidates(reviewTextsDir, showsById) {
       }
     }
   }
-  return { candidates, scanned };
+  return { candidates, scanned, malformed, unreadableDirs };
 }
 
 function main() {
@@ -107,22 +125,24 @@ function main() {
     process.exit(2);
   }
 
-  const { candidates, scanned } = findBackfillCandidates(reviewTextsDir, showsById);
+  const { candidates, scanned, malformed, unreadableDirs } = findBackfillCandidates(reviewTextsDir, showsById);
   const showsHit = new Set(candidates.map((c) => c.showId));
 
   if (opts.json) {
     console.log(JSON.stringify({
       scanned,
+      malformed,
+      unreadableDirs,
       candidateCount: candidates.length,
       showCount: showsHit.size,
       max: opts.max,
       examples: candidates.slice(0, 20).map((c) => c.rel),
     }, null, 2));
   } else {
-    console.log(`[excerpt-backfill] ${candidates.length} excerpt-only backfill candidate(s) across ${showsHit.size} show(s), of ${scanned} scanned; threshold --max=${opts.max}`);
+    console.log(`[excerpt-backfill] ${candidates.length} excerpt-only backfill candidate(s) across ${showsHit.size} show(s), of ${scanned} scanned (${malformed} malformed, ${unreadableDirs} unreadable dir(s)); threshold --max=${opts.max}`);
     for (const c of candidates.slice(0, 20)) console.log(`    - ${c.rel}`);
     if (candidates.length > 20) console.log(`    … +${candidates.length - 20} more`);
-    console.log('[excerpt-backfill] These are already picked up by the standing daily llm-ensemble-score.yml run (--unscored-only) — no separate dispatch needed unless this count is unexpectedly high.');
+    console.log('[excerpt-backfill] These pass the same isActionableUnscored() gate the standing daily llm-ensemble-score.yml run selects on — re-run this script (or check llmScore on the files above) after its next run to confirm they actually scored; a nonzero count here is not proof of completion.');
   }
 
   const over = candidates.length > opts.max;
