@@ -6,13 +6,17 @@
  * elsewhere in the pipeline.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 // Below this, a stripped query/title is too short to be a meaningful signal
 // (e.g. a 1-char akaTitle could substring-match nearly anything) — mirrors
 // the 2-char floor HeaderSearch's caller already applies to raw queries.
 const MIN_MATCH_LENGTH = 2;
 
+// Fold diacritics BEFORE stripping non-ASCII — otherwise "Les Misérables"
+// shreds into "les","mis","rables" and matches nothing (task #648).
 function normalizeSearchText(s) {
-  return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return foldDiacritics((s || '').toLowerCase()).replace(/[^a-z0-9]/g, '');
 }
 
 /** True if `query` matches show.title or any of show.akaTitles. */
