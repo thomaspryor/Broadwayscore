@@ -115,7 +115,7 @@ function main() {
     let card;
     try { card = fetchCard(uuid); }
     catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] fetch failed for #${task.id}: ${String(err.message).slice(0, 160)}`); continue; }
-    try { classifications.push(classifyCandidate({ card, task })); }
+    try { classifications.push({ ...classifyCandidate({ card, task }), id: task.id }); }
     catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] classify failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
   }
 
