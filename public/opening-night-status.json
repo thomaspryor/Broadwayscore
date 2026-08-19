@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T17:15:51.788Z",
+  "generatedAt": "2026-08-18T23:56:45.679Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-08-18",
-      "status": "previews",
+      "status": "open",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -127,27 +127,27 @@
       "slug": "anansi-the-spider-west-end",
       "thumbnail": "/images/shows/anansi-the-spider-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 71,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -239,6 +239,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-18T23:56:45.679Z",
+          "rc": 1,
+          "s": 71,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }
@@ -315,7 +327,7 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-08-25",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
       "daysUntil": 7,
