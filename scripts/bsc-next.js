@@ -24,6 +24,16 @@ const path = require('path');
 const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 
+// Hardcoded to the main checkout, not __dirname-relative — deliberate, same
+// reasoning as QUEUE_PATH below: a dispatch (and everything it shells out to,
+// including `node scripts/notion-brain.js get <id>` inside fetchCardOnce)
+// must always run vetted/merged code, never an in-progress worktree's edits.
+// Corollary trap (bit task #1811's own testing): a REAL, non-dry-run/
+// non-print-prompt invocation of this file from inside a worktree session
+// silently executes MAIN's code via this path, not the worktree's — a guard
+// fix that only exists in the worktree will NOT take effect for such a call.
+// Merge to main first, or stick to --dry-run/--print-prompt for worktree-side
+// testing of anything this constant reaches.
 const REPO = '/Users/tompryor/Broadwayscore';
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
