@@ -11,13 +11,24 @@
  * script is read-only — it never touches Notion — and writes a report
  * consumed by health-check.js's warn row and by enrich-card-acceptance.js.
  *
+ * task #1830: --source linear adds a second, independent sweep over open
+ * Linear (BRO-*) issues (the same verify gate linear-next.js enforces at
+ * dispatch time), writing to its OWN report path
+ * (data/audit/card-verifiability-linear.json) rather than the shared Notion
+ * report — health-check.js's warn row and backlog-drain.js both read the
+ * Notion report's exact schema/id-space today, so this stays additive: the
+ * zero-arg / --source notion (default) behavior and REPORT_PATH's contents
+ * are byte-for-byte unchanged.
+ *
  * Usage:
- *   node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N]
+ *   node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear]
  *
  *   --status   comma-separated Notion Status values to sweep (default: both
  *              backlog statuses — Done cards are irrelevant, Paused cards are
  *              deliberately parked and excluded from the undispatchable count)
- *   --limit    max cards to fetch from the list endpoint (default 300)
+ *              — notion source only.
+ *   --limit    max cards/issues to fetch (default 300)
+ *   --source   notion | linear (default: notion — unchanged from before #1830)
  *   --help/-h  show this message, do nothing else
  */
 const fs = require('fs');
@@ -25,19 +36,26 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+// Lazy-safe to require unconditionally — same reasoning as
+// enrich-card-acceptance.js: getApiKey() is only called inside an actual
+// graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
+const linear = require('./lib/linear-client.js');
 
 const REPO = path.join(__dirname, '..');
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'card-verifiability.json');
+const LINEAR_REPORT_PATH = path.join(REPO, 'data', 'audit', 'card-verifiability-linear.json');
 const DEFAULT_STATUS = 'Not started,In progress';
 const DEFAULT_LIMIT = 300;
 
-const USAGE = `audit-card-verifiability.js — count backlog cards bsc-next would refuse to dispatch.
+const USAGE = `audit-card-verifiability.js — count backlog cards bsc-next/linear-next would refuse to dispatch.
 
 Usage:
-  node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N]
+  node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear]
 
-Writes ${path.relative(REPO, REPORT_PATH)} (consumed by health-check.js's warn row
-and by enrich-card-acceptance.js). Read-only — never touches Notion.
+Writes ${path.relative(REPO, REPORT_PATH)} for --source notion (default; consumed by
+health-check.js's warn row and by enrich-card-acceptance.js) or
+${path.relative(REPO, LINEAR_REPORT_PATH)} for --source linear. Read-only — never
+touches Notion or Linear.
 `;
 
 function parseArgs(argv) {
@@ -109,24 +127,52 @@ function buildReport(evaluated, now = new Date()) {
   };
 }
 
-function writeReport(report) {
-  fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
-  fs.writeFileSync(`${REPORT_PATH}.tmp`, JSON.stringify(report, null, 2) + '\n');
-  fs.renameSync(`${REPORT_PATH}.tmp`, REPORT_PATH);
+function writeReport(report, reportPath = REPORT_PATH) {
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(`${reportPath}.tmp`, JSON.stringify(report, null, 2) + '\n');
+  fs.renameSync(`${reportPath}.tmp`, reportPath);
 }
 
-function main() {
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const args = parseArgs(process.argv.slice(2));
-  const status = typeof args.status === 'string' ? args.status : DEFAULT_STATUS;
-  const limit = args.limit ? parseInt(args.limit, 10) : DEFAULT_LIMIT;
-  if (!Number.isFinite(limit) || limit <= 0) {
-    console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
-    process.exit(1);
-  }
+// Pure (task #1830) — same evaluated shape evaluateCard() produces for a
+// Notion card ({id, name, url, priority, armed, ownerJudgment, reason, ...}),
+// so buildReport() works unchanged across both providers. priority/status are
+// null: Linear's priority is a raw int with its own remap
+// (linear-dispatch.js's priorityRank), not the Notion "P0 Now" string this
+// report's consumers print — not needed for the refused-count metric this
+// report exists to surface.
+function evaluateLinearIssue(issue) {
+  const gate = evaluateVerifiability(issue.description || '');
+  return {
+    id: issue.identifier,
+    name: issue.title,
+    url: issue.url,
+    priority: null,
+    status: (issue.state && issue.state.name) || null,
+    category: null,
+    tags: [],
+    notes: issue.description || '',
+    armed: gate.armed,
+    ownerJudgment: gate.ownerJudgment,
+    reason: gate.reason,
+  };
+}
 
+async function fetchLinearOpenIssuesWithDescriptions() {
+  return linear.listOpenIssuesWithDescriptions();
+}
+
+async function runLinearAudit(limit) {
+  const issues = await fetchLinearOpenIssuesWithDescriptions();
+  console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
+  const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
+  const report = buildReport(evaluated);
+  writeReport(report, LINEAR_REPORT_PATH);
+  return report;
+}
+
+function runNotionAudit(status, limit) {
   const ids = fetchPendingCardIds(status, limit);
-  console.error(`[audit-card-verifiability] ${ids.length} card(s) fetched (status=${status})`);
+  console.error(`[audit-card-verifiability] notion: ${ids.length} card(s) fetched (status=${status})`);
 
   const evaluated = [];
   for (const [i, id] of ids.entries()) {
@@ -137,20 +183,43 @@ function main() {
   }
 
   const report = buildReport(evaluated);
-  writeReport(report);
+  writeReport(report, REPORT_PATH);
+  return report;
+}
 
-  console.log(`Total pending/in-progress cards checked: ${report.total}`);
-  console.log(`Armed (dispatchable):                    ${report.armedCount}`);
-  console.log(`Refused (undispatchable):                ${report.refusedCount}`);
+function printReport(label, report, reportPath) {
+  console.log(`${label} total checked: ${report.total}`);
+  console.log(`${label} armed (dispatchable):    ${report.armedCount}`);
+  console.log(`${label} refused (undispatchable): ${report.refusedCount}`);
   if (report.refused.length) {
-    console.log('\nFirst 15 refused:');
+    console.log(`\nFirst 15 ${label.toLowerCase()} refused:`);
     report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] ${c.name} — ${c.reason}`));
   }
-  console.log(`\nReport written: ${path.relative(REPO, REPORT_PATH)}`);
+  console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
+}
+
+async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const args = parseArgs(process.argv.slice(2));
+  const status = typeof args.status === 'string' ? args.status : DEFAULT_STATUS;
+  const limit = args.limit ? parseInt(args.limit, 10) : DEFAULT_LIMIT;
+  if (!Number.isFinite(limit) || limit <= 0) {
+    console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
+    process.exit(1);
+  }
+  const source = typeof args.source === 'string' ? args.source.trim().toLowerCase() : 'notion';
+  if (!['notion', 'linear'].includes(source)) {
+    console.error(`--source must be one of notion, linear — got ${JSON.stringify(args.source)}`);
+    process.exit(1);
+  }
+
+  const report = source === 'linear' ? await runLinearAudit(limit) : runNotionAudit(status, limit);
+  const reportPath = source === 'linear' ? LINEAR_REPORT_PATH : REPORT_PATH;
+  printReport(source === 'linear' ? 'Linear' : 'Notion', report, reportPath);
 
   if (process.env.GITHUB_STEP_SUMMARY) {
     const summary = [
-      '## Card Verifiability Audit',
+      `## Card Verifiability Audit (${source})`,
       '',
       `| Metric | Count |`,
       `|--------|-------|`,
@@ -163,9 +232,11 @@ function main() {
   }
 }
 
-if (require.main === module) main();
+if (require.main === module) main().catch(err => { console.error(`[audit-card-verifiability] fatal: ${err.message}`); process.exit(1); });
 
 module.exports = {
   parseArgs, notionBrain, fetchCard, fetchPendingCardIds, evaluateCard, buildReport, writeReport,
   REPORT_PATH, DEFAULT_STATUS, DEFAULT_LIMIT, USAGE,
+  // task #1830: Linear audit path — exported for unit coverage.
+  evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
 };
