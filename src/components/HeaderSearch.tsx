@@ -7,6 +7,7 @@ import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { captureEvent } from '@/lib/posthog-events';
+import { matchesShowSearchQuery } from '../../scripts/lib/show-search-match';
 
 interface Show {
   id: string;
@@ -15,6 +16,7 @@ interface Show {
   status: string;
   venue?: string;
   creativeTeamNames?: string;
+  akaTitles?: string[];
   images?: {
     thumbnail?: string;
   };
@@ -54,6 +56,7 @@ export default function HeaderSearch() {
       fuseRef.current = new FuseClass(data, {
         keys: [
           { name: 'title', weight: 0.6 },
+          { name: 'akaTitles', weight: 0.5 },
           { name: 'venue', weight: 0.2 },
           { name: 'creativeTeamNames', weight: 0.2 },
         ],
@@ -75,12 +78,11 @@ export default function HeaderSearch() {
     if (deferredQuery.length < 1 || !fuseRef.current) return [];
     const fuseResults = fuseRef.current.search(deferredQuery, { limit: 8 }).map(result => result.item);
 
-    // Ensure exact substring matches in title always appear (Fuse can miss multi-word partials)
+    // Ensure exact substring matches in title/akaTitles always appear (Fuse can miss multi-word partials)
     // Only apply for 2+ char queries to match Fuse's minMatchCharLength
-    const q = deferredQuery.toLowerCase();
     const substringMatches = deferredQuery.length >= 2
       ? shows.filter(show =>
-          show.title.toLowerCase().includes(q) &&
+          matchesShowSearchQuery(show, deferredQuery) &&
           !fuseResults.some(r => r.id === show.id)
         )
       : [];
