@@ -320,6 +320,11 @@ function summarize(plan) {
     inFlight: plan.inFlight.length,
     needsYou: plan.needsYou,
     p01Queued: plan.p01Queue.length,
+    // #1564: suppressed cards are subtracted from p01Queued, so without this
+    // the heartbeat and --status --json show a backlog that silently shrank.
+    // Every machine-readable surface must carry the population the filter
+    // removed, or the "not silent" claim only holds for the crowned tab.
+    awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
   };
