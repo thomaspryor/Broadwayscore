@@ -112,5 +112,32 @@ test('isSafeCheckCommand: widened forms still refuse the mutating/injectable var
   assert.equal(isSafeCheckCommand('node scripts/audit-help-flag-safety.js --update-baseline'), false);
   assert.equal(isSafeCheckCommand('node scripts/scoring-delta.js --base=main; rm -rf /'), false);
   assert.equal(isSafeCheckCommand('node scripts/scoring-delta.js --base=main'), false);
+  // extract-show-score-reviews.js writes data/show-score.json unconditionally
+  // on every bare invocation (no --dry-run exists) — correctly refused, not a
+  // shape-2 bug. audit-card-verifiability.js's own report write goes to a
+  // TRACKED file (unlike validate-data.js's tmp sentinel / scoring-delta.js's
+  // tmpdir scratch), so it stays refused too — a "verify" re-run must never
+  // race-write shared repo state.
   assert.equal(isSafeCheckCommand('node scripts/extract-show-score-reviews.js'), false);
+  assert.equal(isSafeCheckCommand('node scripts/audit-card-verifiability.js'), false);
+});
+
+// Round 2 (task #1713): three more live shape-2 refusals from
+// audit-card-verifiability.js, each individually vetted for writes before
+// being added — same standard as the round-1 block above.
+test('isSafeCheckCommand: round-2 widened allowlist (audit-cv-flag-contradiction, fix-shared-ibdb-urls --dry-run, check-sb-credits)', () => {
+  assert.equal(isSafeCheckCommand('node scripts/audit-cv-flag-contradiction.js'), true);
+  assert.equal(isSafeCheckCommand('node scripts/audit-cv-flag-contradiction.js --window=30 --strict'), true);
+  assert.equal(isSafeCheckCommand('node scripts/audit-cv-flag-contradiction.js --strict'), true);
+  assert.equal(isSafeCheckCommand('node scripts/fix-shared-ibdb-urls.js --dry-run'), true);
+  assert.equal(isSafeCheckCommand('node scripts/lib/check-sb-credits.js'), true);
+});
+
+test('isSafeCheckCommand: round-2 forms still refuse their mutating variants', () => {
+  // --update-baseline is the only branch of audit-cv-flag-contradiction.js
+  // that calls fs.writeFileSync.
+  assert.equal(isSafeCheckCommand('node scripts/audit-cv-flag-contradiction.js --update-baseline'), false);
+  // fix-shared-ibdb-urls.js calls saveShows() (writes data/shows.json)
+  // whenever --dry-run is absent — bare invocation must stay refused.
+  assert.equal(isSafeCheckCommand('node scripts/fix-shared-ibdb-urls.js'), false);
 });
