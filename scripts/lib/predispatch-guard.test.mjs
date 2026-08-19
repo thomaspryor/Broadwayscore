@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { classifyCandidate, resolveNotionUuid, REVIEW_STATUSES, predispatchGuard } = require('./predispatch-guard.js');
+const { staleOutcomeGuard, closedCardGuard } = require('./dispatch-guards.js');
 
 const MODULE_PATH = fileURLToPath(new URL('./predispatch-guard.js', import.meta.url));
 
@@ -282,4 +283,100 @@ test('predispatchGuard: --allow-closed-card does NOT bypass a Paused-status DO-N
   assert.equal(result.verdict, 'DO-NOT-DISPATCH');
   const err = predispatchGuard(TASK, card, { 'allow-closed-card': true });
   assert.match(err, /REFUSING to dispatch #999/);
+});
+
+// ── task #1816: classifyCandidate vs dispatch-guards.js's staleOutcomeGuard/
+// closedCardGuard — parity where the two genuinely check the same thing,
+// documented (asserted, not just commented) divergence everywhere else. Not
+// a blanket "never disagree" loop: an earlier draft of this test claimed
+// that and was false on real fixtures (a PARKED: note refuses only in
+// classifyCandidate; a short unverifiable Outcome with no sha refuses only
+// in staleOutcomeGuard) — see the cross-reference comments atop both files
+// for why the two are deliberately separate rather than merged. ──────────────
+
+// Strict parity: both independently read card.archived (dispatch-guards.js's
+// header: "the two are deliberately checked independently rather than
+// merged into one Set" — same fact, this just proves it holds).
+test('parity: archived/trashed-page refusal agrees between classifyCandidate and closedCardGuard, any status', () => {
+  for (const status of ['In progress', 'Not started', 'Done']) {
+    const card = { status, archived: true };
+    const result = classifyCandidate({ card, task: TASK });
+    assert.equal(result.verdict, 'DO-NOT-DISPATCH', `classifyCandidate should refuse status=${status}`);
+    assert.ok(closedCardGuard(TASK, card, {}), `closedCardGuard should refuse status=${status}`);
+  }
+});
+
+// Strict parity: a plain terminal status (Done/Archived/Cancelled), no
+// PARKED note, no REOPEN-SUSPECT shape — both TERMINAL_CARD_STATUSES-derived
+// sets agree exactly here (REVIEW_STATUSES = TERMINAL_CARD_STATUSES ∪
+// {Paused}; CLOSED_CARD_STATUSES = TERMINAL_CARD_STATUSES lowercased —
+// same source set, see task-reclaim.js). Paused is deliberately excluded —
+// see the divergence test below.
+test('parity: plain terminal status (Done/Archived/Cancelled) refusal agrees between classifyCandidate and closedCardGuard', () => {
+  for (const status of ['Done', 'Archived', 'Cancelled']) {
+    const card = { status, notes: '', completedDate: null, outcome: '' };
+    const result = classifyCandidate({ card, task: TASK });
+    assert.equal(result.verdict, 'DO-NOT-DISPATCH', `classifyCandidate should refuse status=${status}`);
+    assert.ok(closedCardGuard(TASK, card, {}), `closedCardGuard should refuse status=${status}`);
+  }
+});
+
+// One-directional implication, NOT a universal invariant: classifyCandidate's
+// REOPEN-SUSPECT check (looksLikeReopenSuspect) only ever reads
+// completedDate/outcome — it never consults card.notes at all, so it cannot
+// see an armed acceptance command or a RECHECK-AFTER stamp. staleOutcomeGuard
+// DOES check both (evaluateVerifiability(card.notes).armed and
+// parseRecheckAfterFromCard) and bypasses on either. So the implication below
+// only holds for a REOPEN-SUSPECT card whose notes carry neither — which is
+// the common real shape (a falsely-reopened card's notes are whatever the
+// original backlog card had, not a fresh armed acceptance command), but NOT
+// a guarantee; the next test documents the counterexample explicitly rather
+// than leaving it as an unstated precondition.
+test('one-directional (conditional on unarmed notes): a REOPEN-SUSPECT classification with no acceptance command in notes is also refused by staleOutcomeGuard', () => {
+  const result = classifyCandidate({ card: REOPEN_SUSPECT_CARD, task: TASK });
+  assert.equal(result.verdict, 'REOPEN-SUSPECT');
+  assert.ok(staleOutcomeGuard(TASK, REOPEN_SUSPECT_CARD, {}), 'staleOutcomeGuard should also refuse a REOPEN-SUSPECT-shaped card with unarmed notes');
+});
+
+// Documented divergence (intentional, not a bug, and NOT covered by the
+// "one-directional" test above — ship-check adversarial finding, task #1816):
+// classifyCandidate's REOPEN-SUSPECT check never reads card.notes, so a
+// REOPEN-SUSPECT-shaped card whose notes happen to carry an armed acceptance
+// command sails past staleOutcomeGuard's armed-notes bypass entirely.
+test('divergence: a REOPEN-SUSPECT card with an armed acceptance command in notes refuses in classifyCandidate but NOT in staleOutcomeGuard', () => {
+  const card = { ...REOPEN_SUSPECT_CARD, notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs` passes.' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'REOPEN-SUSPECT');
+  assert.equal(staleOutcomeGuard(TASK, card, {}), null, 'staleOutcomeGuard bypasses on an armed acceptance command, even for a REOPEN-SUSPECT-shaped card');
+});
+
+// Documented divergence (intentional, not a bug): a PARKED: note has no
+// dispatch-guards.js analog at all.
+test('divergence: a PARKED: note refuses in classifyCandidate but NOT in staleOutcomeGuard/closedCardGuard', () => {
+  const card = { status: 'Not started', notes: 'PARKED: waiting on owner decision about market scope.' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  assert.equal(staleOutcomeGuard(TASK, card, {}), null);
+  assert.equal(closedCardGuard(TASK, card, {}), null);
+});
+
+// Documented divergence (intentional, not a bug): a short, sha-less filled
+// Outcome is unverifiable-enough for staleOutcomeGuard's broader check, but
+// too narrow to be REOPEN-SUSPECT-shaped for classifyCandidate.
+test('divergence: a short sha-less filled Outcome refuses in staleOutcomeGuard but NOT in classifyCandidate', () => {
+  const card = { status: 'Not started', notes: '', outcome: 'Fixed it.', completedDate: null };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'OK-TO-DISPATCH');
+  assert.ok(staleOutcomeGuard(TASK, card, {}), 'staleOutcomeGuard should refuse an unverifiable filled Outcome');
+});
+
+// Documented divergence (intentional, not a bug, and previously litigated —
+// see dispatch-guards.js's closedCardGuard header comment): classifyCandidate
+// groups Paused with Done; closedCardGuard deliberately never treats Paused
+// as closed.
+test('divergence: Paused status refuses in classifyCandidate but NOT in closedCardGuard', () => {
+  const card = { status: 'Paused' };
+  const result = classifyCandidate({ card, task: TASK });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  assert.equal(closedCardGuard(TASK, card, {}), null);
 });
