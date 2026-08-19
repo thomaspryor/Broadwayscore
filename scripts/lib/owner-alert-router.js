@@ -65,9 +65,12 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 const { sendAlert } = require('./discord-notify');
 const { isPageWorthy } = require('./page-worthy-alerts');
+// BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
+// shelling out to the linear-brain.js CLI — see linear-issue-create.js's
+// header for why this is the natural repoint target.
+const { createLinearIssue } = require('./linear-issue-create');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -252,18 +255,21 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
   }
 }
 
-// Files a LINEAR issue via the linear-brain.js CLI (BRO-286 Phase 2 intake
-// repoint — this was the Notion Action Queue card path until 2026-08-12; all
-// Linear creation still flows through the single createLinearIssue()
-// chokepoint linear-brain.js wraps, CI-gated by
-// audit-linear-issuecreate-chokepoint.js).
+// Files a LINEAR issue via createLinearIssue() (scripts/lib/linear-issue-
+// create.js) — the one creation chokepoint, CI-gated by
+// audit-linear-issuecreate-chokepoint.js. BRO-375 (Phase 1) repointed this
+// from an execFileSync shell-out to linear-brain.js (subprocess + regex-
+// parsed stdout) to an in-process call, which itself creates the issue via
+// the injectable client in scripts/lib/linear.js (BRO-374) — the seam that
+// lets a routed alert's Linear creation be exercised with a stubbed client
+// in owner-alert-router.test.mjs instead of a real network round trip.
 // Returns { ok, cardId: null, linearIdentifier } — never throws; a dispatch
 // failure degrades to a logged warning rather than crashing the caller's own
 // check/pipeline. cardId is kept in the shape (always null on this path) so
 // existing consumers reading .cardId see a stable field, and the ledger's
 // linearIdentifier field (introduced by rail 2) now also carries the FILED
 // tracker, not just deduped ones.
-function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey }) {
+async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey }) {
   const notes = buildCardNotes({ description, hint, fields, conditionKey });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
@@ -271,34 +277,22 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
   // Notion string form — ignored deliberately rather than half-translated;
   // severity is the honest signal.)
   const linearPriority = (severity === 'critical' || severity === 'error') ? 2 : 3;
-  const args = [
-    path.join(__dirname, '..', 'linear-brain.js'),
-    'create', title,
-    '--notes', notes,
-    '--priority', String(linearPriority),
-    // task #1310: no default disposition. An alert-filed issue isn't being
-    // worked the instant it's created — the Phase-2 drain/auditor picks
-    // parked issues up on its next pass — so this is a park, not a dispatch.
-    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); parked for triage. The Linear-side drain (Phase 2 follow-up, in build) will dispatch machine-verifiable parked issues; until it ships these surface via the digest.`,
-  ];
+  // task #1310: no default disposition. An alert-filed issue isn't being
+  // worked the instant it's created — the Phase-2 drain/auditor picks
+  // parked issues up on its next pass — so this is a park, not a dispatch.
+  const parkReason = `Auto-filed by owner-alert-router (condition: ${conditionKey}); parked for triage. The Linear-side drain (Phase 2 follow-up, in build) will dispatch machine-verifiable parked issues; until it ships these surface via the digest.`;
   try {
-    // 15s: a single Linear issue-creation call. Callers that dispatch many
-    // conditions in a loop (e.g. health-check.js) cap total dispatches per
-    // run separately — this timeout only bounds one call's worst case.
-    const out = execFileSync('node', args, { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
-    // linear-brain.js prints the issue JSON then a human PARKED:/DISPATCHED:
-    // line — parse the identifier (e.g. "BRO-287") out of the JSON block.
-    // Field is `.identifier`, NOT `.id` (`.id` is the opaque UUID).
-    const m = out.match(/"identifier":\s*"([A-Z]+-\d+)"/);
-    const linearIdentifier = m ? m[1] : null;
+    const { issue } = await createLinearIssue({
+      title,
+      description: notes,
+      priority: linearPriority,
+      park: parkReason,
+    });
     logDispatchAttempt({ conditionKey, title, ok: true });
-    return { ok: true, cardId: null, linearIdentifier };
+    return { ok: true, cardId: null, linearIdentifier: issue.identifier };
   } catch (err) {
     // Log the REAL error verbatim — this is the exact spot the npm-ci incident
-    // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem. err.message
-    // from execFileSync includes stderr, so it carries whatever linear-brain.js
-    // actually printed (e.g. "LINEAR_API_KEY not set" or the loud
-    // USAGE_LIMIT_EXCEEDED cap message from linear-issue-create.js).
+    // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
     return { ok: false, error: err.message };
@@ -532,7 +526,7 @@ async function routeAlert(opts) {
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
-    const dispatch = dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
+    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
     result.cardId = dispatch.cardId || null;
     // BRO-286: the filed tracker is a Linear issue — surface WHERE it lives
     // so consumers (health-check's digest line) tell the truth.

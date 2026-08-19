@@ -7,20 +7,22 @@
  * notion-brain.js crashed on a missing @notionhq/client — and the crash was
  * misreported as a NOTION_API_KEY problem, sending every triage session down
  * the wrong path. Unit tests (owner-alert-router.test.mjs) can't catch this
- * class of bug because they deliberately stub execFileSync/sendAlert. This
- * script does NOT stub anything: it routes two synthetic alerts through the
- * REAL owner-alert-router → linear-brain.js CLI → Linear API path (BRO-286
- * repoint, 2026-08-12 — this used to be the notion-brain/Notion chain),
- * verifies the resulting issue actually exists via a real getIssue,
- * exercises the ledger dedup guard for real, then archives its issues.
+ * class of bug because they deliberately stub createLinearIssue()/sendAlert.
+ * This script does NOT stub anything: it routes two synthetic alerts through
+ * the REAL owner-alert-router → createLinearIssue() (scripts/lib/linear-
+ * issue-create.js, via the injectable client in scripts/lib/linear.js —
+ * BRO-375 repointed this in-process, 2026-08-19; before that it shelled out
+ * to linear-brain.js) → Linear API path, verifies the resulting issue
+ * actually exists via a real getIssue, exercises the ledger dedup guard for
+ * real, then archives its issues.
  *
  * On any failure: try routeAlert(disposition='human') first — that path
- * calls sendAlert() (Resend) directly and never shells out to
- * linear-brain.js, so it stays reachable even when the exact thing this
- * canary checks (the issue-filing shell-out) is what's broken. If even that
- * throws, exit nonzero so the workflow's own `notify-failure` step — which
- * depends on neither owner-alert-router.js nor linear-brain.js — still
- * fires as the last-resort backstop.
+ * calls sendAlert() (Resend) directly and never touches Linear issue
+ * creation, so it stays reachable even when the exact thing this canary
+ * checks (the issue-filing call) is what's broken. If even that throws, exit
+ * nonzero so the workflow's own `notify-failure` step — which depends on
+ * neither owner-alert-router.js nor linear-issue-create.js — still fires as
+ * the last-resort backstop.
  *
  * DEV/CI GUARD (added after a local test-fire paged the owner at midnight,
  * 2026-07-24): disposition='human' actually emails the owner in real time —

@@ -13,16 +13,27 @@
  * file (and scripts/lib/linear-client.js itself).
  *
  * Scoped narrowly to issue CREATION with the required dispatch/park
- * disposition (card #1310). The larger, separately-tracked plan (see
- * memory/project_linear_migration_decision.md) repoints routeAlert()'s
- * dispatchCard() at Linear via an injectable-client `scripts/lib/linear.js`
- * — when that lands, this file's createLinearIssue() is the natural thing
- * for it to call, not something it needs to replace.
+ * disposition (card #1310). BRO-375 (Phase 1) repointed routeAlert()'s
+ * dispatchCard() at Linear via this file: dispatchCard() now calls
+ * createLinearIssue() in-process instead of shelling out to the
+ * linear-brain.js CLI, and the actual `issueCreate` mutation below runs
+ * through `scripts/lib/linear.js`'s injectable LinearClient (BRO-374) rather
+ * than linear-client.js's raw createIssue — that's the seam that lets
+ * owner-alert-router.test.mjs assert a routed alert reaches Linear with a
+ * stubbed client and zero network calls. The client is built with
+ * linear-client.js's `graphql()` as its executor (NOT linear.js's own
+ * createLinearClient(), which is a bare fetch with no retry) — this keeps
+ * the 429-rate-limit backoff + mutation-vs-read retry policy
+ * (linear-retry-policy.js) that every other Linear write in this repo gets,
+ * while still building the mutation text through linear.js's LinearClient.
+ * Team/state lookup (getTeam) also stays on linear-client.js, so both reads
+ * and the create share one transport instead of two divergent ones.
  */
 
 'use strict';
 
 const linear = require('./linear-client');
+const { LinearClient } = require('./linear');
 const { resolveDisposition } = require('./card-disposition');
 const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
 
@@ -87,9 +98,13 @@ function pickStateForMode(states, mode) {
  * @param {string} [p.park] reason, required with park, >= MIN_PARK_REASON_LENGTH chars
  * @param {number} [p.priority] Linear priority 0-4
  * @param {string} [p.projectId]
+ * @param {{createIssue: Function}} [p.client] injected Linear client for the
+ *   create mutation (linear.js's LinearClient shape) — tests pass a stub;
+ *   production defaults to a LinearClient wired to linear-client.js's
+ *   retry-aware graphql() (BRO-374/BRO-375).
  * @returns {Promise<{issue: object, mode: 'dispatch'|'park', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, client }) {
   const disposition = resolveDisposition({ dispatch, park });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
@@ -125,9 +140,19 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const finalDescription =
     disposition.mode === 'park' ? `PARKED: ${disposition.reason}\n\n${description || ''}`.trim() : (description || '');
 
+  // Built lazily (not at module load) so requiring this file never reads
+  // LINEAR_API_KEY or touches the network — only a real create attempt does.
+  // Injected executor is linear-client.js's graphql() (429 retry + backoff,
+  // no retry-on-5xx-for-mutations since creation isn't idempotent — see
+  // linear-retry-policy.js), NOT linear.js's own createLinearClient(), which
+  // is a bare single-attempt fetch. This is the fix for a ship-check finding
+  // (Codex, BRO-375): the naive transport silently dropped alerts on a
+  // transient 429 instead of retrying.
+  const issueClient = client || new LinearClient({ graphql: linear.graphql, teamKey: linear.TEAM_KEY });
+
   let issue;
   try {
-    issue = await linear.createIssue({
+    issue = await issueClient.createIssue({
       teamId: team.id,
       title,
       description: finalDescription,

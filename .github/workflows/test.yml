@@ -37,6 +37,23 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # BRO-376 Notion->Linear idempotent import acceptance test. Registered in
+      # tests/unit-test-manifest.txt. Depends only on scripts/lib/** (already
+      # globbed above), so it needs its own entry, plus the top-level script it
+      # exercises as a subprocess.
+      - 'scripts/import-notion-to-linear.test.mjs'
+      - 'scripts/linear-import-corpus.js'
+      # scripts/lib/notion-outcome-history.js/.test.mjs (the actual logic) are
+      # already covered by scripts/lib/** above — this is the top-level CLI
+      # wrapper only. No direct unit test of its own (its logic is fully
+      # covered by the colocated lib test); listed so a solo edit still gets
+      # lint/build/tsc.
+      - 'scripts/export-notion-outcome-history.js'
+      # scripts/linear-import-corpus.js's sibling from the same Sprint 3 work
+      # had the identical gap — no path entry, ZERO CI on a solo edit — even
+      # though nothing here tests it directly yet. Closed alongside rather
+      # than left sitting next to the one just fixed.
+      - 'scripts/verify-linear-migration.js'
       # Sibling advisory guard (task #1760): catches the same recurrence gap
       # one level up — a script named in
       # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
@@ -3873,17 +3890,23 @@ jobs:
         # they ride the full --strict run in check-corpus-drift.yml → digest.
 
       - name: Audit aggregator-archive integrity
-        run: node scripts/audit-aggregator-archive-integrity.js --strict
-        continue-on-error: true
         # Catches the Stuart King contamination class — cached aggregator HTML
         # whose <title> doesn't match the showId in the filename. The bug
         # silently mis-attributed reviews across ~14 LBO archives + 256 across
         # other sources before being caught by a critic email (2026-04-25).
-        # Baseline: data/audit/aggregator-archive-integrity-baseline.json
-        # (currently empty; CI sees ~283 historical bad archives in the private-repo
-        # data set that need triaging before --strict can be enforced).
-        # Currently NON-BLOCKING (continue-on-error) until baseline reflects the
-        # private-repo state. Tracked in Notion 34e637c5-416f-812c follow-up.
+        # Baseline: data/audit/aggregator-archive-integrity-baseline.json holds
+        # 1 known, deliberately-unfixed entry (Notion 34e637c5-416f-812c) —
+        # dtli/the-roast-1980, DTLI's own pun headline "The Roastmaster
+        # General..." for the legitimate show "The Roast" defeats whole-word
+        # title matching on real content, not poisoning (commit 3b45349a273).
+        # That commit's #1763 whole-word-matching fix also quarantined the
+        # ~283 genuinely-poisoned archives this gate used to see, from the
+        # private repo, which is why BLOCKING is now safe. Update via
+        # `node scripts/audit-aggregator-archive-integrity.js --update-baseline`
+        # only after hand-verifying a new hit is a genuine FP, never to make
+        # a red build pass.
+        if: always()
+        run: node scripts/audit-aggregator-archive-integrity.js --strict
 
       - name: Validate market expansion
         if: always()

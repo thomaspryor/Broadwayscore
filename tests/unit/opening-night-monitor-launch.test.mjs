@@ -211,14 +211,16 @@ test('pass env forwards the API key only under auth.mode api-key', () => {
 // parallel session's `git checkout`/`reset --hard` cannot wipe — the live
 // failure was the same on-monitor-launch-failed alert emailing twice 21 min
 // apart through a cooldownHours: 3 window, with the git-tracked ledger showing
-// neither send. routeAlert itself is REAL here — only the Notion CLI call and
-// the Resend sender are stubbed — so this asserts the cooldown actually holds
-// end-to-end through the launcher, not merely that a path gets logged.
+// neither send. routeAlert itself is REAL here — only the Linear issue
+// creation (BRO-375: createLinearIssue(), scripts/lib/linear-issue-create.js)
+// and the Resend sender are stubbed — so this asserts the cooldown actually
+// holds end-to-end through the launcher, not merely that a path gets logged.
 test('alert(): a second launch-failure inside the cooldown is suppressed, and the tracked ledger is never touched', async () => {
   const require = createRequire(import.meta.url);
   const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
   const discordPath = require.resolve('../../scripts/lib/discord-notify.js');
-  const childProcessPath = require.resolve('node:child_process');
+  const linearIssueCreatePath = require.resolve('../../scripts/lib/linear-issue-create.js');
+  const linearClientPath = require.resolve('../../scripts/lib/linear-client.js');
   const launcher = require('../../scripts/opening-night-monitor-launch.js');
 
   // A ledger outside any git checkout — where a local sender gets routed.
@@ -229,20 +231,37 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
 
   const priorRouterCache = require.cache[routerPath];
   const priorDiscordCache = require.cache[discordPath];
+  const priorLinearIssueCreateCache = require.cache[linearIssueCreatePath];
+  const priorLinearClientCache = require.cache[linearClientPath];
   delete require.cache[routerPath];
   delete require.cache[discordPath];
+  delete require.cache[linearIssueCreatePath];
+  delete require.cache[linearClientPath];
 
-  // No Notion card, no Resend email, no writes into the repo's data/audit/.
+  // No Linear issue creation, no Resend email, no writes into the repo's
+  // data/audit/.
   const dispatches = [];
-  const realChildProcess = require(childProcessPath);
-  const realExecFileSync = realChildProcess.execFileSync;
-  realChildProcess.execFileSync = (...args) => {
-    dispatches.push(args);
-    return JSON.stringify({ id: 'fake-card-id' });
+  require.cache[linearIssueCreatePath] = {
+    id: linearIssueCreatePath, filename: linearIssueCreatePath, loaded: true,
+    exports: {
+      createLinearIssue: async (opts) => {
+        dispatches.push(opts);
+        return { issue: { id: 'fake-uuid', identifier: 'BRO-999', title: opts.title }, mode: 'park', stateName: 'Backlog' };
+      },
+    },
   };
   require.cache[discordPath] = {
     id: discordPath, filename: discordPath, loaded: true,
     exports: { sendAlert: async () => true },
+  };
+  // Stub linear-client's searchIssues (rail-2 cross-system dedupe, run inside
+  // routeAlert() before dispatchCard/createLinearIssue is even reached) so
+  // this test never depends on live Linear API state or LINEAR_API_KEY being
+  // present — a real environment on this machine has real issues, and
+  // 'test:launcher-launch-failed' is not guaranteed to be unmatched there.
+  require.cache[linearClientPath] = {
+    id: linearClientPath, filename: linearClientPath, loaded: true,
+    exports: { searchIssues: async () => null },
   };
 
   const router = require(routerPath);
@@ -289,9 +308,10 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
   } finally {
     console.log = realConsoleLog;
     fs.writeFileSync = realWriteFileSync;
-    realChildProcess.execFileSync = realExecFileSync;
     if (priorRouterCache) require.cache[routerPath] = priorRouterCache; else delete require.cache[routerPath];
     if (priorDiscordCache) require.cache[discordPath] = priorDiscordCache; else delete require.cache[discordPath];
+    if (priorLinearIssueCreateCache) require.cache[linearIssueCreatePath] = priorLinearIssueCreateCache; else delete require.cache[linearIssueCreatePath];
+    if (priorLinearClientCache) require.cache[linearClientPath] = priorLinearClientCache; else delete require.cache[linearClientPath];
     if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
