@@ -1771,3 +1771,39 @@
 [2026-08-18 18:14:37] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
 [2026-08-18 18:14:38] DIGEST: 21 unmerged worktree(s) untouched >3d holding stranded work: 1233-infra-vs-substantive-dead agent-a70b3646af63ee6bc agent-a9acef27cd4a6802b bro-286-intake-repoint car-man-completeness-874 claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s3 fix-merge-stash-pop-conflict inbox-sweep-cv-hash job-1014-mser17le job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 p0-dispatch-ledger-exports scraping-v2-t12-ship-check-fixes silent-exclusion-detectors-1188 task-653-corpus-determinism workspace-title-task-number
 [2026-08-18 18:14:38] DONE  removed=6 kept=22 skipped=11 freed=4.8GB (dry_run=0)
+[2026-08-18 21:16:21] KEEP  1233-infra-vs-substantive-dead — 1 unmerged commit(s) on worktree-1233-infra-vs-substantive-dead
+[2026-08-18 21:16:23] SKIP  1543-watchdog-killswitch-staleness — merged but worktree dirty; not forcing
+[2026-08-18 21:16:24] SKIP  1759-untrack-opening-night-sent — merged but worktree dirty; not forcing
+[2026-08-18 21:16:25] SKIP  1772-push-retry-stale-branch — worktree-1772-push-retry-stale-branch merged but a live process has this worktree as its cwd
+[2026-08-18 21:16:25] SKIP  1779-notion-sync-pushed-flag-reset — worktree-1779-notion-sync-pushed-flag-reset merged but a live process has this worktree as its cwd
+[2026-08-18 21:16:25] KEEP  agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-08-18 21:16:27] KEEP  agent-a9acef27cd4a6802b — 1 unmerged commit(s) on worktree-agent-a9acef27cd4a6802b
+[2026-08-18 21:16:28] SKIP  bro-282-owner-approval-channel — worktree-bro-282-owner-approval-channel merged but a live process has this worktree as its cwd
+[2026-08-18 21:16:28] KEEP  bro-286-intake-repoint — 1 unmerged commit(s) on worktree-bro-286-intake-repoint
+[2026-08-18 21:16:33] REMOVE bsc-reconcile-idempotency-1796 — worktree-bsc-reconcile-idempotency-1796 merged, worktree removed (branch kept)
+[2026-08-18 21:16:35] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-18 21:16:36] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-18 21:16:38] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-18 21:16:40] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-18 21:16:41] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-18 21:16:42] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-18 21:16:44] SKIP  cutover-s3 — worktree-cutover-s3 merged but a live process has this worktree as its cwd
+[2026-08-18 21:16:45] SKIP  diary-phase0c — merged but worktree dirty; not forcing
+[2026-08-18 21:16:46] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-18 21:16:47] KEEP  inbox-sweep-cv-hash — 3 unmerged commit(s) on worktree-inbox-sweep-cv-hash
+[2026-08-18 21:16:48] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-18 21:16:51] SKIP  job-1312-msy63muf — merged but worktree dirty; not forcing
+[2026-08-18 21:16:52] SKIP  job-1623-msy55vy5 — merged but worktree dirty; not forcing
+[2026-08-18 21:16:54] SKIP  job-1768-msy6h3fx — merged but worktree dirty; not forcing
+[2026-08-18 21:16:54] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-18 21:16:57] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-18 21:16:59] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-18 21:17:01] SKIP  job-linear-BRO-406-msx5l43y — merged but worktree dirty; not forcing
+[2026-08-18 21:17:02] SKIP  job-linear-BRO-406-msxc1v2h — merged but worktree dirty; not forcing
+[2026-08-18 21:17:02] KEEP  p0-dispatch-ledger-exports — 1 unmerged commit(s) on worktree-p0-dispatch-ledger-exports
+[2026-08-18 21:17:04] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-18 21:17:05] KEEP  silent-exclusion-detectors-1188 — 2 unmerged commit(s) on worktree-silent-exclusion-detectors-1188
+[2026-08-18 21:17:07] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-18 21:17:09] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-18 21:17:11] DIGEST: 21 unmerged worktree(s) untouched >3d holding stranded work: 1233-infra-vs-substantive-dead agent-a70b3646af63ee6bc agent-a9acef27cd4a6802b bro-286-intake-repoint car-man-completeness-874 claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s3 fix-merge-stash-pop-conflict inbox-sweep-cv-hash job-1014-mser17le job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 p0-dispatch-ledger-exports scraping-v2-t12-ship-check-fixes silent-exclusion-detectors-1188 task-653-corpus-determinism workspace-title-task-number
+[2026-08-18 21:17:11] DONE  removed=1 kept=21 skipped=12 freed=802.5MB (dry_run=0)
