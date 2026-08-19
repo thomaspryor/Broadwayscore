@@ -65,6 +65,8 @@ const searchShows = visibleShows.map(show => {
     : '';
   if (creativeTeamNames) entry.creativeTeamNames = creativeTeamNames;
 
+  if (show.akaTitles && show.akaTitles.length) entry.akaTitles = show.akaTitles;
+
   if (show.images && show.images.thumbnail) {
     entry.images = { thumbnail: show.images.thumbnail };
   }
