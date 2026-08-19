@@ -884,8 +884,8 @@ function validateTheaterAddress(shows) {
   }
 
   if (mismatches > AUTOFIX_CAP) {
-    mismatchExamples.forEach(m => err('  ' + m));
-    err(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
+    mismatchExamples.forEach(m => error('  ' + m));
+    error(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
     return;
   }
 

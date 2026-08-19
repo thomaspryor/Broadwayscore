@@ -266,7 +266,7 @@ async function main() {
 <table style="margin:16px 0;border-collapse:collapse;">
   <tr><td style="padding:4px 12px 4px 0;color:#666">Week</td><td><strong>${weekEnding}</strong></td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Teams</td><td><strong>${leaderboard.length}</strong></td></tr>
-  <tr><td style="padding:4px 12px 4px 0;color:#666">Audience sync</td><td>${syncResult.added} added / ${syncResult.existing} existing</td></tr>
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Audience sync</td><td>${syncSummary}</td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
 </table>
 <p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend &rarr;</a></p>
