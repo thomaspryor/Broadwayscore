@@ -702,3 +702,77 @@ test('mutation deny-list covers case variants and .mjs/.cjs (ship-check QA)', ()
   }
   assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
 });
+
+// ── Task #1827: generic audit-/lint- shape + bash *.test.sh form ───────────
+
+test('generic audit-/lint- shape accepts uncurated read-only scripts (card #1827)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const ok of [
+    'node scripts/audit-review-contamination.js --strict',
+    'node scripts/audit-review-contamination.js',
+    // Shape-only: isSafeCheckCommand never checks file existence. The script
+    // not existing yet is a separate (execution-time) concern.
+    'node scripts/audit-worktree-unpushed.js',
+    'node scripts/lint-resend-calls.js',
+    'node scripts/audit-orphan-tests-v2.js --json',
+    'node scripts/lint-something-new.js --dry-run',
+    'node scripts/audit-foo.js --window=30',
+    'node scripts/audit-foo.js --max=5',
+    'node scripts/audit-foo.js --gate',
+  ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
+});
+
+test('generic audit-/lint- shape denylists the two known tracked-file writers (task #1827)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of [
+    'node scripts/audit-card-verifiability.js',
+    'node scripts/audit-card-verifiability.js --json',
+    'node scripts/audit-outlet-registry.js --strict',
+    'node scripts/audit-outlet-registry.js',
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must stay refused`);
+});
+
+test('generic audit-/lint- shape does not widen flags for already-curated scripts', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  // audit-workflow-hygiene.js's own curated entry is bare-only — the generic
+  // form must not grant it a flag nothing has vetted for that script.
+  assert.equal(isSafeCheckCommand('node scripts/audit-workflow-hygiene.js --json'), false);
+  assert.equal(isSafeCheckCommand('node scripts/audit-workflow-hygiene.js'), true); // still fine via its own entry
+  assert.equal(isSafeCheckCommand('node scripts/audit-sibling-title-misroute.js --dry-run'), false);
+});
+
+test('generic audit-/lint- shape rejects free-form args, combined flags, and traversal', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of [
+    'node scripts/audit-foo.js --update',
+    'node scripts/audit-foo.js --strict --json',
+    'node scripts/audit-foo.js --strict; rm -rf /',
+    'node scripts/audit-../../etc/passwd.js',
+    'node scripts/audit-foo.js extra-arg',
+    'node scripts/audit-.js', // empty name segment
+    'node scripts/fix-something.js', // wrong prefix entirely
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+});
+
+test('bash *.test.sh form accepts scripts/tests paths, rejects everything else (task #1827)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  assert.equal(isSafeCheckCommand('bash scripts/lib/sync-audit-checkout.test.sh'), true);
+  assert.equal(isSafeCheckCommand('bash tests/e2e/login.test.sh'), true);
+  for (const bad of [
+    'bash /tmp/evil.test.sh',
+    'bash scripts/lib/../../etc/passwd.test.sh',
+    'bash scripts/lib/sync-audit-checkout.sh', // not a .test.sh
+    'bash scripts/lib/sync-audit-checkout.test.sh; rm -rf /',
+    'sh scripts/lib/sync-audit-checkout.test.sh', // wrong interpreter token
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+});
+
+test('mutating scripts still refused after task #1827 widening', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const bad of [
+    'node scripts/push-review-texts.js',
+    'node scripts/send-opening-night-broadcast.js',
+    'node scripts/rebuild-all-reviews.js',
+    'node scripts/gather-reviews.js',
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+});

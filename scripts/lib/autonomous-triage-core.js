@@ -29,6 +29,56 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // unless the command shape is locked down at validation time. Only these
 // forms are accepted; every file argument must be a relative, traversal-free
 // path under tests/, scripts/, src/, or docs//memory/ (for test -f).
+// Task #1827: basenames EXCLUDED from the generic audit-/lint- shape form
+// below, despite matching its `scripts/(audit|lint)-<name>.js` naming
+// convention. Two classes:
+//   (1) already individually curated above with narrower or different flags
+//       than the generic form's fixed set — letting the generic form ALSO
+//       match them would silently grant flag combinations never vetted for
+//       that specific script (e.g. audit-workflow-hygiene.js is bare-only
+//       above; the generic form would otherwise additionally accept
+//       `--json`, which nothing has confirmed is side-effect-free for it).
+//   (2) unconditional writers to a git-TRACKED data/audit/*.json path on
+//       EVERY invocation (confirmed via `git ls-files`), regardless of
+//       --strict/--json/etc:
+//         - audit-card-verifiability.js: writeReport() → data/audit/
+//           card-verifiability.json. A sibling investigation (task #1827's
+//           duplicate-check turned up Notion card 3bf637c5, 2026-08-19)
+//           already landed a regression test for this exact exclusion
+//           (scripts/tests/enrich-card-acceptance-fallback.test.mjs:122).
+//         - audit-outlet-registry.js: saveAuditResults() → data/audit/
+//           outlet-registry-gaps.json, unconditionally ("Always save to
+//           file"). `git log --oneline -- data/audit/outlet-registry-gaps.
+//           json` shows this file already lands in unrelated commits as
+//           audit-churn noise (e.g. a "chore: local audit log churn"
+//           commit) — the same class of drift the card-verifiability.js
+//           exclusion exists to prevent.
+//       Disposable-checkout consumers (autonomous-run.js worktrees,
+//       autonomous-merge.js's GHA checkout, acceptance-recheck.js's
+//       freshCheckout) discard these writes before merge, but a check
+//       re-run by hand in a persistent local checkout followed by a broad
+//       `git add -A` sweeps the stale snapshot into an unrelated commit —
+//       the actual mechanism behind the audit-churn commits above.
+// NOT a general defense against every future write-on-every-run audit
+// script sharing this prefix convention — that class still needs the same
+// one-by-one review this file used before task #1827, just for two known
+// scripts instead of every audit-/lint- script. A future script of this
+// shape that also writes a tracked path on every run must be added here by
+// hand; nothing here detects that automatically.
+const AUDIT_LINT_GENERIC_FORM_EXCLUDED = new Set([
+  // Narrower/different flags already curated above.
+  'audit-stale-flag-after-url-correction.js',
+  'audit-help-flag-safety.js',
+  'audit-workflow-hygiene.js',
+  'audit-aggregator-archive-integrity.js',
+  'audit-sibling-title-misroute.js',
+  'audit-orphan-tests.js',
+  'audit-cv-flag-contradiction.js',
+  // Unconditional tracked-file writers.
+  'audit-card-verifiability.js',
+  'audit-outlet-registry.js',
+]);
+
 const SAFE_CHECK_FORMS = [
   // .test.mjs/.test.js run via plain `node --test`. A file that imports a TS
   // module via the `@/` path alias (e.g. `@/lib/gate-logic`) throws
@@ -119,6 +169,45 @@ const SAFE_CHECK_FORMS = [
   // shape is equally safe; kept bare-only for consistency with the audit-*.js
   // convention above rather than because a flag would be unsafe.
   { re: /^node scripts\/lib\/check-sb-credits\.js$/ },
+  // Task #1827: generic SHAPE rule replacing one-by-one curation for
+  // read-only audit/lint scripts — the prior curated-array approach hit the
+  // same wall repeatedly (6 more read-only scripts rejected in one day).
+  // Script name is a single path segment (no `.`, no `/`), so it can never
+  // escape scripts/ — routed through pathsGroup/pathPrefix like every other
+  // file-argument form, which gives it the SAME traversal check
+  // (`!a.split('/').includes('..')`, redundant here but consistent) and,
+  // downstream, the SAME resolveCheckPaths existence/new-artifact check
+  // node --test paths get — a hallucinated `audit-plausible-but-fake.js` is
+  // flagged as a to-be-created artifact rather than silently validated
+  // (card #171 class). At most ONE flag from a fixed literal set — no
+  // free-form args, no combining flags (audit-cv-flag-contradiction.js
+  // above needs BOTH --window= and --strict together, which is exactly why
+  // it stays on its own narrower entry instead of relying on this one).
+  // AUDIT_LINT_GENERIC_FORM_EXCLUDED carves out scripts already curated
+  // above (narrower/different vetted flags) and the two known unconditional
+  // tracked-file writers — see that Set's comment for the full reasoning.
+  // Residual risk, accepted by design: a FUTURE script named
+  // scripts/audit-push-something.js or scripts/lint-send-something.js would
+  // match this form's shape without tripping MUTATING_SCRIPT_RE below (that
+  // regex anchors push-/send-/fix-/ingest- at the START of the basename,
+  // not after an audit-/lint- prefix) — safety here rests on the audit-/
+  // lint- naming CONVENTION itself plus the exclusion set, not on
+  // per-token mutation scanning. Any script violating that convention is a
+  // human-review gap, same as it always has been for this list.
+  {
+    re: /^node (scripts\/(?:audit|lint)-[A-Za-z0-9_-]+\.js)(?: (?:--strict|--gate|--json|--dry-run|--window=\d+|--max=\d+))?$/,
+    pathsGroup: 1,
+    pathPrefix: ['scripts/'],
+    denyBasenames: AUDIT_LINT_GENERIC_FORM_EXCLUDED,
+  },
+  // Task #1827: `bash <path>.test.sh` for this repo's *.test.sh bash test
+  // suites (sync-audit-checkout.test.sh et al.) — none were previously a
+  // safe-form shape at all. Same traversal + prefix checks as every other
+  // pathsGroup form; scoped to scripts/ and tests/ only. Verified
+  // sync-audit-checkout.test.sh does all its I/O inside a `mktemp -d`
+  // sandbox with a `trap rm -rf … EXIT` cleanup — no writes to the real
+  // repo tree.
+  { re: /^bash ((?:scripts|tests)\/[\w./-]+\.test\.sh)$/, pathsGroup: 1, pathPrefix: ['scripts/', 'tests/'] },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -127,7 +216,11 @@ const SAFE_CHECK_FORMS = [
 // that WRITE shared data — a verify re-run against a stale local clone is the
 // repo's documented corruption hazard (feedback_local_rebuild_stale_clone_hazard).
 // Applied to every path token in every form, present and future.
-const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.(m|c)?js$|(^|\/)(push|send)-[^/]*\.(m|c)?js$/i;
+// fix-/ingest- added (task #1827) as defense-in-depth alongside push-/send-
+// — belt-and-braces only; see the generic audit-/lint- form's comment above
+// for why this alone doesn't cover every mutating script sharing an
+// audit-/lint- prefix.
+const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.(m|c)?js$|(^|\/)(push|send|fix|ingest)-[^/]*\.(m|c)?js$/i;
 
 function isSafeCheckCommand(cmd) {
   const s = String(cmd || '').trim();
@@ -142,13 +235,14 @@ function isSafeCheckCommand(cmd) {
       // push-/send- prefix; everything else gets the mutation deny (case-
       // insensitive — APFS is case-insensitive — and covers .mjs/.cjs).
       (/\.test\.(m|c)?js$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
-      form.pathPrefix.some(p => a.startsWith(p)));
+      form.pathPrefix.some(p => a.startsWith(p)) &&
+      !(form.denyBasenames && form.denyBasenames.has(path.basename(a))));
     if (ok) return true;
   }
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), or `node scripts/lib/check-sb-credits.js`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-<name>.js` or `node scripts/lint-<name>.js` with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N (any OTHER audit-*.js/lint-*.js script not already named above — audit-card-verifiability.js and audit-outlet-registry.js are never accepted this way, they write shared repo state on every run), or `bash <scripts|tests path>.test.sh`';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
