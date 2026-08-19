@@ -1160,12 +1160,12 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
       "firstSeen": "2026-08-16T20:42:02.771Z",
-      "lastSeen": "2026-08-19T07:57:45.664Z",
+      "lastSeen": "2026-08-19T14:56:42.499Z",
       "lastNotifiedAt": "2026-08-16T20:42:02.771Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "cron-health:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1208,24 +1208,24 @@
       "disposition": "digest",
       "title": "Shipped review too short to verify on Jeeves Takes Charge",
       "firstSeen": "2026-08-18T08:56:58.831Z",
-      "lastSeen": "2026-08-18T14:00:14.518Z",
+      "lastSeen": "2026-08-19T14:56:42.500Z",
       "lastNotifiedAt": "2026-08-18T08:56:58.831Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-publish-date-pre-opening:missing:jeeves-takes-charge-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Jeeves Takes Charge",
       "firstSeen": "2026-08-18T08:56:58.833Z",
-      "lastSeen": "2026-08-19T10:49:42.474Z",
+      "lastSeen": "2026-08-19T14:56:42.501Z",
       "lastNotifiedAt": "2026-08-18T08:56:58.833Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "arm-yield:outlet:newsday": {
       "status": "open",
@@ -1256,48 +1256,48 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Jeeves Takes Charge",
       "firstSeen": "2026-08-18T19:00:26.757Z",
-      "lastSeen": "2026-08-19T10:49:42.475Z",
+      "lastSeen": "2026-08-19T14:56:42.501Z",
       "lastNotifiedAt": "2026-08-18T19:00:26.757Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-publish-date-pre-opening:abigails-party-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Pre-opening publishDate on Abigail’s Party",
       "firstSeen": "2026-08-19T04:02:52.959Z",
-      "lastSeen": "2026-08-19T10:49:43.463Z",
+      "lastSeen": "2026-08-19T14:56:42.503Z",
       "lastNotifiedAt": "2026-08-19T04:02:52.959Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-stale-upcoming-tag-abigails-party-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Abigail’s Party",
       "firstSeen": "2026-08-19T07:09:55.863Z",
-      "lastSeen": "2026-08-19T10:49:43.464Z",
+      "lastSeen": "2026-08-19T14:56:42.504Z",
       "lastNotifiedAt": "2026-08-19T07:09:55.863Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-stale-upcoming-tag-spellbound-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Spellbound",
       "firstSeen": "2026-08-19T07:09:55.865Z",
-      "lastSeen": "2026-08-19T10:49:43.465Z",
+      "lastSeen": "2026-08-19T14:56:42.505Z",
       "lastNotifiedAt": "2026-08-19T07:09:55.865Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
       "status": "open",
@@ -1332,6 +1332,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-451"
+    },
+    "opening-night-remediation-exhausted-t1-missing:jeeves-takes-charge-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
+      "firstSeen": "2026-08-19T14:56:42.502Z",
+      "lastSeen": "2026-08-19T14:56:42.502Z",
+      "lastNotifiedAt": "2026-08-19T14:56:42.502Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
