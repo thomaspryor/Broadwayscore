@@ -152,6 +152,47 @@ test('resolveNotionUuid takes the LAST 32-hex run when more than one appears', (
   assert.equal(resolveNotionUuid(text), '3c0637c5416f816589bde7df0ecebe41');
 });
 
+// ── task #1811: trashed pages (archived/in_trash) keep their Status property
+// untouched, so every check above that branches on `status` would otherwise
+// wave a trashed card through ────────────────────────────────────────────────
+test('classifyCandidate: trashed page + "In progress" status is DO-NOT-DISPATCH', () => {
+  const result = classifyCandidate({ card: { status: 'In progress', archived: true } });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  assert.ok(result.flags.includes('card-archived-in-trash'));
+});
+
+test('classifyCandidate: trashed page + "Not started" status is DO-NOT-DISPATCH', () => {
+  const result = classifyCandidate({ card: { status: 'Not started', archived: true } });
+  assert.equal(result.verdict, 'DO-NOT-DISPATCH');
+  assert.ok(result.flags.includes('card-archived-in-trash'));
+});
+
+test('classifyCandidate: live (non-trashed) "In progress" card is unaffected — OK-TO-DISPATCH', () => {
+  const result = classifyCandidate({ card: { status: 'In progress', archived: false, notes: '' } });
+  assert.equal(result.verdict, 'OK-TO-DISPATCH');
+});
+
+test('classifyCandidate: archived flag absent (real Notion payloads before this fix, or non-formatCard callers) behaves as not-trashed', () => {
+  const result = classifyCandidate({ card: { status: 'Not started', notes: '' } });
+  assert.equal(result.verdict, 'OK-TO-DISPATCH');
+});
+
+test('predispatchGuard: trashed page is refused even with a non-terminal status, names the real cause', () => {
+  const err = predispatchGuard({ id: '1811' }, { status: 'In progress', archived: true }, {});
+  assert.match(err, /REFUSING to dispatch #1811/);
+  assert.match(err, /card-archived-in-trash/);
+  assert.match(err, /moved to the trash/);
+});
+
+test('predispatchGuard: --allow-closed-card does NOT bypass a trashed-page refusal (needs --allow-reopen-suspect, same as PARKED/REOPEN-SUSPECT)', () => {
+  const err = predispatchGuard({ id: '1811' }, { status: 'In progress', archived: true }, { 'allow-closed-card': true });
+  assert.match(err, /REFUSING to dispatch #1811/);
+});
+
+test('predispatchGuard: --allow-reopen-suspect bypasses a trashed-page refusal', () => {
+  assert.equal(predispatchGuard({ id: '1811' }, { status: 'In progress', archived: true }, { 'allow-reopen-suspect': true }), null);
+});
+
 // ── input validation ────────────────────────────────────────────────────────
 test('classifyCandidate throws on a missing/malformed card', () => {
   assert.throws(() => classifyCandidate({}), TypeError);

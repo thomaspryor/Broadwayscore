@@ -249,16 +249,43 @@ function staleOutcomeGuard(task, card, opts) {
 // already reuses that same constant for the same "never make an
 // Archived/Cancelled card dispatchable again" rule, and a second copy here is
 // exactly the drift CLAUDE.md rule 15 warns about. A review caught the first
-// version of this guard omitting Archived, which would have let an archived
-// card dispatch: archived pages also refuse ALL Notion writes, so such a card
-// cannot even be corrected card-side. Lowercased once, at module load, so the
-// canonical set stays the single source of truth.
+// version of this guard omitting Archived, which would have let a card whose
+// STATUS PROPERTY reads "Archived" dispatch. Lowercased once, at module
+// load, so the canonical set stays the single source of truth.
+//
+// This is NOT the same thing as a page moved to Notion's TRASH (task #1811).
+// The "Archived" entry above matches the Status *property value* — a Select
+// option a human sets. Trashing a page is a page-level action (the `archived`
+// / `in_trash` API booleans, see formatCard()) that leaves the Status
+// property completely untouched: a trashed page can still read "In
+// progress" forever, so CLOSED_CARD_STATUSES never matches it, even though
+// (as the comment above already correctly says) it refuses ALL Notion writes
+// and so cannot even be corrected card-side. `card.archived` below is the
+// check that actually catches that case; the two are deliberately checked
+// independently rather than merged into one Set, since one is a status
+// string and the other a page-level boolean with no status value to fake.
 const CLOSED_CARD_STATUSES = new Set([...TERMINAL_CARD_STATUSES].map(s => s.toLowerCase()));
 
 function closedCardGuard(task, card, opts) {
   const o = opts || {};
   if (o['allow-closed-card'] || o['dry-run'] || o['print-prompt']) return null;
   if (!card) return null; // degraded fetch — honest unknown, never a refusal
+  if (card.archived) {
+    return `REFUSING to dispatch #${task.id}: its Notion card has been moved to the TRASH — the local task ` +
+      `mirror still reads "${(task && task.status) || 'unknown'}", and the card's own Status property may still ` +
+      `read anything (trashing doesn't touch it), but the page itself refuses every write ("Can't edit block ` +
+      `that is archived"), so dispatching would open a session that can never even mark the card Done.\n` +
+      `  Fix one of:\n` +
+      `    1. Nothing — the work is done or abandoned. Close the local task mirror entry by hand: set status ` +
+      `to "completed" (manuallyResolvedReason/manuallyResolvedAt alone do NOT remove it from the queue — ` +
+      `actionable() only filters on status, not those fields) AND set manuallyResolvedReason + manuallyResolvedAt ` +
+      `(so a later dead-completion reconciliation never tries to reopen it), since the trashed Notion card can't ` +
+      `be updated to signal either.\n` +
+      `    2. Restore the page from Notion's trash if there is genuinely more to do, then dispatch again.\n` +
+      `    3. Re-run with --allow-closed-card to dispatch anyway (recorded in the ledger) — note predispatch-guard ` +
+      `runs an independent archived check too, so a plain --allow-closed-card alone will still be refused there; ` +
+      `add --allow-reopen-suspect as well to get past both.`;
+  }
   const status = String(card.status || '').trim().toLowerCase();
   if (!CLOSED_CARD_STATUSES.has(status)) return null;
   const pid = notionIdOf(task);

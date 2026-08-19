@@ -54,6 +54,17 @@ function classifyCandidate({ card, task } = {}) {
   const notes = String(card.notes || '');
   const flags = [];
 
+  // Task #1811: a page moved to Notion's TRASH keeps its Status property
+  // untouched — it can still read 'In progress' or 'Not started', so every
+  // check below that branches on `status` would wave it through. Checked
+  // first, before PARKED_RE/looksLikeReopenSuspect: a trashed page refuses
+  // ALL Notion writes, which is a stronger "cannot be worked" fact than
+  // either of those (both of which at least leave the card editable).
+  if (card.archived) {
+    flags.push('card-archived-in-trash');
+    return { verdict: 'DO-NOT-DISPATCH', status, name, flags };
+  }
+
   // Failure mode 3: a card whose STATUS reads 'Not started' (so every other
   // check below would wave it through) but whose NOTES open with a literal
   // PARKED: marker is an explicit human override — checked first, unaffected
@@ -194,7 +205,9 @@ function predispatchGuard(task, card, opts) {
   const flagText = result.flags.length ? ` (${result.flags.join(', ')})` : '';
   const why = result.verdict === 'REOPEN-SUSPECT'
     ? 'the card carries a completedDate plus a substantial recorded Outcome and what looks like a commit sha — this looks like real finished work that a dispatch would redo, not a fresh task.'
-    : 'the card is explicitly marked not-dispatchable right now (a PARKED: note, or a terminal/Paused status).';
+    : result.flags.includes('card-archived-in-trash')
+      ? 'the Notion page has been moved to the trash — it refuses every write regardless of what its Status property still reads.'
+      : 'the card is explicitly marked not-dispatchable right now (a PARKED: note, or a terminal/Paused status).';
   return `REFUSING to dispatch #${task.id}: predispatch-guard classifies its Notion card ${result.verdict}${flagText} — ${why}\n` +
     `  Fix one of:\n` +
     `    1. Verify by hand: node scripts/predispatch-check.js --id ${task.id}${pid ? ` (or: node scripts/notion-brain.js get ${pid})` : ''}\n` +
