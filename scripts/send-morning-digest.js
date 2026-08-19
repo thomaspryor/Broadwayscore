@@ -440,6 +440,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // unlike p1RelevanceAudit above this appears every morning, not only after
   // an on-demand run.
   if (sections.predispatchQueue) blocks.push(renderNamedDigestBlock('Predispatch queue backlog', sections.predispatchQueue));
+  // Dispatch guard queue backlog (task #1802) — generalizes the block above
+  // from predispatch-guard alone to all 8 sibling dispatch-guards.js
+  // predicates. Same {generatedAt, bannerText, items, moreCount} shape, no
+  // new render code. Same producer/plist as predispatchQueue, so it also
+  // appears every morning.
+  if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);

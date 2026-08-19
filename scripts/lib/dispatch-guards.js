@@ -677,7 +677,25 @@ function linearMirrorGuard(task, mapping, opts) {
     `  node scripts/linear-next.js --id ${entry.identifier}`;
 }
 
+// The 8 guard names, in call order, as a single source of truth for anything
+// that needs to enumerate "every dispatch guard" without re-deriving the list
+// (task #1802: scripts/lib/dispatch-guard-queue-audit.js tallies a refusal
+// per name below across every queued task). Keeping this here, next to the
+// functions it names, means adding a 9th guard can't silently leave the
+// audit's list stale the way a second, standalone copy would.
+const GUARD_NAMES = [
+  'deadDispatchGuard',
+  'parkedGuard',
+  'staleOutcomeGuard',
+  'closedCardGuard',
+  'workBranchCollisionGuard',
+  'exactTitleOverlapGuard',
+  'sessionTrackingCloneGuard',
+  'linearMirrorGuard',
+];
+
 module.exports = {
+  GUARD_NAMES,
   findLiveWorkspaceForTask,
   deadDispatchGuard,
   parkedGuard,
