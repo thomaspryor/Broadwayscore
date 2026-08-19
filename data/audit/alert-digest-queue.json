@@ -143,17 +143,6 @@
     "queuedAt": "2026-08-17T13:10:08.867Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32102019605",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-18T05:38:22.998Z"
-  },
-  {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
     "description": "1/151 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nHow the Other Half Loves: score-drift",
@@ -284,5 +273,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-19T07:09:55.865Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32242899897",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-19T10:46:17.500Z"
   }
 ]

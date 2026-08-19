@@ -96,7 +96,9 @@ All other workflows (including `send-follow-notifications`) use `'warning'` or `
 
 ## Actionlint
 
-Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellcheck disabled (`-shellcheck=""`). `>10 inputs` rule suppressed (3 workflows legitimately exceed). Currently `continue-on-error: true` — remove after ~March 11 if stable.
+Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellcheck disabled (`-shellcheck=""`). `>10 inputs` rule suppressed (3 workflows legitimately exceed). Currently `continue-on-error: true` — remove after ~March 11 if stable. It also only lints `.github/workflows/*.yml` — `.github/actions/*/action.yml` composite actions are never linted by CI, and running `actionlint` on one directly misparses it as a malformed workflow (missing `on`/`jobs`) rather than validating composite-action syntax; treat that output as noise, not a real error.
+
+**Composite-action steps don't support `timeout-minutes`** (task #1814/#1815, 2026-08-19) — that key is only valid on job-level steps in a workflow file. Adding it to a step inside `.github/actions/*/action.yml` is a silent no-op (`update-show-status.yml`'s job kept timing out from a hung `setup-playwright` install because of exactly this). To bound a composite-action step, wrap the command in the shell: `timeout <seconds> "$cmd" || { echo "::error::..."; exit 1; }` — see `.github/actions/setup-playwright/action.yml`'s "Install Playwright browsers" step for the pattern (captures output to a log file too, since redirecting to `/dev/null` hides the diagnostic signal a hang needs).
 
 ---
 

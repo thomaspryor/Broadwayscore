@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-19T05:50:08.833Z",
-  "processed": 113,
-  "failed": 1816,
-  "successRate": "5.9%",
+  "updatedAt": "2026-08-19T10:59:27.091Z",
+  "processed": 118,
+  "failed": 2061,
+  "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 59,
+    "playwright": 62,
     "amp": 0,
     "browserbase": 7,
     "directCookies": 13,
     "scrapingbee": 17,
-    "brightdata": 2,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 27
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-18T20:12:57.011Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-08-18T20:14:45.880Z",
-      "event": "bb-session",
-      "session": "6eae1a1f",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
     {
       "t": "2026-08-18T20:14:46.447Z",
       "event": "bb-cookie-inject",
@@ -127,6 +116,17 @@
       "event": "bb-session",
       "session": "d9c95894",
       "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
+    },
+    {
+      "t": "2026-08-19T10:49:35.565Z",
+      "event": "bb-session",
+      "session": "db459d53",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T10:49:35.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
