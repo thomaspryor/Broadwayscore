@@ -96,11 +96,21 @@ function isValidUrl(s) {
   }
 }
 
+// Only the hostname is case-folded (DNS is case-insensitive) — path/query
+// are left as-is, matching route.ts's own normalizeUrl (route.ts:713) so a
+// slot the server would treat as a genuine duplicate is the same slot this
+// treats as one. Also strips the same tracking-param set the server strips,
+// so "same article, different utm_source" batches correctly as one review
+// instead of two false-negative duplicates.
+const TRACKING_PARAM_RE = /^utm_|^fbclid$|^triedRedirect$|^ref$|^mc_eid$/;
 function normalizeUrlForDupeCheck(url) {
   try {
     const u = new URL(url);
     u.hostname = u.hostname.toLowerCase();
-    return u.toString().replace(/\/$/, '').toLowerCase();
+    for (const key of Array.from(u.searchParams.keys())) {
+      if (TRACKING_PARAM_RE.test(key)) u.searchParams.delete(key);
+    }
+    return u.toString().replace(/\/$/, '');
   } catch {
     return url.trim().toLowerCase();
   }
@@ -118,7 +128,9 @@ function validateSlotForSubmission(slot) {
 }
 
 // Slot ids (2nd+ occurrence) whose URL duplicates an earlier slot in the
-// same batch. First occurrence is never flagged.
+// same batch. First occurrence is never flagged. Exposed standalone for
+// callers that want raw same-URL detection; buildSubmissionPlan below does
+// NOT use this directly — see the comment there for why.
 function findDuplicateSlotIds(slots) {
   const seen = new Set();
   const dupes = new Set();
@@ -140,21 +152,33 @@ function findDuplicateSlotIds(slots) {
 // still gets a display row via skipReason). A slot with no url and no text
 // is a genuinely blank/unused row, not an attempted submission, and is
 // omitted — same as before.
+//
+// Validation runs BEFORE duplicate-checking, and only slots that already
+// PASS validation register a key in the dupe-tracking set. Two independent
+// ship-check reviewers (2026-08-19) caught the bug in an earlier version of
+// this function: dedup ran first, over the raw (unvalidated) URLs, so two
+// slots both containing the same malformed garbage string ("not-a-url"
+// twice) classified as one 'malformed-line' + one 'duplicate-filtered' —
+// implying the first was accepted when neither was submittable. Malformed
+// slots never claim their URL as "seen", so a later slot with the SAME URL
+// but valid content still gets its fair chance to submit.
 function buildSubmissionPlan(slots) {
-  const dupes = findDuplicateSlotIds(slots);
   const plan = [];
+  const seenUrls = new Set();
   for (const slot of slots) {
     const hasContent = !!(slot.url || '').trim() || !!(slot.fullText || '').trim();
     if (!hasContent) continue;
-    if (dupes.has(slot.id)) {
-      plan.push({ slot, action: 'skip', skipReason: 'duplicate-filtered' });
-      continue;
-    }
     const malformedReason = validateSlotForSubmission(slot);
     if (malformedReason) {
       plan.push({ slot, action: 'skip', skipReason: malformedReason });
       continue;
     }
+    const key = normalizeUrlForDupeCheck(slot.url.trim());
+    if (seenUrls.has(key)) {
+      plan.push({ slot, action: 'skip', skipReason: 'duplicate-filtered' });
+      continue;
+    }
+    seenUrls.add(key);
     plan.push({ slot, action: 'submit' });
   }
   return plan;

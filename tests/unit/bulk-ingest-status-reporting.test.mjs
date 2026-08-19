@@ -184,6 +184,58 @@ test('buildSubmissionPlan: a slot with only a URL typed (no text yet) still gets
   assert.equal(plan[0].skipReason, 'malformed-line');
 });
 
+// Ship-check finding (2026-08-19, caught independently by two reviewers):
+// an earlier version deduped BEFORE validating, so two slots sharing the
+// same malformed garbage URL classified as one 'malformed-line' + one
+// 'duplicate-filtered' — implying the first was a legitimate submission
+// when neither was submittable.
+test('buildSubmissionPlan: two slots with the SAME malformed URL are both malformed-line, never duplicate-filtered', () => {
+  const slots = [slot('a', 'not-a-url', 'x'.repeat(60)), slot('b', 'not-a-url', 'x'.repeat(60))];
+  const plan = buildSubmissionPlan(slots);
+  const bySlotId = Object.fromEntries(plan.map(p => [p.slot.id, p]));
+  assert.equal(bySlotId.a.action, 'skip');
+  assert.equal(bySlotId.a.skipReason, 'malformed-line');
+  assert.equal(bySlotId.b.action, 'skip');
+  assert.equal(bySlotId.b.skipReason, 'malformed-line');
+});
+
+test('buildSubmissionPlan: a malformed slot does not "claim" its URL and block a later valid slot with the same URL', () => {
+  const slots = [
+    slot('malformed-first', 'https://outlet.com/review', 'too short'), // fails on text length
+    slot('valid-second', 'https://outlet.com/review', 'x'.repeat(60)),
+  ];
+  const plan = buildSubmissionPlan(slots);
+  const bySlotId = Object.fromEntries(plan.map(p => [p.slot.id, p]));
+  assert.equal(bySlotId['malformed-first'].action, 'skip');
+  assert.equal(bySlotId['malformed-first'].skipReason, 'malformed-line');
+  // The second slot is the first VALID occurrence of this URL — it must
+  // submit, not be treated as a duplicate of a slot that was never eligible.
+  assert.equal(bySlotId['valid-second'].action, 'submit');
+});
+
+test('normalizeUrlForDupeCheck (via buildSubmissionPlan): strips tracking params, matching route.ts normalizeUrl', () => {
+  const slots = [
+    slot('a', 'https://outlet.com/review?utm_source=newsletter', 'x'.repeat(60)),
+    slot('b', 'https://outlet.com/review?utm_campaign=spring', 'x'.repeat(60)),
+  ];
+  const plan = buildSubmissionPlan(slots);
+  const bySlotId = Object.fromEntries(plan.map(p => [p.slot.id, p]));
+  assert.equal(bySlotId.a.action, 'submit');
+  assert.equal(bySlotId.b.action, 'skip', 'same article behind different tracking params is still a duplicate');
+  assert.equal(bySlotId.b.skipReason, 'duplicate-filtered');
+});
+
+test('normalizeUrlForDupeCheck (via buildSubmissionPlan): only hostname is case-folded, not the path (avoids false-positive dupes)', () => {
+  const slots = [
+    slot('a', 'https://Outlet.com/Review-Title', 'x'.repeat(60)),
+    slot('b', 'https://outlet.com/review-title', 'x'.repeat(60)), // different case-sensitive path
+  ];
+  const plan = buildSubmissionPlan(slots);
+  const bySlotId = Object.fromEntries(plan.map(p => [p.slot.id, p]));
+  assert.equal(bySlotId.a.action, 'submit');
+  assert.equal(bySlotId.b.action, 'submit', 'different-case paths are different URLs, not a duplicate');
+});
+
 // ─── Acceptance criterion 5: mixed batch produces exactly 3 distinct rows ──
 
 test('mixed batch (1 valid, 1 byline-fail, 1 duplicate) -> exactly 3 distinct status rows', () => {

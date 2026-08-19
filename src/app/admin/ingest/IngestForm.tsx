@@ -650,7 +650,14 @@ function BatchPasteForm({
   const submitCount = plan.filter(p => p.action === 'submit').length;
   const malformedCount = plan.filter(p => p.skipReason === 'malformed-line').length;
   const duplicateCount = plan.filter(p => p.skipReason === 'duplicate-filtered').length;
-  const readyToSubmit = !!selectedShow && submitCount > 0;
+  // Gating on submitCount > 0 (an earlier version of this fix did) meant a
+  // batch of ONLY malformed/duplicate slots left the button disabled —
+  // handleSubmitAll, and its Phase 0 skip-logging, never ran, so those rows
+  // never got a status entry. That's the exact silent-drop this card exists
+  // to close, just relocated to the all-invalid case (ship-check finding,
+  // 2026-08-19). Gate on plan.length instead: any attempted submission,
+  // successful or not, is enough to fire the submit flow.
+  const readyToSubmit = !!selectedShow && plan.length > 0;
 
   function updateSlot(id: string, patch: Partial<ReviewSlot>) {
     setSlots(prev => prev.map(s => (s.id === id ? { ...s, ...patch } : s)));
@@ -672,6 +679,7 @@ function BatchPasteForm({
     let failureCount = 0;
     let doneCount = 0;
     const savedIds: string[] = [];
+    const succeededSlotIds = new Set<string>();
     // Track whether ANY successful slot needs LLM scoring. If so, the post-
     // batch dispatch must target llm-ensemble-score.yml (with fast_rebuild=true)
     // — dispatching rebuild-fast.yml directly would commit unscored reviews
@@ -724,6 +732,7 @@ function BatchPasteForm({
         if (json.success) {
           successCount++;
           savedIds.push(id);
+          succeededSlotIds.add(slot.id);
           if (json.needsScoring) anyNeedsScoring = true;
           onUpdate(id, {
             status: 'saved',
@@ -828,12 +837,23 @@ function BatchPasteForm({
       });
     }
 
-    // Reset slots that succeeded; keep failed ones so operator can edit + retry.
-    if (failureCount === 0) {
-      setSlots([
-        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
-        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
-      ]);
+    // Remove exactly the slots that succeeded; keep failed/skipped ones so
+    // the operator can edit + retry. Gating this on `failureCount === 0`
+    // (an earlier version did) kept EVERY slot — including already-committed
+    // successes — the moment any single slot failed or was skipped, so
+    // clicking Submit again after fixing the one bad row silently re-POSTed
+    // the already-saved reviews too, double-committing them and
+    // double-dispatching rebuilds (ship-check finding, 2026-08-19).
+    if (succeededSlotIds.size > 0) {
+      setSlots(prev => {
+        const remaining = prev.filter(s => !succeededSlotIds.has(s.id));
+        return remaining.length > 0
+          ? remaining
+          : [
+              { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+              { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+            ];
+      });
     }
     setSubmitting(false);
   }
@@ -973,7 +993,9 @@ function BatchPasteForm({
               ? `Submitting ${progress.done} of ${progress.total}…`
               : !readyToSubmit
                 ? 'Fill in at least one review (URL + text)'
-                : `Submit ${submitCount} review${submitCount === 1 ? '' : 's'} for ${selectedShow.title}`}
+                : submitCount > 0
+                  ? `Submit ${submitCount} review${submitCount === 1 ? '' : 's'} for ${selectedShow.title}`
+                  : `Log ${plan.length} failed review${plan.length === 1 ? '' : 's'} — nothing valid to submit`}
           </button>
         </>
       )}
