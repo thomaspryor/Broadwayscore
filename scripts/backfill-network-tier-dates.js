@@ -324,7 +324,12 @@ async function processOne(cand, stats) {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         data.publishDate = urlDate.date;
         data.dateSource = `url-backfill-${urlDate.source}`;
-        safeWriteReview(filePath, data);
+        const res = safeWriteReview(filePath, data);
+        if (res && res.wrote === false) {
+          stats.failed++;
+          console.log(`  [quarantined:${res.skipped}] ${showId} (url) would-be-date=${urlDate.date}`);
+          return;
+        }
       }
       stats.extracted++; stats.touchedShows.add(showId);
       console.log(`  [url] ${showId}: ${urlDate.date}`);
@@ -338,7 +343,12 @@ async function processOne(cand, stats) {
         if (!dryRun) {
           raw.publishDate = textDate;
           raw.dateSource = 'text-regex-backfill';
-          safeWriteReview(filePath, raw);
+          const res = safeWriteReview(filePath, raw);
+          if (res && res.wrote === false) {
+            stats.failed++;
+            console.log(`  [quarantined:${res.skipped}] ${showId} (text) would-be-date=${textDate}`);
+            return;
+          }
         }
         stats.extracted++; stats.touchedShows.add(showId);
         console.log(`  [text] ${showId}: ${textDate}`);
@@ -425,7 +435,13 @@ async function processOne(cand, stats) {
         data.publishDate = date;
         data.dateSource = dateSource;
         delete data.dateBackfillAttempted;
-        safeWriteReview(filePath, data, { force: true });
+        delete data.dateBackfillAttemptReason;
+        const res = safeWriteReview(filePath, data, { force: true });
+        if (res && res.wrote === false) {
+          stats.failed++;
+          console.log(`  [quarantined:${res.skipped}] ${showId} (${dateSource}) would-be-date=${date}`);
+          return;
+        }
       }
       stats.extracted++; stats.touchedShows.add(showId);
       console.log(`  [${dateSource}] ${showId}: ${date}`);
@@ -476,11 +492,15 @@ async function main() {
       const elapsedSec = ((Date.now() - startedAt) / 1000).toFixed(0);
       console.log(`\n--- progress ${processed}/${batch.length} extracted=${stats.extracted} failed=${stats.failed} errors=${stats.errors} elapsed=${elapsedSec}s ---\n`);
       if (!dryRun) {
-        fs.mkdirSync(path.dirname(PROGRESS_PATH), { recursive: true });
-        fs.writeFileSync(PROGRESS_PATH, JSON.stringify({
-          processed, total: batch.length, extracted: stats.extracted, failed: stats.failed,
-          errors: stats.errors, touchedShows: Array.from(stats.touchedShows), updatedAt: new Date().toISOString(),
-        }, null, 2));
+        // Best-effort checkpoint — a write failure here (disk full, permissions)
+        // must not kill an in-flight batch via an unhandled rejection.
+        try {
+          fs.mkdirSync(path.dirname(PROGRESS_PATH), { recursive: true });
+          fs.writeFileSync(PROGRESS_PATH, JSON.stringify({
+            processed, total: batch.length, extracted: stats.extracted, failed: stats.failed,
+            errors: stats.errors, touchedShows: Array.from(stats.touchedShows), updatedAt: new Date().toISOString(),
+          }, null, 2));
+        } catch (e) { console.log(`  [progress-checkpoint-failed] ${e.message}`); }
       }
     }
   }, concurrency);
