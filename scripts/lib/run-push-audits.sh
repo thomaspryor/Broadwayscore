@@ -123,7 +123,14 @@ fi
 # correct there, since CI's checkout IS the branch under test. Scoping still
 # falls back to a full scan when an allowlist or the lint script itself is in
 # CHANGED_FILES (lint-write-routing.sh's own candidate_files() handles that).
-if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
+#
+# Trigger matches .mjs/.ts too (not just .js): lint-write-routing.sh's
+# shows-json/commercial-json/audience-buzz-json checks cover all three
+# extensions (candidate_files "$ALLOWLIST" js mjs ts), so a top-level
+# scripts/*.mjs or scripts/*.ts writer must be able to trigger this audit
+# locally the same way a .js one does — otherwise it silently skips the local
+# gate and only gets caught later in CI (task #1826 review finding).
+if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.(js|mjs|ts)$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
   if [ "$LIST_ONLY" = "1" ]; then
     echo "write-routing"
   elif [ -f scripts/lint-write-routing.sh ]; then

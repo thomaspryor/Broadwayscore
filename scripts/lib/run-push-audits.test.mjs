@@ -77,6 +77,15 @@ test('argv form (no stdin) matches piped-stdin form', () => {
   ]);
 });
 
+test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', () => {
+  // lint-write-routing.sh's shows-json/commercial-json/audience-buzz-json
+  // checks cover .js/.mjs/.ts writers; the local push-time trigger must be
+  // able to fire on all three too, or a top-level .mjs/.ts writer silently
+  // skips the local gate and is only caught later in CI (task #1826 review).
+  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['unbounded-fetch', 'write-routing']);
+});
+
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
@@ -196,4 +205,25 @@ test('no --scope-stdin (CI direct-call mode) still scans the whole tree', () => 
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// End-to-end: actually run run-push-audits.sh (not --list) against a real,
+// currently-clean top-level script in THIS checkout, proving the real wiring
+// — CHANGED_FILES piped into --scope-stdin, consumed by lint-write-routing.sh
+// — works together, not just each half in isolation (the source-grep test
+// above and the isolated-repo tests can't catch a wiring break between them).
+test('end-to-end: run-push-audits.sh passes on a real clean scripts/*.js file', () => {
+  // Only asserts on the write-routing audit specifically (not overall exit
+  // code) — this file also triggers unbounded-fetch/help-flag-safety, whose
+  // pass/fail is out of scope for this card and shouldn't make this test flaky.
+  let out;
+  try {
+    out = execFileSync('bash', [SCRIPT], {
+      input: 'scripts/validate-data.js\n',
+      encoding: 'utf8',
+    });
+  } catch (err) {
+    out = `${err.stdout ?? ''}${err.stderr ?? ''}`;
+  }
+  assert.doesNotMatch(out, /AUDIT BLOCKED: write-routing/);
 });
