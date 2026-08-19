@@ -97,3 +97,12 @@ Card: "P1: fetchPage url_mismatch guard rejects legitimate site redirects…" (3
   `fetchPage(url,{purpose:'opening-night'})` does nothing. Export `BD_OPENING_NIGHT=1` for census scripts.
 - `whatsonstage.com/news/reviews/` returning ~4.2KB is site-side JS rendering — plain curl gets the same
   shell. Census WhatsOnStage via its `?s=` site-search or a JS-rendering fetch, not that index page.
+
+## Gate 21: submit-review-form accepts outlets with NO registered domain, and the LLM scores marketing copy (2026-08-19, Jeeves Takes Charge WE)
+`staybook.in/activities/jeeves-takes-charge` — a ticket-booking listing page — was ingested via the `submit-review-form` source path with `domainUnvalidated:true` / `domainUnvalidatedReason:"no registered domain for outlet staybook - URL host not checked"`, then LLM-scored **78 / Positive** (confidence "low") off one promotional line naming the lead actor. It went live and inflated the composite from 64.81 to 66.18 across 7 entries. Body was pure booking copy ("Get your booking confirmed instantly", "Grab great deals before they are gone").
+**Two gates failed independently:** the domain gate degraded to a warning flag instead of a block, and the non-review classifier never fired before scoring.
+**Detection:** only the reverse diff (prod entries the independent census cannot corroborate) caught it. Forward-only gap-hunting is blind to this class.
+**Manual fix:** `isNonReview:true` + `isNonReviewReason` (do NOT use the `"CV-promoted (not a review):"` prefix — `isNonReviewDemotedByFreshCV` will demote it back) + `manualNonReviewSet/At/By` + `scoreStatus:EXCLUDED_NON_REVIEW` + `excludeFromScoring:true`, then rebuild.
+
+## Gate 22: ingest-review-from-url.js overwrites a DIFFERENT production's review-texts file (2026-08-19, 3x in one night)
+Ingesting a URL whose derived filename collides with an existing outlet--critic file overwrites that file **in place**, destroying another production's review. Happened three times on one opening night (The Stage file corrupted at attempt 49). Filed as Notion `3c1637c5-416f-81b1-9183-da19facd8e89`. Symptom: a previously-live review silently changes show/content after an unrelated ingest. Always `git diff` review-texts after any `ingest-review-from-url.js` run.
