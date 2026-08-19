@@ -80,9 +80,54 @@ test('buildQueueAuditSnapshot: steady state (no history) reports plain count, no
   assert.equal(snap.jump, null);
   assert.match(snap.bannerText, /5 of 30 queued cards blocked from auto-dispatch/);
   assert.match(snap.bannerText, /3 reopen-suspect, 2 do-not-dispatch/);
+  assert.match(snap.bannerText, /20 ok-to-dispatch, 5 check-first/);
   assert.ok(!snap.bannerText.includes('⚠'));
   assert.equal(snap.generatedAt, new Date(NOW).toISOString());
-  assert.equal(snap.items.length, 4);
+  // no name/id on these fixtures, but the 5 blocked cards (3 + 2) still
+  // produce named rows (falling back to '(untitled card)') — the tally rows
+  // that used to occupy `items` moved into bannerText instead.
+  assert.equal(snap.items.length, 5);
+  assert.equal(snap.moreCount, 0);
+});
+
+test('buildQueueAuditSnapshot: items lists actual blocked card titles/ids, not a tally (task #1803)', () => {
+  const classifications = [
+    { verdict: 'OK-TO-DISPATCH', name: 'Fine card', id: '1' },
+    { verdict: 'REOPEN-SUSPECT', name: 'Reopened suspiciously', id: '901' },
+    { verdict: 'DO-NOT-DISPATCH', name: 'Already done', id: '902' },
+  ];
+  const snap = buildQueueAuditSnapshot({ classifications, history: [], now: NOW });
+  assert.equal(snap.items.length, 2);
+  assert.deepEqual(snap.items.map((i) => i.title), ['Reopened suspiciously', 'Already done']);
+  assert.match(snap.items[0].detail, /#901 — REOPEN-SUSPECT/);
+  assert.match(snap.items[1].detail, /#902 — DO-NOT-DISPATCH/);
+  assert.equal(snap.moreCount, 0);
+});
+
+test('buildQueueAuditSnapshot: REOPEN-SUSPECT cards sort before DO-NOT-DISPATCH regardless of input order', () => {
+  const classifications = [
+    { verdict: 'DO-NOT-DISPATCH', name: 'Terminal card', id: '1' },
+    { verdict: 'REOPEN-SUSPECT', name: 'Suspicious card', id: '2' },
+  ];
+  const snap = buildQueueAuditSnapshot({ classifications, history: [], now: NOW });
+  assert.deepEqual(snap.items.map((i) => i.title), ['Suspicious card', 'Terminal card']);
+});
+
+test('buildQueueAuditSnapshot: named items are truncated to maxItems with a moreCount for the rest', () => {
+  const classifications = Array.from({ length: 12 }, (_, i) => (
+    { verdict: 'DO-NOT-DISPATCH', name: `Card ${i}`, id: String(i) }
+  ));
+  const snap = buildQueueAuditSnapshot({ classifications, history: [], now: NOW, maxItems: 8 });
+  assert.equal(snap.items.length, 8);
+  assert.equal(snap.moreCount, 4);
+});
+
+test('buildQueueAuditSnapshot: a blocked card missing name/id degrades to a placeholder title, never throws', () => {
+  const classifications = [{ verdict: 'DO-NOT-DISPATCH' }];
+  const snap = buildQueueAuditSnapshot({ classifications, history: [], now: NOW });
+  assert.equal(snap.items.length, 1);
+  assert.equal(snap.items[0].title, '(untitled card)');
+  assert.equal(snap.items[0].detail, 'DO-NOT-DISPATCH');
 });
 
 test('buildQueueAuditSnapshot: a real week-over-week jump above threshold is flagged', () => {
