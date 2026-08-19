@@ -28,13 +28,76 @@
 # so a violation blocks at push time instead of reddening main for hours
 # (2026-07-12: 24 consecutive Test Suite failures from one unlinted script).
 #
-# Usage: lint-write-routing.sh [review-texts|reviews-json|shows-json|commercial-json|audience-buzz-json|all]   (default: all)
+# Usage: lint-write-routing.sh [--scope-stdin] [review-texts|reviews-json|shows-json|commercial-json|audience-buzz-json|all]   (default: all)
+#
+# --scope-stdin (card #1826): must be the FIRST argument. Reads a newline-
+# separated file list from stdin and restricts every check's candidate files
+# to that list, instead of globbing the whole scripts/ directory. Without it,
+# each check scans the CURRENT WORKING TREE STATE of scripts/ — correct for
+# CI's direct calls (test.yml), which run against a clean checkout of exactly
+# the branch under test, but wrong for scripts/lib/run-push-audits.sh's local
+# push/merge call: that runs in a checkout shared by 20+ concurrent worktree
+# sessions, so an unrelated stray/untracked file left by ANY OTHER session
+# could trip a violation and block a push that never touched it (reproduced
+# 2026-08-19: a different session's uncommitted audit-duplicate-of-cleared-
+# contradiction.js blocked an unrelated launchd-fix merge). run-push-audits.sh
+# passes --scope-stdin with the incoming diff's file list so only files
+# actually part of the push/merge are checked. Same shape as
+# audit-orphan-tests.js's --scope-stdin (card #1488).
 
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 
+SCOPE_STDIN=0
+if [ "${1:-}" = "--scope-stdin" ]; then
+  SCOPE_STDIN=1
+  shift
+fi
+
 MODE="${1:-all}"
 FAILED=0
+
+SCOPE_FILES=""
+if [ "$SCOPE_STDIN" = "1" ]; then
+  SCOPE_FILES="$(cat)"
+fi
+
+# Enumerate candidate files for a write-routing check, honoring --scope-stdin.
+#
+# $1   = this check's allowlist file (e.g. .review-write-guard-exempt.txt).
+# $2.. = filename extensions to match (no dot), e.g. "js" or "js mjs ts".
+#
+# --scope-stdin falls back to a full-repo scan (ignoring SCOPE_FILES) when the
+# allowlist itself, or this script, is in SCOPE_FILES: an edited allowlist can
+# un-exempt an existing violator ANYWHERE in the tree, not just among the
+# files the current push/merge happens to touch, so scoping to the diff alone
+# would let that check silently pass having examined zero files (task #1826
+# review finding).
+candidate_files() {
+  local allowlist="$1"; shift
+  local ext ext_re f full=0
+  if [ "$SCOPE_STDIN" = "1" ]; then
+    if printf '%s\n' "$SCOPE_FILES" | grep -qxF "$allowlist" \
+      || printf '%s\n' "$SCOPE_FILES" | grep -qxF "scripts/lint-write-routing.sh"; then
+      full=1
+    fi
+  fi
+  if [ "$SCOPE_STDIN" = "1" ] && [ "$full" = "0" ]; then
+    ext_re=""
+    for ext in "$@"; do
+      ext_re="${ext_re:+$ext_re|}${ext}"
+    done
+    printf '%s\n' "$SCOPE_FILES" | grep -E "^scripts/[^/]+\.(${ext_re})\$" 2>/dev/null | while IFS= read -r f; do
+      [ -e "$f" ] && echo "$f"
+    done
+    return 0
+  fi
+  for ext in "$@"; do
+    for f in scripts/*."$ext"; do
+      [ -e "$f" ] && echo "$f"
+    done
+  done
+}
 
 read_allowlist() {
   # Extract filenames from an allowlist file (strip comments + " -- reason").
@@ -112,7 +175,8 @@ check_review_texts() {
   EXEMPT=$(read_allowlist "$ALLOWLIST")
   allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
   EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
-  for f in scripts/*.js; do
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
     name=$(basename "$f")
     # Guard itself is exempt
     [ "$name" = "review-write-guard.js" ] && continue
@@ -127,7 +191,7 @@ check_review_texts() {
       && ! grep -q "safeWriteReview" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
-  done
+  done < <(candidate_files "$ALLOWLIST" js)
   if [ -n "$VIOLATIONS" ]; then
     echo "::error::Scripts write directly to review-texts/ without safeWriteReview:"
     for v in $VIOLATIONS; do echo "  $v"; done
@@ -151,7 +215,8 @@ check_reviews_json() {
   EXEMPT=$(read_allowlist "$ALLOWLIST")
   allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
   EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
-  for f in scripts/*.js; do
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
     name=$(basename "$f")
     exempt_has "$EXEMPT_NL" "$name" && continue
     # (1) references data/reviews.json AND (2) writeFileSync to a known
@@ -161,7 +226,7 @@ check_reviews_json() {
       && grep -qE "fs\.writeFileSync\([^)]*(REVIEWS_PATH|reviewsTmpPath|reviewsJsonPath|reviewsPath|targetPath|['\"][^'\"]*data/reviews\.json['\"])" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
-  done
+  done < <(candidate_files "$ALLOWLIST" js)
   if [ -n "$VIOLATIONS" ]; then
     echo "::error::Scripts write data/reviews.json directly (bypasses rebuild audit trail):"
     for v in $VIOLATIONS; do echo "  $v"; done
@@ -188,8 +253,8 @@ check_shows_json() {
   # and .ts top-level scripts exist too (scripts/lib/*.ts, scripts/*.mjs are
   # test/library files excluded by staying at depth 1) and were found
   # capable of the same bypass class in review — cover them too.
-  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
-    [ -e "$f" ] || continue
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
     name=$(basename "$f")
     exempt_has "$EXEMPT_NL" "$name" && continue
     # (1) references data/shows.json AND (2) writeFileSync to a var whose
@@ -211,7 +276,7 @@ check_shows_json() {
       && ! grep -q "shows-write-guard" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
-  done
+  done < <(candidate_files "$ALLOWLIST" js mjs ts)
   if [ -n "$VIOLATIONS" ]; then
     echo "::error::Scripts write data/shows.json without the shows-write-guard lock+merge:"
     for v in $VIOLATIONS; do echo "  $v"; done
@@ -236,8 +301,8 @@ check_commercial_json() {
   EXEMPT=$(read_allowlist "$ALLOWLIST")
   allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
   EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
-  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
-    [ -e "$f" ] || continue
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
     name=$(basename "$f")
     exempt_has "$EXEMPT_NL" "$name" && continue
     # Same shape of check as shows-json: (1) references data/commercial.json
@@ -249,7 +314,7 @@ check_commercial_json() {
       && ! grep -q "commercial-write-guard" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
-  done
+  done < <(candidate_files "$ALLOWLIST" js mjs ts)
   if [ -n "$VIOLATIONS" ]; then
     echo "::error::Scripts write data/commercial.json without the commercial-write-guard lock+merge:"
     for v in $VIOLATIONS; do echo "  $v"; done
@@ -274,8 +339,8 @@ check_audience_buzz_json() {
   EXEMPT=$(read_allowlist "$ALLOWLIST")
   allowlist_parse_ok "$ALLOWLIST" "$EXEMPT" || { FAILED=1; return; }
   EXEMPT_NL=$'\n'"$EXEMPT"$'\n'
-  for f in scripts/*.js scripts/*.mjs scripts/*.ts; do
-    [ -e "$f" ] || continue
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
     name=$(basename "$f")
     exempt_has "$EXEMPT_NL" "$name" && continue
     if grep -qE "['\"][^'\"]*data/audience-buzz\.json['\"]|path\.join\([^)]*['\"]audience-buzz\.json['\"]" "$f" \
@@ -283,7 +348,7 @@ check_audience_buzz_json() {
       && ! grep -q "audience-buzz-write-guard" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
-  done
+  done < <(candidate_files "$ALLOWLIST" js mjs ts)
   if [ -n "$VIOLATIONS" ]; then
     echo "::error::Scripts write data/audience-buzz.json without the audience-buzz-write-guard lock+merge:"
     for v in $VIOLATIONS; do echo "  $v"; done
