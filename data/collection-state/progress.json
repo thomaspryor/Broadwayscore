@@ -63,7 +63,9 @@
     "masquerade-off-broadway-2025/nyt-theater--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+    "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -451,7 +453,25 @@
     "my-neighbour-totoro-west-end-2025/nottingham-confidential--west-end-theatre-editorial.json",
     "my-neighbour-totoro-west-end-2025/theatre-weekly--unknown.json",
     "my-neighbour-totoro-west-end-2025/tribune--unknown.json",
-    "my-neighbour-totoro-west-end-2025/west-end-best-friend--news-desk.json"
+    "my-neighbour-totoro-west-end-2025/west-end-best-friend--news-desk.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/monstagigz--unknown.json",
+    "abigails-party-west-end-2026/telegraph--dominic-cavendish.json",
+    "abigails-party-west-end-2026/thestage--paul-vale.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -496,7 +516,9 @@
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "masquerade-off-broadway-2025/nyt-theater--unknown.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+      "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+      "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "abigails-party-west-end-2026/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -515,7 +537,9 @@
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
       "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ],
     "archiveToday": [],
     "archive": [
       "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -534,7 +558,7 @@
     ]
   },
   "startTime": "2026-08-19T11:41:09.056Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/west-end-best-friend--news-desk.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
   "log": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -568,6 +592,30 @@
       "t": "2026-08-19T20:00:17.310Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-19T21:03:09.840Z",
+      "event": "bb-session",
+      "session": "fd8e4b7c",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-19T21:03:18.220Z",
+      "event": "bb-session",
+      "session": "4e5ea472",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-19T21:06:08.483Z",
+      "event": "bb-session",
+      "session": "f3ec3854",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-19T21:06:27.175Z",
+      "event": "bb-session",
+      "session": "fe275261",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
     }
   ]
 }
