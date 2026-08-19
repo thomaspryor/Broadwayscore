@@ -198,17 +198,6 @@
     "queuedAt": "2026-08-18T13:14:46.580Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.7% (380/489)\noff-broadway: 45.3% (148/327)\nwest-end: 70.1% (391/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (101h)\nA Midsummer Night's Dream - Globe — telegraph (101h)\nA Midsummer Night's Dream - Globe — thestage (101h)\nA Midsummer Night's Dream - Globe — times-uk (101h)\nA Midsummer Night's Dream — financialtimes (101h)\n… 210 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (101h)\nThe Book of Mormon — usatoday (101h)\nHeathers The Musical — dailybeast (101h)\nHeathers The Musical — ew (101h)\nOthello — dailybeast (101h)\n… 4 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-18T14:30:57.779Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "179 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
@@ -284,5 +273,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-19T10:46:17.500Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.9% (380/488)\noff-broadway: 45.3% (148/327)\nwest-end: 70.6% (394/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (121h)\nA Midsummer Night's Dream - Globe — telegraph (121h)\nA Midsummer Night's Dream - Globe — thestage (121h)\nA Midsummer Night's Dream - Globe — times-uk (121h)\nA Midsummer Night's Dream — financialtimes (121h)\n… 185 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (121h)\n& Juliet — nydailynews (121h)\nThe Book of Mormon — usatoday (121h)\nBuena Vista Social Club — broadwaynews (121h)\nBuena Vista Social Club — nydailynews (121h)\n… 26 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-19T11:21:33.545Z"
   }
 ]
