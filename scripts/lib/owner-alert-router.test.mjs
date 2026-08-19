@@ -8,17 +8,39 @@ import os from 'node:os';
 
 const require = createRequire(import.meta.url);
 
-// The router shells out to `node scripts/notion-brain.js create` for
-// disposition='auto' and calls sendAlert() (Resend) for disposition='human'.
-// Neither should ever fire in a unit test — override both dependencies via a
-// throwaway module cache entry pointed at a fake execFileSync/sendAlert, and
-// isolate the ledger/digest-queue files to a temp dir so runs don't touch
-// data/audit/ or leave test residue for the real project.
+// Captured once, before loadRouterWithFakes() ever touches require.cache for
+// scripts/lib/linear.js — the real ISSUE_CREATE_MUTATION text, so the BRO-375
+// wiring test below can assert the actual GraphQL query dispatchCard()
+// triggers matches what linear.js owns, not a hand-copied second string
+// (CLAUDE.md rule 15).
+const { ISSUE_CREATE_MUTATION: REAL_ISSUE_CREATE_MUTATION } = require('./linear.js');
+
+// The router calls createLinearIssue() (scripts/lib/linear-issue-create.js,
+// BRO-375 Phase 1 — formerly an execFileSync shell-out to linear-brain.js)
+// for disposition='auto' and calls sendAlert() (Resend) for
+// disposition='human'. Neither should ever fire in a unit test — override
+// both dependencies via a throwaway module cache entry pointed at a fake
+// createLinearIssue/sendAlert, and isolate the ledger/digest-queue files to a
+// temp dir so runs don't touch data/audit/ or leave test residue for the
+// real project.
 // `ledgerEnvPath` pins the ledger to a real on-disk file via ALERT_LEDGER_PATH
 // instead of the fs remap below — used by the git-checkout-wipe tests, which
 // need the ledger and the (fake) git-tracked ledger to be genuinely different
 // files so one can be wiped without touching the other.
-function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, linearSearchIssuesImpl } = {}) {
+// `useRealLinearIssueCreate` skips the createLinearIssue stub entirely and
+// exercises the REAL scripts/lib/linear-issue-create.js — used by the one
+// test that proves a routed alert reaches Linear through the injectable
+// client in scripts/lib/linear.js (BRO-374), with only the network layer
+// (linear.js's graphql executor + linear-client's getTeam) stubbed below it.
+function loadRouterWithFakes({
+  createLinearIssueImpl,
+  sendAlertImpl,
+  ledgerEnvPath,
+  linearSearchIssuesImpl,
+  useRealLinearIssueCreate,
+  linearGetTeamImpl,
+  linearGraphqlImpl,
+} = {}) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-test-'));
   const priorLedgerEnv = process.env.ALERT_LEDGER_PATH;
   // Default to a per-load temp ledger. Loading bare used to resolve to the
@@ -34,24 +56,35 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, l
   const modulePath = require.resolve('./owner-alert-router.js');
   const discordNotifyPath = require.resolve('./discord-notify.js');
   const linearClientPath = require.resolve('./linear-client.js');
-  const childProcessPath = require.resolve('node:child_process');
+  const linearIssueCreatePath = require.resolve('./linear-issue-create.js');
+  const linearPath = require.resolve('./linear.js');
 
   delete require.cache[modulePath];
   delete require.cache[discordNotifyPath];
   delete require.cache[linearClientPath];
+  delete require.cache[linearIssueCreatePath];
+  delete require.cache[linearPath];
 
-  const calls = { execFileSync: [], sendAlert: [], linearSearchIssues: [] };
+  const calls = { createLinearIssue: [], sendAlert: [], linearSearchIssues: [], linearGraphql: [] };
 
-  // Stub node:child_process.execFileSync so card dispatch never shells out.
-  const realChildProcess = require(childProcessPath);
-  const originalExecFileSync = realChildProcess.execFileSync;
-  realChildProcess.execFileSync = (...args) => {
-    calls.execFileSync.push(args);
-    if (execFileSyncImpl) return execFileSyncImpl(...args);
-    // Default stub mimics linear-brain.js create output (BRO-286): issue JSON
-    // (the `.identifier` field is what dispatchCard parses) + the human line.
-    return JSON.stringify({ id: 'uuid-opaque', identifier: 'BRO-999', title: 'stub' }, null, 2) + '\nPARKED: BRO-999';
-  };
+  // Stub linear-issue-create's createLinearIssue so card dispatch never
+  // shells out or touches the network — default mirrors a real park-mode
+  // create (`.issue.identifier` is what dispatchCard reads). Skipped under
+  // useRealLinearIssueCreate: see header comment above.
+  if (!useRealLinearIssueCreate) {
+    require.cache[linearIssueCreatePath] = {
+      id: linearIssueCreatePath,
+      filename: linearIssueCreatePath,
+      loaded: true,
+      exports: {
+        createLinearIssue: async (opts) => {
+          calls.createLinearIssue.push(opts);
+          if (createLinearIssueImpl) return createLinearIssueImpl(opts);
+          return { issue: { id: 'uuid-opaque', identifier: 'BRO-999', title: opts.title }, mode: 'park', stateName: 'Backlog' };
+        },
+      },
+    };
+  }
 
   // Stub discord-notify's sendAlert so the human path never calls Resend.
   require.cache[discordNotifyPath] = {
@@ -70,7 +103,20 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, l
   // cross-system dedupe never makes a real GraphQL call in a test — default
   // is "no match found" (findLinearDuplicate treats a real Linear outage the
   // same way, via its own try/catch, but a test must never depend on network
-  // or LINEAR_API_KEY being set on the machine running it).
+  // or LINEAR_API_KEY being set on the machine running it). getTeam and
+  // graphql are only actually exercised under useRealLinearIssueCreate (the
+  // real chokepoint calls getTeam to resolve a backlog/unstarted state id,
+  // then builds a LinearClient — scripts/lib/linear.js — around THIS
+  // stubbed graphql executor, not linear.js's own network transport: see
+  // linear-issue-create.js's header for why it reuses linear-client.js's
+  // retry-aware graphql() as the injected executor).
+  const DEFAULT_TEAM = {
+    id: 'team-uuid',
+    states: [
+      { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+      { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+    ],
+  };
   require.cache[linearClientPath] = {
     id: linearClientPath,
     filename: linearClientPath,
@@ -80,6 +126,23 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, l
         calls.linearSearchIssues.push(term);
         if (linearSearchIssuesImpl) return linearSearchIssuesImpl(term);
         return null;
+      },
+      getTeam: async () => (linearGetTeamImpl ? linearGetTeamImpl() : DEFAULT_TEAM),
+      TEAM_KEY: 'BRO',
+      graphql: async (query, variables) => {
+        calls.linearGraphql.push({ query, variables });
+        if (linearGraphqlImpl) return linearGraphqlImpl(query, variables);
+        return {
+          issueCreate: {
+            success: true,
+            issue: {
+              id: 'uuid-opaque',
+              identifier: 'BRO-999',
+              title: variables?.input?.title,
+              url: 'https://linear.app/broadway-scorecard/issue/BRO-999',
+            },
+          },
+        };
       },
     },
   };
@@ -128,9 +191,10 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath, l
     fs.writeFileSync = realWriteFileSync;
     fs.renameSync = realRenameSync;
     fs.mkdirSync = realMkdirSync;
-    realChildProcess.execFileSync = originalExecFileSync;
     delete require.cache[discordNotifyPath];
     delete require.cache[linearClientPath];
+    delete require.cache[linearIssueCreatePath];
+    delete require.cache[linearPath];
     delete require.cache[modulePath];
     if (priorLedgerEnv === undefined) delete process.env.ALERT_LEDGER_PATH;
     else process.env.ALERT_LEDGER_PATH = priorLedgerEnv;
@@ -165,7 +229,7 @@ test('routeAlert: disposition=auto skips filing when Linear already tracks the c
     assert.equal(result.action, 'silent');
     assert.equal(result.cardId, null);
     assert.equal(result.linearIdentifier, 'BRO-777');
-    assert.equal(calls.execFileSync.length, 0, 'must never file a Notion card once Linear already tracks it');
+    assert.equal(calls.createLinearIssue.length, 0, 'must never file a Notion card once Linear already tracks it');
     assert.ok(logs.some(l => /conditionKey test:linear-dup already tracked as BRO-777 — not double-filing/.test(l)));
 
     const ledger = router.loadLedger();
@@ -186,7 +250,7 @@ test('routeAlert: a Linear-deduped condition still gets ledger-cooldown protecti
     await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
     await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
     assert.equal(calls.linearSearchIssues.length, 1, 'the 2nd call must be caught by the top-of-function ledger cooldown, not re-hit Linear');
-    assert.equal(calls.execFileSync.length, 0);
+    assert.equal(calls.createLinearIssue.length, 0);
   } finally {
     restore();
   }
@@ -245,7 +309,7 @@ test('routeAlert: a Linear API failure FAILS OPEN — files the card as before, 
     });
     assert.equal(result.action, 'auto');
     assert.equal(result.linearIdentifier, 'BRO-999', 'the issue must still be filed — a Linear DEDUPE outage must never suppress the filing attempt');
-    assert.equal(calls.execFileSync.length, 1);
+    assert.equal(calls.createLinearIssue.length, 1);
     assert.ok(errors.some(e => /Linear dedupe check failed.*failing open/.test(e)));
   } finally {
     console.error = origError;
@@ -268,11 +332,9 @@ test('routeAlert: disposition=digest and disposition=human never query Linear (o
 
 test("routeAlert: a filed card's notes embed a greppable [conditionKey:...] marker for future dedupe matching", async () => {
   const { router, restore } = loadRouterWithFakes({
-    execFileSyncImpl: (cmd, args) => {
-      const notesIdx = args.indexOf('--notes');
-      const notes = args[notesIdx + 1];
-      assert.match(notes, /\[conditionKey:test:marker-check\]/);
-      return JSON.stringify({ id: 'fake-card-id' });
+    createLinearIssueImpl: (opts) => {
+      assert.match(opts.description, /\[conditionKey:test:marker-check\]/);
+      return { issue: { id: 'fake-uuid', identifier: 'BRO-999', title: opts.title }, mode: 'park', stateName: 'Backlog' };
     },
   });
   try {
@@ -330,13 +392,13 @@ test('routeAlert: new incident with disposition=auto dispatches exactly one card
     assert.equal(result.action, 'auto');
     assert.equal(result.linearIdentifier, 'BRO-999');
     assert.equal(result.cardId, null, 'Linear path files no Notion card (BRO-286)');
-    assert.equal(calls.execFileSync.length, 1);
-    // The filed CLI must be the Linear chokepoint wrapper, parked, with the
-    // conditionKey embedded in the notes it passes.
-    const argv = calls.execFileSync[0][1];
-    assert.ok(String(argv[0]).endsWith('linear-brain.js'), `expected linear-brain.js, got ${argv[0]}`);
-    assert.ok(argv.includes('--park'), 'alert filings are parked, never auto-dispatched');
-    assert.match(argv[argv.indexOf('--notes') + 1], /\[conditionKey:test:new-incident\]/);
+    assert.equal(calls.createLinearIssue.length, 1);
+    // The filed issue must be parked, never auto-dispatched, with the
+    // conditionKey embedded in the description it passes.
+    const opts = calls.createLinearIssue[0];
+    assert.ok(opts.park, 'alert filings are parked, never auto-dispatched');
+    assert.equal(opts.dispatch, undefined);
+    assert.match(opts.description, /\[conditionKey:test:new-incident\]/);
     assert.equal(calls.sendAlert.length, 0);
 
     const ledger = router.loadLedger();
@@ -348,9 +410,50 @@ test('routeAlert: new incident with disposition=auto dispatches exactly one card
   }
 });
 
+// BRO-375 (Phase 1): dispatchCard() no longer shells out to linear-brain.js —
+// it calls the REAL scripts/lib/linear-issue-create.js in-process, which
+// creates the issue through scripts/lib/linear.js's injectable LinearClient
+// (BRO-374). This is the one test in the file that does NOT stub
+// createLinearIssue() itself (useRealLinearIssueCreate) — it stubs only the
+// network layer underneath linear.js (a fake `graphql` executor) and
+// linear-client's getTeam, then asserts the real chokepoint sent the exact
+// ISSUE_CREATE_MUTATION text linear.js owns, with no Notion and no execFileSync
+// anywhere in the path.
+test('routeAlert: disposition=auto creates the Linear issue via the injectable client in scripts/lib/linear.js (BRO-374/BRO-375)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({ useRealLinearIssueCreate: true });
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:linear-js-wiring',
+      title: 'Real chokepoint wiring check',
+      description: 'Something needs attention.',
+      severity: 'error',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'auto');
+    assert.equal(result.cardId, null, 'no Notion card — Linear is the only tracker');
+    assert.equal(result.linearIdentifier, 'BRO-999');
+
+    // Exactly one GraphQL round trip, and it went through linear.js's own
+    // mutation text — not a hand-rolled query, not linear-client.js's.
+    assert.equal(calls.linearGraphql.length, 1);
+    assert.equal(calls.linearGraphql[0].query, REAL_ISSUE_CREATE_MUTATION);
+    const { input } = calls.linearGraphql[0].variables;
+    assert.equal(input.title, 'Real chokepoint wiring check');
+    assert.equal(input.teamId, 'team-uuid');
+    assert.equal(input.stateId, 'backlog-1', 'alert filings are parked (backlog state), never dispatched');
+    assert.equal(input.priority, 2, 'severity:error maps to Linear priority 2 (High)');
+    assert.match(input.description, /\[conditionKey:test:linear-js-wiring\]/);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:linear-js-wiring'].linearIdentifier, 'BRO-999');
+  } finally {
+    restore();
+  }
+});
+
 test('routeAlert: a failed card dispatch is NOT recorded as notified — retries next call', async () => {
   const { router, calls, restore } = loadRouterWithFakes({
-    execFileSyncImpl: () => { throw new Error('Notion API down'); },
+    createLinearIssueImpl: () => { throw new Error('Notion API down'); },
   });
   try {
     const first = await router.routeAlert({
@@ -378,7 +481,7 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
       disposition: 'auto',
     });
     assert.equal(second.action, 'auto');
-    assert.equal(calls.execFileSync.length, 2);
+    assert.equal(calls.createLinearIssue.length, 2);
   } finally {
     restore();
   }
@@ -401,7 +504,7 @@ test('routeAlert: re-fire of an open incident within cooldown is silent (no seco
     });
     assert.equal(second.action, 'silent');
     // Only the first call actually dispatched a card.
-    assert.equal(calls.execFileSync.length, 1);
+    assert.equal(calls.createLinearIssue.length, 1);
 
     const ledger = router.loadLedger();
     assert.equal(ledger.conditions['test:refire'].silentRefires, 1);
@@ -431,7 +534,7 @@ test('routeAlert: resolveCondition then re-fire notifies again immediately (stat
     });
     assert.equal(third.action, 'auto');
     // Both the original incident and the reoccurrence dispatched cards.
-    assert.equal(calls.execFileSync.length, 2);
+    assert.equal(calls.createLinearIssue.length, 2);
 
     const ledger = router.loadLedger();
     assert.equal(ledger.conditions['test:state-change'].status, 'open');
@@ -458,7 +561,7 @@ test('routeAlert: disposition=human on a page-worthy conditionKey calls sendAler
     assert.equal(result.delivered, true);
     assert.equal(calls.sendAlert.length, 1);
     assert.equal(calls.sendAlert[0].email, true);
-    assert.equal(calls.execFileSync.length, 0);
+    assert.equal(calls.createLinearIssue.length, 0);
   } finally {
     restore();
   }
@@ -478,7 +581,7 @@ test('routeAlert: disposition=human on a non-allowlisted conditionKey is downgra
     assert.equal(result.action, 'digest');
     assert.equal(result.requestedDisposition, 'human');
     assert.equal(calls.sendAlert.length, 0);
-    assert.equal(calls.execFileSync.length, 0);
+    assert.equal(calls.createLinearIssue.length, 0);
 
     const queue = router.peekDigestQueue();
     assert.equal(queue.length, 1);
@@ -523,7 +626,7 @@ test('routeAlert: disposition=digest queues a line, no card, no email', async ()
       disposition: 'digest',
     });
     assert.equal(result.action, 'digest');
-    assert.equal(calls.execFileSync.length, 0);
+    assert.equal(calls.createLinearIssue.length, 0);
     assert.equal(calls.sendAlert.length, 0);
 
     const drained = router.drainDigestQueue();
@@ -722,7 +825,7 @@ test('deleteCondition: hard-removes an open condition; no-op on an unknown key',
 // there (see the test above).
 test('readDispatchAttempts: records both successes and failures, independent of the ledger', async () => {
   const { router, restore } = loadRouterWithFakes({
-    execFileSyncImpl: () => { throw new Error("Cannot find module '@notionhq/client'"); },
+    createLinearIssueImpl: () => { throw new Error("Cannot find module '@notionhq/client'"); },
   });
   try {
     await router.routeAlert({ conditionKey: 'test:attempt-a', title: 'a', description: 'd', disposition: 'auto' });
@@ -824,7 +927,7 @@ test('local ledger: cooldown holds across a git checkout that wipes the tracked 
 
     const second = await router.routeAlert(opts);
     assert.equal(second.action, 'silent', 'second call inside the 3h cooldown is suppressed');
-    assert.equal(calls.execFileSync.length, 1, 'exactly one dispatch, not two');
+    assert.equal(calls.createLinearIssue.length, 1, 'exactly one dispatch, not two');
     assert.equal(router.loadLedger().conditions[opts.conditionKey].silentRefires, 1);
   } finally {
     restore();
@@ -853,7 +956,7 @@ test('tracked ledger: the same git checkout wipe re-fires the alert (the bug bei
 
     const second = await router.routeAlert(opts);
     assert.equal(second.action, 'auto', 'cooldown record is gone, so it notifies again');
-    assert.equal(calls.execFileSync.length, 2, 'the observed double-send');
+    assert.equal(calls.createLinearIssue.length, 2, 'the observed double-send');
   } finally {
     restore();
   }
@@ -918,7 +1021,7 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
       cooldownHours: 3,
     });
     assert.equal(result.action, 'silent', 'CI already notified this inside the cooldown');
-    assert.equal(calls.execFileSync.length, 0, 'no duplicate dispatch on the local sender');
+    assert.equal(calls.createLinearIssue.length, 0, 'no duplicate dispatch on the local sender');
     // The seeded copy is now persisted locally; the tracked file is never written.
     assert.ok(fs.existsSync(localLedger));
   } finally {
@@ -948,7 +1051,7 @@ test('an unwritable ledger path does not throw — the alert still dispatches, l
       disposition: 'auto',
     });
     assert.equal(result.action, 'auto', 'the card was still dispatched');
-    assert.equal(calls.execFileSync.length, 1);
+    assert.equal(calls.createLinearIssue.length, 1);
     assert.ok(errors.some(e => e.includes('FAILED to persist the ledger')),
       'a ledger that cannot be written must be reported, not swallowed');
   } finally {
