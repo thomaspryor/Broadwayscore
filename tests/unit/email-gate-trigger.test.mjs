@@ -18,6 +18,13 @@
  * The card's numeric outcome (conversion >X%, dismiss <Y%) is NOT verifiable
  * here — it needs live PostHog traffic days after ship (owner-judgment,
  * out of scope per the card's own acceptance criteria).
+ *
+ * Codex adversarial review (2026-08-19) caught an earlier draft overclaiming
+ * "every passive trigger requires a second page view" — the page-view
+ * minimum is actually the live 'gate-cold-start' A/B experiment's treatment
+ * arm only; control/fallback intentionally have no minimum. Assertions below
+ * are scoped to match real runtime wiring (src/contexts/ProGateContext.tsx),
+ * not just the config value in isolation.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -28,20 +35,35 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
-const { getTriggerCopy } = await import('../../src/lib/gate-logic.ts');
+const { getTriggerCopy, getMobileGateParams, coldStartCheckApplies } = await import('../../src/lib/gate-logic.ts');
 
 const MODAL_SRC = readFileSync(join(REPO_ROOT, 'src/components/EmailCaptureModal.tsx'), 'utf8');
 
 test('modal no longer fires on the old immediate/aggressive trigger: passive gates require meaningful engagement', () => {
   // Old behavior (pre-#586): exit intent could fire near-instantly and the
-  // mobile scroll gate fired at 10s dwell. Both now require real dwell time,
-  // and every passive trigger additionally requires a second page view.
+  // mobile scroll gate fired at 10s dwell.
   assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 5,
     'exit intent must not fire immediately on page load');
-  assert.ok(emailCaptureConfig.mobileScrollGate.minTimeOnPageSec >= 30,
-    'mobile scroll gate must wait for meaningful dwell time, not the old 10s');
+  // Only the control mobile-scroll-gate variant is dwell-gated at 30s+; the
+  // end-of-content variant deliberately swaps dwell time for a near-full-page
+  // scroll-depth requirement as its engagement signal (its 3s floor guards
+  // against scroll-restoration false-fires, not a friction lever — see
+  // email-capture.ts's mobileScrollGateVariants doc) — so it is asserted
+  // separately below rather than folded into a blanket ">=30s" claim.
+  assert.ok(getMobileGateParams('control').minTimeOnPageSec >= 30,
+    'control mobile-scroll-gate variant must wait for meaningful dwell time, not the old 10s');
+  assert.ok(getMobileGateParams('end-of-content').scrollThreshold >= 0.9,
+    'end-of-content variant must require near-full-page scroll depth as its engagement signal');
+  // The page-view minimum is the 'gate-cold-start' A/B experiment's TREATMENT
+  // mechanism (docs/experiments/gate-cold-start.md) — it applies only to the
+  // 'cold-start' arm; 'control'/'fallback' reproduce the pre-experiment
+  // behavior with no page-view minimum, by design (that's what makes it a
+  // valid A/B test). Assert both halves so this doesn't overclaim universal
+  // coverage of a 50%-of-traffic control arm.
   assert.ok(emailCaptureConfig.minPageViewsForPassiveGate >= 2,
-    'passive gates must require more than a first-page-load visitor');
+    'cold-start arm must require more than a first-page-load visitor');
+  assert.equal(coldStartCheckApplies('cold-start'), true, 'page-view minimum must gate the cold-start treatment arm');
+  assert.equal(coldStartCheckApplies('control'), false, 'control arm intentionally has no page-view minimum (A/B baseline)');
 });
 
 test('updated copy: exit_intent/scroll_depth state a concrete deliverable, not a vague tease', () => {
