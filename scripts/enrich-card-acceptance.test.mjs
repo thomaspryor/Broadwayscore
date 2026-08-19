@@ -5,7 +5,11 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { enrichOneCard, spliceNotes } = require('./enrich-card-acceptance.js');
+const {
+  enrichOneCard, spliceNotes,
+  selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard, linearIssueNumber,
+  isLinearIssueTerminal,
+} = require('./enrich-card-acceptance.js');
 
 function fakeNotionBrain(calls) {
   return (args) => { calls.push(args); return { id: args[1] }; };
@@ -271,4 +275,163 @@ test('spliceNotes: appends when no existing section is present', () => {
   const result = spliceNotes('## Problem\nBug.', '## Acceptance criteria\n`npx tsc --noEmit`');
   assert.match(result, /## Problem/);
   assert.match(result, /## Acceptance criteria/);
+});
+
+// ── Linear leg (task #1830) ─────────────────────────────────────────────────
+
+test('selectRefusedLinearIdentifiers: keeps only issues whose description fails the verify gate', () => {
+  const issues = [
+    { identifier: 'BRO-1', title: 'Armed', description: '## Acceptance criteria\n`npx tsc --noEmit`' },
+    { identifier: 'BRO-2', title: 'Owner judgment', description: 'VERIFY: owner-judgment' },
+    { identifier: 'BRO-3', title: 'Prose only, no command', description: '## Problem\nSomething is broken.' },
+    { identifier: 'BRO-4', title: 'No description at all', description: '' },
+  ];
+  assert.deepEqual(selectRefusedLinearIdentifiers(issues), ['BRO-3', 'BRO-4']);
+});
+
+test('selectRefusedLinearIdentifiers: tolerates null/missing description and empty input', () => {
+  assert.deepEqual(selectRefusedLinearIdentifiers([]), []);
+  assert.deepEqual(selectRefusedLinearIdentifiers(null), []);
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers([{ identifier: 'BRO-9', title: 'No desc field' }]),
+    ['BRO-9']
+  );
+});
+
+// ship-check/Codex finding (task #1830): the underlying GraphQL query has no
+// orderBy, so a naive slice(0, limit) downstream would process an arbitrary,
+// run-to-run-inconsistent subset. Selection must be deterministic.
+test('selectRefusedLinearIdentifiers: returns refused issues sorted ascending by BRO-N, regardless of input order', () => {
+  const issues = [
+    { identifier: 'BRO-450', title: 'x', description: '## Problem\nno command' },
+    { identifier: 'BRO-9', title: 'x', description: '## Problem\nno command' },
+    { identifier: 'BRO-100', title: 'x', description: '## Problem\nno command' },
+  ];
+  assert.deepEqual(selectRefusedLinearIdentifiers(issues), ['BRO-9', 'BRO-100', 'BRO-450']);
+});
+
+test('linearIssueNumber: parses the trailing number, non-numeric identifiers sort last', () => {
+  assert.equal(linearIssueNumber('BRO-42'), 42);
+  assert.equal(linearIssueNumber('BRO-007'), 7);
+  assert.equal(linearIssueNumber('not-an-identifier'), Infinity);
+  assert.equal(linearIssueNumber(''), Infinity);
+  assert.equal(linearIssueNumber(null), Infinity);
+});
+
+// ship-check/Codex finding (task #1830): a stale "open" snapshot must never
+// let a write resurrect an issue that reached Done/Canceled since the sweep.
+test('isLinearIssueTerminal: true for completed/canceled state types, false otherwise', () => {
+  assert.equal(isLinearIssueTerminal({ state: { type: 'completed', name: 'Done' } }), true);
+  assert.equal(isLinearIssueTerminal({ state: { type: 'canceled', name: 'Canceled' } }), true);
+  assert.equal(isLinearIssueTerminal({ state: { type: 'started', name: 'In Progress' } }), false);
+  assert.equal(isLinearIssueTerminal({ state: { type: 'unstarted', name: 'Todo' } }), false);
+  assert.equal(isLinearIssueTerminal({}), false);
+  assert.equal(isLinearIssueTerminal(null), false);
+});
+
+test('normalizeLinearIssue: maps a full linear.getIssue() result to the enrichOneCard card shape', () => {
+  const issue = {
+    id: 'uuid-123',
+    identifier: 'BRO-450',
+    title: 'Cron stale 3+ consecutive days: Refresh Show Score',
+    description: '## Problem\nCron has not run.',
+    labels: { nodes: [{ id: 'l1', name: 'cron' }, { id: 'l2', name: 'auto-enriched' }] },
+  };
+  const card = normalizeLinearIssue(issue);
+  assert.equal(card.id, 'uuid-123');
+  assert.equal(card.name, 'Cron stale 3+ consecutive days: Refresh Show Score');
+  assert.equal(card.notes, '## Problem\nCron has not run.');
+  assert.deepEqual(card.tags, ['cron', 'auto-enriched']);
+  assert.equal(card.category, null);
+  assert.equal(card.identifier, 'BRO-450');
+});
+
+test('normalizeLinearIssue: tolerates a missing description, no labels, and no url', () => {
+  const card = normalizeLinearIssue({ id: 'uuid-1', identifier: 'BRO-1', title: 'x' });
+  assert.equal(card.notes, '');
+  assert.deepEqual(card.tags, []);
+  assert.equal(card.url, null);
+});
+
+test('normalizeLinearIssue: carries the issue url through for the audit log', () => {
+  const card = normalizeLinearIssue({ id: 'uuid-1', identifier: 'BRO-1', title: 'x', url: 'https://linear.app/broadway-scorecard/issue/BRO-1' });
+  assert.equal(card.url, 'https://linear.app/broadway-scorecard/issue/BRO-1');
+});
+
+test('makeLinearWriteCard: updates the description then ensures the auto-enriched label via findOrCreateLabel + addLabelToIssue', async () => {
+  const calls = [];
+  const fakeLinearClient = {
+    updateIssue: async (id, input) => { calls.push(['updateIssue', id, input]); },
+    findOrCreateLabel: async (teamId, name) => { calls.push(['findOrCreateLabel', teamId, name]); return { id: 'label-1', name }; },
+    addLabelToIssue: async (issueId, labelId) => { calls.push(['addLabelToIssue', issueId, labelId]); },
+  };
+  const writeCard = makeLinearWriteCard(fakeLinearClient, 'team-1');
+  await writeCard({ id: 'issue-1' }, '## Acceptance criteria\n`npx tsc --noEmit` is clean');
+  assert.deepEqual(calls, [
+    ['updateIssue', 'issue-1', { description: '## Acceptance criteria\n`npx tsc --noEmit` is clean' }],
+    ['findOrCreateLabel', 'team-1', 'auto-enriched'],
+    ['addLabelToIssue', 'issue-1', 'label-1'],
+  ]);
+});
+
+test('enrichOneCard: honors opts.writeCard (Linear path) and never calls opts.notionBrain', async () => {
+  const notionCalls = [];
+  const writeCalls = [];
+  const card = {
+    id: 'issue-uuid-1', name: 'Fetch Guardian Reviews via API', category: null, tags: [],
+    identifier: 'BRO-440', notes: '## Problem\nWorkflow keeps failing.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({ command: 'npx tsc --noEmit', acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` is clean' }),
+    notionBrain: fakeNotionBrain(notionCalls),
+    writeCard: async (c, newNotes) => { writeCalls.push({ id: c.id, newNotes }); },
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(notionCalls.length, 0);
+  assert.equal(writeCalls.length, 1);
+  assert.equal(writeCalls[0].id, 'issue-uuid-1');
+  assert.match(writeCalls[0].newNotes, /npx tsc --noEmit/);
+});
+
+// ship-check finding (QA subagent + Codex, task #1830): a Linear write is 3
+// sequential network calls, any of which can throw. Uncaught, that used to
+// propagate out of enrichOneCard and crash the whole batch loop — must
+// degrade to a per-card 'failed' result instead, same as every other I/O
+// failure path in this file.
+test('enrichOneCard: a throwing opts.writeCard degrades to a failed result, does not propagate', async () => {
+  const card = {
+    id: 'issue-uuid-3', name: 'Some Linear issue', category: null, tags: [],
+    notes: '## Problem\nBug.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({ command: 'npx tsc --noEmit', acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` is clean' }),
+    writeCard: async () => { throw new Error('Linear API HTTP 502'); },
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /write failed: Linear API HTTP 502/);
+});
+
+test('enrichOneCard: a throwing opts.writeCard on the owner-judgment path also degrades to failed', async () => {
+  const card = { id: 'issue-uuid-4', name: 'Email volunteers', category: '', tags: [], notes: 'Reach out.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => '{}',
+    writeCard: async () => { throw new Error('Linear API HTTP 500'); },
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /write failed: Linear API HTTP 500/);
+});
+
+test('enrichOneCard: dry-run mode never calls opts.writeCard either', async () => {
+  const writeCalls = [];
+  const card = { id: 'issue-uuid-2', name: 'Some Linear issue', category: null, tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({ command: 'npx next lint', acceptanceCriteria: '## Acceptance criteria\n`npx next lint` is clean' }),
+    writeCard: async (c, newNotes) => { writeCalls.push({ id: c.id, newNotes }); },
+    dryRun: true,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(writeCalls.length, 0);
 });
