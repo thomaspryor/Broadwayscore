@@ -50,7 +50,14 @@ jobs:
           # GIT_NET_TIMEOUT_SEC kills it — see #1810's GIT_TRACE_CURL
           # trace). fetch-depth: 0 removes the shallow ambiguity; the job
           # still has 10+ min of headroom under its 90-min timeout even
-          # on its longest observed run.
+          # on its longest observed run — but that margin is thinner than
+          # the other two workflows fixed alongside this one. A full
+          # checkout of this repo's ~2GB packed object DB normally takes
+          # ~15-20s, but gitleaks.yml and guard-no-orphan-commit.yml both
+          # document real incidents (2026-07-26, 2026-08) where it spiked
+          # to several minutes or never finished. If checkout time grows
+          # here, watch for this job trading a push-hang failure for a
+          # timeout failure instead.
           fetch-depth: 0
 
       - name: Checkout core data
