@@ -39,7 +39,7 @@ import { ANCHORED_MARKETS_NYC_V6 } from './ANCHORED_MARKETS_NYC_V6';
 export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
   'west-end',
   'off-west-end',
-  ...ANCHORED_MARKETS_NYC_V6,
+  ...Array.from(ANCHORED_MARKETS_NYC_V6),
 ]);
 
 // Shows pre-dating the 2005 cutoff that have been manually curated with
