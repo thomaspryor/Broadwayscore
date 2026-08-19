@@ -695,6 +695,26 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/awards.json)
+        # Per-slug, deep-ceremony-key-union merge (BRO-76). awards.json is
+        # DUAL-TRACKED (see .github/workflows/CLAUDE.md "Public Show JSON
+        # Safety"): update-tony-awards.yml and update-precursor-awards.yml
+        # both commit it straight to this repo on independent, overlapping
+        # seasonal schedules (Apr-Jun), in addition to calling push-core-data
+        # for the private repo copy. The generic "accept remote" case below
+        # would silently drop this run's award data wholesale on conflict —
+        # same data-loss class as commercial.json (CDX-P0-1) and diary-
+        # shows.json (#176). mergeAwardsJson unions slugs, then deep-unions
+        # ceremony keys within a shared slug (a Tony write and an Olivier
+        # write for the same show both survive).
+        echo "  Auto-resolving (awards merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::awards merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/social-post-history.json)
         # Array-of-posts merge. social-post.yml uses a PER-RUN concurrency group
         # (not static — update-show-status.yml dispatches it per-show in a tight
