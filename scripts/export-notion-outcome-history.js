@@ -104,9 +104,17 @@ function main() {
   const { file, records, malformed } = readCorpusRecords(corpusDir);
   if (malformed) throw new Error(`${malformed} malformed corpus line(s) in ${file} — re-verify the archive before exporting`);
 
-  const manifestResult = fs.existsSync(corpusDir) && fs.statSync(corpusDir).isDirectory()
-    ? verifyCorpusManifest(corpusDir, records, { skip: skipManifestCheck })
-    : { checked: false, reason: '--corpus points at a file, not a directory — no manifest to check' };
+  // `--corpus` may be a directory (the default) OR a direct file path — this
+  // export's own error message for a count mismatch tells the user to "point
+  // --corpus at the published .gz" (a FILE), and the earlier version of this
+  // check only ran when corpusDir was literally a directory, so following
+  // that advice silently skipped every manifest protection it exists to
+  // provide (code review finding). manifest.json always lives in the
+  // corpus's DIRECTORY regardless of which form the user passed.
+  const manifestDir = fs.existsSync(corpusDir) && fs.statSync(corpusDir).isDirectory()
+    ? corpusDir
+    : path.dirname(corpusDir);
+  const manifestResult = verifyCorpusManifest(manifestDir, records, { skip: skipManifestCheck });
 
   const rows = buildOutcomeHistory(records);
 
