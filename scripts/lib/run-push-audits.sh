@@ -113,12 +113,29 @@ if echo "$CHANGED_FILES" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^scripts/au
 fi
 
 # Write-routing lint (same script CI runs in test.yml's Lint Workflows job).
-if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
+#
+# --scope-stdin (card #1826): this repo's main checkout is shared by 20+
+# concurrent worktree/cmux sessions, so an unscoped full-tree scan here picks
+# up ANY session's stray/untracked scripts/*.js file — not just files this
+# push/merge actually touches — and blocks an unrelated push on a violation
+# it never introduced. CI's own direct calls to lint-write-routing.sh
+# (test.yml) don't pass this flag and keep scanning the whole checkout —
+# correct there, since CI's checkout IS the branch under test. Scoping still
+# falls back to a full scan when an allowlist or the lint script itself is in
+# CHANGED_FILES (lint-write-routing.sh's own candidate_files() handles that).
+#
+# Trigger matches .mjs/.ts too (not just .js): lint-write-routing.sh's
+# shows-json/commercial-json/audience-buzz-json checks cover all three
+# extensions (candidate_files "$ALLOWLIST" js mjs ts), so a top-level
+# scripts/*.mjs or scripts/*.ts writer must be able to trigger this audit
+# locally the same way a .js one does — otherwise it silently skips the local
+# gate and only gets caught later in CI (task #1826 review finding).
+if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.(js|mjs|ts)$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
   if [ "$LIST_ONLY" = "1" ]; then
     echo "write-routing"
   elif [ -f scripts/lint-write-routing.sh ]; then
     ROUTING_OUT="/tmp/push-audit-routing.$$.$RANDOM.out"
-    if ! bash scripts/lint-write-routing.sh all >"$ROUTING_OUT" 2>&1; then
+    if ! printf '%s\n' "$CHANGED_FILES" | bash scripts/lint-write-routing.sh --scope-stdin all >"$ROUTING_OUT" 2>&1; then
       echo ""
       echo "=== AUDIT BLOCKED: write-routing lint failed (CI would go red) ==="
       echo ""
