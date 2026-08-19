@@ -4189,6 +4189,14 @@ jobs:
     runs-on: ubuntu-latest
     # Skip on Dependabot PRs — see unit-tests above.
     if: github.actor != 'dependabot[bot]' && github.event.inputs.test_type != 'data-only' && github.event.inputs.test_type != 'visual-only'
+    # 30 (added task #1815): this job carried no timeout-minutes, so a hung
+    # step (e.g. Setup Playwright before its own fix) rode GitHub's 360-min
+    # default job cap. Two live runs caught mid-hang on 2026-08-19 (32225853985,
+    # 32224792662) sat 3h15m+ before being manually cancelled. Analogy-calibrated
+    # to this file's other same-shape job timeouts (line 3294, 1918), not yet
+    # measured against real E2E job durations — see those two for the
+    # measurement-calibration convention this should graduate to.
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -4308,6 +4316,9 @@ jobs:
       (github.event_name == 'workflow_dispatch' &&
        github.event.inputs.test_type != 'data-only' &&
        github.event.inputs.test_type != 'e2e-only')
+    # 30 (added task #1815) — same rationale as e2e-tests above: no
+    # job-level timeout meant a hung step rode GitHub's 360-min default.
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5
