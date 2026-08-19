@@ -88,14 +88,24 @@ function findWeekAgoEntry(history, now) {
  *   oldest-first or any order — findWeekAgoEntry scans all of them
  * @param {number} [a.now] epoch ms, defaults to Date.now() (CLI wrapper
  *   should always pass this explicitly so the module stays pure/testable)
+ * @param {number} [a.skippedNoUuid] queued tasks the CLI wrapper couldn't
+ *   resolve a Notion id for — excluded from `classifications`/`tally`
+ * @param {number} [a.fetchErrors] cards the CLI wrapper failed to
+ *   fetch/classify (Notion API error, timeout) — also excluded. Both counts
+ *   are surfaced in bannerText/items (ship-check adversarial finding): a run
+ *   with real skips must not read identically to a genuinely quiet day, or
+ *   the blocked-count banner silently understates the true backlog.
  * @returns {{generatedAt:string, bannerText:string,
  *   items:Array<{title:string, detail:string}>, moreCount:number,
- *   tally:object, blockedCount:number,
+ *   tally:object, blockedCount:number, skippedCount:number,
  *   jump:{pctChange:number, previousCount:number, previousAt:string}|null}}
  */
-function buildQueueAuditSnapshot({ classifications, history = [], now = Date.now() } = {}) {
+function buildQueueAuditSnapshot({
+  classifications, history = [], now = Date.now(), skippedNoUuid = 0, fetchErrors = 0,
+} = {}) {
   const tally = tallyVerdicts(classifications);
   const blockedCount = tally['REOPEN-SUSPECT'] + tally['DO-NOT-DISPATCH'];
+  const skippedCount = skippedNoUuid + fetchErrors;
 
   const weekAgo = findWeekAgoEntry(history, now);
   let jump = null;
@@ -106,22 +116,40 @@ function buildQueueAuditSnapshot({ classifications, history = [], now = Date.now
     }
   }
 
-  const bannerText = jump
+  const skippedSuffix = skippedCount > 0
+    ? ` [${skippedCount} queued task${skippedCount === 1 ? '' : 's'} not counted — ${skippedNoUuid} no Notion id, ${fetchErrors} fetch/classify error]`
+    : '';
+  const bannerText = (jump
     ? `⚠ blocked backlog jumped to ${blockedCount} (${tally['REOPEN-SUSPECT']} reopen-suspect, ${tally['DO-NOT-DISPATCH']} do-not-dispatch) — up ${Math.round(jump.pctChange * 100)}% from ${jump.previousCount} a week ago`
-    : `${blockedCount} of ${tally.total} queued card${tally.total === 1 ? '' : 's'} blocked from auto-dispatch (${tally['REOPEN-SUSPECT']} reopen-suspect, ${tally['DO-NOT-DISPATCH']} do-not-dispatch)`;
+    : `${blockedCount} of ${tally.total} queued card${tally.total === 1 ? '' : 's'} blocked from auto-dispatch (${tally['REOPEN-SUSPECT']} reopen-suspect, ${tally['DO-NOT-DISPATCH']} do-not-dispatch)`
+  ) + skippedSuffix;
+
+  const items = [
+    { title: 'OK-TO-DISPATCH', detail: String(tally['OK-TO-DISPATCH']) },
+    { title: 'CHECK-FIRST', detail: String(tally['CHECK-FIRST']) },
+    { title: 'REOPEN-SUSPECT', detail: String(tally['REOPEN-SUSPECT']) },
+    { title: 'DO-NOT-DISPATCH', detail: String(tally['DO-NOT-DISPATCH']) },
+  ];
+  if (skippedCount > 0) {
+    items.push({ title: 'NOT COUNTED', detail: `${skippedCount} (${skippedNoUuid} no id, ${fetchErrors} fetch error)` });
+  }
+  // classifyCandidate() only ever returns the 4 VERDICTS above (a closed
+  // set) — tally.unresolved should always be 0. Surfacing it when it isn't
+  // is a canary: if a future verdict is ever added upstream, this line goes
+  // from dead code to the one signal that blockedCount/items silently
+  // stopped accounting for the new verdict (ship-check adversarial finding).
+  if (tally.unresolved > 0) {
+    items.push({ title: 'UNRECOGNIZED VERDICT', detail: `${tally.unresolved} — classifyCandidate returned an unknown verdict string; predispatch-queue-audit.js's VERDICTS list is stale` });
+  }
 
   return {
     generatedAt: new Date(now).toISOString(),
     bannerText,
-    items: [
-      { title: 'OK-TO-DISPATCH', detail: String(tally['OK-TO-DISPATCH']) },
-      { title: 'CHECK-FIRST', detail: String(tally['CHECK-FIRST']) },
-      { title: 'REOPEN-SUSPECT', detail: String(tally['REOPEN-SUSPECT']) },
-      { title: 'DO-NOT-DISPATCH', detail: String(tally['DO-NOT-DISPATCH']) },
-    ],
+    items,
     moreCount: 0,
     tally,
     blockedCount,
+    skippedCount,
     jump,
   };
 }

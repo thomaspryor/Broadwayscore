@@ -139,3 +139,36 @@ test('buildQueueAuditSnapshot: empty classifications does not throw, reports zer
   assert.equal(snap.blockedCount, 0);
   assert.match(snap.bannerText, /^0 of 0 queued cards blocked/);
 });
+
+test('buildQueueAuditSnapshot: skipped/fetch-error cards are surfaced, not silently dropped from the banner', () => {
+  const classifications = [
+    ...Array(10).fill({ verdict: 'OK-TO-DISPATCH' }),
+    ...Array(2).fill({ verdict: 'DO-NOT-DISPATCH' }),
+  ];
+  const snap = buildQueueAuditSnapshot({
+    classifications, history: [], now: NOW, skippedNoUuid: 20, fetchErrors: 4,
+  });
+  assert.equal(snap.skippedCount, 24);
+  assert.match(snap.bannerText, /\[24 queued tasks not counted — 20 no Notion id, 4 fetch\/classify error\]/);
+  const notCounted = snap.items.find((i) => i.title === 'NOT COUNTED');
+  assert.ok(notCounted, 'expected a NOT COUNTED item row when skips are present');
+  assert.match(notCounted.detail, /24 \(20 no id, 4 fetch error\)/);
+});
+
+test('buildQueueAuditSnapshot: zero skips omits the NOT COUNTED row and the banner suffix entirely', () => {
+  const snap = buildQueueAuditSnapshot({ classifications: [{ verdict: 'OK-TO-DISPATCH' }], history: [], now: NOW });
+  assert.equal(snap.skippedCount, 0);
+  assert.ok(!snap.items.some((i) => i.title === 'NOT COUNTED'));
+  assert.ok(!snap.bannerText.includes('not counted'));
+});
+
+test('buildQueueAuditSnapshot: an unresolved (unrecognized) verdict is surfaced as a canary, not silently dropped', () => {
+  const classifications = [
+    { verdict: 'OK-TO-DISPATCH' },
+    { verdict: 'SOME-NEW-VERDICT-NOBODY-UPDATED-THIS-FOR' },
+  ];
+  const snap = buildQueueAuditSnapshot({ classifications, history: [], now: NOW });
+  assert.equal(snap.tally.unresolved, 1);
+  const canary = snap.items.find((i) => i.title === 'UNRECOGNIZED VERDICT');
+  assert.ok(canary, 'expected an UNRECOGNIZED VERDICT row when tally.unresolved > 0');
+});

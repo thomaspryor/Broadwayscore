@@ -46,10 +46,15 @@ Usage:
   node scripts/predispatch-queue-audit.js --help      show this message, do nothing else
 `;
 
+// A missing/unreadable TASKS_DIR (wrong CLAUDE_CODE_TASK_LIST_ID, wrong
+// machine, launchd PATH/cwd misconfiguration) must fail loud, not degrade to
+// an empty task list — an empty list produces the exact same "0 of 0 queued
+// cards blocked" snapshot as a genuinely healthy quiet day, so a broken
+// config would silently read as "all clear" forever (ship-check adversarial
+// finding; same vacuous-gate class as #1063/#1069, see
+// scripts/lib/dispatch-outcome-digest.js's identical guard).
 function loadQueuedTasks() {
-  let files;
-  try { files = fs.readdirSync(TASKS_DIR).filter((f) => f.endsWith('.json')); }
-  catch { return []; }
+  const files = fs.readdirSync(TASKS_DIR).filter((f) => f.endsWith('.json'));
   const tasks = [];
   for (const f of files) {
     try {
@@ -60,8 +65,20 @@ function loadQueuedTasks() {
   return tasks;
 }
 
+// 30s timeout (ship-check adversarial finding): this loop runs one
+// execFileSync per queued task (150-200+ sequential calls at 6:50am,
+// before the 7:30am digest). Without a bound, a single hung
+// `notion-brain.js get` call — a stalled Notion API request — wedges the
+// whole launchd job indefinitely, leaving the snapshot un-refreshed for
+// every downstream card too. execFileSync throws on timeout, which the
+// caller already treats as a per-card fetch error (fetchErrors++), so one
+// slow card degrades the count instead of hanging the run.
+const NOTION_FETCH_TIMEOUT_MS = 30_000;
+
 function fetchCard(uuid) {
-  const out = execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', uuid], { encoding: 'utf8' });
+  const out = execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', uuid], {
+    encoding: 'utf8', timeout: NOTION_FETCH_TIMEOUT_MS,
+  });
   return JSON.parse(out);
 }
 
@@ -80,7 +97,15 @@ function main() {
   const dryRun = process.argv.includes('--dry-run');
   const now = Date.now();
 
-  const tasks = loadQueuedTasks();
+  let tasks;
+  try {
+    tasks = loadQueuedTasks();
+  } catch (err) {
+    console.error(`[predispatch-queue-audit] task mirror unreadable at ${TASKS_DIR}: ${err.message}`);
+    console.error('[predispatch-queue-audit] refusing to write a snapshot — a missing/unreadable task mirror would misreport a healthy "0 blocked" (vacuous-gate class, #1063/#1069)');
+    process.exit(1);
+  }
+
   const classifications = [];
   let skippedNoUuid = 0;
   let fetchErrors = 0;
@@ -95,19 +120,29 @@ function main() {
   }
 
   const history = loadHistory();
-  const snapshot = buildQueueAuditSnapshot({ classifications, history, now });
+  const snapshot = buildQueueAuditSnapshot({ classifications, history, now, skippedNoUuid, fetchErrors });
 
   console.log(`predispatch-queue-audit: ${snapshot.bannerText}`);
-  if (skippedNoUuid) console.log(`  (${skippedNoUuid} queued task(s) skipped — no Notion id)`);
-  if (fetchErrors) console.log(`  (${fetchErrors} card(s) skipped — fetch/classify error)`);
 
   if (dryRun) return;
 
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
-  fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  writeFileAtomic(SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
 
   const newHistory = [...history, { at: snapshot.generatedAt, blockedCount: snapshot.blockedCount }].slice(-HISTORY_MAX);
-  fs.writeFileSync(HISTORY_FILE, JSON.stringify(newHistory, null, 2) + '\n');
+  writeFileAtomic(HISTORY_FILE, JSON.stringify(newHistory, null, 2) + '\n');
+}
+
+// write-then-rename (ship-check adversarial finding): send-morning-digest.js
+// (via digest-snapshots.js's readSnapshot) reads this same file. A plain
+// writeFileSync is not atomic — a reader that opens the file mid-write would
+// see a truncated/partial JSON parse failure. rename(2) on the same
+// filesystem is atomic, so a concurrent reader always sees either the old
+// complete file or the new complete file, never a torn one.
+function writeFileAtomic(filePath, contents) {
+  const tmp = `${filePath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, contents);
+  fs.renameSync(tmp, filePath);
 }
 
 if (require.main === module) main();
