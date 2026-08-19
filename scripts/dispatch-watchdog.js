@@ -304,10 +304,15 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
   }
 
   if (plan.outage.outage) {
+    // Card #1829: cause-specific title + description — the old hardcoded
+    // "injection" wording would misdiagnose a pure surface-not-found cluster
+    // (cmux DID accept the commands; it never rendered a working pane for
+    // them), which is exactly the failure class this card exists to fix.
+    const cause = dispatchLedger.describeOutageCause(plan.outage.causes);
     pageOwner({
       conditionKey: 'watchdog-launcher-outage',
-      title: 'cmux launcher outage — dispatches are dying at injection',
-      description: `Watchdog: ${plan.outage.count} launches across tasks ${plan.outage.taskIds.join(', ')} died with "injection never ran". cmux is likely wedged or backgrounded — foreground/restart the cmux app. Watchdog is holding all dispatches until a launch verifies.`,
+      title: 'cmux launcher outage — dispatches are dying before a session starts',
+      description: `Watchdog: ${plan.outage.count} launches across tasks ${plan.outage.taskIds.join(', ')} died: ${cause}. Foreground/restart the cmux app. Watchdog is holding all dispatches until a launch verifies.`,
       cooldownHours: 6,
     });
   }
