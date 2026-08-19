@@ -40,7 +40,17 @@ concurrency:
 jobs:
   update-cast-changes:
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    # timeout-minutes raised 80 -> 95 (task #1813 follow-up, same day as
+    # the fetch-depth fix below): a full fetch-depth:0 checkout was
+    # directly measured at ~22-23 min TWICE today in other workflows
+    # fixed the same way (runs 32226150541, plus two sweep-we-
+    # aggregators.yml dispatches), not the ~15-20s this comment
+    # originally assumed. Historical max runtime under the OLD fast
+    # shallow checkout was 52 min; 52 + ~23 checkout ≈ 75 min, leaving
+    # only ~5 min under the old 80-min cap. Mirrors the identical fix
+    # applied the same day to update-show-status.yml (Notion
+    # 3c1637c5-416f-8190) for the same reason.
+    timeout-minutes: 95
 
     steps:
       - name: Checkout repository
@@ -56,8 +66,14 @@ jobs:
           # origin/main pathologically slow (silent 90s+ local-compute
           # hang, no network activity, until GIT_NET_TIMEOUT_SEC kills it
           # — see #1810's GIT_TRACE_CURL trace). fetch-depth: 0 removes
-          # the shallow ambiguity; the job has 25+ min of measured
-          # headroom under its 80-min timeout.
+          # the shallow ambiguity.
+          #
+          # Headroom note (corrected 2026-08-19, same day): a full
+          # checkout of this repo's ~2GB packed object DB was directly
+          # measured at ~22-23 min in real dispatches today, not the
+          # ~15-20s this comment previously assumed. timeout-minutes was
+          # raised above (80->95) to restore real margin instead of
+          # leaving a stale "25+ min headroom" claim that no longer held.
           fetch-depth: 0
 
       - name: Checkout core data
