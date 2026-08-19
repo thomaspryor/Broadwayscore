@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { classifyContentTier } = require('./lib/content-quality');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `fix-carrie-1988-nytimes-stale-flag-2026-08-19.js
@@ -37,8 +38,11 @@ Usage:
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const DRY_RUN = process.argv.includes('--dry-run');
-const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
-  || path.join(require('os').homedir(), 'broadway-review-texts');
+// resolveReviewTextsDir(), not a hardcoded ~/broadway-review-texts default —
+// that legacy clone can be silently stale (scripts/lib/review-texts-dir.js
+// docblock, 2026-08-17 incident); a future copy of this one-off pattern must
+// not default to it.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 const FILE_PATH = path.join(REVIEW_TEXTS_DIR, 'carrie-1988', 'nytimes--unknown.json');
 
 const data = JSON.parse(fs.readFileSync(FILE_PATH, 'utf8'));
