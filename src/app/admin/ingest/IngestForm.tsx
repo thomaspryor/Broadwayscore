@@ -2,6 +2,24 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseScore } from '@/lib/admin-ingest-score';
+import {
+  classifyStatus,
+  describeStatus,
+  buildSubmissionPlan,
+  isValidUrl,
+} from '../../../../scripts/lib/ingest-status';
+
+// Mirrors scripts/lib/ingest-status.js STATUS_META keys — kept in sync by
+// tests/unit/bulk-ingest-status-reporting.test.mjs.
+type IngestDisplayStatus =
+  | 'success'
+  | 'byline-error'
+  | 'outlet-unknown'
+  | 'duplicate-filtered'
+  | 'malformed-line'
+  | 'server-error'
+  | 'other-rejection'
+  | 'submitting';
 
 interface DetectionResult {
   outletId: string | null;
@@ -68,6 +86,14 @@ interface LogEntry {
   // committed a humanReviewScore so the operator can audit which rows
   // hard-locked at a specific score vs went to LLM ensemble scoring.
   lockedScore?: number;
+  // Card #1604: set for rows that were skipped BEFORE hitting the API
+  // (client-side validation failure or a same-batch duplicate URL) so they
+  // still get a status row instead of vanishing from `validSlots` filtering
+  // with no trace. See scripts/lib/ingest-status.js buildSubmissionPlan.
+  skippedReason?: 'duplicate-filtered' | 'malformed-line';
+  // True when this row's own commit succeeded but the batch-level rebuild
+  // dispatch that follows it failed — the review is saved but NOT yet live.
+  dispatchFailed?: boolean;
 }
 
 type Mode = 'single' | 'batch';
@@ -94,7 +120,11 @@ export default function IngestForm() {
   );
 
   function pushLog(entry: LogEntry) {
-    setSubmissionLog(prev => [entry, ...prev].slice(0, 10));
+    // Cap generously above any realistic single-session batch size — the
+    // old cap of 10 combined with SubmissionLog's render-only-5 silently
+    // hid rows (including failures) for any batch of 5+ (Card #1604 finding
+    // A: the operator's actual "11 submitted, 10 accounted for" symptom).
+    setSubmissionLog(prev => [entry, ...prev].slice(0, 200));
   }
   function updateLog(id: string, patch: Partial<LogEntry>) {
     setSubmissionLog(prev => prev.map(e => (e.id === id ? { ...e, ...patch } : e)));
@@ -129,10 +159,16 @@ function SubmissionLog({ entries }: { entries: LogEntry[] }) {
   return (
     <div className="rounded-lg border border-white/10 bg-surface-raised/60 p-3 space-y-2">
       <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
-        Recent submissions
+        Recent submissions{' '}
+        <span className="normal-case text-gray-500 font-normal">
+          ({entries.length})
+        </span>
       </div>
-      <ul className="space-y-1">
-        {entries.slice(0, 5).map(e => (
+      {/* Every attempted submission gets a row here — no count cap (Card
+          #1604: a hardcoded slice(0, 5) previously hid older rows, including
+          failures, for any batch of 5+). Scrolls instead of truncating. */}
+      <ul className="space-y-1 max-h-96 overflow-y-auto">
+        {entries.map(e => (
           <LogRow key={e.id} entry={e} />
         ))}
       </ul>
@@ -140,37 +176,44 @@ function SubmissionLog({ entries }: { entries: LogEntry[] }) {
   );
 }
 
+// Shared status taxonomy → Tailwind tone token. Keep in sync with
+// scripts/lib/ingest-status.js STATUS_META tones.
+const TONE_CLASS: Record<string, string> = {
+  pending: 'text-gray-400',
+  success: 'text-status-open',
+  warning: 'text-score-tepid',
+  error: 'text-score-skip',
+};
+
 function LogRow({ entry }: { entry: LogEntry }) {
-  const icon =
-    entry.status === 'submitting' ? '⏳' : entry.status === 'saved' ? '✓' : '✕';
-  const tone =
-    entry.status === 'submitting'
-      ? 'text-gray-400'
-      : entry.status === 'saved'
-        ? 'text-status-open'
-        : 'text-score-skip';
-  const failureLabel = entry.status === 'failed' ? describeFailureReason(entry.failureReason) : null;
+  const displayStatus = classifyStatus(entry) as IngestDisplayStatus;
+  const meta = describeStatus(displayStatus) as { icon: string; label: string; tone: string };
+  const tone = TONE_CLASS[meta.tone] || 'text-gray-400';
+  const isRejected = displayStatus !== 'success' && displayStatus !== 'byline-error' && displayStatus !== 'submitting';
   const summary =
-    entry.status === 'saved' && entry.criticName
-      ? `${entry.criticName} · ${entry.outletId} · ${entry.showId}`
-      : entry.status === 'submitting'
+    displayStatus === 'success' || displayStatus === 'byline-error'
+      ? entry.criticName
+        ? `${entry.criticName} · ${entry.outletId} · ${entry.showId}`
+        : meta.label
+      : displayStatus === 'submitting'
         ? entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)
-        : failureLabel || entry.error || 'Failed';
+        : entry.error || meta.label;
 
   // Decode the dispatched workflow into operator-friendly ETA (Lost Boys
   // 2026-04-27 ship-check Gap 8). Without this hint, "saved + rebuild
   // dispatched" leaves the operator guessing whether to expect 5 min
   // (rebuild-fast) or 15-20 min (LLM-then-rebuild).
   const eta = entry.status === 'saved' ? describeDispatchEta(entry.dispatchedWorkflow) : null;
-  const bylineWarning = entry.status === 'saved' && entry.pendingReason === 'no-byline';
+  const bylineWarning = displayStatus === 'byline-error';
   const lockedBadge =
     entry.status === 'saved' && typeof entry.lockedScore === 'number'
       ? entry.lockedScore
       : null;
+  const detectionWarningCount = entry.warningCount && entry.warningCount > 0 ? entry.warningCount : null;
 
   return (
     <li className="flex items-start gap-2 text-xs">
-      <span className={`${tone} mt-0.5 shrink-0 w-4`}>{icon}</span>
+      <span className={`${tone} mt-0.5 shrink-0 w-4`} title={displayStatus}>{meta.icon}</span>
       <div className="flex-1 min-w-0">
         <div className={`${tone} truncate flex items-center gap-1.5`}>
           <span className="truncate">{summary}</span>
@@ -183,7 +226,7 @@ function LogRow({ entry }: { entry: LogEntry }) {
             </span>
           )}
         </div>
-        {entry.status === 'failed' && (
+        {isRejected && (
           <div className="text-[11px] text-gray-500 truncate" title={entry.error}>
             {entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 70)}
           </div>
@@ -196,6 +239,16 @@ function LogRow({ entry }: { entry: LogEntry }) {
         {eta && (
           <div className={`text-[11px] mt-0.5 ${eta.tone}`}>
             {eta.label}
+          </div>
+        )}
+        {entry.dispatchFailed && (
+          <div className="text-[11px] text-score-tepid mt-0.5">
+            ⚠ Saved, but the batch rebuild dispatch failed — not live yet. See the dispatch row below for the manual trigger command.
+          </div>
+        )}
+        {detectionWarningCount && (
+          <div className="text-[11px] text-gray-500 mt-0.5">
+            ⓘ {detectionWarningCount} detection warning{detectionWarningCount === 1 ? '' : 's'} — auto-detected fields may need a check
           </div>
         )}
       </div>
@@ -227,17 +280,6 @@ function describeDispatchEta(workflow?: string): { label: string; tone: string }
     };
   }
   return { label: `Dispatched ${workflow}`, tone: 'text-gray-500' };
-}
-
-function describeFailureReason(reason?: string): string | null {
-  switch (reason) {
-    case 'outlet-unknown': return 'Outlet not in registry — add domain to outlet-registry.json';
-    case 'duplicate': return 'Stale-flag collision — existing file flagged for a different URL (set forceClearStale=true)';
-    case 'no-show': return 'Show not detected — set showId explicitly';
-    case 'malformed-url': return 'Malformed URL';
-    case 'server-error': return 'GitHub API error — retry or check token';
-    default: return null;
-  }
 }
 
 // ─── Single-paste form ──────────────────────────────────────────────
@@ -598,15 +640,24 @@ function BatchPasteForm({
     return [];
   }, [shows, showQuery, selectedShow]);
 
-  const validSlots = useMemo(
-    () =>
-      slots.filter(
-        s => s.url.trim() && isValidUrl(s.url) && s.fullText.trim().length >= 50,
-      ),
-    [slots],
-  );
-  const invalidCount = slots.filter(s => s.url.trim() || s.fullText.trim()).length - validSlots.length;
-  const readyToSubmit = !!selectedShow && validSlots.length > 0;
+  // Single source of truth for "what happens to each slot on submit" — every
+  // non-empty slot gets exactly one plan entry, 'submit' or 'skip' (with a
+  // reason). Card #1604: the old `validSlots` filter silently excluded
+  // malformed/duplicate slots from both submission AND the log with no
+  // trace; buildSubmissionPlan is what handleSubmitAll now iterates so every
+  // attempted row — including skips — gets a status entry.
+  const plan = useMemo(() => buildSubmissionPlan(slots), [slots]);
+  const submitCount = plan.filter(p => p.action === 'submit').length;
+  const malformedCount = plan.filter(p => p.skipReason === 'malformed-line').length;
+  const duplicateCount = plan.filter(p => p.skipReason === 'duplicate-filtered').length;
+  // Gating on submitCount > 0 (an earlier version of this fix did) meant a
+  // batch of ONLY malformed/duplicate slots left the button disabled —
+  // handleSubmitAll, and its Phase 0 skip-logging, never ran, so those rows
+  // never got a status entry. That's the exact silent-drop this card exists
+  // to close, just relocated to the all-invalid case (ship-check finding,
+  // 2026-08-19). Gate on plan.length instead: any attempted submission,
+  // successful or not, is enough to fire the submit flow.
+  const readyToSubmit = !!selectedShow && plan.length > 0;
 
   function updateSlot(id: string, patch: Partial<ReviewSlot>) {
     setSlots(prev => prev.map(s => (s.id === id ? { ...s, ...patch } : s)));
@@ -623,20 +674,45 @@ function BatchPasteForm({
     if (!readyToSubmit || submitting || !selectedShow) return;
 
     setSubmitting(true);
-    setProgress({ done: 0, total: validSlots.length });
+    setProgress({ done: 0, total: plan.length });
     let successCount = 0;
     let failureCount = 0;
+    let doneCount = 0;
+    const savedIds: string[] = [];
+    const succeededSlotIds = new Set<string>();
     // Track whether ANY successful slot needs LLM scoring. If so, the post-
     // batch dispatch must target llm-ensemble-score.yml (with fast_rebuild=true)
     // — dispatching rebuild-fast.yml directly would commit unscored reviews
     // that never render on the live page (Lost Boys 2026-04-26 Issue #5).
     let anyNeedsScoring = false;
 
+    // Phase 0: log every skipped slot (malformed, or a duplicate URL earlier
+    // in this same batch) up front. Card #1604 — these never used to get a
+    // row at all, since `validSlots` filtered them out before the submit
+    // loop started; the operator's "11 submitted, 10 accounted for" math
+    // never had anywhere to record the 11th.
+    for (const item of plan) {
+      if (item.action !== 'skip') continue;
+      failureCount++;
+      doneCount++;
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      onResult({
+        id,
+        startedAt: Date.now(),
+        url: item.slot.url.trim() || '(no URL entered)',
+        status: 'failed',
+        skippedReason: item.skipReason as 'duplicate-filtered' | 'malformed-line',
+      });
+    }
+    setProgress({ done: doneCount, total: plan.length });
+
+    const submitItems = plan.filter(item => item.action === 'submit');
+
     // Phase 1: commit each review with skipDispatch=true. The show is FIXED
     // at the form level so every entry gets the same showId — no per-slot
     // detection ambiguity.
-    for (let i = 0; i < validSlots.length; i++) {
-      const slot = validSlots[i];
+    for (let i = 0; i < submitItems.length; i++) {
+      const slot = submitItems[i].slot;
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       onResult({ id, startedAt: Date.now(), url: slot.url, status: 'submitting' });
 
@@ -655,6 +731,8 @@ function BatchPasteForm({
         const json = (await res.json()) as IngestResponse;
         if (json.success) {
           successCount++;
+          savedIds.push(id);
+          succeededSlotIds.add(slot.id);
           if (json.needsScoring) anyNeedsScoring = true;
           onUpdate(id, {
             status: 'saved',
@@ -681,13 +759,16 @@ function BatchPasteForm({
           failureReason: 'server-error',
         });
       }
-      setProgress({ done: i + 1, total: validSlots.length });
+      doneCount++;
+      setProgress({ done: doneCount, total: plan.length });
     }
 
-    // Phase 2: ONE dispatch covering all the commits. Skip only if literally
-    // zero succeeded. When any committed file lacks scoring, route to
-    // llm-ensemble-score.yml (which auto-triggers rebuild-fast on completion);
-    // otherwise dispatch rebuild-fast directly.
+    // Phase 2: ONE dispatch covering all the commits. When any committed
+    // file lacks scoring, route to llm-ensemble-score.yml (which
+    // auto-triggers rebuild-fast on completion); otherwise dispatch
+    // rebuild-fast directly. When literally nothing committed, synthesize an
+    // explicit 0-of-N summary row instead of silently ending the batch with
+    // no closing row (Card #1604 finding F).
     if (successCount > 0) {
       const dispatchId = `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`;
       const dispatchMode: 'rebuild' | 'score-then-rebuild' = anyNeedsScoring
@@ -734,27 +815,59 @@ function BatchPasteForm({
             status: 'failed',
             error: `Reviews committed but dispatch failed: ${json.error}. Trigger manually: ${fallbackCmd}`,
           });
+          // The individual review commits above are real — only the rebuild
+          // that would make them live failed. Flag each so the operator
+          // doesn't read "✓ saved" as "✓ live" (Card #1604 finding E).
+          savedIds.forEach(sid => onUpdate(sid, { dispatchFailed: true }));
         }
       } catch (err) {
         onUpdate(dispatchId, {
           status: 'failed',
           error: `Reviews committed but dispatch failed: ${err instanceof Error ? err.message : String(err)}`,
         });
+        savedIds.forEach(sid => onUpdate(sid, { dispatchFailed: true }));
       }
+    } else if (plan.length > 0) {
+      onResult({
+        id: `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`,
+        startedAt: Date.now(),
+        url: `0 of ${plan.length} review${plan.length === 1 ? '' : 's'} committed for ${selectedShow.title}`,
+        status: 'failed',
+        error: `All ${plan.length} submission${plan.length === 1 ? '' : 's'} in this batch failed or were skipped — nothing was dispatched. See the rows above for each reason.`,
+      });
     }
 
-    // Reset slots that succeeded; keep failed ones so operator can edit + retry.
-    if (failureCount === 0) {
-      setSlots([
-        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
-        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
-      ]);
+    // Remove exactly the slots that succeeded; keep failed/skipped ones so
+    // the operator can edit + retry. Gating this on `failureCount === 0`
+    // (an earlier version did) kept EVERY slot — including already-committed
+    // successes — the moment any single slot failed or was skipped, so
+    // clicking Submit again after fixing the one bad row silently re-POSTed
+    // the already-saved reviews too, double-committing them and
+    // double-dispatching rebuilds (ship-check finding, 2026-08-19).
+    if (succeededSlotIds.size > 0) {
+      setSlots(prev => {
+        const remaining = prev.filter(s => !succeededSlotIds.has(s.id));
+        return remaining.length > 0
+          ? remaining
+          : [
+              { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+              { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+            ];
+      });
     }
     setSubmitting(false);
   }
 
   return (
-    <form onSubmit={handleSubmitAll} className="space-y-5">
+    // noValidate: without it, a malformed `type="url"` slot trips the
+    // browser's native constraint validation and silently blocks the
+    // 'submit' event from firing AT ALL — not just for that slot, for the
+    // whole batch, including otherwise-valid slots — before handleSubmitAll
+    // (and its buildSubmissionPlan-based malformed-line status row) ever
+    // runs. buildSubmissionPlan already re-implements the same URL-validity
+    // check in JS, so it — not the browser — is what decides what's
+    // submittable (Card #1604, caught via manual QA of this fix).
+    <form onSubmit={handleSubmitAll} noValidate className="space-y-5">
       {/* Show picker */}
       <Field label="Show" required hint="All reviews in this batch will be attached to this show.">
         {selectedShow ? (
@@ -848,11 +961,20 @@ function BatchPasteForm({
             + Add another review
           </button>
 
-          {(validSlots.length > 0 || invalidCount > 0) && (
+          {(submitCount > 0 || malformedCount > 0 || duplicateCount > 0) && (
             <div className="text-xs text-gray-400">
-              <strong className="text-status-open">{validSlots.length} ready</strong>
-              {invalidCount > 0 && (
-                <span className="text-score-tepid"> · {invalidCount} incomplete (need URL + text ≥50ch)</span>
+              <strong className="text-status-open">{submitCount} ready</strong>
+              {malformedCount > 0 && (
+                <span className="text-score-tepid"> · {malformedCount} incomplete (need URL + text ≥50ch)</span>
+              )}
+              {duplicateCount > 0 && (
+                <span className="text-score-tepid">
+                  {' '}
+                  · {duplicateCount} duplicate URL{duplicateCount === 1 ? '' : 's'} in this batch
+                </span>
+              )}
+              {(malformedCount > 0 || duplicateCount > 0) && (
+                <span> — will still show as a status row after you submit.</span>
               )}
             </div>
           )}
@@ -871,7 +993,9 @@ function BatchPasteForm({
               ? `Submitting ${progress.done} of ${progress.total}…`
               : !readyToSubmit
                 ? 'Fill in at least one review (URL + text)'
-                : `Submit ${validSlots.length} review${validSlots.length === 1 ? '' : 's'} for ${selectedShow.title}`}
+                : submitCount > 0
+                  ? `Submit ${submitCount} review${submitCount === 1 ? '' : 's'} for ${selectedShow.title}`
+                  : `Log ${plan.length} failed review${plan.length === 1 ? '' : 's'} — nothing valid to submit`}
           </button>
         </>
       )}
@@ -968,15 +1092,6 @@ function SlotEditor({
 
 function makeSlotId() {
   return `slot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function isValidUrl(s: string): boolean {
-  try {
-    new URL(s);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 // ─── Detected section (single-paste only) ─────────────────────────
