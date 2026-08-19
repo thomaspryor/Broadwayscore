@@ -225,6 +225,35 @@ function terminalSurfaceAliveIn(ref) {
   }
 }
 
+// Card #1829, correctness fix from adversarial review: terminalSurfaceAliveIn
+// requires hasClaudeChrome — the persistent "ctx NN%" status bar — which is
+// the RIGHT bar for its existing callers (they already suspect the workspace
+// might be dead on other grounds, so "chrome not painted yet" siding with
+// "not proven alive" is the safe direction). It is the WRONG signal for a
+// caller deciding whether to REPORT SUCCESS on a workspace that just this
+// instant registered a live wrapper + cmux tag: claude can legitimately have
+// a real, rendered pane for a moment before its own UI paints that status
+// bar, and conflating "chrome not visible yet" with "surface confirmed gone"
+// would make a brand-new, healthy launch fail this check by pure timing —
+// the opposite failure mode from the one this card fixes (false success),
+// but just as damaging to real dispatch throughput.
+//
+// This function answers only the narrower, purely negative question a
+// success-path caller actually needs: is the surface CONFIRMED missing? A
+// successful read-screen call proves the surface exists regardless of what
+// is drawn on it yet, so only the isNotFoundError-classified exception case
+// counts as confirmed-missing; every other outcome (a successful read with
+// no chrome yet, or a different/transient error) is "not confirmed missing"
+// — the correct fail-open direction for gating a success report.
+function terminalSurfaceConfirmedMissing(ref) {
+  try {
+    run(['read-screen', '--workspace', ref]);
+    return false;
+  } catch (e) {
+    return isNotFoundError(e.message);
+  }
+}
+
 // Shared two-signal liveness check (cards #559/#564). claudeAliveIn alone
 // queries only cmux's tag/process registry, which can desync from the truth
 // in EITHER direction (#548: false positive; #559: false negative, verified
@@ -362,5 +391,5 @@ module.exports = {
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
   listWorkspaces, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
-  terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
+  terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
 };

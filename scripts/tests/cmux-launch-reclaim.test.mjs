@@ -72,8 +72,9 @@ function baseProbes(overrides = {}) {
     idleSec: () => 0, // < IDLE_GATE_SEC so the idle-gated pre-wake never fires either
     cmuxExists: () => true,
     // Card #1829: MUST be stubbed, same reason as cmuxExists/wake above — the
-    // default falls back to the REAL cmuxws.terminalSurfaceAliveIn, which
-    // shells out to the real cmux CLI. Defaulting to "alive" here keeps every
+    // default falls back to cmux-launch.js's defaultSurfaceAliveFn (built on
+    // cmuxws.terminalSurfaceConfirmedMissing), which shells out to the real
+    // cmux CLI. Defaulting to "alive" here keeps every
     // pre-#1829 test in this file exercising exactly the wrapper/tag failure
     // path it was written for, not a real (and here undefined-behavior)
     // read-screen call against a fabricated workspace ref.

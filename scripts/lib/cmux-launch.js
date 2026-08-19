@@ -340,10 +340,19 @@ function osActivateCmuxApp() {
 // reporting "Terminal surface not found"). Neither existing signal here
 // queries the rendered surface at all, so this function adopted 7/7 dead
 // cmux-tab dispatches on 2026-08-19 as ok:true with nothing actually running.
-// terminalSurfaceAliveIn queries cmux's read-screen directly and only
-// returns false on a CONFIRMED not-found (any other error fails open), so
-// requiring it here adds a genuinely independent, authoritative signal
-// without making this check more failure-prone than it already is.
+// terminalSurfaceConfirmedMissing queries cmux's read-screen directly and
+// only reports true on a CONFIRMED not-found (a successful read, or any
+// other error, leaves this false — fail-open), so requiring its inverse here
+// adds a genuinely independent, authoritative signal without making this
+// check more failure-prone than it already is. NOT terminalSurfaceAliveIn:
+// that helper requires the claude status-bar chrome to be painted, which is
+// the wrong bar for a check that must not false-fail a workspace whose
+// surface is real but whose UI hasn't drawn its first frame yet (adversarial
+// review, 2026-08-19 — see terminalSurfaceConfirmedMissing's own header).
+function defaultSurfaceAliveFn(ref) {
+  return !cmuxws.terminalSurfaceConfirmedMissing(ref);
+}
+
 // Pure AND-gate over the 4 signals (rule 15 — extracted so the "surface is
 // now required" behavior is directly unit-testable without a real cmux
 // socket or OS process table). listed=false always means dead regardless of
@@ -354,7 +363,7 @@ function computeStrictAliveness({ listed, claudeAlive, osProcessAlive, surfaceAl
 }
 
 function strictlyAliveWorkspace(ref, marker, probes = {}) {
-  const surfaceAliveFn = probes.terminalSurfaceAlive || cmuxws.terminalSurfaceAliveIn;
+  const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
   try {
     const listed = cmuxws.listWorkspaces().some(w => w.ref === ref);
     if (!listed) return false;
@@ -837,8 +846,13 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // unsafe alone (#548: workspace:115 had a live wrapper AND a live cmux
       // tag while read-screen reported the surface gone). One read-screen
       // call here — not per-poll — confirms the surface actually exists
-      // before ever reporting success.
-      const surfaceAliveFn = probes.terminalSurfaceAlive || cmuxws.terminalSurfaceAliveIn;
+      // before ever reporting success. defaultSurfaceAliveFn, NOT
+      // terminalSurfaceAliveIn: the moment wrapper+tag just registered is
+      // exactly when the claude UI may not have painted its status-bar
+      // chrome yet, and terminalSurfaceAliveIn requires that chrome — using
+      // it here would false-fail a brand-new, genuinely healthy launch on
+      // pure timing (adversarial review, 2026-08-19).
+      const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
       if (surfaceAliveFn(ws.ref) !== false) {
         if (autoColor) setAutoColor(ws.ref);
         return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
