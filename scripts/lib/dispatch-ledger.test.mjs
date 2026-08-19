@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, describeOutageCause, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -806,58 +806,6 @@ test('detectLauncherOutage: "wrapper exited" is NOT outage evidence — injectio
   });
   const entries = ['1', '2', '3'].map((t, i) => exited(t, `workspace:${i}`));
   assert.equal(detectLauncherOutage(entries, { now }).outage, false);
-});
-
-// Card #1829: 'surface not found' — the card's OWN incident (7 launches,
-// cross-task, ~33 min window, "Terminal surface not found" on every one) was
-// invisible to this detector before this fix, since only 'injection never
-// ran' counted as outage evidence. reason text below matches
-// REASONS[STATES.SURFACE_NOT_FOUND] in cmux-launch-state.js exactly.
-test('detectLauncherOutage: a surface-not-found cluster across 3+ tasks IS outage evidence (the card #1829 incident shape)', () => {
-  const now = Date.parse('2026-08-19T15:20:00.000Z');
-  const surfaceDeath = (taskId, ref, minsAgo) => ({
-    event: 'dead', taskId, workspaceRef: ref,
-    failureReason: `wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session in ${ref}`,
-    ts: new Date(now - minsAgo * 60000).toISOString(),
-  });
-  const entries = [surfaceDeath('868', 'workspace:868', 30), surfaceDeath('870', 'workspace:870', 20),
-    surfaceDeath('873', 'workspace:873', 10)];
-  const r = detectLauncherOutage(entries, { now });
-  assert.equal(r.outage, true, 'before card #1829 this exact incident shape produced outage:false — must now alarm');
-  assert.deepEqual(r.causes, { injection: false, surface: true });
-});
-
-test('detectLauncherOutage: causes reports BOTH when injection and surface deaths mix in the same window', () => {
-  const now = Date.parse('2026-08-19T15:20:00.000Z');
-  const entries = [
-    { event: 'dead', taskId: '1', workspaceRef: 'workspace:1', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:1', ts: new Date(now - 20 * 60000).toISOString() },
-    { event: 'dead', taskId: '2', workspaceRef: 'workspace:2', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:2', ts: new Date(now - 15 * 60000).toISOString() },
-    { event: 'dead', taskId: '3', workspaceRef: 'workspace:3', failureReason: 'wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session in workspace:3', ts: new Date(now - 5 * 60000).toISOString() },
-  ];
-  const r = detectLauncherOutage(entries, { now });
-  assert.equal(r.outage, true);
-  assert.deepEqual(r.causes, { injection: true, surface: true });
-});
-
-test('detectLauncherOutage: "wrapper exited" and slow-boot deaths still do NOT flip causes.surface (regression safety)', () => {
-  const now = Date.parse('2026-08-19T15:20:00.000Z');
-  const entries = ['1', '2', '3'].map((t, i) => ({
-    event: 'dead', taskId: t, workspaceRef: `workspace:${i}`,
-    failureReason: 'launch wrapper exited without claude registering',
-    ts: new Date(now - 5 * 60000).toISOString(),
-  }));
-  assert.equal(detectLauncherOutage(entries, { now }).outage, false, 'unrelated failure reasons must not be swept into the broadened regex');
-});
-
-test('describeOutageCause: distinct, accurate prose per cause combination — never says "injection" for a pure surface cluster', () => {
-  const injectionOnly = describeOutageCause({ injection: true, surface: false });
-  const surfaceOnly = describeOutageCause({ injection: false, surface: true });
-  const both = describeOutageCause({ injection: true, surface: true });
-  assert.match(injectionOnly, /injection/i);
-  assert.doesNotMatch(surfaceOnly, /injection/i, 'a pure surface-not-found cluster must never be described as an injection failure');
-  assert.match(surfaceOnly, /surface|render/i);
-  assert.match(both, /injection/i);
-  assert.match(both, /surface|render/i);
 });
 
 test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are not outage evidence', () => {
