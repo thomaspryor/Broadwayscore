@@ -339,6 +339,11 @@ tmp/
 # run on this Mac via launchd).
 /data/audit/predispatch-queue-audit-snapshot.json
 /data/audit/predispatch-queue-audit-history.json
+# sync-audit-checkout.sh refusal snapshots (task #1563) — Mac-local, one per
+# SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit). Producer:
+# scripts/lib/sync-audit-checkout.sh's refuse-loud path. Consumer:
+# send-morning-digest.js. Cleared automatically on the next successful sync.
+/data/audit/sync-refused-*.json
 # Dispatch guard queue backlog digest metric (task #1802) — same producer
 # (scripts/predispatch-queue-audit.js, one script now writes two snapshots),
 # same Mac-local reasoning as the pair directly above.
