@@ -11,36 +11,14 @@
     "queuedAt": "2026-08-19T14:07:32.782Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 20.4% of shows changed coverage state",
-    "description": "review-gap blast radius 20.4% (10/49 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, bone-wars-off-broadway-2026, buena-vista-social-club-2025, horrible-histories-barmy-britain-the-best-bits-west-end-2026, hungry-women-off-broadway-2026, jeeves-takes-charge-west-end-2026, the-25th-annual-putnam-county-spelling-bee-off-broadway-2025, the-house-of-the-negro-insane-off-broadway-2026, the-oresteia-west-end-2026, trophy-boys-off-broadway-2025\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (2804/2500 reqs)",
+    "description": "Zone serp_api1 billed 2804 requests today against a ceiling of 2500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n4 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (570), gather-reviews.js (461), opening-night-poller.js (310).",
+    "severity": "critical",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-19T14:33:01.658Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "3/150 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nAvenue Q: score-drift\nThe Devil Wears Prada: score-drift\nThe Lion King: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-19T14:33:14.729Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "156 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-19T14:33:14.817Z"
+    "queuedAt": "2026-08-19T14:33:59.575Z"
   }
 ]
