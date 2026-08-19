@@ -157,8 +157,23 @@ async function main() {
       log: () => {}, // quiet
     });
 
-    // Advance retry/cooldown state whether the SERP call succeeded or failed.
-    if (!opts.dryRun && result !== '__SERP_UNAVAILABLE__') {
+    // Resolve recovery BEFORE recording the attempt: recordSerpAttempt can
+    // set staleWrongProductionRecoveryAbandoned:true on the exhausting
+    // retry, and isEligibleForStaleWrongProductionRecovery (which
+    // resolveStaleWrongProductionRecovery calls internally) rejects any file
+    // with that flag already set. Recording first would silently discard a
+    // genuine hit on exactly the attempt most likely to succeed — the last
+    // one before giving up — and permanently exclude the file from every
+    // future scan (Codex adversarial review, round 2 of this PR).
+    const recovery = (result && result !== '__SERP_UNAVAILABLE__')
+      ? resolveStaleWrongProductionRecovery(c.data, result, c.show)
+      : null;
+
+    // Advance retry/cooldown bookkeeping only when there was NO recovery — a
+    // successful recovery clears wrongProduction below, so the retry
+    // counters are moot: isEligibleForStaleWrongProductionRecovery already
+    // excludes the file on the next scan via the wrongProduction!==true check.
+    if (!recovery && !opts.dryRun && result !== '__SERP_UNAVAILABLE__') {
       try {
         const attemptUpdates = recordSerpAttempt(c.show, reviewObj);
         if (Object.keys(attemptUpdates).length > 0) {
@@ -167,10 +182,6 @@ async function main() {
         }
       } catch (e) { /* non-fatal */ }
     }
-
-    const recovery = (result && result !== '__SERP_UNAVAILABLE__')
-      ? resolveStaleWrongProductionRecovery(c.data, result, c.show)
-      : null;
 
     if (recovery) {
       console.log(`✓ recovered: ${recovery.url}`);

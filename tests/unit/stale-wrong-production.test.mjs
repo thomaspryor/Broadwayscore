@@ -153,6 +153,38 @@ describe('resolveStaleWrongProductionRecovery — identifies the current review 
   });
 });
 
+describe('recordSerpAttempt/resolveStaleWrongProductionRecovery ordering — a hit on the LAST retry must not be discarded', () => {
+  // scripts/retry-stale-wrong-production.js's own regression: recordSerpAttempt
+  // sets staleWrongProductionRecoveryAbandoned:true on the attempt that hits
+  // MAX_RETRIES_WRONG_CONTENT. If the caller applies+writes that update to
+  // `data` BEFORE calling resolveStaleWrongProductionRecovery, the very next
+  // eligibility check rejects the file (data.staleWrongProductionRecoveryAbandoned
+  // === true) even though `result` is a perfectly valid, in-window URL — the
+  // successful hit on the exhausting attempt is silently thrown away and the
+  // file becomes permanently ineligible (Codex adversarial review, round 2).
+  const openWindowShow = { id: 'chicago-2026', title: 'Chicago', category: 'broadway', status: 'open', previewsStartDate: '2026-01-10', openingDate: '2026-02-01' };
+  const currentUrl = 'https://www.usatoday.com/story/life/theater/2026/02/03/chicago-review/999/';
+
+  it('resolve-THEN-record (correct order): a hit on the exhausting attempt is still accepted', () => {
+    const data = { ...staleFile(), staleWpRetryCount: 2 }; // next attempt hits openWindow's max of 3
+    const recovery = resolveStaleWrongProductionRecovery(data, currentUrl, openWindowShow);
+    assert.ok(recovery, 'resolve must succeed BEFORE the abandoned flag is applied');
+    assert.equal(recovery.url, currentUrl);
+    // Only now would the caller record the attempt — but it shouldn't, since recovery succeeded.
+  });
+
+  it('record-THEN-resolve (the bug): the same hit is silently discarded and the file locks out forever', () => {
+    const data = { ...staleFile(), staleWpRetryCount: 2 };
+    const attemptUpdates = recordSerpAttempt(openWindowShow, { ...data, incompleteReason: 'stale_wrong_production' });
+    assert.equal(attemptUpdates.staleWrongProductionRecoveryAbandoned, true, 'sanity: this IS the exhausting attempt');
+    Object.assign(data, attemptUpdates); // the bug: applying abandonment before resolving
+    const recovery = resolveStaleWrongProductionRecovery(data, currentUrl, openWindowShow);
+    assert.equal(recovery, null, 'demonstrates the bug: a valid hit is rejected once abandoned is set first');
+    // And the file is now permanently ineligible regardless of any future URL:
+    assert.equal(isEligibleForStaleWrongProductionRecovery(data, openWindowShow), false);
+  });
+});
+
 describe('shouldRetryUrlDiscovery / recordSerpAttempt — stale_wrong_production reuses the retry/cooldown SHAPE under its OWN namespaced fields', () => {
   const openWindowShow = { id: 'x', category: 'broadway', status: 'open', openingDate: new Date().toISOString().slice(0, 10) };
 
