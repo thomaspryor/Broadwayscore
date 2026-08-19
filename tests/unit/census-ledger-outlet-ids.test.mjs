@@ -102,3 +102,23 @@ test('unionCensus still resolves a genuinely-unresolvable-by-URL row via outlet 
   assert.ok(ids.includes('latimes'), 'text-only fallback still works and resolves the alias correctly');
   assert.ok(!ids.includes('the-la-times'), 'no duplicate outletId leaks through');
 });
+
+test('unionCensus never overrides a source-provided outletId with a URL guess (regression: sunday-telegraph)', () => {
+  // A bare URL domain can never disambiguate a shared-domain edition split
+  // (telegraph.co.uk serves both telegraph and sunday-telegraph — see
+  // resolveOutletFromUrl's own "eponymous wins" collision-rule comment). A
+  // source like theatre-reviews resolves that split via byline/section text
+  // and sets outletId deliberately; unionCensus must trust it, not overwrite
+  // it with resolveOutletFromUrl(url) (adversarial review finding, BRO-90).
+  const census = unionCensus([{
+    source: 'theatre-reviews',
+    reviews: [
+      { outlet: 'The Sunday Telegraph', outletId: 'sunday-telegraph', critic: 'Unknown', stars: null, url: 'https://www.telegraph.co.uk/theatre/review' },
+      { outlet: 'Time Out London', outletId: 'timeout-london', critic: 'Unknown', stars: null, url: 'https://www.timeout.com/london/theatre/review' },
+    ],
+  }]);
+  const ids = census.entries.map((e) => e.outletId);
+  assert.ok(ids.includes('sunday-telegraph'), 'source-provided sunday-telegraph must survive');
+  assert.ok(!ids.includes('telegraph'), 'must not be silently overwritten with the URL-domain guess');
+  assert.ok(ids.includes('timeout-london'), 'source-provided timeout-london must survive');
+});
