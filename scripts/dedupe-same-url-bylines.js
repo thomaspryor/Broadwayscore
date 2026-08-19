@@ -71,6 +71,7 @@ const { isIncludableForRebuild, areSameCriticFuzzy } = require('./lib/review-gua
 const { normalizeUrl } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 
 const USAGE = `dedupe-same-url-bylines.js — Fixes the same-URL / multi-byline double-count class (Notion 2026-07-12,.
 
@@ -286,7 +287,8 @@ function fix(cohesive) {
   const day = new Date().toISOString().slice(0, 10);
   for (const g of cohesive) {
     const dir = path.join(REVIEW_TEXTS_DIR, g.showId);
-    const loserSet = new Set(g.losers);
+    const canonPath = path.join(dir, g.canonical);
+    const canonData = JSON.parse(fs.readFileSync(canonPath, 'utf-8'));
     // The chosen canonical can carry a STALE duplicateOf/duplicateTextOf
     // pointer at one of its own now-subordinate losers — left over from an
     // earlier pass (e.g. collect-review-texts.js's content-fingerprint dedup,
@@ -301,13 +303,24 @@ function fix(cohesive) {
     // entirely, taking its score/byline with it. Clearing the canonical's own
     // pointer here — in the SAME write pass that subordinates its losers —
     // closes the loop so the canonical it chose is the file that survives.
-    const canonPath = path.join(dir, g.canonical);
-    const canonData = JSON.parse(fs.readFileSync(canonPath, 'utf-8'));
-    if ((canonData.duplicateOf && loserSet.has(canonData.duplicateOf)) ||
-        (canonData.duplicateTextOf && loserSet.has(canonData.duplicateTextOf))) {
-      canonData.duplicateOf = null;
-      canonData.duplicateTextOf = null;
-      canonData.duplicateClearReason = `same-url-byline-dedup on ${day}: cleared stale self-pointer at now-subordinate sibling(s) ${g.losers.join(', ')} — this file is the chosen canonical`;
+    // Shares scripts/lib/canonical-duplicate-pointers.js with
+    // audit-review-url-clusters.js (fixed for this exact bug class 2026-08-17,
+    // loves-labours-lost-globe-west-end-2026) rather than hand-rolling the
+    // clear — that module gets null-vs-delete right (duplicateOf: null,
+    // duplicateTextOf: deleted; validate-data.js flags a null duplicateTextOf
+    // as a field that should have been removed) and only drops a field
+    // proven to point at a cluster member, never both unconditionally.
+    // No `siblings` param: g.losers is already a same-URL cluster (audit()
+    // groups strictly by normalizeUrl), which the module's own docs treat as
+    // sufficient proof on its own — passing siblings here would additionally
+    // require the loser to ALREADY point back at the canonical, which isn't
+    // true yet for a freshly-detected group (the loser-marking loop below is
+    // what sets that pointer), so it would refuse to clear the exact case
+    // this fix exists for.
+    const plan = planCanonicalPointerClear(canonData, { self: g.canonical, clusterFiles: g.losers });
+    if (plan.drop.length) {
+      applyCanonicalPointerClear(canonData, plan);
+      canonData.duplicateClearReason = `same-url-byline-dedup on ${day}: ${plan.reason} — this file is the chosen canonical`;
       safeWriteReview(canonPath, canonData, { force: true });
       staleCanonicalPointerCleared++;
     }

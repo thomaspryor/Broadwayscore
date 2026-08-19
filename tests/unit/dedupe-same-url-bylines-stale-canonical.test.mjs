@@ -63,8 +63,11 @@ test('fix(): clears a stale duplicateTextOf the canonical carries at its own new
 
   const canonData = JSON.parse(fs.readFileSync(path.join(showDir, canonName), 'utf-8'));
   assert.equal(canonData.duplicateOf, null, 'canonical must stay primary');
-  assert.equal(canonData.duplicateTextOf, null, 'stale self-pointer must be cleared');
-  assert.match(canonData.duplicateClearReason, /cleared stale self-pointer/);
+  // duplicateTextOf must be DELETED, not nulled — a null duplicateTextOf is
+  // itself a validate-data.js warning (scripts/lib/canonical-duplicate-
+  // pointers.js's documented null-vs-delete distinction).
+  assert.equal('duplicateTextOf' in canonData, false, 'stale self-pointer must be deleted, not nulled');
+  assert.match(canonData.duplicateClearReason, /pointed back into its own byline cluster/);
 
   const loserData = JSON.parse(fs.readFileSync(path.join(showDir, loserName), 'utf-8'));
   assert.equal(loserData.duplicateOf, canonName, 'loser must be marked duplicate of the canonical');
