@@ -3085,6 +3085,21 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/detect-stale-merge-head.test.sh
 
+      - name: Run sync-audit-checkout test (bash integration)
+        # Task #1563: local main drifted 119 commits behind origin because
+        # every launchd job swallowed a failed `git merge --ff-only` with
+        # `|| echo "...running with local code"` — the shared fix
+        # (scripts/lib/sync-audit-checkout.sh, task #732) resets regenerable
+        # non-jsonl data/audit/ snapshots and retries, but refuses loudly
+        # (non-zero exit, no reset) on a dirty .jsonl ledger, a dirty file
+        # outside data/audit/, or real commit divergence — this had zero
+        # test coverage until now. Bash-level so it exercises real git
+        # fast-forward/refuse behavior on fixture repos, not just the prose.
+        # No path-allowlist entry needed — scripts/lib/** (line 22) already
+        # covers both the script and this test file.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/sync-audit-checkout.test.sh
+
       - name: Run push-with-retry mutex/deadline interaction test (bash integration)
         # Task #458 (2026-07-30 finding, card #669): push_mutex_acquire can block
         # for a real stretch waiting on another session's lock (its own timeout
