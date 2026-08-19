@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-04T08:39:34.723Z",
-    "showId": "the-car-man-west-end-2026",
-    "newFile": "telegraph--unknown.json",
-    "ok": false,
-    "file": "telegraph--rachel-ward.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.telegraph.co.uk/culture/theatre/dance/11747488/The-Car-Man-Sadlers-Wells-review-masterful.html",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2015-07-17",
-      "incomingUrl": "https://www.telegraph.co.uk/theatre/what-to-see/matthew-bourne-bizet-sadlers-wells/",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-08-04T08:43:01.869Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "all-that-dazzles-uk--daz-gale.json",
-    "ok": false,
-    "file": "all-that-dazzles-uk--unknown.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.allthatdazzles.co.uk/post/review-heathers-the-arts-at-marble-arch",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.allthatdazzles.co.uk/post/review-heathers-sohoplace",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-04T08:43:01.960Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "west-end-best-friend--cara-brazier.json",
@@ -9393,6 +9355,40 @@
       "existingPublishDate": null,
       "incomingUrl": "https://www.theguardian.com/stage/2024/dec/01/twelfth-night-review-orange-tree-theatre",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-19T01:05:29.625Z",
+    "showId": "disruption-off-broadway-2026",
+    "newFile": "broadwayworld--cindy-marcolina.json",
+    "ok": false,
+    "file": "broadwayworld--cindy-marcolina.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803",
+      "existingFlags": {
+        "wrongProduction": false,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": true
+      },
+      "existingPublishDate": "2026-08-03",
+      "incomingUrl": "https://www.broadwayworld.com/westend/article/Review-DISRUPTION-Park-Theatre-20230714",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-19T01:11:57.014Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
     }
   }
 ]
