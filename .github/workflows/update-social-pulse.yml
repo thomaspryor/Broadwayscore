@@ -33,7 +33,17 @@ jobs:
     # Wikipedia are all direct JSON APIs — a show takes seconds, not the
     # ~2 min the Apify sync-runs took. ~120 shows × (fetch + GPT-4o-mini
     # classify) + ranks + commit fits comfortably in 90.
-    timeout-minutes: 90
+    #
+    # timeout-minutes raised 90 -> 110 (task #1813 follow-up, same day as
+    # the fetch-depth fix below): a full fetch-depth:0 checkout was
+    # directly measured at ~22-23 min TWICE today (runs 32226150541 and
+    # two sweep-we-aggregators.yml dispatches), not the ~15-20s this
+    # comment originally assumed. Historical max runtime under the OLD
+    # fast shallow checkout was 76 min; 76 + ~23 checkout ≈ 99 min, which
+    # would have EXCEEDED the old 90-min cap on a full-scope run. Mirrors
+    # the identical fix applied the same day to update-show-status.yml
+    # (Notion 3c1637c5-416f-8190) for the same reason.
+    timeout-minutes: 110
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -48,16 +58,16 @@ jobs:
           # since-drifted origin/main pathologically slow (silent 90s+
           # local-compute hang, no network activity, until
           # GIT_NET_TIMEOUT_SEC kills it — see #1810's GIT_TRACE_CURL
-          # trace). fetch-depth: 0 removes the shallow ambiguity; the job
-          # still has 10+ min of headroom under its 90-min timeout even
-          # on its longest observed run — but that margin is thinner than
-          # the other two workflows fixed alongside this one. A full
-          # checkout of this repo's ~2GB packed object DB normally takes
-          # ~15-20s, but gitleaks.yml and guard-no-orphan-commit.yml both
-          # document real incidents (2026-07-26, 2026-08) where it spiked
-          # to several minutes or never finished. If checkout time grows
-          # here, watch for this job trading a push-hang failure for a
-          # timeout failure instead.
+          # trace). fetch-depth: 0 removes the shallow ambiguity.
+          #
+          # Headroom note (corrected 2026-08-19, same day): a full
+          # checkout of this repo's ~2GB packed object DB was directly
+          # measured at ~22-23 min in real dispatches today, not the
+          # ~15-20s this comment previously assumed (gitleaks.yml and
+          # guard-no-orphan-commit.yml separately document similar
+          # spikes). timeout-minutes was raised above (90->110) to give
+          # this back real margin instead of leaving a stale "10+ min
+          # headroom" claim that no longer held.
           fetch-depth: 0
 
       - name: Checkout core data
