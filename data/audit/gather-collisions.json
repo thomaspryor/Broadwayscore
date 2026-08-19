@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-04T08:43:01.960Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "west-end-best-friend--cara-brazier.json",
-    "ok": false,
-    "file": "west-end-best-friend--unknown.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-the-arts-at-marble-arch",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.westendbestfriend.co.uk/news/review-heathers-the-musical-soho-place",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-08-04T08:43:02.057Z",
-    "showId": "heathers-the-musical-off-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/review-heathers-the-musical-haymarket-theatre_47588/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.whatsonstage.com/news/heathers-the-musical-brings-big-fun-to-new-york-review_1686519/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-04T08:43:02.148Z",
     "showId": "heathers-the-musical-off-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9378,6 +9340,40 @@
   },
   {
     "recordedAt": "2026-08-19T01:11:57.014Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
+    }
+  },
+  {
+    "recordedAt": "2026-08-19T03:28:15.921Z",
+    "showId": "disruption-off-broadway-2026",
+    "newFile": "broadwayworld--cindy-marcolina.json",
+    "ok": false,
+    "file": "broadwayworld--cindy-marcolina.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803",
+      "existingFlags": {
+        "wrongProduction": false,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": true
+      },
+      "existingPublishDate": "2026-08-03",
+      "incomingUrl": "https://www.broadwayworld.com/westend/article/Review-DISRUPTION-Park-Theatre-20230714",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-19T03:35:03.936Z",
     "showId": "the-pass-off-broadway-2026",
     "newFile": "theatrely--juan-a-ramirez.json",
     "ok": false,
