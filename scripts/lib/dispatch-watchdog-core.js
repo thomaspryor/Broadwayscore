@@ -134,6 +134,66 @@ function watchdogLiveCount(entries) {
   return n;
 }
 
+// How long an unlanded dispatch claim keeps its task out of the sweep before
+// the task re-arms on its own. Deliberately a DAY, not the ~90s sweep period:
+// the refusals this suppresses are deterministic guard verdicts (a Notion card
+// that is closed, PARKED, or REOPEN-SUSPECT), and those only change when a
+// human edits the card — a daily-scale event. Long enough that a permanently
+// refused card costs one claim a day instead of the whole budget; short enough
+// that a genuinely transient failure (wedged cmux, spawn crash, the 15-minute
+// DISPATCH_TIMEOUT_MS kill) retries by itself rather than being suppressed for
+// good. Sibling constant: bsc-reconcile.js's STALL_COOLDOWN_MS.
+const REDISPATCH_REARM_MS = 24 * 3600 * 1000;
+
+// Tasks the watchdog has already claimed a dispatch for whose claim never
+// produced a launch — i.e. the child `bsc-next --id N` refused it (a guard
+// verdict) or died before it could launch anything.
+//
+// The whole 2026-07-26/08-19 dispatcher regression (card #1564) lives here.
+// executeSweep() journals its REDISPATCH claim BEFORE spawning the child, but
+// a refused child journals nothing at all, and planSweep never read its own
+// claims back — so the same task was re-selected on every ~90s sweep forever.
+// Live evidence: 2026-08-19 14:02-14:09Z, twelve consecutive claims across
+// only #1759 and #586 (both REOPEN-SUSPECT per `node scripts/predispatch-
+// check.js --id N`, which is what made bsc-next exit 1 in about a second) spent
+// the ENTIRE perDay budget in eight minutes and produced zero launches,
+// starving every genuinely dispatchable P0/P1 for the rest of the day. Same
+// shape 08-18 05:00-05:06Z (9 claims) and 08-17 04:17-04:26Z (7); historically
+// task 383 reached 56 claims.
+//
+// This is exactly the doctrine bsc-reconcile.js's stall sweep already follows
+// — it stamps STALL_EVENT before its own spawn precisely so that "whether
+// bsc-next accepts or refuses (parked card, card-gate rejection), the outcome
+// is recorded once ... a refusal must not re-fire every tick"
+// (bsc-reconcile.js:428-431). The watchdog was already stamping the identical
+// marker; it simply never consulted it. No new ledger event is needed.
+//
+// A later 'launch' re-arms the task — the same self-healing rule
+// watchdogParkedIds() and parkedTasks() use — which is also why this doubles
+// as a boot-window duplicate guard: a claim whose child is still booting (a
+// launch legitimately takes minutes) no longer gets re-picked by the next
+// sweep before its 'launch' row lands. That boot-window re-pick is the
+// duplicate-workspace-pair generator card #1564 reported.
+function watchdogClaimPending(entries, now) {
+  const lastClaim = new Map();
+  const lastLaunch = new Map();
+  for (const e of entries || []) {
+    if (!e || e.taskId == null || !e.ts) continue;
+    const id = String(e.taskId);
+    if (id === WATCHDOG_TAB_MARKER) continue;      // 'watchdog-resurrect' rows are not a task
+    if (e.event === WATCHDOG_EVENTS.REDISPATCH) lastClaim.set(id, e.ts);
+    else if (e.event === 'launch') lastLaunch.set(id, e.ts);
+  }
+  const pending = new Set();
+  for (const [id, claimTs] of lastClaim) {
+    const launchTs = lastLaunch.get(id);
+    if (launchTs && launchTs >= claimTs) continue;             // the claim landed
+    const age = now - Date.parse(claimTs);
+    if (Number.isFinite(age) && age < REDISPATCH_REARM_MS) pending.add(id);
+  }
+  return pending;
+}
+
 // Has this task already been watchdog-parked since its most recent launch?
 // (pre-mortem P0: without this memory, a parked card is re-parked and
 // re-alerted every 90s forever). A newer 'launch' clears the park — same
@@ -210,6 +270,7 @@ function planSweep(entries, tasks, opts) {
   // ── retry candidates: ledger-confirmed dead, still-open task ──
   const ownerParked = parkedTasks(entries);        // 'vanished' = owner signal
   const wdParked = watchdogParkedIds(entries);
+  const claimPending = watchdogClaimPending(entries, now);   // #1564
   const outage = detectLauncherOutage(entries, { now });
   const retryable = [];
   const toPark = [];
@@ -223,6 +284,7 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    if (claimPending.has(id)) continue;            // #1564: claimed, never landed — don't re-claim every sweep
     // Human-territory cards are excluded here too, not just in the P0/P1
     // backlog sweep below (ship-check catch on task #1154). Retry only needs a
     // PRIOR dead launch to fire, so without this a card that was dispatched
@@ -263,11 +325,23 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
   }
   p01Queue.sort((a, b) => (a.priority < b.priority ? -1 : a.priority > b.priority ? 1 :
     parseInt(a.taskId, 10) - parseInt(b.taskId, 10)));
+
+  // Surfaced, never silent (ship-check doctrine: a cap that hides what it
+  // dropped reads as "covered everything"). Only still-open tasks are worth
+  // the owner's attention — a claim whose task later completed is just history.
+  const awaitingClaim = [];
+  for (const id of claimPending) {
+    const task = tasks.get(id);
+    if (!isTaskOpen(task) || open.has(id)) continue;
+    awaitingClaim.push({ taskId: id, subject: task.subject });
+  }
+  awaitingClaim.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
 
   // ── budgets ──
   const usedToday = watchdogClaimsToday(entries, now).length;
@@ -306,7 +380,7 @@ function planSweep(entries, tasks, opts) {
 
   return {
     now, cmuxObserved,
-    inFlight, retryable, toPark, p01Queue, toDispatch,
+    inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
     budgets: { usedToday, liveNow, autoTabs, budget, holds, caps: CAPS },
     outage,
     crownSessionTabs: deadCrownTabs,
@@ -357,6 +431,14 @@ function renderNarrative(plan) {
     lines.push('');
     lines.push(`Holding dispatches: ${plan.budgets.holds.join('; ')}`);
   }
+  if (plan.awaitingClaim && plan.awaitingClaim.length) {
+    lines.push('');
+    lines.push(`${plan.awaitingClaim.length} card(s) I already tried and could not start — not retried again today:`);
+    for (const a of plan.awaitingClaim.slice(0, 6)) {
+      lines.push(`  • #${a.taskId} "${(a.subject || '').slice(0, 60)}" — check it with: node scripts/predispatch-check.js --id ${a.taskId}`);
+    }
+    if (plan.awaitingClaim.length > 6) lines.push(`  • …and ${plan.awaitingClaim.length - 6} more`);
+  }
   if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
     lines.push('');
     lines.push('Needs you:');
@@ -372,6 +454,7 @@ function renderNarrative(plan) {
 module.exports = {
   WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
+  REDISPATCH_REARM_MS, watchdogClaimPending,
   taskPriority, notionIdOf,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,
