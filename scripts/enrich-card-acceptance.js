@@ -33,9 +33,27 @@
  * Idempotent: a card already armed, or already tagged "auto-enriched", is
  * skipped on a re-run (--force to re-process anyway).
  *
+ * task #1830: the Linear migration (task #1303/BRO-266) left open Linear
+ * (BRO-*) issues completely unarmed — this file used to sweep Notion only,
+ * so linear-next.js's verify gate refused to dispatch any migrated issue
+ * that predates "acceptance criteria must name a runnable command."
+ * --source notion|linear|both (default notion — see main()'s comment on why
+ * ship-check/Codex flagged the original 'both' default as a backward-compat
+ * break) adds a second, independent
+ * leg (runLinearLeg) that fetches open BRO issues via
+ * scripts/lib/linear-client.js (the SAME chokepoint linear-next.js uses —
+ * never a second, drifting GraphQL client), evaluates each description with
+ * the identical evaluateVerifiability gate, and drafts/writes acceptance
+ * criteria the same way. --cards/--from-report are Notion-report-specific
+ * and only affect the Notion leg; the Linear leg always does a live sweep.
+ * enrichOneCard() itself is provider-agnostic: it writes through
+ * opts.writeCard(card, newNotes, newTagsCsv) when supplied (Linear), or
+ * falls back to opts.notionBrain(['update', ...]) unchanged (Notion) — see
+ * writeBack() below.
+ *
  * Usage:
- *   node scripts/enrich-card-acceptance.js [--limit N] [--dry-run]
- *   node scripts/enrich-card-acceptance.js --cards id1,id2      (explicit test mode)
+ *   node scripts/enrich-card-acceptance.js [--limit N] [--dry-run] [--source notion|linear|both]
+ *   node scripts/enrich-card-acceptance.js --cards id1,id2      (explicit Notion test mode)
  *   node scripts/enrich-card-acceptance.js --from-report        (skip a fresh Notion sweep,
  *                                                                 use data/audit/card-verifiability.json)
  */
@@ -60,10 +78,21 @@ const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
+// task #1830: the ONE chokepoint for Linear reads/writes — never a second,
+// drifting GraphQL client (mirrors linear-next.js's own require). Safe to
+// require unconditionally: getApiKey() is only called lazily inside an
+// actual graphql() call, so a Notion-only run never needs LINEAR_API_KEY set.
+const linear = require('./lib/linear-client.js');
 
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.ENRICH_CARD_MODEL || CLAUDE_HAIKU;
-const DEFAULT_LIMIT = 100; // spend cap (~100 cards x 1 cheap call, per card #646)
+// Spend cap, ~100 cards x 1 cheap call (per card #646) — applied PER LEG
+// (task #1830: --source both runs Notion and Linear independently, each
+// capped at DEFAULT_LIMIT, so the effective ceiling for a bare --source both
+// invocation is ~2x this number, not this number. The zero-arg default stays
+// 'notion' precisely so an existing unflagged invocation doesn't inherit that
+// doubled cap for free — see main()'s `source` default.
+const DEFAULT_LIMIT = 100;
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout, same pattern as autonomous-triage.js.
@@ -80,18 +109,20 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 }
 
 const USAGE = `enrich-card-acceptance.js — draft missing acceptance-criteria commands for
-undispatchable backlog cards (task #646).
+undispatchable backlog cards (task #646) and Linear issues (task #1830).
 
 Usage:
-  node scripts/enrich-card-acceptance.js [--limit N] [--dry-run]
+  node scripts/enrich-card-acceptance.js [--limit N] [--dry-run] [--source notion|linear|both]
   node scripts/enrich-card-acceptance.js --cards id1,id2
   node scripts/enrich-card-acceptance.js --from-report
 
-  --limit N       max cards to enrich this run (default ${DEFAULT_LIMIT})
-  --dry-run       evaluate + draft, make zero Notion writes
-  --cards ids     explicit comma-separated card ids (test mode)
+  --limit N       max cards to enrich PER SOURCE this run (default ${DEFAULT_LIMIT})
+  --dry-run       evaluate + draft, make zero Notion/Linear writes
+  --source WHICH  notion | linear | both (default: notion — pass linear or
+                  both to also sweep open BRO issues)
+  --cards ids     explicit comma-separated Notion card ids (test mode, Notion leg only)
   --from-report   read the refused list from data/audit/card-verifiability.json
-                  instead of running a fresh live Notion sweep
+                  instead of running a fresh live Notion sweep (Notion leg only)
   --force         re-process cards already tagged auto-enriched
   --help/-h       show this message, do nothing else
 `;
@@ -325,6 +356,12 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
     const entry = {
       ts: new Date().toISOString(), id: card.id, name: card.name, action,
+      // identifier/url: null for a Notion card (no such fields), populated
+      // for a Linear issue (task #1830, ship-check/Codex finding — the
+      // pre-existing log had no human-readable Linear reference, only the
+      // internal UUID, which makes a manual rollback lookup slower than it
+      // needs to be).
+      identifier: card.identifier || null, url: card.url || null,
       previousNotes: card.notes || '', newNotes,
     };
     fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
@@ -337,6 +374,86 @@ function mergeTags(tags, add) {
   const set = new Set((tags || []).map(String));
   set.add(add);
   return [...set].join(',');
+}
+
+// Provider-agnostic write dispatch (task #1830). opts.writeCard, when
+// supplied, is used verbatim — this is how the Linear leg plugs in without
+// enrichOneCard() knowing Linear exists. Omitted (the Notion leg, and every
+// existing test), it falls through to the original opts.notionBrain(['update',
+// ...]) call unchanged — zero behavior change for the Notion path.
+function writeBack(card, newNotes, opts) {
+  const newTagsCsv = mergeTags(card.tags, 'auto-enriched');
+  if (typeof opts.writeCard === 'function') return opts.writeCard(card, newNotes, newTagsCsv);
+  return opts.notionBrain(['update', card.id, '--notes', newNotes, '--tags', newTagsCsv]);
+}
+
+// ── Linear leg (task #1830) ─────────────────────────────────────────────────
+
+// Pure — given linear.listOpenIssuesWithDescriptions()'s output ({identifier,
+// title, description, url, state}[]), returns the identifiers whose
+// description the verify-gate refuses. Same gate audit-card-verifiability.js
+// runs against Notion notes; a Linear issue's description is the same
+// "## Acceptance criteria" prose by convention (linear-next.js's own verify
+// gate reads it the identical way).
+// linear-dispatch.js's buildOpenIssuesWithDescriptionsQuery() has no orderBy
+// (ship-check/Codex finding, task #1830) — API return order is otherwise
+// unspecified, so a bare slice(0, limit) downstream could process an
+// arbitrary, run-to-run-inconsistent subset. Sort ascending by the numeric
+// BRO-N suffix (oldest issue first, same "oldest eligible first" convention
+// backlog-drain.js's candidateOrder() already uses) so repeated runs make
+// steady, deterministic progress through the SAME ordered backlog.
+function linearIssueNumber(identifier) {
+  const m = /-(\d+)$/.exec(String(identifier || ''));
+  return m ? parseInt(m[1], 10) : Infinity;
+}
+
+function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
+  return (openIssuesWithDesc || [])
+    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed)
+    .map(iss => iss.identifier)
+    .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
+}
+
+// Pure — normalizes a full linear.getIssue() result into the {id, name,
+// notes, tags, category} shape enrichOneCard() expects (the same shape
+// audit-card-verifiability.js's evaluateCard() produces for a Notion card).
+// category is always null: Linear has no Notion-category equivalent, which
+// isCardEligible() already treats as fail-closed (applies the human-action
+// title filter without the Notion "no-category" 5-word bound) — the same
+// conservative posture a "no-category" Notion card gets today.
+// Pure — true when a freshly-fetched Linear issue has reached a terminal
+// state since the sweep snapshot was taken. See runLinearLeg's call site for
+// why this must be checked before ever writing.
+function isLinearIssueTerminal(issue) {
+  const stateType = issue && issue.state && issue.state.type;
+  return stateType === 'completed' || stateType === 'canceled';
+}
+
+function normalizeLinearIssue(issue) {
+  return {
+    id: issue.id,
+    name: issue.title,
+    notes: issue.description || '',
+    tags: ((issue.labels && issue.labels.nodes) || []).map(l => l.name),
+    category: null,
+    identifier: issue.identifier,
+    url: issue.url || null,
+  };
+}
+
+// Impure factory (task #1830) — returns an opts.writeCard-shaped function
+// bound to one Linear client + team id. Kept as a factory (not a bare
+// function reading module-level `linear`) so tests can inject a fake client
+// and exercise the exact write sequence with zero network calls.
+function makeLinearWriteCard(linearClient, teamId) {
+  return async function writeLinearCard(card, newNotes) {
+    await linearClient.updateIssue(card.id, { description: newNotes });
+    // addLabelToIssue is additive (read-modify-write over the CURRENT label
+    // set — see linear-client.js) — safe to call even when the issue already
+    // carries the label.
+    const label = await linearClient.findOrCreateLabel(teamId, 'auto-enriched');
+    await linearClient.addLabelToIssue(card.id, label.id);
+  };
 }
 
 // task #1713: a run that fails 100% of cards printed per-card "failed" lines
@@ -396,7 +513,19 @@ async function enrichOneCard(card, opts = {}) {
     const newNotes = `${card.notes || ''}\n\nVERIFY: owner-judgment`.trim();
     if (!opts.dryRun) {
       logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath);
-      opts.notionBrain(['update', card.id, '--notes', newNotes, '--tags', mergeTags(card.tags, 'auto-enriched')]);
+      // ship-check/Codex + QA-subagent finding (task #1830): a Linear write is
+      // 3 sequential network calls (updateIssue, findOrCreateLabel,
+      // addLabelToIssue — see makeLinearWriteCard), any of which can throw a
+      // transient GraphQL error. Uncaught, that would propagate out of
+      // enrichOneCard through the whole batch loop, discarding every
+      // remaining card's result AND (under --source both) a leg that already
+      // finished successfully. Degrade to the same per-card 'failed' outcome
+      // every other I/O failure in this function already uses.
+      try {
+        await writeBack(card, newNotes, opts);
+      } catch (e) {
+        return { id: card.id, name: card.name, action: 'failed', detail: `write failed: ${e.message}` };
+      }
     }
     return { id: card.id, name: card.name, action: 'owner-judgment', detail: eligibility.reason };
   }
@@ -488,21 +617,20 @@ async function enrichOneCard(card, opts = {}) {
 
   if (!opts.dryRun) {
     logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath);
-    opts.notionBrain(['update', card.id, '--notes', newNotes, '--tags', mergeTags(card.tags, 'auto-enriched')]);
+    // See the owner-judgment write above for why this is caught rather than
+    // left to propagate.
+    try {
+      await writeBack(card, newNotes, opts);
+    } catch (e) {
+      return { id: card.id, name: card.name, action: 'failed', detail: `write failed: ${e.message}` };
+    }
   }
   return { id: card.id, name: card.name, action: 'llm-enriched', detail: finalGate.cmd, newPaths: pathCheck.newPaths || [] };
 }
 
-async function main() {
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const args = parseArgs(process.argv.slice(2));
-  const dryRun = !!args['dry-run'];
-  const limit = args.limit ? parseInt(args.limit, 10) : DEFAULT_LIMIT;
-  if (!Number.isFinite(limit) || limit <= 0) {
-    console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
-    process.exit(1);
-  }
-
+// Original Notion sweep, unchanged in behavior — extracted so main() can run
+// it as one leg alongside the Linear leg (task #1830).
+async function runNotionLeg(args, { dryRun, limit }) {
   let ids;
   if (args.cards) {
     ids = String(args.cards).split(',').map(s => s.trim()).filter(Boolean);
@@ -520,17 +648,116 @@ async function main() {
   }
 
   ids = ids.slice(0, limit);
-  console.error(`[enrich-card-acceptance] ${ids.length} refused card(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
+  console.error(`[enrich-card-acceptance] notion: ${ids.length} refused card(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
 
   const results = [];
   for (const [i, id] of ids.entries()) {
     const card = notionBrain(['get', id]);
     const result = await enrichOneCard(card, { callLLM, notionBrain, dryRun, force: !!args.force });
+    result.source = 'notion';
     results.push(result);
-    console.error(`[enrich-card-acceptance] ${i + 1}/${ids.length} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
+    console.error(`[enrich-card-acceptance] notion ${i + 1}/${ids.length} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
     // Rate limiting — same 1s spacing adjudicate-review-queue.js uses between LLM calls.
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
+  return results;
+}
+
+// Linear leg (task #1830) — always a live sweep (no --cards/--from-report
+// equivalent yet; the Linear backlog is small enough today that a live fetch
+// every run costs nothing meaningful, same call linear-next.js's --list makes).
+async function runLinearLeg(args, { dryRun, limit }) {
+  let openIssues;
+  try {
+    openIssues = await linear.listOpenIssuesWithDescriptions();
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] linear: fetch failed, skipping this leg: ${e.message}`);
+    return [];
+  }
+
+  const refusedIdentifiers = selectRefusedLinearIdentifiers(openIssues).slice(0, limit);
+  console.error(`[enrich-card-acceptance] linear: ${refusedIdentifiers.length} refused issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
+  if (!refusedIdentifiers.length) return [];
+
+  // Team id is only needed to tag the 'auto-enriched' label on a real write —
+  // resolved once per run, not per card. dryRun never reaches writeCard() (see
+  // enrichOneCard's `if (!opts.dryRun)` guards), so it's fine to leave
+  // writeCard null in that mode.
+  let writeCard = null;
+  if (!dryRun) {
+    try {
+      const team = await linear.getTeam();
+      writeCard = makeLinearWriteCard(linear, team.id);
+    } catch (e) {
+      console.error(`[enrich-card-acceptance] linear: getTeam failed, aborting this leg (cannot tag auto-enriched): ${e.message}`);
+      return [];
+    }
+  }
+
+  const results = [];
+  for (const [i, identifier] of refusedIdentifiers.entries()) {
+    let full;
+    try {
+      full = await linear.getIssue(identifier);
+    } catch (e) {
+      const failResult = { id: identifier, name: identifier, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' };
+      results.push(failResult);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → failed (${failResult.detail.slice(0, 100)})`);
+      continue;
+    }
+    if (!full) continue;
+    // Terminal-state guard (ship-check/Codex finding, task #1830): the
+    // sweep's issue list is a snapshot from listOpenIssuesWithDescriptions()
+    // taken moments earlier. If this issue was completed/canceled since then,
+    // writing to it would go through updateIssue's withArchivedIssueRetry
+    // (linear-client.js), which UNARCHIVES an archived issue to apply the
+    // write — resurrecting a closed BRO issue with LLM-drafted criteria and
+    // an auto-enriched label. Re-check the freshly-fetched state, not the
+    // stale snapshot, before ever enriching.
+    if (isLinearIssueTerminal(full)) {
+      const stateType = full.state && full.state.type;
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: `issue reached a terminal state ("${(full.state && full.state.name) || stateType}") since the sweep`,
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
+    const card = normalizeLinearIssue(full);
+    const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
+    result.source = 'linear';
+    results.push(result);
+    console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
+    if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
+  }
+  return results;
+}
+
+async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const args = parseArgs(process.argv.slice(2));
+  const dryRun = !!args['dry-run'];
+  const limit = args.limit ? parseInt(args.limit, 10) : DEFAULT_LIMIT;
+  if (!Number.isFinite(limit) || limit <= 0) {
+    console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
+    process.exit(1);
+  }
+  // Default 'notion', NOT 'both' (ship-check/Codex finding, task #1830): an
+  // existing unflagged cron/manual invocation of this script has run
+  // Notion-only for its whole history. Defaulting the zero-arg form to
+  // 'both' would silently add up to DEFAULT_LIMIT more live LLM-drafted
+  // writes to real Linear issues onto every such invocation the moment this
+  // ships — opt-in only, via explicit --source linear or --source both.
+  const source = typeof args.source === 'string' ? args.source.trim().toLowerCase() : 'notion';
+  if (!['notion', 'linear', 'both'].includes(source)) {
+    console.error(`--source must be one of notion, linear, both — got ${JSON.stringify(args.source)}`);
+    process.exit(1);
+  }
+
+  const results = [];
+  if (source === 'notion' || source === 'both') results.push(...await runNotionLeg(args, { dryRun, limit }));
+  if (source === 'linear' || source === 'both') results.push(...await runLinearLeg(args, { dryRun, limit }));
 
   const tally = results.reduce((acc, r) => { acc[r.action] = (acc[r.action] || 0) + 1; return acc; }, {});
   console.log('\n=== ENRICHMENT SUMMARY ===');
@@ -539,7 +766,7 @@ async function main() {
   console.log(`  Owner-judgment:      ${tally['owner-judgment'] || 0}`);
   console.log(`  Skipped:             ${tally.skipped || 0}`);
   console.log(`  Failed:              ${tally.failed || 0}`);
-  if (dryRun) console.log('\n  DRY RUN — no Notion writes were made');
+  if (dryRun) console.log('\n  DRY RUN — no Notion/Linear writes were made');
 
   if (process.env.GITHUB_STEP_SUMMARY) {
     const summary = [
@@ -574,4 +801,9 @@ module.exports = {
   logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
   selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
   OPENROUTER_MODEL, GEMINI_MODEL,
+  // task #1830: Linear read/write path — exported for unit coverage without
+  // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are
+  // pure; makeLinearWriteCard takes an injectable client).
+  writeBack, selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard,
+  linearIssueNumber, isLinearIssueTerminal,
 };

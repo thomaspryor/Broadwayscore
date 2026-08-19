@@ -1,0 +1,1562 @@
+{
+  "generatedAt": "2026-08-19T16:01:49.892Z",
+  "total": 324,
+  "armedCount": 102,
+  "refusedCount": 222,
+  "refused": [
+    {
+      "id": "BRO-457",
+      "name": "Wire done-semantics-gate into an actual Done-transition enforcement point",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-457/wire-done-semantics-gate-into-an-actual-done-transition-enforcement",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-451",
+      "name": "BSC Daily: Workflow repeat-failure: Deploy to Vercel",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-451/bsc-daily-workflow-repeat-failure-deploy-to-vercel",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-450",
+      "name": "Cron stale 3+ consecutive days: Refresh Show Score (opening-night)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-450/cron-stale-3-consecutive-days-refresh-show-score-opening-night",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-441",
+      "name": "BSC Daily: Sync: cast coverage",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-441/bsc-daily-sync-cast-coverage",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-440",
+      "name": "BSC Daily: Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-440/bsc-daily-workflow-repeat-failure-fetch-guardian-reviews-via-api",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-434",
+      "name": "BSC Daily: Quality: star-vs-score mismatch",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-434/bsc-daily-quality-star-vs-score-mismatch",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-431",
+      "name": "P1: flag-wrong-production-by-date.js re-flags wrongProduction without clearing stale wrongProductionOverride/ManualClear breadcrumbs",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-431/p1-flag-wrong-production-by-datejs-re-flags-wrongproduction-without",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-428",
+      "name": "BSC Daily: Sync: baseline drift",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-428/bsc-daily-sync-baseline-drift",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-424",
+      "name": "Investigate GitHub Rulesets migration for real branch-protection enforcement",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-424/investigate-github-rulesets-migration-for-real-branch-protection",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-423",
+      "name": "Merge path has ~15 min of usable budget: fetch-depth 0 checkout eats 35 of its 50-minute timeout",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-423/merge-path-has-15-min-of-usable-budget-fetch-depth-0-checkout-eats-35",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh run view <a fresh Autonomous Merge run> --json jobs)"
+    },
+    {
+      "id": "BRO-385",
+      "name": "Phase 3: freeze ledgers 30 days, close ~90 self-referential cards",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-385/phase-3-freeze-ledgers-30-days-close-90-self-referential-cards",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-382",
+      "name": "Phase 3: dispatcher + watchdogs to log-only shadow, then off",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-382/phase-3-dispatcher-watchdogs-to-log-only-shadow-then-off",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-373",
+      "name": "P0: verify the Codex lane end to end (never started in the pilot)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-373/p0-verify-the-codex-lane-end-to-end-never-started-in-the-pilot",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-372",
+      "name": "T1/T2 review stuck >24h: Trainspotting the musical — broadwayworld",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-372/t1t2-review-stuck-24h-trainspotting-the-musical-broadwayworld",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-369",
+      "name": "BSC Daily: Workflow repeat-failure: Opening Night Checklist",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-369/bsc-daily-workflow-repeat-failure-opening-night-checklist",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-365",
+      "name": "BSC Daily: Quality: corpus drift",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-365/bsc-daily-quality-corpus-drift",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-364",
+      "name": "BSC Daily: Credits: ScrapingDog",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-364/bsc-daily-credits-scrapingdog",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-363",
+      "name": "Weekly review refresh keeps recreating Two Strangers Broadway-review duplicates under the regional show ID",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-363/weekly-review-refresh-keeps-recreating-two-strangers-broadway-review",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-sibling-title-misroute.js --show=two-strangers-carry-a-cake-across-new-york-at-art-regional-2025 --st)"
+    },
+    {
+      "id": "BRO-346",
+      "name": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-346/bsc-daily-workflow-repeat-failure-rebuild-reviews-data",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-345",
+      "name": "BSC Daily: Workflow repeat-failure: Process Feedback Submissions",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-345/bsc-daily-workflow-repeat-failure-process-feedback-submissions",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-338",
+      "name": "CYRUS SMOKE TEST - reply only, no code changes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-338/cyrus-smoke-test-reply-only-no-code-changes",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-335",
+      "name": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-335/bsc-daily-workflow-repeat-failure-commercial-rss-poll",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-334",
+      "name": "BSC Daily: Workflow repeat-failure: Rebuild Reviews (Fast)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-334/bsc-daily-workflow-repeat-failure-rebuild-reviews-fast",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-332",
+      "name": "T1/T2 silent gap on near-opening show: An American Daughter — nytimes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-332/t1t2-silent-gap-on-near-opening-show-an-american-daughter-nytimes",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-329",
+      "name": "T1/T2 silent gap on near-opening show: An American Daughter — nysr",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-329/t1t2-silent-gap-on-near-opening-show-an-american-daughter-nysr",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-328",
+      "name": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-328/live-show-has-zero-critic-reviews-on-site-matilda-the-musical-theatre",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-327",
+      "name": "T1/T2 review stuck >24h: Disruption — wsj",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-327/t1t2-review-stuck-24h-disruption-wsj",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-296",
+      "name": "main test.yml red on 2+ consecutive pushes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-296/main-testyml-red-on-2-consecutive-pushes",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-288",
+      "name": "Backlog-import curated issues can never trip the archive-done cleanup path (BRO-285 follow-up)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-288/backlog-import-curated-issues-can-never-trip-the-archive-done-cleanup",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-283",
+      "name": "Full-system loop inventory complete (2026-08-12): every hook/launchd/workflow/skill loop mapped; 4 verified breakages; backlog 4% rails-hardening",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-283/full-system-loop-inventory-complete-2026-08-12-every",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-281",
+      "name": "Linear free plan caps the workspace at 250 unarchived issues — we hit it on day 2",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-281/linear-free-plan-caps-the-workspace-at-250-unarchived-issues-we-hit-it",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-279",
+      "name": "Main red: 3 independent causes fixed + time-bomb test detector (in-flight, never imported)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-279/main-red-3-independent-causes-fixed-time-bomb-test-detector-in-flight",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-278",
+      "name": "Duplicate-dispatch guard misses same-task collisions across sessions",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-278/duplicate-dispatch-guard-misses-same-task-collisions-across-sessions",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-277",
+      "name": "Carried over: 6 open email-intake items that die when the Notion poller is retired",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-277/carried-over-6-open-email-intake-items-that-die-when-the-notion-poller",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-276",
+      "name": "Carried over: 12 open T1/T2 coverage-gap and stuck-review alerts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-276/carried-over-12-open-t1t2-coverage-gap-and-stuck-review-alerts",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-275",
+      "name": "Carried over: 9 shows reported missing from the site, never added",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-275/carried-over-9-shows-reported-missing-from-the-site-never-added",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-274",
+      "name": "Carried over: 26 rage-click / UX-audit findings the Linear import dropped",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-274/carried-over-26-rage-click-ux-audit-findings-the-linear-import-dropped",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-273",
+      "name": "Recovered: Newsletter send-day WE lede/card-order consistency + score-drift refresh",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-273/recovered-newsletter-send-day-we-ledecard-order-consistency-score",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-272",
+      "name": "Recovered: audit-stale-announced-shows.js never wired into CI",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-272/recovered-audit-stale-announced-showsjs-never-wired-into-ci",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-271",
+      "name": "Recovered: infra hygiene backlog — bsc-next blank --id misdispatch, gc-merged-worktrees.sh arithmetic bug, missing .env keys",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-271/recovered-infra-hygiene-backlog-bsc-next-blank-id-misdispatch-gc",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-270",
+      "name": "Recovered: iOS Browse toggle overlap + Maestro CI bookmark-toggle permanently red",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-270/recovered-ios-browse-toggle-overlap-maestro-ci-bookmark-toggle",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-269",
+      "name": "Recovered: closingSoon dead code path + freshness auto-fix missing per-show ID",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-269/recovered-closingsoon-dead-code-path-freshness-auto-fix-missing-per",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-268",
+      "name": "Recovered: dead-dispatch guard headless/session-shaped liveness (unfinished half)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-268/recovered-dead-dispatch-guard-headlesssession-shaped-liveness",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-267",
+      "name": "Recovered: multi-writer audit-JSON race (opening-night-history.json) + swallowed-audit-writer lint debt",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-267/recovered-multi-writer-audit-json-race-opening-night-historyjson",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-266",
+      "name": "Rules & memory overhaul for the Linear world (CLAUDE.md rewrite, index prune)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-266/rules-and-memory-overhaul-for-the-linear-world-claudemd-rewrite-index",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-265",
+      "name": "Recover WE historical pilot S1/S2 state and continue from the Notion plan card",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-265/recover-we-historical-pilot-s1s2-state-and-continue-from-the-notion",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-264",
+      "name": "Phase 2: machine-verified Done gate (branch rules, ship-check-as-CI, budgets, heartbeat)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-264/phase-2-machine-verified-done-gate-branch-rules-ship-check-as-ci",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-263",
+      "name": "Unit test for evaluateScrapingdogCredits (Codex smoke test)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-263/unit-test-for-evaluatescrapingdogcredits-codex-smoke-test",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-262",
+      "name": "Show Score audience scraper: LLM page-validator rejects valid pages, 0% success",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-262/show-score-audience-scraper-llm-page-validator-rejects-valid-pages",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-259",
+      "name": "push-with-retry.sh abort-restore still drops commits under extreme concurrency (recurrence of #769, closed prematurely)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-259/push-with-retrysh-abort-restore-still-drops-commits-under-extreme",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-258",
+      "name": "push-with-retry exit-0 false success recurred 2026-08-03 AFTER #833 completed — content never reached origin",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-258/push-with-retry-exit-0-false-success-recurred-2026-08-03-after-833",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-257",
+      "name": "alert-digest-queue.json now has 2 committer workflows — push-with-retry keep-local can lose or resurrect a queued line",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-257/alert-digest-queuejson-now-has-2-committer-workflows-push-with-retry",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-256",
+      "name": "Codex agent never starts on delegation — \"request may not have reached the agent\"",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-256/codex-agent-never-starts-on-delegation-request-may-not-have-reached",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-255",
+      "name": "Pull-quote-extraction step clobbers aggregatorStars via lost-update race (found during #1249)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-255/pull-quote-extraction-step-clobbers-aggregatorstars-via-lost-update",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-254",
+      "name": "westend outletId collides between a real WE outlet and cross-market flagging logic",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-254/westend-outletid-collides-between-a-real-we-outlet-and-cross-market",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-250",
+      "name": "CI gate: catch missing CLEAR_BREADCRUMBS entries for same-job force:true PROTECTED-field clears",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-250/ci-gate-catch-missing-clear-breadcrumbs-entries-for-same-job-forcetrue",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-244",
+      "name": "Decide: is TodayTix actually the Beat the Critics prize sponsor? Page and rules say opposite things",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-244/decide-is-todaytix-actually-the-beat-the-critics-prize-sponsor-page",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-243",
+      "name": "P1: canonicalVenue naive first-word fallback risks false venue matches (found during #1246)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-243/p1-canonicalvenue-naive-first-word-fallback-risks-false-venue-matches",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-242",
+      "name": "Beat the Critics landing contradicts itself: 'TONY AWARDS 2027' badge over '2026 Tony Awards have taken place'",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-242/beat-the-critics-landing-contradicts-itself-tony-awards-2027-badge",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-241",
+      "name": "Beat the Critics: no Tony/ATW/Broadway League unaffiliated disclaimer on a Tony-branded prize draw",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-241/beat-the-critics-no-tonyatwbroadway-league-unaffiliated-disclaimer-on",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-237",
+      "name": "P1: slugCollidesWith blind spot — 3 more sites can silently drop a real new show's discovery signal",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-237/p1-slugcollideswith-blind-spot-3-more-sites-can-silently-drop-a-real",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-236",
+      "name": "Fix Tony predictions page: premature winner predictions for new season",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-236/fix-tony-predictions-page-premature-winner-predictions-for-new-season",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-235",
+      "name": "Missing extractor patterns: The Stage + pages-on-stages (silent stubs)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-235/missing-extractor-patterns-the-stage-pages-on-stages-silent-stubs",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-234",
+      "name": "P1: 8 opening-night checks are blind in CI — they read review-texts, the hourly job never checks it out",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-234/p1-8-opening-night-checks-are-blind-in-ci-they-read-review-texts-the",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-232",
+      "name": "Digest-autofix S4: queue hygiene — canonical row-family key, decision routing, digest truthfulness",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-232/digest-autofix-s4-queue-hygiene-canonical-row-family-key-decision",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-231",
+      "name": "P1: health digest is blind in CI — 6 untracked ledgers make their rows pass because the input is missing (59 real push failures render green)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-231/p1-health-digest-is-blind-in-ci-6-untracked-ledgers-make-their-rows",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-228",
+      "name": "Notion card acceptance-criteria safe-form gate has no path for tests/unit/*.test.mjs importing TS via @ alias",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-228/notion-card-acceptance-criteria-safe-form-gate-has-no-path-for",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-227",
+      "name": "P1: opening-night broadcast can send without a critics' verdict, contradicting modal copy promise",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-227/p1-opening-night-broadcast-can-send-without-a-critics-verdict",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-226",
+      "name": "extract-dtli-reviews.js duplicates the outlet-refinement laundering and bypasses both chokepoint guards",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-226/extract-dtli-reviewsjs-duplicates-the-outlet-refinement-laundering-and",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-225",
+      "name": "P1: 267 live reviews filed under an aggregator outlet carry a real critic byline — separate staff critics from collapsed attributions",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-225/p1-267-live-reviews-filed-under-an-aggregator-outlet-carry-a-real",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-224",
+      "name": "P1: aggregator guard misses westendtheatre.com — domain set has the wrong TLD (66 corpus files unguarded)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-224/p1-aggregator-guard-misses-westendtheatrecom-domain-set-has-the-wrong",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-222",
+      "name": "P1: review guards never consult a show's declared priorRuns — suppressed a real review on a live newsletter show",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-222/p1-review-guards-never-consult-a-shows-declared-priorruns-suppressed-a",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-220",
+      "name": "Digest-autofix system underperforming: investigate + improvement plan",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-220/digest-autofix-system-underperforming-investigate-improvement-plan",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-219",
+      "name": "Structural #2: Opening night is not truly automated — needs hands-off path",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-219/structural-2-opening-night-is-not-truly-automated-needs-hands-off-path",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-218",
+      "name": "Kill ScrapingBee premium_proxy direct calls (cost more than Bright Data)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-218/kill-scrapingbee-premium-proxy-direct-calls-cost-more-than-bright-data",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-217",
+      "name": "NYC rollout: verify + rebuild + deploy + explainer (after backfill drain completes)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-217/nyc-rollout-verify-rebuild-deploy-explainer-after-backfill-drain",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-216",
+      "name": "Show Stats S2: shared stats engine — src/lib/stats",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-216/show-stats-s2-shared-stats-engine-srclibstats",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-214",
+      "name": "BD auto-blacklists GitHub CI runner IPs (recurring email) — auto-clear self-heal",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-214/bd-auto-blacklists-github-ci-runner-ips-recurring-email-auto-clear",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-213",
+      "name": "OWNER MANDATE: page-worthy allowlist gate for owner-alert-router (card #611)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-213/owner-mandate-page-worthy-allowlist-gate-for-owner-alert-router-card",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-212",
+      "name": "Fix: BSC Daily: Workflow repeat-failure: Test Suite",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-212/fix-bsc-daily-workflow-repeat-failure-test-suite",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-208",
+      "name": "P1: poller false-failures — content-survival flags sibling-pipeline supersede as REVERTED (deterministic 5x retry loop)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-208/p1-poller-false-failures-content-survival-flags-sibling-pipeline",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-205",
+      "name": "P1: 6 scraper callers treat conflict skips as benign — the silent-veto class beyond the gap audit",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-205/p1-6-scraper-callers-treat-conflict-skips-as-benign-the-silent-veto",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-203",
+      "name": "P1: article-extractor has no generic fallback — unknown domains return 0 chars, so new outlets stay uncollectable",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-203/p1-article-extractor-has-no-generic-fallback-unknown-domains-return-0",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-202",
+      "name": "Coverage-pipeline defect tracker (2026-08-09): 8 issues, 4 shipped / 4 open — close systematically post-send",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-202/coverage-pipeline-defect-tracker-2026-08-09-8-issues-4-shipped-4-open",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-201",
+      "name": "build-sim.sh arch fix is incomplete: stale module cache also blocks worktree builds",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-201/build-simsh-arch-fix-is-incomplete-stale-module-cache-also-blocks",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-199",
+      "name": "Newsletter closing lede announced a future final performance as present-tense news",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-199/newsletter-closing-lede-announced-a-future-final-performance-as",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-197",
+      "name": "Generalize gemini-calibration-ema.js to all 4 ensemble models",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-197/generalize-gemini-calibration-emajs-to-all-4-ensemble-models",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-195",
+      "name": "P1: main red — CLAUDE.md over byte cap fails Lint Workflows (test.yml)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-195/p1-main-red-claudemd-over-byte-cap-fails-lint-workflows-testyml",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-194",
+      "name": "P1: main red — 2 routeAlert(disposition:'human') callers not in digest baseline (alert-sender gate)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-194/p1-main-red-2-routealertdispositionhuman-callers-not-in-digest",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-193",
+      "name": "hook-syntax-guard: restore loop can fight a deliberate hook disable",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-193/hook-syntax-guard-restore-loop-can-fight-a-deliberate-hook-disable",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-187",
+      "name": "Review-coverage systemic fixes: junk census candidates, extraction rot, babysitter remediation loop (Pass/Disruption/Vessel)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-187/review-coverage-systemic-fixes-junk-census-candidates-extraction-rot",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-185",
+      "name": "Drain the 751-file self-contradictory-clear backlog and ratchet the gate to 0",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-185/drain-the-751-file-self-contradictory-clear-backlog-and-ratchet-the",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-184",
+      "name": "eas-build.yml: vendor-stats-lib tamper check is schedule-only, unguarded on manual workflow_dispatch (same class as #1026's CI fix)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-184/eas-buildyml-vendor-stats-lib-tamper-check-is-schedule-only-unguarded",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-183",
+      "name": "Breadcrumb href routes concerts/operas to a genre browse page that doesn't fit (no events list exists)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-183/breadcrumb-href-routes-concertsoperas-to-a-genre-browse-page-that",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-182",
+      "name": "OWE venue-page discovery lacks the OB staging gate — candidates land in shows.json directly",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-182/owe-venue-page-discovery-lacks-the-ob-staging-gate-candidates-land-in",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-181",
+      "name": "Extend audit-regex-patterns.js to discovery exclude arrays (NON_THEATER/WE_EXTRA/VENUE_PAGE patterns)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-181/extend-audit-regex-patternsjs-to-discovery-exclude-arrays-non",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-180",
+      "name": "audit-pull-quotes.js fileForReview ambiguous match: duplicate-criticName review-text files pick wrong file (7 shows)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-180/audit-pull-quotesjs-fileforreview-ambiguous-match-duplicate-criticname",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-179",
+      "name": "Consolidate the two show-image coverage predicates + verify-then-write ordering",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-179/consolidate-the-two-show-image-coverage-predicates-verify-then-write",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-178",
+      "name": "Image fetch: run cleanup on the throw path (try/finally in processOneShow)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-178/image-fetch-run-cleanup-on-the-throw-path-tryfinally-in-processoneshow",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-177",
+      "name": "Broadway edition has the same subject/card-order mismatch class fixed for WE: broadwayOpenings renders shows.json order",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-177/broadway-edition-has-the-same-subjectcard-order-mismatch-class-fixed",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-176",
+      "name": "Exclusion-reason census: nothing consumes explainExclusion's rule names — attribute corpus drift to a rule",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-176/exclusion-reason-census-nothing-consumes-explainexclusions-rule-names",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-175",
+      "name": "check-seo-health CWV_PAGES samples exactly one show page out of ~2800 routes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-175/check-seo-health-cwv-pages-samples-exactly-one-show-page-out-of-2800",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-174",
+      "name": "Unify ticket rendering config (HIDDEN_PLATFORMS + priority) into affiliate-platforms.json",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-174/unify-ticket-rendering-config-hidden-platforms-priority-into-affiliate",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-173",
+      "name": "RECHECK-AFTER: 2026-08-18 — affiliate monitor shadow burn-in review (paging goes live)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-173/recheck-after-2026-08-18-affiliate-monitor-shadow-burn-in-review",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-172",
+      "name": "CI red on main: TM-link acceptance test failing after #956 closed (dead Ticketmaster link or stale fixture)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-172/ci-red-on-main-tm-link-acceptance-test-failing-after-956-closed-dead",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-171",
+      "name": "Recover 545 Unknown-critic bylines via generalized page/text extraction",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-171/recover-545-unknown-critic-bylines-via-generalized-pagetext-extraction",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-170",
+      "name": "Codex CLI blocked in worktree sessions (shared-repo data-clone issue) — ship-checks silently downgrade to API fallback",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-170/codex-cli-blocked-in-worktree-sessions-shared-repo-data-clone-issue",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-168",
+      "name": "Stale CV-promotion never demotes wrongShow when later CV re-verifies as valid (28-file corpus scan, incl. NYT/Variety/WSJ)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-168/stale-cv-promotion-never-demotes-wrongshow-when-later-cv-re-verifies",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-167",
+      "name": "Investigate 302 corpus files with wrongProductionAutoCleared still excluded (task #1017 follow-up)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-167/investigate-302-corpus-files-with-wrongproductionautocleared-still",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-166",
+      "name": "OB discovery S7: ticket links + affiliate coverage for new shows / off-off-broadway",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-166/ob-discovery-s7-ticket-links-affiliate-coverage-for-new-shows-off-off",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-164",
+      "name": "Critics' Take overstates critical split (Comedy About Spies; audit generator for false-balance framing)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-164/critics-take-overstates-critical-split-comedy-about-spies-audit",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-163",
+      "name": "Ledger-coverage guard found 33 more workflows beyond the original 19 (task #996 follow-up)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-163/ledger-coverage-guard-found-33-more-workflows-beyond-the-original-19",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-162",
+      "name": "CI: test.yml runs on main end as 'cancelled' with no superseding push — per-commit concurrency is NOT the cause",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-162/ci-testyml-runs-on-main-end-as-cancelled-with-no-superseding-push-per",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-160",
+      "name": "OB discovery S3: promotion writer stops hardcoding category/market/dates",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-160/ob-discovery-s3-promotion-writer-stops-hardcoding-categorymarketdates",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-159",
+      "name": "OB discovery S4: off-off-broadway category (Option A) — P0 consumer audit",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-159/ob-discovery-s4-off-off-broadway-category-option-a-p0-consumer-audit",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-158",
+      "name": "OB discovery S5: ob-venue-candidates.json concurrency (the #788 class)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-158/ob-discovery-s5-ob-venue-candidatesjson-concurrency-the-788-class",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-157",
+      "name": "The Car Man tag conflict: WEST END on show page vs OFF WEST END in listing",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-157/the-car-man-tag-conflict-west-end-on-show-page-vs-off-west-end-in",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-155",
+      "name": "Off-Broadway discovery gap: NYT August roundup showed 9 of 15 shows missing",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-155/off-broadway-discovery-gap-nyt-august-roundup-showed-9-of-15-shows",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-154",
+      "name": "Post recent West End openings on r/TheWestEnd (4 individual + Off-WE combo)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-154/post-recent-west-end-openings-on-rthewestend-4-individual-off-we-combo",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-151",
+      "name": "Audit top url-mismatch-suspects.json hosts for Variety-class fixable permalink drift",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-151/audit-top-url-mismatch-suspectsjson-hosts-for-variety-class-fixable",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-144",
+      "name": "The Stage + WaPo recent-gap bulk backfill via #876 infra (80 + 25 recent files)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-144/the-stage-wapo-recent-gap-bulk-backfill-via-876-infra-80-25-recent",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-143",
+      "name": "Pre-push review gate: branch-scoped verdicts don't survive a merge into main (residual #828 gap)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-143/pre-push-review-gate-branch-scoped-verdicts-dont-survive-a-merge-into",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-142",
+      "name": "Stale MERGE_HEAD on shared main worktree blocks all pushes — no detection/recovery",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-142/stale-merge-head-on-shared-main-worktree-blocks-all-pushes-no",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-141",
+      "name": "Generalize recover-serp-text.js urlless sweep beyond Telegraph: 422 candidates, LSA=115",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-141/generalize-recover-serp-textjs-urlless-sweep-beyond-telegraph-422",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-140",
+      "name": "RECHECK 2026-08-03: S2 gate-fix metrics — blocks/session < 1.0 in 8/3 transcripts + no hook-related session deaths + S1 reminder <15K tokens in a fresh session",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-140/recheck-2026-08-03-s2-gate-fix-metrics-blockssession-10-in-83",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-139",
+      "name": "iOS P1: London market excludes ALL 316 Off-West-End shows (Home, Browse, Stats) — OB toggle is dead for London users",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-139/ios-p1-london-market-excludes-all-316-off-west-end-shows-home-browse",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-138",
+      "name": "P1: merge-worktree-to-main.sh skips the pre-push audits",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-138/p1-merge-worktree-to-mainsh-skips-the-pre-push-audits",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-137",
+      "name": "Time-boxed: can the real-browser login method beat newspapers.com's viewer? (access ends 2026-08-27)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-137/time-boxed-can-the-real-browser-login-method-beat-newspaperscoms",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-136",
+      "name": "Fix: BSC Daily: Credits: ScrapingBee",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-136/fix-bsc-daily-credits-scrapingbee",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-135",
+      "name": "P1 #779: Safari cookie extraction dead on Tahoe — WSJ OTP-login + browser recovery pipeline",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-135/p1-779-safari-cookie-extraction-dead-on-tahoe-wsj-otp-login-browser",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-134",
+      "name": "Instrument direct HTTP GitHub API calls (fetchJSON duplicated across scripts) — gh CLI ruled out as #821 burner",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-134/instrument-direct-http-github-api-calls-fetchjson-duplicated-across",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-133",
+      "name": "gather-reviews auto-registered outlets get no region — next WE blog repeats the cross-market exclusion",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-133/gather-reviews-auto-registered-outlets-get-no-region-next-we-blog",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-132",
+      "name": "Newsletter: create-broadcast-draft PATCHes bannered HTML with no guard — decide the policy (12 soft-issue triggers)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-132/newsletter-create-broadcast-draft-patches-bannered-html-with-no-guard",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-131",
+      "name": "Forbes feature pitch: Marc Hershberg (Commercial Scorecard)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-131/forbes-feature-pitch-marc-hershberg-commercial-scorecard",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-130",
+      "name": "Feedback auto-fix scopes multi-show reports to a single showId — second show silently dropped (issue #515)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-130/feedback-auto-fix-scopes-multi-show-reports-to-a-single-showid-second",
+      "reason": "acceptance criteria names no runnable command (prose only)"
+    },
+    {
+      "id": "BRO-129",
+      "name": "Feedback pipeline: close the outcome loop — thank-you email fires regardless of add-requested-show success/failure",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-129/feedback-pipeline-close-the-outcome-loop-thank-you-email-fires",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-128",
+      "name": "Reddit post: Les Mis Arena Concert (r/Broadway)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-128/reddit-post-les-mis-arena-concert-rbroadway",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-127",
+      "name": "Arm PUSH_VIA_API_FALLBACK on a real caller + verify in production",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-127/arm-push-via-api-fallback-on-a-real-caller-verify-in-production",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-126",
+      "name": "OWNER MANDATE: no review gate fires BEFORE implementation — every hook catches sessions at Stop/push, after the code exists",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-126/owner-mandate-no-review-gate-fires-before-implementation-every-hook",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-125",
+      "name": "Regional trigger: replace roundup-exists with a 3+ distinct-review threshold (owner rule 2026-07-30)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-125/regional-trigger-replace-roundup-exists-with-a-3-distinct-review",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-124",
+      "name": "Local pre-push hook doesn't check the CLAUDE.md byte cap — only CI does, so overages surface after push",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-124/local-pre-push-hook-doesnt-check-the-claudemd-byte-cap-only-ci-does-so",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-123",
+      "name": "Cron-health per-cron cooldown (card #608) silenced pages but 4 named crons are still actually stale/broken",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-123/cron-health-per-cron-cooldown-card-608-silenced-pages-but-4-named",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-121",
+      "name": "URL ping-pong wipes scored reviews: add loginSuccessful to normalizeUrl strip list + flip-flop breaker",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-121/url-ping-pong-wipes-scored-reviews-add-loginsuccessful-to-normalizeurl",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-119",
+      "name": "Canon checklists show wrong-production poster art (In the Heights CenterREP, Avenue Q London)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-119/canon-checklists-show-wrong-production-poster-art-in-the-heights",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-118",
+      "name": "iOS Stats P2 polish batch (sim-QA leftovers from build-61 audit)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-118/ios-stats-p2-polish-batch-sim-qa-leftovers-from-build-61-audit",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-117",
+      "name": "Stamp rescoreFlaggedAt at enqueue — 16 producers, zero enqueue timestamps, so stuck-queue detection can't generalize",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-117/stamp-rescoreflaggedat-at-enqueue-16-producers-zero-enqueue-timestamps",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-115",
+      "name": "Backfill 259 excerpt-only unscored reviews (122 shows) unlocked by #501 fix",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-115/backfill-259-excerpt-only-unscored-reviews-122-shows-unlocked-by-501",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-114",
+      "name": "BWW reverse-discovery source: freshness/backfill visibility for missed cron runs",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-114/bww-reverse-discovery-source-freshnessbackfill-visibility-for-missed",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-113",
+      "name": "notion-brain.js create fails SILENTLY on some --notes payloads (3 cards lost in one session)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-113/notion-brainjs-create-fails-silently-on-some-notes-payloads-3-cards",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-112",
+      "name": "Phantom Barry Gordin bylines from scrape-wp-theater-blogs.js: 207 files, chimera merges, 8 live double-counted reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-112/phantom-barry-gordin-bylines-from-scrape-wp-theater-blogsjs-207-files",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-111",
+      "name": "P1: URL-change invariant gap — stale wrongProduction/CV survives maybeUpgradeUrl (112-file class)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-111/p1-url-change-invariant-gap-stale-wrongproductioncv-survives",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-109",
+      "name": "Extend audit-run-budget-coverage.js to catch script→lib-helper budget-threading gaps",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-109/extend-audit-run-budget-coveragejs-to-catch-scriptlib-helper-budget",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-108",
+      "name": "Systemic audit: fetch() calls missing AbortSignal.timeout across scripts/",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-108/systemic-audit-fetch-calls-missing-abortsignaltimeout-across-scripts",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-107",
+      "name": "Wire run-budget.js into 8 scripts surfaced by the fixed audit-run-budget-coverage.js",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-107/wire-run-budgetjs-into-8-scripts-surfaced-by-the-fixed-audit-run",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-104",
+      "name": "Health-digest warning triage: drive the ~11 warnings to true-state-only (fix cast-changes cron, 4 stale freshness sources, audience/pipeline/quality rows, verify stuck-work counts shrank post-drain)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-104/health-digest-warning-triage-drive-the-11-warnings-to-true-state-only",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-103",
+      "name": "Cloud-memory sync: make merge-aware, not replace-from-master",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-103/cloud-memory-sync-make-merge-aware-not-replace-from-master",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-102",
+      "name": "Harden IBDB+Wikipedia creative-team scrape paths against hallucinations",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-102/harden-ibdbwikipedia-creative-team-scrape-paths-against-hallucinations",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-93",
+      "name": "Triage 51 stale 'announced' shows: reviews collected but status never flipped",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-93/triage-51-stale-announced-shows-reviews-collected-but-status-never",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-92",
+      "name": "Audit alerts that ask the owner to run a command the automation could run itself (WE-gate variable class) — grant scoped perms or auto-approval path",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-92/audit-alerts-that-ask-the-owner-to-run-a-command-the-automation-could",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-91",
+      "name": "Triage 30 late-add-flagged shows corpus-wide (detectLateAdd output)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-91/triage-30-late-add-flagged-shows-corpus-wide-detectlateadd-output",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-90",
+      "name": "Census/ledger leaks junk + duplicate outletIds (buy-tickets-directly, the-la-times)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-90/censusledger-leaks-junk-duplicate-outletids-buy-tickets-directly-the",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-89",
+      "name": "Shipped T1-retrieval Sprint 2: opening-night dispatch-storm (census counts all tiers) + phantom census outlets",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-89/shipped-t1-retrieval-sprint-2-opening-night-dispatch-storm-census",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-88",
+      "name": "iOS TestFlight: build 54 submitted for Beta App Review (public link go-live)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-88/ios-testflight-build-54-submitted-for-beta-app-review-public-link-go",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-87",
+      "name": "Verify iOS build 54 Beta App Review approved → public TestFlight link live",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-87/verify-ios-build-54-beta-app-review-approved-public-testflight-link",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-86",
+      "name": "Mezzanine override collision auditor: systematically check all MEZZANINE_OVERRIDES for common-title dilution",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-86/mezzanine-override-collision-auditor-systematically-check-all",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-85",
+      "name": "Round 2 blocker: design-inspiration folder lacks the Mezzanine/Letterboxd screenshots the dispatch describes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-85/round-2-blocker-design-inspiration-folder-lacks-the",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-81",
+      "name": "iOS: HIGH-FIDELITY proposed designs (images, with options) for every key screen — baselines already captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-81/ios-high-fidelity-proposed-designs-images-with-options-for-every-key",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-80",
+      "name": "Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-80/triage-unopened-shows-carrying-scored-prior-run-reviews-55-shows-250",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-79",
+      "name": "Audit 87 ensemble-scoreability rejections from NYC rollout rescore (19 null-reason) + recover Wicked WaPo/EW",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-79/audit-87-ensemble-scoreability-rejections-from-nyc-rollout-rescore-19",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-78",
+      "name": "Wire --max-cost into llm-ensemble-score.yml workflow_dispatch",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-78/wire-max-cost-into-llm-ensemble-scoreyml-workflow-dispatch",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-77",
+      "name": "HoverRateStars shows interactive rate control on unopened/announced shows across all browse cards",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-77/hoverratestars-shows-interactive-rate-control-on-unopenedannounced",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-76",
+      "name": "Generalize core-data rebase reconciliation: registry + lint gate + remaining multi-writer files",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-76/generalize-core-data-rebase-reconciliation-registry-lint-gate",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-75",
+      "name": "Investigate high-volume wrongProduction exclusions (beetlejuice-2022: 261/day)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-75/investigate-high-volume-wrongproduction-exclusions-beetlejuice-2022",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-74",
+      "name": "C2 multi-critic URL dedup: 7 cases of same-URL double-counting",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-74/c2-multi-critic-url-dedup-7-cases-of-same-url-double-counting",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-73",
+      "name": "After 2026-08-03: verify 2 clean Social Pulse v3 runs → cancel Apify subscription",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-73/after-2026-08-03-verify-2-clean-social-pulse-v3-runs-cancel-apify",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-71",
+      "name": "Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews (triaged per-item)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-71/silent-gap-120d-sweep-remainder-16-stranded-t1t2-reviews-triaged-per",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-70",
+      "name": "Network-tier publishDate backfill: close the remaining ~2900 undated reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-70/network-tier-publishdate-backfill-close-the-remaining-2900-undated",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-69",
+      "name": "Rebuild same-URL dedup: prefer a real criticName over 'Unknown' (byline derivation-gap root cause)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-69/rebuild-same-url-dedup-prefer-a-real-criticname-over-unknown-byline",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-68",
+      "name": "Unparsed explicit ratings: auto-dispatch recover-explicit-ratings workflow",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-68/unparsed-explicit-ratings-auto-dispatch-recover-explicit-ratings",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-67",
+      "name": "LLM fallback should fire on PARTIAL extraction, not just zero — resilience to format changes",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-67/llm-fallback-should-fire-on-partial-extraction-not-just-zero",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-66",
+      "name": "GitHub API rate-limit spikes on opening nights (aggressive 10-min cadence)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-66/github-api-rate-limit-spikes-on-opening-nights-aggressive-10-min",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-65",
+      "name": "Fix: Test Suite CI contamination failure blocking email tests",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-65/fix-test-suite-ci-contamination-failure-blocking-email-tests",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-64",
+      "name": "Reply to Nick (wants some help)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-64/reply-to-nick-wants-some-help",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-63",
+      "name": "Reschedule 12 errored Instagram and Threads posts after Meta account fix",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-63/reschedule-12-errored-instagram-and-threads-posts-after-meta-account",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-62",
+      "name": "Audit 946 multi-critic URL collisions in review-texts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-62/audit-946-multi-critic-url-collisions-in-review-texts",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-61",
+      "name": "Post Schmigadoon! opening on Reddit",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-61/post-schmigadoon-opening-on-reddit",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-60",
+      "name": "send-opening-night-broadcast.js: sync tracker to origin on draft creation (not just preview)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-60/send-opening-night-broadcastjs-sync-tracker-to-origin-on-draft",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-59",
+      "name": "Pivot Reddit distribution to creator partners",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-59/pivot-reddit-distribution-to-creator-partners",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-58",
+      "name": "Triage 86 shows over drift threshold from check-review-count-drift",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-58/triage-86-shows-over-drift-threshold-from-check-review-count-drift",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-57",
+      "name": "Audit other exclusion flags for stale-data drift (wrongShow/wrongProduction/isNonReview/wrongAttribution)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-57/audit-other-exclusion-flags-for-stale-data-drift",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-56",
+      "name": "Seed archive-integrity baseline from CI's view (unblock --strict gate)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-56/seed-archive-integrity-baseline-from-cis-view-unblock-strict-gate",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-55",
+      "name": "[Lost Boys postmortem] Issue #1 P1 — /ingest bulk endpoint silently drops reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-55/lost-boys-postmortem-issue-1-p1-ingest-bulk-endpoint-silently-drops",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-54",
+      "name": "Stage-latency.jsonl rotation cron + ALLOW_LARGE allowlist update",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-54/stage-latencyjsonl-rotation-cron-allow-large-allowlist-update",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-53",
+      "name": "Tier 2: Stale wrongProduction recovery — find current review when old URL was SERP-matched",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-53/tier-2-stale-wrongproduction-recovery-find-current-review-when-old-url",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-52",
+      "name": "Author-page critic discovery — NYT/New Yorker/Vulture/BWW per-critic indexes as a coverage gate",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-52/author-page-critic-discovery-nytnew-yorkervulturebww-per-critic",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-51",
+      "name": "CI Test Suite red on main since 2026-05-02 — contamination audit (7 strict) + npm audit high severity",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-51/ci-test-suite-red-on-main-since-2026-05-02-contamination-audit-7",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-50",
+      "name": "Meet with Kevin McCollum (lead producer, Two Strangers)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-50/meet-with-kevin-mccollum-lead-producer-two-strangers",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-49",
+      "name": "Ask Dennis T to mentor (Tony voter + coproducer path)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-49/ask-dennis-t-to-mentor-tony-voter-coproducer-path",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-48",
+      "name": "Pitch kit: forwardable blurb for industry intros",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-48/pitch-kit-forwardable-blurb-for-industry-intros",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-47",
+      "name": "Column-count brittleness audit across table-parsing scrapers",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-47/column-count-brittleness-audit-across-table-parsing-scrapers",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-46",
+      "name": "outlet-registry tier-4 schema mismatch breaks Test Suite",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-46/outlet-registry-tier-4-schema-mismatch-breaks-test-suite",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-45",
+      "name": "validate-data.js: Tristan cross-market check breaks Test Suite",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-45/validate-datajs-tristan-cross-market-check-breaks-test-suite",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-44",
+      "name": "Switch headline traffic KPI to engaged sessions (drop Direct bots)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-44/switch-headline-traffic-kpi-to-engaged-sessions-drop-direct-bots",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-43",
+      "name": "Audit show-page ticket CTA — Hamilton/Wicked leaking conversion 6x vs Death of a Salesman",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-43/audit-show-page-ticket-cta-hamiltonwicked-leaking-conversion-6x-vs",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-42",
+      "name": "Subject line generator for Weekly Round-up email",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-42/subject-line-generator-for-weekly-round-up-email",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-41",
+      "name": "Decide on IG collab with 1minutecritic Tony series",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-41/decide-on-ig-collab-with-1minutecritic-tony-series",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-40",
+      "name": "Newsletter Phase 2: edit/approve via +claude alias",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-40/newsletter-phase-2-editapprove-via-claude-alias",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-39",
+      "name": "Sweep OB anticipatory_pre_opening_post flags (retroactive OB 14-day grace)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-39/sweep-ob-anticipatory-pre-opening-post-flags-retroactive-ob-14-day",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-38",
+      "name": "Audit other content-quality detectors for buried-signature misses (404 cousin)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-38/audit-other-content-quality-detectors-for-buried-signature-misses-404",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-37",
+      "name": "Comparative within-show anchored scoring (fix 97-clustering)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-37/comparative-within-show-anchored-scoring-fix-97-clustering",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-36",
+      "name": "NYT bot-stub reviews mislabeled contentTier=complete (scored on partial text)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-36/nyt-bot-stub-reviews-mislabeled-contenttiercomplete-scored-on-partial",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-34",
+      "name": "CI health: ~75% of test.yml runs on main cancel before validating (data-commit churn)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-34/ci-health-75percent-of-testyml-runs-on-main-cancel-before-validating",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-33",
+      "name": "CI red: NEWSLETTER_PATTERNS[4] content-quality regex FP rate over threshold",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-33/ci-red-newsletter-patterns4-content-quality-regex-fp-rate-over",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-32",
+      "name": "Route 39 direct-ScrapingBee scripts through fetchPage() (complete SD migration)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-32/route-39-direct-scrapingbee-scripts-through-fetchpage-complete-sd",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-31",
+      "name": "Test Suite red on main — mobile-shows.json: 6 closed shows without scored reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-31/test-suite-red-on-main-mobile-showsjson-6-closed-shows-without-scored",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-30",
+      "name": "Audience-buzz title-collision sweep (revival/year cross-production Reddit contamination)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-30/audience-buzz-title-collision-sweep-revivalyear-cross-production",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-29",
+      "name": "Commercial data: 33 show(s) awaiting your review",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-29/commercial-data-33-shows-awaiting-your-review",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-27",
+      "name": "Commercial Scorecard: signup-gate the entire card (blur + preview for signed-out users)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-27/commercial-scorecard-signup-gate-the-entire-card-blur-preview-for",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-24",
+      "name": "NYC rollout: anchored bands + V6 decompression (Hamilton 91→95)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-24/nyc-rollout-anchored-bands-v6-decompression-hamilton-9195",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-23",
+      "name": "Sweep for false-positive wrongProduction from misparsed publishDate + corroboration guard",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-23/sweep-for-false-positive-wrongproduction-from-misparsed-publishdate",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-10",
+      "name": "Decide: keep Cyrus after free trial (before it converts to $120/mo)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-10/decide-keep-cyrus-after-free-trial-before-it-converts-to-dollar120mo",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    },
+    {
+      "id": "BRO-5",
+      "name": "Show hero (redesign): tier label wraps mid-word at 360-414px (\"Mixe d\", \"Shruggin g\")",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5/show-hero-redesign-tier-label-wraps-mid-word-at-360-414px-mixe-d",
+      "reason": "card has no acceptance-criteria section or VERIFY line"
+    }
+  ]
+}

@@ -409,7 +409,7 @@ function planSweep(entries, tasks, opts) {
   const holds = [];
   if (!dispatchEnabled) holds.push('dispatch kill-switch set');
   if (!cmuxObserved) holds.push('cmux unobservable — report-only');
-  if (outage.outage) holds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
+  if (outage.outage) holds.push(`launcher outage detected (${outage.count} deaths, tasks ${outage.taskIds.join('/')})`); // card #1829: not always injection — can be surface-not-found too
   if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
   if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
