@@ -38,9 +38,10 @@ test('shouldRefuseForAuth: refuses only on an explicit ok:false result', () => {
 // Fake clock + probes for the verification wait (card #705). intervalSec 0
 // keeps `sleep 0` cheap; `now` advances 5 simulated seconds per poll so a
 // 6-minute wait costs milliseconds.
-function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, ...opts }) {
+function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, wrapperStartedAt = () => false, ...opts }) {
   let t = 0;
   const polls = [];
+  let startedCalls = 0;
   const res = waitForLaunchOutcome({
     ws: { ref: 'workspace:900' }, marker: 'bsc-cmd-705-abcd1234.sh',
     attempt: 1, maxAttempts: 2, injectionGraceSec: 90, slowBootCapSec: 360,
@@ -50,13 +51,14 @@ function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, ...o
       now: () => { const v = t; t += 5000; return v; },
       wrapperAlive: () => { const v = wrapperAliveAt(t / 1000); polls.push({ t: t / 1000, wrapperAlive: v }); return v; },
       claudeTagAlive: () => tagAliveAt(t / 1000),
+      wrapperStarted: () => { startedCalls += 1; return wrapperStartedAt(t / 1000); },
       // MUST be stubbed: without it the deferred-render wake default fires a
       // REAL `cmux set-app-focus active` on the host with no clear (lazy-exec
       // fix ship-check finding, 2026-08-02).
       wake: () => {},
     },
   });
-  return { res, polls };
+  return { res, polls, startedCalls: () => startedCalls };
 }
 
 // Captured shape from `ps -e -ww -o command=` on the host, 2026-07-26 — the
@@ -131,6 +133,67 @@ test('waitForLaunchOutcome: nothing ever runs → injection-never-ran, retry all
   const last = fakeWait({ attempt: 2 }).res;
   assert.equal(last.action, 'fail');
   assert.equal(last.state, STATES.INJECTION_NEVER_RAN);
+});
+
+// ── Started-marker file signal (card #1812) ────────────────────────────────
+// Live-reproduced 2026-08-19 via scripts/probe-cmux-launch.js: a fast-exit
+// wrapper can complete and vanish entirely BETWEEN two 3s ps snapshots, so
+// osProcessAliveForSeed never once samples it alive even though the command
+// genuinely ran (ground-truth marker file existed). THIS TEST FAILS ON
+// PRE-FIX CODE: without startedProbe wired in, wrapperAliveAt always
+// returning false gives wrapperEverSeen no way to become true, so the wait
+// times out to INJECTION_NEVER_RAN/retry exactly like the case above — proven
+// by running this test against `git stash` of the cmux-launch.js change.
+test('waitForLaunchOutcome: a wrapper the ps probe NEVER samples alive still verifies via the started-marker file (card #1812)', () => {
+  const { res, startedCalls } = fakeWait({
+    wrapperAliveAt: () => false, // ps snapshot NEVER once catches it — the reproduced false-negative
+    wrapperStartedAt: t => t >= 5, // but the marker file the wrapper touched first proves it ran, within the #548 debounce grace
+    tagAliveAt: t => t >= 5, // claude registers on the same poll
+  });
+  assert.equal(res.action, 'ok', 'the started-marker signal must let a genuinely-running launch verify instead of timing out dead');
+  assert.equal(res.state, STATES.REGISTERED);
+  assert.ok(startedCalls() > 0, 'the started-marker probe must actually be consulted');
+});
+
+// Coverage gap named in ship-check (2026-08-19): the marker signal at attempt
+// 2 must still verify normally — nothing about it is attempt-scoped.
+test('waitForLaunchOutcome: the started-marker signal also verifies on the LAST attempt (action:fail territory, not just retry)', () => {
+  const { res } = fakeWait({
+    attempt: 2,
+    wrapperAliveAt: () => false,
+    wrapperStartedAt: t => t >= 5,
+    tagAliveAt: t => t >= 5,
+  });
+  assert.equal(res.action, 'ok', 'attempt number must not gate whether the started-marker signal counts');
+  assert.equal(res.state, STATES.REGISTERED);
+});
+
+test('waitForLaunchOutcome: started-marker never fires → unchanged INJECTION_NEVER_RAN behavior (regression safety)', () => {
+  const { res, startedCalls } = fakeWait({ wrapperStartedAt: () => false });
+  assert.equal(res.action, 'retry');
+  assert.equal(res.state, STATES.INJECTION_NEVER_RAN);
+  assert.ok(startedCalls() > 0, 'the probe must be polled, not skipped');
+});
+
+test('waitForLaunchOutcome: started-marker probe is never consulted when ps catches the wrapper on the very first sample (no wasted fs calls)', () => {
+  const { startedCalls } = fakeWait({
+    wrapperAliveAt: () => true, // ps catches it immediately — sampleAlive short-circuits startedProbe
+    tagAliveAt: t => t >= 10,
+    wrapperStartedAt: () => { throw new Error('must not be called once the ps sample alone already confirmed the wrapper'); },
+  });
+  assert.equal(startedCalls(), 0, 'the marker-file probe is short-circuited by `sampleAlive ||`, never consulted');
+});
+
+test('waitForLaunchOutcome: started via marker but never comes alive → WRAPPER_EXITED, not INJECTION_NEVER_RAN (more honest diagnosis)', () => {
+  // The command genuinely ran (marker proves it) and then nothing ever
+  // registered — this is now correctly distinguishable from "nothing ever
+  // ran at all", even though both are still a 'retry'/'fail' verdict.
+  const { res } = fakeWait({
+    wrapperAliveAt: () => false,
+    wrapperStartedAt: t => t >= 5,
+    tagAliveAt: () => false,
+  });
+  assert.equal(res.state, STATES.WRAPPER_EXITED);
 });
 
 test('waitForLaunchOutcome: claude tag alone never verifies without a live wrapper process (#548 cross-check intact)', () => {

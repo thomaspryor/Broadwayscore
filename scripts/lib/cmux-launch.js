@@ -401,9 +401,27 @@ function verifiedAlive(ws, marker) {
 // wrapperEverSeen is per-ATTEMPT state and lives here rather than in the pure
 // decision: "the wrapper ran and then died" is only distinguishable from
 // "the wrapper never ran" by remembering earlier polls.
-function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, wakeAfterSec = WAKE_AFTER_SEC, wakeFn = null, probes = {} }) {
+//
+// startedProbe (card #1812) is a SECOND, independent way to learn the wrapper
+// ever ran, alongside the ps-based wrapperProbe. Live-reproduced via
+// scripts/probe-cmux-launch.js on this exact machine (2026-08-19): a fast
+// payload's wrapper can complete and exit entirely BETWEEN two 3s ps
+// snapshots, so osProcessAliveForSeed never once samples it alive — the
+// launcher reports INJECTION_NEVER_RAN while a ground-truth marker file
+// proves the command DID run. A snapshot-based probe can structurally miss a
+// transient process; a marker FILE the wrapper touches as its very first
+// action cannot un-happen once written, so fs.existsSync can never miss it
+// the way a point-in-time `ps` sample can. This only widens wrapperEverSeen
+// (OR'd with the existing signal) — the ongoing wrapperAlive/missStreak
+// liveness debounce below is untouched, so WRAPPER_EXITED detection (did it
+// die after starting) still depends solely on the real ps signal.
+function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, wakeAfterSec = WAKE_AFTER_SEC, wakeFn = null, startedFile = null, probes = {} }) {
   const wrapperProbe = probes.wrapperAlive || osProcessAliveForSeed;
   const tagProbe = probes.claudeTagAlive || (ref => cmuxws.claudeAliveIn(ref));
+  const startedProbe = probes.wrapperStarted || (() => {
+    if (!startedFile) return false;
+    try { return fs.existsSync(startedFile); } catch { return false; }
+  });
   // probes.wake is the TEST seam and wins; wakeFn is how launchCmuxSession
   // observes fire-time (it must learn a wake happened even if this wait is
   // later interrupted by a throw — outcome-based tracking would leak the
@@ -425,10 +443,18 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   let effectiveGraceSec = injectionGraceSec;
   for (;;) {
     const sampleAlive = wrapperProbe(marker);
-    if (sampleAlive) {
-      if (!wrapperEverSeen) wrapperFirstSeenAt = now();
-      wrapperEverSeen = true; missStreak = 0;
-    } else { missStreak += 1; }
+    if (sampleAlive) missStreak = 0; else missStreak += 1;
+    // Card #1812: OR in the marker-file signal ONLY while still unresolved —
+    // once wrapperEverSeen is true (via either signal) there is nothing left
+    // to learn from it, so skip the extra fs.existsSync on every later poll.
+    // missStreak stays driven SOLELY by sampleAlive (the real ps signal,
+    // reset above) — the marker file, once written, never goes away, so
+    // folding it into missStreak would permanently defeat WRAPPER_EXITED
+    // detection for a wrapper that genuinely started and later died.
+    if (!wrapperEverSeen && (sampleAlive || startedProbe())) {
+      wrapperFirstSeenAt = now();
+      wrapperEverSeen = true;
+    }
     // Debounce the ps probe once the wrapper HAS been seen (ship-check, GPT
     // reviewer): osProcessAliveForSeed fails CLOSED on a ps error, truncation
     // or timeout, so one unlucky sample would read as "the wrapper died" and
@@ -641,7 +667,21 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   const launchNonce = crypto.randomBytes(4).toString('hex');
   const cmdFile = path.join(os.tmpdir(), `bsc-cmd-${seedKey}-${launchNonce}.sh`);
   const cmdMarker = path.basename(cmdFile);
-  fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
+  // Started-marker file (card #1812): touched as the wrapper's literal FIRST
+  // action, before the real command, so waitForLaunchOutcome's startedProbe
+  // can learn injection happened even for a wrapper too short-lived for `ps`
+  // sampling to ever catch alive — see that function's header for the live
+  // repro. Nonce-shared with cmdFile so it's unique per launch attempt exactly
+  // like cmdMarker (never a stale hit from an earlier attempt on the same
+  // seedKey).
+  const startedFile = path.join(os.tmpdir(), `bsc-started-${seedKey}-${launchNonce}`);
+  // Quoted (gpt-5.4-mini ship-check catch, 2026-08-19): seedKey can contain
+  // characters unsafe for an unquoted shell word (e.g. Linear-mirrored task
+  // ids like "linear:BRO-406"); the pre-existing cmdFile/cmdMarker naming
+  // shares the same seedKey-in-a-path assumption, but this line puts it
+  // INSIDE an executed shell command, not just a filename passed as an argv
+  // element, so an unquoted space would break the wrapper script itself.
+  fs.writeFileSync(cmdFile, `#!/bin/bash\ntouch "${startedFile}"\n${command}\n`);
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   const cmuxExists = probes.cmuxExists || (() => fs.existsSync(CMUX));
   if (!cmuxExists()) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
@@ -746,7 +786,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     // started-but-unregistered claude is allowed to boot.
     outcome = waitForLaunchOutcome({
       ws, marker: cmdMarker, attempt, maxAttempts: MAX_ATTEMPTS,
-      injectionGraceSec: verifyTimeoutSec, slowBootCapSec, probes,
+      injectionGraceSec: verifyTimeoutSec, slowBootCapSec, startedFile, probes,
       // woke is recorded AT FIRE TIME, not from the returned outcome — a
       // throw/interrupt between the wake and the return would otherwise skip
       // the finally-clear and leave the override pinned.
