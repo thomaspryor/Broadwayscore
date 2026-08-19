@@ -1424,7 +1424,23 @@ function safeWriteReview(filePath, newData, options = {}) {
         // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
         newData.duplicateClearReason = null;
       } else if (newData._duplicateOfCleared) {
-        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but carries a _duplicateOfCleared breadcrumb — honoring the prior clear, not re-marking`);
+        // #1655: shouldMarkUrlCollisionDuplicate/shouldMarkPostCorrectionDuplicate
+        // already declined (both bail out on _duplicateOfCleared, above), so we
+        // land here whether or not the caller ALREADY set newData.duplicateOf to
+        // this exact collider before calling safeWriteReview. That second case is
+        // the actual bug: a caller re-asserting the very same-URL duplicate the
+        // breadcrumb claims was cleared, with nothing here to strip the
+        // now-contradicted breadcrumb (this function only ever decided whether to
+        // SET duplicateOf itself — it never audited an incoming value). Precedent
+        // (SELF_CLEAR_PAIRS, flag-contradiction.js #1020/#1022/#1023): the setter
+        // that ran most recently wins and the breadcrumb — now proven stale by
+        // that same fresh write — is retracted, not the other way around.
+        if (newData.duplicateOf === collider) {
+          console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} re-asserts duplicateOf=${collider} while still carrying a stale _duplicateOfCleared for the same URL — retracting the breadcrumb (#1655)`);
+          delete newData._duplicateOfCleared;
+        } else {
+          console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but carries a _duplicateOfCleared breadcrumb — honoring the prior clear, not re-marking`);
+        }
       } else {
         // Normal path: newData carries the real review body and the collider is
         // a thin/empty same-URL stub. Marking newData duplicate here BURIES the
