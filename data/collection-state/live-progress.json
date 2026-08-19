@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-18T21:52:54.097Z",
-  "processed": 75,
-  "failed": 1430,
+  "updatedAt": "2026-08-19T01:17:24.454Z",
+  "processed": 76,
+  "failed": 1439,
   "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 44,
@@ -11,44 +11,10 @@
     "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-18T15:15:36.375Z",
-      "event": "bb-session",
-      "session": "e8a9f012",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-18T15:15:45.850Z",
-      "event": "bb-session",
-      "session": "1767057c",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-18T16:33:20.334Z",
-      "event": "bb-session",
-      "session": "a4361c4c",
-      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
-    },
-    {
-      "t": "2026-08-18T16:33:20.854Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-18T16:34:41.423Z",
-      "event": "bb-session",
-      "session": "b1bd5513",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-18T16:34:41.933Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-18T16:37:20.442Z",
       "event": "bb-session",
@@ -124,6 +90,40 @@
     },
     {
       "t": "2026-08-18T20:59:59.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T01:15:22.874Z",
+      "event": "bb-session",
+      "session": "4ed23e2e",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-19T01:15:43.091Z",
+      "event": "bb-session",
+      "session": "43ad1896",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-19T01:16:11.450Z",
+      "event": "bb-session",
+      "session": "750f4de2",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T01:16:12.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T01:16:42.917Z",
+      "event": "bb-session",
+      "session": "c65daa2b",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T01:16:43.653Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

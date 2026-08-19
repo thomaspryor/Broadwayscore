@@ -74,7 +74,8 @@
     "and-juliet-2022/newyorker--conde-nast.json",
     "anansi-the-spider-west-end-2026/london-theatre--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -1506,7 +1507,16 @@
     "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/times-square-chronicles--suzanna-bowling.json",
-    "titanique-2026/wsj--charles-isherwood.json"
+    "titanique-2026/wsj--charles-isherwood.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1606,11 +1616,12 @@
       "oh-mary-2024/talkinbroadway--matthew-murray.json",
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ]
   },
   "startTime": "2026-08-18T15:14:36.452Z",
-  "lastProcessed": "titanique-2026/wsj--charles-isherwood.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
   "log": [
     {
       "t": "2026-08-18T15:15:36.375Z",
@@ -1721,6 +1732,40 @@
     },
     {
       "t": "2026-08-18T20:59:59.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T01:15:22.874Z",
+      "event": "bb-session",
+      "session": "4ed23e2e",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-19T01:15:43.091Z",
+      "event": "bb-session",
+      "session": "43ad1896",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-19T01:16:11.450Z",
+      "event": "bb-session",
+      "session": "750f4de2",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T01:16:12.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-19T01:16:42.917Z",
+      "event": "bb-session",
+      "session": "c65daa2b",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-19T01:16:43.653Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
