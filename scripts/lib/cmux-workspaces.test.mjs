@@ -205,6 +205,15 @@ test('isNotFoundError: not_found confirms dead; any other message is uncertainty
   assert.equal(isNotFoundError('Command failed: socket timeout'), false);
   assert.equal(isNotFoundError(''), false);
   assert.equal(isNotFoundError(undefined), false);
+  // Card #1829: the shape actually thrown by a live cmux for a workspace
+  // whose pane never rendered — a DIFFERENT error-type prefix
+  // (internal_error, not not_found) with the confirmation only in the
+  // message text. The regex above (pre-fix) missed this and made
+  // terminalSurfaceAliveIn report "alive" for 7/7 dead cmux-tab dispatches
+  // on 2026-08-19 that this exact error came from.
+  assert.equal(isNotFoundError('Command failed: cmux read-screen --workspace workspace:866\nError: internal_error: ERROR: Terminal surface not found\n'), true);
+  assert.equal(isNotFoundError('internal_error: ERROR: Terminal surface not found'), true);
+  assert.equal(isNotFoundError('Error: internal_error: ERROR: Workspace not found'), true);
 });
 
 test('pruneDone: second-signal throw = alive (never close on uncertainty from either signal)', () => {
