@@ -303,11 +303,24 @@ jobs:
 
       # Second self-heal pass: discovery + IBDB enrichment above can attach an
       # original production's ibdbUrl to a freshly discovered revival stub —
-      # that's exactly what blocked the commit daily 2026-07-03→05 (the stale
-      # URLs never landed in shows.json; each day's discovery re-created them
-      # in the working tree and validation re-blocked). The pass before
-      # pre-validate heals pre-existing data; this pass heals what discovery
-      # just introduced. Idempotent and near-instant.
+      # that's exactly what blocked the commit daily 2026-07-03→05 and again
+      # 2026-08-15→18 (task #1817). The pass before pre-validate heals
+      # pre-existing data; this pass heals what discovery just introduced.
+      # Idempotent and near-instant.
+      #
+      # Root cause of the recurrence (#1817, verified 2026-08-19): both
+      # passes DID clear the field in this job's working tree every single
+      # run — the premise in the old version of this comment ("the stale
+      # URLs never landed in shows.json; each day's discovery re-created
+      # them in the working tree") was wrong. The real bug was one layer
+      # downstream: push-core-data/action.yml's post-rebase reconciliation
+      # step restores a safelisted field from origin/main whenever OUR
+      # local value is null — and since origin/main had never received a
+      # prior fix either (same bug, every run), it still had the old shared
+      # URL, so the reconciliation silently restored the exact value this
+      # self-heal had just cleared, on every push that needed a rebase.
+      # Fixed by making that reconciliation baseline-aware (see
+      # scripts/lib/reconcile-shows-fields.js).
       - name: Self-heal shared ibdbUrls (post-discovery)
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/fix-shared-ibdb-urls.js
