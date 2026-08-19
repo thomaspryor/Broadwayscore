@@ -43,7 +43,10 @@ function canonicalizeVenue(venue) {
 
 function fullTextMentionsVenue(fullText, venue) {
   const canon = canonicalizeVenue(venue);
-  if (!canon || canon.length < 3) return false;
+  // Below 5 chars a canonicalized venue token collides with common English
+  // words/phrases ("Park Theatre" -> "park", which matches "in the park" in
+  // unrelated prose) — too short to trust as a supporting signal.
+  if (!canon || canon.length < 5) return false;
   const canonText = canonicalizeVenue(fullText || '');
   return canonText.includes(canon);
 }
@@ -82,9 +85,10 @@ function classifyPriorRunCandidate(show, reviews) {
   }
 
   const msList = list.map(r => parseMs(r.publishDate)).filter(ms => ms != null);
-  const distinctYears = Array.from(
-    new Set(list.map(r => (r.publishDate ? String(r.publishDate).slice(0, 4) : null)).filter(Boolean))
-  ).sort();
+  // Derived from the parsed ms value (not a raw string slice) so a
+  // non-ISO-but-JS-parseable publishDate ("8/1/2025") reports its real year
+  // instead of a garbage slice of the raw string.
+  const distinctYears = Array.from(new Set(msList.map(ms => new Date(ms).getUTCFullYear()))).sort();
   const spanDays = msList.length >= 2
     ? Math.round((Math.max(...msList) - Math.min(...msList)) / 86400000)
     : msList.length === 1 ? 0 : null;
@@ -101,21 +105,31 @@ function classifyPriorRunCandidate(show, reviews) {
   const earliestIso = msList.length ? new Date(Math.min(...msList)).toISOString().slice(0, 10) : null;
   const latestIso = msList.length ? new Date(Math.max(...msList)).toISOString().slice(0, 10) : null;
 
-  // Priority 1: a majority of these files are ALREADY independently flagged
-  // wrongProduction/wrongShow by another guard — the temporal gate is redundant
-  // with an existing contamination finding, not the discovery of a new legit run.
-  if (count > 0 && flaggedCount / count >= CONTAMINATION_FLAG_RATIO) {
+  // Priority 1: at least 2 of these files are ALREADY independently flagged
+  // wrongProduction/wrongShow by another guard (majority AND a floor of 2 —
+  // a single stale/misapplied flag out of a 2-file show must not, by itself,
+  // suppress a real prior-run investigation; those flags have a known ~15%
+  // false-positive rate, see memory/feedback_llm_wrongprod_false_positives.md)
+  // — the temporal gate is redundant with an existing contamination finding,
+  // not the discovery of a new legit run. Still worth a human spot-check.
+  if (flaggedCount >= 2 && flaggedCount / count >= CONTAMINATION_FLAG_RATIO) {
     return {
       verdict: 'likely-contamination',
-      reasoning: `${flaggedCount}/${count} files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.`,
+      reasoning: `${flaggedCount}/${count} files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.`,
       stats: { count, distinctYears, spanDays, flaggedCount, venueMentionCount },
       suggestedPriorRun: null,
     };
   }
 
-  // Priority 2: a single tight cluster (one calendar year, <=120 days apart)
-  // reads like one earlier run of the same production.
-  if (distinctYears.length === 1 && spanDays != null && spanDays <= SINGLE_RUN_MAX_SPAN_DAYS) {
+  // Priority 2: a tight cluster (<=120 days apart, regardless of whether that
+  // span happens to cross a Dec/Jan calendar-year boundary — a real preview
+  // run frequently does) reads like one earlier run of the same production.
+  // A single review is weak evidence on its own (one bad publishDate, one
+  // stray title-collision article) — it only counts as a cluster when a
+  // second independent signal (an actual venue mention in the text) backs it.
+  const isTightCluster = spanDays != null && spanDays <= SINGLE_RUN_MAX_SPAN_DAYS;
+  const singleReviewNeedsVenueConfirm = count === 1 && venueMentionCount === 0;
+  if (isTightCluster && !singleReviewNeedsVenueConfirm) {
     const venueNote = realVenue
       ? (venueMentionCount > 0
         ? `${venueMentionCount}/${count} review texts mention the show's own venue ("${show.venue}") — supports same-venue return.`
@@ -123,7 +137,7 @@ function classifyPriorRunCandidate(show, reviews) {
       : 'show has no venue on file (TBA) — venue signal unavailable.';
     return {
       verdict: 'likely-single-prior-run',
-      reasoning: `${count} premature-scored reviews cluster in ${distinctYears[0]} within a ${spanDays}-day window (single run pattern), ${flaggedCount} already flagged. ${venueNote}`,
+      reasoning: `${count} premature-scored review(s) cluster within a ${spanDays}-day window (single run pattern), ${flaggedCount} already flagged. ${venueNote}`,
       stats: { count, distinctYears, spanDays, flaggedCount, venueMentionCount },
       suggestedPriorRun: {
         venue: realVenue || undefined,
@@ -134,14 +148,16 @@ function classifyPriorRunCandidate(show, reviews) {
     };
   }
 
-  // Priority 3: everything else — multiple distinct year-clusters (could be
-  // several legit prior runs OR multi-production contamination), or a single
-  // year with a suspiciously wide span. Needs a human to read the reviews.
+  // Priority 3: everything else — reviews spread wider than one run's window,
+  // or a lone review with no venue corroboration. Needs a human to read the
+  // texts before deciding whether this is one run, several, or contamination.
   return {
     verdict: 'needs-human-review',
-    reasoning: distinctYears.length > 1
-      ? `Premature-scored reviews span ${distinctYears.length} distinct years (${distinctYears.join(', ')}) — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.`
-      : `${count} reviews in ${distinctYears[0] || 'unknown year'} span ${spanDays}d, wider than the ${SINGLE_RUN_MAX_SPAN_DAYS}d single-run heuristic — verify before declaring a single prior run.`,
+    reasoning: singleReviewNeedsVenueConfirm
+      ? `Only 1 premature-scored review and its text doesn't mention the show's own venue ("${realVenue || 'TBA'}") — too little evidence to call this a prior run on its own; read the review before deciding.`
+      : distinctYears.length > 1
+        ? `Premature-scored reviews span ${distinctYears.length} distinct years (${distinctYears.join(', ')}) and ${spanDays}d — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.`
+        : `${count} reviews span ${spanDays}d, wider than the ${SINGLE_RUN_MAX_SPAN_DAYS}d single-run heuristic — verify before declaring a single prior run.`,
     stats: { count, distinctYears, spanDays, flaggedCount, venueMentionCount },
     suggestedPriorRun: null,
   };

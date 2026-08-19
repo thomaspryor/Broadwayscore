@@ -69,6 +69,32 @@ test('classifyPriorRunCandidate: reviews spanning multiple distinct years -> nee
   assert.equal(result.stats.distinctYears.length, 2);
 });
 
+test('classifyPriorRunCandidate: a single flagged file out of two must NOT alone trigger contamination (flaggedCount floor)', () => {
+  const reviews = [
+    { publishDate: '2025-01-01', wrongProduction: true },
+    { publishDate: '2025-01-10', wrongProduction: false },
+  ];
+  const result = classifyPriorRunCandidate(SHOW, reviews);
+  assert.notEqual(result.verdict, 'likely-contamination');
+});
+
+test('classifyPriorRunCandidate: a lone review with no venue corroboration is too weak to call a prior run', () => {
+  const reviews = [{ publishDate: '2018-03-01', outletId: 'guardian', wrongProduction: false, fullText: 'no venue mention here' }];
+  const result = classifyPriorRunCandidate(SHOW, reviews);
+  assert.equal(result.verdict, 'needs-human-review');
+  assert.equal(result.suggestedPriorRun, null);
+});
+
+test('classifyPriorRunCandidate: a span crossing a Dec/Jan calendar-year boundary within 120 days still reads as a single run', () => {
+  const reviews = [
+    { publishDate: '2025-12-10', outletId: 'guardian', wrongProduction: false },
+    { publishDate: '2026-01-15', outletId: 'thestage', wrongProduction: false },
+  ];
+  const result = classifyPriorRunCandidate(SHOW, reviews);
+  assert.equal(result.verdict, 'likely-single-prior-run');
+  assert.equal(result.stats.distinctYears.length, 2);
+});
+
 test('classifyPriorRunCandidate: single year but wide span exceeds single-run window -> needs-human-review', () => {
   const reviews = [
     { publishDate: '2020-01-05', wrongProduction: false },
@@ -84,7 +110,13 @@ test('canonicalizeVenue: strips theatre/theater/the and punctuation for loose ma
 });
 
 test('fullTextMentionsVenue: matches canonicalized substring, false on empty venue', () => {
-  assert.equal(fullTextMentionsVenue('A hit at the Park Theatre this week.', 'Park Theatre'), true);
-  assert.equal(fullTextMentionsVenue('A hit downtown.', 'Park Theatre'), false);
+  assert.equal(fullTextMentionsVenue('A hit at the Almeida Theatre this week.', 'Almeida Theatre'), true);
+  assert.equal(fullTextMentionsVenue('A hit downtown.', 'Almeida Theatre'), false);
   assert.equal(fullTextMentionsVenue('anything', ''), false);
+});
+
+test('fullTextMentionsVenue: rejects a canonicalized venue too short to trust (avoids common-word collisions)', () => {
+  // "Park Theatre" canonicalizes to "park" (4 chars) — too short to trust;
+  // would otherwise false-match unrelated prose like "in the park".
+  assert.equal(fullTextMentionsVenue('A show set in the park.', 'Park Theatre'), false);
 });
