@@ -277,12 +277,12 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32242430477",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32242899897",
     "decision": false,
     "decisionPrompt": null,
     "model": "opus",
-    "queuedAt": "2026-08-19T10:42:57.018Z"
+    "queuedAt": "2026-08-19T10:46:17.500Z"
   }
 ]
