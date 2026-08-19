@@ -71,6 +71,13 @@ function baseProbes(overrides = {}) {
     now: fakeClock(),
     idleSec: () => 0, // < IDLE_GATE_SEC so the idle-gated pre-wake never fires either
     cmuxExists: () => true,
+    // Card #1829: MUST be stubbed, same reason as cmuxExists/wake above — the
+    // default falls back to the REAL cmuxws.terminalSurfaceAliveIn, which
+    // shells out to the real cmux CLI. Defaulting to "alive" here keeps every
+    // pre-#1829 test in this file exercising exactly the wrapper/tag failure
+    // path it was written for, not a real (and here undefined-behavior)
+    // read-screen call against a fabricated workspace ref.
+    terminalSurfaceAlive: () => true,
     ...overrides,
   };
 }
@@ -264,6 +271,117 @@ test('CMUX_LAUNCH_RECLAIM_DISABLED=1: kill switch reverts to pre-#1706 behavior 
   } finally {
     if (prev === undefined) delete process.env.CMUX_LAUNCH_RECLAIM_DISABLED;
     else process.env.CMUX_LAUNCH_RECLAIM_DISABLED = prev;
+    listMock.mock.restore();
+    try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
+  }
+});
+
+// ── Card #1829: a confirmed-missing terminal surface is no longer adoptable ─
+// The incident: 7/7 cmux-tab dispatches on 2026-08-19 created a workspace
+// with a live cmux tag AND a live OS wrapper process, but the terminal
+// surface never rendered (`cmux read-screen` returned "Terminal surface not
+// found" on all seven, one 50 minutes old). strictlyAliveWorkspace previously
+// only checked the tag + OS-process signals, so BOTH the in-call late-adopt
+// watch and the cross-invocation reclaim journal (this file's whole subject)
+// reported these workspaces alive and the launcher returned ok:true with
+// nothing actually running. These tests exercise the REAL launchCmuxSession
+// end to end (rule 15) with terminalSurfaceAlive as the one signal under test.
+test('launchCmuxSession: a journaled entry whose OS/tag signals look alive but read-screen confirms no surface is NOT reclaimed — reported failed instead', () => {
+  const journalPath = tmpJournalPath();
+  writeLaunchJournalEntry('task-1829-surface', {
+    workspaceRef: 'workspace:9400', marker: 'bsc-cmd-task-1829-surface-deadbeef.sh',
+    state: 'injection-never-ran', timestamp: new Date(0).toISOString(),
+  }, journalPath);
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9401\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => [{ ref: 'workspace:9400', title: 'stale' }]);
+  const claudeAliveMock = mock.method(cmuxws, 'claudeAliveIn', () => true);
+
+  try {
+    const res = launchCmuxSession({
+      title: 'test launch surface-dead reclaim', seed: 'seed text', seedKey: 'reclaim-1829-a', workKey: 'task-1829-surface',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
+      // terminalSurfaceAlive: false reproduces the exact 2026-08-19 shape —
+      // cmux's own tag registry mocked alive above (that registry really did
+      // report these workspaces as having a live claude), and the OS-process
+      // signal is left unstubbed here (osProcessAliveForSeed reads the real
+      // `ps` table for this never-real marker and legitimately finds
+      // nothing, same as incident evidence #3 — no matching process existed
+      // by the time anything checked). Only read-screen is authoritative for
+      // "this exact scenario is what strictlyAliveWorkspace must now refuse",
+      // and it's the one signal isolated as the deciding AND-term by
+      // computeStrictAliveness's direct unit tests in cmux-launch.test.mjs.
+      probes: { ...baseProbes(), terminalSurfaceAlive: () => false, newWorkspace: newWorkspaceMock },
+    });
+
+    assert.equal(res.ok, false, 'a confirmed-missing surface must never be reported as a successful launch');
+    assert.notEqual(res.reclaimedAcrossInvocation, true, 'the journaled entry must not be reclaimed');
+    assert.equal(newWorkspaceMock.mock.callCount(), 1, 'refusing to reclaim still lets a fresh launch attempt proceed');
+  } finally {
+    listMock.mock.restore();
+    claudeAliveMock.mock.restore();
+    try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
+  }
+});
+
+// Second-opinion review of this card's first pass flagged that the fix above
+// only covered the late-adopt/reclaim paths — the FAST path (wrapper + tag
+// both register within the first few polls, `outcome.action === 'ok'` on
+// attempt 1, no late-adopt or reclaim ever consulted) is what most real
+// dispatches actually take, and it had the identical #548-class blind spot:
+// claudeRegistered trusts wrapperAlive+tagAlive alone. This test drives that
+// exact path — instant wrapper+tag registration — with the surface signal
+// confirmed dead, and proves the launcher refuses to report success there too.
+test('launchCmuxSession: instant wrapper+tag registration (the common-case fast path) still refuses success when read-screen confirms no surface', () => {
+  const journalPath = tmpJournalPath();
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9500\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+
+  try {
+    const res = launchCmuxSession({
+      title: 'test launch fast-path surface-dead', seed: 'seed text', seedKey: 'reclaim-1829-b', workKey: 'task-1829-fastpath',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
+      probes: {
+        ...baseProbes(),
+        wrapperAlive: () => true, // registers on the very first poll — the common case
+        claudeTagAlive: () => true,
+        terminalSurfaceAlive: () => false, // …but the surface never rendered (#548-class desync)
+        newWorkspace: newWorkspaceMock,
+      },
+    });
+
+    assert.equal(res.ok, false, 'wrapper+tag alone must never be enough to report success once read-screen disagrees');
+    assert.match(res.reason || '', /surface/i, 'the failure reason must name the surface check, not a generic verify failure');
+    assert.equal(res.deadConfirmed, true, 'a confirmed-missing surface is a real death, not an ambiguous/slow-boot case');
+  } finally {
+    listMock.mock.restore();
+    try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
+  }
+});
+
+test('launchCmuxSession: instant wrapper+tag registration WITH a real surface still succeeds (no false failures from the new check)', () => {
+  const journalPath = tmpJournalPath();
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9501\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+
+  try {
+    const res = launchCmuxSession({
+      title: 'test launch fast-path healthy', seed: 'seed text', seedKey: 'reclaim-1829-c', workKey: 'task-1829-fastpath-ok',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
+      probes: {
+        ...baseProbes(), // terminalSurfaceAlive: () => true by default
+        wrapperAlive: () => true,
+        claudeTagAlive: () => true,
+        newWorkspace: newWorkspaceMock,
+      },
+    });
+
+    assert.equal(res.ok, true, 'a genuinely healthy fast-path launch must not be penalized by the new surface check');
+    assert.equal(res.ref, 'workspace:9501');
+    assert.equal(newWorkspaceMock.mock.callCount(), 1);
+  } finally {
     listMock.mock.restore();
     try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
   }

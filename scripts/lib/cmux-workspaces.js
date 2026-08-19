@@ -202,8 +202,19 @@ function hasClaudeChrome(screenText) {
 // Any error OTHER than not_found (busy socket, timeout) is uncertainty, not
 // confirmation, and must NOT contribute to a close verdict — same fail-safe
 // rule as claudeAliveIn. Pure parser (exported).
+//
+// Card #1829: cmux now also throws `Error: internal_error: ERROR: Terminal
+// surface not found` for a workspace whose pane was never rendered (the
+// #1199 deferred-render case) — a DIFFERENT error-type prefix
+// (`internal_error`, not `not_found`) with the confirmation in the message
+// text instead. The original regex only matched the `not_found:` prefix, so
+// this shape fell through to "any other error = uncertainty" and
+// terminalSurfaceAliveIn reported these workspaces ALIVE — the exact
+// misclassification that let 7/7 dead cmux-tab dispatches on 2026-08-19
+// report launch success with no agent running. Matching the message text
+// directly (not just the error-type prefix) catches both shapes.
 function isNotFoundError(message) {
-  return /not_found/i.test(String(message || ''));
+  return /not_found|(?:surface|workspace|pane)\s+not\s+found/i.test(String(message || ''));
 }
 
 function terminalSurfaceAliveIn(ref) {
