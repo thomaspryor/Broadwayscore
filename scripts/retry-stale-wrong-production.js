@@ -35,9 +35,22 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+
+const USAGE = `Tier 2 stale wrongProduction recovery (BRO-53)
+
+Usage:
+  node scripts/retry-stale-wrong-production.js [--dry-run] [--max-tier 3] [--limit 50] [--time-budget-min=N]
+
+  --dry-run              Scan and report candidates without writing or calling SERP.
+  --max-tier N           Only outlets at tier <= N (default 2).
+  --limit N              Max candidates to process this run (default 200).
+  --time-budget-min=N    Wall-clock budget in minutes (0/omitted = unlimited).
+
+Env: SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN (at least one required)`;
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -53,6 +66,7 @@ function parseArgs() {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const opts = parseArgs();
   const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
