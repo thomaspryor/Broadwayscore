@@ -37,6 +37,23 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # BRO-376 Notion->Linear idempotent import acceptance test. Registered in
+      # tests/unit-test-manifest.txt. Depends only on scripts/lib/** (already
+      # globbed above), so it needs its own entry, plus the top-level script it
+      # exercises as a subprocess.
+      - 'scripts/import-notion-to-linear.test.mjs'
+      - 'scripts/linear-import-corpus.js'
+      # scripts/lib/notion-outcome-history.js/.test.mjs (the actual logic) are
+      # already covered by scripts/lib/** above — this is the top-level CLI
+      # wrapper only. No direct unit test of its own (its logic is fully
+      # covered by the colocated lib test); listed so a solo edit still gets
+      # lint/build/tsc.
+      - 'scripts/export-notion-outcome-history.js'
+      # scripts/linear-import-corpus.js's sibling from the same Sprint 3 work
+      # had the identical gap — no path entry, ZERO CI on a solo edit — even
+      # though nothing here tests it directly yet. Closed alongside rather
+      # than left sitting next to the one just fixed.
+      - 'scripts/verify-linear-migration.js'
       # Sibling advisory guard (task #1760): catches the same recurrence gap
       # one level up — a script named in
       # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS

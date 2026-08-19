@@ -51,6 +51,15 @@ regexes = [
   # Same pattern as CMUX_CLOSE_OK=1 in ~/.claude/hooks/cmux-destructive-guard.sh (outside
   # this repo, so it never needed an allowlist entry).
   '''CMUX_LAUNCH_UNSAFE_OK=1''',
+  # Same GA4_PROPERTY_ID false positive already allowlisted for
+  # scripts/newsletter/*.test.mjs above (env var NAME, not a value), now also
+  # appearing verbatim inside a migrated Notion Outcome in
+  # data/archive/notion-card-history.jsonl (BRO-376 Outcome-preservation
+  # export). Allowlisted by value rather than by path, since that archive file
+  # is append-only and will keep growing with real historical session prose —
+  # a path allowlist would blind future scans to an actual secret pasted into
+  # some other card's Outcome text.
+  '''GA4_PROPERTY_ID''',
   # Dead BUFFER_TOKEN. Hardcoded in scripts/social-infographics/schedule-buffer.js from
   # 2026-03-28 and live in this public repo until 2026-07-26, when it was revoked in
   # Buffer and replaced with an env var. Verified dead: mcp.buffer.com returns
