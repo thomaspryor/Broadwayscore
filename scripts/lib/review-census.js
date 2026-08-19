@@ -171,7 +171,7 @@ function parsePlaybillVerdict(content, showId) {
   for (const r of raw) {
     const resolved = r.url ? resolveOutletFromUrl(r.url) : null;
     const outletId = resolved && resolved.outletId ? resolved.outletId : (r.outlet ? normalizeOutlet(r.outlet) : null);
-    if (!outletId) continue;
+    if (!outletId || isJunkOutlet(outletId)) continue;
     rows.push({ outlet: r.outlet || outletId, critic: r.critic || 'Unknown', stars: null, url: r.url || '', outletId });
   }
   return rows;
@@ -256,8 +256,17 @@ function unionCensus(perSource) {
     if (!Array.isArray(reviews) || reviews.length === 0) continue;
     sourcesPresent.push(source);
     for (const r of reviews) {
-      const outletId = r.outletId || normalizeOutlet(r.outlet || '');
-      if (!outletId) continue;
+      // URL-based resolution beats text-based (normalizeOutlet/r.outletId): the
+      // registry's domain map is precise, while byline-text matching is fuzzy and
+      // alias-collision-prone (e.g. a roundup byline "The LA Times" for an article
+      // that was actually re-published under a different registered domain). A
+      // source like parseBwwRoundup never sets r.outletId and always resolved
+      // purely off byline text even when it captured a URL — this is what let a
+      // stale/mismatched text match (e.g. "About Entertainment") override a URL
+      // that resolves cleanly to a different, correct registry outlet (#BRO-90).
+      const urlResolved = r.url ? resolveOutletFromUrl(r.url) : null;
+      const outletId = (urlResolved && urlResolved.outletId) || r.outletId || normalizeOutlet(r.outlet || '');
+      if (!outletId || isJunkOutlet(outletId)) continue;
       const existing = byOutlet.get(outletId);
       const entry = {
         outletId,
