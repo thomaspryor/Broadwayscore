@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } from './digest-snapshots.js';
+import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } from './digest-snapshots.js';
 import { classifySubject } from './scheduled-email-count-rules.js';
 import digestSender from '../send-morning-digest.js';
 
@@ -465,4 +465,58 @@ test('buildHtml: warnings-only day reads calm ("Nothing needs your attention"), 
   });
   assert.match(stuck, /1 issue detected/);
   assert.match(stuck, /Nothing needs your attention/);
+});
+
+test('readSyncRefused: no files -> null (quiet morning, no block rendered)', () => {
+  const dir = tmpAudit();
+  assert.equal(readSyncRefused({ auditDir: dir }), null);
+});
+
+test('readSyncRefused: missing auditDir -> null, never throws', () => {
+  assert.equal(readSyncRefused({ auditDir: '/no/such/dir/at/all' }), null);
+});
+
+test('readSyncRefused: one refusal -> named block with tag/reason/behindCount', () => {
+  const dir = tmpAudit();
+  write(dir, 'sync-refused-backlog-drain.json', {
+    tag: 'backlog-drain', at: '2026-08-19T14:15:25.038Z', reason: 'dirty-jsonl-ledger',
+    behindCount: 12, dirtyFiles: ['data/audit/score-history.jsonl'],
+  });
+  const summary = readSyncRefused({ auditDir: dir });
+  assert.equal(summary.count, 1);
+  assert.match(summary.bannerText, /backlog-drain/);
+  assert.equal(summary.items.length, 1);
+  assert.equal(summary.items[0].title, 'backlog-drain');
+  assert.match(summary.items[0].detail, /dirty-jsonl-ledger/);
+  assert.match(summary.items[0].detail, /12 commit/);
+});
+
+test('readSyncRefused: multiple tags refused -> all named, newest sorts first', () => {
+  const dir = tmpAudit();
+  write(dir, 'sync-refused-digest.json', { tag: 'digest', at: '2026-08-19T07:30:00.000Z', reason: 'diverged', behindCount: 3 });
+  write(dir, 'sync-refused-shadow.json', { tag: 'shadow', at: '2026-08-19T02:47:00.000Z', reason: 'dirty-outside-audit', behindCount: 119 });
+  const summary = readSyncRefused({ auditDir: dir });
+  assert.equal(summary.count, 2);
+  assert.equal(summary.generatedAt, '2026-08-19T07:30:00.000Z'); // newest `at` wins
+  assert.deepEqual(summary.items.map((i) => i.title).sort(), ['digest', 'shadow']);
+});
+
+test('readSyncRefused: unrelated/garbage files ignored, never throw', () => {
+  const dir = tmpAudit();
+  write(dir, 'health-digest-snapshot.json', { generatedAt: '2026-08-19T00:00:00Z' });
+  write(dir, 'sync-refused-broken.json', '{not json');
+  write(dir, 'sync-refused-no-tag.json', { at: '2026-08-19T00:00:00Z', reason: 'diverged' });
+  assert.equal(readSyncRefused({ auditDir: dir }), null);
+});
+
+test('readSyncRefused: maxItems truncates, moreCount reflects the rest', () => {
+  const dir = tmpAudit();
+  const tags = ['shadow', 'digest', 'backlog-drain', 'predispatch-queue-audit'];
+  tags.forEach((tag, i) => write(dir, `sync-refused-${tag}.json`, {
+    tag, at: `2026-08-19T0${i}:00:00.000Z`, reason: 'diverged', behindCount: i,
+  }));
+  const summary = readSyncRefused({ auditDir: dir, maxItems: 2 });
+  assert.equal(summary.count, 4);
+  assert.equal(summary.items.length, 2);
+  assert.equal(summary.moreCount, 2);
 });
