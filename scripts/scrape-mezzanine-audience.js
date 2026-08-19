@@ -49,10 +49,20 @@ const MEZZANINE_OVERRIDES = {
   // real Playhouse Theatre run (found via /what-else audit of card #313 —
   // same bug class as the Romeo and Juliet fix below). Venue pin isolates ours.
   'cabaret-at-the-kit-kat-club-west-end-2021': { name: 'Cabaret', venue: 'Playhouse' },
-  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'Harry Potter and the Cursed Child',
-  'six-the-musical-west-end-2021': 'Six',
-  // OB shows where our title appends "the Musical" but Mezzanine uses short title
-  'heathers-the-musical-off-broadway-2025': 'Heathers',
+  // Bare "Harry Potter and the Cursed Child" also matches the separate
+  // Broadway production (harry-potter-2021, Lyric Theatre) — a bare override
+  // would merge both markets' Mezzanine ratings into this West End show.
+  // Venue pin restricts to the Palace Theatre run (found via BRO-86 collision
+  // auditor sweep — same bug class as card #313).
+  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': { name: 'Harry Potter and the Cursed Child', venue: 'Palace' },
+  // Bare "Six" also matches the separate Broadway production (six-2021, Lena
+  // Horne Theatre) — venue pin restricts to the Vaudeville Theatre run.
+  'six-the-musical-west-end-2021': { name: 'Six', venue: 'Vaudeville' },
+  // OB shows where our title appends "the Musical" but Mezzanine uses short title.
+  // Bare "Heathers" also matches the separate West End production
+  // (heathers-the-musical-off-west-end-2026) — venue pin restricts to the
+  // New World Stages run.
+  'heathers-the-musical-off-broadway-2025': { name: 'Heathers', venue: 'New World Stages' },
   // "Little Women" bare override was merging our small off-Broadway revival
   // with the unrelated 2005 Virginia Theatre Broadway production (30 ratings,
   // wrong show). Venue pin restricts to our 92NY run — currently 0 Mezzanine
@@ -801,7 +811,7 @@ async function main() {
 }
 
 if (require.main !== module) {
-  module.exports = { matchProductions, deduplicateMatches, normalize };
+  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES };
 } else {
   main().catch(e => {
     console.error('Fatal error:', e.message);
