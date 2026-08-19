@@ -64,15 +64,17 @@ function loadShows() {
 
 function collectPrematureScoredReviews(show, reviewTextsDir) {
   const dir = path.join(reviewTextsDir, show.id);
-  if (!fs.existsSync(dir)) return [];
+  if (!fs.existsSync(dir)) return { reviews: [], unreadableCount: 0 };
   const out = [];
+  let unreadableCount = 0;
   for (const file of fs.readdirSync(dir)) {
     if (!file.endsWith('.json')) continue;
     let data;
     try {
       data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
     } catch {
-      continue; // unreadable file — not evidence either way
+      unreadableCount++; // unreadable file — not evidence either way, but worth surfacing
+      continue;
     }
     if (!isPrematureReviewForUnopenedShow(data, show)) continue;
     if (!hasValidScore(data)) continue;
@@ -87,7 +89,7 @@ function collectPrematureScoredReviews(show, reviewTextsDir) {
       fullText: data.fullText,
     });
   }
-  return out;
+  return { reviews: out, unreadableCount };
 }
 
 function main() {
@@ -98,15 +100,19 @@ function main() {
     process.exit(1);
   }
 
+  console.log(`[triage-unopened-shows] review-texts dir: ${reviewTextsDir}`);
+
   const candidates = ONLY_SHOW ? shows.filter(s => s.id === ONLY_SHOW) : shows;
   const results = [];
+  let totalUnreadable = 0;
 
   for (const show of candidates) {
     const status = String(show.status || '').toLowerCase();
     if (!UNOPENED_STATUSES.has(status)) continue;
     if (hasDeclaredPriorRuns(show)) continue;
 
-    const reviews = collectPrematureScoredReviews(show, reviewTextsDir);
+    const { reviews, unreadableCount } = collectPrematureScoredReviews(show, reviewTextsDir);
+    totalUnreadable += unreadableCount;
     if (reviews.length === 0) continue;
 
     const classification = classifyPriorRunCandidate(show, reviews);
@@ -146,12 +152,16 @@ function main() {
     scannedShows: candidates.length,
     flaggedShows: results.length,
     flaggedFiles: totalFiles,
+    unreadableFiles: totalUnreadable,
     byVerdict,
     shows: results.sort((a, b) => b.stats.count - a.stats.count),
   };
 
   console.log(`[triage-unopened-shows] ${results.length} shows / ${totalFiles} files carrying gate-excluded scored reviews`);
   console.log(`[triage-unopened-shows] by verdict: ${JSON.stringify(byVerdict)}`);
+  if (totalUnreadable > 0) {
+    console.log(`[triage-unopened-shows] WARNING: ${totalUnreadable} review-text files failed to parse and were skipped (not counted as evidence either way)`);
+  }
   for (const r of report.shows) {
     console.log(`  ${r.verdict.padEnd(24)} ${r.showId} (${r.stats.count} files, venue=${r.venue || 'TBA'})`);
   }

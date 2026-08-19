@@ -1,12 +1,14 @@
 {
-  "generatedAt": "2026-08-19T18:29:37.359Z",
+  "generatedAt": "2026-08-19T18:34:27.369Z",
   "linearIssue": "BRO-80",
   "scannedShows": 2905,
   "flaggedShows": 55,
   "flaggedFiles": 224,
+  "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 51,
-    "likely-single-prior-run": 4
+    "likely-contamination": 31,
+    "likely-single-prior-run": 3,
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -18,11 +20,11 @@
       "previewsStartDate": "2026-10-03",
       "openingDate": "2026-10-13",
       "verdict": "likely-contamination",
-      "reasoning": "18/18 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "18/18 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 18,
         "distinctYears": [
-          "2024"
+          2024
         ],
         "spanDays": 10,
         "flaggedCount": 18,
@@ -203,17 +205,17 @@
       "previewsStartDate": "2026-11-12",
       "openingDate": "2026-11-24",
       "verdict": "likely-contamination",
-      "reasoning": "17/17 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "17/17 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 17,
         "distinctYears": [
-          "2015",
-          "2016",
-          "2018",
-          "2019",
-          "2020",
-          "2024",
-          "2025"
+          2015,
+          2016,
+          2018,
+          2019,
+          2020,
+          2024,
+          2025
         ],
         "spanDays": 3651,
         "flaggedCount": 17,
@@ -385,12 +387,12 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "14/17 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "14/17 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 17,
         "distinctYears": [
-          "2022",
-          "2023"
+          2022,
+          2023
         ],
         "spanDays": 270,
         "flaggedCount": 14,
@@ -562,12 +564,12 @@
       "previewsStartDate": "2025-02-24",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "12/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "12/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 12,
         "distinctYears": [
-          "2011",
-          "2023"
+          2011,
+          2023
         ],
         "spanDays": 4167,
         "flaggedCount": 12,
@@ -694,12 +696,12 @@
       "previewsStartDate": null,
       "openingDate": "2026-09-22",
       "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 11,
         "distinctYears": [
-          "2022",
-          "2024"
+          2022,
+          2024
         ],
         "spanDays": 894,
         "flaggedCount": 11,
@@ -817,13 +819,13 @@
       "previewsStartDate": null,
       "openingDate": "2026-10-30",
       "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 11,
         "distinctYears": [
-          "2014",
-          "2020",
-          "2023"
+          2014,
+          2020,
+          2023
         ],
         "spanDays": 3131,
         "flaggedCount": 11,
@@ -941,11 +943,11 @@
       "previewsStartDate": "2026-11-10",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 11,
         "distinctYears": [
-          "2022"
+          2022
         ],
         "spanDays": 0,
         "flaggedCount": 11,
@@ -1063,12 +1065,12 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "8/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "8/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 10,
         "distinctYears": [
-          "2023",
-          "2025"
+          2023,
+          2025
         ],
         "spanDays": 821,
         "flaggedCount": 8,
@@ -1177,11 +1179,11 @@
       "previewsStartDate": "2026-12-18",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 10,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 2,
         "flaggedCount": 10,
@@ -1290,11 +1292,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "8/8 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "8/8 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 8,
         "distinctYears": [
-          "2016"
+          2016
         ],
         "spanDays": 9,
         "flaggedCount": 8,
@@ -1385,11 +1387,11 @@
       "previewsStartDate": null,
       "openingDate": "2026-10-13",
       "verdict": "likely-contamination",
-      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 7,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 7,
@@ -1471,11 +1473,11 @@
       "previewsStartDate": "2026-09-08",
       "openingDate": "2026-09-08",
       "verdict": "likely-contamination",
-      "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 6,
         "distinctYears": [
-          "2023"
+          2023
         ],
         "spanDays": 0,
         "flaggedCount": 6,
@@ -1548,12 +1550,12 @@
       "previewsStartDate": "2026-10-08",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 5,
         "distinctYears": [
-          "2023",
-          "2024"
+          2023,
+          2024
         ],
         "spanDays": 517,
         "flaggedCount": 5,
@@ -1617,11 +1619,11 @@
       "previewsStartDate": "2026-10-01",
       "openingDate": "2026-10-07",
       "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 2,
         "flaggedCount": 4,
@@ -1676,12 +1678,12 @@
       "previewsStartDate": "2027-02-12",
       "openingDate": "2027-02-23",
       "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2022",
-          "2026"
+          2022,
+          2026
         ],
         "spanDays": 1301,
         "flaggedCount": 4,
@@ -1736,11 +1738,11 @@
       "previewsStartDate": "2026-09-21",
       "openingDate": "2026-09-30",
       "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2026"
+          2026
         ],
         "spanDays": 6,
         "flaggedCount": 4,
@@ -1795,11 +1797,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "2/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 13,
         "flaggedCount": 2,
@@ -1854,11 +1856,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-single-prior-run",
-      "reasoning": "4 premature-scored reviews cluster in 2025 within a 17-day window (single run pattern), 1 already flagged. none of the 4 review texts mention the show's own venue (\"Theatre Royal Stratford East\") — verify venue before declaring.",
+      "reasoning": "4 premature-scored review(s) cluster within a 17-day window (single run pattern), 1 already flagged. none of the 4 review texts mention the show's own venue (\"Theatre Royal Stratford East\") — verify venue before declaring.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 17,
         "flaggedCount": 1,
@@ -1918,11 +1920,11 @@
       "previewsStartDate": "2026-11-21",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
-          "2022"
+          2022
         ],
         "spanDays": 0,
         "flaggedCount": 4,
@@ -1977,11 +1979,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2009"
+          2009
         ],
         "spanDays": 1,
         "flaggedCount": 3,
@@ -2027,11 +2029,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2017"
+          2017
         ],
         "spanDays": 0,
         "flaggedCount": 3,
@@ -2077,13 +2079,13 @@
       "previewsStartDate": "2026-08-27",
       "openingDate": "2026-09-03",
       "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2016",
-          "2023",
-          "2024"
+          2016,
+          2023,
+          2024
         ],
         "spanDays": 2844,
         "flaggedCount": 3,
@@ -2129,11 +2131,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "2/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 6,
         "flaggedCount": 2,
@@ -2179,13 +2181,13 @@
       "previewsStartDate": "2026-10-22",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2017",
-          "2018",
-          "2019"
+          2017,
+          2018,
+          2019
         ],
         "spanDays": 771,
         "flaggedCount": 3,
@@ -2231,11 +2233,11 @@
       "previewsStartDate": "2026-11-19",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 3,
         "distinctYears": [
-          "2023"
+          2023
         ],
         "spanDays": 0,
         "flaggedCount": 3,
@@ -2280,18 +2282,23 @@
       "venue": "Irish Repertory Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "likely-single-prior-run",
+      "reasoning": "2 premature-scored review(s) cluster within a 0-day window (single run pattern), 1 already flagged. none of the 2 review texts mention the show's own venue (\"Irish Repertory Theatre\") — verify venue before declaring.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2023"
+          2023
         ],
         "spanDays": 0,
         "flaggedCount": 1,
         "venueMentionCount": 0
       },
-      "suggestedPriorRun": null,
+      "suggestedPriorRun": {
+        "venue": "Irish Repertory Theatre",
+        "reviewDateRangeStart": "2023-12-14",
+        "reviewDateRangeEnd": "2023-12-14",
+        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
+      },
       "reviews": [
         {
           "file": "broadwayworld--unknown.json",
@@ -2322,12 +2329,12 @@
       "previewsStartDate": "2026-11-21",
       "openingDate": "2026-11-21",
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2017",
-          "2025"
+          2017,
+          2025
         ],
         "spanDays": 2831,
         "flaggedCount": 2,
@@ -2364,11 +2371,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2024"
+          2024
         ],
         "spanDays": 0,
         "flaggedCount": 2,
@@ -2405,12 +2412,12 @@
       "previewsStartDate": "2026-12-05",
       "openingDate": "2026-12-17",
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2019",
-          "2021"
+          2019,
+          2021
         ],
         "spanDays": 627,
         "flaggedCount": 2,
@@ -2446,13 +2453,13 @@
       "venue": "Noël Coward Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Premature-scored reviews span 2 distinct years (2016, 2018) and 449d — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2016",
-          "2018"
+          2016,
+          2018
         ],
         "spanDays": 449,
         "flaggedCount": 1,
@@ -2489,11 +2496,11 @@
       "previewsStartDate": null,
       "openingDate": "2027-03-09",
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 3,
         "flaggedCount": 2,
@@ -2530,11 +2537,11 @@
       "previewsStartDate": "2027-02-27",
       "openingDate": "2027-03-25",
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 2,
@@ -2571,12 +2578,12 @@
       "previewsStartDate": "2026-08-28",
       "openingDate": "2026-09-08",
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2015",
-          "2017"
+          2015,
+          2017
         ],
         "spanDays": 741,
         "flaggedCount": 2,
@@ -2613,12 +2620,12 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          "2017",
-          "2018"
+          2017,
+          2018
         ],
         "spanDays": 596,
         "flaggedCount": 2,
@@ -2655,11 +2662,11 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-single-prior-run",
-      "reasoning": "1 premature-scored reviews cluster in 2024 within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"Theatre at St. Jean's\") — supports same-venue return.",
+      "reasoning": "1 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"Theatre at St. Jean's\") — supports same-venue return.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2024"
+          2024
         ],
         "spanDays": 0,
         "flaggedCount": 0,
@@ -2691,12 +2698,12 @@
       "venue": "Southwark",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Southwark\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2015"
+          2015
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2723,12 +2730,12 @@
       "venue": "New York City Center",
       "previewsStartDate": null,
       "openingDate": "2026-10-28",
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"New York City Center\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2020"
+          2020
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2755,12 +2762,12 @@
       "venue": "Almeida Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Almeida Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2017"
+          2017
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2787,12 +2794,12 @@
       "venue": "Almeida Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Almeida Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2016"
+          2016
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2819,12 +2826,12 @@
       "venue": "Prince Edward Theatre",
       "previewsStartDate": "2027-05-13",
       "openingDate": "2027-05-27",
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Prince Edward Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2014"
+          2014
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2851,12 +2858,12 @@
       "venue": "Kiln Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Kiln Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2024"
+          2024
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2883,12 +2890,12 @@
       "venue": "Metropolitan Opera House",
       "previewsStartDate": null,
       "openingDate": "2026-09-23",
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2018"
+          2018
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2915,12 +2922,12 @@
       "venue": "Metropolitan Opera House",
       "previewsStartDate": null,
       "openingDate": "2026-11-01",
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2026"
+          2026
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2947,12 +2954,12 @@
       "venue": "Southwark Playhouse",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Southwark Playhouse\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2018"
+          2018
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -2979,12 +2986,12 @@
       "venue": "Southwark Playhouse",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Southwark Playhouse\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3011,12 +3018,12 @@
       "venue": "Kiln Theatre",
       "previewsStartDate": "2026-09-17",
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Kiln Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3043,12 +3050,12 @@
       "venue": "Kiln Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Kiln Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3075,12 +3082,12 @@
       "venue": "The Other Palace - Main Theatre",
       "previewsStartDate": "2026-10-07",
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Other Palace - Main Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3107,12 +3114,12 @@
       "venue": "Park Theatre",
       "previewsStartDate": "2026-10-15",
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2016"
+          2016
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3139,12 +3146,12 @@
       "venue": "Young Vic (Main House)",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Young Vic (Main House)\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2018"
+          2018
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3171,12 +3178,12 @@
       "venue": "Kiln Theatre",
       "previewsStartDate": "2026-11-12",
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Kiln Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2018"
+          2018
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3203,23 +3210,18 @@
       "venue": "The Other Palace",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "1 premature-scored reviews cluster in 2015 within a 0-day window (single run pattern), 0 already flagged. none of the 1 review texts mention the show's own venue (\"The Other Palace\") — verify venue before declaring.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Other Palace\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2015"
+          2015
         ],
         "spanDays": 0,
         "flaggedCount": 0,
         "venueMentionCount": 0
       },
-      "suggestedPriorRun": {
-        "venue": "The Other Palace",
-        "reviewDateRangeStart": "2015-07-16",
-        "reviewDateRangeEnd": "2015-07-16",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
+      "suggestedPriorRun": null,
       "reviews": [
         {
           "file": "london-box-office--phil-willmott.json",
@@ -3240,12 +3242,12 @@
       "venue": "Orange Tree Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Orange Tree Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2025"
+          2025
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3272,12 +3274,12 @@
       "venue": "Park Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "1/1 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2015"
+          2015
         ],
         "spanDays": 0,
         "flaggedCount": 1,
@@ -3304,23 +3306,18 @@
       "venue": "Park Theatre",
       "previewsStartDate": null,
       "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "1 premature-scored reviews cluster in 2017 within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"Park Theatre\") — supports same-venue return.",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
-          "2017"
+          2017
         ],
         "spanDays": 0,
         "flaggedCount": 0,
-        "venueMentionCount": 1
+        "venueMentionCount": 0
       },
-      "suggestedPriorRun": {
-        "venue": "Park Theatre",
-        "reviewDateRangeStart": "2017-09-26",
-        "reviewDateRangeEnd": "2017-09-26",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
+      "suggestedPriorRun": null,
       "reviews": [
         {
           "file": "london-box-office--stacey-tyler.json",
