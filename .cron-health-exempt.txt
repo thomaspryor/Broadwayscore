@@ -184,3 +184,9 @@ verify-schema.yml
 # gate can flap red again on the next new critic outlet — visible immediately
 # via a red main build, not a silent staleness a user would notice. Digest-only.
 outlet-registry-baseline-maintenance.yml
+
+# Weekly report-only sweeps (no auto-apply) — a stale run means slower drift
+# detection, not user-facing staleness worth paging on. Digest-only, matches
+# the other weekly audit-*.yml entries above.
+audit-stale-wrong-production.yml
+clear-stale-suspected-misattribution-flags.yml

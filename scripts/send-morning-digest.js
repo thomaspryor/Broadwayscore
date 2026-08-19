@@ -446,11 +446,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // new render code. Same producer/plist as predispatchQueue, so it also
   // appears every morning.
   if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
-  // launchd stale-code refusals (task #1563) — same {generatedAt, bannerText,
-  // items, moreCount} shape, no new render code. Only appears when a job
-  // actually refused (see readSyncRefused's header) — silent on a normal
-  // morning, unlike the always-on blocks above.
-  if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync refused (stale code)', sections.syncRefused));
+  // launchd blocked git syncs (task #1563) — same {generatedAt, bannerText,
+  // items, moreCount} shape, no new render code. Only appears when a job's
+  // sync actually got blocked (see readSyncRefused's header — not every
+  // caller stops running when this happens, so "blocked" not "refused"
+  // here) — silent on a normal morning, unlike the always-on blocks above.
+  if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync blocked (stale checkout)', sections.syncRefused));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
@@ -609,11 +610,11 @@ async function main() {
     console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
   }
 
-  // sync-audit-checkout.sh refusal snapshots (task #1563) — a launchd job
-  // that refused to run on stale/dirty code writes one of these; presence
-  // is itself the alert (see readSyncRefused's header). Not pushed to
-  // `problems` — that banner is for a producer that's supposed to run and
-  // didn't; this is its own named block instead, same as backlogDrain.
+  // sync-audit-checkout.sh blocked-sync snapshots (task #1563) — a launchd
+  // job whose git sync got blocked on stale/dirty code writes one of these;
+  // presence is itself the alert (see readSyncRefused's header). Not pushed
+  // to `problems` — that banner is for a producer that's supposed to run
+  // and didn't; this is its own named block instead, same as backlogDrain.
   try {
     sections.syncRefused = readSyncRefused();
   } catch (err) {

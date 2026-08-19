@@ -49,6 +49,7 @@ on:
       # covered by the colocated lib test); listed so a solo edit still gets
       # lint/build/tsc.
       - 'scripts/export-notion-outcome-history.js'
+      - 'scripts/export-notion-outcome-history.test.mjs'
       # scripts/linear-import-corpus.js's sibling from the same Sprint 3 work
       # had the identical gap — no path entry, ZERO CI on a solo edit — even
       # though nothing here tests it directly yet. Closed alongside rather
@@ -641,6 +642,10 @@ on:
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/audit-contradicted-flag-basis.js'
+      # duplicateOf + stale _duplicateOfCleared contradiction sweep (#1655).
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit to the CLI wrapper itself triggers CI.
+      - 'scripts/audit-duplicate-of-cleared-contradiction.js'
       # Regression guard on maybeUpgradeUrl's actual corruption source (#1416):
       # a "URL upgrade" whose candidate is dated outside the show's current-run
       # window is a wrong-production swap, not a correction. Colocated
@@ -3777,6 +3782,31 @@ jobs:
         # records are hand-adjudicated — never raise it to make a red build
         # pass, and never clear a flag in bulk to reach a lower number. There
         # is no --fix on the audit for exactly that reason.
+
+      - name: Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)
+        if: always()
+        run: node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0
+        # A record must never carry a live duplicateOf pointer AND a
+        # _duplicateOfCleared breadcrumb for the SAME url — the two verdicts
+        # directly contradict each other, and which one wins used to depend on
+        # incidental file-read ordering rather than a rule (the-authenticator-
+        # west-end-2026, 2026-08-15: both siblings landed in reviews.json and
+        # validate-data.js's duplicate-URL check went red). Detector (with the
+        # full derivation): scripts/lib/duplicate-of-cleared-contradiction.js.
+        #
+        # 154 records matched this shape on 2026-08-19 (task #1655) — all
+        # retracted via --fix in the same session that added this gate; live
+        # count is 0. _duplicateOfCleared is dead going forward (zero writers
+        # left in the codebase after the review-write-guard.js fix a few
+        # commits up), so this population has no expected steady-state
+        # backlog: any future hit means some writer reintroduced the exact
+        # contradictory shape. --max=0.
+        #
+        # --fix is safe to run in bulk here, UNLIKE audit-self-contradictory-
+        # clears.js's --fix (memory/feedback_audit_fix_remediation_untrusted.md)
+        # — _duplicateOfCleared has zero readers in the inclusion/scoring path
+        # and isn't a PROTECTED_FIELDS entry, so retracting it never moves which
+        # review lands in reviews.json. duplicateOf already governs that alone.
 
       - name: Audit URL-swap regression (#1416)
         if: always()

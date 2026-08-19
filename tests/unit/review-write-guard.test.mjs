@@ -305,6 +305,51 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('honors a _duplicateOfCleared breadcrumb when the incoming write does NOT re-assert duplicateOf', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-cleared-honored-'));
+    try {
+      const sharedUrl = 'https://example.com/1984-review';
+      fs.writeFileSync(path.join(dir, 'christopher-bonanos.json'), JSON.stringify({ url: sharedUrl }, null, 2));
+
+      const ourPath = path.join(dir, 'jesse-green.json');
+      safeWriteReview(ourPath, {
+        url: sharedUrl,
+        _duplicateOfCleared: 'auto:2026-04-12 different critics',
+        fullText: 'unrelated field update, not re-asserting duplicateOf',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, undefined);
+      assert.equal(written._duplicateOfCleared, 'auto:2026-04-12 different critics');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('#1655: retracts a stale _duplicateOfCleared when the write itself re-asserts duplicateOf at the same collider', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-cleared-retracted-'));
+    try {
+      const sharedUrl = 'https://example.com/1984-review';
+      fs.writeFileSync(path.join(dir, 'christopher-bonanos.json'), JSON.stringify({ url: sharedUrl }, null, 2));
+
+      const ourPath = path.join(dir, 'jesse-green.json');
+      // A caller (e.g. a dedup script) re-asserts duplicateOf at the exact same
+      // collider the breadcrumb was cleared for, in the same write.
+      safeWriteReview(ourPath, {
+        url: sharedUrl,
+        _duplicateOfCleared: 'auto:2026-04-12 different critics',
+        duplicateOf: 'christopher-bonanos.json',
+        duplicateReason: 'same-url-byline-dedup',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, 'christopher-bonanos.json');
+      assert.equal('_duplicateOfCleared' in written, false);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   test('urlCorrectedFrom + bodyless + sibling-owned URL → tombstoned (post-correction branch)', () => {
     // The blanket urlCorrectedFrom skip was replaced 2026-08-01 (enormous-
     // crocodile oscillation): a corrected file adopting a URL a substantive

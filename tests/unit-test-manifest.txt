@@ -37,6 +37,7 @@ scripts/discover-new-shows.test.mjs
 scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
 scripts/enrich-wikipedia-synopsis.test.mjs
+scripts/export-notion-outcome-history.test.mjs
 scripts/flag-wrong-production-by-date.test.mjs
 scripts/import-notion-to-linear.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
@@ -156,6 +157,7 @@ tests/unit/build-domain-index.test.mjs
 tests/unit/build-ob-venues.test.mjs
 tests/unit/bulk-import-preflight.test.mjs
 tests/unit/bulk-import-summary.test.mjs
+tests/unit/bulk-ingest-status-reporting.test.mjs
 tests/unit/button-hierarchy.test.mjs
 tests/unit/buzz-classifier.test.mjs
 tests/unit/bww-reviews-disambig.test.mjs
@@ -246,10 +248,10 @@ tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
 tests/unit/dispatcher-safety-port-table.test.mjs
 tests/unit/display-field-artifacts.test.mjs
-tests/unit/done-semantics-gate.test.mjs
 tests/unit/dl-distinguished-performance-chip.test.mjs
 tests/unit/dom-article-extractor.test.mjs
 tests/unit/domain-tier-skip.test.mjs
+tests/unit/done-semantics-gate.test.mjs
 tests/unit/dtli-sibling-reroute.test.mjs
 tests/unit/dtli-slug-discover.test.mjs
 tests/unit/duplicate-cycle.test.mjs
@@ -285,10 +287,10 @@ tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-rebuild-trigger.test.mjs
 tests/unit/gemini-calibration-ema.test.mjs
 tests/unit/gemini-thinking-budget-guard.test.mjs
-tests/unit/gun-and-powder-show.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
+tests/unit/gun-and-powder-show.test.mjs
 tests/unit/hc-author-override.test.mjs
 tests/unit/headless-prompt-no-owner-handoff.test.mjs
 tests/unit/health-check-batch-state.test.mjs

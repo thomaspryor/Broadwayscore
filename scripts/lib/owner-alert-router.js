@@ -269,6 +269,18 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
 // existing consumers reading .cardId see a stable field, and the ledger's
 // linearIdentifier field (introduced by rail 2) now also carries the FILED
 // tracker, not just deduped ones.
+//
+// Note on the removed 15s bound (ship-check, BRO-375): the old execFileSync
+// call had an explicit `timeout: 15000` around the whole subprocess. This
+// in-process call has no equivalent wrapper — getTeam() + createIssue() each
+// get their own 429-retry-with-backoff (linear-client.js's graphql(), up to
+// DEFAULT_MAX_ATTEMPTS), so a persistent rate limit can now take longer than
+// 15s end to end. Accepted deliberately: every other createLinearIssue()
+// caller in this repo (linear-brain.js, linear-session.js) already has no
+// such cap, and re-adding one here would cut the retry fix short exactly
+// when it matters (a real 429 burst). If this ever needs bounding, pass
+// timeoutMs/maxAttempts through to linear-client.js's graphql() rather than
+// wrapping the whole call in a race — see linear-client.js's graphql() opts.
 async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey }) {
   const notes = buildCardNotes({ description, hint, fields, conditionKey });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
