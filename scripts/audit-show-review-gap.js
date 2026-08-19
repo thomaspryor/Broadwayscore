@@ -109,6 +109,7 @@ const {
   STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
+  filledDateOutsideWindow,
 } = require('./lib/flagged-recovery');
 // Same set the rebuild's aggregatorStars-fallback scores from (P5.7) — the
 // star fallback below must not write stars the rebuild would then ignore.

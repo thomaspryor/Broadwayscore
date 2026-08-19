@@ -3282,7 +3282,7 @@ function buildTierChain(ctx, review) {
         // canUseBrowserbase() now also enforces the per-domain cap when passed the
         // hostname, so the day/run/domain decision is unified in one place.
         let urlDomain;
-        try { urlDomain = new URL(url).hostname.replace('www.', ''); } catch {}
+        try { urlDomain = new URL(ctx.url).hostname.replace('www.', ''); } catch {}
         if (!canUseBrowserbase(urlDomain)) return false;
         return (
           ctx.isKnownBlocked || ctx.sawCaptcha || ctx.enableBrowserbase ||
