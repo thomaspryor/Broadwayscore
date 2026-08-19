@@ -121,6 +121,21 @@ const title = `ZZ-probe-${stamp}`;
   const disagree = !!(result && result.ok) !== markerSeen;
   console.log(`\n${disagree ? '*** LAUNCHER AND REALITY DISAGREE — bug reproduced ***' : 'launcher and reality agree'}`);
 
+  // Card #1812: the comparison above conflates two different questions for a
+  // non-claude payload like this probe's `touch` — "did the WRAPPER run" vs
+  // "did CLAUDE register" — and `ok` can never be true without a real claude
+  // process, so `disagree` above is structurally unsatisfiable-to-false for
+  // any payload that isn't literally `claude`. The bug this probe's header
+  // actually targets ("the failure lives in launchCmuxSession's WRAPPER-
+  // PROCESS PROBE") is specifically about wrapper detection, so report that
+  // narrower, payload-independent comparison too: state !== 'injection-never-
+  // ran' means SOME poll (ps or the started-marker file) saw the wrapper run,
+  // which is exactly what markerSeen independently confirms.
+  const wrapperDetected = !!(result && (result.ok || (result.state && result.state !== 'injection-never-ran')));
+  const wrapperDisagree = wrapperDetected !== markerSeen;
+  console.log(`\nwrapper detected : ${wrapperDetected} (state=${result && result.state})`);
+  console.log(`wrapper vs ground truth : ${wrapperDisagree ? '*** DISAGREE — the specific false-negative this probe was built for ***' : 'agree'}`);
+
   // Cleanup
   if (result && result.ws && result.ws.ref) {
     spawnSync('/Applications/cmux.app/Contents/Resources/bin/cmux',
