@@ -6,7 +6,8 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
-  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand } = require('./cmux-launch.js');
+  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
+  computeStrictAliveness } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
@@ -245,6 +246,33 @@ test('shouldAdoptLateStart: refuses when the workspace never came alive, or the 
   assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: 'workspace:115' }, false), false);
   assert.equal(shouldAdoptLateStart({ ok: true, workspaceRef: 'workspace:115' }, true), false);
   assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: null }, true), false);
+});
+
+// ── Card #1829: terminal-surface signal now required for "alive" ──────────
+// The incident: 7/7 cmux-tab dispatches on 2026-08-19 created a workspace
+// record with a live cmux tag AND a live OS wrapper process, but the
+// terminal surface never rendered (`cmux read-screen` returned "Terminal
+// surface not found" on all seven, one 50 minutes old). strictlyAliveWorkspace
+// previously only checked the tag + OS-process signals, so it reported these
+// ALIVE and the launcher adopted them as ok:true with nothing actually
+// running. computeStrictAliveness is the pure AND-gate that function now
+// delegates to.
+test('computeStrictAliveness: a live tag + live OS process is NOT enough — a confirmed-dead surface still means dead', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: true, surfaceAlive: false }), false,
+    'the exact 2026-08-19 incident shape: every existing signal said alive, only read-screen knew the surface was gone');
+});
+
+test('computeStrictAliveness: all four signals alive → alive', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: true, surfaceAlive: true }), true);
+});
+
+test('computeStrictAliveness: not listed → dead regardless of the other three', () => {
+  assert.equal(computeStrictAliveness({ listed: false, claudeAlive: true, osProcessAlive: true, surfaceAlive: true }), false);
+});
+
+test('computeStrictAliveness: any single false signal → dead (unanimous AND)', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: false, osProcessAlive: true, surfaceAlive: true }), false);
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: false, surfaceAlive: true }), false);
 });
 
 test('osActivateCmuxApp: best-effort OS-level activation, never throws (card #900)', () => {
