@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T16:07:11.959Z",
+  "generatedAt": "2026-08-19T17:31:14.111Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,24 @@
       "status": "open",
       "slug": "abigails-party-west-end",
       "thumbnail": "/images/shows/abigails-party-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 90,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "siteScore": 81.19,
+      "liveScore": 81,
+      "scoreDrift": -0.18999999999999773,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
-      "t2": 0,
+      "total": 7,
+      "t1": 4,
+      "t2": 2,
       "t3": 1,
-      "positive": 1,
+      "positive": 7,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:0/2",
+          "7/8 total",
+          "T1:2/3",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -59,23 +58,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -95,10 +82,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -110,6 +93,18 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-19T17:31:14.111Z",
+          "rc": 7,
+          "s": 81.19,
+          "t1": 4,
+          "t2": 2,
+          "t3": 1,
+          "p": 7,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -510,23 +505,22 @@
       "status": "open",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
-      "siteScore": 64.81,
-      "liveScore": 65,
-      "scoreDrift": 0.18999999999999773,
+      "siteScore": 67.94,
+      "liveScore": 68,
+      "scoreDrift": 0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 10,
       "t1": 1,
       "t2": 2,
-      "t3": 3,
-      "positive": 1,
-      "mixed": 4,
+      "t3": 7,
+      "positive": 3,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:4/6"
@@ -637,6 +631,18 @@
           "t3": 3,
           "p": 1,
           "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-19T17:31:14.111Z",
+          "rc": 10,
+          "s": 67.94,
+          "t1": 1,
+          "t2": 2,
+          "t3": 7,
+          "p": 3,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }
