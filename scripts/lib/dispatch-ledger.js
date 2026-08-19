@@ -804,7 +804,33 @@ const OUTAGE_LOOKBACK_MS = 30 * 60 * 1000; // matches the observed 8/3 cluster w
 // launcher failing to inject. Conflating it here would raise a confident,
 // false "cmux is not accepting commands" alarm off three unrelated task
 // bugs, exactly the kind of silent-wrongness this detector exists to avoid.
-const OUTAGE_REASON_RE = /injection never ran/;
+// Card #1829: 'surface not found' joins 'injection never ran' as outage
+// evidence — same category as the exclusion note above, opposite side. Its
+// own incident WAS a 7-launch, cross-task, 33-minute cluster of exactly this
+// signature (workspaces created, commands apparently run, but cmux never
+// rendered a working pane for any of them) — the textbook shape this
+// detector exists to catch, just a different symptom of "cmux is not
+// correctly serving new panes" than a swallowed injection. Before this,
+// #1829-class deaths were invisible to detectLauncherOutage entirely.
+// Split into two sub-patterns (not just the combined OR below) so
+// detectLauncherOutage can report WHICH cause(s) actually fired — three
+// separate owner-facing messages (bsc-next.js, dispatch-watchdog.js,
+// dispatch-watchdog-core.js) previously hardcoded "injection never ran"
+// prose; without knowing which cause(s) are in the window, broadening the
+// match here alone would make those messages actively wrong for a pure
+// surface-not-found cluster (plan-review finding, 2026-08-19).
+const INJECTION_REASON_RE = /injection never ran/;
+const SURFACE_REASON_RE = /terminal surface was never rendered/;
+const OUTAGE_REASON_RE = new RegExp(`${INJECTION_REASON_RE.source}|${SURFACE_REASON_RE.source}`);
+
+// Shared prose so every owner-facing caller describes the SAME outage the
+// same way, instead of each hand-writing (and inevitably drifting on) its
+// own diagnosis text. `causes` is detectLauncherOutage's own return field.
+function describeOutageCause({ injection, surface } = {}) {
+  if (injection && surface) return 'cmux dispatches are dying before a working session ever starts — some at injection (command never ran), some with no terminal surface ever rendered';
+  if (surface) return 'cmux is creating workspaces and apparently running their commands, but never rendering a working terminal surface for them';
+  return 'cmux itself is not accepting new-workspace commands (dispatches dying at injection)';
+}
 
 // entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
 // is unavailable in workflow scripts, callers pass it explicitly).
@@ -814,6 +840,13 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
   const deaths = entries.filter(e => e.event === 'dead' && isWorkspaceRef(e.workspaceRef) &&
     OUTAGE_REASON_RE.test(String(e.failureReason || '')) && e.ts && Date.parse(e.ts) >= cutoff);
   if (!deaths.length) return { outage: false, count: 0, taskIds: [] };
+  // Which sub-cause(s) are actually in this window — callers use this to
+  // describe the outage accurately instead of hardcoding "injection never
+  // ran" prose that would be wrong for a pure surface-not-found cluster.
+  const causes = {
+    injection: deaths.some(e => INJECTION_REASON_RE.test(String(e.failureReason || ''))),
+    surface: deaths.some(e => SURFACE_REASON_RE.test(String(e.failureReason || ''))),
+  };
 
   // Newest death, not oldest (Codex adversarial review, 2026-08-03 — P0):
   // comparing against the OLDEST death let failure→success→3-more-failures
@@ -823,7 +856,7 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
   // right now.
   const newestDeathTs = deaths.reduce((max, e) => e.ts > max ? e.ts : max, deaths[0].ts);
   const recovered = entries.some(e => e.event === 'launch' && !e.unverified && e.ts && e.ts > newestDeathTs);
-  if (recovered) return { outage: false, count: deaths.length, taskIds: [...new Set(deaths.map(e => String(e.taskId)))], recovered: true };
+  if (recovered) return { outage: false, count: deaths.length, taskIds: [...new Set(deaths.map(e => String(e.taskId)))], causes, recovered: true };
 
   const taskIds = [...new Set(deaths.map(e => String(e.taskId)))];
   const oldestDeathTs = deaths.reduce((min, e) => e.ts < min ? e.ts : min, deaths[0].ts);
@@ -831,6 +864,7 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
     outage: taskIds.length >= minDistinctTasks,
     count: deaths.length,
     taskIds,
+    causes,
     sinceTs: oldestDeathTs,
   };
 }
@@ -974,5 +1008,5 @@ module.exports = {
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
   remapEntries,
   openTaskWorkspaceLaunches,
-  detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
+  detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS, describeOutageCause,
 };
