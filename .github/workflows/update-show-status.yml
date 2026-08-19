@@ -65,6 +65,24 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # fetch-depth: 0 (task #1810 root-cause fix): a GIT_TRACE_CURL diagnostic
+          # dispatch (run 32212462925) proved the "Commit and push changes" step's
+          # 90s hangs are PURE LOCAL git computation, not network — the info/refs
+          # ref-advertisement GET completes in ~300ms on every attempt, then there
+          # is a silent 90s gap with ZERO curl activity (the pack POST never even
+          # opens) before GIT_NET_TIMEOUT_SEC kills it. That signature is git
+          # building the push pack against a SHALLOW (fetch-depth 1, the default)
+          # local history: this job runs 30-40+ min after checkout (discovery +
+          # enrichment), so origin/main has always advanced by push time, and a
+          # shallow client can't cheaply negotiate "what the remote already has"
+          # the way a full clone can. A full checkout removes that ambiguity, and
+          # push-with-retry.sh's shallow-bounding logic (task #466 — a DIFFERENT
+          # fix, for slow FETCHES from a shallow client, not this) becomes a no-op
+          # here. fetch-depth: 0 fetches all branches/tags (its actual documented
+          # semantics — NOT just a deep clone of main), against this repo's ~2.2GB
+          # packed object DB; the job has 15+ min of measured headroom under its
+          # 75-min timeout (see the timeout-minutes comment above).
+          fetch-depth: 0
 
 
       - name: Checkout core data
@@ -551,21 +569,6 @@ jobs:
         # not another deadline bump.
         env:
           PUSH_DEADLINE_SEC: '1200'
-          # TEMPORARY DIAGNOSTIC (task #1810, remove once the real fix lands):
-          # both `git push` calls inside push-with-retry.sh's retry loop have
-          # been observed hanging exactly GIT_NET_TIMEOUT_SEC=90s on every
-          # attempt (run 32177332656) while the fetches in the same loop
-          # consistently complete in 0-4s — ruling out the shallow-fetch class
-          # of problem (already bounded by task #466) and pointing at the push
-          # transport itself. GIT_TRACE_CURL surfaces HTTP/TLS transport detail
-          # (handshake, request/response timing) that plain GIT_TRACE/
-          # GIT_TRACE_PERFORMANCE do not, so a live trace can distinguish a
-          # stalled/idle connection from slow server-side processing from a
-          # genuinely-slow-but-bounded transfer — each implies a different fix.
-          # GIT_TRACE_CURL_NO_DATA suppresses the pack payload dump so the job
-          # log stays readable.
-          GIT_TRACE_CURL: '1'
-          GIT_TRACE_CURL_NO_DATA: '1'
           # scraper-spend-ledger.jsonl is now in this step's git add list
           # (Sprint 3, card 3b1637c5): discover-new-shows.js/enrich-ticket-
           # platform-links.js/discover-playbill-urls.js call url-discovery.js's
