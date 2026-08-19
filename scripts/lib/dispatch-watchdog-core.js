@@ -174,24 +174,76 @@ const REDISPATCH_REARM_MS = 24 * 3600 * 1000;
 // launch legitimately takes minutes) no longer gets re-picked by the next
 // sweep before its 'launch' row lands. That boot-window re-pick is the
 // duplicate-workspace-pair generator card #1564 reported.
+// Compared by MAX parsed timestamp, deliberately not by last-row-in-file
+// (the convention openTaskWorkspaceLaunches uses). Nothing serialises writes
+// to this ledger across processes — the sweep, bsc-reconcile and bsc-prune
+// all append concurrently — so a process can stamp its ts, be preempted, and
+// land its row after newer ones. Taking the last row in FILE order would then
+// read an older ts as "latest" and could either re-arm a fresh claim early or
+// suppress a card whose launch already landed (adversarial-review catch).
+// Rows with an unparseable ts are ignored rather than coerced to epoch 0.
 function watchdogClaimPending(entries, now) {
   const lastClaim = new Map();
   const lastLaunch = new Map();
+  const keepMax = (map, id, ms) => {
+    const prev = map.get(id);
+    if (prev == null || ms > prev) map.set(id, ms);
+  };
   for (const e of entries || []) {
     if (!e || e.taskId == null || !e.ts) continue;
     const id = String(e.taskId);
     if (id === WATCHDOG_TAB_MARKER) continue;      // 'watchdog-resurrect' rows are not a task
-    if (e.event === WATCHDOG_EVENTS.REDISPATCH) lastClaim.set(id, e.ts);
-    else if (e.event === 'launch') lastLaunch.set(id, e.ts);
+    const ms = Date.parse(e.ts);
+    if (!Number.isFinite(ms)) continue;
+    if (e.event === WATCHDOG_EVENTS.REDISPATCH) keepMax(lastClaim, id, ms);
+    else if (e.event === 'launch') keepMax(lastLaunch, id, ms);
   }
-  const pending = new Set();
-  for (const [id, claimTs] of lastClaim) {
-    const launchTs = lastLaunch.get(id);
-    if (launchTs && launchTs >= claimTs) continue;             // the claim landed
-    const age = now - Date.parse(claimTs);
-    if (Number.isFinite(age) && age < REDISPATCH_REARM_MS) pending.add(id);
+  // A Map, not a Set: callers need the claim's AGE as well as its identity
+  // (the boot-window grace below, and any future backoff).
+  const pending = new Map();
+  for (const [id, claimMs] of lastClaim) {
+    const launchMs = lastLaunch.get(id);
+    if (launchMs != null && launchMs >= claimMs) continue;      // the claim landed
+    if (now - claimMs < REDISPATCH_REARM_MS) pending.set(id, claimMs);
   }
   return pending;
+}
+
+// A dispatch legitimately takes minutes to produce its 'launch' row, and the
+// sweep runs every ~92s — so a perfectly healthy dispatch is claim-pending for
+// a while. Suppression applies immediately (that IS the boot-window duplicate
+// guard), but the owner-facing "I tried and could not start" LABEL waits this
+// long, or every successful dispatch would be announced as a failure first
+// (ship-check P1). Comfortably past cmux-launch's own verify windows.
+const CLAIM_LABEL_GRACE_MS = 15 * 60 * 1000;
+
+// The suppression above is per-card and deliberately quiet. But there is one
+// failure shape where quiet is dangerous: cmux-launch returns { ok:false }
+// with NO workspaceRef when the cmux CLI is missing, the auth preflight
+// fails, or `cmux new-workspace` exits non-zero — and failedLaunchEntries()
+// returns [] for a ref-less failure (dispatch-ledger.js:403), so those write
+// NO ledger row at all. Every claim then looks exactly like a guard refusal,
+// and detectLauncherOutage() cannot see it either (it keys on 'dead' rows
+// carrying "injection never ran"). Without this check a wedged launcher would
+// silently stall the whole fleet for a day instead of storming the budget
+// (ship-check P0).
+//
+// The discriminator is fleet-wide, not per-card: several cards claimed and
+// NOTHING launched anywhere. A run of genuinely refused cards is common (the
+// top of the P0/P1 queue can hold several REOPEN-SUSPECT cards) — but during
+// one, other dispatches still land, so lastLaunchAnyMs stays fresh. Zero
+// launches from ANY source across the window is the launcher itself.
+const CLAIM_OUTAGE_MIN = 3;                       // > CAPS.perSweep: not one bad sweep
+const CLAIM_OUTAGE_WINDOW_MS = 2 * 3600 * 1000;
+
+function lastLaunchAnywhereMs(entries) {
+  let latest = null;
+  for (const e of entries || []) {
+    if (!e || e.event !== 'launch' || !e.ts) continue;
+    const ms = Date.parse(e.ts);
+    if (Number.isFinite(ms) && (latest == null || ms > latest)) latest = ms;
+  }
+  return latest;
 }
 
 // Has this task already been watchdog-parked since its most recent launch?
@@ -336,12 +388,18 @@ function planSweep(entries, tasks, opts) {
   // dropped reads as "covered everything"). Only still-open tasks are worth
   // the owner's attention — a claim whose task later completed is just history.
   const awaitingClaim = [];
-  for (const id of claimPending) {
+  for (const [id, claimMs] of claimPending) {
     const task = tasks.get(id);
     if (!isTaskOpen(task) || open.has(id)) continue;
-    awaitingClaim.push({ taskId: id, subject: task.subject });
+    if (now - claimMs < CLAIM_LABEL_GRACE_MS) continue;   // still plausibly booting
+    awaitingClaim.push({ taskId: id, subject: task.subject, claimedAt: new Date(claimMs).toISOString() });
   }
   awaitingClaim.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
+
+  // Wedged-launcher check — see CLAIM_OUTAGE_MIN above.
+  const lastLaunchAny = lastLaunchAnywhereMs(entries);
+  const claimOutage = awaitingClaim.length >= CLAIM_OUTAGE_MIN &&
+    (lastLaunchAny == null || now - lastLaunchAny > CLAIM_OUTAGE_WINDOW_MS);
 
   // ── budgets ──
   const usedToday = watchdogClaimsToday(entries, now).length;
@@ -352,6 +410,7 @@ function planSweep(entries, tasks, opts) {
   if (!dispatchEnabled) holds.push('dispatch kill-switch set');
   if (!cmuxObserved) holds.push('cmux unobservable — report-only');
   if (outage.outage) holds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
+  if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
   if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
   if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
@@ -376,7 +435,12 @@ function planSweep(entries, tasks, opts) {
       }
     }
   }
-  const needsYou = toPark.length + wdParked.size + recheckFailures.length + (outage.outage ? 1 : 0);
+  // awaitingClaim counts: these are cards the watchdog tried and could not
+  // start, and only the owner can unblock them. Leaving them out made the tab
+  // title read "0 need you" while the P0/P1 count silently shrank by the same
+  // number — the backlog looked drained (ship-check P1).
+  const needsYou = toPark.length + wdParked.size + recheckFailures.length +
+    (outage.outage ? 1 : 0) + awaitingClaim.length;
 
   return {
     now, cmuxObserved,
@@ -433,9 +497,11 @@ function renderNarrative(plan) {
   }
   if (plan.awaitingClaim && plan.awaitingClaim.length) {
     lines.push('');
-    lines.push(`${plan.awaitingClaim.length} card(s) I already tried and could not start — not retried again today:`);
+    lines.push(`${plan.awaitingClaim.length} card(s) I already tried and could not start — I won't try again for 24h from that attempt:`);
     for (const a of plan.awaitingClaim.slice(0, 6)) {
-      lines.push(`  • #${a.taskId} "${(a.subject || '').slice(0, 60)}" — check it with: node scripts/predispatch-check.js --id ${a.taskId}`);
+      lines.push(`  • #${a.taskId} "${(a.subject || '').slice(0, 60)}"`);
+      lines.push(`      why: node scripts/predispatch-check.js --id ${a.taskId}`);
+      lines.push(`      re-arm now (after fixing the card): node scripts/bsc-next.js --id ${a.taskId} --force`);
     }
     if (plan.awaitingClaim.length > 6) lines.push(`  • …and ${plan.awaitingClaim.length - 6} more`);
   }
@@ -454,7 +520,8 @@ function renderNarrative(plan) {
 module.exports = {
   WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
-  REDISPATCH_REARM_MS, watchdogClaimPending,
+  REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
+  watchdogClaimPending, lastLaunchAnywhereMs,
   taskPriority, notionIdOf,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,
