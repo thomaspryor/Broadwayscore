@@ -30,10 +30,8 @@ if (!file || !keepLocal || !keepRemote) {
   process.exit(1);
 }
 
-const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
-const { mergeDiaryShows } = require('./merge-diary-shows');
-const { mergeSocialPostHistory } = require('./merge-social-post-history');
-const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
+const { findEntry } = require('./core-data-merge-registry');
+const { mergeCommercialJson } = require('./merge-commercial-data');
 
 function readSide(flag) {
   execSync(`git checkout ${flag} -- ${JSON.stringify(file)}`, { stdio: 'pipe' });
@@ -45,24 +43,20 @@ try {
   const localData = readSide(keepLocal);
   const remoteData = readSide(keepRemote);
 
-  let mergedResult;
-  let trailingNewline = true;
-  if (file.endsWith('commercial-pending-review.json')) {
-    mergedResult = mergePendingReview(localData, remoteData);
-  } else if (file.endsWith('commercial-research-queue.json')) {
-    mergedResult = mergeResearchQueue(localData, remoteData);
-  } else if (file.endsWith('diary-shows.json')) {
-    mergedResult = mergeDiaryShows(localData, remoteData);
-    // diary-shows.json is written by its three producers without a trailing
-    // newline; match that so a no-op merge is byte-identical.
-    trailingNewline = false;
-  } else if (file.endsWith('social-post-history.json')) {
-    mergedResult = mergeSocialPostHistory(localData, remoteData);
-  } else if (file.endsWith('feedback-request-ledger.json')) {
-    mergedResult = mergeFeedbackLedger(localData, remoteData);
-  } else {
-    mergedResult = mergeCommercialJson(localData, remoteData);
-  }
+  // BRO-76: merge-fn dispatch now reads from the canonical registry
+  // (scripts/lib/core-data-merge-registry.js) instead of a hand-maintained
+  // if/else endsWith chain — one fewer place a new multi-writer file's merge
+  // fn has to be independently remembered. Unmatched paths (there are none
+  // among this script's callers today — push-with-retry.sh only invokes it
+  // for case arms it already recognizes) fall back to mergeCommercialJson,
+  // preserving this script's pre-existing default behavior.
+  const entry = findEntry(file, 'public-repo');
+  const merge = entry ? entry.merge : mergeCommercialJson;
+  // diary-shows.json is written by its three producers without a trailing
+  // newline; match that so a no-op merge is byte-identical.
+  const trailingNewline = entry ? entry.newline !== false : true;
+
+  const mergedResult = merge(localData, remoteData);
 
   fs.writeFileSync(file, JSON.stringify(mergedResult.merged, null, 2) + (trailingNewline ? '\n' : ''));
   console.log(`merge-commercial-conflict: ${file} merged — ${JSON.stringify(mergedResult.stats)}`);

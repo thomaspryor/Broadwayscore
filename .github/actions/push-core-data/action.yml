@@ -279,6 +279,26 @@ runs:
             [ -f "diary-shows.json" ] && cp diary-shows.json /tmp/our-diary-shows.json
           fi
 
+          # Save remote's pre-rebase copy of every OTHER registered
+          # private-core-data file (BRO-76: scripts/lib/core-data-merge-
+          # registry.js) — awards.json, opening-night-sent.json,
+          # critic-registry.json, grosses-history.json as of this card. Same
+          # staleness guard as commercial.json/diary-shows.json above (card
+          # #268): only capture a file this job's Sync step actually touched,
+          # or "ours" is a stale on-disk copy that can out-vote a concurrent
+          # fix. Generic reconciliation itself runs post-rebase, below.
+          mkdir -p /tmp/remote-core-data
+          node -e '
+            const { activeEntriesFor } = require(require("path").join(process.env.GITHUB_WORKSPACE, "scripts/lib/core-data-merge-registry"));
+            for (const e of activeEntriesFor("private-core-data")) console.log(e.file);
+          ' > /tmp/.core-data-registry-files 2>/dev/null || true
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            if grep -qxF "$f" /tmp/.core-data-changed-files 2>/dev/null; then
+              git show origin/main:"$f" > "/tmp/remote-core-data/$f" 2>/dev/null || true
+            fi
+          done < /tmp/.core-data-registry-files
+
           # Rebase with -X ours: our version wins on conflicts.
           # Post-rebase reconciliation below restores any remote-only changes
           # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
@@ -543,6 +563,29 @@ runs:
               git add diary-shows.json
               git commit --amend --no-edit
               echo "Amended commit with reconciled diary-shows.json"
+            fi
+          fi
+
+          # Generic reconciliation for every OTHER registered private-core-data
+          # file (BRO-76: scripts/lib/core-data-merge-registry.js), using the
+          # pre-rebase snapshots captured above. One node call drives all of
+          # them (awards.json, opening-night-sent.json, critic-registry.json,
+          # grosses-history.json as of this card) instead of a bespoke inline
+          # block per file — a NEW multi-writer file only needs a merge fn +
+          # registry entry, not a matching edit here. Prints changed
+          # basenames, one per line, so exactly those get `git add`ed — not
+          # a blanket `-A` (same reasoning as the per-file blocks above).
+          if [ -d /tmp/remote-core-data ]; then
+            RECONCILED_REGISTRY_FILES=$(node "${GITHUB_WORKSPACE}/scripts/lib/reconcile-core-data-registry.js" /tmp/remote-core-data 2>&1 >/tmp/.reconciled-registry-files) || true
+            [ -n "$RECONCILED_REGISTRY_FILES" ] && echo "$RECONCILED_REGISTRY_FILES"
+            if [ -s /tmp/.reconciled-registry-files ]; then
+              while IFS= read -r f; do
+                [ -n "$f" ] && [ -f "$f" ] && git add "$f"
+              done < /tmp/.reconciled-registry-files
+              if ! git diff --staged --quiet; then
+                git commit --amend --no-edit
+                echo "Amended commit with reconciled: $(tr '\n' ' ' < /tmp/.reconciled-registry-files)"
+              fi
             fi
           fi
 
