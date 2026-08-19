@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-19T00:14:52.489Z",
+  "generatedAt": "2026-08-19T06:22:32.577Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 148,
-  "clean": 147,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "magic-mike-live-west-end-2021",
-      "title": "Magic Mike Live",
-      "openingDate": "2018-11-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 64.15 vs local 64.31 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9
-    }
-  ]
+  "checked": 150,
+  "clean": 150,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
