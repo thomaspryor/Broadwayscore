@@ -29,6 +29,13 @@ on:
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
       - 'vercel.json'
+      # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
+      # itself (line ~2042 below) — its parsing logic now lives in
+      # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
+      # a thin CLI wrapper outside scripts/lib/, so a solo edit to it alone
+      # would trigger zero CI without this entry (task #1581, same gap class
+      # as scripts/check-orphan-commits.js above).
+      - 'scripts/audit-workflow-concurrency.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
