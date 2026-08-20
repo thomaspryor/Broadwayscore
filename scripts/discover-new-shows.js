@@ -280,6 +280,7 @@ function fetchTodayTixPage(offset = 0, limit = 100) {
     const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
+        response.resume();
         return;
       }
       let data = '';
@@ -559,6 +560,7 @@ function fetchTodayTixLondonPage(offset = 0, limit = 100) {
     const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix London API HTTP ${response.statusCode}`));
+        response.resume();
         return;
       }
       let data = '';
@@ -768,7 +770,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
     }, (res) => {
       // Follow one redirect (301/302/307/308)
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        https.get(res.headers.location, {
+        const redirectReq = https.get(res.headers.location, {
           headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
           timeout: 20000,
         }, (res2) => {
@@ -777,6 +779,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
           res2.on('data', chunk => d += chunk);
           res2.on('end', () => resolve(d));
         }).on('error', reject);
+        redirectReq.on('timeout', () => { redirectReq.destroy(); reject(new Error('Timeout after redirect')); });
         res.resume();
         return;
       }
@@ -883,7 +886,7 @@ async function fetchShowsFromLondonTheatre() {
     }, (res) => {
       // Follow one redirect (301/302/307/308)
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        https.get(res.headers.location, {
+        const redirectReq = https.get(res.headers.location, {
           headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
           timeout: 20000,
         }, (res2) => {
@@ -892,6 +895,7 @@ async function fetchShowsFromLondonTheatre() {
           res2.on('data', chunk => d += chunk);
           res2.on('end', () => resolve(d));
         }).on('error', reject);
+        redirectReq.on('timeout', () => { redirectReq.destroy(); reject(new Error('Timeout after redirect')); });
         res.resume();
         return;
       }
@@ -1305,6 +1309,7 @@ function searchTodayTixByTitle(title, location = 1) {
     const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         resolve(null);
+        response.resume();
         return;
       }
       let data = '';

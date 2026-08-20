@@ -128,10 +128,19 @@ test('Orange Tree + Park Theatre linkPatterns admit shows, reject utility/pagina
 // timeout protection fails CI instead of shipping a silent hang risk.
 test('every fetch()/https.get() call site in discover-new-shows.js has timeout protection', () => {
   const source = readFileSync(SOURCE_PATH, 'utf8');
-  const WINDOW = 800;
   const isCommentLine = (index) => {
     const lineStart = source.lastIndexOf('\n', index) + 1;
     return source.slice(lineStart, index).trimStart().startsWith('//');
+  };
+  // Top-level function boundaries, sorted — used to scope each call site's
+  // search to "rest of its enclosing function" instead of a fixed character
+  // window. A fixed window either misses handlers in long functions or, if
+  // widened enough to cover them, can bleed into an unrelated later call's
+  // handler and mask a real gap. Scoping to the enclosing function is exact.
+  const fnBoundaries = [...source.matchAll(/^(?:async )?function \w+\(/gm)].map(m => m.index);
+  const restOfEnclosingFunction = (index) => {
+    const next = fnBoundaries.find(b => b > index);
+    return source.slice(index, next === undefined ? source.length : next);
   };
 
   // Bare fetch( calls — excludes fetchPage(/fetchShowsFrom...( by requiring no
@@ -140,21 +149,28 @@ test('every fetch()/https.get() call site in discover-new-shows.js has timeout p
   const fetchSites = [...source.matchAll(/(?<![.\w])fetch\(/g)].filter(m => !isCommentLine(m.index));
   assert.ok(fetchSites.length >= 2, 'expected at least the known fetch() call sites — did they move or get removed?');
   for (const match of fetchSites) {
-    const window = source.slice(match.index, match.index + WINDOW);
+    const scope = restOfEnclosingFunction(match.index);
     const line = source.slice(0, match.index).split('\n').length;
-    assert.match(window, /AbortSignal\.timeout\(\d+\)/,
+    assert.match(scope, /AbortSignal\.timeout\(\d+\)/,
       `fetch() at line ${line} must pass an AbortSignal.timeout(...) signal`);
   }
 
   // https.get(/http.get( calls — Node's http(s) module doesn't support
-  // AbortSignal directly; timeout protection here is the { timeout: N } option
-  // plus a req.on('timeout', ...) handler that destroys the request.
+  // AbortSignal directly. The { timeout: N } option alone is not enough: Node
+  // just emits a 'timeout' event and does nothing further, so the request
+  // hangs forever unless a listener destroys it (this was a real gap in the
+  // OLT/LT redirect-follow calls — the option was set but nothing destroyed
+  // the socket on fire). Require both the option AND a handler that calls
+  // .destroy() on it, within the same enclosing function (so an outer
+  // request's handler can't be mistaken for a nested redirect request's).
   const httpGetSites = [...source.matchAll(/\bhttps?\.get\(/g)].filter(m => !isCommentLine(m.index));
   assert.ok(httpGetSites.length >= 2, 'expected at least the known https.get() call sites — did they move or get removed?');
   for (const match of httpGetSites) {
-    const window = source.slice(match.index, match.index + WINDOW);
+    const scope = restOfEnclosingFunction(match.index);
     const line = source.slice(0, match.index).split('\n').length;
-    assert.match(window, /timeout\s*:\s*\d+/,
+    assert.match(scope, /timeout\s*:\s*\d+/,
       `https.get()/http.get() at line ${line} must pass a { timeout: N } option`);
+    assert.match(scope, /on\(\s*'timeout'\s*,[\s\S]*?\.destroy\(\)/,
+      `https.get()/http.get() at line ${line} must have a .on('timeout', ...) handler that calls .destroy()`);
   }
 });
