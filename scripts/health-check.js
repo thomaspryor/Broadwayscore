@@ -3437,20 +3437,16 @@ function bwwRoundupMissBacklogResults(summary) {
   }];
 }
 
-// task #707 canary telemetry (2026-08-16 plan-review): info-only — the
-// fallback firing is EXPECTED and healthy under real contention, not a
-// problem. This exists so the owner can tell "fallback fixed an occasional
-// race" (a few entries) from "normal pushes are now always exhausting
-// first" (most/all of a workflow's entries) BEFORE deciding whether to
-// widen PUSH_VIA_API_FALLBACK's rollout past the canary. Eligibility is
-// still opt-in-only after task #1792 (2026-08-18) — that task added an
-// earlier-trigger threshold and a failure-message pointer for the same
-// opted-in population, but stopped short of a non-CI default-on after
-// testing surfaced a pre-existing gap in the fallback's own concurrent-
-// commit safety net (see push-with-retry.sh's `_PUSH_API_FALLBACK_ELIGIBLE`
-// comment and the task #1792 follow-up card). `workflow: ''` (rendered
-// '(unknown workflow)' below) would be a local/headless caller that
-// manually set PUSH_VIA_API_FALLBACK=1 itself — not expected at volume.
+// task #707 telemetry, widened to fleet scale by task #1847 (2026-08-20):
+// info-only — the fallback firing is EXPECTED and healthy under real
+// contention, not a problem. This exists so the owner can tell "fallback
+// fixed an occasional race" (a few entries, a handful of workflows) from
+// "normal pushes are now always exhausting first" (most/all attempts, a
+// concentrated set of workflows) now that eligibility defaults ON for
+// ~130 callers instead of 2 opt-in canaries (weekly-grosses.yml,
+// outlet-registry-baseline-maintenance.yml — both since had their
+// PUSH_VIA_API_FALLBACK opt-in stripped as redundant). `workflow: ''`
+// (rendered '(unknown workflow)' below) is a local/headless caller.
 function pushFallbackUsageResults(entries) {
   if (!entries || entries.length === 0) return [];
   const byWorkflow = new Map();
@@ -3462,19 +3458,20 @@ function pushFallbackUsageResults(entries) {
   return [{
     // 'pass' (not 'error'/'warn' — those are the only two the digest
     // renders as alarming lines; this is expected/healthy telemetry, not
-    // something to flag). Ship-check finding (2026-08-16): the rendered
-    // digest table only ever shows a category's PASSED/TOTAL count, never
-    // an individual pass-status check's message — so this row surfaces as
-    // its own named "Push" category line (visible, since it's currently the
-    // only check in that category) but the per-workflow breakdown in
-    // `message` only reaches someone who reads data/audit/health-*-snapshot.json
-    // directly. Acceptable for canary-scale telemetry (one workflow, low
-    // volume); a real digest section would be needed before this could
-    // usefully surface per-workflow detail at wider rollout.
+    // something to flag). Ship-check finding (2026-08-16, still true at
+    // fleet scale): the rendered digest table only ever shows a category's
+    // PASSED/TOTAL count, never an individual pass-status check's message —
+    // so this row surfaces as its own named "Push" category line but the
+    // per-workflow breakdown in `message` only reaches someone who reads
+    // data/audit/health-*-snapshot.json directly. A real digest section
+    // showing the per-workflow breakdown would be more valuable now that
+    // this is fleet-wide telemetry rather than a 2-canary sample — flagged
+    // as a follow-up, not built here (out of scope for the eligibility
+    // flip itself).
     name: 'Push: Git Data API fallback usage (24h)',
     status: 'pass',
     message: `${entries.length} push(es) landed via the API fallback instead of a normal local push in the last 24h — ${parts}.`,
-    hint: 'Expected while PUSH_VIA_API_FALLBACK is enabled for a workflow (task #707 canary). A sudden jump, or a jump on a NON-canary workflow, means that workflow started opting in or contention got materially worse — check data/audit/*.json glob scope (reconcile-merged-json.js MANAGED list) before widening rollout.',
+    hint: 'Expected now that the fallback defaults on fleet-wide (task #1847). A sudden jump, or a jump concentrated on one workflow, means contention got materially worse there — check data/audit/*.json glob scope (reconcile-merged-json.js MANAGED list), or set PUSH_API_FALLBACK_DISABLE=1 for that caller if it needs to opt back out.',
   }];
 }
 

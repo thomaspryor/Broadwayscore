@@ -258,6 +258,33 @@ function syncTrackerToOrigin(localData) {
 }
 
 /**
+ * Marks a draft (or preview) as complete in the in-memory tracker, persists it
+ * locally, and syncs it to origin/main. BRO-60: previously only the SEND_TO
+ * (preview) path called syncTrackerToOrigin — a real Resend draft creation saved
+ * locally via saveSentData() but never synced, so a CLI-created draft's
+ * completed:true state was invisible to origin until the next scheduled CI
+ * commit, same class of divergence as the 2026-04-11 preview incident this
+ * function's sibling comment describes. Exported for unit testing.
+ */
+function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo) {
+  const completionData = {
+    draftCreatedAt: new Date().toISOString(),
+    ...draftInfo,
+    completed: true,
+    draftStatus: 'draft',
+    sentAt: null,
+    recipientCount: null,
+  };
+  sentData.shows[broadcastKey] = completionData;
+  for (const s of showsForEmail) {
+    sentData.shows[s.showId] = { ...completionData, broadcastKey };
+  }
+  saveSentData(sentData);
+  syncTrackerToOrigin(sentData);
+  return completionData;
+}
+
+/**
  * Find shows that opened within the last N days.
  */
 function findRecentlyOpenedShows(shows, lookbackDays) {
@@ -821,22 +848,12 @@ async function main() {
       // NEW 2026-04-22: also track draftStatus so reconcile-broadcast-state.js can
       // round-trip the Resend API and detect cancelled/deleted drafts. completed:true
       // stays for backwards-compat; shouldRequeueShow() gates the re-entry path.
-      const completionData = {
-        draftCreatedAt: new Date().toISOString(),
+      recordDraftCompletion(sentData, broadcastKey, showsForEmail, {
         draftId,
         draftUrl,
         method: 'resend-draft',
         reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-        completed: true,
-        draftStatus: 'draft',
-        sentAt: null,
-        recipientCount: null,
-      };
-      sentData.shows[broadcastKey] = completionData;
-      for (const s of showsForEmail) {
-        sentData.shows[s.showId] = { ...completionData, broadcastKey };
-      }
-      saveSentData(sentData);
+      });
 
       console.log(`\nDraft ready — log into Resend to send: ${draftUrl}`);
 
@@ -890,7 +907,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH };
 
 if (require.main === module) {
   main().catch(err => {

@@ -727,6 +727,22 @@ Also: editing CLAUDE.md without `claude-md-anchors.json` throws a false corrupti
 ---
 
 ## Sprint 7: Repoint every consumer, loud ones first
+
+> `[CHANGED: the "~40 Notion-touching scripts" this sprint is scoped against is WRONG — it is 66 scripts and
+> 18 workflows. Measured 2026-08-20:
+>   ls scripts/*.js scripts/lib/*.js | xargs grep -ln "notion-brain\|@notionhq\|NOTION_API_KEY" \
+>     | grep -vE "notion-brain.js|export-notion-corpus|verify-notion-corpus|notion-tasks-sync|\.test\." | wc -l
+>     -> 66   (the exclusions are the Notion tooling being RETIRED, not repointed)
+>   grep -rln "notion\|NOTION" .github/workflows/ | wc -l  -> 18
+> Sprint 7 has 12 tasks written against 40% of its real surface. Re-scope before starting it; do not assume the
+> per-task file lists below are complete either — they were derived from the same undercount.
+>
+> Also settle BEFORE S7-T1: `scripts/lib/linear.js` (8.9KB) has ZERO requirers repo-wide — verified with
+> `grep -rn "lib/linear'" . --exclude-dir=node_modules` -> 0 matches. It is not "a second client to reconcile",
+> it is a merged-but-never-wired refactor from BRO-374 ("single injectable Linear client"); every real caller
+> uses scripts/lib/linear-client.js. The choice is wire it or delete it, and it is a decision, not a merge.
+> — source: Sprint 4 execution]`
+
 **Demo:** No workflow calls Notion; the digest's Needs-You rows carry live Linear links; every silent reader alarms
 on an empty board instead of reporting all-clear.
 **Risks:** The silent readers are the dangerous half — `autonomous-acceptance-recheck.js` is the RECHECK-AFTER
@@ -987,3 +1003,73 @@ parallel Claude Code sessions for different sprints — they share a remote and 
    double-run byte diff (S2-T6).
 3. **Half-migrated board with no un-import path.** Mitigated by batching + abort threshold + `--rollback`
    (S3-T7b), the append-only pageId ledger (S3-T2), and the anti-join (S3-T7c).
+
+---
+
+## Execution corrections — 2026-08-20 session (S3-T7c + S4-T3a)
+
+Every item here was found by RUNNING something, not by reading the plan. That is now nine plan specifics wrong
+across four sprints. The pattern is consistent and worth stating for whoever picks this up: **the plan's
+sequencing and hazard analysis have been reliable; every count, inventory and file list in it has not been.**
+Re-measure before trusting any number below or above.
+
+### Landed this session
+- **S3-T7c EXECUTED** (owner go, 2026-08-20). 1,603 issues created, 0 failures, 17 batches; with the 48 already
+  on the board and a 10-issue canary, all 1,705 planned issues exist in Linear. Acceptance criterion 3
+  (body text, token-level) passed 5/5 across a deterministic spread of the run — bodies 1,989-2,686 chars, no
+  `[Full content in page body below]` placeholder, correct `[Canceled] [Archive]` disposition.
+- **S4-T3a DONE** — `~/.claude` `9f5a0b2`, repo `81e5feb01a4`.
+
+### S4-T3a: it is SIX files, not four, five, or seven
+The prior handoff corrected 4/5 -> 7. That is also wrong. The right answer is six PATCHED and two deliberately
+NOT patched:
+- Patched: `notion-mcp-block.sh`, `notion-create-block.sh`, `notion-card-required-commit.sh`,
+  `notion-card-required-stop.sh`, `linear-issue-required-stop.sh`, plus the repo cloud copy
+  `.claude/hooks/notion-create-block.sh` (repo `settings.json:16`, fires whenever `~/.claude/hooks` is absent).
+  The plan deferred that cloud copy to S4-T4, but `board-gate-escape-hatch.md` already promised the owner it
+  honours the hatch, so shipping the status without it would have made the doc lie in the exact emergency it
+  exists for.
+- **NOT patched, deliberately:** the two PostToolUse sentinel WRITERS, `notion-create-verify.sh` and
+  `linear-issue-verify.sh`. They contact no board — they parse tool output and write the `/tmp` sentinels the
+  enforcing gates read. Standing them down means a session working under the hatch writes no sentinel, so the
+  moment the owner REMOVES the hatch the commit gate blocks it again, and the failure-breadcrumb cleanup never
+  runs, leaving a stale breadcrumb that blocks every subsequent tool call. **The off switch would arm a fresh
+  wedge on its way out.** If a future task "completes" the hatch by adding it to these two, it is reintroducing
+  this bug; `hooks/tests/board-gate-hatch/run.sh` asserts they stay unhatched.
+
+### The rehearsed rollback is over-broad
+`git -C ~/.claude checkout pre-board-cutover -- hooks/` also reverts ~186 lines of unrelated
+`context-budget-nudge.sh` work landed after the tag. S4-T2 rehearsed it on a single deleted file, so the blast
+radius was never observed. Use:
+`git -C ~/.claude checkout pre-board-cutover -- hooks/notion-*.sh hooks/linear-*.sh`
+The tag is ANNOTATED: object `cb817234c06e`, commit `cc85a97d5fb` (the prior handoff cited `fafa0cc`, a real
+commit but not this tag's). `BOARD_GATE_DISABLED` is gitignored, so it survives a rollback and then silently
+stops being read — looking like protection wired to nothing.
+
+### The escape hatch was never an owner prerequisite
+The plan says the hatch "must be in his hands" — meaning the DOCUMENT, shipped by S1-T3 in Sprint 1. Two
+handoffs mutated that into "the owner must demonstrate he can create the file" and carried it forward as a hard
+blocking rule. It cost a round-trip for nothing. Claude can and should create the file itself before editing
+the hooks; the owner-facing procedure exists for a future outage when no session is alive to help.
+
+### Two production bugs found by running the import
+1. **The ledger had no durability.** `data/linear-import-mapping.jsonl` is git-tracked, written incrementally
+   for ~30 minutes, in a checkout parallel sessions merge into. A concurrent merge reset it mid-run and
+   destroyed ~776 uncommitted rows. No Linear issues were lost — the deterministic id makes a replayed create a
+   classified no-op, which is the single reason this was survivable — but the pageId->issue MAPPING was, and the
+   anti-join then reports live issues as unaccounted. Fixed: `checkpointLedger()` commits every batch
+   (`a8b387b436a`). It proved itself within the hour: at the next abort, 1,360 rows on disk and 1,360 committed.
+2. **Rate limits arrive in two shapes and S1-T1 only handled one.** Linear returns HTTP 200 with
+   "Rate limit exceeded. Only 2500 requests are allowed per 1 hour." in the GraphQL error body. Because
+   `res.ok` is true it bypassed every retry branch and threw as a permanent error; the importer graded 39 as
+   "unexpected failures" and aborted a run that was merely throttled. **Sprint 7 repoints ~66 scripts onto this
+   client and would have inherited that fleet-wide.** Fixed: `a4325aba399`.
+
+### Operational limit to plan around
+**Linear allows 2,500 requests per rolling hour.** A full 1,705-issue import plus any re-run exceeds it. Budget
+one import per hour, or expect a mid-run throttle. The importer resumes cleanly from the ledger.
+
+### Still owner-gated (verified against the plan text, not inherited assertion)
+Only two remain in the entire plan: **S7-T8** (intake-channel repoint-vs-retire) and **Sprint 8** (deleting
+Notion). Everything else is executable without the owner. If a future handoff claims otherwise, check it against
+the plan before escalating.
