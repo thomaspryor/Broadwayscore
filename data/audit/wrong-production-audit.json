@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-20T18:18:15.583Z",
+  "timestamp": "2026-08-20T20:42:07.034Z",
   "stats": {
-    "totalReviews": 42490,
-    "alreadyFlagged": 18207,
+    "totalReviews": 42310,
+    "alreadyFlagged": 18162,
     "dateGuardCatches": 160,
-    "directorMismatch": 992,
-    "tvFilmSignals": 1217,
-    "londonSignals": 925,
-    "offBroadwaySignals": 494,
+    "directorMismatch": 982,
+    "tvFilmSignals": 1212,
+    "londonSignals": 922,
+    "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3567
+    "noPublishDate": 3557
   },
   "findings": [
     {
@@ -2866,20 +2866,6 @@
       "score": 85,
       "publishDate": "September 5, 2019",
       "url": "https://observer.com/2019/09/tom-hiddleston-betrayal-broadway-debut-review-harold-pinter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from betrayal-2013"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
-      "file": "theater-life--barry-gordin.json",
-      "score": 80,
-      "publishDate": "2019-10-18T09:00:16",
-      "url": "https://theaterlife.com/betrayal-1-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -6905,30 +6891,6 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 97,
-      "publishDate": "2022-12-30T13:40:37",
-      "url": "https://theaterlife.com/death-of-a-salesman-5/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
       "file": "theater-life--david-sheward.json",
       "score": 97,
       "publishDate": "2022-12-30T13:40:37",
@@ -7387,20 +7349,6 @@
       "score": null,
       "publishDate": null,
       "url": "https://playbill.com/article/read-the-reviews-for-diana-the-musical-on-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
-      "file": "theater-life--barry-gordin.json",
-      "score": 38,
-      "publishDate": "2021-10-07T00:21:31",
-      "url": "https://theaterlife.com/diana-the-musical/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -12401,20 +12349,6 @@
     },
     {
       "showId": "home-2024",
-      "file": "theater-life--barry-gordin.json",
-      "score": 96,
-      "publishDate": "2024-06-14T12:38:23",
-      "url": "https://theaterlife.com/home/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"douglas turner ward\" from home-1980"
-        }
-      ]
-    },
-    {
-      "showId": "home-2024",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 88,
       "publishDate": "2024-06-14T12:38:23",
@@ -13611,20 +13545,6 @@
       "score": 88,
       "publishDate": "July 11, 2022",
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 99,
-      "publishDate": "2022-07-14T23:21:11",
-      "url": "https://theaterlife.com/into-the-woods/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -17706,20 +17626,6 @@
     },
     {
       "showId": "miss-saigon-2017",
-      "file": "theater-life--barry-gordin.json",
-      "score": 96,
-      "publishDate": "2017-05-06T15:07:02",
-      "url": "https://theaterlife.com/miss-saigon/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
-        }
-      ]
-    },
-    {
-      "showId": "miss-saigon-2017",
       "file": "theater-life--lauren-yarger.json",
       "score": 97,
       "publishDate": "2017-05-06T15:07:02",
@@ -19514,20 +19420,6 @@
       "score": 88,
       "publishDate": "March 16, 2023",
       "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from parade-1998"
-        }
-      ]
-    },
-    {
-      "showId": "parade-2023",
-      "file": "theater-life--barry-gordin.json",
-      "score": 95,
-      "publishDate": "2023-03-25T19:57:41",
-      "url": "https://theaterlife.com/parade-1-2-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22559,20 +22451,6 @@
     },
     {
       "showId": "smash-2025",
-      "file": "theater-life--barry-gordin.json",
-      "score": 37,
-      "publishDate": "2025-04-18T12:07:38",
-      "url": "https://theaterlife.com/smash-3/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "smash-2025",
       "file": "theater-life--patrick-christiano.json",
       "score": 97,
       "publishDate": "2025-04-17T18:40:20",
@@ -23668,20 +23546,6 @@
     },
     {
       "showId": "straight-white-men-2018",
-      "file": "theater-life--barry-gordin.json",
-      "score": 60,
-      "publishDate": "2018-08-26T22:12:30",
-      "url": "https://theaterlife.com/straight-white-men/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "straight-white-men-2018",
       "file": "theater-life--isa-goldberg.json",
       "score": 59,
       "publishDate": "2018-08-26T22:12:30",
@@ -24045,20 +23909,6 @@
       "score": 80,
       "publishDate": "February 24th, 2017",
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/jake-gyllenhaal-sunday-park-george-hudson-theatre-new-york-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
-      "file": "theater-life--barry-gordin.json",
-      "score": 95,
-      "publishDate": "2017-03-30T13:08:48",
-      "url": "https://theaterlife.com/sunday-in-the-park-with-george-12/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28205,20 +28055,6 @@
     },
     {
       "showId": "the-parisian-woman-2017",
-      "file": "theater-life--barry-gordin.json",
-      "score": 39,
-      "publishDate": "2017-12-05T15:50:55",
-      "url": "https://theaterlife.com/the-parisian-woman/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-parisian-woman-2017",
       "file": "theater-life--david-sheward.json",
       "score": 25,
       "publishDate": "2017-12-05T15:50:55",
@@ -30495,20 +30331,6 @@
     },
     {
       "showId": "walking-with-ghosts-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 77,
-      "publishDate": "2022-11-01T08:57:00",
-      "url": "https://theaterlife.com/walking-with-ghosts-3/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "walking-with-ghosts-2022",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 65,
       "publishDate": "October 30th, 2022",
@@ -31390,25 +31212,6 @@
       "score": 97,
       "publishDate": "2020-02-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
-      "file": "theater-life--barry-gordin.json",
-      "score": 79,
-      "publishDate": "2020-02-23T10:31:01",
-      "url": "https://theaterlife.com/west-side-story-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36043,6 +35846,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "firstnightmagazine--unknown.json",
+      "score": 41,
       "publishDate": "2026-08-18",
       "url": "https://firstnightmagazine.com/2026/08/18/review-of-death-note-the-musical-2026-barbican-supernatural-sung-through-thriller-has-no-super-or-natural-writing/",
       "findings": [
@@ -42492,6 +42296,20 @@
     },
     {
       "showId": "old-times-2015",
+      "file": "huffpost--michael-glitz.json",
+      "score": 93,
+      "publishDate": "October 10th, 2015",
+      "url": "http://www.huffingtonpost.com/michael-giltz/theater-solid-shepard-hal_b_8272662.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "old-times-2015",
       "file": "thewrap--robert-hofler.json",
       "score": 87,
       "publishDate": "2015-10-07",
@@ -46640,20 +46458,6 @@
     },
     {
       "showId": "the-collaboration-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 55,
-      "publishDate": "2023-01-30T18:47:04",
-      "url": "https://theaterlife.com/the-collaboration-1-2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-collaboration-2022",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 62,
       "publishDate": "January 9th, 2023",
@@ -49266,20 +49070,6 @@
     },
     {
       "showId": "the-thanksgiving-play-2023",
-      "file": "theater-life--barry-gordin.json",
-      "score": 94,
-      "publishDate": "2023-04-29T11:34:46",
-      "url": "https://theaterlife.com/the-thanksgiving-play-1-2/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-thanksgiving-play-2023",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 95,
       "publishDate": "2023-04-29T11:34:46",
@@ -49624,20 +49414,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "tina-2019",
-      "file": "theater-life--barry-gordin.json",
-      "score": 94,
-      "publishDate": "2020-01-22T09:50:00",
-      "url": "https://theaterlife.com/tina/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -50589,20 +50365,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
-      "file": "theater-life--barry-gordin.json",
-      "score": 60,
-      "publishDate": "2024-10-04T17:02:26",
-      "url": "https://theaterlife.com/yellow-face/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
