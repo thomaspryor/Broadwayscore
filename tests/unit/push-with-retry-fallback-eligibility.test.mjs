@@ -54,8 +54,8 @@ exec "${realGit}" "$@"
   return dir;
 }
 
-function setupRunner(tmp, seedFile) {
-  const originDir = path.join(tmp, 'origin.git');
+function setupRunner(tmp, seedFile, originDirName) {
+  const originDir = path.join(tmp, originDirName || 'origin.git');
   const seedDir = path.join(tmp, 'seed');
   const runnerDir = path.join(tmp, 'runner');
   sh(`git init -q --bare "${originDir}"`, tmp);
@@ -137,6 +137,36 @@ test('task #1847: PUSH_API_FALLBACK_DISABLE=1 still disables the fallback under 
       `expected PUSH_API_FALLBACK_DISABLE=1 to suppress the fallback. Output:\n${stdout}`);
     assert.match(stdout, /the Git Data API fallback \(default-on\) did NOT run this attempt/,
       `expected the discoverability pointer to explain why. Output:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('task #1847: the broadway-review-texts repo is excluded from the fallback (Codex ship-check P0 finding)', () => {
+  // Codex's second (post-merge) adversarial ship-check pass found this: the
+  // API fallback overlays every path our diff touched outright onto the
+  // current remote tip, with no equivalent to restore_protected_fields()
+  // (which runs after every LOCAL resolution branch and restores manually-
+  // set fields like humanReviewScore that -X theirs conflict resolution can
+  // drop). A concurrent writer's protected-field edit to a review file we
+  // ALSO touched would be silently discarded by the fallback. Excluded via
+  // remote URL detection until the fallback gains its own reconciliation.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-elig-reviewtexts-'));
+  try {
+    // Bare repo directory literally named to contain the substring the
+    // script matches on — real local git operations, no network dependency.
+    const { runnerDir } = setupRunner(tmp, undefined, 'broadway-review-texts.git');
+    fs.writeFileSync(path.join(runnerDir, 'plain.js'), 'const x = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "plain commit"', runnerDir);
+
+    const fakeGitDir = makeAlwaysFailPushGitDir(tmp);
+    const { stdout } = runFixture(runnerDir, fakeGitDir, {}, tmp);
+
+    assert.doesNotMatch(stdout, /trying the Git Data API fallback/,
+      `expected the broadway-review-texts repo to be excluded from the fallback. Output:\n${stdout}`);
+    assert.match(stdout, /this is the broadway-review-texts repo \(excluded/,
+      `expected the discoverability pointer to name the review-texts exclusion. Output:\n${stdout}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
