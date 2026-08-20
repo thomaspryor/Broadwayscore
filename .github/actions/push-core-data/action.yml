@@ -229,6 +229,15 @@ runs:
               sleep "$DELAY_S"
               continue
               ;;
+            stop:max-attempts-reached)
+              # Still rate-limited on the final attempt — the dance below issues
+              # several MORE API calls against the same throttled token (fetch +
+              # several git show per file); running it here can't help this job
+              # (no attempts left) and only worsens the shared-PAT burst for
+              # every other workflow sharing REVIEW_TEXTS_TOKEN's quota.
+              echo "::error::Core data push still rate-limited after $i attempts — giving up without the fetch/rebase/reconcile dance"
+              exit 1
+              ;;
           esac
 
           # Push failed — another workflow pushed first. Fetch their version
