@@ -2643,14 +2643,18 @@ jobs:
         run: |
           # A "Commit scraper-spend ledger" step races every other concurrent
           # workflow pushing to main — losing that race is routine, expected
-          # contention, not a data problem. BRO-2243: this job (and 5 other
-          # open PRs) went red because that race was mistaken for a real
-          # validation failure. All 30 existing call sites already have both
-          # if: always() and continue-on-error: true (fixed BRO-163,
-          # 2026-08-14) — this is the structural guard so a new call site,
-          # or an edit that drops one of the two flags, can't silently
-          # reopen it. Logic lives in scripts/lint-workflow-guards.sh —
-          # shared with the local pre-push hook.
+          # contention, not a data problem. BRO-2243 investigated a claim
+          # that this race was reddening Data Validation on several open PRs;
+          # it turned out each of those was actually failing on an unrelated
+          # content check (Audit flag-vs-CV contradictions), and all 30
+          # existing commit-scraper-spend-ledger call sites already carry
+          # both if: always() and continue-on-error: true (fixed BRO-163,
+          # 2026-08-14) — so the race itself is already structurally
+          # prevented everywhere. This is the permanent regression guard so
+          # a new call site, or an edit that drops one of the two flags,
+          # can't silently reopen it. Logic lives in
+          # scripts/lint-workflow-guards.sh — shared with the local
+          # pre-push hook.
           bash scripts/lint-workflow-guards.sh ledger-step-guard
 
       - name: Check scripts avoid reset --soft + scoped-add + commit
