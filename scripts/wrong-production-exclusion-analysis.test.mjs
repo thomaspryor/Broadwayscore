@@ -19,6 +19,7 @@ const {
   summarizeByShow,
   categorizeShow,
   analyzeExclusionLog,
+  buildNextLedger,
 } = require('./lib/wrong-production-exclusion-analysis');
 
 function exclusionLine({ showId, file, ts, url }) {
@@ -133,6 +134,37 @@ describe('categorizeShow — REPEATED_LOGGING vs NEEDS_REVIEW (BRO-75 core quest
     assert.equal(result.repeatMultiplier, 0);
     assert.equal(result.category, 'NORMAL');
   });
+
+  it('with a knownFiles ledger, surfaces a genuinely new file even when it is buried among heavily re-logged stale files', () => {
+    // The gap a same-day-only repeat ratio can't see: 20 stale files each
+    // re-logged 3x (60 lines, repeatMultiplier 3 -> would read as pure
+    // REPEATED_LOGGING) PLUS 1 brand-new file logged once. Total volume
+    // (61 lines / 21 files) still looks noise-dominated by ratio alone, but
+    // the ledger diff must still catch the 1 new file.
+    const staleFiles = Array.from({ length: 20 }, (_, i) => `stale-${i}.json`);
+    const files = new Set([...staleFiles, 'brand-new-review.json']);
+    const entry = { showId: 'mixed-show', totalLines: 61, files };
+    const knownFiles = new Set(staleFiles); // everything except the new one was already known
+    const result = categorizeShow(entry, { knownFiles });
+    assert.equal(result.category, 'NEEDS_REVIEW');
+    assert.equal(result.newFileCount, 1);
+  });
+
+  it('with a knownFiles ledger, categorizes an all-known show as REPEATED_LOGGING regardless of ratio', () => {
+    const files = new Set(['a.json', 'b.json']);
+    const entry = { showId: 'all-known', totalLines: 6, files };
+    const result = categorizeShow(entry, { knownFiles: new Set(['a.json', 'b.json']) });
+    assert.equal(result.category, 'REPEATED_LOGGING');
+    assert.equal(result.newFileCount, 0);
+  });
+
+  it('with a knownFiles ledger, categorizes a single known file logged once as NORMAL', () => {
+    const files = new Set(['a.json']);
+    const entry = { showId: 'quiet', totalLines: 1, files };
+    const result = categorizeShow(entry, { knownFiles: new Set(['a.json']) });
+    assert.equal(result.category, 'NORMAL');
+    assert.equal(result.newFileCount, 0);
+  });
 });
 
 describe('analyzeExclusionLog — end to end', () => {
@@ -170,5 +202,71 @@ describe('analyzeExclusionLog — end to end', () => {
   it('returns [] for a log with no wrongProduction exclusions', () => {
     const lines = [JSON.stringify({ showId: 'a', file: 'x.json', reason: 'skippedDuplicateOf' })];
     assert.deepEqual(analyzeExclusionLog(lines.join('\n')), []);
+  });
+
+  it('with knownFilesByShow, distinguishes a new-file spike from stale re-logging on the SAME day — the case a repeat-ratio-only heuristic masks', () => {
+    // beetlejuice-2022: 94 files re-logged 3x today (282 lines) — all
+    // already in the ledger from prior days. Without a ledger this reads
+    // REPEATED_LOGGING purely from the ratio, same as with one; the real
+    // test is the show below.
+    const knownBeetlejuiceFiles = Array.from({ length: 94 }, (_, i) => `outlet-${i}.json`);
+    const lines = [];
+    for (let run = 0; run < 3; run++) {
+      for (const file of knownBeetlejuiceFiles) {
+        lines.push(exclusionLine({ showId: 'beetlejuice-2022', file, ts: `2026-04-17T0${run}:00:00.000Z` }));
+      }
+    }
+    // some-show-2026: 30 stale known files re-logged 3x (90 lines) PLUS 2
+    // brand-new files logged once each. Same-day repeat ratio for the whole
+    // show (92/32 ≈ 2.9x) reads as pure REPEATED_LOGGING and would hide the
+    // 2 new mistakes — the ledger diff must not.
+    const knownOtherFiles = Array.from({ length: 30 }, (_, i) => `known-${i}.json`);
+    for (let run = 0; run < 3; run++) {
+      for (const file of knownOtherFiles) {
+        lines.push(exclusionLine({ showId: 'some-show-2026', file, ts: `2026-04-17T0${run}:00:00.000Z` }));
+      }
+    }
+    lines.push(exclusionLine({ showId: 'some-show-2026', file: 'genuinely-new-1.json' }));
+    lines.push(exclusionLine({ showId: 'some-show-2026', file: 'genuinely-new-2.json' }));
+
+    const knownFilesByShow = {
+      'beetlejuice-2022': knownBeetlejuiceFiles,
+      'some-show-2026': knownOtherFiles,
+    };
+
+    const results = analyzeExclusionLog(lines.join('\n'), { knownFilesByShow });
+    const byShowId = Object.fromEntries(results.map(r => [r.showId, r]));
+
+    assert.equal(byShowId['beetlejuice-2022'].category, 'REPEATED_LOGGING');
+    assert.equal(byShowId['beetlejuice-2022'].newFileCount, 0);
+
+    assert.equal(byShowId['some-show-2026'].category, 'NEEDS_REVIEW');
+    assert.equal(byShowId['some-show-2026'].newFileCount, 2);
+  });
+});
+
+describe('buildNextLedger', () => {
+  it('unions previously-known files with files seen in today\'s log, per show', () => {
+    const records = [
+      JSON.parse(exclusionLine({ showId: 'a', file: 'new.json' })),
+      JSON.parse(exclusionLine({ showId: 'a', file: 'already-known.json' })),
+    ];
+    const previous = { a: ['already-known.json'], b: ['untouched-today.json'] };
+    const next = buildNextLedger(records, previous);
+    assert.deepEqual(next.a.sort(), ['already-known.json', 'new.json']);
+    // shows with no exclusions today keep their prior entries
+    assert.deepEqual(next.b, ['untouched-today.json']);
+  });
+
+  it('starts from an empty ledger on first run', () => {
+    const records = [JSON.parse(exclusionLine({ showId: 'a', file: 'x.json' }))];
+    const next = buildNextLedger(records, {});
+    assert.deepEqual(next, { a: ['x.json'] });
+  });
+
+  it('ignores exclusion reasons other than skippedWrongProduction', () => {
+    const records = [{ showId: 'a', file: 'x.json', reason: 'skippedDuplicateOf' }];
+    const next = buildNextLedger(records, {});
+    assert.deepEqual(next, {});
   });
 });

@@ -62,27 +62,55 @@ function summarizeByShow(records) {
 
 const DEFAULT_REPEAT_THRESHOLD = 1.5;
 const DEFAULT_DISTINCT_FILE_THRESHOLD = 10;
+const DEFAULT_NEW_FILE_THRESHOLD = 1;
 
 /**
  * Categorize one show's exclusion volume.
  *
- * - REPEATED_LOGGING: the same small set of files re-logged across multiple
- *   rebuild runs (high totalLines, low distinct-file-to-line ratio). Not
- *   evidence of over-blocking — log noise from a sticky flag.
- * - NEEDS_REVIEW: many DISTINCT files excluded, each close to once. A real
- *   signal of newly-excluded content — warrants a content-level audit (see
- *   scripts/audit-wrong-production.js).
- * - NORMAL: low volume either way.
+ * `opts.knownFiles` (a Set of filenames already flagged as of a PRIOR day,
+ * loaded from the cross-day ledger — see loadSeenLedger/CLI wrapper) is what
+ * makes this actually distinguish new mistakes from stale re-logging.
+ * Without it, a same-day repeat count alone can't tell "flagged for the
+ * first time this morning, re-logged on the next 2 rebuild passes" (3 lines,
+ * 1 file, repeatMultiplier 3 — indistinguishable from a file that's been
+ * flagged for months) from genuine staleness. When `knownFiles` is provided:
+ *
+ * - NEEDS_REVIEW: at least one file in today's log is NOT in `knownFiles` —
+ *   a genuinely new exclusion, regardless of how noisy the rest of the
+ *   show's re-logging is. This is the case a pure repeat-ratio heuristic
+ *   masks (see analyzeExclusionLog's `newFiles` plumbing).
+ * - REPEATED_LOGGING: every file in today's log is already in `knownFiles`
+ *   and got re-logged across multiple rebuild passes. Log noise, not
+ *   over-blocking.
+ * - NORMAL: low volume, nothing new.
+ *
+ * Without `knownFiles` (single-day snapshot, e.g. a first run with no
+ * ledger yet), falls back to the same-day repeat-ratio heuristic: a high
+ * totalLines/distinctFiles ratio still doesn't prove staleness, but it's the
+ * best available signal until a ledger exists.
  */
 function categorizeShow(entry, opts = {}) {
   const repeatThreshold = opts.repeatThreshold ?? DEFAULT_REPEAT_THRESHOLD;
   const distinctFileThreshold = opts.distinctFileThreshold ?? DEFAULT_DISTINCT_FILE_THRESHOLD;
+  const newFileThreshold = opts.newFileThreshold ?? DEFAULT_NEW_FILE_THRESHOLD;
 
   const distinctFiles = entry.files.size;
   const repeatMultiplier = distinctFiles > 0 ? entry.totalLines / distinctFiles : 0;
 
+  let newFileCount = null;
+  if (opts.knownFiles instanceof Set) {
+    newFileCount = 0;
+    for (const file of entry.files) {
+      if (!opts.knownFiles.has(file)) newFileCount++;
+    }
+  }
+
   let category;
-  if (repeatMultiplier >= repeatThreshold) {
+  if (newFileCount !== null) {
+    // Ledger available: new-file evidence takes priority over repeat noise.
+    category = newFileCount >= newFileThreshold ? 'NEEDS_REVIEW' : 'REPEATED_LOGGING';
+    if (newFileCount === 0 && repeatMultiplier < repeatThreshold) category = 'NORMAL';
+  } else if (repeatMultiplier >= repeatThreshold) {
     category = 'REPEATED_LOGGING';
   } else if (distinctFiles >= distinctFileThreshold) {
     category = 'NEEDS_REVIEW';
@@ -95,6 +123,7 @@ function categorizeShow(entry, opts = {}) {
     totalLines: entry.totalLines,
     distinctFiles,
     repeatMultiplier: Math.round(repeatMultiplier * 100) / 100,
+    ...(newFileCount !== null ? { newFileCount } : {}),
     category,
   };
 }
@@ -103,16 +132,46 @@ function categorizeShow(entry, opts = {}) {
  * Full pipeline: JSONL text -> per-show categorized summaries, sorted by
  * total log volume descending (matches how "top shows by exclusion count"
  * gets read).
+ *
+ * `opts.knownFilesByShow` (Map<showId, Set<file>> | Record<showId, string[]>)
+ * is forwarded per-show as `knownFiles` to categorizeShow — pass the
+ * cross-day ledger here to get real new-vs-stale categorization.
  */
-function analyzeExclusionLog(jsonlText, opts) {
+function analyzeExclusionLog(jsonlText, opts = {}) {
   const records = parseExclusionLog(jsonlText);
   const byShow = summarizeByShow(records);
   const results = [];
   for (const entry of byShow.values()) {
-    results.push(categorizeShow(entry, opts));
+    const perShowOpts = { ...opts };
+    delete perShowOpts.knownFilesByShow;
+    if (opts.knownFilesByShow) {
+      const raw = opts.knownFilesByShow instanceof Map
+        ? opts.knownFilesByShow.get(entry.showId)
+        : opts.knownFilesByShow[entry.showId];
+      if (raw) perShowOpts.knownFiles = raw instanceof Set ? raw : new Set(raw);
+    }
+    results.push(categorizeShow(entry, perShowOpts));
   }
   results.sort((a, b) => b.totalLines - a.totalLines);
   return results;
+}
+
+/**
+ * Build the next cross-day ledger snapshot: union of everything previously
+ * known with everything seen in today's log, per show. The CLI wrapper
+ * persists this to disk so tomorrow's run can tell new files from old ones.
+ */
+function buildNextLedger(records, previousLedger = {}) {
+  const byShow = summarizeByShow(records);
+  const next = {};
+  const showIds = new Set([...Object.keys(previousLedger), ...byShow.keys()]);
+  for (const showId of showIds) {
+    const known = new Set(previousLedger[showId] || []);
+    const entry = byShow.get(showId);
+    if (entry) for (const file of entry.files) known.add(file);
+    next[showId] = [...known].sort();
+  }
+  return next;
 }
 
 module.exports = {
@@ -120,4 +179,5 @@ module.exports = {
   summarizeByShow,
   categorizeShow,
   analyzeExclusionLog,
+  buildNextLedger,
 };
