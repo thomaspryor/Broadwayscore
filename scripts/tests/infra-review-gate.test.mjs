@@ -19,6 +19,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const scope = require('../lib/infra-review-scope.js');
@@ -69,6 +72,21 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     // covered its own named motivating example.
     ['scripts/merge-worktree-to-main.sh', 'concurrency', 'critical'],
     ['scripts/lib/run-push-audits.sh', 'concurrency', 'critical'],
+    // task #1856: the composite actions that actually run the multi-writer
+    // push/checkout for CI runners — task #1850 edited three of these
+    // without the gate firing because only the scripts/lib/push-* shape
+    // was covered.
+    ['.github/actions/push-core-data/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/push-review-texts/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/push-aggregator-archive/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-core-data/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-review-texts/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-aggregator-archive/action.yml', 'concurrency', 'critical'],
+    // adversarial review of #1856 (Codex): this action calls
+    // push-with-retry.sh under the same concurrent-push race, despite a
+    // directory name that doesn't start with push-/checkout- — the reason
+    // the rule enumerates exact names instead of guessing at a prefix.
+    ['.github/actions/commit-scraper-spend-ledger/action.yml', 'concurrency', 'critical'],
     ['scripts/lib/review-gate.mjs', 'gates', 'critical'],
     ['scripts/lib/review-guards.js', 'gates', 'critical'],
     ['.github/workflows/test.yml', 'ci-gate', 'critical'],
@@ -93,6 +111,35 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     assert.equal(c.rule, rule, `${path} rule`);
     assert.equal(c.tier, tier, `${path} tier`);
     assert.ok(c.why && c.why.length > 20, `${path} must explain itself to the blocked session`);
+  }
+});
+
+test('(a) task #1856 acceptance: the push/checkout composite actions batch is critical', () => {
+  const r = classifyChange([
+    '.github/actions/push-core-data/action.yml',
+    '.github/actions/push-review-texts/action.yml',
+    '.github/actions/push-aggregator-archive/action.yml',
+    '.github/actions/checkout-core-data/action.yml',
+    '.github/actions/checkout-review-texts/action.yml',
+  ]);
+  assert.equal(r.inScope, true);
+  assert.equal(r.tier, 'critical');
+});
+
+test('(a) other .github/actions/ composite actions stay OUT of scope — the enumerated list is not a name-shape guess', () => {
+  // Codex adversarial review of #1856: a `(push|checkout)-[a-z-]+` wildcard
+  // both under- and over-matches (missed commit-scraper-spend-ledger despite
+  // its push-with-retry.sh call; would have silently matched any future
+  // push-* dir that isn't actually a push primitive). These are every OTHER
+  // real action.yml in the repo as of task #1856 — none should classify.
+  for (const p of [
+    '.github/actions/check-file-sizes/action.yml',
+    '.github/actions/dispatch-deploy/action.yml',
+    '.github/actions/notify-failure/action.yml',
+    '.github/actions/setup-node/action.yml',
+    '.github/actions/setup-playwright/action.yml',
+  ]) {
+    assert.equal(classifyPath(p).inScope, false, `${p} must NOT be gated`);
   }
 });
 
@@ -382,6 +429,43 @@ test('an explicit bypass is downgraded to warn and recorded, not silently honour
   });
   assert.equal(d.action, 'warn');
   assert.match(d.reason, /NO-PLAN-REVIEW/);
+});
+
+// ── self-defending: every composite action that calls a push/concurrency
+// primitive must be enumerated in the 'concurrency' rule ──────────────────
+//
+// /what-else on task #1856 (Codex adversarial review): the fix enumerates
+// exact .github/actions/ names rather than a push-/checkout- prefix
+// wildcard, because commit-scraper-spend-ledger/action.yml calls
+// push-with-retry.sh despite a name that doesn't match that prefix — an
+// enumerated list only stays correct as long as a human remembers to update
+// it every time a NEW composite action starts calling a gated script. This
+// test removes that dependency: it reads the real action.yml files off
+// disk and fails if any of them invoke a known concurrency-primitive script
+// without being in scope, so the next silent gap is a red test, not a
+// missed review.
+test('every real .github/actions/*/action.yml that calls a concurrency-primitive script is in scope', () => {
+  const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const actionsDir = path.join(repoRoot, '.github', 'actions');
+  const WRITE_PRIMITIVE_RE = /push-with-retry\.sh|scripts\/lib\/atomic-[a-z-]+\.(?:js|mjs|cjs)|scripts\/lib\/file-lock\.(?:js|mjs|cjs)/;
+  const dirs = fs.readdirSync(actionsDir, { withFileTypes: true }).filter((d) => d.isDirectory());
+  const uncovered = [];
+  for (const d of dirs) {
+    const ymlPath = ['action.yml', 'action.yaml']
+      .map((f) => path.join(actionsDir, d.name, f))
+      .find((p) => fs.existsSync(p));
+    if (!ymlPath) continue;
+    const text = fs.readFileSync(ymlPath, 'utf8');
+    // A `push-retry-args` DESCRIPTION line (commit-scraper-spend-ledger's own
+    // inputs block) mentions the script name without invoking it — only a
+    // `run:` step actually calling it is a real write path. Cheap enough to
+    // just require the match not be inside an `inputs:`/`description:` line.
+    const callsPrimitive = text.split('\n').some((line) => WRITE_PRIMITIVE_RE.test(line) && !/^\s*description:/.test(line));
+    if (!callsPrimitive) continue;
+    const rel = path.relative(repoRoot, ymlPath);
+    if (!classifyPath(rel).inScope) uncovered.push(rel);
+  }
+  assert.deepEqual(uncovered, [], `these composite actions call a concurrency-primitive script but are NOT gated: ${uncovered.join(', ')}`);
 });
 
 test('the four 2026-08-05 defect sites are all inside the blocking tier', () => {

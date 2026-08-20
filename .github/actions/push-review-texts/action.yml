@@ -275,8 +275,10 @@ runs:
         # with richer content (longer fullText). This prevents a truncated archive
         # snapshot from overwriting a complete review pushed by another workflow.
         for i in 1 2 3 4 5; do
+          STDERR_FILE=$(mktemp)
           # Try fast path first: if no conflicts, rebase + push succeeds immediately
-          if git pull --rebase origin main 2>&1; then
+          if git pull --rebase origin main 2>"$STDERR_FILE"; then
+            cat "$STDERR_FILE" >&2
             # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134):
             # in-process guards (url-ownership.js Guard I, gather's cross-production
             # check) validate against the CHECKOUT snapshot. If a manual cross-show
@@ -291,10 +293,15 @@ runs:
             # Fail-open: a validator crash must never block a data push.
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
-            if git push origin main 2>&1; then
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully (attempt $i)"
+              rm -f "$STDERR_FILE"
               exit 0
             fi
+            cat "$STDERR_FILE" >&2
+          else
+            cat "$STDERR_FILE" >&2
           fi
 
           # Rebase hit conflicts — resolve them content-aware
@@ -416,15 +423,46 @@ runs:
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
 
-            if git push origin main 2>&1; then
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
+              rm -f "$STDERR_FILE"
               exit 0
             fi
+            cat "$STDERR_FILE" >&2
           fi
 
-          echo "Push attempt $i failed, retrying in $((RANDOM % 10 + 5))s..."
+          # BRO-66 sibling (card #1850): distinguish a GitHub-API-rate-limit
+          # failure from a real merge conflict before deciding how long to
+          # wait. STDERR_FILE holds whichever git call most recently failed
+          # above (the pre-loop pull, the fast-path push, or the
+          # content-aware-merge push) — conflict-shaped stderr doesn't match
+          # the rate-limit pattern, so the case below falls through to the
+          # existing flat-jitter retry unchanged for that path.
+          echo "Push attempt $i failed"
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ")
+          rm -f "$STDERR_FILE"
           git rebase --abort 2>/dev/null || true
-          sleep $((RANDOM % 10 + 5))
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Review-texts push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              echo "Retrying in $((RANDOM % 10 + 5))s..."
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
         done
 
         echo "WARNING: Failed to push review-texts after 5 attempts"

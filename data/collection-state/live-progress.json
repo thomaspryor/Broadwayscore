@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-20T12:58:54.756Z",
-  "processed": 67,
-  "failed": 729,
-  "successRate": "8.4%",
+  "updatedAt": "2026-08-20T19:59:19.399Z",
+  "processed": 135,
+  "failed": 1611,
+  "successRate": "7.7%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 76,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 3,
-    "scrapingbee": 7,
+    "browserbase": 9,
+    "directCookies": 4,
+    "scrapingbee": 21,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 29
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -58,6 +58,62 @@
       "t": "2026-08-20T12:55:05.386Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T19:17:43.329Z",
+      "event": "bb-session",
+      "session": "7fb71f84",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-20T19:17:43.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T19:29:39.106Z",
+      "event": "bb-session",
+      "session": "a724268a",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-08-20T19:29:39.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-20T19:35:50.156Z",
+      "event": "bb-session",
+      "session": "316be199",
+      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
+    },
+    {
+      "t": "2026-08-20T19:35:50.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:46:37.813Z",
+      "event": "bb-session",
+      "session": "2662928b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-lloyd-webber-closes-cind"
+    },
+    {
+      "t": "2026-08-20T19:48:35.756Z",
+      "event": "bb-session",
+      "session": "c0a14f87",
+      "url": "https://variety.com/2024/legit/reviews/galileo-musical-review-berkeley-rep-12360"
+    },
+    {
+      "t": "2026-08-20T19:48:36.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:58:37.545Z",
+      "event": "bb-session",
+      "session": "79803aab",
+      "url": "https://www.express.co.uk/entertainment/theatre/890235/the-snowman-review-peacoc"
     }
   ]
 }

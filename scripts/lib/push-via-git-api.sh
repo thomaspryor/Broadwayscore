@@ -145,18 +145,43 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   fi
 
   # Need the tip commit's objects locally to build the overlay tree on top
-  # of it. --depth=1 on BOTH the primary (by-sha) and fallback (by-ref)
-  # fetch is deliberate, not just cheap: we only ever read $CURRENT_TIP's
-  # own tree (read-tree below), never walk its ancestry, so there is no
-  # history this script needs beyond the tip commit itself — unlike a
-  # rebase-based flow, there is no #466-class case where a depth bound here
-  # would break correctness. The fallback exists for remotes that reject
-  # fetching an arbitrary commit sha directly (uploadpack.allowReachableSHA1InWant
-  # disabled) but do allow a depth-bounded ref fetch. Audited by
-  # scripts/audit-unbounded-fetch.js — keep both calls depth-bounded.
-  _git_net fetch -q --depth=1 "$REMOTE" "$CURRENT_TIP" 2>/dev/null \
-    || _git_net fetch -q --depth=1 "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null \
-    || true
+  # of it. Skip the fetch entirely when we already have it — the common case
+  # once this script is invoked repeatedly against the same shared checkout
+  # (e.g. CURRENT_TIP is our own already-pushed HEAD or an ancestor we
+  # already hold). This is not just an optimization: task #1847 found that
+  # `git fetch --depth=1 <remote> <sha>` SHALLOW-GRAFTS the local repository
+  # as a side effect EVEN WHEN <sha> and its full ancestry are already
+  # present locally — flipping `is-shallow-repository` to true and silently
+  # truncating `git log`/`git rev-list`/`merge-base --is-ancestor` traversal
+  # at that commit for the REST of that checkout's lifetime (confirmed via a
+  # minimal repro: a non-shallow 3-commit repo, `git fetch --depth=1 origin
+  # <local-HEAD-sha>`, and the repo is shallow afterward with `git log`
+  # showing only that one commit). This script's own header promises it
+  # "never touches the caller's working tree, index, or local branch ref" —
+  # an undocumented shallow-graft of the shared object database breaks that
+  # promise and corrupts every other ancestry-dependent guard in
+  # push-with-retry.sh (BRO-259 checks, orphan-commit checks) for as long as
+  # that checkout persists, which matters for the ~20 local scripts calling
+  # push-with-retry.sh against the PERSISTENT shared checkout (unlike CI's
+  # disposable one) — see push-with-retry.sh's task #1489 comment. If a
+  # fetch IS genuinely needed (the object is missing), depth-bound it only
+  # when the repo is ALREADY shallow (nothing new to lose — matches the
+  # disposable-CI-checkout population this script was designed for);
+  # otherwise fetch without a depth bound so a currently-full checkout stays
+  # full. unbounded-fetch-ok: gated on is-shallow-repository=false, git's own
+  # negotiation against existing haves keeps this cheap — audited by
+  # scripts/audit-unbounded-fetch.js.
+  if ! git cat-file -e "${CURRENT_TIP}^{commit}" 2>/dev/null; then
+    if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+      _git_net fetch -q --depth=1 "$REMOTE" "$CURRENT_TIP" 2>/dev/null \
+        || _git_net fetch -q --depth=1 "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null \
+        || true
+    else
+      _git_net fetch -q "$REMOTE" "$CURRENT_TIP" 2>/dev/null \
+        || _git_net fetch -q "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null \
+        || true
+    fi
+  fi
   if ! git cat-file -e "${CURRENT_TIP}^{commit}" 2>/dev/null; then
     echo "  push-via-git-api: failed to fetch remote tip $CURRENT_TIP (attempt $i/$MAX_RETRIES)" >&2
     sleep $((1 + i))
