@@ -262,6 +262,147 @@ exec "${realGit}" "$@"
   return dir;
 }
 
+// A `git` wrapper that fails ONLY the very first `push` call (without ever
+// invoking real git — a clean network-rejection simulation) and, as a side
+// effect of that one call, commits a concurrent change in the invoking repo
+// — mirroring a parallel session landing a commit on the shared local
+// checkout right as this run's first push attempt goes out. EVERY
+// subsequent git call (including the SECOND push, made by push-via-git-
+// api.sh's own internal retry once this run reaches the API fallback)
+// proxies to real git normally, so the fallback can genuinely succeed
+// end-to-end rather than being stubbed. Subcommand detection mirrors
+// makePushFailingGitDir() above.
+function makeFirstPushFailsWithConcurrentCommitGitDir(tmp) {
+  const dir = path.join(tmp, 'fake-git-first-push-fails-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+sub=""
+args=("$@")
+i=0
+while [ $i -lt \${#args[@]} ]; do
+  a="\${args[$i]}"
+  case "$a" in
+    -c|-C) i=$((i+2)); continue;;
+    -*) i=$((i+1)); continue;;
+    *) sub="$a"; break;;
+  esac
+done
+if [ "$sub" = "push" ] && [ -n "\${FIRST_PUSH_MARKER:-}" ] && [ ! -f "$FIRST_PUSH_MARKER" ]; then
+  touch "$FIRST_PUSH_MARKER"
+  echo 'const concurrent = 1;' > concurrent-session.js
+  "${realGit}" add concurrent-session.js
+  "${realGit}" -c user.email=c@c.c -c user.name=c commit -q -m "concurrent session commit"
+  exit 1
+fi
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
+test('task #1793: a genuine no-op rebase does not block sync_restore_base_head before the API fallback\'s reset', () => {
+  // Direct repro of task #1793's bug scenario. Sequence: our first push
+  // attempt is rejected (network sim) but a concurrent commit lands on the
+  // shared local checkout AS A SIDE EFFECT of that same push call — so by
+  // the time push-with-retry.sh fetches+rebases, local HEAD
+  // (payload+concurrent) ALREADY contains origin's tip as an ancestor,
+  // making `git rebase -X theirs origin/main` a GENUINE NO-OP (nothing to
+  // replay). push-content-survival.js is stubbed to always report failure
+  // (matching the BRO-259 tests below) so control flow reliably reaches full
+  // retry exhaustion and the API fallback regardless of whether the
+  // underlying git push technically succeeded — the same path in both
+  // pre-fix and post-fix code, isolating exactly what #1793 changes.
+  //
+  // Pre-fix: the no-op rebase was wrongly treated as "history changed",
+  // flipping HEAD_TRUSTED_CLEAN false and making sync_restore_base_head()
+  // refuse to adopt the concurrent commit right before the fallback's
+  // pre-diff reset — discarding it.
+  // Post-fix: history_changed correctly stays false, HEAD_TRUSTED_CLEAN
+  // stays true, sync_restore_base_head() adopts the concurrent commit
+  // before the reset, so it survives locally even though the stubbed
+  // survival check still reports the run as failed overall.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-1793-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+  const fixtureLibDir = path.join(tmp, 'fixture-scripts', 'lib');
+  const fixtureScriptsDir = path.join(tmp, 'fixture-scripts');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    fs.writeFileSync(path.join(runnerDir, 'payload.js'), 'const payload = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "payload commit"', runnerDir);
+
+    // Isolated copy of push-with-retry.sh + its sibling deps, matching the
+    // BRO-259 fixture pattern below — needs push-mutex.sh/disk-floor-
+    // check.sh too (sourced at the top) or the fixture script dies before
+    // reaching a push.
+    fs.mkdirSync(fixtureLibDir, { recursive: true });
+    const realLibDir = path.dirname(SCRIPT);
+    const realScriptsDir = path.dirname(realLibDir);
+    for (const f of fs.readdirSync(realLibDir)) {
+      if (f.endsWith('.js') || f.endsWith('.sh')) {
+        fs.copyFileSync(path.join(realLibDir, f), path.join(fixtureLibDir, f));
+      }
+    }
+    for (const f of ['check-orphan-commits.js', 'check-post-rebase-survival.js', 'validate-added-review-ownership.js']) {
+      const src = path.join(realScriptsDir, f);
+      if (fs.existsSync(src)) fs.copyFileSync(src, path.join(fixtureScriptsDir, f));
+    }
+    fs.writeFileSync(path.join(fixtureLibDir, 'push-content-survival.js'), '#!/usr/bin/env node\nprocess.exit(1);\n');
+    const fixtureScript = path.join(fixtureLibDir, 'push-with-retry.sh');
+
+    const fakeGitDir = makeFirstPushFailsWithConcurrentCommitGitDir(tmp);
+    const marker = path.join(tmp, 'first-push.marker');
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${fixtureScript}" 1 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          FIRST_PUSH_MARKER: marker,
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    const postRunLog = sh('git log --oneline', runnerDir).trim();
+    assert.equal(fs.existsSync(marker), true, 'fixture failed to inject the concurrent commit during the first push');
+    assert.notEqual(code, 0, `expected non-zero exit (content-survival stubbed to always fail); got 0. Output:\n${stdout}`);
+    assert.match(stdout, /rebase-clean|Current branch main is up to date/,
+      `expected a clean/no-op rebase to occur in this run. Output:\n${stdout}`);
+    assert.match(postRunLog, /concurrent session commit/,
+      `the commit landed DURING the push was dropped (task #1793 regression). Log:\n${postRunLog}\nOutput:\n${stdout}`);
+    assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}\nOutput:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('#769: abort-restore preserves commits made DURING the run when HEAD only advanced', () => {
   // Incident class (task #769): push-with-retry.sh captures SCRIPT_ENTRY_HEAD
   // at start; every abort path force-restores it. When a PARALLEL session

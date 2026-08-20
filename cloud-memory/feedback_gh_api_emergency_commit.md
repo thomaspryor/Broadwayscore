@@ -7,15 +7,16 @@ modified: 2026-08-18T21:07:38.806Z
 ---
 ## Check this FIRST before hand-building anything below
 
-`scripts/lib/push-with-retry.sh` already has this exact fallback built in,
-opt-in via `PUSH_VIA_API_FALLBACK=1` (task #707, ~line 1451). Confirmed
-reliable in production twice (2026-08-14, 2026-08-18/task #1791) — both
-times a session didn't know the flag existed and manually replicated the
+`scripts/lib/push-with-retry.sh` already has this exact fallback built in
+and runs it AUTOMATICALLY (default-on since task #1847 — no flag needed;
+`PUSH_API_FALLBACK_DISABLE=1` opts a caller back out). Confirmed reliable in
+production twice (2026-08-14, 2026-08-18/task #1791) — both times a session
+didn't know the fallback existed and manually replicated the
 blob/tree/commit/ref-update sequence by hand, burning 15-45 minutes to
-rediscover what the flag already does. Try
-`PUSH_VIA_API_FALLBACK=1 bash scripts/lib/push-with-retry.sh <retries> main`
-before hand-rolling the steps below. (Follow-up to make this default-on /
-more discoverable: task #1792.)
+rediscover what the script already does. Just run
+`bash scripts/lib/push-with-retry.sh <retries> main` before hand-rolling the
+steps below — it will fetch+rebase first, then fall back to the Git Data API
+automatically on exhaustion.
 
 ## The situation
 

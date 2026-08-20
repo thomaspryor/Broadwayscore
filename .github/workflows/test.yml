@@ -410,7 +410,7 @@ on:
       - 'scripts/lib/push-with-retry.mutex-deadline.test.sh'
       - 'scripts/lib/push-with-retry.fetch-timeout.test.sh'
       # Git Data API push fallback (task #707, generalizes the task #698 live
-      # fix): opt-in (PUSH_VIA_API_FALLBACK=1) replacement for the local
+      # fix; default-on since task #1847): replacement for the local
       # fetch+rebase+push cycle when it exhausts every retry under high
       # churn. Test lives in tests/unit/ (node --test batch, covered by the
       # tests/** glob already); the .sh source needs explicit listing (no
