@@ -36,6 +36,15 @@ on:
       # would trigger zero CI without this entry (task #1581, same gap class
       # as scripts/check-orphan-commits.js above).
       - 'scripts/audit-workflow-concurrency.js'
+      # BRO-554 deploy dedup: scripts/check-recent-deploy.js is a top-level
+      # script (outside the scripts/lib/** glob above) and its required test
+      # scripts/vercel-deploy.test.mjs lives at scripts/ root per the Linear
+      # ticket's acceptance criteria (`node --test scripts/vercel-deploy.test.mjs`),
+      # not scripts/lib/ — neither is covered by any existing glob, so both
+      # need their own entry (same gap class as scripts/check-orphan-commits.js
+      # above). Registered in tests/unit-test-manifest.txt.
+      - 'scripts/check-recent-deploy.js'
+      - 'scripts/vercel-deploy.test.mjs'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.

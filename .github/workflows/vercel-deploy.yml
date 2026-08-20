@@ -38,14 +38,22 @@ jobs:
   #     report success while its Vercel deploy was CANCELED (2026-06-26), and
   #     skipped preflights also conclude "success" (stale-baseline bug in the
   #     old gh-run-list lookup).
-  #   - Scheduled ticks skip only on positive proof: HEAD already live, or no
-  #     site-path diff vs the live SHA while the live deploy is <6h old
-  #     (content-aware gate, 2026-07-19 cost fix: ~93% of main commits are
-  #     bookkeeping that rebuilt an identical site ~139x/day).
+  #   - Scheduled ticks skip only on positive proof: HEAD already live, a real
+  #     prod deploy landed <30min ago (recently-deployed dedup, BRO-554 —
+  #     prevents a burst of small commits each invalidating Vercel's ISR
+  #     cache), or no site-path diff vs the live SHA while the live deploy is
+  #     <6h old (content-aware gate, 2026-07-19 cost fix: ~93% of main
+  #     commits are bookkeeping that rebuilt an identical site ~139x/day).
   #   - The 6h staleness backstop bounds staleness for private core-data
   #     changes (shows.json etc.) that never touch this repo's tree.
   #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
   #     when HEAD is already live. Any gate-input failure fails OPEN (deploy).
+  #     The same 30-min dedup window is enforced one layer up, before the
+  #     workflow_dispatch call itself, for the 5 automated (non-emergency)
+  #     pipeline workflows that dispatch this workflow directly (see
+  #     scripts/check-recent-deploy.js) — opening-night-broadcast.yml,
+  #     opening-night-express.yml, and opening-night-poller.yml are
+  #     deliberately excluded from that pre-dispatch check.
   # Kill switch: set repo variable DEPLOY_GATE_DISABLED=true to force every
   # trigger through (phone-operable; no code change).
   # Carries the Beaches #9 race guard (workflow_run conclusion check).

@@ -5,16 +5,19 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC } = require('./should-deploy-gate.js');
+const { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC, DEDUP_WINDOW_SEC } = require('./should-deploy-gate.js');
 
 const A = 'a'.repeat(40);
 const B = 'b'.repeat(40);
 
+// deployAgeSec must clear DEDUP_WINDOW_SEC (30min) so tests below that aren't
+// specifically about the recently-deployed rule exercise the diff/staleness
+// logic instead of tripping the dedup check first.
 const base = {
   eventName: 'schedule',
   gateDisabled: false,
   baselineSha: A,
-  deployAgeSec: 600,
+  deployAgeSec: DEDUP_WINDOW_SEC + 600,
   headSha: B,
   diffResult: 'clean',
 };
@@ -38,6 +41,23 @@ test('schedule: clean site diff + fresh deploy skips (content-gate)', () => {
 test('schedule: dirty site diff deploys (content-changed)', () => {
   const r = decide({ ...base, diffResult: 'dirty' });
   assert.deepEqual(r, { proceed: true, reason: 'content-changed' });
+});
+
+test('schedule: recently-deployed skips even with a dirty (content-changed) diff (BRO-554)', () => {
+  // The whole point of the dedup rule: content DID change, but we just
+  // deployed — wait for the window to clear instead of shipping again.
+  const r = decide({ ...base, diffResult: 'dirty', deployAgeSec: 300 });
+  assert.deepEqual(r, { proceed: false, reason: 'recently-deployed' });
+});
+
+test('schedule: recently-deployed boundary is exact (< DEDUP_WINDOW_SEC only)', () => {
+  const justUnder = decide({ ...base, diffResult: 'dirty', deployAgeSec: DEDUP_WINDOW_SEC - 1 });
+  assert.deepEqual(justUnder, { proceed: false, reason: 'recently-deployed' });
+  // At exactly the boundary, dedup does NOT fire — falls through to the
+  // content-diff check (base's diffResult is 'clean' here, so content-gate).
+  const atBoundary = decide({ ...base, deployAgeSec: DEDUP_WINDOW_SEC });
+  assert.deepEqual(atBoundary, { proceed: false, reason: 'content-gate' });
+  assert.equal(DEDUP_WINDOW_SEC, 1800);
 });
 
 test('schedule: staleness backstop fires at >6h even with clean diff (seconds math)', () => {

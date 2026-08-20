@@ -14,14 +14,27 @@
  * charges dominating the Vercel bill (2026-07 cost analysis).
  *
  * Skip rules (scheduled ticks only — the gate ONLY skips on positive proof):
- *   - baseline known AND baseline == HEAD                    → skip (no-new-commits)
- *   - baseline known AND site-path diff empty AND deploy <6h → skip (content-gate)
+ *   - baseline known AND baseline == HEAD                     → skip (no-new-commits)
+ *   - baseline known AND deploy age < 30min (BRO-554)         → skip (recently-deployed)
+ *   - baseline known AND site-path diff empty AND deploy <6h  → skip (content-gate)
  * EVERYTHING else proceeds: unknown baseline, Vercel API failure, git fetch or
  * diff failure, deploy older than 6h (staleness backstop — private core-data
  * changes don't touch this repo, the backstop bounds their staleness), any
  * non-schedule event (workflow_dispatch / workflow_run keep their "ship now"
- * semantics, deduped only when HEAD is already live).
- * A wrongly-run build costs cents; a wrongly-skipped deploy is silent staleness.
+ * semantics, deduped only when HEAD is already live — those triggers are either
+ * genuine manual/emergency use or a post-rebuild refresh with its own SLA in
+ * opening-night-checklist.yml; throttling them risked reintroducing the
+ * "deploy-before-rebuild race" this file's workflow_run handling exists to
+ * avoid). A wrongly-run build costs cents; a wrongly-skipped deploy is silent
+ * staleness.
+ *
+ * The recently-deployed rule (BRO-554, 2026-08-20) exists because a burst of
+ * small commits minutes apart could each pass the content-gate and deploy —
+ * every deploy invalidates Vercel's ISR cache, so back-to-back deploys mean a
+ * page never serves a second cached request. scripts/check-recent-deploy.js
+ * applies the same DEDUP_WINDOW_SEC to the workflow_dispatch callers that
+ * bypass this gate entirely (gather-reviews.yml etc. — see that script's
+ * header for why this gate's own workflow_dispatch branch can't cover them).
  *
  * Kill switch: repo variable DEPLOY_GATE_DISABLED=true (passed as GATE_DISABLED)
  * forces proceed on every trigger — the 2am phone-operable escape hatch.
@@ -66,6 +79,10 @@ const SITE_PATHS = [
 
 const STALENESS_BACKSTOP_SEC = 6 * 3600;
 
+// Minimum time between deploys for scheduled ticks (BRO-554). Shared with
+// scripts/check-recent-deploy.js so both dedup paths use the same window.
+const DEDUP_WINDOW_SEC = 30 * 60;
+
 // git diff --quiet exit codes: 0 = no diff, 1 = diff, anything else = error.
 function classifyDiffExit(code) {
   if (code === 0) return 'clean';
@@ -103,6 +120,7 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   if (baselineSha === headSha) return { proceed: false, reason: 'no-new-commits' };
   if (deployAgeSec == null) return { proceed: true, reason: 'no-age-fail-open' };
   if (deployAgeSec > STALENESS_BACKSTOP_SEC) return { proceed: true, reason: 'staleness-backstop' };
+  if (deployAgeSec < DEDUP_WINDOW_SEC) return { proceed: false, reason: 'recently-deployed' };
   if (diffResult === 'dirty') return { proceed: true, reason: 'content-changed' };
   if (diffResult === 'clean') return { proceed: false, reason: 'content-gate' };
   return { proceed: true, reason: 'diff-error-fail-open' };
@@ -179,7 +197,7 @@ function main() {
     !gateDisabled &&
     eventName === 'schedule' &&
     baseline.sha && baseline.sha !== headSha &&
-    baseline.ageSec != null && baseline.ageSec <= STALENESS_BACKSTOP_SEC
+    baseline.ageSec != null && baseline.ageSec >= DEDUP_WINDOW_SEC && baseline.ageSec <= STALENESS_BACKSTOP_SEC
   ) {
     diff = runDiff(baseline.sha, headSha);
   }
@@ -203,6 +221,6 @@ function main() {
   writeOutput(proceed, reason);
 }
 
-module.exports = { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC };
+module.exports = { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC, DEDUP_WINDOW_SEC };
 
 if (require.main === module) main();
