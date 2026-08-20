@@ -108,6 +108,36 @@ test('recover-serp-text.js refuses a proven-zero --outlet=ap sweep at the CLI wi
   assert.match(stderr, /proven-zero sweep/);
 });
 
+test('proven-zero DOMAIN-list entries are ALSO guarded via their own registered aliases (dailymail.com, thetimes.com)', () => {
+  // what-else finding: the guard closed the OUTLET-alias bypass (ap ->
+  // apnews.com/abcnews.go.com) but missed the symmetric case for entries
+  // already in PROVEN_ZERO_SWEEP_DOMAINS itself — daily-mail's own registry
+  // alias (dailymail.com) and times-uk's (thetimes.com) were reachable
+  // without tripping the guard.
+  const aliasSet1 = REGISTRY_DOMAIN_ALIASES['dailymail.co.uk'];
+  const aliasSet2 = REGISTRY_DOMAIN_ALIASES['thetimes.co.uk'];
+  assert.ok(aliasSet1 && aliasSet1.has('dailymail.com'), 'expected dailymail.co.uk alias fixture to still be registered');
+  assert.ok(aliasSet2 && aliasSet2.has('thetimes.com'), 'expected thetimes.co.uk alias fixture to still be registered');
+  assert.equal(isProvenZeroSweep({ domain: 'dailymail.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), true);
+  assert.equal(isProvenZeroSweep({ domain: 'thetimes.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), true);
+});
+
+test('recover-serp-text.js refuses --domain=dailymail.com (alias of the guarded dailymail.co.uk) at the CLI', () => {
+  let stderr = '';
+  let exitCode = 0;
+  try {
+    execFileSync('node', ['scripts/recover-serp-text.js', '--domain=dailymail.com', '--dry-run', '--limit=1'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
+  } catch (e) {
+    exitCode = e.status;
+    stderr = e.stderr || '';
+  }
+  assert.notEqual(exitCode, 0);
+  assert.match(stderr, /proven-zero sweep/);
+});
+
 test('recover-serp-text.js refuses --domain=apnews.com and --domain=abcnews.go.com too — the alias bypass is closed end-to-end', () => {
   for (const domain of ['apnews.com', 'abcnews.go.com']) {
     let stderr = '';

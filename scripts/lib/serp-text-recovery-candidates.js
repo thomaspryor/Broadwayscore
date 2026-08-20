@@ -107,14 +107,19 @@ const PROVEN_ZERO_SWEEP_OUTLETS = new Set([
  * pool with no measured yield. Pure + exported for unit testing.
  *
  * A --domain target is ALSO guarded when it resolves — directly or through
- * a registered domain alias — to a proven-zero OUTLET (e.g. `ap` was
- * measured via --outlet=ap, but buildDomainOutletIds()'s alias expansion
- * means --domain=apnews.com or --domain=abcnews.go.com now reach the exact
- * same AP-attributed candidate pool; without this check the alias
- * generalization would silently reopen the guard it's supposed to protect —
- * ship-check finding, BRO-141). outletDomains/domainAliases are optional so
- * existing callers that only care about the static domain/outlet lists
- * still work; pass OUTLET_DOMAINS/REGISTRY_DOMAIN_ALIASES to get the full check.
+ * a registered domain alias — to a proven-zero domain OR outlet. Two alias
+ * paths, both closed here (what-else pass, BRO-141, found the second one
+ * live in this same file/session — 55 registry outlets carry domainAliases,
+ * including two of PROVEN_ZERO_SWEEP_DOMAINS' own entries: daily-mail's
+ * dailymail.co.uk/dailymail.com and times-uk's thetimes.co.uk/thetimes.com):
+ *   1. `ap` was measured via --outlet=ap, but buildDomainOutletIds()'s alias
+ *      expansion means --domain=apnews.com or --domain=abcnews.go.com now
+ *      reach the exact same AP-attributed pool (ship-check finding).
+ *   2. --domain=dailymail.co.uk is guarded directly, but its own alias
+ *      --domain=dailymail.com was NOT, before this fix.
+ * outletDomains/domainAliases are optional so existing callers that only
+ * care about the static lists still work; pass
+ * OUTLET_DOMAINS/REGISTRY_DOMAIN_ALIASES to get the full check.
  *
  * @param {object} target
  * @param {string|null} target.domain
@@ -127,12 +132,19 @@ function isProvenZeroSweep(target, outletDomains, domainAliases) {
   if (target.outlet) return PROVEN_ZERO_SWEEP_OUTLETS.has(target.outlet);
   if (!target.domain) return false;
   if (PROVEN_ZERO_SWEEP_DOMAINS.has(target.domain)) return true;
+  if (!domainAliases) return false;
+  // Path 2: does target.domain alias a domain that's directly in the list?
+  for (const provenDomain of PROVEN_ZERO_SWEEP_DOMAINS) {
+    const aliasSet = domainAliases[provenDomain] || new Set();
+    if (aliasSet.has(target.domain)) return true;
+  }
   if (!outletDomains) return false;
+  // Path 1: does target.domain (or its alias) resolve to a proven-zero outlet?
   for (const outletId of PROVEN_ZERO_SWEEP_OUTLETS) {
     const primary = outletDomains[outletId];
     if (!primary) continue;
     if (target.domain === primary) return true;
-    const aliasSet = (domainAliases && domainAliases[primary]) || new Set();
+    const aliasSet = domainAliases[primary] || new Set();
     if (aliasSet.has(target.domain)) return true;
   }
   return false;
