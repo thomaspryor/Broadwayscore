@@ -181,22 +181,6 @@ async function main() {
     process.exit(1);
   }
 
-  // This is the highest-fan-out direct-API-call script in the repo (up to 2
-  // calls per workflow — 372 for the current 186 workflows, see header
-  // comment). Skip gracefully when the shared fleet-wide token quota is
-  // already critically low instead of contributing to the exhaustion
-  // (same guard as health-check.js's getWorkflowRunSummary(), BRO-134).
-  // Deliberately NOT bypassed by --force — that flag only bypasses the
-  // local 24h results cache, not this shared-quota safety net.
-  if (hasLowHeadroom()) {
-    if (JSON_OUTPUT) {
-      console.log(JSON.stringify({ skipped: true, reason: 'low fleet-wide rate-limit headroom' }));
-    } else {
-      console.error('⚠️  Skipping — fleet-wide GitHub API rate-limit headroom is low. Try again once quota recovers.');
-    }
-    return;
-  }
-
   const files = fs.readdirSync(WORKFLOW_DIR)
     .filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();
@@ -207,6 +191,23 @@ async function main() {
     return !c || (Date.now() - c.fetchedAt) >= CACHE_TTL_MS;
   }).length;
   const fromCache = files.length - staleCount;
+
+  // This is the highest-fan-out direct-API-call script in the repo (up to 2
+  // calls per workflow — 372 for the current 186 workflows, see header
+  // comment). Skip gracefully when the shared fleet-wide token quota is
+  // already critically low instead of contributing to the exhaustion
+  // (same guard as health-check.js's getWorkflowRunSummary(), BRO-134).
+  // Checked AFTER the cache load so a fully-warm cache (staleCount === 0,
+  // zero real API calls needed) is never skipped over a quota concern that
+  // doesn't apply to it.
+  if (staleCount > 0 && hasLowHeadroom()) {
+    if (JSON_OUTPUT) {
+      console.log(JSON.stringify({ skipped: true, reason: 'low fleet-wide rate-limit headroom', fromCache, staleCount }));
+    } else {
+      console.error('⚠️  Skipping — fleet-wide GitHub API rate-limit headroom is low. Try again once quota recovers.');
+    }
+    return;
+  }
 
   if (!JSON_OUTPUT) {
     if (fromCache > 0 && !FORCE) {
