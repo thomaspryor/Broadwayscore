@@ -8,10 +8,20 @@
  * generalization of that fix's regression test into a scanner over the rest
  * of scripts/.
  *
- * Detection is heuristic (regex + "rest of enclosing function" scoping, same
- * class of tradeoff as audit-help-flag-safety.js) — false positives/negatives
- * expected, same as every other audit-*.js in this repo. Two independent
- * protection shapes are recognized, both real patterns in this codebase:
+ * Detection is heuristic (regex + acorn tokenizing, same class of tradeoff as
+ * audit-help-flag-safety.js) — false positives/negatives expected, same as
+ * every other audit-*.js in this repo. Protection matching is TIED to the
+ * specific call site, not just "does a protection pattern appear anywhere in
+ * the enclosing function": fetch()'s AbortSignal.timeout/AbortController
+ * check is scoped to the exact `signal:` identifier that call passes, and
+ * https.get()'s destroy-handler check is scoped to the exact request
+ * variable that call assigns (or, for a chained call with no variable, to
+ * just that chained statement). Without this, one call's real protection
+ * silently masked a completely different, genuinely unprotected sibling call
+ * in the same function — caught live by two independent adversarial reviews
+ * (Claude + Codex) converging on the same finding, then confirmed against
+ * the real corpus. Two independent protection shapes are recognized, both
+ * real patterns in this codebase:
  *
  *   fetch(url, { signal: AbortSignal.timeout(N), ... })
  *
@@ -85,30 +95,97 @@ function listScannableFiles(dir) {
 const FETCH_RE = /(?<![.\w])fetch\(/g;
 const HTTP_GET_RE = /\bhttps?\.get\(/g;
 
-// Top-level function-boundary starts, used to scope each call site's search
-// to "rest of its enclosing function" (BRO-108, second commit: a fixed
-// character window either misses handlers in long functions or, widened
-// enough to cover them, bleeds into an unrelated later call's handler and
-// masks a real gap — scoping to the enclosing function is exact for the
-// single-function-per-boundary-segment case, which is this codebase's norm).
-// Covers named function declarations and exports.foo/module.exports.foo/
-// const-let-var assignments to `function(...)` — both require the literal
-// `function` keyword, so they're unambiguous. Deliberately does NOT match
-// `const x = (...) => {...}` / `const x = arg => {...}`: a naive version of
-// that pattern (`= \(` or `= IDENT =>`) also matches ordinary parenthesized
-// expressions like `const n = (s.displayName || s.name || '').toLowerCase()`,
-// which is not a function head at all — telling the two apart requires
-// paren-matching to confirm `=>` actually follows the close-paren. Caught
-// live: that false boundary cut searchTodayTixByTitle's scope off 53 lines
-// before its real `req.on('timeout', ...)` handler, reporting a genuinely
-// protected call as a false positive. Top-level arrow-assigned functions
-// are rare at these call sites in this codebase (verified by survey before
-// writing this) — this is the same scope the original BRO-108 test used.
-const FUNC_BOUNDARY_RE = /^[ \t]*(?:(?:async\s+)?function\s+[\w$]+\s*\(|(?:module\.exports(?:\.[\w$]+)?|exports\.[\w$]+|(?:const|let|var)\s+[\w$]+)\s*=\s*(?:async\s*)?function\s*\()/gm;
+/** Index of the char matching src[openIdx] (openChar), by simple depth counting. Callers pass a blanked view (strings/comments space-filled) so stray brackets inside string content can't desync it. */
+function findMatchingBracket(src, openIdx, openChar, closeChar) {
+  let depth = 0;
+  for (let i = openIdx; i < src.length; i++) {
+    const ch = src[i];
+    if (ch === openChar) depth++;
+    else if (ch === closeChar) { depth--; if (depth === 0) return i; }
+  }
+  return null;
+}
+
+// Past a parameter list's closing paren, skips an optional TypeScript
+// return-type annotation (`: Promise<X>`) plus surrounding whitespace,
+// tracking <>/()/[] depth so a generic like `Promise<KimiScoringOutcome>`
+// doesn't confuse the scan. Without this, kimi-scorer.ts's
+// `async scoreReview(...): Promise<KimiScoringOutcome> {` (and any TS arrow
+// with an explicit return type) never matched — the `{`/`=>` check that
+// confirms a real function head landed on the return-type text, not the
+// body opener, silently dropping the boundary (caught live: KimiScorer had
+// only its constructor recognized, scoreReview()'s fetch() call fell back to
+// file-wide scope).
+function skipReturnTypeAnnotation(src, idx) {
+  let k = idx;
+  while (k < src.length && /\s/.test(src[k])) k++;
+  if (src[k] !== ':') return k;
+  k++;
+  let depth = 0;
+  for (; k < src.length; k++) {
+    const ch = src[k];
+    if (ch === '<' || ch === '(' || ch === '[') depth++;
+    else if (ch === '>' || ch === ')' || ch === ']') depth--;
+    else if (depth <= 0 && (ch === '{' || ch === ';' || ch === '=')) break;
+  }
+  return k;
+}
+
+// Function-boundary starts, used to scope each call site's search to "rest
+// of its enclosing function" (BRO-108, second commit: a fixed character
+// window either misses handlers in long functions or, widened enough to
+// cover them, bleeds into an unrelated later call's handler and masks a
+// real gap). Three shapes, all requiring paren-matching precision to avoid
+// false boundaries:
+//   1. function declarations / exports.foo|module.exports.foo|const-let-var
+//      assignments to `function(...)` — unambiguous (literal keyword),
+//      optionally preceded by `export `/`export default ` (TS files use
+//      this — missed entirely before, collapsing scripts/llm-scoring/
+//      batch-clients.ts's 7 exported functions into ONE scope with zero
+//      boundaries, confirmed live by two independent adversarial reviews).
+//   2. const/let/var assigned to an arrow function `(...) => {` — confirmed
+//      via findMatchingBracket that `=>` actually follows the close-paren,
+//      not just "next char after = is (": a naive version of this pattern
+//      also matches ordinary parenthesized expressions like
+//      `const n = (s.displayName || s.name || '').toLowerCase()`, which
+//      cut searchTodayTixByTitle's scope 53 lines short of its real handler
+//      (caught live). Paren-matching closes that hole.
+//   3. class-method shorthand `[async ][static ]name(...) {` — kimi-scorer.ts's
+//      KimiScorer.scoreReview() is exactly this shape, zero `function`
+//      keyword in the whole file otherwise (also caught live). Excludes
+//      control-flow keywords (if/for/while/switch/catch/function) so
+//      `if (x) {` isn't mistaken for a method header.
+const FUNC_KEYWORD_HEAD_RE = /^[ \t]*(?:export\s+(?:default\s+)?)?(?:(?:async\s+)?function\s+[\w$]+\s*\(|(?:module\.exports(?:\.[\w$]+)?|exports\.[\w$]+|(?:const|let|var)\s+[\w$]+)\s*=\s*(?:async\s*)?function\s*\()/gm;
+const ARROW_HEAD_RE = /^[ \t]*(?:export\s+(?:default\s+)?)?(?:const|let|var)\s+[\w$]+\s*=\s*(?:async\s*)?\(/gm;
+const METHOD_SHORTHAND_HEAD_RE = /^[ \t]*(?:static\s+)?(?:async\s+)?(?:\*\s*)?(?!if\b|for\b|while\b|switch\b|catch\b|function\b|return\b)[\w$]+\s*\(/gm;
 
 function functionBoundaries(source) {
-  const re = new RegExp(FUNC_BOUNDARY_RE.source, 'gm');
-  return [...source.matchAll(re)].map((m) => m.index);
+  const boundaries = new Set();
+
+  for (const m of source.matchAll(new RegExp(FUNC_KEYWORD_HEAD_RE.source, 'gm'))) {
+    boundaries.add(m.index);
+  }
+
+  for (const m of source.matchAll(new RegExp(ARROW_HEAD_RE.source, 'gm'))) {
+    const openParenIdx = m.index + m[0].length - 1;
+    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
+    if (closeParenIdx == null) continue;
+    const k = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `(x: string): Promise<void> => {`
+    if (source.slice(k, k + 2) === '=>') boundaries.add(m.index);
+  }
+
+  for (const m of source.matchAll(new RegExp(METHOD_SHORTHAND_HEAD_RE.source, 'gm'))) {
+    const openParenIdx = m.index + m[0].length - 1;
+    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
+    if (closeParenIdx == null) continue;
+    const k = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `async scoreReview(...): Promise<X> {`
+    // Must open a block body, and must NOT be followed by '=>' (that's a
+    // bare-identifier-typed arrow param list, not a method) or '=' (that's
+    // an assignment target, e.g. destructuring — not a call header at all).
+    if (source[k] === '{') boundaries.add(m.index);
+  }
+
+  return [...boundaries].sort((a, b) => a - b);
 }
 
 // Whole enclosing function, not just "from the call forward" — a timeout
@@ -241,6 +318,54 @@ function blankStringsAndComments(src) {
 // separately scanned by HTTP_GET_RE).
 const LOCAL_FETCH_SHADOW_RE = /(?:^|\n)[ \t]*(?:async\s+)?function\s+fetch\s*\(/;
 
+// Span of a call's own argument list, e.g. `fetch(` at callOpenParenIdx-1 →
+// returns [callOpenParenIdx, matching close paren]. Used to check patterns
+// that must be part of THIS call's own arguments (the { timeout: N } option,
+// an inline AbortSignal.timeout(...)) — narrower and safer than the whole
+// enclosing-function scope, which two independent adversarial reviews (Claude
+// + Codex, task #1862) both confirmed lets ONE call's protection silently
+// mask a DIFFERENT, genuinely unprotected call in the same function.
+function callArgSpan(source, callOpenParenIdx) {
+  const close = findMatchingBracket(source, callOpenParenIdx, '(', ')');
+  return { start: callOpenParenIdx, end: close === null ? source.length : close + 1 };
+}
+
+// Extends a call's own argument span through any immediately-chained
+// `.identifier(...)` segments — `https.get(url, cb).on('error', x).on('timeout', y)`
+// is one statement/expression, and BRO-108's own real code (fetch-bww-roundups.js,
+// audit-we-reviews.js, etc.) always chains protection handlers directly onto
+// a request with no intermediate variable. Scoping to just this chain (rather
+// than the whole enclosing function) is exact for this shape — no risk of
+// borrowing an unrelated call's handler.
+function chainedCallSpanEnd(source, callOpenParenIdx) {
+  let end = callArgSpan(source, callOpenParenIdx).end;
+  for (;;) {
+    let k = end;
+    while (k < source.length && /\s/.test(source[k])) k++;
+    if (source[k] !== '.') break;
+    k++;
+    while (k < source.length && /[\w$]/.test(source[k])) k++;
+    while (k < source.length && /\s/.test(source[k])) k++;
+    if (source[k] !== '(') break;
+    const close = findMatchingBracket(source, k, '(', ')');
+    if (close === null) break;
+    end = close + 1;
+  }
+  return end;
+}
+
+// If a call at matchIndex is the RHS of `const/let/var NAME = <call>`,
+// returns NAME; otherwise null. Ties https.get()'s protection search to the
+// SPECIFIC request object (`req.on('timeout', ...)` must reference the same
+// `req` this call created), instead of "any .on('timeout',...destroy() text
+// anywhere in the function" — the fix for the same cross-call-contamination
+// risk described on callArgSpan above, for the assigned-to-a-variable shape.
+function assignedVarName(source, matchIndex) {
+  const before = source.slice(Math.max(0, matchIndex - 200), matchIndex); // bounded tail — assignment is always immediately before the call
+  const m = /(?:const|let|var)\s+([\w$]+)\s*=\s*(?:await\s+)?$/.exec(before);
+  return m ? m[1] : null;
+}
+
 function checkSource(file, source) {
   if (source.includes(EXEMPTION)) return []; // checked on RAW source — a blanked comment can't hide the exemption from itself
 
@@ -255,48 +380,94 @@ function checkSource(file, source) {
 
   for (const match of (shadowsFetch ? [] : scanSrc.matchAll(FETCH_RE))) {
     if (isCommentLine(scanSrc, match.index)) continue;
-    const scope = enclosingFunctionScope(scopeSrc, boundaries, match.index);
-    // Two shapes both count: the modern AbortSignal.timeout(N) one-liner, or
-    // the older manual AbortController + setTimeout(() => controller.abort(),
-    // N) pattern (still in live use across 15 files in this codebase, e.g.
-    // backfill-pv-critics.js's fetchWithTimeout helper).
-    // A variable/expression argument (AbortSignal.timeout(timeoutMs)) is as
-    // valid as a literal — required \d+ here missed linear-client.js's real,
-    // working `signal: AbortSignal.timeout(timeoutMs)`, a false positive.
-    const hasAbortSignalTimeout = /AbortSignal\.timeout\(\s*[\w.]+/.test(scope);
-    const hasAbortControllerTimer = /new\s+AbortController\(\)/.test(scope) && /setTimeout\([\s\S]*?\.abort\(\)/.test(scope);
-    if (!hasAbortSignalTimeout && !hasAbortControllerTimer) {
+    const openParenIdx = match.index + match[0].length - 1; // bracket-matching runs on scanSrc — strings are blanked there, so a User-Agent string containing literal "(" can't desync the depth count
+    const ownArgs = callArgSpan(scanSrc, openParenIdx);
+    const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end); // strings intact — a signal variable name is real code, not string content, but kept consistent with the rest of the scan
+
+    // Inline AbortSignal.timeout(...) — tied to THIS call's own arguments,
+    // not "anywhere in the function", so it can never borrow a sibling
+    // call's protection (the false-negative both Claude and Codex adversarial
+    // review independently confirmed for functions with 2+ fetch() calls).
+    const hasInlineAbortSignal = /AbortSignal\.timeout\(\s*[\w.]+/.test(ownArgsText);
+
+    let protectedCall = hasInlineAbortSignal;
+    if (!protectedCall) {
+      // signal: someVar / signal: controller.signal — captures the base
+      // identifier only, then requires ANY protection for THAT SPECIFIC name
+      // in the enclosing function: either it's itself assigned
+      // AbortSignal.timeout(...), or it's an AbortController whose signal is
+      // aborted from a setTimeout(...) referencing the SAME name. Ties the
+      // check to one variable so a DIFFERENT fetch()'s controller in the same
+      // function can't satisfy this one.
+      const sigMatch = /signal\s*:\s*([\w$]+)/.exec(ownArgsText);
+      if (sigMatch) {
+        const ident = sigMatch[1];
+        const scope = enclosingFunctionScope(scopeSrc, boundaries, match.index);
+        const identRe = ident.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const isSignalItself = new RegExp(`\\b${identRe}\\b\\s*=\\s*AbortSignal\\.timeout\\(`).test(scope);
+        const isControllerTied = new RegExp(`\\b${identRe}\\b\\s*=\\s*new\\s+AbortController\\(\\)`).test(scope)
+          && new RegExp(`setTimeout\\([\\s\\S]*?\\b${identRe}\\b\\.abort\\(`).test(scope);
+        protectedCall = isSignalItself || isControllerTied;
+      }
+    }
+
+    if (!protectedCall) {
       findings.push({
         file,
         line: lineOf(scanSrc, match.index),
         call: 'fetch()',
-        detail: 'no AbortSignal.timeout(...) signal or AbortController+setTimeout(...abort()) pattern found in the enclosing function',
+        detail: 'no AbortSignal.timeout(...) signal or AbortController+setTimeout(...abort()) pattern tied to this call\'s signal found',
       });
     }
   }
 
   for (const match of scanSrc.matchAll(HTTP_GET_RE)) {
     if (isCommentLine(scanSrc, match.index)) continue;
-    const scope = enclosingFunctionScope(scopeSrc, boundaries, match.index);
+    const openParenIdx = match.index + match[0].length - 1;
+    const ownArgs = callArgSpan(scanSrc, openParenIdx);
+    const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end);
 
-    // Two independent shapes both count as real protection: the
-    // { timeout: N } option paired with a .on('timeout', ...) handler that
-    // calls .destroy() (Node emits the event but does nothing on its own —
-    // BRO-108's second commit), OR req.setTimeout(N, ...) whose callback
-    // calls .destroy() (the other pattern already in wide use in this repo,
-    // e.g. scrape-lottery-rush.js, outlet-listing-poller.js).
-    const hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(scope);
-    const hasOnTimeoutDestroy = /\.on\(\s*['"]timeout['"]\s*,[\s\S]*?\.destroy\(/.test(scope);
-    const hasSetTimeoutDestroy = /\.setTimeout\(\s*[\w.]+[\s\S]*?\.destroy\(/.test(scope);
+    // { timeout: N } is always part of THIS call's own options object in
+    // every real instance in this codebase — tying it to the call's own
+    // arguments (not the whole enclosing function) costs nothing and closes
+    // off any chance of a sibling call's option satisfying this one.
+    const hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
+
+    // Destroy-handler search is tied to the SPECIFIC request object: if the
+    // call is assigned to a variable (`const req = https.get(...)`), the
+    // handler must reference that same variable name, searched across the
+    // whole enclosing function (a real handler can legitimately sit many
+    // lines after the call — discover-new-shows.js's searchTodayTixByTitle
+    // has one 53 lines down). If NOT assigned (chained directly onto the
+    // call, e.g. `https.get(url, cb).on('error', x).on('timeout', y)`), the
+    // handler is always part of the SAME statement in every real instance
+    // here, so the search narrows to just that chained expression — either
+    // way, a DIFFERENT call's handler can no longer satisfy this one.
+    const varName = assignedVarName(scanSrc, match.index);
+    let destroySearchText;
+    let destroyRe, setTimeoutRe;
+    if (varName) {
+      destroySearchText = enclosingFunctionScope(scopeSrc, boundaries, match.index);
+      const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]*?\\.destroy\\(`);
+      setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]*?\\.destroy\\(`);
+    } else {
+      const chainEnd = chainedCallSpanEnd(scanSrc, openParenIdx);
+      destroySearchText = scopeSrc.slice(match.index, chainEnd);
+      destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]*?\.destroy\(/;
+      setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]*?\.destroy\(/;
+    }
+    const hasOnTimeoutDestroy = destroyRe.test(destroySearchText);
+    const hasSetTimeoutDestroy = setTimeoutRe.test(destroySearchText);
 
     const protectedCall = hasSetTimeoutDestroy || (hasTimeoutOption && hasOnTimeoutDestroy);
     if (protectedCall) continue;
 
     let detail;
     if (!hasTimeoutOption && !hasSetTimeoutDestroy) {
-      detail = 'no { timeout: N } option or req.setTimeout(N, ...) found in the enclosing function';
+      detail = 'no { timeout: N } option or req.setTimeout(N, ...) found for this call';
     } else {
-      detail = 'timeout option set but no .on(\'timeout\', ...) handler calling .destroy() found — the socket will hang forever on fire';
+      detail = 'timeout option set but no .on(\'timeout\', ...) handler calling .destroy() found for this specific request — the socket will hang forever on fire';
     }
     findings.push({ file, line: lineOf(scanSrc, match.index), call: 'https.get()/http.get()', detail });
   }

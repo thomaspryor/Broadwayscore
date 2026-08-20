@@ -53,6 +53,114 @@ test('fetch() protected by AbortController + setTimeout(...abort()) is not flagg
   assert.deepEqual(checkSource('fixture.js', src), []);
 });
 
+test('two fetch() calls in one function, one protected one not — only the unprotected one is flagged', () => {
+  // The core bug two independent adversarial reviews (Claude + Codex)
+  // converged on live: "enclosing function scope" checked "does ANY
+  // protection pattern appear anywhere in this text", not "does it protect
+  // THIS call" — so one call's AbortController would silently mask a
+  // completely unrelated, genuinely unprotected sibling call in the same
+  // function. Fixed by tying the AbortController/AbortSignal search to the
+  // specific `signal:` identifier this call actually uses.
+  const src = `
+    async function doTwoThings(url1, url2) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      const a = await fetch(url1, { signal: controller.signal });
+      clearTimeout(timer);
+      const b = await fetch(url2);
+      return [a, b];
+    }`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1, `expected exactly the unprotected fetch(url2) to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].line, 7);
+});
+
+test('two https.get() calls in one function, one protected one not — only the unprotected one is flagged', () => {
+  const src = `
+    function doTwoThings() {
+      const req1 = https.get(url1, { timeout: 15000 }, cb1);
+      req1.on('timeout', () => req1.destroy());
+      const req2 = https.get(url2, { timeout: 15000 }, cb2);
+      // req2 has no destroy handler at all — a real gap
+    }`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1, `expected exactly the unprotected req2 call to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].line, 5);
+});
+
+test('export async function (TypeScript) is a real function boundary', () => {
+  // Real false negative found live: scripts/llm-scoring/batch-clients.ts
+  // uses `export async function submitOpenAIBatch(...)` throughout — the
+  // boundary regex required the match to start with `function`/`async
+  // function`, so a leading `export ` prefix meant ZERO boundaries were
+  // found in the whole file, collapsing all 7 exported functions (14 fetch()
+  // calls) into one shared scope.
+  const src = `
+    export async function callA(url1, url2) {
+      const a = await fetch(url1, { signal: AbortSignal.timeout(5000) });
+      return a;
+    }
+    export async function callB(url) {
+      const b = await fetch(url);
+      return b;
+    }`;
+  const findings = checkSource('fixture.ts', src);
+  assert.equal(findings.length, 1, `expected only callB's fetch to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].line, 7);
+});
+
+test('a TypeScript class method with a return-type annotation is a real function boundary', () => {
+  // Real false negative found live: scripts/llm-scoring/kimi-scorer.ts's
+  // `async scoreReview(...): Promise<KimiScoringOutcome> {` — the `: Type`
+  // return annotation sits between the closing paren and the body's `{`,
+  // so the naive "closing paren then whitespace then {" check landed on the
+  // return-type text and never recognized the method as a boundary.
+  const src = `
+    class Client {
+      async methodA(x: string): Promise<void> {
+        const a = await fetch(x, { signal: AbortSignal.timeout(5000) });
+        return a;
+      }
+      async methodB(x: string): Promise<void> {
+        const b = await fetch(x);
+        return b;
+      }
+    }`;
+  const findings = checkSource('fixture.ts', src);
+  assert.equal(findings.length, 1, `expected only methodB's fetch to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].line, 8);
+});
+
+test('a top-level arrow function assigned with const is a real function boundary', () => {
+  const src = `
+    const helperA = async (url) => {
+      const a = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      return a;
+    };
+    const helperB = async (url) => {
+      const b = await fetch(url);
+      return b;
+    };`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1, `expected only helperB's fetch to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].line, 7);
+});
+
+test('a parenthesized non-arrow expression is NOT mistaken for an arrow-function boundary', () => {
+  // Regression guard for the ORIGINAL boundary bug (searchTodayTixByTitle,
+  // discover-new-shows.js): `const n = (a || b).toLowerCase()` must not be
+  // treated as an arrow-function head just because `= (` appears.
+  const src = `
+    function go() {
+      const req = https.get(url, { timeout: 15000 }, (res) => {
+        const n = (res.displayName || res.name || '').toLowerCase();
+        return n;
+      });
+      req.on('timeout', () => req.destroy());
+    }`;
+  assert.deepEqual(checkSource('fixture.js', src), []);
+});
+
 test('a function literally named fetch() (shadowing global) is never flagged', () => {
   // Real false positive found live across 6 files (fetch-bww-roundups.js,
   // fetch-from-wayback.js, scripts/lib/author-pages/{muckrack,bww,nysr,
