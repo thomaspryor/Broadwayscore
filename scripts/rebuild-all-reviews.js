@@ -280,6 +280,15 @@ function flagForHumanReview(data, reason, detail) {
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
+// --show=<id>: scope this run to one show and print its per-file exclusion
+// reasons, then exit before any write (reviews.json, watermark, registry,
+// etc). This is the diagnostic command review-count-match.check.js has
+// documented since it was written (`rebuild-all-reviews.js --show=ID
+// --verbose | grep EXCLUSION`) — the flag didn't actually exist (task #1846),
+// so that documented remediation command has never worked.
+const SHOW_FILTER_ARG = process.argv.find(a => a.startsWith('--show='));
+const SHOW_FILTER = SHOW_FILTER_ARG ? SHOW_FILTER_ARG.slice('--show='.length) : null;
+
 // decodeHtmlEntities imported from ./lib/text-cleaning
 
 // fixMojibake, fixMissingPeriods — imported from ./lib/rebuild-helpers
@@ -1150,6 +1159,7 @@ const multiProductionTitleIds = new Set();
 // Get all show directories (filter out orphan dirs that don't match any show in shows.json)
 const validShowIds = new Set(showsData.shows.map(s => s.id));
 const showDirs = listShowDirs(reviewTextsDir)
+  .filter(f => !SHOW_FILTER || f === SHOW_FILTER)
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice
@@ -3339,12 +3349,23 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Garbage outlet guard: skip reviews with sentence-fragment outlet names
+      // Garbage outlet guard: skip reviews with sentence-fragment outlet names.
+      // Registry short-circuit (task #1846): a review whose outletId already
+      // resolves to a REGISTERED outlet can't be a BWW-parser sentence-fragment
+      // artifact — nobody hand-registers "was-along-for-the-ride" as an outlet.
+      // Without this, the "^a |^an " branch below false-positives on real
+      // registered outlets that happen to start with an article, e.g.
+      // "A Youngish Perspective" and "A Younger Theatre" (both live UK theatre
+      // blogs, confirmed silently dropped from reviews.json for multiple shows).
       const outlet = (data.outlet || '').trim();
+      const garbageCheckOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
+      const isRegisteredOutlet = !!outletRegistry.outlets[garbageCheckOutletKey];
       if (
-        outlet.length > 50 ||
-        /^(is |has |the show |a |an |in her |in his |but |with |and |does |proves |keeps |left |enjoying |are )/i.test(outlet) ||
-        (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
+        !isRegisteredOutlet && (
+          outlet.length > 50 ||
+          /^(is |has |the show |a |an |in her |in his |but |with |and |does |proves |keeps |left |enjoying |are )/i.test(outlet) ||
+          (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
+        )
       ) {
         console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
         logExclusion("skippedGarbage", showId, file, data);
@@ -4424,11 +4445,28 @@ showDirs.forEach(showId => {
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
         stats.corruptedFiles.push(`${showId}/${file}`);
       } else {
+        // Task #1846: this branch used to drop the file with NO logExclusion
+        // call — an uncaught runtime exception anywhere in the per-file
+        // processing above (a TypeError from an unexpected field shape, etc.)
+        // silently excluded a fully-valid, fully-scored review with no
+        // audit-trail reason at all ("not-logged" in review-count-match's
+        // exclusion index, which can only report reasons that were logged).
         console.error(`  Error processing ${file}: ${e.message}`);
+        logExclusion("skippedProcessingError", showId, file, null, { error: e.message.substring(0, 200) });
+        stats.skippedProcessingError = (stats.skippedProcessingError || 0) + 1;
       }
     }
   });
 });
+
+if (SHOW_FILTER) {
+  // Diagnostic mode: print what would be included/excluded and exit BEFORE
+  // any write (reviews.json, deploy watermark, outlet registry, etc.) — this
+  // must never truncate the real multi-show reviews.json down to one show.
+  const built = allReviews.filter(r => r.showId === SHOW_FILTER).length;
+  console.log(`\n--show=${SHOW_FILTER}: ${built} review(s) would be included (diagnostic mode — nothing written).`);
+  process.exit(0);
+}
 
 // Sort reviews by showId, then outlet
 allReviews.sort((a, b) => {
@@ -5674,16 +5712,54 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   const { backfillMissingOutletRegions } = require('./lib/outlet-region-map');
   const outletShowCategories = outletShowCategoriesRaw;
 
+  const skippedAliasCollisionOutlets = [];
+  const skippedAliasCollisionDetails = [];
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
+    const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
+      const candidateEntry = { displayName, tier: 3, aliases: [outletId] };
+      // A new outlet whose id/displayName (raw or "the "-stripped) lands on
+      // an already-registered outlet's identity is a silent semantic
+      // duplicate (the-la-times/latimes, task #1838/#1843) — it would
+      // silently steal that outlet's byline-matched reviews. Unlike domain
+      // (nullable), there's no field to degrade here: refuse to write the
+      // entry at all. The review still resolves fine by its literal
+      // outletId — getOutletTier/getOutletDisplayName both degrade
+      // gracefully for an unregistered id (tier 3, raw-id display) — and
+      // validate-data.js's unknown-outlet check is informational, not a
+      // hard failure. Checked against outletRegistry.outlets AS MUTATED SO
+      // FAR this loop, so two colliding new outlets registered in the same
+      // batch are each caught against what came before them.
+      //
+      // Known trade-off (Codex adversarial review, #1843 ship-check): staying
+      // unregistered also makes this outlet permanently eligible for
+      // cross-market-guard.js's "COMPLETELY unregistered" bootstrap exemption
+      // (evaluateForwardCrossMarketGuard, task #817) — a US outlet review of a
+      // West End show that would otherwise be flagged silently passes until a
+      // human resolves the collision in outlet-registry.json. Accepted:
+      // registering it WOULD have applied that same forward guard, but under
+      // a stolen/near-duplicate identity — i.e. this trades "unflagged for a
+      // rare collision candidate" for "never silently steals another
+      // outlet's byline-matched reviews," which is the worse failure mode.
+      if (wouldCauseAliasCollision(outletRegistry.outlets, outletRegistry._aliasIndex, outletId, candidateEntry)) {
+        skippedAliasCollisionOutlets.push(outletId);
+        // Recompute the specific colliding key/outlet(s) for the persisted
+        // audit trail below — only on the rare skip path, not the hot loop.
+        const withCandidate = { ...outletRegistry.outlets, [outletId]: candidateEntry };
+        const collisions = findOutletAliasCollisions(withCandidate, outletRegistry._aliasIndex)
+          .filter((c) => c.outletIds.includes(outletId));
+        skippedAliasCollisionDetails.push({ outletId, collisions });
+        console.warn(`⚠️  SKIPPED auto-registering "${outletId}" — would create an alias collision with an existing outlet (near-duplicate identity). Left unregistered; resolve manually in outlet-registry.json.`);
+        continue;
+      }
       // A hint domain inferred from this outlet's own URLs can still collide
       // with an already-registered outlet — e.g. a venue-disambiguated
       // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
@@ -5695,9 +5771,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
         ? hintDomain
         : null;
       outletRegistry.outlets[outletId] = {
-        displayName,
-        tier: 3,
-        aliases: [outletId],
+        ...candidateEntry,
         domain
       };
     }
@@ -5707,15 +5781,17 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // both the newOutlets just added above and pre-existing entries (BRO-133).
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
-  if (newOutlets.length > 0 || backfilledOutlets.length > 0) {
+  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id));
+
+  if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {
       outletRegistry._meta.lastUpdated = new Date().toISOString();
     }
     const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
     fs.writeFileSync(registryPath, JSON.stringify(outletRegistry, null, 2));
-    if (newOutlets.length > 0) {
-      console.log(`\n✅ AUTO-REGISTERED ${newOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
-      for (const id of newOutlets.sort()) {
+    if (registeredOutlets.length > 0) {
+      console.log(`\n✅ AUTO-REGISTERED ${registeredOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
+      for (const id of registeredOutlets.sort()) {
         console.log(`  + ${id}`);
       }
       console.log('  Review tiers manually if needed.');
@@ -5729,6 +5805,28 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     console.log('  ⚠ IMPORTANT: Also update outlet-registry.json in the PRIVATE repo (~/broadway-scorecard-data/data/outlet-registry.json).');
     console.log('    CI uses the private repo copy — reviews scored here won\'t appear in production until the private registry is updated.');
     console.log('    Quick sync: cp data/outlet-registry.json ~/broadway-scorecard-data/data/ && cd ~/broadway-scorecard-data && git add data/outlet-registry.json && git commit -m "sync outlet registry" && git push');
+  }
+
+  if (skippedAliasCollisionOutlets.length > 0) {
+    console.warn(`\n⚠️  SKIPPED ${skippedAliasCollisionOutlets.length} new outlet(s) — alias collision with an existing outlet (see warnings above): ${skippedAliasCollisionOutlets.sort().join(', ')}`);
+    console.warn('  These outletIds fall back to tier 3 / raw-id display unregistered. Resolve manually in outlet-registry.json (merge into the colliding outlet, or rename to a non-colliding id).');
+    // Persisted audit trail (task #1843 ship-check — Codex flagged that the
+    // skip state previously existed only in an in-memory array + console
+    // warning, so a CI log rotation loses the only record of what needs
+    // manual resolution). Mirrors the existing rebuild-regression.json /
+    // rebuild-show-drift.json pattern: single JSON object, overwritten each
+    // run it fires, non-fatal on write failure.
+    try {
+      const auditDir = path.join(__dirname, '..', 'data', 'audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(path.join(auditDir, 'skipped-alias-collisions.json'), JSON.stringify({
+        timestamp: new Date().toISOString(),
+        skipped: skippedAliasCollisionDetails,
+      }, null, 2) + '\n');
+      console.warn('  Persisted: data/audit/skipped-alias-collisions.json');
+    } catch (auditErr) {
+      console.warn(`  Could not write skipped-alias-collisions.json: ${auditErr.message}`);
+    }
   }
 }
 

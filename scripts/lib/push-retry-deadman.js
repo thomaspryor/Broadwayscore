@@ -66,10 +66,24 @@ function assessPushRetryDeadman(entries, opts = {}) {
   // A no-op-rebase record is the #394 signature and the more serious signal (a
   // stale-ref regression); 3+ exhaustions in a week is also worth an error row.
   const status = noops.length > 0 || recent.length >= 3 ? 'error' : 'warn';
+  // workflow attribution (task #1842): entries written before this field
+  // existed have no `workflow` key — group those under 'unknown' rather than
+  // 'undefined' or dropping them, so old + new rows both count toward the
+  // per-workflow breakdown that makes this row actionable without manual
+  // Actions-run-history archaeology.
+  const byWorkflow = new Map();
+  for (const r of recent) {
+    const wf = r.workflow || 'unknown';
+    byWorkflow.set(wf, (byWorkflow.get(wf) || 0) + 1);
+  }
+  const workflowBreakdown = [...byWorkflow.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([wf, n]) => `${wf} x${n}`)
+    .join(', ');
   const message =
     `${recent.length} push-retry failure(s) in the last 7d` +
     (noops.length > 0 ? ` including ${noops.length} NO-OP-rebase abort(s) (task-#394 stale-ref signature)` : '') +
-    ` across ${branches.join(', ')}. Most recent reason: ${recent[recent.length - 1].reason || '?'}.`;
+    ` across ${branches.join(', ')} [${workflowBreakdown}]. Most recent reason: ${recent[recent.length - 1].reason || '?'}.`;
 
   return {
     name: NAME,

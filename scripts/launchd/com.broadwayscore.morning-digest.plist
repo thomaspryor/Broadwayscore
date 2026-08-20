@@ -32,14 +32,27 @@
          only for this cron context so a stray digest-triggered auto-fix run
          never launches a headless bsc-next job from this job. See
          scripts/resume-headless-job.js:53-54 and bsc-runner.js:167-171 for
-         why this one plist carries it and no other launchd job here does. -->
+         why this one plist carries it and no other launchd job here does.
+
+         SEMICOLON not && before the final exec (task #1818): this is the
+         ONLY launchd job that both runs sync-audit-checkout.sh AND is the
+         sole reader (readSyncRefused, scripts/lib/digest-snapshots.js) of
+         the refusal snapshot that call writes on failure. Chaining with &&
+         like the mutating jobs (backlog-drain/autonomous-shadow/predispatch-
+         queue-audit.plist — deliberately left on && here, they must fail
+         closed) meant a blocked sync silently ate the owner's only email,
+         including the one email whose job is to report the block. This
+         digest is read-only reporting, so running it against a stale/dirty
+         checkout is strictly safer than not running it — its own
+         sections.syncRefused block (send-morning-digest.js) surfaces the
+         staleness in the email itself instead of the owner getting silence. -->
     <key>Label</key>
     <string>com.broadwayscore.morning-digest</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=digest bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/send-morning-digest.js --send-to-owner</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=digest bash scripts/lib/sync-audit-checkout.sh; exec node scripts/send-morning-digest.js --send-to-owner</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>

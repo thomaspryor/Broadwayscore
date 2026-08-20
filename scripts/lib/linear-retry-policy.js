@@ -176,7 +176,37 @@ function retryDelayMs(attempt, headers, opts = {}) {
   return Math.min(capMs, Math.round(exp * (0.5 + 0.5 * random())));
 }
 
+/**
+ * Linear signals rate limiting in TWO shapes, and only one of them is an HTTP
+ * 429. Observed 2026-08-20, mid-import: HTTP 200 with the limit reported in the
+ * GraphQL error body —
+ *   "Rate limit exceeded. Only 2500 requests are allowed per 1 hour."
+ * — which sails past isRetryableStatus() (status is 200) and past every retry
+ * branch, surfacing to the caller as a permanent error. The corpus importer
+ * graded 39 of them as "unexpected failures" and aborted a run that was merely
+ * throttled. Sprint 7 repoints ~66 scripts onto this client, so every one of
+ * them would inherit that misclassification.
+ *
+ * Matches on the extensions code where Linear supplies one and falls back to
+ * the message, because the code is not documented as stable and the message is
+ * what was actually observed on the wire.
+ */
+const RATE_LIMIT_CODE_RE = /RATE_?LIMIT/i;
+const RATE_LIMIT_MESSAGE_RE = /rate[ _-]?limit/i;
+
+function isRateLimitBody(body) {
+  if (!body || !Array.isArray(body.errors)) return false;
+  return body.errors.some((e) => {
+    if (!e) return false;
+    const ext = e.extensions || {};
+    const code = ext.code || ext.type || '';
+    if (RATE_LIMIT_CODE_RE.test(String(code))) return true;
+    return RATE_LIMIT_MESSAGE_RE.test(String(e.message || ''));
+  });
+}
+
 module.exports = {
+  isRateLimitBody,
   MAX_DELAY_MS,
   DEFAULT_BASE_MS,
   DEFAULT_MAX_ATTEMPTS,

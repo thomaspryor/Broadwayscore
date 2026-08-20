@@ -65,6 +65,7 @@ const { mergeAwardsJson } = require('./merge-awards-json');
 const { mergeOpeningNightSent } = require('./merge-opening-night-sent');
 const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
+const { mergeReviewsJson } = require('./merge-reviews-json');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -158,10 +159,23 @@ const CORE_DATA_MERGE_REGISTRY = [
   {
     file: 'reviews.json',
     surface: 'private-core-data',
-    status: 'deferred',
-    deferredReason:
-      'genuinely the hottest multi-writer file (20+ independently-scheduled writers) but also the central scoring-pipeline file (CLAUDE.md §3/§12) — a wrong array-union merge risks silent scoring corruption across the whole site, not just one file. Needs its own dedicated, carefully-tested card rather than reusing this session\'s generic keyed-union pattern on the deadline this card was worked under.',
-    followUp: 'BRO-76 follow-up card filed for reviews.json-specific reconciliation',
+    status: 'active',
+    merge: mergeReviewsJson,
+    format: 'json',
+    newline: true,
+    // BRO-76 follow-up (card #1834): the hottest multi-writer file (20+
+    // independently-scheduled writers) AND the central scoring-pipeline file
+    // (CLAUDE.md §3/§12), so this was deliberately deferred out of BRO-76's
+    // first pass rather than reusing the generic keyed-union pattern on a
+    // deadline. scripts/lib/merge-reviews-json.js's module comment has the
+    // full design (identity = outlet+criticKey with a canonicalized-URL
+    // fallback, reusing manual-entry-merge.js/review-guards.js's own
+    // normalizers; conflicts resolve manualEntry > newer whole-snapshot
+    // _meta.lastUpdated > contentTier > ours; disjoint keys union, with a
+    // documented accepted limitation) — see it before
+    // touching this entry. Verified with scripts/scoring-delta.js and
+    // scripts/test-temporal-override-regression.js before flipping to
+    // 'active'.
   },
   { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
   { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'only update-critic-consensus.yml writes it' },

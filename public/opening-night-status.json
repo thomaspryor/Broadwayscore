@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T19:20:26.520Z",
+  "generatedAt": "2026-08-20T16:56:04.967Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,26 @@
       "status": "open",
       "slug": "abigails-party-west-end",
       "thumbnail": "/images/shows/abigails-party-west-end-2026/thumbnail.webp",
-      "siteScore": 81.84,
-      "liveScore": 82,
-      "scoreDrift": 0.1599999999999966,
+      "siteScore": 83.85,
+      "liveScore": 84,
+      "scoreDrift": 0.15000000000000568,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 9,
       "t1": 4,
-      "t2": 1,
+      "t2": 4,
       "t3": 1,
-      "positive": 6,
+      "positive": 9,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
           "T1:2/3",
-          "hi-conf:1/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -51,18 +50,6 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -129,6 +116,18 @@
           "t2": 1,
           "t3": 1,
           "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-20T16:56:04.967Z",
+          "rc": 9,
+          "s": 83.85,
+          "t1": 4,
+          "t2": 4,
+          "t3": 1,
+          "p": 9,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -529,19 +528,19 @@
       "status": "open",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
-      "siteScore": 69.05,
+      "siteScore": 68.54,
       "liveScore": 69,
-      "scoreDrift": -0.04999999999999716,
+      "scoreDrift": 0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 18,
       "t1": 1,
-      "t2": 2,
-      "t3": 9,
-      "positive": 4,
-      "mixed": 7,
-      "negative": 1,
+      "t2": 4,
+      "t3": 13,
+      "positive": 7,
+      "mixed": 9,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -681,6 +680,18 @@
           "m": 7,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-20T16:56:04.967Z",
+          "rc": 18,
+          "s": 68.54,
+          "t1": 1,
+          "t2": 4,
+          "t3": 13,
+          "p": 7,
+          "m": 9,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     }
@@ -696,7 +707,7 @@
       "status": "previews",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,

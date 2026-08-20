@@ -32,12 +32,21 @@
 const linear = require('./lib/linear-client');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
+const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 
 const USAGE = `Usage:
   node scripts/linear-session.js claim --issue=BRO-123
   node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"]
-  node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."]
-  node scripts/linear-session.js ping`;
+  node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."] [--force="<reason ≥10 chars>"]
+  node scripts/linear-session.js ping
+
+  report --status=done is REFUSED (exit 5) unless the issue carries
+  done-evidence: a "PR-EVIDENCE: merged deployed checked (<url>)" line, or a
+  safe-form verification command in an "## Acceptance criteria" section /
+  "VERIFY: <cmd>" line — read from the issue description, its existing
+  comments, and this call's own outcome comment. Bypass with
+  --force="<reason ≥10 chars>", or LINEAR_DONE_GATE_DISABLED=1 for automation
+  that must not block (BRO-457).`;
 
 function parseArgs(argv) {
   const args = { _: [] };
@@ -198,19 +207,75 @@ async function cmdReport(args) {
 
   const team = await linear.getTeam();
   const completion = lsr.planCompletion({ status: args.status, states: team.states });
+
+  // BRO-457: this is the OTHER call site that ever moves a Linear issue to a
+  // completed state (the one --status=done sessions actually use, not
+  // linear-brain.js's `update`) — done-semantics-gate.js had zero real-world
+  // effect until both were wired. Gated on the literal 'done' status, not a
+  // resolved state `type`: planCompletion() only returns {stateId,
+  // stateName}, and every completion this branch ever runs for was already
+  // requested via status==='done', so the semantic intent is unambiguous
+  // without adding a type field to that return shape.
+  let stateMoved = false;
+  let refusal = null;
   if (completion.stateId) {
-    await linear.updateIssue(issue.id, { stateId: completion.stateId });
+    if (args.status === 'done') {
+      const bypassReason =
+        args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
+      if (args.force && !bypassReason) {
+        console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
+      }
+      if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
+        // Same three text sources linear-brain.js's update gate reads:
+        // description, prior comments (already on `issue` from getIssue()'s
+        // comments(first: 20)), and this call's own outcome comment — which
+        // was already posted above, so it counts as commentText here too.
+        const existingComments = ((issue.comments && issue.comments.nodes) || [])
+          .map((c) => c && c.body)
+          .filter(Boolean);
+        const gate = checkLinearDoneTransition({
+          targetStateType: 'completed',
+          description: issue.description || '',
+          commentText: body,
+          existingComments,
+        });
+        if (gate.gated && !gate.allowed) refusal = gate;
+      }
+    }
+    if (!refusal) {
+      await linear.updateIssue(issue.id, { stateId: completion.stateId });
+      stateMoved = true;
+    }
   }
 
+  // Marker printed regardless of refusal — the outcome comment above IS the
+  // report the Stop-hook "reported" sentinel tracks (see file header); a
+  // refused Done still means this session communicated status honestly, it
+  // just didn't get to change the issue's state.
   console.log(lsr.buildIssueIdMarker(issue.id));
   console.log(
     JSON.stringify({
       id: issue.id,
       identifier: issue.identifier,
       status: args.status,
-      stateName: completion.stateName || (issue.state && issue.state.name) || null,
+      stateName: stateMoved ? completion.stateName : (issue.state && issue.state.name) || null,
+      doneGateRefused: !!refusal,
     })
   );
+
+  if (refusal) {
+    console.error(
+      `\n❌ REFUSED (${refusal.verdict}) — ${issue.identifier} stays in "${
+        (issue.state && issue.state.name) || 'its current state'
+      }", not moved to ${completion.stateName}\n`
+    );
+    console.error(refusal.reason);
+    console.error(
+      `\nTo move it anyway, pass --force="<reason ≥10 chars>", ` +
+        `or set LINEAR_DONE_GATE_DISABLED=1 for automation that must not block.\n`
+    );
+    process.exit(5);
+  }
 }
 
 async function cmdPing() {
