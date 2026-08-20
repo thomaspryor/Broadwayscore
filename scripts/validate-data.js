@@ -2323,7 +2323,7 @@ function validateOutletAliasNearDuplicates() {
   }
   const { findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-  const collisions = findOutletAliasCollisions(registry.outlets || registry);
+  const collisions = findOutletAliasCollisions(registry.outlets || registry, registry._aliasIndex);
   for (const c of collisions) {
     error(`[near-duplicate-outlet] "${c.key}" resolves to ${c.outletIds.length} outlets (${c.outletIds.join(', ')}) — one is a semantic duplicate of the other (the-la-times class). Merge the duplicate into the canonical outlet (see scripts/merge-outlet-alias-duplicates.js for the pattern) or rename to remove the collision.`);
   }

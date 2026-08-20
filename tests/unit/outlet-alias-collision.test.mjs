@@ -96,6 +96,37 @@ describe('findOutletAliasCollisions', () => {
     const laTimesKeyCollision = collisions.find((c) => c.key === 'la times');
     assert.deepStrictEqual(laTimesKeyCollision.outletIds, ['la-times-blog', 'latimes', 'the-la-times']);
   });
+
+  test('a new outlet colliding with a DIFFERENT outlet\'s _aliasIndex entry is flagged', () => {
+    // _aliasIndex is a second, independent resolution source
+    // (review-normalization.js:104-111) — a new outlet's own identity can
+    // collide with an _aliasIndex alias that points at someone else entirely,
+    // not just with another outlet's own `aliases` array. Registered as its
+    // own id (the realistic collision surface — ids and _aliasIndex keys are
+    // both slug/hyphenated text, unlike free-text displayNames).
+    const outlets = {
+      'the-globe-and-mail': { displayName: 'The Globe and Mail', tier: 3, aliases: [] },
+      'the-globe-and-mail-j-kelly-nestruck': { displayName: 'J Kelly Nestruck Blog', tier: 3, aliases: [] },
+    };
+    const aliasIndex = { 'the-globe-and-mail-j-kelly-nestruck': 'the-globe-and-mail' };
+    const collisions = findOutletAliasCollisions(outlets, aliasIndex);
+    const hit = collisions.find((c) => c.key === 'the-globe-and-mail-j-kelly-nestruck');
+    assert.ok(hit, 'expected a collision on the aliasIndex-claimed key');
+    assert.deepStrictEqual(hit.outletIds, ['the-globe-and-mail', 'the-globe-and-mail-j-kelly-nestruck']);
+  });
+
+  test('_aliasIndex entries pointing at the SAME outlet as the collision do not false-positive', () => {
+    const outlets = {
+      latimes: { displayName: 'Los Angeles Times', tier: 1, aliases: ['la times'] },
+    };
+    const aliasIndex = { 'the-la-times-charles-mcnulty': 'latimes' };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets, aliasIndex), []);
+  });
+
+  test('omitting aliasIndex entirely does not throw and behaves as empty', () => {
+    const outlets = { variety: { displayName: 'Variety', tier: 1, aliases: [] } };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets, undefined), []);
+  });
 });
 
 describe('buildOutletTextKeys', () => {
@@ -121,7 +152,7 @@ describe('live registry', () => {
     const registryPath = resolve(ROOT, 'data', 'outlet-registry.json');
     if (!existsSync(registryPath)) return; // data not checked out in this environment
     const registry = JSON.parse(readFileSync(registryPath, 'utf8'));
-    const collisions = findOutletAliasCollisions(registry.outlets || registry);
+    const collisions = findOutletAliasCollisions(registry.outlets || registry, registry._aliasIndex);
     assert.deepStrictEqual(
       collisions,
       [],
