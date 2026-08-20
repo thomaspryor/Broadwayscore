@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-20T19:33:41.338Z",
-  "processed": 92,
-  "failed": 1304,
-  "successRate": "6.6%",
+  "updatedAt": "2026-08-20T19:44:03.168Z",
+  "processed": 111,
+  "failed": 1535,
+  "successRate": "6.7%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 64,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 4,
-    "scrapingbee": 15,
+    "scrapingbee": 17,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 23
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -80,6 +80,17 @@
       "t": "2026-08-20T19:29:39.652Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-20T19:35:50.156Z",
+      "event": "bb-session",
+      "session": "316be199",
+      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
+    },
+    {
+      "t": "2026-08-20T19:35:50.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
