@@ -43,6 +43,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { venuesMatch } = require('./lib/deduplication');
 
@@ -77,8 +78,11 @@ const adminPromoteAll = args.includes('--admin-promote-all');
 // fetches for either, no venue-page-sourced OB promotions (those keep the
 // operator-run path via health-check). Both classes validate off the
 // aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
-// Review Roundup page IS the go-live signal). Name kept for backward compat
-// with existing CI invocations even though it now covers a second class.
+// Review Roundup page IS the go-live signal) — for the regional class, the
+// roundup must ALSO name 3+ distinct review outlets (owner rule 2026-07-30,
+// BRO-125: see decideRegionalPromotion / scripts/lib/review-threshold.js).
+// Name kept for backward compat with existing CI invocations even though it
+// now covers a second class.
 const regionalOnly = args.includes('--regional-only');
 // --email: send the owner a "went live" notification for promoted regional /
 // off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
@@ -136,7 +140,18 @@ function buildShowEntry(candidate) {
 // the validation: it only exists once professional reviews are out.
 const AGGREGATOR_ROUNDUP_SOURCES = new Set(['bww-roundup', 'playbill-verdict']);
 
-/** Pure promotion rule for regional candidates (testable, CLAUDE.md §15). */
+/**
+ * Pure promotion rule for regional candidates (testable, CLAUDE.md §15).
+ *
+ * BRO-125 (owner rule 2026-07-30): "roundup exists" alone is no longer
+ * sufficient — a roundup naming only 1-2 critics carries "very little
+ * critical or audience signal to be useful." The roundup-source + feeder-
+ * venue checks below stay (they establish this candidate is a real,
+ * in-scope regional production at all); decideReviewThresholdPromotion adds
+ * the actual signal check on top, using candidate.reviewCount — the count of
+ * distinct registered outlets aggregator-candidate-extract.js's
+ * countDistinctReviewOutlets() found in that same roundup article.
+ */
 function decideRegionalPromotion(candidate) {
   if (!candidate || candidate.category !== 'regional') {
     return { confirmed: false, reason: 'not a regional candidate' };
@@ -149,7 +164,11 @@ function decideRegionalPromotion(candidate) {
     // only fires on stale staged entries written before the venue table existed.
     return { confirmed: false, reason: `venue "${candidate.venue}" not in the feeder-venue table` };
   }
-  return { confirmed: true, reason: 'aggregator roundup page exists (regional feeder venue)', source: 'aggregator-roundup' };
+  const reviewThreshold = decideReviewThresholdPromotion(candidate);
+  if (!reviewThreshold.confirmed) {
+    return { confirmed: false, reason: `roundup exists but ${reviewThreshold.reason}` };
+  }
+  return { confirmed: true, reason: `aggregator roundup page exists (regional feeder venue) — ${reviewThreshold.reason}`, source: 'aggregator-roundup' };
 }
 
 /**

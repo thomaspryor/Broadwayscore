@@ -12,6 +12,9 @@ const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideO
 const { feederVenueCity, classifyVenueMarket } =
   require('../../scripts/lib/aggregator-candidate-extract.js');
 
+// reviewCount: 3 — BRO-125 (owner rule 2026-07-30) requires 3+ distinct
+// review outlets on top of the roundup-exists checks below; see the
+// below-threshold tests further down for the rejection path.
 const ROUNDUP_CANDIDATE = {
   title: 'Testshow: The Fake Musical',
   venue: 'Goodman Theatre',
@@ -21,6 +24,7 @@ const ROUNDUP_CANDIDATE = {
   articlePublishedAt: '2026-07-01T10:39:17-04:00',
   discoveredAt: '2026-07-03T15:27:32.001Z',
   category: 'regional',
+  reviewCount: 3,
 };
 
 test('decideRegionalPromotion: roundup-sourced feeder-venue candidate is confirmed', () => {
@@ -43,6 +47,26 @@ test('decideRegionalPromotion: non-regional and non-feeder candidates never conf
   assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, category: 'off-broadway' }).confirmed, false);
   assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, venue: "St. Luke's Theatre" }).confirmed, false);
   assert.equal(decideRegionalPromotion(null).confirmed, false);
+});
+
+// BRO-125 (owner rule 2026-07-30): "It's only important to catch shows that
+// get 3+ reviews... otherwise there's very little critical or audience
+// signal to be useful." A roundup existing is no longer sufficient on its
+// own — it must also name 3+ distinct review outlets.
+test('decideRegionalPromotion: a roundup naming fewer than 3 distinct reviews does NOT confirm', () => {
+  const r = decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: 2 });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /only 2 distinct review outlet/);
+});
+
+test('decideRegionalPromotion: a roundup with an unknown/unparseable reviewCount does NOT confirm (fails closed)', () => {
+  assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: undefined }).confirmed, false);
+  assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: null }).confirmed, false);
+});
+
+test('decideRegionalPromotion: exactly 3 distinct reviews confirms; venue/source checks still gate first', () => {
+  const r = decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: 3, venue: "St. Luke's Theatre" });
+  assert.equal(r.confirmed, false, 'non-feeder venue still rejects regardless of review count');
 });
 
 test('buildRegionalShowEntry: id/slug carry -regional-<article year>, market fail-closed', () => {

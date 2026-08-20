@@ -33,6 +33,7 @@
 const { JSDOM } = require('jsdom');
 const { slugify, levenshteinDistance, venuesMatch } = require('./deduplication');
 const { normalizeTitle } = require('./title-match');
+const { normalizeOutlet, isRegisteredOutlet, resolveOutletFromUrl } = require('./review-normalization');
 
 // Aggregator-infrastructure URLs that land in the unmatched audit but are not
 // shows (site nav, legal, feeds). Matched against the article slug.
@@ -263,6 +264,108 @@ function extractArticleFields(html) {
     venue: venue || null,
     date: date || null,
   };
+}
+
+/** Outlet name for one JSON-LD BlogPosting entry — mirrors
+ *  gather-reviews.js#extractBWWRoundupReviews Method 1 (the real BWW
+ *  review-ingestion parser), simplified to just name the outlet rather than
+ *  build a full review record. */
+function outletNameFromBlogPosting(posting) {
+  if (posting.author) {
+    const authorName = Array.isArray(posting.author) ? posting.author[0]?.name : posting.author?.name;
+    if (!authorName) return null;
+    if (authorName.includes(' - ')) return authorName.split(' - ')[0].trim();
+    if (authorName.includes(', ')) {
+      const idx = authorName.indexOf(', ');
+      const part0 = authorName.slice(0, idx).trim();
+      const part1 = authorName.slice(idx + 2).trim();
+      if (isRegisteredOutlet(part1)) return part1;
+      if (isRegisteredOutlet(part0)) return part0;
+      return authorName;
+    }
+    if (authorName.includes(': ')) {
+      const idx = authorName.lastIndexOf(': ');
+      const part0 = authorName.slice(0, idx).trim();
+      const part1 = authorName.slice(idx + 2).trim();
+      if (isRegisteredOutlet(part0)) return part0;
+      if (isRegisteredOutlet(part1)) return part1;
+      return authorName;
+    }
+    return authorName;
+  }
+  if (posting.headline && posting.headline.includes(' - ')) {
+    const outlet = posting.headline.split(' - ')[0].trim();
+    // Real outlet names are 1-5 words; 6+ = headline fragment, not an outlet.
+    return outlet.split(/\s+/).length > 5 ? null : outlet;
+  }
+  return null;
+}
+
+/**
+ * Count DISTINCT registered review outlets a roundup/verdict article names —
+ * the real signal behind BRO-125's 3+ distinct-review promotion threshold
+ * (owner rule 2026-07-30), replacing the old "a roundup article exists at
+ * all" proxy (decideRegionalPromotion in promote-ob-venue-candidates.js
+ * used to stop at "source is bww-roundup/playbill-verdict", with no check
+ * on how many critics the article actually named).
+ *
+ * Two extraction paths, tried in order:
+ *  1. BWW Review Roundup JSON-LD: LiveBlogPosting.liveBlogUpdate[] (or a
+ *     standalone BlogPosting) — one entry per critic. Same JSON-LD shape
+ *     gather-reviews.js#extractBWWRoundupReviews parses for the real
+ *     review-ingestion pipeline; only registered outlets count (an unknown
+ *     or typo'd name never inflates the count).
+ *  2. Playbill Verdict (and any BWW article without LiveBlogPosting
+ *     JSON-LD): every outbound <a href> in the article body, resolved via
+ *     resolveOutletFromUrl — the same domain-resolution
+ *     scrape-playbill-verdict.js#extractReviewLinksFromArticle uses for the
+ *     real ingestion pipeline. Non-outlet domains (ticketing, social,
+ *     Playbill's own site) resolve to null and are dropped automatically —
+ *     no blocklist duplicated here.
+ *
+ * Pure given html; returns 0 (never throws) on unparseable input.
+ */
+function countDistinctReviewOutlets(html) {
+  if (!html) return 0;
+  let doc;
+  try { doc = new JSDOM(html).window.document; } catch { return 0; }
+
+  const ids = new Set();
+  for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
+    let parsed;
+    try { parsed = JSON.parse(script.textContent); } catch { continue; }
+    const items = Array.isArray(parsed) ? parsed : [parsed];
+    for (const item of items) {
+      if (!item || typeof item !== 'object') continue;
+      const postings = [];
+      if (item['@type'] === 'BlogPosting') postings.push(item);
+      if (item['@type'] === 'LiveBlogPosting' && Array.isArray(item.liveBlogUpdate)) {
+        for (const u of item.liveBlogUpdate) {
+          if (u && u['@type'] === 'BlogPosting') postings.push(u);
+        }
+      }
+      for (const posting of postings) {
+        const outletRaw = outletNameFromBlogPosting(posting);
+        if (outletRaw && isRegisteredOutlet(outletRaw)) ids.add(normalizeOutlet(outletRaw));
+      }
+    }
+  }
+
+  if (ids.size === 0) {
+    const container =
+      doc.querySelector('article, .article-content, .article-body, .entry-content, main') || doc.body;
+    if (container) {
+      for (const a of container.querySelectorAll('a[href]')) {
+        const href = a.getAttribute('href');
+        if (!href) continue;
+        let resolved = null;
+        try { resolved = resolveOutletFromUrl(href); } catch { resolved = null; }
+        if (resolved && resolved.outletId) ids.add(resolved.outletId);
+      }
+    }
+  }
+
+  return ids.size;
 }
 
 // Boundary markers for the NO-venue-in-headline case (placeholder slugs like
@@ -933,6 +1036,10 @@ function classifyCandidate({ source, record, html, shows }) {
     discoveredAt: record.firstSeen || fields.date || new Date().toISOString(),
     category: classifyVenueMarket(fields.venue),
     corroborations: [],
+    // BRO-125: distinct review outlets this article names — the promotion
+    // gate's real "enough critical signal" check (scripts/lib/review-
+    // threshold.js), replacing the old bare roundup-exists proxy.
+    reviewCount: countDistinctReviewOutlets(html),
   };
   return { status: 'accept', candidate };
 }
@@ -958,4 +1065,5 @@ module.exports = {
   referenceTitle,
   classifyCandidate,
   titleCaseShout,
+  countDistinctReviewOutlets,
 };
