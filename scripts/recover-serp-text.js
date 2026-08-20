@@ -33,6 +33,7 @@
  *   --limit=N        Max candidates to process (default: 20)
  *   --dry-run        Discovery + fetch only, no file writes
  *   --show=SLUG      Only process one show
+ *   --force-exhausted  Override the proven-zero-sweep guard (see below)
  */
 
 const fs = require('fs');
@@ -44,7 +45,8 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
-const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
+const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 
@@ -75,6 +77,16 @@ const CONFIG = {
 
 if (!CONFIG.domain && !CONFIG.outlet) {
   console.error('Usage: node scripts/recover-serp-text.js (--domain=newyorker.com | --outlet=ap) [--limit=N] [--dry-run] [--show=SLUG]');
+  process.exit(1);
+}
+
+// Refuse a re-sweep of a pool already measured to a reproducible zero yield
+// (see scripts/lib/serp-text-recovery-candidates.js's PROVEN_ZERO_SWEEP_*
+// lists) — re-running these burns real SERP provider spend for no measured
+// return. --force-exhausted overrides (e.g. the underlying registry/site
+// changed since the 2026-08-16 measurement).
+if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.domain, outlet: CONFIG.outlet }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES)) {
+  console.error(`  ⛔ ${CONFIG.outlet ? `--outlet=${CONFIG.outlet}` : `--domain=${CONFIG.domain}`} is a proven-zero sweep (Notion card 3b1637c5-416f-8163-a707-e156f5e1efc3, measured 2026-08-16) — re-running burns SERP spend for no yield. Pass --force-exhausted to override.`);
   process.exit(1);
 }
 
@@ -157,24 +169,26 @@ function loadCandidates() {
   } catch {}
 
   const exhausted = loadExhausted();
-  const thinTiers = new Set(['truncated', 'excerpt', 'stub']);
   const candidates = [];
   let scanned = 0, skippedComplete = 0, skippedFlagged = 0, skippedNoUrl = 0, skippedExhausted = 0, skippedWrongDomain = 0;
 
   const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory()).map(d => d.name);
 
-  // Which outletIds actually resolve to CONFIG.domain — used to vet urlless
-  // candidates below. Built from the canonical OUTLET_DOMAINS map (same one
-  // discoverCorrectUrl() reads) rather than string-matching the outletId
-  // against the domain: outletIds are frequently hyphenated in ways that
-  // don't literally contain the domain's slug (hollywood-reporter vs
-  // hollywoodreporter.com), and a bare substring match in the other
-  // direction produces false positives across unrelated outlets (boston.com
-  // matching boston-globe, boston-herald, edge-boston, ...).
-  const domainOutletIds = CONFIG.outlet ? null : new Set(
-    Object.keys(OUTLET_DOMAINS).filter(id => OUTLET_DOMAINS[id] === CONFIG.domain)
-  );
+  // Which outletIds actually resolve to CONFIG.domain (or one of its
+  // registered domain aliases, e.g. AP's apnews.com/abcnews.go.com pair) —
+  // used to vet urlless candidates below. Built from the canonical
+  // OUTLET_DOMAINS map (same one discoverCorrectUrl() reads) rather than
+  // string-matching the outletId against the domain: outletIds are
+  // frequently hyphenated in ways that don't literally contain the domain's
+  // slug (hollywood-reporter vs hollywoodreporter.com), and a bare substring
+  // match in the other direction produces false positives across unrelated
+  // outlets (boston.com matching boston-globe, boston-herald, edge-boston,
+  // ...). Alias-inclusive (ship-check finding, BRO-141): without it, an
+  // urlless candidate for an outlet published on the alias TLD is invisible
+  // to a --domain run targeting the primary domain, even though a
+  // URL-bearing file for that same outlet would be recoverable.
+  const domainOutletIds = CONFIG.outlet ? null : buildDomainOutletIds(CONFIG.domain, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES);
 
   for (const showDir of showDirs) {
     if (CONFIG.showFilter && showDir !== CONFIG.showFilter) continue;
@@ -193,25 +207,24 @@ function loadCandidates() {
       // URL from scratch. Without SERP keys there's nothing to anchor a
       // urlless file to, so it's correctly skipped. --outlet mode still
       // requires a url since there's no per-outlet domain to match against.
+      // Generalized (BRO-141) beyond the original Telegraph-only backfill —
+      // domainOutletIds resolves via OUTLET_DOMAINS for every outlet, so any
+      // outlet's urlless thin-tier files are now eligible. Decision logic is
+      // in scripts/lib/serp-text-recovery-candidates.js (unit-tested there).
       const hasSerpKeys = !!(CONFIG.scrapingBeeKey || CONFIG.brightDataKey);
-      if (!data.url && (CONFIG.outlet || !hasSerpKeys)) { skippedNoUrl++; continue; }
-      if (CONFIG.outlet) {
-        if ((data.outletId || '') !== CONFIG.outlet) { skippedWrongDomain++; continue; }
-      } else if (data.url) {
-        let domain;
-        try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
-        if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
-      } else {
-        // No url to check a domain against — fall back to the outletId ->
-        // domain reverse lookup, since that's the exact signal
-        // discoverCorrectUrl() will use to resolve OUTLET_DOMAINS.
-        if (!domainOutletIds.has((data.outletId || '').toLowerCase())) { skippedWrongDomain++; continue; }
+      const { qualifies, skipReason } = evaluateCandidate(
+        data,
+        { domain: CONFIG.domain, outlet: CONFIG.outlet, hasSerpKeys, domainOutletIds },
+        exhausted
+      );
+      if (!qualifies) {
+        if (skipReason === 'no_url') skippedNoUrl++;
+        else if (skipReason === 'wrong_domain') skippedWrongDomain++;
+        else if (skipReason === 'complete') skippedComplete++;
+        else if (skipReason === 'flagged') skippedFlagged++;
+        else if (skipReason === 'exhausted') skippedExhausted++;
+        continue;
       }
-
-      if (data.contentTier === 'complete') { skippedComplete++; continue; }
-      if (!thinTiers.has(data.contentTier)) continue;
-      if (data.wrongShow || data.wrongProduction || data.wrongAttribution || data.isRoundupArticle) { skippedFlagged++; continue; }
-      if (exhausted[data.url]) { skippedExhausted++; continue; }
 
       const show = shows[data.showId] || {};
       candidates.push({
