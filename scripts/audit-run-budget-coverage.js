@@ -19,6 +19,22 @@
  *   helper (fetchPage/fetch/fetchXxx/scraperFetchJSON/httpsGet, one level of
  *   indirection through a helper function) — if found, WARN.
  *
+ * BRO-109 extension: the check above only sees loops written INSIDE the
+ * script itself. It's blind to the #369/#415/#421/#438/#446 shape where the
+ * script requires (or should require) run-budget, but the actual unbounded
+ * loop lives one hop away in a scripts/lib/ helper it calls (e.g.
+ * batchScrapeAgeRecommendations in lib/broadway-com-runtimes.js,
+ * batchDiscoverSlugs in lib/serp-slug-discovery.js) — a script→lib-helper
+ * "budget-threading gap". A second pass now: for each `require('./lib/X')`
+ * in the script, resolves the imported helper's exported function, checks
+ * whether ITS body has a risky loop, and if so whether it has a
+ * budget-shaped parameter (checked via `.exceeded()`) that the call site
+ * actually supplies an argument for. Two distinct findings:
+ *   - "not-passed": the helper supports a budget param, but the call site's
+ *     arg count doesn't reach that parameter's position.
+ *   - "unsupported": the helper has a risky loop with no budget param at
+ *     all, so there's no way to thread one through even if the caller has it.
+ *
  * This is a heuristic, not a parser — false positives AND false negatives
  * are expected. It intentionally does NOT chase indirection beyond one
  * helper-function hop, and treats any loop whose header bounds the iterable
@@ -212,23 +228,233 @@ function extractLoops(src) {
   return out;
 }
 
-/** True if the script has an unbounded-looking loop that calls a network helper. */
-function hasRiskyLoop(src) {
+/**
+ * Blanks `//` and `/* *\/` comment text (to spaces, preserving offsets) so a
+ * docstring mentioning a risky-looking call by name — e.g. "fetchPage()
+ * unwraps at FETCH time" in a prose comment — can't masquerade as a real
+ * call to NETWORK_CALL_RE. String literals are left untouched: skipped over
+ * (not blanked) using the same '...'/"..." skip as findMatching, and
+ * backtick template literals are intentionally NOT skipped, consistent with
+ * findMatching's documented policy (their ${...} interpolations are real
+ * code). Extending the risky-loop check to whole scripts/lib/ files (BRO-109)
+ * made this necessary — the original single-script scope rarely hit a large
+ * enough docstring to false-positive, but library files with long header
+ * comments do (scripts/lib/review-write-guard.js#safeWriteReview matched via
+ * exactly this before this function was added).
+ */
+function stripComments(src) {
+  let out = '';
+  let i = 0;
+  while (i < src.length) {
+    const ch = src[i];
+    if (ch === '/' && src[i + 1] === '/') {
+      let j = i;
+      while (j < src.length && src[j] !== '\n') j++;
+      out += ' '.repeat(j - i);
+      i = j;
+      continue;
+    }
+    if (ch === '/' && src[i + 1] === '*') {
+      let j = src.indexOf('*/', i + 2);
+      j = j === -1 ? src.length : j + 2;
+      out += src.slice(i, j).replace(/[^\n]/g, ' ');
+      i = j;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      let j = i + 1;
+      while (j < src.length && src[j] !== ch) {
+        if (src[j] === '\\') j++;
+        j++;
+      }
+      j = Math.min(j + 1, src.length);
+      out += src.slice(i, j);
+      i = j;
+      continue;
+    }
+    out += ch;
+    i++;
+  }
+  return out;
+}
+
+/**
+ * Core of the risky-loop check: are there unbounded-looking loops in
+ * `bodySrc` that call a network helper? `namesSrc` is where one-hop helper
+ * function bodies are looked up to build the "networky names" set — for a
+ * whole-script check this is the same source (`riskyLoopIn(src, src)`); for
+ * a single lib-helper function's body it's the WHOLE lib file, so sibling
+ * functions it delegates to are still visible.
+ */
+function riskyLoopIn(bodySrc, namesSrc) {
   const networkyNames = new Set(
-    extractFunctionBodies(src).filter((f) => NETWORK_CALL_RE.test(f.body)).map((f) => f.name),
+    extractFunctionBodies(namesSrc).filter((f) => NETWORK_CALL_RE.test(stripComments(f.body))).map((f) => f.name),
   );
-  for (const loop of extractLoops(src)) {
+  for (const loop of extractLoops(bodySrc)) {
     // Explicitly bounded: `.slice(-N)` (last N) or `.slice(A, B)` with literal
     // bounds (e.g. `maps.slice(-2)`, `candidates.slice(0, 4)`). A single
     // non-negative-literal or variable arg (`.slice(alreadyProcessed)`) means
     // "from N to end" — NOT bounded — so it must NOT match here.
     if (/\.slice\(\s*-\d+\s*\)|\.slice\(\s*\d+\s*,\s*\d+\s*\)/.test(loop.header)) continue;
-    if (NETWORK_CALL_RE.test(loop.body)) return true;
+    const cleanBody = stripComments(loop.body);
+    if (NETWORK_CALL_RE.test(cleanBody)) return true;
     for (const name of networkyNames) {
-      if (new RegExp(`\\b${name}\\s*\\(`).test(loop.body)) return true;
+      if (new RegExp(`\\b${name}\\s*\\(`).test(cleanBody)) return true;
     }
   }
   return false;
+}
+
+/** True if the script has an unbounded-looking loop that calls a network helper. */
+function hasRiskyLoop(src) {
+  return riskyLoopIn(src, src);
+}
+
+/** True if a single lib-helper function's body has a risky loop (sibling helpers in `libSrc` count as one hop). */
+function functionBodyHasRiskyLoop(fnBody, libSrc) {
+  return riskyLoopIn(fnBody, libSrc);
+}
+
+/**
+ * All named function bodies AND parameter lists in a script (function decls +
+ * const-assigned arrow fns with a block body) — like extractFunctionBodies
+ * but also captures the raw parameter list, needed to find a budget-shaped
+ * parameter's position.
+ */
+function extractFunctionSignatures(src) {
+  const re = /(?:async\s+function\s+([A-Za-z_$][\w$]*)\s*\(([^)]*)\)|function\s+([A-Za-z_$][\w$]*)\s*\(([^)]*)\)|const\s+([A-Za-z_$][\w$]*)\s*=\s*async\s*\(([^)]*)\)\s*=>|const\s+([A-Za-z_$][\w$]*)\s*=\s*\(([^)]*)\)\s*=>)\s*\{/g;
+  const out = [];
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const name = m[1] || m[3] || m[5] || m[7];
+    const paramsRaw = m[2] || m[4] || m[6] || m[8] || '';
+    const braceIdx = m.index + m[0].length - 1;
+    const body = extractBracedBody(src, braceIdx);
+    if (name && body != null) {
+      const params = paramsRaw
+        .split(',')
+        .map((p) => p.trim().split('=')[0].trim().replace(/^\.\.\./, ''))
+        .filter(Boolean);
+      out.push({ name, params, body });
+    }
+  }
+  return out;
+}
+
+/**
+ * 0-based index of a budget-shaped parameter that the function body actually
+ * checks (`<name>.exceeded(` or `<name>?.exceeded(`) — i.e. a real budget
+ * param, not just a coincidentally-named one that's ignored. -1 if none.
+ */
+function findBudgetParamIndex(fn) {
+  const idx = fn.params.findIndex((p) => /budget/i.test(p));
+  if (idx === -1) return -1;
+  const name = fn.params[idx];
+  return new RegExp(`\\b${name}\\??\\.exceeded\\s*\\(`).test(fn.body) ? idx : -1;
+}
+
+/** Local lib requires: `const { a, b } = require('./lib/xxx');` → [{names: ['a','b'], relPath: 'xxx'}]. */
+function getLibRequires(src) {
+  const re = /const\s*\{\s*([^}]+)\}\s*=\s*require\(\s*['"]\.\/lib\/([A-Za-z0-9_\-]+)(?:\.js)?['"]\s*\)/g;
+  const out = [];
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const names = m[1].split(',').map((s) => s.trim().split(':')[0].trim()).filter(Boolean);
+    out.push({ names, relPath: m[2] });
+  }
+  return out;
+}
+
+/** Names in a lib file's `module.exports = { a, b, c };` (shorthand export-list convention used throughout scripts/lib/). */
+function getModuleExportNames(src) {
+  const m = /module\.exports\s*=\s*\{([^}]*)\}/s.exec(src);
+  if (!m) return new Set();
+  return new Set(m[1].split(',').map((s) => s.trim().split(':')[0].trim()).filter(Boolean));
+}
+
+/** Number of top-level (paren/brace/bracket/string-aware) comma-separated args in a call's argument text. */
+function countTopLevelArgs(argsText) {
+  const trimmed = argsText.trim();
+  if (trimmed === '') return 0;
+  let depth = 0;
+  let count = 1;
+  for (let i = 0; i < trimmed.length; i++) {
+    const ch = trimmed[i];
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      i++;
+      while (i < trimmed.length && trimmed[i] !== quote) {
+        if (trimmed[i] === '\\') i++;
+        i++;
+      }
+      continue;
+    }
+    if ('([{'.includes(ch)) depth++;
+    else if (')]}'.includes(ch)) depth--;
+    else if (ch === ',' && depth === 0) count++;
+  }
+  return count;
+}
+
+/** Argument counts of every call to `fnName(...)` found in `src`. */
+function callArgCounts(src, fnName) {
+  const re = new RegExp(`\\b${fnName}\\s*\\(`, 'g');
+  const out = [];
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const parenIdx = m.index + m[0].length - 1;
+    const end = matchParen(src, parenIdx);
+    if (end == null) continue;
+    out.push(countTopLevelArgs(src.slice(parenIdx + 1, end)));
+  }
+  return out;
+}
+
+/**
+ * Script→lib-helper budget-threading gaps (BRO-109): scripts/lib/ helpers the
+ * script calls that have their own risky (network-in-loop) body, where either
+ * the helper has no budget param at all ("unsupported") or has one the call
+ * site doesn't actually reach with an argument ("not-passed").
+ * `libSrcByRelPath` maps a lib require's relPath (e.g. 'broadway-com-runtimes')
+ * to that file's source, so this stays a pure function of two strings/maps —
+ * fs resolution lives in main().
+ */
+function findBudgetThreadingGaps(scriptSrc, libSrcByRelPath) {
+  const gaps = [];
+  for (const { names, relPath } of getLibRequires(scriptSrc)) {
+    const libSrc = libSrcByRelPath[relPath];
+    if (libSrc == null) continue;
+    const exportedNames = getModuleExportNames(libSrc);
+    const signatures = extractFunctionSignatures(libSrc);
+    for (const name of names) {
+      if (!exportedNames.has(name)) continue;
+      const fn = signatures.find((f) => f.name === name);
+      if (!fn) continue;
+      if (!functionBodyHasRiskyLoop(fn.body, libSrc)) continue;
+
+      const budgetIdx = findBudgetParamIndex(fn);
+      if (budgetIdx === -1) {
+        gaps.push({ name, relPath, reason: 'unsupported' });
+        continue;
+      }
+      const argCounts = callArgCounts(scriptSrc, name);
+      if (argCounts.length > 0 && argCounts.every((c) => c <= budgetIdx)) {
+        gaps.push({ name, relPath, reason: 'not-passed' });
+      }
+    }
+  }
+  return gaps;
+}
+
+/** Reads the lib files a script `require('./lib/X')`s (for findBudgetThreadingGaps's second argument). */
+function resolveLibSrcs(scriptSrc) {
+  const map = {};
+  for (const { relPath } of getLibRequires(scriptSrc)) {
+    if (map[relPath] !== undefined) continue;
+    const libPath = path.join(SCRIPTS_DIR, 'lib', `${relPath}.js`);
+    if (fs.existsSync(libPath)) map[relPath] = fs.readFileSync(libPath, 'utf8');
+  }
+  return map;
 }
 
 function main() {
@@ -238,7 +464,8 @@ function main() {
     .sort();
 
   const warnings = [];
-  const scriptCache = new Map(); // script path -> { hasRunBudget, risky }
+  const threadingWarnings = [];
+  const scriptCache = new Map(); // script path -> { hasRunBudget, risky, threadingGaps }
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -281,6 +508,7 @@ function main() {
             scriptCache.set(scriptPath, {
               hasRunBudget,
               risky: !hasRunBudget && hasRiskyLoop(content),
+              threadingGaps: findBudgetThreadingGaps(content, resolveLibSrcs(content)),
             });
           }
 
@@ -288,27 +516,70 @@ function main() {
           if (result.risky) {
             warnings.push({ file, job: job.name, timeoutMinutes: step.timeoutMinutes, script });
           }
+          for (const gap of result.threadingGaps) {
+            threadingWarnings.push({ file, job: job.name, timeoutMinutes: step.timeoutMinutes, script, ...gap });
+          }
         }
       }
     }
   }
 
-  if (warnings.length === 0) {
+  if (warnings.length === 0 && threadingWarnings.length === 0) {
     console.log(`✅ Run-budget coverage guard: no candidates flagged (${files.length} workflows checked).`);
     return;
   }
 
-  console.log('⚠️  Run-budget coverage guard — possible missing scripts/lib/run-budget.js:\n');
-  console.log('These jobs have timeout-minutes <= 35 on a SCHEDULED trigger, use Bright Data /');
-  console.log('ScrapingBee, and invoke a script with a loop that calls a network helper but does');
-  console.log('NOT require scripts/lib/run-budget — the same shape as #369/#415/#421.\n');
-  console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
-  for (const w of warnings) {
-    console.log(`  • ${w.file} :: job "${w.job}" (timeout-minutes: ${w.timeoutMinutes}) → scripts/${w.script}`);
+  if (warnings.length > 0) {
+    console.log('⚠️  Run-budget coverage guard — possible missing scripts/lib/run-budget.js:\n');
+    console.log('These jobs have timeout-minutes <= 35 on a SCHEDULED trigger, use Bright Data /');
+    console.log('ScrapingBee, and invoke a script with a loop that calls a network helper but does');
+    console.log('NOT require scripts/lib/run-budget — the same shape as #369/#415/#421.\n');
+    console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
+    for (const w of warnings) {
+      console.log(`  • ${w.file} :: job "${w.job}" (timeout-minutes: ${w.timeoutMinutes}) → scripts/${w.script}`);
+    }
+    console.log(`\nFix: wire scripts/lib/run-budget.js into the script (see #369/#415 for the pattern).`);
+    console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
   }
-  console.log(`\nFix: wire scripts/lib/run-budget.js into the script (see #369/#415 for the pattern).`);
-  console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
+
+  if (threadingWarnings.length > 0) {
+    console.log('⚠️  Run-budget coverage guard — possible script→lib-helper budget-threading gaps (BRO-109):\n');
+    console.log('These scripts call a scripts/lib/ helper with its own unbounded network loop, but the');
+    console.log('call site never threads a run-budget through to it — the helper\'s loop has no way to');
+    console.log('stop early even though the calling script has (or could have) a budget. Same shape as');
+    console.log('batchScrapeAgeRecommendations (lib/broadway-com-runtimes.js) / batchDiscoverSlugs');
+    console.log('(lib/serp-slug-discovery.js).\n');
+    console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
+    for (const w of threadingWarnings) {
+      const detail = w.reason === 'unsupported'
+        ? `lib/${w.relPath}.js#${w.name}() has an internal network loop but no budget parameter at all`
+        : `lib/${w.relPath}.js#${w.name}() accepts a budget param but the call site doesn't pass it`;
+      console.log(`  • ${w.file} :: job "${w.job}" → scripts/${w.script} calls ${detail}`);
+    }
+    console.log(`\nFix: thread the script's run-budget object through to the helper call (see lib/broadway-com-runtimes.js's`);
+    console.log(`batchScrapeAgeRecommendations or lib/serp-slug-discovery.js's batchDiscoverSlugs for the pattern).`);
+    console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
+  }
   // Advisory only — never fails CI (see header).
 }
 
-main();
+// Only run the audit when executed directly — `require()`d from a unit test,
+// the module must expose its decision functions without scanning the repo
+// (CLAUDE.md §15: tests require() the real function, never a copy of it).
+if (require.main === module) main();
+
+module.exports = {
+  hasRiskyLoop,
+  riskyLoopIn,
+  stripComments,
+  functionBodyHasRiskyLoop,
+  extractFunctionBodies,
+  extractFunctionSignatures,
+  extractLoops,
+  findBudgetParamIndex,
+  getLibRequires,
+  getModuleExportNames,
+  countTopLevelArgs,
+  callArgCounts,
+  findBudgetThreadingGaps,
+};
