@@ -24,6 +24,7 @@ const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -170,6 +171,19 @@ const FORCE_REGEN = process.argv.includes('--force') || process.env.FORCE_REGENE
 // per-show hash cache — writing a 1-entry cache would look like every other
 // show's hash vanished and force a full-corpus regen on the next real run.
 const SHOW_ARG = (process.argv.find((a) => a.startsWith('--show=')) || '').slice('--show='.length) || null;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`Usage: node scripts/generate-mobile-show-details.js [--force] [--show=<id>]
+
+Regenerates public/data/shows/{id}.json (mobile app detail files) from
+reviews.json + shows.json + other core data. Also prunes {id}.json files for
+shows no longer valid/visible (skipped on --show=<id> scoped runs).
+
+  --force        Bypass the per-show hash cache — regenerate every show.
+  --show=<id>    Regenerate only this show; leaves the hash cache untouched.
+`);
+  process.exit(0);
+}
 
 // ===========================================
 // LOAD DATA
