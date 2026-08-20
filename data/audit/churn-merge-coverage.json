@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-20T11:32:17.612Z",
+    "generatedAt": "2026-08-20T18:11:33.979Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,21 +10,21 @@
     "minChurn": 30,
     "flaggedCount": 3,
     "exemptCount": 9,
-    "coveredCount": 16,
-    "highChurnTracked": 28
+    "coveredCount": 14,
+    "highChurnTracked": 26
   },
   "flagged": [
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 45
+      "churn": 46
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 35
+      "churn": 41
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "exempt": [
@@ -34,116 +34,106 @@
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 97
+      "churn": 85
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 96
+      "churn": 84
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 96
+      "churn": 84
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 67
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
       "churn": 56
     },
     {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 54
+    },
+    {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 44
+      "churn": 47
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
-      "churn": 41
+      "churn": 34
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 35
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 891,
+      "churn": 828,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 863,
+      "churn": 802,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 479,
+      "churn": 457,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 406,
+      "churn": 379,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 390,
+      "churn": 362,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 228,
+      "churn": 213,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 135,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 135,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 135,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 100,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 96,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 96,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 96,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 55,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 34,
+      "churn": 49,
       "mergeAttr": "ours"
     }
   ]
