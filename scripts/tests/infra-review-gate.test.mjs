@@ -69,6 +69,21 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     // covered its own named motivating example.
     ['scripts/merge-worktree-to-main.sh', 'concurrency', 'critical'],
     ['scripts/lib/run-push-audits.sh', 'concurrency', 'critical'],
+    // task #1856: the composite actions that actually run the multi-writer
+    // push/checkout for CI runners — task #1850 edited three of these
+    // without the gate firing because only the scripts/lib/push-* shape
+    // was covered.
+    ['.github/actions/push-core-data/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/push-review-texts/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/push-aggregator-archive/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-core-data/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-review-texts/action.yml', 'concurrency', 'critical'],
+    ['.github/actions/checkout-aggregator-archive/action.yml', 'concurrency', 'critical'],
+    // adversarial review of #1856 (Codex): this action calls
+    // push-with-retry.sh under the same concurrent-push race, despite a
+    // directory name that doesn't start with push-/checkout- — the reason
+    // the rule enumerates exact names instead of guessing at a prefix.
+    ['.github/actions/commit-scraper-spend-ledger/action.yml', 'concurrency', 'critical'],
     ['scripts/lib/review-gate.mjs', 'gates', 'critical'],
     ['scripts/lib/review-guards.js', 'gates', 'critical'],
     ['.github/workflows/test.yml', 'ci-gate', 'critical'],
@@ -93,6 +108,35 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     assert.equal(c.rule, rule, `${path} rule`);
     assert.equal(c.tier, tier, `${path} tier`);
     assert.ok(c.why && c.why.length > 20, `${path} must explain itself to the blocked session`);
+  }
+});
+
+test('(a) task #1856 acceptance: the push/checkout composite actions batch is critical', () => {
+  const r = classifyChange([
+    '.github/actions/push-core-data/action.yml',
+    '.github/actions/push-review-texts/action.yml',
+    '.github/actions/push-aggregator-archive/action.yml',
+    '.github/actions/checkout-core-data/action.yml',
+    '.github/actions/checkout-review-texts/action.yml',
+  ]);
+  assert.equal(r.inScope, true);
+  assert.equal(r.tier, 'critical');
+});
+
+test('(a) other .github/actions/ composite actions stay OUT of scope — the enumerated list is not a name-shape guess', () => {
+  // Codex adversarial review of #1856: a `(push|checkout)-[a-z-]+` wildcard
+  // both under- and over-matches (missed commit-scraper-spend-ledger despite
+  // its push-with-retry.sh call; would have silently matched any future
+  // push-* dir that isn't actually a push primitive). These are every OTHER
+  // real action.yml in the repo as of task #1856 — none should classify.
+  for (const p of [
+    '.github/actions/check-file-sizes/action.yml',
+    '.github/actions/dispatch-deploy/action.yml',
+    '.github/actions/notify-failure/action.yml',
+    '.github/actions/setup-node/action.yml',
+    '.github/actions/setup-playwright/action.yml',
+  ]) {
+    assert.equal(classifyPath(p).inScope, false, `${p} must NOT be gated`);
   }
 });
 

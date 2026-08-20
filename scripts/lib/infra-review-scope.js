@@ -124,7 +124,26 @@ const SHARED_INFRA_RULES = [
     // session editing that exact file noticed the pre-review gate never
     // fired. No test previously exercised this path either — see the added
     // case in scripts/tests/infra-review-gate.test.mjs.
-    re: /^scripts\/(?:lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|run-push-audits)|merge-worktree-to-main)\.(?:js|mjs|cjs|sh)$/,
+    //
+    // The `.github/actions/...` alternative (task #1856) covers the composite
+    // actions that actually perform the multi-writer push/pull for CI
+    // runners — the same class of file this rule already names as its
+    // motivating example, just reached from a workflow step instead of a
+    // script invocation. Task #1850 edited three of these without the gate
+    // firing because only the scripts/lib/push-*.{js,mjs,cjs,sh} shape was
+    // covered.
+    //
+    // Enumerated by exact action name, NOT a `(push|checkout)-[a-z-]+`
+    // wildcard: an adversarial review of this exact change (Codex, task
+    // #1856) found commit-scraper-spend-ledger/action.yml — which stages a
+    // commit and calls push-with-retry.sh under the identical concurrent-
+    // push race this rule exists to gate — sitting outside any push-/
+    // checkout- prefix, so a naming-convention wildcard would have missed a
+    // real, currently-existing multi-writer push primitive on day one. That
+    // mirrors the file's own stated principle for 'ci-gate' above (line
+    // ~159): "CI gates", not "everything that looks like it might be one" —
+    // a curated name list here, not an open name-shape guess.
+    re: /^(?:scripts\/(?:lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|run-push-audits)|merge-worktree-to-main)\.(?:js|mjs|cjs|sh)|\.github\/actions\/(?:push-core-data|push-review-texts|push-aggregator-archive|checkout-core-data|checkout-review-texts|checkout-aggregator-archive|commit-scraper-spend-ledger)\/action\.ya?ml)$/,
     why: 'many sessions write here at once; a defect corrupts or silently drops another session\'s work',
   },
   {
