@@ -22,4 +22,26 @@ function shouldBlockContaminationGate({ crossMarketLeaks, strictHits, floor }) {
   return crossMarketLeaks > 0 || strictHits > floor;
 }
 
-module.exports = { shouldBlockContaminationGate };
+// Classes counted toward `strictHits` above (BRO-65). "wrong data SHOWN to
+// users" (integrity): A cross-market, C domain mismatch, E unflagged roundup,
+// F empty junk. B (false-positive wrongProduction) and D (pre-opening feature)
+// are deliberately excluded — see the long rationale in
+// audit-review-contamination.js next to its own copy of this set. Single
+// source of truth with that script (which requires this module rather than
+// redefining the set) so the CI gate and its regression tests can never drift
+// apart on which classes are "integrity" vs "report-only".
+const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
+
+/**
+ * Sums the `hits` buckets (keyed `<ClassLetter>_description`, e.g.
+ * `C_domain_mismatch`) whose class letter is in STRICT_CLASSES.
+ * @param {Record<string, unknown[]>} hits
+ * @returns {number}
+ */
+function countStrictHits(hits) {
+  return Object.entries(hits)
+    .filter(([k]) => STRICT_CLASSES.has(k.split('_')[0]))
+    .reduce((sum, [, arr]) => sum + arr.length, 0);
+}
+
+module.exports = { shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits };
