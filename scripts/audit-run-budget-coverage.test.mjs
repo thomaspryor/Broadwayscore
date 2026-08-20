@@ -1,10 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
   extractFunctionSignatures,
+  extractFunctionBodies,
   findBudgetParamIndex,
   getLibRequires,
   getModuleExportNames,
@@ -14,7 +16,86 @@ const {
   findBudgetThreadingGaps,
   stripComments,
   hasRiskyLoop,
+  extractBracedBody,
 } = require('./audit-run-budget-coverage.js');
+
+// --- regex-literal awareness in findMatching / stripComments -------------
+
+// Regression: an unescaped brace inside a regex literal's character class
+// (`/\{\{/`) is idiomatic HTML/wiki-markup scrubbing in this repo
+// (scripts/lib/wiki-utils.js), and unskipped it desyncs findMatching's
+// depth counter exactly like an unskipped string would. Verified live: this
+// swallowed 2 of wiki-utils.js's 3 top-level functions into a sibling's body
+// before the fix (adversarial review, BRO-109).
+test('extractFunctionBodies does not let an unbalanced brace inside a regex literal desync function extraction', () => {
+  const src = [
+    'function stripBraces(s) {',
+    "  return s.replace(/\\{\\{/g, '').replace(/\\}\\}/g, '');",
+    '}',
+    'function second(s) {',
+    '  return s.trim();',
+    '}',
+  ].join('\n');
+  const names = extractFunctionBodies(src).map((f) => f.name);
+  assert.deepEqual(names, ['stripBraces', 'second']);
+});
+
+test('a regex character class containing an unescaped brace does not desync extractBracedBody on the real wiki-utils.js file', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const src = fs.readFileSync(path.join(__dirname, 'lib', 'wiki-utils.js'), 'utf8');
+  const names = extractFunctionBodies(src).map((f) => f.name);
+  assert.ok(names.length >= 3, `expected at least 3 top-level functions, got: ${names.join(', ')}`);
+});
+
+test('division after an identifier is NOT misread as a regex literal (would swallow real code as "regex")', () => {
+  const src = 'function f(a, b) { const ratio = a / b; return fetchPage(ratio) / 2; }';
+  const [fn] = extractFunctionBodies(src);
+  assert.equal(fn.name, 'f');
+  assert.ok(fn.body.includes('fetchPage(ratio)'), fn.body);
+  assert.ok(fn.body.trim().endsWith('/ 2;'), fn.body);
+});
+
+test('stripComments does not misread an unbalanced brace inside a regex as real code needing comment treatment', () => {
+  const src = "const clean = s.replace(/\\{\\{/g, ''); // trailing comment";
+  const cleaned = stripComments(src);
+  assert.ok(cleaned.includes("s.replace(/\\{\\{/g, '')"));
+  assert.ok(!cleaned.includes('trailing comment'));
+});
+
+// --- findMatching (via extractBracedBody) — backtick-aware brace matching -
+
+// Regression: findMatching's own comment-detection has the SAME bug as
+// stripComments did — a raw `//` inside backtick template TEXT (a URL) must
+// not be misread as a line comment. Before the fix, this desynced the whole
+// scan: findMatching jumped past end-of-string looking for a newline that
+// doesn't exist, returned null, and extractBracedBody (and therefore every
+// loop/function extraction downstream of it) silently saw NOTHING after the
+// URL — not just for this one loop, but for the rest of the file.
+test('extractBracedBody finds the correct closing brace past a backtick URL', () => {
+  const src = 'function f() { const u = `https://api.example.com/x`; return 1; }';
+  const body = extractBracedBody(src, src.indexOf('{'));
+  assert.equal(body, ' const u = `https://api.example.com/x`; return 1; ');
+});
+
+test('extractBracedBody still counts real nested braces inside a ${...} interpolation', () => {
+  const src = 'function f() { const u = `${ { a: 1 } }`; return 1; }';
+  const body = extractBracedBody(src, src.indexOf('{'));
+  assert.equal(body, ' const u = `${ { a: 1 } }`; return 1; ');
+});
+
+test('extractBracedBody handles multiple backtick literals with URLs in the same body', () => {
+  const src = [
+    'function f() {',
+    '  const a = `https://a.example.com/x`;',
+    '  const b = `https://b.example.com/y`;',
+    '  return fetchPage(a) + fetchPage(b);',
+    '}',
+  ].join('\n');
+  const body = extractBracedBody(src, src.indexOf('{'));
+  assert.ok(body.includes('fetchPage(a) + fetchPage(b)'), body);
+});
 
 // --- extractFunctionSignatures -------------------------------------------
 
@@ -30,6 +111,20 @@ test('extractFunctionSignatures captures params for const-assigned async arrow f
   const [fn] = extractFunctionSignatures(src);
   assert.equal(fn.name, 'batchDiscoverSlugs');
   assert.deepEqual(fn.params, ['siteDomain', 'shows', 'pathPrefix', 'delayMs', 'budget']);
+});
+
+// Regression: a default param value that itself contains parens — an inline
+// arrow function default — must not truncate the param list at the arrow's
+// OWN `()`. A naive `\([^)]*\)` regex stops at the first `)`, which lands
+// inside `onProgress = ()`, so the whole function silently fails to match at
+// all — a risky helper with this shape would be invisible to the BRO-109
+// threading check (false negative), not just mis-parsed.
+test('extractFunctionSignatures handles a default param value containing its own parens', () => {
+  const src = `async function batchThing(items, onProgress = () => {}, budget = null) {\n  return 1;\n}`;
+  const sigs = extractFunctionSignatures(src);
+  const fn = sigs.find((f) => f.name === 'batchThing');
+  assert.ok(fn, 'batchThing must still be found');
+  assert.deepEqual(fn.params, ['items', 'onProgress', 'budget']);
 });
 
 // --- findBudgetParamIndex -------------------------------------------------
@@ -76,6 +171,14 @@ test('getLibRequires ignores non-local requires (npm packages, node builtins)', 
 test('getModuleExportNames parses a shorthand export list', () => {
   const src = `module.exports = {\n  discoverSlug,\n  batchDiscoverSlugs,\n};`;
   assert.deepEqual([...getModuleExportNames(src)], ['discoverSlug', 'batchDiscoverSlugs']);
+});
+
+// Regression: a nested object VALUE in the export list must not truncate
+// parsing at its own inner `}` — a naive `[^}]*` regex stops there and
+// silently drops every export named after it.
+test('getModuleExportNames does not truncate at a nested object value', () => {
+  const src = `module.exports = {\n  batchDiscoverSlugs,\n  CONFIG: { retries: 3 },\n  discoverSlug,\n};`;
+  assert.deepEqual([...getModuleExportNames(src)], ['batchDiscoverSlugs', 'CONFIG', 'discoverSlug']);
 });
 
 // --- countTopLevelArgs / callArgCounts ------------------------------------
@@ -170,6 +273,33 @@ test('hasRiskyLoop (whole-script check) still works after comment-stripping was 
   assert.equal(hasRiskyLoop(`// await fetchPage(x) mentioned only in a comment\nfor (const x of xs) { console.log(x); }`), false);
 });
 
+// Regression: a bare URL inside a backtick template literal — `https://x` —
+// contains a literal `//` that stripComments's line-comment check must NOT
+// treat as a comment start; doing so blanked the rest of the line, including
+// a real fetchPage() call appearing after the URL on the SAME line. A false
+// negative here (a hidden real network call) is worse than the false
+// positive of under-stripping a rare comment nested inside a template
+// literal's ${...}, so backtick content is now copied verbatim like a
+// regular string, never scanned for // or /* */.
+test('a bare URL inside a backtick template literal does not get misread as a line comment', () => {
+  const src = 'for (const x of xs) { const r = await fetchPage(`https://api.example.com/${x}`); }';
+  const cleaned = stripComments(src);
+  assert.ok(cleaned.includes('fetchPage(`https://api.example.com/${x}`)'), cleaned);
+  assert.equal(hasRiskyLoop(src), true);
+});
+
+test('a comment AFTER a backtick URL on the same line is still stripped', () => {
+  const src = [
+    'for (const x of xs) {',
+    '  const url = `https://api.example.com/${x}`; // fetch it',
+    '  await fetchPage(url);',
+    '}',
+  ].join('\n');
+  const cleaned = stripComments(src);
+  assert.ok(!cleaned.includes('// fetch it'));
+  assert.ok(cleaned.includes('`https://api.example.com/${x}`'));
+});
+
 // --- findBudgetThreadingGaps: the end-to-end BRO-109 check ----------------
 
 const BATCH_HELPER_LIB = [
@@ -200,14 +330,40 @@ test('does not flag when the call site threads the budget through', () => {
   assert.deepEqual(gaps, []);
 });
 
-test('does not flag when AT LEAST ONE call site threads the budget through', () => {
+// A short call site still leaves the helper's loop with no way to stop early
+// even if a SIBLING call site threads the budget correctly — flag it (a
+// missed short call site is a worse failure mode than the extra noise of
+// flagging a genuinely-safe second call site).
+test('flags "not-passed" when ANY call site omits the budget, even if another call site includes it', () => {
   const scriptSrc = [
     `const { batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');`,
     `await batchScrapeAgeRecommendations(a, b, c);`,
     `await batchScrapeAgeRecommendations(a, b, c, budget);`,
   ].join('\n');
   const gaps = findBudgetThreadingGaps(scriptSrc, { 'broadway-com-runtimes': BATCH_HELPER_LIB });
-  assert.deepEqual(gaps, []);
+  assert.deepEqual(gaps, [{ name: 'batchScrapeAgeRecommendations', relPath: 'broadway-com-runtimes', reason: 'not-passed' }]);
+});
+
+// Regression: a JSDoc example call mentioning the full-arg-count call must
+// not count as a real call site — that would mask a genuine short call site
+// elsewhere in the same script (false negative).
+test('a call site mentioned only in a comment does not mask a real short call site', () => {
+  const scriptSrc = [
+    `const { batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');`,
+    `// e.g. batchScrapeAgeRecommendations(entries, shows, enrichments, budget)`,
+    `await batchScrapeAgeRecommendations(currentEntries, shows, enrichments);`,
+  ].join('\n');
+  const gaps = findBudgetThreadingGaps(scriptSrc, { 'broadway-com-runtimes': BATCH_HELPER_LIB });
+  assert.deepEqual(gaps, [{ name: 'batchScrapeAgeRecommendations', relPath: 'broadway-com-runtimes', reason: 'not-passed' }]);
+});
+
+test('resolves a require reached via ../lib/ from a one-level-deep subdirectory script', () => {
+  const scriptSrc = [
+    `const { batchScrapeAgeRecommendations } = require('../lib/broadway-com-runtimes');`,
+    `await batchScrapeAgeRecommendations(currentEntries, shows, enrichments);`,
+  ].join('\n');
+  const gaps = findBudgetThreadingGaps(scriptSrc, { 'broadway-com-runtimes': BATCH_HELPER_LIB });
+  assert.deepEqual(gaps, [{ name: 'batchScrapeAgeRecommendations', relPath: 'broadway-com-runtimes', reason: 'not-passed' }]);
 });
 
 test('flags "unsupported": helper has a risky loop with no budget param at all', () => {

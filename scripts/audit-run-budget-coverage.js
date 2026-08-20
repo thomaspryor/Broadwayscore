@@ -146,20 +146,94 @@ function getJobBlocks(raw) {
   });
 }
 
+// Chars after which a bare `/` is (almost) certainly a regex-literal start,
+// not division — the standard "operand can't precede a regex" heuristic.
+const REGEX_PRECEDING_CHAR_RE = /[([{,;:=!&|?+\-*%~^]$/;
+const REGEX_PRECEDING_KEYWORD_RE = /(?:^|[^\w$])(return|typeof|instanceof|in|of|new|delete|void|yield|case|do|else)$/;
+
+/** True if the `/` at src[slashIdx] plausibly opens a regex literal (vs. division), by inspecting the preceding token. */
+function looksLikeRegexStart(src, slashIdx) {
+  let k = slashIdx - 1;
+  while (k >= 0 && /\s/.test(src[k])) k--;
+  if (k < 0) return true; // nothing before it — can't be a binary division operator
+  if (REGEX_PRECEDING_CHAR_RE.test(src[k])) return true;
+  return REGEX_PRECEDING_KEYWORD_RE.test(src.slice(Math.max(0, k - 12), k + 1));
+}
+
+/**
+ * Index just past a regex literal (and its flags) starting at src[startIdx]
+ * (`src[startIdx] === '/'`), honoring backslash escapes and `[...]`
+ * character classes (where an unescaped `/` does NOT end the literal — e.g.
+ * `/[/]/` is a one-char class matching a literal slash). Returns null if no
+ * unescaped, non-class closing `/` is found before a newline (bails rather
+ * than guessing — an apparent regex that runs past end-of-line is more
+ * likely a stray division the heuristic misfired on).
+ */
+function skipRegexLiteral(src, startIdx) {
+  let i = startIdx + 1;
+  let inClass = false;
+  while (i < src.length && src[i] !== '\n') {
+    const c = src[i];
+    if (c === '\\') { i += 2; continue; }
+    if (c === '[') { inClass = true; i++; continue; }
+    if (c === ']') { inClass = false; i++; continue; }
+    if (c === '/' && !inClass) {
+      i++;
+      while (i < src.length && /[a-z]/i.test(src[i])) i++; // flags: g, i, m, ...
+      return i;
+    }
+    i++;
+  }
+  return null;
+}
+
 /** Index of the char matching the `(` at src[openIdx]. */
 /**
  * Index of the char matching src[openIdx] (which must be openChar), skipping
  * over '...'/"..." string literals and //, /* comments so a stray brace or
  * paren INSIDE a log message or error string can't desync the count (a bare
  * `console.log('caught: ' + e.message + '}')` would otherwise truncate the
- * scan early). Backtick template literals are intentionally NOT skipped —
- * their `${...}` interpolations are real code and may themselves contain a
- * network call worth catching.
+ * scan early). Also skips regex literals (`/[{}]/g`) — an unescaped brace
+ * inside a regex's character class is idiomatic in this scraping-heavy repo
+ * (e.g. `scripts/lib/wiki-utils.js`'s `.replace(/\{\{/g, '')` /
+ * `.replace(/\}\}/g, '')` markup scrubbers) and, unskipped, desyncs `depth`
+ * exactly like an unskipped string would — confirmed on that real file:
+ * without this, extractFunctionBodies() swallowed 2 of its 3 top-level
+ * functions into a sibling's body. Backtick template literals are handled
+ * with a small context stack rather than skipped outright: raw template
+ * TEXT is opaque (never scanned for // or /* comments, ' / " strings, or
+ * regex starts — a literal URL like `` `https://x` `` must not have its `//`
+ * misread as a comment, which would desync the scan and silently make the
+ * entire rest of the source invisible — a much worse false negative than
+ * under-matching one template literal), but `${...}` interpolations ARE real
+ * code and get full normal handling (their own nested braces/parens/
+ * comments/strings/regexes all count), because they may themselves contain a
+ * network call worth catching. BRO-109 surfaced the backtick case: extending
+ * the risky-loop scan to whole scripts/lib/ files hit many more
+ * `` fetchPage(`https://...`) `` call sites than the original single-script
+ * scope ever did, and the naive "don't skip backticks at all" policy
+ * silently dropped every loop/function after the first such call.
  */
 function findMatching(src, openIdx, openChar, closeChar) {
   let depth = 0;
+  // Stack of contexts we're nested inside. The bottom frame is always
+  // top-level/interpolation code (`text: false`); a frame with `text: true`
+  // means we're inside a template literal's raw text, where `braceDepth`
+  // is unused. A `code` frame reached via `${` tracks its OWN `{`/`}`
+  // nesting in `braceDepth` so an unrelated nested object/block inside the
+  // interpolation isn't mistaken for the interpolation's closing brace.
+  const stack = [{ text: false, braceDepth: 0 }];
   for (let i = openIdx; i < src.length; i++) {
+    const top = stack[stack.length - 1];
     const ch = src[i];
+
+    if (top.text) {
+      if (ch === '\\') { i++; continue; }
+      if (ch === '`') { stack.pop(); continue; }
+      if (ch === '$' && src[i + 1] === '{') { stack.push({ text: false, braceDepth: 0 }); i++; continue; }
+      continue; // raw template text: never a comment/string start, never a brace/paren of interest
+    }
+
     if (ch === '/' && src[i + 1] === '/') {
       const nl = src.indexOf('\n', i);
       i = nl === -1 ? src.length : nl;
@@ -170,6 +244,10 @@ function findMatching(src, openIdx, openChar, closeChar) {
       i = end === -1 ? src.length + 1 : end + 1;
       continue;
     }
+    if (ch === '/' && looksLikeRegexStart(src, i)) {
+      const end = skipRegexLiteral(src, i);
+      if (end != null) { i = end - 1; continue; }
+    }
     if (ch === '"' || ch === "'") {
       let j = i + 1;
       while (j < src.length && src[j] !== ch) {
@@ -179,6 +257,24 @@ function findMatching(src, openIdx, openChar, closeChar) {
       i = j;
       continue;
     }
+    if (ch === '`') { stack.push({ text: true, braceDepth: 0 }); continue; }
+
+    if (stack.length > 1) {
+      // Inside a ${...} interpolation: track its own brace nesting so its
+      // closing `}` (back to raw template text) isn't confused with a
+      // nested object/block's `}` inside the interpolation. The `${` that
+      // OPENED this frame was consumed as a 2-char marker above and never
+      // reached the openChar/closeChar check below, so the `}` that CLOSES
+      // it back to raw text must be excluded from that check too (`continue`)
+      // — otherwise it double-decrements `depth` for a brace whose matching
+      // open was never counted, returning a match many characters too early.
+      if (ch === '{') top.braceDepth++;
+      else if (ch === '}') {
+        if (top.braceDepth === 0) { stack.pop(); continue; }
+        top.braceDepth--;
+      }
+    }
+
     if (ch === openChar) depth++;
     else if (ch === closeChar) { depth--; if (depth === 0) return i; }
   }
@@ -195,18 +291,17 @@ function extractBracedBody(src, openBraceIdx) {
   return end == null ? null : src.slice(openBraceIdx + 1, end);
 }
 
-/** All named function bodies in a script (function decls + const-assigned arrow fns with a block body). */
+/**
+ * All named function bodies in a script (function decls + const-assigned
+ * arrow fns with a block body). Thin projection over extractFunctionSignatures
+ * (dropping `params`) rather than its own regex — a separate `[^)]*`-based
+ * param-list regex here would reintroduce the exact "default value with its
+ * own parens truncates the match" bug that extractFunctionSignatures was
+ * fixed for, just for the one-hop "networky name" lookup instead of the
+ * budget-param lookup.
+ */
 function extractFunctionBodies(src) {
-  const re = /(?:async\s+function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)|function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)|const\s+([A-Za-z_$][\w$]*)\s*=\s*async\s*\([^)]*\)\s*=>|const\s+([A-Za-z_$][\w$]*)\s*=\s*\([^)]*\)\s*=>)\s*\{/g;
-  const out = [];
-  let m;
-  while ((m = re.exec(src)) !== null) {
-    const name = m[1] || m[2] || m[3] || m[4];
-    const braceIdx = m.index + m[0].length - 1;
-    const body = extractBracedBody(src, braceIdx);
-    if (name && body != null) out.push({ name, body });
-  }
-  return out;
+  return extractFunctionSignatures(src).map(({ name, body }) => ({ name, body }));
 }
 
 /** All for/while loops with a `{ }` block body (single-statement loops are skipped — heuristic limitation). */
@@ -232,12 +327,18 @@ function extractLoops(src) {
  * Blanks `//` and `/* *\/` comment text (to spaces, preserving offsets) so a
  * docstring mentioning a risky-looking call by name — e.g. "fetchPage()
  * unwraps at FETCH time" in a prose comment — can't masquerade as a real
- * call to NETWORK_CALL_RE. String literals are left untouched: skipped over
- * (not blanked) using the same '...'/"..." skip as findMatching, and
- * backtick template literals are intentionally NOT skipped, consistent with
- * findMatching's documented policy (their ${...} interpolations are real
- * code). Extending the risky-loop check to whole scripts/lib/ files (BRO-109)
- * made this necessary — the original single-script scope rarely hit a large
+ * call to NETWORK_CALL_RE. String literals AND backtick template literals
+ * are left untouched: skipped over verbatim (not blanked, not scanned for
+ * `//`/`/* *\/`), same policy as findMatching. Backticks specifically must be
+ * skipped here (unlike findMatching, which leaves them unskipped so a paren
+ * inside a `${...}` interpolation still counts toward brace-matching): a
+ * template literal holding a bare URL — `` `https://api.example.com/x` `` —
+ * contains a literal `//` that is NOT a comment start, and misreading it as
+ * one would blank the rest of the line, silently hiding a real network call
+ * that appears later on it — exactly the false-negative class this file's
+ * own header calls worse than a false positive. Extending the risky-loop
+ * check to whole scripts/lib/ files (BRO-109) made comment-stripping
+ * necessary at all — the original single-script scope rarely hit a large
  * enough docstring to false-positive, but library files with long header
  * comments do (scripts/lib/review-write-guard.js#safeWriteReview matched via
  * exactly this before this function was added).
@@ -261,7 +362,11 @@ function stripComments(src) {
       i = j;
       continue;
     }
-    if (ch === '"' || ch === "'") {
+    if (ch === '/' && looksLikeRegexStart(src, i)) {
+      const end = skipRegexLiteral(src, i);
+      if (end != null) { out += src.slice(i, end); i = end; continue; }
+    }
+    if (ch === '"' || ch === "'" || ch === '`') {
       let j = i + 1;
       while (j < src.length && src[j] !== ch) {
         if (src[j] === '\\') j++;
@@ -316,25 +421,77 @@ function functionBodyHasRiskyLoop(fnBody, libSrc) {
 }
 
 /**
+ * Splits a comma-separated parameter/argument LIST into its top-level
+ * (paren/brace/bracket/string-aware) chunks — e.g. `a, b = () => {}, c`
+ * stays 3 chunks, not split on the comma-less arrow default's internal
+ * structure. Shared by extractFunctionSignatures (splitting params) and
+ * countTopLevelArgs (splitting call args).
+ */
+function splitTopLevel(text) {
+  const trimmed = text.trim();
+  if (trimmed === '') return [];
+  const out = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < trimmed.length; i++) {
+    const ch = trimmed[i];
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      i++;
+      while (i < trimmed.length && trimmed[i] !== quote) {
+        if (trimmed[i] === '\\') i++;
+        i++;
+      }
+      continue;
+    }
+    if ('([{'.includes(ch)) depth++;
+    else if (')]}'.includes(ch)) depth--;
+    else if (ch === ',' && depth === 0) {
+      out.push(trimmed.slice(start, i));
+      start = i + 1;
+    }
+  }
+  out.push(trimmed.slice(start));
+  return out.map((s) => s.trim()).filter((s) => s !== '');
+}
+
+const FUNCTION_HEADER_RE = /(?:async\s+function\s+([A-Za-z_$][\w$]*)\s*\(|function\s+([A-Za-z_$][\w$]*)\s*\(|const\s+([A-Za-z_$][\w$]*)\s*=\s*async\s*\(|const\s+([A-Za-z_$][\w$]*)\s*=\s*\()/g;
+
+/**
  * All named function bodies AND parameter lists in a script (function decls +
  * const-assigned arrow fns with a block body) — like extractFunctionBodies
  * but also captures the raw parameter list, needed to find a budget-shaped
- * parameter's position.
+ * parameter's position. Params are located via matchParen (paren-depth-aware)
+ * rather than a `[^)]*` regex, so a default value that itself contains
+ * parens — `function f(items, onProgress = () => {})` — doesn't prematurely
+ * truncate the param list at the arrow's own `()` and silently drop the
+ * whole function from the scan (a real risky helper would then be invisible
+ * to the BRO-109 threading check — a false negative, not just imprecision).
  */
 function extractFunctionSignatures(src) {
-  const re = /(?:async\s+function\s+([A-Za-z_$][\w$]*)\s*\(([^)]*)\)|function\s+([A-Za-z_$][\w$]*)\s*\(([^)]*)\)|const\s+([A-Za-z_$][\w$]*)\s*=\s*async\s*\(([^)]*)\)\s*=>|const\s+([A-Za-z_$][\w$]*)\s*=\s*\(([^)]*)\)\s*=>)\s*\{/g;
   const out = [];
   let m;
-  while ((m = re.exec(src)) !== null) {
-    const name = m[1] || m[3] || m[5] || m[7];
-    const paramsRaw = m[2] || m[4] || m[6] || m[8] || '';
-    const braceIdx = m.index + m[0].length - 1;
-    const body = extractBracedBody(src, braceIdx);
+  FUNCTION_HEADER_RE.lastIndex = 0;
+  while ((m = FUNCTION_HEADER_RE.exec(src)) !== null) {
+    const name = m[1] || m[2] || m[3] || m[4];
+    const isArrow = Boolean(m[3] || m[4]);
+    const openParenIdx = m.index + m[0].length - 1;
+    const closeParenIdx = matchParen(src, openParenIdx);
+    if (closeParenIdx == null) continue;
+
+    let j = closeParenIdx + 1;
+    while (j < src.length && /\s/.test(src[j])) j++;
+    if (isArrow) {
+      if (src[j] !== '=' || src[j + 1] !== '>') continue;
+      j += 2;
+      while (j < src.length && /\s/.test(src[j])) j++;
+    }
+    if (src[j] !== '{') continue;
+
+    const body = extractBracedBody(src, j);
     if (name && body != null) {
-      const params = paramsRaw
-        .split(',')
-        .map((p) => p.trim().split('=')[0].trim().replace(/^\.\.\./, ''))
-        .filter(Boolean);
+      const paramsRaw = src.slice(openParenIdx + 1, closeParenIdx);
+      const params = splitTopLevel(paramsRaw).map((p) => p.split('=')[0].trim().replace(/^\.\.\./, ''));
       out.push({ name, params, body });
     }
   }
@@ -353,9 +510,16 @@ function findBudgetParamIndex(fn) {
   return new RegExp(`\\b${name}\\??\\.exceeded\\s*\\(`).test(fn.body) ? idx : -1;
 }
 
-/** Local lib requires: `const { a, b } = require('./lib/xxx');` → [{names: ['a','b'], relPath: 'xxx'}]. */
+/**
+ * Local lib requires: `const { a, b } = require('./lib/xxx');` →
+ * [{names: ['a','b'], relPath: 'xxx'}]. Matches `./lib/` AND `../lib/` (one
+ * or more `../`/`./` segments) — scripts one directory down (scripts/cli/,
+ * scripts/admin/, etc.) reach scripts/lib/ via `../lib/`, not `./lib/`; a
+ * script→lib-helper gap in one of those would otherwise be silently invisible
+ * to this check.
+ */
 function getLibRequires(src) {
-  const re = /const\s*\{\s*([^}]+)\}\s*=\s*require\(\s*['"]\.\/lib\/([A-Za-z0-9_\-]+)(?:\.js)?['"]\s*\)/g;
+  const re = /const\s*\{\s*([^}]+)\}\s*=\s*require\(\s*['"](?:\.\.\/|\.\/)+lib\/([A-Za-z0-9_\-]+)(?:\.js)?['"]\s*\)/g;
   const out = [];
   let m;
   while ((m = re.exec(src)) !== null) {
@@ -365,35 +529,26 @@ function getLibRequires(src) {
   return out;
 }
 
-/** Names in a lib file's `module.exports = { a, b, c };` (shorthand export-list convention used throughout scripts/lib/). */
+/**
+ * Names in a lib file's `module.exports = { a, b, c };` (shorthand
+ * export-list convention used throughout scripts/lib/). Uses matchParen's
+ * sibling extractBracedBody (brace-depth-aware) rather than a `[^}]*` regex,
+ * so a nested object value in the export list — `module.exports = { a, b:
+ * { c } };` — doesn't truncate at the inner `}` and silently drop every
+ * export named after it.
+ */
 function getModuleExportNames(src) {
-  const m = /module\.exports\s*=\s*\{([^}]*)\}/s.exec(src);
+  const m = /module\.exports\s*=\s*\{/.exec(src);
   if (!m) return new Set();
-  return new Set(m[1].split(',').map((s) => s.trim().split(':')[0].trim()).filter(Boolean));
+  const braceIdx = m.index + m[0].length - 1;
+  const body = extractBracedBody(src, braceIdx);
+  if (body == null) return new Set();
+  return new Set(splitTopLevel(body).map((s) => s.split(':')[0].trim()).filter(Boolean));
 }
 
 /** Number of top-level (paren/brace/bracket/string-aware) comma-separated args in a call's argument text. */
 function countTopLevelArgs(argsText) {
-  const trimmed = argsText.trim();
-  if (trimmed === '') return 0;
-  let depth = 0;
-  let count = 1;
-  for (let i = 0; i < trimmed.length; i++) {
-    const ch = trimmed[i];
-    if (ch === '"' || ch === "'" || ch === '`') {
-      const quote = ch;
-      i++;
-      while (i < trimmed.length && trimmed[i] !== quote) {
-        if (trimmed[i] === '\\') i++;
-        i++;
-      }
-      continue;
-    }
-    if ('([{'.includes(ch)) depth++;
-    else if (')]}'.includes(ch)) depth--;
-    else if (ch === ',' && depth === 0) count++;
-  }
-  return count;
+  return splitTopLevel(argsText).length;
 }
 
 /** Argument counts of every call to `fnName(...)` found in `src`. */
@@ -421,6 +576,11 @@ function callArgCounts(src, fnName) {
  */
 function findBudgetThreadingGaps(scriptSrc, libSrcByRelPath) {
   const gaps = [];
+  // Comments stripped once, up front: a JSDoc @example call (or any other
+  // prose mentioning `helperName(a, b, c, budget)`) must not count as a real
+  // call site — that would mask an actual call that omits the budget arg
+  // (false negative, worse than the noise a stray comment might otherwise add).
+  const cleanScriptSrc = stripComments(scriptSrc);
   for (const { names, relPath } of getLibRequires(scriptSrc)) {
     const libSrc = libSrcByRelPath[relPath];
     if (libSrc == null) continue;
@@ -437,8 +597,11 @@ function findBudgetThreadingGaps(scriptSrc, libSrcByRelPath) {
         gaps.push({ name, relPath, reason: 'unsupported' });
         continue;
       }
-      const argCounts = callArgCounts(scriptSrc, name);
-      if (argCounts.length > 0 && argCounts.every((c) => c <= budgetIdx)) {
+      // ANY call site short of the budget param position is a real gap —
+      // even if a sibling call site elsewhere threads it correctly, the
+      // short one still runs the helper's loop with no way to stop early.
+      const argCounts = callArgCounts(cleanScriptSrc, name);
+      if (argCounts.some((c) => c <= budgetIdx)) {
         gaps.push({ name, relPath, reason: 'not-passed' });
       }
     }
@@ -576,9 +739,15 @@ module.exports = {
   extractFunctionBodies,
   extractFunctionSignatures,
   extractLoops,
+  findMatching,
+  matchParen,
+  extractBracedBody,
+  looksLikeRegexStart,
+  skipRegexLiteral,
   findBudgetParamIndex,
   getLibRequires,
   getModuleExportNames,
+  splitTopLevel,
   countTopLevelArgs,
   callArgCounts,
   findBudgetThreadingGaps,
