@@ -933,6 +933,14 @@ on:
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'
       - 'tests/unit/opening-night-latency-report.test.mjs'
+      # BRO-75: wrongProduction exclusion-volume analysis (distinguishes
+      # sticky-flag re-logging across rebuild passes from genuine new
+      # over-blocking). Colocated scripts/wrong-production-exclusion-
+      # analysis.test.mjs runs in the tests/unit-test-manifest.txt batch;
+      # these source entries make a solo edit trigger it.
+      - 'scripts/lib/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.test.mjs'
       # Pull-quote guards decide the excerpt shown on every review card. The
       # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
       # truncation / hedge-guard starvation) added hard + soft guards here and
