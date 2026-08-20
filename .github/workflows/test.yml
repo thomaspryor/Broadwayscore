@@ -1481,6 +1481,12 @@ on:
       - 'scripts/audit-help-flag-safety.js'
       - 'scripts/audit-help-flag-safety.test.mjs'
       - 'scripts/.help-flag-safety-baseline.json'
+      # Fetch/https.get timeout audit (#1862, BRO-108 follow-up) — same
+      # solo-edit-must-trigger-CI reasoning as the guard above. Informational
+      # only (exit 0 on the repo-wide scan) — not --gate-wired, so no
+      # baseline JSON entry needed here.
+      - 'scripts/audit-fetch-timeouts.js'
+      - 'scripts/audit-fetch-timeouts.test.mjs'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
