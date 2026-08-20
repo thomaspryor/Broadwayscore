@@ -85,7 +85,7 @@ if (!CONFIG.domain && !CONFIG.outlet) {
 // lists) — re-running these burns real SERP provider spend for no measured
 // return. --force-exhausted overrides (e.g. the underlying registry/site
 // changed since the 2026-08-16 measurement).
-if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.domain, outlet: CONFIG.outlet })) {
+if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.domain, outlet: CONFIG.outlet }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES)) {
   console.error(`  ⛔ ${CONFIG.outlet ? `--outlet=${CONFIG.outlet}` : `--domain=${CONFIG.domain}`} is a proven-zero sweep (Notion card 3b1637c5-416f-8163-a707-e156f5e1efc3, measured 2026-08-16) — re-running burns SERP spend for no yield. Pass --force-exhausted to override.`);
   process.exit(1);
 }

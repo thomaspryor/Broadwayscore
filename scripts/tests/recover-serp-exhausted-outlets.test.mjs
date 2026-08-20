@@ -15,9 +15,11 @@ const require = createRequire(import.meta.url);
 // reimplementing the list.
 const {
   isProvenZeroSweep,
+  buildDomainOutletIds,
   PROVEN_ZERO_SWEEP_DOMAINS,
   PROVEN_ZERO_SWEEP_OUTLETS,
 } = require('../lib/serp-text-recovery-candidates.js');
+const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('../lib/url-discovery.js');
 
 test('proven-zero domain pools are guarded', () => {
   for (const domain of ['lightingandsoundamerica.com', 'wolfentertainmentguide.com', 'dailymail.co.uk', 'thetimes.co.uk']) {
@@ -29,17 +31,34 @@ test('AP is guarded in --outlet mode (0/18 measured via --outlet=ap, not --domai
   assert.equal(isProvenZeroSweep({ domain: null, outlet: 'ap' }), true);
 });
 
-test('AP is NOT guarded as a --domain target — the measured zero was --outlet mode only', () => {
-  // apnews.com itself was never swept via --domain; guarding it there would
-  // be broader than what was actually measured (and would also block the
-  // BRO-141 domain-alias generalization test fixtures, which use apnews.com
-  // as a positive example).
+test('AP is NOT guarded as a bare --domain target when no outlet-domain map is passed (documents the optional-arg fallback)', () => {
+  // Without outletDomains/domainAliases, isProvenZeroSweep can only check the
+  // static PROVEN_ZERO_SWEEP_DOMAINS list — apnews.com was never added to it
+  // directly (the measured zero was --outlet=ap, not --domain=apnews.com).
   assert.equal(isProvenZeroSweep({ domain: 'apnews.com', outlet: null }), false);
 });
 
-test('un-swept outlets/domains are not guarded (vulture and nypost — the recommended next sweep)', () => {
-  assert.equal(isProvenZeroSweep({ domain: 'vulture.com', outlet: null }), false);
-  assert.equal(isProvenZeroSweep({ domain: 'nypost.com', outlet: null }), false);
+test('AP IS guarded as --domain=apnews.com (and its alias abcnews.go.com) once outletDomains/domainAliases are passed — closes the alias bypass', () => {
+  // ship-check regression: BRO-141's own alias-expansion commit
+  // (buildDomainOutletIds) made --domain=apnews.com / --domain=abcnews.go.com
+  // reach the exact same AP-attributed candidate pool that --outlet=ap was
+  // measured at 0/18. Without this, the alias generalization silently
+  // reopened the guard it's supposed to protect. This is the real call the
+  // CLI makes — recover-serp-text.js always passes both maps.
+  assert.equal(isProvenZeroSweep({ domain: 'apnews.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), true);
+  assert.equal(isProvenZeroSweep({ domain: 'abcnews.go.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), true);
+});
+
+test('un-swept outlets/domains are not guarded even with the full maps passed (vulture and nypost — the recommended next sweep)', () => {
+  assert.equal(isProvenZeroSweep({ domain: 'vulture.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), false);
+  assert.equal(isProvenZeroSweep({ domain: 'nypost.com', outlet: null }, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES), false);
+});
+
+test('sanity: apnews.com really does resolve to outletId "ap" and abcnews.go.com really is its registered alias (guards against the fixture itself drifting)', () => {
+  assert.equal(OUTLET_DOMAINS['ap'], 'apnews.com');
+  const aliasSet = REGISTRY_DOMAIN_ALIASES['apnews.com'];
+  assert.ok(aliasSet && aliasSet.has('abcnews.go.com'));
+  assert.ok(buildDomainOutletIds('apnews.com', OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES).has('ap'));
 });
 
 test('a target with neither domain nor outlet is not guarded', () => {
@@ -87,4 +106,22 @@ test('recover-serp-text.js refuses a proven-zero --outlet=ap sweep at the CLI wi
   }
   assert.notEqual(exitCode, 0);
   assert.match(stderr, /proven-zero sweep/);
+});
+
+test('recover-serp-text.js refuses --domain=apnews.com and --domain=abcnews.go.com too — the alias bypass is closed end-to-end', () => {
+  for (const domain of ['apnews.com', 'abcnews.go.com']) {
+    let stderr = '';
+    let exitCode = 0;
+    try {
+      execFileSync('node', ['scripts/recover-serp-text.js', `--domain=${domain}`, '--dry-run', '--limit=1'], {
+        encoding: 'utf8',
+        stdio: ['ignore', 'ignore', 'pipe'],
+      });
+    } catch (e) {
+      exitCode = e.status;
+      stderr = e.stderr || '';
+    }
+    assert.notEqual(exitCode, 0, `expected --domain=${domain} to be refused`);
+    assert.match(stderr, /proven-zero sweep/);
+  }
 });
