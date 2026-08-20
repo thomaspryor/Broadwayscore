@@ -70,28 +70,66 @@ describe('BRO-79 audit fix list — internal consistency', () => {
 });
 
 describe('BRO-79 root-cause fix — clearFailureFlags no longer self-nulls a fresh rejection', () => {
-  it('saveReviewFile in scripts/llm-scoring/index.ts skips the stale-flag clear on the rejection write', () => {
-    const src = fs.readFileSync(path.join(__dirname_equiv(), '..', '..', 'scripts', 'llm-scoring', 'index.ts'), 'utf8');
-    assert.ok(
-      /function saveReviewFile\(filePath: string, data: any, opts:/.test(src),
-      'saveReviewFile should accept an opts parameter (skipFailureFlagClear)'
-    );
-    assert.ok(
-      /skipFailureFlagClear/.test(src),
-      'saveReviewFile / its rejection-write call site should reference skipFailureFlagClear'
-    );
-    // The rejection-stamping call site must opt out of the stale-flag clear.
+  const { clearFailureFlags } = require('../../scripts/lib/clear-failure-flags.js');
+  const LONG_GARBAGE_TEXT = 'nav menu cookie banner '.repeat(30); // >=500 chars, unscoreable
+
+  it('reproduces the BRO-79 bug: without the option, a freshly-set garbage_text rejectionReason self-nulls', () => {
+    const data = { fullText: LONG_GARBAGE_TEXT, rejectionReason: 'garbage_text', rejectedBy: 'ensemble-scoreability-check' };
+    clearFailureFlags(data);
+    assert.strictEqual(data.rejectionReason, null, 'sanity check: this is the exact bug shape BRO-79 fixed');
+  });
+
+  it('skipRejectionReasonClear:true preserves a freshly-set garbage_text rejectionReason', () => {
+    const data = { fullText: LONG_GARBAGE_TEXT, rejectionReason: 'garbage_text', rejectedBy: 'ensemble-scoreability-check' };
+    const cleared = clearFailureFlags(data, { skipRejectionReasonClear: true });
+    assert.strictEqual(data.rejectionReason, 'garbage_text');
+    assert.strictEqual(data.rejectedBy, 'ensemble-scoreability-check');
+    assert.ok(!cleared.includes('rejectionReason'));
+  });
+
+  it('skipRejectionReasonClear:true still clears every OTHER stale flag on the same write (narrow skip, not a blanket one)', () => {
+    const data = {
+      fullText: LONG_GARBAGE_TEXT,
+      rejectionReason: 'garbage_text',
+      incompleteReason: 'no_url',
+      url: 'https://example.com/review',
+      scoreStatus: 'TO_BE_CALCULATED',
+      llmScore: { score: 50 },
+      serpRetryCount: 3,
+    };
+    const cleared = clearFailureFlags(data, { skipRejectionReasonClear: true });
+    assert.strictEqual(data.rejectionReason, 'garbage_text', 'rejectionReason itself must survive');
+    assert.strictEqual(data.incompleteReason, null, 'unrelated stale flags must still clear');
+    assert.strictEqual(data.scoreStatus, null);
+    assert.strictEqual(data.serpRetryCount, null);
+    assert.ok(cleared.includes('incompleteReason'));
+    assert.ok(cleared.includes('scoreStatus'));
+    assert.ok(cleared.includes('serpRetryCount'));
+  });
+
+  it('does not skip the clear for a STALE garbage_text rejection carried over from a prior run (skipRejectionReasonClear defaults to false)', () => {
+    // A caller that is NOT the fresh-rejection write path (i.e. every other
+    // saveReviewFile call) must keep clearing a real stale flag.
+    const data = { fullText: LONG_GARBAGE_TEXT, rejectionReason: 'garbage_text', rejectedBy: 'ensemble-scoreability-check' };
+    clearFailureFlags(data); // no opts — default behavior
+    assert.strictEqual(data.rejectionReason, null);
+  });
+
+  it('scripts/llm-scoring/index.ts wires the rejection-stamping saveReviewFile call to skipRejectionReasonClear', () => {
+    // Lightweight wiring check (behavior itself is covered by the tests above,
+    // which exercise clearFailureFlags directly) — just confirms the call site
+    // that sets rejectionReason also passes the option, so a future refactor
+    // that silently drops the option still gets caught by the behavioral tests
+    // above failing, and this catches an accidental disconnection of the two.
+    const srcPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts', 'llm-scoring', 'index.ts');
+    const src = fs.readFileSync(srcPath, 'utf8');
     const rejectionWriteMatch = src.match(/fileData\.rejectionReasoning = rejectionReasoning;[\s\S]{0,200}saveReviewFile\([^)]*\)/);
     assert.ok(rejectionWriteMatch, 'could not locate the rejection-stamping saveReviewFile call');
     assert.ok(
-      /skipFailureFlagClear:\s*true/.test(rejectionWriteMatch[0]),
-      'the rejection-stamping saveReviewFile call must pass { skipFailureFlagClear: true }'
+      /skipRejectionReasonClear:\s*true/.test(rejectionWriteMatch[0]),
+      'the rejection-stamping saveReviewFile call must pass { skipRejectionReasonClear: true }'
     );
   });
-
-  function __dirname_equiv() {
-    return path.dirname(new URL(import.meta.url).pathname);
-  }
 });
 
 describe('BRO-79 audit report (requires ~/broadway-review-texts + prior script run)', { skip: !hasReport }, () => {
@@ -147,17 +185,26 @@ describe('BRO-79 live data state (requires ~/broadway-review-texts)', { skip: !h
     assert.strictEqual(data.wrongProductionManualClear, true);
   });
 
-  it('wicked-2003 WaPo is recovered: rejection cleared, fullText moved to garbageFullText, includable, and scores', () => {
-    const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
+  it('wicked-2003 WaPo is recovered: rejection cleared, fullText archived outside garbageFullText (so rebuild does not auto-restore the contamination), includable, and scores', () => {
+    const { getBestScore, applyScoreRelevantMigrations } = require('../../scripts/lib/rebuild-helpers.js');
     const data = load(WICKED_WAPO_PATH);
     assert.strictEqual(data.rejectionReason, null);
     assert.strictEqual(data.fullText, null);
-    assert.ok(data.garbageFullText && data.garbageFullText.length > 0);
+    // Must NOT be garbageFullText: rebuild-helpers.js's applyScoreRelevantMigrations()
+    // auto-restores garbageFullText into fullText via cleanText() whenever fullText is
+    // empty and garbageReason isn't an error/404 page — cleanText() does not strip the
+    // WaPo homepage junk here, so that migration would silently undo this recovery.
+    assert.strictEqual(data.garbageFullText, undefined);
+    assert.ok(data.bro79ContaminatedFullTextArchive && data.bro79ContaminatedFullTextArchive.length > 0);
     assert.ok(data.showScoreExcerpt);
     const includable = isIncludableForRebuild(data, { id: data.showId }, WICKED_WAPO_PATH);
     assert.strictEqual(includable, true);
     const best = getBestScore(data);
     assert.ok(best && typeof best.score === 'number', 'wicked-2003 WaPo should have a resolvable score');
+    // Simulate the actual rebuild migration step and confirm fullText stays cleared.
+    const migrated = { ...data };
+    applyScoreRelevantMigrations(migrated);
+    assert.strictEqual(migrated.fullText, null, 'rebuild must not auto-restore the contaminated text back into fullText');
   });
 
   it('wicked-2003 EW alice-king remains rejected (sound not_a_review, documented not recovered)', () => {

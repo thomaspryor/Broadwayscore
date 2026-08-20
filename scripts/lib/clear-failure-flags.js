@@ -69,10 +69,21 @@ function hasSuccessfulFetch(data) {
  * - humanReview* fields — manual overrides, never auto-clear
  *
  * @param {object} data - Review JSON data (mutated in place)
+ * @param {object} [opts]
+ * @param {boolean} [opts.skipRejectionReasonClear=false] - Skip the
+ *   rejectionReason/rejectedBy stale-clear rule below. For callers writing a
+ *   FRESH rejection in the same object/call (e.g. the ensemble-scoreability
+ *   write in llm-scoring/index.ts): garbage scrape text is frequently >=500
+ *   chars, so the stale-clear rule would immediately null the reason that
+ *   was just set, before it reaches disk (BRO-79 — 178+ files ended up with
+ *   rejectedBy set, rejectionReasoning populated, rejectionReason: null).
+ *   Every OTHER rule in this function still runs — this narrows the skip to
+ *   exactly the one field a fresh-rejection write can't safely pass through.
  * @returns {string[]} List of flags that were cleared
  */
-function clearFailureFlags(data) {
+function clearFailureFlags(data, opts = {}) {
   if (!data || typeof data !== 'object') return [];
+  const { skipRejectionReasonClear = false } = opts;
   const cleared = [];
 
   const hasText = hasCompletText(data);
@@ -110,11 +121,11 @@ function clearFailureFlags(data) {
   // issues that text length does not resolve. Clearing them let a Vulture FILM review
   // of Hamlet (rejected as wrong_production) back into reviews.json (2026-04-20).
   const isTextFetchRejection = data.rejectionReason === 'garbage_text';
-  if (data.rejectionReason && hasText && isTextFetchRejection) {
+  if (data.rejectionReason && hasText && isTextFetchRejection && !skipRejectionReasonClear) {
     data.rejectionReason = null;
     cleared.push('rejectionReason');
   }
-  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length > 0 && hasText && isTextFetchRejection) {
+  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length > 0 && hasText && isTextFetchRejection && !skipRejectionReasonClear) {
     // Keep the array but empty it — signals that prior rejection was re-evaluated
     data.rejectedBy = null;
     cleared.push('rejectedBy');

@@ -41,35 +41,50 @@ const REVIEW_TEXTS_ROOT = path.join(require('os').homedir(), 'broadway-review-te
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'bro-79-ensemble-rejection-audit.json');
 const dryRun = process.argv.includes('--dry-run');
 
-// --- 1. Null-reason backfill: 26 files from the 2026-07-21/22 cohort, each hand-audited
-// against fullText + rejectionReasoning. Every one is a SOUND rejection of the stored text
-// (see rationale) — none is a recoverable review except wicked-2003 (handled separately below).
+// --- 1. Null-reason backfill: 25 files from the 2026-07-21/22 cohort (26th is
+// wicked-2003 WaPo, recovered separately below), each hand-audited against
+// fullText + rejectionReasoning. Every one is a SOUND rejection of the stored
+// text (see rationale) — none is a recoverable review.
+//
+// reason choice matters beyond labeling: clear-failure-flags.js auto-nulls
+// rejectionReason='garbage_text' (and ONLY that reason) on any future
+// success-path write once fullText is >=500 chars, with no re-verification —
+// that's the exact mechanism BRO-79 exists to fix. Reserve 'garbage_text' for
+// content that's boilerplate-SHAPED (nav shells/CAPTCHA/ad interstitials/
+// traffic widgets) where a refetch could plausibly land real article text.
+// Anything that's coherent, on-topic-for-the-SITE prose about the WRONG
+// subject — a different article, a homepage feed, an index/listing page —
+// gets 'not_a_review' instead: refetching the same URL will deterministically
+// reproduce the same wrong content, so auto-clearing without re-verification
+// would silently let a stale/wrong score resurface (ship-check adversarial
+// review, Codex — caught 2 mislabeled examples; audited all 25 against this
+// rule and reclassified 13, see WSJ/Newsday/Musto entries below).
 const NULL_BACKFILL = [
-  { path: 'fully-committed-2016/eater--joshua-david-stein.json', reason: 'garbage_text', rationale: 'Real review contaminated with an unrelated Dallas-dining-scene listicle mid-article (scrape merged two Eater articles).' },
-  { path: 'grey-house-2023/slash-film--caroline-cao.json', reason: 'garbage_text', rationale: 'Real review present but >80% of the text is an unrelated horror-films listicle appended after it.' },
-  { path: 'hadestown-2019/vox--constance-grady.json', reason: 'garbage_text', rationale: 'Real review interspersed with paywall/ad and personal-finance-story junk mid-article.' },
-  { path: 'harry-potter-2021/limelight-magazine-au--clive-paget.json', reason: 'garbage_text', rationale: 'Truncated mid-sentence into promotional/nav content; paywall cutoff.' },
+  { path: 'fully-committed-2016/eater--joshua-david-stein.json', reason: 'garbage_text', rationale: 'Real review contaminated with an unrelated Dallas-dining-scene listicle mid-article (scrape merged two Eater articles) — re-extraction could recover it.' },
+  { path: 'grey-house-2023/slash-film--caroline-cao.json', reason: 'garbage_text', rationale: 'Real review present but >80% of the text is an unrelated horror-films listicle appended after it — re-extraction could recover it.' },
+  { path: 'hadestown-2019/vox--constance-grady.json', reason: 'garbage_text', rationale: 'Real review interspersed with paywall/ad and personal-finance-story junk mid-article — re-extraction could recover it.' },
+  { path: 'harry-potter-2021/limelight-magazine-au--clive-paget.json', reason: 'garbage_text', rationale: 'Truncated mid-sentence into promotional/nav content; paywall cutoff — a fresh fetch could get past it.' },
   { path: 'little-bear-ridge-road-2025/playbill--logan-culwell-block.json', reason: 'not_a_review', rationale: 'Playbill "reviews are in" news roundup — cast/creative-team facts and links to other outlets\' reviews, no evaluative content of its own.' },
-  { path: 'network-2018/broadwaynews--charles-isherwood.json', reason: 'garbage_text', rationale: 'Stored text is an archive.ph CAPTCHA interstitial, not article content.' },
-  { path: 'promises-promises-2010/timeout--adam-feldman.json', reason: 'garbage_text', rationale: 'Partial real review fragment mixed with site nav and user-comment text; not cleanly scoreable as stored.' },
+  { path: 'network-2018/broadwaynews--charles-isherwood.json', reason: 'garbage_text', rationale: 'Stored text is an archive.ph CAPTCHA interstitial, not article content — a fresh fetch could get past it.' },
+  { path: 'promises-promises-2010/timeout--adam-feldman.json', reason: 'garbage_text', rationale: 'Partial real review fragment mixed with site nav and user-comment text; not cleanly scoreable as stored, but re-extraction could recover it.' },
   { path: 'the-lion-king-1997/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Behind-the-scenes operations/anniversary feature — no evaluative judgment of the production.' },
-  { path: 'yellow-face-2024/aaartsalliance--katie-gee-salisbury.json', reason: 'garbage_text', rationale: 'Scrape captured the site\'s reviews-archive index page (titles/links only), not the article body.' },
-  { path: '1984-2017/bloomberg--jason-zinoman.json', reason: 'garbage_text', rationale: 'Scrape captured Bloomberg homepage/nav headlines; the review headline appears only as an unlinked title.' },
-  { path: 'brief-encounter-2010/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: stored text is a live traffic-report widget, not the article (see also 5 sibling Newsday files below).' },
-  { path: 'butley-2006/wsj--terry-teachout.json', reason: 'garbage_text', rationale: 'Systemic WSJ stream.wsj.com bug: stored text is the CURRENT WSJ homepage feed, not the archived article (identical 4248-char payload as romeo-and-juliet-2013 and the-testament-of-mary-2013 below — same scraper bug, three shows).' },
-  { path: 'cats-2016/out-magazine--michael-musto.json', reason: 'garbage_text', rationale: 'Wrong article entirely — an unrelated Michael Musto interview piece with no Cats content; URL was never a Cats review.' },
-  { path: 'charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json', reason: 'garbage_text', rationale: 'Truncated mid-sentence before the verdict, with nav noise mixed in.' },
-  { path: 'dont-dress-for-dinner-2012/nydailynews--joe-dziemianowicz.json', reason: 'garbage_text', rationale: 'Truncated and interleaved with unrelated NY Daily News headlines.' },
-  { path: 'good-people-2011/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article (see brief-encounter-2010 above).' },
-  { path: 'jerusalem-2011/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article.' },
-  { path: 'la-bete-2010/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article.' },
-  { path: 'miss-saigon-2017/out-magazine--michael-musto.json', reason: 'garbage_text', rationale: 'Wrong article entirely — unrelated Musto interview content, URL was never a Miss Saigon review.' },
-  { path: 'romeo-and-juliet-2013/wsj--unknown.json', reason: 'garbage_text', rationale: 'Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above).' },
+  { path: 'yellow-face-2024/aaartsalliance--katie-gee-salisbury.json', reason: 'not_a_review', rationale: 'Scrape captured the site\'s reviews-archive INDEX page (titles/links only), not the article body — refetching this same URL will always return the same index page.' },
+  { path: '1984-2017/bloomberg--jason-zinoman.json', reason: 'not_a_review', rationale: 'Scrape captured Bloomberg homepage/nav headlines, not the article; the review headline appears only as an unlinked title — this is what an unauthenticated fetch of this URL will always return.' },
+  { path: 'brief-encounter-2010/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: stored text is a live traffic-report widget, not the article (see also 5 sibling Newsday files below) — reproducible on this URL, not a one-off fetch glitch.' },
+  { path: 'butley-2006/wsj--terry-teachout.json', reason: 'not_a_review', rationale: 'Systemic WSJ stream.wsj.com bug: stored text is the CURRENT WSJ homepage feed, not the archived article (identical 4248-char payload as romeo-and-juliet-2013 and the-testament-of-mary-2013 below — same scraper bug, three shows) — reproducible on this URL.' },
+  { path: 'cats-2016/out-magazine--michael-musto.json', reason: 'not_a_review', rationale: 'Wrong article entirely — an unrelated Michael Musto interview piece with no Cats content; URL was never a Cats review, so this is permanent, not a fetch fluke.' },
+  { path: 'charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json', reason: 'garbage_text', rationale: 'Truncated mid-sentence before the verdict, with nav noise mixed in — a fresh fetch could recover the full text.' },
+  { path: 'dont-dress-for-dinner-2012/nydailynews--joe-dziemianowicz.json', reason: 'garbage_text', rationale: 'Truncated and interleaved with unrelated NY Daily News headlines — a fresh fetch could recover the full text.' },
+  { path: 'good-people-2011/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article (see brief-encounter-2010 above) — reproducible on this URL.' },
+  { path: 'jerusalem-2011/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL.' },
+  { path: 'la-bete-2010/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL.' },
+  { path: 'miss-saigon-2017/out-magazine--michael-musto.json', reason: 'not_a_review', rationale: 'Wrong article entirely — unrelated Musto interview content, URL was never a Miss Saigon review, so this is permanent, not a fetch fluke.' },
+  { path: 'romeo-and-juliet-2013/wsj--unknown.json', reason: 'not_a_review', rationale: 'Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above) — reproducible on this URL.' },
   { path: 'sister-act-2011/ew--thom-geier.json', reason: 'not_a_review', rationale: 'Pre-opening preview piece written before previews began — anticipatory commentary, no evaluation of an actual performance.' },
-  { path: 'sister-act-2011/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article.' },
+  { path: 'sister-act-2011/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL.' },
   { path: 'sunday-in-the-park-with-george-1984/nydailynews--howard-kissel.json', reason: 'not_a_review', rationale: 'Bernadette Peters career profile/interview piece — no critical evaluation of the production.' },
-  { path: 'the-people-in-the-picture-2011/newsday--linda-winer.json', reason: 'garbage_text', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article.' },
-  { path: 'the-testament-of-mary-2013/wsj--unknown.json', reason: 'garbage_text', rationale: 'Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above).' },
+  { path: 'the-people-in-the-picture-2011/newsday--linda-winer.json', reason: 'not_a_review', rationale: 'Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL.' },
+  { path: 'the-testament-of-mary-2013/wsj--unknown.json', reason: 'not_a_review', rationale: 'Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above) — reproducible on this URL.' },
 ];
 
 // --- 2. Confirmed false positives from a 20-file spot-check sample of wrong_production /
@@ -103,6 +118,12 @@ function loadJson(relPath) {
 
 function saveJson(relPath, data) {
   if (dryRun) return;
+  // force:true skips safeWriteReview's protected-field AND _locked checks entirely
+  // (scripts/lib/review-write-guard.js) — refuse to silently bypass a lock on a
+  // one-time hand-audited migration like this one (ship-check adversarial review).
+  if (data._locked) {
+    throw new Error(`${relPath}: refusing force-write, file is _locked — resolve manually`);
+  }
   // force+no-merge: `data` was loaded fresh from disk and mutated in place above,
   // so it's already the complete intended file content — safeWriteReview should
   // write it as-is rather than re-merging against disk (which would just read
@@ -159,19 +180,28 @@ function run() {
     if (!data.showScoreExcerpt || !data.llmScore) {
       throw new Error('wicked-2003 WaPo: expected showScoreExcerpt + llmScore to already exist for excerpt-tier recovery');
     }
-    data.garbageFullText = data.fullText;
-    data.garbageReason = 'WaPo archive URL is a journaltimes.com syndication mirror; refetch (2026-02-10) returned ~2 real paragraphs followed by unrelated WaPo homepage related-links/privacy-notice junk. No clean washingtonpost.com URL for this 2003 Peter Marks review was located (BRO-79 audit, Wayback CDX + web search both came up empty). Recovering via excerpt-tier scoring instead of fullText.';
+    // Deliberately NOT stored as `garbageFullText`: rebuild-helpers.js's
+    // applyScoreRelevantMigrations() auto-restores garbageFullText into
+    // fullText (via cleanText()) whenever fullText is empty and garbageReason
+    // isn't an error/404 page (rebuild-helpers.js:951-959) — cleanText() does
+    // NOT strip the WaPo related-links/privacy-notice junk appended after the
+    // two real paragraphs here, so that migration would silently undo this
+    // excerpt-tier recovery on the very next rebuild (Codex adversarial
+    // review, BRO-79 ship-check). Archived under a field name no pipeline
+    // code reads instead.
+    data.bro79ContaminatedFullTextArchive = data.fullText;
+    data.garbageReason = 'WaPo archive URL is a journaltimes.com syndication mirror; refetch (2026-02-10) returned ~2 real paragraphs followed by unrelated WaPo homepage related-links/privacy-notice junk (cleanText() does not strip it). No clean washingtonpost.com URL for this 2003 Peter Marks review was located (BRO-79 audit, Wayback CDX + web search both came up empty). Recovering via excerpt-tier scoring instead of fullText; contaminated text archived under bro79ContaminatedFullTextArchive, NOT garbageFullText, so rebuild-helpers.js does not auto-restore it.';
     data.fullText = null;
     data.rejectedAt = null;
     data.rejectedBy = null;
     data.rejectionReason = null;
     data.rejectionReasoning = null;
-    data.manualClearReason = 'BRO-79: recovered via excerpt-tier scoring (showScoreExcerpt + dtliExcerpt + pre-existing llmScore=66/assignedScore=85); fullText moved to garbageFullText, cleared to null so getBestTextForScoring()/isIncludableForRebuild() use the excerpt path.';
+    data.manualClearReason = 'BRO-79: recovered via excerpt-tier scoring (showScoreExcerpt + dtliExcerpt + pre-existing llmScore=66/assignedScore=85); fullText cleared to null (contaminated text preserved in bro79ContaminatedFullTextArchive, not garbageFullText) so getBestTextForScoring()/isIncludableForRebuild() use the excerpt path and stay there.';
     data.manualClearAt = dryRun ? '(dry-run)' : new Date().toISOString();
     saveJson(WICKED_WAPO_PATH, data);
     report.wickedRecovery = {
       path: WICKED_WAPO_PATH,
-      method: 'excerpt-tier (fullText cleared, showScoreExcerpt/dtliExcerpt/llmScore/assignedScore retained)',
+      method: 'excerpt-tier (fullText cleared, showScoreExcerpt/dtliExcerpt/llmScore/assignedScore retained, contaminated text archived outside garbageFullText to prevent auto-restore)',
       llmScore: data.llmScore.score,
       assignedScore: data.assignedScore,
     };

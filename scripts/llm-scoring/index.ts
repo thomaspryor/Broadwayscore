@@ -774,20 +774,21 @@ function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: s
 /**
  * Save scored review file — clears stale failure flags before writing (Pattern Card #1).
  *
- * `skipFailureFlagClear` exists for the rejection-stamping write itself: that
+ * `skipRejectionReasonClear` exists for the rejection-stamping write itself: that
  * call sets `rejectionReason` on the SAME in-memory object a moment before
  * calling this function, so clearFailureFlags's stale-garbage_text-clear rule
  * (rejectionReason cleared once fullText is >=500 chars) would immediately
  * null out the reason it was just asked to persist — garbage nav/paywall text
  * is frequently long even though it's unscoreable. That produced 178+
- * `rejectedBy` stamps with `rejectionReason: null` (BRO-79). The clear is
- * still correct and needed on every OTHER saveReviewFile call, where it's
- * clearing a STALE flag left over from a prior run.
+ * `rejectedBy` stamps with `rejectionReason: null` (BRO-79). Scoped to just
+ * that one sub-rule (not a blanket skip of clearFailureFlags) so this write
+ * still clears any OTHER stale flag on the object (incompleteReason,
+ * serpRetryCount, scoreStatus, etc.) exactly as every other saveReviewFile
+ * call does — ship-check adversarial review flagged an earlier version that
+ * skipped clearFailureFlags entirely as broader than necessary.
  */
-function saveReviewFile(filePath: string, data: any, opts: { skipFailureFlagClear?: boolean } = {}): void {
-  if (!opts.skipFailureFlagClear) {
-    clearFailureFlags(data);
-  }
+function saveReviewFile(filePath: string, data: any, opts: { skipRejectionReasonClear?: boolean } = {}): void {
+  clearFailureFlags(data, { skipRejectionReasonClear: !!opts.skipRejectionReasonClear });
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
   filesModifiedCount++;
 }
@@ -1505,7 +1506,7 @@ async function main(): Promise<void> {
         fileData.rejectionReason = rejection;
         fileData.rejectionReasoning = rejectionReasoning;
         fileData.promptVersion = PROMPT_VERSION;
-        saveReviewFile(filePath, fileData, { skipFailureFlagClear: true });
+        saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
       }
 
       console.log(`REJECTED (${rejection}): ${(result as any).rejectionReasoning?.substring(0, 80) || ''}`);
