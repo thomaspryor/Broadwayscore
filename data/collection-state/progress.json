@@ -1125,7 +1125,17 @@
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1186,7 +1196,9 @@
       "hadestown-west-end-2024/thereviewshub--the-reviews-hub.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -1236,7 +1248,7 @@
     ]
   },
   "startTime": "2026-08-19T11:41:09.056Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -1387,6 +1399,28 @@
       "event": "bb-session",
       "session": "e1504558",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-20T05:39:27.322Z",
+      "event": "bb-session",
+      "session": "43390741",
+      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-"
+    },
+    {
+      "t": "2026-08-20T05:39:27.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-20T05:41:57.083Z",
+      "event": "bb-session",
+      "session": "6f8ffb57",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-20T05:41:57.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }

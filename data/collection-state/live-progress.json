@@ -1,44 +1,20 @@
 {
-  "updatedAt": "2026-08-20T05:39:20.380Z",
+  "updatedAt": "2026-08-20T05:43:39.775Z",
   "processed": 88,
-  "failed": 1036,
+  "failed": 1046,
   "successRate": "7.8%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 4,
     "scrapingbee": 12,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 17
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-19T21:03:09.840Z",
-      "event": "bb-session",
-      "session": "fd8e4b7c",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-19T21:03:18.220Z",
-      "event": "bb-session",
-      "session": "4e5ea472",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-19T21:06:08.483Z",
-      "event": "bb-session",
-      "session": "f3ec3854",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-19T21:06:27.175Z",
-      "event": "bb-session",
-      "session": "fe275261",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
     {
       "t": "2026-08-20T00:30:07.409Z",
       "event": "bb-session",
@@ -131,6 +107,28 @@
       "event": "bb-session",
       "session": "e1504558",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-20T05:39:27.322Z",
+      "event": "bb-session",
+      "session": "43390741",
+      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-"
+    },
+    {
+      "t": "2026-08-20T05:39:27.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-20T05:41:57.083Z",
+      "event": "bb-session",
+      "session": "6f8ffb57",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-20T05:41:57.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
