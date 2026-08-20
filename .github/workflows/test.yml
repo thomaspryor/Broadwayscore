@@ -818,6 +818,15 @@ on:
       # Check 2e). Solo edits must run its unit test (dolly incident 2026-07-14).
       - 'tests/unit/announced-promotion.test.mjs'
       - 'scripts/update-show-status.js'
+      # Stale 'announced' show detector (BRO-93) — flags announced shows whose
+      # run has demonstrably started/finished (stale previewsStartDate or
+      # collected review-texts). Root-level scripts/*.test.mjs is not globbed
+      # (registered in tests/unit-test-manifest.txt), so a solo edit needs its
+      # own entry. scripts/lib/stale-announced-audit.js (the decision logic +
+      # ack mechanism) is intentionally NOT listed here — already covered by
+      # the scripts/lib/** glob above.
+      - 'scripts/audit-stale-announced-shows.js'
+      - 'scripts/audit-stale-announced-shows.test.mjs'
       # Scraping cost v3 S2 — Bright Data daily breaker + per-run budget, and
       # the failed-fetch policy that keeps a budget_capped miss from retiring a
       # live review URL. Both have colocated *.test.mjs that run in the
