@@ -96,6 +96,7 @@ const {
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { STRICT_CLASSES, countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
 const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
@@ -258,7 +259,9 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 //     excludes files flagged isNonReview/nonReviewFlag/nonReviewContent
 //     via alreadyFlagged above, so the hit count trends down as the
 //     classifier chews through the backlog.
-const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
+// STRICT_CLASSES itself now lives in ./lib/contamination-gate.js — single
+// source of truth with the --gate decision and with
+// scripts/audit-review-contamination.test.mjs (BRO-65).
 
 const hits = {
   A_cross_market: [],
@@ -587,12 +590,7 @@ if (JSON_OUT) {
 
 // In strict mode, only count classes that are in the strict set.
 // Class D (pre-opening features) is report-only — too many legitimate preview reviews.
-const strictHits = Object.entries(hits)
-  .filter(([k]) => {
-    const classLetter = k.split('_')[0];
-    return STRICT_CLASSES.has(classLetter);
-  })
-  .reduce((sum, [, arr]) => sum + arr.length, 0);
+const strictHits = countStrictHits(hits);
 
 // --gate: catastrophe floor only. A cross-market leak (class A — wrong show's
 // reviews shown to users) ALWAYS blocks; otherwise block only on a mass spike past
@@ -610,7 +608,6 @@ if (GATE) {
     process.exit(1);
   }
 
-  const { shouldBlockContaminationGate } = require('./lib/contamination-gate');
   const crossMarketLeaks = hits.A_cross_market.length;
   if (shouldBlockContaminationGate({ crossMarketLeaks, strictHits, floor: GATE_FLOOR })) {
     console.error(`\n❌ GATE: ${crossMarketLeaks} cross-market leak(s) (class A, zero-tolerance) + ${strictHits} strict hit(s) vs floor ${GATE_FLOOR}. Failing.`);
