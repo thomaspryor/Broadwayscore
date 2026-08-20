@@ -75,5 +75,38 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-19T22:17:10.955Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Abigail’s Party",
+    "description": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content reviews 'Abigail's Party' at Theatre Royal, Stratford East (a regional London theater, not a West En — https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-20T05:49:12.224Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:abigails-party-west-end-2026",
+    "title": "Shipped review too short to verify on Abigail’s Party",
+    "description": "thestage/Paul Vale (thestage--paul-vale.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/abigails-party-review-theatre-royal-stratford-east-mike-leigh-nadia-fall-tamzin-outhwaite-kevin-bishop",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-20T05:49:12.226Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-abigails-party-west-end-2026",
+    "title": "Unverified revival on Abigail’s Party",
+    "description": "abigails-party-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-20T05:49:12.229Z"
   }
 ]
