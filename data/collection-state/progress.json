@@ -114,7 +114,12 @@
     "billy-elliot-the-musical-west-end-2027/nytg--unknown.json",
     "billy-elliot-the-musical-west-end-2027/thereviewshub--the-reviews-hub.json",
     "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
-    "billy-elliot-the-musical-west-end-2027/whatsonstage--phil-lowe.json"
+    "billy-elliot-the-musical-west-end-2027/whatsonstage--phil-lowe.json",
+    "christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json",
+    "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
+    "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+    "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+    "cinderella-west-end-2026/independent--oliver-browning.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1687,7 +1692,12 @@
     "dolly-an-original-musical-2026/hollywood-reporter--frank-scheck.json",
     "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
     "dolly-an-original-musical-2026/nydailynews--joe-dziemianowicz.json",
-    "christmas-carol-goes-wrong-west-end-2026/telegraph--dominic-cavendish.json"
+    "christmas-carol-goes-wrong-west-end-2026/telegraph--dominic-cavendish.json",
+    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+    "cinderella-west-end-2026/ew--emlyn-travis.json",
+    "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cinderella-west-end-2026/observer--david-cote.json",
+    "cinderella-west-end-2026/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1758,13 +1768,18 @@
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "billy-elliot-the-musical-west-end-2027/nytg--unknown.json",
       "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
-      "billy-elliot-the-musical-west-end-2027/whatsonstage--phil-lowe.json"
+      "billy-elliot-the-musical-west-end-2027/whatsonstage--phil-lowe.json",
+      "christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json",
+      "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+      "cinderella-west-end-2026/independent--oliver-browning.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
       "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
+      "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1789,7 +1804,8 @@
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-2015/nytimes--ben-brantley.json"
+      "hamilton-2015/nytimes--ben-brantley.json",
+      "cinderella-west-end-2026/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
@@ -1825,7 +1841,7 @@
     ]
   },
   "startTime": "2026-08-20T09:36:04.336Z",
-  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "cinderella-west-end-2026/independent--oliver-browning.json",
   "log": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -1903,6 +1919,12 @@
       "t": "2026-08-20T19:35:50.660Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:46:37.813Z",
+      "event": "bb-session",
+      "session": "2662928b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-lloyd-webber-closes-cind"
     }
   ]
 }
