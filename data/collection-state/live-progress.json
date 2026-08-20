@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-20T20:00:43.023Z",
-  "processed": 139,
-  "failed": 1637,
-  "successRate": "7.8%",
+  "updatedAt": "2026-08-20T20:03:28.659Z",
+  "processed": 144,
+  "failed": 1642,
+  "successRate": "8.1%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 83,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 4,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 30
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -114,6 +114,17 @@
       "event": "bb-session",
       "session": "79803aab",
       "url": "https://www.express.co.uk/entertainment/theatre/890235/the-snowman-review-peacoc"
+    },
+    {
+      "t": "2026-08-20T20:03:13.698Z",
+      "event": "bb-session",
+      "session": "bc7fffd6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
+    },
+    {
+      "t": "2026-08-20T20:03:14.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
