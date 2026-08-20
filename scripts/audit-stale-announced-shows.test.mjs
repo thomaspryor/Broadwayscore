@@ -44,23 +44,10 @@ test('announced with collected review-texts → flagged even with no previewsSta
   assert.deepEqual(reasons, ['data/review-texts/ has collected review file(s)']);
 });
 
-test('announced, openingDate 30+ days in the past, no previewsStartDate → flagged (straight-to-open transfer class)', () => {
-  const show = { id: 'x', status: 'announced', previewsStartDate: null, openingDate: '2026-06-01' };
-  const reasons = evaluateAnnouncedShow(show, { now: NOW, staleDays: STALE_DAYS, hasReviews: false, acks: [] });
-  assert.equal(reasons.length, 1);
-  assert.match(reasons[0], /openingDate 2026-06-01 is \d+d in the past/);
-});
-
-test('announced, openingDate within stale window → not flagged', () => {
-  const show = { id: 'x', status: 'announced', openingDate: '2026-08-01' };
-  const reasons = evaluateAnnouncedShow(show, { now: NOW, staleDays: STALE_DAYS, hasReviews: false, acks: [] });
-  assert.deepEqual(reasons, []);
-});
-
-test('announced, all three signals fire → three reasons reported', () => {
-  const show = { id: 'x', status: 'announced', previewsStartDate: '2026-06-01', openingDate: '2026-06-15' };
+test('announced, both signals fire → both reasons reported', () => {
+  const show = { id: 'x', status: 'announced', previewsStartDate: '2026-06-01' };
   const reasons = evaluateAnnouncedShow(show, { now: NOW, staleDays: STALE_DAYS, hasReviews: true, acks: [] });
-  assert.equal(reasons.length, 3);
+  assert.equal(reasons.length, 2);
 });
 
 test('acked show is never flagged, even when stale signals fire', () => {

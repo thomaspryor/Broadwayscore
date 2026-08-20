@@ -33,7 +33,6 @@
  *   node scripts/audit-stale-announced-shows.js --stale-days=30
  *   node scripts/audit-stale-announced-shows.js --fail-on-gap
  *   node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="..."
- *   node scripts/audit-stale-announced-shows.js --unack=<show-id>
  *
  * Output: data/audit/stale-announced-shows.json
  */
@@ -60,7 +59,6 @@ const FAIL_ON_GAP = argv.includes('--fail-on-gap');
 const DRY_RUN = argv.includes('--dry-run');
 const ACK_ID = (argv.find(a => a.startsWith('--ack=')) || '').replace('--ack=', '') || null;
 const ACK_NOTE = (argv.find(a => a.startsWith('--ack-note=')) || '').replace('--ack-note=', '') || '';
-const UNACK_ID = (argv.find(a => a.startsWith('--unack=')) || '').replace('--unack=', '') || null;
 
 function loadJSON(file, fallback = null) {
   try {
@@ -80,6 +78,18 @@ function hasPopulatedReviewTextsDir(showId) {
 }
 
 function main() {
+  // --ack=<id>: record a triage decision and exit — doesn't run the audit.
+  if (ACK_ID) {
+    if (!ACK_NOTE) {
+      console.error('--ack requires --ack-note="<why this show is known-stale>"');
+      process.exit(1);
+    }
+    const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked ${ACK_ID}: ${ACK_NOTE}`);
+    return;
+  }
+
   const showsData = loadJSON(SHOWS_FILE);
   if (!showsData || !Array.isArray(showsData.shows)) {
     console.error(`Could not load ${SHOWS_FILE}`);

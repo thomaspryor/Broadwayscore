@@ -52,13 +52,8 @@ function daysSince(dateStr, now) {
 }
 
 /**
- * Is this 'announced' show stale? Three independent signals, any fires:
+ * Is this 'announced' show stale? Two independent signals, either fires:
  *  - previewsStartDate is set and > staleDays in the past
- *  - openingDate is set and > staleDays in the past (mirrors the date-staleness
- *    check announced-promotion.js's decideAnnouncedPromotion already does for
- *    BOTH dates — a show can be announced with only an openingDate set and no
- *    previewsStartDate, e.g. a straight-to-open transfer, and that case was
- *    silently unflaggable before this)
  *  - the show has a populated data/review-texts/{id}/ directory (hasReviews, injected
  *    so this stays a pure function — the fs read is the caller's job)
  *
@@ -72,13 +67,9 @@ function evaluateAnnouncedShow(show, opts) {
   if (isAcked(show.id, acks)) return [];
 
   const reasons = [];
-  const previewsPastDays = show.previewsStartDate ? daysSince(show.previewsStartDate, now) : null;
-  if (previewsPastDays !== null && previewsPastDays > staleDays) {
-    reasons.push(`previewsStartDate ${show.previewsStartDate} is ${previewsPastDays}d in the past`);
-  }
-  const openingPastDays = show.openingDate ? daysSince(show.openingDate, now) : null;
-  if (openingPastDays !== null && openingPastDays > staleDays) {
-    reasons.push(`openingDate ${show.openingDate} is ${openingPastDays}d in the past`);
+  const pastDays = show.previewsStartDate ? daysSince(show.previewsStartDate, now) : null;
+  if (pastDays !== null && pastDays > staleDays) {
+    reasons.push(`previewsStartDate ${show.previewsStartDate} is ${pastDays}d in the past`);
   }
   if (hasReviews) {
     reasons.push('data/review-texts/ has collected review file(s)');
