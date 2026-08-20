@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T16:56:04.967Z",
+  "generatedAt": "2026-08-20T18:02:25.623Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,18 +12,18 @@
       "status": "open",
       "slug": "abigails-party-west-end",
       "thumbnail": "/images/shows/abigails-party-west-end-2026/thumbnail.webp",
-      "siteScore": 83.85,
-      "liveScore": 84,
-      "scoreDrift": 0.15000000000000568,
+      "siteScore": 82.21,
+      "liveScore": 82,
+      "scoreDrift": -0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 4,
+      "total": 11,
+      "t1": 5,
       "t2": 4,
-      "t3": 1,
-      "positive": 9,
-      "mixed": 0,
+      "t3": 2,
+      "positive": 10,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -44,10 +44,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -129,6 +125,18 @@
           "t3": 1,
           "p": 9,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-20T18:02:25.623Z",
+          "rc": 11,
+          "s": 82.21,
+          "t1": 5,
+          "t2": 4,
+          "t3": 2,
+          "p": 10,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -528,27 +536,26 @@
       "status": "open",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
-      "siteScore": 68.54,
+      "siteScore": 68.99,
       "liveScore": 69,
-      "scoreDrift": 0.45999999999999375,
+      "scoreDrift": 0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 19,
       "t1": 1,
       "t2": 4,
-      "t3": 13,
-      "positive": 7,
+      "t3": 14,
+      "positive": 8,
       "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:5/6"
+          "T2:1/2"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -689,6 +696,18 @@
           "t2": 4,
           "t3": 13,
           "p": 7,
+          "m": 9,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-20T18:02:25.623Z",
+          "rc": 19,
+          "s": 68.99,
+          "t1": 1,
+          "t2": 4,
+          "t3": 14,
+          "p": 8,
           "m": 9,
           "n": 2,
           "bc": "waiting"
