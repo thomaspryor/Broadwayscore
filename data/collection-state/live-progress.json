@@ -1,18 +1,135 @@
 {
-  "updatedAt": "2026-08-20T05:26:21.659Z",
-  "processed": 1,
-  "failed": 6,
-  "successRate": "14.3%",
+  "updatedAt": "2026-08-20T05:26:24.972Z",
+  "processed": 79,
+  "failed": 945,
+  "successRate": "7.7%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "directCookies": 4,
+    "scrapingbee": 10,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 1
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-08-19T20:00:16.813Z",
+      "event": "bb-session",
+      "session": "e72ae12a",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-19T20:00:17.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-19T21:03:09.840Z",
+      "event": "bb-session",
+      "session": "fd8e4b7c",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-19T21:03:18.220Z",
+      "event": "bb-session",
+      "session": "4e5ea472",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-19T21:06:08.483Z",
+      "event": "bb-session",
+      "session": "f3ec3854",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-19T21:06:27.175Z",
+      "event": "bb-session",
+      "session": "fe275261",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-20T00:30:07.409Z",
+      "event": "bb-session",
+      "session": "66997000",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T00:30:08.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T01:19:54.719Z",
+      "event": "bb-session",
+      "session": "59952606",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-20T01:20:14.467Z",
+      "event": "bb-session",
+      "session": "f4fa0ad7",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-20T01:20:40.649Z",
+      "event": "bb-session",
+      "session": "32f1d195",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T01:20:41.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T01:22:00.660Z",
+      "event": "bb-session",
+      "session": "7536b52b",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-20T01:22:17.517Z",
+      "event": "bb-session",
+      "session": "03084f7b",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-20T01:25:18.462Z",
+      "event": "bb-session",
+      "session": "5309039a",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-20T01:25:19.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T01:28:12.969Z",
+      "event": "bb-session",
+      "session": "133583e5",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-20T01:28:21.059Z",
+      "event": "bb-session",
+      "session": "133d1632",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-20T03:06:35.418Z",
+      "event": "bb-session",
+      "session": "c4a95d9f",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-20T03:06:55.215Z",
+      "event": "bb-session",
+      "session": "d9fb4d1a",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    }
+  ]
 }
