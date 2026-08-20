@@ -15,7 +15,6 @@
 import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as cheerio from 'cheerio';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
@@ -24,14 +23,14 @@ const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/sh
 // and this script's bare Playwright fallback both fail identically when BWW
 // throttles/blocks the GitHub Actions IP range.
 const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
-const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./lib/table-schema-assertion');
+// parseAllTimeHtml lives here (not inline) so it's require()-able from a
+// plain node --test file — see scripts/lib/alltime-table-parser.js header.
+const { parseAllTimeHtml, TABLE_SCHEMA } = require('./lib/alltime-table-parser');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
-
-// Verified live 2026-08-12: <thead><th> = Show / Gross / Avg. Tix / Seats Sold / Total Perf.
-const TABLE_SCHEMA = { minCells: 5, expectedHeaders: ['Show', 'Gross', 'Avg. Tix', 'Seats Sold', 'Total Perf'] };
 
 interface AllTimeStats {
   gross: number | null;
@@ -85,51 +84,6 @@ function loadGrosses(): GrossesData {
   }
 }
 
-// Parse the cumulative-grosses table from raw HTML (BD/Scrapingdog tier).
-// Mirrors the Playwright $$eval extraction in scrapePage() below.
-function parseAllTimeHtml(html: string): ScrapedRow[] {
-  const $ = cheerio.load(html);
-
-  // Prefer <thead><th> (confirmed present live 2026-08-12), but fall back to
-  // the first <tr>'s cells so a proxied-HTML variant without a <thead>
-  // wrapper doesn't false-positive a schema failure on a working page.
-  let headerCells = $('table thead th').map((_i, el) => $(el).text().trim()).get();
-  if (headerCells.length === 0) {
-    headerCells = $('table tr').first().find('th, td').map((_i, el) => $(el).text().trim()).get();
-  }
-  try {
-    assertTableSchema([headerCells], TABLE_SCHEMA);
-  } catch (err) {
-    if (err instanceof TableSchemaError) {
-      console.error(`::error::scrape-alltime: ${err.message}`);
-      return [];
-    }
-    throw err;
-  }
-
-  const rows: ScrapedRow[] = [];
-
-  $('table tr').each((_i, rowEl) => {
-    const cells = $(rowEl).find('td');
-    if (cells.length < 5) return;
-
-    const showTheater = $(cells[0]).text().trim();
-    const lines = showTheater.split('\n').map(s => s.trim()).filter(Boolean);
-    const showTitle = lines[0] || '';
-    const gross = $(cells[1]).text().trim();
-    if (!showTitle || !gross.includes('$')) return;
-
-    rows.push({
-      showTitle,
-      gross,
-      attendance: $(cells[3]).text().trim(),
-      performances: $(cells[4]).text().trim(),
-    });
-  });
-
-  return rows;
-}
-
 async function fetchAllTimeHtmlProvider(
   url: string,
   fetchFn: (url: string) => Promise<{ content: string } | null>
@@ -179,29 +133,38 @@ async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
     throw err;
   }
 
-  // Extract cumulative data from table
-  // Columns: Show+Theater (0) | Gross (1) | Avg. Tix (2) | Seats Sold (3) | Total Perf. (4)
-  // Verified main + ?year=YYYY pages 2026-05-16; previously 7 cols (Previews+RegularShows split out).
-  const tableData = await page.$$eval('table tr', rows => {
+  // Extract cumulative data from table. Column positions are resolved by
+  // header label (findColumnIndex), not assumed by fixed index — an
+  // inserted/reordered/appended column shifts these indices instead of
+  // silently misreading the wrong cell (root cause of task #118: BWW's
+  // March 2026 7→5 column change broke a hardcoded cells[6]).
+  const showIdx = findColumnIndex(headerCells, 'Show');
+  const grossIdx = findColumnIndex(headerCells, 'Gross');
+  const attendanceIdx = findColumnIndex(headerCells, 'Seats Sold');
+  const performancesIdx = findColumnIndex(headerCells, 'Total Perf');
+  const maxIdx = Math.max(showIdx, grossIdx, attendanceIdx, performancesIdx);
+
+  const tableData = await page.$$eval('table tr', (rows, indices) => {
+    const { showIdx, grossIdx, attendanceIdx, performancesIdx, maxIdx } = indices;
     return rows.map(row => {
       const cells = row.querySelectorAll('td');
-      if (cells.length < 5) return null;
+      if (cells.length <= maxIdx) return null;
 
-      const showTheater = cells[0]?.textContent?.trim() || '';
+      const showTheater = cells[showIdx]?.textContent?.trim() || '';
       // The show name is the first line (before the theater name)
       const lines = showTheater.split('\n').map((s: string) => s.trim()).filter(Boolean);
       const showTitle = lines[0] || '';
 
       return {
         showTitle,
-        gross: cells[1]?.textContent?.trim() || '',
-        attendance: cells[3]?.textContent?.trim() || '', // SeatsSold column
-        performances: cells[4]?.textContent?.trim() || '' // TotalPerf column
+        gross: cells[grossIdx]?.textContent?.trim() || '',
+        attendance: cells[attendanceIdx]?.textContent?.trim() || '',
+        performances: cells[performancesIdx]?.textContent?.trim() || ''
       };
     }).filter((r): r is { showTitle: string; gross: string; attendance: string; performances: string } =>
       r !== null && r.showTitle !== '' && r.gross.includes('$')
     );
-  });
+  }, { showIdx, grossIdx, attendanceIdx, performancesIdx, maxIdx });
 
   console.log(`  Found ${tableData.length} shows on page`);
   return tableData;

@@ -403,8 +403,27 @@ fi
 # the repo, with no need to touch any of the ~130 caller workflows.
 # PUSH_API_FALLBACK_DISABLE=1 remains available as an env-level override for
 # any single caller that needs to opt back out without a revert.
+#
+# EXCLUDED: the private broadway-review-texts repo (Codex ship-check P0,
+# found on the FINAL diff after merge — fixed same-session before any
+# non-canary review-texts push could hit it). restore_protected_fields()
+# (called after every LOCAL resolution branch above) restores manually-set
+# fields — humanReviewScore, wrongProductionManualClear, etc. — that a
+# concurrent writer's push may have set on a review file since our
+# SCRIPT_ENTRY_BASE. The API fallback has NO equivalent step: it overlays
+# our version of every touched path outright onto whatever the current
+# remote tip has, so a protected field a concurrent writer just set on a
+# file we ALSO touched would be silently discarded — the exact class of
+# loss restore_protected_fields() exists to prevent, reachable through a
+# path that was never taught about it. Detected via remote URL, matching
+# the CROSS-SHOW OWNERSHIP GATE's existing pattern below. Re-enable once
+# the fallback gains its own protected-field reconciliation step.
+_PUSH_API_REPO_EXCLUDED=false
+case "$(git remote get-url origin 2>/dev/null || true)" in
+  *broadway-review-texts*) _PUSH_API_REPO_EXCLUDED=true ;;
+esac
 _PUSH_API_FALLBACK_ELIGIBLE=false
-if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] \
+if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "$_PUSH_API_REPO_EXCLUDED" != "true" ] \
      && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
   _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
@@ -1814,7 +1833,7 @@ if [ "$pushed" != "true" ]; then
   # content-dropped error) and repeating the pointer here would read as "try
   # the thing that was just tried and failed."
   if [ "$_api_fallback_ok" != "true" ]; then
-    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/data-audit path (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
+    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/data-audit path (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
   restore_head_if_moved "retries-exhausted"
   exit 1

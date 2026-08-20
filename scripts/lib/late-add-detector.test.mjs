@@ -125,6 +125,20 @@ describe('detectLateAdd', () => {
     assert.equal(r.earliestOutletId, 'thestage');
   });
 
+  test('the oldest-dated review is filtered out as suspect: the next measurable one controls the result', () => {
+    // Filter-then-minimum interaction: a fetch-date-stamped review (unmeasurable)
+    // happens to have the oldest publishDate of the set. It must be excluded
+    // BEFORE the minimum is taken, not just filtered from the final answer.
+    const reviewsForShow = [
+      { assignedScore: 91, publishDate: '2026-04-01', firstSeenAt: '2026-04-01T00:00:00Z', outletId: 'suspect-outlet' }, // oldest date, but suspect
+      { assignedScore: 78, publishDate: '2026-05-13', firstSeenAt: '2026-07-01T00:00:00Z', outletId: 'vulture' },
+    ];
+    const r = detectLateAdd(reviewsForShow, '2026-06-17');
+    assert.equal(r.isLateAdd, true);
+    assert.equal(r.gapDays, 35);
+    assert.equal(r.earliestOutletId, 'vulture');
+  });
+
   test('multiple pre-opening reviews inside grace window: none trigger a late add', () => {
     // A normal preview cycle: several critics review during previews, all
     // within the 30d grace window -- this must NOT be flagged.
