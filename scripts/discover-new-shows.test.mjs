@@ -174,3 +174,60 @@ test('every fetch()/https.get() call site in discover-new-shows.js has timeout p
       `https.get()/http.get() at line ${line} must have a .on('timeout', ...) handler that calls .destroy()`);
   }
 });
+
+// task #1863 (BRO-102 follow-up): applyVerifiedIbdbCreativeTeam() is the
+// first-write path for every newly-discovered Broadway show's creative team
+// — the highest-risk of the IBDB creativeTeam consumers, since a bad write
+// here ships before auto-fix-show-data.js's own IBDB step ever runs (that
+// step only fires when the team is empty/1-entry, which won't be true once
+// this write lands). Mocks verifyCreativeTeamViaSerp (the network boundary)
+// rather than re-implementing its decision logic — CLAUDE.md rule 15.
+const creativeTeamVerifyPath = require.resolve('./lib/creative-team-verify.js');
+const discoverNewShowsPath = require.resolve('./discover-new-shows.js');
+
+function loadWithMockedVerify(verifyImpl) {
+  const real = require(creativeTeamVerifyPath);
+  delete require.cache[creativeTeamVerifyPath];
+  delete require.cache[discoverNewShowsPath];
+  require.cache[creativeTeamVerifyPath] = {
+    id: creativeTeamVerifyPath, filename: creativeTeamVerifyPath, loaded: true,
+    exports: { ...real, verifyCreativeTeamViaSerp: verifyImpl },
+  };
+  try {
+    return require(discoverNewShowsPath);
+  } finally {
+    delete require.cache[creativeTeamVerifyPath];
+    delete require.cache[discoverNewShowsPath];
+    require.cache[creativeTeamVerifyPath] = { id: creativeTeamVerifyPath, filename: creativeTeamVerifyPath, loaded: true, exports: real };
+  }
+}
+
+test('applyVerifiedIbdbCreativeTeam: no member confirmed -> show.creativeTeam stays unset (wrong-table-cell case)', async () => {
+  const { applyVerifiedIbdbCreativeTeam } = loadWithMockedVerify(async () => []);
+  const show = { id: 'wrong-cell-2026', title: 'Wrong Cell', openingDate: '2026-01-15' };
+  await applyVerifiedIbdbCreativeTeam(show, [{ name: 'Hallucinated Name', role: 'Director' }]);
+  assert.equal(show.creativeTeam, undefined);
+});
+
+test('applyVerifiedIbdbCreativeTeam: a confirmed member is written to show.creativeTeam', async () => {
+  const { applyVerifiedIbdbCreativeTeam } = loadWithMockedVerify(async (show, proposed) =>
+    proposed.map(m => ({ ...m, _source: 'serp-verified-ibdb-discovery' }))
+  );
+  const show = { id: 'confirmed-2026', title: 'Confirmed', openingDate: '2026-01-15' };
+  await applyVerifiedIbdbCreativeTeam(show, [{ name: 'Mary Zimmerman', role: 'Director' }]);
+  assert.equal(show.creativeTeam.length, 1);
+  assert.equal(show.creativeTeam[0].name, 'Mary Zimmerman');
+  assert.equal(show.creativeTeam[0]._source, 'serp-verified-ibdb-discovery');
+});
+
+test('applyVerifiedIbdbCreativeTeam: combined names are split before SERP verification', async () => {
+  let seenProposed;
+  const { applyVerifiedIbdbCreativeTeam } = loadWithMockedVerify(async (show, proposed) => {
+    seenProposed = proposed;
+    return [];
+  });
+  const show = { id: 'combined-2026', title: 'Combined', openingDate: '2026-01-15' };
+  await applyVerifiedIbdbCreativeTeam(show, [{ name: 'John Doe & Jane Smith', role: 'Director' }]);
+  assert.equal(seenProposed.length, 2, 'combined name must be split into individual entries before verification');
+  assert.deepEqual(seenProposed.map(m => m.name).sort(), ['Jane Smith', 'John Doe']);
+});
