@@ -39,6 +39,7 @@ const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
+const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
@@ -3015,7 +3016,7 @@ async function getWorkflowRunSummary() {
 
       while (page <= maxPages) {
         const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-        const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+        const response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
         if (!response || !response.workflow_runs) break;
         runs.push(...response.workflow_runs);
         if (response.workflow_runs.length < 100) break;
@@ -3135,7 +3136,7 @@ async function getOpenFeedbackReviewIssues() {
     const url = 'https://api.github.com/repos/thomaspryor/Broadwayscore/issues?labels=needs-manual-review&state=open&per_page=100';
     // Cached (shared across every concurrently-dispatched session on this Mac).
     const response = await cachedFetch('needs-manual-review-issues',
-      () => fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' }));
+      () => fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } }));
     if (!Array.isArray(response)) return { skipped: true, issues: [] };
     return {
       skipped: false,
@@ -3473,28 +3474,6 @@ function pushFallbackUsageResults(entries) {
     message: `${entries.length} push(es) landed via the API fallback instead of a normal local push in the last 24h — ${parts}.`,
     hint: 'Expected now that the fallback defaults on fleet-wide (task #1847). A sudden jump, or a jump concentrated on one workflow, means contention got materially worse there — check data/audit/*.json glob scope (reconcile-merged-json.js MANAGED list), or set PUSH_API_FALLBACK_DISABLE=1 for that caller if it needs to opt back out.',
   }];
-}
-
-// Simple HTTPS GET that returns parsed JSON
-function fetchJSON(url, headers) {
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(url);
-    const req = require('https').request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: 'GET',
-      headers: { ...headers, 'Accept': 'application/json' },
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); } catch { resolve(null); }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Timeout')); });
-    req.end();
-  });
 }
 
 // --- Email Digest ---
