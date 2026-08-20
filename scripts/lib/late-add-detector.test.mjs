@@ -59,6 +59,14 @@ describe('detectLateAdd', () => {
     assert.equal(r.earliestOutletId, 'vulture');
   });
 
+  test('the flagging threshold is 30 days, per BRO-91 acceptance criteria', () => {
+    // Pins the literal "30-day" policy the acceptance criteria names. The
+    // boundary tests below derive their fixture dates FROM GRACE_DAYS, so
+    // without this they'd keep passing even if GRACE_DAYS silently drifted
+    // to 29 or 31.
+    assert.equal(GRACE_DAYS, 30);
+  });
+
   test('GRACE_DAYS boundary: exactly at the floor is NOT late (strictly greater-than)', () => {
     const catalogClock = '2026-06-17';
     const earliestMs = Date.parse(catalogClock) - GRACE_DAYS * 86400000;
