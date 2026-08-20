@@ -72,6 +72,7 @@ scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
+scripts/scrape-broadway-com-audience.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
@@ -273,6 +274,7 @@ tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/feedback-form-validation.test.mjs
+tests/unit/feedback-multi-show-fix.test.mjs
 tests/unit/feedback-owner-reports.test.mjs
 tests/unit/feedback-pipeline-fields.test.mjs
 tests/unit/feedback-request-ledger.test.mjs

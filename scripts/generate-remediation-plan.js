@@ -354,9 +354,17 @@ async function main() {
   const showsData = loadJsonSafe('data/shows.json');
   const shows = showsData?.shows || showsData || [];
 
-  // Find relevant shows — by showId if available, otherwise extract from message text
+  // Find relevant shows — prefer the canonical multi-show showIds[] (issue
+  // #515: a report can name more than one show), fall back to the legacy
+  // singular showId, then to extracting names from the message text.
   let relevantShows = [];
-  if (diagnosis.showId) {
+  const diagShowIds = Array.isArray(diagnosis.showIds) ? diagnosis.showIds.filter(Boolean) : [];
+  if (diagShowIds.length > 0) {
+    for (const id of diagShowIds) {
+      const show = shows.find(s => s.id === id);
+      if (show) relevantShows.push(show);
+    }
+  } else if (diagnosis.showId) {
     const show = shows.find(s => s.id === diagnosis.showId);
     if (show) relevantShows.push(show);
   }
@@ -593,6 +601,7 @@ ${diagnosis.originalMessage
       confidence: diagnosis.confidence,
       showId: diagnosis.showId,
       showSlug: diagnosis.showSlug,
+      showIds: diagShowIds.length > 0 ? diagShowIds : (diagnosis.showId ? [diagnosis.showId] : []),
     },
     // PII stays OUT of the persisted plan file — data/pending-fixes/ is
     // committed to the PUBLIC repo (it was gitignored 2026-03-08 for exactly
