@@ -571,6 +571,34 @@ describe('review-count-match stays print-only on purpose', () => {
   it('computeGapSeverity: zero gap is ok', () => {
     assert.equal(reviewCountMatch.computeGapSeverity(0, 0), 'ok');
   });
+
+  // Codex ship-check finding (task #1846 follow-up): 'skippedProcessingError'
+  // (a caught runtime exception in rebuild-all-reviews.js, not an intentional
+  // exclusion) must count as a bug signal for severity purposes just like
+  // 'not-logged' — otherwise a systemic crash that happens to log a reason
+  // string gets laundered into 'warning' by looking "explained".
+  it('BUG_SIGNAL_REASONS treats skippedProcessingError the same as not-logged', () => {
+    assert.ok(reviewCountMatch.BUG_SIGNAL_REASONS.has('not-logged'));
+    assert.ok(reviewCountMatch.BUG_SIGNAL_REASONS.has('skippedProcessingError'));
+    assert.ok(!reviewCountMatch.BUG_SIGNAL_REASONS.has('skippedWrongProduction'));
+    assert.ok(!reviewCountMatch.BUG_SIGNAL_REASONS.has('skippedDuplicateOf'));
+  });
+
+  it('a gap made entirely of skippedProcessingError reasons is still error severity (not laundered into warning by having a reason string at all)', () => {
+    const reasons = { skippedProcessingError: 5 };
+    const unexplainedCount = Object.entries(reasons)
+      .reduce((sum, [reason, count]) => sum + (reviewCountMatch.BUG_SIGNAL_REASONS.has(reason) ? count : 0), 0);
+    assert.equal(unexplainedCount, 5);
+    assert.equal(reviewCountMatch.computeGapSeverity(5, unexplainedCount), 'error');
+  });
+
+  it('a gap made entirely of legitimate reasons (wrong-production etc) stays warning even mixed with a small skippedProcessingError count', () => {
+    const reasons = { skippedWrongProduction: 10, skippedDuplicateOf: 3, skippedProcessingError: 1 };
+    const unexplainedCount = Object.entries(reasons)
+      .reduce((sum, [reason, count]) => sum + (reviewCountMatch.BUG_SIGNAL_REASONS.has(reason) ? count : 0), 0);
+    assert.equal(unexplainedCount, 1);
+    assert.equal(reviewCountMatch.computeGapSeverity(14, unexplainedCount), 'warning');
+  });
 });
 
 // ---------------------------------------------------------------------------

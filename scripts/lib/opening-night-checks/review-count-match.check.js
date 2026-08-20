@@ -17,14 +17,25 @@ const description = 'Local review-texts file count matches reviews.json count (e
 const WARN_THRESHOLD = 1;
 const ERROR_THRESHOLD = 5;
 
+// Reasons that mean "the pipeline is broken," not "this file was correctly
+// excluded" — a real logged reason still counts toward severity as if it
+// were unexplained. 'not-logged' is the literal absence of a reason;
+// 'skippedProcessingError' is a caught runtime exception (rebuild-all-
+// reviews.js's generic catch block) — both are bug signals, and a systemic
+// version of either (many files failing the same way) must still surface as
+// 'error', not get laundered into 'warning' by having a technically-present
+// reason string (Codex ship-check finding, task #1846 follow-up).
+const BUG_SIGNAL_REASONS = new Set(['not-logged', 'skippedProcessingError']);
+
 /**
- * Task #1846: severity tracks the UNEXPLAINED portion of the gap, not the
- * raw gap. A large gap where every file carries a real logged reason
- * (dedup, wrong-production, non-review, etc.) is expected pipeline
- * behavior, not an operator action item — only an unexplained ('not-logged')
- * count is the actual silent-exclusion bug this check exists to catch.
+ * Task #1846: severity tracks the UNEXPLAINED (bug-signal) portion of the
+ * gap, not the raw gap. A large gap where every file carries a real,
+ * legitimate logged reason (dedup, wrong-production, non-review, etc.) is
+ * expected pipeline behavior, not an operator action item — only a
+ * bug-signal reason (see BUG_SIGNAL_REASONS) is the actual silent-exclusion
+ * class this check exists to catch.
  * @param {number} gap - localCount - builtCount
- * @param {number} unexplainedCount - how many of the gap files had no logged reason
+ * @param {number} unexplainedCount - how many of the gap files had a bug-signal reason
  * @returns {'ok'|'warning'|'error'}
  */
 function computeGapSeverity(gap, unexplainedCount) {
@@ -133,7 +144,8 @@ function run(show, context) {
     named.push({ file: f, reason });
   }
 
-  const unexplainedCount = reasons['not-logged'] || 0;
+  const unexplainedCount = Object.entries(reasons)
+    .reduce((sum, [reason, count]) => sum + (BUG_SIGNAL_REASONS.has(reason) ? count : 0), 0);
   const severity = computeGapSeverity(gap, unexplainedCount);
   // Stays print-only (task #1132, extending #389): this check's "fix" is a
   // read-only diagnostic pipe (grep EXCLUSION), not an idempotent action — the
@@ -148,8 +160,8 @@ function run(show, context) {
     .map(n => `  - ${n.file} (${n.reason})`)
     .join('\n');
   const explainedLabel = unexplainedCount === 0
-    ? `all ${gap} explained by a logged reason`
-    : `${unexplainedCount} of ${gap} UNEXPLAINED (not-logged)`;
+    ? `all ${gap} explained by a legitimate logged reason`
+    : `${unexplainedCount} of ${gap} are a BUG SIGNAL (not-logged or skippedProcessingError)`;
 
   return {
     ok: unexplainedCount === 0 && gap < ERROR_THRESHOLD,
@@ -159,4 +171,4 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, loadExclusionIndex, computeGapSeverity };
+module.exports = { name, description, run, loadExclusionIndex, computeGapSeverity, BUG_SIGNAL_REASONS };
