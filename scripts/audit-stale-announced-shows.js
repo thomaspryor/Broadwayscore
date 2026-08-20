@@ -33,6 +33,7 @@
  *   node scripts/audit-stale-announced-shows.js --stale-days=30
  *   node scripts/audit-stale-announced-shows.js --fail-on-gap
  *   node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="..."
+ *   node scripts/audit-stale-announced-shows.js --unack=<show-id>
  *
  * Output: data/audit/stale-announced-shows.json
  */
@@ -59,6 +60,7 @@ const FAIL_ON_GAP = argv.includes('--fail-on-gap');
 const DRY_RUN = argv.includes('--dry-run');
 const ACK_ID = (argv.find(a => a.startsWith('--ack=')) || '').replace('--ack=', '') || null;
 const ACK_NOTE = (argv.find(a => a.startsWith('--ack-note=')) || '').replace('--ack-note=', '') || '';
+const UNACK_ID = (argv.find(a => a.startsWith('--unack=')) || '').replace('--unack=', '') || null;
 
 function loadJSON(file, fallback = null) {
   try {
@@ -78,10 +80,27 @@ function hasPopulatedReviewTextsDir(showId) {
 }
 
 function main() {
+  const showsData = loadJSON(SHOWS_FILE);
+  if (!showsData || !Array.isArray(showsData.shows)) {
+    console.error(`Could not load ${SHOWS_FILE}`);
+    process.exit(1);
+  }
+
   // --ack=<id>: record a triage decision and exit — doesn't run the audit.
+  // Requires the id to be a real, currently-'announced' show, so a typo or a
+  // not-yet-discovered id can't pre-silence a future real flag.
   if (ACK_ID) {
     if (!ACK_NOTE) {
       console.error('--ack requires --ack-note="<why this show is known-stale>"');
+      process.exit(1);
+    }
+    const show = showsData.shows.find(s => s.id === ACK_ID);
+    if (!show) {
+      console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
+      process.exit(1);
+    }
+    if (show.status !== 'announced') {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
       process.exit(1);
     }
     const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
@@ -90,10 +109,17 @@ function main() {
     return;
   }
 
-  const showsData = loadJSON(SHOWS_FILE);
-  if (!showsData || !Array.isArray(showsData.shows)) {
-    console.error(`Could not load ${SHOWS_FILE}`);
-    process.exit(1);
+  // --unack=<id>: remove a previously-recorded ack and exit.
+  if (UNACK_ID) {
+    const acks = loadAcks();
+    const remaining = acks.filter(a => a.id !== UNACK_ID);
+    if (remaining.length === acks.length) {
+      console.error(`--unack=${UNACK_ID}: no ack found for this id`);
+      process.exit(1);
+    }
+    saveAcks(remaining);
+    console.log(`Unacked ${UNACK_ID}`);
+    return;
   }
 
   // --ack=<id>: record a triage decision and exit — doesn't run the audit.
