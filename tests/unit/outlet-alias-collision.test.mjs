@@ -20,7 +20,7 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 const require = createRequire(import.meta.url);
-const { stripLeadingThe, buildOutletTextKeys, findOutletAliasCollisions } =
+const { stripLeadingThe, buildOutletTextKeys, findOutletAliasCollisions, wouldCauseAliasCollision } =
   require(resolve(ROOT, 'scripts/lib/outlet-alias-collision.js'));
 
 describe('stripLeadingThe', () => {
@@ -195,6 +195,46 @@ describe('findOutletAliasCollisions — hyphen/concatenated class (task #1844)',
     };
     const aliasIndex = { 'david-cote': 'observer' };
     assert.deepStrictEqual(findOutletAliasCollisions(outlets, aliasIndex), []);
+  });
+});
+
+describe('wouldCauseAliasCollision', () => {
+  test('a candidate whose auto-generated displayName collides with an existing alias returns true (task #1843)', () => {
+    // Same shape rebuild-all-reviews.js's AUTO-REGISTER block would build:
+    // displayName is title-cased from the hyphenated id.
+    const outlets = {
+      latimes: { displayName: 'Los Angeles Times', tier: 1, aliases: ['la times', 'los angeles times'] },
+    };
+    const candidateEntry = { displayName: 'The La Times', tier: 3, aliases: ['the-la-times'] };
+    assert.strictEqual(wouldCauseAliasCollision(outlets, undefined, 'the-la-times', candidateEntry), true);
+  });
+
+  test('a non-colliding candidate returns false', () => {
+    const outlets = {
+      variety: { displayName: 'Variety', tier: 1, aliases: [] },
+    };
+    const candidateEntry = { displayName: 'Some New Outlet', tier: 3, aliases: ['some-new-outlet'] };
+    assert.strictEqual(wouldCauseAliasCollision(outlets, undefined, 'some-new-outlet', candidateEntry), false);
+  });
+
+  test('a candidate colliding with a DIFFERENT candidate already written earlier in the same batch returns true', () => {
+    // Reproduces Codex's "concrete silent failure #1": two colliding new
+    // outlet IDs registered in the same rebuild run. Caller checks each
+    // candidate against outletRegistry.outlets AS MUTATED by earlier
+    // iterations of the same loop — simulate that by pre-adding the first
+    // candidate before checking the second.
+    const outlets = {
+      'the-la-times': { displayName: 'The La Times', tier: 3, aliases: ['the-la-times'] },
+    };
+    const secondCandidateEntry = { displayName: 'La Times', tier: 3, aliases: ['la-times'] };
+    assert.strictEqual(wouldCauseAliasCollision(outlets, undefined, 'la-times', secondCandidateEntry), true);
+  });
+
+  test('does not mutate the passed-in outlets map', () => {
+    const outlets = { variety: { displayName: 'Variety', tier: 1, aliases: [] } };
+    const before = JSON.stringify(outlets);
+    wouldCauseAliasCollision(outlets, undefined, 'the-variety', { displayName: 'The Variety', tier: 3, aliases: ['the-variety'] });
+    assert.strictEqual(JSON.stringify(outlets), before);
   });
 });
 
