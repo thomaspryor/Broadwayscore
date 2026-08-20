@@ -94,7 +94,8 @@
     "hadestown-2019/theatrely--theatrely-staff.json",
     "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
     "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "hamilton-west-end-2021/variety--kj-yossman.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1437,7 +1438,16 @@
     "magic-mike-live-west-end-2021/timeout--nicola-dowse.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/british-theatre--unknown.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json"
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/whatsonstage--ben-hewis.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hamilton-west-end-2021/variety--unknown.json",
+    "hamilton-west-end-2021/vulture--jesse-green.json",
+    "hamilton-west-end-2021/deadline--jeremy-gerard.json",
+    "hamilton-west-end-2021/ew--leah-greenblatt.json",
+    "hamilton-west-end-2021/ew--unknown.json",
+    "hamilton-west-end-2021/newsday--linda-winer.json",
+    "hamilton-west-end-2021/nypost--elisabeth-vincentelli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1502,7 +1512,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json"
+      "data/review-texts/weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+      "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
+      "hamilton-west-end-2021/variety--kj-yossman.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1554,7 +1566,7 @@
     ]
   },
   "startTime": "2026-08-20T09:36:04.336Z",
-  "lastProcessed": "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+  "lastProcessed": "hamilton-west-end-2021/nypost--elisabeth-vincentelli.json",
   "log": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -1621,6 +1633,17 @@
       "t": "2026-08-20T19:29:39.652Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-20T19:35:50.156Z",
+      "event": "bb-session",
+      "session": "316be199",
+      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
+    },
+    {
+      "t": "2026-08-20T19:35:50.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
