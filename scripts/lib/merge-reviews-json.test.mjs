@@ -219,6 +219,38 @@ test('mergeReviewsJson: duplicate keys within the OURS side alone must not silen
   assert.equal(merged.reviews.length, 2);
 });
 
+test('mergeReviewsJson: same-side dedup keeps a manualEntry record over its non-manual pipeline twin, regardless of array order (codex 4th-pass finding)', () => {
+  const pipelineTwin = review({ assignedScore: 30 }); // same identity as the manual record below
+  const manualCorrection = review({ manualEntry: true, assignedScore: 85 });
+  // Pipeline twin listed FIRST — blind first-occurrence-wins would silently
+  // discard the manual correction before resolveConflict ever sees it.
+  const { merged: mergedA } = mergeReviewsJson({ reviews: [pipelineTwin, manualCorrection] }, { reviews: [] });
+  assert.equal(mergedA.reviews.length, 1);
+  assert.equal(mergedA.reviews[0].manualEntry, true);
+  assert.equal(mergedA.reviews[0].assignedScore, 85);
+
+  // Order reversed — must still keep the manual one.
+  const { merged: mergedB } = mergeReviewsJson({ reviews: [manualCorrection, pipelineTwin] }, { reviews: [] });
+  assert.equal(mergedB.reviews.length, 1);
+  assert.equal(mergedB.reviews[0].manualEntry, true);
+});
+
+test('mergeReviewsJson: _meta baseMeta stays consistent with lastUpdated when ONE side is unparseable, not just on an exact tie (codex 4th-pass finding)', () => {
+  const ours = {
+    reviews: [review({ criticName: 'Critic A' })],
+    _meta: { lastUpdated: 'not-a-date', stats: { source: 'ours' } },
+  };
+  const remote = {
+    reviews: [review({ criticName: 'Critic B' })],
+    _meta: { lastUpdated: '2026-01-01T00:00:00.000Z', stats: { source: 'remote' } },
+  };
+  const { merged } = mergeReviewsJson(ours, remote);
+  // newerIso falls back to remote (the only parseable side) — baseMeta must
+  // track that, not silently default to ours' stats.
+  assert.equal(merged._meta.lastUpdated, '2026-01-01T00:00:00.000Z');
+  assert.equal(merged._meta.stats.source, 'remote');
+});
+
 test('mergeReviewsJson: two DIFFERENT manualEntry records for the same URL (independent-review P1 finding) resolve to one, not a permanent duplicate', () => {
   // e.g. two independent human corrections to the same article landing
   // with different critic names (different primary keys) — previously the

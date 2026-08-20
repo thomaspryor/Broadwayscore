@@ -200,20 +200,38 @@ function mergeReviewsJson(ours, remote) {
   // primary-key-only, not URL-based, on both sides — see the manual-entry
   // URL rescue note below for why a same-URL rule can't safely apply here
   // unscoped.
+  // On a same-side collision, a manualEntry record beats a non-manual one
+  // regardless of array order — rebuild-all-reviews.js's own mergeManualEntries
+  // already guarantees a well-formed rebuild output never carries BOTH a
+  // manual correction and its non-manual pipeline twin at the same identity
+  // (it replaces the twin in place), but a side reconciling here isn't
+  // guaranteed to be a fresh rebuild output — e.g. manual-review-direct.js
+  // writes a manual record directly and may not find-and-replace its
+  // pipeline twin if its own matching used a different key. Blind
+  // first-occurrence-wins would silently discard the manual correction
+  // whenever the non-manual twin happens to appear first in the array
+  // (Codex adversarial finding, reproduced directly against this code).
   function dedupeByKey(reviews) {
     const byKey = new Map();
-    const canonical = [];
+    const keyless = [];
     let duplicateKeysSkipped = 0;
     for (const r of reviews) {
       const k = keyOf(r);
-      if (k && byKey.has(k)) {
-        duplicateKeysSkipped++;
+      if (!k) {
+        keyless.push(r);
         continue;
       }
-      if (k) byKey.set(k, r);
-      canonical.push(r);
+      if (!byKey.has(k)) {
+        byKey.set(k, r);
+        continue;
+      }
+      duplicateKeysSkipped++;
+      const existing = byKey.get(k);
+      if (r && r.manualEntry === true && !(existing && existing.manualEntry === true)) {
+        byKey.set(k, r);
+      }
     }
-    return { byKey, canonical, duplicateKeysSkipped };
+    return { byKey, canonical: [...byKey.values(), ...keyless], duplicateKeysSkipped };
   }
 
   const oursDeduped = dedupeByKey(oursReviews);
@@ -288,13 +306,20 @@ function mergeReviewsJson(ours, remote) {
   }
 
   const merged = { ...ours, reviews: mergedReviews };
-  const lu = newerIso(ours._meta && ours._meta.lastUpdated, remote._meta && remote._meta.lastUpdated);
-  // Ties toward ours, same as newerIso and oursSnapshotNewer above (reusing
-  // the already-computed signal rather than re-deriving a separate equality
-  // check that could tie the other way — a prior version of this line did,
-  // picking remote's whole _meta on an exact-timestamp tie even though
-  // newerIso "kept" ours' timestamp value).
-  const baseMeta = (oursSnapshotNewer === false && remote._meta) || ours._meta || remote._meta || {};
+  const oursLu = ours._meta && ours._meta.lastUpdated;
+  const remoteLu = remote._meta && remote._meta.lastUpdated;
+  const lu = newerIso(oursLu, remoteLu);
+  // baseMeta must track whichever side's lastUpdated actually ended up as
+  // `lu`, so stats and lastUpdated never come from different sides. Cannot
+  // reuse oursSnapshotNewer here: it returns null both on an exact tie AND
+  // whenever EITHER side is unparseable, but newerIso only falls back to
+  // the other side when the CURRENT side specifically is unparseable — so
+  // "ours unparseable, remote valid" made oursSnapshotNewer null (→ baseMeta
+  // defaulted to ours) while lu still carried remote's value, mismatched
+  // (Codex adversarial finding, reproduced directly against this code).
+  // Comparing lu against each raw value directly ties toward ours in every
+  // case newerIso does (exact tie, or both sides unparseable).
+  const baseMeta = (lu === remoteLu && lu !== oursLu && remote._meta) || ours._meta || remote._meta || {};
   merged._meta = { ...baseMeta, ...(lu ? { lastUpdated: lu } : {}) };
   if (merged._meta.stats && typeof merged._meta.stats === 'object') {
     merged._meta.stats = { ...merged._meta.stats, totalReviews: mergedReviews.length };
