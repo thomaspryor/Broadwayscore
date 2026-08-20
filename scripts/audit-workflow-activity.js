@@ -181,22 +181,6 @@ async function main() {
     process.exit(1);
   }
 
-  // This is the highest-fan-out direct-API-call script in the repo (up to 2
-  // calls per workflow — 372 for the current 186 workflows, see header
-  // comment). Skip gracefully when the shared fleet-wide token quota is
-  // already critically low instead of contributing to the exhaustion
-  // (same guard as health-check.js's getWorkflowRunSummary(), BRO-134).
-  // Deliberately NOT bypassed by --force — that flag only bypasses the
-  // local 24h results cache, not this shared-quota safety net.
-  if (hasLowHeadroom()) {
-    if (JSON_OUTPUT) {
-      console.log(JSON.stringify({ skipped: true, reason: 'low fleet-wide rate-limit headroom' }));
-    } else {
-      console.error('⚠️  Skipping — fleet-wide GitHub API rate-limit headroom is low. Try again once quota recovers.');
-    }
-    return;
-  }
-
   const files = fs.readdirSync(WORKFLOW_DIR)
     .filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();

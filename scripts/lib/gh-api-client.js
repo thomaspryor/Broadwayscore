@@ -65,7 +65,7 @@ function logCall(caller, method, url) {
  * @returns {Promise<any>} parsed JSON body, or null for a 204
  */
 async function fetchGitHubJSON(url, opts = {}) {
-  const { method = 'GET', headers = {}, token, caller, body } = opts;
+  const { method = 'GET', headers = {}, token, caller, body, timeoutMs = 15000 } = opts;
   const callerName = caller || defaultCallerName();
   logCall(callerName, method, url);
 
@@ -77,7 +77,23 @@ async function fetchGitHubJSON(url, opts = {}) {
     ...headers,
   };
 
-  const res = await fetch(url, { method, headers: finalHeaders, body });
+  // Old duplicated fetchJSON/apiGet implementations all had a ~15s hard
+  // timeout on the socket (one hung connection must not hang the whole
+  // caller — task #737 hardened audit-workflow-hygiene.js's local copy for
+  // exactly this). fetch() has no timeout by default, so replicate it here.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let res;
+  try {
+    res = await fetch(url, { method, headers: finalHeaders, body, signal: controller.signal });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error(`GitHub API ${method} ${url} -> timed out after ${timeoutMs}ms`);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     const err = new Error(`GitHub API ${method} ${url} -> HTTP ${res.status}: ${text.slice(0, 300)}`);

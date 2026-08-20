@@ -3040,7 +3040,21 @@ async function getWorkflowRunSummary() {
 
       while (page <= maxPages) {
         const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-        const response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+        let response;
+        try {
+          response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+        } catch (pageErr) {
+          // A failure on page 2+ must not discard page 1's already-fetched
+          // runs (fetchGitHubJSON throws on non-2xx, unlike the old fetchJSON
+          // which silently parsed whatever body came back) — degrade to
+          // "partial results" instead of losing everything. A page-1 failure
+          // means zero data was ever fetched — keep propagating that to the
+          // outer catch so it reports skipped/error rather than a false "0
+          // failures" clean read.
+          if (page === 1) throw pageErr;
+          console.error(`[Workflows] page ${page} fetch failed, using ${runs.length} run(s) from earlier pages: ${pageErr.message}`);
+          break;
+        }
         if (!response || !response.workflow_runs) break;
         runs.push(...response.workflow_runs);
         if (response.workflow_runs.length < 100) break;
