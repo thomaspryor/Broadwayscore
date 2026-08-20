@@ -1318,11 +1318,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Refresh Show Score (opening-night)",
       "firstSeen": "2026-08-19T12:31:28.188Z",
-      "lastSeen": "2026-08-19T12:31:28.188Z",
+      "lastSeen": "2026-08-20T12:33:43.178Z",
       "lastNotifiedAt": "2026-08-19T12:31:28.188Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-450"
+      "linearIdentifier": "BRO-450",
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Deploy to Vercel": {
       "status": "open",
@@ -1403,6 +1404,18 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "cron-health:Commercial Weekly Orchestrator": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial Weekly Orchestrator",
+      "firstSeen": "2026-08-20T12:33:43.118Z",
+      "lastSeen": "2026-08-20T12:33:43.118Z",
+      "lastNotifiedAt": "2026-08-20T12:33:43.118Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
