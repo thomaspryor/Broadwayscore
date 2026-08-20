@@ -112,6 +112,13 @@ jobs:
           # checklist detect-and-log only, dispatching nothing.
           OPENING_NIGHT_REMEDIATION_DISABLED: ${{ vars.OPENING_NIGHT_REMEDIATION_DISABLED || 'false' }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          # BRO-67: bww-rr-count-mismatch / dtli-count-mismatch checks now run
+          # the same LLM partial-extraction fallback as gather-reviews.js
+          # (llmFallbackExtractIfNeeded). Without this, callClaude rejects
+          # immediately with "ANTHROPIC_API_KEY not set" and the fallback is a
+          # silent no-op — the parity checks stay blind to the exact
+          # format-change misses they exist to catch.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           SHOW_ARG=""
           if [ -n "${{ inputs.show_id }}" ]; then

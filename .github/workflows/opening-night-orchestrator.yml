@@ -721,6 +721,10 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
+          # BRO-67: this step's opening-night-checklist.js invocation runs the
+          # bww/dtli count-mismatch checks, same as opening-night-checklist.yml
+          # — needs the key for the same reason (see that workflow's comment).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           # --out keeps the JSON free of stdout/stderr log noise — a merged
           # redirect made checklist.json unparseable and silently un-scoped
