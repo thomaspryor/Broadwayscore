@@ -51,16 +51,19 @@ function loadWithMocks({ serpQueryImpl, ibdbCreativeTeam }) {
     },
   };
 
-  const mod = require(targetPath);
-
-  // Restore the real modules for anything requiring them after this point.
-  delete require.cache[urlDiscoveryPath];
-  delete require.cache[ibdbDatesPath];
-  delete require.cache[targetPath];
-  require.cache[urlDiscoveryPath] = { id: urlDiscoveryPath, filename: urlDiscoveryPath, loaded: true, exports: realUrlDiscovery };
-  require.cache[ibdbDatesPath] = { id: ibdbDatesPath, filename: ibdbDatesPath, loaded: true, exports: realIbdbDates };
-
-  return mod;
+  try {
+    return require(targetPath);
+  } finally {
+    // Restore the real modules for anything requiring them after this point,
+    // even if requiring targetPath threw — a leaked mock in require.cache
+    // would otherwise silently poison every later test in this process that
+    // does a plain require('./lib/ibdb-dates') / require('./lib/url-discovery').
+    delete require.cache[urlDiscoveryPath];
+    delete require.cache[ibdbDatesPath];
+    delete require.cache[targetPath];
+    require.cache[urlDiscoveryPath] = { id: urlDiscoveryPath, filename: urlDiscoveryPath, loaded: true, exports: realUrlDiscovery };
+    require.cache[ibdbDatesPath] = { id: ibdbDatesPath, filename: ibdbDatesPath, loaded: true, exports: realIbdbDates };
+  }
 }
 
 function fakeShow(overrides = {}) {
@@ -155,6 +158,56 @@ test('fixCreativeTeam: IBDB step writes nothing when no member passes SERP verif
 
   assert.equal(result, null);
   assert.equal(show.creativeTeam, undefined, 'no creative team data may be introduced without verification');
+});
+
+test('verifyCreativeTeamViaSerp: dedupes duplicate name+role entries (one SERP call, one output entry)', async () => {
+  let calls = 0;
+  const { verifyCreativeTeamViaSerp } = loadWithMocks({
+    serpQueryImpl: async () => {
+      calls++;
+      return [{ title: 'Example opens', snippet: 'Example, directed by Mary Zimmerman, begins previews.' }];
+    },
+    ibdbCreativeTeam: [],
+  });
+
+  const proposed = [
+    { name: 'Mary Zimmerman', role: 'Director' },
+    { name: 'Mary Zimmerman', role: 'Director' },
+    { name: 'mary zimmerman', role: 'director' }, // case-insensitive duplicate
+  ];
+  const verified = await verifyCreativeTeamViaSerp(fakeShow(), proposed, '2026', 'serp-verified-ibdb');
+
+  assert.equal(calls, 1, 'duplicate members must only be SERP-queried once');
+  assert.equal(verified.length, 1, 'duplicate members must only appear once in the output');
+});
+
+test('verifyCreativeTeamViaSerp: a blank/missing name is rejected without a network call (would otherwise wildcard-match any "<verb> <anyone>" snippet)', async () => {
+  let calls = 0;
+  const { verifyCreativeTeamViaSerp } = loadWithMocks({
+    serpQueryImpl: async () => { calls++; return [{ title: 'Example opens', snippet: 'Example, directed by Someone Else, begins previews.' }]; },
+    ibdbCreativeTeam: [],
+  });
+
+  const proposed = [{ name: '', role: 'Director' }, { name: '   ', role: 'Director' }];
+  const verified = await verifyCreativeTeamViaSerp(fakeShow(), proposed, '2026', 'serp-verified-ibdb');
+
+  assert.deepEqual(verified, []);
+  assert.equal(calls, 0, 'a blank name must never reach serpQuery');
+});
+
+test('verifyCreativeTeamViaSerp: "Music & Lyrics" confirms on either "music and lyrics by" or "music & lyrics by"', async () => {
+  const { verifyCreativeTeamViaSerp } = loadWithMocks({
+    serpQueryImpl: async () => [
+      { title: 'Example opens', snippet: 'Example, music & lyrics by Jason Robert Brown, begins previews.' },
+    ],
+    ibdbCreativeTeam: [],
+  });
+
+  const proposed = [{ name: 'Jason Robert Brown', role: 'Music & Lyrics' }];
+  const verified = await verifyCreativeTeamViaSerp(fakeShow(), proposed, '2026', 'serp-verified-ibdb');
+
+  assert.equal(verified.length, 1);
+  assert.equal(verified[0].name, 'Jason Robert Brown');
 });
 
 test('fixCreativeTeam: IBDB step never overwrites an existing creativeTeam[1] with an unverified replacement', async () => {
