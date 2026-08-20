@@ -307,6 +307,7 @@ jobs:
             function resolveShow(name) {
               return resolveShowRanked(name, allShows);
             }
+            const { normalizeDiagnosisShowIds } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-multishow.js`);
 
             // Drain as we go: entries are removed from `remaining` once handled,
             // and whatever is left (mid-loop crash/cancel) is written back in
@@ -316,10 +317,20 @@ jobs:
               for (const entry of diagnosed) {
                 const { item, submission, diagnosis } = entry;
                 const resolvedShow = resolveShow(submission.show);
+                // showIds is the canonical multi-show field: every show this
+                // report references, not just the form's `show` field. Union
+                // of diagnoseBug's deterministic resolvedShowIds (matched
+                // against the message text too) with the form-field show —
+                // the form field is authoritative when present, so it's
+                // guaranteed to be included even if resolvedShowIds missed it.
+                const showIdSet = new Set(normalizeDiagnosisShowIds(diagnosis));
+                if (resolvedShow?.id) showIdSet.add(resolvedShow.id);
+                const showIds = [...showIdSet];
                 const diagPayload = {
                   ...diagnosis,
-                  showId: resolvedShow?.id || null,
+                  showId: resolvedShow?.id || showIds[0] || null,
                   showSlug: resolvedShow?.slug || null,
+                  showIds,
                   submitterName: submission.name || null,
                   submitterEmail: submission.email || null,
                   submitterShow: submission.show || null,
@@ -373,6 +384,7 @@ jobs:
                   diagnosis.proposedFix,
                   `**Confidence:** ${diagnosis.confidence} | **Type:** ${diagnosis.fixType}`,
                   `**Files:** ${diagnosis.relevantFiles.join(', ')}`,
+                  ...(showIds.length > 1 ? [`**Shows referenced:** ${showIds.join(', ')} (auto-fix will attempt all of them)`] : []),
                   '',
                   '---',
                   `*Auto-diagnosed by feedback pipeline*`,

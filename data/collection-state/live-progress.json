@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-20T12:58:54.756Z",
-  "processed": 67,
-  "failed": 729,
-  "successRate": "8.4%",
+  "updatedAt": "2026-08-20T19:27:34.571Z",
+  "processed": 85,
+  "failed": 1211,
+  "successRate": "6.6%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 52,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 3,
-    "scrapingbee": 7,
+    "scrapingbee": 14,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 13
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-08-20T12:55:05.386Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T19:17:43.329Z",
+      "event": "bb-session",
+      "session": "7fb71f84",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-20T19:17:43.857Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

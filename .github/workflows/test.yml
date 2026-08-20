@@ -74,6 +74,18 @@ on:
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # Table-parsing scrapers audited for column-count brittleness (task
+      # BRO-47/#118/#1331): each calls assertTableSchema (scripts/lib/,
+      # globbed above; scrape-alltime.ts also uses findColumnIndex) before
+      # indexing cells by position, but the scraper files themselves live
+      # outside scripts/lib/ with no scripts/** broad glob, so a solo edit
+      # to one of them alone triggered ZERO CI.
+      - 'scripts/scrape-alltime.ts'
+      - 'scripts/scrape-grosses.ts'
+      - 'scripts/backfill-grosses-history.ts'
+      - 'scripts/scrape-nydcc.js'
+      - 'scripts/scrape-obie.js'
+      - 'scripts/scrape-ibdb.ts'
       # Column-count brittleness guard (task #118) used by scrape-alltime.ts
       # and scrape-grosses.ts: its unit test is in tests/unit-test-manifest.txt
       # (tests/** is globbed above) but a solo edit to the lib needs this
@@ -410,7 +422,7 @@ on:
       - 'scripts/lib/push-with-retry.mutex-deadline.test.sh'
       - 'scripts/lib/push-with-retry.fetch-timeout.test.sh'
       # Git Data API push fallback (task #707, generalizes the task #698 live
-      # fix): opt-in (PUSH_VIA_API_FALLBACK=1) replacement for the local
+      # fix; default-on since task #1847): replacement for the local
       # fetch+rebase+push cycle when it exhausts every retry under high
       # churn. Test lives in tests/unit/ (node --test batch, covered by the
       # tests/** glob already); the .sh source needs explicit listing (no
@@ -508,6 +520,14 @@ on:
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
       - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
+      # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI. Its lib dependency
+      # (scripts/lib/broadway-com-rating-parser.js) is already covered by the
+      # scripts/lib/** glob above.
+      - 'scripts/scrape-broadway-com-audience.js'
+      - 'scripts/scrape-broadway-com-audience.test.mjs'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.
@@ -1689,6 +1709,10 @@ on:
       # deleted review-text-scoreable mirror onto review-guards canonical
       # predicates. Path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/check-review-count-drift.js'
+      # BRO-58: colocated test, registered in tests/unit-test-manifest.txt
+      # (tests/** already globbed above). Root-level scripts/*.test.mjs is NOT
+      # globbed, so a solo edit to just this file needs its own entry.
+      - 'scripts/check-review-count-drift.test.mjs'
       - 'scripts/clear-stale-wrong-production-flags.js'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
@@ -2988,6 +3012,38 @@ jobs:
             BATCH_PASS=$(grep -E '^(# pass |ℹ pass )' "$log" | tail -n1 | awk '{print $NF}')
             BATCH_FAIL=$(grep -E '^(# fail |ℹ fail )' "$log" | tail -n1 | awk '{print $NF}')
             : "${BATCH_PASS:=UNKNOWN}" "${BATCH_FAIL:=UNKNOWN}"
+            if [ "$rc" -ne 0 ]; then
+              # BRO-2238: a 1-of-N batch failure previously printed nothing
+              # but "exit=1" — Node's TAP output already has the answer
+              # (`not ok N - <name>` plus a `location: 'file:line'`
+              # diagnostic a few lines below it) but it was buried unlabeled
+              # inside the raw tee'd log under a collapsed group. Pull those
+              # pairs into the step summary, and annotate each failing test
+              # name as its own ::error:: so it shows up in the PR checks UI
+              # without anyone needing to expand a log group.
+              local failures
+              failures=$(awk '
+                /^not ok / { print; show=1; next }
+                show && /^  location:/ { print; show=0; next }
+                show && /^  \.\.\.$/ { show=0; next }
+              ' "$log")
+              if [ -n "$failures" ]; then
+                echo "::group::$label batch — failing tests"
+                echo "$failures"
+                echo "::endgroup::"
+                {
+                  echo "### $label batch — failing tests"
+                  echo '```'
+                  echo "$failures"
+                  echo '```'
+                } >> "$GITHUB_STEP_SUMMARY"
+                while IFS= read -r name; do
+                  echo "::error::$label batch failing test: $name"
+                done < <(grep '^not ok ' "$log" | sed -E 's/^not ok [0-9]+ - //')
+              else
+                echo "::warning::$label batch exited $rc but no 'not ok' TAP line was found in the log — likely a crash or timeout above, not a named test failure."
+              fi
+            fi
             return "$rc"
           }
 
