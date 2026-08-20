@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-20T12:53:38.436Z",
+  "updatedAt": "2026-08-20T12:54:57.096Z",
   "processed": 66,
-  "failed": 704,
-  "successRate": "8.6%",
+  "failed": 714,
+  "successRate": "8.5%",
   "tierBreakdown": {
     "playwright": 43,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 3,
     "scrapingbee": 7,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -36,6 +36,17 @@
       "t": "2026-08-20T12:50:23.138Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T12:54:34.117Z",
+      "event": "bb-session",
+      "session": "bc55fe41",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-20T12:54:34.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
