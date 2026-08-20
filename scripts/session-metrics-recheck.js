@@ -55,6 +55,15 @@ function transcriptsForDay(dir, dateStr) {
     });
 }
 
+// Build a YYYY-MM-DD string from local date components (NOT toISOString,
+// which is UTC — after ~7-9pm ET that rolls to tomorrow's date, so the
+// resulting "start" is in the future and every real transcript's mtime
+// silently falls before it, reporting 0 scanned instead of erroring).
+function localDateString(d) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
 function transcriptsSince(dir, dateStr) {
   const start = new Date(`${dateStr}T00:00:00`);
   return fs
@@ -88,7 +97,7 @@ function main() {
 
   const files = args.date
     ? transcriptsForDay(dir, args.date)
-    : transcriptsSince(dir, args.since || new Date().toISOString().slice(0, 10));
+    : transcriptsSince(dir, args.since || localDateString(new Date()));
 
   const perSessionBlocks = [];
   const allCrashes = [];
