@@ -69,7 +69,8 @@
     "abigails-party-west-end-2026/telegraph--dominic-cavendish.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "jeeves-takes-charge-west-end-2026/a-youngish-perspective--unknown.json",
-    "jeeves-takes-charge-west-end-2026/north-west-end--unknown.json"
+    "jeeves-takes-charge-west-end-2026/north-west-end--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -481,7 +482,16 @@
     "abigails-party-west-end-2026/london-box-office--stuart-king.json",
     "abigails-party-west-end-2026/monstagigz--unknown.json",
     "abigails-party-west-end-2026/thestage--paul-vale.json",
-    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json"
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -551,7 +561,8 @@
       "abigails-party-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
-      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -572,7 +583,7 @@
     ]
   },
   "startTime": "2026-08-19T11:41:09.056Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -630,6 +641,17 @@
       "event": "bb-session",
       "session": "fe275261",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-20T00:30:07.409Z",
+      "event": "bb-session",
+      "session": "66997000",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T00:30:08.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
