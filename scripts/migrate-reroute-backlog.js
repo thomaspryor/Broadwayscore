@@ -53,6 +53,17 @@ const outletData = outletRegistry.outlets || outletRegistry;
 
 const multiProdYearGuard = buildMultiProdYearGuard(showsData.shows);
 
+// Normalized-title -> [show, ...] index. Both --cross-market call sites below
+// (getWeSiblings and the cross-market scan set) read it; it was referenced but
+// never defined, so every --cross-market run died with
+// "ReferenceError: titleGroups is not defined" before doing any work.
+const titleGroups = {};
+for (const s of showsData.shows) {
+  if (!s.title) continue;
+  const key = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  (titleGroups[key] ||= []).push(s);
+}
+
 // ─── For --cross-market: WE sibling lookup ───
 function getWeSiblings(showId) {
   const show = showById.get(showId);

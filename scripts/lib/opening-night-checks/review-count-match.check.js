@@ -18,6 +18,23 @@ const WARN_THRESHOLD = 1;
 const ERROR_THRESHOLD = 5;
 
 /**
+ * Task #1846: severity tracks the UNEXPLAINED portion of the gap, not the
+ * raw gap. A large gap where every file carries a real logged reason
+ * (dedup, wrong-production, non-review, etc.) is expected pipeline
+ * behavior, not an operator action item — only an unexplained ('not-logged')
+ * count is the actual silent-exclusion bug this check exists to catch.
+ * @param {number} gap - localCount - builtCount
+ * @param {number} unexplainedCount - how many of the gap files had no logged reason
+ * @returns {'ok'|'warning'|'error'}
+ */
+function computeGapSeverity(gap, unexplainedCount) {
+  if (unexplainedCount >= ERROR_THRESHOLD) return 'error';
+  if (unexplainedCount > 0) return 'warning';
+  if (gap >= ERROR_THRESHOLD) return 'warning';
+  return 'ok';
+}
+
+/**
  * Read today's and yesterday's exclusion JSONL and return a map of
  * filename → { reason, details } for the given show. Balusters postmortem meta-fix:
  * without per-file reasons the check's remediation hint is "go grep the rebuild log" —
@@ -116,7 +133,8 @@ function run(show, context) {
     named.push({ file: f, reason });
   }
 
-  const severity = gap >= ERROR_THRESHOLD ? 'error' : 'warning';
+  const unexplainedCount = reasons['not-logged'] || 0;
+  const severity = computeGapSeverity(gap, unexplainedCount);
   // Stays print-only (task #1132, extending #389): this check's "fix" is a
   // read-only diagnostic pipe (grep EXCLUSION), not an idempotent action — the
   // real remediation depends on the per-file reason above (re-run collection,
@@ -129,13 +147,16 @@ function run(show, context) {
   const top = named.slice(0, 8)
     .map(n => `  - ${n.file} (${n.reason})`)
     .join('\n');
+  const explainedLabel = unexplainedCount === 0
+    ? `all ${gap} explained by a logged reason`
+    : `${unexplainedCount} of ${gap} UNEXPLAINED (not-logged)`;
 
   return {
-    ok: false,
+    ok: unexplainedCount === 0 && gap < ERROR_THRESHOLD,
     severity,
-    message: `${gap} local review file(s) excluded from reviews.json (${localCount} local vs ${builtCount} built).\n  By reason: ${reasonSummary || '(no audit log today)'}\n${top}${named.length > 8 ? `\n  ... and ${named.length - 8} more` : ''}\n  Full inspect: ${cmd}`,
-    details: { localCount, builtCount, gap, showId: show.id, reasons, ghosts: named },
+    message: `${gap} local review file(s) excluded from reviews.json (${localCount} local vs ${builtCount} built) — ${explainedLabel}.\n  By reason: ${reasonSummary || '(no audit log today)'}\n${top}${named.length > 8 ? `\n  ... and ${named.length - 8} more` : ''}\n  Full inspect: ${cmd}`,
+    details: { localCount, builtCount, gap, showId: show.id, reasons, unexplainedCount, ghosts: named },
   };
 }
 
-module.exports = { name, description, run, loadExclusionIndex };
+module.exports = { name, description, run, loadExclusionIndex, computeGapSeverity };

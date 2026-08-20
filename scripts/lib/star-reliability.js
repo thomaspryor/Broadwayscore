@@ -143,14 +143,16 @@ function detectBandFromReviewFile(data) {
  * @param {{category: string|null|undefined, envFlag: boolean}} opts
  * @returns {boolean} true → use anchored V6 path
  */
-function shouldUseAnchoredMode({ category, envFlag }) {
-  // Inline the WE check so this module has zero TS-side imports. The
-  // src/config/scoring.ts ANCHORED_MARKETS set is the human-edited source
-  // of truth; we mirror it here. Keep both in sync — Sprint 5 cleanup can
-  // unify via a JSON-backed config if both ever drift.
-  // 2026-07-20: broadway + off-broadway added (NYC rollout).
-  const ANCHORED_MARKETS = new Set(['west-end', 'off-west-end', 'broadway', 'off-broadway']);
+// Module-level (not function-local) so tests/unit/anchored-markets-consistency.test.mjs
+// can assert this mirror stays in sync with src/config/scoring.ts's
+// ANCHORED_MARKETS instead of drifting silently (the same drift class
+// tier-config-consistency.test.ts already guards for TIER_WEIGHTS).
+// This module has zero TS-side imports by design — src/config/scoring.ts
+// ANCHORED_MARKETS is the human-edited source of truth; we mirror it here.
+// 2026-07-20: broadway + off-broadway added (NYC rollout).
+const ANCHORED_MARKETS = new Set(['west-end', 'off-west-end', 'broadway', 'off-broadway']);
 
+function shouldUseAnchoredMode({ category, envFlag }) {
   // Deny-list: missing category never auto-anchors, regardless of envFlag.
   if (category === null || category === undefined || category === '') {
     return false;
@@ -166,6 +168,7 @@ function shouldUseAnchoredMode({ category, envFlag }) {
 
 module.exports = {
   LOW_RELIABILITY_EXTRACTION,
+  ANCHORED_MARKETS,
   isHighReliabilityStar,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,

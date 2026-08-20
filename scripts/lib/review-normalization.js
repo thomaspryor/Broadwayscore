@@ -1688,6 +1688,12 @@ function isJunkOutlet(outletName) {
   if ((slug.match(/-/g) || []).length > 5) return true;
   // Known garbage patterns from BWW extraction
   if (/photo-credit|average-rating|read-the-reviews|reviewed-its|the-unthinkable/.test(slug)) return true;
+  // Ticket/box-office CTA link text (e.g. Playbill Verdict "Buy Tickets Directly
+  // from the Theatre") — not an outlet, but the anchor text passes every other
+  // heuristic here (short enough, few enough hyphens) so it needs its own check.
+  // ('box-office' alone only — NOT a suffix match, which would also catch the
+  // real registered aggregator outlet 'london-box-office'.)
+  if (/^(buy|get)-tickets\b|tickets-directly|^box-office$/.test(slug)) return true;
   // Starts with conjunctions/verbs that indicate a sentence fragment
   if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
   // Contains verb phrases never found in outlet names

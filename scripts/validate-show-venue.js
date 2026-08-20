@@ -130,7 +130,12 @@ function shortTitleSlug(title) {
  */
 function scorePlaybillUrl(url, show) {
   const u = url.toLowerCase();
-  const m = u.match(/\/production\/([a-z0-9-]+?)-(?:off-)?(?:broadway|regional|tour|west-end)-/);
+  // Playbill's West End production URLs use "london" as the market segment
+  // (e.g. "bronco-billy-the-musical-london-charing-cross-theatre-2024"), NOT
+  // "west-end" — without this alternative the regex never matches a single
+  // real West End/Off-West-End Playbill URL, so findPlaybillUrl() silently
+  // fails "no-playbill-url" for the entire London market (card #590).
+  const m = u.match(/\/production\/([a-z0-9-]+?)-(?:off-)?(?:broadway|regional|tour|west-end|london)-/);
   const titleSegment = m ? m[1] : null;
   const showSlug = shortTitleSlug(show.title);
   if (!titleSegment || !showSlug) return null;
@@ -142,11 +147,23 @@ function scorePlaybillUrl(url, show) {
 
   let s = 10; // title match earned
   const isOB = show.category === 'off-broadway';
+  const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
   // Regional/tour URLs are never a fit for a NYC OB/Broadway entry — they
   // describe a different production (different venue, different cast).
   if ((u.includes('-regional-') || u.includes('-tour-')) && (isOB || !show.category)) return null;
+  // Cross-market hard reject: a same-titled show can have entirely separate
+  // Broadway and West End productions (different venue, cast, often
+  // different score) — the +10 title-match alone must never carry a
+  // cross-market URL past findPlaybillUrl's `score > 0` filter. A soft
+  // penalty isn't enough here: -5 off a +10 title match still nets positive
+  // (adversarial review, card #590 — this was a real false-positive path
+  // introduced by adding "london" as a recognized market segment above).
+  const isLondonUrl = u.includes('-london-');
+  if (isLondonUrl && !isLondon) return null;
+  if (!isLondonUrl && isLondon && (u.includes('-broadway-') || u.includes('-off-broadway-'))) return null;
   if (u.includes('-off-broadway-')) s += isOB ? 5 : -5;
   else if (u.includes('-broadway-')) s += isOB ? -5 : 5;
+  else if (isLondonUrl) s += 5;
   const cv = canonicalVenue(show.venue || '');
   if (cv) {
     const cvSlug = cv.replace(/\s+/g, '-');
@@ -162,7 +179,9 @@ async function findPlaybillUrl(show, log) {
   if (cache.shows && cache.shows[show.id]) {
     return { url: cache.shows[show.id], source: 'cache' };
   }
-  const market = show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway';
+  const market = show.category === 'off-broadway' ? 'Off-Broadway'
+    : (show.category === 'west-end' || show.category === 'off-west-end') ? 'London'
+    : 'Broadway';
   const venueWord = (show.venue || '').split(/[\s\-,—\/]/)[0];
   const queries = [
     `site:playbill.com/production "${show.title}" ${market} ${venueWord}`,
@@ -433,4 +452,11 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+if (require.main === module) {
+  main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+}
+
+module.exports = {
+  isProvisional, shortTitleSlug, scorePlaybillUrl,
+  parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
+};

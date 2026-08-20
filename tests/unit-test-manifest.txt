@@ -103,6 +103,7 @@ scripts/tests/orphan-task-reconciliation.test.mjs
 scripts/tests/pull-quote-quality.test.mjs
 scripts/tests/recheck-ledger-persistence.test.mjs
 scripts/tests/record-push-ledger-redaction.test.mjs
+scripts/tests/scripts-no-undef.test.mjs
 scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/tracked-and-ignored-guard.test.mjs
@@ -177,6 +178,7 @@ tests/unit/cast-changes-real-data.test.mjs
 tests/unit/cast-changes-validate-event.test.mjs
 tests/unit/cast-extraction-guards.test.mjs
 tests/unit/cast-tombstone.test.mjs
+tests/unit/census-ledger-outlet-ids.test.mjs
 tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
 tests/unit/ci-cancellation-logic.test.mjs
@@ -241,6 +243,7 @@ tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
 tests/unit/digest-escalation.test.mjs
 tests/unit/digest-row-clip.test.mjs
+tests/unit/digest-sync-refused-reporting.test.mjs
 tests/unit/discover-historical-shows-category.test.mjs
 tests/unit/discover-new-shows-gates.test.mjs
 tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
@@ -305,6 +308,8 @@ tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/import-ledger.test.mjs
+tests/unit/import-ledger-checkpoint.test.mjs
+tests/unit/linear-graphql-rate-limit.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
@@ -325,10 +330,12 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/linear-brain-done-gate.test.mjs
 tests/unit/linear-cap.test.mjs
 tests/unit/linear-client-archived-issue.test.mjs
 tests/unit/linear-client-backoff.test.mjs
 tests/unit/linear-next.test.mjs
+tests/unit/linear-session-done-gate.test.mjs
 tests/unit/lint-canonical-writers.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/live-rc-missing-drift.test.mjs
@@ -351,6 +358,7 @@ tests/unit/merge-owner-email-log.test.mjs
 tests/unit/merge-review-fields.test.mjs
 tests/unit/merge-social-post-history.test.mjs
 tests/unit/merge-worktree-push-verification.test.mjs
+tests/unit/mezzanine-override-collision-auditor.test.mjs
 tests/unit/mezzanine-search-classify.test.mjs
 tests/unit/mezzanine-sibling-year-gate.test.mjs
 tests/unit/model-default-guard.test.mjs
@@ -377,6 +385,7 @@ tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
 tests/unit/opening-night-checks-critics-take.test.mjs
+tests/unit/opening-night-checks-dtli.test.mjs
 tests/unit/opening-night-checks-juan-a-ramirez-bypass.test.mjs
 tests/unit/opening-night-checks-metadata-completeness.test.mjs
 tests/unit/opening-night-checks-remediation-coverage.test.mjs
@@ -394,10 +403,12 @@ tests/unit/opening-window-budget-reserve.test.mjs
 tests/unit/opera-prompt-context.test.mjs
 tests/unit/orchestrator-guardian-dispatch.test.mjs
 tests/unit/orphan-pending-decision.test.mjs
+tests/unit/outlet-alias-collision.test.mjs
 tests/unit/outlet-listing-poller.test.mjs
 tests/unit/outlet-logos-generated.test.mjs
 tests/unit/outlet-recency-monitor.test.mjs
 tests/unit/outlet-registry-domain-collisions.test.mjs
+tests/unit/outlet-registry.test.mjs
 tests/unit/owner-approval-channel.test.mjs
 tests/unit/page-validator.test.mjs
 tests/unit/park-visibility.test.mjs
@@ -468,6 +479,7 @@ tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
 tests/unit/review-output-guard.test.mjs
+tests/unit/review-scoring-backfill.test.mjs
 tests/unit/review-texts-dir-resolution.test.mjs
 tests/unit/review-url-clusters.test.mjs
 tests/unit/review-write-guard-placeholder.test.mjs
@@ -564,6 +576,7 @@ tests/unit/url-validation.test.mjs
 tests/unit/url-year-conflict-hint.test.mjs
 tests/unit/validate-added-review-ownership.test.mjs
 tests/unit/validate-data-push-refusal-sentinel.test.mjs
+tests/unit/validate-show-venue.test.mjs
 tests/unit/variety-extractor.test.mjs
 tests/unit/venue-aliases.test.mjs
 tests/unit/venue-anomaly.test.mjs

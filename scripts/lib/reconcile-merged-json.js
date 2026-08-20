@@ -79,30 +79,23 @@ function repoRoot() {
   }
 }
 
-const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
-const { mergeDiaryShows } = require('./merge-diary-shows');
-const { mergeSocialPostHistory } = require('./merge-social-post-history');
-const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
-const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
-const { mergeOwnerEmailLog } = require('./merge-owner-email-log');
-const { mergeCensusRecallTrend } = require('./merge-census-recall-trend');
-const { mergeCoverageAdversarialProbeTrend } = require('./merge-coverage-adversarial-probe-trend');
+const { activeEntriesFor } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
 // no-op reconciliation is byte-identical and does not create a phantom diff.
-const MANAGED = [
-  { file: 'data/commercial.json', merge: mergeCommercialJson, newline: true },
-  { file: 'data/commercial-pending-review.json', merge: mergePendingReview, newline: true },
-  { file: 'data/commercial-research-queue.json', merge: mergeResearchQueue, newline: true },
-  { file: 'data/diary-shows.json', merge: mergeDiaryShows, newline: false },
-  { file: 'data/social-post-history.json', merge: mergeSocialPostHistory, newline: true },
-  { file: 'data/audit/bww-roundup-miss-ledger.jsonl', merge: mergeBwwRoundupLedger, format: 'jsonl' },
-  { file: 'data/audit/scraper-spend-ledger.jsonl', merge: mergeScraperSpendLedger, format: 'jsonl' },
-  { file: 'data/audit/owner-email-log.jsonl', merge: mergeOwnerEmailLog, format: 'jsonl' },
-  { file: 'data/audit/census-recall-trend.jsonl', merge: mergeCensusRecallTrend, format: 'jsonl' },
-  { file: 'data/audit/coverage-adversarial-probe-trend.jsonl', merge: mergeCoverageAdversarialProbeTrend, format: 'jsonl' },
-];
+//
+// BRO-76: derived from the canonical registry (scripts/lib/core-data-merge-
+// registry.js) instead of an independently hand-maintained array — this used
+// to be the ORIGINAL of what reconcile-coverage.js's MANAGED_BASENAMES called
+// itself "kept in sync with... by comment only." Registry entries store bare
+// basenames (shared with the private-core-data surface); the 'data/' prefix
+// is this surface's own convention, applied here.
+const MANAGED = activeEntriesFor('public-repo').map((e) => ({
+  file: `data/${e.file}`,
+  merge: e.merge,
+  ...(e.format === 'jsonl' ? { format: 'jsonl' } : { newline: e.newline }),
+}));
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
 function mergerFor(file) {

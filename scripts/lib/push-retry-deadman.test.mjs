@@ -65,3 +65,23 @@ test('a record with an unparseable ts is ignored, not counted', () => {
   const r = assessPushRetryDeadman([{ ts: 'not-a-date', reason: 'retries-exhausted' }], { now: NOW });
   assert.equal(r.status, 'pass');
 });
+
+test('legacy records without a workflow field group under "unknown" (task #1842)', () => {
+  const r = assessPushRetryDeadman([rec(1), rec(2), rec(3)], { now: NOW });
+  assert.equal(r.status, 'error');
+  assert.match(r.message, /unknown x3/);
+});
+
+test('workflow attribution breaks down per-workflow, most-frequent first (task #1842)', () => {
+  const entries = [
+    rec(1, 'retries-exhausted', { workflow: 'data-health-check.yml' }),
+    rec(2, 'retries-exhausted', { workflow: 'data-health-check.yml' }),
+    rec(3, 'retries-exhausted', { workflow: 'opening-night-express.yml' }),
+  ];
+  const r = assessPushRetryDeadman(entries, { now: NOW });
+  assert.equal(r.status, 'error');
+  assert.match(r.message, /data-health-check\.yml x2/);
+  assert.match(r.message, /opening-night-express\.yml x1/);
+  // most-frequent workflow listed before the less-frequent one
+  assert.ok(r.message.indexOf('data-health-check.yml x2') < r.message.indexOf('opening-night-express.yml x1'));
+});

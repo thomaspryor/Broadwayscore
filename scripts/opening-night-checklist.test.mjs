@@ -34,6 +34,7 @@ const criticsTakePresent = require('./lib/opening-night-checks/critics-take-pres
 const unparsedRatings = require('./lib/opening-night-checks/unparsed-explicit-ratings.check.js');
 const scoreJump = require('./lib/opening-night-checks/unexplained-score-jump.check.js');
 const bwwRrCountMismatch = require('./lib/opening-night-checks/bww-rr-count-mismatch.check.js');
+const dtliCountMismatch = require('./lib/opening-night-checks/dtli-count-mismatch.check.js');
 const t1OutletsScored = require('./lib/opening-night-checks/t1-outlets-scored.check.js');
 const emptyCast = require('./lib/opening-night-checks/empty-cast.check.js');
 const staleUpcomingTag = require('./lib/opening-night-checks/stale-upcoming-tag.check.js');
@@ -158,9 +159,16 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
     assert.equal(details.missingReviews.length, 6, 'each missing review must be individually actionable');
   });
 
-  it('the stub path stays separate: missingReviews declares no details.remediation', () => {
-    // Catch 2 is remediated by createReviewFile stubs, not by a workflow
-    // dispatch — collectRemediations must ignore it rather than double-acting.
+  it('matches the REAL check contract: gap-alert stays ok:true, so collectRemediations never sees it', () => {
+    // bww-rr-count-mismatch.check.js's gap>ALERT_THRESHOLD branch returns
+    // ok:true (severity:'warning' only) BY DESIGN — see the check's own
+    // comment: "severity stays at warning even for large gaps because
+    // auto-remediation queues stubs immediately". collectRemediations()
+    // early-continues on `ok !== false` before it ever reads
+    // details.remediation, so this ok:true shape is what actually keeps the
+    // stub path from double-acting as a workflow/alert dispatch, matching the
+    // real result shape the check returns rather than an ok:false shape it
+    // never emits.
     const actions = collectRemediations(
       asShowResults(
         { ok: true, severity: 'warning', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
@@ -168,6 +176,43 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
       )
     );
     assert.equal(actions.length, 0);
+  });
+
+  it('isolates WHY: collectRemediations reads details.remediation specifically, not the presence of missingReviews', () => {
+    // The test above alone can't distinguish "collectRemediations ignores
+    // ok:true results" from "collectRemediations ignores missingReviews
+    // specifically" — both explanations pass it identically (BRO-219 followup:
+    // the same gap was found and fixed for dtli-count-mismatch's twin test in
+    // scripts/opening-night-checklist.test.mjs's catch-2b block). Holding
+    // ok:false constant across both fixtures isolates the real discriminator:
+    // a missingReviews-only details object (no .remediation key) yields zero
+    // actions, while the identical shape WITH a .remediation key attached
+    // yields one — proving the function keys off details.remediation, not
+    // off whatever else details happens to contain.
+    const missingReviewsOnly = collectRemediations(
+      asShowResults(
+        { ok: false, severity: 'error', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'bww-rr-count-mismatch'
+      )
+    );
+    assert.equal(missingReviewsOnly.length, 0, 'a missingReviews-only details object must not be read as a remediation spec');
+
+    const withRemediation = collectRemediations(
+      asShowResults(
+        {
+          ok: false,
+          severity: 'error',
+          message: 'gap',
+          details: {
+            gap: 6,
+            missingReviews: [{ outletId: 'x' }],
+            remediation: { kind: 'alert', key: 'bww-rr-hypothetical:test', conditionKey: 'bww-rr-hypothetical-test', description: 'gap' },
+          },
+        },
+        'bww-rr-count-mismatch'
+      )
+    );
+    assert.equal(withRemediation.length, 1, 'the SAME missingReviews payload must still surface once a details.remediation key is added');
   });
 
   it('the extractor-throw branch degrades instead of throwing ReferenceError', () => {
@@ -179,6 +224,99 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
     );
     assert.ok(!/details:\s*\{\s*rrUrl,\s*ourBwwCount\s*\}/.test(src), 'undefined ourBwwCount is back in the degradation path');
     assert.equal(typeof bwwRrCountMismatch.run, 'function');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Catch 2b — dtli-count-mismatch.check.js is bww-rr-count-mismatch's
+// structural twin (same missingReviews contract, consumed by the same
+// check-name-agnostic remediateMissingReviews() in opening-night-checklist.js)
+// but had zero test coverage anywhere — BRO-219 gap. No-network branch
+// coverage lives in tests/unit/opening-night-checks-dtli.test.mjs.
+// ---------------------------------------------------------------------------
+describe('catch 2b: DTLI count mismatch', () => {
+  it('a gap over the alert threshold yields stub work via the SAME contract as BWW RR', () => {
+    // The live check fetches the DTLI page, so this asserts the CONTRACT its
+    // details carry — the shape remediateMissingReviews() consumes to create
+    // stub review files, identical in shape to the bww-rr-remediation source.
+    const gap = 10 - 4;
+    const details = {
+      dtliCount: 10,
+      haveCount: 4,
+      gap,
+      missingReviews: Array.from({ length: gap }, (_, i) => ({
+        outletId: `outlet-${i}`,
+        criticName: null,
+        url: `https://example.com/dtli-review-${i}`,
+        source: 'dtli-remediation',
+      })),
+    };
+    assert.ok(details.gap > 3, 'a 6-review gap must clear the >3 alert threshold');
+    assert.equal(details.missingReviews.length, 6, 'each missing review must be individually actionable');
+    assert.ok(details.missingReviews.every(m => m.source === 'dtli-remediation'));
+  });
+
+  it('matches the REAL check contract: gap-alert stays ok:true, so collectRemediations never sees it', () => {
+    // dtli-count-mismatch.check.js's gap>ALERT_THRESHOLD branch returns
+    // ok:true (severity:'warning' only) BY DESIGN — see the check's own
+    // comment: "severity stays at warning even for large gaps because
+    // auto-remediation queues stubs immediately". collectRemediations()
+    // early-continues on `ok !== false` before it ever reads
+    // details.remediation (opening-night-remediation.js's collect loop), so
+    // this ok:true shape is what actually keeps the stub path from
+    // double-acting as a workflow/alert dispatch, matching the real result
+    // shape the check returns rather than an ok:false shape it never emits.
+    const actions = collectRemediations(
+      asShowResults(
+        { ok: true, severity: 'warning', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(actions.length, 0);
+  });
+
+  it('isolates WHY: collectRemediations reads details.remediation specifically, not the presence of missingReviews', () => {
+    // The test above alone can't distinguish "collectRemediations ignores
+    // ok:true results" from "collectRemediations ignores missingReviews
+    // specifically" — both explanations pass it identically. Holding ok:false
+    // constant across both fixtures isolates the real discriminator: a
+    // missingReviews-only details object (no .remediation key) yields zero
+    // actions, while the identical shape WITH a .remediation key attached
+    // yields one — proving the function keys off details.remediation, not
+    // off whatever else details happens to contain.
+    const missingReviewsOnly = collectRemediations(
+      asShowResults(
+        { ok: false, severity: 'error', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(missingReviewsOnly.length, 0, 'a missingReviews-only details object must not be read as a remediation spec');
+
+    const withRemediation = collectRemediations(
+      asShowResults(
+        {
+          ok: false,
+          severity: 'error',
+          message: 'gap',
+          details: {
+            gap: 6,
+            missingReviews: [{ outletId: 'x' }],
+            remediation: { kind: 'alert', key: 'dtli-hypothetical:test', conditionKey: 'dtli-hypothetical-test', description: 'gap' },
+          },
+        },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(withRemediation.length, 1, 'the SAME missingReviews payload must still surface once a details.remediation key is added');
+  });
+
+  it('is auto-registered by loadChecks() (directory scan, no name-list to forget)', () => {
+    const names = loadChecks().map(c => c.name);
+    assert.ok(names.includes('dtli-count-mismatch'));
+  });
+
+  it('exports run as a function', () => {
+    assert.equal(typeof dtliCountMismatch.run, 'function');
   });
 });
 
@@ -406,6 +544,32 @@ describe('review-count-match stays print-only on purpose', () => {
     const actions = collectRemediations(asShowResults(result, 'review-count-match'));
     assert.equal(actions.length, 0);
     fs.rmSync(scopedRoot, { recursive: true, force: true });
+  });
+
+  // Task #1846: a live show (jeeves-takes-charge-west-end-2026) had a fully
+  // valid, fully-scored review silently missing from reviews.json — the
+  // garbage-outlet guard's "^a |^an " sentence-fragment regex false-positived
+  // on the real outlet name "A Youngish Perspective". Once fixed, this check
+  // still reports the gap (other files in the same show are legitimately
+  // excluded — dedup, wrong-production), but severity must not read 'error'
+  // for a gap where every file has a real logged reason: only an unexplained
+  // ('not-logged') count is the actual silent-exclusion bug.
+  it('computeGapSeverity: a fully-explained gap is never error, regardless of size', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(14, 0), 'warning');
+    assert.equal(reviewCountMatch.computeGapSeverity(100, 0), 'warning');
+  });
+
+  it('computeGapSeverity: small fully-explained gap is ok', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(2, 0), 'ok');
+  });
+
+  it('computeGapSeverity: unexplained files at/above ERROR_THRESHOLD (5) is error', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(5, 5), 'error');
+    assert.equal(reviewCountMatch.computeGapSeverity(23, 23), 'error');
+  });
+
+  it('computeGapSeverity: zero gap is ok', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(0, 0), 'ok');
   });
 });
 

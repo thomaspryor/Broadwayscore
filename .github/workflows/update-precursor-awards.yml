@@ -172,6 +172,13 @@ jobs:
 
       - name: Commit and push
         if: steps.changes.outputs.has_changes == 'true'
+        env:
+          # BRO-76: see update-tony-awards.yml's identical env var comment —
+          # closes the non-conflicting-silent-drop gap for awards.json (the
+          # OTHER of its two writers). Reconciliation only touches registered
+          # files (scripts/lib/core-data-merge-registry.js), so this has no
+          # effect on the unrelated data/precursors/ files also staged here.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

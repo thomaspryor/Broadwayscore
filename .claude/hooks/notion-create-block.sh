@@ -3,6 +3,27 @@
 # Cloud sandboxes do not have ~/.claude/hooks/, so the project copy runs there.
 # Avoids double-firing identical logic on local sessions where the user-level
 # Claude Code settings.json already wires the master at ~/.claude/hooks/<this-script-name>.
+# ── Board gate escape hatch ─────────────────────────────────────────────
+# See board-gate-escape-hatch.md (Broadwayscore repo root) — the owner-facing
+# off switch for every board gate on this machine.
+#
+# This check is FIRST, before stdin is read, before jq, and before any board
+# reachability probe. The failure mode it exists for is "the board is reachable
+# but wrong", so a probe running ahead of it could hang for its full timeout on
+# every gated command — which is the outage, not the remedy.
+#
+# Prefix match, not equality: the documented no-terminal path is a TextEdit
+# save, and TextEdit appends .txt whether the owner wants it or not.
+# -e OR -L so a dangling symlink still counts as "present".
+# Honoured unconditionally: an escape hatch with conditions is not an escape hatch.
+for _hatch in "$HOME/.claude/BOARD_GATE_DISABLED"*; do
+  if [ -e "$_hatch" ] || [ -L "$_hatch" ]; then exit 0; fi
+done
+# Env-var twin, matching the idiom of the other kill switches in this directory
+# (INFRA_REVIEW_GATE_DISABLE, VISUAL_QA_DISABLE) so engineers get a familiar path.
+[ "${BOARD_GATE_DISABLED:-0}" = "1" ] && exit 0
+# ── end board gate escape hatch ─────────────────────────────────────────
+
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi

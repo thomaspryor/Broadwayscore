@@ -51,19 +51,11 @@
  * scripts/audit-reconcile-coverage.js.
  */
 
-// Kept in sync with MANAGED in reconcile-merged-json.js.
-const MANAGED_BASENAMES = [
-  'commercial.json',
-  'commercial-pending-review.json',
-  'commercial-research-queue.json',
-  'diary-shows.json',
-  'social-post-history.json',
-  'audit/bww-roundup-miss-ledger.jsonl',
-  'audit/scraper-spend-ledger.jsonl',
-  'audit/owner-email-log.jsonl',
-  'audit/census-recall-trend.jsonl',
-  'audit/coverage-adversarial-probe-trend.jsonl',
-];
+// BRO-76: derived from the canonical registry (scripts/lib/core-data-merge-
+// registry.js) instead of a copy kept in sync with reconcile-merged-json.js's
+// MANAGED "by comment only" — same underlying list now, not two.
+const { activeEntriesFor } = require('./core-data-merge-registry');
+const MANAGED_BASENAMES = activeEntriesFor('public-repo').map((e) => e.file);
 
 const PUSH_SH_RE = /push-with-retry\.sh\b/;
 const PUSH_JS_CALL_RE = /pushWithRetry\s*\(/;

@@ -293,57 +293,6 @@ function blankStringContents(src) {
   const exact = blankStringContentsViaAcorn(src);
   if (exact !== null) return exact;
   return src; // fail open — never silently blank real code
-  let out = '';
-  for (let i = 0; i < src.length; i++) {
-    const ch = src[i];
-
-    // Consume regex literals as opaque units so a quote/backtick inside one
-    // can never open a phantom string. Blank the body (it is never a call).
-    if (ch === '/' && src[i + 1] !== '/' && src[i + 1] !== '*' && isRegexStart(src, i)) {
-      let j = i + 1;
-      let inClass = false;
-      let closed = false;
-      for (; j < src.length; j++) {
-        const c = src[j];
-        if (c === '\\') { j++; continue; }
-        if (c === '\n') break;            // unterminated — bail, treat as division
-        if (c === '[') inClass = true;
-        else if (c === ']') inClass = false;
-        else if (c === '/' && !inClass) { closed = true; break; }
-      }
-      if (closed) {
-        out += '/' + ' '.repeat(j - i - 1) + '/';
-        i = j;
-        continue;
-      }
-      // Not a well-formed regex on one line — fall through as an ordinary char.
-    }
-
-    if (ch !== '`' && ch !== '"' && ch !== "'") { out += ch; continue; }
-
-    const quote = ch;
-    out += quote;
-    let j = i + 1;
-    while (j < src.length && src[j] !== quote) {
-      // A '/"-string can't span a raw newline — stop rather than run away.
-      if (quote !== '`' && src[j] === '\n') break;
-      // Escape: blank both the backslash and the character it escapes, so a
-      // `\'` inside the literal never reads as the closing quote.
-      if (src[j] === '\\') { out += ' '; if (j + 1 < src.length) out += src[j + 1] === '\n' ? '\n' : ' '; j += 2; continue; }
-      // Keep `${ ... }` expression text verbatim — it is evaluated code.
-      if (quote === '`' && src[j] === '$' && src[j + 1] === '{') {
-        const close = findMatching(src, j + 1, '{', '}');
-        if (close === null) { out += ' '; j++; continue; }
-        out += src.slice(j, close + 1);
-        j = close + 1;
-        continue;
-      }
-      out += src[j] === '\n' ? '\n' : ' ';
-      j++;
-    }
-    if (j < src.length && src[j] === quote) { out += quote; i = j; } else { i = j - 1; }
-  }
-  return out;
 }
 
 // Matches only up to and including the OPENING paren of a function/arrow's

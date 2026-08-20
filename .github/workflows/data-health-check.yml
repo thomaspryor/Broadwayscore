@@ -42,7 +42,23 @@ jobs:
     # (Run health check, E2E canary, bulk commit) are counted — a job-level
     # kill mid-git-operation on ANY step carries the same stale-REBASE_HEAD
     # risk documented on the ledger-commit step below.
-    timeout-minutes: 20
+    # Raised 20->35->45 (task #1842, same class as task #1791). First pass
+    # (20->35) set both commit steps to PUSH_DEADLINE_SEC=600s — verified
+    # LIVE via manual workflow_dispatch run 32393356269 (2026-08-20) and it
+    # was NOT enough: the bulk commit step burned 4 full
+    # fetch->rebase-conflict->retry cycles (~720s real wall-clock) against
+    # heavier contention than the original incident's 2-cycle/405s failure,
+    # and still hit "overall deadline 600s exceeded" before landing. Raised
+    # to 900s (matching task #1791's own value — this repo's data/audit/*
+    # write contention is evidently not lighter than audit-aggregator-gap.yml's,
+    # so there's no basis left for a discounted daily-cadence number here).
+    # "Commit acceptance recheck ledger"'s own timeout-minutes moved 13->17
+    # to stay above its new 900s deadline. Job timeout raised 35->45 to give
+    # "Commit health check + triage data" — no per-step cap, runs LAST —
+    # real headroom to reach its own new 900s deadline even after every step
+    # ahead of it in this job. Nowhere near GitHub Actions' 360-min hard job
+    # ceiling.
+    timeout-minutes: 45
     permissions:
       contents: write
       issues: write
@@ -261,20 +277,42 @@ jobs:
       # continue-on-error, and health-check.js surfaces that as the "Push-retry
       # deadman" digest row.
       #
-      # timeout-minutes: 5, NOT push-with-retry.sh's own PUSH_DEADLINE_SEC=240s
-      # (4 min) rounded up (ship-check finding): a step timeout tighter than
-      # the script's own internal deadline can SIGKILL it mid-`git rebase`,
-      # leaving a stale REBASE_HEAD marker behind — which the very next
-      # "Commit health check + triage data" step's own push-with-retry.sh call
-      # then refuses to run on top of (the BRO-142 stale-marker guard) and
-      # hard-fails the WHOLE job, reproducing this exact bug's failure class.
-      # Same reasoning as "Acceptance recheck (shadow mode)" above: its
-      # 5-minute step timeout deliberately outlives its own 3-minute script
-      # budget so the step "dies with time for the commit step after it."
+      # timeout-minutes: 13 (was 5), NOT push-with-retry.sh's own
+      # PUSH_DEADLINE_SEC rounded up (ship-check finding): a step timeout
+      # tighter than the script's own internal deadline can SIGKILL it
+      # mid-`git rebase`, leaving a stale REBASE_HEAD marker behind — which
+      # the very next "Commit health check + triage data" step's own
+      # push-with-retry.sh call then refuses to run on top of (the BRO-142
+      # stale-marker guard) and hard-fails the WHOLE job, reproducing this
+      # exact bug's failure class. Same reasoning as "Acceptance recheck
+      # (shadow mode)" above: its step timeout deliberately outlives its own
+      # script budget so the step "dies with time for the commit step after
+      # it."
+      #
+      # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
+      # audit-aggregator-gap.yml fix; raised from an initial 600s that a live
+      # verification run proved insufficient — see the job timeout-minutes
+      # comment above). This step itself did NOT fail in the incident that
+      # opened #1842 (run 32344089679, 2026-08-20 — it completed in 312s,
+      # well under the original 240s default) — the failure there was the
+      # "Commit health check + triage data" step below. This bump is
+      # proactive hardening, not an incident fix: this step calls the
+      # identical push-with-retry.sh against the identical heavy
+      # data/audit/* write contention that tripped the other step (and that
+      # a live 2026-08-20 verification run showed is heavier than the
+      # original incident), so it is equally exposed and just hasn't rolled
+      # the dice badly yet. Per push-with-retry.sh's own sizing comment: "DO
+      # NOT raise this SHARED default... Callers that measurably need more
+      # real cycles should override PUSH_DEADLINE_SEC at their own call
+      # site, after confirming their OWN job-timeout headroom" —
+      # timeout-minutes: 17 above is that confirmed headroom (900s + 2min
+      # margin).
       - name: Commit acceptance recheck ledger
         if: always()
         continue-on-error: true
-        timeout-minutes: 5
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -423,8 +461,56 @@ jobs:
           node scripts/linear-archive-done.js || true
           node scripts/check-linear-cap.js --alert
 
+      # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
+      # audit-aggregator-gap.yml fix): this is the step that actually failed
+      # in the incident that opened this card — run 32344089679 (2026-08-20)
+      # ran 405s (07:37:37→07:44:22), hit push-with-retry.sh's shared 240s
+      # default after 2 rebase/conflict cycles against heavy concurrent
+      # data/audit/* writers, aborted, and hard-failed the job (no
+      # continue-on-error here, unlike every shadow-mode step above), firing
+      # the misleading "Daily Data Health Check Crashed" critical email even
+      # though the health-check script itself passed.
+      #
+      # First fix pass set this to 600s and was verified LIVE via manual
+      # workflow_dispatch run 32393356269 (2026-08-20) — it was NOT enough:
+      # this step burned 4 full fetch->rebase-conflict->retry cycles
+      # (~720s real wall-clock) against contention heavier than the original
+      # incident and still hit "overall deadline 600s exceeded" before
+      # landing. Raised to 900s (matching #1791's own value) on the evidence
+      # that this repo's data/audit/* contention is not actually lighter
+      # than audit-aggregator-gap.yml's.
+      #
+      # Third pass (still task #1842): TWO further live verification runs at
+      # 900s (32396596947, 32398165382 — the second deliberately run with NO
+      # other worktree-merge activity from this session, to rule out
+      # self-inflicted contention) BOTH still failed — but not from the
+      # deadline. Log evidence: "All push attempts failed after 7 attempts"
+      # fired at ~140s and ~140s respectively, nowhere near the 900s budget.
+      # push-with-retry.sh's default MAX_RETRIES=7 (not PUSH_DEADLINE_SEC)
+      # was the actual binding constraint — its per-attempt backoff
+      # (WAIT=3+i*2+jitter, script line ~1554) sums to only ~110s over 7
+      # attempts, so raising the time deadline alone bought this step nothing
+      # to spend it on: the loop still gave up at attempt 7 with ~760s of
+      # granted deadline unused. push-with-retry.sh checks
+      # `$SECONDS -ge $PUSH_DEADLINE_SEC` at the top of EVERY loop iteration
+      # (script line ~952), independent of MAX_RETRIES — so raising
+      # MAX_RETRIES here doesn't weaken the deadline safety valve, it just
+      # stops attempt-count from cutting the loop off before the deadline
+      # can. 25 (positional arg 1) is sized so the backoff schedule's own sum
+      # (~725s across 25 attempts, per the formula above) plus per-attempt
+      # work lands just under the 900s deadline — the deadline, not an
+      # arbitrary retry count, is what actually governs this step now.
+      #
+      # No explicit timeout-minutes override on this step (matching
+      # audit-aggregator-gap.yml's equivalent fix, which also left its
+      # bulk-commit step uncapped) — it inherits the job timeout-minutes
+      # below, which is raised specifically to give this LAST step real
+      # headroom past its new 900s internal deadline even after every step
+      # ahead of it in this job.
       - name: Commit health check + triage data
         if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -489,7 +575,7 @@ jobs:
             echo "No health check data changes"
           else
             git commit -m "data: Update health check + triage state [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Notify on failure

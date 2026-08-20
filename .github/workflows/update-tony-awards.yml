@@ -76,6 +76,16 @@ jobs:
 
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          # BRO-76: awards.json has a case arm in push-with-retry.sh's
+          # resolve_conflicts() (fires on an actual rebase conflict), but
+          # `git pull --rebase -X ours` can also silently absorb a nearby
+          # hunk WITHOUT ever raising a conflict — the exact gap reconcile-
+          # merged-json.js's opt-in pass exists to close (see its own header).
+          # This workflow and update-precursor-awards.yml are the only two
+          # writers, so opting both in gives awards.json full coverage on
+          # both the conflicting and non-conflicting silent-drop paths.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

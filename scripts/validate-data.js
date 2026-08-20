@@ -884,8 +884,8 @@ function validateTheaterAddress(shows) {
   }
 
   if (mismatches > AUTOFIX_CAP) {
-    mismatchExamples.forEach(m => err('  ' + m));
-    err(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
+    mismatchExamples.forEach(m => error('  ' + m));
+    error(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
     return;
   }
 
@@ -2299,6 +2299,38 @@ function validateOutletAliasIntegrity() {
     ok('No outlet alias integrity issues');
   } else {
     error(`Found ${issues} outlet alias integrity issue(s)`);
+  }
+}
+
+/**
+ * Near-duplicate outlet detector (the-la-times class, task #1838 / BRO-90).
+ * Logic lives in scripts/lib/outlet-alias-collision.js (§15); colocated
+ * test: tests/unit/outlet-alias-collision.test.mjs.
+ *
+ * Catches what validateOutletRegistryDuplicates/validateOutletAliasIntegrity
+ * don't: a new outlet whose id/displayName/alias, once "the "/"the-"
+ * prefix-stripped, lands on text a DIFFERENT outlet already owns —
+ * buildRegistryAliasMap() (review-normalization.js) resolves that stripped
+ * form too, so the duplicate silently steals byline-matched reviews without
+ * ever tripping an exact-string collision check.
+ */
+function validateOutletAliasNearDuplicates() {
+  info('Checking outlet-registry.json for near-duplicate outlets (the-la-times class)...');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping');
+    return;
+  }
+  const { findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const collisions = findOutletAliasCollisions(registry.outlets || registry, registry._aliasIndex);
+  for (const c of collisions) {
+    error(`[near-duplicate-outlet] "${c.key}" resolves to ${c.outletIds.length} outlets (${c.outletIds.join(', ')}) — one is a semantic duplicate of the other (the-la-times class). Merge the duplicate into the canonical outlet (see scripts/merge-outlet-alias-duplicates.js for the pattern) or rename to remove the collision.`);
+  }
+  if (collisions.length === 0) {
+    ok('No near-duplicate outlets in outlet-registry.json');
+  } else {
+    error(`Found ${collisions.length} near-duplicate outlet collision(s) in outlet-registry.json`);
   }
 }
 
@@ -4864,6 +4896,8 @@ function runValidation() {
   validateNonTheaterContent(shows);
   console.log('');
   validateOutletAliasIntegrity();
+  console.log('');
+  validateOutletAliasNearDuplicates();
   console.log('');
   validateOutletMapperSync();
   console.log('');

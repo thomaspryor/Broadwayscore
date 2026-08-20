@@ -1,14 +1,24 @@
 {
-  "generatedAt": "2026-08-17T04:49:16.913Z",
+  "generatedAt": "2026-08-19T18:14:42.598Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "bronco-billy-the-musical-west-end-2024"
   },
   "counts": {
-    "total": 0,
+    "total": 1,
     "match": 0,
     "mismatch": 0,
-    "unresolved": 0
+    "unresolved": 1
   },
-  "results": []
+  "results": [
+    {
+      "id": "bronco-billy-the-musical-west-end-2024",
+      "title": "Bronco Billy – The Musical",
+      "venue": "Charing Cross Theatre",
+      "result": "fetch-error",
+      "error": "All scraping methods failed",
+      "mismatches": [],
+      "playbillUrl": "https://playbill.com/production/bronco-billy-the-musical-london-charing-cross-theatre-2024",
+      "parsed": null
+    }
+  ]
 }

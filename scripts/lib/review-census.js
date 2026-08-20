@@ -171,7 +171,7 @@ function parsePlaybillVerdict(content, showId) {
   for (const r of raw) {
     const resolved = r.url ? resolveOutletFromUrl(r.url) : null;
     const outletId = resolved && resolved.outletId ? resolved.outletId : (r.outlet ? normalizeOutlet(r.outlet) : null);
-    if (!outletId) continue;
+    if (!outletId || isJunkOutlet(outletId)) continue;
     rows.push({ outlet: r.outlet || outletId, critic: r.critic || 'Unknown', stars: null, url: r.url || '', outletId });
   }
   return rows;
@@ -256,8 +256,20 @@ function unionCensus(perSource) {
     if (!Array.isArray(reviews) || reviews.length === 0) continue;
     sourcesPresent.push(source);
     for (const r of reviews) {
-      const outletId = r.outletId || normalizeOutlet(r.outlet || '');
-      if (!outletId) continue;
+      // A source's own r.outletId always wins when present — some sources (e.g.
+      // theatre-reviews) resolve shared-domain edition splits (telegraph vs
+      // sunday-telegraph, timeout vs timeout-london) via byline/section text that
+      // a bare URL domain can never disambiguate (see resolveOutletFromUrl's own
+      // "eponymous wins" collision-rule comment); overriding that with the URL
+      // guess silently mis-routed sunday-telegraph → telegraph (adversarial review
+      // finding, BRO-90). URL resolution only kicks in as a fallback for sources
+      // that DON'T set outletId at all — parseBwwRoundup is exactly that case: it
+      // resolves purely off byline text via normalizeOutlet(r.outlet), which is
+      // what let a stale/mismatched byline (e.g. "About Entertainment") beat a URL
+      // that resolves cleanly to the correct registry outlet (#BRO-90).
+      const urlResolved = (!r.outletId && r.url) ? resolveOutletFromUrl(r.url) : null;
+      const outletId = r.outletId || (urlResolved && urlResolved.outletId) || normalizeOutlet(r.outlet || '');
+      if (!outletId || isJunkOutlet(outletId)) continue;
       const existing = byOutlet.get(outletId);
       const entry = {
         outletId,

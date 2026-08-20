@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-19T16:07:05.749Z",
+  "timestamp": "2026-08-20T16:55:58.716Z",
   "stats": {
-    "totalReviews": 42454,
-    "alreadyFlagged": 18204,
-    "dateGuardCatches": 145,
-    "directorMismatch": 987,
-    "tvFilmSignals": 1215,
-    "londonSignals": 918,
+    "totalReviews": 42489,
+    "alreadyFlagged": 18208,
+    "dateGuardCatches": 160,
+    "directorMismatch": 992,
+    "tvFilmSignals": 1217,
+    "londonSignals": 925,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3641
+    "noPublishDate": 3567
   },
   "findings": [
     {
@@ -677,6 +677,118 @@
       ]
     },
     {
+      "showId": "abigails-party-west-end-2026",
+      "file": "british-theatre--tim-fox.json",
+      "score": 89,
+      "publishDate": "2024-09-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 696d before show (2024-09-15 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "daily-mail--veronica-lee.json",
+      "score": 83,
+      "publishDate": "2024-09-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 691d before show (2024-09-20 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "everything-theatre--simone-green.json",
+      "score": 92,
+      "publishDate": "2024-09-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "londontheatre1--jonathan-marshall.json",
+      "score": 87,
+      "publishDate": "2024-09-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 84,
+      "publishDate": "2024-09-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "thestage--paul-vale.json",
+      "score": 82,
+      "publishDate": "2024-09-13",
+      "url": "https://www.thestage.co.uk/reviews/abigails-party-review-theatre-royal-stratford-east-mike-leigh-nadia-fall-tamzin-outhwaite-kevin-bishop",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "times-uk--nancy-durrant.json",
+      "score": 81,
+      "publishDate": "2024-09-13",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 78,
+      "publishDate": "2024-09-13",
+      "url": "https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
       "showId": "after-midnight-2013",
       "file": "broadwayworld--michael-dale.json",
       "score": 90,
@@ -1227,7 +1339,7 @@
       "showId": "an-act-of-god-2016",
       "file": "star-watch-byline--e-caroll.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "2016-07-30",
       "url": "https://www.starwatchbyline.com/?p=15756",
       "findings": [
         {
@@ -3287,6 +3399,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "observer--httpsobservercomauthordavid-cote.json",
+      "score": 79,
       "publishDate": "2023-12-19",
       "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
       "findings": [
@@ -3847,6 +3960,20 @@
     },
     {
       "showId": "carmen-off-broadway-2025",
+      "file": "parterre-box--gabrielle-ferrari.json",
+      "score": 68,
+      "publishDate": "2024-01-03",
+      "url": "https://parterre.com/2024/01/03/star-vehicles/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 664d before show (2024-01-03 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
       "file": "vulture--justin-davidson.json",
       "score": 41,
       "publishDate": "2024-01-04",
@@ -3856,6 +3983,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 663d before show (2024-01-04 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "washpost--andor-brodeur.json",
+      "score": 61,
+      "publishDate": "2024-01-01",
+      "url": "https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 666d before show (2024-01-01 vs 2025-10-28)"
         }
       ]
     },
@@ -4216,7 +4357,7 @@
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2026-07-27",
       "url": "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
       "findings": [
         {
@@ -4230,7 +4371,7 @@
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "2026-07-27",
       "url": "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
       "findings": [
         {
@@ -5478,7 +5619,7 @@
       "showId": "clydes-2021",
       "file": "latimes--unknown.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2022-01-06",
       "url": "https://www.latimes.com/entertainment-arts/story/2022-01-06/clydes-livestream-uzo-aduba-theater",
       "findings": [
         {
@@ -6369,7 +6510,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2026-08-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
       "findings": [
@@ -9284,7 +9425,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -14226,6 +14367,47 @@
       ]
     },
     {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "a-youngish-perspective--lucy-holz.json",
+      "score": 78,
+      "publishDate": "2026-08-19",
+      "url": "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-08-19",
+      "url": "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "londontheatre1--terry-eastham.json",
+      "score": 78,
+      "publishDate": "2026-08-19",
+      "url": "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "jekyll-and-hyde-2013",
       "file": "ap--mark-kennedy.json",
       "score": 55,
@@ -14318,7 +14500,7 @@
       "showId": "joe-turners-come-and-gone-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2026-04-25",
       "url": "https://culturesauce.com/2026/04/25/joe-turners-come-and-gone-broadway-review/#google_vignette",
       "findings": [
         {
@@ -17987,6 +18169,7 @@
     {
       "showId": "music-city-off-broadway-2026",
       "file": "nyt-theater--unknown.json",
+      "score": 77,
       "publishDate": "2026-06-25",
       "url": "https://newyorktheater.me/2026/06/25/music-city-review/",
       "findings": [
@@ -18008,6 +18191,17 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "file": "nytimes--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 487d before show (2024-11-21 vs 2026-03-23)"
         }
       ]
     },
@@ -18158,9 +18352,14 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "nytimes--unknown.json",
-      "publishDate": null,
+      "publishDate": "2022-11-03",
       "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.html",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 561d before show (2022-11-03 vs 2024-05-17)"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -18517,20 +18716,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "njcom--christopher-kelly.json",
-      "score": 91,
-      "publishDate": "2026-02-06",
-      "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -19395,6 +19580,48 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
+      "file": "broadwayworld--franco-milazzo.json",
+      "score": 41,
+      "publishDate": "2025-12-15",
+      "url": "https://www.broadwayworld.com/westend/article/Review-PARANORMAL-ACTIVITY-Ambassadors-Theatre-20251215",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "guardian--kate-wyver.json",
+      "score": 87,
+      "publishDate": "December 16th, 2025",
+      "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 81,
+      "publishDate": "2025-12-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
       "file": "london-theatre--matt-wolf-writing.json",
       "score": 91,
       "publishDate": "2025-12-17",
@@ -19418,6 +19645,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "December 16th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/paranormal-activity-ambassadors-theatre-review-b1262616.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "thestage--tom-wicker.json",
+      "score": 87,
+      "publishDate": "December 16th, 2025",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
         }
       ]
     },
@@ -20635,7 +20890,7 @@
       "showId": "proof-2026",
       "file": "chicagotribune--unknown.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2026-04-16",
       "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
       "findings": [
         {
@@ -25052,7 +25307,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "london-theatre--peter-brown.json",
-      "score": 91,
+      "score": 93,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/the-book-of-mormon-review",
       "findings": [
@@ -29571,6 +29826,17 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "latimes--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1338d before show (2022-10-26 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 81,
       "publishDate": "2022-04-04",
@@ -29979,7 +30245,7 @@
     {
       "showId": "tru-off-broadway-2026",
       "file": "nysr--david-finkle.json",
-      "publishDate": null,
+      "publishDate": "2026-03-19",
       "url": "https://nystagereview.com/2026/03/19/tru-very-up-close-and-personal-with-truman-capote/",
       "findings": [
         {
@@ -31893,7 +32159,7 @@
       "showId": "1536-west-end-2026",
       "file": "times-uk--laura-hackett-fiction-editor.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2026-05-23",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/ava-pickett-margot-robbie-1536-play-r77xl7h7v",
       "findings": [
         {
@@ -32152,10 +32418,21 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 55d before show (2026-02-27 vs 2026-04-23)"
+        }
+      ]
+    },
+    {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2026-06-30",
       "url": "https://www.thereviewshub.com/midsummer-nights-dream-regents-park-open-air-theatre-london/",
       "findings": [
         {
@@ -32393,6 +32670,33 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2026-08-20",
+      "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 86,
+      "publishDate": "2026-08-20",
+      "url": "https://www.standard.co.uk/culture/theatre/abigails-party-at-harold-pinter-theatre-review-b1294045.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -32803,6 +33107,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 88,
+      "publishDate": "2026-08-19",
+      "url": "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -34750,6 +35068,17 @@
     },
     {
       "showId": "cats-west-end-2026",
+      "file": "nysr--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 109d before show (2026-04-07 vs 2026-07-25)"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
       "file": "openairtheatre--unknown.json",
       "publishDate": null,
       "url": "https://openairtheatre.com/production/cats",
@@ -35617,7 +35946,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 61,
+      "score": 57,
       "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
@@ -35702,6 +36031,19 @@
       "score": 60,
       "publishDate": "2026-08-12",
       "url": "https://everything-theatre.co.uk/2026/08/review-death-note-the-musical-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "publishDate": "2026-08-18",
+      "url": "https://firstnightmagazine.com/2026/08/18/review-of-death-note-the-musical-2026-barbican-supernatural-sung-through-thriller-has-no-super-or-natural-writing/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -38280,7 +38622,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-06-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-high-society-barbican-theatre",
       "findings": [
@@ -38336,7 +38678,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "firstnightmagazine--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-06-06",
       "url": "https://firstnightmagazine.com/2026/06/06/review-of-high-society-2026-barbican-flimsy-narrative-rides-high-on-spectacle-and-thats-alright-with-me/",
       "findings": [
@@ -38546,7 +38888,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
@@ -38642,7 +38984,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--cheryl-markoski.json",
-      "score": 87,
+      "score": 83,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -38671,7 +39013,7 @@
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "2026-08-12",
       "url": "https://theatrevibe.co.uk/2026/08/12/review-how-the-other-half-loves-old-vic-2026/",
       "findings": [
         {
@@ -38706,6 +39048,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "timeout-london--time-out.json",
+      "score": 85,
+      "publishDate": "2026-08-18",
+      "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -39373,6 +39729,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": 94,
+      "publishDate": "2026-08-19",
+      "url": "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -42247,7 +42617,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2025-01-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
@@ -42912,6 +43282,19 @@
       "score": 39,
       "publishDate": "2026-06-26",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-the-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "timeout--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -43689,6 +44072,7 @@
     {
       "showId": "shifters-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
+      "score": 60,
       "publishDate": "2026-07-16",
       "url": "https://culturesauce.com/shifters-off-broadway-review/",
       "findings": [
@@ -47730,7 +48114,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2026-06-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-MISANTHROPE-starring-Sandra-Oh-20260624",
       "findings": [
@@ -48089,7 +48473,7 @@
       "showId": "the-oresteia-west-end-2026",
       "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 48,
-      "publishDate": null,
+      "publishDate": "2026-07-15",
       "url": "https://theatrevibe.co.uk/2026/07/15/review-the-oresteia-bridge-theatre-2026/",
       "findings": [
         {
