@@ -280,6 +280,15 @@ function flagForHumanReview(data, reason, detail) {
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
+// --show=<id>: scope this run to one show and print its per-file exclusion
+// reasons, then exit before any write (reviews.json, watermark, registry,
+// etc). This is the diagnostic command review-count-match.check.js has
+// documented since it was written (`rebuild-all-reviews.js --show=ID
+// --verbose | grep EXCLUSION`) — the flag didn't actually exist (task #1846),
+// so that documented remediation command has never worked.
+const SHOW_FILTER_ARG = process.argv.find(a => a.startsWith('--show='));
+const SHOW_FILTER = SHOW_FILTER_ARG ? SHOW_FILTER_ARG.slice('--show='.length) : null;
+
 // decodeHtmlEntities imported from ./lib/text-cleaning
 
 // fixMojibake, fixMissingPeriods — imported from ./lib/rebuild-helpers
@@ -1150,6 +1159,7 @@ const multiProductionTitleIds = new Set();
 // Get all show directories (filter out orphan dirs that don't match any show in shows.json)
 const validShowIds = new Set(showsData.shows.map(s => s.id));
 const showDirs = listShowDirs(reviewTextsDir)
+  .filter(f => !SHOW_FILTER || f === SHOW_FILTER)
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice
@@ -3339,12 +3349,23 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Garbage outlet guard: skip reviews with sentence-fragment outlet names
+      // Garbage outlet guard: skip reviews with sentence-fragment outlet names.
+      // Registry short-circuit (task #1846): a review whose outletId already
+      // resolves to a REGISTERED outlet can't be a BWW-parser sentence-fragment
+      // artifact — nobody hand-registers "was-along-for-the-ride" as an outlet.
+      // Without this, the "^a |^an " branch below false-positives on real
+      // registered outlets that happen to start with an article, e.g.
+      // "A Youngish Perspective" and "A Younger Theatre" (both live UK theatre
+      // blogs, confirmed silently dropped from reviews.json for multiple shows).
       const outlet = (data.outlet || '').trim();
+      const garbageCheckOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
+      const isRegisteredOutlet = !!outletRegistry.outlets[garbageCheckOutletKey];
       if (
-        outlet.length > 50 ||
-        /^(is |has |the show |a |an |in her |in his |but |with |and |does |proves |keeps |left |enjoying |are )/i.test(outlet) ||
-        (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
+        !isRegisteredOutlet && (
+          outlet.length > 50 ||
+          /^(is |has |the show |a |an |in her |in his |but |with |and |does |proves |keeps |left |enjoying |are )/i.test(outlet) ||
+          (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
+        )
       ) {
         console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
         logExclusion("skippedGarbage", showId, file, data);
@@ -4424,11 +4445,28 @@ showDirs.forEach(showId => {
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
         stats.corruptedFiles.push(`${showId}/${file}`);
       } else {
+        // Task #1846: this branch used to drop the file with NO logExclusion
+        // call — an uncaught runtime exception anywhere in the per-file
+        // processing above (a TypeError from an unexpected field shape, etc.)
+        // silently excluded a fully-valid, fully-scored review with no
+        // audit-trail reason at all ("not-logged" in review-count-match's
+        // exclusion index, which can only report reasons that were logged).
         console.error(`  Error processing ${file}: ${e.message}`);
+        logExclusion("skippedProcessingError", showId, file, null, { error: e.message.substring(0, 200) });
+        stats.skippedProcessingError = (stats.skippedProcessingError || 0) + 1;
       }
     }
   });
 });
+
+if (SHOW_FILTER) {
+  // Diagnostic mode: print what would be included/excluded and exit BEFORE
+  // any write (reviews.json, deploy watermark, outlet registry, etc.) — this
+  // must never truncate the real multi-show reviews.json down to one show.
+  const built = allReviews.filter(r => r.showId === SHOW_FILTER).length;
+  console.log(`\n--show=${SHOW_FILTER}: ${built} review(s) would be included (diagnostic mode — nothing written).`);
+  process.exit(0);
+}
 
 // Sort reviews by showId, then outlet
 allReviews.sort((a, b) => {
