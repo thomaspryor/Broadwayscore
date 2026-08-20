@@ -1,44 +1,5 @@
 [
   {
-    "startedAt": "2026-08-15T05:14:46.004Z",
-    "completedAt": "2026-08-15T05:19:06.462Z",
-    "totalReviews": 42590,
-    "processed": 25,
-    "skipped": 42557,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 154650,
-      "output": 8444,
-      "total": 411356
-    },
-    "errorDetails": [
-      {
-        "showId": "romeo-and-juliet-off-broadway-2026",
-        "outletId": "talkinbroadway",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-08-15T05:19:15.745Z",
-    "completedAt": "2026-08-15T05:22:54.757Z",
-    "totalReviews": 42590,
-    "processed": 33,
-    "skipped": 42398,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 269272,
-      "output": 12692,
-      "total": 689371
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-15T05:48:15.659Z",
     "completedAt": "2026-08-15T05:52:33.326Z",
     "totalReviews": 42591,
@@ -445631,5 +445592,33 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-20T02:33:40.328Z",
+    "completedAt": "2026-08-20T02:33:43.561Z",
+    "totalReviews": 13,
+    "processed": 0,
+    "skipped": 12,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4752,
+      "output": 129,
+      "total": 12747
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-20T03:00:02.627Z",
+    "completedAt": "2026-08-20T03:00:08.987Z",
+    "totalReviews": 29,
+    "processed": 1,
+    "skipped": 28,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5726,
+      "output": 371,
+      "total": 14521
+    },
+    "errorDetails": []
   }
 ]
