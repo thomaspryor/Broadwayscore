@@ -402,8 +402,23 @@ jobs:
             echo "No changes detected — skipping commit/deploy"
           fi
 
+      # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
+      # audit-aggregator-gap.yml fix): confirmed live in runs 32251748635 +
+      # 32237876239 (jeeves-takes-charge-west-end-2026, 2026-08-19) — this
+      # step's push-with-retry.sh hit the shared 240s default, restored HEAD,
+      # and aborted before reaching origin, against the same heavy
+      # concurrent data/audit/* write contention as the other two confirmed
+      # instances of this class. Unlike data-health-check.yml, no job
+      # timeout-minutes change is needed here: the job budget is already
+      # 90 minutes (line 87) and this step runs partway through a scraping +
+      # scoring pipeline, leaving ample headroom for 900s — matching #1791's
+      # own value rather than data-health-check.yml's tighter 600s, since
+      # this workflow has the same generous-headroom profile #1791's target
+      # did.
       - name: Commit and push
         if: inputs.dry_run != true && (steps.changes.outputs.has_changes == 'true' || steps.after.outputs.count > steps.before.outputs.count)
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
