@@ -309,6 +309,29 @@ async function callLLM(prompt, opts = {}) {
   throw new Error(`all ${providers.length} available provider(s) failed — ${errors.join(' | ')}`);
 }
 
+// Demote every backticked span that is neither the validated command nor
+// itself safe-form out of command position, by swapping its backticks for
+// single quotes. candidatesFrom() matches ONLY backticked spans
+// (/`([^`\n]+)`/g in scripts/lib/autonomous-verify-cmd.js), so a demoted span
+// is structurally no longer a command candidate — which is what makes the
+// guardrail-3 recheck a proof rather than a hope. Prose is preserved, so the
+// "what does passing mean" context that a human reads at dispatch time
+// (bsc-next.js, autonomous-acceptance-recheck.js) survives.
+//
+// Deliberately does NOT touch spans that pass isSafeCheckCommand: guardrail 3
+// always permitted additional SAFE commands, and demoting those would be a
+// behavior change nothing asked for.
+function demoteUnsafeSpans(section, finalCommand) {
+  const demoted = [];
+  const rewritten = String(section).replace(/`([^`\n]+)`/g, (whole, inner) => {
+    const trimmed = inner.trim();
+    if (trimmed === finalCommand || isSafeCheckCommand(trimmed)) return whole;
+    demoted.push(trimmed);
+    return `'${inner}'`;
+  });
+  return { section: rewritten, demoted };
+}
+
 function buildEnrichPrompt(card) {
   return `You are drafting the missing "## Acceptance criteria" section for a software backlog card so a dispatcher can verify it was actually done, by RE-RUNNING one command.
 
@@ -351,7 +374,7 @@ function parseEnrichResponse(text) {
 const ENRICHMENT_LOG_PATH = path.join(REPO, 'data', 'audit', 'card-enrichment-log.jsonl');
 // logPath is injectable so tests exercise the real write path without polluting
 // the repo's audit log with fixture card IDs. CLI usage omits it and gets the real path.
-function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PATH) {
+function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PATH, extra = {}) {
   try {
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
     const entry = {
@@ -363,6 +386,14 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // needs to be).
       identifier: card.identifier || null, url: card.url || null,
       previousNotes: card.notes || '', newNotes,
+      // Guardrail-3 demotions, in full. The console line slices detail to 100
+      // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
+      // this JSONL entry is the durable, greppable record of what the
+      // guardrail actually caught. Without it there is no way to tell a
+      // healthy sweep from a prompt regression spraying script names into
+      // every draft — which is exactly the blind spot that made the
+      // guardrail's real false-positive rate unmeasurable before now.
+      demotedSpans: extra.demotedSpans || [],
     };
     fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
   } catch (e) {
@@ -595,17 +626,51 @@ async function enrichOneCard(card, opts = {}) {
   // out a single PATH executable IS a valid unsafe command with neither
   // (e.g. `make`) — this guardrail is deliberately conservative defense in
   // depth (never write a card whose own notes document an unsanctioned
-  // command, even one nothing today would execute), and that margin is worth
-  // more than a slightly higher enrichment hit-rate against the odd
-  // false-positive rejection, which just falls through to the un-mutating,
-  // zero-write 'failed' outcome anyway.
+  // command, even one nothing today would execute).
+  //
+  // The DETECTOR below is unchanged and still fires on every one of those
+  // spans, including bare identifiers. What changed is the RESPONSE to it.
+  // Measured on a real 60-card Linear sweep (2026-08-20): 40 of 60 cards
+  // (67%) died here, and the flagged spans were overwhelmingly not commands
+  // at all — `normalizeUrl`, `wrongProduction`, `rescoreFlaggedAt`,
+  // `NEWSLETTER_PATTERNS[4]`, show ids like `wicked-2003`, and bare file
+  // paths. Since an un-armed card cannot be dispatched at all, "fail the
+  // whole draft" was the single largest structural cap on backlog
+  // throughput.
+  //
+  // So: instead of discarding the draft, DEMOTE every offending span out of
+  // command position — rewrite `foo` to 'foo' — and then re-run the exact
+  // same detector on the rewritten section, accepting only if it now comes
+  // back clean. Because candidatesFrom() only ever matches backticked spans,
+  // a demoted span is provably no longer a candidate, so the invariant
+  // ("never write a card whose own notes document an unsanctioned command")
+  // holds by construction rather than by inspection. Spans that are the
+  // validated command, or are themselves safe-form, keep their backticks.
+  //
+  // This is NOT the reverted #1713 change wearing a hat: #1713 narrowed what
+  // COUNTS as unsafe, so `make` slipped through into a card verbatim and
+  // still backticked. Here `make` is still detected, and still never reaches
+  // the card as a command — it lands as prose. If a demotion somehow fails to
+  // clear the detector, the original zero-write 'failed' outcome stands.
   const allCandidates = candidatesFrom(draftedSection);
   const unsafeExtra = allCandidates.find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
+  let sectionToWrite = draftedSection;
+  let demotedSpans = [];
   if (unsafeExtra) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${unsafeExtra.slice(0, 120)}` };
+    const demotion = demoteUnsafeSpans(draftedSection, finalCommand);
+    sectionToWrite = demotion.section;
+    demotedSpans = demotion.demoted;
+    // Re-run the SAME detector on the rewritten section. Structural, not
+    // incidental: if anything unsanctioned survives in command position, fail
+    // exactly as before and write nothing.
+    const survivingUnsafe = candidatesFrom(sectionToWrite)
+      .find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
+    if (survivingUnsafe) {
+      return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${survivingUnsafe.slice(0, 120)}` };
+    }
   }
 
-  const newNotes = spliceNotes(card.notes, draftedSection);
+  const newNotes = spliceNotes(card.notes, sectionToWrite);
 
   // Final safety net: re-run the SAME gate the audit/dispatch use before ever
   // writing — an LLM that ignored instructions must not slip a bad or
@@ -616,7 +681,7 @@ async function enrichOneCard(card, opts = {}) {
   }
 
   if (!opts.dryRun) {
-    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath);
+    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans });
     // See the owner-judgment write above for why this is caught rather than
     // left to propagate.
     try {
@@ -625,7 +690,20 @@ async function enrichOneCard(card, opts = {}) {
       return { id: card.id, name: card.name, action: 'failed', detail: `write failed: ${e.message}` };
     }
   }
-  return { id: card.id, name: card.name, action: 'llm-enriched', detail: finalGate.cmd, newPaths: pathCheck.newPaths || [] };
+  return {
+    id: card.id,
+    name: card.name,
+    action: 'llm-enriched',
+    // Name the demoted spans in the run log rather than demoting silently —
+    // a guardrail that fires 40 times in a 60-card sweep needs to stay
+    // visible, otherwise nobody can tell a healthy sweep from a prompt
+    // regression that started spraying script names into every draft.
+    detail: demotedSpans.length
+      ? `${finalGate.cmd} (demoted ${demotedSpans.length} non-command span(s) to prose: ${demotedSpans.slice(0, 3).join(', ').slice(0, 120)})`
+      : finalGate.cmd,
+    demotedSpans,
+    newPaths: pathCheck.newPaths || [],
+  };
 }
 
 // Original Notion sweep, unchanged in behavior — extracted so main() can run

@@ -10,6 +10,10 @@ const {
   selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard, linearIssueNumber,
   isLinearIssueTerminal,
 } = require('./enrich-card-acceptance.js');
+// Rule 15: assert against the REAL validator the production path uses, never a
+// copy — if isSafeCheckCommand's notion of "safe" drifts, these tests move with
+// it instead of silently pinning the old definition.
+const { isSafeCheckCommand } = require('./lib/verify-gate.js');
 
 function fakeNotionBrain(calls) {
   return (args) => { calls.push(args); return { id: args[1] }; };
@@ -175,7 +179,25 @@ test('eligible card: LLM drafts a mutating command — rejected before ever writ
   assert.equal(calls.length, 0);
 });
 
-test('eligible card: LLM drafts a SAFE primary command but a mutating command rides along in the prose — rejected, zero writes', async () => {
+// The invariant these two tests defend is "never write a card whose own notes
+// document an unsanctioned command" — so they assert on the WRITTEN NOTES, not
+// on the return code. Asserting action==='failed' only ever tested the
+// response, and would have gone on passing if the demotion path leaked a
+// backticked mutating command into the card.
+function backtickedSpans(text) {
+  return [...String(text || '').matchAll(/`([^`\n]+)`/g)].map(m => m[1].trim());
+}
+
+// notion-brain is invoked argv-style, so the written notes are the token AFTER
+// '--notes'. Reading calls[0].notes would be undefined, and every regex
+// assertion below would vacuously pass against undefined.
+function writtenNotes(calls) {
+  const idx = calls[0].indexOf('--notes');
+  assert.notEqual(idx, -1, 'expected a --notes argument in the write call');
+  return calls[0][idx + 1];
+}
+
+test('eligible card: a mutating command rides along in the prose — demoted out of command position, never written as a command', async () => {
   const calls = [];
   const card = {
     id: 'c3b', name: 'Fix scoring bug', category: 'Product', tags: [],
@@ -187,20 +209,31 @@ test('eligible card: LLM drafts a SAFE primary command but a mutating command ri
       acceptanceCriteria: '## Acceptance criteria\nFirst run `node scripts/rebuild-all-reviews.js` to refresh, then verify with `npx tsc --noEmit`.',
     }),
     notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'failed');
-  assert.match(r.detail, /names an additional unsafe command/);
-  assert.match(r.detail, /rebuild-all-reviews/);
-  assert.equal(calls.length, 0);
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  // THE INVARIANT: every backticked span in what actually got written is a
+  // sanctioned check command.
+  const unsafeWritten = backtickedSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeWritten, [], `unsanctioned command written as a command: ${unsafeWritten.join(', ')}`);
+  // The mutating script survives only as prose, never in backticks.
+  assert.ok(/rebuild-all-reviews/.test(written), 'prose context should be preserved, not discarded');
+  assert.ok(!/`[^`\n]*rebuild-all-reviews[^`\n]*`/.test(written), 'rebuild-all-reviews must not remain backticked');
+  assert.ok(r.demotedSpans.some(s => /rebuild-all-reviews/.test(s)), 'demotion should be reported in the result');
 });
 
 // task #1713: a narrower guardrail-3 filter (only flag backtick spans with
 // whitespace or /) was tried to reduce false-positive rejections of bare
 // identifiers like `wrongProduction`, then REVERTED after adversarial review
 // pointed out a single PATH executable (e.g. `make`) is a valid unsafe
-// command with neither — so a bare-identifier-shaped extra command must
-// still be rejected, same as any other unsanctioned command in the prose.
-test('eligible card: LLM draft mentions an unsafe SINGLE-TOKEN command in backticks — still rejected (guardrail-3 stays conservative)', async () => {
+// command with neither. The DETECTOR still has to fire on `make` — that part
+// of #1713 stands. What this test now pins is that firing means "demote it to
+// prose", not "let it through backticked": the failure #1713 reintroduced was
+// `make` reaching the card still in command position, and that must never
+// happen whichever way the guardrail responds.
+test('eligible card: an unsafe SINGLE-TOKEN command in backticks (`make`) is still detected and never written as a command', async () => {
   const calls = [];
   const card = {
     id: 'c7', name: 'Fix scoring bug', category: 'Product', tags: [],
@@ -212,10 +245,78 @@ test('eligible card: LLM draft mentions an unsafe SINGLE-TOKEN command in backti
       acceptanceCriteria: '## Acceptance criteria\nRun `make` to rebuild first, then verify with `npx tsc --noEmit`.',
     }),
     notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'failed');
-  assert.match(r.detail, /names an additional unsafe command/);
-  assert.equal(calls.length, 0);
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  const unsafeWritten = backtickedSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeWritten, [], `unsanctioned command written as a command: ${unsafeWritten.join(', ')}`);
+  assert.ok(!/`make`/.test(written), '`make` must not survive in backticks');
+  assert.ok(r.demotedSpans.includes('make'), 'the detector must still have fired on `make`');
+});
+
+test('guardrail 3: a bare identifier the LLM backticked (wrongProduction) no longer costs the whole card', async () => {
+  const calls = [];
+  const card = {
+    id: 'c7b', name: 'Fix stale flag', category: 'Product', tags: [],
+    notes: '## Problem\nA flag goes stale.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\nThe `wrongProduction` flag clears; verify with `npx tsc --noEmit`.',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+  const unsafeWritten = backtickedSpans(writtenNotes(calls)).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeWritten, []);
+  assert.ok(/wrongProduction/.test(writtenNotes(calls)), 'identifier should survive as prose');
+});
+
+test('guardrail 3: demotions are recorded in the enrichment audit log, not just the truncated console line', async () => {
+  const fs = require('node:fs');
+  const logPath = path.join(os.tmpdir(), `enrich-demote-log-${process.pid}.jsonl`);
+  try { fs.unlinkSync(logPath); } catch { /* first run */ }
+  const calls = [];
+  const card = {
+    id: 'c7d', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nSomething scores wrong.',
+  };
+  await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\nFirst run `node scripts/rebuild-all-reviews.js`, then verify with `npx tsc --noEmit`.',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath,
+  });
+  const entry = JSON.parse(fs.readFileSync(logPath, 'utf8').trim().split('\n').pop());
+  assert.ok(Array.isArray(entry.demotedSpans), 'audit entry must carry demotedSpans');
+  assert.ok(entry.demotedSpans.some(s => /rebuild-all-reviews/.test(s)),
+    'the full demoted span must survive in the log even though the console line truncates it');
+  fs.unlinkSync(logPath);
+});
+
+test('guardrail 3: an ADDITIONAL safe command keeps its backticks (no gratuitous behavior change)', async () => {
+  const calls = [];
+  const card = {
+    id: 'c7c', name: 'Fix types', category: 'Product', tags: [],
+    notes: '## Problem\nTypes are wrong.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\nAlso `npx next lint` stays clean; verify with `npx tsc --noEmit`.',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.ok(/`npx next lint`/.test(writtenNotes(calls)), 'a safe extra command must keep its backticks');
+  assert.deepEqual(r.demotedSpans, [], 'nothing should be demoted when every span is safe');
 });
 
 test('eligible card: LLM call throws — failed, zero writes', async () => {
