@@ -142,6 +142,32 @@ async function graphql(query, variables, opts = {}) {
 
     const json = await res.json();
     if (json.errors && json.errors.length) {
+      // Rate limiting can arrive as an HTTP 200 carrying a GraphQL error body,
+      // in which case none of the retry handling above ran (res.ok was true).
+      // Re-enter the SAME retry decision with a synthetic 429 rather than
+      // duplicating the policy here — observed 2026-08-20, see isRateLimitBody.
+      if (retryPolicy.isRateLimitBody(json)) {
+        const verdict = retryPolicy.shouldRetry({ status: 429, body: json, mutation });
+        if (verdict.retry && attempt < maxAttempts) {
+          const delayMs = retryPolicy.retryDelayMs(attempt, res.headers, { baseMs: opts.baseMs });
+          onRetry({ status: 429, reason: `${verdict.reason}-graphql-body`, attempt, maxAttempts, delayMs });
+          await sleepFn(delayMs);
+          continue;
+        }
+        // Exhausted. Keep the code in STATUS POSITION ("HTTP 429") so the
+        // fleet's transient classifier grades this retryable rather than
+        // permanent, and flag it so callers can say "resume after the window
+        // resets" instead of dumping N unexpected failures.
+        const rlErr = new Error(
+          `Linear API HTTP 429 rate-limited (GraphQL body, not retried further): ` +
+            `${json.errors.map((e) => e && e.message).filter(Boolean).join('; ')}`
+        );
+        rlErr.status = 429;
+        rlErr.retryable = true;
+        rlErr.rateLimited = true;
+        rlErr.linearErrors = json.errors;
+        throw rlErr;
+      }
       const err = new Error(`Linear GraphQL error: ${json.errors.map((e) => e.message).join('; ')}`);
       // Raw errors attached (not just flattened into the message) so callers that
       // need to branch on a specific error code — e.g. USAGE_LIMIT_EXCEEDED, the
