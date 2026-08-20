@@ -102,23 +102,31 @@ function findGaps(workflowDir, { repoRoot = ROOT, scriptsDir = path.join(repoRoo
 }
 
 function main() {
-  const args = process.argv.slice(2);
-  const asJson = args.includes('--json');
-  const dirArg = args.find((a) => a.startsWith('--dir='));
-  const workflowDir = dirArg ? path.resolve(ROOT, dirArg.slice('--dir='.length)) : DEFAULT_WORKFLOW_DIR;
+  // Advisory tools must never break the CI job hosting them (ship-check
+  // review, task #1855): an unexpected malformed-workflow parse error here
+  // would otherwise fail `lint-workflows` even though this step's whole
+  // point is to be a soft warning, not a gate.
+  try {
+    const args = process.argv.slice(2);
+    const asJson = args.includes('--json');
+    const dirArg = args.find((a) => a.startsWith('--dir='));
+    const workflowDir = dirArg ? path.resolve(ROOT, dirArg.slice('--dir='.length)) : DEFAULT_WORKFLOW_DIR;
 
-  const gaps = findGaps(workflowDir);
+    const gaps = findGaps(workflowDir);
 
-  if (asJson) {
-    console.log(JSON.stringify({ gaps }, null, 2));
-  } else if (gaps.length === 0) {
-    console.log('audit-workflow-secret-gaps: no gaps found — every secret a workflow-invoked script reads is provided somewhere in that step\'s env chain.');
-  } else {
-    console.log(`::warning::audit-workflow-secret-gaps: ${gaps.length} step(s) invoke a script that reads a secret their env never provides (silent no-op, not a crash — see script header):`);
-    for (const g of gaps) {
-      console.log(`  ${g.workflow} :: job "${g.job}" :: step "${g.step}" -> ${g.script} reads ${g.secret}`);
+    if (asJson) {
+      console.log(JSON.stringify({ gaps }, null, 2));
+    } else if (gaps.length === 0) {
+      console.log('audit-workflow-secret-gaps: no gaps found — every secret a workflow-invoked script reads is provided somewhere in that step\'s env chain.');
+    } else {
+      console.log(`::warning::audit-workflow-secret-gaps: ${gaps.length} step(s) invoke a script that reads a secret their env never provides (silent no-op, not a crash — see script header):`);
+      for (const g of gaps) {
+        console.log(`  ${g.workflow} :: job "${g.job}" :: step "${g.step}" -> ${g.script} reads ${g.secret}`);
+      }
+      console.log('Add the missing secret to that step\'s (or its job\'s) env: block in the workflow file, or suppress a false positive with `# audit-secret-gap-ok: SECRET_NAME`.');
     }
-    console.log('Add the missing secret to that step\'s (or its job\'s) env: block in the workflow file, or suppress a false positive with `# audit-secret-gap-ok: SECRET_NAME`.');
+  } catch (err) {
+    console.log(`::warning::audit-workflow-secret-gaps crashed (${err.message}) — treating as no findings rather than failing the job (see file header).`);
   }
   process.exit(0); // advisory — never fails CI (see file header)
 }

@@ -24,8 +24,9 @@
  * lib/llm-extractor.js, which reads ANTHROPIC_API_KEY. One hop would have
  * missed it entirely.
  *
- * `index.js`'s loader is itself dynamic (`fs.readdirSync(dir).map(f =>
- * require(path.join(dir, f)))`), which a static require() regex can't see.
+ * `index.js`'s loader is itself dynamic — it lists the directory with
+ * fs.readdirSync, then require()s each matching filename by joining it back
+ * onto that same directory — which a static require() regex can't see.
  * `DYNAMIC_DIR_GLOB_RE` special-cases that exact shape (readdirSync of a
  * variable, then require(path.join(sameVariable, ...)) nearby) and pulls in
  * every sibling .js file in that directory as an additional edge. This is a
@@ -40,8 +41,8 @@
  * `# audit-secret-gap-ok: SECRET_NAME` comment anywhere in the workflow file.
  *
  * Known false-negative (second-opinion review, task #1855): `extractEnvReads`
- * only matches string-literal keys (`process.env.X`, `process.env['X']`,
- * `const { X } = process.env`). A COMPUTED key — `process.env[someVar]`,
+ * only matches string-literal keys (dot access, bracket access with a quoted
+ * literal, or destructuring). A COMPUTED key — `process.env[someVar]`,
  * e.g. `scripts/collect-review-texts.js`'s per-outlet credential lookup
  * (`process.env[creds.emailVar]`) — is invisible to this scan. That is
  * exactly the shape most likely to recur as a BRO-67-class silent no-op
@@ -50,6 +51,15 @@
  * not actually covered. Left unresolved rather than guessed at: reliably
  * resolving an arbitrary computed key back to its possible string values
  * needs real static analysis, not a regex.
+ *
+ * Second known false-negative (ship-check review, task #1855): a step that
+ * invokes a script indirectly via `npm run <script-name>` (resolved through
+ * package.json's `scripts` map) is invisible to `extractScriptInvocations`,
+ * which only matches literal `node`/`npx tsx`/`npx ts-node` invocations. No
+ * current workflow calls a secret-reading script this way (checked at
+ * introduction), but it is an undocumented blind spot in exactly the shape
+ * of script this tool exists to cover — worth resolving `npm run` through
+ * package.json if a workflow ever adopts that style for one of these.
  */
 'use strict';
 
@@ -59,12 +69,27 @@ const path = require('path');
 const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.ts', '.json', '/index.js', '/index.ts'];
 const REQUIRE_RE = /require\(\s*['"](\.[^'"]+)['"]\s*\)/g;
 const IMPORT_RE = /(?:from|import)\s*\(?\s*['"](\.[^'"]+)['"]/g;
-const DYNAMIC_DIR_GLOB_RE = /readdirSync\s*\(\s*([A-Za-z_$][\w$]*)\s*\)[\s\S]{0,400}?require\(\s*path\.join\(\s*\1\s*,/;
+// `fs\.` is a deliberately load-bearing prefix, not cosmetic: without it this
+// pattern is a quine — it textually matches ITS OWN definition line below
+// (the regex source text contains "readdirSync\s*\(\s*(...)" immediately
+// followed by "require\(\s*path\.join\(\s*\1\s*,", which is exactly what the
+// bare pattern looks for). That made collectTransitiveSource treat this
+// file's own directory (scripts/lib/, ~300 files) as a dependency of ITSELF
+// on every run, silently defeating buildRequirerCounts' shared-module
+// filter for any script requiring this file (ship-check finding, task
+// #1855 — confirmed live: scripts/audit-workflow-secret-gaps.js was
+// wrongly flagged as reading IMPACT_*/POSTHOG_*/PARTNERIZE_* secrets it has
+// no relation to, pulled in purely via this false self-match). Requiring
+// the `fs.` call-site prefix matches how every real loader in this repo
+// actually writes it (`fs.readdirSync(CHECKS_DIR)` in
+// opening-night-checks/index.js) while no longer matching the regex
+// literal's own un-prefixed source text.
+const DYNAMIC_DIR_GLOB_RE = /fs\.readdirSync\s*\(\s*([A-Za-z_$][\w$]*)\s*\)[\s\S]{0,400}?require\(\s*path\.join\(\s*\1\s*,/;
 const ENV_DOT_RE = /process\.env\.([A-Z][A-Z0-9_]*)\b/g;
 const ENV_BRACKET_RE = /process\.env\[\s*['"]([A-Z][A-Z0-9_]*)['"]\s*\]/g;
 const ENV_DESTRUCTURE_RE = /const\s*\{([^}]+)\}\s*=\s*process\.env/g;
 const SCRIPT_INVOKE_RE = /(?:^|[\s;&|])(?:node|npx\s+ts-node|npx\s+tsx)\s+((?:-[\w-]+(?:[= ]\S+)?\s+)*)([\w./-]+\.(?:js|mjs|cjs|ts))\b/g;
-const SECRET_REF_RE = /\$\{\{\s*secrets\.([A-Z0-9_]+)\s*\}\}/g;
+const SECRET_REF_RE = /\$\{\{\s*secrets(?:\.([A-Z0-9_]+)|\[\s*['"]([A-Z0-9_]+)['"]\s*\])\s*\}\}/g;
 const EXEMPT_RE = /#\s*audit-secret-gap-ok:\s*([A-Z0-9_]+)/g;
 
 // --- Line/indent utilities -------------------------------------------------
@@ -321,7 +346,7 @@ function collectTransitiveSource(entryAbsPath, { maxFiles = 60, requirerCounts =
   return chunks.join('\n');
 }
 
-/** `process.env.X` / `process.env['X']` / destructured reads. */
+/** Dot access, quoted bracket access, and destructured `process.env` reads. */
 function extractEnvReads(source) {
   const reads = new Set();
   let m;
@@ -339,17 +364,18 @@ function extractEnvReads(source) {
   return reads;
 }
 
-/** Every secret name referenced anywhere via `${{ secrets.X }}` across the
- * given workflow file contents — the universe of things this repo treats as
- * "a secret" worth flagging when a script reads it but a step never provides
- * it. Restricting to this set (rather than flagging any missing env var)
- * avoids noise on ambient/non-secret vars (CI, HOME, repo `vars.*`, etc.). */
+/** Every secret name referenced anywhere via the secrets context (dot or
+ * quoted-bracket form) across the given workflow file contents — the
+ * universe of things this repo treats as "a secret" worth flagging when a
+ * script reads it but a step never provides it. Restricting to this set
+ * (rather than flagging any missing env var) avoids noise on ambient/
+ * non-secret vars (CI, HOME, repo `vars.*`, etc.). */
 function collectKnownSecrets(workflowRawContents) {
   const known = new Set();
   for (const raw of workflowRawContents) {
     let m;
     const re = new RegExp(SECRET_REF_RE);
-    while ((m = re.exec(raw))) known.add(m[1]);
+    while ((m = re.exec(raw))) known.add(m[1] || m[2]);
   }
   return known;
 }

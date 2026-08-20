@@ -155,6 +155,12 @@ test('collectKnownSecrets: only secrets.X references count', () => {
   assert.ok(!known.has('NOT_A_SECRET'));
 });
 
+test('collectKnownSecrets: also recognizes secrets[\'X\'] bracket form', () => {
+  const raw = 'env:\n  A: ${{ secrets[\'BRACKET_TOKEN\'] }}\n';
+  const known = collectKnownSecrets([raw]);
+  assert.ok(known.has('BRACKET_TOKEN'));
+});
+
 test('collectExemptions: parses the audit-secret-gap-ok comment convention', () => {
   const raw = '# audit-secret-gap-ok: SOME_SECRET\nname: x\n';
   const exempt = collectExemptions(raw);
@@ -401,16 +407,46 @@ test('findGaps: a missing env var that is never referenced anywhere as ${{ secre
 
 // --- Regression floor against the real repo --------------------------------
 
-test('findGaps: the 3 BRO-67 workflows (opening-night-checklist/poller/orchestrator) no longer show ANTHROPIC_API_KEY gaps on main', () => {
+test('findGaps: the 3 specific BRO-67 steps no longer show an ANTHROPIC_API_KEY gap on main', () => {
+  // Deliberately narrowed to the exact 3 (workflow, step) pairs the BRO-67
+  // fix touched, NOT "every ANTHROPIC_API_KEY gap in these 3 files" — that
+  // broader assertion briefly failed in development on a 4th, DIFFERENT step
+  // (opening-night-orchestrator.yml's "Send opening night status to
+  // Discord" -> scripts/opening-night-status.js), which turned out to be a
+  // genuine false positive of the documented over-approximation kind: that
+  // script only calls opening-night-poller.js's checkReadiness/
+  // getMissingT1T2Outlets (re-exported from scripts/lib/opening-night-
+  // readiness.js, no LLM involved), but poller.js's own file-level code
+  // separately requires lib/llm-extractor.js for an unrelated code path
+  // (SERP discovery), so the trace correctly-but-uselessly attributes that
+  // read to every caller of the whole file. A real bug there, if any, is a
+  // job for a human triaging that specific advisory finding — not this
+  // regression floor, which exists only to prove the ALREADY-FIXED bug
+  // stays fixed.
   const ROOT = path.resolve(__dirname, '..', '..');
   const workflowDir = path.join(ROOT, '.github', 'workflows');
   const gaps = findGaps(workflowDir);
-  const bro67 = gaps.filter(
-    (g) =>
-      g.secret === 'ANTHROPIC_API_KEY' &&
-      ['opening-night-checklist.yml', 'opening-night-poller.yml', 'opening-night-orchestrator.yml'].includes(
-        g.workflow
-      )
+  const fixedSteps = [
+    ['opening-night-checklist.yml', 'Run opening night checklist'],
+    ['opening-night-poller.yml', 'Run poller for each show'],
+    ['opening-night-orchestrator.yml', 'Run opening night checklist + SLA dispatch'],
+  ];
+  const stillBroken = gaps.filter(
+    (g) => g.secret === 'ANTHROPIC_API_KEY' && fixedSteps.some(([wf, step]) => g.workflow === wf && g.step === step)
   );
-  assert.deepEqual(bro67, []);
+  assert.deepEqual(stillBroken, []);
+});
+
+test('findGaps: no self-referential gap from this tool describing its own regex shapes in doc comments (codex ship-check finding, task #1855)', () => {
+  // The tool's own docstrings used to contain literal example text like
+  // `process.env.X` and `${{ secrets.X }}`, which the regex scanners (which
+  // do not distinguish code from comments/prose) matched against themselves —
+  // producing a spurious "test.yml reads secret X" finding on every run.
+  const ROOT = path.resolve(__dirname, '..', '..');
+  const workflowDir = path.join(ROOT, '.github', 'workflows');
+  const gaps = findGaps(workflowDir);
+  assert.deepEqual(
+    gaps.filter((g) => g.workflow === 'test.yml' && g.script === 'scripts/audit-workflow-secret-gaps.js'),
+    []
+  );
 });
