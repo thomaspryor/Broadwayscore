@@ -326,13 +326,18 @@ function verifyUrlsAgainstHtml(reviews, rawHtml) {
  * @param {string} opts.aggregator - 'dtli' or 'bww'
  * @param {string} opts.showTitle - Show title for context
  * @param {string} opts.showId - Show ID for logging
+ * @param {number} [opts.regexCount] - Reviews the regex pass already found, for
+ *   an accurate log line — 0 (zero-extraction trigger) or >0 (partial-extraction
+ *   trigger, via llmFallbackExtractIfNeeded). Omit when calling this directly
+ *   with no regex baseline to compare against.
  * @returns {Array} - Array of review objects, or empty array on failure
  */
-async function llmFallbackExtract(rawHtml, { aggregator, showTitle, showId }) {
+async function llmFallbackExtract(rawHtml, { aggregator, showTitle, showId, regexCount }) {
   const prompt = aggregator === 'dtli' ? DTLI_PROMPT : BWW_PROMPT;
   const cleanedHtml = cleanHtmlForLLM(rawHtml);
 
-  console.log(`    ⚠ ${aggregator.toUpperCase()} regex extracted 0 reviews — trying LLM fallback (${cleanedHtml.length} chars)...`);
+  const regexNote = regexCount > 0 ? `regex extracted ${regexCount} (partial)` : 'regex extracted 0';
+  console.log(`    ⚠ ${aggregator.toUpperCase()} ${regexNote} — trying LLM fallback (${cleanedHtml.length} chars)...`);
 
   try {
     const response = await callClaudeWithRetry(
@@ -439,7 +444,7 @@ async function llmFallbackExtractIfNeeded(rawHtml, regexReviews, { aggregator, s
   const expected = countExpectedReviews(rawHtml, aggregator);
   if (!isPartialExtraction(regexReviews.length, expected)) return regexReviews;
 
-  const llmReviews = await llmFallbackExtract(rawHtml, { aggregator, showTitle, showId });
+  const llmReviews = await llmFallbackExtract(rawHtml, { aggregator, showTitle, showId, regexCount: regexReviews.length });
   return mergeAggregatorReviews(regexReviews, llmReviews);
 }
 
