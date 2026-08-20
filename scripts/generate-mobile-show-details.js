@@ -24,6 +24,7 @@ const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -134,6 +135,20 @@ function computePerShowHash(show, globalHash, ctx) {
   return hash.digest('hex');
 }
 
+// sha256 of the exact bytes written to a show's output file. Stored
+// alongside the input hash so the skip gate can detect cache/git desync:
+// a CI run can compute+cache a hash and write the file locally, then have
+// its git push fail (e.g. rebase/push-contention) so that write never lands
+// on main — while the hash cache itself is a GH Actions cache, persisted
+// independent of git history. The next run's checkout has the OLD file back,
+// but the cached input-hash still matches (inputs haven't changed since), so
+// the old skip gate treated it as "already correct" forever. Comparing the
+// live on-disk bytes against the hash recorded at write time closes that gap
+// — see task #1839 (carrie-1988 rv field / 92-show wrongProduction leak).
+function hashContent(buf) {
+  return crypto.createHash('sha256').update(buf).digest('hex');
+}
+
 function readCachedHash() {
   try { return JSON.parse(fs.readFileSync(HASH_CACHE_FILE, 'utf-8')); }
   catch { return null; }
@@ -156,6 +171,19 @@ const FORCE_REGEN = process.argv.includes('--force') || process.env.FORCE_REGENE
 // per-show hash cache — writing a 1-entry cache would look like every other
 // show's hash vanished and force a full-corpus regen on the next real run.
 const SHOW_ARG = (process.argv.find((a) => a.startsWith('--show=')) || '').slice('--show='.length) || null;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`Usage: node scripts/generate-mobile-show-details.js [--force] [--show=<id>]
+
+Regenerates public/data/shows/{id}.json (mobile app detail files) from
+reviews.json + shows.json + other core data. Also prunes {id}.json files for
+shows no longer valid/visible (skipped on --show=<id> scoped runs).
+
+  --force        Bypass the per-show hash cache — regenerate every show.
+  --show=<id>    Regenerate only this show; leaves the hash cache untouched.
+`);
+  process.exit(0);
+}
 
 // ===========================================
 // LOAD DATA
@@ -428,17 +456,25 @@ const invariantChecks = new Map(); // showId → expected reviewEntries.length a
 
 for (const show of visibleShows) {
   // Per-show hash gate. If usableCache exists and this show's cached hash
-  // matches AND the output file is on disk, skip the heavy regen. Carry the
-  // hash forward into newShowHashes so the NEXT run can also skip this show
-  // (without this, skipped shows would silently drop out of cache after one
-  // run and force-regen on the run after — the bug Claude reviewer flagged).
+  // matches AND the on-disk file's bytes match what was recorded as written
+  // for that hash, skip the heavy regen. Carry the entry forward into
+  // newShowHashes so the NEXT run can also skip this show (without that,
+  // skipped shows would silently drop out of cache after one run and
+  // force-regen on the run after — the bug Claude reviewer flagged).
+  //
+  // The output-hash check (entry.oh vs the live file's sha256) guards against
+  // cache/git desync: entries written by the pre-fix cache format are bare
+  // strings, not {h, oh} objects, so they fail this check and force one
+  // self-healing regen. See hashContent() docstring above for why this
+  // matters.
   if (usableCache) {
-    const cachedHash = usableCache[show.id];
-    if (cachedHash) {
+    const entry = usableCache[show.id];
+    if (entry && typeof entry === 'object' && entry.h && entry.oh) {
       const perShowHash = computePerShowHash(show, globalHash, HASH_CTX);
       const filePath = path.join(outputDir, `${show.id}.json`);
-      if (cachedHash === perShowHash && fs.existsSync(filePath)) {
-        newShowHashes[show.id] = perShowHash; // carry forward
+      if (entry.h === perShowHash && fs.existsSync(filePath)
+        && hashContent(fs.readFileSync(filePath)) === entry.oh) {
+        newShowHashes[show.id] = entry; // carry forward
         skipped++;
         continue;
       }
@@ -812,10 +848,13 @@ for (const show of visibleShows) {
   invariantChecks.set(show.id, reviewEntries.length);
   generated++;
   totalSize += json.length;
-  // Record this show's hash so the next run can skip it if inputs unchanged.
-  // Computed AFTER write so a write failure (which throws) doesn't leave a
-  // stale "we already wrote this" entry in the cache.
-  newShowHashes[show.id] = computePerShowHash(show, globalHash, HASH_CTX);
+  // Record this show's input hash + the exact bytes just written so the next
+  // run can skip it if inputs are unchanged AND the file on disk still
+  // matches (see hashContent() docstring — this is what detects cache/git
+  // desync from a failed push). Computed AFTER write so a write failure
+  // (which throws) doesn't leave a stale "we already wrote this" entry in
+  // the cache.
+  newShowHashes[show.id] = { h: computePerShowHash(show, globalHash, HASH_CTX), oh: hashContent(json) };
 }
 
 // Stage-2→3 invariant: verify each written file's review count matches the
@@ -840,6 +879,38 @@ if (invariantErrors > 0) {
   process.exit(1);
 }
 console.log(`✓ Invariant: ${generated} written shows pass stage-2→3 counts (${skipped} skipped via hash cache).`);
+
+// Orphan cleanup: delete detail files for shows that no longer exist in
+// shows.json, or that fell out of visibility (closed + no scored reviews)
+// since they were last generated. The main loop above only ever touches
+// visibleShows — it never removes what dropped out — so a show whose last
+// scored review gets excluded (e.g. wrongProduction) kept serving its stale
+// file forever via any direct fetch (e.g. SharedListClient's
+// `/data/shows/{id}.json`). Skipped on --show=X scoped runs, where
+// visibleShows is a single-show subset, not the full visibility set (task
+// #1839 — 67 of 92 shows found with a stale wrongProduction-flagged review
+// in `rv` were in this orphaned-file state, invisible to every past regen).
+let pruned = 0;
+if (!SHOW_ARG) {
+  const validIds = new Set(shows.map(s => s.id));
+  const visibleIds = new Set(visibleShows.map(s => s.id));
+  // Only touch this script's own `{id}.json` outputs — NOT sibling artifacts
+  // that share the directory but are written by other scripts, e.g.
+  // `{id}.social.json` (generate-social-post.js, see src/lib/data-social-pulse.ts).
+  // Show ids are plain [a-z0-9-]+ slugs (no dots), so a strict match excludes
+  // any multi-suffix filename automatically.
+  const DETAIL_FILE_RE = /^([a-z0-9-]+)\.json$/;
+  for (const f of fs.readdirSync(outputDir)) {
+    const m = DETAIL_FILE_RE.exec(f);
+    if (!m) continue;
+    const id = m[1];
+    if (validIds.has(id) && visibleIds.has(id)) continue;
+    fs.unlinkSync(path.join(outputDir, f));
+    delete newShowHashes[id];
+    pruned++;
+  }
+  if (pruned > 0) console.log(`✓ Pruned ${pruned} orphaned show detail file(s) (no longer valid/visible)`);
+}
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;
 const totalKB = (totalSize / 1024).toFixed(0);
