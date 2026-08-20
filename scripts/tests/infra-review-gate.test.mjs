@@ -19,6 +19,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const scope = require('../lib/infra-review-scope.js');
@@ -426,6 +429,43 @@ test('an explicit bypass is downgraded to warn and recorded, not silently honour
   });
   assert.equal(d.action, 'warn');
   assert.match(d.reason, /NO-PLAN-REVIEW/);
+});
+
+// ── self-defending: every composite action that calls a push/concurrency
+// primitive must be enumerated in the 'concurrency' rule ──────────────────
+//
+// /what-else on task #1856 (Codex adversarial review): the fix enumerates
+// exact .github/actions/ names rather than a push-/checkout- prefix
+// wildcard, because commit-scraper-spend-ledger/action.yml calls
+// push-with-retry.sh despite a name that doesn't match that prefix — an
+// enumerated list only stays correct as long as a human remembers to update
+// it every time a NEW composite action starts calling a gated script. This
+// test removes that dependency: it reads the real action.yml files off
+// disk and fails if any of them invoke a known concurrency-primitive script
+// without being in scope, so the next silent gap is a red test, not a
+// missed review.
+test('every real .github/actions/*/action.yml that calls a concurrency-primitive script is in scope', () => {
+  const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const actionsDir = path.join(repoRoot, '.github', 'actions');
+  const WRITE_PRIMITIVE_RE = /push-with-retry\.sh|scripts\/lib\/atomic-[a-z-]+\.(?:js|mjs|cjs)|scripts\/lib\/file-lock\.(?:js|mjs|cjs)/;
+  const dirs = fs.readdirSync(actionsDir, { withFileTypes: true }).filter((d) => d.isDirectory());
+  const uncovered = [];
+  for (const d of dirs) {
+    const ymlPath = ['action.yml', 'action.yaml']
+      .map((f) => path.join(actionsDir, d.name, f))
+      .find((p) => fs.existsSync(p));
+    if (!ymlPath) continue;
+    const text = fs.readFileSync(ymlPath, 'utf8');
+    // A `push-retry-args` DESCRIPTION line (commit-scraper-spend-ledger's own
+    // inputs block) mentions the script name without invoking it — only a
+    // `run:` step actually calling it is a real write path. Cheap enough to
+    // just require the match not be inside an `inputs:`/`description:` line.
+    const callsPrimitive = text.split('\n').some((line) => WRITE_PRIMITIVE_RE.test(line) && !/^\s*description:/.test(line));
+    if (!callsPrimitive) continue;
+    const rel = path.relative(repoRoot, ymlPath);
+    if (!classifyPath(rel).inScope) uncovered.push(rel);
+  }
+  assert.deepEqual(uncovered, [], `these composite actions call a concurrency-primitive script but are NOT gated: ${uncovered.join(', ')}`);
 });
 
 test('the four 2026-08-05 defect sites are all inside the blocking tier', () => {
