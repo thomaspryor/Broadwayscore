@@ -188,23 +188,36 @@ function mergeReviewsJson(ours, remote) {
   const oursReviews = Array.isArray(ours.reviews) ? ours.reviews : [];
   const remoteReviews = Array.isArray(remote.reviews) ? remote.reviews : [];
 
-  // First occurrence per PRIMARY key wins; a later remote review claiming a
-  // key already seen is a duplicate WITHIN the remote snapshot itself and is
-  // dropped outright (counted below). Deliberately primary-key-only, not
-  // URL-based — see the manual-entry URL rescue note in the module comment
-  // for why a same-URL rule can't safely apply here unscoped.
-  const remoteByKey = new Map();
-  const remoteCanonical = new Set();
-  let remoteDuplicateKeysSkipped = 0;
-  for (const r of remoteReviews) {
-    const k = keyOf(r);
-    if (k && remoteByKey.has(k)) {
-      remoteDuplicateKeysSkipped++;
-      continue;
+  // First occurrence per PRIMARY key wins on EACH side independently before
+  // cross-side matching runs — without this, two same-key duplicates on ONE
+  // side (e.g. "R. Scott Reedy" and "R Scott Reedy" both surviving one
+  // side's rebuild un-deduped, which criticKey's stronger normalization
+  // treats as one identity even though rebuild's own weaker dedup key did
+  // not) would each independently "consume" the other side's single
+  // matching record, so the second consumer's conflict silently wins and
+  // the FIRST one's resolution — and the fact that anything was ever
+  // ambiguous — evaporates with no count anywhere. Deliberately
+  // primary-key-only, not URL-based, on both sides — see the manual-entry
+  // URL rescue note below for why a same-URL rule can't safely apply here
+  // unscoped.
+  function dedupeByKey(reviews) {
+    const byKey = new Map();
+    const canonical = [];
+    let duplicateKeysSkipped = 0;
+    for (const r of reviews) {
+      const k = keyOf(r);
+      if (k && byKey.has(k)) {
+        duplicateKeysSkipped++;
+        continue;
+      }
+      if (k) byKey.set(k, r);
+      canonical.push(r);
     }
-    if (k) remoteByKey.set(k, r);
-    remoteCanonical.add(r);
+    return { byKey, canonical, duplicateKeysSkipped };
   }
+
+  const oursDeduped = dedupeByKey(oursReviews);
+  const remoteDeduped = dedupeByKey(remoteReviews);
 
   const oursSnapshotNewer = snapshotIsNewer(ours, remote);
   const consumedRemote = new Set();
@@ -212,9 +225,9 @@ function mergeReviewsJson(ours, remote) {
   let conflicts = 0;
   let conflictsResolvedToRemote = 0;
 
-  for (const r of oursReviews) {
+  for (const r of oursDeduped.canonical) {
     const k = keyOf(r);
-    const remoteMatch = k ? remoteByKey.get(k) : null;
+    const remoteMatch = k ? remoteDeduped.byKey.get(k) : null;
     if (!remoteMatch) {
       mergedReviews.push(r);
       continue;
@@ -230,8 +243,7 @@ function mergeReviewsJson(ours, remote) {
   }
 
   let added = 0;
-  for (const r of remoteReviews) {
-    if (!remoteCanonical.has(r)) continue; // dropped duplicate-within-remote (counted above)
+  for (const r of remoteDeduped.canonical) {
     if (consumedRemote.has(r)) continue; // already handled above (kept or conflict-resolved)
     // Remote-only entry — union it in so the race doesn't drop the other
     // writer's addition. See KNOWN LIMITATION in the module comment above.
@@ -240,13 +252,20 @@ function mergeReviewsJson(ours, remote) {
   }
 
   // Manual-entry URL rescue (see module comment): after the primary-key
-  // merge above, a manualEntry review may still sit alongside a separate
-  // non-manual "twin" record for the exact same article (byline SWAP, not
-  // just formatting drift — the primary key legitimately treated them as
-  // different identities). Scoped to manualEntry pairs only: a bare
+  // merge above, a manualEntry review may still sit alongside a SEPARATE
+  // record for the exact same article — either a non-manual pipeline twin
+  // (byline SWAP, not just formatting drift — the primary key legitimately
+  // treated them as different identities) or, more rarely, a SECOND
+  // manualEntry record (two independent human corrections to the same
+  // article, e.g. via concurrent manual-review-direct.js runs, that landed
+  // with different critic names and therefore different primary keys).
+  // Scoped to pairs involving at least one manualEntry record — a bare
   // same-URL rule is unsafe in general (7 legitimate same-URL/
   // different-critic pairs exist in the live corpus with no manual entry
-  // involved — see module comment).
+  // involved — see module comment). First-registered manual record per URL
+  // wins (mergedReviews is ours-derived entries first, then remote-only
+  // additions, so this prefers ours on an ours-vs-remote manual/manual tie
+  // — consistent with resolveConflict's "both manual → ours" rule above).
   let urlRescueConflicts = 0;
   const manualUrlIndex = new Map();
   for (const r of mergedReviews) {
@@ -258,11 +277,11 @@ function mergeReviewsJson(ours, remote) {
   if (manualUrlIndex.size) {
     for (let i = mergedReviews.length - 1; i >= 0; i--) {
       const r = mergedReviews[i];
-      if (!r || r.manualEntry === true) continue;
+      if (!r) continue;
       const uk = urlKeyOf(r);
       const twin = uk && manualUrlIndex.get(uk);
       if (twin && twin !== r) {
-        mergedReviews.splice(i, 1); // the manual twin already present wins
+        mergedReviews.splice(i, 1); // the earlier-registered manual twin wins
         urlRescueConflicts++;
       }
     }
@@ -270,7 +289,12 @@ function mergeReviewsJson(ours, remote) {
 
   const merged = { ...ours, reviews: mergedReviews };
   const lu = newerIso(ours._meta && ours._meta.lastUpdated, remote._meta && remote._meta.lastUpdated);
-  const baseMeta = (lu && lu === (remote._meta && remote._meta.lastUpdated) && remote._meta) || ours._meta || remote._meta || {};
+  // Ties toward ours, same as newerIso and oursSnapshotNewer above (reusing
+  // the already-computed signal rather than re-deriving a separate equality
+  // check that could tie the other way — a prior version of this line did,
+  // picking remote's whole _meta on an exact-timestamp tie even though
+  // newerIso "kept" ours' timestamp value).
+  const baseMeta = (oursSnapshotNewer === false && remote._meta) || ours._meta || remote._meta || {};
   merged._meta = { ...baseMeta, ...(lu ? { lastUpdated: lu } : {}) };
   if (merged._meta.stats && typeof merged._meta.stats === 'object') {
     merged._meta.stats = { ...merged._meta.stats, totalReviews: mergedReviews.length };
@@ -278,7 +302,15 @@ function mergeReviewsJson(ours, remote) {
 
   return {
     merged,
-    stats: { added, conflicts, conflictsResolvedToRemote, remoteDuplicateKeysSkipped, urlRescueConflicts, totalReviews: mergedReviews.length },
+    stats: {
+      added,
+      conflicts,
+      conflictsResolvedToRemote,
+      oursDuplicateKeysSkipped: oursDeduped.duplicateKeysSkipped,
+      remoteDuplicateKeysSkipped: remoteDeduped.duplicateKeysSkipped,
+      urlRescueConflicts,
+      totalReviews: mergedReviews.length,
+    },
   };
 }
 

@@ -204,6 +204,48 @@ test('mergeReviewsJson: duplicate keys within the remote side alone — first oc
   assert.equal(stats.remoteDuplicateKeysSkipped, 1);
 });
 
+test('mergeReviewsJson: duplicate keys within the OURS side alone must not silently drop a real remote-only entry (independent-review P1 finding)', () => {
+  // Regression: before the fix, each `ours` duplicate independently
+  // "consumed" the SAME single remote match, so the second consumer's
+  // resolution silently won and remote's genuinely distinct r1 vanished —
+  // never unioned, never counted anywhere.
+  const oursA = review({ assignedScore: 1 });
+  const oursB = review({ assignedScore: 2 }); // same identity as oursA
+  const r1 = review({ criticName: 'Someone Else', assignedScore: 3 }); // distinct identity, must survive
+  const { merged, stats } = mergeReviewsJson({ reviews: [oursA, oursB] }, { reviews: [r1] });
+  assert.equal(stats.oursDuplicateKeysSkipped, 1);
+  assert.ok(merged.reviews.some(r => r.assignedScore === 1), 'first ours duplicate must survive');
+  assert.ok(merged.reviews.some(r => r.assignedScore === 3), 'the distinct remote-only review must not be dropped');
+  assert.equal(merged.reviews.length, 2);
+});
+
+test('mergeReviewsJson: two DIFFERENT manualEntry records for the same URL (independent-review P1 finding) resolve to one, not a permanent duplicate', () => {
+  // e.g. two independent human corrections to the same article landing
+  // with different critic names (different primary keys) — previously the
+  // URL rescue explicitly skipped any candidate that was itself
+  // manualEntry, so neither ever got reconciled against the other.
+  const correctionV1 = review({ manualEntry: true, criticName: 'First Correction', assignedScore: 40, url: 'https://example.com/twice-corrected' });
+  const correctionV2 = review({ manualEntry: true, criticName: 'Second Correction', assignedScore: 90, url: 'https://example.com/twice-corrected' });
+  const { merged, stats } = mergeReviewsJson({ reviews: [correctionV1] }, { reviews: [correctionV2] });
+  assert.equal(merged.reviews.length, 1, 'must not leave two live manualEntry records for the same article');
+  assert.equal(merged.reviews[0].manualEntry, true);
+  assert.equal(stats.urlRescueConflicts, 1);
+});
+
+test('mergeReviewsJson: _meta baseMeta on an exact-timestamp tie is internally consistent with lastUpdated (ties toward ours, matching newerIso)', () => {
+  const ours = {
+    reviews: [review({ criticName: 'Critic A' })],
+    _meta: { lastUpdated: '2026-01-01T00:00:00.000Z', stats: { source: 'ours' } },
+  };
+  const remote = {
+    reviews: [review({ criticName: 'Critic B' })],
+    _meta: { lastUpdated: '2026-01-01T00:00:00.000Z', stats: { source: 'remote' } },
+  };
+  const { merged } = mergeReviewsJson(ours, remote);
+  assert.equal(merged._meta.lastUpdated, '2026-01-01T00:00:00.000Z');
+  assert.equal(merged._meta.stats.source, 'ours'); // must match whichever side lastUpdated came from
+});
+
 test('tierRank: untiered/unknown contentTier ranks lowest, below invalid', () => {
   assert.ok(tierRank({ contentTier: 'invalid' }) > tierRank({}));
   assert.ok(tierRank({ contentTier: 'complete' }) > tierRank({ contentTier: 'invalid' }));
