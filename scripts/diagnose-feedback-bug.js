@@ -354,6 +354,13 @@ export async function diagnoseBug(message, showName, userCategory) {
     }).join('\n\n');
   }
 
+  // Deterministic show-ID resolution — computed from the catalog matches
+  // above, NOT from what the LLM chooses to name in its JSON response. A
+  // multi-show report (issue #515: two shows sharing the same venue-city
+  // bug) must carry every matched show through to the auto-fix step, not
+  // just whichever one the model happened to mention.
+  const resolvedShowIds = [...new Set(allShowData.map(d => (d.show || d).id).filter(Boolean))];
+
   // 4. Build diagnosis prompt
   const awardsInstructions = isAwardsBug ? `
 
@@ -409,7 +416,13 @@ Respond with ONLY a JSON object in this exact format:
 }`;
 
   // 5. Call Claude
-  return await callClaude(prompt);
+  const diagnosis = await callClaude(prompt);
+
+  // Attach the deterministic show-ID list regardless of what the LLM echoed
+  // — process-feedback.yml and auto-fix-feedback-bug.js key off this, not
+  // off diagnosis.relevantFiles.
+  diagnosis.resolvedShowIds = resolvedShowIds;
+  return diagnosis;
 }
 
 // CLI entry point. realpath both sides: the ESM loader realpaths

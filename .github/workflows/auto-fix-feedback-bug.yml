@@ -73,7 +73,7 @@ jobs:
         run: node scripts/auto-fix-feedback-bug.js
 
       - name: Commit and push
-        if: always() && steps.fix.outputs.action == 'fixed'
+        if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'partial')
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
@@ -138,6 +138,26 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber,
                 state: 'closed', state_reason: 'completed'
+              });
+            } else if (action === 'partial') {
+              // Multi-show report where only some shows got fixed (issue
+              // #515) — comment with the per-show breakdown and leave the
+              // issue OPEN. Never state_reason:'completed' here: closing
+              // would silently drop the unresolved show(s) exactly like the
+              // original bug.
+              const fs = require('fs');
+              let body = 'Some but not all shows referenced in this report were auto-fixed. Leaving this issue open for the remainder.';
+              try {
+                body = fs.readFileSync('.github-comment.md', 'utf8') || body;
+              } catch (_) { /* fall back to generic message above */ }
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body,
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['auto-fixed', 'needs-manual-review']
               });
             } else if (action === 'not-a-bug') {
               await github.rest.issues.addLabels({
