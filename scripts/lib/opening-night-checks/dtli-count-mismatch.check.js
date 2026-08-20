@@ -19,6 +19,7 @@ const path = require('path');
 const { fetchPage } = require('../scraper');
 const { extractDTLIReviews } = require('../../gather-reviews');
 const { normalizeOutlet, findExistingReviewFile } = require('../review-normalization');
+const { llmFallbackExtractIfNeeded } = require('../llm-extractor');
 
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', '..', '..', 'data', 'dtli-slug-map.json');
 
@@ -97,6 +98,12 @@ async function run(show, context) {
   let extracted;
   try {
     extracted = extractDTLIReviews(html, show.id, dtliUrl, show.title) || [];
+    // Same LLM fallback gather-reviews.js uses (zero AND partial triggers) — this
+    // check calls the same regex extractor, so it's blind to the exact format
+    // changes it exists to catch unless it gets the same resilience.
+    extracted = await llmFallbackExtractIfNeeded(html, extracted, {
+      aggregator: 'dtli', showTitle: show.title, showId: show.id,
+    });
   } catch (err) {
     return {
       ok: true,

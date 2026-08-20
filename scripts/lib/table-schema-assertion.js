@@ -72,4 +72,29 @@ function assertTableSchema(rows, { minCells, expectedHeaders = [] } = {}) {
   return true;
 }
 
-module.exports = { assertTableSchema, TableSchemaError };
+/**
+ * Finds a header column's index by label instead of assuming a fixed
+ * position (task BRO-47 follow-up to #118: a fixed-position schema check
+ * alone still breaks if a source inserts/reorders a column between two
+ * that a scraper already reads by index — the schema assertion passes
+ * because all expected labels are still present, but `cells[N]` now reads
+ * the wrong data). Case-insensitive, whitespace-normalized.
+ *
+ * Tries an exact match first, falling back to substring only if no header
+ * cell matches exactly — a pure substring match would resolve a label like
+ * "Gross" to a future "Weekly Gross" column ahead of the real "Gross"
+ * column, silently reintroducing the same wrong-cell class of bug this
+ * function exists to prevent. Returns -1 if nothing matches either way.
+ *
+ * @param {string[]} headerRow - header cell text, in document order
+ * @param {string} label - text to match against each header cell
+ * @returns {number}
+ */
+function findColumnIndex(headerRow, label) {
+  const target = normalizeHeaderText(label);
+  const exact = headerRow.findIndex(h => normalizeHeaderText(h) === target);
+  if (exact !== -1) return exact;
+  return headerRow.findIndex(h => normalizeHeaderText(h).includes(target));
+}
+
+module.exports = { assertTableSchema, TableSchemaError, findColumnIndex };

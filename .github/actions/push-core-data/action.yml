@@ -192,10 +192,53 @@ runs:
         fi
 
         for i in 1 2 3 4 5; do
-          if git push origin main; then
+          PUSH_STDERR_FILE=$(mktemp)
+          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+            cat "$PUSH_STDERR_FILE" >&2
             echo "Core data pushed successfully (attempt $i)"
+            rm -f "$PUSH_STDERR_FILE"
             exit 0
           fi
+          cat "$PUSH_STDERR_FILE" >&2
+
+          # BRO-66 sibling (card #1850): a rate-limited push means the GitHub
+          # API itself is throttling REVIEW_TEXTS_TOKEN, not "another workflow
+          # pushed first" — the fetch/rebase/reconcile dance below issues
+          # several MORE API calls (git fetch, several git show per file) that
+          # would just as likely fail too and waste the attempt. Detect via
+          # scripts/lib/github-rate-limit-retry.js (BRO-66, unit-tested in
+          # tests/unit/checkout-rate-limit-retry.test.mjs) and skip straight to
+          # a backoff + retry of the push itself when rate-limited; any other
+          # failure falls through to the existing reconciliation dance below,
+          # unchanged.
+          DECISION=$(PUSH_STDERR_FILE="$PUSH_STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.PUSH_STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ")
+          rm -f "$PUSH_STDERR_FILE"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Core data push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retrying push directly (skipping fetch/rebase/reconcile)"
+              sleep "$DELAY_S"
+              continue
+              ;;
+            stop:max-attempts-reached)
+              # Still rate-limited on the final attempt — the dance below issues
+              # several MORE API calls against the same throttled token (fetch +
+              # several git show per file); running it here can't help this job
+              # (no attempts left) and only worsens the shared-PAT burst for
+              # every other workflow sharing REVIEW_TEXTS_TOKEN's quota.
+              echo "::error::Core data push still rate-limited after $i attempts — giving up without the fetch/rebase/reconcile dance"
+              exit 1
+              ;;
+          esac
 
           # Push failed — another workflow pushed first. Fetch their version
           # before rebasing so we can reconcile JSON data.

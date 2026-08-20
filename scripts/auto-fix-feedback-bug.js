@@ -7,7 +7,9 @@
  * and for high-confidence data fixes, calls Claude to generate exact field edits,
  * applies them, and validates.
  *
- * Outputs one of: fixed | skipped | not-a-bug | validation-failed | error
+ * Outputs one of: fixed | partial | skipped | not-a-bug | validation-failed | error
+ * `partial` means the report named multiple shows and only some got fixed —
+ * the issue stays open instead of closing as COMPLETED (issue #515).
  *
  * Env vars:
  *   ISSUE_BODY       - Full GitHub issue body text
@@ -28,6 +30,7 @@ const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = _require('./lib/cli-help.js');
 const { foldDiacritics } = _require('./lib/title-match.js');
 const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
+const { normalizeDiagnosisShowIds, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -164,25 +167,40 @@ async function main() {
     return;
   }
 
-  // 4. Gate: need a show ID
-  if (!diagnosis.showId) {
+  // 4. Gate: need at least one show ID. A report can name more than one show
+  // (issue #515) — showIds is the canonical multi-show list, normalized from
+  // whatever form the diagnosis carries (showIds / resolvedShowIds / legacy
+  // singular showId).
+  const showIds = normalizeDiagnosisShowIds(diagnosis);
+  if (showIds.length === 0) {
     writeComment('## Requires Manual Review\n\nCould not resolve the show mentioned in this report. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
     output('skipped');
     return;
   }
 
-  // 5. Verify show exists
+  // 5. Verify shows exist — resolve every showId independently so one bad ID
+  // doesn't block fixing the others.
   const showsData = loadJsonFile('data/shows.json');
   const shows = showsData.shows || showsData;
-  const showIndex = shows.findIndex(s => s.id === diagnosis.showId);
-  if (showIndex === -1) {
-    writeComment(`## Requires Manual Review\n\nShow \`${diagnosis.showId}\` not found in shows.json. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
+  const resolvedShows = [];
+  const unresolvedShowIds = [];
+  for (const id of showIds) {
+    const idx = shows.findIndex(s => s.id === id);
+    if (idx === -1) unresolvedShowIds.push(id);
+    else resolvedShows.push({ id, index: idx, show: shows[idx] });
+  }
+  if (resolvedShows.length === 0) {
+    writeComment(`## Requires Manual Review\n\nNone of the shows referenced (\`${showIds.join('`, `')}\`) were found in shows.json. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
     output('skipped');
     return;
   }
+  console.log(`Found ${resolvedShows.length}/${showIds.length} show(s): ${resolvedShows.map(r => `${r.show.title} (${r.id})`).join(', ')}`);
 
-  const show = shows[showIndex];
-  console.log(`Found show: ${show.title} (${show.id})`);
+  // The awards co-winner path (6a below) is inherently single-show — a co-
+  // winner report names one ceremony/category for one production. Use the
+  // first resolved show for it, matching prior behavior when showIds had
+  // exactly one entry.
+  const show = resolvedShows[0].show;
 
   // 6a. Awards co-winner fix: applied directly from diagnosis — no second Claude call needed.
   //     Tony ties route to manual (require awards-confirmed-ties.json update).
@@ -270,10 +288,70 @@ async function main() {
     return;
   }
 
-  // 6. Call Claude to generate exact edits
+  // 6. Call Claude to generate exact edits — once per resolved show. Each
+  // show gets its own Claude call scoped to its own current data, so a fix
+  // for show A can never be misapplied against show B's fields.
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const allowedFieldsList = Object.entries(EDITABLE_FIELDS)
+    .map(([file, fields]) => `  ${file}: ${fields.join(', ')}`)
+    .join('\n');
 
-  // Build context: current show data from relevant files
+  const perShowResults = [];
+  for (const { index: showIndex, show: showEntry } of resolvedShows) {
+    const result = await generateAndApplyFixForShow({
+      show: showEntry,
+      showIndex,
+      shows,
+      diagnosis,
+      anthropic,
+      allowedFieldsList,
+      isMultiShow: resolvedShows.length > 1,
+    });
+    perShowResults.push({ show: showEntry, ...result });
+  }
+
+  const { action, comment } = summarizeShowFixOutcomes(perShowResults, unresolvedShowIds);
+
+  if (action === 'skipped') {
+    writeComment(comment);
+    output('skipped');
+    return;
+  }
+
+  // Save shows.json if any show's fields were mutated in place
+  if (perShowResults.some(r => r.applied.some(a => a.startsWith('shows.json')))) {
+    // `shows` was mutated in place and (for the object-root shape) IS
+    // `showsData.shows` — pass `showsData` itself, not a rebuilt copy, so
+    // shows-write-guard's object-identity snapshot lookup still matches and
+    // the concurrent-writer merge fires.
+    saveJsonFile('data/shows.json', Array.isArray(showsData) ? shows : showsData);
+  }
+
+  // 8. Validate once for every show's changes together
+  console.log('Running validation...');
+  if (!runValidation()) {
+    console.error('Validation failed — rolling back');
+    rollbackDataFiles();
+    writeComment('## Validation Failed\n\nThe auto-fix was applied but failed data validation. Changes have been rolled back. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
+    output('validation-failed');
+    return;
+  }
+
+  // 9. Success (fully or partially — action is 'fixed' or 'partial')
+  writeComment(comment);
+  output(action);
+  const totalApplied = perShowResults.reduce((n, r) => n + r.applied.length, 0);
+  console.log(`${action}: applied ${totalApplied} edit(s) across ${perShowResults.filter(r => r.applied.length > 0).length}/${resolvedShows.length + unresolvedShowIds.length} show(s)`);
+}
+
+/**
+ * Generates and applies data-file edits for ONE show via a scoped Claude
+ * call. Mutates `shows[showIndex]` in place for shows.json changes (caller
+ * saves once after every show has run); writes commercial.json /
+ * audience-buzz.json immediately per change, same as the pre-multi-show
+ * behavior.
+ */
+async function generateAndApplyFixForShow({ show, showIndex, shows, diagnosis, anthropic, allowedFieldsList, isMultiShow }) {
   const currentData = { show: { ...show } };
   try {
     const commercial = loadJsonFile('data/commercial.json');
@@ -285,9 +363,9 @@ async function main() {
     if (buzz.shows?.[show.id]) currentData.audienceBuzz = buzz.shows[show.id];
   } catch { /* skip */ }
 
-  const allowedFieldsList = Object.entries(EDITABLE_FIELDS)
-    .map(([file, fields]) => `  ${file}: ${fields.join(', ')}`)
-    .join('\n');
+  const scopeNote = isMultiShow
+    ? `\n- This bug report names more than one show. Only propose edits for THIS show (${show.title}, id: ${show.id}) — the other show(s) are handled by separate calls. If the diagnosis findings don't clearly apply to this specific show, set canFix to false.`
+    : '';
 
   const prompt = `You are fixing a data bug in Broadway Scorecard's database.
 
@@ -311,7 +389,7 @@ ${JSON.stringify(currentData, null, 2)}
 ${allowedFieldsList}
 - You must specify the EXACT current value (oldValue) and the corrected value (newValue)
 - If you cannot determine the correct new value with certainty, set canFix to false
-- NEVER guess or fabricate data — only fix what the diagnosis clearly identifies
+- NEVER guess or fabricate data — only fix what the diagnosis clearly identifies${scopeNote}
 
 Respond with ONLY a JSON object:
 {
@@ -342,22 +420,16 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
     if (!jsonMatch) throw new Error('No JSON in Claude response');
     edits = JSON.parse(jsonMatch[0]);
   } catch (err) {
-    console.error('Claude API error:', err.message);
-    writeComment(`## Error\n\nFailed to generate fix edits: ${err.message}\n\n---\n*Auto-processed by feedback pipeline*`);
-    output('error');
-    return;
+    console.error(`Claude API error for ${show.id}:`, err.message);
+    return { applied: [], skipped: [], error: `Claude API error: ${err.message}` };
   }
 
   if (!edits.canFix) {
-    writeComment(`## Requires Manual Review\n\nAuto-fix could not determine the correct edit: ${edits.reason}\n\n---\n*Auto-processed by feedback pipeline*`);
-    output('skipped');
-    return;
+    return { applied: [], skipped: [], error: edits.reason || 'could not determine the correct edit' };
   }
 
   if (!edits.changes || edits.changes.length === 0) {
-    writeComment('## Requires Manual Review\n\nNo specific changes identified.\n\n---\n*Auto-processed by feedback pipeline*');
-    output('skipped');
-    return;
+    return { applied: [], skipped: [], error: 'no specific changes identified' };
   }
 
   // 7. Validate and apply edits
@@ -424,39 +496,7 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
     }
   }
 
-  if (applied.length === 0) {
-    const reasons = skipped.length > 0 ? `\n\nSkipped edits:\n${skipped.map(s => `- ${s}`).join('\n')}` : '';
-    writeComment(`## Requires Manual Review\n\nNo edits could be applied.${reasons}\n\n---\n*Auto-processed by feedback pipeline*`);
-    output('skipped');
-    return;
-  }
-
-  // Save shows.json if we modified it
-  if (applied.some(a => a.startsWith('shows.json'))) {
-    // `shows` was mutated in place and (for the object-root shape) IS
-    // `showsData.shows` — pass `showsData` itself, not a rebuilt copy, so
-    // shows-write-guard's object-identity snapshot lookup still matches and
-    // the concurrent-writer merge fires.
-    saveJsonFile('data/shows.json', Array.isArray(showsData) ? shows : showsData);
-  }
-
-  // 8. Validate
-  console.log('Running validation...');
-  if (!runValidation()) {
-    console.error('Validation failed — rolling back');
-    rollbackDataFiles();
-    writeComment('## Validation Failed\n\nThe auto-fix was applied but failed data validation. Changes have been rolled back. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
-    output('validation-failed');
-    return;
-  }
-
-  // 9. Success
-  const appliedList = applied.map(a => `- ${a}`).join('\n');
-  const skippedList = skipped.length > 0 ? `\n\n**Skipped:**\n${skipped.map(s => `- ${s}`).join('\n')}` : '';
-
-  writeComment(`## Fix Applied\n\n**Show:** ${show.title}\n**Explanation:** ${edits.explanation}\n\n**Changes:**\n${appliedList}${skippedList}\n\nThe fix will be live within a few minutes after deployment.\n\n---\n*Auto-fixed by feedback pipeline*`);
-  output('fixed');
-  console.log(`Successfully applied ${applied.length} edit(s)`);
+  return { applied, skipped, explanation: edits.explanation };
 }
 
 main().catch(err => {
