@@ -96,7 +96,7 @@ const {
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { STRICT_CLASSES, countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
+const { countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
 const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
