@@ -3053,6 +3053,7 @@ async function getWorkflowRunSummary() {
           // failures" clean read.
           if (page === 1) throw pageErr;
           console.error(`[Workflows] page ${page} fetch failed, using ${runs.length} run(s) from earlier pages: ${pageErr.message}`);
+          partial = true;
           break;
         }
         if (!response || !response.workflow_runs) break;

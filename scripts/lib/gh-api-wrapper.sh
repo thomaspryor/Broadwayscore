@@ -45,6 +45,11 @@ WARN_THRESHOLD=${GH_API_WRAPPER_WARN_THRESHOLD:-3000}
 _log_call() {
   local caller="$1" method="$2" url="$3"
   {
+    # ~/.claude always exists on the Mac this is designed for (it's the
+    # harness's own home dir, same assumption gh-call-wrapper.sh makes), but
+    # a CI runner's $HOME may not have it yet — mkdir rather than silently
+    # losing every ledger line on a fresh runner (code-review finding).
+    mkdir -p "$(dirname "$LEDGER")" 2>/dev/null
     ts=$(date +%s 2>/dev/null) || ts=0
     printf '%s\tpid=%s\tppid=%s\tcaller=%s\tmethod=%s\turl=%s\n' \
       "$ts" "$$" "${PPID:-0}" "$caller" "$method" "$url" >> "$LEDGER" 2>/dev/null
