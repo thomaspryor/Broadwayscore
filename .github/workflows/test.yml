@@ -410,7 +410,7 @@ on:
       - 'scripts/lib/push-with-retry.mutex-deadline.test.sh'
       - 'scripts/lib/push-with-retry.fetch-timeout.test.sh'
       # Git Data API push fallback (task #707, generalizes the task #698 live
-      # fix): opt-in (PUSH_VIA_API_FALLBACK=1) replacement for the local
+      # fix; default-on since task #1847): replacement for the local
       # fetch+rebase+push cycle when it exhausts every retry under high
       # churn. Test lives in tests/unit/ (node --test batch, covered by the
       # tests/** glob already); the .sh source needs explicit listing (no
@@ -508,6 +508,14 @@ on:
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
       - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
+      # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI. Its lib dependency
+      # (scripts/lib/broadway-com-rating-parser.js) is already covered by the
+      # scripts/lib/** glob above.
+      - 'scripts/scrape-broadway-com-audience.js'
+      - 'scripts/scrape-broadway-com-audience.test.mjs'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.

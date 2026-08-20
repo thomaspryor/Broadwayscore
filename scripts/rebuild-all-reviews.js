@@ -281,12 +281,25 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
 // --show=<id>: scope this run to one show and print its per-file exclusion
-// reasons, then exit before any write (reviews.json, watermark, registry,
-// etc). This is the diagnostic command review-count-match.check.js has
-// documented since it was written (`rebuild-all-reviews.js --show=ID
+// reasons, then exit before any AGGREGATE write (reviews.json, watermark,
+// registry, etc). This is the diagnostic command review-count-match.check.js
+// has documented since it was written (`rebuild-all-reviews.js --show=ID
 // --verbose | grep EXCLUSION`) — the flag didn't actually exist (task #1846),
 // so that documented remediation command has never worked.
+// NOTE: the target show's own review-text files still get the same
+// normalization writes a full rebuild always performs (stale --unknown
+// rename/merge, contentVerification promotion, designation correction) —
+// those are pre-existing, idempotent, single-show-scoped side effects, not
+// something this flag disables. Only the cross-show aggregate outputs are
+// skipped.
 const SHOW_FILTER_ARG = process.argv.find(a => a.startsWith('--show='));
+if (SHOW_FILTER_ARG && SHOW_FILTER_ARG.slice('--show='.length).length === 0) {
+  // Ship-check finding (Codex, task #1846): a bare `--show=` (id omitted —
+  // typo'd trailing arg, copy-paste truncation) must never silently fall
+  // through to an unscoped full rebuild that writes the real reviews.json.
+  console.error('❌ --show= requires a show id (e.g. --show=some-show-2026). Refusing to run an unscoped rebuild.');
+  process.exit(1);
+}
 const SHOW_FILTER = SHOW_FILTER_ARG ? SHOW_FILTER_ARG.slice('--show='.length) : null;
 
 // decodeHtmlEntities imported from ./lib/text-cleaning
@@ -3350,16 +3363,23 @@ showDirs.forEach(showId => {
       }
 
       // Garbage outlet guard: skip reviews with sentence-fragment outlet names.
-      // Registry short-circuit (task #1846): a review whose outletId already
-      // resolves to a REGISTERED outlet can't be a BWW-parser sentence-fragment
-      // artifact — nobody hand-registers "was-along-for-the-ride" as an outlet.
-      // Without this, the "^a |^an " branch below false-positives on real
-      // registered outlets that happen to start with an article, e.g.
-      // "A Youngish Perspective" and "A Younger Theatre" (both live UK theatre
-      // blogs, confirmed silently dropped from reviews.json for multiple shows).
+      // Registry short-circuit (task #1846): a review whose outletId is
+      // EXACTLY a registered outlet id/alias can't be a BWW-parser
+      // sentence-fragment artifact — nobody hand-registers
+      // "was-along-for-the-ride" as an outlet. Without this, the "^a |^an "
+      // branch below false-positives on real registered outlets that happen
+      // to start with an article, e.g. "A Youngish Perspective" and
+      // "A Younger Theatre" (both live UK theatre blogs, confirmed silently
+      // dropped from reviews.json for multiple shows).
+      // Deliberately EXACT match against REGISTERED_OUTLET_IDS, not
+      // normalizeOutletCanonical() — that helper also does fuzzy
+      // concatenated-slug prefix matching (e.g. "variety-frank-rizzo" →
+      // "variety", for outlet+critic-glued outletIds), which would let a
+      // garbage outletId that merely STARTS WITH a registered id/alias
+      // (e.g. a hypothetical "a-youngish-perspective-something") slip past
+      // this guard too (Codex ship-check finding, task #1846 follow-up).
       const outlet = (data.outlet || '').trim();
-      const garbageCheckOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
-      const isRegisteredOutlet = !!outletRegistry.outlets[garbageCheckOutletKey];
+      const isRegisteredOutlet = REGISTERED_OUTLET_IDS.has((data.outletId || '').toLowerCase().trim());
       if (
         !isRegisteredOutlet && (
           outlet.length > 50 ||
@@ -4461,10 +4481,13 @@ showDirs.forEach(showId => {
 
 if (SHOW_FILTER) {
   // Diagnostic mode: print what would be included/excluded and exit BEFORE
-  // any write (reviews.json, deploy watermark, outlet registry, etc.) — this
-  // must never truncate the real multi-show reviews.json down to one show.
+  // any AGGREGATE write (reviews.json, deploy watermark, outlet registry,
+  // etc.) — this must never truncate the real multi-show reviews.json down
+  // to one show. The target show's own review-text files may still have
+  // been normalized above (stale-filename rename/merge, CV promotion) —
+  // that's not new here, it's the same side effect a full rebuild always has.
   const built = allReviews.filter(r => r.showId === SHOW_FILTER).length;
-  console.log(`\n--show=${SHOW_FILTER}: ${built} review(s) would be included (diagnostic mode — nothing written).`);
+  console.log(`\n--show=${SHOW_FILTER}: ${built} review(s) would be included (diagnostic mode — no reviews.json/aggregate write).`);
   process.exit(0);
 }
 
