@@ -11,9 +11,11 @@ scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
+scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
+scripts/auto-fix-show-data.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-core-data-guard.test.mjs
 scripts/autonomous-merge-parity.test.mjs
@@ -258,6 +260,7 @@ tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
 tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
+tests/unit/dispatch-prompt-review-rule.test.mjs
 tests/unit/dispatcher-safety-port-table.test.mjs
 tests/unit/display-field-artifacts.test.mjs
 tests/unit/dl-distinguished-performance-chip.test.mjs
@@ -488,6 +491,7 @@ tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
+tests/unit/review-normalization.maybeUpgradeUrl.test.mjs
 tests/unit/review-output-guard.test.mjs
 tests/unit/review-scoring-backfill.test.mjs
 tests/unit/review-texts-dir-resolution.test.mjs

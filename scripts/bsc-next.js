@@ -350,6 +350,11 @@ function buildSeed(task, card, project, model) {
     // unless the session re-reads the card before wrapping up.
     `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since launch. If the card instructs chaining, dispatch the next workspace yourself; never end by telling the user to paste a prompt.`,
     ``,
+    // Discoverability only (task #672/BRO-126, task #1079) — the enforcement
+    // is the hook, not this line; a session that never reads this is blocked
+    // exactly the same as one that does.
+    `Editing shared infra (dispatch layer, spend/concurrency primitives, the review gates, gating CI, hooks)? CLAUDE.md rule 18 / infra-plan-review-gate.sh blocks your first edit there until a pre-implementation review is on record — run /second-opinion or /plan-review, then \`node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID\`.`,
+    ``,
     // Cheap human-in-loop escalation (task #151): sizing happens before any
     // code is read, so a mis-sized card should say so rather than silently
     // grinding on an under-powered model.
