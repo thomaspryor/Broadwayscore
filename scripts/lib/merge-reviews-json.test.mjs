@@ -107,14 +107,31 @@ test('mergeReviewsJson: both sides manualEntry — keeps ours (matches -X ours r
   assert.equal(merged.reviews[0].assignedScore, 50);
 });
 
-test('mergeReviewsJson: byline swap on the same article — URL fallback resolves it as a CONFLICT, not a duplicate union (iceboy-regional-2026 shape)', () => {
+test('mergeReviewsJson: byline swap on the same article — manual-entry URL rescue resolves it, not a duplicate union (iceboy-regional-2026 shape)', () => {
   const wrongByline = review({ criticName: 'Christopher Borrelli', assignedScore: 75, url: 'https://chicago.suntimes.com/review-a' });
   const corrected = review({ criticName: 'Steven Oxman', assignedScore: 65, manualEntry: true, url: 'https://chicago.suntimes.com/review-a' });
   const { merged, stats } = mergeReviewsJson({ reviews: [wrongByline] }, { reviews: [corrected] });
   assert.equal(merged.reviews.length, 1, 'must resolve to one review, not two duplicate critics for the same article');
   assert.equal(merged.reviews[0].criticName, 'Steven Oxman');
-  assert.equal(stats.conflicts, 1);
-  assert.equal(stats.added, 0);
+  assert.equal(stats.urlRescueConflicts, 1);
+});
+
+test('mergeReviewsJson: byline swap works regardless of which side (ours/remote) carries the manual entry', () => {
+  const wrongByline = review({ criticName: 'Christopher Borrelli', assignedScore: 75, url: 'https://chicago.suntimes.com/review-a' });
+  const corrected = review({ criticName: 'Steven Oxman', assignedScore: 65, manualEntry: true, url: 'https://chicago.suntimes.com/review-a' });
+  const { merged, stats } = mergeReviewsJson({ reviews: [corrected] }, { reviews: [wrongByline] });
+  assert.equal(merged.reviews.length, 1);
+  assert.equal(merged.reviews[0].criticName, 'Steven Oxman');
+  assert.equal(stats.urlRescueConflicts, 1);
+});
+
+test('mergeReviewsJson: legitimate same-URL/different-critic pairs with NO manual entry involved are never collapsed (anastasia-2017 WSJ shape — real corpus case)', () => {
+  const isherwood = review({ criticName: 'Charles Isherwood', outlet: 'The Wall Street Journal', assignedScore: 60, url: 'https://www.wsj.com/articles/anastasia-review-the-real-thing-1493152968' });
+  const rothstein = review({ criticName: 'Edward Rothstein', outlet: 'The Wall Street Journal', assignedScore: 80, url: 'https://www.wsj.com/articles/anastasia-review-the-real-thing-1493152968' });
+  const { merged, stats } = mergeReviewsJson({ reviews: [isherwood] }, { reviews: [rothstein] });
+  assert.equal(merged.reviews.length, 2, 'both distinct critics must survive — a bare same-URL rule would wrongly collapse them');
+  assert.equal(stats.urlRescueConflicts, 0);
+  assert.equal(stats.conflicts, 0);
 });
 
 test('mergeReviewsJson: timestamps tied/unparseable — falls back to higher contentTier, then ours', () => {

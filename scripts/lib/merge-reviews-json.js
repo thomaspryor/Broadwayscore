@@ -45,20 +45,32 @@
 //
 // Merge rules:
 //   * shape: { _meta, reviews: [...] }
-//   * identity: showId + outlet(lower/trim) + criticKey(criticName), with a
-//     showId+canonicalized-URL fallback when the primary key doesn't match.
-//     Reuses manual-entry-merge.js's criticKey() (punctuation/diacritic-
-//     insensitive) and review-guards.js's canonicalizeUrlForDedup() rather
-//     than inventing a third normalizer — a plain lower/trim key (rebuild's
-//     own pass-2 dedup key) is NOT enough here: manual-entry-merge.js exists
-//     specifically because byline text drifts between a human correction and
-//     the pipeline's scrape ("R. Scott Reedy" vs "R Scott Reedy", confirmed
-//     live on wonder-regional-2026) or disagrees outright (byline swap,
-//     confirmed live on iceboy-regional-2026) — a weaker key would treat the
-//     two sides of exactly that conflict as disjoint and union them into a
-//     visible duplicate-critic scoring input instead of resolving the
-//     conflict. Verified collision-free across the full production corpus
-//     (19,903 reviews) under both the primary key and the URL fallback.
+//   * identity: showId + outlet(lower/trim) + criticKey(criticName) — reuses
+//     manual-entry-merge.js's criticKey() (punctuation/diacritic-insensitive)
+//     rather than a plain lower/trim key (rebuild's own pass-2 dedup key),
+//     because manual-entry-merge.js exists specifically to bridge byline
+//     text drift between a human correction and the pipeline's scrape
+//     ("R. Scott Reedy" vs "R Scott Reedy", confirmed live on
+//     wonder-regional-2026) — a weaker key would treat both sides of exactly
+//     that conflict as disjoint and union them into a visible duplicate-
+//     critic scoring input instead of resolving the conflict. Verified
+//     collision-free across the full production corpus (19,903 reviews).
+//   * manual-entry URL rescue (separate, narrower pass, run AFTER the
+//     primary-key merge below): a manualEntry review can also disagree with
+//     its pipeline twin by an outright byline SWAP, not just formatting
+//     drift (confirmed live on iceboy-regional-2026 — "Chris Jones" vs
+//     "Christopher Borrelli" on the same Chicago Tribune URL), which the
+//     primary key alone cannot catch. manual-entry-merge.js's fallback for
+//     this is a same-showId+URL match — but that fallback is NOT safe to
+//     apply as a blanket identity rule the way the primary key is: the live
+//     corpus has 7 legitimate same-show, same-URL, DIFFERENT-critic pairs
+//     with no manualEntry involved at all (e.g. anastasia-2017's WSJ review
+//     carries both Charles Isherwood and Edward Rothstein under the same
+//     URL — co-bylined or corpus artifact, but genuinely two distinct
+//     records, not a duplicate to collapse). So the URL match is scoped
+//     narrowly: only rescues a pair where at least one side is
+//     `manualEntry: true`, applied once over the already-merged output
+//     (see the pass below) rather than during identity matching itself.
 //   * disjoint identities (present on only one side): union — both sides'
 //     additions survive. Safe by the same reasoning as mergeDiaryShows:
 //     every writer only adds/updates review-texts files (or, for
@@ -72,17 +84,17 @@
 //     review-texts file moments before this run (wrongProduction, etc.), or
 //     its review-texts file was deleted outright (e.g.
 //     scripts/delete-stub-candidates.js), while remote's older snapshot
-//     still carries the pre-exclusion entry, the union could resurrect it
-//     for one push cycle. reviews.json carries no flag/tombstone data itself
-//     to detect this from the snapshot alone, and this reconciler's
-//     private-core-data checkout does not carry review-texts (a separate
-//     private repo) to cross-check against. Accepted because every one of
-//     the 20+ writers independently reruns rebuild-all-reviews.js from the
-//     current review-texts corpus on its own schedule (the tightest is
-//     llm-ensemble-score / enrich-reviews, hours apart) — the very next
-//     rebuild re-excludes it from a fresh review-texts read, so the exposure
-//     window is one push cycle, not permanent silent corruption. This is
-//     also STRICTLY SAFER than the pre-existing status quo this replaces
+//     still carries the pre-exclusion entry, the union could resurrect it.
+//     reviews.json carries no flag/tombstone data itself to detect this from
+//     the snapshot alone, and this reconciler's private-core-data checkout
+//     does not carry review-texts (a separate private repo) to cross-check
+//     against — there is no cheap, safe way to close this from inside this
+//     merge without also risking dropping a legitimate concurrent addition.
+//     NOT strictly bounded to "one push cycle": if the excluding side keeps
+//     losing pushes to an older snapshot, the resurrection can recur each
+//     time until an uncontended rebuild finally lands. It IS bounded by
+//     "eventually corrected by the next rebuild that isn't racing," and is
+//     STRICTLY SAFER than the pre-existing status quo this replaces
 //     (unconditional `-X ours`), which had no bound at all: it could
 //     permanently drop either side's genuine additions depending purely on
 //     which push won the race.
@@ -176,24 +188,21 @@ function mergeReviewsJson(ours, remote) {
   const oursReviews = Array.isArray(ours.reviews) ? ours.reviews : [];
   const remoteReviews = Array.isArray(remote.reviews) ? remote.reviews : [];
 
-  // First occurrence per identity wins; a later remote review claiming an
-  // identity already seen (same key OR same URL) is a duplicate WITHIN the
-  // remote snapshot itself and is dropped outright — kept out of both the
-  // lookup maps AND the eventual union pass (remoteCanonical), so it can
-  // never sneak in unioned-in as a phantom extra vote.
+  // First occurrence per PRIMARY key wins; a later remote review claiming a
+  // key already seen is a duplicate WITHIN the remote snapshot itself and is
+  // dropped outright (counted below). Deliberately primary-key-only, not
+  // URL-based — see the manual-entry URL rescue note in the module comment
+  // for why a same-URL rule can't safely apply here unscoped.
   const remoteByKey = new Map();
-  const remoteByUrlKey = new Map();
   const remoteCanonical = new Set();
   let remoteDuplicateKeysSkipped = 0;
   for (const r of remoteReviews) {
     const k = keyOf(r);
-    const uk = urlKeyOf(r);
-    if ((k && remoteByKey.has(k)) || (uk && remoteByUrlKey.has(uk))) {
+    if (k && remoteByKey.has(k)) {
       remoteDuplicateKeysSkipped++;
       continue;
     }
     if (k) remoteByKey.set(k, r);
-    if (uk) remoteByUrlKey.set(uk, r);
     remoteCanonical.add(r);
   }
 
@@ -205,8 +214,7 @@ function mergeReviewsJson(ours, remote) {
 
   for (const r of oursReviews) {
     const k = keyOf(r);
-    const uk = urlKeyOf(r);
-    const remoteMatch = (k && remoteByKey.get(k)) || (uk && remoteByUrlKey.get(uk)) || null;
+    const remoteMatch = k ? remoteByKey.get(k) : null;
     if (!remoteMatch) {
       mergedReviews.push(r);
       continue;
@@ -231,6 +239,35 @@ function mergeReviewsJson(ours, remote) {
     added++;
   }
 
+  // Manual-entry URL rescue (see module comment): after the primary-key
+  // merge above, a manualEntry review may still sit alongside a separate
+  // non-manual "twin" record for the exact same article (byline SWAP, not
+  // just formatting drift — the primary key legitimately treated them as
+  // different identities). Scoped to manualEntry pairs only: a bare
+  // same-URL rule is unsafe in general (7 legitimate same-URL/
+  // different-critic pairs exist in the live corpus with no manual entry
+  // involved — see module comment).
+  let urlRescueConflicts = 0;
+  const manualUrlIndex = new Map();
+  for (const r of mergedReviews) {
+    if (r && r.manualEntry === true) {
+      const uk = urlKeyOf(r);
+      if (uk && !manualUrlIndex.has(uk)) manualUrlIndex.set(uk, r);
+    }
+  }
+  if (manualUrlIndex.size) {
+    for (let i = mergedReviews.length - 1; i >= 0; i--) {
+      const r = mergedReviews[i];
+      if (!r || r.manualEntry === true) continue;
+      const uk = urlKeyOf(r);
+      const twin = uk && manualUrlIndex.get(uk);
+      if (twin && twin !== r) {
+        mergedReviews.splice(i, 1); // the manual twin already present wins
+        urlRescueConflicts++;
+      }
+    }
+  }
+
   const merged = { ...ours, reviews: mergedReviews };
   const lu = newerIso(ours._meta && ours._meta.lastUpdated, remote._meta && remote._meta.lastUpdated);
   const baseMeta = (lu && lu === (remote._meta && remote._meta.lastUpdated) && remote._meta) || ours._meta || remote._meta || {};
@@ -241,7 +278,7 @@ function mergeReviewsJson(ours, remote) {
 
   return {
     merged,
-    stats: { added, conflicts, conflictsResolvedToRemote, remoteDuplicateKeysSkipped, totalReviews: mergedReviews.length },
+    stats: { added, conflicts, conflictsResolvedToRemote, remoteDuplicateKeysSkipped, urlRescueConflicts, totalReviews: mergedReviews.length },
   };
 }
 
