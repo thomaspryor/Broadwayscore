@@ -321,15 +321,43 @@ async function callLLM(prompt, opts = {}) {
 // Deliberately does NOT touch spans that pass isSafeCheckCommand: guardrail 3
 // always permitted additional SAFE commands, and demoting those would be a
 // behavior change nothing asked for.
+// NEWLINE-TOLERANT on purpose, unlike candidatesFrom()'s /`([^`\n]+)`/g.
+// CommonMark inline code may span a line ending (the newline renders as a
+// space), so `rm -rf /\n` is a code span to every human reading the card but
+// is INVISIBLE to the dispatcher's detector. Adversarial review (Codex,
+// 2026-08-20) surfaced this; measured against unmodified main, a card whose
+// drafted section contained ONLY such a span was already written verbatim —
+// the hole predates this change. What this change would otherwise have done
+// is widen it: an unrelated single-line unsafe span used to cause a hard
+// fail that incidentally shielded the hidden multiline one, and demotion
+// removes that accident. So the scan used for DEMOTION and for the safety
+// RECHECK is deliberately wider than the detector's, which makes this path
+// strictly safer than main rather than merely no worse.
+const MD_CODE_SPAN_RE = /`([^`]+)`/g;
+
+// How a code span reads once Markdown has rendered it — newlines collapse to
+// spaces, so that is the form the safety check must judge.
+function renderedSpan(inner) {
+  return String(inner).trim().replace(/\s+/g, ' ');
+}
+
 function demoteUnsafeSpans(section, finalCommand) {
   const demoted = [];
-  const rewritten = String(section).replace(/`([^`\n]+)`/g, (whole, inner) => {
-    const trimmed = inner.trim();
+  const rewritten = String(section).replace(MD_CODE_SPAN_RE, (whole, inner) => {
+    const trimmed = renderedSpan(inner);
     if (trimmed === finalCommand || isSafeCheckCommand(trimmed)) return whole;
     demoted.push(trimmed);
     return `'${inner}'`;
   });
   return { section: rewritten, demoted };
+}
+
+// Every code span the card would actually render, that is not a sanctioned
+// check command. The final structural assertion before any write.
+function unsanctionedRenderedSpans(section, finalCommand) {
+  return [...String(section).matchAll(MD_CODE_SPAN_RE)]
+    .map(m => renderedSpan(m[1]))
+    .filter(c => c !== finalCommand && !isSafeCheckCommand(c));
 }
 
 function buildEnrichPrompt(card) {
@@ -652,22 +680,22 @@ async function enrichOneCard(card, opts = {}) {
   // still backticked. Here `make` is still detected, and still never reaches
   // the card as a command — it lands as prose. If a demotion somehow fails to
   // clear the detector, the original zero-write 'failed' outcome stands.
-  const allCandidates = candidatesFrom(draftedSection);
-  const unsafeExtra = allCandidates.find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
-  let sectionToWrite = draftedSection;
-  let demotedSpans = [];
-  if (unsafeExtra) {
-    const demotion = demoteUnsafeSpans(draftedSection, finalCommand);
-    sectionToWrite = demotion.section;
-    demotedSpans = demotion.demoted;
-    // Re-run the SAME detector on the rewritten section. Structural, not
-    // incidental: if anything unsanctioned survives in command position, fail
-    // exactly as before and write nothing.
-    const survivingUnsafe = candidatesFrom(sectionToWrite)
-      .find(c => c.trim() !== finalCommand && !isSafeCheckCommand(c.trim()));
-    if (survivingUnsafe) {
-      return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${survivingUnsafe.slice(0, 120)}` };
-    }
+  // Demotion runs UNCONDITIONALLY, not only when candidatesFrom() flags
+  // something. The detector cannot see a code span that straddles a newline,
+  // so gating demotion on the detector's own verdict would leave exactly the
+  // spans it is blindest to untouched. When every span is already sanctioned
+  // this is a no-op and demoted comes back empty.
+  const demotion = demoteUnsafeSpans(draftedSection, finalCommand);
+  const sectionToWrite = demotion.section;
+  const demotedSpans = demotion.demoted;
+
+  // Structural assertion, not a hope: nothing that renders as a code span may
+  // survive unless it is the validated command or itself safe-form. If a
+  // demotion somehow failed to clear it (re-paired backticks, nesting), the
+  // original zero-write 'failed' outcome stands.
+  const survivingUnsafe = unsanctionedRenderedSpans(sectionToWrite, finalCommand);
+  if (survivingUnsafe.length) {
+    return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${survivingUnsafe[0].slice(0, 120)}` };
   }
 
   const newNotes = spliceNotes(card.notes, sectionToWrite);
