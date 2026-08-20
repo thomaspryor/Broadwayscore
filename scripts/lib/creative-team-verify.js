@@ -20,6 +20,10 @@ const ROLE_CANON = {
   director: 'Director', playwright: 'Playwright', choreographer: 'Choreographer',
   'book writer': 'Book Writer', book: 'Book',
   composer: 'Composer', lyricist: 'Lyricist',
+  // IBDB's extractCreativeTeamFromText() (lib/ibdb-dates.js) emits these
+  // exact labels — added for BRO-102 so the IBDB scrape path can route
+  // through the same SERP-verification gate as the LLM path.
+  music: 'Music', lyrics: 'Lyrics', 'music & lyrics': 'Music & Lyrics',
 };
 
 /**
@@ -33,8 +37,9 @@ function roleVerb(role) {
          r === 'playwright' ? 'written by' :
          r === 'choreographer' ? 'choreographed by' :
          (r === 'book writer' || r === 'book') ? 'book by' :
-         r === 'composer' ? 'music by' :
-         r === 'lyricist' ? 'lyrics by' : null;
+         (r === 'composer' || r === 'music') ? 'music by' :
+         (r === 'lyricist' || r === 'lyrics') ? 'lyrics by' :
+         r === 'music & lyrics' ? 'music and lyrics by' : null;
 }
 
 /**

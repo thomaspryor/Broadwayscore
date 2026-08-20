@@ -152,6 +152,10 @@ on:
       # lib itself needs explicit listing per this repo's convention.
       - 'scripts/audit-creative-team-serp.js'
       - 'scripts/auto-fix-show-data.js'
+      # BRO-102 colocated test (root-level scripts/*.test.mjs is NOT globbed,
+      # registered in tests/unit-test-manifest.txt) — path-listed so a solo
+      # edit to either triggers CI.
+      - 'scripts/auto-fix-show-data.test.mjs'
       # BWW Review Roundup byline parser: a photo credit's photographer surname
       # ("Photo credit: Mark Senior") was absorbed as the next critic's first
       # name, minting a phantom URL-less duplicate that same-URL dedup could not
