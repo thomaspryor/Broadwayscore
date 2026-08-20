@@ -64,15 +64,14 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, VERIFY_LINE_RE } = (() => {
+const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
-  const { SECTION_RE, VERIFY_LINE_RE } = require('./lib/autonomous-verify-cmd.js');
+  const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
   return {
     evaluateVerifiability: gate.evaluateVerifiability,
     isSafeCheckCommand: gate.isSafeCheckCommand,
     candidatesFrom: gate.candidatesFrom,
     SECTION_RE,
-    VERIFY_LINE_RE,
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
@@ -371,32 +370,46 @@ function unsanctionedRenderedSpans(section, finalCommand) {
 // the surface a dispatcher can read a command out of, and it rode through
 // every write path unexamined.
 //
-// Narrowly scoped on purpose (task description option 3): only lines
-// matching VERIFY_LINE_RE are touched. Ordinary owner-authored prose
-// elsewhere in the card — including a backticked word that happens to sit
-// outside a VERIFY: line — is never rewritten. VERIFY_LINE_RE's capture
-// group is intentionally single-line (`(.+)$` under 'm', not 's'), matching
-// extractVerifyCmd's own candidatesFrom() scan, which also never reads
-// across a newline — so this can't miss a candidate extractVerifyCmd itself
-// would have missed too.
+// Scoped to the whole VERIFY "paragraph" — through the next blank line, next
+// heading, or end of text — NOT a single line matched by autonomous-verify-
+// cmd.js's line-anchored VERIFY_LINE_RE. Ship-check finding: a first version
+// scoped to VERIFY_LINE_RE's single line missed the same class of hole
+// guardrail 3 was hardened against for the drafted section (commits
+// a9b0c8d355b, bc9059c9b31) — CommonMark inline code can straddle a line
+// ending WITHIN one paragraph, so `VERIFY: \`rm -rf\n/tmp\`` renders as one
+// intact "VERIFY: `rm -rf /tmp`" code span to a human/Notion/Linear reader
+// even though extractVerifyCmd's own single-line regex would never treat it
+// as an executable candidate. Bounding at the next blank line/heading is
+// where CommonMark itself stops letting a code span continue, so this can't
+// be tricked into swallowing an unrelated later paragraph — and it lets the
+// SAME newline-tolerant demoteUnsafeSpans/unsanctionedRenderedSpans
+// guardrail 3 already proved safe under backtick re-pairing attacks run here
+// unchanged, rather than a second, drifting implementation.
+// (?![\s\S]) rather than a bare $ — under the 'm' flag $ matches before EVERY
+// line terminator, not just true end-of-string, which would silently collapse
+// this back to single-line matching (caught by direct regex testing before
+// this shipped: the lookahead's own `$` was satisfying at the first line
+// break, well short of the closing backtick).
+const VERIFY_BLOCK_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?:[\s\S]*?(?=\n[ \t]*\n|\n#|(?![\s\S]))/gim;
+
 function demoteUnsafeVerifyLines(text) {
   const demoted = [];
-  const rewritten = String(text).replace(VERIFY_LINE_RE, (whole, captured) => {
-    const { section: rewrittenCaptured, demoted: lineDemoted } = demoteUnsafeSpans(captured, undefined);
-    if (!lineDemoted.length) return whole;
-    demoted.push(...lineDemoted);
-    return whole.slice(0, whole.length - captured.length) + rewrittenCaptured;
+  const rewritten = String(text).replace(VERIFY_BLOCK_RE, (whole) => {
+    const { section: rewrittenBlock, demoted: blockDemoted } = demoteUnsafeSpans(whole, undefined);
+    if (!blockDemoted.length) return whole;
+    demoted.push(...blockDemoted);
+    return rewrittenBlock;
   });
   return { text: rewritten, demoted };
 }
 
-// Structural assertion mirroring unsanctionedRenderedSpans, scoped to VERIFY:
-// lines only — the re-check that makes demoteUnsafeVerifyLines a proof
+// Structural assertion mirroring unsanctionedRenderedSpans, scoped to VERIFY
+// blocks only — the re-check that makes demoteUnsafeVerifyLines a proof
 // rather than a hope.
 function unsanctionedVerifyLineSpans(text) {
   const out = [];
-  for (const m of String(text).matchAll(VERIFY_LINE_RE)) {
-    out.push(...unsanctionedRenderedSpans(m[1], undefined));
+  for (const m of String(text).matchAll(VERIFY_BLOCK_RE)) {
+    out.push(...unsanctionedRenderedSpans(m[0], undefined));
   }
   return out;
 }

@@ -449,6 +449,35 @@ test('BRO-2232: the owner-judgment write path also strips a pre-existing unsanct
   assert.ok(!/`rm -rf \/`/.test(written), 'rm -rf / must not remain backticked');
 });
 
+// A first version of this fix scoped demotion to VERIFY_LINE_RE's single
+// line and missed exactly the class of hole guardrail 3 was hardened
+// against for the drafted section: CommonMark inline code can straddle a
+// line ending within one paragraph, so a backtick opened on the VERIFY:
+// line and closed on the NEXT line still renders as one intact command to a
+// human/Notion/Linear reader. This must be caught the same as a same-line
+// span.
+test('BRO-2232: a pre-existing unsafe VERIFY line whose backtick span straddles a newline is still demoted', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2232-e', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nx.\nVERIFY: `rm -rf\n/tmp`',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  const unsafeRendered = renderedCodeSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeRendered, [], `card renders an unsanctioned command as code: ${unsafeRendered.join(', ')}`);
+  assert.ok(r.demotedSpans.some(s => /rm -rf/.test(s)), 'the multiline span should be reported as demoted');
+});
+
 // Note: a card whose pre-existing notes already carry a SAFE VERIFY line
 // can't reach either write path at all — evaluateVerifiability() sees that
 // safe candidate and arms the card, so it's skipped before any write, same
