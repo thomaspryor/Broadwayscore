@@ -106,6 +106,26 @@ describe('maybeUpgradeUrl clears stale wrongProduction/contentVerification on a 
     assert.equal(existing.wrongProduction, true);
   });
 
+  test('a cosmetic-only URL variant (same canonical article, e.g. a tracking param) still clears stale flags via force:true (#483)', () => {
+    // normalizeUrl() treats these as the SAME article — urlCanonicallyChanged()
+    // alone would say nothing changed. maybeUpgradeUrl already decided the old
+    // content is bad and is discarding it regardless, so it must still fire
+    // the invariant here; this is the exact escape maybeUpgradeUrl's force:true
+    // option exists to close (see url-change-invariant.js's `force` doc).
+    const existing = staleFlaggedFile();
+    const cosmeticVariant = existing.url + '?utm_source=twitter';
+    const changed = quiet(() => maybeUpgradeUrl(
+      existing,
+      cosmeticVariant,
+      'bww-aggregator',
+      { showTitle: 'Test Show' },
+    ));
+
+    assert.equal(changed, true);
+    assert.equal(existing.wrongProduction, undefined, 'stale wrongProduction must clear even on a cosmetic-only URL variant');
+    assert.equal(existing.contentVerification, undefined, 'stale contentVerification must clear even on a cosmetic-only URL variant');
+  });
+
   test('contentTier:invalid + wrongProduction refuses the swap entirely (flag-driven, not stale — do not auto-clear)', () => {
     const existing = staleFlaggedFile({ contentTier: 'invalid', contentTierReason: 'Wrong production' });
     const before = { ...existing };
