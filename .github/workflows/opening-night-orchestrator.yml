@@ -456,7 +456,16 @@ jobs:
           # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
           # can override with -f max_iterations=16.
           MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
-          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}
+          # BRO-66: scheduled (cron) runs never populate `inputs.*`, so this
+          # fallback — not the workflow_dispatch default of 15 above — is the
+          # cadence every opening night actually runs at. It used to fall back
+          # to 10min (rate-limit UNsafe per the input's own description),
+          # which is the "aggressive 10-min cadence" this card is named after:
+          # more iterations/hour → proportionally more REVIEW_TEXTS_TOKEN API
+          # calls from checkout-core-data + checkout-review-texts per poller
+          # dispatch, and that PAT has a flat 5000 req/hr ceiling shared by
+          # every workflow using it. 15min matches the documented safe default.
+          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 15 }}
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
 
@@ -546,12 +555,13 @@ jobs:
           #      report and the checklist + SLA dispatch tail steps never fired.
           # Exiting cleanly under the cap restores both.
           # 240min, not 300: the deadline is only checked at the TOP of each
-          # iteration, and one iteration can then run ~75min (poller's own 60min
-          # job timeout + POLL_INTERVAL sleep + dispatch/verify overhead). So the
-          # true worst case is DEADLINE + ~75min, and 240+75=315 stays under the
-          # 360 cap with a real reserve for the always() tail steps. It also has
-          # to absorb the steps that run BEFORE this one (checkout, npm ci,
-          # budget pre-flight), which are not covered by this clock.
+          # iteration, and one iteration can then run ~80min (poller's own 60min
+          # job timeout + POLL_INTERVAL sleep [15min default for scheduled runs
+          # since BRO-66, was 10] + dispatch/verify overhead). So the true worst
+          # case is DEADLINE + ~80min, and 240+80=320 stays under the 360 cap
+          # with a real reserve for the always() tail steps. It also has to
+          # absorb the steps that run BEFORE this one (checkout, npm ci, budget
+          # pre-flight), which are not covered by this clock.
           DEADLINE=$(( $(date +%s) + 240*60 ))
           COMPLETED_ITERATIONS=0
           DEADLINE_EXIT=false
