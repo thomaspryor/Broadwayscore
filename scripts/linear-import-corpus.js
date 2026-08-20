@@ -546,6 +546,14 @@ async function main() {
     },
     onBatchEnd: ({ batch, failures }) => {
       console.error(`batch ${batch}: created ${created}, existing ${alreadyOnBoard}, failed ${failures.length}`);
+      // Commit the ledger now, not at the end of the run. It is the only record
+      // of pageId -> issue, and a ~30-minute uncommitted write in a checkout that
+      // parallel sessions merge into WILL eventually be reset out from under us
+      // (it was, on 2026-08-20: ~776 rows lost mid-run). Best-effort; a failed
+      // checkpoint must never abort an import that is otherwise succeeding.
+      if (ledgerLib.checkpointLedger(ledgerPath, `batch ${batch}`)) {
+        console.error(`  ledger checkpointed after batch ${batch}`);
+      }
     },
   });
 

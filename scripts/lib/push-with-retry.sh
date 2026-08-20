@@ -148,13 +148,30 @@ git_push() {
 PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$SCRIPT_DIR/../../data/audit/push-retry-failures.jsonl}"
 record_push_failure() {
   local reason="${1:-unknown}" attempt="${2:-0}"
-  local ts remote
+  local ts remote workflow
   ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo unknown)
   remote=$(git remote get-url origin 2>/dev/null | sed -E 's#.*[/:]##; s#\.git$##' || echo unknown)
+  # workflow (task #1842, same class as task #1791): the ledger previously had
+  # no way to say WHICH of this repo's ~150 push-with-retry.sh callers hit a
+  # given failure — the "Push-retry deadman" digest check
+  # (scripts/lib/push-retry-deadman.js) could only report a raw count,
+  # forcing manual Actions-run-history archaeology to find the responsible
+  # workflow (confirmed cost: ~20min + tripped gh-poll-block.sh doing exactly
+  # that for THIS card). $GITHUB_WORKFLOW is free-text (the yml's `name:`,
+  # e.g. "Rebuild Reviews (Fast)") — unlike $remote above (sed-forced to a
+  # bare hostname/repo segment), it isn't structurally safe to interpolate
+  # into a JSON string. Escape backslashes before quotes (order matters — an
+  # already-escaped quote's backslash must not itself be re-escaped) so a
+  # workflow name containing '"' or '\' can't produce a malformed JSON line;
+  # readJsonlLedgerOrNull() (scripts/health-check.js) silently drops
+  # malformed lines, which would make exactly the record this field exists to
+  # surface vanish undetected.
+  workflow=$(printf '%s' "${GITHUB_WORKFLOW:-unknown}" | sed 's/\\/\\\\/g; s/"/\\"/g')
   mkdir -p "$(dirname "$PUSH_FAILURE_LOG")" 2>/dev/null || true
-  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s}\n' \
+  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s"}\n' \
     "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
+    "$workflow" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
 }
 

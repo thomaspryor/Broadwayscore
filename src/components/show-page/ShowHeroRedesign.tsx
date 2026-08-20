@@ -489,7 +489,7 @@ function Inner({
             <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
             <div className="min-w-0 flex-1">
               {tier && (
-                <p className="text-sm font-bold leading-tight break-words" style={{ color: tier.color }}>
+                <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>
                   {tier.label}
                 </p>
               )}
@@ -507,7 +507,7 @@ function Inner({
                 {audienceGrade.grade}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold leading-tight break-words" style={{ color: audienceGrade.color }}>
+                <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: audienceGrade.color }}>
                   {audienceGrade.label}
                 </p>
                 {audienceCount > 0 && (
