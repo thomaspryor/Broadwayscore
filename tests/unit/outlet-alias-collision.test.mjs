@@ -180,21 +180,40 @@ describe('findOutletAliasCollisions — hyphen/concatenated class (task #1844)',
     assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
   });
 
-  test('declared exception: express-uk/sunday-express (distinct UK masthead editions) does not flag', () => {
+  test('express-uk and sunday-express (distinct UK masthead editions sharing a domain) do not collide once the misplaced alias is fixed', () => {
+    // Pre-#1844-follow-up shape had 'sundayexpress' on express-uk, which
+    // collided with sunday-express (a real routing bug, not a registry
+    // duplicate — fixed by moving the alias, not by merging the outlets).
     const outlets = {
-      'express-uk': { displayName: 'Express  (UK)', tier: 4, aliases: ['sundayexpress'] },
-      'sunday-express': { displayName: 'Sunday Express', tier: 3, aliases: ['sunday-express'] },
+      'express-uk': { displayName: 'Express  (UK)', tier: 4, aliases: ['dailyexpress'] },
+      'sunday-express': { displayName: 'Sunday Express', tier: 3, aliases: ['sunday-express', 'sundayexpress'] },
     };
     assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
   });
 
-  test('declared exception: david-cote critic-name alias vs unrelated _aliasIndex routing entry does not flag', () => {
+  test('declared exceptions: david-cote/davidcote critic-name alias vs unrelated _aliasIndex routing entry does not flag (both slug and concatenated forms)', () => {
     const outlets = {
       'cote-notices': { displayName: 'Cote Notices', tier: 3, aliases: ['david cote'] },
       observer: { displayName: 'Observer', tier: 2, aliases: [] },
     };
     const aliasIndex = { 'david-cote': 'observer' };
     assert.deepStrictEqual(findOutletAliasCollisions(outlets, aliasIndex), []);
+  });
+
+  test('_aliasIndex entries get the same slug/concatenated expansion as outlet-owned keys (task #1844 follow-up)', () => {
+    // Regression for the asymmetry an adversarial review caught: an
+    // _aliasIndex entry that's hyphenated ('metro-source') must still
+    // collide with an outlet whose own id is the concatenated form
+    // ('metrosource'), not just with another outlet's raw/the-stripped text.
+    const outlets = {
+      'metro-uk': { displayName: 'Metro UK', tier: 3, aliases: ['metro'] },
+      metrosource: { displayName: 'Metrosource', tier: 3, aliases: [] },
+    };
+    const aliasIndex = { 'metro-source': 'metro-uk' };
+    const collisions = findOutletAliasCollisions(outlets, aliasIndex);
+    const hit = collisions.find((c) => c.key === 'metrosource');
+    assert.ok(hit, 'expected a collision on the concatenated key "metrosource"');
+    assert.deepStrictEqual(hit.outletIds, ['metro-uk', 'metrosource']);
   });
 });
 
