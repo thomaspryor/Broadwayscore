@@ -55,17 +55,6 @@
     "queuedAt": "2026-08-19T16:17:21.965Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32285030834",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-19T18:19:27.685Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026",
     "title": "Unhandled CV.wrongProduction on Abigail’s Party",
     "description": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content reviews 'Abigail's Party' at Theatre Royal, Stratford East (a regional London theater, not a West En — https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
@@ -130,5 +119,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-20T09:23:15.268Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32394353435",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-20T17:14:04.669Z"
   }
 ]
