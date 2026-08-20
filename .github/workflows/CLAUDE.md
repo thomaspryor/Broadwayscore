@@ -251,7 +251,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
 - **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild → deploy`
   - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
-  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
+  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (30-min dedup via `scripts/check-recent-deploy.js`, BRO-554), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)

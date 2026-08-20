@@ -559,23 +559,16 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
-          # Deploy dedup: skip only if a deploy was triggered AFTER this run started
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — one was already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
+          # Deploy dedup (BRO-554): scripts/check-recent-deploy.js — skips only
+          # when a real prod deploy landed within the last 30 min (shared
+          # DEDUP_WINDOW_SEC with scripts/lib/should-deploy-gate.js).
+          if ! node scripts/check-recent-deploy.js; then
+            echo "Skipping deploy — a recent prod deploy already covers this change"
+            exit 0
           fi
-
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
       - name: Auto-trigger text collection if needed
