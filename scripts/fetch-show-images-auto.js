@@ -33,7 +33,7 @@ const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./l
 const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { hasNewerSameTitleProduction } = require('./lib/canon-poster-art');
+const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -2238,9 +2238,10 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // production-specific sources like IBDB, ShowScore, Google Images, and Playbill.
   // Logic lives in scripts/lib/canon-poster-art.js so it's unit-testable
   // without the network/API-key dependencies of this file (BRO-119).
-  const skipTodayTix = hasNewerSameTitleProduction(show, allShowsData.shows);
+  const newerProduction = findNewerSameTitleProduction(show, allShowsData.shows);
+  const skipTodayTix = !!newerProduction;
   if (skipTodayTix) {
-    console.log(`   ⚠ Newer production of "${show.title}" exists — skipping TodayTix, trying IBDB/Google`);
+    console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
   }
 
   let apiData = null;

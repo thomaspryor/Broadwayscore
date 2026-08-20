@@ -12,22 +12,23 @@
 'use strict';
 
 /**
- * True if `show` is closed and some OTHER show in `allShows` shares its
- * title (allowing punctuation-separated variants like "The Tempest - Globe")
- * and opened later. When true, TodayTix sourcing must be skipped in favor of
+ * The other show in `allShows` that made `show` unsafe to auto-source from
+ * TodayTix — closed, shares `show`'s title (allowing punctuation-separated
+ * variants like "The Tempest - Globe"), and opened later — or `null` if none
+ * exists. When truthy, TodayTix sourcing must be skipped in favor of
  * production-specific sources (IBDB, ShowScore, Google Images, Playbill).
  *
  * @param {{id: string, title: string, status: string, openingDate?: string|null}} show
  * @param {Array<{id: string, title: string, openingDate?: string|null}>} allShows
- * @returns {boolean}
+ * @returns {{id: string, title: string, openingDate?: string|null}|null}
  */
-function hasNewerSameTitleProduction(show, allShows) {
-  if (show.status !== 'closed') return false;
+function findNewerSameTitleProduction(show, allShows) {
+  if (show.status !== 'closed') return null;
 
   const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
   const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
 
-  return allShows.some((s) => {
+  return allShows.find((s) => {
     if (s.id === show.id) return false;
     const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
     // Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
@@ -40,7 +41,7 @@ function hasNewerSameTitleProduction(show, allShows) {
     if (sBase !== baseTitle && !isVariant) return false;
     const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
     return sYear > showYear;
-  });
+  }) ?? null;
 }
 
-module.exports = { hasNewerSameTitleProduction };
+module.exports = { findNewerSameTitleProduction };
