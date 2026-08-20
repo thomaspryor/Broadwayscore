@@ -260,6 +260,23 @@ function httpsJson(method, url, headers, body) {
   });
 }
 
+// Task #1818: this job now runs even when sync-audit-checkout.sh refused
+// (stale/dirty checkout, sections.syncRefused) — read-only reporting is safe
+// on stale code, but runAutofix()/runAutofixCanary() are NOT: they file real
+// Linear cards and can dispatch real headless fix sessions (dispatchDetached
+// -> linear-next.js --headless, which answers only to LINEAR_NEXT_DISABLED —
+// a switch this plist does NOT set; BSC_RUNNER_DISABLED only ever gated the
+// legacy bsc-next.js routing path, per BRO-286). Force dryRun on both
+// whenever the checkout is untrusted so a refusal can never cause
+// card-filing/dispatch decisions to run off stale or half-written code —
+// dryRun's row states (card-filed/dispatched) render identically to the real
+// thing, so the email body is unaffected. Extracted (CLAUDE.md rule 15) so
+// this safety property has a real regression test instead of living only as
+// an inline `||`.
+function autofixShouldDryRun({ dryRun = false, syncRefused = null } = {}) {
+  return !!dryRun || !!syncRefused;
+}
+
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
 // scripts/lib/scheduled-email-count-rules.js — the one-email-per-day monitor
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
@@ -621,6 +638,8 @@ async function main() {
     console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  const autofixDryRun = autofixShouldDryRun({ dryRun, syncRefused: sections.syncRefused });
+
   // "Needs You" tab triage (card #870) — cmux tabs with a pending owner
   // decision (❓-prefixed by ~/.claude/hooks/lib/workspace-mark-done.js).
   // Computed live, not read from a snapshot file — no producer cron exists
@@ -701,7 +720,7 @@ async function main() {
     // filtered OUT of that array so renderHealthDigestBlock's "Needs your
     // attention" card only ever shows genuine judgment calls.
     const queuedForAutofix = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun, log: (m) => console.log(m) });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m) });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
@@ -750,7 +769,7 @@ async function main() {
   // Fail-soft: never blocks the digest send.
   try {
     const { runAutofixCanary } = require('./lib/autofix-canary.js');
-    runAutofixCanary({ dryRun, log: (m) => console.log(m) });
+    runAutofixCanary({ dryRun: autofixDryRun, log: (m) => console.log(m) });
   } catch (err) {
     console.error(`[digest] WARN autofix canary failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }
@@ -877,4 +896,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun };
