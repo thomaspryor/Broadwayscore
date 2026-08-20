@@ -155,17 +155,29 @@ test('findBudgetParamIndex handles optional-chaining .exceeded() checks', () => 
 
 // --- getLibRequires / getModuleExportNames --------------------------------
 
-test('getLibRequires parses destructured local lib requires', () => {
+test('getLibRequires parses destructured local lib requires (exported === local when unaliased)', () => {
   const src = `const { batchScrapeAgeRecommendations, scrapeCurrentRuntimes } = require('./lib/broadway-com-runtimes');\nconst { cleanup } = require('./lib/scraper');`;
   const reqs = getLibRequires(src);
   assert.equal(reqs.length, 2);
-  assert.deepEqual(reqs[0], { names: ['batchScrapeAgeRecommendations', 'scrapeCurrentRuntimes'], relPath: 'broadway-com-runtimes' });
-  assert.deepEqual(reqs[1], { names: ['cleanup'], relPath: 'scraper' });
+  assert.deepEqual(reqs[0], {
+    names: [
+      { exported: 'batchScrapeAgeRecommendations', local: 'batchScrapeAgeRecommendations' },
+      { exported: 'scrapeCurrentRuntimes', local: 'scrapeCurrentRuntimes' },
+    ],
+    relPath: 'broadway-com-runtimes',
+  });
+  assert.deepEqual(reqs[1], { names: [{ exported: 'cleanup', local: 'cleanup' }], relPath: 'scraper' });
 });
 
 test('getLibRequires ignores non-local requires (npm packages, node builtins)', () => {
   const src = `const fs = require('fs');\nconst { foo } = require('some-npm-package');`;
   assert.deepEqual(getLibRequires(src), []);
+});
+
+test('getLibRequires separates exported name from local alias — `exported: local` destructure', () => {
+  const src = `const { batchScrapeAgeRecommendations: batchScrape } = require('./lib/broadway-com-runtimes');`;
+  const reqs = getLibRequires(src);
+  assert.deepEqual(reqs[0].names, [{ exported: 'batchScrapeAgeRecommendations', local: 'batchScrape' }]);
 });
 
 test('getModuleExportNames parses a shorthand export list', () => {
@@ -273,6 +285,21 @@ test('hasRiskyLoop (whole-script check) still works after comment-stripping was 
   assert.equal(hasRiskyLoop(`// await fetchPage(x) mentioned only in a comment\nfor (const x of xs) { console.log(x); }`), false);
 });
 
+// Regression (adversarial code-review, BRO-109): a template literal NESTED
+// inside another template literal's ${...} interpolation — `` `outer
+// ${`inner`} end` `` — must not mis-pair the outer literal's closing
+// backtick with the inner literal's opening one. Before the fix,
+// stripComments treated backticks as plain quoted strings (skip to the next
+// backtick unconditionally), so it paired backtick 1 with backtick 2 (the
+// INNER literal's open), leaving "end`" to be scanned as ordinary code and
+// corrupting parsing of everything after it on the same line.
+test('stripComments does not mis-pair a nested template literal inside a ${...} interpolation', () => {
+  const src = 'for (const x of xs) { const u = `outer ${`http://inner`} end`; await fetchPage(x); }';
+  const cleaned = stripComments(src);
+  assert.ok(cleaned.includes('await fetchPage(x)'), cleaned);
+  assert.equal(hasRiskyLoop(src), true);
+});
+
 // Regression: a bare URL inside a backtick template literal — `https://x` —
 // contains a literal `//` that stripComments's line-comment check must NOT
 // treat as a comment start; doing so blanked the rest of the line, including
@@ -361,6 +388,21 @@ test('resolves a require reached via ../lib/ from a one-level-deep subdirectory 
   const scriptSrc = [
     `const { batchScrapeAgeRecommendations } = require('../lib/broadway-com-runtimes');`,
     `await batchScrapeAgeRecommendations(currentEntries, shows, enrichments);`,
+  ].join('\n');
+  const gaps = findBudgetThreadingGaps(scriptSrc, { 'broadway-com-runtimes': BATCH_HELPER_LIB });
+  assert.deepEqual(gaps, [{ name: 'batchScrapeAgeRecommendations', relPath: 'broadway-com-runtimes', reason: 'not-passed' }]);
+});
+
+// Regression: an aliased destructure (`exported: local`, a real pattern in
+// this repo — e.g. `fetchPage: fetchPageScraper`) must be flagged by
+// searching the script for the LOCAL alias's call sites, not the lib file's
+// exported name — the script never contains the exported name as a literal
+// call, so searching for that name found zero call sites and silently
+// reported no gap at all.
+test('flags "not-passed" through an aliased destructure import (exported name != local call-site name)', () => {
+  const scriptSrc = [
+    `const { batchScrapeAgeRecommendations: batchScrape } = require('./lib/broadway-com-runtimes');`,
+    `await batchScrape(currentEntries, shows, enrichments);`,
   ].join('\n');
   const gaps = findBudgetThreadingGaps(scriptSrc, { 'broadway-com-runtimes': BATCH_HELPER_LIB });
   assert.deepEqual(gaps, [{ name: 'batchScrapeAgeRecommendations', relPath: 'broadway-com-runtimes', reason: 'not-passed' }]);

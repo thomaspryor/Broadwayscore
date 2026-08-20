@@ -327,27 +327,41 @@ function extractLoops(src) {
  * Blanks `//` and `/* *\/` comment text (to spaces, preserving offsets) so a
  * docstring mentioning a risky-looking call by name — e.g. "fetchPage()
  * unwraps at FETCH time" in a prose comment — can't masquerade as a real
- * call to NETWORK_CALL_RE. String literals AND backtick template literals
- * are left untouched: skipped over verbatim (not blanked, not scanned for
- * `//`/`/* *\/`), same policy as findMatching. Backticks specifically must be
- * skipped here (unlike findMatching, which leaves them unskipped so a paren
- * inside a `${...}` interpolation still counts toward brace-matching): a
- * template literal holding a bare URL — `` `https://api.example.com/x` `` —
- * contains a literal `//` that is NOT a comment start, and misreading it as
- * one would blank the rest of the line, silently hiding a real network call
- * that appears later on it — exactly the false-negative class this file's
- * own header calls worse than a false positive. Extending the risky-loop
- * check to whole scripts/lib/ files (BRO-109) made comment-stripping
- * necessary at all — the original single-script scope rarely hit a large
- * enough docstring to false-positive, but library files with long header
- * comments do (scripts/lib/review-write-guard.js#safeWriteReview matched via
- * exactly this before this function was added).
+ * call to NETWORK_CALL_RE. Quoted strings are left untouched (skipped over
+ * verbatim, never scanned). Backtick template literals use the SAME
+ * text/interpolation context stack as findMatching (raw text copied verbatim
+ * and never scanned for `//`/`/* *\/`/regex starts; `${...}` interpolations
+ * get full normal handling since they're real code) — an earlier version
+ * treated backticks as plain quoted strings (skip to the next backtick,
+ * unconditionally), which mis-paired a NESTED template literal — ``  `outer
+ * ${`inner`} end`  `` — the first backtick of `inner` was read as the
+ * CLOSING backtick of the outer string, leaving `` end` `` to be scanned as
+ * ordinary code and corrupting everything after it. A bare URL inside
+ * template text — `` `https://api.example.com/x` `` — has the same false-
+ * negative risk this function was built to close in the first place: its
+ * `//` is not a comment start, and misreading it would blank the rest of the
+ * line, silently hiding a real network call later on it. Extending the
+ * risky-loop check to whole scripts/lib/ files (BRO-109) made comment-
+ * stripping necessary at all — the original single-script scope rarely hit a
+ * large enough docstring to false-positive, but library files with long
+ * header comments do (scripts/lib/review-write-guard.js#safeWriteReview
+ * matched via exactly this before this function was added).
  */
 function stripComments(src) {
   let out = '';
   let i = 0;
+  const stack = [{ text: false, braceDepth: 0 }];
   while (i < src.length) {
+    const top = stack[stack.length - 1];
     const ch = src[i];
+
+    if (top.text) {
+      if (ch === '\\') { out += src.slice(i, Math.min(i + 2, src.length)); i += 2; continue; }
+      if (ch === '`') { stack.pop(); out += ch; i++; continue; }
+      if (ch === '$' && src[i + 1] === '{') { stack.push({ text: false, braceDepth: 0 }); out += '${'; i += 2; continue; }
+      out += ch; i++; continue; // raw template text: never a comment/regex/string start
+    }
+
     if (ch === '/' && src[i + 1] === '/') {
       let j = i;
       while (j < src.length && src[j] !== '\n') j++;
@@ -366,7 +380,7 @@ function stripComments(src) {
       const end = skipRegexLiteral(src, i);
       if (end != null) { out += src.slice(i, end); i = end; continue; }
     }
-    if (ch === '"' || ch === "'" || ch === '`') {
+    if (ch === '"' || ch === "'") {
       let j = i + 1;
       while (j < src.length && src[j] !== ch) {
         if (src[j] === '\\') j++;
@@ -377,6 +391,19 @@ function stripComments(src) {
       i = j;
       continue;
     }
+    if (ch === '`') { stack.push({ text: true, braceDepth: 0 }); out += ch; i++; continue; }
+
+    if (stack.length > 1) {
+      // Same interpolation brace-depth tracking as findMatching: a nested
+      // object/block's `}` inside `${...}` must not be mistaken for the
+      // interpolation's own closing `}`.
+      if (ch === '{') top.braceDepth++;
+      else if (ch === '}') {
+        if (top.braceDepth === 0) { stack.pop(); out += ch; i++; continue; }
+        top.braceDepth--;
+      }
+    }
+
     out += ch;
     i++;
   }
@@ -512,18 +539,34 @@ function findBudgetParamIndex(fn) {
 
 /**
  * Local lib requires: `const { a, b } = require('./lib/xxx');` →
- * [{names: ['a','b'], relPath: 'xxx'}]. Matches `./lib/` AND `../lib/` (one
- * or more `../`/`./` segments) — scripts one directory down (scripts/cli/,
- * scripts/admin/, etc.) reach scripts/lib/ via `../lib/`, not `./lib/`; a
- * script→lib-helper gap in one of those would otherwise be silently invisible
- * to this check.
+ * [{names: [{exported: 'a', local: 'a'}, ...], relPath: 'xxx'}]. Matches
+ * `./lib/` AND `../lib/` (one or more `../`/`./` segments) — scripts one
+ * directory down (scripts/cli/, scripts/admin/, etc.) reach scripts/lib/ via
+ * `../lib/`, not `./lib/`; a script→lib-helper gap in one of those would
+ * otherwise be silently invisible to this check.
+ *
+ * `exported` and `local` diverge for an aliased destructure — `const {
+ * batchScrapeAgeRecommendations: batchScrape } = require(...)` — a real
+ * pattern in this repo (e.g. `fetchPage: fetchPageScraper` in
+ * scripts/recollect-for-scores.js). `exported` is the name that appears in
+ * the lib file's own module.exports / function declaration (needed to find
+ * and inspect the helper); `local` is what the SCRIPT actually calls
+ * (needed to find its call sites). Conflating them — using `exported` for
+ * both, as an earlier version of this function did — made findBudgetThreadingGaps
+ * search the script for a name it never uses, silently missing the gap.
  */
 function getLibRequires(src) {
   const re = /const\s*\{\s*([^}]+)\}\s*=\s*require\(\s*['"](?:\.\.\/|\.\/)+lib\/([A-Za-z0-9_\-]+)(?:\.js)?['"]\s*\)/g;
   const out = [];
   let m;
   while ((m = re.exec(src)) !== null) {
-    const names = m[1].split(',').map((s) => s.trim().split(':')[0].trim()).filter(Boolean);
+    const names = m[1]
+      .split(',')
+      .map((s) => {
+        const parts = s.trim().split(':').map((p) => p.trim());
+        return { exported: parts[0], local: (parts[1] || parts[0]).replace(/^\.\.\./, '') };
+      })
+      .filter((n) => n.exported);
     out.push({ names, relPath: m[2] });
   }
   return out;
@@ -586,23 +629,25 @@ function findBudgetThreadingGaps(scriptSrc, libSrcByRelPath) {
     if (libSrc == null) continue;
     const exportedNames = getModuleExportNames(libSrc);
     const signatures = extractFunctionSignatures(libSrc);
-    for (const name of names) {
-      if (!exportedNames.has(name)) continue;
-      const fn = signatures.find((f) => f.name === name);
+    for (const { exported, local } of names) {
+      if (!exportedNames.has(exported)) continue;
+      const fn = signatures.find((f) => f.name === exported);
       if (!fn) continue;
       if (!functionBodyHasRiskyLoop(fn.body, libSrc)) continue;
 
       const budgetIdx = findBudgetParamIndex(fn);
       if (budgetIdx === -1) {
-        gaps.push({ name, relPath, reason: 'unsupported' });
+        gaps.push({ name: exported, relPath, reason: 'unsupported' });
         continue;
       }
       // ANY call site short of the budget param position is a real gap —
       // even if a sibling call site elsewhere threads it correctly, the
       // short one still runs the helper's loop with no way to stop early.
-      const argCounts = callArgCounts(cleanScriptSrc, name);
+      // Searched by `local` (what the script actually calls), not `exported`
+      // — they diverge for an aliased destructure.
+      const argCounts = callArgCounts(cleanScriptSrc, local);
       if (argCounts.some((c) => c <= budgetIdx)) {
-        gaps.push({ name, relPath, reason: 'not-passed' });
+        gaps.push({ name: exported, relPath, reason: 'not-passed' });
       }
     }
   }
