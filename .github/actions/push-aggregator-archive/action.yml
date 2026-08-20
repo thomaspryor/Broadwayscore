@@ -79,17 +79,48 @@ runs:
         # Push with retry — newer local scrape always wins on conflicts
         # In rebase context, -X theirs = keep our commits being replayed (local changes)
         for i in 1 2 3 4 5; do
-          if git push origin main 2>&1; then
+          STDERR_FILE=$(mktemp)
+          if git push origin main 2>"$STDERR_FILE"; then
+            cat "$STDERR_FILE" >&2
             echo "Aggregator archive pushed successfully (attempt $i)"
+            rm -f "$STDERR_FILE"
             exit 0
           fi
+          cat "$STDERR_FILE" >&2
 
           echo "Push attempt $i failed, pulling and rebasing..."
-          if ! git pull --rebase -X theirs origin main 2>&1; then
+          if ! git pull --rebase -X theirs origin main 2>"$STDERR_FILE"; then
+            cat "$STDERR_FILE" >&2
             git rebase --abort 2>/dev/null || true
+          else
+            cat "$STDERR_FILE" >&2
           fi
 
-          sleep $((RANDOM % 10 + 5))
+          # BRO-66 sibling (card #1850): STDERR_FILE holds whichever of the
+          # two git calls above most recently failed. A rate-limit-shaped
+          # failure gets exponential backoff instead of the flat jitter sleep;
+          # a real conflict (non-rate-limit stderr) falls through unchanged.
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ")
+          rm -f "$STDERR_FILE"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Aggregator archive push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
         done
 
         echo "WARNING: Failed to push aggregator-archive after 5 attempts"
