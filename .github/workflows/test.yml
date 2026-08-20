@@ -44,6 +44,11 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # scripts/lib/workflow-secret-scan.test.mjs (task #1855) requires this
+      # top-level CLI wrapper directly (to test findGaps() end-to-end) — same
+      # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
+      # very audit when this file was added.
+      - 'scripts/audit-workflow-secret-gaps.js'
       # BRO-376 Notion->Linear idempotent import acceptance test. Registered in
       # tests/unit-test-manifest.txt. Depends only on scripts/lib/** (already
       # globbed above), so it needs its own entry, plus the top-level script it
@@ -928,6 +933,14 @@ on:
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'
       - 'tests/unit/opening-night-latency-report.test.mjs'
+      # BRO-75: wrongProduction exclusion-volume analysis (distinguishes
+      # sticky-flag re-logging across rebuild passes from genuine new
+      # over-blocking). Colocated scripts/wrong-production-exclusion-
+      # analysis.test.mjs runs in the tests/unit-test-manifest.txt batch;
+      # these source entries make a solo edit trigger it.
+      - 'scripts/lib/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.test.mjs'
       # Pull-quote guards decide the excerpt shown on every review card. The
       # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
       # truncation / hedge-guard starvation) added hard + soft guards here and
@@ -2106,6 +2119,23 @@ jobs:
         # own. Heuristic (regex require()/import parsing), non-blocking —
         # always exits 0 (see script header for why).
         run: node scripts/audit-test-yml-lib-deps.js
+
+      - name: Audit — workflow steps missing secrets their scripts require (advisory, task #1855)
+        # Static analysis: traces which process.env.SECRET reads a workflow-
+        # invoked script's (transitive, depth-bounded) require graph makes,
+        # diffs against that step's/job's/workflow's env: block, and flags
+        # secrets referenced elsewhere in this repo's workflows via the
+        # secrets context (so it only flags real repo secrets) that were never
+        # wired into that specific step. Motivated by BRO-67 (task #1855):
+        # opening-night-checklist.yml, opening-night-poller.yml, and
+        # opening-night-orchestrator.yml silently missing ANTHROPIC_API_KEY
+        # for months — the LLM call degrades gracefully on a missing key, so
+        # nothing crashed, a fallback feature just silently no-op'd. Parsing
+        # + tracing logic in scripts/lib/workflow-secret-scan.js. Heuristic
+        # (regex-based require/env-read scanning, not a real JS analyzer) —
+        # non-blocking, always exits 0 (see script header for known false-
+        # positive/negative classes, incl. computed process.env[var] keys).
+        run: node scripts/audit-workflow-secret-gaps.js
 
       - name: Audit — review-texts scripts missing from test.yml push-path allowlist (advisory, task #1760)
         # Sibling guard to the one directly above: catches the same

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-20T19:27:34.571Z",
-  "processed": 85,
-  "failed": 1211,
-  "successRate": "6.6%",
+  "updatedAt": "2026-08-20T20:03:46.606Z",
+  "processed": 144,
+  "failed": 1652,
+  "successRate": "8.0%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 83,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 3,
-    "scrapingbee": 14,
+    "browserbase": 9,
+    "directCookies": 4,
+    "scrapingbee": 22,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 30
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-08-20T10:35:21.461Z",
-      "event": "bb-session",
-      "session": "75e22968",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-20T10:35:22.576Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-20T12:50:22.090Z",
       "event": "bb-session",
@@ -69,6 +58,73 @@
       "t": "2026-08-20T19:17:43.857Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T19:29:39.106Z",
+      "event": "bb-session",
+      "session": "a724268a",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-08-20T19:29:39.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-20T19:35:50.156Z",
+      "event": "bb-session",
+      "session": "316be199",
+      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
+    },
+    {
+      "t": "2026-08-20T19:35:50.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:46:37.813Z",
+      "event": "bb-session",
+      "session": "2662928b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-lloyd-webber-closes-cind"
+    },
+    {
+      "t": "2026-08-20T19:48:35.756Z",
+      "event": "bb-session",
+      "session": "c0a14f87",
+      "url": "https://variety.com/2024/legit/reviews/galileo-musical-review-berkeley-rep-12360"
+    },
+    {
+      "t": "2026-08-20T19:48:36.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:58:37.545Z",
+      "event": "bb-session",
+      "session": "79803aab",
+      "url": "https://www.express.co.uk/entertainment/theatre/890235/the-snowman-review-peacoc"
+    },
+    {
+      "t": "2026-08-20T20:03:13.698Z",
+      "event": "bb-session",
+      "session": "bc7fffd6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
+    },
+    {
+      "t": "2026-08-20T20:03:14.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-20T20:03:31.496Z",
+      "event": "bb-session",
+      "session": "8046faff",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
+    },
+    {
+      "t": "2026-08-20T20:03:31.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
