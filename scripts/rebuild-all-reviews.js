@@ -5674,16 +5674,36 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   const { backfillMissingOutletRegions } = require('./lib/outlet-region-map');
   const outletShowCategories = outletShowCategoriesRaw;
 
+  const skippedAliasCollisionOutlets = [];
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
+    const { wouldCauseAliasCollision } = require('./lib/outlet-alias-collision');
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
+      const candidateEntry = { displayName, tier: 3, aliases: [outletId] };
+      // A new outlet whose id/displayName (raw or "the "-stripped) lands on
+      // an already-registered outlet's identity is a silent semantic
+      // duplicate (the-la-times/latimes, task #1838/#1843) — it would
+      // silently steal that outlet's byline-matched reviews. Unlike domain
+      // (nullable), there's no field to degrade here: refuse to write the
+      // entry at all. The review still resolves fine by its literal
+      // outletId — getOutletTier/getOutletDisplayName both degrade
+      // gracefully for an unregistered id (tier 3, raw-id display) — and
+      // validate-data.js's unknown-outlet check is informational, not a
+      // hard failure. Checked against outletRegistry.outlets AS MUTATED SO
+      // FAR this loop, so two colliding new outlets registered in the same
+      // batch are each caught against what came before them.
+      if (wouldCauseAliasCollision(outletRegistry.outlets, outletRegistry._aliasIndex, outletId, candidateEntry)) {
+        skippedAliasCollisionOutlets.push(outletId);
+        console.warn(`⚠️  SKIPPED auto-registering "${outletId}" — would create an alias collision with an existing outlet (near-duplicate identity). Left unregistered; resolve manually in outlet-registry.json.`);
+        continue;
+      }
       // A hint domain inferred from this outlet's own URLs can still collide
       // with an already-registered outlet — e.g. a venue-disambiguated
       // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
@@ -5695,9 +5715,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
         ? hintDomain
         : null;
       outletRegistry.outlets[outletId] = {
-        displayName,
-        tier: 3,
-        aliases: [outletId],
+        ...candidateEntry,
         domain
       };
     }
@@ -5707,15 +5725,17 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // both the newOutlets just added above and pre-existing entries (BRO-133).
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
-  if (newOutlets.length > 0 || backfilledOutlets.length > 0) {
+  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id));
+
+  if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {
       outletRegistry._meta.lastUpdated = new Date().toISOString();
     }
     const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
     fs.writeFileSync(registryPath, JSON.stringify(outletRegistry, null, 2));
-    if (newOutlets.length > 0) {
-      console.log(`\n✅ AUTO-REGISTERED ${newOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
-      for (const id of newOutlets.sort()) {
+    if (registeredOutlets.length > 0) {
+      console.log(`\n✅ AUTO-REGISTERED ${registeredOutlets.length} new outlet(s) in outlet-registry.json (Tier 3):`);
+      for (const id of registeredOutlets.sort()) {
         console.log(`  + ${id}`);
       }
       console.log('  Review tiers manually if needed.');
@@ -5729,6 +5749,11 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     console.log('  ⚠ IMPORTANT: Also update outlet-registry.json in the PRIVATE repo (~/broadway-scorecard-data/data/outlet-registry.json).');
     console.log('    CI uses the private repo copy — reviews scored here won\'t appear in production until the private registry is updated.');
     console.log('    Quick sync: cp data/outlet-registry.json ~/broadway-scorecard-data/data/ && cd ~/broadway-scorecard-data && git add data/outlet-registry.json && git commit -m "sync outlet registry" && git push');
+  }
+
+  if (skippedAliasCollisionOutlets.length > 0) {
+    console.warn(`\n⚠️  SKIPPED ${skippedAliasCollisionOutlets.length} new outlet(s) — alias collision with an existing outlet (see warnings above): ${skippedAliasCollisionOutlets.sort().join(', ')}`);
+    console.warn('  These outletIds fall back to tier 3 / raw-id display unregistered. Resolve manually in outlet-registry.json (merge into the colliding outlet, or rename to a non-colliding id).');
   }
 }
 

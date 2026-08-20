@@ -131,9 +131,47 @@ function findOutletAliasCollisions(outlets, aliasIndex) {
   return collisions.sort((a, b) => a.key.localeCompare(b.key));
 }
 
+/**
+ * Would registering `candidateId` with `candidateEntry` (displayName/aliases)
+ * create a near-duplicate against the outlets already in the registry?
+ *
+ * For callers that AUTO-CREATE new outlet entries from raw review outletIds
+ * (rebuild-all-reviews.js's AUTO-REGISTER NEW OUTLETS block) — mirrors
+ * wouldCauseDomainCollision()'s write-time-gate pattern
+ * (scripts/lib/outlet-registry-domain-collisions.js) for the alias-collision
+ * class of near-duplicate (the-la-times/latimes, BRO-90 / task #1838).
+ *
+ * Unlike `domain`, a new outlet's identity (id/displayName) isn't optional —
+ * there's no null-able field to degrade to. Callers should treat `true` as
+ * "do not write this outlet into the registry" and log loudly instead, so
+ * the review still resolves by its literal outletId (getOutletTier/
+ * getOutletDisplayName both degrade gracefully for an unregistered id —
+ * tier 3 default, raw-id display fallback) rather than silently stealing
+ * another outlet's byline-matched reviews.
+ *
+ * Pass the registry's CURRENT `outlets` map at call time (already including
+ * any candidates from earlier in the same batch that were admitted) so two
+ * colliding new outlet IDs registered in the same rebuild run are each
+ * checked against what came before them, not just against the pre-batch
+ * registry.
+ *
+ * @param {object} outlets - registry.outlets map (id → entry), NOT yet
+ *   containing candidateId
+ * @param {object} [aliasIndex] - registry._aliasIndex map
+ * @param {string} candidateId
+ * @param {object} candidateEntry - { displayName, aliases, ... }
+ * @returns {boolean}
+ */
+function wouldCauseAliasCollision(outlets, aliasIndex, candidateId, candidateEntry) {
+  const withCandidate = { ...(outlets || {}), [candidateId]: candidateEntry };
+  const collisions = findOutletAliasCollisions(withCandidate, aliasIndex);
+  return collisions.some((c) => c.outletIds.includes(candidateId));
+}
+
 module.exports = {
   stripLeadingThe,
   buildOutletTextKeys,
   findOutletAliasCollisions,
+  wouldCauseAliasCollision,
   DECLARED_THE_EXCEPTIONS,
 };
