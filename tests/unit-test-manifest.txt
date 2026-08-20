@@ -310,9 +310,8 @@ tests/unit/health-check-repeat-failures.test.mjs
 tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
-tests/unit/import-ledger.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
-tests/unit/linear-graphql-rate-limit.test.mjs
+tests/unit/import-ledger.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
@@ -337,6 +336,7 @@ tests/unit/linear-brain-done-gate.test.mjs
 tests/unit/linear-cap.test.mjs
 tests/unit/linear-client-archived-issue.test.mjs
 tests/unit/linear-client-backoff.test.mjs
+tests/unit/linear-graphql-rate-limit.test.mjs
 tests/unit/linear-next.test.mjs
 tests/unit/linear-session-done-gate.test.mjs
 tests/unit/lint-canonical-writers.test.mjs
