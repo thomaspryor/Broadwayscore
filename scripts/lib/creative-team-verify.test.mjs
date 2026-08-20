@@ -51,6 +51,25 @@ test('ROLE_CANON preserves exact-case labels for data-creative.ts routing', () =
   assert.equal(ROLE_CANON['playwright'], 'Playwright');
 });
 
+// BRO-102: IBDB's extractCreativeTeamFromText() (lib/ibdb-dates.js) emits
+// "Music"/"Lyrics"/"Music & Lyrics" (not "composer"/"lyricist") — roleVerb
+// must recognize both so the IBDB scrape path can route composer/lyricist
+// credits through the same SERP-verification gate as the LLM path.
+test('roleVerb recognizes IBDB label variants alongside the LLM-facing labels', () => {
+  assert.equal(roleVerb('music'), 'music by');
+  assert.equal(roleVerb('Music'), 'music by');
+  assert.equal(roleVerb('lyrics'), 'lyrics by');
+  assert.equal(roleVerb('Lyrics'), 'lyrics by');
+  assert.equal(roleVerb('music & lyrics'), 'music and lyrics by');
+  assert.equal(roleVerb('Music & Lyrics'), 'music and lyrics by');
+});
+
+test('ROLE_CANON maps IBDB label variants to their own exact-case labels', () => {
+  assert.equal(ROLE_CANON['music'], 'Music');
+  assert.equal(ROLE_CANON['lyrics'], 'Lyrics');
+  assert.equal(ROLE_CANON['music & lyrics'], 'Music & Lyrics');
+});
+
 test('roleVerbVariants covers audit-only roles and rejects design roles', () => {
   assert.ok(roleVerbVariants('Music & Lyrics').includes('music and lyrics by'));
   assert.ok(roleVerbVariants('composer').includes('composed by'));

@@ -1,44 +1,59 @@
 {
-  "generatedAt": "2026-08-20T10:24:12.811Z",
+  "generatedAt": "2026-08-20T20:19:40.673Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 148,
-  "defective": 2,
+  "clean": 147,
+  "defective": 3,
   "byType": {
-    "score-drift": 2
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "openingDate": "2026-08-18",
+      "showId": "abigails-party-west-end-2026",
+      "title": "Abigail’s Party",
+      "openingDate": "2026-08-19",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 67.57 vs local 67.99 (Δ0.42)"
+          "detail": "deployed cs 79.66 vs local 79.81 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17
+      "localCount": 13,
+      "deployedCount": 13
     },
     {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "title": "How the Other Half Loves",
-      "openingDate": "2026-08-12",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2022-01-19",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.5 vs local 77.42 (Δ0.08)"
+          "detail": "deployed cs 69.24 vs local 69.48 (Δ0.24)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 20,
+      "deployedCount": 20
+    },
+    {
+      "showId": "wicked-2003",
+      "title": "Wicked",
+      "openingDate": "2003-10-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63 vs local 62.79 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 22
     }
   ]
 }

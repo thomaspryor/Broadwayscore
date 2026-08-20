@@ -11,9 +11,11 @@ scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
+scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
+scripts/auto-fix-show-data.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-core-data-guard.test.mjs
 scripts/autonomous-merge-parity.test.mjs
@@ -113,6 +115,7 @@ scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
 scripts/verify-contamination-gate.test.mjs
+scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-email-policy.test.mjs
@@ -243,6 +246,7 @@ tests/unit/cross-show-url-reroute.test.mjs
 tests/unit/curated-historical-min-reviews.test.mjs
 tests/unit/cv-stale-wrongproduction-selfheal.test.mjs
 tests/unit/date-utils.test.mjs
+tests/unit/dedupe-byline-preference.test.mjs
 tests/unit/dedupe-same-url-bylines-stale-canonical.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
@@ -257,6 +261,7 @@ tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
 tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
+tests/unit/dispatch-prompt-review-rule.test.mjs
 tests/unit/dispatcher-safety-port-table.test.mjs
 tests/unit/display-field-artifacts.test.mjs
 tests/unit/dl-distinguished-performance-chip.test.mjs
@@ -486,6 +491,7 @@ tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
+tests/unit/review-normalization.maybeUpgradeUrl.test.mjs
 tests/unit/review-output-guard.test.mjs
 tests/unit/review-scoring-backfill.test.mjs
 tests/unit/review-texts-dir-resolution.test.mjs
@@ -498,6 +504,7 @@ tests/unit/roundup-rebuild-guard.test.mjs
 tests/unit/rss-opening-window-identity.test.mjs
 tests/unit/rss-poller-state.test.mjs
 tests/unit/rss-wrongshow-guard.test.mjs
+tests/unit/safari-cookie-extraction.test.mjs
 tests/unit/same-title-venue-carveout.test.mjs
 tests/unit/same-url-byline-dedup.test.mjs
 tests/unit/sample.test.mjs
@@ -524,6 +531,7 @@ tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs
 tests/unit/serp-session-cap.test.mjs
 tests/unit/serp-slug-discovery.test.mjs
+tests/unit/session-metrics.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs

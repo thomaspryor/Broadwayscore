@@ -251,6 +251,58 @@ test('null/undefined data → null (never throws)', () => {
   assert.equal(detectCvFlagContradiction(undefined), null);
 });
 
+// BRO-2244: anticipatory ingest gate (wrongProductionReason:
+// 'anticipatory_pre_opening_post') flags on temporal grounds a content-only CV
+// pass cannot evaluate — rebuild-all-reviews.js and wrong-production-autoclear.js
+// already treat it as protected from CV-based auto-clear, so this audit must not
+// surface it as a "new contradiction" either (real prod instance: a-christmas
+// -carol-west-end-2026/broadwayworld--aliya-al-hassan.json).
+test('anticipatory_pre_opening_post wrongProductionReason exempted, even with high-confidence affirming CV', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    textWordCount: 508,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('anticipatory exemption is wrongProduction-only — same reason string on wrongShow still fires', () => {
+  const f = {
+    wrongShow: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+// Codex ship-check finding: exempting an anticipatory wrongProduction flag must
+// fall through to a co-occurring wrongShow flag on the SAME file, not abort
+// outright — the exempt reason says nothing about whether wrongShow is also a
+// legitimate contradiction worth human triage. 0 corpus instances today, but
+// nothing structurally prevents a file from carrying both.
+test('wrongProduction exempt + wrongShow both true on one file → wrongShow still surfaces', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongShow: true,
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('a different (non-exempt) wrongProductionReason still fires as a contradiction', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'CV-promoted: some other reason',
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongProduction');
+});
+
 // SELF_CLEAR_PAIRS coverage (tasks #1020/#1022/#1023) — a record asserting an
 // exclusion flag AND its own retraction breadcrumb at once. Regression guard
 // for #1023: an-american-in-paris-2015/broadwayworld--roy-berko.json and
