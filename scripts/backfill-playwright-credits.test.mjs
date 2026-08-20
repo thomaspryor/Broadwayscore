@@ -66,6 +66,18 @@ test('verifyAndMergePlaywright: a confirmed Playwright is merged in', async () =
   assert.equal(merged[1].name, 'Reginald Rose', 'inserted after Director');
 });
 
+test('verifyAndMergePlaywright: a combined Playwright credit is split before SERP verification', async () => {
+  let seenProposed;
+  const { verifyAndMergePlaywright } = loadWithMockedVerify(async (show, proposed) => {
+    seenProposed = proposed;
+    return [];
+  });
+  const show = fakeShow();
+  await verifyAndMergePlaywright(show, [{ name: 'John Doe & Jane Smith', role: 'Playwright' }], '2026');
+  assert.equal(seenProposed.length, 2, 'combined name must be split into individual entries before verification');
+  assert.deepEqual(seenProposed.map(m => m.name).sort(), ['Jane Smith', 'John Doe']);
+});
+
 test('verifyAndMergePlaywright: role already present -> mergeCreativeTeam no-ops even if verified', async () => {
   const { verifyAndMergePlaywright } = loadWithMockedVerify(async (show, proposed, year, sourceTag) =>
     proposed.map(m => ({ ...m, _source: sourceTag }))

@@ -102,6 +102,38 @@ test('buildVerifiedCreativeTeamChange: merge mode rejects an unconfirmed new rol
   assert.equal(result, null);
 });
 
+test('buildVerifiedCreativeTeamChange: force mode with a partial verified result does not shrink an existing complete team', async () => {
+  const { buildVerifiedCreativeTeamChange } = loadWithMockedVerify(async (show, proposed) =>
+    // Simulate one member failing (network error / rejection) — only 1 of 2 survives.
+    proposed.slice(0, 1)
+  );
+  const show = fakeShow({
+    creativeTeam: [
+      { name: 'Existing Director', role: 'Director' },
+      { name: 'Existing Playwright', role: 'Playwright' },
+    ],
+  });
+  const ibdb = {
+    creativeTeam: [
+      { name: 'IBDB Director', role: 'Director' },
+      { name: 'IBDB Playwright', role: 'Playwright' },
+    ],
+  };
+  const result = await buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits: false, force: true });
+  assert.equal(result, null, 'a partial verified result must not silently shrink an existing complete team on --force');
+});
+
+test('buildVerifiedCreativeTeamChange: force mode with a full verified result still overwrites', async () => {
+  const { buildVerifiedCreativeTeamChange } = loadWithMockedVerify(async (show, proposed, year, sourceTag) =>
+    proposed.map(m => ({ ...m, _source: sourceTag }))
+  );
+  const show = fakeShow({ creativeTeam: [{ name: 'Old Director', role: 'Director' }] });
+  const ibdb = { creativeTeam: [{ name: 'New Director', role: 'Director' }] };
+  const result = await buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits: false, force: true });
+  assert.ok(result);
+  assert.equal(result.new[0].name, 'New Director');
+});
+
 test('buildVerifiedCreativeTeamChange: merge mode with no new roles -> null (no SERP call needed)', async () => {
   let calls = 0;
   const { buildVerifiedCreativeTeamChange } = loadWithMockedVerify(async () => { calls++; return []; });

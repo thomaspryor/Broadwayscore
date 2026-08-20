@@ -178,12 +178,16 @@ function mergeCreativeTeam(existing, ibdbTeam, targetRole) {
 // credits before merging — the IBDB regex extraction can grab the wrong
 // table cell or carry stale data, same failure class as the other
 // ibdb.creativeTeam consumers. Returns { merged, added: [] } (no-op) when
-// nothing survives verification.
+// nothing survives verification. Splits combined names first — a combined
+// "John Doe & Jane Smith" credit would otherwise be SERP-queried as one
+// literal phrase and silently fail to confirm (same reasoning as
+// discover-new-shows.js/enrich-ibdb-dates.js, ship-check 2026-08-20).
 async function verifyAndMergePlaywright(show, ibdbCreativeTeam, year) {
   const playwrightEntries = (ibdbCreativeTeam || []).filter(e => e.role === 'Playwright');
   if (playwrightEntries.length === 0) return { merged: show.creativeTeam || [], added: [] };
 
-  const verified = await verifyCreativeTeamViaSerp(show, playwrightEntries, year, 'serp-verified-ibdb-playwright-backfill');
+  const { result: splitEntries } = splitCombinedCredits(playwrightEntries);
+  const verified = await verifyCreativeTeamViaSerp(show, splitEntries, year, 'serp-verified-ibdb-playwright-backfill');
   if (verified.length === 0) return { merged: show.creativeTeam || [], added: [] };
 
   return mergeCreativeTeam(show.creativeTeam || [], verified, 'Playwright');

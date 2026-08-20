@@ -150,6 +150,16 @@ async function buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits, force
   if (!hasCreativeTeam || force) {
     const verified = await verifyCreativeTeamViaSerp(show, splitIbdbTeam, year, 'serp-verified-ibdb-enrich');
     if (verified.length === 0) return null;
+    // verifyCreativeTeamViaSerp doesn't distinguish "explicitly rejected" from
+    // "SERP call errored" (both just come back missing from `verified`) — a
+    // transient network blip on --force could otherwise silently shrink an
+    // existing complete team down to whatever happened to succeed. --force is
+    // a rare, manually-triggered mode; the safe default is to skip the write
+    // rather than lose credits (ship-check 2026-08-20).
+    if (hasCreativeTeam && force && verified.length < show.creativeTeam.length) {
+      console.log(`  ⚠️  ${show.title}: --force verified only ${verified.length}/${splitIbdbTeam.length} IBDB credit(s), fewer than the existing ${show.creativeTeam.length} — skipping creativeTeam overwrite (possible transient SERP failure, not necessarily a real rejection)`);
+      return null;
+    }
     return {
       field: 'creativeTeam',
       old: hasCreativeTeam ? `${show.creativeTeam.length} role(s)` : 'empty',
