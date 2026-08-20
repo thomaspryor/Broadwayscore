@@ -44,10 +44,45 @@ function stripLeadingThe(text) {
 }
 
 /**
+ * Expand one piece of raw text into every form it would resolve from in
+ * buildRegistryAliasMap()'s surface: raw, "the "-stripped, slugified,
+ * "the-"-stripped-slug, and concatenated (slug with hyphens removed).
+ * Shared by buildOutletTextKeys() (outlet id/displayName/aliases) and the
+ * _aliasIndex scan in findOutletAliasCollisions() — both are literal-text
+ * resolution sources and must get the same expansion (task #1844: an
+ * earlier version only expanded outlet-owned keys, missing a hyphenated
+ * vs. concatenated collision between an _aliasIndex entry and an outlet).
+ *
+ * @param {string} text
+ * @returns {string[]} lowercase forms (deduplicated by the caller's Set)
+ */
+function expandTextKeyForms(text) {
+  const forms = [];
+  if (!text) return forms;
+  const lower = String(text).toLowerCase().trim();
+  if (!lower) return forms;
+  forms.push(lower);
+  const stripped = stripLeadingThe(lower);
+  if (stripped && stripped !== lower) forms.push(stripped);
+
+  const slug = slugify(lower);
+  if (!slug) return forms;
+  forms.push(slug);
+  const slugStripped = stripLeadingThe(slug);
+  if (slugStripped && slugStripped !== slug) forms.push(slugStripped);
+  // Concatenated form (no separators) — connects a hyphenated masthead
+  // registration ('theater-news-online') to a bare-domain-style one
+  // ('theaternewsonline') for the same real outlet.
+  const concat = slug.replace(/-/g, '');
+  if (concat && concat !== slug) forms.push(concat);
+
+  return forms;
+}
+
+/**
  * Build the same text-key resolution surface buildRegistryAliasMap() builds
- * for a single outlet: its id, displayName, and aliases, each in raw,
- * "the "-stripped, slugified, "the-"-stripped-slug, and concatenated
- * (slug with hyphens removed) form.
+ * for a single outlet: its id, displayName, and aliases, each expanded via
+ * expandTextKeyForms().
  *
  * @param {string} outletId
  * @param {object} entry - registry.outlets[outletId]
@@ -56,23 +91,7 @@ function stripLeadingThe(text) {
 function buildOutletTextKeys(outletId, entry) {
   const keys = new Set();
   const addKey = (text) => {
-    if (!text) return;
-    const lower = String(text).toLowerCase().trim();
-    if (!lower) return;
-    keys.add(lower);
-    const stripped = stripLeadingThe(lower);
-    if (stripped && stripped !== lower) keys.add(stripped);
-
-    const slug = slugify(lower);
-    if (!slug) return;
-    keys.add(slug);
-    const slugStripped = stripLeadingThe(slug);
-    if (slugStripped && slugStripped !== slug) keys.add(slugStripped);
-    // Concatenated form (no separators) — connects a hyphenated masthead
-    // registration ('theater-news-online') to a bare-domain-style one
-    // ('theaternewsonline') for the same real outlet.
-    const concat = slug.replace(/-/g, '');
-    if (concat && concat !== slug) keys.add(concat);
+    for (const form of expandTextKeyForms(text)) keys.add(form);
   };
 
   addKey(outletId);
@@ -92,19 +111,18 @@ function buildOutletTextKeys(outletId, entry) {
  * instead of weakening the detector when a legitimate split turns up.
  */
 const DECLARED_THE_EXCEPTIONS = [
-  // 'Express (UK)' (daily) and 'Sunday Express' are distinct, separately
-  // edited UK newspaper mastheads that share a publisher and domain
-  // (express.co.uk) — not a duplicate registration. express-uk's own
-  // 'sundayexpress' alias predates this detector and is left as-is (task
-  // #1844); investigated, not merged.
-  ['sundayexpress', 'express-uk', 'sunday-express'],
   // Not an outlet duplicate: 'cote-notices' lists critic David Cote's own
   // name ("david cote") as an alias of his self-published Substack outlet;
   // the unrelated _aliasIndex entry 'david-cote' -> 'observer' is a
   // critic-name routing default (his primary staff outlet), not a second
-  // registration of the same site. Only collides via slugify('david cote')
-  // === 'david-cote' (task #1844); investigated, not merged.
+  // registration of the same site. Collides on both the slugified
+  // ('david-cote') and concatenated ('davidcote') forms of "david cote"
+  // (task #1844); investigated, not merged. If normalizeOutlet('David
+  // Cote')/('DavidCote') ever needs to resolve consistently regardless of
+  // separator, that's a routing-precedence fix in review-normalization.js,
+  // not a registry merge — these two outlets are genuinely different.
   ['david-cote', 'cote-notices', 'observer'],
+  ['davidcote', 'cote-notices', 'observer'],
 ];
 
 function isDeclaredException(key, outletIds) {
@@ -146,11 +164,7 @@ function findOutletAliasCollisions(outlets, aliasIndex) {
 
   for (const [alias, targetId] of Object.entries(aliasIndex || {})) {
     if (alias === '_note' || !targetId) continue;
-    const lower = String(alias).toLowerCase().trim();
-    if (!lower) continue;
-    claim(lower, targetId);
-    const stripped = stripLeadingThe(lower);
-    if (stripped && stripped !== lower) claim(stripped, targetId);
+    for (const form of expandTextKeyForms(alias)) claim(form, targetId);
   }
 
   const collisions = [];
@@ -203,6 +217,7 @@ function wouldCauseAliasCollision(outlets, aliasIndex, candidateId, candidateEnt
 
 module.exports = {
   stripLeadingThe,
+  expandTextKeyForms,
   buildOutletTextKeys,
   findOutletAliasCollisions,
   wouldCauseAliasCollision,
