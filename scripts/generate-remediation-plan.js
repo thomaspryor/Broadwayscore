@@ -601,6 +601,7 @@ ${diagnosis.originalMessage
       confidence: diagnosis.confidence,
       showId: diagnosis.showId,
       showSlug: diagnosis.showSlug,
+      showIds: diagShowIds.length > 0 ? diagShowIds : (diagnosis.showId ? [diagnosis.showId] : []),
     },
     // PII stays OUT of the persisted plan file — data/pending-fixes/ is
     // committed to the PUBLIC repo (it was gitignored 2026-03-08 for exactly
