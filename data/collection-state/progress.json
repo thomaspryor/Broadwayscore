@@ -119,7 +119,14 @@
     "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
     "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
     "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
-    "cinderella-west-end-2026/independent--oliver-browning.json"
+    "cinderella-west-end-2026/independent--oliver-browning.json",
+    "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+    "cinderella-west-end-2026/london-box-office--stuart-king.json",
+    "cinderella-west-end-2026/standard--the-standard.json",
+    "cinderella-west-end-2026/telegraph--marianka-swain.json",
+    "galileo-2026/variety--dennis-harvey.json",
+    "galileo-2026/san-francisco-chronicle--lily-janiak.json",
+    "galileo-2026/sfist--jay-barmann.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1697,7 +1704,10 @@
     "cinderella-west-end-2026/ew--emlyn-travis.json",
     "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
     "cinderella-west-end-2026/observer--david-cote.json",
-    "cinderella-west-end-2026/bloomberg--chris-rovzar.json"
+    "cinderella-west-end-2026/bloomberg--chris-rovzar.json",
+    "cinderella-west-end-2026/northjerseycom--robert-feldberg.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1771,7 +1781,9 @@
       "billy-elliot-the-musical-west-end-2027/whatsonstage--phil-lowe.json",
       "christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json",
       "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
-      "cinderella-west-end-2026/independent--oliver-browning.json"
+      "cinderella-west-end-2026/independent--oliver-browning.json",
+      "cinderella-west-end-2026/london-box-office--stuart-king.json",
+      "cinderella-west-end-2026/standard--the-standard.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1779,7 +1791,9 @@
       "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
       "hamilton-west-end-2021/variety--kj-yossman.json",
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
-      "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json"
+      "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
+      "data/review-texts/galileo-2026/variety--dennis-harvey.json",
+      "galileo-2026/variety--dennis-harvey.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1805,7 +1819,9 @@
       "hadestown-2019/theatrely--theatrely-staff.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "hamilton-2015/nytimes--ben-brantley.json",
-      "cinderella-west-end-2026/broadwaynews--brittani-samuel.json"
+      "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+      "cinderella-west-end-2026/telegraph--marianka-swain.json",
+      "galileo-2026/san-francisco-chronicle--lily-janiak.json"
     ],
     "brightdata": [
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
@@ -1837,11 +1853,13 @@
       "wicked-west-end-2021/thestage--paul-vale.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
       "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
-      "billy-elliot-the-musical-west-end-2027/thereviewshub--the-reviews-hub.json"
+      "billy-elliot-the-musical-west-end-2027/thereviewshub--the-reviews-hub.json",
+      "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+      "galileo-2026/sfist--jay-barmann.json"
     ]
   },
   "startTime": "2026-08-20T09:36:04.336Z",
-  "lastProcessed": "cinderella-west-end-2026/independent--oliver-browning.json",
+  "lastProcessed": "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json",
   "log": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -1925,6 +1943,17 @@
       "event": "bb-session",
       "session": "2662928b",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-lloyd-webber-closes-cind"
+    },
+    {
+      "t": "2026-08-20T19:48:35.756Z",
+      "event": "bb-session",
+      "session": "c0a14f87",
+      "url": "https://variety.com/2024/legit/reviews/galileo-musical-review-berkeley-rep-12360"
+    },
+    {
+      "t": "2026-08-20T19:48:36.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-20T19:47:16.434Z",
-  "processed": 120,
-  "failed": 1576,
-  "successRate": "7.1%",
+  "updatedAt": "2026-08-20T19:50:43.536Z",
+  "processed": 127,
+  "failed": 1579,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 70,
+    "playwright": 72,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 7,
     "directCookies": 4,
-    "scrapingbee": 18,
+    "scrapingbee": 20,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 26
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -97,6 +97,17 @@
       "event": "bb-session",
       "session": "2662928b",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-lloyd-webber-closes-cind"
+    },
+    {
+      "t": "2026-08-20T19:48:35.756Z",
+      "event": "bb-session",
+      "session": "c0a14f87",
+      "url": "https://variety.com/2024/legit/reviews/galileo-musical-review-berkeley-rep-12360"
+    },
+    {
+      "t": "2026-08-20T19:48:36.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
