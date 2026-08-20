@@ -87,10 +87,13 @@ describe('detectLateAdd', () => {
     // BRO-91 corpus-wide run surfaced this shape repeatedly on Broadway titles
     // with no priorRuns/transferOf link yet: a review of an earlier run
     // (West End original, out-of-town tryout) predates the Broadway catalog
-    // clock by hundreds of days, well past any preview window.
+    // clock by hundreds of days, well past any preview window. The earlier
+    // review is listed SECOND here (not element 0) so this can only pass if
+    // detectLateAdd actually scans for the minimum publishDate rather than
+    // assuming the earliest review is always first in the array.
     const reviewsForShow = [
-      { assignedScore: 85, publishDate: '2023-11-02', firstSeenAt: '2025-09-01T00:00:00Z', outletId: 'guardian' },
       { assignedScore: 79, publishDate: '2025-03-11', firstSeenAt: '2025-03-12T00:00:00Z', outletId: 'nytimes' },
+      { assignedScore: 85, publishDate: '2023-11-02', firstSeenAt: '2025-09-01T00:00:00Z', outletId: 'guardian' },
     ];
     const r = detectLateAdd(reviewsForShow, '2025-03-25');
     assert.equal(r.isLateAdd, true);
@@ -100,11 +103,13 @@ describe('detectLateAdd', () => {
 
   test('West End class: an earlier venue run under the same catalog entry, well past grace', () => {
     // Mirrors the West End side of the corpus-wide run: an off-West-End or
-    // regional-transfer run's reviews land under the transfer venue's later
-    // catalog clock with no priorRuns link yet.
+    // regional-transfer run's reviews (both predating the catalog clock)
+    // land under the transfer venue's later catalog clock with no
+    // priorRuns link yet. The earlier review is listed SECOND to prove the
+    // min-selection scan, not array position.
     const reviewsForShow = [
-      { assignedScore: 90, publishDate: '2025-10-08', firstSeenAt: '2026-06-01T00:00:00Z', outletId: 'thestage' },
-      { assignedScore: 88, publishDate: '2026-06-16', firstSeenAt: '2026-06-17T00:00:00Z', outletId: 'whatsonstage' },
+      { assignedScore: 88, publishDate: '2026-06-01', firstSeenAt: '2026-06-02T00:00:00Z', outletId: 'whatsonstage' },
+      { assignedScore: 90, publishDate: '2025-10-08', firstSeenAt: '2026-06-03T00:00:00Z', outletId: 'thestage' },
     ];
     const r = detectLateAdd(reviewsForShow, '2026-06-13');
     assert.equal(r.isLateAdd, true);
