@@ -186,6 +186,13 @@ function hasDeclaredPriorRuns(show) {
 // These are written by date-based setters and are valid candidates for priorRuns
 // auto-clear. Anything not in this set (and not in the auto-prefix list below)
 // is treated as a manual reason and protected.
+//
+// ALSO CONSUMED by scripts/lib/flag-contradiction.js's detectCvFlagContradiction
+// (BRO-2244) as the set of wrongProductionReason values a content-only CV pass
+// cannot evaluate (temporal/production-context, not text content) — that
+// consumer exempts these reasons from the flag-vs-CV contradiction audit.
+// Adding a new value here also exempts it from that CI gate; confirm that's
+// intended (or split into a differently-scoped set) before adding one.
 const DATE_ONLY_AUTO_REASONS = new Set([
   'anticipatory_pre_opening_post', // collect-review-texts.js anticipatory gate
 ]);

@@ -277,6 +277,22 @@ test('anticipatory exemption is wrongProduction-only — same reason string on w
   assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
 });
 
+// Codex ship-check finding: exempting an anticipatory wrongProduction flag must
+// fall through to a co-occurring wrongShow flag on the SAME file, not abort
+// outright — the exempt reason says nothing about whether wrongShow is also a
+// legitimate contradiction worth human triage. 0 corpus instances today, but
+// nothing structurally prevents a file from carrying both.
+test('wrongProduction exempt + wrongShow both true on one file → wrongShow still surfaces', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongShow: true,
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
 test('a different (non-exempt) wrongProductionReason still fires as a contradiction', () => {
   const f = {
     wrongProduction: true,
