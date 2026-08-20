@@ -1,5 +1,6 @@
 /**
- * Near-duplicate outlet-registry detector (the-la-times class, task #1838 / BRO-90).
+ * Near-duplicate outlet-registry detector (the-la-times class, task #1838 / BRO-90;
+ * extended to the slugify()/concatenated class by task #1844).
  *
  * buildRegistryAliasMap() (scripts/lib/review-normalization.js) resolves free
  * text to a canonical outlet ID via a WIDER surface than either existing
@@ -17,15 +18,22 @@
  * displayName "The La Times" stripped to "la times", which was already an
  * alias of 'latimes' (tier 1) — silently stealing byline-matched reviews.
  *
- * Scope note: this covers the raw-text + "the "-stripped surface (id,
- * displayName, aliases, and _aliasIndex) but NOT normalizeOutlet()'s further
- * slugify()-based fallback (review-normalization.js:427-437) — a collision
- * that only appears after full slugification (e.g. punctuation differences)
- * would not be caught here. No known live case needs that wider check; add
- * it if one turns up.
+ * Task #1844 extends this to normalizeOutlet()'s slugify()-based fallback
+ * (review-normalization.js:427-437): a slugified query only equals a
+ * DIFFERENT outlet's raw (unslugified) key when that key happens to already
+ * be slug-shaped, so slugify() alone doesn't connect a hyphenated id to a
+ * concatenated one (slugify('theater-news-online') === 'theater-news-online',
+ * it does not become 'theaternewsonline'). What actually creates the
+ * duplicate is normalizeOutlet()'s startsWith()-based concatenated-critic
+ * matching (lines 399-425) and the fact that an unresolved slug is used
+ * verbatim as a brand-new outlet id (line 440) — so a hyphenated masthead
+ * ("Theater News Online") and its de-hyphenated form ("theaternewsonline",
+ * e.g. from a bare domain) silently register as two separate outlets. Add
+ * each key's slugified form AND that slug with hyphens removed so a
+ * hyphenated and concatenated registration of the same outlet collide here.
  */
 
-const { isSentinelOutletId } = require('./review-normalization');
+const { isSentinelOutletId, slugify } = require('./review-normalization');
 
 /**
  * Strip a leading "the " (space-separated text) or "the-" (slug/id text)
@@ -37,8 +45,9 @@ function stripLeadingThe(text) {
 
 /**
  * Build the same text-key resolution surface buildRegistryAliasMap() builds
- * for a single outlet: its id, displayName, and aliases, each in both raw
- * and "the "-stripped form.
+ * for a single outlet: its id, displayName, and aliases, each in raw,
+ * "the "-stripped, slugified, "the-"-stripped-slug, and concatenated
+ * (slug with hyphens removed) form.
  *
  * @param {string} outletId
  * @param {object} entry - registry.outlets[outletId]
@@ -53,6 +62,17 @@ function buildOutletTextKeys(outletId, entry) {
     keys.add(lower);
     const stripped = stripLeadingThe(lower);
     if (stripped && stripped !== lower) keys.add(stripped);
+
+    const slug = slugify(lower);
+    if (!slug) return;
+    keys.add(slug);
+    const slugStripped = stripLeadingThe(slug);
+    if (slugStripped && slugStripped !== slug) keys.add(slugStripped);
+    // Concatenated form (no separators) — connects a hyphenated masthead
+    // registration ('theater-news-online') to a bare-domain-style one
+    // ('theaternewsonline') for the same real outlet.
+    const concat = slug.replace(/-/g, '');
+    if (concat && concat !== slug) keys.add(concat);
   };
 
   addKey(outletId);
@@ -66,13 +86,26 @@ function buildOutletTextKeys(outletId, entry) {
 
 /**
  * Declared exceptions: [textKey, outletIdA, outletIdB] triples where a
- * the-stripped collision is a deliberate, investigated edition/masthead
- * split rather than a duplicate — same pattern as EDITION_PAIRS /
- * DECLARED_ALIAS_OVERLAPS in scripts/lib/outlet-registry-domain-collisions.js.
- * Empty today (no legitimate "the "-split outlet pair has been found); add
- * entries here instead of weakening the detector if one ever turns up.
+ * collision is a deliberate, investigated edition/masthead split rather
+ * than a duplicate — same pattern as EDITION_PAIRS / DECLARED_ALIAS_OVERLAPS
+ * in scripts/lib/outlet-registry-domain-collisions.js. Add entries here
+ * instead of weakening the detector when a legitimate split turns up.
  */
-const DECLARED_THE_EXCEPTIONS = [];
+const DECLARED_THE_EXCEPTIONS = [
+  // 'Express (UK)' (daily) and 'Sunday Express' are distinct, separately
+  // edited UK newspaper mastheads that share a publisher and domain
+  // (express.co.uk) — not a duplicate registration. express-uk's own
+  // 'sundayexpress' alias predates this detector and is left as-is (task
+  // #1844); investigated, not merged.
+  ['sundayexpress', 'express-uk', 'sunday-express'],
+  // Not an outlet duplicate: 'cote-notices' lists critic David Cote's own
+  // name ("david cote") as an alias of his self-published Substack outlet;
+  // the unrelated _aliasIndex entry 'david-cote' -> 'observer' is a
+  // critic-name routing default (his primary staff outlet), not a second
+  // registration of the same site. Only collides via slugify('david cote')
+  // === 'david-cote' (task #1844); investigated, not merged.
+  ['david-cote', 'cote-notices', 'observer'],
+];
 
 function isDeclaredException(key, outletIds) {
   return DECLARED_THE_EXCEPTIONS.some(

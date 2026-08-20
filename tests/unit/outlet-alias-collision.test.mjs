@@ -1,11 +1,15 @@
 /**
- * Near-duplicate outlet-registry detector (task #1838 / BRO-90).
+ * Near-duplicate outlet-registry detector (task #1838 / BRO-90; extended to
+ * the slugify()/concatenated class by task #1844).
  *
  * buildRegistryAliasMap()'s text-resolution surface (id, displayName,
  * aliases, and each of those with a leading "the " stripped) is wider than
  * validate-data.js's existing collision checks — a new outlet whose identity
  * lands on another outlet's stripped form is a silent semantic duplicate
- * that steals byline-matched reviews (the-la-times/latimes, BRO-90).
+ * that steals byline-matched reviews (the-la-times/latimes, BRO-90). Task
+ * #1844 extends this to a hyphenated masthead and its concatenated
+ * (no-hyphen) sibling registering as two separate outlets
+ * (theater-news-online/theaternewsonline).
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
@@ -129,6 +133,71 @@ describe('findOutletAliasCollisions', () => {
   });
 });
 
+describe('findOutletAliasCollisions — hyphen/concatenated class (task #1844)', () => {
+  // Fixtures shaped like the live registry BEFORE task #1844's merge: each
+  // pair is a hyphenated masthead registration and a separately-created
+  // concatenated (no-hyphen) registration of the SAME real outlet.
+  const HYPHEN_CONCAT_FIXTURES = [
+    ['theater-news-online', 'theaternewsonline', { displayName: 'Theater News Online' }, { displayName: 'Theaternewsonline' }],
+    ['new-city-stage', 'newcitystage', { displayName: 'New City Stage' }, { displayName: 'newcitystage' }],
+    ['dallas-voice', 'dallasvoice', { displayName: 'Dallas Voice' }, { displayName: 'Dallasvoice' }],
+    ['the-only-critic', 'theonlycritic', { displayName: 'The Only Critic' }, { displayName: 'Theonlycritic' }],
+    ['adrian-dim-anlig', 'adriandimanlig', { displayName: 'Adrian Dim Anlig' }, { displayName: 'Adriandimanlig' }],
+    ['new-york-city-theatre', 'newyorkcitytheatre', { displayName: 'New York City Theatre' }, { displayName: 'Newyorkcitytheatre' }],
+    ['out-in-jersey', 'outinjersey', { displayName: 'Out In Jersey' }, { displayName: 'Outinjersey' }],
+  ];
+
+  for (const [hyphenId, concatId, hyphenEntry, concatEntry] of HYPHEN_CONCAT_FIXTURES) {
+    test(`catches ${hyphenId} as a duplicate of ${concatId} (pre-#1844 fixture)`, () => {
+      const outlets = {
+        [hyphenId]: { tier: 3, aliases: [], ...hyphenEntry },
+        [concatId]: { tier: 3, aliases: [], ...concatEntry },
+      };
+      const collisions = findOutletAliasCollisions(outlets);
+      const ids = new Set(collisions.flatMap((c) => c.outletIds));
+      assert.ok(ids.has(hyphenId), `${hyphenId} should be flagged`);
+      assert.ok(ids.has(concatId), `${concatId} should be flagged`);
+      const hit = collisions.find((c) => c.key === concatId.toLowerCase());
+      assert.ok(hit, `expected a collision on the concatenated key "${concatId}"`);
+    });
+  }
+
+  test('post-merge registry (concatenated phantom removed) has no collision', () => {
+    const outlets = {
+      'theater-news-online': {
+        displayName: 'Theater News Online', tier: 3,
+        aliases: ['theaternewsonline', 'theaternewsonline.com'],
+      },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
+  });
+
+  test('hyphenated id and concatenated id for genuinely different outlets do not collide', () => {
+    const outlets = {
+      'new-york-times': { displayName: 'The New York Times', tier: 1, aliases: [] },
+      'nypost': { displayName: 'New York Post', tier: 2, aliases: [] },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
+  });
+
+  test('declared exception: express-uk/sunday-express (distinct UK masthead editions) does not flag', () => {
+    const outlets = {
+      'express-uk': { displayName: 'Express  (UK)', tier: 4, aliases: ['sundayexpress'] },
+      'sunday-express': { displayName: 'Sunday Express', tier: 3, aliases: ['sunday-express'] },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
+  });
+
+  test('declared exception: david-cote critic-name alias vs unrelated _aliasIndex routing entry does not flag', () => {
+    const outlets = {
+      'cote-notices': { displayName: 'Cote Notices', tier: 3, aliases: ['david cote'] },
+      observer: { displayName: 'Observer', tier: 2, aliases: [] },
+    };
+    const aliasIndex = { 'david-cote': 'observer' };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets, aliasIndex), []);
+  });
+});
+
 describe('buildOutletTextKeys', () => {
   test('includes id, displayName, aliases, and their the-stripped forms', () => {
     const keys = buildOutletTextKeys('the-la-times', { displayName: 'The La Times', aliases: ['the-la-times-alt'] });
@@ -142,6 +211,18 @@ describe('buildOutletTextKeys', () => {
 
   test('handles a bare outlet with no displayName/aliases', () => {
     const keys = buildOutletTextKeys('variety', {});
+    assert.deepStrictEqual(keys, ['variety']);
+  });
+
+  test('adds the slugified and concatenated (no-hyphen) form of a spaced displayName (task #1844)', () => {
+    const keys = buildOutletTextKeys('theater-news-online', { displayName: 'Theater News Online' });
+    assert.ok(keys.includes('theater news online'), 'raw displayName');
+    assert.ok(keys.includes('theater-news-online'), 'slugified displayName');
+    assert.ok(keys.includes('theaternewsonline'), 'concatenated (no-hyphen) form');
+  });
+
+  test('does not add a redundant concatenated key when the slug already has no hyphens', () => {
+    const keys = buildOutletTextKeys('variety', { displayName: 'Variety' });
     assert.deepStrictEqual(keys, ['variety']);
   });
 });
