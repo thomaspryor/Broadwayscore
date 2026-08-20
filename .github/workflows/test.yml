@@ -533,6 +533,12 @@ on:
       # scripts/lib/** glob above.
       - 'scripts/scrape-broadway-com-audience.js'
       - 'scripts/scrape-broadway-com-audience.test.mjs'
+      # BRO-112: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/scrape-wp-theater-blogs.js'
+      - 'scripts/scrape-wp-theater-blogs.test.mjs'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.

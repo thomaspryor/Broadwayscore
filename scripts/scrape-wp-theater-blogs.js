@@ -20,7 +20,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { classifyContentTier } = require('./lib/content-quality');
+const { classifyContentTier, extractTheaterLifeByline } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
 const { setExtractedScore } = require('./lib/score-routing');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -77,6 +77,10 @@ const SITES = [
     minContentLength: 500,
     extractStarRating: true,  // "Show Name *** 1/2" in titles
     usersEndpointPublic: true,
+    // WP author id 2 ("Barry Gordin") is the site's shared publishing/admin
+    // account, not the critic — every post's WP author resolves to it. The
+    // real byline is in-body ("By: <Name>"). See BRO-112 / Notion 39b637c5.
+    authorMappingIsHouseAccount: true,
   },
 ];
 
@@ -232,6 +236,20 @@ async function fetchAuthorMapping(site) {
 // ---------------------------------------------------------------------------
 // Author extraction fallback
 // ---------------------------------------------------------------------------
+
+// Resolve author: knownAuthors map (hand-verified) → in-body byline (when the
+// WP author mapping is a shared house account rather than the critic, e.g.
+// theaterlife.com's every post resolving to site owner "Barry Gordin" —
+// BRO-112) → WP users mapping → regex fallback.
+function resolveAuthorName(site, authorId, authorMapping, plainText, post) {
+  if (site.knownAuthors && site.knownAuthors[authorId]) {
+    return site.knownAuthors[authorId];
+  }
+  if (site.authorMappingIsHouseAccount) {
+    return extractTheaterLifeByline(plainText) || authorMapping[authorId] || extractAuthorFromContent(post) || 'Unknown';
+  }
+  return authorMapping[authorId] || extractAuthorFromContent(post) || 'Unknown';
+}
 
 function extractAuthorFromContent(post) {
   // Non-greedy name regex: 2-4 words starting with uppercase (handles McCall, O'Brien, Porter II)
@@ -503,8 +521,7 @@ async function scrapeSite(site, shows) {
       continue;
     }
 
-    // Resolve author: knownAuthors map → WP users mapping → regex fallback
-    let authorName = (site.knownAuthors && site.knownAuthors[authorId]) || authorMapping[authorId] || extractAuthorFromContent(post) || 'Unknown';
+    const authorName = resolveAuthorName(site, authorId, authorMapping, plainText, post);
 
     // Build review data
     const reviewData = {
@@ -623,7 +640,11 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { SITES, resolveAuthorName, extractAuthorFromContent };
