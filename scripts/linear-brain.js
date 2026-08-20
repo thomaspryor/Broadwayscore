@@ -23,6 +23,8 @@ require('./lib/load-env').loadEnv();
 
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const { hasHelpFlag } = require('./lib/cli-help');
+const linearClient = require('./lib/linear-client');
+const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
 
@@ -30,7 +32,8 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
-  node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"]
+  node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
+    [--force "<reason ≥10 chars>"]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -45,6 +48,13 @@ Usage:
   update: moves an issue's workflow state and/or posts a comment. --state takes
           a REAL Linear state name (not notion-brain's Done|Paused vocabulary);
           an unknown name exits 1 and lists the team's actual states.
+          Moving into a completed-type state is REFUSED (exit 5) unless the
+          issue carries done-evidence: a PR recorded via a "PR-EVIDENCE:
+          merged deployed checked (<url>)" line (issue description or this
+          call's --comment), or a safe-form verification command in an
+          "## Acceptance criteria" section / "VERIFY: <cmd>" line. Bypass
+          with --force "<reason ≥10 chars>", or LINEAR_DONE_GATE_DISABLED=1
+          for automation that must not block (BRO-457).
 `;
 
 function parseArgs(argv) {
@@ -135,8 +145,20 @@ async function runProbe(args) {
   process.exit(probe.EXIT_CODES[verdict]);
 }
 
-async function main() {
-  const argv = process.argv.slice(2);
+async function main(argv = process.argv.slice(2), deps = {}) {
+  // Injectable I/O seams — real Linear client by default, same convention
+  // scripts/linear-next.js's main() uses (deps default to the live module,
+  // tests pass stubs so no live Linear API call or gate side effect happens
+  // under `node --test`). Only the `update` command's Done-transition path
+  // needs these; every other command still lazily requires linear-client.js
+  // inline, unchanged.
+  const {
+    getIssue: getIssueFn = linearClient.getIssue,
+    getTeam: getTeamFn = linearClient.getTeam,
+    updateIssue: updateIssueFn = linearClient.updateIssue,
+    createComment: createCommentFn = linearClient.createComment,
+  } = deps;
+
   if (hasHelpFlag(argv)) {
     console.log(USAGE);
     return;
@@ -210,10 +232,9 @@ async function main() {
       process.exit(1);
     }
 
-    const linearClient = require('./lib/linear-client');
     const { resolveState, formatStateError } = require('./lib/linear-state-resolve');
     try {
-      const issue = await linearClient.getIssue(identifier);
+      const issue = await getIssueFn(identifier);
       if (!issue) {
         console.error(`❌ no such issue: ${identifier}`);
         process.exit(2);
@@ -223,13 +244,52 @@ async function main() {
       // `team.states` is passed whole — resolveState normalizes both shapes.
       let target = null;
       if (args.state !== undefined) {
-        const team = await linearClient.getTeam();
+        const team = await getTeamFn();
         const resolved = resolveState(args.state, team.states);
         if (!resolved.ok) {
           console.error(`❌ ${formatStateError(resolved)}`);
           process.exit(1);
         }
         target = resolved.state;
+      }
+
+      // BRO-457: refuse a move into a completed-type state unless the issue
+      // carries one of done-semantics-gate.js's two accepted evidence shapes.
+      // Resolved (not written) so far — same "costs nothing on refusal" shape
+      // as the state-name resolve above. Gated on `target.type`, not the
+      // literal state NAME, so a team rename of "Done" doesn't silently stop
+      // gating (see linear-done-gate.js's header).
+      if (target && target.type === 'completed') {
+        const bypassReason =
+          args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
+        if (args.force && !bypassReason) {
+          console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
+        }
+        if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
+          const commentText = typeof args.comment === 'string' ? args.comment : '';
+          // getIssue()'s query already fetches comments(first: 20) — reuse
+          // that read rather than a second round-trip. Evidence posted as a
+          // PAST comment (a prior session's "PR-EVIDENCE: ..." or a VERIFY:
+          // line) must count too, not just this call's own --comment.
+          const existingComments = ((issue.comments && issue.comments.nodes) || [])
+            .map((c) => c && c.body)
+            .filter(Boolean);
+          const gate = checkLinearDoneTransition({
+            targetStateType: target.type,
+            description: issue.description || '',
+            commentText,
+            existingComments,
+          });
+          if (gate.gated && !gate.allowed) {
+            console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
+            console.error(gate.reason);
+            console.error(
+              `\nTo move it anyway, pass --force "<reason ≥10 chars>", ` +
+                `or set LINEAR_DONE_GATE_DISABLED=1 for automation that must not block.\n`
+            );
+            process.exit(5);
+          }
+        }
       }
 
       // ORDER MATTERS, and the first version had it backwards. It moved the
@@ -241,12 +301,12 @@ async function main() {
       const landed = [];
       try {
         if (args.comment !== undefined) {
-          await linearClient.createComment(issue.id, args.comment);
+          await createCommentFn(issue.id, args.comment);
           commented = true;
           landed.push('comment posted');
         }
         if (target) {
-          await linearClient.updateIssue(issue.id, { stateId: target.id });
+          await updateIssueFn(issue.id, { stateId: target.id });
           landed.push(`state → ${target.name}`);
         }
       } catch (err) {
@@ -317,4 +377,12 @@ async function main() {
   }
 }
 
-main();
+// Exported (not auto-invoked) when required as a module — the injectable
+// `deps` param above only exists so tests can drive `update`'s Done-gate
+// end-to-end without a live LINEAR_API_KEY, same convention as
+// scripts/linear-next.js's main(argv, deps).
+if (require.main === module) {
+  main();
+}
+
+module.exports = { main };
