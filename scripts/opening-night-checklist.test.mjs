@@ -159,9 +159,16 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
     assert.equal(details.missingReviews.length, 6, 'each missing review must be individually actionable');
   });
 
-  it('the stub path stays separate: missingReviews declares no details.remediation', () => {
-    // Catch 2 is remediated by createReviewFile stubs, not by a workflow
-    // dispatch — collectRemediations must ignore it rather than double-acting.
+  it('matches the REAL check contract: gap-alert stays ok:true, so collectRemediations never sees it', () => {
+    // bww-rr-count-mismatch.check.js's gap>ALERT_THRESHOLD branch returns
+    // ok:true (severity:'warning' only) BY DESIGN — see the check's own
+    // comment: "severity stays at warning even for large gaps because
+    // auto-remediation queues stubs immediately". collectRemediations()
+    // early-continues on `ok !== false` before it ever reads
+    // details.remediation, so this ok:true shape is what actually keeps the
+    // stub path from double-acting as a workflow/alert dispatch, matching the
+    // real result shape the check returns rather than an ok:false shape it
+    // never emits.
     const actions = collectRemediations(
       asShowResults(
         { ok: true, severity: 'warning', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
@@ -169,6 +176,43 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
       )
     );
     assert.equal(actions.length, 0);
+  });
+
+  it('isolates WHY: collectRemediations reads details.remediation specifically, not the presence of missingReviews', () => {
+    // The test above alone can't distinguish "collectRemediations ignores
+    // ok:true results" from "collectRemediations ignores missingReviews
+    // specifically" — both explanations pass it identically (BRO-219 followup:
+    // the same gap was found and fixed for dtli-count-mismatch's twin test in
+    // scripts/opening-night-checklist.test.mjs's catch-2b block). Holding
+    // ok:false constant across both fixtures isolates the real discriminator:
+    // a missingReviews-only details object (no .remediation key) yields zero
+    // actions, while the identical shape WITH a .remediation key attached
+    // yields one — proving the function keys off details.remediation, not
+    // off whatever else details happens to contain.
+    const missingReviewsOnly = collectRemediations(
+      asShowResults(
+        { ok: false, severity: 'error', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'bww-rr-count-mismatch'
+      )
+    );
+    assert.equal(missingReviewsOnly.length, 0, 'a missingReviews-only details object must not be read as a remediation spec');
+
+    const withRemediation = collectRemediations(
+      asShowResults(
+        {
+          ok: false,
+          severity: 'error',
+          message: 'gap',
+          details: {
+            gap: 6,
+            missingReviews: [{ outletId: 'x' }],
+            remediation: { kind: 'alert', key: 'bww-rr-hypothetical:test', conditionKey: 'bww-rr-hypothetical-test', description: 'gap' },
+          },
+        },
+        'bww-rr-count-mismatch'
+      )
+    );
+    assert.equal(withRemediation.length, 1, 'the SAME missingReviews payload must still surface once a details.remediation key is added');
   });
 
   it('the extractor-throw branch degrades instead of throwing ReferenceError', () => {
@@ -212,10 +256,16 @@ describe('catch 2b: DTLI count mismatch', () => {
     assert.ok(details.missingReviews.every(m => m.source === 'dtli-remediation'));
   });
 
-  it('the stub path stays separate: missingReviews declares no details.remediation', () => {
-    // Same as catch 2 — DTLI is remediated by createReviewFile stubs, not by a
-    // workflow dispatch — collectRemediations must ignore it rather than
-    // double-acting.
+  it('matches the REAL check contract: gap-alert stays ok:true, so collectRemediations never sees it', () => {
+    // dtli-count-mismatch.check.js's gap>ALERT_THRESHOLD branch returns
+    // ok:true (severity:'warning' only) BY DESIGN — see the check's own
+    // comment: "severity stays at warning even for large gaps because
+    // auto-remediation queues stubs immediately". collectRemediations()
+    // early-continues on `ok !== false` before it ever reads
+    // details.remediation (opening-night-remediation.js's collect loop), so
+    // this ok:true shape is what actually keeps the stub path from
+    // double-acting as a workflow/alert dispatch, matching the real result
+    // shape the check returns rather than an ok:false shape it never emits.
     const actions = collectRemediations(
       asShowResults(
         { ok: true, severity: 'warning', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
@@ -223,6 +273,41 @@ describe('catch 2b: DTLI count mismatch', () => {
       )
     );
     assert.equal(actions.length, 0);
+  });
+
+  it('isolates WHY: collectRemediations reads details.remediation specifically, not the presence of missingReviews', () => {
+    // The test above alone can't distinguish "collectRemediations ignores
+    // ok:true results" from "collectRemediations ignores missingReviews
+    // specifically" — both explanations pass it identically. Holding ok:false
+    // constant across both fixtures isolates the real discriminator: a
+    // missingReviews-only details object (no .remediation key) yields zero
+    // actions, while the identical shape WITH a .remediation key attached
+    // yields one — proving the function keys off details.remediation, not
+    // off whatever else details happens to contain.
+    const missingReviewsOnly = collectRemediations(
+      asShowResults(
+        { ok: false, severity: 'error', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(missingReviewsOnly.length, 0, 'a missingReviews-only details object must not be read as a remediation spec');
+
+    const withRemediation = collectRemediations(
+      asShowResults(
+        {
+          ok: false,
+          severity: 'error',
+          message: 'gap',
+          details: {
+            gap: 6,
+            missingReviews: [{ outletId: 'x' }],
+            remediation: { kind: 'alert', key: 'dtli-hypothetical:test', conditionKey: 'dtli-hypothetical-test', description: 'gap' },
+          },
+        },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(withRemediation.length, 1, 'the SAME missingReviews payload must still surface once a details.remediation key is added');
   });
 
   it('is auto-registered by loadChecks() (directory scan, no name-list to forget)', () => {
