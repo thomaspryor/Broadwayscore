@@ -5675,12 +5675,13 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   const outletShowCategories = outletShowCategoriesRaw;
 
   const skippedAliasCollisionOutlets = [];
+  const skippedAliasCollisionDetails = [];
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
-    const { wouldCauseAliasCollision } = require('./lib/outlet-alias-collision');
+    const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
@@ -5712,6 +5713,12 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // outlet's byline-matched reviews," which is the worse failure mode.
       if (wouldCauseAliasCollision(outletRegistry.outlets, outletRegistry._aliasIndex, outletId, candidateEntry)) {
         skippedAliasCollisionOutlets.push(outletId);
+        // Recompute the specific colliding key/outlet(s) for the persisted
+        // audit trail below — only on the rare skip path, not the hot loop.
+        const withCandidate = { ...outletRegistry.outlets, [outletId]: candidateEntry };
+        const collisions = findOutletAliasCollisions(withCandidate, outletRegistry._aliasIndex)
+          .filter((c) => c.outletIds.includes(outletId));
+        skippedAliasCollisionDetails.push({ outletId, collisions });
         console.warn(`⚠️  SKIPPED auto-registering "${outletId}" — would create an alias collision with an existing outlet (near-duplicate identity). Left unregistered; resolve manually in outlet-registry.json.`);
         continue;
       }
@@ -5765,6 +5772,23 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   if (skippedAliasCollisionOutlets.length > 0) {
     console.warn(`\n⚠️  SKIPPED ${skippedAliasCollisionOutlets.length} new outlet(s) — alias collision with an existing outlet (see warnings above): ${skippedAliasCollisionOutlets.sort().join(', ')}`);
     console.warn('  These outletIds fall back to tier 3 / raw-id display unregistered. Resolve manually in outlet-registry.json (merge into the colliding outlet, or rename to a non-colliding id).');
+    // Persisted audit trail (task #1843 ship-check — Codex flagged that the
+    // skip state previously existed only in an in-memory array + console
+    // warning, so a CI log rotation loses the only record of what needs
+    // manual resolution). Mirrors the existing rebuild-regression.json /
+    // rebuild-show-drift.json pattern: single JSON object, overwritten each
+    // run it fires, non-fatal on write failure.
+    try {
+      const auditDir = path.join(__dirname, '..', 'data', 'audit');
+      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+      fs.writeFileSync(path.join(auditDir, 'skipped-alias-collisions.json'), JSON.stringify({
+        timestamp: new Date().toISOString(),
+        skipped: skippedAliasCollisionDetails,
+      }, null, 2) + '\n');
+      console.warn('  Persisted: data/audit/skipped-alias-collisions.json');
+    } catch (auditErr) {
+      console.warn(`  Could not write skipped-alias-collisions.json: ${auditErr.message}`);
+    }
   }
 }
 
