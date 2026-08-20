@@ -5699,6 +5699,17 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // hard failure. Checked against outletRegistry.outlets AS MUTATED SO
       // FAR this loop, so two colliding new outlets registered in the same
       // batch are each caught against what came before them.
+      //
+      // Known trade-off (Codex adversarial review, #1843 ship-check): staying
+      // unregistered also makes this outlet permanently eligible for
+      // cross-market-guard.js's "COMPLETELY unregistered" bootstrap exemption
+      // (evaluateForwardCrossMarketGuard, task #817) — a US outlet review of a
+      // West End show that would otherwise be flagged silently passes until a
+      // human resolves the collision in outlet-registry.json. Accepted:
+      // registering it WOULD have applied that same forward guard, but under
+      // a stolen/near-duplicate identity — i.e. this trades "unflagged for a
+      // rare collision candidate" for "never silently steals another
+      // outlet's byline-matched reviews," which is the worse failure mode.
       if (wouldCauseAliasCollision(outletRegistry.outlets, outletRegistry._aliasIndex, outletId, candidateEntry)) {
         skippedAliasCollisionOutlets.push(outletId);
         console.warn(`⚠️  SKIPPED auto-registering "${outletId}" — would create an alias collision with an existing outlet (near-duplicate identity). Left unregistered; resolve manually in outlet-registry.json.`);
