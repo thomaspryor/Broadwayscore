@@ -74,6 +74,18 @@ on:
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # Table-parsing scrapers audited for column-count brittleness (task
+      # BRO-47/#118/#1331): each calls assertTableSchema (scripts/lib/,
+      # globbed above; scrape-alltime.ts also uses findColumnIndex) before
+      # indexing cells by position, but the scraper files themselves live
+      # outside scripts/lib/ with no scripts/** broad glob, so a solo edit
+      # to one of them alone triggered ZERO CI.
+      - 'scripts/scrape-alltime.ts'
+      - 'scripts/scrape-grosses.ts'
+      - 'scripts/backfill-grosses-history.ts'
+      - 'scripts/scrape-nydcc.js'
+      - 'scripts/scrape-obie.js'
+      - 'scripts/scrape-ibdb.ts'
       # Column-count brittleness guard (task #118) used by scrape-alltime.ts
       # and scrape-grosses.ts: its unit test is in tests/unit-test-manifest.txt
       # (tests/** is globbed above) but a solo edit to the lib needs this
