@@ -72,6 +72,7 @@ scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
+scripts/scrape-broadway-com-audience.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
@@ -273,6 +274,7 @@ tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/feedback-form-validation.test.mjs
+tests/unit/feedback-multi-show-fix.test.mjs
 tests/unit/feedback-owner-reports.test.mjs
 tests/unit/feedback-pipeline-fields.test.mjs
 tests/unit/feedback-request-ledger.test.mjs
@@ -444,6 +446,7 @@ tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-ledger-store.test.mjs
 tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs
+tests/unit/push-with-retry-fallback-eligibility.test.mjs
 tests/unit/rebuild-dedup-scored-preference.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs
 tests/unit/rebuild-helpers.test.mjs
