@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-20T18:10:47.492Z",
-  "processed": 3,
-  "failed": 4,
-  "successRate": "42.9%",
+  "updatedAt": "2026-08-20T19:08:28.792Z",
+  "processed": 67,
+  "failed": 739,
+  "successRate": "8.3%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
@@ -14,5 +14,50 @@
     "archive": 2
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-08-20T10:35:21.461Z",
+      "event": "bb-session",
+      "session": "75e22968",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T10:35:22.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T12:50:22.090Z",
+      "event": "bb-session",
+      "session": "48cb419b",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T12:50:23.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T12:54:34.117Z",
+      "event": "bb-session",
+      "session": "bc55fe41",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-20T12:54:34.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-20T12:55:04.424Z",
+      "event": "bb-session",
+      "session": "ead216d1",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-20T12:55:05.386Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
