@@ -277,7 +277,7 @@ function bwayFallbackFlags(show) {
 function fetchTodayTixPage(offset = 0, limit = 100) {
   return new Promise((resolve, reject) => {
     const url = `https://api.todaytix.com/api/v2/shows?location=1&limit=${limit}&offset=${offset}`;
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -290,6 +290,7 @@ function fetchTodayTixPage(offset = 0, limit = 100) {
       });
       response.on('error', reject);
     }).on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('TodayTix API request timed out')); });
   });
 }
 
@@ -555,7 +556,7 @@ async function fetchShowsFromPlaybillBroadway() {
 function fetchTodayTixLondonPage(offset = 0, limit = 100) {
   return new Promise((resolve, reject) => {
     const url = `https://api.todaytix.com/api/v2/shows?location=2&limit=${limit}&offset=${offset}`;
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix London API HTTP ${response.statusCode}`));
         return;
@@ -568,6 +569,7 @@ function fetchTodayTixLondonPage(offset = 0, limit = 100) {
       });
       response.on('error', reject);
     }).on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('TodayTix London API request timed out')); });
   });
 }
 
@@ -1300,7 +1302,7 @@ function searchTodayTixByTitle(title, location = 1) {
   const query = encodeURIComponent(cleanSearchTitle(title));
   const url = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${location}`;
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         resolve(null);
         return;
@@ -1372,6 +1374,7 @@ function searchTodayTixByTitle(title, location = 1) {
       });
       response.on('error', () => resolve(null));
     }).on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
   });
 }
 

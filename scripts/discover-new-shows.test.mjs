@@ -11,9 +11,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { shouldExcludeVenueShow, VENUE_LISTING_PAGES } = require('./discover-new-shows.js');
+const SOURCE_PATH = fileURLToPath(new URL('./discover-new-shows.js', import.meta.url));
 
 test('two-word protagonist-style titles are NOT excluded (Space Dogs class)', () => {
   const realShows = [
@@ -114,5 +117,44 @@ test('Orange Tree + Park Theatre linkPatterns admit shows, reject utility/pagina
     assert.ok(venue, `${name} must be in VENUE_LISTING_PAGES`);
     for (const href of admit) assert.ok(venue.linkPattern.test(href), `${name} should admit: ${href}`);
     for (const href of reject) assert.ok(!venue.linkPattern.test(href), `${name} should reject: ${href}`);
+  }
+});
+
+// BRO-108: fetchShowsFromTheatremonkey() was the only fetch() call in this file
+// with no timeout/AbortSignal, and could hang a scraper indefinitely regardless
+// of any --time-budget-min wall-clock guard (budget checks only run between
+// discovery sources, not inside a single hung network call). Static-scans every
+// network call site in the file so a future fetch()/https.get() addition without
+// timeout protection fails CI instead of shipping a silent hang risk.
+test('every fetch()/https.get() call site in discover-new-shows.js has timeout protection', () => {
+  const source = readFileSync(SOURCE_PATH, 'utf8');
+  const WINDOW = 800;
+  const isCommentLine = (index) => {
+    const lineStart = source.lastIndexOf('\n', index) + 1;
+    return source.slice(lineStart, index).trimStart().startsWith('//');
+  };
+
+  // Bare fetch( calls — excludes fetchPage(/fetchShowsFrom...( by requiring no
+  // preceding word char or dot immediately before "fetch(", and skips mentions
+  // inside // comments.
+  const fetchSites = [...source.matchAll(/(?<![.\w])fetch\(/g)].filter(m => !isCommentLine(m.index));
+  assert.ok(fetchSites.length >= 2, 'expected at least the known fetch() call sites — did they move or get removed?');
+  for (const match of fetchSites) {
+    const window = source.slice(match.index, match.index + WINDOW);
+    const line = source.slice(0, match.index).split('\n').length;
+    assert.match(window, /AbortSignal\.timeout\(\d+\)/,
+      `fetch() at line ${line} must pass an AbortSignal.timeout(...) signal`);
+  }
+
+  // https.get(/http.get( calls — Node's http(s) module doesn't support
+  // AbortSignal directly; timeout protection here is the { timeout: N } option
+  // plus a req.on('timeout', ...) handler that destroys the request.
+  const httpGetSites = [...source.matchAll(/\bhttps?\.get\(/g)].filter(m => !isCommentLine(m.index));
+  assert.ok(httpGetSites.length >= 2, 'expected at least the known https.get() call sites — did they move or get removed?');
+  for (const match of httpGetSites) {
+    const window = source.slice(match.index, match.index + WINDOW);
+    const line = source.slice(0, match.index).split('\n').length;
+    assert.match(window, /timeout\s*:\s*\d+/,
+      `https.get()/http.get() at line ${line} must pass a { timeout: N } option`);
   }
 });
