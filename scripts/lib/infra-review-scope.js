@@ -114,7 +114,17 @@ const SHARED_INFRA_RULES = [
     id: 'concurrency',
     tier: 'critical',
     label: 'concurrency primitive / push path',
-    re: /^scripts\/lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|merge-worktree-to-main|run-push-audits)\.(?:js|mjs|cjs|sh)$/,
+    // `merge-worktree-to-main` is deliberately OUTSIDE the `scripts/lib/`
+    // prefix below (BRO-253 /what-else finding, 2026-08-18): the file lives
+    // at top-level `scripts/merge-worktree-to-main.sh`, not `scripts/lib/`,
+    // so the original single `^scripts\/lib\/(?:...)` anchor could NEVER
+    // match it — the alternative sat in the list as dead text, and this
+    // "concurrency primitive / push path" gate never actually covered the
+    // file it names as its own motivating example. Caught only because a
+    // session editing that exact file noticed the pre-review gate never
+    // fired. No test previously exercised this path either — see the added
+    // case in scripts/tests/infra-review-gate.test.mjs.
+    re: /^scripts\/(?:lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|run-push-audits)|merge-worktree-to-main)\.(?:js|mjs|cjs|sh)$/,
     why: 'many sessions write here at once; a defect corrupts or silently drops another session\'s work',
   },
   {
@@ -147,6 +157,13 @@ const SHARED_INFRA_RULES = [
     // merges a bad branch unattended, which is precisely this tier's remit.
     re: /^\.github\/workflows\/(?:test|lint-workflows|vercel-deploy|vercel-build-guard|autonomous-merge)\.ya?ml$/,
     why: 'gates merges and deploys for every branch and session; a defect here lands main red, blocks prod, or merges a bad branch unattended',
+  },
+  {
+    id: 'branch-protection',
+    tier: 'critical',
+    label: 'branch protection config',
+    re: /^scripts\/setup-branch-protection\.js$/,
+    why: 'changes what GitHub allows onto main fleet-wide; BRO-378 found the literal "required PR" ask breaks ~300 direct-push workflows — a defect here is a repo-wide outage or a silently unenforced gate',
   },
   {
     id: 'ci',

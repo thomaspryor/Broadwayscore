@@ -54,8 +54,12 @@ const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady, shouldEscalateToFix, parseVerifiedOutcomeLine } = require('./lib/plan-ready.js');
-const { preflightAuth, resolveAuthEnv } = require('./lib/claude-cli.js');
+const { preflightAuth, resolveAuthEnv, resolveClaudeBin, pathWithClaudeBinDir } = require('./lib/claude-cli.js');
 const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
+// Reuse dispatch-watchdog's kill-switch staleness pager (task #1543) rather
+// than reimplementing it — same bug class (a file-based kill switch that
+// silently stops P0/P1 auto-fixes has no alarm of its own), same fix.
+const { pageIfKillSwitchStale } = require('./dispatch-watchdog.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
 
@@ -612,13 +616,20 @@ function runClaude(prompt, card, opts = {}) {
       // above the spread because an inherited empty value would shadow it.
       ...resolveAuthEnv(),
       HOME: require('os').homedir(),
-      PATH: process.env.PATH,
+      // Task #1768 (ship-check, Codex): the OUTER spawn below uses an absolute
+      // path, but this runEnv forwarded process.env.PATH untouched — so a
+      // nested `claude` the child itself invokes hit the very ENOENT the
+      // absolute-path fix was meant to close. Same helper strippedEnv uses.
+      PATH: pathWithClaudeBinDir(process.env.PATH),
     };
     // Empty string, not `delete` — matches the exact env shape preflightAuth
     // just proved works (authPing probes with `ANTHROPIC_API_KEY: ''`), so
     // the real spawn never diverges from the probed shape.
     Object.assign(runEnv, auth.envForMode || (auth.mode === 'oauth' ? { ANTHROPIC_API_KEY: '' } : {}));
-    const raw = require('child_process').execFileSync('claude', args, {
+    // Task #1768: bare-name 'claude' fails ENOENT under a launchd-minimal
+    // PATH (no ~/.local/bin) — resolveClaudeBin() finds the absolute path
+    // instead of relying on this process's own PATH to contain it.
+    const raw = require('child_process').execFileSync(resolveClaudeBin(), args, {
       cwd: runDir,
       input: prompt,
       timeout: 30 * 60 * 1000, // 30 min max
@@ -965,6 +976,30 @@ async function main() {
     console.error('--card requires a value, e.g. --card 3af637c5-416f-8199-810c-e68f50c33b8d or --card=<id>');
     process.exit(1);
   }
+  // Kill-switch staleness alarm: checked BEFORE the NOTION_API_KEY gate and
+  // BEFORE acquireLock() (deliberately, not "ride along" further down) — a
+  // broken NOTION_API_KEY or a Fix pipeline holding poll.lock for hours
+  // (up to ~2h: 4 stages x 30 min, see acquireLock()'s own comment) must not
+  // also blind the ONE mechanism meant to catch the switch going stale
+  // (Codex adversarial review, task #1720: dispatch-watchdog.js's equivalent
+  // is a standalone --health invocation for exactly this reason). Skipped
+  // on --dry-run: DRY_RUN is documented as a "safe ... preview" (see USAGE)
+  // and must not have the side effect of writing to the real alert ledger.
+  // Best-effort: alerting must never break the poll itself.
+  if (!DRY_RUN) {
+    const escalationOffFile = path.join(STATE_DIR, 'escalation-off');
+    try {
+      // Not awaited: pageIfKillSwitchStale is synchronous and its own
+      // pageOwner() already fire-and-forgets routeAlert() internally (same
+      // shape as dispatch-watchdog.js's own non-awaited call site) — an
+      // await here would misleadingly imply it blocks on alert delivery.
+      pageIfKillSwitchStale(escalationOffFile, {
+        conditionKey: 'escalation-kill-switch-stale',
+        label: 'Investigate→Fix escalation kill switch',
+        clearHint: `rm ${escalationOffFile}`,
+      });
+    } catch (err) { log(`  escalation kill-switch staleness check failed (non-fatal): ${err.message}`); }
+  }
   if (!process.env.NOTION_API_KEY) {
     console.error('NOTION_API_KEY not set in .env');
     process.exit(1);
@@ -987,6 +1022,7 @@ async function main() {
   // ALL auto-escalation immediately, no deploy needed. Checked once per run
   // (not per card) — cheap fs.existsSync, and a mid-run toggle taking effect
   // next cycle rather than mid-cycle is fine for a rate-limited safety valve.
+  // (Staleness is alarmed on above, before the API-key/lock gates.)
   const escalationKillSwitch = fs.existsSync(path.join(STATE_DIR, 'escalation-off'));
 
   // Reply loop FIRST: replies are quick and a Fix pipeline can hold this

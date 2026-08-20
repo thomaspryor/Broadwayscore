@@ -54,7 +54,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -66,6 +66,8 @@ const {
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
+const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
+const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -149,6 +151,46 @@ function localLinearDelegationMessage() {
     return `${status.alarm ? `${status.alarm} ` : ''}Linear agents: the delegation check hit its page limit, so older sessions were not examined.`;
   }
   return status.alarm || null;
+}
+
+// Cyrus runner fleet health (BRO-380 Phase 2). Same reasoning as the relay
+// above: the scheduler writes this status file on THIS machine, so CI health
+// checks never see it. The two failure modes are runaway spend (a wedged
+// runner blows the daily API cap) and silence (the scheduler dies and no
+// runner fires) — both invisible until the bill or the stalled backlog shows
+// up. This reader surfaces either in the daily digest. CYRUS_HOME override
+// keeps the alerting path testable without touching the live status file.
+const RUNNER_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'runner-health.json'
+);
+// Loop 5: finished agent pull requests pile up unmerged because no actor decides,
+// and until now nothing told the owner it was happening — four green PRs sat for a
+// day and it surfaced only because someone went looking. scripts/pr-supervisor.js
+// publishes its verdicts here on a schedule; this renders them. Same shape as the
+// relay and delegation readers above: the file's absence is unknown, never an alarm.
+const PR_SUPERVISOR_STATUS_PATH = path.join(
+  process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
+  'pr-supervisor-status.json'
+);
+function localPrSupervisorMessage() {
+  let payload;
+  try {
+    payload = JSON.parse(fs.readFileSync(PR_SUPERVISOR_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // never published on this machine — unknown, not an alarm
+  }
+  return assessSupervisorStatus(payload).message;
+}
+
+function localRunnerHealthMessage() {
+  let state;
+  try {
+    state = JSON.parse(fs.readFileSync(RUNNER_STATUS_PATH, 'utf8'));
+  } catch {
+    return null; // no runners on this machine, or file not written yet — unknown, not dead
+  }
+  return assessRunnerHealth(state).message;
 }
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
@@ -334,6 +376,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (cyrusMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(cyrusMsg)}</p>`);
   }
+  const runnerMsg = localRunnerHealthMessage();
+  if (runnerMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(runnerMsg)}</p>`);
+  }
+  const supervisorMsg = localPrSupervisorMessage();
+  if (supervisorMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
+  }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
   }
@@ -384,6 +434,24 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // cron-wired), so this only appears the mornings after someone runs
   // scripts/audit-card-relevance.js.
   if (sections.p1RelevanceAudit) blocks.push(renderNamedDigestBlock('P1 backlog relevance audit', sections.p1RelevanceAudit));
+  // Predispatch queue backlog (task #1801) — same {generatedAt, bannerText,
+  // items, moreCount} shape, no new render code. Cron'd Mac-locally before
+  // this digest sends (com.broadwayscore.predispatch-queue-audit plist), so
+  // unlike p1RelevanceAudit above this appears every morning, not only after
+  // an on-demand run.
+  if (sections.predispatchQueue) blocks.push(renderNamedDigestBlock('Predispatch queue backlog', sections.predispatchQueue));
+  // Dispatch guard queue backlog (task #1802) — generalizes the block above
+  // from predispatch-guard alone to all 8 sibling dispatch-guards.js
+  // predicates. Same {generatedAt, bannerText, items, moreCount} shape, no
+  // new render code. Same producer/plist as predispatchQueue, so it also
+  // appears every morning.
+  if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
+  // launchd blocked git syncs (task #1563) — same {generatedAt, bannerText,
+  // items, moreCount} shape, no new render code. Only appears when a job's
+  // sync actually got blocked (see readSyncRefused's header — not every
+  // caller stops running when this happens, so "blocked" not "refused"
+  // here) — silent on a normal morning, unlike the always-on blocks above.
+  if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync blocked (stale checkout)', sections.syncRefused));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
@@ -540,6 +608,17 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // sync-audit-checkout.sh blocked-sync snapshots (task #1563) — a launchd
+  // job whose git sync got blocked on stale/dirty code writes one of these;
+  // presence is itself the alert (see readSyncRefused's header). Not pushed
+  // to `problems` — that banner is for a producer that's supposed to run
+  // and didn't; this is its own named block instead, same as backlogDrain.
+  try {
+    sections.syncRefused = readSyncRefused();
+  } catch (err) {
+    console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // "Needs You" tab triage (card #870) — cmux tabs with a pending owner

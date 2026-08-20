@@ -84,6 +84,14 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
 const SUBSCRIBERS_PATH = path.join(DATA_DIR, isLondonMarket(MARKET) ? 'subscribers-westend.json' : 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
+// Sync target for syncTrackerToOrigin() below. As of task #1759,
+// opening-night-sent.json is untracked+ignored in the PUBLIC repo (like every
+// other CORE_FILES entry) — the private data repo (synced via checkout-core-
+// data/push-core-data) is the only place a `gh api contents` read/write can
+// reach it. Files sit at that repo's ROOT (checkout-core-data does
+// `cp -f /tmp/core-data-checkout/*.json data/`), so no 'data/' prefix here.
+const SYNC_REPO = 'thomaspryor/broadway-scorecard-data';
+const SYNC_REMOTE_PATH = 'opening-night-sent.json';
 const EXPRESS_COMPLETED_PATH = path.join(DATA_DIR, 'audit', 'opening-night-express-completed.json');
 
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
@@ -133,13 +141,17 @@ function mergeTrackerEntries(remoteParsed, localParsed) {
 }
 
 /**
- * Push data/opening-night-sent.json to origin/main via the GitHub Contents API.
+ * Push opening-night-sent.json to the private data repo's main branch (SYNC_REPO)
+ * via the GitHub Contents API. As of task #1759 this is the authoritative copy —
+ * the public repo no longer tracks the file, so a public-repo target would either
+ * 404 or (worse) re-create/re-track it there on every local sync.
  *
  * Why: when the script is invoked from a local shell (e.g. manual CLI preview), it
- * writes the tracker to disk but the running-in-CI workflow reads origin/main. Without
- * a sync step, the workflow can't see the CLI write and will double-send on its next
- * run. This is what caused the 2026-04-11 duplicate-preview incident (CLI sent at
- * 02:09 UTC but never committed; workflow fired at 12:21 UTC reading stale origin).
+ * writes the tracker to disk but the running-in-CI workflow reads the private repo
+ * (via checkout-core-data). Without a sync step, the workflow can't see the CLI
+ * write and will double-send on its next run. This is what caused the 2026-04-11
+ * duplicate-preview incident (CLI sent at 02:09 UTC but never committed; workflow
+ * fired at 12:21 UTC reading stale state).
  *
  * Strategy: fetch the current file from origin/main, parse it, merge in our in-memory
  * entries (CLI write wins on conflict — the CLI just sent, so our entries are newest),
@@ -171,8 +183,8 @@ function syncTrackerToOrigin(localData) {
     return;
   }
 
-  const REPO = 'thomaspryor/Broadwayscore';
-  const REMOTE_PATH = 'data/opening-night-sent.json';
+  const REPO = SYNC_REPO;
+  const REMOTE_PATH = SYNC_REMOTE_PATH;
   const BRANCH = 'main';
 
   const fetchRemote = () => {
@@ -878,7 +890,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH };
 
 if (require.main === module) {
   main().catch(err => {

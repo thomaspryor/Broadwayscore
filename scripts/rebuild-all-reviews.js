@@ -5678,16 +5678,27 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
+    const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
+      // A hint domain inferred from this outlet's own URLs can still collide
+      // with an already-registered outlet — e.g. a venue-disambiguated
+      // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
+      // that domain straight through would trip validate-data.js's
+      // domain-collision gate the instant this commit lands (task #1776).
+      // Leave domain null in that case; region backfill below still applies.
+      const hintDomain = outletDomainHints[outletId] || null;
+      const domain = hintDomain && !wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain)
+        ? hintDomain
+        : null;
       outletRegistry.outlets[outletId] = {
         displayName,
         tier: 3,
         aliases: [outletId],
-        domain: outletDomainHints[outletId] || null
+        domain
       };
     }
   }

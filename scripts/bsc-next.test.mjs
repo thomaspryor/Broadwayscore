@@ -395,7 +395,7 @@ test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth
 // hand-constructed ledger entries with successionOf pre-populated, which is
 // exactly why this slipped through: nothing drove runSuccessionDispatch()
 // itself against a real read/append round-trip. This test does.
-function runSuccessionHarness() {
+function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
   const { runSuccessionDispatch } = require('./bsc-next.js');
   const ledger = [];
   const launched = [];
@@ -406,7 +406,7 @@ function runSuccessionHarness() {
     launchCmux: () => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; },
     readLedgerEntries: () => ledger.slice(),
     appendLedgerEntry: (e) => { const w = { ts: new Date().toISOString(), ...e }; ledger.push(w); return w; },
-    fetchCard: () => null,
+    fetchCard: fetchCardOverride || (() => null),
     // Injected so this end-to-end test never writes to the real, shared
     // data/audit/alert-digest-queue.json (it did, before this seam existed
     // — see pageSuccessionCapExceeded's injection comment in bsc-next.js).
@@ -459,6 +459,80 @@ test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, th
   assert.equal(paged.length, 1, 'the injected pager (not the real routeAlert) sees exactly the one refusal');
 
   fs.unlinkSync(handoffPath);
+});
+
+// Task #1790: succession deliberately skips the fresh-dispatch machinery
+// (overlap / verify gate / duplicate-workspace) because it CONTINUES a task
+// rather than deciding to start one — but it still OPENS A SESSION, which is
+// exactly why linearMirrorGuard is placed before the --succession branch in
+// main(). A successor sent to continue a card that closed mid-flight is the
+// same relaunch-closed-work bug the stall sweep hits, so closedCardGuard runs
+// on this path too. Driven through the REAL runSuccessionDispatch, not the
+// pure guard, so the wiring itself is what's under test.
+test('runSuccessionDispatch: a card Notion says is Done is refused before any workspace opens', () => {
+  const { launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  // The [notion:...] marker is load-bearing: notionIdOf() returns null without
+  // it, so bsc-next never fetches a card and the guard correctly sees nothing.
+  const task = { id: '857', subject: 'succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1, 'a Done card must refuse the succession dispatch');
+  assert.equal(launched.length, 0, 'no workspace may open for a closed card');
+
+  fs.unlinkSync(handoffPath);
+});
+
+test('runSuccessionDispatch: --allow-closed-card dispatches AND is recorded in the ledger', () => {
+  const { ledger, launched, dispatchOnce } = runSuccessionHarness({ fetchCard: () => ({ status: 'Done' }) });
+  const task = { id: '858', subject: 'deliberate succession onto a closed card', status: 'in_progress', description: '[notion:3c0637c5416f817bb04ded7de1362b07] P1 Next · Done · Infrastructure' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-closed-ok-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath, 'allow-closed-card': true });
+  assert.equal(r.exitCode, null, 'the explicit override must not be refused');
+  assert.equal(launched.length, 1, 'the override actually dispatches');
+  // The refusal message promises the override is "recorded in the ledger".
+  // It was not, until this test existed — nothing wrote the field at all.
+  const launch = ledger.filter(e => e.event === 'launch').slice(-1)[0];
+  assert.equal(launch.allowClosedCard, true, 'deliberately dispatching onto a closed card must be auditable');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// Task #1790: fetchCard had no retry — a single execFileSync, and ANY throw
+// (a Notion 429/500/timeout) returned null. Several callers degrade on null,
+// including closedCardGuard, which ALLOWS dispatch when the card is null so a
+// Notion outage cannot livelock the stall sweep. Two adversarial reviews
+// independently flagged that this makes the guard most permissive exactly when
+// a fetch is flaky. Refusing on null would livelock, so the fix makes null
+// RARER instead of changing its meaning.
+test('fetchCard: a transient failure is retried once and recovers', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', {
+    sleepMs: 1,
+    fetchOnce: () => { calls += 1; if (calls === 1) throw new Error('transient 500'); return { status: 'Done' }; },
+  });
+  assert.deepEqual(card, { status: 'Done' }, 'the retry must return the real card, not null');
+  assert.equal(calls, 2, 'exactly one retry');
+});
+
+test('fetchCard: a permanent failure still degrades to null (honest unknown, never a throw)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; throw new Error('gone'); } });
+  assert.equal(card, null);
+  assert.equal(calls, 2, 'bounded — never retries forever');
+});
+
+test('fetchCard: the happy path costs exactly one call (no added latency)', () => {
+  const { fetchCard } = require('./bsc-next.js');
+  let calls = 0;
+  const card = fetchCard('page-1', { sleepMs: 1, fetchOnce: () => { calls += 1; return { status: 'In progress' }; } });
+  assert.deepEqual(card, { status: 'In progress' });
+  assert.equal(calls, 1);
 });
 
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
@@ -767,6 +841,7 @@ test('main(): a task mapped to a live Linear issue is refused before launching a
       loadTasks: () => loadTasks(dir),
       loadLinearMirrorMapping: () => ({ '1341': { linearId: 'x', identifier: 'BRO-500', title: 'y', project: 'Infrastructure' } }),
       launchCmux: () => { throw new Error('launchCmux must never be called once the Linear guard refuses'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the Linear guard refuses'); },
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -873,6 +948,7 @@ test('main(): --id refuses to dispatch when a local worktree branch already carr
       listWorkBranchStatuses: () => [{ name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] }],
       launchCmux: () => { throw new Error('launchCmux must never be called once the worktree-branch guard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the worktree-branch guard refuses'); },
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -912,6 +988,12 @@ test('main(): --id --force bypasses the worktree-branch guard and proceeds to th
       cmuxAvailable: () => false, // sidestep the cmux path entirely once past this guard
       fetchCard: () => null,
       launchCmux: () => ({ ok: true, ref: 'workspace:1' }),
+      // MUST be stubbed: this path reaches the real launch-journal site
+      // (bsc-next.js:1213). Unstubbed it defaults to dispatchLedger.appendEntry,
+      // whose LEDGER_PATH is hardcoded to /Users/tompryor/Broadwayscore — the
+      // mkdtempSync above isolates only the TASKS dir, so the write escaped and
+      // put 77 junk 'workspace:1' launch rows in the production ledger.
+      appendLedgerEntry: () => {},
     });
   } catch (e) {
     assert.equal(e.message, '__EXIT__');
@@ -943,6 +1025,7 @@ test('main(): --id --dry-run also skips the git I/O entirely (ship-check finding
     main(['--id', '1233', '--dry-run'], {
       loadTasks: () => require('./bsc-next.js').loadTasks(dir),
       listWorkBranchStatuses: () => { listWorkBranchStatusesCalled = true; return []; },
+      appendLedgerEntry: () => {},
       fetchCard: () => null,
     });
   } finally {
@@ -950,6 +1033,100 @@ test('main(): --id --dry-run also skips the git I/O entirely (ship-check finding
     fs2.rmSync(tmp, { recursive: true, force: true });
   }
   assert.equal(listWorkBranchStatusesCalled, false);
+});
+
+// ── Task #1800: predispatch-guard wired into the real dispatch path ─────────
+// scripts/lib/predispatch-guard.js's classifyCandidate existed and was
+// correct, but nothing in the real dispatch path ever called it — only a
+// human running `node scripts/predispatch-check.js --id N` by hand got its
+// protection. This proves the wiring: a task whose Notion card classifies
+// REOPEN-SUSPECT is refused by main() itself, never reaching launchCmux.
+//
+// Notes carries an ARMED acceptance command deliberately — without one,
+// staleOutcomeGuard (which runs BEFORE predispatchGuard in main(), since any
+// filled Outcome with no runnable verify command is refused on its own) would
+// refuse this fixture first, for the wrong reason, and this test would pass
+// without ever exercising predispatchGuard at all.
+test('main(): a REOPEN-SUSPECT card (falsely reopened over completed work) is refused before launchCmux, without a human running predispatch-check.js', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-predispatch-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1800.json'), JSON.stringify({
+    id: '1800', subject: 'falsely reopened card', description: '[notion:3c1637c5416f8124b9fdf6b2f6fdec13] P1 Next',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const card = {
+    status: 'Not started', completedDate: '2026-08-14',
+    outcome: 'Verified complete on current main, commit 4ab855fc30f — no code change needed.'.repeat(2),
+    notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs`',
+  };
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '1800'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => [],
+      fetchCard: () => card,
+      launchCmux: () => { throw new Error('launchCmux must never be called once predispatchGuard refuses'); },
+      cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once predispatchGuard refuses'); },
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #1800/.test(e)), `expected a predispatch-guard refusal, got: ${errors.join(' | ')}`);
+  assert.ok(errors.some(e => /REOPEN-SUSPECT/.test(e)));
+  assert.ok(errors.some(e => /predispatch-check\.js --id 1800/.test(e)));
+});
+
+test('main(): --allow-reopen-suspect dispatches a REOPEN-SUSPECT card anyway, recorded in the ledger', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-predispatch-guard-override-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '1801.json'), JSON.stringify({
+    id: '1801', subject: 'falsely reopened card, deliberately overridden', description: '[notion:3c1637c5416f8124b9fdf6b2f6fdec14] P1 Next',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const card = {
+    status: 'Not started', completedDate: '2026-08-14',
+    outcome: 'Verified complete on current main, commit 4ab855fc30f — no code change needed.'.repeat(2),
+    notes: '## Acceptance criteria\n`node --test scripts/lib/predispatch-guard.test.mjs`',
+  };
+  const ledgerEntries = [];
+  const origLog = console.log;
+  console.log = () => {};
+  try {
+    main(['--id', '1801', '--allow-reopen-suspect'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      listWorkBranchStatuses: () => [],
+      fetchCard: () => card,
+      cmuxAvailable: () => false,
+      launchCmux: () => ({ ok: true, ref: 'workspace:1801' }),
+      appendLedgerEntry: (e) => ledgerEntries.push(e),
+    });
+  } finally {
+    console.log = origLog;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  const launch = ledgerEntries.filter(e => e.event === 'launch').slice(-1)[0];
+  assert.ok(launch, 'the override must actually dispatch and journal a launch entry');
+  assert.equal(launch.allowReopenSuspect, true, 'the override must be auditable in the ledger');
 });
 
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────

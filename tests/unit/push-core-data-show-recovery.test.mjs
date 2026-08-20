@@ -8,52 +8,40 @@
 // "Core data pushed successfully", and only the later one survived. A green run
 // that deletes data is the worst failure mode this repo has.
 //
-// The logic under test is embedded in a github-script block inside
-// .github/actions/push-core-data/action.yml, so this test EXTRACTS it from the
-// YAML and runs it for real. Extracting rather than duplicating is deliberate:
-// a copy would drift, and the copy passing would prove nothing about the action.
+// The logic under test used to be embedded in a github-script block inside
+// .github/actions/push-core-data/action.yml, and this test extracted it from
+// the YAML and ran it for real (extracting rather than duplicating: a copy
+// would drift, and the copy passing would prove nothing about the action).
+//
+// Task #1817: that inline block was itself extracted into a real module,
+// scripts/lib/reconcile-shows-fields.js (colocated test:
+// scripts/lib/reconcile-shows-fields.test.mjs), because the YAML text had a
+// bug (restored a field from remote whenever local was null, with no way to
+// tell "never had it" from "just deliberately cleared it") that needed a
+// baseline-aware fix and real unit coverage. This test now imports that real
+// module directly — same "test the real code, not a copy" principle, just
+// via require() instead of YAML-text surgery + eval.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import os from 'node:os';
 
 const nodeRequire = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ACTION = path.join(__dirname, '../../.github/actions/push-core-data/action.yml');
-
-function extractReconciliation() {
-  const src = fs.readFileSync(ACTION, 'utf8');
-  const start = src.indexOf('// Only reconcile fields that are manually corrected');
-  assert.notEqual(start, -1, 'shows.json reconciliation block not found in push-core-data action');
-  const end = src.indexOf("' 2>&1 || true", start);
-  assert.notEqual(end, -1, 'could not find the end of the reconciliation block');
-  return src.slice(start, end).split('\n').map((l) => l.replace(/^ {14}/, '')).join('\n');
-}
-
-const LOGIC = extractReconciliation();
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pcd-'));
-const P = { shows: path.join(tmp, 'shows.json'), remote: path.join(tmp, 'remote.json'), base: path.join(tmp, 'base.json') };
+const { reconcileShowsJson } = nodeRequire('../../scripts/lib/reconcile-shows-fields.js');
 
 function reconcile({ local, remote, base }) {
-  fs.writeFileSync(P.shows, JSON.stringify(local));
-  fs.writeFileSync(P.remote, JSON.stringify(remote));
-  if (base === null) { try { fs.unlinkSync(P.base); } catch { /* absent on purpose */ } }
-  else fs.writeFileSync(P.base, JSON.stringify(base));
-
-  const src = 'const fs = require("fs");\n' + LOGIC
-    .replaceAll('"shows.json"', JSON.stringify(P.shows))
-    .replaceAll('"/tmp/remote-shows.json"', JSON.stringify(P.remote))
-    .replaceAll('"/tmp/base-shows.json"', JSON.stringify(P.base));
-
   const logs = [];
-  const [oLog, oErr] = [console.log, console.error];
-  console.log = (...a) => logs.push(a.join(' '));
-  console.error = (...a) => logs.push('ERR ' + a.join(' '));
-  try { new Function('require', src)(nodeRequire); } finally { console.log = oLog; console.error = oErr; }
-  return { shows: JSON.parse(fs.readFileSync(P.shows, 'utf8')).shows, logs };
+  const { readded, baseAvailable } = reconcileShowsJson(local, remote, base);
+  if (!baseAvailable) {
+    const localIds = new Set((local.shows || []).map((s) => s && s.id).filter(Boolean));
+    const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localIds.has(rs.id)).length;
+    if (remoteOnly > 0 && readded === 0) logs.push(`::warning::${remoteOnly} show(s) exist on remote but not locally and no merge base was readable`);
+  }
+  return { shows: local.shows, logs };
 }
 
 const S = (id, extra = {}) => ({ id, title: id, ...extra });

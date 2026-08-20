@@ -24,12 +24,24 @@
 const fs = require('fs');
 const path = require('path');
 const { safeUnlinkReview } = require('./lib/review-write-guard');
+const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const flag = (n, d) => { const a = args.find(x => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : d; };
 const DEFERRED = flag('deferred', path.join(process.env.HOME || '', 'Documents/claude-outputs/apply-slug-misroute-deferred.json'));
-const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
+// WRITES (safeUnlinkReview deletes review files) — see scripts/lib/review-texts-dir.js.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+// Adversarial review finding (task #1749): this script never validated the
+// resolved root existed — a missing/wrong dir just made every candidate's
+// per-file existsSync fail closed as a silent skip, reporting a clean
+// "No candidates." run instead of the real error. isReviewTextsCheckout (not
+// bare existsSync) also rejects a bare/empty resolved dir, the same
+// false-all-clear shape the shared resolver's own hardening targets.
+if (!isReviewTextsCheckout(REVIEW_TEXTS_DIR)) {
+  console.error(`review-texts dir not a real checkout: ${REVIEW_TEXTS_DIR}`);
+  process.exit(1);
+}
 
 if (!fs.existsSync(DEFERRED)) { console.error(`Deferred file not found: ${DEFERRED}`); process.exit(1); }
 const INCLUDE_DIFF_URL = args.includes('--include-diff-url');

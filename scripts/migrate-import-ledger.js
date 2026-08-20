@@ -41,6 +41,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const ledgerLib = require('./lib/import-ledger');
+const corpusIo = require('./lib/notion-corpus-io');
 const { extractNotionId } = require('./lib/linear-import-rules');
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -90,22 +91,25 @@ function mirrorPageIds() {
  * shared by two pages maps to nothing rather than to one of them.
  */
 function corpusTitleIndex(corpusArg) {
-  const file =
-    corpusArg && fs.existsSync(corpusArg) && fs.statSync(corpusArg).isDirectory()
-      ? path.join(corpusArg, 'corpus.ndjson')
-      : corpusArg;
-  if (!file || !fs.existsSync(file)) return { unique: new Map(), ambiguous: new Set(), pages: 0 };
+  if (!corpusArg) return { unique: new Map(), ambiguous: new Set(), pages: 0, given: false };
+  // Was: look for `corpus.ndjson` in the directory, return an empty index if
+  // absent. The PUBLISHED corpus is only ever `corpus.ndjson.gz`, so that made
+  // `--corpus=<the archive>` a silent no-op that still printed
+  // "(no --corpus given)". readCorpusRecords() handles both forms and THROWS
+  // when there is nothing to read, which is caught below and made fatal: a
+  // recovery step that was asked for and did not run must not look like a
+  // recovery step that was not asked for.
+  // `malformed` is consumed, not discarded. A torn line in the corpus is a page
+  // this migration cannot see, so it silently narrows title recovery — the same
+  // shape of quiet loss as the gz bug this function already had.
+  const { records, malformed } = corpusIo.readCorpusRecords(corpusArg);
+  if (malformed) {
+    throw new Error(`${malformed} malformed line(s) in the corpus — re-verify it before trusting title recovery`);
+  }
   const counts = new Map();
   const first = new Map();
   let pages = 0;
-  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    if (!line.trim()) continue;
-    let rec;
-    try {
-      rec = JSON.parse(line);
-    } catch {
-      continue;
-    }
+  for (const rec of records) {
     pages++;
     const title = (rec.properties && rec.properties.Name) || '';
     if (!title) continue;
@@ -118,7 +122,7 @@ function corpusTitleIndex(corpusArg) {
     if (n === 1) unique.set(title, first.get(title));
     else ambiguous.add(title);
   }
-  return { unique, ambiguous, pages };
+  return { unique, ambiguous, pages, given: true };
 }
 
 function main() {
@@ -138,7 +142,17 @@ function main() {
   const legacy = JSON.parse(fs.readFileSync(legacyPath, 'utf8'));
 
   const fromMirror = mirrorPageIds();
-  const titles = corpusTitleIndex(args.corpus);
+  let titles;
+  try {
+    titles = corpusTitleIndex(args.corpus);
+  } catch (err) {
+    console.error(`❌ --corpus given but unreadable: ${err.message}`);
+    process.exit(1);
+  }
+  if (titles.given && titles.pages === 0) {
+    console.error('❌ --corpus given but it contains zero pages — refusing to run title recovery blind.');
+    process.exit(1);
+  }
 
   const via = { mirror: 0, corpusTitle: 0, none: 0 };
   const ambiguousHits = [];

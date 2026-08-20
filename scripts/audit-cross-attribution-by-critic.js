@@ -21,14 +21,14 @@
  *   node scripts/audit-cross-attribution-by-critic.js --min-score=8 --min-margin=3
  *   node scripts/audit-cross-attribution-by-critic.js --verbose
  *
- * Source-of-truth note: writes (--apply) target the private review-texts repo
- * at ~/broadway-review-texts (see memory/feedback_review_texts_not_symlink.md).
+ * Source-of-truth note: writes (--apply) target whichever review-texts clone
+ * scripts/lib/review-texts-dir.js resolves (see memory/feedback_review_texts_not_symlink.md).
  */
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 function arg(name, fallback = null) {
@@ -42,8 +42,13 @@ const MIN_SCORE = Number(arg('min-score', '8'));
 const MIN_MARGIN = Number(arg('min-margin', '3'));
 const MIN_FILED_RATIO = Number(arg('min-filed-ratio', '0.25'));
 
-const REVIEW_TEXTS_DIR = arg('review-texts-dir',
-  path.join(os.homedir(), 'broadway-review-texts'));
+// WRITES under --apply (wrongShow flags + duplicateOf pointers) — see
+// scripts/lib/review-texts-dir.js. --review-texts-dir= still overrides explicitly.
+// Lazy: arg(..., fallback) is a plain function call, so a fallback expression
+// passed inline would evaluate (and pay resolveReviewTextsDir()'s fs/git work)
+// on every run even when --review-texts-dir= makes it unnecessary.
+const REVIEW_TEXTS_DIR = arg('review-texts-dir', null) || resolveReviewTextsDir();
+console.log(`[audit-cross-attribution-by-critic] review-texts: ${REVIEW_TEXTS_DIR}`);
 const SHOWS_PATH = arg('shows-path',
   path.join(__dirname, '..', 'data', 'shows.json'));
 const REPORT_PATH = arg('report-path',
@@ -498,12 +503,8 @@ for (const c of criticRanking.slice(0, 10)) {
 
 if (APPLY) {
   console.log('\n=== APPLYING HIGH-CONFIDENCE FLAGS ===');
-  if (REVIEW_TEXTS_DIR !== path.join(os.homedir(), 'broadway-review-texts')) {
-    console.log(`Note: writing to ${REVIEW_TEXTS_DIR} (not the private repo).`);
-  } else {
-    console.log(`Writing to private repo: ${REVIEW_TEXTS_DIR}`);
-    console.log('Run git status / commit / push there afterwards.');
-  }
+  console.log(`Writing to: ${REVIEW_TEXTS_DIR}`);
+  console.log('Run git status / commit / push there afterwards.');
 
   let flagged = 0;
   for (const f of flags) {

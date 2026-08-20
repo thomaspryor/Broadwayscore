@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-08-16T12:27:11.957Z",
+  "lastChecked": "2026-08-19T14:07:12.819Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "42638 files, 19780 reviews (surplus: 22858)"
+      "message": "42776 files, 19818 reviews (surplus: 22958)"
     },
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "26 open shows all have reviews and grosses"
+      "message": "25 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "71 running BW/WE shows — no stale social-pulse files"
+      "message": "72 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "26 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 empty cast: Paranormal Activity"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19780 vs baseline 19791"
+      "message": "Reviews dropped: 19818 vs baseline 19823"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 8/9/2026 (7d ago)"
+      "message": "weekEnding 8/9/2026 (10d ago)"
     }
   ]
 }

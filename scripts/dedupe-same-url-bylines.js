@@ -48,6 +48,10 @@
  * member the rebuild would keep live survives; the others are marked
  * duplicateOf the canonical (LOAD-MODIFY-SAVE, force:true — they share the
  * canonical's URL, so a non-forced write would just re-derive the same mark).
+ * fix() also clears any STALE duplicateOf/duplicateTextOf the chosen canonical
+ * itself carries at one of its own new losers (BRO-318: an uncleared pointer
+ * here makes the pair circular and lets rebuild-all-reviews.js's fingerprint
+ * dedup — which has no canonical-awareness — silently keep the loser instead).
  *
  * Usage:
  *   node scripts/dedupe-same-url-bylines.js            # report (exit 1 if any)
@@ -67,6 +71,7 @@ const { isIncludableForRebuild, areSameCriticFuzzy } = require('./lib/review-gua
 const { normalizeUrl } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 
 const USAGE = `dedupe-same-url-bylines.js — Fixes the same-URL / multi-byline double-count class (Notion 2026-07-12,.
 
@@ -278,10 +283,47 @@ function audit() {
 }
 
 function fix(cohesive) {
-  let collapsed = 0, losersMarked = 0;
+  let collapsed = 0, losersMarked = 0, staleCanonicalPointerCleared = 0;
   const day = new Date().toISOString().slice(0, 10);
   for (const g of cohesive) {
     const dir = path.join(REVIEW_TEXTS_DIR, g.showId);
+    const canonPath = path.join(dir, g.canonical);
+    const canonData = JSON.parse(fs.readFileSync(canonPath, 'utf-8'));
+    // The chosen canonical can carry a STALE duplicateOf/duplicateTextOf
+    // pointer at one of its own now-subordinate losers — left over from an
+    // earlier pass (e.g. collect-review-texts.js's content-fingerprint dedup,
+    // which ran before this file was ever chosen canonical here). Left
+    // uncleared, it makes the canonical and a loser mutually point at each
+    // other, which rebuild-all-reviews.js's one-hop circular-recovery logic
+    // reads as "ambiguous — keep both" and defers the decision to the belt-
+    // and-suspenders fingerprint dedup (~4085), a check with no awareness of
+    // which side THIS script designated canonical. That check breaks ties by
+    // file sort order alone, so it can (and did — queen-versailles-2025
+    // Vulture, BRO-318) keep the loser and silently drop the canonical
+    // entirely, taking its score/byline with it. Clearing the canonical's own
+    // pointer here — in the SAME write pass that subordinates its losers —
+    // closes the loop so the canonical it chose is the file that survives.
+    // Shares scripts/lib/canonical-duplicate-pointers.js with
+    // audit-review-url-clusters.js (fixed for this exact bug class 2026-08-17,
+    // loves-labours-lost-globe-west-end-2026) rather than hand-rolling the
+    // clear — that module gets null-vs-delete right (duplicateOf: null,
+    // duplicateTextOf: deleted; validate-data.js flags a null duplicateTextOf
+    // as a field that should have been removed) and only drops a field
+    // proven to point at a cluster member, never both unconditionally.
+    // No `siblings` param: g.losers is already a same-URL cluster (audit()
+    // groups strictly by normalizeUrl), which the module's own docs treat as
+    // sufficient proof on its own — passing siblings here would additionally
+    // require the loser to ALREADY point back at the canonical, which isn't
+    // true yet for a freshly-detected group (the loser-marking loop below is
+    // what sets that pointer), so it would refuse to clear the exact case
+    // this fix exists for.
+    const plan = planCanonicalPointerClear(canonData, { self: g.canonical, clusterFiles: g.losers });
+    if (plan.drop.length) {
+      applyCanonicalPointerClear(canonData, plan);
+      canonData.duplicateClearReason = `same-url-byline-dedup on ${day}: ${plan.reason} — this file is the chosen canonical`;
+      safeWriteReview(canonPath, canonData, { force: true });
+      staleCanonicalPointerCleared++;
+    }
     for (const loser of g.losers) {
       const p = path.join(dir, loser);
       const data = JSON.parse(fs.readFileSync(p, 'utf-8'));
@@ -294,7 +336,7 @@ function fix(cohesive) {
     }
     collapsed++;
   }
-  return { collapsed, losersMarked };
+  return { collapsed, losersMarked, staleCanonicalPointerCleared };
 }
 
 function writeAuditReport(different) {
@@ -325,7 +367,7 @@ function main() {
   if (FIX) {
     const r = fix(cohesive);
     writeAuditReport(different);
-    console.log(`\nCollapsed ${r.collapsed} group(s); marked ${r.losersMarked} duplicate(s). Wrote ${different.length} different-text groups to ${path.relative(process.cwd(), AUDIT_PATH)}.`);
+    console.log(`\nCollapsed ${r.collapsed} group(s); marked ${r.losersMarked} duplicate(s); cleared ${r.staleCanonicalPointerCleared} stale canonical self-pointer(s). Wrote ${different.length} different-text groups to ${path.relative(process.cwd(), AUDIT_PATH)}.`);
     console.log('Re-run the rebuild to drop the double-counts.');
     process.exit(0);
   }

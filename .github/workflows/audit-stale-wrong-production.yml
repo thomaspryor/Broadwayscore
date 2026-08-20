@@ -1,0 +1,99 @@
+name: Audit Stale wrongProduction Flags
+
+# Scheduled REPORT-ONLY check for stale `wrongProduction` flags in
+# data/review-texts/ — card #1610, Notion 34e637c5-416f-811d follow-up.
+#
+# Background: clear-stale-wrong-production-flags.js (predicate +
+# Sonnet-high-confidence second opinion) was run manually once (2026-04-26,
+# 175 cleared) and never scheduled. Re-running it 2026-08-19 found 150 new
+# predicate candidates, 76 LLM-confirmed high-confidence — real ongoing drift.
+#
+# This workflow does NOT auto-apply. wrongProduction is a much larger, riskier
+# corpus (~16k flagged, most CORRECTLY flagged — tours, regional tryouts,
+# revivals, cross-Atlantic transfers) than suspectedMisattribution, and the
+# LLM-gated sweep has no track record running unattended in CI yet. It reports
+# the current candidate + LLM-confirmed count weekly so a human can review
+# before this graduates to `clear-stale-wrong-production-flags.yml --apply`.
+#
+# To apply a reviewed backlog: `node scripts/clear-stale-wrong-production-flags.js --llm --apply`
+# locally, or `--force-bulk` once the sweep script gets a matching --apply
+# workflow (deliberately not shipped yet — see note above).
+on:
+  schedule:
+    # Weekly on Wednesdays at 9:30 AM UTC (30 min after the suspectedMisattribution sweep).
+    - cron: '30 9 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-stale-wrong-production
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Audit stale wrongProduction flags (report-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run predicate + LLM second-opinion (dry-run, no writes)
+        id: sweep
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm 2>&1)
+          STATUS=$?
+          echo "$OUT" | tail -200
+          MATCHES=$(echo "$OUT" | grep -oE 'Predicate matches: [0-9]+' | head -1 | grep -oE '[0-9]+')
+          CONFIRMED=$(echo "$OUT" | grep -oE 'LLM confirmed stale \(high-conf only\): [0-9]+' | head -1 | grep -oE '[0-9]+')
+          echo "matches=${MATCHES:-0}" >> $GITHUB_OUTPUT
+          echo "confirmed=${CONFIRMED:-0}" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Summary
+        run: |
+          {
+            echo "## wrongProduction Stale-Flag Audit (report-only)"
+            echo ""
+            echo "**Predicate candidates:** ${{ steps.sweep.outputs.matches }}"
+            echo "**LLM-confirmed high-confidence:** ${{ steps.sweep.outputs.confirmed }}"
+            echo ""
+            echo "No files were modified — this workflow reports only. To clear the"
+            echo "confirmed backlog: \`node scripts/clear-stale-wrong-production-flags.js --llm --apply\`"
+            echo "(refuses >50 clears without --force-bulk)."
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on script error
+        if: steps.sweep.outputs.status != '0'
+        run: |
+          echo "::error::clear-stale-wrong-production-flags.js exited non-zero (status ${{ steps.sweep.outputs.status }}) — see the 'Run predicate + LLM second-opinion' step log above for the actual error, not the (possibly stale) candidate counts in this summary."
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Stale wrongProduction Failed'
+          severity: 'warning'

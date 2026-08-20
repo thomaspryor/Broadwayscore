@@ -605,9 +605,15 @@ function validateDates(shows) {
     const sameTitleSibs = (sameTitleGroups.get(normTitle(show.title)) || []).filter(o => o.id !== show.id);
     const inherited = inheritedDateFromSibling(show, sameTitleSibs);
     if (inherited && inherited.field === 'openingDate') {
-      error(`Show "${show.title}" (${show.id}) has openingDate identical to same-title sibling ${inherited.siblingId} — date was cloned from the wrong production. Set this production's real dates.`);
+      // siblingId is parenthesized (not bare prose) so validation-setdiff.js's
+      // discovery-commit-gate attribution can extract it — this error can name
+      // a candidate this run touched (the sibling) while show.id itself is a
+      // pre-existing, untouched row, and only the parenthesized/quoted forms
+      // are extracted (card #1786: a bare mention here left the whole error
+      // unattributable and blocked every unrelated status flip in the run).
+      error(`Show "${show.title}" (${show.id}) has openingDate identical to same-title sibling (${inherited.siblingId}) — date was cloned from the wrong production. Set this production's real dates.`);
     } else if (inherited) {
-      warn(`Show "${show.title}" (${show.id}) has ${inherited.field} identical to same-title sibling ${inherited.siblingId} — possible cloned date; verify.`);
+      warn(`Show "${show.title}" (${show.id}) has ${inherited.field} identical to same-title sibling (${inherited.siblingId}) — possible cloned date; verify.`);
     }
 
     // Inherited-year heuristic (SOFT/warn): recent {title}-{YYYY} id with a decades-older
@@ -878,8 +884,8 @@ function validateTheaterAddress(shows) {
   }
 
   if (mismatches > AUTOFIX_CAP) {
-    mismatchExamples.forEach(m => err('  ' + m));
-    err(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
+    mismatchExamples.forEach(m => error('  ' + m));
+    error(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
     return;
   }
 

@@ -53,6 +53,7 @@ const { safeRenameReview } = require('./lib/review-write-guard');
 const {
   matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
 } = require('./lib/show-matching');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -113,8 +114,8 @@ function reviewUrl(p) {
   catch { return null; }
 }
 
-const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
-  || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
+// WRITES (--apply moves files via safeRenameReview) — see scripts/lib/review-texts-dir.js.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 
 if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
   console.error(`review-texts dir not found: ${REVIEW_TEXTS_DIR}`);

@@ -29,7 +29,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
-const { decideLaunchWait, isSlowBootFailure, STATES,
+const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
 const { preflightAuth } = require('./claude-cli.js');
 const { ensureAutoTitle } = require('./workspace-naming.js');
@@ -331,10 +331,48 @@ function osActivateCmuxApp() {
 // happened. Require a SUCCESSFUL workspace listing that still contains the ref
 // before trusting the process check, so a socket failure yields "not alive"
 // (report the failure) instead of "adopt the corpse".
-function strictlyAliveWorkspace(ref, marker) {
+//
+// Card #1829: cmux's tag/process registry (claudeAliveIn) and a live OS
+// wrapper process (osProcessAliveForSeed) can BOTH read positive for a
+// workspace whose terminal surface never rendered — that's precisely the
+// #1199 deferred-render failure mode this file's own header already
+// documents for workspace:115 (tag "Running" + capture-pane/read-screen ALL
+// reporting "Terminal surface not found"). Neither existing signal here
+// queries the rendered surface at all, so this function adopted 7/7 dead
+// cmux-tab dispatches on 2026-08-19 as ok:true with nothing actually running.
+// terminalSurfaceConfirmedMissing queries cmux's read-screen directly and
+// only reports true on a CONFIRMED not-found (a successful read, or any
+// other error, leaves this false — fail-open), so requiring its inverse here
+// adds a genuinely independent, authoritative signal without making this
+// check more failure-prone than it already is. NOT terminalSurfaceAliveIn:
+// that helper requires the claude status-bar chrome to be painted, which is
+// the wrong bar for a check that must not false-fail a workspace whose
+// surface is real but whose UI hasn't drawn its first frame yet (adversarial
+// review, 2026-08-19 — see terminalSurfaceConfirmedMissing's own header).
+function defaultSurfaceAliveFn(ref) {
+  return !cmuxws.terminalSurfaceConfirmedMissing(ref);
+}
+
+// Pure AND-gate over the 4 signals (rule 15 — extracted so the "surface is
+// now required" behavior is directly unit-testable without a real cmux
+// socket or OS process table). listed=false always means dead regardless of
+// the other three: a ref that isn't even in listWorkspaces() can't be alive
+// by any definition.
+function computeStrictAliveness({ listed, claudeAlive, osProcessAlive, surfaceAlive }) {
+  return !!(listed && claudeAlive && osProcessAlive && surfaceAlive);
+}
+
+function strictlyAliveWorkspace(ref, marker, probes = {}) {
+  const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
   try {
-    if (!cmuxws.listWorkspaces().some(w => w.ref === ref)) return false;
-    return cmuxws.claudeAliveIn(ref) && osProcessAliveForSeed(marker);
+    const listed = cmuxws.listWorkspaces().some(w => w.ref === ref);
+    if (!listed) return false;
+    return computeStrictAliveness({
+      listed,
+      claudeAlive: cmuxws.claudeAliveIn(ref),
+      osProcessAlive: osProcessAliveForSeed(marker),
+      surfaceAlive: surfaceAliveFn(ref),
+    });
   } catch { return false; }
 }
 
@@ -401,9 +439,27 @@ function verifiedAlive(ws, marker) {
 // wrapperEverSeen is per-ATTEMPT state and lives here rather than in the pure
 // decision: "the wrapper ran and then died" is only distinguishable from
 // "the wrapper never ran" by remembering earlier polls.
-function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, wakeAfterSec = WAKE_AFTER_SEC, wakeFn = null, probes = {} }) {
+//
+// startedProbe (card #1812) is a SECOND, independent way to learn the wrapper
+// ever ran, alongside the ps-based wrapperProbe. Live-reproduced via
+// scripts/probe-cmux-launch.js on this exact machine (2026-08-19): a fast
+// payload's wrapper can complete and exit entirely BETWEEN two 3s ps
+// snapshots, so osProcessAliveForSeed never once samples it alive — the
+// launcher reports INJECTION_NEVER_RAN while a ground-truth marker file
+// proves the command DID run. A snapshot-based probe can structurally miss a
+// transient process; a marker FILE the wrapper touches as its very first
+// action cannot un-happen once written, so fs.existsSync can never miss it
+// the way a point-in-time `ps` sample can. This only widens wrapperEverSeen
+// (OR'd with the existing signal) — the ongoing wrapperAlive/missStreak
+// liveness debounce below is untouched, so WRAPPER_EXITED detection (did it
+// die after starting) still depends solely on the real ps signal.
+function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, wakeAfterSec = WAKE_AFTER_SEC, wakeFn = null, startedFile = null, probes = {} }) {
   const wrapperProbe = probes.wrapperAlive || osProcessAliveForSeed;
   const tagProbe = probes.claudeTagAlive || (ref => cmuxws.claudeAliveIn(ref));
+  const startedProbe = probes.wrapperStarted || (() => {
+    if (!startedFile) return false;
+    try { return fs.existsSync(startedFile); } catch { return false; }
+  });
   // probes.wake is the TEST seam and wins; wakeFn is how launchCmuxSession
   // observes fire-time (it must learn a wake happened even if this wait is
   // later interrupted by a throw — outcome-based tracking would leak the
@@ -425,10 +481,18 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   let effectiveGraceSec = injectionGraceSec;
   for (;;) {
     const sampleAlive = wrapperProbe(marker);
-    if (sampleAlive) {
-      if (!wrapperEverSeen) wrapperFirstSeenAt = now();
-      wrapperEverSeen = true; missStreak = 0;
-    } else { missStreak += 1; }
+    if (sampleAlive) missStreak = 0; else missStreak += 1;
+    // Card #1812: OR in the marker-file signal ONLY while still unresolved —
+    // once wrapperEverSeen is true (via either signal) there is nothing left
+    // to learn from it, so skip the extra fs.existsSync on every later poll.
+    // missStreak stays driven SOLELY by sampleAlive (the real ps signal,
+    // reset above) — the marker file, once written, never goes away, so
+    // folding it into missStreak would permanently defeat WRAPPER_EXITED
+    // detection for a wrapper that genuinely started and later died.
+    if (!wrapperEverSeen && (sampleAlive || startedProbe())) {
+      wrapperFirstSeenAt = now();
+      wrapperEverSeen = true;
+    }
     // Debounce the ps probe once the wrapper HAS been seen (ship-check, GPT
     // reviewer): osProcessAliveForSeed fails CLOSED on a ps error, truncation
     // or timeout, so one unlucky sample would read as "the wrapper died" and
@@ -641,7 +705,21 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   const launchNonce = crypto.randomBytes(4).toString('hex');
   const cmdFile = path.join(os.tmpdir(), `bsc-cmd-${seedKey}-${launchNonce}.sh`);
   const cmdMarker = path.basename(cmdFile);
-  fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
+  // Started-marker file (card #1812): touched as the wrapper's literal FIRST
+  // action, before the real command, so waitForLaunchOutcome's startedProbe
+  // can learn injection happened even for a wrapper too short-lived for `ps`
+  // sampling to ever catch alive — see that function's header for the live
+  // repro. Nonce-shared with cmdFile so it's unique per launch attempt exactly
+  // like cmdMarker (never a stale hit from an earlier attempt on the same
+  // seedKey).
+  const startedFile = path.join(os.tmpdir(), `bsc-started-${seedKey}-${launchNonce}`);
+  // Quoted (gpt-5.4-mini ship-check catch, 2026-08-19): seedKey can contain
+  // characters unsafe for an unquoted shell word (e.g. Linear-mirrored task
+  // ids like "linear:BRO-406"); the pre-existing cmdFile/cmdMarker naming
+  // shares the same seedKey-in-a-path assumption, but this line puts it
+  // INSIDE an executed shell command, not just a filename passed as an argv
+  // element, so an unquoted space would break the wrapper script itself.
+  fs.writeFileSync(cmdFile, `#!/bin/bash\ntouch "${startedFile}"\n${command}\n`);
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   const cmuxExists = probes.cmuxExists || (() => fs.existsSync(CMUX));
   if (!cmuxExists()) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
@@ -657,7 +735,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   // listed workspace ref AND cmux's claude tag AND a live OS process for that
   // launch's exact marker) — a transient socket error or a stale registry
   // entry reads as "not alive", never as license to adopt a corpse.
-  const strictlyAlive = probes.strictlyAlive || strictlyAliveWorkspace;
+  const strictlyAlive = probes.strictlyAlive || ((ref, marker) => strictlyAliveWorkspace(ref, marker, probes));
   const journalEntry = readLaunchJournalEntry(effectiveWorkKey, journalPath);
   if (journalEntry && strictlyAlive(journalEntry.workspaceRef, journalEntry.marker)) {
     console.error(`[cmux-launch] reclaiming ${journalEntry.workspaceRef} for "${effectiveWorkKey}" — a prior launch (${journalEntry.state || 'unverified'}, recorded ${journalEntry.timestamp}) is now confirmed alive; not opening a second session`);
@@ -746,7 +824,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     // started-but-unregistered claude is allowed to boot.
     outcome = waitForLaunchOutcome({
       ws, marker: cmdMarker, attempt, maxAttempts: MAX_ATTEMPTS,
-      injectionGraceSec: verifyTimeoutSec, slowBootCapSec, probes,
+      injectionGraceSec: verifyTimeoutSec, slowBootCapSec, startedFile, probes,
       // woke is recorded AT FIRE TIME, not from the returned outcome — a
       // throw/interrupt between the wake and the return would otherwise skip
       // the finally-clear and leave the override pinned.
@@ -760,8 +838,34 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       wakeFn: isFirstWake => { wakeState.woke = true; if (!isFirstWake) osActivateCmuxApp(); return setAppFocus('active'); },
     });
     if (outcome.action === 'ok') {
-      if (autoColor) setAutoColor(ws.ref);
-      return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
+      // Card #1829 — second-opinion review flagged that this is the path
+      // MOST launches actually take (attempt 1, first-try registration), so
+      // it needed the same fix as the late-adopt/reclaim paths below, not
+      // just those. claudeRegistered (wrapperAlive && tagAlive) is exactly
+      // the two-signal desync this file's own header already documents as
+      // unsafe alone (#548: workspace:115 had a live wrapper AND a live cmux
+      // tag while read-screen reported the surface gone). One read-screen
+      // call here — not per-poll — confirms the surface actually exists
+      // before ever reporting success. defaultSurfaceAliveFn, NOT
+      // terminalSurfaceAliveIn: the moment wrapper+tag just registered is
+      // exactly when the claude UI may not have painted its status-bar
+      // chrome yet, and terminalSurfaceAliveIn requires that chrome — using
+      // it here would false-fail a brand-new, genuinely healthy launch on
+      // pure timing (adversarial review, 2026-08-19).
+      const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
+      if (surfaceAliveFn(ws.ref) !== false) {
+        if (autoColor) setAutoColor(ws.ref);
+        return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
+      }
+      // Confirmed dead by the one authoritative signal that disagrees with
+      // wrapper+tag. Do NOT close it here — that is the same owner-approved
+      // "never close from this function" boundary the 'retry' branch below
+      // documents; just refuse to call it a success and fall through to the
+      // same failed/late-adopt handling every other unverified outcome gets
+      // (which itself now also requires the surface signal, so it will not
+      // be silently re-adopted either).
+      console.error(`[cmux-launch] ${ws.ref}: wrapper + cmux tag both registered, but read-screen confirms NO terminal surface — refusing to report success (card #1829).`);
+      outcome = { ...outcome, action: 'fail', state: STATES.SURFACE_NOT_FOUND, reason: REASONS[STATES.SURFACE_NOT_FOUND] };
     }
     if (outcome.action === 'retry') {
       // DISPROVED 2026-08-13 (owner decision, Option A). The premise this
@@ -782,6 +886,19 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // duplicate factory the old comment warned about (both tabs boot on the
       // next foreground). A genuinely-dead tab now lingers until bsc-prune,
       // which is strictly cheaper than killing a live session's work.
+      //
+      // Card #1829 does NOT reopen this (owner-approved Option A stands —
+      // closeWorkspace must never reappear here, enforced by
+      // dispatch-ledger.test.mjs). The actual fix for "7/7 dead dispatches
+      // reported success" lives in strictlyAliveWorkspace below: it now
+      // requires cmux's read-screen to independently confirm a live terminal
+      // surface before EITHER the in-call late-adopt watch or the
+      // cross-invocation reclaim journal can report this workspace ok:true.
+      // A workspace left here that never gets a real surface is therefore
+      // correctly reported FAILED (not silently adopted), and the NEXT
+      // dispatch attempt for the same work — which checks that same journal
+      // entry before creating anything — no longer wrongly adopts the corpse
+      // and opens a genuinely new workspace instead.
       console.error(`[cmux-launch] attempt ${attempt} reported ${outcome.state} for ${ws ? ws.ref : 'nothing'} — NOT closing and NOT relaunching (the probe is unreliable; see scripts/probe-cmux-launch.js). Leaving it for late-adopt.`);
       break;
     }
@@ -814,7 +931,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   // launch really is dead.
   if (lateAdoptSec > 0 && failed.workspaceRef) {
     console.error(`[cmux-launch] ${failed.state} — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before returning it unverified`);
-    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, cmdMarker), lateAdoptSec);
+    const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, cmdMarker, probes), lateAdoptSec);
     if (shouldAdoptLateStart(failed, live)) {
       if (autoColor) setAutoColor(failed.workspaceRef);
       return { ok: true, ref: failed.workspaceRef, adoptedLate: true, seedFile, command };
@@ -842,7 +959,8 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
 
 module.exports = {
   launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
-  osActivateCmuxApp, strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
+  osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
+  waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
   buildLaunchCommand,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,

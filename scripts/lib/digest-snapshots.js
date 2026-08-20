@@ -95,6 +95,26 @@ const SNAPSHOTS = [
   // was never meant to run overnight. optionalIfMissing until the first run
   // lands the snapshot file.
   { key: 'p1RelevanceAudit', label: 'P1 backlog relevance audit', file: 'card-relevance-digest-snapshot.json', maxAgeH: 336, optionalIfMissing: true },
+  // scripts/predispatch-queue-audit.js (task #1801) — tallies
+  // predispatch-guard's (task #1800) verdicts across every queued card, so a
+  // REOPEN-SUSPECT/DO-NOT-DISPATCH backlog spike (e.g. a
+  // reconcile-dead-completions misfire) is visible in aggregate instead of
+  // only as scattered individual dispatch refusals. Mac-local, same as
+  // backlogDrain above — cron'd via com.broadwayscore.predispatch-queue-audit
+  // (launchd), not committed. optionalIfMissing until the plist's first run
+  // lands the file.
+  { key: 'predispatchQueue', label: 'predispatch queue backlog', file: 'predispatch-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/predispatch-queue-audit.js's second tally (task #1802) —
+  // generalizes the row above from predispatch-guard alone to all 8 sibling
+  // dispatch-guards.js predicates (deadDispatchGuard, parkedGuard,
+  // staleOutcomeGuard, closedCardGuard, workBranchCollisionGuard,
+  // exactTitleOverlapGuard, sessionTrackingCloneGuard, linearMirrorGuard), so
+  // a spike in any ONE of them (e.g. a bad Linear mirror sync flagging many
+  // cards) is visible instead of only as scattered individual dispatch
+  // refusals. Same producer/run/plist as predispatchQueue above — one script,
+  // two snapshot files. optionalIfMissing until the plist's first run after
+  // this change lands the file.
+  { key: 'dispatchGuardQueue', label: 'dispatch guard queue backlog', file: 'dispatch-guard-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**
@@ -263,7 +283,54 @@ function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
   };
 }
 
+// sync-audit-checkout.sh blocked-sync snapshots (task #1563). One file PER
+// SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit/nightly —
+// see scripts/launchd/*.plist and scripts/autonomous-nightly.sh), not a
+// single fixed filename, so this can't be a SNAPSHOTS row (readAllSnapshots
+// reads exactly one path per key). Presence alone is the signal: the
+// producer deletes its own file on the next successful sync, so any file
+// that still exists means that job's checkout has been stale since its
+// last blocked sync — unlike every other row above, there is no "missing =
+// still waiting for the first run" quiet state to special-case; "missing"
+// here IS the quiet day. Never throws — a broken read degrades to "nothing
+// to report", same fail-soft contract as every other reader in this file.
+//
+// Wording note (review finding): most callers chain with `&&` and genuinely
+// stop when sync-audit-checkout.sh exits non-zero, but scripts/autonomous-
+// nightly.sh (SYNC_TAG=nightly) deliberately does NOT — it logs a warning
+// and continues, because its triage/executor steps read from Notion and
+// spawn their own isolated worktrees rather than depending on THIS
+// checkout being current. "Refused to run" would be false for that caller,
+// so the copy below says "blocked git sync" instead, which is accurate
+// for every caller regardless of what it does afterward.
+function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
+  let names;
+  try { names = fs.readdirSync(auditDir); } catch { return null; }
+  const rows = [];
+  for (const name of names) {
+    if (!/^sync-refused-.+\.json$/.test(name)) continue;
+    let snap;
+    try { snap = JSON.parse(fs.readFileSync(path.join(auditDir, name), 'utf8')); }
+    catch { continue; }
+    if (!snap || typeof snap !== 'object' || !snap.tag) continue;
+    rows.push(snap);
+  }
+  if (!rows.length) return null;
+  rows.sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')));
+  return {
+    generatedAt: rows[0].at,
+    count: rows.length,
+    bannerText: `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`,
+    items: rows.slice(0, maxItems).map((r) => ({
+      title: r.tag,
+      detail: `${r.reason || 'unknown'} — ${Number(r.behindCount) || 0} commit(s) behind origin/main as of ${String(r.at || '').slice(0, 16).replace('T', ' ')} UTC`,
+    })),
+    moreCount: Math.max(0, rows.length - maxItems),
+  };
+}
+
 module.exports = {
   SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR,
   DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon,
+  readSyncRefused,
 };

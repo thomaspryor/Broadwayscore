@@ -29,6 +29,13 @@ on:
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
       - 'vercel.json'
+      # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
+      # itself (line ~2042 below) — its parsing logic now lives in
+      # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
+      # a thin CLI wrapper outside scripts/lib/, so a solo edit to it alone
+      # would trigger zero CI without this entry (task #1581, same gap class
+      # as scripts/check-orphan-commits.js above).
+      - 'scripts/audit-workflow-concurrency.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
@@ -37,6 +44,32 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # BRO-376 Notion->Linear idempotent import acceptance test. Registered in
+      # tests/unit-test-manifest.txt. Depends only on scripts/lib/** (already
+      # globbed above), so it needs its own entry, plus the top-level script it
+      # exercises as a subprocess.
+      - 'scripts/import-notion-to-linear.test.mjs'
+      - 'scripts/linear-import-corpus.js'
+      # scripts/lib/notion-outcome-history.js/.test.mjs (the actual logic) are
+      # already covered by scripts/lib/** above — this is the top-level CLI
+      # wrapper only. No direct unit test of its own (its logic is fully
+      # covered by the colocated lib test); listed so a solo edit still gets
+      # lint/build/tsc.
+      - 'scripts/export-notion-outcome-history.js'
+      - 'scripts/export-notion-outcome-history.test.mjs'
+      # scripts/linear-import-corpus.js's sibling from the same Sprint 3 work
+      # had the identical gap — no path entry, ZERO CI on a solo edit — even
+      # though nothing here tests it directly yet. Closed alongside rather
+      # than left sitting next to the one just fixed.
+      - 'scripts/verify-linear-migration.js'
+      # Sibling advisory guard (task #1760): catches the same recurrence gap
+      # one level up — a script named in
+      # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
+      # array with no matching entry here. Registered in
+      # tests/unit-test-manifest.txt; needs its own entry (no scripts/**
+      # broad glob) so a solo edit triggers CI.
+      - 'scripts/audit-review-texts-test-yml-coverage.js'
+      - 'scripts/audit-review-texts-test-yml-coverage.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -337,6 +370,12 @@ on:
       # logic + shared cmux launch primitive. Colocated tests run in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/opening-night-monitor-launch.js'
+      # Kill-switch staleness alarm (task #1777, 2026-08-18): reuses
+      # dispatch-watchdog.js's pageIfKillSwitchStale (task #1543) — mirrors
+      # #1720's fix in notion-action-poll.js. Test lives in scripts/tests/
+      # (registered in tests/unit-test-manifest.txt, not globbed) —
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs'
       # Opening-night scored-stage alert (task #1737, 2026-08-17): shared
       # filter/date/scored-lookup predicate + the script that calls it.
       # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
@@ -466,6 +505,8 @@ on:
       # explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
       # files are NOT globbed) — path-listed so a solo edit triggers CI.
       - 'scripts/audit-audience-buzz-contamination.test.mjs'
+      # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
+      - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
@@ -608,6 +649,10 @@ on:
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/audit-contradicted-flag-basis.js'
+      # duplicateOf + stale _duplicateOfCleared contradiction sweep (#1655).
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit to the CLI wrapper itself triggers CI.
+      - 'scripts/audit-duplicate-of-cleared-contradiction.js'
       # Regression guard on maybeUpgradeUrl's actual corruption source (#1416):
       # a "URL upgrade" whose candidate is dated outside the show's current-run
       # window is a wrong-production swap, not a correction. Colocated
@@ -639,6 +684,24 @@ on:
       # tests (review-url-clusters.test.mjs, cluster-canonical.test.mjs run in the
       # no-data batch). Without these an edit pushes with ZERO CI.
       - 'scripts/audit-review-url-clusters.js'
+      # review-texts-dir migration (task #1749): these 8 scripts now call
+      # resolveReviewTextsDir() (scripts/lib/review-texts-dir.js) instead of
+      # their own stale-clone default. Colocated regression coverage is the
+      # MIGRATED_SCRIPTS array in tests/unit/review-texts-dir-resolution.test.mjs
+      # (that test file is under tests/**, already globbed above, so editing
+      # IT always triggers CI — but a solo edit to one of these bare
+      # scripts/*.js files, without touching the test file in the same push,
+      # got ZERO CI). audit-review-url-clusters.js, audit-slug-match-routing.js,
+      # apply-slug-misroute-whitelist.js, and fix-photo-credit-byline-phantoms.js
+      # — the other 4 scripts in that same array — were already listed.
+      - 'scripts/audit-cross-attribution-by-critic.js'
+      - 'scripts/audit-outlet-star-scales.js'
+      - 'scripts/backfill-critic-name-truncation.js'
+      - 'scripts/classify-unscored-blocked-url.js'
+      - 'scripts/classify-unscored-news-articles.js'
+      - 'scripts/delete-misroute-orphans.js'
+      - 'scripts/probe-wrong-show-staleness.js'
+      - 'scripts/verify-misroute-content.js'
       - 'scripts/audit-orphan-show-ids.js'
       # Drives BOTH lint-workflows gates below (orphan tests + decayed
       # exemptions). Unlisted until 2026-08-01, so an edit to the exempt map
@@ -1361,6 +1424,12 @@ on:
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/bsc-reconcile.js'
       - 'scripts/bsc-reconcile.test.mjs'
+      # Card #1796: reopen-idempotency fix for sweepUntrackedInProgress's
+      # UNTRACKED_MARKER/OUTCOME_PARK_MARKER guards (same bug class as
+      # #1795). Registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'
@@ -1399,9 +1468,11 @@ on:
       - 'scripts/audit-outlet-stub-rate.test.mjs'
       # Dead-dispatch completion guard (card #1144): a task whose latest
       # dispatch is journaled dead must not be marked completed. Colocated
-      # test runs in the lib-test glob; path-listed so a solo edit triggers
-      # CI (feedback_test_yml_push_path_allowlist).
+      # test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/reconcile-dead-completions.js'
+      - 'scripts/reconcile-dead-completions.test.mjs'
       # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
       # renders a terminal surface, so the injected command never runs. The
       # retry layer hides it from every individual session, so only the
@@ -1528,6 +1599,23 @@ on:
       # weaker set than the overnight run. autonomous-checks.test.mjs runs in
       # the scripts/lib/*.test.mjs glob; the top-level parity test is NOT
       # globbed, so it is also listed in the tests/unit node --test invocation.
+      - 'scripts/autonomous-merge-core-data-guard.test.mjs'
+      # Task #1759 — prevention lint for the ROOT accident behind the
+      # 2026-08-17 outage (autonomous-merge-core-data-guard.test.mjs above is
+      # the tactical fix): a data/*.json file that's BOTH git-tracked AND
+      # shipped by checkout-core-data dirties a tracked path on every run.
+      # scripts/lib/tracked-and-ignored-guard.js runs in the lib-test glob;
+      # the colocated scripts/tests/ test is NOT globbed by 'tests/**' (same
+      # "scripts/tests/ is not scripts/lib/" gap as feedback_test_yml_push_path_allowlist),
+      # so it needs its own explicit line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/tracked-and-ignored-guard.test.mjs'
+      # Loop 5 PR supervisor: the pure merge-decision function, its CLI, and its
+      # fixture test. Registered in tests/unit-test-manifest.txt, but that only
+      # decides WHICH tests run once this workflow triggers — without these path
+      # entries a push touching only the supervisor triggers no CI at all.
+      - 'scripts/pr-supervisor.js'
+      - 'scripts/lib/pr-supervisor-core.js'
+      - 'tests/unit/pr-supervisor-core.test.mjs'
       - 'scripts/autonomous-merge-parity.test.mjs'
       # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
       # and the stuck-work digest check. Colocated test runs in the lib-test
@@ -1994,6 +2082,17 @@ jobs:
         # own. Heuristic (regex require()/import parsing), non-blocking —
         # always exits 0 (see script header for why).
         run: node scripts/audit-test-yml-lib-deps.js
+
+      - name: Audit — review-texts scripts missing from test.yml push-path allowlist (advisory, task #1760)
+        # Sibling guard to the one directly above: catches the same
+        # recurrence gap one level up. Task #1749 migrated 12 scripts to
+        # resolveReviewTextsDir(); 8 of 12 were found missing from this
+        # push-path allow-list (fixed in 808c40b7c6c), and it recurred twice
+        # more mid-task as scripts were added to
+        # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
+        # array without a matching entry here. Heuristic (regex array-literal
+        # parsing), non-blocking — always exits 0 (see script header for why).
+        run: node scripts/audit-review-texts-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
         # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
@@ -3015,6 +3114,21 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/detect-stale-merge-head.test.sh
 
+      - name: Run sync-audit-checkout test (bash integration)
+        # Task #1563: local main drifted 119 commits behind origin because
+        # every launchd job swallowed a failed `git merge --ff-only` with
+        # `|| echo "...running with local code"` — the shared fix
+        # (scripts/lib/sync-audit-checkout.sh, task #732) resets regenerable
+        # non-jsonl data/audit/ snapshots and retries, but refuses loudly
+        # (non-zero exit, no reset) on a dirty .jsonl ledger, a dirty file
+        # outside data/audit/, or real commit divergence — this had zero
+        # test coverage until now. Bash-level so it exercises real git
+        # fast-forward/refuse behavior on fixture repos, not just the prose.
+        # No path-allowlist entry needed — scripts/lib/** (line 22) already
+        # covers both the script and this test file.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/sync-audit-checkout.test.sh
+
       - name: Run push-with-retry mutex/deadline interaction test (bash integration)
         # Task #458 (2026-07-30 finding, card #669): push_mutex_acquire can block
         # for a real stretch waiting on another session's lock (its own timeout
@@ -3197,6 +3311,19 @@ jobs:
             fi
           fi
           node scripts/check-image-aspect.js --changed "$RANGE"
+
+      - name: Dispatch-ledger write isolation (no test may write the real ledger)
+        # Task #1789: a test called the real bsc-next main() without stubbing
+        # appendLedgerEntry, so it fell through to dispatchLedger.appendEntry —
+        # whose LEDGER_PATH is hardcoded to the owner's Mac checkout. 77 junk
+        # "launch" rows landed in the production ledger, every one stamped
+        # workspaceRef "workspace:1" (the test stub's literal return), which
+        # read like a dispatcher storming a live owner workspace. It corrupted
+        # the dead-launch-rate denominator and isLatestDispatchDead().
+        # Static check, so it works on ubuntu even though the polluted path is
+        # macOS-only — the exposure is local, but the defect is authored here.
+        if: always()
+        run: node --test scripts/lib/ledger-write-isolation.test.mjs
 
   data-validation:
     name: Data Validation
@@ -3663,6 +3790,31 @@ jobs:
         # pass, and never clear a flag in bulk to reach a lower number. There
         # is no --fix on the audit for exactly that reason.
 
+      - name: Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)
+        if: always()
+        run: node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0
+        # A record must never carry a live duplicateOf pointer AND a
+        # _duplicateOfCleared breadcrumb for the SAME url — the two verdicts
+        # directly contradict each other, and which one wins used to depend on
+        # incidental file-read ordering rather than a rule (the-authenticator-
+        # west-end-2026, 2026-08-15: both siblings landed in reviews.json and
+        # validate-data.js's duplicate-URL check went red). Detector (with the
+        # full derivation): scripts/lib/duplicate-of-cleared-contradiction.js.
+        #
+        # 154 records matched this shape on 2026-08-19 (task #1655) — all
+        # retracted via --fix in the same session that added this gate; live
+        # count is 0. _duplicateOfCleared is dead going forward (zero writers
+        # left in the codebase after the review-write-guard.js fix a few
+        # commits up), so this population has no expected steady-state
+        # backlog: any future hit means some writer reintroduced the exact
+        # contradictory shape. --max=0.
+        #
+        # --fix is safe to run in bulk here, UNLIKE audit-self-contradictory-
+        # clears.js's --fix (memory/feedback_audit_fix_remediation_untrusted.md)
+        # — _duplicateOfCleared has zero readers in the inclusion/scoring path
+        # and isn't a PROTECTED_FIELDS entry, so retracting it never moves which
+        # review lands in reviews.json. duplicateOf already governs that alone.
+
       - name: Audit URL-swap regression (#1416)
         if: always()
         run: node scripts/audit-url-downgrade.js --gate
@@ -3775,17 +3927,23 @@ jobs:
         # they ride the full --strict run in check-corpus-drift.yml → digest.
 
       - name: Audit aggregator-archive integrity
-        run: node scripts/audit-aggregator-archive-integrity.js --strict
-        continue-on-error: true
         # Catches the Stuart King contamination class — cached aggregator HTML
         # whose <title> doesn't match the showId in the filename. The bug
         # silently mis-attributed reviews across ~14 LBO archives + 256 across
         # other sources before being caught by a critic email (2026-04-25).
-        # Baseline: data/audit/aggregator-archive-integrity-baseline.json
-        # (currently empty; CI sees ~283 historical bad archives in the private-repo
-        # data set that need triaging before --strict can be enforced).
-        # Currently NON-BLOCKING (continue-on-error) until baseline reflects the
-        # private-repo state. Tracked in Notion 34e637c5-416f-812c follow-up.
+        # Baseline: data/audit/aggregator-archive-integrity-baseline.json holds
+        # 1 known, deliberately-unfixed entry (Notion 34e637c5-416f-812c) —
+        # dtli/the-roast-1980, DTLI's own pun headline "The Roastmaster
+        # General..." for the legitimate show "The Roast" defeats whole-word
+        # title matching on real content, not poisoning (commit 3b45349a273).
+        # That commit's #1763 whole-word-matching fix also quarantined the
+        # ~283 genuinely-poisoned archives this gate used to see, from the
+        # private repo, which is why BLOCKING is now safe. Update via
+        # `node scripts/audit-aggregator-archive-integrity.js --update-baseline`
+        # only after hand-verifying a new hit is a genuine FP, never to make
+        # a red build pass.
+        if: always()
+        run: node scripts/audit-aggregator-archive-integrity.js --strict
 
       - name: Validate market expansion
         if: always()
@@ -4106,6 +4264,14 @@ jobs:
     runs-on: ubuntu-latest
     # Skip on Dependabot PRs — see unit-tests above.
     if: github.actor != 'dependabot[bot]' && github.event.inputs.test_type != 'data-only' && github.event.inputs.test_type != 'visual-only'
+    # 30 (added task #1815): this job carried no timeout-minutes, so a hung
+    # step (e.g. Setup Playwright before its own fix) rode GitHub's 360-min
+    # default job cap. Two live runs caught mid-hang on 2026-08-19 (32225853985,
+    # 32224792662) sat 3h15m+ before being manually cancelled. Analogy-calibrated
+    # to this file's other same-shape job timeouts (line 3294, 1918), not yet
+    # measured against real E2E job durations — see those two for the
+    # measurement-calibration convention this should graduate to.
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -4225,6 +4391,9 @@ jobs:
       (github.event_name == 'workflow_dispatch' &&
        github.event.inputs.test_type != 'data-only' &&
        github.event.inputs.test_type != 'e2e-only')
+    # 30 (added task #1815) — same rationale as e2e-tests above: no
+    # job-level timeout meant a hung step rode GitHub's 360-min default.
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5

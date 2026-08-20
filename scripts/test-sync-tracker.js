@@ -175,11 +175,11 @@ check(
 );
 
 check(
-  'fetchRemote GET: origin/main has data/opening-night-sent.json',
+  'fetchRemote GET: private data repo main has opening-night-sent.json',
   (() => {
     try {
       const raw = execSync(
-        'gh api repos/thomaspryor/Broadwayscore/contents/data/opening-night-sent.json?ref=main',
+        `gh api repos/${mod.SYNC_REPO}/contents/${mod.SYNC_REMOTE_PATH}?ref=main`,
         { encoding: 'utf8' }
       );
       const meta = JSON.parse(raw);
@@ -196,7 +196,7 @@ check(
   (() => {
     try {
       const raw = execSync(
-        'gh api repos/thomaspryor/Broadwayscore/contents/data/opening-night-sent.json?ref=main',
+        `gh api repos/${mod.SYNC_REPO}/contents/${mod.SYNC_REMOTE_PATH}?ref=main`,
         { encoding: 'utf8' }
       );
       const meta = JSON.parse(raw);
@@ -215,7 +215,7 @@ check(
   (() => {
     try {
       execSync(
-        'gh api repos/thomaspryor/Broadwayscore/contents/data/does-not-exist-' + Date.now() + '.json?ref=main',
+        `gh api repos/${mod.SYNC_REPO}/contents/does-not-exist-` + Date.now() + '.json?ref=main',
         { stdio: ['ignore', 'ignore', 'pipe'] }
       );
       return false; // should have thrown
@@ -237,7 +237,7 @@ check(
   (() => {
     try {
       const raw = execSync(
-        'gh api repos/thomaspryor/Broadwayscore/contents/data/opening-night-sent.json?ref=main',
+        `gh api repos/${mod.SYNC_REPO}/contents/${mod.SYNC_REMOTE_PATH}?ref=main`,
         { encoding: 'utf8' }
       );
       const meta = JSON.parse(raw);

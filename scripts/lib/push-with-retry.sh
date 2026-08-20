@@ -36,7 +36,25 @@ source "$SCRIPT_DIR/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
+# BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally
+# named that" — NOT current HEAD. In a worktree checked out on a feature
+# branch, local `main` is a separate ref pinned at worktree-creation time
+# and never advances, so `git push origin main` there pushes that stale ref
+# every single time (always rejected non-fast-forward — indistinguishable
+# from real remote churn; task #1772, ~50 consecutive failures traced to
+# this in a live incident, root-caused to exactly this). Confirmed via a
+# full grep audit of every call site in .github/workflows/ and scripts/
+# (2026-08-18): no caller anywhere in this repo passes a plain branch name
+# other than "main" — every explicit refspec already uses the "HEAD:x" form
+# handled below. So EVERY plain name is normalized to "HEAD:<name>" here,
+# not just the unset-default case: on a normal main-branch checkout HEAD
+# already equals local main's tip, so this is byte-identical to the old
+# behavior for every existing caller; in a worktree on another branch it
+# correctly pushes current HEAD instead of the stale same-named local ref.
 BRANCH=${2:-main}
+if [[ "$BRANCH" != *:* ]]; then
+  BRANCH="HEAD:$BRANCH"
+fi
 
 # ── Hang guards (Notion 39d637c5 / task #183) ────────────────────────────────
 # Under high commit churn on a busy main, a `git fetch`/`git push` can stall on an
@@ -77,6 +95,18 @@ BRANCH=${2:-main}
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
 PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min); override per-caller for measured high-churn cost
+
+# Task #1792: how many failed local fetch+rebase+push attempts to tolerate
+# before trying the Git Data API fallback (below), instead of waiting for the
+# full $MAX_RETRIES/deadline exhaustion. Default floors at 3 — the backoff
+# comment further down notes pushes against busy main "almost always succeed
+# within 2-3 attempts", so a lower floor would fire on ordinary transient
+# contention, not just the sustained-loss case this exists for — and scales
+# with MAX_RETRIES so a caller overriding it to e.g. 30 doesn't get an
+# early-trigger that fires at the same fixed attempt 3 every time.
+_default_fallback_after=$(( (MAX_RETRIES + 1) / 2 ))
+[ "$_default_fallback_after" -lt 3 ] && _default_fallback_after=3
+PUSH_API_FALLBACK_AFTER_ATTEMPTS=${PUSH_API_FALLBACK_AFTER_ATTEMPTS:-$_default_fallback_after}
 
 # coreutils `timeout` on Linux/CI, `gtimeout` on macOS+coreutils, else absent.
 _TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
@@ -319,6 +349,41 @@ SCRIPT_ENTRY_HEAD="$(git rev-parse HEAD 2>/dev/null || true)"
 SCRIPT_ENTRY_BASE=""
 if [ -n "$SCRIPT_ENTRY_HEAD" ] && git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1; then
   SCRIPT_ENTRY_BASE="$(git merge-base "$SCRIPT_ENTRY_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)"
+fi
+
+# Task #1792: is the Git Data API fallback (below) eligible for THIS run at
+# all? Shared by both the early-trigger break (inside the retry loop) and the
+# full-exhaustion fallback block, so the two can't drift onto different
+# conditions. Eligible when:
+#   - not explicitly disabled (PUSH_API_FALLBACK_DISABLE=1, the escape hatch
+#     for any caller this rollout causes trouble for), AND
+#   - the caller explicitly opted in (PUSH_VIA_API_FALLBACK=1 — unchanged from
+#     task #707's original opt-in, e.g. weekly-grosses.yml's staged-rollout
+#     repo var), AND
+#   - the fallback script's own prerequisites are met (a resolvable merge
+#     base, and push-via-git-api.sh present).
+#
+# NOT default-on for non-CI callers, despite both motivating incidents
+# (2026-08-14, 2026-08-18/#1791, data/audit/push-retry-failures.jsonl) being
+# ci:false local sessions that never had a way to opt in — an earlier attempt
+# at that (gating on `[ -z "${GITHUB_ACTIONS:-}" ]` in addition to the opt-in
+# flag) broke tests/unit/push-with-retry-abort-preserves-head.test.mjs's
+# "#769"/"BRO-259" cases: the fallback's pre-diff reset (below) can discard a
+# legitimately-preserved concurrent commit when this SAME iteration's rebase
+# was a genuine no-op that nonetheless flips HEAD_TRUSTED_CLEAN false (line
+# ~1261: `git rebase -X theirs` exits 0 — and sets history_changed=true —
+# whether or not anything actually needed rebasing, so a no-op is
+# indistinguishable from a real rewrite by that signal alone). That's a
+# pre-existing gap in task #707/BRO-259's own fallback safety net (already
+# live today for the 2 CI-canary opt-in callers), not something safe to
+# widen onto the much larger non-CI population without fixing it first — see
+# the follow-up card this session filed. Keeping eligibility scoped to the
+# explicit opt-in for now; the early-trigger/discoverability changes below
+# still land real value against the CURRENT opt-in population.
+_PUSH_API_FALLBACK_ELIGIBLE=false
+if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
+     && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
+  _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
 
 # Shared ancestor predicate (BRO-259) — used by both sync_restore_base_head()
@@ -627,6 +692,26 @@ resolve_conflicts() {
           git add "$file" 2>/dev/null && resolved=true
         else
           echo "  ::warning::diary-shows merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
+      data/awards.json)
+        # Per-slug, deep-ceremony-key-union merge (BRO-76). awards.json is
+        # DUAL-TRACKED (see .github/workflows/CLAUDE.md "Public Show JSON
+        # Safety"): update-tony-awards.yml and update-precursor-awards.yml
+        # both commit it straight to this repo on independent, overlapping
+        # seasonal schedules (Apr-Jun), in addition to calling push-core-data
+        # for the private repo copy. The generic "accept remote" case below
+        # would silently drop this run's award data wholesale on conflict —
+        # same data-loss class as commercial.json (CDX-P0-1) and diary-
+        # shows.json (#176). mergeAwardsJson unions slugs, then deep-unions
+        # ceremony keys within a shared slug (a Tony write and an Olivier
+        # write for the same show both survive).
+        echo "  Auto-resolving (awards merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::awards merge failed for $file; falling back to keep-local"
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
@@ -982,6 +1067,41 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # checkout it can burn a full 90s doing nothing useful on every retry. Set
   # this to skip straight to the bounded fallback below without editing the
   # script mid-incident.
+  # Capture the shallow boundary BEFORE the unshallow attempt below can touch
+  # it — task #1723: 'git fetch --unshallow' can return rc=0 and flip
+  # `git rev-parse --is-shallow-repository` to false even when it did NOT
+  # actually restore ancestry to the remote's current tip (observed: origin
+  # force-rewritten to unrelated history — the unshallow negotiation completes
+  # trivially since the server has nothing to send for a boundary commit that
+  # no longer exists on its side, silently clearing our local shallow marker
+  # without connecting our history to the new tip). This used to be captured
+  # AFTER the unshallow attempt (gated on is-shallow-repository still being
+  # true at that point), which meant a lying unshallow made `_shallow_base_sha`
+  # never get set at all — silently disabling the task #466 ancestry-escalation
+  # abort below for exactly the case it exists to catch. Capturing here, before
+  # the attempt runs, means that check still fires on the ORIGINAL boundary
+  # even when the later unshallow lies about having fixed things.
+  #
+  # Computed ONCE for the whole run, not per iteration. This sits inside the
+  # retry loop and each successful bounded fetch DEEPENS the repo, so the
+  # boundary moves further back in time every pass. Recomputing would subtract
+  # another SHALLOW_SINCE_SLACK_SEC from an already-older boundary each time —
+  # the window would creep wider (and the fetch slower) with every retry, for
+  # no benefit: the original boundary is the commit our outgoing work is built
+  # on, and any later boundary is older, so the first window already covers
+  # what ancestry needs. Memoising also keeps the decision deterministic across
+  # a run, which is what the ancestry assert below reasons about.
+  #
+  # `|| true` on the rev-list is load-bearing under `set -euo pipefail`: with
+  # pipefail a failing `git rev-list` (unborn HEAD) makes the whole pipeline —
+  # and therefore this assignment — non-zero, and `set -e` would abort the
+  # entire push mid-retry. Falling through with an empty value is correct: the
+  # helper then returns the bounded --depth fallback.
+  if [ -z "${_shallow_base_sha:-}" ] && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+    _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
+    _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
+  fi
+
   if [ -z "${GITHUB_ACTIONS:-}" ] && [ -z "${_unshallow_attempted:-}" ] \
      && [ "${PUSH_SKIP_UNSHALLOW:-}" != "1" ] \
      && [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
@@ -997,27 +1117,10 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
     # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
     # only a handful of commits). This is the commit that must remain an
-    # ancestor of the fetched tip.
-    #
-    # Computed ONCE for the whole run, not per iteration. This block sits inside
-    # the retry loop and each successful bounded fetch DEEPENS the repo, so the
-    # boundary moves further back in time every pass. Recomputing would subtract
-    # another SHALLOW_SINCE_SLACK_SEC from an already-older boundary each time —
-    # the window would creep wider (and the fetch slower) with every retry, for
-    # no benefit: the original boundary is the commit our outgoing work is built
-    # on, and any later boundary is older, so the first window already covers
-    # what ancestry needs. Memoising also keeps the decision deterministic
-    # across a run, which is what the ancestry assert below reasons about.
-    #
-    # `|| true` on the rev-list is load-bearing under `set -euo pipefail`: with
-    # pipefail a failing `git rev-list` (unborn HEAD) makes the whole pipeline —
-    # and therefore this assignment — non-zero, and `set -e` would abort the
-    # entire push mid-retry. Falling through with an empty value is correct: the
-    # helper then returns the bounded --depth fallback.
-    if [ -z "${_shallow_base_sha:-}" ]; then
-      _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
-      _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
-    fi
+    # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
+    # captured above, before the unshallow attempt — reused here, not
+    # recomputed (still memoized the same way if this repo was never touched
+    # by that block, e.g. inside GITHUB_ACTIONS).
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
       # None of the emitted args can contain whitespace (asserted in the test),
       # so unquoted word-splitting into the array is safe here.
@@ -1095,7 +1198,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # this design rejects. Setting fetch_ok=false routes us down the existing,
   # already-safe "fetch failed" path: no tracking-ref write, no no-op guard,
   # just backoff and retry with a fresh budget.
-  if [ "$fetch_ok" = "true" ] && [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ] && [ -n "${_shallow_base_sha:-}" ]; then
+  #
+  # Gated on `_shallow_base_sha` alone (task #1723) — NOT also on
+  # `${#FETCH_DEPTH_ARGS[@]} -gt 0`. FETCH_DEPTH_ARGS reflects whether the fetch
+  # ABOVE was depth-bounded, which depends on `is-shallow-repository` AFTER the
+  # task #1489 unshallow attempt; that flag can go false even when the
+  # unshallow did not actually connect our history to the new tip (see the
+  # capture comment above). `_shallow_base_sha` is set once, before that
+  # attempt, from whether the checkout WAS shallow at entry — the correct
+  # invariant for "does this run need an ancestry safety check at all".
+  if [ "$fetch_ok" = "true" ] && [ -n "${_shallow_base_sha:-}" ]; then
     if ! git merge-base --is-ancestor "$_shallow_base_sha" FETCH_HEAD 2>/dev/null; then
       # Pick a widening that is actually REACHABLE on both paths. Gating this on
       # a non-empty epoch (as the first cut did) made it dead code precisely
@@ -1107,7 +1219,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       else
         _widen_args=(--deepen=2000)
       fi
-      echo "  ::warning::fetch was depth-bounded but base $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
+      # "fetch could not restore ancestry" not "depth-bounded fetch" (task
+      # #1723): this branch also fires after a post-unshallow fetch that was
+      # NOT depth-bounded (FETCH_DEPTH_ARGS may be empty here) — the invariant
+      # being checked is the shallow checkout's ORIGINAL boundary, not whether
+      # the fetch that just ran happened to carry a --depth/--shallow-since flag.
+      echo "  ::warning::shallow checkout's original boundary $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
       fetch_start=$SECONDS
       if git_fetch "${_widen_args[@]}" \
            origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
@@ -1138,7 +1255,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # logged, non-zero — and leave main untouched. `if: always()` steps and
         # the failure telemetry still run.
         record_push_failure "shallow-ancestry-unrecoverable" "$i"
-        echo "::error::push-with-retry: depth-bounded fetch could not restore ancestry — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        echo "::error::push-with-retry: fetch could not restore ancestry to the shallow checkout's original boundary — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
         restore_head_if_moved "shallow-ancestry-unrecoverable"
         exit 1
       fi
@@ -1359,33 +1476,54 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # a successful resolution but before the now-pushable commit is ever pushed
   # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
   # just falls through to the normal backoff + next attempt.
-  if [ "$history_changed" = "true" ] && git_push origin "$BRANCH"; then
-    if verify_content_survived; then
-      echo "Push succeeded after conflict resolution (attempt $i)"
-      pushed=true
-      break
-    else
-      echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
-      record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
-      # BRO-259: resets to RESTORE_BASE_HEAD (the best known-good point as of
-      # the last sync_restore_base_head() call, at loop-top or before the
-      # pre-resolution push above), NOT the stale original SCRIPT_ENTRY_HEAD
-      # — see the "Task #769 residual" this replaces at the pre-resolution
-      # reset above. NOT re-syncing here: HEAD right now is THIS iteration's
-      # own rebase/merge/cherry-pick result, not a clean append, so it isn't
-      # safe to treat as adoptable (a rebase rewrites history — HEAD is
-      # generally not even a descendant of RESTORE_BASE_HEAD any more). A
-      # foreign commit landing during the few seconds this iteration's own
-      # resolution took is a known, accepted residual (see
-      # sync_restore_base_head()'s header). The discard stays LOUD instead of
-      # silent — the SHAs stay recoverable via reflog.
-      git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
-      # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
-      # landed — see the identical comment at the pre-resolution reset above.
-      if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
-        HEAD_TRUSTED_CLEAN=true
+  if [ "$history_changed" = "true" ]; then
+    if git_push origin "$BRANCH"; then
+      if verify_content_survived; then
+        echo "Push succeeded after conflict resolution (attempt $i)"
+        pushed=true
+        break
+      else
+        echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
+        record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
+        # BRO-259: resets to RESTORE_BASE_HEAD (the best known-good point as of
+        # the last sync_restore_base_head() call, at loop-top or before the
+        # pre-resolution push above), NOT the stale original SCRIPT_ENTRY_HEAD
+        # — see the "Task #769 residual" this replaces at the pre-resolution
+        # reset above. NOT re-syncing here: HEAD right now is THIS iteration's
+        # own rebase/merge/cherry-pick result, not a clean append, so it isn't
+        # safe to treat as adoptable (a rebase rewrites history — HEAD is
+        # generally not even a descendant of RESTORE_BASE_HEAD any more). A
+        # foreign commit landing during the few seconds this iteration's own
+        # resolution took is a known, accepted residual (see
+        # sync_restore_base_head()'s header). The discard stays LOUD instead of
+        # silent — the SHAs stay recoverable via reflog.
+        git log --oneline "$RESTORE_BASE_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
+        # BRO-259 (Codex finding): only mark HEAD trusted if the reset actually
+        # landed — see the identical comment at the pre-resolution reset above.
+        if git reset --hard "$RESTORE_BASE_HEAD" 2>/dev/null; then
+          HEAD_TRUSTED_CLEAN=true
+        fi
       fi
+    else
+      # task #1810: this branch used to be silent (bare `&&` short-circuit,
+      # no else) — a 90s GIT_NET_TIMEOUT_SEC hang here printed NOTHING,
+      # which is why update-show-status.yml's identical hang on this exact
+      # push call went undiagnosed in CI logs for 4+ days.
+      echo "  Post-resolution push failed (attempt $i) — will retry after backoff"
     fi
+  fi
+
+  # Task #1792: auto-trigger the Git Data API fallback sooner than full
+  # $MAX_RETRIES/deadline exhaustion, instead of burning the whole local
+  # budget on a flow that's already lost $PUSH_API_FALLBACK_AFTER_ATTEMPTS
+  # attempts in a row. Only reached on a failed-attempt path (never
+  # short-circuits a successful push, which already `break`s above). Falls
+  # through to the SAME fallback block below as ordinary exhaustion — this is
+  # strictly an earlier entry point into existing logic, not new fallback
+  # behavior.
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
+    echo "::warning::push-with-retry: $i failed local attempt(s) reached (PUSH_API_FALLBACK_AFTER_ATTEMPTS=$PUSH_API_FALLBACK_AFTER_ATTEMPTS) — breaking out of the local fetch+rebase+push loop early to try the Git Data API fallback instead of waiting for full exhaustion"
+    break
   fi
 
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
@@ -1416,20 +1554,38 @@ done
 # instead of a full rebase. On the incident this generalizes, it won on the
 # FIRST attempt after 20 failed local-flow attempts.
 #
-# Opt-in (PUSH_VIA_API_FALLBACK=1), mirroring PUSH_RECONCILE_MERGED_JSON's
-# convention: this changes push semantics for the fallback attempt only —
-# every file OUR outgoing commit(s) touched wins outright over whatever's
-# on the remote tip (no per-line JSON merge; see the script's own header
-# for why that's the right call for the state/audit-ledger files this
-# targets). ~130 workflows push through this helper, so the fallback stays
-# opt-in until more callers have exercised it. Requires SCRIPT_ENTRY_BASE
-# (computed near the top of this script) to know what our outgoing diff is
-# relative to — skips silently if that's unavailable (e.g. no origin ref
-# resolvable at script start).
+# This changes push semantics for the fallback attempt only — every file OUR
+# outgoing commit(s) touched wins outright over whatever's on the remote tip
+# (no per-line JSON merge; see the script's own header for why that's the
+# right call for the state/audit-ledger files this targets). Requires
+# SCRIPT_ENTRY_BASE (computed near the top of this script) to know what our
+# outgoing diff is relative to — skips silently if that's unavailable (e.g.
+# no origin ref resolvable at script start).
+#
+# Eligibility is `$_PUSH_API_FALLBACK_ELIGIBLE` (computed near the top of this
+# script, right after SCRIPT_ENTRY_BASE — see that comment for the full
+# rationale, including why task #1792 stopped short of defaulting this on for
+# non-CI callers): unchanged from task #707's original opt-in
+# (PUSH_VIA_API_FALLBACK=1, e.g. weekly-grosses.yml's staged-rollout repo
+# var). Task #1792 adds the early-trigger threshold and shows.json/
+# reviews.json carve-out below, plus points a caller that hits full
+# exhaustion at this flag if it never fired (see the final failure message).
 _api_fallback_ok=false
-if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
-     && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
+if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
   _api_fallback_ok=true
+
+  # Task #1792 fix (bug found by widening fallback eligibility onto the
+  # existing #769/BRO-259 test fixtures): this call was documented as one of
+  # BRO-259's three protected call sites (see HEAD_TRUSTED_CLEAN's own
+  # comment above, "the Git-Data-API fallback's pre-diff reset") but was
+  # never actually wired in here — a concurrent writer's commit landing on
+  # this shared local checkout between loop exhaustion and this point (e.g.
+  # exactly the scenario a `git push` side effect can trigger, per
+  # tests/unit/push-with-retry-abort-preserves-head.test.mjs's "#769:
+  # abort-restore preserves commits made DURING the run" fixture) was
+  # silently discarded by the unconditional reset below instead of being
+  # adopted into RESTORE_BASE_HEAD first. Same gate as the other two sites.
+  [ "$HEAD_TRUSTED_CLEAN" = "true" ] && sync_restore_base_head
 
   # Force local HEAD back to the pristine original commit before diffing
   # (ship-check/Codex adversarial-review finding). The retry loop above may
@@ -1488,6 +1644,20 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     # (e.g. rebuild-fast.yml, rebuild-reviews.yml stage `data/audit/*.json`
     # on every run) until that follow-up audit narrows or clears specific
     # paths — expected and intentional, not a bug in this guard.
+    #
+    # data/shows.json + data/reviews.json fail-closed (task #1792 round-2
+    # review finding): the two hottest, most-concurrently-written files in
+    # the repo, written by 60+ non-canary workflows through this script, and
+    # NOT in MANAGED or under data/audit/ — so neither existing check above
+    # disqualifies them. "Ours wins outright" on a whole-file basis would
+    # silently discard a concurrent writer's edit to a DIFFERENT show/review
+    # entry in the same file, not just a real conflict on the same key — the
+    # local rebase flow's actual line-level merge doesn't have this failure
+    # mode. Named explicitly rather than folded into MANAGED because they
+    # need no reconciliation LOGIC (nothing to merge them with here) — they
+    # just need the fallback to never touch them; PUSH_RECONCILE_MERGED_JSON
+    # is not applicable, and the local fetch+rebase+push path (unaffected by
+    # this change) remains the only route for these two files.
     # ship-check/Codex adversarial finding (2026-08-16): this check MUST diff
     # against the range push-via-git-api.sh will actually replay, not
     # SCRIPT_ENTRY_HEAD. The git reset just above lands HEAD at
@@ -1506,21 +1676,23 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
     _managed_check_rc=0
     node -e '
         const { MANAGED } = require(process.argv[1]);
+        const NEVER_FALLBACK = ["data/shows.json", "data/reviews.json"];
         const changed = require("child_process")
           .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
           .split("\n").filter(Boolean);
         const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const hit = changed.find((f) => isManaged(f) || (f.startsWith("data/audit/") && !isManaged(f)));
+        const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith("/" + p));
+        const hit = changed.find((f) => isManaged(f) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f)));
         process.exit(hit ? 1 : 0);
       ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
     if [ "$_managed_check_rc" = "1" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json, or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
       _api_fallback_ok=false
     fi
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
-  echo "::warning::push-with-retry: local fetch+rebase+push exhausted $MAX_RETRIES attempts — trying the Git Data API fallback (task #707)"
+  echo "::warning::push-with-retry: local fetch+rebase+push failed after up to $i of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
   # Command substitution only captures stdout — push-via-git-api.sh writes
   # ONLY the new commit sha there on success, so API_NEW_SHA is clean.
   # Its progress/diagnostic lines go to stderr, which flows through here
@@ -1556,6 +1728,16 @@ fi
 if [ "$pushed" != "true" ]; then
   record_push_failure "retries-exhausted" "$MAX_RETRIES"
   echo "::error::All push attempts failed after $MAX_RETRIES attempts"
+  # Task #1792 (discoverability): a session hitting this had no way to know
+  # PUSH_VIA_API_FALLBACK / this run's own eligibility existed unless it
+  # already knew to look. Only add the pointer when the fallback did NOT run
+  # (_api_fallback_ok never true) — if it DID run and also failed, that's
+  # already logged above ("Git Data API fallback also failed" / the
+  # content-dropped error) and repeating the pointer here would read as "try
+  # the thing that was just tried and failed."
+  if [ "$_api_fallback_ok" != "true" ]; then
+    echo "::error::push-with-retry: the Git Data API fallback did NOT run this attempt — either PUSH_VIA_API_FALLBACK was not set to 1, PUSH_API_FALLBACK_DISABLE=1 was set, no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/data-audit path (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — re-run with PUSH_VIA_API_FALLBACK=1 if none of the disqualifying reasons apply, or see scripts/lib/push-via-git-api.sh."
+  fi
   restore_head_if_moved "retries-exhausted"
   exit 1
 fi

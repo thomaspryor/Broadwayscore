@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-08-19T17:46:25.352Z",
+  "apply": true,
+  "includeMedium": false,
+  "auditTimestamp": "2026-08-19T17:41:25.085Z",
+  "counts": {
+    "flagged": 3,
+    "skipped": 1,
+    "missing": 0
+  },
+  "affectedShows": [
+    "oh-mary-2024",
+    "stranger-things-the-first-shadow-west-end-2023",
+    "the-outsiders-world-premiere-regional-2023"
+  ],
+  "flagged": [
+    {
+      "file": "oh-mary-2024/njcom--christopher-kelly.json",
+      "filedUnder": "oh-mary-2024",
+      "closerTo": "oh-mary-west-end-2025",
+      "matchReason": "publish-date",
+      "confidence": "high",
+      "hasDupeInCorrectDir": true
+    },
+    {
+      "file": "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "filedUnder": "stranger-things-the-first-shadow-west-end-2023",
+      "closerTo": "stranger-things-2024",
+      "matchReason": "publish-date",
+      "confidence": "high",
+      "hasDupeInCorrectDir": true
+    },
+    {
+      "file": "the-outsiders-world-premiere-regional-2023/pages-on-stages--mason-pilevsky.json",
+      "filedUnder": "the-outsiders-world-premiere-regional-2023",
+      "closerTo": "the-outsiders-2024",
+      "matchReason": "publish-date",
+      "confidence": "high",
+      "hasDupeInCorrectDir": true
+    }
+  ],
+  "skipped": [
+    {
+      "file": "oh-mary-2024/one-minute-critic--matthew-wexler.json",
+      "reason": "human-approved/cleared"
+    }
+  ],
+  "missing": []
+}

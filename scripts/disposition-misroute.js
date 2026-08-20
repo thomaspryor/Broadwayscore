@@ -97,8 +97,8 @@ async function cmdReport() {
       description:
         `${fresh.length} review file(s) appear misrouted and are not yet dispositioned. ` +
         `Nothing was changed automatically. To triage LOCALLY:\n` +
-        `1) REVIEW_TEXTS_DIR=~/broadway-review-texts node scripts/audit-slug-match-routing.js\n` +
-        `2) REVIEW_TEXTS_DIR=~/broadway-review-texts node scripts/verify-misroute-content.js --include-flagged --include-oos\n` +
+        `1) node scripts/audit-slug-match-routing.js\n` +
+        `2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n` +
         `3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\n` +
         `To silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason="..."`,
       fields: rows,

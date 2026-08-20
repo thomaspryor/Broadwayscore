@@ -81,11 +81,120 @@ function resolveAuthEnv() {
   return readEnvKeys(AUTH_KEYS);
 }
 
+// Absolute-path candidates for the `claude` binary, in preference order —
+// mirrors BASH5_CANDIDATES/modernBash() in infra-gate-registration-check.js
+// (same launchd-minimal-PATH class of bug, there for bash 5 vs macOS's
+// PATH-resolved bash 3.2). Deliberately not resolved via PATH.
+function claudeBinCandidates(env) {
+  const home = env.HOME || os.homedir();
+  return [
+    path.join(home, '.local/bin/claude'),
+    '/Applications/cmux.app/Contents/Resources/bin/claude',
+    '/opt/homebrew/bin/claude',   // Apple Silicon Homebrew — absent from the
+                                  // original list, so a brew-only machine fell
+                                  // through to bare 'claude' and kept the ENOENT
+                                  // exposure this resolver exists to close.
+    '/usr/local/bin/claude',
+  ];
+}
+
+function isExecutablePath(p) {
+  try {
+    // statSync BEFORE accessSync: a DIRECTORY passes X_OK whenever it has
+    // search permission (verified 2026-08-18 — `fs.accessSync(dir, X_OK)`
+    // returns cleanly, then spawning it fails EACCES). Without the isFile
+    // guard a directory named `claude` at an earlier candidate path would
+    // shadow the real binary later in the list, and the resulting EACCES
+    // would point at the wrong cause — the exact silent-misresolution this
+    // resolver exists to prevent (ship-check finding, gpt-5.4-mini).
+    if (!fs.statSync(p).isFile()) return false;
+    fs.accessSync(p, fs.constants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolve an absolute path to the `claude` binary instead of relying on
+ * spawning the bare name and letting Node resolve it through PATH.
+ *
+ * Task #1768: launchd-parented plists carry only the plist's
+ * EnvironmentVariables PATH (no ~/.local/bin), so bare-name spawn died
+ * `ENOENT` — 9 failures across 8 days, reproduced with a control test:
+ * a bare-name spawn under a minimal PATH fails, the same call with the
+ * absolute path succeeds. Same launchd-minimal-env class as AUTH_KEYS
+ * above (#713), left unaddressed for PATH until now.
+ *
+ * env.CLAUDE_BIN wins if set and executable — a bad/stale value is ignored
+ * (fail open), not thrown on. Otherwise probes the fixed candidate list.
+ * Falls back to the bare 'claude' string, unchanged from today's behavior,
+ * so an environment where PATH already resolves it is never regressed.
+ *
+ * @param {NodeJS.ProcessEnv} [env] injectable for tests; defaults to the
+ *   real process env for actual spawns.
+ * @param {string[]} [candidates] injectable for tests; defaults to
+ *   claudeBinCandidates(env) for actual spawns.
+ * @returns {string} an absolute path, or 'claude' if nothing resolved.
+ */
+function resolveClaudeBin(env = process.env, candidates = claudeBinCandidates(env)) {
+  if (env.CLAUDE_BIN) {
+    // CLAUDE_BIN is an OPERATOR PIN — the documented way to force a specific
+    // build for a rollback. Silently discarding a bad pin and running some
+    // other candidate is the worst outcome: the operator believes they rolled
+    // back, the run says Done, and the wrong binary produced it. Both
+    // ship-check reviewers (Codex + gpt-5.4-mini) flagged this independently.
+    // Still fail OPEN so a typo can never take the whole dispatcher down —
+    // but never fail SILENT.
+    if (!path.isAbsolute(env.CLAUDE_BIN)) {
+      console.error(`[claude-cli] IGNORING CLAUDE_BIN="${env.CLAUDE_BIN}": not an absolute path (it would resolve against the cwd, which differs per dispatch). Falling back to candidate probing.`);
+    } else if (!isExecutablePath(env.CLAUDE_BIN)) {
+      console.error(`[claude-cli] IGNORING CLAUDE_BIN="${env.CLAUDE_BIN}": not an executable file. Falling back to candidate probing — if you set this to pin a version for a rollback, that pin is NOT in effect.`);
+    } else {
+      return env.CLAUDE_BIN;
+    }
+  }
+  for (const c of candidates) {
+    if (isExecutablePath(c)) return c;
+  }
+  return 'claude';
+}
+
+/**
+ * Prepend the resolved binary's directory to a PATH string, so a nested
+ * `claude` the child itself invokes resolves under the same minimal-PATH
+ * parent that made the outer spawn need an absolute path (task #1768).
+ *
+ * Shared so callers building their own env (notion-action-poll.js's runEnv)
+ * get the identical treatment instead of re-deriving it — CLAUDE.md rule 15.
+ *
+ * @param {string} [pathValue] the PATH being forwarded to the child.
+ * @returns {string} PATH with the resolved binary's dir first (deduped).
+ */
+function pathWithClaudeBinDir(pathValue = process.env.PATH) {
+  const bin = resolveClaudeBin();
+  if (!path.isAbsolute(bin)) return pathValue || '';
+  const dir = path.dirname(bin);
+  const parts = (pathValue || '').split(path.delimiter).filter(Boolean);
+  if (parts.includes(dir)) return parts.join(path.delimiter);
+  return [dir, ...parts].join(path.delimiter);
+}
+
 function strippedEnv(extra = {}) {
-  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', ...AUTH_KEYS];
+  // CLAUDE_BIN must survive the strip: task #1780 made the spawn call resolve
+  // the binary against this merged env (not bare process.env), so dropping it
+  // here would silently break the documented operator-pin mechanism for
+  // anyone who sets CLAUDE_BIN as a real env var rather than passing it via
+  // the `extra` (opts.env) override.
+  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'CLAUDE_BIN', ...AUTH_KEYS];
   const env = {};
   for (const k of keep) { if (process.env[k] !== undefined) env[k] = process.env[k]; }
   env.HOME = env.HOME || os.homedir();
+  // Same #1768 fix as the spawn call sites: if resolution found an absolute
+  // path, put its directory on the forwarded PATH too, so a nested `claude`
+  // invocation the child itself makes (not just this module's own spawns)
+  // also resolves under the same minimal-PATH parent.
+  env.PATH = pathWithClaudeBinDir(env.PATH);
   // Precedence, weakest first: process.env < .env top-up < caller's `extra`.
   // The top-up sits ABOVE `env` on purpose: readEnvKeys only returns keys the
   // environment left absent OR EMPTY, and an inherited `FOO=` empty string
@@ -106,12 +215,22 @@ function strippedEnv(extra = {}) {
 // successful run. Probe the actual auth shape BEFORE spawning the real session
 // so a doomed pass never silently "succeeds" with a login prompt as its output.
 function authPing(extraEnv) {
-  const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+  // Same effective-env-before-resolve fix as runClaudeCli (task #1780): probe
+  // the SAME binary the real spawn would use, including any CLAUDE_BIN pin
+  // passed via extraEnv — resolving against bare process.env would silently
+  // ping a different binary than the one the pass actually runs.
+  const pingEnv = { ...process.env, ...resolveAuthEnv(), ...extraEnv };
+  const r = spawnSync(resolveClaudeBin(pingEnv), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
     // resolveAuthEnv() sits above process.env for the same reason as in
     // strippedEnv: under launchd the keys are absent, and the probe has to
     // exercise the SAME credentials the real spawn will get or it proves
     // nothing. extraEnv still wins so probe 1 can force the no-API-key shape.
-    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...resolveAuthEnv(), ...extraEnv } });
+    { encoding: 'utf8', timeout: 120000, env: pingEnv });
+  // A spawn error (e.g. ENOENT) sets r.error and leaves status/stdout/stderr
+  // null — falling through to `exit ${r.status}` would print the
+  // uninformative "exit null" for exactly the failure this module exists to
+  // make legible (task #1768).
+  if (r.error) return { ok: false, detail: String(r.error.message || r.error).slice(0, 300) };
   if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
   // Positive validation, never a grep for the error string (it may get reworded):
   // require the envelope to actually contain the pong.
@@ -327,8 +446,15 @@ function runClaudeCli(opts) {
 
   return new Promise((resolve) => {
     let child;
+    // Resolve against the EFFECTIVE (post-merge) env, not bare process.env —
+    // otherwise a caller's env.CLAUDE_BIN override (the documented operator
+    // pin, and the test seam for substituting a fake binary) never takes
+    // effect: resolveClaudeBin() would silently probe the real candidate
+    // list instead (task #1780 — this exact gap invoking the real installed
+    // `claude` under opening-night-monitor.test.mjs's fixtures).
+    const spawnEnv = strippedEnv(env);
     try {
-      child = spawn('claude', args, { cwd, env: strippedEnv(env), stdio: ['pipe', 'pipe', 'pipe'] });
+      child = spawn(resolveClaudeBin(spawnEnv), args, { cwd, env: spawnEnv, stdio: ['pipe', 'pipe', 'pipe'] });
     } catch (e) {
       return resolve(done({ stage: STAGES.ERROR, errorDetail: `spawn failed: ${e.message}` }));
     }
@@ -470,4 +596,5 @@ module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
+  resolveClaudeBin, pathWithClaudeBinDir,
 };

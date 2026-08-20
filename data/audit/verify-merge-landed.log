@@ -210,3 +210,9 @@ verify-merge-landed: worktree-url-change-invariant-483 -> main still reachable f
 verify-merge-landed: job/linear-BRO-284-msqfpaff -> main still reachable from origin/main (compare status: ahead) at +120s
 verify-merge-landed: worktree-feedback-pipeline-shared-fields -> main still reachable from origin/main (compare status: ahead) at +120s
 verify-merge-landed: worktree-rebuild-staleness-guard -> main still reachable from origin/main (compare status: ahead) at +120s
+verify-merge-landed: worktree-1770-reconcile-dead-completions-timestamp -> main still reachable from origin/main (compare status: ahead) at +120s
+verify-merge-landed: worktree-push-fallback-earlier-1792 -> main still reachable from origin/main (compare status: identical) at +120s
+verify-merge-landed: worktree-push-fallback-earlier-1792 -> main still reachable from origin/main (compare status: ahead) at +480s
+verify-merge-landed: worktree-push-fallback-earlier-1792 -> main still reachable from origin/main (compare status: ahead) at +900s
+verify-merge-landed: worktree-push-fallback-earlier-1792 -> main survived all 3 delayed check(s) — done
+verify-merge-landed: worktree-owner-alert-router-attempts-fixture-fix -> main still reachable from origin/main (compare status: ahead) at +120s

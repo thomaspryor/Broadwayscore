@@ -1,31 +1,63 @@
 {
-  "updatedAt": "2026-08-17T23:53:29.305Z",
-  "processed": 0,
-  "failed": 7,
-  "successRate": "0%",
+  "updatedAt": "2026-08-20T12:58:54.756Z",
+  "processed": 67,
+  "failed": 729,
+  "successRate": "8.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "browserbase": 1,
+    "directCookies": 3,
+    "scrapingbee": 7,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-08-17T23:52:22.846Z",
+      "t": "2026-08-20T10:35:21.461Z",
       "event": "bb-session",
-      "session": "72f2008f",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "75e22968",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-17T23:52:40.991Z",
+      "t": "2026-08-20T10:35:22.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T12:50:22.090Z",
       "event": "bb-session",
-      "session": "caf70a76",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "48cb419b",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T12:50:23.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T12:54:34.117Z",
+      "event": "bb-session",
+      "session": "bc55fe41",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-20T12:54:34.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-20T12:55:04.424Z",
+      "event": "bb-session",
+      "session": "ead216d1",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-20T12:55:05.386Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

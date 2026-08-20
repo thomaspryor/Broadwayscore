@@ -1,0 +1,119 @@
+name: Clear Stale suspectedMisattribution Flags
+
+# Scheduled cleanup for stale `suspectedMisattribution` flags in data/review-texts/.
+# Background (card #1610, Notion 34e637c5-416f-81b8): critic-registry.json is
+# regenerated nightly from the corpus (audit-critic-outlets.js), so a critic's
+# knownOutlets list grows over time. A file flagged suspectedMisattribution
+# before the registry caught up carries the exclusion forever unless swept.
+# The predicate script was run manually once (2026-04-26, 106/106 cleared) and
+# never scheduled — re-running it 2026-08-19 found 21 of 30 currently-flagged
+# files had reaccumulated. This workflow closes that gap.
+#
+# Deterministic, no LLM/API key needed — isLikelyStaleSuspectedMisattribution()
+# just checks the current critic-registry. Surge-guarded (script refuses >25
+# clears without --force-bulk) since this still writes unattended to the
+# private review-texts corpus.
+on:
+  schedule:
+    # Weekly on Wednesdays at 9 AM UTC (after audit-aggregator-coverage Monday,
+    # before audit-review-quality Tuesday's own weekly cadence).
+    - cron: '0 9 * * 3'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >25 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-stale-suspected-misattribution
+  cancel-in-progress: false
+
+jobs:
+  clear-stale:
+    name: Clear stale suspectedMisattribution flags
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run sweep (report)
+        id: sweep
+        run: |
+          set +e
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js 2>&1)
+          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'Stale \(would clear\): [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.sweep.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: auto-clear ${{ steps.sweep.outputs.count }} stale suspectedMisattribution flags [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## suspectedMisattribution Stale-Flag Sweep"
+            echo ""
+            echo "**Stale flags found:** ${{ steps.sweep.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+            elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.sweep.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Stale suspectedMisattribution Failed'
+          severity: 'warning'

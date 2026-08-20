@@ -246,15 +246,39 @@ function isAttemptEvent(event) {
 // can be missing or malformed on exactly those lines. Matches this file's own
 // lastByRef/foldJobs/openTaskWorkspaceLaunches convention (last-in-array
 // wins), not a new one (Opus second-opinion review, card #1144).
-function latestAttemptForTask(taskId, entries) {
+//
+// opts.beforeTs (card #1770/task #1701 incident): optional ISO cutoff — an
+// attempt entry whose own `ts` is strictly after it is skipped, so "latest"
+// means "latest AS OF that moment" rather than "latest ever". Without this,
+// a task that completed via an earlier healthy attempt and was later
+// mistakenly re-dispatched (a redispatch that then died) reads as if its
+// completion itself never ran — see isLatestDispatchDead below. Absent or
+// unparseable beforeTs is a no-op: identical to today's unfiltered behavior.
+function latestAttemptForTask(taskId, entries, opts = {}) {
+  const cutoffTs = opts.beforeTs ? Date.parse(opts.beforeTs) : NaN;
+  const hasCutoff = Number.isFinite(cutoffTs);
   let latest = null;
   for (const e of entries || []) {
     if (!e || typeof e !== 'object') continue;
     if (String(e.taskId) !== String(taskId)) continue;
     if (!isAttemptEvent(e.event)) continue;
+    if (hasCutoff) {
+      const ts = Date.parse(e.ts || '');
+      if (Number.isFinite(ts) && ts > cutoffTs) continue;
+    }
     latest = e;
   }
   return latest;
+}
+
+function isDeadShapedAttempt(e) {
+  return isDeadlikeEvent(e.event)
+    || (e.event === 'launch' && e.unverified === true)
+    // An abandoned attempt (lease-held / pre-spawn exception) never actually
+    // ran, same as a dead cmux launch — a caller checking "did the LATEST
+    // attempt run" (dispatch-dead-launch-guard.js's completion guard) must
+    // not trust a task marked completed off the back of one.
+    || e.event === JOB_EVENTS.ABANDONED;
 }
 
 // True when the task's MOST RECENT dispatch attempt never actually ran.
@@ -268,17 +292,45 @@ function latestAttemptForTask(taskId, entries) {
 // dead — a later successful redispatch always supersedes earlier deaths, so
 // a task that died once and was then legitimately redispatched is never
 // blocked forever. No attempt recorded at all → NOT dead.
-function isLatestDispatchDead(taskId, entries) {
+//
+// opts.beforeTs (card #1770/task #1701 incident): deliberately NOT passed
+// straight to latestAttemptForTask — the true latest-ever attempt is always
+// checked FIRST. Cmux workspace remaps (see remapEntries()) can rewrite a
+// perfectly healthy, still-running attempt's 'launch' timestamp to a moment
+// AFTER the task's own completion (a remap is bookkeeping on the SAME
+// attempt, not a new one) — a raw ts>beforeTs filter would wrongly discard
+// that healthy attempt and fall back to an earlier dead one, manufacturing a
+// false dead-completion where none exists (caught live against production
+// ledger data: tasks #1115/#1709 both false-flagged this way before this
+// two-phase check was added). The cutoff is only consulted as a FALLBACK,
+// and only when the real latest-ever attempt is itself dead-shaped AND its
+// own ts is after the cutoff — i.e. only for a stale re-dispatch of already-
+// finished work (the #1701 shape), never for an in-progress/remapped one.
+// Returns the actual dead-shaped attempt ENTRY that isLatestDispatchDead's
+// decision is based on (or null if the latest attempt isn't dead) — same
+// two-phase beforeTs/cutoff logic as that function, factored out so a
+// caller that needs to know WHICH ledger event was dead (not just true/
+// false) can key off its own `ts` (card #1795: reconcile-dead-completions.js's
+// REOPEN_MARKER idempotency needs to distinguish "this exact dead-dispatch
+// event was already handled" from "a NEW dead completion happened since").
+function resolveDeadAttempt(taskId, entries, opts = {}) {
   const latest = latestAttemptForTask(taskId, entries);
-  if (!latest) return false;
-  if (isDeadlikeEvent(latest.event)) return true;
-  if (latest.event === 'launch' && latest.unverified === true) return true;
-  // An abandoned attempt (lease-held / pre-spawn exception) never actually
-  // ran, same as a dead cmux launch — a caller checking "did the LATEST
-  // attempt run" (dispatch-dead-launch-guard.js's completion guard) must not
-  // trust a task marked completed off the back of one.
-  if (latest.event === JOB_EVENTS.ABANDONED) return true;
-  return false;
+  if (!latest) return null;
+  if (!isDeadShapedAttempt(latest)) return null;
+
+  if (opts.beforeTs) {
+    const cutoffTs = Date.parse(opts.beforeTs);
+    const latestTs = Date.parse(latest.ts || '');
+    if (Number.isFinite(cutoffTs) && Number.isFinite(latestTs) && latestTs > cutoffTs) {
+      const atCutoff = latestAttemptForTask(taskId, entries, opts);
+      return (atCutoff && isDeadShapedAttempt(atCutoff)) ? atCutoff : null;
+    }
+  }
+  return latest;
+}
+
+function isLatestDispatchDead(taskId, entries, opts = {}) {
+  return Boolean(resolveDeadAttempt(taskId, entries, opts));
 }
 
 // LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
@@ -914,7 +966,7 @@ module.exports = {
   // bsc-next, dispatch-watchdog, the S6 canary) died on load. Do not re-add
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
-  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
+  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,

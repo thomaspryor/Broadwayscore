@@ -200,6 +200,13 @@ function formatCard(page) {
     createdAt: page.created_time || null,
     lastEditedAt,
     ageDays,
+    // A page moved to Notion's trash keeps its Status property untouched (it
+    // can still read "In progress") but refuses every write with "Can't edit
+    // block that is archived" — a permanent, un-closeable dispatch target if
+    // nothing downstream checks for it (task #1811). `archived` and
+    // `in_trash` are both present on every pages.retrieve/pages.update
+    // response; either one true means the page is gone from the working set.
+    archived: Boolean(page.archived || page.in_trash),
   };
 }
 

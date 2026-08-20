@@ -68,13 +68,17 @@ test('isModelAllowed refuses fable/mythos (the old interactive-only default) and
 test('runMonitorPass: happy path against a fake claude binary — no cmux involved', async () => {
   const dir = mkTmp();
   try {
-    writeFakeClaude(dir, { resultText: 'pass complete: 3 reviews live' });
+    const fakeClaude = writeFakeClaude(dir, { resultText: 'pass complete: 3 reviews live' });
     const result = await runMonitorPass({
       prompt: 'be the opening night monitor',
       cwd: REPO_ROOT,
       model: 'opus',
       maxWallMin: 1,
-      env: { ...process.env, PATH: `${dir}:${process.env.PATH}` },
+      // CLAUDE_BIN, not a PATH prepend — task #1768 made binary resolution
+      // probe a fixed absolute-path candidate list instead of searching
+      // PATH, so a PATH-only override no longer substitutes the fake
+      // binary; CLAUDE_BIN is the documented, supported override (task #1780).
+      env: { ...process.env, CLAUDE_BIN: fakeClaude },
     });
     assert.equal(result.ok, true);
     assert.equal(result.resultText, 'pass complete: 3 reviews live');
@@ -105,10 +109,10 @@ test('runMonitorPass: refuses fable before ever spawning a process', async () =>
 test('runMonitorPass: a nonzero exit surfaces as a failed stage, not a thrown exception', async () => {
   const dir = mkTmp();
   try {
-    writeFakeClaude(dir, { exitCode: 1, resultText: 'boom' });
+    const fakeClaude = writeFakeClaude(dir, { exitCode: 1, resultText: 'boom' });
     const result = await runMonitorPass({
       prompt: 'x', cwd: REPO_ROOT, model: 'opus', maxWallMin: 1,
-      env: { ...process.env, PATH: `${dir}:${process.env.PATH}` },
+      env: { ...process.env, CLAUDE_BIN: fakeClaude },
     });
     assert.equal(result.ok, false);
     assert.ok(result.stage);
@@ -131,14 +135,16 @@ test('runMonitorPass completes successfully when invoked from launchd-shaped (do
   const outFile = path.join(dir, 'result.json');
   const ppidFile = path.join(dir, 'ppid.txt');
   try {
-    writeFakeClaude(dir, { resultText: 'orphan pass ok' });
+    const fakeClaude = writeFakeClaude(dir, { resultText: 'orphan pass ok' });
 
     const runnerScript = path.join(dir, 'runner.js');
     fs.writeFileSync(runnerScript, `
       const fs = require('fs');
       const { runMonitorPass } = require(${JSON.stringify(path.join(__dirname, 'opening-night-monitor.js'))});
       fs.writeFileSync(${JSON.stringify(ppidFile)}, String(process.ppid));
-      runMonitorPass({ prompt: 'x', cwd: ${JSON.stringify(REPO_ROOT)}, model: 'opus', maxWallMin: 1 })
+      // CLAUDE_BIN, not PATH — see the happy-path test's comment: task #1768
+      // made binary resolution ignore PATH entirely.
+      runMonitorPass({ prompt: 'x', cwd: ${JSON.stringify(REPO_ROOT)}, model: 'opus', maxWallMin: 1, env: { ...process.env, CLAUDE_BIN: ${JSON.stringify(fakeClaude)} } })
         .then(r => fs.writeFileSync(${JSON.stringify(outFile)}, JSON.stringify(r)))
         .catch(e => fs.writeFileSync(${JSON.stringify(outFile)}, JSON.stringify({ ok: false, crashed: String(e && e.stack || e) })));
     `);

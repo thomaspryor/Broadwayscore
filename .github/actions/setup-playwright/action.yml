@@ -19,9 +19,27 @@ runs:
 
     - name: Install Playwright browsers
       shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
       run: |
+        log=$(mktemp)
         if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
-          npx playwright install ${{ inputs.browsers }} --with-deps > /dev/null 2>&1
+          cmd=(npx playwright install ${{ inputs.browsers }} --with-deps)
         else
-          npx playwright install-deps ${{ inputs.browsers }} > /dev/null 2>&1
+          cmd=(npx playwright install-deps ${{ inputs.browsers }})
         fi
+        # timeout-minutes isn't supported on composite-action steps, so the
+        # `timeout` command is what stops this from silently eating the
+        # parent job's entire budget on a hung apt-get/dpkg lock (task #1815).
+        timeout 480 "${cmd[@]}" > "$log" 2>&1
+        status=$?
+        if [ "$status" -ne 0 ]; then
+          if [ "$status" -eq 124 ]; then
+            echo "::error::${cmd[*]} timed out after 8m — output so far:"
+          else
+            echo "::error::${cmd[*]} failed (exit $status) — full output:"
+          fi
+          cat "$log"
+          exit 1
+        fi
+        tail -n 20 "$log"

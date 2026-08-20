@@ -109,8 +109,12 @@ for attempt in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
-  # Push.
-  if git push origin "$BRANCH"; then
+  # Push current HEAD (this repo may be checked out on a branch other than
+  # $BRANCH — a plain `git push origin "$BRANCH"` would push whatever the
+  # LOCAL branch literally named $BRANCH points to, not the commit this
+  # script just fetched/rebased above; task #1772 found the identical bug in
+  # push-with-retry.sh's push line). HEAD is what the rebase above landed on.
+  if git push origin "HEAD:$BRANCH"; then
     echo "  Push succeeded on attempt $attempt."
     exit 0
   fi

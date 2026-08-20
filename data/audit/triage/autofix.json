@@ -1,7 +1,7 @@
 {
   "system": "autofix",
   "status": "error",
-  "lastChecked": "2026-08-16T12:27:11.960Z",
+  "lastChecked": "2026-08-19T14:07:12.822Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -19,7 +19,7 @@
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
       "status": "error",
-      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 2 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 5 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     }
   ]
 }

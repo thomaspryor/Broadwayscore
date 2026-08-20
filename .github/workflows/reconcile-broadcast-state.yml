@@ -66,35 +66,20 @@ jobs:
           fi
           node scripts/reconcile-broadcast-state.js $ARGS
 
-      - name: Check for changes
-        id: changes
-        run: |
-          if git diff --quiet data/opening-night-sent.json 2>/dev/null; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit reconciled state
-        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add --force data/opening-night-sent.json
-          git commit -m "data: Reconcile Resend broadcast state [skip ci]
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-          bash scripts/lib/push-with-retry.sh
-
-      # opening-night-sent.json is one of push-core-data's CORE_FILES — the
-      # commit above only reaches the public repo's gitignore-forced copy.
+      # opening-night-sent.json is one of push-core-data's CORE_FILES and (as
+      # of task #1759) untracked+ignored in the public repo — no public commit
+      # step needed. push-core-data diffs data/opening-night-sent.json against
+      # the /tmp/core-data-snapshot/ copy checkout-core-data wrote at job
+      # start and safely no-ops when unchanged, so it's safe to call
+      # unconditionally (gated only on dry_run, which reconcile-broadcast-
+      # state.js itself already respects by skipping the writeFileSync).
       # Without this step the reconciled draftStatus/sentAt/recipientCount
       # never lands in the authoritative private data repo, so the next
       # checkout-core-data (e.g. opening-night-broadcast.yml) silently
       # reverts it to the pre-reconciliation state (task #1442, same bug
       # class as #1441's update-tony-awards.yml).
       - name: Push core data to private repo
-        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
+        if: inputs.dry_run != true
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

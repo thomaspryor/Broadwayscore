@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 const require = createRequire(import.meta.url);
-const { EDITION_PAIRS, DECLARED_ALIAS_OVERLAPS, findUndeclaredDomainCollisions } =
+const { EDITION_PAIRS, DECLARED_ALIAS_OVERLAPS, findUndeclaredDomainCollisions, wouldCauseDomainCollision } =
   require(resolve(ROOT, 'scripts/lib/outlet-registry-domain-collisions.js'));
 
 describe('findUndeclaredDomainCollisions', () => {
@@ -120,6 +120,51 @@ describe('findUndeclaredDomainCollisions', () => {
       ['dc-metro-theater-arts', 'dctheatrescene'],
       ['chicago-sun-times', 'suntimes'],
     ]);
+  });
+});
+
+describe('wouldCauseDomainCollision', () => {
+  test('flags a candidate whose inferred domain is already claimed (task #1776)', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision({ 'times-uk': { domain: 'thetimes.co.uk' } }, 'the-times-barbican', 'thetimes.co.uk'),
+      true
+    );
+  });
+
+  test('allows a candidate whose domain is unclaimed', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision({ 'times-uk': { domain: 'thetimes.co.uk' } }, 'some-new-outlet', 'someblog.com'),
+      false
+    );
+  });
+
+  test('does not flag a candidate with no domain', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision({ 'times-uk': { domain: 'thetimes.co.uk' } }, 'the-times-barbican', null),
+      false
+    );
+  });
+
+  test('a candidate joining a declared EDITION_PAIRS domain is not flagged', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision({ timeout: { domain: 'timeout.com' } }, 'timeout-london', 'timeout.com'),
+      false
+    );
+  });
+
+  test('flags a candidate whose primary domain is claimed by an existing outlet only via domainAliases (task #1270 pattern)', () => {
+    assert.strictEqual(
+      wouldCauseDomainCollision(
+        { squatter: { domain: 'squatter.com', domainAliases: ['thetimes.co.uk'] } },
+        'the-times-barbican',
+        'thetimes.co.uk'
+      ),
+      true
+    );
+  });
+
+  test('an empty registry never collides', () => {
+    assert.strictEqual(wouldCauseDomainCollision({}, 'the-times-barbican', 'thetimes.co.uk'), false);
   });
 });
 

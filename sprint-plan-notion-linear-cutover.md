@@ -263,6 +263,21 @@ defence. Notion must be fully live throughout.
 ## Sprint 3: Migrate the backlog into Linear
 **Demo:** 398 P0/P1-tier issues live in Linear, 1,255 P2/P3 present as Canceled + `notion-archive` (searchable,
 not dispatchable), and an anti-join proving no un-Done Notion page is unaccounted for.
+`[CHANGED: every card count in this sprint is stale — they were measured before days of board growth. Recomputed
+off the frozen Sprint 2 corpus (4,994 pages) on 2026-08-17, which is the source the importer actually reads:
+un-Done 1,949 (not 1,831); live P0/P1 435 (not 398); archive 1,514 (not 1,255). The importer's own dry-run
+disposition, after excluding noise and already-imported cards, is live 275 · archive 1,433 · already imported 133
+· skipped 3,156, balancing to 4,994 / 4,994 with nothing in an unlabelled bucket. Do not re-hardcode any of these
+either — measure at verify time; that is what the S3-T6 report is for. — source: Sprint 3 execution]`
+
+`[ADDED — the source the importer reads changed, and this is the load-bearing correction of the sprint.
+scripts/linear-import.js reads the LOCAL MIRROR, which holds 460 files against an un-Done backlog of 1,949
+pages: it syncs P0/P1 and in-progress only, so it structurally cannot see three quarters of what Sprint 3
+exists to migrate, and no dedupe fix changes that. The backlog import is therefore a new script,
+scripts/linear-import-corpus.js, sourced from the frozen corpus — same reasoning that already split
+migrate-import-ledger.js out (a one-shot write into a board with no bulk delete has different failure modes from
+a repeatable convergence tool). All curation rules and the pageId ledger are shared; only the driving loop
+differs. linear-import.js keeps --reconcile. — source: Sprint 3 execution]`
 **Risks:** Exact-title dedupe collapsing the three near-identical "main red" P0s; a mid-run crash leaving a
 half-migrated board; notification flood to the owner's phone.
 **MODEL: Opus** — the ledger re-key and the anti-join are where silent loss hides.
@@ -335,6 +350,16 @@ half-migrated board; notification flood to the owner's phone.
 - **Description:** `[CHANGED: derive, don't guess — source: decomposition critique]` Do NOT hand-pick 30 labels.
   Derive the label set from the tags actually present on the 398 live-imported cards, so the vocabulary matches
   what is on the board. The full 1,099-tag vocabulary is already preserved in the Sprint 2 corpus.
+  `[CHANGED: derived, and the derivation needed a second filter the plan did not anticipate. Tags on live cards
+  are 227 distinct, of which 143 appear exactly ONCE — a tag one card carries cannot group anything. Deriving
+  from every imported card instead yields 545, which is not a vocabulary, it is the raw tag column. What ships:
+  live cards, tags used by >=2 of them, which is 85 labels including `notion-archive`. Nothing is lost — the full
+  tag list survives in the corpus and on the `Tags:` line of every imported issue body. Derived from ALL live
+  cards rather than the pending ones, so a resumed run derives the same set.
+  ALSO: Linear label names are unique CASE-INSENSITIVELY and the board carries Linear's stock `Bug`/`Feature`/
+  `Improvement`, so creating the normalised `bug` fails with "duplicate label name" and would have killed the run
+  at whichever card first carried that tag. Found by the 3-card rehearsal, not by reading. ensureLabels matches
+  case-insensitively and reuses the existing label. — source: Sprint 3 execution]`
 - **Acceptance criteria:**
   - VERIFY: the 30 labels exist in Linear and an imported card carries its mapped labels
 
@@ -374,7 +399,16 @@ half-migrated board; notification flood to the owner's phone.
   `[ADDED: make the write IDEMPOTENT rather than only recoverable. Linear's IssueCreateInput accepts a
   client-supplied `id` — verified by live introspection 2026-08-17, it is a String field on the input type — so
   deriving a deterministic UUIDv5 from the Notion pageId makes a replayed create a server-side no-op instead of a
-  duplicate. This is load-bearing for two reasons: S3-T3 removes the exact-title dedupe, which is currently the
+  duplicate.
+  `[CHANGED: both halves of that sentence are wrong against the real API, measured live 2026-08-18. (1) Linear
+  REJECTS a v5 id — `constraints: { isUuid: "id must be a UUID" }` — and accepts the identical request with a v4
+  id, so every create in the bulk import would have failed argument validation. The id is now SHA-256 over
+  (namespace, pageId) with the version/variant bits stamped to v4: deterministic, which is what is actually
+  needed, and valid, which is what the API demands. (2) A replayed create is NOT a silent no-op; it is a 400,
+  `code INPUT_ERROR`, "Entity Issue with id … already exists." That is a BETTER guarantee — the server refuses the
+  duplicate rather than creating it — but only if the caller classifies that one error as success, which
+  isAlreadyExistsError() now does narrowly enough that other input errors still abort the run. Proven end-to-end
+  on the live board (create, replay, confirm exactly one issue exists, archive). — source: Sprint 3 execution]` This is load-bearing for two reasons: S3-T3 removes the exact-title dedupe, which is currently the
   ONLY thing preventing duplicates; and scripts/lib/linear-retry-policy.js deliberately refuses to retry
   mutations on 5xx (S1-T1) precisely because a replayed create cannot be assumed safe. Supply the id here and
   the importer may then opt in with `graphql(..., { retryMutationsOn5xx: true })`, which is the difference

@@ -1,0 +1,216 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const require = createRequire(import.meta.url);
+const { resetPushedFlag, reopenTask } = require('./reconcile-dead-completions.js');
+const { readMap, writeMap, isPushEligible } = require('./notion-tasks-sync.js');
+
+function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-')); }
+
+// Card #1779: correctNotionCard() corrects a Notion card's status but never
+// reset the sync-map's entry.pushed flag, so cmdPush's isPushEligible would
+// skip that card forever even after the underlying task was genuinely
+// completed a second time (real incident: task #1709).
+
+test('resetPushedFlag: flips pushed true -> false and persists to disk', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '7', name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'reset');
+  const onDisk = readMap(dir);
+  assert.equal(onDisk.pg1.pushed, false);
+  // Nothing else on the entry was touched.
+  assert.equal(onDisk.pg1.taskId, '7');
+  assert.equal(onDisk.pg1.syncedStatus, 'Done');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('resetPushedFlag: no-ops (does not throw, does not write) when no entry exists for that pageId', () => {
+  const dir = tmpDir();
+  writeMap(dir, {});
+
+  const result = resetPushedFlag(dir, 'missing-page', '7');
+
+  assert.equal(result, 'no-entry');
+  assert.deepEqual(readMap(dir), {});
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('resetPushedFlag: no-ops when the entry belongs to a different task (reused pageId guard)', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '99', name: 'unrelated', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'no-entry');
+  // Unrelated entry must be left completely alone.
+  assert.equal(readMap(dir).pg1.pushed, true);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('resetPushedFlag: no-ops when pushed is already false', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '7', name: 'x', syncedStatus: 'Not started', url: 'https://n/x', pushed: false, fmt: 1 } });
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'already-clear');
+  assert.equal(readMap(dir).pg1.pushed, false);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('resetPushedFlag: numeric taskId in the map matches a string taskId argument (type-coercion, not a false match)', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: 7, name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+
+  // taskId stored as a number, looked up as a string — String() coercion on
+  // both sides means this SHOULD match (mapCardToTask stores string ids, but
+  // callers elsewhere pass numbers straight from task-store JSON) — genuine
+  // mismatches (different underlying ids) are covered by the "reused
+  // pageId guard" test above.
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'reset');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// The actual regression this card is about: a card stuck with pushed:true
+// becomes push-eligible again once resetPushedFlag runs, chained straight
+// into notion-tasks-sync.js's own real isPushEligible predicate (the exact
+// check cmdPush's loop uses) — not a reimplementation of it.
+test('resetPushedFlag + isPushEligible: a stuck card becomes re-closeable once the task is genuinely completed again', () => {
+  const dir = tmpDir();
+  const entry = { taskId: '7', name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 };
+  writeMap(dir, { pg1: entry });
+  const completedTask = { id: '7', status: 'completed' };
+
+  // Before the fix in this card, the stuck entry is never push-eligible no
+  // matter what the task's status is.
+  assert.equal(isPushEligible(entry, completedTask), false);
+
+  resetPushedFlag(dir, 'pg1', '7');
+  const freshEntry = readMap(dir).pg1;
+
+  assert.equal(isPushEligible(freshEntry, completedTask), true, 'cmdPush would now re-close this card instead of skipping it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('resetPushedFlag: lock contention reports lock-contention and leaves the map untouched', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '7', name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+  // Simulate a concurrent sync holding the lock (same mechanism acquireLock uses).
+  fs.writeFileSync(path.join(dir, '.sync-lock'), JSON.stringify({ pid: 999999, acquiredAt: new Date().toISOString() }));
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'lock-contention');
+  assert.equal(readMap(dir).pg1.pushed, true, 'a held lock must never be silently stolen mid-write');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Ship-check adversarial finding (gpt-5.4-mini): an fs error mid-write must
+// report 'write-failed', not throw uncaught — a throw here would surface at
+// correctNotionCard()'s call site as a misleading "Notion correction
+// failed", even though the Notion status update already succeeded by the
+// time resetPushedFlag runs.
+test('resetPushedFlag: an fs write failure reports write-failed instead of throwing', () => {
+  const dir = tmpDir();
+  writeMap(dir, { pg1: { taskId: '7', name: 'x', syncedStatus: 'Done', url: 'https://n/x', pushed: true, fmt: 1 } });
+  // writeMap's atomic write targets '.notion-map.json.tmp' then renames it —
+  // pre-occupying that path with a directory makes the write throw EISDIR.
+  fs.mkdirSync(path.join(dir, '.notion-map.json.tmp'));
+
+  const result = resetPushedFlag(dir, 'pg1', '7');
+
+  assert.equal(result, 'write-failed');
+  assert.equal(readMap(dir).pg1.pushed, true, 'a failed write must not leave the entry half-updated');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+function writeTask(dir, id, task) {
+  fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify({ id, ...task }, null, 2));
+}
+function readTask(dir, id) {
+  return JSON.parse(fs.readFileSync(path.join(dir, `${id}.json`), 'utf8'));
+}
+
+// Card #1795: the actual regression this card is about. reopenTask()'s old
+// any-marker no-op couldn't distinguish "this exact dead-dispatch event was
+// already handled" from "a NEW dead completion happened since a previous
+// reopen" — a task reopened once, redispatched, and genuinely re-completed
+// via a SECOND dead session stayed stuck 'completed' forever (live
+// incidents: tasks #1756/#1763).
+test('#1795: reopenTask reopens a task that already carries an OLD marker (different dead-dispatch event)', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'completed',
+    owner: 'someone',
+    description: '[reconcile-dead-completions 2026-08-17] reopened — marked completed while its most recent dispatch was journaled dead in dispatch-ledger.jsonl (card #1144).\n\noriginal task text',
+    lastReopenedForEventTs: '2026-08-17T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'pending');
+  assert.equal(task.owner, null);
+  assert.equal(task.lastReopenedForEventTs, '2026-08-18T09:00:00.000Z');
+  assert.ok(task.description.startsWith('[reconcile-dead-completions '), 'new banner is stacked, not skipped');
+  assert.ok(task.description.includes('original task text'), 'original description survives');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// The behavior the original marker was protecting: a repeat --fix run for
+// the SAME dead-dispatch event (e.g. a scheduled job firing twice before
+// the reopened task is re-dispatched) must still no-op, not stack a second
+// banner or re-touch status/owner.
+test('#1795: reopenTask still no-ops on a repeat call for the SAME dead-dispatch event', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'pending', // already reopened by a first call
+    owner: null,
+    description: '[reconcile-dead-completions 2026-08-18] reopened — ...\n\noriginal',
+    lastReopenedForEventTs: '2026-08-18T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'pending');
+  assert.equal((task.description.match(/\[reconcile-dead-completions /g) || []).length, 1, 'no second banner stacked');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#1795: reopenTask on a task with no prior marker reopens and stamps lastReopenedForEventTs', () => {
+  const dir = tmpDir();
+  writeTask(dir, '999', { status: 'completed', owner: 'x', description: 'plain task, never reopened' });
+
+  reopenTask('999', dir, '2026-08-18T09:00:00.000Z');
+
+  const task = readTask(dir, '999');
+  assert.equal(task.status, 'pending');
+  assert.equal(task.lastReopenedForEventTs, '2026-08-18T09:00:00.000Z');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Conservative fallback for malformed/legacy ledger data with no ts to key
+// off — preserves the original any-marker guard rather than risk stacking.
+test('#1795: reopenTask falls back to the old any-marker no-op when deadAttemptTs is unknown', () => {
+  const dir = tmpDir();
+  writeTask(dir, '1756', {
+    status: 'completed',
+    description: '[reconcile-dead-completions 2026-08-17] reopened — ...\n\noriginal',
+    lastReopenedForEventTs: '2026-08-17T09:00:00.000Z',
+  });
+
+  reopenTask('1756', dir, null);
+
+  const task = readTask(dir, '1756');
+  assert.equal(task.status, 'completed', 'no deadAttemptTs to key off of, so the legacy any-marker guard applies');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

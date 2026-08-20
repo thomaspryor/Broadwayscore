@@ -9,6 +9,10 @@
 //   "[notion:3b2637c5-...] P1 Next · Not started · Product\nhttps://..."
 // but the tag is not always the first line — zombie-sweep re-opens and other
 // prefixes push it down, so search the whole description, not just line 1.
+// Diacritic folding for label normalisation — see normalizeLabelName below for
+// why stripping non-ASCII without folding first defeats the function's purpose.
+const { foldDiacritics } = require('./title-match');
+
 const NOTION_ID_RE = /\[notion:([a-f0-9-]+)\]/;
 
 // EVERY Priority value the brain board can hold. Not a guess and not a sample:
@@ -265,8 +269,223 @@ function isIdleArchive(localStatus, ageDays, idleDays = ARCHIVE_IDLE_DAYS) {
   return typeof ageDays === 'number' && ageDays >= idleDays;
 }
 
+// ───────────────────────────────────────────────────────────────────────────
+// Sprint 3: importing from the CORPUS rather than the local mirror.
+//
+// The mirror holds 460 files. The un-Done Notion backlog is 1,949 pages
+// (measured off the Sprint 2 corpus 2026-08-17, not quoted from the plan —
+// the plan's 1,831 predates several days of board growth). So a mirror-sourced
+// import cannot see ~three quarters of what Sprint 3 exists to migrate, and no
+// amount of fixing the dedupe changes that. Everything below classifies a
+// CORPUS record; the mirror rules above are untouched and still drive
+// --reconcile.
+// ───────────────────────────────────────────────────────────────────────────
+
+// A fixed namespace UUID for "a Linear issue minted from a Notion page". Its
+// only requirement is that it never changes: the whole point is that the same
+// pageId yields the same issue id on every run, forever.
+//
+// Randomly generated once, then frozen. Do NOT regenerate it — a new namespace
+// silently makes every previously-imported card look un-imported, and a replay
+// would then duplicate all 1,949 into a board with no bulk delete.
+const NOTION_ISSUE_NAMESPACE = '6f1a7d9c-3b52-4e18-9a24-8c0f5d6e7b31';
+
+/**
+ * A DETERMINISTIC UUID, formatted as version 4.
+ *
+ * READ THIS BEFORE CHANGING THE VERSION NIBBLE. The sprint plan and the Sprint 3
+ * handoff both specify UUIDv5 here, and both are wrong against the real API.
+ * Measured live on 2026-08-18, the issue-create mutation rejects a v5 id outright:
+ *
+ *   constraints: { isUuid: "id must be a UUID" }
+ *   userPresentableMessage: "id must be a UUID."
+ *
+ * with the very same request succeeding when the only change is a v4 id.
+ * Linear's validator accepts v4 and nothing else, so a correct v5 UUID cannot
+ * be used no matter how well it is derived.
+ *
+ * What Sprint 3 actually needs from this value is DETERMINISM, not randomness:
+ * the same Notion page must always produce the same issue id. So the bytes come
+ * from SHA-256 over (namespace, name) exactly as a name-based UUID would, and
+ * only the six version/variant bits are stamped to v4 so the value survives
+ * validation. It is a hash wearing a v4 costume, deliberately, and the tests
+ * assert both halves: same input -> same id, and the id passes as v4.
+ *
+ * SHA-256 rather than SHA-1 because nothing here needs RFC 4122 §4.3 byte
+ * compatibility — the version is already a lie, so there is no interop to
+ * preserve, and no reason to reach for the weaker hash. 122 free bits make
+ * collision across 1,949 pages unreachable.
+ */
+function deterministicUuidV4(name, namespace = NOTION_ISSUE_NAMESPACE) {
+  const crypto = require('node:crypto');
+  const hex = String(namespace).replace(/-/g, '');
+  if (!/^[0-9a-f]{32}$/i.test(hex)) throw new Error(`bad UUID namespace: ${namespace}`);
+  const nsBytes = Buffer.from(hex, 'hex');
+  const hash = crypto.createHash('sha256').update(Buffer.concat([nsBytes, Buffer.from(String(name), 'utf8')])).digest();
+  const b = Buffer.from(hash.subarray(0, 16));
+  b[6] = (b[6] & 0x0f) | 0x40; // version 4 — required by Linear's isUuid validator
+  b[8] = (b[8] & 0x3f) | 0x80; // RFC 4122 variant
+  const s = b.toString('hex');
+  return `${s.slice(0, 8)}-${s.slice(8, 12)}-${s.slice(12, 16)}-${s.slice(16, 20)}-${s.slice(20)}`;
+}
+
+/**
+ * The deterministic Linear issue id for a Notion page.
+ *
+ * THIS IS THE THING THAT MAKES THE BULK WRITE SAFE, though not by the mechanism
+ * the plan describes. Measured live on 2026-08-18, replaying a create with an
+ * id that already exists does NOT silently no-op — it fails with a specific,
+ * recognisable 400:
+ *
+ *   code: INPUT_ERROR
+ *   "Entity Issue with id 2edea22f-… already exists."
+ *
+ * That is still exactly the guarantee Sprint 3 needs, and arguably a better one:
+ * the duplicate is refused BY THE SERVER, loudly, instead of being created. The
+ * importer's job is therefore to classify that one error as "already imported"
+ * and continue — see isAlreadyExistsError() — rather than to assume silence.
+ *
+ * Two independent facts make this load-bearing:
+ *
+ *   1. S3-T3 deletes the exact-title dedupe, which was the importer's ONLY
+ *      duplicate guard. It had to go — 28 titles are shared by 69 distinct
+ *      un-Done cards, so title-dedupe silently collapses 41 real cards — but
+ *      removing it without this leaves the board unprotected.
+ *   2. scripts/lib/linear-retry-policy.js deliberately refuses to retry
+ *      mutations on 5xx (S1-T1), because a replayed create cannot be assumed
+ *      safe. A deterministic id is what makes the replay safe: it either
+ *      creates the issue the ambiguous attempt never created, or it comes back
+ *      as the conflict above. That, and only that, is what lets the importer
+ *      opt into retryMutationsOn5xx.
+ *
+ * `kind` keeps the two sources in separate id spaces. A mirror task with no
+ * [notion:] marker still needs a stable key, and hashing its task id under the
+ * same namespace as a pageId would let the two collide in principle.
+ */
+function deriveIssueId(key, kind = 'notion-page') {
+  if (!key) return null;
+  return deterministicUuidV4(`${kind}:${key}`);
+}
+
+/**
+ * Is this the "an issue with that id already exists" conflict?
+ *
+ * The importer treats it as SUCCESS (the card is on the board, which is the
+ * post-condition it wanted) rather than as a failure. Matched on the stable
+ * parts — the INPUT_ERROR code plus the "already exists" phrasing — and never
+ * on the message alone, so an unrelated INPUT_ERROR (a bad stateId, a malformed
+ * title) still aborts the run the way it should.
+ */
+function isAlreadyExistsError(err) {
+  const errors = (err && err.linearErrors) || [];
+  for (const e of errors) {
+    const ext = (e && e.extensions) || {};
+    const msg = `${e.message || ''} ${ext.userPresentableMessage || ''}`;
+    if (ext.code === 'INPUT_ERROR' && /already exists/i.test(msg)) return true;
+    if (/conflict on insert/i.test(e.message || '')) return true;
+  }
+  return false;
+}
+
+// Notion Status -> Linear workflow state name, for corpus records. Distinct
+// from mapStatusToLinearState above, which speaks the local mirror's
+// vocabulary ('pending'/'in_progress'); these are the board's own values.
+function mapNotionStatusToLinearState(status) {
+  return String(status || '').trim() === 'In progress' ? 'In Progress' : 'Backlog';
+}
+
+// The label every archived card carries, so the owner can find the whole
+// migrated backlog with one filter.
+const ARCHIVE_LABEL = 'notion-archive';
+// Stamped by --rollback (S3-T7b) on everything it cancels.
+const ROLLBACK_LABEL = 'import-rollback';
+
+/**
+ * Notion Tags are free text typed by many sessions over months. Linear label
+ * names are compared exactly, so without normalisation "Opening Night",
+ * "opening night" and "opening-night" become three labels for one idea.
+ * Returns null for anything that cannot be a useful label.
+ */
+function normalizeLabelName(tag) {
+  const s = foldDiacritics(String(tag || ''))
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_]+/g, '-')
+    // Fold FIRST (above), then strip. Stripping non-ASCII without folding turns
+    // "café" into "caf" while "cafe" stays "cafe" — two labels for one idea,
+    // which is the exact problem this function exists to prevent. Caught by
+    // tests/unit/sibling-matchers-diacritics.test.mjs, which fails CLOSED on any
+    // scripts/lib file carrying the shred signature with no fold.
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-|-$/g, '');
+  if (!s || s.length < 2 || s.length > 40) return null;
+  return s;
+}
+
+function recordTags(record) {
+  const raw = (record && record.properties && record.properties.Tags) || '';
+  if (Array.isArray(raw)) return raw;
+  // The corpus flattens multi-selects to a comma-separated string.
+  return String(raw).split(/\s*,\s*/);
+}
+
+/**
+ * The single disposition for one corpus record. EXACTLY one of:
+ *
+ *   {disposition:'live',    reason:'live'}       -> created open, in a workstream project
+ *   {disposition:'archive', reason:'archive'}    -> created Canceled + notion-archive
+ *   {disposition:'skip',    reason:'<named>'}    -> not created at all
+ *
+ * S3-T6's acceptance criterion is that created + skipped-with-reason + archived
+ * equals the page total with ZERO cards in an unlabelled "other" bucket, which
+ * is only checkable if every path out of this function is named. There is no
+ * default return — the last branch is the archive branch, deliberately, since
+ * "we could not tell" must land on the non-dispatchable side.
+ */
+function classifyCorpusRecord(record) {
+  const props = (record && record.properties) || {};
+  const title = String(props.Name || '').trim();
+  const status = String(props.Status || '').trim();
+
+  // Checked first so the reason names the real cause: a Done card is finished
+  // work regardless of what its title looks like.
+  if (status === 'Done') return { disposition: 'skip', reason: 'notion_done', title, status };
+  if (!title) return { disposition: 'skip', reason: 'blank_title', title, status };
+
+  const noise = classifyNoise(title);
+  if (noise) return { disposition: 'skip', reason: `noise:${noise}`, title, status };
+
+  const priority = props.Priority || '';
+  const tier = normalizePriorityTier(priority);
+  const labels = [...new Set(recordTags(record).map(normalizeLabelName).filter(Boolean))];
+  const base = {
+    title,
+    status,
+    priority,
+    tier,
+    labels,
+    linearPriority: mapPriorityToLinear(priority),
+    stateName: mapNotionStatusToLinearState(status),
+    project: classifyProject(title),
+  };
+
+  if (isLivePriorityTier(priority)) return { ...base, disposition: 'live', reason: 'live' };
+  return { ...base, disposition: 'archive', reason: 'archive', project: 'Archive' };
+}
+
 module.exports = {
   ARCHIVE_IDLE_DAYS,
+  ARCHIVE_LABEL,
+  ROLLBACK_LABEL,
+  NOTION_ISSUE_NAMESPACE,
+  deterministicUuidV4,
+  deriveIssueId,
+  isAlreadyExistsError,
+  mapNotionStatusToLinearState,
+  normalizeLabelName,
+  recordTags,
+  classifyCorpusRecord,
   isIdleArchive,
   extractNotionId,
   extractPriorityTag,

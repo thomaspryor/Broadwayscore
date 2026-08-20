@@ -23,12 +23,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('../../scripts/lib/review-texts-dir.js');
+const SCRIPTS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'scripts');
 
 const tmp = () => mkdtempSync(path.join(tmpdir(), 'rt-resolve-'));
 /** A directory that looks like a real clone: has .git and content. */
@@ -49,6 +51,13 @@ const makeEmptyDir = (root) => {
 const makePlainCopy = (root) => {
   const d = path.join(root, 'data', 'review-texts');
   mkdirSync(path.join(d, 'some-show-2026'), { recursive: true });
+  return d;
+};
+/** A bare/sparse clone: has .git but NO content — a second false-all-clear shape. */
+const makeBareGitOnlyDir = (root) => {
+  const d = path.join(root, 'data', 'review-texts');
+  mkdirSync(d, { recursive: true });
+  writeFileSync(path.join(d, '.git'), 'gitdir: /somewhere\n');
   return d;
 };
 const noMain = () => null;
@@ -72,6 +81,24 @@ test('review-texts resolution — prefers a real checkout at the repo root', () 
     resolveReviewTextsDir({}, repo, home, { mainWorktree: noMain }),
     nested,
     'a real nested clone wins over the legacy path',
+  );
+});
+
+test('review-texts resolution — a BARE .git-only nested dir is NOT a checkout (the second false all-clear)', () => {
+  // Adversarial review finding (task #1749): `.git` is itself a readdirSync
+  // entry, so the OLD `readdirSync(dir).length > 0` check was TRUE for a
+  // freshly-inited/sparse clone that has `.git` but no show directories —
+  // the exact false-all-clear the empty-dir case above guards against, just
+  // with `.git` present. A WRITE tool pointed here reports a clean corpus for
+  // a directory containing nothing scoreable.
+  const repo = tmp();
+  const home = tmp();
+  makeBareGitOnlyDir(repo);
+  assert.equal(isReviewTextsCheckout(path.join(repo, 'data', 'review-texts')), false);
+  assert.equal(
+    resolveReviewTextsDir({}, repo, home, { mainWorktree: noMain }),
+    path.join(home, 'broadway-review-texts'),
+    'a .git-only dir must be skipped, not silently adopted',
   );
 });
 
@@ -146,3 +173,66 @@ test('review-texts resolution — the resolver is a leaf module with no CLI side
   // repair CLI's "Refusing to run unscoped" exit(2) firing on import.
   assert.equal(typeof resolveReviewTextsDir, 'function');
 });
+
+// Task #1749: ~8 CLI scripts each hardcoded their OWN os.homedir()/HOME
+// fallback to the legacy ~/broadway-review-texts clone instead of going
+// through this resolver. On 2026-08-17 that clone was 143+ commits stale, and
+// a WRITING tool defaulted to it, silently repairing the wrong copy while
+// reporting success (fix-canonical-duplicate-backpointer.js, migrated first).
+// These cases pin every remaining migrated script to the shared resolver so a
+// future edit can't quietly reintroduce a private default.
+//
+// backfill-lbo-individual-stars.js is deliberately NOT in this list: it scans
+// and writes BOTH clones every run by design (see its file header), so the
+// single-default bug class this suite guards against does not apply to it.
+const MIGRATED_SCRIPTS = [
+  'audit-review-url-clusters.js',
+  'delete-misroute-orphans.js',
+  'apply-slug-misroute-whitelist.js',
+  'backfill-critic-name-truncation.js',
+  'verify-misroute-content.js',
+  'classify-unscored-blocked-url.js',
+  'audit-outlet-star-scales.js',
+  'probe-wrong-show-staleness.js',
+  // Found by adversarial review during this same task (Codex sweep for
+  // `broadway-review-texts` outside review-texts-dir.js), same bug, same fix:
+  'classify-unscored-news-articles.js',
+  'fix-photo-credit-byline-phantoms.js',
+  'audit-cross-attribution-by-critic.js',
+  'audit-slug-match-routing.js',
+];
+
+for (const name of MIGRATED_SCRIPTS) {
+  test(`review-texts resolution — ${name} resolves through resolveReviewTextsDir, not its own default`, () => {
+    const src = readFileSync(path.join(SCRIPTS_DIR, name), 'utf8');
+    assert.match(
+      src,
+      /require\(['"]\.\/lib\/review-texts-dir(\.js)?['"]\)/,
+      `${name} must require scripts/lib/review-texts-dir.js`,
+    );
+    assert.match(
+      src,
+      /resolveReviewTextsDir\(\)/,
+      `${name} must call resolveReviewTextsDir()`,
+    );
+    // A live (non-comment) fallback straight to the legacy clone would
+    // silently reintroduce the bug even with the require/call present above
+    // (e.g. an `||` chain that never reaches resolveReviewTextsDir). Comments
+    // referencing the legacy path for context are fine; only a real
+    // os.homedir()/HOME join to broadway-review-texts is disallowed.
+    const liveCode = src
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('//') && !line.trim().startsWith('*'))
+      .join('\n');
+    assert.doesNotMatch(
+      liveCode,
+      /(os\.homedir\(\)|process\.env\.HOME)[^\n]*broadway-review-texts/,
+      `${name} must not keep a private os.homedir()/HOME fallback to the legacy clone`,
+    );
+    assert.match(
+      liveCode,
+      /review.texts[^\n]*\$\{/i,
+      `${name} must print the resolved review-texts path on startup`,
+    );
+  });
+}

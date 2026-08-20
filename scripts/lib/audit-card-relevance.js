@@ -31,6 +31,29 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { RECHECK_AFTER_RE } = require('./recheck-stamp.js');
 const { foldDiacritics } = require('./title-match.js');
 
+// A passing acceptance command is only real done-evidence when its own test
+// imports the module under test — otherwise it can assert guard BEHAVIOUR
+// against fixtures forever while the live DATA it claims to fix never
+// changes (task #1724 — demonstrated live: "362 domainless outlets" card's
+// test imports only node:test/assert/fs/path, passes 7/7, while the live
+// count went UP to 364). opts.readFile is optional: when not injected this
+// check is skipped entirely (backward compatible — ambiguous, never assumed
+// weak) so callers that don't wire file reads keep prior behavior.
+const CMD_TEST_FILE_RE = /(\S+\.test\.(?:m|c)?(?:j|t)s)\b/;
+function extractTestFileFromCmd(cmd) {
+  const m = CMD_TEST_FILE_RE.exec(String(cmd || ''));
+  return m ? m[1] : null;
+}
+
+const LOCAL_IMPORT_RE = /(?:require\(\s*['"]([^'"]+)['"]\s*\)|from\s+['"]([^'"]+)['"])/g;
+function testImportsLocalModule(source) {
+  for (const m of String(source || '').matchAll(LOCAL_IMPORT_RE)) {
+    const spec = m[1] || m[2];
+    if (spec && spec.startsWith('.')) return true;
+  }
+  return false;
+}
+
 // ── LIKELY-DONE: acceptance command ─────────────────────────────────────
 // Reuses the SAME extractor bsc-next.js's dispatch gate uses (verify-gate.js
 // → autonomous-verify-cmd.js), so "this card names a runnable command" can
@@ -40,10 +63,15 @@ function checkAcceptanceHolds(card, opts) {
   const { cmd } = evaluateVerifiability(card.notes || '');
   if (!cmd || typeof opts.runAcceptanceCmd !== 'function') return null;
   const result = opts.runAcceptanceCmd(cmd);
-  if (result && result.status === 'pass') {
-    return { type: 'acceptance-command-passes', cmd, detail: result.detail || null };
+  if (!result || result.status !== 'pass') return null;
+  if (typeof opts.readFile === 'function') {
+    const testFile = extractTestFileFromCmd(cmd);
+    if (testFile) {
+      const source = opts.readFile(testFile);
+      if (source != null && !testImportsLocalModule(source)) return null; // WEAK: never imports the module under test
+    }
   }
-  return null;
+  return { type: 'acceptance-command-passes', cmd, detail: result.detail || null };
 }
 
 // ── LIKELY-DONE: commit SHAs already on main ────────────────────────────
@@ -62,12 +90,65 @@ function extractCommitShas(text) {
   return [...out];
 }
 
+// A SHA in a card's notes can mean two very different things: a commit the
+// card DELIVERED (real done-evidence) or a commit the card CITES — for root
+// cause, precedent, or "this is the commit that introduced it" (says nothing
+// about this card). Good card-writing hygiene cites prior commits constantly,
+// so reading any on-main SHA in prose as delivery false-positives hardest on
+// the best-documented cards (task #1724 — confirmed live: a Not-started card
+// quoted the show-date-line commit `55a5181ee49` as precedent while
+// describing an unrelated verify-gate bug, and read as LIKELY-DONE).
+// Two independent gates close that gap:
+//   1. Status: a card nobody has started can never be "done" via a cited
+//      commit alone — at most a done-adjacent signal for a human to check.
+//   2. Touched-file overlap: even on a started card, a SHA only counts as
+//      delivery once it demonstrably touches a file this card's own notes
+//      reference — cited-for-precedent commits almost never do.
+//   3. A card naming its own falsifiable acceptance command that is
+//      CURRENTLY FAILING has a stronger, live signal that work isn't done —
+//      a "landed in commit X" citation must never override a bar the card
+//      itself set and is presently missing (caught live re-verifying this
+//      fix: a Paused card whose Outcome says "STILL BLOCKED" — acceptance
+//      command failing — still tripped commits-on-main on a "Landed in
+//      commit d41a6bfddb6" line).
 function checkCommitsOnMain(card, opts) {
   const text = `${card.notes || ''}\n${card.outcome || ''}`;
   const shas = extractCommitShas(text);
   if (!shas.length || typeof opts.isCommitOnMain !== 'function') return null;
   const allOnMain = shas.every((sha) => opts.isCommitOnMain(sha));
   if (!allOnMain) return null;
+
+  if (card.status === 'Not started') return null;
+
+  // Fail CLOSED, not open, when the card names its own falsifiable bar but
+  // there's no way to check it right now (e.g. the fresh-checkout build
+  // failed, so opts.runAcceptanceCmd was never wired for this sweep) — a
+  // cited commit must never override an unconfirmable bar the card itself
+  // set (adversarial review catch, task #1724 follow-on: the checkout-
+  // failure fallback path in scripts/audit-card-relevance.js sets
+  // getCommitTouchedFiles but not runAcceptanceCmd, which would have
+  // silently skipped this whole check and reopened the residual FP it
+  // exists to catch).
+  const { cmd: ownCmd } = evaluateVerifiability(card.notes || '');
+  if (ownCmd) {
+    if (typeof opts.runAcceptanceCmd !== 'function') return null;
+    const ownResult = opts.runAcceptanceCmd(ownCmd);
+    if (ownResult && ownResult.status === 'fail') return null;
+  }
+
+  if (typeof opts.getCommitTouchedFiles !== 'function') return null;
+  // notes-only, deliberately narrower than extractCommitShas' notes+outcome:
+  // a path referenced only in Outcome (a later status update, not the card's
+  // own scope) shouldn't confirm overlap for a SHA cited anywhere in the
+  // card — under-classifying to REAL is the safe direction here.
+  const referencedPaths = new Set(extractReferencedPaths(card.notes));
+  if (!referencedPaths.size) return null; // nothing to confirm overlap against
+  const confirmed = shas.every((sha) => {
+    const touched = opts.getCommitTouchedFiles(sha) || [];
+    return touched.some((f) => referencedPaths.has(f));
+  });
+  if (!confirmed) return null;
+
   return { type: 'commits-on-main', shas };
 }
 
@@ -318,6 +399,8 @@ module.exports = {
   extractFileRefs,
   extractSymbols,
   extractReferencedPaths,
+  extractTestFileFromCmd,
+  testImportsLocalModule,
   checkAcceptanceHolds,
   checkCommitsOnMain,
   checkRecheckAfterDueAndVerified,

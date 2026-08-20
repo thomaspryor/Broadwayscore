@@ -532,6 +532,17 @@ jobs:
         env:
           ESCALATE_NAMES: ${{ steps.check.outputs.escalate_names }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # card #1786: this step's disposition:'auto' path calls
+          # routeAlert -> findLinearDuplicate + dispatchCard, both of which
+          # shell out to linear-brain.js — without this the Linear dedupe
+          # check and issue creation both fail with "LINEAR_API_KEY not set"
+          # (failing open on the dedupe check, but dispatchCard's own
+          # execFileSync still throws), so the chronic-stale escalation this
+          # step exists for never actually files a tracker. Confirmed via
+          # run 32137177060's log: "Update Show Status" was correctly
+          # identified as stale 3+ consecutive days, but issue dispatch
+          # failed silently on this missing secret.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           node -e '

@@ -42,6 +42,7 @@ const {
 } = require('./lib/canonical-duplicate-pointers');
 let isIncludableForRebuild = () => false;
 try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
 const gate = args.includes('--gate');
@@ -51,7 +52,11 @@ const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[
 const threshold = Number((args.find((a) => a.startsWith('--threshold=')) || '').split('=')[1]) || 5;
 const maxRecover = Number((args.find((a) => a.startsWith('--max-recover=')) || '').split('=')[1]) || 8;
 
-const RT = process.env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts');
+// This script WRITES (--fix rewrites review JSON via writePlain). See
+// scripts/lib/review-texts-dir.js — the legacy ~/broadway-review-texts clone
+// was 143+ commits stale as of 2026-08-17; a write pointed there silently
+// corrupts the wrong copy while reporting success.
+const RT = resolveReviewTextsDir();
 const SHOWS_JSON = process.env.SHOWS_JSON
   || path.join(os.homedir(), 'broadway-scorecard-data', 'shows.json');
 
@@ -132,8 +137,12 @@ function writePlain(p, json) {
 
 if (!fs.existsSync(RT)) {
   console.error(`review-texts dir not found: ${RT}`);
-  process.exit(0);
+  // exit(1), not exit(0): a missing corpus is "the audit couldn't run", not
+  // "the audit ran and found 0 clusters" — those are different outcomes and
+  // must not share an exit code, or --fix can silently no-op and report clean.
+  process.exit(1);
 }
+console.log(`[audit-review-url-clusters] review-texts: ${RT}`);
 
 const showDirs = fs.readdirSync(RT).filter((d) => {
   const p = path.join(RT, d);

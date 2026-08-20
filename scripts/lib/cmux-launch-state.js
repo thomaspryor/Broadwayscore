@@ -45,6 +45,7 @@ const STATES = Object.freeze({
   WRAPPER_EXITED: 'wrapper-exited',         // wrapper ran and died without claude registering
   SLOW_BOOT_TIMEOUT: 'slow-boot-timeout',   // wrapper still alive at the cap — alive, just not verifiable yet
   WRAPPER_GONE_TAG_ALIVE: 'wrapper-gone-tag-alive', // wrapper not in ps, but cmux still reports a live claude
+  SURFACE_NOT_FOUND: 'surface-not-found',   // wrapper+tag both said REGISTERED, but read-screen confirmed no terminal surface exists (card #1829)
 });
 
 // Human-readable reason per terminal state, for the launch result and logs.
@@ -56,6 +57,7 @@ const REASONS = Object.freeze({
   [STATES.WRAPPER_EXITED]: 'launch wrapper exited without claude registering',
   [STATES.SLOW_BOOT_TIMEOUT]: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
   [STATES.WRAPPER_GONE_TAG_ALIVE]: 'launch wrapper is gone from the process table but cmux still reports a live claude in the workspace — ambiguous, left alone',
+  [STATES.SURFACE_NOT_FOUND]: 'wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session',
 });
 
 /**

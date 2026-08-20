@@ -65,6 +65,8 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
+// Pure leaf module (no requires of its own), so this cannot cycle back here.
+const { TERMINAL_CARD_STATUSES } = require('./task-reclaim.js');
 
 // scripts/linear-import.js's Notion-mirror <-> Linear-issue join (Phase 0
 // rail 1, plan 2026-08-12). Default path only — linearMirrorGuard() itself
@@ -171,6 +173,15 @@ function isNativeTaskDoneWithoutCard(task, card) {
   return card == null && !!task && task.status === 'completed';
 }
 
+// Deliberately separate from predispatch-guard.js's classifyCandidate (task
+// #1816, owner decision 2026-08-19: keep both, do not merge). This guard
+// catches ANY unverifiable filled Outcome regardless of shape; classifyCandidate's
+// REOPEN-SUSPECT is a narrower subset (completedDate + a long outcome + a
+// sha-shaped substring) built for a different signal (a falsely-reopened
+// card, not merely a stale one) — a card can trip this guard without ever
+// reaching REOPEN-SUSPECT. Both run back to back on the same card at
+// bsc-next.js:1081-1098 (defense-in-depth, not alternate call paths) and
+// together in predispatch-queue-audit.js:230/254 for advisory tallying.
 function staleOutcomeGuard(task, card, opts) {
   if (opts.force || opts['allow-unverifiable'] || opts['dry-run'] || opts['print-prompt']) return null;
   const outcome = card && String(card.outcome || '').trim();
@@ -197,6 +208,117 @@ function staleOutcomeGuard(task, card, opts) {
     `    1. Close the card as Done if the recorded Outcome is sufficient${pid ? ` (Notion): node scripts/notion-brain.js update ${pid} --status Done` : ''}.\n` +
     `    2. Add a backticked safe-form command to the card's "## Acceptance criteria" stating what's still missing.\n` +
     `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
+}
+
+// ── Closed-card guard (task #1790, the stall-sweep half of the mirror problem) ──
+// The local task mirror is NOT authoritative about whether a card is still
+// open. `notion-tasks-sync.js pull` only teaches the mirror about cards it
+// pulls, and a Done card drops out of that set entirely, so a card closed in
+// Notion can sit at status 'in_progress' locally indefinitely.
+// reconcileStaleMirrors (notion-tasks-sync.js:923) rotates through the
+// backlog and eventually corrects each entry, but bsc-reconcile.js's stall
+// sweep fires faster than rotation reaches any given entry — measured live
+// 2026-08-18, a card closed at 20:08 was relaunched at 20:43 and pruned again
+// at 20:45, twice inside 40 minutes.
+//
+// The fix belongs HERE rather than in the sweep because bsc-next.js already
+// fetches the authoritative card on every dispatch (`fetchCardFn(pid)`, just
+// above staleOutcomeGuard's call site) — so this costs ZERO extra Notion
+// calls and covers every dispatcher at once: the stall sweep, a hand-run
+// `--id`, digest-autofix, and the #853 dead-tab redispatch. Putting a second
+// Notion client inside the sweep would have fixed exactly one caller.
+//
+// Deliberate scope decisions, each pinned by a test:
+//   * `card == null` (the Notion fetch degraded) ALLOWS. This guard only ever
+//     fires on a POSITIVE closed reading. A refusal-on-unknown would let a
+//     Notion outage starve the sweep's 2-per-tick budget and block genuinely
+//     stalled tasks from ever healing — and it matches bsc-next.js's existing
+//     "refuse only when the full card is in hand" precedent.
+//   * "Paused" is NOT closed. mapStatus (notion-tasks-sync.js:104-110) folds
+//     Paused into the dispatchable 'pending' lane, so treating it as closed
+//     would be a policy change about which cards are workable, not a
+//     stale-mirror fix. This is not a fresh judgement call: task #1778 already
+//     considered adding 'Paused' to the terminal pair and REJECTED it after
+//     adversarial review (see notion-tasks-sync.js:48-55). Two reviewers of
+//     THIS change argued the opposite; the prior decision stands, and reopening
+//     it belongs on its own card rather than riding in on a mirror fix.
+//   * Diverges deliberately from scripts/linear-next.js's checkTerminalStateGuard
+//     (~:361), which DOES bypass on --force. That guard protects the Linear
+//     lane, which has no --force-carrying reconciler aimed at it;
+//     bsc-reconcile.js's redispatchArgv does exactly that here. Same intent,
+//     different blast radius — do not "harmonise" the two without re-reading
+//     redispatchArgv:176-178 first.
+//   * `--force` does NOT bypass this. --force exists to override the
+//     duplicate-workspace guard; a closed card is never something it should
+//     override, and bsc-reconcile.js's #853 path (redispatchArgv:176-178) is
+//     precisely where the stale-mirror bug also bites. The escape hatch is its
+//     own explicit, ledger-visible flag, mirroring --allow-unverifiable.
+// Reuses task-reclaim.js's TERMINAL_CARD_STATUSES ({Done, Archived,
+// Cancelled}) rather than declaring a parallel set — notion-tasks-sync.js:44
+// already reuses that same constant for the same "never make an
+// Archived/Cancelled card dispatchable again" rule, and a second copy here is
+// exactly the drift CLAUDE.md rule 15 warns about. A review caught the first
+// version of this guard omitting Archived, which would have let a card whose
+// STATUS PROPERTY reads "Archived" dispatch. Lowercased once, at module
+// load, so the canonical set stays the single source of truth.
+//
+// This is NOT the same thing as a page moved to Notion's TRASH (task #1811).
+// The "Archived" entry above matches the Status *property value* — a Select
+// option a human sets. Trashing a page is a page-level action (the `archived`
+// / `in_trash` API booleans, see formatCard()) that leaves the Status
+// property completely untouched: a trashed page can still read "In
+// progress" forever, so CLOSED_CARD_STATUSES never matches it, even though
+// (as the comment above already correctly says) it refuses ALL Notion writes
+// and so cannot even be corrected card-side. `card.archived` below is the
+// check that actually catches that case; the two are deliberately checked
+// independently rather than merged into one Set, since one is a status
+// string and the other a page-level boolean with no status value to fake.
+const CLOSED_CARD_STATUSES = new Set([...TERMINAL_CARD_STATUSES].map(s => s.toLowerCase()));
+
+// Deliberately separate from predispatch-guard.js's classifyCandidate (task
+// #1816, owner decision 2026-08-19: keep both, do not merge). The two DO
+// overlap on the archived/trashed-page check (both read card.archived
+// independently — see this file's header, "checked independently rather
+// than merged into one Set"), but diverge everywhere else: this guard never
+// treats 'Paused' as closed (a deliberate, previously-litigated choice — see
+// the block comment above), while classifyCandidate's REVIEW_STATUSES groups
+// Paused with Done on purpose; this guard also has no PARKED:-note check at
+// all. Chained together at the same call sites (bsc-next.js:536-543 and
+// :1088-1098), not routed to different callers — see predispatch-guard.js's
+// own header for the fuller rationale and predispatch-guard.test.mjs for the
+// parity/divergence coverage between the two.
+function closedCardGuard(task, card, opts) {
+  const o = opts || {};
+  if (o['allow-closed-card'] || o['dry-run'] || o['print-prompt']) return null;
+  if (!card) return null; // degraded fetch — honest unknown, never a refusal
+  if (card.archived) {
+    return `REFUSING to dispatch #${task.id}: its Notion card has been moved to the TRASH — the local task ` +
+      `mirror still reads "${(task && task.status) || 'unknown'}", and the card's own Status property may still ` +
+      `read anything (trashing doesn't touch it), but the page itself refuses every write ("Can't edit block ` +
+      `that is archived"), so dispatching would open a session that can never even mark the card Done.\n` +
+      `  Fix one of:\n` +
+      `    1. Nothing — the work is done or abandoned. Close the local task mirror entry by hand: set status ` +
+      `to "completed" (manuallyResolvedReason/manuallyResolvedAt alone do NOT remove it from the queue — ` +
+      `actionable() only filters on status, not those fields) AND set manuallyResolvedReason + manuallyResolvedAt ` +
+      `(so a later dead-completion reconciliation never tries to reopen it), since the trashed Notion card can't ` +
+      `be updated to signal either.\n` +
+      `    2. Restore the page from Notion's trash if there is genuinely more to do, then dispatch again.\n` +
+      `    3. Re-run with --allow-closed-card to dispatch anyway (recorded in the ledger) — note predispatch-guard ` +
+      `runs an independent archived check too, so a plain --allow-closed-card alone will still be refused there; ` +
+      `add --allow-reopen-suspect as well to get past both.`;
+  }
+  const status = String(card.status || '').trim().toLowerCase();
+  if (!CLOSED_CARD_STATUSES.has(status)) return null;
+  const pid = notionIdOf(task);
+  return `REFUSING to dispatch #${task.id}: its Notion card is already ${card.status} — the local task ` +
+    `mirror still reads "${(task && task.status) || 'unknown'}", but Notion is the source of truth. ` +
+    `\`notion-tasks-sync.js pull\` does reconcile the mirror, but only a bounded rotation window per run ` +
+    `(reconcileStaleMirrors), so a freshly-closed card can stay stale locally for several runs — ` +
+    `dispatching now would relaunch closed work.\n` +
+    `  Fix one of:\n` +
+    `    1. Nothing — the work is done. Re-run node scripts/notion-tasks-sync.js pull until the mirror catches up.\n` +
+    `    2. Re-open the card if there is genuinely more to do${pid ? `: node scripts/notion-brain.js update ${pid} --status "In progress"` : ''}, then dispatch again.\n` +
+    `    3. Re-run with --allow-closed-card to dispatch anyway (recorded in the ledger).`;
 }
 
 // Pure composition of the self-heal + refusal check (no I/O — the caller does
@@ -603,12 +725,32 @@ function linearMirrorGuard(task, mapping, opts) {
     `  node scripts/linear-next.js --id ${entry.identifier}`;
 }
 
+// The 8 guard names, in call order, as a single source of truth for anything
+// that needs to enumerate "every dispatch guard" without re-deriving the list
+// (task #1802: scripts/lib/dispatch-guard-queue-audit.js tallies a refusal
+// per name below across every queued task). Keeping this here, next to the
+// functions it names, means adding a 9th guard can't silently leave the
+// audit's list stale the way a second, standalone copy would.
+const GUARD_NAMES = [
+  'deadDispatchGuard',
+  'parkedGuard',
+  'staleOutcomeGuard',
+  'closedCardGuard',
+  'workBranchCollisionGuard',
+  'exactTitleOverlapGuard',
+  'sessionTrackingCloneGuard',
+  'linearMirrorGuard',
+];
+
 module.exports = {
+  GUARD_NAMES,
   findLiveWorkspaceForTask,
   deadDispatchGuard,
   parkedGuard,
   staleOutcomeGuard,
   isNativeTaskDoneWithoutCard,
+  closedCardGuard,
+  CLOSED_CARD_STATUSES,
   checkDeadDispatch,
   notionIdOf,
   loadLinearMirrorMapping,

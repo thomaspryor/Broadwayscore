@@ -86,6 +86,24 @@ function extractQuotedTokens(text) {
 // the minority of error sites that quote the id itself, and every other
 // per-show error in this file falls through to allAttributed=false — the
 // discovery gate's own error surface (task #1439).
+// Card #1786: same-title-sibling errors (validate-data.js ~608) used to
+// interpolate the OTHER show's id directly into prose with no quotes or
+// parens — "... same-title sibling ${inherited.siblingId} — date was
+// cloned...". When the pre-existing show (not itself a discovery candidate)
+// was the one named in parens, the real candidate's id was unextractable
+// and the whole error came back unattributable, collapsing the per-show
+// partial-block gate to block-everything. Fixed at the source instead of
+// here: validate-data.js now parenthesizes siblingId too, so the existing
+// PAREN_GROUP_RE extraction below already catches it. (An earlier version
+// of this fix added a generic bare show-id-shaped regex over all error
+// text instead — reverted: validate-data.js's corpus has other id-shaped
+// substrings that aren't show ids at all, e.g. outlet-registry.json keys
+// like "the-times-2022" appearing unquoted in outlet-collision errors, and
+// image/duplicate-review URLs containing a show id as a path segment. A
+// global regex would false-positive-attribute an error to an unrelated
+// candidate whose id merely appears in incidental text, silently letting
+// the real cause through unblocked.)
+
 function extractCandidateTokens(text) {
   const out = extractQuotedTokens(text);
   let m;

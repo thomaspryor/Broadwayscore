@@ -99,4 +99,39 @@ function findUndeclaredDomainCollisions(outlets) {
   return collisions.sort((a, b) => a.domain.localeCompare(b.domain));
 }
 
-module.exports = { EDITION_PAIRS, DECLARED_ALIAS_OVERLAPS, findUndeclaredDomainCollisions };
+/**
+ * Would registering `candidateId` with `candidateDomain` create an undeclared
+ * primary-domain collision against the outlets already in the registry?
+ *
+ * For callers that AUTO-CREATE new outlet entries and infer a domain from the
+ * outlet's own review URLs (rebuild-all-reviews.js's AUTO-REGISTER NEW
+ * OUTLETS block) — that inference has no way to know the inferred domain is
+ * already claimed by an existing outlet, so it must ask this gate before
+ * writing the domain. Without it, any new outlet whose reviews happen to
+ * share a masthead's host with an already-registered outlet (e.g. a
+ * venue-disambiguated "the-times-barbican" sharing thetimes.co.uk with
+ * "times-uk") gets auto-stamped with a colliding domain on creation, turning
+ * validate-data.js's domain-collision gate red until a later cleanup pass
+ * nulls it back out (task #1776 — this exact class caused repeat main-red
+ * incidents).
+ *
+ * @param {object} outlets - registry.outlets map (id → entry), NOT yet
+ *   containing candidateId
+ * @param {string} candidateId
+ * @param {string|null|undefined} candidateDomain
+ * @returns {boolean}
+ */
+function wouldCauseDomainCollision(outlets, candidateId, candidateDomain) {
+  const domain = normalizeDomain(candidateDomain);
+  if (!domain) return false;
+  const withCandidate = { ...(outlets || {}), [candidateId]: { domain: candidateDomain } };
+  const collisions = findUndeclaredDomainCollisions(withCandidate);
+  return collisions.some((c) => c.outletIds.includes(candidateId));
+}
+
+module.exports = {
+  EDITION_PAIRS,
+  DECLARED_ALIAS_OVERLAPS,
+  findUndeclaredDomainCollisions,
+  wouldCauseDomainCollision,
+};

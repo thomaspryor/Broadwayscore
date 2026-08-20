@@ -1,30 +1,27 @@
 ---
 name: branch-protection-direct-push
-description: "GitHub branch protection's \"Required status checks\" gates PR merges only — direct pushes go through even when checks fail or get cancelled"
+description: "GitHub branch protection's required_status_checks DOES block a direct push of a brand-new commit outright (GH006) — corrected 2026-08-18 after the opposite claim caused a live production outage"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: a31f4cef-d4fa-40ec-bd4d-c390619e6577
+  modified: 2026-08-18T01:15:41.612Z
 ---
 
-GitHub branch protection's `required_status_checks` setting only gates **PR merges**. It does NOT block direct pushes to the protected branch, even when:
-- The required check failed
-- The required check was cancelled by a newer push
-- The required check never ran (e.g., paths-filter on the workflow excluded the commit's paths)
+**CORRECTED 2026-08-18 (BRO-378) — the original claim below ("required_status_checks only gates PR merges, never blocks a direct push") is WRONG, or at minimum was true only under conditions this repo no longer has.** Trusting the original version of this memory caused a live production outage: BRO-378 applied `enforce_admins:true` + `required_status_checks` (no `required_pull_request_reviews`) to main on the strength of this file's original claim, then a real bot workflow's direct push (Update Deploy Watermark, run 32087193625) was rejected outright on all 3 retries:
 
-**Why:** Verified empirically on 2026-05-23 — commit `a88d4334c6` landed on main with `Data Validation: failure` + `E2E Tests: failure` on test.yml. My own commit `d1d00d36f4` landed with all required checks "cancelled" by a subsequent push.
+```
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote: - Required status check "Lint Workflows" is expected.
+```
+
+Reverted within 3 minutes; no data lost (the bot's retry-with-rebase discarded its own unpushed local commit safely). Root cause: `required_status_checks` requires the pushed commit's exact SHA to already have a passing check run recorded against it. A commit made directly (not via a branch GitHub already ran CI against) can never satisfy that — GitHub rejects the push before any check has a chance to run, independent of `enforce_admins` or the pushing identity's permission level.
+
+**Conclusion: there is no configuration of classic GitHub branch protection with a non-empty `required_status_checks` list that leaves a direct-push-to-main architecture working.** Not a matter of finding the right flag combination — `required_status_checks` alone, even without `required_pull_request_reviews`, blocks every direct push of a new commit. The only way to have both "required checks" and direct pushes is `required_pull_request_reviews` OFF and `required_status_checks` OFF entirely (today's Broadwayscore baseline: `allow_force_pushes:false` + `allow_deletions:false` only).
 
 **How to apply:**
-- When telling the user that branch protection "blocks broken code," qualify it: only on PR merges. Direct pushes are not gated by required status checks. They ARE blocked by:
-  - `allow_force_pushes: false` (force-push blocked)
-  - `allow_deletions: false` (branch deletion blocked)
-  - `enforce_admins: true` + `required_pull_request_reviews` (would require PRs)
-- If the user wants true gate enforcement for direct pushes, the only path is requiring PRs (no direct pushes). The current Broadway Scorecard workflow is direct-push to main, so "required status checks" gives them less than I initially implied.
-
-**The actual benefit of the protection I enabled on 2026-05-23 (main):**
-- Force-push: blocked ✅
-- Branch deletion: blocked ✅
-- PR merges: must pass `TypeScript Check` + `Unit Tests` ✅
-- Direct pushes: not gated by status checks (visible red X only) ❌
+- Never assume `required_status_checks` alone is a "free" hardening step against a direct-push repo. Test it live on a real workflow before trusting it (a disposable branch does NOT reproduce this — GitHub returns the SAME rejection there; the safe test is dispatching a real low-risk production workflow and reading its push step's actual output, exactly as BRO-378 did).
+- If the user wants true gate enforcement for direct pushes, the only path is `required_pull_request_reviews` (no direct pushes at all) — which itself requires migrating every direct-push workflow off `git push origin main` first (GitHub Rulesets with a bypass-actor list for bot identities is the likely mechanism; untested as of 2026-08-18).
+- Source of truth for main's protection state is now `scripts/setup-branch-protection.js` (`SAFE_TARGET` vs `FULL_ENFORCEMENT_TARGET`, the latter marked not-safe-to-apply) — read that file's header before touching branch protection again, don't re-derive from this memory alone.
 
 See also: [[worktree-code-changes]] for the related discipline of using worktrees.

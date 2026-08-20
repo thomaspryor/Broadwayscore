@@ -101,9 +101,13 @@ test('CI gate: no domainless outlet in the registry — present or future — is
   assert.deepEqual(violations, [], `domainless outlets wrongly ruled eligible: ${violations.join(', ')}`);
 });
 
-test('the 9 evidence WE outlets with a live domain are backfilled and SERP-eligible', () => {
+test('the 8 evidence WE outlets with a live domain are backfilled and SERP-eligible', () => {
+  // 'the-herald' dropped out of this set (task #1758): merged away entirely
+  // into 'herald' (an accidental registry duplicate, same paper/critics, not
+  // a distinct domain) rather than backfilled with its own domain — same
+  // "gone, or carries a real domain" resolution as guardian-uk/telegraph-uk.
   const backfilled = EVIDENCE_WE_KEYS.filter(
-    k => !['guardian-uk', 'telegraph-uk'].includes(k) && !STILL_DOMAINLESS_BY_DESIGN.has(k)
+    k => !['guardian-uk', 'telegraph-uk', 'the-herald'].includes(k) && !STILL_DOMAINLESS_BY_DESIGN.has(k)
   );
   for (const key of backfilled) {
     const outlet = outlets[key];

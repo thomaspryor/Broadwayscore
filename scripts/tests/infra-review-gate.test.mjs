@@ -63,6 +63,12 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     ['scripts/lib/file-lock.js', 'concurrency', 'critical'],
     ['scripts/lib/push-with-retry.sh', 'concurrency', 'critical'],
     ['scripts/lib/atomic-shows-write.js', 'concurrency', 'critical'],
+    // BRO-253 /what-else finding: this file lives at top-level scripts/, not
+    // scripts/lib/ — the original regex was anchored under scripts/lib/ only
+    // and could never match it, so this "critical" gate silently never
+    // covered its own named motivating example.
+    ['scripts/merge-worktree-to-main.sh', 'concurrency', 'critical'],
+    ['scripts/lib/run-push-audits.sh', 'concurrency', 'critical'],
     ['scripts/lib/review-gate.mjs', 'gates', 'critical'],
     ['scripts/lib/review-guards.js', 'gates', 'critical'],
     ['.github/workflows/test.yml', 'ci-gate', 'critical'],
@@ -79,6 +85,7 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     // wider shared surface — in scope, but only the observe tier
     ['scripts/lib/title-match.js', 'shared-lib', 'shared'],
     ['scripts/lib/content-quality.js', 'gates', 'critical'],
+    ['scripts/setup-branch-protection.js', 'branch-protection', 'critical'],
   ];
   for (const [path, rule, tier] of cases) {
     const c = classifyPath(path);

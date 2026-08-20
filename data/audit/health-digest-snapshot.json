@@ -1,12 +1,16 @@
 {
-  "generatedAt": "2026-08-16T12:27:21.774Z",
-  "subject": "BSC URGENT (day 20): 8 unresolved errors",
-  "bannerText": "9 errors, 30 warnings",
-  "consecutiveErrorDays": 20,
+  "generatedAt": "2026-08-19T14:07:17.433Z",
+  "subject": "BSC URGENT (day 21): 11 unresolved errors",
+  "bannerText": "12 errors, 39 warnings",
+  "consecutiveErrorDays": 21,
   "errors": [
     {
-      "name": "Credits: ScrapingDog",
-      "message": "2387k credits left (60%) · 134k/day burn · renews in 18d · exhausts in ~18d (BEFORE renewal)"
+      "name": "Data quality: cross-outlet attribution drift",
+      "message": "Drift-check snapshot is 3d old (>48h) — the daily check itself has stopped running"
+    },
+    {
+      "name": "Main: red streak",
+      "message": "main's Test Suite has had no confirmed-green run in 10.0h (11 failing runs) — first red commit 8b49be611, job \"Lint Workflows, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Autofix: jobs actually succeeding",
@@ -14,23 +18,31 @@
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 2 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 5 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "message": "Rebuild Reviews (Fast) failed 23 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 13 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "message": "Rebuild Reviews Data failed 5 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Checklist",
-      "message": "Opening Night Checklist failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews Data failed 8 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "message": "Deploy to Vercel failed 4 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "message": "Process Feedback Submissions failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "message": "Audit Aggregator Review Gap failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -39,16 +51,20 @@
   ],
   "warns": [
     {
+      "name": "Sync: cast coverage",
+      "message": "1 empty cast: Paranormal Activity"
+    },
+    {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19780 vs baseline 19791"
+      "message": "Reviews dropped: 19818 vs baseline 19823"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: take-me-out-2022 Theater Life 2/5 stars→40 vs LLM 84, gap 45)"
+      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: cleansed-off-west-end-2026 The Mail 5/5 stars→100 vs LLM 53, gap 47)"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "7 audit(s) drifting: cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "7 audit(s) drifting: cross-show URL contamination (review URL slug names a different show), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Quality: outlet domain moves",
@@ -56,39 +72,79 @@
     },
     {
       "name": "Quality: outlet invalid-content rate",
-      "message": "4 outlet(s) show a broken-extractor signature (worst: metrmag — 5/5 recent invalid, 100% vs 0% baseline)"
+      "message": "3 outlet(s) show a broken-extractor signature (worst: metrmag — 5/5 recent invalid, 100% vs 0% baseline)"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: roundup-url-mismatch lifetime sweep",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
     },
     {
       "name": "Coverage: SERP census recall",
-      "message": "Review coverage not judgeable yet: only 1 prior run(s) on record (need 2) — no baseline to judge against yet"
+      "message": "Review coverage not judgeable yet: 0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend"
     },
     {
       "name": "Coverage: adversarial probe",
-      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: the-family-album-regional-2026, the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+      "message": "This week's sample had nothing measurable (settling/undated shows, or a SERP outage) — no evidence either way"
     },
     {
       "name": "Quality: coverageExpectation drift",
       "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
     },
     {
+      "name": "Quality: outlet-heartbeat red flags",
+      "message": "Heartbeat monitor last ran 9d ago (>8d)"
+    },
+    {
       "name": "SEO: health",
       "message": "2 SEO warning(s): /west-end: scored 67/100 on a simulated phone test (below 70) — simulated test only; real visitors are fine, usually ignorable; /west-end: simulated-test score dropped to 67 (was 91)"
     },
     {
-      "name": "Cron failed: Update Show Status",
-      "message": "Last run inconclusive: failure (4h ago), no success in 36h"
+      "name": "Cron failed: Rebuild Reviews",
+      "message": "Last run inconclusive: failure (0h ago), no success in 36h"
+    },
+    {
+      "name": "Cron failed: Test Suite",
+      "message": "Last run inconclusive: failure (2h ago), no success in 48h"
+    },
+    {
+      "name": "Cron failed: Update Lottery/Rush",
+      "message": "Last run inconclusive: failure (2h ago), no success in 192h"
+    },
+    {
+      "name": "Cron failed: Update Show Score",
+      "message": "Last run inconclusive: failure (6h ago), no success in 192h"
+    },
+    {
+      "name": "Cron failed: Reverse Discovery",
+      "message": "Last run inconclusive: failure (3h ago), no success in 24h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "94 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (14d, stamp overdue 8d); Scraping v2: T4 was a yield regression — reviews.php is not  (14d, stamp overdue 8d); Generalize recover-serp-text.js urlless sweep beyond Telegra (11d, stamp overdue 8d) (11 awaiting recheck, earliest due 2026-08-14; 8 parked via tab-close, oldest 2026-08-11 — resume: node scripts/bsc-next.js --id 1271 --force — not counted)"
+      "message": "13 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (5d, stamp overdue 4d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (4d, stamp overdue 3d); P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing (4d) (9 awaiting recheck, earliest due 2026-08-17; 4 parked via tab-close, oldest 2026-08-18 — resume: node scripts/bsc-next.js --id 1748 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "33 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (24d); Trainspotting: only 4 reviews on site + email said 7 (invest (24d); cmux-launch: adopt a late-alive workspace instead of close-a (23d)"
+      "message": "35 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (27d); Trainspotting: only 4 reviews on site + email said 7 (invest (27d); cmux-launch: adopt a late-alive workspace instead of close-a (26d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",
-      "message": "2 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
+      "message": "3 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
     },
     {
       "name": "Push-retry deadman",
@@ -103,6 +159,14 @@
       "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
     },
     {
+      "name": "Dispatch health: dead-launch rate (unmeasurable here)",
+      "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here."
+    },
+    {
+      "name": "Headless dispatch: success rate (unmeasurable here)",
+      "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The headless success rate cannot be measured from here."
+    },
+    {
       "name": "Autofix: daily canary (dispatch pipeline proof)",
       "message": "Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here."
     },
@@ -111,16 +175,16 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Process Feedback Submissions",
-      "message": "Process Feedback Submissions failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Commercial RSS Poll",
+      "message": "Commercial RSS Poll failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
+      "message": "Collect WE/OB Review Texts failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
-      "message": "11 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "message": "12 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
       "name": "Workflow coverage: never-run",
@@ -136,78 +200,168 @@
     },
     {
       "name": "Data: undispatchable backlog cards",
-      "message": "31 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Pull design and UX inspo from TodayTix predictions site"
+      "message": "73 of 297 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] P0: main red 24h+ — #483 stale-flag producers + help-flag guard"
     }
   ],
   "queued": [
     {
-      "title": "Stale 'upcoming' tag on As You Like It - Globe",
-      "description": "as-you-like-it-globe-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=as-you-like-it-globe-west-end-2026 --apply",
+      "title": "Scraping spend over budget",
+      "description": "Day 2026-08-15. Over budget: browserbase $4.8 > $4 (48 sessions); brightdata $11.49 > $2.5 (2661 serp + 4999 unlocker reqs); scrapingbee 60761 credits > 35000; scrapingdog 91297 credits > 45000. 2026-08-15 · Browserbase: $4.8 (48 sessions) · 2026-08-15 · Bright Data: $11.49 (2661 serp / 4999 unlocker) · ScrapingBee: 60761 credits (346494 this cycle) · ScrapingDog: 91297 credits (1613037 this cycle) · Browserbase attribution: 8% attributed — top: collect-review-texts.js 4 · Bright Data attribution: 31% attributed — top: validate-show-venue.js 1213, opening-night-poller.js 772, audit-show-review-gap.js 265, gather-reviews.js 62, ingest-review-from-url.js 21 · ScrapingBee attribution: 2% attributed — top: validate-show-venue.js 535, audit-show-review-gap.js 236, opening-night-poller.js 100, recover-explicit-ratings.js 42, extract-theatre-record.js 27 · ScrapingDog attribution: 5% attributed — top: gather-reviews.js 1439, opening-night-poller.js 1364, collect-outlet-reviews.js 972, audit-show-review-gap.js 382, collect-review-texts.js 80. Verification streak reset to 0.",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+      "description": "Scope: 2 opening window(s): anansi-the-spider-west-end-2026 (2026-08-15), as-you-like-it-globe-west-end-2026 (2026-08-14)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
       "severity": "warning",
       "url": null
     },
     {
-      "title": "Stale 'upcoming' tag on The House of the Negro Insane",
-      "description": "the-house-of-the-negro-insane-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-house-of-the-negro-insane-off-broadway-2026 --apply",
+      "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/pride-theatre-dorfman-west-end-2026"
+    },
+    {
+      "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/why-i-stuck-a-flare-up-my-arse-for-england-garrick-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026"
+    },
+    {
+      "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-review2-west-end-2026"
+    },
+    {
+      "title": "Krapps Last Tape @ royal court — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026"
+    },
+    {
+      "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-west-end-2026"
+    },
+    {
+      "title": "Dracula @ noel coward — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/dracula-west-end-2026"
+    },
+    {
+      "title": "John Proctor @ royal court — West End show live and scoring",
+      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026"
+    },
+    {
+      "title": "Pride the Musical @ National Theatre — West End show live and scoring",
+      "description": "Auto-promoted from a wet-listing aggregator listing (https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+      "severity": "info",
+      "url": "https://broadwayscorecard.com/show/pride-the-musical-west-end-2026"
+    },
+    {
+      "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jeeves-takes-charge-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
       "severity": "warning",
       "url": null
     },
     {
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2524/2250 reqs)",
-      "description": "Zone serp_api1 billed 2524 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1034), opening-night-poller.js (349), audit-show-review-gap.js (54).",
-      "severity": "critical",
+      "title": "Auto-remediation gave up on abigails-party-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"abigails-party-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Auto-remediation gave up on spellbound-off-broadway-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"spellbound-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+      "severity": "warning",
       "url": null
     },
     {
       "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/155 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nDeath Note: The Musical: score-drift",
+      "description": "1/151 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nHow the Other Half Loves: score-drift",
       "severity": "error",
       "url": null
     },
     {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 9 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31886083800"
-    },
-    {
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4820/2250 reqs)",
-      "description": "Zone web_unlocker2 billed 4820 requests today against a ceiling of 2250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n6 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (1213), opening-night-poller.js (632), audit-show-review-gap.js (264).",
-      "severity": "critical",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 77.8% (406/522)\noff-broadway: 46.8% (161/344)\nwest-end: 70% (409/584)\n\nOldest gaps:\nCelebrity Autobiography — nytimes (568h)\nCelebrity Autobiography — nypost (398h)\nCelebrity Autobiography — thewrap (386h)\nCelebrity Autobiography — timeout (386h)\nCelebrity Autobiography — vulture (386h)\n… 218 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nCelebrity Autobiography — variety (386h)\nAladdin — ew (34h)\nThe Book of Mormon — usatoday (34h)\nBuena Vista Social Club — broadwaynews (34h)\nHeathers The Musical — dailybeast (34h)\n… 16 more circuit-open cell(s)",
+      "title": "Shipped review too short to verify on Jeeves Takes Charge",
+      "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-at-ustinov-studio-bath-from-director-hugh-wooldridge-starring-sam-harrison",
       "severity": "warning",
       "url": null
     },
     {
-      "title": "domain-tier-skip.json drift: 1 domain+tier verdict(s) need review",
-      "description": "didtheylikeit.com / scrapingdog (degrade): skip:false but 2% success over 1551 calls (< 30% threshold) — consider flipping to skip:true",
-      "severity": "warn",
+      "title": "Shipped review missing publishDate on Jeeves Takes Charge",
+      "description": "thestage/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-at-ustinov-studio-bath-from-director-hugh-wooldridge-starring-sam-harrison",
+      "severity": "warning",
       "url": null
     },
     {
-      "title": "Scrapingdog daily breaker TRIPPED: 35071/30000 credits",
-      "description": "Scrapingdog billed 35071 credits today against a ceiling of 30000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (597), collect-review-texts.js (546), collect-outlet-reviews.js (253).",
-      "severity": "critical",
+      "title": "Scoring Audit has stopped updating (190 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-09 and 2026-08-18.)",
+      "severity": "error",
       "url": null
     },
     {
-      "title": "Review-gap audit refused to write — 19.4% of shows changed coverage state",
-      "description": "review-gap blast radius 19.4% (6/31 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, horrible-histories-barmy-britain-the-best-bits-west-end-2026, how-the-other-half-loves-west-end-2026, marlise-off-broadway-2026, paddington-the-musical-west-end-2025, the-house-of-the-negro-insane-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "title": "Newsday (reviews collected) has stopped updating (9 days)",
+      "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-09, 9 days ago. It has never before gone quiet for more than 7 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 9d, from 6 productive day(s) / 9 item(s) between 2026-07-11 and 2026-08-09.)",
       "severity": "error",
       "url": null
     },
     {
       "title": "T1 Coverage — new gaps past 24h",
-      "description": "214 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+      "description": "179 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
       "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Stale 'upcoming' tag on Jeeves Takes Charge",
+      "description": "jeeves-takes-charge-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jeeves-takes-charge-west-end-2026 --apply",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Pre-opening publishDate on Abigail’s Party",
+      "description": "curtain-call-reviews/Unknown SHIPPED with publishDate 2026-07-20 (30d before openingDate 2026-08-19): https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Review-gap audit refused to write — 20.7% of shows changed coverage state",
+      "description": "review-gap blast radius 20.7% (6/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: abigails-party-west-end-2026, eugene-onegin-off-broadway-2026, jeeves-takes-charge-west-end-2026, the-house-of-the-negro-insane-off-broadway-2026, three-houses-off-broadway-2026, trophy-boys-off-broadway-2025\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Stale 'upcoming' tag on Abigail’s Party",
+      "description": "abigails-party-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=abigails-party-west-end-2026 --apply",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Stale 'upcoming' tag on Spellbound",
+      "description": "spellbound-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=spellbound-off-broadway-2026 --apply",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32242899897"
+    },
+    {
+      "title": "T1 Coverage Scoreboard",
+      "description": "broadway: 77.9% (380/488)\noff-broadway: 45.3% (148/327)\nwest-end: 70.6% (394/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (121h)\nA Midsummer Night's Dream - Globe — telegraph (121h)\nA Midsummer Night's Dream - Globe — thestage (121h)\nA Midsummer Night's Dream - Globe — times-uk (121h)\nA Midsummer Night's Dream — financialtimes (121h)\n… 185 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (121h)\n& Juliet — nydailynews (121h)\nThe Book of Mormon — usatoday (121h)\nBuena Vista Social Club — broadwaynews (121h)\nBuena Vista Social Club — nydailynews (121h)\n… 26 more circuit-open cell(s)",
+      "severity": "warning",
       "url": null
     }
   ],
-  "autoFixedCount": 3,
-  "passedCount": 50,
-  "totalCount": 94
+  "autoFixedCount": 1,
+  "passedCount": 48,
+  "totalCount": 104
 }

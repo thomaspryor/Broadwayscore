@@ -24,10 +24,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
-const REVIEW_TEXTS_DIR = path.join(process.env.HOME, 'broadway-review-texts');
+// Read-only against review-texts (writes only go to REGISTRY_PATH/DISCOVER_OUT/
+// MISMATCH_OUT) — see scripts/lib/review-texts-dir.js.
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+console.log(`[audit-outlet-star-scales] review-texts: ${REVIEW_TEXTS_DIR}`);
 const DISCOVER_OUT = path.join(ROOT, 'data', 'audit', 'outlet-star-scales-discovered.json');
 const MISMATCH_OUT = path.join(ROOT, 'data', 'audit', 'star-scale-mismatch-candidates.jsonl');
 
