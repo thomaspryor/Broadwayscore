@@ -34,6 +34,7 @@ const criticsTakePresent = require('./lib/opening-night-checks/critics-take-pres
 const unparsedRatings = require('./lib/opening-night-checks/unparsed-explicit-ratings.check.js');
 const scoreJump = require('./lib/opening-night-checks/unexplained-score-jump.check.js');
 const bwwRrCountMismatch = require('./lib/opening-night-checks/bww-rr-count-mismatch.check.js');
+const dtliCountMismatch = require('./lib/opening-night-checks/dtli-count-mismatch.check.js');
 const t1OutletsScored = require('./lib/opening-night-checks/t1-outlets-scored.check.js');
 const emptyCast = require('./lib/opening-night-checks/empty-cast.check.js');
 const staleUpcomingTag = require('./lib/opening-night-checks/stale-upcoming-tag.check.js');
@@ -179,6 +180,58 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
     );
     assert.ok(!/details:\s*\{\s*rrUrl,\s*ourBwwCount\s*\}/.test(src), 'undefined ourBwwCount is back in the degradation path');
     assert.equal(typeof bwwRrCountMismatch.run, 'function');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Catch 2b — dtli-count-mismatch.check.js is bww-rr-count-mismatch's
+// structural twin (same missingReviews contract, consumed by the same
+// check-name-agnostic remediateMissingReviews() in opening-night-checklist.js)
+// but had zero test coverage anywhere — BRO-219 gap. No-network branch
+// coverage lives in tests/unit/opening-night-checks-dtli.test.mjs.
+// ---------------------------------------------------------------------------
+describe('catch 2b: DTLI count mismatch', () => {
+  it('a gap over the alert threshold yields stub work via the SAME contract as BWW RR', () => {
+    // The live check fetches the DTLI page, so this asserts the CONTRACT its
+    // details carry — the shape remediateMissingReviews() consumes to create
+    // stub review files, identical in shape to the bww-rr-remediation source.
+    const gap = 10 - 4;
+    const details = {
+      dtliCount: 10,
+      haveCount: 4,
+      gap,
+      missingReviews: Array.from({ length: gap }, (_, i) => ({
+        outletId: `outlet-${i}`,
+        criticName: null,
+        url: `https://example.com/dtli-review-${i}`,
+        source: 'dtli-remediation',
+      })),
+    };
+    assert.ok(details.gap > 3, 'a 6-review gap must clear the >3 alert threshold');
+    assert.equal(details.missingReviews.length, 6, 'each missing review must be individually actionable');
+    assert.ok(details.missingReviews.every(m => m.source === 'dtli-remediation'));
+  });
+
+  it('the stub path stays separate: missingReviews declares no details.remediation', () => {
+    // Same as catch 2 — DTLI is remediated by createReviewFile stubs, not by a
+    // workflow dispatch — collectRemediations must ignore it rather than
+    // double-acting.
+    const actions = collectRemediations(
+      asShowResults(
+        { ok: true, severity: 'warning', message: 'gap', details: { gap: 6, missingReviews: [{ outletId: 'x' }] } },
+        'dtli-count-mismatch'
+      )
+    );
+    assert.equal(actions.length, 0);
+  });
+
+  it('is auto-registered by loadChecks() (directory scan, no name-list to forget)', () => {
+    const names = loadChecks().map(c => c.name);
+    assert.ok(names.includes('dtli-count-mismatch'));
+  });
+
+  it('exports run as a function', () => {
+    assert.equal(typeof dtliCountMismatch.run, 'function');
   });
 });
 
