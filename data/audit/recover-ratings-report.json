@@ -1,12 +1,18 @@
 {
-  "totalMissing": 0,
+  "totalMissing": 1,
   "phase0UrlsFound": 0,
   "phase1Recovered": 0,
   "phase2Recovered": 0,
-  "phase3Recovered": 0,
-  "phase3Scraped": 0,
+  "phase3Recovered": 1,
+  "phase3Scraped": 1,
   "phase3ScrapeFailed": 0,
-  "byOutlet": {},
+  "byOutlet": {
+    "times-uk": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 1
+    }
+  },
   "errors": 0,
   "timeBudgetMin": 100,
   "timeBudgetExhausted": false
