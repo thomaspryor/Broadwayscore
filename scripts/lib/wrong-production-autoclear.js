@@ -646,6 +646,7 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  DATE_ONLY_AUTO_REASONS,
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,

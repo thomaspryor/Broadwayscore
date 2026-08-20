@@ -54,6 +54,7 @@
 
 const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
+const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
 
 /**
  * A file whose flag a human has already ruled on — never escalate it. Covers:
@@ -200,6 +201,19 @@ function detectCvFlagContradiction(file) {
     : file.isRoundupArticle === true ? 'isRoundupArticle'
     : null;
   if (!flag) return null;
+
+  // DATE_ONLY_AUTO_REASONS (e.g. the anticipatory ingest gate's
+  // 'anticipatory_pre_opening_post') flags on TEMPORAL/production-context
+  // grounds a content-only CV pass cannot evaluate — CV reading the text as a
+  // valid review of the right show says nothing about whether it reviews the
+  // counted production vs. a preview performance. rebuild-all-reviews.js and
+  // wrong-production-autoclear.js already treat every wrongProductionReason as
+  // protected from CV-based auto-clear (BRO-2244); this audit must not flag
+  // the same reasons as "contradictions" needing human triage — that's not a
+  // gap in the flag, it's the flag working as designed.
+  if (flag === 'wrongProduction' && DATE_ONLY_AUTO_REASONS.has(file.wrongProductionReason)) {
+    return null;
+  }
 
   const reasoning = cv.reasoning
     || (Array.isArray(cv.issues) && cv.issues.length ? cv.issues[0] : '')
