@@ -231,7 +231,15 @@ function isSafeCheckCommand(cmd) {
       // .test.* files are harmless test runs even when their name shares a
       // push-/send- prefix; everything else gets the mutation deny (case-
       // insensitive — APFS is case-insensitive — and covers .mjs/.cjs).
-      (/\.test\.(m|c)?js$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
+      // .test.ts included explicitly (BRO-2218 ship-check, echoed by two
+      // independent reviewers): MUTATING_SCRIPT_RE's own `.(m|c)?js$` suffix
+      // never matches `.ts` anyway, so this arm is currently a no-op for that
+      // extension — but leaving it unlisted reads as "someone forgot .ts",
+      // and silently depends on MUTATING_SCRIPT_RE never being widened to
+      // cover `.ts` mutating scripts in the future. Spelling it out here
+      // keeps the carve-out's own suffix list in sync with what
+      // SAFE_CHECK_FORMS actually allows, independent of that future.
+      (/\.test\.(?:(?:m|c)?js|ts)$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
       form.pathPrefix.some(p => a.startsWith(p)) &&
       // allowBasenames (task #1827's generic audit-/lint- form only): an
       // ALLOWLIST, not a denylist — see AUDIT_LINT_GENERIC_FORM_ALLOWED's
