@@ -45,6 +45,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { evaluateCandidate } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 
@@ -157,7 +158,6 @@ function loadCandidates() {
   } catch {}
 
   const exhausted = loadExhausted();
-  const thinTiers = new Set(['truncated', 'excerpt', 'stub']);
   const candidates = [];
   let scanned = 0, skippedComplete = 0, skippedFlagged = 0, skippedNoUrl = 0, skippedExhausted = 0, skippedWrongDomain = 0;
 
@@ -193,25 +193,24 @@ function loadCandidates() {
       // URL from scratch. Without SERP keys there's nothing to anchor a
       // urlless file to, so it's correctly skipped. --outlet mode still
       // requires a url since there's no per-outlet domain to match against.
+      // Generalized (BRO-141) beyond the original Telegraph-only backfill —
+      // domainOutletIds resolves via OUTLET_DOMAINS for every outlet, so any
+      // outlet's urlless thin-tier files are now eligible. Decision logic is
+      // in scripts/lib/serp-text-recovery-candidates.js (unit-tested there).
       const hasSerpKeys = !!(CONFIG.scrapingBeeKey || CONFIG.brightDataKey);
-      if (!data.url && (CONFIG.outlet || !hasSerpKeys)) { skippedNoUrl++; continue; }
-      if (CONFIG.outlet) {
-        if ((data.outletId || '') !== CONFIG.outlet) { skippedWrongDomain++; continue; }
-      } else if (data.url) {
-        let domain;
-        try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
-        if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
-      } else {
-        // No url to check a domain against — fall back to the outletId ->
-        // domain reverse lookup, since that's the exact signal
-        // discoverCorrectUrl() will use to resolve OUTLET_DOMAINS.
-        if (!domainOutletIds.has((data.outletId || '').toLowerCase())) { skippedWrongDomain++; continue; }
+      const { qualifies, skipReason } = evaluateCandidate(
+        data,
+        { domain: CONFIG.domain, outlet: CONFIG.outlet, hasSerpKeys, domainOutletIds },
+        exhausted
+      );
+      if (!qualifies) {
+        if (skipReason === 'no_url') skippedNoUrl++;
+        else if (skipReason === 'wrong_domain') skippedWrongDomain++;
+        else if (skipReason === 'complete') skippedComplete++;
+        else if (skipReason === 'flagged') skippedFlagged++;
+        else if (skipReason === 'exhausted') skippedExhausted++;
+        continue;
       }
-
-      if (data.contentTier === 'complete') { skippedComplete++; continue; }
-      if (!thinTiers.has(data.contentTier)) continue;
-      if (data.wrongShow || data.wrongProduction || data.wrongAttribution || data.isRoundupArticle) { skippedFlagged++; continue; }
-      if (exhausted[data.url]) { skippedExhausted++; continue; }
 
       const show = shows[data.showId] || {};
       candidates.push({
