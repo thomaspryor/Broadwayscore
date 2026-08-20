@@ -274,6 +274,7 @@ tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/feedback-form-validation.test.mjs
+tests/unit/feedback-multi-show-fix.test.mjs
 tests/unit/feedback-owner-reports.test.mjs
 tests/unit/feedback-pipeline-fields.test.mjs
 tests/unit/feedback-request-ledger.test.mjs
@@ -309,6 +310,8 @@ tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/import-ledger.test.mjs
+tests/unit/import-ledger-checkpoint.test.mjs
+tests/unit/linear-graphql-rate-limit.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs

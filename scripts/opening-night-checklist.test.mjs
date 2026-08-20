@@ -545,6 +545,32 @@ describe('review-count-match stays print-only on purpose', () => {
     assert.equal(actions.length, 0);
     fs.rmSync(scopedRoot, { recursive: true, force: true });
   });
+
+  // Task #1846: a live show (jeeves-takes-charge-west-end-2026) had a fully
+  // valid, fully-scored review silently missing from reviews.json — the
+  // garbage-outlet guard's "^a |^an " sentence-fragment regex false-positived
+  // on the real outlet name "A Youngish Perspective". Once fixed, this check
+  // still reports the gap (other files in the same show are legitimately
+  // excluded — dedup, wrong-production), but severity must not read 'error'
+  // for a gap where every file has a real logged reason: only an unexplained
+  // ('not-logged') count is the actual silent-exclusion bug.
+  it('computeGapSeverity: a fully-explained gap is never error, regardless of size', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(14, 0), 'warning');
+    assert.equal(reviewCountMatch.computeGapSeverity(100, 0), 'warning');
+  });
+
+  it('computeGapSeverity: small fully-explained gap is ok', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(2, 0), 'ok');
+  });
+
+  it('computeGapSeverity: unexplained files at/above ERROR_THRESHOLD (5) is error', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(5, 5), 'error');
+    assert.equal(reviewCountMatch.computeGapSeverity(23, 23), 'error');
+  });
+
+  it('computeGapSeverity: zero gap is ok', () => {
+    assert.equal(reviewCountMatch.computeGapSeverity(0, 0), 'ok');
+  });
 });
 
 // ---------------------------------------------------------------------------

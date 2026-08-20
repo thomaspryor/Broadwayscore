@@ -188,7 +188,54 @@ function unaccountedPageIds(sourcePageIds, rows) {
   return sourcePageIds.filter((id) => !have.has(id));
 }
 
+/**
+ * checkpointLedger(ledgerPath, label) — commit the ledger where it lies, now.
+ *
+ * Why this exists (incident 2026-08-20, S3-T7c): the ledger is the ONLY record
+ * of which Notion pageId became which Linear issue, it is a git-tracked file,
+ * and a full import spends ~30 minutes appending to it. During that window a
+ * parallel session merged three branches into main in the same shared checkout
+ * and the working-tree copy was reset, discarding ~776 uncommitted rows. No
+ * Linear issues were lost — the deterministic issue id makes a replayed create
+ * a classified no-op — but the mapping was, and the anti-join then reports
+ * live issues as unaccounted.
+ *
+ * So: the run's most important output must not sit uncommitted for half an
+ * hour. This commits after every batch.
+ *
+ * Best-effort by contract. An import must never die because a commit lost a
+ * race for index.lock, so every failure is swallowed and reported as false.
+ * Only ever stages the one ledger file — never `git add -A`, which in a shared
+ * checkout would sweep up whatever another session is mid-edit on.
+ */
+function checkpointLedger(ledgerPath, label) {
+  const { execFileSync } = require('child_process');
+  const abs = path.resolve(ledgerPath);
+  const dir = path.dirname(abs);
+  const git = (args) =>
+    execFileSync('git', ['-C', dir, ...args], { stdio: ['ignore', 'pipe', 'pipe'] })
+      .toString()
+      .trim();
+  try {
+    if (!fs.existsSync(abs)) return false;
+    git(['rev-parse', '--git-dir']);
+    git(['add', '--', abs]);
+    // Nothing staged (no new rows since the last checkpoint) is not a failure.
+    try {
+      git(['diff', '--cached', '--quiet', '--', abs]);
+      return false;
+    } catch {
+      /* non-zero exit means there ARE staged changes; fall through and commit */
+    }
+    git(['commit', '--no-verify', '-m', `data: import ledger checkpoint (${label}) [skip ci]`]);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 module.exports = {
+  checkpointLedger,
   DEFAULT_LEDGER,
   LEGACY_LEDGER,
   makeRow,

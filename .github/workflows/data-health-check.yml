@@ -480,6 +480,27 @@ jobs:
       # that this repo's data/audit/* contention is not actually lighter
       # than audit-aggregator-gap.yml's.
       #
+      # Third pass (still task #1842): TWO further live verification runs at
+      # 900s (32396596947, 32398165382 — the second deliberately run with NO
+      # other worktree-merge activity from this session, to rule out
+      # self-inflicted contention) BOTH still failed — but not from the
+      # deadline. Log evidence: "All push attempts failed after 7 attempts"
+      # fired at ~140s and ~140s respectively, nowhere near the 900s budget.
+      # push-with-retry.sh's default MAX_RETRIES=7 (not PUSH_DEADLINE_SEC)
+      # was the actual binding constraint — its per-attempt backoff
+      # (WAIT=3+i*2+jitter, script line ~1554) sums to only ~110s over 7
+      # attempts, so raising the time deadline alone bought this step nothing
+      # to spend it on: the loop still gave up at attempt 7 with ~760s of
+      # granted deadline unused. push-with-retry.sh checks
+      # `$SECONDS -ge $PUSH_DEADLINE_SEC` at the top of EVERY loop iteration
+      # (script line ~952), independent of MAX_RETRIES — so raising
+      # MAX_RETRIES here doesn't weaken the deadline safety valve, it just
+      # stops attempt-count from cutting the loop off before the deadline
+      # can. 25 (positional arg 1) is sized so the backoff schedule's own sum
+      # (~725s across 25 attempts, per the formula above) plus per-attempt
+      # work lands just under the 900s deadline — the deadline, not an
+      # arbitrary retry count, is what actually governs this step now.
+      #
       # No explicit timeout-minutes override on this step (matching
       # audit-aggregator-gap.yml's equivalent fix, which also left its
       # bulk-commit step uncapped) — it inherits the job timeout-minutes
@@ -554,7 +575,7 @@ jobs:
             echo "No health check data changes"
           else
             git commit -m "data: Update health check + triage state [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Notify on failure
