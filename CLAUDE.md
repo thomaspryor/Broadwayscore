@@ -128,7 +128,7 @@ See `memory/email-broadcast-rules.md` for full history.
 - **NEVER send to any Resend audience with >5 real contacts for testing**
 
 ### 18. Review BEFORE editing shared infrastructure (owner decision 2026-08-05, #1079)
-Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail verdict stands until an `owner-override` verdict. Wider `scripts/lib/**` warns only. Scope: `scripts/lib/infra-review-scope.js`.
+Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail verdict stands until an `owner-override` verdict. Wider `scripts/lib/**` warns only. Scope: `scripts/lib/infra-review-scope.js`.
 
 ---
 

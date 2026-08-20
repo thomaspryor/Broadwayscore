@@ -353,7 +353,7 @@ As soon as the critique is complete — before the user answers Phase 7, and whe
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
-  --result=pass --session-id="$CLAUDE_SESSION_ID" --note="<one line: what the review changed>"
+  --result=pass --session-id="$CLAUDE_CODE_SESSION_ID" --note="<one line: what the review changed>"
 ```
 
 `~/.claude/hooks/infra-plan-review-gate.sh` reads this before the session's first edit to shared infrastructure — the dispatch layer, spend guards, concurrency primitives, the review gates, CI workflows and hooks (task #1079, owner decision 2026-08-05, scope in `scripts/lib/infra-review-scope.js`). Without the record the session stays blocked no matter how thorough the review was.
