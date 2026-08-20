@@ -66,17 +66,6 @@
     "queuedAt": "2026-08-19T18:19:27.685Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 19.7% of shows changed coverage state",
-    "description": "review-gap blast radius 19.7% (14/71 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: anansi-the-spider-west-end-2026, bone-wars-off-broadway-2026, cat-cohen-broad-strokes-off-broadway-2026, eurydice-off-broadway-2026, heathers-the-musical-off-west-end-2026, hershey-felder-the-piano-and-me-off-broadway-2026, hungry-women-off-broadway-2026, music-city-off-broadway-2026, orlando-off-broadway-2026, paranormal-activity-west-end-2025, sinatra-the-musical-west-end-2026, the-jonathan-larson-project-off-west-end-2026, the-lonely-few-off-broadway-2024, trophy-boys-off-broadway-2025\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-19T22:17:10.955Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026",
     "title": "Unhandled CV.wrongProduction on Abigail’s Party",
     "description": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content reviews 'Abigail's Party' at Theatre Royal, Stratford East (a regional London theater, not a West En — https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
@@ -108,5 +97,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-20T05:49:12.229Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
+    "description": "review-gap blast radius 20.0% (5/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bone-wars-off-broadway-2026, eurydice-off-broadway-2026, the-house-of-the-negro-insane-off-broadway-2026, three-houses-off-broadway-2026, trophy-boys-off-broadway-2025\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-20T08:29:16.744Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.9% (380/488)\noff-broadway: 45.4% (148/326)\nwest-end: 70.8% (395/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (142h)\nA Midsummer Night's Dream - Globe — telegraph (142h)\nA Midsummer Night's Dream - Globe — thestage (142h)\nA Midsummer Night's Dream - Globe — times-uk (142h)\nA Midsummer Night's Dream — financialtimes (142h)\n… 201 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (142h)\nThe Book of Mormon — usatoday (142h)\nBuena Vista Social Club — broadwaynews (142h)\nHeathers The Musical — dailybeast (142h)\nHeathers The Musical — ew (142h)\n… 11 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-20T08:29:24.290Z"
   }
 ]

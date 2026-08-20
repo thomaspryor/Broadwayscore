@@ -1,82 +1,11 @@
 {
-  "generatedAt": "2026-08-20T02:25:14.177Z",
+  "generatedAt": "2026-08-20T08:29:29.018Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 146,
-  "defective": 4,
-  "byType": {
-    "missing-from-prod": 4
-  },
-  "shows": [
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: stageandcinema"
-        }
-      ],
-      "missingFromProd": [
-        "stageandcinema"
-      ],
-      "localCount": 16,
-      "deployedCount": 15
-    },
-    {
-      "showId": "music-city-off-broadway-2026",
-      "title": "Music City",
-      "openingDate": "2026-03-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: nyt-theater"
-        }
-      ],
-      "missingFromProd": [
-        "nyt-theater"
-      ],
-      "localCount": 8,
-      "deployedCount": 7
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "title": "Masquerade",
-      "openingDate": "2025-09-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: wsj"
-        }
-      ],
-      "missingFromProd": [
-        "wsj"
-      ],
-      "localCount": 15,
-      "deployedCount": 14
-    },
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: timeout"
-        }
-      ],
-      "missingFromProd": [
-        "timeout"
-      ],
-      "localCount": 31,
-      "deployedCount": 30
-    }
-  ]
+  "clean": 150,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
