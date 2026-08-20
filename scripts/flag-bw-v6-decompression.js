@@ -36,6 +36,7 @@ const glob = require('glob');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -89,6 +90,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     d.needsRescore = true;
     d.rescoreReason = 'bw-v6-decompression';
     delete d.rescoreCompletedAt;
+    markRescoreFlagged(d);
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

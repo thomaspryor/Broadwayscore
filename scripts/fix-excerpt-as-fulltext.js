@@ -11,6 +11,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const dryRun = !process.argv.includes('--apply');
 const base = path.join(__dirname, '..', 'data', 'review-texts');
@@ -56,6 +57,7 @@ for (const d of dirs) {
       // (scores on excerpts via rebuild-all-reviews.js will still work)
       if (data.llmScore && !data.humanReviewScore) {
         data.needsRescore = true;
+        markRescoreFlagged(data);
       }
 
       if (!dryRun) {

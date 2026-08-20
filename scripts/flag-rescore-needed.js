@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -219,6 +220,7 @@ for (const show of shows) {
           data.rescoreReason = isExcerptBased
             ? 'scored on brief excerpt, now has fullText'
             : 'fullText significantly longer than excerpt used for scoring';
+          markRescoreFlagged(data);
 
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }

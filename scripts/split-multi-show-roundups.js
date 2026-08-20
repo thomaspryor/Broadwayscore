@@ -41,6 +41,7 @@
 const fs = require('fs');
 const path = require('path');
 const { splitMultiShowArticle, loadShows } = require('./lib/multi-show-splitter');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 // ============================================================================
 // CLI
@@ -260,6 +261,7 @@ function rewriteParent(data, ownSection, childShowIds) {
   // from whatever was scored before (or unscored).
   out.needsRescore = true;
   out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
+  markRescoreFlagged(out);
   // Clear any stale ensemble/llm scores derived from the un-trimmed text.
   delete out.ensembleData;
   delete out.llmScore;
@@ -291,6 +293,7 @@ function buildChild(parentData, section, parentShowId) {
     needsRescoreReason: 'multi-show-split: new child file, awaiting scoring',
   };
   child.textWordCount = child.wordCount;
+  markRescoreFlagged(child);
   return child;
 }
 

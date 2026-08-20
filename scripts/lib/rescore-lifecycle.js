@@ -46,6 +46,7 @@ function markRescoreComplete(fileData, completedAt) {
   if (fileData.needsRescore || fileData.needs_rescore) {
     delete fileData.needsRescore;
     delete fileData.needs_rescore;
+    delete fileData.rescoreFlaggedAt;
     fileData.rescoreCompletedAt = completedAt || new Date().toISOString();
   }
   // Task #97 adversarial review (codex, 2026-08-10): staleScoredBeforeOpening
@@ -59,6 +60,39 @@ function markRescoreComplete(fileData, completedAt) {
   if (fileData.staleScoredBeforeOpening) {
     delete fileData.staleScoredBeforeOpening;
     delete fileData.staleScoredBeforeOpeningAt;
+  }
+  return fileData;
+}
+
+/**
+ * markRescoreFlagged — the WRITE-side counterpart to markRescoreComplete, for
+ * the enqueue end of the same lifecycle (Notion 3a9637c5-416f-8155 / BRO-117).
+ *
+ * Before this, 16+ producers set `needsRescore = true` with no timestamp, so
+ * isScoredButStillQueued() (stuck-rescore-flag.js) could never tell "queued
+ * and legitimately awaiting rescore" from "queued but already scored, flag
+ * never retired" for any producer other than the one Haiku-fallback
+ * fingerprint it was hand-built for. Every producer should call this
+ * immediately after setting needsRescore truthy so the flag always carries
+ * its own enqueue time.
+ *
+ * Idempotent by design: if the file already carries a rescoreFlaggedAt (a
+ * producer re-touching a review still sitting in the queue, or a second
+ * producer flagging the same file for a different reason), the ORIGINAL
+ * enqueue time is preserved rather than reset — resetting it on every touch
+ * would make "how long has this been stuck" measure the wrong thing.
+ *
+ * Mutates in place and returns the same object, same calling convention as
+ * markRescoreComplete.
+ *
+ * @param {Object} fileData - review file object about to be persisted
+ * @param {string} [flaggedAt] - ISO timestamp; defaults to now (injectable for tests)
+ * @returns {Object} the same fileData, mutated
+ */
+function markRescoreFlagged(fileData, flaggedAt) {
+  if (!fileData || typeof fileData !== 'object') return fileData;
+  if (!fileData.rescoreFlaggedAt) {
+    fileData.rescoreFlaggedAt = flaggedAt || new Date().toISOString();
   }
   return fileData;
 }
@@ -177,6 +211,7 @@ function isBlockedFromRescore(data) {
 
 module.exports = {
   markRescoreComplete,
+  markRescoreFlagged,
   stampTerminalScoringFailure,
   isBlockedFromRescore,
   isDeterministicTextGateFailure,

@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -177,6 +178,7 @@ function runBeforeOpeningMode(openingDateStr, showId) {
       data.llmScore = null;
       data.llmMetadata = null;
       data.needsRescore = true;
+      markRescoreFlagged(data);
       data.staleScoredBeforeOpening = true;
       // Freshness-stamped so the push-restore breadcrumb (review-write-guard.js
       // CLEAR_BREADCRUMBS) can bound how long it suppresses restoring a stale

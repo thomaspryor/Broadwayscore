@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { markRescoreFlagged } = require('../lib/rescore-lifecycle');
 
 // review-texts is gitignored; resolve from main repo root (handles worktrees)
 const { execSync } = require('child_process');
@@ -67,6 +68,7 @@ function processDir(dir) {
       if (isSevere && !data.needsRescore) {
         data.needsRescore = true;
         data.needsRescoreReason = 'stale-ensemble-severe-divergence';
+        markRescoreFlagged(data);
         flagged++;
         const relPath = path.relative(REVIEW_TEXTS_DIR, fp);
         flaggedFiles.push(relPath);

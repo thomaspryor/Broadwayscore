@@ -54,6 +54,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -4269,6 +4270,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Review was scored on excerpt, now has fullText - flag for rescoring
     data.needsRescore = true;
     data.rescoreReason = 'fullText added after excerpt-based scoring';
+    markRescoreFlagged(data);
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
 

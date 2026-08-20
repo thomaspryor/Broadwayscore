@@ -148,6 +148,7 @@ function main() {
       const d = JSON.parse(fs.readFileSync(s.path, 'utf8'));
       delete d.needsRescore;
       delete d.rescoreReason;
+      delete d.rescoreFlaggedAt;
       delete d.lateStarAnchorBand;
       // Freshness-gated breadcrumb (task #1259, same shape as tasks #97/#1237):
       // this runs in enrich-reviews.yml's single job, which later calls

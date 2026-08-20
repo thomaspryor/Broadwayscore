@@ -338,6 +338,14 @@ const PROTECTED_FIELDS = [
   // restore loop only iterates PROTECTED fields).
   'rescoreReason',
   'lateStarAnchorBand',
+  // Enqueue timestamp (BRO-117 / Notion 3a9637c5-416f-8155), stamped by
+  // markRescoreFlagged() (rescore-lifecycle.js) alongside needsRescore by every
+  // producer. Same protection rationale as needsRescore/rescoreReason above: a
+  // dropped stamp on rebase would leave a real queued flag with no provenance
+  // time, silently reopening the "can't tell queued-legitimately from
+  // stuck-forever" gap this stamp exists to close. Deleted alongside
+  // needsRescore by markRescoreComplete() and audit-stuck-rescore-flags.js --fix.
+  'rescoreFlaggedAt',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js

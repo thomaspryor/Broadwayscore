@@ -28,6 +28,7 @@ const path = require('path');
 const glob = require('glob');
 const { needsLateStarReanchor } = require('./lib/late-star-anchor');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -75,6 +76,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     // without clearing it is invisible to the drain. Same pattern as
     // flag-combined-reviews.js.
     delete d.rescoreCompletedAt;
+    markRescoreFlagged(d);
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

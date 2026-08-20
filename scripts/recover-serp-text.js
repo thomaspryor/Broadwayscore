@@ -47,6 +47,7 @@ const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -347,6 +348,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
     data.rescoreReason = 'fullText recovered via SERP text recovery';
+    markRescoreFlagged(data);
   }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');

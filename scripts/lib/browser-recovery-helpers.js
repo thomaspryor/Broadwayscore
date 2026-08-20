@@ -19,6 +19,7 @@ const { execSync } = require('child_process');
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./content-quality');
 const { cleanText, stripTrailingJunk } = require('./text-cleaning');
 const { evaluateDatePlausibility } = require('./date-plausibility');
+const { markRescoreFlagged } = require('./rescore-lifecycle');
 
 // Same worktree-symlink gap as REVIEW_TEXTS_DIR above — data/shows.json is a
 // gitignored symlink into the private ~/broadway-scorecard-data clone, so a
@@ -195,6 +196,7 @@ function processRecoveredText(candidate, rawText, labels) {
   if (data.llmScore?.score) {
     data.needsRescore = true;
     data.rescoreReason = `fullText recovered via ${labels.sourceMethod} (task #831)`;
+    markRescoreFlagged(data);
   }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');

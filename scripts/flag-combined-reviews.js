@@ -13,6 +13,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { baseSlug, computeCombinedWith } = require('./lib/combined-review-utils');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -178,6 +179,7 @@ function main() {
           data.rejectionReasoning = null;
           data.rescoreCompletedAt = null;
           data.needsRescore = true;
+          markRescoreFlagged(data);
         }
         safeWriteReview(entry.filePath, data);
       }

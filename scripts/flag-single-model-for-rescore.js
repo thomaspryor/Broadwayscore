@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
@@ -91,6 +92,7 @@ function main() {
 
       if (apply) {
         data.needsRescore = true;
+        markRescoreFlagged(data);
 
         // Clear stale assignedScore that came from single-model scoring
         // to prevent it from resurfacing via the P4 fallback path

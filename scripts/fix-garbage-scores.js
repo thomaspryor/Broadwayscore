@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -209,6 +210,7 @@ function invalidateScore(filePath, review) {
     // Flag for excerpt-based rescoring
     data.needsRescore = true;
     data.rescoreReason = 'LLM score invalidated (based on garbage text), excerpts available';
+    markRescoreFlagged(data);
     if (verbose) {
       console.log(`    Flagged for rescore (has excerpts)`);
     }
