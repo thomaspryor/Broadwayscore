@@ -82,4 +82,46 @@ function evaluateCandidate(data, target, exhausted) {
   return { qualifies: true, skipReason: null };
 }
 
-module.exports = { evaluateCandidate, buildDomainOutletIds, THIN_TIERS };
+// Domains/outlets already swept to a measured, reproducible zero-recovery
+// rate (Notion card 3b1637c5-416f-8163-a707-e156f5e1efc3, measured
+// 2026-08-16: 192 combined candidates across these 5 pools, 0 recovered —
+// old/niche sites with near-zero Google indexing, or paywalled). Re-running
+// them burns real SERP provider spend for no yield; this is a DATA finding,
+// not a code bug, so it belongs in a checked-in guard rather than operator
+// memory. Keyed on the exact --domain/--outlet CLI value (ap was swept via
+// --outlet mode, the rest via --domain).
+const PROVEN_ZERO_SWEEP_DOMAINS = new Set([
+  'lightingandsoundamerica.com', // 0/108
+  'wolfentertainmentguide.com',  // 0/28
+  'dailymail.co.uk',             // 0/19
+  'thetimes.co.uk',              // 0/12 (also paywalled — see OTP tasks #919/#924)
+]);
+const PROVEN_ZERO_SWEEP_OUTLETS = new Set([
+  'ap', // 0/18 via --outlet mode
+]);
+
+/**
+ * Is this --domain/--outlet target a pool already measured to a
+ * reproducible zero-recovery rate? Callers should refuse to run (or require
+ * an explicit override) rather than silently re-burning SERP spend on a
+ * pool with no measured yield. Pure + exported for unit testing.
+ *
+ * @param {object} target
+ * @param {string|null} target.domain
+ * @param {string|null} target.outlet
+ * @returns {boolean}
+ */
+function isProvenZeroSweep(target) {
+  if (target.outlet) return PROVEN_ZERO_SWEEP_OUTLETS.has(target.outlet);
+  if (target.domain) return PROVEN_ZERO_SWEEP_DOMAINS.has(target.domain);
+  return false;
+}
+
+module.exports = {
+  evaluateCandidate,
+  buildDomainOutletIds,
+  isProvenZeroSweep,
+  PROVEN_ZERO_SWEEP_DOMAINS,
+  PROVEN_ZERO_SWEEP_OUTLETS,
+  THIN_TIERS,
+};

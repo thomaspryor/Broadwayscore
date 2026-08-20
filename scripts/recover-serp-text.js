@@ -33,6 +33,7 @@
  *   --limit=N        Max candidates to process (default: 20)
  *   --dry-run        Discovery + fetch only, no file writes
  *   --show=SLUG      Only process one show
+ *   --force-exhausted  Override the proven-zero-sweep guard (see below)
  */
 
 const fs = require('fs');
@@ -45,7 +46,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
-const { evaluateCandidate, buildDomainOutletIds } = require('./lib/serp-text-recovery-candidates');
+const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 
@@ -76,6 +77,16 @@ const CONFIG = {
 
 if (!CONFIG.domain && !CONFIG.outlet) {
   console.error('Usage: node scripts/recover-serp-text.js (--domain=newyorker.com | --outlet=ap) [--limit=N] [--dry-run] [--show=SLUG]');
+  process.exit(1);
+}
+
+// Refuse a re-sweep of a pool already measured to a reproducible zero yield
+// (see scripts/lib/serp-text-recovery-candidates.js's PROVEN_ZERO_SWEEP_*
+// lists) — re-running these burns real SERP provider spend for no measured
+// return. --force-exhausted overrides (e.g. the underlying registry/site
+// changed since the 2026-08-16 measurement).
+if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.domain, outlet: CONFIG.outlet })) {
+  console.error(`  ⛔ ${CONFIG.outlet ? `--outlet=${CONFIG.outlet}` : `--domain=${CONFIG.domain}`} is a proven-zero sweep (Notion card 3b1637c5-416f-8163-a707-e156f5e1efc3, measured 2026-08-16) — re-running burns SERP spend for no yield. Pass --force-exhausted to override.`);
   process.exit(1);
 }
 
