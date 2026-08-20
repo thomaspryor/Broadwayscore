@@ -42,6 +42,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { detectEssayIntroFalsePositive } = require('./lib/essay-intro-nonreview-fp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const USAGE = `audit-exclusion-flags.js — sweep isNonReview:true files for the essay-intro false-positive class (BRO-57)
 
@@ -158,7 +159,15 @@ function main() {
       if (args.apply) {
         try {
           applyClear(data, match);
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          // force:true — an intentional operator-equivalent override, same as
+          // audit-wrongshow-autoclear-conflicts.js's clears. Routes through the
+          // shared write guard (required by test.yml's safeWriteReview lint)
+          // rather than a raw fs.writeFileSync.
+          safeWriteReview(filePath, data, { force: true });
+          const after = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (after.isNonReview !== false || after.nonReviewManualClear !== true) {
+            console.error(`  ERROR: write did not stick for ${showId}/${file} (isNonReview=${after.isNonReview}, nonReviewManualClear=${after.nonReviewManualClear})`);
+          }
         } catch (e) {
           console.error(`  ERROR applying clear to ${showId}/${file}: ${e.message}`);
         }
