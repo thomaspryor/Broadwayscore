@@ -174,10 +174,14 @@ function hoursSince(iso) {
   return (Date.now() - t) / (1000 * 60 * 60);
 }
 
-// notion-brain.js rejects "Not started" cards whose Notes total <300 chars
-// (feedback_notion_card_context.md). The template below clears that floor
-// for realistic inputs, but a very short description + short conditionKey
-// can land right on the edge — pad explicitly rather than relying on margin.
+// A floor on how much context an auto-filed tracker carries. It originated as
+// notion-brain.js's rule that a "Not started" card needs >=300 chars of Notes
+// (feedback_notion_card_context.md); this router now files LINEAR issues, which
+// impose no such rule, so the floor is kept on its own merits rather than
+// inherited: an alert that files a two-line issue is an alert nobody can act on
+// without re-deriving what tripped it. The template below clears the floor for
+// realistic inputs, but a very short description plus a short conditionKey can
+// land right on the edge — pad explicitly rather than relying on margin.
 const MIN_NOTES_LENGTH = 320;
 
 function buildCardNotes({ description, hint, fields, conditionKey }) {
@@ -502,7 +506,10 @@ async function routeAlert(opts) {
 
   // Rail 2 cross-system dedupe (Phase 0, plan 2026-08-12, task #1341): 'auto'
   // is the only disposition that actually creates a NEW tracker (dispatchCard
-  // files a Notion card) — checked here, after the disposition is resolved,
+  // files a LINEAR issue — it has since BRO-375 repointed it; this comment said
+  // "Notion card" long after that stopped being true, and on 2026-08-19 it led
+  // an owner session to report to the owner that alerts still filed Notion
+  // cards) — checked here, after the disposition is resolved,
   // so a 'human' request downgraded to 'digest' never triggers a Linear round
   // trip it doesn't need. Short-circuits with the SAME { action: 'silent',
   // conditionKey, cardId } shape the ledger-cooldown check above returns, plus
