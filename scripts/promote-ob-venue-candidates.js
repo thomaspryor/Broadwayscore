@@ -548,7 +548,10 @@ async function main() {
     if (!venuesMatch(entry.venue, c.venue)) {
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });
     }
-    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
+    // reviewCount recorded for regional promotions only — it's the actual
+    // number decideReviewThresholdPromotion gated on (BRO-125); other
+    // sources don't compute it, so a bare `undefined` there just means N/A.
+    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : undefined });
   }
 
   console.log('');
