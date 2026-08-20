@@ -413,6 +413,36 @@ async function llmFallbackExtract(rawHtml, { aggregator, showTitle, showId }) {
   }
 }
 
+/**
+ * Decide whether the LLM fallback is needed and run it, centralizing the two
+ * triggers (zero extraction, partial extraction) so callers besides
+ * gather-reviews.js (which wires the same decision inline) don't have to
+ * reimplement the hasStructuralMarkers/isPartialExtraction/mergeAggregatorReviews
+ * dance. Used by opening-night-poller.js and the bww/dtli count-mismatch
+ * checklist checks — those previously fell back to the LLM only on zero (poller)
+ * or not at all (the count-mismatch checks), leaving them blind to the same
+ * partial-format-change misses this module exists to catch.
+ *
+ * @param {string} rawHtml
+ * @param {Array} regexReviews - baseline reviews already extracted via regex
+ * @param {Object} opts - { aggregator, showTitle, showId }
+ * @returns {Promise<Array>} - regexReviews unchanged, the LLM-only result (zero
+ *   case), or regexReviews merged with LLM findings (partial case)
+ */
+async function llmFallbackExtractIfNeeded(rawHtml, regexReviews, { aggregator, showTitle, showId }) {
+  if (!hasStructuralMarkers(rawHtml, aggregator)) return regexReviews;
+
+  if (regexReviews.length === 0) {
+    return llmFallbackExtract(rawHtml, { aggregator, showTitle, showId });
+  }
+
+  const expected = countExpectedReviews(rawHtml, aggregator);
+  if (!isPartialExtraction(regexReviews.length, expected)) return regexReviews;
+
+  const llmReviews = await llmFallbackExtract(rawHtml, { aggregator, showTitle, showId });
+  return mergeAggregatorReviews(regexReviews, llmReviews);
+}
+
 function logFallbackUsage(aggregator, showId, reviewCount, htmlLength) {
   try {
     const auditPath = path.join(__dirname, '../../data/audit/extraction-fallbacks.json');
@@ -439,6 +469,7 @@ module.exports = {
   cleanHtmlForLLM,
   hasStructuralMarkers,
   llmFallbackExtract,
+  llmFallbackExtractIfNeeded,
   countExpectedReviews,
   isPartialExtraction,
   mergeAggregatorReviews,
