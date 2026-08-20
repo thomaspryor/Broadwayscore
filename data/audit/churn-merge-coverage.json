@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-20T10:11:39.650Z",
+    "generatedAt": "2026-08-20T11:32:17.612Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 3,
     "exemptCount": 9,
-    "coveredCount": 17,
-    "highChurnTracked": 29
+    "coveredCount": 16,
+    "highChurnTracked": 28
   },
   "flagged": [
     {
@@ -24,13 +24,13 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 32
+      "churn": 33
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 158
+      "churn": 157
     },
     {
       "path": "public/data/mobile-shows.json",
@@ -46,44 +46,44 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 69
+      "churn": 67
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 57
+      "churn": 56
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 45
+      "churn": 44
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
-      "churn": 39
+      "churn": 41
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 36
+      "churn": 35
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 864,
+      "churn": 891,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 836,
+      "churn": 863,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 481,
+      "churn": 479,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 404,
+      "churn": 406,
       "mergeAttr": "union"
     },
     {
@@ -93,7 +93,7 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 227,
+      "churn": 228,
       "mergeAttr": "union"
     },
     {
@@ -138,17 +138,12 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 30,
+      "churn": 34,
       "mergeAttr": "ours"
     }
   ]
