@@ -3008,6 +3008,38 @@ jobs:
             BATCH_PASS=$(grep -E '^(# pass |ℹ pass )' "$log" | tail -n1 | awk '{print $NF}')
             BATCH_FAIL=$(grep -E '^(# fail |ℹ fail )' "$log" | tail -n1 | awk '{print $NF}')
             : "${BATCH_PASS:=UNKNOWN}" "${BATCH_FAIL:=UNKNOWN}"
+            if [ "$rc" -ne 0 ]; then
+              # BRO-2238: a 1-of-N batch failure previously printed nothing
+              # but "exit=1" — Node's TAP output already has the answer
+              # (`not ok N - <name>` plus a `location: 'file:line'`
+              # diagnostic a few lines below it) but it was buried unlabeled
+              # inside the raw tee'd log under a collapsed group. Pull those
+              # pairs into the step summary, and annotate each failing test
+              # name as its own ::error:: so it shows up in the PR checks UI
+              # without anyone needing to expand a log group.
+              local failures
+              failures=$(awk '
+                /^not ok / { print; show=1; next }
+                show && /^  location:/ { print; show=0; next }
+                show && /^  \.\.\.$/ { show=0; next }
+              ' "$log")
+              if [ -n "$failures" ]; then
+                echo "::group::$label batch — failing tests"
+                echo "$failures"
+                echo "::endgroup::"
+                {
+                  echo "### $label batch — failing tests"
+                  echo '```'
+                  echo "$failures"
+                  echo '```'
+                } >> "$GITHUB_STEP_SUMMARY"
+                while IFS= read -r name; do
+                  echo "::error::$label batch failing test: $name"
+                done < <(grep '^not ok ' "$log" | sed -E 's/^not ok [0-9]+ - //')
+              else
+                echo "::warning::$label batch exited $rc but no 'not ok' TAP line was found in the log — likely a crash or timeout above, not a named test failure."
+              fi
+            fi
             return "$rc"
           }
 
