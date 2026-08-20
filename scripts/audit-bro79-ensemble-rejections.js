@@ -24,6 +24,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_ROOT = path.join(require('os').homedir(), 'broadway-review-texts');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'bro-79-ensemble-rejection-audit.json');
@@ -91,7 +92,12 @@ function loadJson(relPath) {
 
 function saveJson(relPath, data) {
   if (dryRun) return;
-  fs.writeFileSync(path.join(REVIEW_TEXTS_ROOT, relPath), JSON.stringify(data, null, 2) + '\n');
+  // force+no-merge: `data` was loaded fresh from disk and mutated in place above,
+  // so it's already the complete intended file content — safeWriteReview should
+  // write it as-is rather than re-merging against disk (which would just read
+  // back the same object anyway) or applying protected-field preservation logic
+  // meant for independent writers stepping on each other's fields.
+  safeWriteReview(path.join(REVIEW_TEXTS_ROOT, relPath), data, { force: true, merge: false });
 }
 
 function run() {
