@@ -25,6 +25,17 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/audit-bro79-ensemble-rejections.js [--dry-run]');
+  console.log('');
+  console.log('One-time BRO-79 fix: backfills null rejectionReason on the 25 affected');
+  console.log('files, clears 3 confirmed FP rejections, and recovers wicked-2003 WaPo');
+  console.log('via excerpt-tier scoring in ~/broadway-review-texts. --dry-run prints the');
+  console.log('planned changes without writing.');
+  process.exit(0);
+}
 
 const REVIEW_TEXTS_ROOT = path.join(require('os').homedir(), 'broadway-review-texts');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'bro-79-ensemble-rejection-audit.json');
