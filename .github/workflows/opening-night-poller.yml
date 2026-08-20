@@ -106,6 +106,21 @@ jobs:
           # merge-base resolvable so every commit stays properly parented.
           fetch-depth: 0
 
+      # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT — 5000 req/hr across ALL
+      # API calls from that token, shared by every workflow that checks out
+      # or pushes core-data/review-texts. Logging remaining/reset at job start
+      # and end (see the matching step near the bottom of this job) makes a
+      # near-exhausted quota visible in the run log BEFORE it causes a hard
+      # failure, instead of the only signal being the checkout step's error.
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (start)
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
+
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -210,6 +225,14 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: poll
         env:
+          # BRO-67: DTLI/BWW extraction now routes through
+          # llmFallbackExtractIfNeeded (zero AND partial-extraction triggers).
+          # Without this, callClaude rejects immediately with "ANTHROPIC_API_KEY
+          # not set" and the fallback silently degrades to the regex baseline —
+          # this step is the only one that runs the extraction code, so it's
+          # the one that needs the key (the later "Score reviews inline" step's
+          # key is for LLM ensemble scoring, unrelated).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
@@ -693,6 +716,16 @@ jobs:
               fi
             fi
           done
+
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (end)
+        if: always()
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
 
       - name: Notify on failure
         id: notify

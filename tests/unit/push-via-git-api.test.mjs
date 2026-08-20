@@ -196,6 +196,68 @@ test('two concurrent push-via-git-api.sh invocations racing the SAME origin: one
   }
 });
 
+test('push-via-git-api.sh does not shallow-graft the caller\'s local repo when the remote tip is already known locally (task #1847)', () => {
+  // Bug found while widening push-with-retry.sh's fallback eligibility to
+  // default-on (task #1847): `git fetch --depth=1 <remote> <sha>` shallow-
+  // grafts the LOCAL repository as a side effect even when <sha> and its
+  // full ancestry are ALREADY present locally — flipping
+  // `is-shallow-repository` to true and truncating `git log`/`git rev-list`/
+  // `merge-base --is-ancestor` traversal at that commit for the rest of the
+  // checkout's lifetime. Confirmed via a minimal repro outside this
+  // fixture. This script's own header promises it "never touches the
+  // caller's working tree, index, or local branch ref" — an undocumented
+  // shallow-graft of the object database breaks that promise and corrupts
+  // every ancestry-dependent guard in push-with-retry.sh (BRO-259 checks,
+  // orphan-commit checks) for as long as the checkout persists, which
+  // matters most for the persistent shared local checkout (unlike CI's
+  // disposable one). The fix skips the fetch when the object is already
+  // present, and depth-bounds a genuinely-needed fetch only when the repo
+  // was ALREADY shallow.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-shallow-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+
+    // Build a multi-commit chain and push it normally so origin's tip is
+    // exactly our own local HEAD — already fully known locally, with real
+    // ancestry depth (base -> commit1 -> commit2), matching the production
+    // shape: push-with-retry.sh's local flow already pushed this run's
+    // commits before the API fallback is ever invoked.
+    fs.writeFileSync(path.join(runnerDir, 'data', 'c1.json'), '{"c1":1}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "commit1"', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'data', 'c2.json'), '{"c2":1}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "commit2"', runnerDir);
+    sh('git push -q origin main', runnerDir);
+
+    assert.equal(sh('git rev-parse --is-shallow-repository', runnerDir).trim(), 'false');
+    const preRunLog = sh('git log --oneline', runnerDir).trim();
+    assert.equal(preRunLog.split('\n').length, 3, `expected a 3-commit chain before the run. Log:\n${preRunLog}`);
+
+    // Diff a small amount of new content on top of the already-pushed tip —
+    // any non-empty base_sha..HEAD works; base_sha is the ORIGINAL clone
+    // point, well behind the current (already-known) tip.
+    const originalBaseSha = sh('git rev-parse HEAD~2', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'c3.json'), '{"c3":1}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "commit3"', runnerDir);
+
+    runScript(['main', originalBaseSha, '5'], runnerDir);
+
+    assert.equal(sh('git rev-parse --is-shallow-repository', runnerDir).trim(), 'false',
+      'push-via-git-api.sh must not shallow-graft a checkout that was full before it ran');
+    const postRunLog = sh('git log --oneline HEAD', runnerDir).trim();
+    assert.ok(postRunLog.split('\n').length >= 4,
+      `expected the original 3-commit ancestry to remain traversable. Log:\n${postRunLog}`);
+    assert.match(postRunLog, /commit1/, `commit1 no longer traversable — ancestry truncated. Log:\n${postRunLog}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('push-via-git-api.sh fails loudly (exit 1) with no push attempted when base_sha is invalid', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
   try {

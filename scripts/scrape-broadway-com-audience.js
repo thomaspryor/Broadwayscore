@@ -21,6 +21,12 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { fetchPage } = require('./lib/scraper');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
+const {
+  isBotChallenge,
+  extractJsonLdRating,
+  extractHtmlRating,
+  shouldUseScraperFallback,
+} = require('./lib/broadway-com-rating-parser');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -76,18 +82,6 @@ async function fetchPageWithTimeout(url, options = {}, timeoutMs = 30000) {
       setTimeout(() => reject(new Error(`fetchPage timeout after ${timeoutMs / 1000}s`)), timeoutMs)
     ),
   ]);
-}
-
-/**
- * Detect bot challenge pages (Cloudflare, etc.) that return valid 200 but no real content.
- */
-function isBotChallenge(html) {
-  return html.length < 10000 && (
-    html.includes('Client Challenge') ||
-    html.includes('Just a moment') ||
-    html.includes('cf-browser-verification') ||
-    html.includes('_fs-ch-')
-  );
 }
 
 // ---- Discovery: Parse /shows/ listing page ----
@@ -205,84 +199,6 @@ async function discoverFromSitemap() {
 
   console.log(`  Found ${slugs.length} show slugs in sitemap`);
   return slugs;
-}
-
-// ---- Extraction: Parse JSON-LD from show page ----
-
-/**
- * Extract aggregateRating from JSON-LD on a Broadway.com show page.
- * Returns { ratingValue, ratingCount } or null if not found.
- */
-function extractJsonLdRating(html) {
-  // Find all JSON-LD script blocks
-  const jsonLdPattern = /<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
-  let match;
-
-  while ((match = jsonLdPattern.exec(html)) !== null) {
-    try {
-      const data = JSON.parse(match[1]);
-      const items = Array.isArray(data) ? data : [data];
-
-      for (const item of items) {
-        if (item.aggregateRating) {
-          const rating = item.aggregateRating;
-          const ratingValue = parseFloat(rating.ratingValue);
-          const ratingCount = parseInt(rating.ratingCount || rating.reviewCount, 10);
-
-          if (!isNaN(ratingValue) && !isNaN(ratingCount) && ratingCount > 0) {
-            return { ratingValue, ratingCount };
-          }
-        }
-      }
-    } catch {
-      // Invalid JSON — skip this block
-    }
-  }
-
-  return null;
-}
-
-/**
- * Fallback: extract rating from rendered HTML when JSON-LD is absent.
- * Looks for patterns like "Customer Reviews (270)" and a nearby score like "4.8".
- * Returns { ratingValue, ratingCount } or null.
- */
-function extractHtmlRating(html) {
-  // Pattern 1: "Customer Reviews (N)" — count in parentheses
-  const countMatch = html.match(/Customer\s+Reviews?\s*\((\d+)\)/i);
-  if (!countMatch) return null;
-  const ratingCount = parseInt(countMatch[1], 10);
-  if (!ratingCount || ratingCount < 1) return null;
-
-  // Pattern 2: Standalone score near the reviews section
-  // Look for a rating value like "4.8" in the vicinity (within 2000 chars of "Customer Reviews")
-  const countIdx = html.indexOf(countMatch[0]);
-  const vicinity = html.substring(Math.max(0, countIdx - 1000), countIdx + 2000);
-
-  // Look for a decimal rating (1.0-5.0) that appears as text content, not in URLs
-  // Common patterns: ">4.8<", ">4.8 ", aria-label with rating
-  const ratingPatterns = [
-    // Score in text content: >4.8< or >4.8 out of
-    />\s*([1-5]\.\d)\s*</,
-    // aria-label pattern
-    /aria-label="([1-5]\.\d)/,
-    // Score followed by "out of 5" or "/ 5"
-    /([1-5]\.\d)\s*(?:out of|\/)\s*5/,
-    // Score in a data attribute
-    /data-(?:rating|score)="([1-5]\.\d)"/,
-  ];
-
-  for (const pattern of ratingPatterns) {
-    const match = vicinity.match(pattern);
-    if (match) {
-      const ratingValue = parseFloat(match[1]);
-      if (ratingValue >= 1.0 && ratingValue <= 5.0) {
-        return { ratingValue, ratingCount };
-      }
-    }
-  }
-
-  return null;
 }
 
 // ---- Title matching ----
@@ -552,7 +468,20 @@ async function main() {
   let skipped = 0;
   let errors = 0;
 
-  let scrapingBeeUsed = 0;
+  let fallbackUsed = 0;
+
+  // Circuit breaker: retrying every "no rating" via the scraper fallback
+  // (widened below for BRO-547) is fine when the cause is CI bot-blocking —
+  // Playwright's separate execution path should recover the rating for most
+  // of those. But a `--include-closed` sitemap run mixes in old/closed shows
+  // that legitimately have no Broadway.com rating at all; retrying every one
+  // of those wastes a full Playwright round-trip (up to 30s) with no benefit,
+  // and that path has no --limit or timeout wrapper. If several fallback
+  // attempts IN A ROW also come back empty, stop retrying for the rest of
+  // this run — a real bot-block would keep recovering via Playwright, so a
+  // miss streak signals "no data exists" rather than "still blocked."
+  const FALLBACK_MISS_CIRCUIT_BREAKER = 5;
+  let consecutiveFallbackMisses = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     const { bc, show, confidence } = toProcess[i];
@@ -573,23 +502,41 @@ async function main() {
 
       let rating = extractJsonLdRating(html) || extractHtmlRating(html);
 
-      // If no rating found and page looks like a bot challenge, retry via shared scraper
-      if (!rating && isBotChallenge(html)) {
-        if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying scraper fallback...`);
-        try {
-          const result = await fetchPageWithTimeout(bc.url, { renderJs: true });
-          const scraperHtml = result?.content || '';
-          if (scraperHtml && !isBotChallenge(scraperHtml)) {
-            rating = extractJsonLdRating(scraperHtml) || extractHtmlRating(scraperHtml);
-            scrapingBeeUsed++;
-            if (!rating && verbose) {
-              console.log(`  SKIP ${show.id}: no rating data found (even via scraper, ${scraperHtml.length} bytes)`);
+      // If no rating found, retry via the shared scraper fallback chain.
+      // BRO-547: CI bot-blocking doesn't always look like an obvious
+      // challenge page (isBotChallenge()'s short-page/marker heuristics) —
+      // sometimes it's a full-size 200 response that's just missing the
+      // JSON-LD block. Retry whenever extraction failed, not only when
+      // isBotChallenge() also matches (Playwright is tried first and is
+      // free for broadway.com, so this isn't an expensive retry) — unless
+      // the circuit breaker above has tripped.
+      if (shouldUseScraperFallback(html, rating)) {
+        if (consecutiveFallbackMisses >= FALLBACK_MISS_CIRCUIT_BREAKER) {
+          if (verbose) console.log(`  SKIP ${show.id}: no rating data found (fallback circuit breaker open after ${consecutiveFallbackMisses} consecutive misses)`);
+        } else {
+          if (verbose) console.log(`  No rating found for ${show.id}${isBotChallenge(html) ? ' (bot challenge)' : ''}, trying scraper fallback...`);
+          try {
+            const result = await fetchPageWithTimeout(bc.url, { renderJs: true });
+            const scraperHtml = result?.content || '';
+            if (scraperHtml && !isBotChallenge(scraperHtml)) {
+              rating = extractJsonLdRating(scraperHtml) || extractHtmlRating(scraperHtml);
+              if (rating) {
+                fallbackUsed++;
+                consecutiveFallbackMisses = 0;
+              } else {
+                consecutiveFallbackMisses++;
+                if (verbose) {
+                  console.log(`  SKIP ${show.id}: no rating data found (even via scraper, ${scraperHtml.length} bytes)`);
+                }
+              }
+            } else {
+              consecutiveFallbackMisses++;
+              if (verbose) console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml.length} bytes)`);
             }
-          } else if (verbose) {
-            console.log(`  Scraper fallback failed for ${show.id} (${scraperHtml.length} bytes)`);
+          } catch (e) {
+            consecutiveFallbackMisses++;
+            if (verbose) console.log(`  Scraper fallback error for ${show.id}: ${e.message}`);
           }
-        } catch (e) {
-          if (verbose) console.log(`  Scraper fallback error for ${show.id}: ${e.message}`);
         }
       }
 
@@ -622,8 +569,8 @@ async function main() {
     }
   }
 
-  if (scrapingBeeUsed > 0) {
-    console.log(`\nScrapingBee used for ${scrapingBeeUsed} bot-challenged pages`);
+  if (fallbackUsed > 0) {
+    console.log(`\nScraper fallback recovered rating data for ${fallbackUsed} pages`);
   }
 
   console.log(`\nResults: ${updated} updated, ${skipped} skipped, ${errors} errors`);

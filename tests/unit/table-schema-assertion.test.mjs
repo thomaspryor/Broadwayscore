@@ -11,7 +11,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { assertTableSchema, TableSchemaError } = require('../../scripts/lib/table-schema-assertion.js');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('../../scripts/lib/table-schema-assertion.js');
 
 // Real header rows captured live from BroadwayWorld 2026-08-12.
 const ALLTIME_HEADER = ['Show', 'Gross', 'Avg. Tix', 'Seats Sold', 'Total Perf.'];
@@ -65,4 +65,41 @@ test('assertTableSchema skips label checking when expectedHeaders is omitted', (
 test('assertTableSchema is case- and whitespace-insensitive for header matching', () => {
   const messy = ['  show  ', 'GROSS', 'avg.   tix', 'Seats Sold', 'total perf.'];
   assert.equal(assertTableSchema([messy], ALLTIME_SCHEMA), true);
+});
+
+// findColumnIndex (task BRO-47 follow-up) — resolves a column's position
+// by header label so assertTableSchema passing (all labels present
+// somewhere) doesn't mask a fixed-index read silently landing on the
+// wrong cell after a column is inserted or reordered.
+
+test('findColumnIndex finds an exact-match header', () => {
+  assert.equal(findColumnIndex(ALLTIME_HEADER, 'Show'), 0);
+  assert.equal(findColumnIndex(ALLTIME_HEADER, 'Gross'), 1);
+});
+
+test('findColumnIndex falls back to substring match (e.g. "Total Perf." trailing period)', () => {
+  assert.equal(findColumnIndex(ALLTIME_HEADER, 'Total Perf'), 4);
+});
+
+test('findColumnIndex returns -1 when no header cell matches', () => {
+  assert.equal(findColumnIndex(ALLTIME_HEADER, 'Weeks Running'), -1);
+});
+
+test('findColumnIndex prefers an exact match over an unrelated substring collision', () => {
+  // A hypothetical future column ("Weekly Gross") that contains "Gross" as
+  // a substring must not steal the match from the real "Gross" column.
+  const withCollision = ['Show', 'Weekly Gross', 'Gross', 'Seats Sold', 'Total Perf.'];
+  assert.equal(findColumnIndex(withCollision, 'Gross'), 2);
+});
+
+test('findColumnIndex falls back to substring match when no exact match exists at all', () => {
+  // No column is titled exactly "Gross" — only "Weekly Gross" exists — so
+  // the substring fallback is the correct (only) way to resolve it.
+  const onlySubstring = ['Show', 'Weekly Gross', 'Seats Sold', 'Total Perf.'];
+  assert.equal(findColumnIndex(onlySubstring, 'Gross'), 1);
+});
+
+test('findColumnIndex is case- and whitespace-insensitive', () => {
+  const messy = ['  show  ', 'GROSS', 'avg.   tix', 'Seats Sold', 'total perf.'];
+  assert.equal(findColumnIndex(messy, 'Gross'), 1);
 });
