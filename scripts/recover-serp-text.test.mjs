@@ -10,11 +10,11 @@ const require = createRequire(import.meta.url);
 // files become recoverable, not just Telegraph's. The decision logic lives
 // in scripts/lib/serp-text-recovery-candidates.js (CLAUDE.md rule 15:
 // extract + require(), never re-implement in the test).
-const { evaluateCandidate, THIN_TIERS } = require('./lib/serp-text-recovery-candidates.js');
-const { OUTLET_DOMAINS } = require('./lib/url-discovery.js');
+const { evaluateCandidate, buildDomainOutletIds, THIN_TIERS } = require('./lib/serp-text-recovery-candidates.js');
+const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery.js');
 
 function domainOutletIds(domain) {
-  return new Set(Object.keys(OUTLET_DOMAINS).filter(id => OUTLET_DOMAINS[id] === domain));
+  return buildDomainOutletIds(domain, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES);
 }
 
 function thinFile(overrides = {}) {
@@ -163,6 +163,30 @@ test('a url already in the exhausted list is excluded', () => {
   const result = evaluateCandidate(data, target, exhausted);
   assert.equal(result.qualifies, false);
   assert.equal(result.skipReason, 'exhausted');
+});
+
+test('generalizes to registered domain aliases: urlless AP candidate qualifies under its alias domain abcnews.go.com', () => {
+  // AP's registry entry carries domainAliases: ['abcnews.go.com'] (real data).
+  // An urlless AP file must still qualify when --domain targets the ALIAS,
+  // not just the primary apnews.com — otherwise a URL-bearing AP file on
+  // that alias would be recoverable but an otherwise-identical urlless one
+  // would report zero candidates (ship-check finding).
+  const aliasSet = REGISTRY_DOMAIN_ALIASES['apnews.com'];
+  assert.ok(aliasSet && aliasSet.has('abcnews.go.com'), 'expected AP domain alias fixture to still be registered');
+  const data = thinFile({ outletId: 'ap' });
+  const target = { domain: 'abcnews.go.com', outlet: null, hasSerpKeys: true, domainOutletIds: domainOutletIds('abcnews.go.com') };
+  const result = evaluateCandidate(data, target, {});
+  assert.equal(result.qualifies, true);
+});
+
+test('buildDomainOutletIds returns an empty set for a domain with no outlets and no aliases', () => {
+  const result = buildDomainOutletIds('not-a-real-domain.example', OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES);
+  assert.equal(result.size, 0);
+});
+
+test('buildDomainOutletIds returns an empty set for a null/undefined domain', () => {
+  assert.equal(buildDomainOutletIds(null, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES).size, 0);
+  assert.equal(buildDomainOutletIds(undefined, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES).size, 0);
 });
 
 test('OUTLET_DOMAINS carries multiple outlets beyond Telegraph (sanity check the generalization has real data to work with)', () => {

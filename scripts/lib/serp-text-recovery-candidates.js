@@ -3,6 +3,31 @@
 const THIN_TIERS = new Set(['truncated', 'excerpt', 'stub']);
 
 /**
+ * outletIds (lowercased) whose OUTLET_DOMAINS entry is `domain` OR one of
+ * `domain`'s registered aliases (data/outlet-registry.json's domainAliases
+ * field, e.g. AP's apnews.com/abcnews.go.com pair) — the same alias group
+ * buildSiteClause() searches. Without this, an urlless candidate for an
+ * outlet published on the alias TLD is invisible to a --domain run
+ * targeting the primary domain (or vice versa), even though a URL-bearing
+ * file for that same outlet on that domain would be recoverable via the
+ * existing-url path. Pure + exported for unit testing (ship-check finding,
+ * BRO-141).
+ *
+ * @param {string|null} domain
+ * @param {object} outletDomains - OUTLET_DOMAINS (outletId -> primary domain)
+ * @param {object} domainAliases - REGISTRY_DOMAIN_ALIASES (domain -> Set<domain>)
+ * @returns {Set<string>}
+ */
+function buildDomainOutletIds(domain, outletDomains, domainAliases) {
+  if (!domain) return new Set();
+  const aliasSet = (domainAliases && domainAliases[domain]) || new Set();
+  const targetDomains = new Set([domain, ...aliasSet]);
+  return new Set(
+    Object.keys(outletDomains).filter(id => targetDomains.has(outletDomains[id]))
+  );
+}
+
+/**
  * Pure per-file gate for scripts/recover-serp-text.js's loadCandidates() loop:
  * does this review-text file qualify as a SERP-recovery candidate for the
  * given --domain/--outlet target?
@@ -57,4 +82,4 @@ function evaluateCandidate(data, target, exhausted) {
   return { qualifies: true, skipReason: null };
 }
 
-module.exports = { evaluateCandidate, THIN_TIERS };
+module.exports = { evaluateCandidate, buildDomainOutletIds, THIN_TIERS };

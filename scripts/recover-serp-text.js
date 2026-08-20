@@ -44,8 +44,8 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
-const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
-const { evaluateCandidate } = require('./lib/serp-text-recovery-candidates');
+const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
+const { evaluateCandidate, buildDomainOutletIds } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 
@@ -164,17 +164,20 @@ function loadCandidates() {
   const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory()).map(d => d.name);
 
-  // Which outletIds actually resolve to CONFIG.domain — used to vet urlless
-  // candidates below. Built from the canonical OUTLET_DOMAINS map (same one
-  // discoverCorrectUrl() reads) rather than string-matching the outletId
-  // against the domain: outletIds are frequently hyphenated in ways that
-  // don't literally contain the domain's slug (hollywood-reporter vs
-  // hollywoodreporter.com), and a bare substring match in the other
-  // direction produces false positives across unrelated outlets (boston.com
-  // matching boston-globe, boston-herald, edge-boston, ...).
-  const domainOutletIds = CONFIG.outlet ? null : new Set(
-    Object.keys(OUTLET_DOMAINS).filter(id => OUTLET_DOMAINS[id] === CONFIG.domain)
-  );
+  // Which outletIds actually resolve to CONFIG.domain (or one of its
+  // registered domain aliases, e.g. AP's apnews.com/abcnews.go.com pair) —
+  // used to vet urlless candidates below. Built from the canonical
+  // OUTLET_DOMAINS map (same one discoverCorrectUrl() reads) rather than
+  // string-matching the outletId against the domain: outletIds are
+  // frequently hyphenated in ways that don't literally contain the domain's
+  // slug (hollywood-reporter vs hollywoodreporter.com), and a bare substring
+  // match in the other direction produces false positives across unrelated
+  // outlets (boston.com matching boston-globe, boston-herald, edge-boston,
+  // ...). Alias-inclusive (ship-check finding, BRO-141): without it, an
+  // urlless candidate for an outlet published on the alias TLD is invisible
+  // to a --domain run targeting the primary domain, even though a
+  // URL-bearing file for that same outlet would be recoverable.
+  const domainOutletIds = CONFIG.outlet ? null : buildDomainOutletIds(CONFIG.domain, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES);
 
   for (const showDir of showDirs) {
     if (CONFIG.showFilter && showDir !== CONFIG.showFilter) continue;
