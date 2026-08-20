@@ -168,9 +168,11 @@ const CORE_DATA_MERGE_REGISTRY = [
     // (CLAUDE.md §3/§12), so this was deliberately deferred out of BRO-76's
     // first pass rather than reusing the generic keyed-union pattern on a
     // deadline. scripts/lib/merge-reviews-json.js's module comment has the
-    // full design (keyOf mirrors rebuild-all-reviews.js's own pass-2 dedup
-    // key, manualEntry > contentTier > publishDate conflict resolution, and
-    // the accepted union-of-disjoint-keys limitation) — see it before
+    // full design (identity = outlet+criticKey with a canonicalized-URL
+    // fallback, reusing manual-entry-merge.js/review-guards.js's own
+    // normalizers; conflicts resolve manualEntry > newer whole-snapshot
+    // _meta.lastUpdated > contentTier > ours; disjoint keys union, with a
+    // documented accepted limitation) — see it before
     // touching this entry. Verified with scripts/scoring-delta.js and
     // scripts/test-temporal-override-regression.js before flipping to
     // 'active'.
