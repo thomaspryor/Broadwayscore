@@ -130,7 +130,11 @@
     "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json",
     "a-christmas-carol-west-end-2026/broadwayworld--aliya-al-hassan.json",
     "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json",
-    "a-christmas-carol-west-end-2026/telegraph--dominic-cavendish.json"
+    "a-christmas-carol-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "the-snowman-west-end-2026/manchester-evening-news--emma-gill.json",
+    "the-snowman-west-end-2026/timeout-london--caroline-mcginn.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1717,7 +1721,13 @@
     "the-jungle-book-west-end-2026/ew--unknown.json",
     "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
     "a-christmas-carol-west-end-2026/thestage--holly-o.json",
-    "a-christmas-carol-west-end-2026/thestage--tom-wicker.json"
+    "a-christmas-carol-west-end-2026/thestage--tom-wicker.json",
+    "the-jungle-book-west-end-2026/chicago-sun-times--unknown.json",
+    "the-jungle-book-west-end-2026/chicagotribune--unknown.json",
+    "jack-and-the-beanstalk-off-west-end-2026/telegraph--claire-allfree.json",
+    "jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json",
+    "jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "the-snowman-west-end-2026/express-uk--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1795,7 +1805,9 @@
       "cinderella-west-end-2026/london-box-office--stuart-king.json",
       "cinderella-west-end-2026/standard--the-standard.json",
       "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json"
+      "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json",
+      "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "the-snowman-west-end-2026/timeout-london--caroline-mcginn.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1805,7 +1817,8 @@
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
       "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
       "data/review-texts/galileo-2026/variety--dennis-harvey.json",
-      "galileo-2026/variety--dennis-harvey.json"
+      "galileo-2026/variety--dennis-harvey.json",
+      "data/review-texts/the-snowman-west-end-2026/express-uk--neil-norman.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1869,11 +1882,13 @@
       "billy-elliot-the-musical-west-end-2027/thereviewshub--the-reviews-hub.json",
       "cinderella-west-end-2026/london-box-office--marian-pashley.json",
       "galileo-2026/sfist--jay-barmann.json",
-      "a-christmas-carol-west-end-2026/broadwayworld--aliya-al-hassan.json"
+      "a-christmas-carol-west-end-2026/broadwayworld--aliya-al-hassan.json",
+      "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
+      "the-snowman-west-end-2026/manchester-evening-news--emma-gill.json"
     ]
   },
   "startTime": "2026-08-20T09:36:04.336Z",
-  "lastProcessed": "a-christmas-carol-west-end-2026/thestage--tom-wicker.json",
+  "lastProcessed": "the-snowman-west-end-2026/express-uk--neil-norman.json",
   "log": [
     {
       "t": "2026-08-20T10:35:21.461Z",
@@ -1968,6 +1983,12 @@
       "t": "2026-08-20T19:48:36.264Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-20T19:58:37.545Z",
+      "event": "bb-session",
+      "session": "79803aab",
+      "url": "https://www.express.co.uk/entertainment/theatre/890235/the-snowman-review-peacoc"
     }
   ]
 }
