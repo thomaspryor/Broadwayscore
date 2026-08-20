@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-20T01:23:43.052Z",
-  "processed": 77,
-  "failed": 993,
-  "successRate": "7.2%",
+  "updatedAt": "2026-08-20T01:23:44.052Z",
+  "processed": 76,
+  "failed": 854,
+  "successRate": "8.2%",
   "tierBreakdown": {
     "playwright": 48,
     "amp": 0,
@@ -11,9 +11,9 @@
     "scrapingbee": 9,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 15
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-19T19:33:26.112Z",
@@ -82,6 +82,41 @@
       "t": "2026-08-20T00:30:08.552Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T01:19:54.719Z",
+      "event": "bb-session",
+      "session": "59952606",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-20T01:20:14.467Z",
+      "event": "bb-session",
+      "session": "f4fa0ad7",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-20T01:20:40.649Z",
+      "event": "bb-session",
+      "session": "32f1d195",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-20T01:20:41.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-20T01:22:00.660Z",
+      "event": "bb-session",
+      "session": "7536b52b",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-20T01:22:17.517Z",
+      "event": "bb-session",
+      "session": "03084f7b",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
