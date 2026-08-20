@@ -39,6 +39,7 @@ const EXTRACTOR_PATH = path.join(REPO, 'scripts', 'extract-safari-cookies.py');
 const HARNESS = `
 import importlib.util
 import json
+import os
 import struct
 import sys
 import tempfile
@@ -119,8 +120,10 @@ def encode_file(pages):
     return bytes(out)
 
 
-NOW = int(datetime.datetime(2026, 8, 20, tzinfo=datetime.timezone.utc).timestamp())
-FAR_FUTURE = NOW + 365 * 86400
+# Relative to actual run time (never a hardcoded date) so this test can't
+# turn into a year-bomb once "FAR_FUTURE" becomes the past.
+NOW = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+FAR_FUTURE = NOW + 50 * 365 * 86400
 PAST = NOW - 86400
 
 records = [
@@ -141,14 +144,36 @@ records = [
 page = encode_page(records)
 file_bytes = encode_file([page])
 
+# A SEPARATE fixture that actually reproduces the Tahoe failure mode: the
+# auth (httpOnly) cookie is entirely absent, only the non-auth cookie Tahoe
+# still persists survives. This is what a real Tahoe Cookies.binarycookies
+# looks like for wsj — "N cookies found" is true and useless at the same time.
+tahoe_records = [
+    encode_record(".wsj.com", "ab_uuid", "/", "12345", False, False, FAR_FUTURE),
+]
+tahoe_file_bytes = encode_file([encode_page(tahoe_records)])
+
 with tempfile.NamedTemporaryFile(suffix=".binarycookies", delete=False) as f:
     f.write(file_bytes)
     tmp_path = f.name
 
-all_cookies = mod.parse_binary_cookies(tmp_path)
+with tempfile.NamedTemporaryFile(suffix=".binarycookies", delete=False) as f:
+    f.write(tahoe_file_bytes)
+    tahoe_tmp_path = f.name
+
+try:
+    all_cookies = mod.parse_binary_cookies(tmp_path)
+    tahoe_cookies = mod.parse_binary_cookies(tahoe_tmp_path)
+finally:
+    # Fixtures are scratch — don't leak them into the system temp dir on
+    # every run (5 tests share this harness, each invocation would otherwise
+    # leave 2 files behind).
+    os.unlink(tmp_path)
+    os.unlink(tahoe_tmp_path)
 
 wsj_filtered = mod.filter_cookies_for_group(all_cookies, mod.DOMAIN_GROUPS["wsj"])
 nytimes_filtered = mod.filter_cookies_for_group(all_cookies, mod.DOMAIN_GROUPS["nytimes"])
+tahoe_wsj_filtered = mod.filter_cookies_for_group(tahoe_cookies, mod.DOMAIN_GROUPS["wsj"])
 
 result = {
     "all_cookies": [
@@ -161,6 +186,8 @@ result = {
     "cookie_file_candidates": mod.COOKIE_FILE_CANDIDATES,
     "domain_matches_subdomain": mod.domain_matches("sub.wsj.com", [".wsj.com"]),
     "domain_matches_suffix_false_positive": mod.domain_matches("evilwsj.com", [".wsj.com"]),
+    "tahoe_wsj_filtered_names": sorted(c["name"] for c in tahoe_wsj_filtered),
+    "tahoe_wsj_httponly_count": sum(1 for c in tahoe_wsj_filtered if c["httpOnly"]),
 }
 print(json.dumps(result))
 `;
@@ -208,21 +235,23 @@ test('extract-safari-cookies.py: domain_matches matches real subdomains, not suf
   );
 });
 
-test('extract-safari-cookies.py: the Tahoe failure mode — non-httpOnly cookies survive, auth cookie does not', () => {
-  // This is the actual bug this ticket is about: Tahoe still writes ordinary
-  // cookies to Cookies.binarycookies, so a naive "did we find any wsj
-  // cookies?" check reports success while the one cookie that matters (the
-  // httpOnly auth token) is silently absent. Anything downstream that reads
-  // wsj.json and doesn't distinguish httpOnly count from raw cookie count
-  // would wrongly believe the session is usable.
+test('extract-safari-cookies.py: pre-Tahoe fixture — httpOnly auth cookie is counted correctly', () => {
   const result = runHarness();
   assert.deepEqual(result.wsj_filtered_names, ['ab_uuid', 'region', 'sso']);
-  // In this fixture ALL cookies (including sso) round-trip correctly, because
-  // we're simulating pre-Tahoe (the binarycookies file has the auth cookie).
-  // The regression this guards is at the consumer level: httpOnly count must
-  // be reported distinctly from total count so a REAL Tahoe run (0 httpOnly
-  // among N cookies) is distinguishable from a healthy one.
   assert.equal(result.wsj_httponly_count, 1, 'exactly one httpOnly cookie (sso) should be counted for wsj');
+});
+
+test('extract-safari-cookies.py: the Tahoe failure mode — a real zero-httpOnly extraction still "finds" cookies', () => {
+  // This is the actual bug this ticket is about, reproduced directly: on
+  // Tahoe the binarycookies file still contains ordinary (non-httpOnly)
+  // cookies, so `filter_cookies_for_group` returns a non-empty match — the
+  // extractor's own "N cookies found" success path is exactly as true and
+  // exactly as useless as it is in production. Anything downstream that
+  // reads wsj.json and doesn't check httpOnly count separately from total
+  // count would wrongly conclude the session is usable.
+  const result = runHarness();
+  assert.deepEqual(result.tahoe_wsj_filtered_names, ['ab_uuid'], 'the non-auth cookie alone still matches the wsj domain group');
+  assert.equal(result.tahoe_wsj_httponly_count, 0, 'zero httpOnly cookies — the auth token Tahoe silently dropped');
 });
 
 test('extract-safari-cookies.py: COOKIE_FILE_CANDIDATES includes the Tahoe sandboxed container path', () => {
