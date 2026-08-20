@@ -522,6 +522,33 @@ const _freshStuckRescoreCleared = (d) => {
   return age >= 0 && age <= STUCK_RESCORE_FRESH_DAYS * 86400000;
 };
 
+// rescoreCompleted freshness gate (BRO-117 / Notion 3a9637c5-416f-8155, same
+// shape as its three siblings above). This is the OTHER clear path for
+// needsRescore/rescoreFlaggedAt — not audit-stuck-rescore-flags.js --fix
+// (that's _freshStuckRescoreCleared), but the ordinary successful-scoring
+// completion: rescore-lifecycle.js's markRescoreComplete() deletes both
+// fields the moment a fresh score lands and stamps rescoreCompletedAt. That
+// completion typically runs in the SAME job that later calls push-review-
+// texts (llm-ensemble-score.yml), and the flag being retired was very likely
+// committed to origin in an EARLIER, separate job (the producer that queued
+// it) — so the post-rebase committed HEAD this job pulls still carries
+// needsRescore=true, and without this breadcrumb the restore step would
+// silently resurrect the very flag markRescoreComplete just retired, right
+// back to a state indistinguishable from the flag never having been cleared
+// at all — the exact "queue never drains" bug class this whole file exists
+// to prevent, one layer deeper (the retirement itself, not just detecting a
+// missed one). Bounds the same way as its siblings: expires on its own so it
+// can never suppress restoring a later, unrelated re-flag indefinitely.
+const RESCORE_COMPLETED_FRESH_DAYS = 3;
+const _freshRescoreCompleted = (d) => {
+  if (!d || !d.rescoreCompletedAt) return false;
+  const at = Date.parse(String(d.rescoreCompletedAt));
+  if (Number.isNaN(at)) return false;
+  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
+  const age = Date.now() - at;
+  return age >= 0 && age <= RESCORE_COMPLETED_FRESH_DAYS * 86400000;
+};
+
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
@@ -676,9 +703,15 @@ const CLEAR_BREADCRUMBS = {
   // rescoreReason/lateStarAnchorBand when the flag is permanently stuck (the
   // scorer would reject the file, so it could never clear itself). See
   // PROTECTED_FIELDS comment above and _freshStuckRescoreCleared.
-  needsRescore: _freshStuckRescoreCleared,
+  // BRO-117: needsRescore ALSO retires via the ordinary successful-scoring
+  // path (markRescoreComplete), which stamps rescoreCompletedAt instead of
+  // stuckRescoreCleared — _freshRescoreCompleted covers that second clear
+  // path. rescoreFlaggedAt (the enqueue timestamp added by BRO-117) is
+  // cleared by BOTH the same two paths, so it shares the same union.
+  needsRescore: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
   rescoreReason: _freshStuckRescoreCleared,
   lateStarAnchorBand: _freshStuckRescoreCleared,
+  rescoreFlaggedAt: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
 };
 
 /**

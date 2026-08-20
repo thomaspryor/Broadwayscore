@@ -101,6 +101,7 @@ function runQualityFlaggedMode() {
         data.llmScore = null;
         data.llmMetadata = null;
         if (data.needsRescore) data.needsRescore = null;
+        if (data.rescoreFlaggedAt) data.rescoreFlaggedAt = null;
         if (data.rescoreCompletedAt) data.rescoreCompletedAt = null;
         const r = safeWriteReview(fp, data);
         if (r.lockedSkipped) lockedSkipCount++;

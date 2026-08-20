@@ -13,12 +13,20 @@
  * PROTECTED_FIELDS) — an unprotected stamp would be silently dropped the
  * moment a producer's own commit races push-review-texts, defeating the
  * fix on every affected file.
- * Test 7 is the one that actually prevents recurrence for producers not yet
- * written: it scans every scripts/**\/*.js file for a `needsRescore =`
- * assignment and asserts markRescoreFlagged() is called near it. A new
- * producer added later without the call fails here, the same way
- * tests/unit/rescore-lifecycle.test.mjs's index.ts scan catches a new
- * scoring success path that forgets markRescoreComplete().
+ * Test 7 helps prevent recurrence for producers not yet written: it scans
+ * every scripts/**\/*.js file for a `needsRescore = true` / `= '<reason>'` /
+ * `needsRescore: true` assignment and asserts markRescoreFlagged() is called
+ * near it, the same way tests/unit/rescore-lifecycle.test.mjs's index.ts scan
+ * catches a new scoring success path that forgets markRescoreComplete(). It
+ * is a regex, not a parser — a producer assigning a variable RHS
+ * (`data.needsRescore = someVar`) or using bracket notation
+ * (`data['needsRescore'] = true`) would slip through undetected. No current
+ * producer does either; this is a known gap, not a guarantee.
+ * Tests 14-17 cover the generalization this fix unlocks: isScoredButStillQueued()
+ * (scripts/lib/stuck-rescore-flag.js) can now use rescoreFlaggedAt to detect a
+ * stuck flag from ANY producer, not just the original hand-fingerprinted one —
+ * while staying conservative (presumed legitimate) for historical files that
+ * predate this fix and have no stamp to compare against.
  */
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -32,6 +40,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '..', '..');
 
 const { markRescoreFlagged, markRescoreComplete } = require(path.join(REPO, 'scripts/lib/rescore-lifecycle.js'));
+const { isIntentionalClear } = require(path.join(REPO, 'scripts/lib/review-write-guard.js'));
+const { isScoredButStillQueued } = require(path.join(REPO, 'scripts/lib/stuck-rescore-flag.js'));
+
+// Mirror of the restore decision shared by push-review-texts/action.yml and
+// restore-protected-fields.js (same harness as tests/unit/intentional-clear-
+// breadcrumb.test.mjs — a field is restored only when it's empty locally,
+// had content committed/remote, and is NOT a deliberate clear).
+const isEmptyVal = (v) => v === undefined || v === null
+  || (typeof v === 'string' && v.length === 0) || (Array.isArray(v) && v.length === 0);
+function wouldRestore(field, local, committed) {
+  if (isEmptyVal(local[field]) && isIntentionalClear(field, local, committed)) return false;
+  return !isEmptyVal(committed[field]) && isEmptyVal(local[field]);
+}
 
 test('markRescoreFlagged stamps rescoreFlaggedAt', () => {
   const f = { needsRescore: true };
@@ -91,6 +112,46 @@ test('rescoreFlaggedAt is a PROTECTED_FIELDS entry in review-write-guard.js', ()
     /'rescoreFlaggedAt'/.test(protectedFieldsMatch[1]),
     'rescoreFlaggedAt must be in PROTECTED_FIELDS so the enqueue stamp survives a rebase restore'
   );
+});
+
+test('BRO-117 codebase-review finding: markRescoreComplete retirement of needsRescore/rescoreFlaggedAt survives a same-job push-review-texts restore', () => {
+  // The realistic production shape: a producer flagged needsRescore=true and
+  // that commit already landed on origin (committed). Later, in a SEPARATE
+  // job, the scorer picks the file up via --needs-rescore, scores it, and
+  // markRescoreComplete() clears needsRescore + rescoreFlaggedAt locally and
+  // stamps rescoreCompletedAt — all BEFORE that job's own push-review-texts
+  // step runs. Without a CLEAR_BREADCRUMBS entry keyed on rescoreCompletedAt,
+  // the restore step would see local.needsRescore empty, committed.needsRescore
+  // still true (unchanged since the producer's earlier, separate push), and
+  // silently resurrect it — undoing markRescoreComplete() and reintroducing
+  // the exact "queue never drains" bug class this file exists to prevent, one
+  // layer deeper than the Haiku-fallback incident that motivated it.
+  const committed = { needsRescore: true, rescoreReason: 'bw-v6-decompression', rescoreFlaggedAt: new Date(Date.now() - 5 * 86400000).toISOString() };
+  const local = { assignedScore: 88, rescoreCompletedAt: new Date().toISOString() };
+  markRescoreComplete(local); // no-op here since needsRescore isn't set on `local`, but exercises the real call shape
+  assert.equal(wouldRestore('needsRescore', local, committed), false, 'needsRescore must NOT be resurrected after a fresh markRescoreComplete()');
+  assert.equal(wouldRestore('rescoreFlaggedAt', local, committed), false, 'rescoreFlaggedAt must NOT be resurrected after a fresh markRescoreComplete()');
+});
+
+test('the rescoreCompleted breadcrumb expires — a STALE rescoreCompletedAt does not suppress restore', () => {
+  const committed = { needsRescore: true, rescoreFlaggedAt: new Date(Date.now() - 20 * 86400000).toISOString() };
+  const local = { assignedScore: 88, rescoreCompletedAt: new Date(Date.now() - 10 * 86400000).toISOString() };
+  assert.equal(wouldRestore('needsRescore', local, committed), true, 'a 10-day-old completion stamp must not suppress restore forever');
+  assert.equal(wouldRestore('rescoreFlaggedAt', local, committed), true);
+});
+
+test('the rescoreCompleted breadcrumb rejects a FUTURE-dated rescoreCompletedAt (mirrors the codex fix for stuckRescoreClearedAt)', () => {
+  const committed = { needsRescore: true, rescoreFlaggedAt: new Date(Date.now() - 20 * 86400000).toISOString() };
+  const local = { assignedScore: 88, rescoreCompletedAt: new Date(Date.now() + 30 * 86400000).toISOString() };
+  assert.equal(wouldRestore('needsRescore', local, committed), true, 'a future-dated stamp must not suppress restore indefinitely');
+});
+
+test('audit-stuck-rescore-flags.js --fix clearing survives restore for rescoreFlaggedAt too (not just needsRescore)', () => {
+  const committed = { needsRescore: true, rescoreReason: 'bw-v6-decompression', lateStarAnchorBand: 'B', rescoreFlaggedAt: new Date(Date.now() - 5 * 86400000).toISOString() };
+  const local = { stuckRescoreCleared: true, stuckRescoreClearedAt: new Date().toISOString() };
+  for (const field of ['needsRescore', 'rescoreReason', 'lateStarAnchorBand', 'rescoreFlaggedAt']) {
+    assert.equal(wouldRestore(field, local, committed), false, `${field} must not be resurrected by a fresh stuckRescoreCleared`);
+  }
 });
 
 test('audit-stuck-rescore-flags.js --fix retires rescoreFlaggedAt alongside needsRescore', () => {
@@ -170,5 +231,72 @@ test('every needsRescore producer under scripts/ calls markRescoreFlagged', () =
     [],
     `producer(s) set needsRescore without calling markRescoreFlagged() nearby: ${missing.join(', ')}. ` +
       'Import markRescoreFlagged from scripts/lib/rescore-lifecycle.js and call it right after setting the flag.'
+  );
+});
+
+// The point of stamping rescoreFlaggedAt: isScoredButStillQueued() can now
+// GENERALIZE beyond the single Haiku-fallback fingerprint it was hand-built
+// for (ship-check finding, codex + Claude codebase review both flagged that
+// the stamp alone was inert without this). See scripts/lib/stuck-rescore-
+// flag.js's "General path (BRO-117)" branch.
+
+test('isScoredButStillQueued: general path fires when a stamped file scores AFTER being flagged, flag never retired', () => {
+  assert.equal(
+    isScoredButStillQueued({
+      needsRescore: true,
+      rescoreReason: 'fullText added after excerpt-based scoring',
+      scoreSource: 'llm-v6',
+      rescoreFlaggedAt: '2026-08-01T00:00:00.000Z',
+      llmMetadata: { scoredAt: '2026-08-05T00:00:00.000Z' }, // scored AFTER the flag — response to the queue, flag never cleared
+    }),
+    true
+  );
+});
+
+test('isScoredButStillQueued: general path stays quiet on a legitimate re-queue (scored BEFORE being flagged)', () => {
+  // The 2026-07-26 corpus shape this whole predicate exists to not re-break:
+  // the review was scored, THEN something changed (fullText arrived) and it
+  // was re-flagged — the stale score predates the flag, so it's pending work,
+  // not a stuck flag.
+  assert.equal(
+    isScoredButStillQueued({
+      needsRescore: true,
+      rescoreReason: 'fullText added after excerpt-based scoring',
+      scoreSource: 'llm-v6',
+      rescoreFlaggedAt: '2026-08-05T00:00:00.000Z',
+      llmMetadata: { scoredAt: '2026-08-01T00:00:00.000Z' }, // scored BEFORE the flag
+    }),
+    false
+  );
+});
+
+test('isScoredButStillQueued: general path presumes legitimate when rescoreFlaggedAt is absent (backward compatibility)', () => {
+  // Historical corpus files enqueued before this fix shipped (or a future
+  // producer that forgets to call markRescoreFlagged) have no stamp to
+  // compare against. Treating that as "stuck" would repeat the exact
+  // 162-false-positive incident isStuckRescoreFlag's sibling comment
+  // documents — those files are indistinguishable from a healthy re-queue
+  // without a timestamp, and --fix would cancel real pending rescores.
+  assert.equal(
+    isScoredButStillQueued({
+      needsRescore: true,
+      rescoreReason: 'bw-v6-decompression',
+      scoreSource: 'llm-v6',
+      llmMetadata: { scoredAt: '2026-08-01T00:00:00.000Z' },
+    }),
+    false
+  );
+});
+
+test('isScoredButStillQueued: general path respects rescoreCompletedAt regardless of scoreSource', () => {
+  assert.equal(
+    isScoredButStillQueued({
+      needsRescore: true,
+      scoreSource: 'llm-v6',
+      rescoreFlaggedAt: '2026-08-01T00:00:00.000Z',
+      llmMetadata: { scoredAt: '2026-08-05T00:00:00.000Z' },
+      rescoreCompletedAt: '2026-08-06T00:00:00.000Z',
+    }),
+    false
   );
 });

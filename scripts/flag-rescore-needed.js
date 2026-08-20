@@ -98,6 +98,7 @@ if (cleanupMode) {
           if (!dryRun) {
             delete data.needsRescore;
             delete data.rescoreReason;
+            delete data.rescoreFlaggedAt;
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
           }
         }

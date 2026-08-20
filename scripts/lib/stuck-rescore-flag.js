@@ -74,6 +74,11 @@ function isScoredButStillQueued(data) {
   const scoredAt = (data.llmMetadata && data.llmMetadata.scoredAt) || data.scoredAt;
   if (!scoredAt) return false;
 
+  // Retired correctly by a post-fix run — not stuck.
+  if (data.rescoreCompletedAt) return false;
+
+  const flaggedAt = data.rescoreFlaggedAt || data.needsRescoreAt;
+
   // DO NOT broaden this to "has any score while queued". Most producers requeue
   // a review precisely BECAUSE it was already scored and something changed —
   // 'fullText added after excerpt-based scoring', 'fullText recovered from
@@ -83,19 +88,31 @@ function isScoredButStillQueued(data) {
   // broad version would have handed the other 162 to this auditor's --fix,
   // which DELETES needsRescore (audit-stuck-rescore-flags.js:124) and would
   // have silently cancelled 162 genuinely-needed rescores.
+  if (data.scoreSource === 'manual-cleared-haiku-fallback') {
+    // The original hand-fingerprinted path (2026-07-26 incident) — the only
+    // producer whose stuck-flag shape was provable before any producer
+    // stamped an enqueue time. Historically defaults to "stuck" when
+    // flaggedAt is absent (matches the incident corpus, where this path
+    // never got one); keep that exact behavior for this fingerprint.
+    if (!flaggedAt) return true;
+    return String(scoredAt) > String(flaggedAt);
+  }
+
+  // General path (BRO-117 / Notion 3a9637c5-416f-8155): every producer now
+  // stamps rescoreFlaggedAt at enqueue (scripts/lib/rescore-lifecycle.js
+  // markRescoreFlagged), so the fingerprint restriction above can finally
+  // generalize — a score produced AFTER the file was flagged, with the flag
+  // still set, means the score WAS the response to being queued and the
+  // completion step simply failed to retire the flag, regardless of which
+  // producer or scoreSource enqueued it.
   //
-  // So key on the bug's fingerprint instead, which is provable: the
-  // Haiku-fallback path is the only writer of this scoreSource, and it was the
-  // path that failed to retire the flag. Anything else that is scored-and-queued
-  // is presumed legitimate until a producer stamps an enqueue timestamp we can
-  // compare against (no producer does today — that gap is Notion-carded).
-  if (data.scoreSource !== 'manual-cleared-haiku-fallback') return false;
-
-  // Retired correctly by a post-fix run — not stuck.
-  if (data.rescoreCompletedAt) return false;
-
-  const flaggedAt = data.rescoreFlaggedAt || data.needsRescoreAt;
-  if (!flaggedAt) return true;
+  // Still presume legitimate when flaggedAt is missing — that's every file
+  // enqueued before this fix shipped (the historical corpus), or a future
+  // producer that forgot to call markRescoreFlagged. Treating an absent
+  // stamp as "stuck" is exactly the broadening the comment above warns
+  // against: those files are indistinguishable from a healthy re-queue
+  // without a timestamp to compare, and --fix would cancel real pending work.
+  if (!flaggedAt) return false;
   return String(scoredAt) > String(flaggedAt);
 }
 

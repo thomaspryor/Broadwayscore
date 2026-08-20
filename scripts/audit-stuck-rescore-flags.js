@@ -127,15 +127,18 @@ function main() {
   const byReason = {};
   for (const s of stuck) byReason[s.reason] = (byReason[s.reason] || 0) + 1;
 
-  // REPORT-ONLY for kind==='scored-but-queued' (2026-07-26). That predicate keys
-  // on scoreSource==='manual-cleared-haiku-fallback', but scoreSource is NOT
-  // durable provenance: collect-review-texts.js:4186 requeues a file (fullText
-  // arrived after excerpt scoring) WITHOUT resetting scoreSource, so a perfectly
-  // valid pending rescore can still carry the fallback source. --fix deletes
-  // needsRescore, which would silently cancel that real rescore. The producing
-  // bug is already fixed at source (rescore-lifecycle.js markRescoreComplete on
-  // every success path), so this class only needs to be VISIBLE, never auto-fixed.
-  // Revisit once producers stamp rescoreFlaggedAt (Notion 3a9637c5-416f-8155).
+  // REPORT-ONLY for kind==='scored-but-queued' (2026-07-26). Every producer now
+  // stamps rescoreFlaggedAt at enqueue (BRO-117 / Notion 3a9637c5-416f-8155), so
+  // isScoredButStillQueued() (scripts/lib/stuck-rescore-flag.js) has generalized
+  // beyond the original scoreSource==='manual-cleared-haiku-fallback' fingerprint
+  // and is more accurate than it was when this gate was written — but the gate
+  // itself deliberately stays report-only here. The historical corpus (files
+  // flagged before this fix shipped) has no rescoreFlaggedAt to compare against,
+  // so the predicate presumes those legitimate rather than risk the 162-false-
+  // positive class that motivated this gate in the first place; --fix deleting
+  // needsRescore on a wrong call would silently cancel a real pending rescore.
+  // Once the corpus has cycled enough that most 'scored-but-queued' hits carry a
+  // real rescoreFlaggedAt-based verdict, revisit whether --fix should trust it.
   const fixable = stuck.filter((s) => s.kind !== 'scored-but-queued');
   const reportOnly = stuck.length - fixable.length;
   if (opts.fix && reportOnly) {
