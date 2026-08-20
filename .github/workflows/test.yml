@@ -1709,6 +1709,10 @@ on:
       # deleted review-text-scoreable mirror onto review-guards canonical
       # predicates. Path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/check-review-count-drift.js'
+      # BRO-58: colocated test, registered in tests/unit-test-manifest.txt
+      # (tests/** already globbed above). Root-level scripts/*.test.mjs is NOT
+      # globbed, so a solo edit to just this file needs its own entry.
+      - 'scripts/check-review-count-drift.test.mjs'
       - 'scripts/clear-stale-wrong-production-flags.js'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
