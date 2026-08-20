@@ -2116,8 +2116,8 @@ jobs:
         # Static analysis: traces which process.env.SECRET reads a workflow-
         # invoked script's (transitive, depth-bounded) require graph makes,
         # diffs against that step's/job's/workflow's env: block, and flags
-        # secrets referenced via ${{ secrets.X }} elsewhere in this repo's
-        # workflows (so it only flags real repo secrets) that were never
+        # secrets referenced elsewhere in this repo's workflows via the
+        # secrets context (so it only flags real repo secrets) that were never
         # wired into that specific step. Motivated by BRO-67 (task #1855):
         # opening-night-checklist.yml, opening-night-poller.yml, and
         # opening-night-orchestrator.yml silently missing ANTHROPIC_API_KEY
