@@ -3007,12 +3007,13 @@ async function getWorkflowRunSummary() {
     // part of the cache key — it's "last 24h from call time" either way, and
     // pinning the key lets concurrent callers within the TTL window share
     // one result instead of each computing a distinct since= and missing.
-    const results = await cachedFetch('workflow-run-summary-24h', async () => {
+    const { runs: results, partial } = await cachedFetch('workflow-run-summary-24h', async () => {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       // Use REST API with per_page=100 (covers most days in 1-2 calls)
       const runs = [];
       let page = 1;
       const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
+      let partial = false;
 
       while (page <= maxPages) {
         const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
@@ -3029,6 +3030,7 @@ async function getWorkflowRunSummary() {
           // failures" clean read.
           if (page === 1) throw pageErr;
           console.error(`[Workflows] page ${page} fetch failed, using ${runs.length} run(s) from earlier pages: ${pageErr.message}`);
+          partial = true;
           break;
         }
         if (!response || !response.workflow_runs) break;
@@ -3036,7 +3038,7 @@ async function getWorkflowRunSummary() {
         if (response.workflow_runs.length < 100) break;
         page++;
       }
-      return runs;
+      return { runs, partial };
     });
 
     const completed = results.filter(r => r.status === 'completed');
@@ -3090,6 +3092,7 @@ async function getWorkflowRunSummary() {
       })),
       repeatFailures,
       skipped: false,
+      partial,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);
@@ -4058,6 +4061,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       <h3 style="color:#aaa;margin:24px 0 8px;">Workflow Runs (24h)</h3>
       <p style="color:#ccc;margin:4px 0;">
         ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total)
+        ${workflowSummary.partial ? ' <span style="color:#f1c40f;">(partial — a later page of results failed to load, counts may undercount)</span>' : ''}
       </p>
       ${failedList ? `<ul style="padding-left:20px;margin:4px 0;">${failedList}</ul>` : ''}
     `;
