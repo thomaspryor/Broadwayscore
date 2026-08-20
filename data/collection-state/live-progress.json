@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-20T19:59:19.399Z",
-  "processed": 135,
-  "failed": 1611,
-  "successRate": "7.7%",
+  "updatedAt": "2026-08-20T20:03:46.606Z",
+  "processed": 144,
+  "failed": 1652,
+  "successRate": "8.0%",
   "tierBreakdown": {
-    "playwright": 76,
+    "playwright": 83,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 4,
-    "scrapingbee": 21,
+    "scrapingbee": 22,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 29
+    "archive": 30
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-08-20T10:35:21.461Z",
-      "event": "bb-session",
-      "session": "75e22968",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-20T10:35:22.576Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-20T12:50:22.090Z",
       "event": "bb-session",
@@ -114,6 +103,28 @@
       "event": "bb-session",
       "session": "79803aab",
       "url": "https://www.express.co.uk/entertainment/theatre/890235/the-snowman-review-peacoc"
+    },
+    {
+      "t": "2026-08-20T20:03:13.698Z",
+      "event": "bb-session",
+      "session": "bc7fffd6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
+    },
+    {
+      "t": "2026-08-20T20:03:14.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-20T20:03:31.496Z",
+      "event": "bb-session",
+      "session": "8046faff",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
+    },
+    {
+      "t": "2026-08-20T20:03:31.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
