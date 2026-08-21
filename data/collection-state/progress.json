@@ -3,7 +3,9 @@
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
@@ -16,14 +18,24 @@
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -36,7 +48,7 @@
     ]
   },
   "startTime": "2026-08-21T15:01:32.866Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
   "log": [
     {
       "t": "2026-08-21T18:59:25.838Z",
@@ -49,6 +61,18 @@
       "event": "bb-session",
       "session": "f6df9d7a",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-21T19:05:29.353Z",
+      "event": "bb-session",
+      "session": "d9a59016",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-21T19:05:48.229Z",
+      "event": "bb-session",
+      "session": "e41cea78",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
     }
   ]
 }
