@@ -53,6 +53,7 @@ const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { readEnvKeys } = require('./lib/load-env');
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -137,9 +138,12 @@ function parseArgs(argv) {
 }
 
 function loadScoredReviews(showId) {
-  const revs = require(path.join(ROOT, 'data', 'reviews.json'));
-  const arr = Array.isArray(revs.reviews || revs) ? (revs.reviews || revs) : Object.values(revs.reviews || revs);
-  return arr.filter((r) => r.showId === showId);
+  // Must go through the shared loader, not a raw reviews.json require(): shows
+  // with blog-tier reviews (data/blog-reviews-for-scoring.json) are concatenated
+  // in at build time (src/lib/data-core.ts) but don't live in reviews.json
+  // itself — reading reviews.json alone would report a real, live-scored blog
+  // review as a coverage gap.
+  return loadReviewsWithBlog().filter((r) => r.showId === showId);
 }
 
 // An outlet can have more than one critic-bylined file for the same show
@@ -270,12 +274,16 @@ function printReplayPlan(showId, reviewTextsDir, hasCreds) {
 it only prints this runbook, credentials or not. Run these steps BY HAND, one
 at a time, watching each complete:${hasCreds ? ' (credentials ARE present in this session — see the staleness caveat below before running it anyway.)' : ' this session has no SCRAPINGBEE_API_KEY/BRIGHTDATA_TOKEN in .env, so it could not run live discovery even in --apply mode if one existed.'}
 
-  # 0. Set a trap FIRST so a Ctrl-C or crash mid-run still restores the backup
+  # 0. Back up FIRST, with nothing destructive armed yet (never skip this step)
   BACKUP="/tmp/${showId}-backup-\$(date +%s)"
-  trap 'rm -rf "${showDir}"; cp -r "\$BACKUP" "${showDir}"; echo "restored from \$BACKUP"' EXIT
-
-  # 1. Back up (never skip — this deletes real production review files)
   cp -r "${showDir}" "\$BACKUP"
+
+  # 1. ONLY once the backup above finished, arm a restore-on-exit trap — it
+  #    checks the backup actually exists before touching the real directory,
+  #    so an interrupt before step 0 finishes does nothing destructive at all
+  #    (setting the trap before the backup existed would delete the real data
+  #    on an early Ctrl-C with nothing to restore from — verified in review).
+  trap '[ -d "\$BACKUP" ] && { rm -rf "${showDir}"; cp -r "\$BACKUP" "${showDir}"; echo "restored from \$BACKUP"; } || echo "no backup at \$BACKUP — nothing restored, real directory left untouched"' EXIT
 
   # 2. Simulate a just-opened show with zero reviews
   find "${showDir}" -name '*.json' ! -name 'failed-fetches.json' -delete
