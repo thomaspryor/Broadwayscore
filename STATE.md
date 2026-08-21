@@ -1,28 +1,59 @@
-# BRO-848 session state (handoff)
+# BRO-749 — state at handoff
 
 ## Done
-- Root-caused + fixed a real gating bug in `scripts/migrate-reroute-backlog.js --cross-market`: it pre-filtered on the same-market `pickRerouteTarget()` decision before `classifyCandidate()` ever ran, so cross-market-flagged reviews never got a shot at West-End-sibling routing.
-- Broadened + then re-tightened (after Codex ship-check review) two year-detection regexes.
-- Closed a TOCTOU race in `--execute`'s write-target step (`{flag:'wx'}` + `targetWrittenByUs` gate on cleanup).
-- Found + closed a real copyright leak: the migration's plan/log JSON wrote full review `fullText` into the *public* repo's `data/` dir, outside the CI "no copyrighted content" guard's scope. Added `.gitignore` entries.
-- Generated + executed a 47-entry cross-market reroute plan against the live corpus (44/47 already scored). Committed + pushed to the private `broadway-review-texts` repo: commit `1f810c1204e`.
-- Added `scripts/verify-reroute-migration.test.mjs` (delegates to `--verify`), registered in `test.yml` push-paths + `tests/unit-test-manifest.txt`. Fixed it once more after finding a real edge case live (present-but-empty log = skip, not fail).
-- All commits merged to `main` and pushed: `104a688c5ec`, `7ce229a5d23`.
-- Commented on Linear BRO-848 with full findings (the specific hamlet/godot/sunset-boulevard-1994 examples from the original card have no valid West End sibling show — separate task) and moved it to **In Review**.
-- Dispatched a manual rebuild so the 47 fixed reviews actually land on the live site (nothing else would have triggered it — a direct `git push` to the private review-texts repo doesn't fire `rebuild-reviews.yml`'s `workflow_run` trigger, which only listens for "Collect Review Texts" completing).
+1. **Found & verified the real QEH Southbank (Apr 7-12 2026) review**: londonwithatoddler.com,
+   published 2026-04-07, explicitly names "Queen Elizabeth Hall" and matches the show's real
+   cast. (Ruled out several other 2026-04 hits — ayoungishperspective.co.uk Apr 17 and
+   thereviewshub.com — both turned out to be *other legs* of the same national tour: The Lowry,
+   Salford. This show tours widely in 2026 with the same cast at every stop, so cast-name match
+   alone is NOT sufficient to confirm venue — always confirm venue/date text explicitly.)
+2. **Ingested the review** into the private `broadway-review-texts` repo (source of truth):
+   `the-boy-at-the-back-of-the-class-west-end-2026/london-with-a-toddler--kate-s.json`.
+   Registered the outlet (`london-with-a-toddler`, tier 3) in `outlet-registry.json` in
+   `broadway-scorecard-data` (core-data repo). Both pushed to `main` — commits
+   `88516f16feb`/`d38ba5b809b` (review-texts), `32306e498` (core-data).
+3. **Flagged 2 wrong-production stubs** that CI's `gather-reviews.yml` SERP pass surfaced for
+   this show — both are the Lowry, Salford leg, not QEH: `a-youngish-perspective--unknown.json`
+   and `thereviewshub--the-reviews-hub-london.json`. Both now have `wrongProduction: true` +
+   explanatory notes. Commit `d38ba5b809b`.
+4. **Added regression test** `scripts/gather-reviews.test.mjs` (registered in
+   `tests/unit-test-manifest.txt`) — requires the real `quickDateCheck`/`verifyProduction`
+   from `scripts/lib/production-verifier.js` against this exact show's real data. Passes:
+   `node --test scripts/gather-reviews.test.mjs` → 4/4 pass.
+5. **Fixed a local-run hazard I caused**: `node scripts/gather-reviews.js --shows=...` run
+   locally (before I understood this worktree's `data/review-texts` is a 1-show stub, not the
+   full private repo) triggered its internal `rebuild-all-reviews.js` call, which nearly wiped
+   `reviews.json` (19912→35 reviews) in the symlinked `~/broadway-scorecard-data` clone, plus
+   truncated `data/audit/needs-human-review.json`, `rebuild-regression.json`,
+   `stage-latency.jsonl`, `public/data/admin/critic-coverage.json`, `public/data/admin/locks.json`
+   in this worktree. **All reverted** (`git restore`) before anything was pushed — verified
+   `~/broadway-scorecard-data` reviews.json back to 19912 reviews, worktree back to clean.
+   Nothing bad was ever pushed to any remote.
+6. Committed + pushed worktree branch `job/linear-BRO-749-mt2mvixt` (test file + manifest entry).
+7. This worktree's `scripts/gather-reviews.js` run also dispatched CI's `gather-reviews.yml`
+   remotely for this show (run `32459884148`) as a second, safer discovery pass (full fresh
+   checkout, no local-clone hazard) — it completed successfully and is what surfaced the 2
+   wrong-production stubs I then flagged (item 3 above).
 
-## In flight — NEEDS FOLLOW-UP
-- **GH Actions run 32456719610** ("Rebuild Reviews Data", dispatched ~07:00 UTC 2026-08-21) was still `pending`/running when this session hit its time budget. A resumed session should:
-  1. `gh run view 32456719610 --json status,conclusion` (or `scripts/lib/wait-for-run.sh 32456719610`, NOT `gh run watch`)
-  2. If green: verify the collision-drops metric and that the 47 moved reviews are now scoring — check e.g. `romeo-and-juliet-off-broadway-2026`'s review count/score on prod (may need `scripts/check-prod-deploy.js` + the next Vercel deploy cycle too, since a rebuild alone doesn't deploy).
-  3. If red/failed: diagnose from the run log — nothing about my fix should make rebuild fail (the 47 moved files are ordinary, keyword-verified, already-scored reviews), so a failure is more likely unrelated ambient corpus flap; don't assume it's caused by this session's changes without checking.
+## Pending / needs a follow-up check
+- CI's `rebuild-reviews.yml` (dispatched as a retry, run `32464131156`, plus my own explicit
+  dispatch `32464574627`) was still `in_progress` at handoff. The FIRST attempt (inside
+  `gather-reviews.yml` run `32459884148`'s own `rebuild` job) **failed** — not a data bug, a
+  push race against other concurrent automation on the busy `Broadwayscore` repo (7 retries,
+  `push-with-retry.sh` gave up after 240s). This only affects the *derived* `reviews.json`
+  aggregate — the source-of-truth review-text files are already safely committed+pushed
+  (confirmed live via `gh api repos/thomaspryor/broadway-review-texts/contents/...`).
+- **Next step**: check whether `gh run view 32464131156` (or the latest `rebuild-reviews.yml`
+  run) succeeded. If still failing, just re-dispatch:
+  `gh workflow run rebuild-reviews.yml -f reason="BRO-749 retry"` — it's idempotent, just
+  rebuilds `reviews.json` from the already-correct review-texts state.
+- Once rebuilt, spot check: `node scripts/query.js "SELECT * FROM reviews WHERE showId='the-boy-at-the-back-of-the-class-west-end-2026'"` (after `npm run db:build`) should show the
+  new London With a Teenager review and should NOT show the 2 Lowry Salford stubs as valid.
+- The new review has no explicit score — will need `LLM Ensemble Score Reviews` workflow (or
+  it runs automatically post-rebuild) to get a score.
+- Did NOT open a PR for the `job/linear-BRO-749-mt2mvixt` branch (data-only test file addition,
+  low risk) — branch is pushed, can be merged directly or via PR per normal flow.
 
-## Not done (scoped as follow-up, not this ticket)
-- `sunset-boulevard-1994`, `waiting-for-godot-2009/2013/2025`: no West End sibling show exists in `shows.json` at all. Their flagged reviews are mostly correctly-excluded exact-URL duplicates of copies already filed at the right Broadway target. A few (e.g. the 1993 London premiere AP wire review) need a **new show entry** (editorial judgment + Playbill/venue verification per CLAUDE.md rule 3) before they can be routed anywhere — out of scope for a pure reroute-execution task.
-- `hamlet-1975/1995/2009`: already fixed via **BRO-867**, which landed on `main` mid-session via a parallel worktree (flag+exclude, since no valid target existed for the Eddie Izzard solo show or the pre-transfer Oct 2025 National Theatre run).
-- `rollback-reroute-backlog.js` still hardcodes the non-cross-market log path only — would need a `--cross-market` flag mirroring `migrate-reroute-backlog.js` if a cross-market run ever needs rolling back. Minor, not urgent (the executed 47-move log is `data/reroute-migration-log-cross-market.json`, gitignored, still present locally on this machine at `/Users/tompryor/Broadwayscore/data/`).
-
-## Next command for a resumed session
-```
-gh run view 32456719610 --json status,conclusion,url
-```
+## Linear
+Comment posted on BRO-749 documenting the above; issue moved to "In Review"
+(state id `1af3f235-9020-4c77-ba57-2cc7aa9f27c9`).
