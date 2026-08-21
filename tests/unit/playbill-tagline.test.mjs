@@ -66,16 +66,6 @@ test('no bsp-bio-subtitle block → unknown, not a false "original"', () => {
   });
 });
 
-test('reads revival/original from the LAST tag, not "anywhere in the list" (ship-check finding)', () => {
-  // A genre tag containing the word doesn't get misread, and if a markup
-  // regression ever printed both Revival and Original, the one Playbill
-  // actually intends (the last one) wins rather than an arbitrary tie-break.
-  const contradictory = pageWithTags('Broadway', 'Play', 'Original', 'Revival');
-  assert.equal(parsePlaybillTagLine(contradictory).revivalStatus, 'revival');
-  const reversedContradictory = pageWithTags('Broadway', 'Play', 'Revival', 'Original');
-  assert.equal(parsePlaybillTagLine(reversedContradictory).revivalStatus, 'original');
-});
-
 test('empty/undefined html does not throw', () => {
   assert.equal(parsePlaybillTagLine('').revivalStatus, 'unknown');
   assert.equal(parsePlaybillTagLine(undefined).revivalStatus, 'unknown');

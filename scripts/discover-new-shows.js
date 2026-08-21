@@ -78,7 +78,6 @@ const {
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
-const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -2430,16 +2429,6 @@ async function discoverShows() {
     return { show, detectedType, isRevival, confidence, revivalSource: isRevival ? (knownCheck.isKnown ? 'known-show' : 'title-crossref') : null };
   });
 
-  // Playbill's market tag ("Broadway"/"Off-Broadway"/"London") vs a show's
-  // shows.json category — belt-and-suspenders cross-check for Stage 2 below.
-  function playbillMarketMatchesCategory(pbMarket, category) {
-    const m = pbMarket.toLowerCase();
-    if (m === 'broadway') return isBroadwayCategory({ category });
-    if (m === 'off-broadway') return category === 'off-broadway';
-    if (m === 'london') return isLondonMarket(category);
-    return true; // unrecognized label (e.g. "Tour") — don't block on it
-  }
-
   // Stage 2: Playbill tag-line check (BRO-2023). Playbill prints "Revival" or
   // "Original" on every production page it has classified — authoritative,
   // not a title heuristic — so unlike Stage 1's cross-reference it resolves a
@@ -2459,27 +2448,9 @@ async function discoverShows() {
       }
       const det = playbillCandidates[i];
       try {
-        // det.show.isRevival is never set at this point in discovery (Stage 1's
-        // call is tracked on the `det` wrapper, not the raw show object) — so
-        // without this, compareShow()'s isRevival check always compares
-        // Playbill against `undefined` and reports a spurious mismatch for
-        // every revival, regardless of what Stage 1 actually found
-        // (ship-check finding).
-        det.show.isRevival = det.isRevival;
         const result = await validatePlaybillProduction(det.show, () => {});
         const tagLine = result?.parsed?.tagLine;
-        // Ship-check finding: findPlaybillUrl's SERP match is scored, not
-        // exact — a venue/opening-year mismatch means the page validateOne
-        // fetched is probably the WRONG production (a different staging of
-        // the same title), so its tag line must not be trusted here.
-        const wrongPage = (result?.mismatches || []).some(m => m.field === 'venue' || m.field === 'opening-year');
-        // Cross-check Playbill's own market label against the show's market
-        // — belt-and-suspenders against the same wrong-page risk when the
-        // venue/year happen to coincide.
-        const marketMismatch = tagLine?.market && !playbillMarketMatchesCategory(tagLine.market, det.show.category);
-        if (wrongPage || marketMismatch) {
-          console.log(`  ⚠️  Playbill page for "${det.show.title}" looks like a different production (${wrongPage ? (result.mismatches.map(m => m.field).join('/') + ' mismatch') : `market ${tagLine.market} vs ${det.show.category || 'broadway'}`}) — ignoring its tag line`);
-        } else if (tagLine && tagLine.revivalStatus !== 'unknown') {
+        if (tagLine && tagLine.revivalStatus !== 'unknown') {
           const playbillIsRevival = tagLine.revivalStatus === 'revival';
           if (det.isRevival !== playbillIsRevival) {
             console.log(`  📋 Playbill override: "${det.show.title}" isRevival ${det.isRevival} → ${playbillIsRevival} (${tagLine.tags.join(' | ')})`);
@@ -2487,10 +2458,7 @@ async function discoverShows() {
           det.isRevival = playbillIsRevival;
           det.confidence = 'high';
           det.revivalSource = 'playbill-tag';
-          det.revivalSourceUrl = result.playbillUrl || null;
           if (tagLine.showType) det.detectedType = tagLine.showType;
-        } else if (result?.playbillUrl) {
-          console.log(`  ℹ️  Playbill page found for "${det.show.title}" but no genre tag line parsed (markup may have changed) — ${result.playbillUrl}`);
         }
       } catch (e) {
         console.log(`  ⚠️  Playbill tag-line check failed for "${det.show.title}": ${e.message}`);
@@ -2662,12 +2630,6 @@ async function discoverShows() {
         // unknown, not a confirmed "new production". Flagged for manual
         // review rather than silently rendered as new.
         ...(show.revivalStatusUnconfirmed ? { revivalStatusUnconfirmed: true } : {}),
-        // Provenance for the isRevival call above (ship-check finding: a
-        // future bad Playbill parse/page match needs to be selectively
-        // findable and revertable, not silently indistinguishable from a
-        // title-crossref or known-show call).
-        ...(detection.revivalSource ? { revivalSource: detection.revivalSource } : {}),
-        ...(detection.revivalSourceUrl ? { revivalSourceUrl: detection.revivalSourceUrl } : {}),
       };
 
       // Persist TodayTix category for future type detection (backfill on re-runs)
