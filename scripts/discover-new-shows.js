@@ -50,7 +50,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -78,6 +78,7 @@ const {
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
+const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 

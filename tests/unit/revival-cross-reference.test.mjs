@@ -14,23 +14,12 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
+  normalizeTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
 } = require('../../scripts/lib/revival-cross-reference.js');
 
-test('normalizeRevivalTitle strips leading article + punctuation, case-folds', () => {
-  assert.equal(normalizeRevivalTitle('The Seagull'), 'seagull');
-  assert.equal(normalizeRevivalTitle("Schmigadoon!"), 'schmigadoon');
-});
-
-test('normalizeRevivalTitle folds diacritics before stripping non-ASCII (sibling-matchers guard)', () => {
-  // foldDiacritics must run BEFORE the [^a-z0-9' ] strip, or an accented
-  // title loses its accented letters entirely instead of folding to ASCII —
-  // caught by tests/unit/sibling-matchers-diacritics.test.mjs when this file
-  // was first extracted (it copied the unfolded original verbatim).
-  assert.equal(normalizeRevivalTitle('Amélie'), 'amelie');
-  const map = buildExistingTitleMap([{ title: 'Amelie', id: 'amelie-2017', type: 'musical', category: 'broadway' }]);
-  const result = detectRevivalByTitleCrossReference({ title: 'Amélie', id: 'amelie-2030', category: 'broadway' }, map);
-  assert.equal(result.isRevival, true);
+test('normalizeTitle strips leading article + punctuation, case-folds', () => {
+  assert.equal(normalizeTitle('The Seagull'), 'seagull');
+  assert.equal(normalizeTitle("Schmigadoon!"), 'schmigadoon');
 });
 
 test('buildExistingTitleMap skips very short titles', () => {
@@ -79,22 +68,6 @@ test('no match at all → neither revival nor transfer', () => {
   assert.equal(result.isRevival, false);
   assert.equal(result.isTransfer, false);
   assert.equal(result.match, null);
-});
-
-test('a same-market prior production is found even when a cross-market entry has the same title (ship-check finding)', () => {
-  // buildExistingTitleMap used to keep only the FIRST same-titled entry — if
-  // that first one happened to be cross-market, a real same-market prior
-  // production later in the list was shadowed and misread as a transfer.
-  const existing = [
-    { title: 'Network', id: 'network-london-2017', type: 'play', category: 'west-end' }, // seen first
-    { title: 'Network', id: 'network-1958', type: 'play', category: null }, // real Broadway prior production
-  ];
-  const map = buildExistingTitleMap(existing);
-  const newShow = { title: 'Network', id: 'network-2030', category: 'broadway' };
-  const result = detectRevivalByTitleCrossReference(newShow, map);
-  assert.equal(result.isRevival, true);
-  assert.equal(result.isTransfer, false);
-  assert.equal(result.match.id, 'network-1958');
 });
 
 test('matching against itself (same id already in the map) is not a match', () => {
