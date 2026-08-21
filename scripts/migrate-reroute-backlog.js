@@ -153,7 +153,7 @@ function classifyCandidate(showId, file, data, guard, decision) {
       if (weSibs.length > 0) {
         let detectedYear = null;
         if (data.publishDate) { const m = data.publishDate.match(/(20\d\d|19\d\d)/); if (m) detectedYear = parseInt(m[0]); }
-        if (!detectedYear && data.url) { const m = data.url.match(/(?<![0-9])(20\d\d|19\d\d)(?![0-9])/); if (m) detectedYear = parseInt(m[1]); }
+        if (!detectedYear && data.url) { const m = data.url.match(/(?:^|[/\-_.])(20\d\d|19\d\d)(?=$|[/\-_.])/); if (m) detectedYear = parseInt(m[1]); }
 
         if (detectedYear) {
           const weDecision = pickRerouteTarget(guard.showYear, weSibs, detectedYear);
@@ -287,7 +287,7 @@ if (MODE === 'dryrun') {
         if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
       }
       if (!detectedYear && data.url) {
-        const m = data.url.match(/(?<![0-9])(20\d\d|19\d\d)(?![0-9])/);
+        const m = data.url.match(/(?:^|[/\-_.])(20\d\d|19\d\d)(?=$|[/\-_.])/);
         if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
       }
       if (!detectedYear) continue;
@@ -428,6 +428,9 @@ if (MODE === 'execute') {
       continue;
     }
 
+    // Declared outside try/catch so the catch block's cleanup can see it —
+    // see the write-target comment below for why this gates the cleanup.
+    let targetWrittenByUs = false;
     try {
       // Re-read fresh from disk
       const sourceData = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
@@ -451,10 +454,17 @@ if (MODE === 'execute') {
         sourceData.allowEarlyDate = true;
       }
 
-      // Write target
+      // Write target. 'wx' closes the TOCTOU gap between the pre-flight
+      // existsSync check above and this write — throws EEXIST instead of
+      // silently overwriting if something else (a rebuild, a concurrent
+      // migration run) created the target in between. targetWrittenByUs
+      // gates the catch-block cleanup below: on EEXIST we did NOT write the
+      // file, so we must not delete what's sitting there — it belongs to
+      // whoever raced us.
       const targetDir = path.dirname(targetPath);
       if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-      fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n');
+      fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n', { flag: 'wx' });
+      targetWrittenByUs = true;
 
       // Delete source
       fs.unlinkSync(sourcePath);
@@ -468,8 +478,12 @@ if (MODE === 'execute') {
       if (moved % 20 === 0) console.log(`  ... ${moved} moved`);
     } catch (e) {
       console.error(`  FAIL ${sourceShowId}/${file}: ${e.message}`);
-      // Clean up target if written
-      try { if (fs.existsSync(targetPath)) fs.unlinkSync(targetPath); } catch { /* best-effort */ }
+      // Only clean up the target if THIS iteration wrote it (e.g. the
+      // subsequent unlinkSync(sourcePath) threw) — never delete a file that
+      // lost the 'wx' race, since that means it belongs to another writer.
+      if (targetWrittenByUs) {
+        try { fs.unlinkSync(targetPath); } catch { /* best-effort */ }
+      }
       failed++;
     }
   }
