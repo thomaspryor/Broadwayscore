@@ -10,7 +10,7 @@ const { foldDiacritics } = require('./title-match');
 // never cross-reference against an unaccented shows.json entry (or vice
 // versa) — same class of bug documented across every other title matcher in
 // this codebase (tests/unit/sibling-matchers-diacritics.test.mjs).
-function normalizeTitle(t) {
+function normalizeRevivalTitle(t) {
   return foldDiacritics(t || '').toLowerCase()
     .replace(/^(the|a|an)\s+/i, '')
     .replace(/['']/g, "'")
@@ -29,12 +29,20 @@ function normalizeTitle(t) {
 function buildExistingTitleMap(shows) {
   const map = new Map();
   for (const s of shows) {
-    const norm = normalizeTitle(s.title);
+    const norm = normalizeRevivalTitle(s.title);
     if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
     if (!map.has(norm)) map.set(norm, []);
     map.get(norm).push({ type: s.type, id: s.id, category: s.category, title: s.title });
   }
   return map;
+}
+
+// Broadway is stored 3 ways in shows.json (absent key / null / 'broadway'
+// string, per isBroadwayCategory's own doc comment) — fold through that
+// predicate so a legacy null-category entry compares equal to an explicit
+// 'broadway' one instead of being misread as cross-market.
+function normMarket(cat) {
+  return isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
 }
 
 // Among same-titled candidates (excluding the show itself), prefer a
@@ -43,7 +51,6 @@ function pickBestMatch(candidates, show) {
   if (!candidates || !candidates.length) return null;
   const others = candidates.filter(c => c.id !== show.id);
   if (!others.length) return null;
-  const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
   const showMarket = normMarket(show.category);
   return others.find(c => normMarket(c.category) === showMarket) || others[0];
 }
@@ -62,12 +69,12 @@ function pickBestMatch(candidates, show) {
  * entry isn't wrongly treated as cross-market.
  */
 function detectRevivalByTitleCrossReference(show, existingTitleMap) {
-  const norm = normalizeTitle(show.title);
+  const norm = normalizeRevivalTitle(show.title);
   let match = pickBestMatch(existingTitleMap.get(norm), show);
   if (!match) {
     // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
     const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
-    const normBase = normalizeTitle(base);
+    const normBase = normalizeRevivalTitle(base);
     if (normBase.length >= 5 && normBase !== norm) {
       match = pickBestMatch(existingTitleMap.get(normBase), show);
     }
@@ -76,7 +83,6 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
     return { isRevival: false, detectedType: null, confidence: null, match: null, isTransfer: false };
   }
 
-  const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
   const sameMarket = normMarket(match.category) === normMarket(show.category);
   if (sameMarket) {
     return { isRevival: true, detectedType: match.type || null, confidence: 'high', match, isTransfer: false };
@@ -84,4 +90,4 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
   return { isRevival: false, detectedType: null, confidence: null, match, isTransfer: true };
 }
 
-module.exports = { normalizeTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference };
+module.exports = { normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference };
