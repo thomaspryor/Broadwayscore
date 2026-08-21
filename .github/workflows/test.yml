@@ -920,6 +920,11 @@ on:
       - 'scripts/newsletter/pre-send-check.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
+      # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
+      # (skips in unit-tests, which never checks out data/review-texts; enforced for
+      # real by the data-validation job's re-run below, after checkout-review-texts).
+      - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
       # must never silently override a unanimous LLM ensemble rejection.
@@ -3746,6 +3751,18 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
+
+      - name: Run frankie-2002 cleanup regression guard (needs review-texts)
+        # BRO-853: same corpus-missing trap as explainExclusion above. Registered
+        # in tests/unit-test-manifest.txt, but that batch runs in the unit-tests
+        # job which never checks out data/review-texts, so it would only ever
+        # exercise its own skip branch there. Re-run HERE with
+        # REQUIRE_REVIEW_CORPUS=1 so a future re-addition of one of the 15
+        # deleted wrong-production duplicate files actually fails CI.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
 
       - name: Run data validation
         if: always()
