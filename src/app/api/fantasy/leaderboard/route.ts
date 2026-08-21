@@ -4,6 +4,33 @@ import { computeLeaderboard } from '@/lib/data-fantasy';
 import { FANTASY_SEASON } from '@/config/fantasy';
 import type { FantasyEntry } from '@/config/fantasy';
 
+// Email search confirms "does this exact email have an entry" — an
+// existence oracle an attacker could otherwise run at unlimited scale
+// against a breached email list. Same in-memory-per-instance rate limit
+// shape as the draft route (src/app/api/fantasy/draft/route.ts), sized
+// generously for a legit user checking a few emails (self + friends).
+// Does not cover the RPC being callable directly via Supabase REST with
+// the public anon key — same boundary every anon-grantable read in this
+// schema already trusts (e.g. the unthrottled full-table
+// fantasy_entries_public list this same route already exposes).
+const emailSearchRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const EMAIL_SEARCH_RATE_LIMIT = 20;
+const EMAIL_SEARCH_RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function checkEmailSearchRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = emailSearchRateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    emailSearchRateLimitMap.set(ip, { count: 1, resetAt: now + EMAIL_SEARCH_RATE_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= EMAIL_SEARCH_RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
+const EMAIL_FORMAT_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 interface FantasyEntryPublicRow {
   id: string;
   display_email: string | null;
@@ -59,6 +86,15 @@ export async function GET(request: NextRequest) {
     const leagueName = request.nextUrl.searchParams.get('league')?.toLowerCase().trim() || null;
 
     if (emailQuery) {
+      if (!EMAIL_FORMAT_RE.test(emailQuery)) {
+        return NextResponse.json({ entries: [], meta: { totalEntries: 0, season: FANTASY_SEASON, notFound: true } });
+      }
+
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      if (!checkEmailSearchRateLimit(ip)) {
+        return NextResponse.json({ entries: [], error: 'Too many searches. Please try again later.' }, { status: 429 });
+      }
+
       // Rank is relative standing, so compute it against the full season
       // leaderboard, then narrow the response to the matched entry.
       const { data: allEntries, error: allError } = await supabase

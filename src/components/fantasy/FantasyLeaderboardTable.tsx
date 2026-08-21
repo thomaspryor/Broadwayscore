@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import type { LeaderboardEntry } from '@/config/fantasy';
 
+const EMAIL_FORMAT_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function FantasyLeaderboardTable() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,9 +22,12 @@ export default function FantasyLeaderboardTable() {
     return () => clearTimeout(timer);
   }, [leagueFilter]);
 
-  // Debounce email search (500ms) — email search takes priority over league filter
+  // Debounce email search (500ms) — email search takes priority over league
+  // filter. Only fires once the input is a complete email address, so
+  // every keystroke of a partial address doesn't round-trip to the server.
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedEmail(emailFilter.trim()), 500);
+    const trimmed = emailFilter.trim();
+    const timer = setTimeout(() => setDebouncedEmail(EMAIL_FORMAT_RE.test(trimmed) ? trimmed : ''), 500);
     return () => clearTimeout(timer);
   }, [emailFilter]);
 
