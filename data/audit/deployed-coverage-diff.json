@@ -1,44 +1,29 @@
 {
-  "generatedAt": "2026-08-21T10:24:08.131Z",
+  "generatedAt": "2026-08-21T22:16:57.498Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 148,
-  "defective": 2,
+  "clean": 149,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "title": "Jeeves Takes Charge",
+      "openingDate": "2026-08-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.47 vs local 72.76 (Δ0.71)"
+          "detail": "deployed cs 70.29 vs local 69.47 (Δ0.82)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
-    },
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.66 vs local 79.82 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
+      "localCount": 22,
+      "deployedCount": 22
     }
   ]
 }
