@@ -67,7 +67,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -3545,23 +3545,67 @@ function createReviewFile(showId, reviewData, options = {}) {
           // get matched to the same URL by discovery — that's two real reviews, keep separate.
           // But when the EXISTING file's critic name came ONLY from roundup/positional-
           // attribution sources (ROUNDUP_URL_SOURCES — carousel order, roundup page layout,
-          // known to misattribute) and the INCOMING write carries a byline from a more
-          // authoritative source (a real extracted byline, not positional guessing), this is
-          // the OTHER case: one review, same URL, and the roundup simply guessed the wrong
-          // critic for it. Correct the existing file instead of spawning a duplicate under the
-          // wrong name (Becky Shaw 2026-04: variety--brent-lang.json from a BWW roundup +
-          // variety--rebecca-rubin.json from RSS discovery, same URL, same review).
+          // known to misattribute) and the INCOMING write carries a byline from a source this
+          // codebase already trusts for critic identity, this is the OTHER case: one review,
+          // same URL, and the roundup simply guessed the wrong critic for it. Correct the
+          // existing file instead of spawning a duplicate under the wrong name (Becky Shaw
+          // 2026-04: variety--brent-lang.json from a BWW roundup + variety--rebecca-rubin.json
+          // from a later discovery, same URL, same review).
+          //
+          // isVerifiedDiscoverySource() — NOT a plain "not a roundup" test — is the confidence
+          // gate: ROUNDUP_URL_SOURCES was built for URL/content reliability, not byline
+          // provenance, and an early version of this fix used its negation as a stand-in for
+          // "trustworthy critic name." That's wrong: 'rss-discovery' fails outside
+          // ROUNDUP_URL_SOURCES but is EXCLUDED from VERIFIED_DISCOVERY_SOURCES precisely
+          // because "RSS hits often duplicate named-critic files" (review-guards.js,
+          // tests/unit/pending-strand-routing.test.mjs) — an RSS feed's <author> is often the
+          // publication or a wire byline, not the actual critic. Reusing the codebase's own
+          // canonical "is this source's attribution trustworthy" predicate (Pattern Card #4)
+          // keeps this correction to the sources it was already built to trust (adversarial
+          // ship-check finding, 2026-08-21).
           const existingSources = Array.isArray(existingReview.sources) && existingReview.sources.length
             ? existingReview.sources
             : [existingReview.source].filter(Boolean);
           const existingIsRoundupOnly = existingSources.length > 0 && existingSources.every(s => ROUNDUP_URL_SOURCES.has(s));
-          const incomingIsRoundup = ROUNDUP_URL_SOURCES.has(reviewData.source);
-          if (existingIsRoundupOnly && !incomingIsRoundup && !existingReview.criticNameManual) {
+          const incomingIsVerified = isVerifiedDiscoverySource(reviewData.source);
+          // Same flag/human-decision carve-out the sibling wrongShow-replacement branch above
+          // computes as isHumanFlagged (out of scope here — that binding lives inside the
+          // sibling `if (existingKey === reviewKey)` block) — a roundup-sourced file can still
+          // carry a real human or LLM verdict, and this correction must not resurrect a flagged
+          // file under a new critic's name while leaving the wrong-show content/flag untouched
+          // (adversarial ship-check finding: mergeReviews only clears those flags via
+          // applyUrlChangeInvariant, which is gated on urlChanged — and the URL here is
+          // identical by construction, so it never fires).
+          const existingIsHumanFlagged = existingReview.wrongShowReason
+            || existingReview.humanReviewedWrongProduction === false
+            || existingReview.humanReviewScore != null
+            || (existingReview.llmScore && existingReview.llmScore.score != null);
+          const existingBlocksCorrection = existingReview.wrongShow || existingReview.wrongProduction || existingIsHumanFlagged;
+          // Target-filename clobber guard (adversarial ship-check finding): refuse the
+          // correction if a THIRD file already sits at the incoming critic's canonical
+          // filename — renaming onto it would silently overwrite unrelated content depending
+          // on readdirSync() iteration order.
+          const targetPathClear = existingFile === filename || !fs.existsSync(filepath);
+          if (existingIsRoundupOnly && incomingIsVerified && !existingReview.criticNameManual
+              && !existingBlocksCorrection && targetPathClear) {
             const corrected = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
             }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            // mergeReviews keeps the FIRST-seen source as primary (existing's roundup source);
+            // force both fields so a corrected file no longer reads as roundup-attributed.
             corrected.criticName = reviewData.criticName;
+            corrected.source = reviewData.source;
+            // Audit breadcrumb (adversarial ship-check finding: rollback previously relied on
+            // a console line alone) — records what changed and why, so a bad correction can be
+            // identified and reverted without re-deriving it from git history.
+            corrected._criticCorrection = {
+              fromCriticName: existingReview.criticName,
+              fromSource: existingSources,
+              toCriticName: reviewData.criticName,
+              toSource: reviewData.source,
+              correctedAt: new Date().toISOString(),
+            };
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(corrected, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
