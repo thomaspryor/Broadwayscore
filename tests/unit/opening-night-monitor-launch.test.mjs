@@ -228,6 +228,15 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
   const pinnedLedger = path.join(tmpDir, 'state', 'alert-ledger.json');
   const priorEnv = process.env.ALERT_LEDGER_PATH;
   process.env.ALERT_LEDGER_PATH = pinnedLedger;
+  // BRO-1699: owner-alert-router.js now refuses to write the REAL attempts
+  // log under node:test unless ALERT_ATTEMPTS_LOG_PATH is set (same guard
+  // class as the ledger above) — must be set BEFORE require() below resolves
+  // ATTEMPTS_LOG_PATH, or logDispatchAttempt() throws internally (swallowed
+  // by its own non-fatal try/catch, so this test kept passing while silently
+  // never writing an attempt row — caught by code-review, not by this test).
+  const priorAttemptsLogEnv = process.env.ALERT_ATTEMPTS_LOG_PATH;
+  const attemptsLog = path.join(tmpDir, 'alert-router-attempts.jsonl');
+  process.env.ALERT_ATTEMPTS_LOG_PATH = attemptsLog;
 
   const priorRouterCache = require.cache[routerPath];
   const priorDiscordCache = require.cache[discordPath];
@@ -267,8 +276,8 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
   const router = require(routerPath);
   const realWriteFileSync = fs.writeFileSync;
   const realReadFileSync = fs.readFileSync;
-  const attemptsLog = path.join(tmpDir, 'alert-router-attempts.jsonl');
-  fs.writeFileSync = (p, ...rest) => realWriteFileSync(p === router._ATTEMPTS_LOG_PATH ? attemptsLog : p, ...rest);
+  // No fs remap needed for the attempts log anymore — ATTEMPTS_LOG_PATH
+  // already resolved to attemptsLog at require() time via the env var above.
 
   const readTracked = () => {
     try { return realReadFileSync(router._TRACKED_LEDGER_PATH, 'utf8'); } catch { return null; }
@@ -313,6 +322,7 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
     if (priorLinearIssueCreateCache) require.cache[linearIssueCreatePath] = priorLinearIssueCreateCache; else delete require.cache[linearIssueCreatePath];
     if (priorLinearClientCache) require.cache[linearClientPath] = priorLinearClientCache; else delete require.cache[linearClientPath];
     if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
+    if (priorAttemptsLogEnv === undefined) delete process.env.ALERT_ATTEMPTS_LOG_PATH; else process.env.ALERT_ATTEMPTS_LOG_PATH = priorAttemptsLogEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 });
