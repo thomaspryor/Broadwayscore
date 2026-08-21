@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: source review-texts JSON lives in the private
+// broadway-review-texts repo (gitignored, not checked out in this repo or in
+// CI) — the fixtures below are a snapshot copied from it, not derivable from
+// any file this test could read.
 /**
  * Unit tests for hamlet-off-broadway-2026's review-texts cleanup (BRO-867).
  *
