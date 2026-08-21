@@ -1102,6 +1102,14 @@ on:
       - 'scripts/deep-research-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
       - 'scripts/gather-reviews.js'
+      # Colocated regression test for quickDateCheck/verifyProduction (date-range +
+      # venue filters that gather-reviews.js relies on via production-verifier.js) —
+      # registered in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+      # isn't globbed there), but ALSO needs this push-path entry since this job
+      # only fires on paths matching this allow-list; a solo edit to just the test
+      # file would otherwise ship with zero CI (same class as scripts/discover-new-shows.js
+      # + .test.mjs above).
+      - 'scripts/gather-reviews.test.mjs'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'

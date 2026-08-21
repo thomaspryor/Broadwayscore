@@ -66,16 +66,21 @@ test('verifyProduction flags a London venue mention in a US-market show without 
 });
 
 test('verifyProduction does not reject a London venue mention for a West End show itself', () => {
-  // For WE/off-WE shows, a London venue mention is expected, not a red flag —
-  // the date-range check (quickDateCheck) is what actually protects WE shows
-  // from cross-venue tour contamination, not this venue-text heuristic.
+  // For WE/off-WE shows, a registered West End venue mention is expected, not
+  // a red flag — the date-range check (quickDateCheck) is what actually
+  // protects WE shows from cross-venue tour contamination, not this
+  // venue-text heuristic. Uses "National Theatre" (a real WEST_END_VENUES
+  // entry) rather than "Queen Elizabeth Hall" (not in that list) so this
+  // genuinely exercises the WE/US branch rather than short-circuiting on an
+  // empty issues list for an unrelated reason.
   const result = verifyProduction({
     showId: SHOW_ID,
     url: 'https://example.com/review',
     publishDate: '2026-04-07',
-    text: 'The Boy at the Back of the Class plays the Queen Elizabeth Hall, Southbank Centre, from 7 to 12 April.',
+    text: 'The Boy at the Back of the Class plays the National Theatre from 7 to 12 April.',
     showData: { venue: 'Queen Elizabeth Hall - Southbank Centre' },
     category: 'west-end',
   });
   assert.equal(result.shouldReject, false);
+  assert.ok(result.issues.some((i) => i.type === 'london_venue'));
 });
