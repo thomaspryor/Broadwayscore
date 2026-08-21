@@ -410,25 +410,74 @@ Return ONLY the JSON array, no other text. Example:
 
   if (!proposed || proposed.length === 0) return null;
 
-  // Step 2: SERP-verify each proposed member.
-  // 2026-05-26: previously non-director roles were accepted without verification.
-  // Result: LLM hallucinated "Martyna Majok (Book Writer)" for Liberation (correct:
-  // Bess Wohl, Playwright) and reached production. Now ALL roles require SERP
-  // confirmation; unrecognized roles are rejected rather than silently accepted.
-  // Decision logic lives in lib/creative-team-verify.js (shared with
-  // audit-creative-team-serp.js, which retro-verifies pre-guard entries).
+  // Step 2: SERP-verify each proposed member. Shared with the IBDB scrape
+  // path (see verifyCreativeTeamViaSerp below) — BRO-102.
+  const verified = await verifyCreativeTeamViaSerp(show, proposed, year, 'serp-verified-llm');
+
+  return verified.length > 0 ? verified : null;
+}
+
+// Shared SERP-verification gate for creative-team writes.
+//
+// 2026-05-26: previously non-director roles proposed by the LLM were accepted
+// without verification. Result: LLM hallucinated "Martyna Majok (Book Writer)"
+// for Liberation (correct: Bess Wohl, Playwright) and reached production. Now
+// ALL roles require SERP confirmation; unrecognized roles (design/tech
+// credits with no reliable "<verb> <name>" attribution phrase — Scenic
+// Design, Orchestrations, etc.) are rejected rather than trusted verbatim.
+//
+// BRO-102: the IBDB scrape path (Step 2 in fixCreativeTeam) previously took
+// ibdb.creativeTeam verbatim — a wrong table cell or stale IBDB entry would
+// repeat the same wrong-attribution pattern for any Broadway show with an
+// ibdbUrl. It now routes through this same gate before writing.
+//
+// Decision logic (roleVerb/ROLE_CANON/serpTextConfirms) lives in
+// lib/creative-team-verify.js, shared with audit-creative-team-serp.js,
+// which retro-verifies pre-guard entries.
+//
+// Cost: this adds up to ~7 SERP calls (one per verifiable role) where the
+// IBDB path previously made zero. Bounded by check-show-freshness.yml's
+// open/previews-only scope for the daily cron; a large --backfill-historical
+// or targeted --show= batch run is the case to watch if SB SERP credit burn
+// spikes.
+//
+// Scope note: this SERP check confirms "<verb> <name>" for the show's TITLE,
+// not its specific production year — it can't tell a 2026 revival's director
+// from a same-titled 1990s production's director if both are attributable
+// online. For the IBDB caller that's covered upstream: lookupIBDBDates()'s
+// production-year gate (lib/ibdb-dates.js) already rejects ibdb.creativeTeam
+// entirely when the IBDB page's year doesn't match the show's openingYear, so
+// only same-production entries ever reach this function. Callers without an
+// equivalent upstream year gate should not assume this function verifies
+// production identity, only name+role attribution.
+async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag) {
   const verified = [];
+  const seen = new Set(); // name+role dedup — a shared gate can't assume every caller pre-dedupes
   for (const member of proposed) {
-    const role = String(member.role || '').toLowerCase();
-    const verb = roleVerb(role);
-    if (!verb) {
-      console.log(`    ❌ Unrecognized role "${member.role}" for ${member.name} — rejecting (cannot SERP-verify)`);
+    const name = String(member.name || '').trim();
+    if (!name) {
+      console.log(`    ❌ Blank/missing name for role "${member.role}" — rejecting`);
       continue;
     }
-    const canonRole = ROLE_CANON[role];
+    const role = String(member.role || '').toLowerCase();
+    const dedupeKey = `${role}::${name.toLowerCase()}`;
+    if (seen.has(dedupeKey)) continue;
+    seen.add(dedupeKey);
 
-    const query = `"${show.title}" ${year} "${verb} ${member.name}"`;
-    console.log(`    🔍 Verifying: ${member.name} (${member.role}) via SERP...`);
+    const verb = roleVerb(role);
+    if (!verb) {
+      console.log(`    ❌ Unrecognized role "${member.role}" for ${name} — rejecting (cannot SERP-verify)`);
+      continue;
+    }
+    const canonRole = ROLE_CANON[role] || member.role;
+    // "Music & Lyrics" is published inconsistently ("music and lyrics by" vs
+    // "music & lyrics by") — accept either spelling for this one role rather
+    // than widening every role to roleVerbVariants (which would weaken the
+    // single-verb hallucination signal the other roles rely on).
+    const phrases = role === 'music & lyrics' ? [verb, 'music & lyrics by'] : [verb];
+
+    const query = `"${show.title}" ${year} "${verb} ${name}"`;
+    console.log(`    🔍 Verifying: ${name} (${member.role}) via SERP...`);
     try {
       await sleep(500);
       const serpResults = await serpQuery(query);
@@ -436,10 +485,10 @@ Return ONLY the JSON array, no other text. Example:
         // Require the full phrase "directed by [name]" in a snippet — not just
         // the name — anchored to a segment naming this show (see
         // lib/creative-team-verify.js for the snippet-stitching failure mode).
-        const confirmed = serpTextConfirms(serpResults, [verb], member.name, { title: show.title });
+        const confirmed = serpTextConfirms(serpResults, phrases, name, { title: show.title });
         if (confirmed) {
-          console.log(`    ✅ SERP confirmed: ${member.name} (${member.role})`);
-          verified.push({ ...member, role: canonRole, _source: 'serp-verified-llm' });
+          console.log(`    ✅ SERP confirmed: ${name} (${member.role})`);
+          verified.push({ ...member, name, role: canonRole, _source: sourceTag });
         } else {
           console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
         }
@@ -451,7 +500,7 @@ Return ONLY the JSON array, no other text. Example:
     }
   }
 
-  return verified.length > 0 ? verified : null;
+  return verified;
 }
 
 // Fix creative team - fetch from TodayTix, IBDB (Broadway), or SERP-verified LLM (OB/WE)
@@ -485,15 +534,27 @@ async function fixCreativeTeam(show, todayTixIds) {
       const openingYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4)) : undefined;
       const ibdb = await lookupIBDBDates(show.title, { ibdbUrl: show.ibdbUrl, openingYear });
       if (ibdb.creativeTeam && ibdb.creativeTeam.length >= 1) {
-        // Defensive: never overwrite an existing non-empty creativeTeam from IBDB
-        // without a louder signal. The guard at line 413 already returns early if
-        // show.creativeTeam.length >= 2, so we only reach here when it's empty
-        // or has 1 entry — log the latter so regressions are auditable.
-        if (show.creativeTeam && show.creativeTeam.length > 0) {
-          console.log(`    ⚠️  IBDB replacing existing creativeTeam[${show.creativeTeam.length}] on ${show.id}`);
+        // BRO-102: IBDB regex extraction can grab the wrong table cell or
+        // carry stale data — route through the same SERP-verification gate
+        // as the LLM path (verifyCreativeTeamViaSerp) rather than trusting
+        // ibdb.creativeTeam verbatim. Design/tech-credit roles with no
+        // verifiable attribution phrase (Scenic Design, Orchestrations, etc.)
+        // are dropped, same as the LLM path.
+        const year = openingYear || show.openingDate?.slice(0, 4) || 'upcoming';
+        console.log(`    Verifying ${ibdb.creativeTeam.length} IBDB creative-team member(s) via SERP...`);
+        const verified = await verifyCreativeTeamViaSerp(show, ibdb.creativeTeam, year, 'serp-verified-ibdb');
+        if (verified.length > 0) {
+          // Defensive: never overwrite an existing non-empty creativeTeam from IBDB
+          // without a louder signal. The guard at line 413 already returns early if
+          // show.creativeTeam.length >= 2, so we only reach here when it's empty
+          // or has 1 entry — log the latter so regressions are auditable.
+          if (show.creativeTeam && show.creativeTeam.length > 0) {
+            console.log(`    ⚠️  IBDB replacing existing creativeTeam[${show.creativeTeam.length}] on ${show.id}`);
+          }
+          show.creativeTeam = verified;
+          return `Fetched creative team from IBDB for ${show.title} (${verified.length} member(s), SERP-verified)`;
         }
-        show.creativeTeam = ibdb.creativeTeam;
-        return `Fetched creative team from IBDB for ${show.title} (${ibdb.creativeTeam.length} members)`;
+        console.log(`    ⚠️  No IBDB creative-team members passed SERP verification — leaving unset`);
       }
     } catch (e) {
       console.log(`    ⚠️  IBDB fetch failed: ${e.message}`);
@@ -713,14 +774,26 @@ async function main() {
   return results;
 }
 
-main()
-  .catch(err => {
-    console.error('Fatal error:', err);
-    process.exitCode = 1;
-  })
-  .finally(() => {
-    // fetchUrl()'s Playwright fallback leaves Chromium open on success —
-    // cleanup() closes it with a timeout guard. Without this, any run that
-    // touches even one Playwright-fetched URL hangs forever (#438/#914 class).
-    cleanupScraper().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
-  });
+if (require.main === module) {
+  main()
+    .catch(err => {
+      console.error('Fatal error:', err);
+      process.exitCode = 1;
+    })
+    .finally(() => {
+      // fetchUrl()'s Playwright fallback leaves Chromium open on success —
+      // cleanup() closes it with a timeout guard. Without this, any run that
+      // touches even one Playwright-fetched URL hangs forever (#438/#914 class).
+      cleanupScraper().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+    });
+}
+
+// Exports for unit tests (BRO-102) — the IBDB and LLM creative-team write
+// paths both route through verifyCreativeTeamViaSerp before touching
+// show.creativeTeam; tests exercise that gate directly against a fake
+// serpQuery rather than re-implementing its decision logic.
+module.exports = {
+  fixCreativeTeam,
+  verifyCreativeTeamViaSerp,
+  generateCreativeTeamWithSerpVerification,
+};

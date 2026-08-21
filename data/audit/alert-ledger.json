@@ -137,12 +137,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-20T18:24:53.053Z",
-      "lastNotifiedAt": "2026-08-20T18:24:53.053Z",
-      "notifyCount": 42,
+      "lastSeen": "2026-08-20T22:56:21.929Z",
+      "lastNotifiedAt": "2026-08-20T20:35:43.778Z",
+      "notifyCount": 43,
       "cardId": null,
       "linearIdentifier": null,
-      "resolvedAt": "2026-08-20T19:01:45.944Z"
+      "silentRefires": 3,
+      "resolvedAt": "2026-08-20T23:12:01.165Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -226,36 +227,34 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-20T10:24:12.918Z",
-      "lastNotifiedAt": "2026-08-19T14:33:14.817Z",
-      "notifyCount": 21,
+      "lastSeen": "2026-08-20T20:19:40.779Z",
+      "lastNotifiedAt": "2026-08-20T20:19:40.779Z",
+      "notifyCount": 22,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-20T10:24:12.999Z",
+      "lastSeen": "2026-08-20T20:19:40.862Z",
       "lastNotifiedAt": "2026-08-20T08:29:24.290Z",
       "notifyCount": 25,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-20T10:24:12.819Z",
-      "lastNotifiedAt": "2026-08-19T14:33:14.729Z",
-      "notifyCount": 18,
+      "lastSeen": "2026-08-20T20:19:40.681Z",
+      "lastNotifiedAt": "2026-08-20T20:19:40.681Z",
+      "notifyCount": 19,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 3
+      "linearIdentifier": null
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -393,11 +392,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 15.7% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-20T08:29:16.744Z",
-      "lastNotifiedAt": "2026-08-20T08:29:16.744Z",
-      "notifyCount": 25,
+      "lastSeen": "2026-08-20T20:19:26.359Z",
+      "lastNotifiedAt": "2026-08-20T20:19:26.359Z",
+      "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -510,9 +509,9 @@
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Disruption — wsj",
       "firstSeen": "2026-08-06T11:25:10.363Z",
-      "lastSeen": "2026-08-13T11:45:04.129Z",
-      "lastNotifiedAt": "2026-08-13T11:45:04.129Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-20T20:19:28.556Z",
+      "lastNotifiedAt": "2026-08-20T20:19:28.556Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-327"
     },
@@ -777,13 +776,13 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-20T18:24:53.052Z",
-      "lastNotifiedAt": "2026-08-20T18:04:55.622Z",
-      "notifyCount": 19,
+      "lastSeen": "2026-08-20T22:56:21.928Z",
+      "lastNotifiedAt": "2026-08-20T20:35:41.765Z",
+      "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-20T18:45:28.028Z"
+      "silentRefires": 3,
+      "resolvedAt": "2026-08-20T23:12:01.083Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -911,12 +910,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-20T10:24:05.230Z",
+      "lastSeen": "2026-08-20T20:19:32.232Z",
       "lastNotifiedAt": "2026-08-13T23:42:15.236Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 59
+      "silentRefires": 60
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",

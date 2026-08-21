@@ -75,6 +75,12 @@ on:
       # broad glob) so a solo edit triggers CI.
       - 'scripts/audit-review-texts-test-yml-coverage.js'
       - 'scripts/audit-review-texts-test-yml-coverage.test.mjs'
+      # BRO-141: recover-serp-text.js's colocated test requires it directly
+      # (root-level scripts/*.js + *.test.mjs, no scripts/** broad glob) —
+      # needs its own entry so a solo edit triggers CI.
+      - 'scripts/recover-serp-text.js'
+      - 'scripts/recover-serp-text.test.mjs'
+      - 'scripts/tests/recover-serp-exhausted-outlets.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -152,6 +158,10 @@ on:
       # lib itself needs explicit listing per this repo's convention.
       - 'scripts/audit-creative-team-serp.js'
       - 'scripts/auto-fix-show-data.js'
+      # BRO-102 colocated test (root-level scripts/*.test.mjs is NOT globbed,
+      # registered in tests/unit-test-manifest.txt) — path-listed so a solo
+      # edit to either triggers CI.
+      - 'scripts/auto-fix-show-data.test.mjs'
       # BWW Review Roundup byline parser: a photo credit's photographer surname
       # ("Photo credit: Mark Senior") was absorbed as the next critic's first
       # name, minting a phantom URL-less duplicate that same-URL dedup could not
@@ -820,6 +830,15 @@ on:
       # Check 2e). Solo edits must run its unit test (dolly incident 2026-07-14).
       - 'tests/unit/announced-promotion.test.mjs'
       - 'scripts/update-show-status.js'
+      # Stale 'announced' show detector (BRO-93) — flags announced shows whose
+      # run has demonstrably started/finished (stale previewsStartDate or
+      # collected review-texts). Root-level scripts/*.test.mjs is not globbed
+      # (registered in tests/unit-test-manifest.txt), so a solo edit needs its
+      # own entry. scripts/lib/stale-announced-audit.js (the decision logic +
+      # ack mechanism) is intentionally NOT listed here — already covered by
+      # the scripts/lib/** glob above.
+      - 'scripts/audit-stale-announced-shows.js'
+      - 'scripts/audit-stale-announced-shows.test.mjs'
       # Scraping cost v3 S2 — Bright Data daily breaker + per-run budget, and
       # the failed-fetch policy that keeps a budget_capped miss from retiring a
       # live review URL. Both have colocated *.test.mjs that run in the
@@ -939,6 +958,14 @@ on:
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'
       - 'tests/unit/opening-night-latency-report.test.mjs'
+      # BRO-75: wrongProduction exclusion-volume analysis (distinguishes
+      # sticky-flag re-logging across rebuild passes from genuine new
+      # over-blocking). Colocated scripts/wrong-production-exclusion-
+      # analysis.test.mjs runs in the tests/unit-test-manifest.txt batch;
+      # these source entries make a solo edit trigger it.
+      - 'scripts/lib/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.js'
+      - 'scripts/wrong-production-exclusion-analysis.test.mjs'
       # Pull-quote guards decide the excerpt shown on every review card. The
       # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
       # truncation / hedge-guard starvation) added hard + soft guards here and

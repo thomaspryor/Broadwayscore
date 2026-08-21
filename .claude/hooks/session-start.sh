@@ -224,7 +224,7 @@ fi
 #
 # Paths watched (repo | sync-script | label):
 #   data/review-texts         → scripts/sync-review-texts.sh      (review-texts)
-#   ~/broadway-scorecard-data → (no --check-only helper yet)      (core-data)
+#   ~/broadway-scorecard-data → inline ancestry check below         (core-data)
 #
 # Fires on startup AND resume — resume is actually the higher-value case since
 # long-running sessions that pause + resume are when local drift matters most.
@@ -276,6 +276,68 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
     fi
   fi
 fi
+
+# CORE-DATA staleness (added 2026-08-20). The block above watches
+# data/review-texts; ~/broadway-scorecard-data had NO warning at all — the
+# header's own path table already flagged it as "(no --check-only helper yet)".
+#
+# Why it matters, from an incident that cost two dispatches: the core clone
+# supplies shows.json / reviews.json / outlet-registry.json into data/ via
+# setup-local-data.sh. A clone 2 commits behind produced a stale
+# outlet-registry.json, which read as "this fix never landed". A card was
+# reopened against two workers who had BOTH been correct, with a pointed
+# "don't close this again" comment on top. Stale core data does not fail
+# loudly like a missing file — it silently yields WRONG CONCLUSIONS.
+#
+# Ancestry only, deliberately: unlike review-texts, this clone legitimately
+# carries untracked local artifacts (.notion-corpus-runs/, actor-slugs.json,
+# cast-manifest.json), so copying the dirty-tree warning would fire every
+# session and train the reader to ignore it (adversarial review, Codex).
+#
+# Fail-open and bounded: same 5s perl alarm guard the review-texts path uses,
+# skipped entirely when the clone is absent (cloud sandboxes, fresh machines).
+# session-start runs on ~20 concurrent windows; an unbounded fetch here would
+# delay every one of them.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; }; then
+  CORE_DATA_DIR="${BSC_DATA_REPO:-$HOME/broadway-scorecard-data}"
+  if [ -d "$CORE_DATA_DIR/.git" ]; then
+    # Explicit refspec: a bare `git fetch origin main` can leave
+    # refs/remotes/origin/main stale under some refspec configs, which would
+    # make the rev-list below silently report 0 behind — the exact false
+    # negative this block exists to prevent.
+    perl -e 'alarm shift; exec @ARGV' 5 \
+      git -C "$CORE_DATA_DIR" fetch origin '+refs/heads/main:refs/remotes/origin/main' -q 2>/dev/null
+    CORE_BEHIND=$(git -C "$CORE_DATA_DIR" rev-list --count HEAD..refs/remotes/origin/main 2>/dev/null || echo 0)
+    CORE_AHEAD=$(git -C "$CORE_DATA_DIR" rev-list --count refs/remotes/origin/main..HEAD 2>/dev/null || echo 0)
+    : "${CORE_BEHIND:=0}" "${CORE_AHEAD:=0}"
+    if [ "$CORE_BEHIND" != "0" ] && [ "$CORE_AHEAD" != "0" ]; then
+      echo ""
+      echo "🚨 CORE DATA DIVERGED: $CORE_DATA_DIR is $CORE_BEHIND behind AND $CORE_AHEAD ahead of origin/main."
+      echo "   shows.json / reviews.json / outlet-registry.json in data/ may be BOTH stale and locally modified."
+      echo "   Reconcile before trusting any data-layer conclusion:"
+      echo "     cd $CORE_DATA_DIR && git pull --rebase origin main"
+      echo ""
+    elif [ "$CORE_BEHIND" != "0" ]; then
+      echo ""
+      echo "🔶 STALE CORE DATA: $CORE_DATA_DIR is $CORE_BEHIND commit(s) behind origin/main."
+      echo "   data/shows.json, data/reviews.json and data/outlet-registry.json are served from"
+      echo "   this clone. Stale core data does NOT fail loudly — it silently produces WRONG"
+      echo "   CONCLUSIONS (a card was reopened against two correct workers this way on 2026-08-20)."
+      echo "   Before asserting anything about the data layer, refresh it:"
+      echo "     cd $CORE_DATA_DIR && git pull --ff-only origin main && cd - && ./scripts/setup-local-data.sh"
+      echo "   Or check the authoritative copy directly, without pulling:"
+      echo "     git -C $CORE_DATA_DIR show origin/main:outlet-registry.json"
+      echo ""
+    elif [ "$CORE_AHEAD" != "0" ]; then
+      echo ""
+      echo "🔶 UNPUSHED CORE DATA: $CORE_DATA_DIR is $CORE_AHEAD commit(s) ahead of origin/main."
+      echo "   Local core-data commits that CI has not seen. Push before relying on a rebuild:"
+      echo "     cd $CORE_DATA_DIR && bash ~/Broadwayscore/scripts/lib/push-with-retry.sh 7 main"
+      echo ""
+    fi
+  fi
+fi
+
 
 # Scoring-delta session baseline (added 2026-06-04). data/review-texts is a single
 # clone SHARED by all concurrent CMUX sessions, so `scoring-delta.js`'s `git diff

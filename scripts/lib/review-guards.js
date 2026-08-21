@@ -2550,48 +2550,65 @@ function shouldRetryUrlDiscovery(show, review) {
   const isNoUrl = ir === 'no_url';
   const isWrongContent = ir === 'wrong_content';
   const isFabricated = !!review.fabricatedEntry;
+  // Tier 2 stale wrongProduction recovery (BRO-53): callers pass this
+  // incompleteReason (transiently, not persisted as the file's real
+  // incompleteReason) to reuse this same lifecycle-aware retry-count/cooldown
+  // SHAPE for a THIRD failure class — a stored URL that's from the wrong
+  // calendar window, not missing/wrong-kind content. Uses its OWN state
+  // fields (staleWpRetryCount/staleWpRetryAfter/
+  // staleWrongProductionRecoveryAbandoned), NOT the shared serpRetryCount/
+  // serpRetryAfter/serpDiscoveryAbandoned — those mean "all URL discovery is
+  // exhausted" for no_url/wrong_content callers (collect-review-texts.js,
+  // gather-reviews.js, etc.), and a Tier 2 exhaustion must not silently
+  // block a LATER, unrelated no_url/wrong_content retry on the same file
+  // (or vice versa) just because they'd otherwise share one counter.
+  const isStaleWrongProduction = ir === 'stale_wrong_production';
+  const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
+  const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
+  const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
 
   // Not in a gated state → let callers proceed (e.g. collector-flagged
   // wrongShow retries via existing wrongShowRetryAt path are not this gate's
   // responsibility).
-  if (!isNoUrl && !isWrongContent && !isFabricated) {
+  if (!isNoUrl && !isWrongContent && !isFabricated && !isStaleWrongProduction) {
     return { shouldRetry: true, reason: 'not_gated' };
   }
 
   // Permanent gate — once set, only a human unsets.
-  if (review.serpDiscoveryAbandoned === true) {
+  if (review[abandonedField] === true) {
     return { shouldRetry: false, reason: 'abandoned' };
   }
 
   const lifecycle = classifyLifecycle(show);
-  const count = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+  const count = typeof review[countField] === 'number' ? review[countField] : 0;
 
-  // wrong_content: hard retry cap
-  if (isWrongContent) {
+  // wrong_content / stale_wrong_production: hard retry cap
+  if (isWrongContent || isStaleWrongProduction) {
     const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
     if (count >= max) {
       return {
         shouldRetry: false,
         reason: 'max_retries_reached',
-        updates: { serpDiscoveryAbandoned: true },
+        updates: { [abandonedField]: true },
       };
     }
   }
 
-  // Cooldown gate (applies to both no_url and wrong_content under max)
-  if (review.serpRetryAfter) {
-    const after = new Date(review.serpRetryAfter).getTime();
+  // Cooldown gate (applies to no_url, wrong_content, and stale_wrong_production under max)
+  if (review[afterField]) {
+    const after = new Date(review[afterField]).getTime();
     if (!isNaN(after) && Date.now() < after) {
       return {
         shouldRetry: false,
         reason: 'cooldown',
-        nextAttemptAt: review.serpRetryAfter,
+        nextAttemptAt: review[afterField],
       };
     }
   }
 
   // Allow retry — tag reason for logging
   if (isWrongContent) return { shouldRetry: true, reason: 'wrong_content_retry' };
+  if (isStaleWrongProduction) return { shouldRetry: true, reason: 'stale_wrong_production_retry' };
   return { shouldRetry: true, reason: isFabricated ? 'fabricated_retry' : 'no_url_retry' };
 }
 
@@ -2615,28 +2632,156 @@ function recordSerpAttempt(show, review) {
   const ir = review.incompleteReason;
   const isNoUrl = ir === 'no_url' || !!review.fabricatedEntry;
   const isWrongContent = ir === 'wrong_content';
-  if (!isNoUrl && !isWrongContent) return {};
+  // See shouldRetryUrlDiscovery's comment: stale_wrong_production uses its
+  // OWN namespaced state fields, not the shared serpRetryCount/serpRetryAfter/
+  // serpDiscoveryAbandoned, so its exhaustion can't cross-contaminate the
+  // no_url/wrong_content gate (or vice versa) on the same file.
+  const isStaleWrongProduction = ir === 'stale_wrong_production';
+  if (!isNoUrl && !isWrongContent && !isStaleWrongProduction) return {};
 
-  const prevCount = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+  const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
+  const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
+  const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
+
+  const prevCount = typeof review[countField] === 'number' ? review[countField] : 0;
   const newCount = prevCount + 1;
-  const updates = { serpRetryCount: newCount };
+  const updates = { [countField]: newCount };
 
   const lifecycle = classifyLifecycle(show);
 
-  // wrong_content: check if this attempt just hit the cap → abandon
-  if (isWrongContent) {
+  // wrong_content / stale_wrong_production: check if this attempt just hit the cap → abandon
+  if (isWrongContent || isStaleWrongProduction) {
     const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
     if (newCount >= max) {
-      updates.serpDiscoveryAbandoned = true;
+      updates[abandonedField] = true;
       return updates;
     }
   }
 
   // Still have retries → set next cooldown
   const cooldown = COOLDOWN_MS[lifecycle] ?? (7 * DAY_MS);
-  updates.serpRetryAfter = new Date(Date.now() + cooldown).toISOString();
+  updates[afterField] = new Date(Date.now() + cooldown).toISOString();
 
   return updates;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Tier 2 stale wrongProduction recovery (BRO-53)
+ *
+ * getWrongProductionReasonFromUrl correctly excludes files where the stored
+ * URL belongs to an old archive (a prior production, a tour leg, a
+ * pre-transfer run) — but the pipeline never goes back and asks "so where's
+ * the CURRENT review by this critic+outlet?". The critic and outlet are
+ * real; a current review likely exists on the open web; nothing ever
+ * targeted a search for it, because a file with real fullText already
+ * "counts" as retrieved everywhere else in the pipeline.
+ *
+ * Eligibility is derived STRUCTURALLY — by re-running the canonical date
+ * guard against the file's own stored url right now — rather than by
+ * matching wrongProductionReason/wrongProductionNote text. There are 15+
+ * call sites across scripts/ that set wrongProduction with their own reason
+ * phrasing into one of two different fields (grep `wrongProductionReason =`
+ * / `wrongProductionNote =`), so text-matching would either miss most of
+ * them or require chasing every producer's wording. Re-deriving from the URL
+ * is exactly the question BRO-53 asks ("is the URL we hold from the wrong
+ * calendar window?") and stays correct regardless of which script or field
+ * originally set the flag.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Tier 2 recovery eligibility gate.
+ *
+ * True only when: wrongProduction is set, the file's OWN stored url still
+ * fails the URL-date guard today (re-derived via getWrongProductionReasonFromUrl,
+ * not read from a reason string), no human has already adjudicated the file,
+ * no prior recovery attempt already ran (recovered or abandoned), and
+ * there's a named critic + outlet to search for.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} [show] - shows.json entry
+ * @returns {boolean}
+ */
+function isEligibleForStaleWrongProductionRecovery(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show) return false;
+
+  // A human already adjudicated this file — don't second-guess.
+  if (data.wrongProductionManualClear === true) return false;
+  if (data.wrongProductionOverride === true) return false;
+  if (data.humanReviewedWrongProduction === false) return false;
+
+  // Recovery already ran (found the current review, or exhausted retries).
+  if (data.staleWrongProductionRecovered === true) return false;
+  if (data.staleWrongProductionRecoveryAbandoned === true) return false;
+
+  // Needs a real critic byline to search "critic + outlet + show" for.
+  const critic = String(data.criticName || '').trim().toLowerCase();
+  if (!critic || critic === 'unknown' || critic === 'staff') return false;
+
+  if (!data.outletId && !data.outlet) return false;
+
+  // Structural check: does the stored url STILL fail the date guard today?
+  const url = data.url || data.sourceUrl || '';
+  if (!getWrongProductionReasonFromUrl(url, show)) return false;
+
+  return true;
+}
+
+/**
+ * Given a URL discovered via a targeted "critic + outlet + show title" SERP
+ * search, decide whether it represents genuine recovery of the CURRENT
+ * review — as opposed to re-finding the same stale archive URL, or a second
+ * out-of-window hit for a different prior production.
+ *
+ * Pure — no I/O. The caller (a sibling script, modeled on
+ * scripts/retry-wrong-urls.js) is responsible for actually running the SERP
+ * search — scripts/lib/url-discovery.js's discoverCorrectUrl already builds
+ * a critic+outlet+title query — and for gating retry frequency via
+ * shouldRetryUrlDiscovery/recordSerpAttempt with
+ * incompleteReason: 'stale_wrong_production' (reuses the existing
+ * lifecycle-aware retry-count/cooldown SHAPE, under its own namespaced state
+ * fields — see that function's comment).
+ *
+ * Deliberately does NOT itself clear wrongProduction or return a
+ * ready-to-write patch: clearing the flag safely requires also correcting
+ * the embedded contentVerification sub-object (or rebuild-all-reviews.js's
+ * CV pre-pass silently re-flags it on the next rebuild) and dropping the
+ * stale content/score fields fetched from the OLD url (or a rebuild that
+ * runs before the refetch can admit old-production text as current). Both
+ * are the caller's job via the existing scripts/lib/wrong-production-clear.js
+ * clearWrongProductionFlags() helper — this function only decides WHETHER a
+ * discovered URL qualifies as genuine recovery and WHICH url to use.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {string|null} discoveredUrl - URL returned by the targeted SERP search
+ * @param {object} [show] - shows.json entry
+ * @returns {{url: string, oldUrl: string}|null} the recovery decision, or null if not qualifying
+ */
+function resolveStaleWrongProductionRecovery(data, discoveredUrl, show) {
+  if (!data || !discoveredUrl || typeof discoveredUrl !== 'string') return null;
+  if (!isEligibleForStaleWrongProductionRecovery(data, show)) return null;
+
+  const oldUrl = String(data.url || '').trim();
+  if (discoveredUrl === oldUrl) return null; // same stale URL — not recovery
+
+  // The candidate must itself pass the date guard, i.e. land INSIDE the
+  // show's window. If it's still flagged, it's just another out-of-window
+  // hit (e.g. a different prior production), not the current review.
+  const stillFlagged = getWrongProductionReasonFromUrl(discoveredUrl, show);
+  if (stillFlagged) return null;
+
+  // Defense in depth: discoverCorrectUrl already host-checks its candidates
+  // internally, but clearing wrongProduction is a stronger, harder-to-undo
+  // action than a plain URL swap (retry-wrong-urls.js's case) — re-validate
+  // the outlet's own domain before trusting the candidate. Lazy require:
+  // url-discovery.js already requires this file at load time, so a top-level
+  // require here would be circular.
+  const { validateUrlDomain } = require('./url-discovery');
+  const outletId = data.outletId || '';
+  const domainCheck = validateUrlDomain(discoveredUrl, outletId);
+  if (domainCheck.valid === false) return null;
+
+  return { url: discoveredUrl, oldUrl };
 }
 
 /**
@@ -3832,6 +3977,8 @@ module.exports = {
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
+  isEligibleForStaleWrongProductionRecovery,
+  resolveStaleWrongProductionRecovery,
   pickRerouteTarget,
   isIncludableForRebuild,
   explainExclusion,
