@@ -4762,6 +4762,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       health.siteSearch.hits = siteSearchResults.length;
 
       for (const result of siteSearchResults) {
+        // Site search is a second, structurally-separate discovery path (outlet-native
+        // search, not Google) — it got none of STEP 2's wrong-production filtering.
+        // Apply the same opening-night guard here so a revival/transfer can't absorb
+        // an undeclared earlier production's review through this path instead (BRO-736).
+        if (options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+          console.log(`  ✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+          health.rejections.wrongProduction++;
+          continue;
+        }
         const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
         const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
         foundReviews.push({

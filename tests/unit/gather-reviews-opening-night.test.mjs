@@ -77,6 +77,39 @@ test('a URL with no embedded year is never rejected (nothing to check)', () => {
   assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), false);
 });
 
+test('a URL year in the FUTURE relative to opening year is rejected (bad record, not a legitimate prior run)', () => {
+  const show = { openingDate: '2026-04-09' };
+  const url = 'https://www.nytimes.com/2028/01/01/theater/cats-review.html';
+  assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), true);
+});
+
+test('a December opening reviewed the following January is accepted (spillover grace)', () => {
+  const show = { openingDate: '2026-12-28' };
+  const url = 'https://www.nytimes.com/2027/01/02/theater/cats-review.html';
+  assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), false);
+});
+
+test('an April opening reviewed the following January is still rejected (no spillover grace outside Nov/Dec)', () => {
+  const show = { openingDate: '2026-04-09' };
+  const url = 'https://www.nytimes.com/2027/01/02/theater/cats-review.html';
+  assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), true);
+});
+
+test('a priorRuns entry with only openingDate (no closingDate) still readmits its own year', () => {
+  const show = {
+    openingDate: '2026-04-09',
+    priorRuns: [{ openingDate: '2024-06-01' }],
+  };
+  const url = 'https://www.nytimes.com/2024/06/12/theater/cats-jellicle-ball-review.html';
+  assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), false);
+});
+
+test('a malformed show.openingDate never rejects (cannot determine a window, fails safe)', () => {
+  const show = { openingDate: 'not-a-real-date' };
+  const url = 'https://www.nytimes.com/2024/06/12/theater/cats-review.html';
+  assert.equal(isSerpUrlWrongProductionForOpeningNight(url, show), false);
+});
+
 test('missing show.openingDate never rejects (can\'t determine a window)', () => {
   const url = 'https://www.nytimes.com/2024/06/12/theater/cats-review.html';
   assert.equal(isSerpUrlWrongProductionForOpeningNight(url, {}), false);

@@ -21,12 +21,7 @@
  * - tests/unit/gather-reviews-opening-night.test.mjs
  */
 
-const { isUrlYearInPriorRun, isUrlYearInTourLeg } = require('./url-discovery');
-
-// Year as a standalone path token, delimited by "/" or "-" on both sides —
-// matches the dash-form permalink fix in url-discovery.js's isUrlYearInPriorRun
-// (WordPress-style /2015/07/29/ AND slug-style -2015-the-car-man-review/).
-const URL_YEAR_RE = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
+const { isUrlYearInPriorRun, isUrlYearInTourLeg, URL_YEAR_PATTERN } = require('./url-discovery');
 
 /**
  * Extract a 4-digit year embedded in a URL path, or null if none found.
@@ -35,16 +30,21 @@ const URL_YEAR_RE = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
  */
 function extractUrlYear(url) {
   if (!url) return null;
-  const m = String(url).match(URL_YEAR_RE);
+  const m = String(url).match(URL_YEAR_PATTERN);
   return m ? parseInt(m[1], 10) : null;
 }
 
 /**
  * Strict (zero-grace) check for whether a SERP-discovered URL is almost
  * certainly the wrong production for an opening-night show. Unlike
- * isUrlYearOutsideWindow's -3y grace, this rejects ANY embedded year that
- * doesn't match the show's opening year — unless that year is explicitly
- * readmitted by a declared priorRuns or tourLegs window.
+ * isUrlYearOutsideWindow's -3y grace, this rejects any embedded year outside
+ * a tight window around the show's opening year — unless that year is
+ * explicitly readmitted by a declared priorRuns or tourLegs window.
+ *
+ * The window is opening year only, EXCEPT a Nov/Dec opening also admits
+ * openingYear+1 — press for a late-December opening routinely publishes in
+ * the first days of January (adversarial ship-check review, BRO-736: an
+ * exact-match-only window silently drops those legitimate reviews).
  *
  * Returns false (not suspicious) when the URL has no embedded year — most
  * outlet URLs don't encode one, and this check only exists to catch the
@@ -59,9 +59,13 @@ function isSerpUrlWrongProductionForOpeningNight(url, show) {
   const urlYear = extractUrlYear(url);
   if (urlYear == null) return false;
 
-  const openingYear = new Date(show.openingDate).getFullYear();
+  const openingDate = new Date(show.openingDate);
+  const openingYear = openingDate.getFullYear();
   if (isNaN(openingYear)) return false;
+
+  const spillsIntoNextYear = openingDate.getUTCMonth() >= 10; // Nov (10) or Dec (11)
   if (urlYear === openingYear) return false;
+  if (spillsIntoNextYear && urlYear === openingYear + 1) return false;
 
   if (isUrlYearInPriorRun(url, show.priorRuns)) return false;
   if (isUrlYearInTourLeg(url, show.tourLegs)) return false;
