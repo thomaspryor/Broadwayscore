@@ -61,6 +61,12 @@ function loadRouterWithFakes({
   const priorDigestQueueEnv = process.env.ALERT_DIGEST_QUEUE_PATH;
   const digestPath = path.join(tmpDir, 'alert-digest-queue.json');
   process.env.ALERT_DIGEST_QUEUE_PATH = digestPath;
+  // Same treatment for the attempts log (BRO-1699 systematic pass) — kept in
+  // the returned object below since several tests write attempts-log fixture
+  // rows directly via this path, outside logDispatchAttempt().
+  const priorAttemptsLogEnv = process.env.ALERT_ATTEMPTS_LOG_PATH;
+  const attemptsPath = path.join(tmpDir, 'alert-router-attempts.jsonl');
+  process.env.ALERT_ATTEMPTS_LOG_PATH = attemptsPath;
   const modulePath = require.resolve('./owner-alert-router.js');
   const discordNotifyPath = require.resolve('./discord-notify.js');
   const linearClientPath = require.resolve('./linear-client.js');
@@ -156,14 +162,13 @@ function loadRouterWithFakes({
   };
 
   const router = require(modulePath);
-  // Point the ledger/digest-queue at the temp dir (module already resolved
-  // its paths at require time — the ledger and digest queue are both env-var
-  // overridable (set above, before require()) so DIGEST_QUEUE_PATH/LEDGER_PATH
-  // already resolve straight to the temp dir; TRACKED_LEDGER_PATH and
-  // ATTEMPTS_LOG_PATH have no such override, so those two still need the
-  // fs-remap fallback below.
+  // Point the ledger at the temp dir (module already resolved its paths at
+  // require time — the ledger, digest queue, and attempts log are all
+  // env-var overridable (set above, before require()) so their *_PATH
+  // constants already resolve straight to the temp dir; only
+  // TRACKED_LEDGER_PATH has no override, so it still needs the fs-remap
+  // fallback below.
   const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
-  const attemptsPath = path.join(tmpDir, 'alert-router-attempts.jsonl');
 
   const realReadFileSync = fs.readFileSync;
   const realWriteFileSync = fs.writeFileSync;
@@ -180,10 +185,6 @@ function loadRouterWithFakes({
     // local test run would read the repo's REAL alert-ledger.json while a CI
     // run (LEDGER_PATH === tracked path) would not — same test, two answers.
     if (p === router._TRACKED_LEDGER_PATH) return path.join(tmpDir, 'tracked-alert-ledger.json');
-    // dispatchCard() logs every disposition='auto' attempt here — must be
-    // redirected too, or every test run touching disposition='auto' writes
-    // real attempt rows into the repo's data/audit/ directory.
-    if (p === router._ATTEMPTS_LOG_PATH) return attemptsPath;
     return p;
   }
 
@@ -206,6 +207,8 @@ function loadRouterWithFakes({
     else process.env.ALERT_LEDGER_PATH = priorLedgerEnv;
     if (priorDigestQueueEnv === undefined) delete process.env.ALERT_DIGEST_QUEUE_PATH;
     else process.env.ALERT_DIGEST_QUEUE_PATH = priorDigestQueueEnv;
+    if (priorAttemptsLogEnv === undefined) delete process.env.ALERT_ATTEMPTS_LOG_PATH;
+    else process.env.ALERT_ATTEMPTS_LOG_PATH = priorAttemptsLogEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 

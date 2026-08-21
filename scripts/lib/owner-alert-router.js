@@ -112,7 +112,12 @@ const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
 // incident every single dispatch failed, so the ledger would have shown ZERO
 // activity all week even though the router was attempting (and silently
 // failing) auto-dispatch on every run.
-const ATTEMPTS_LOG_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
+// Overridable + guarded like the ledger and digest queue above (BRO-1699
+// what-else finding, systematic pass: this is the third tracked file this
+// module writes and had the same gap as the digest queue did before this
+// pass).
+const ATTEMPTS_LOG_PATH = process.env.ALERT_ATTEMPTS_LOG_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
 const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 
 const DISPOSITIONS = ['auto', 'digest', 'human'];
@@ -246,6 +251,7 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
       ok,
       error: error ? String(error).slice(0, 500) : null,
     }));
+    assertRealFileWriteIsSafeUnderTest('alert-router attempts log', 'ALERT_ATTEMPTS_LOG_PATH');
     fs.mkdirSync(path.dirname(ATTEMPTS_LOG_PATH), { recursive: true });
     fs.writeFileSync(ATTEMPTS_LOG_PATH, kept.join('\n') + '\n');
   } catch (err) {
