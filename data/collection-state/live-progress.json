@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-21T03:08:45.885Z",
+  "updatedAt": "2026-08-21T04:21:37.112Z",
   "processed": 66,
-  "failed": 935,
-  "successRate": "6.6%",
+  "failed": 985,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 3,
     "scrapingbee": 7,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 15
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-20T23:16:54.951Z",
@@ -90,6 +90,28 @@
     },
     {
       "t": "2026-08-21T03:04:01.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T04:15:45.133Z",
+      "event": "bb-session",
+      "session": "d2dd506d",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T04:15:46.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T04:17:25.994Z",
+      "event": "bb-session",
+      "session": "bcc837a2",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-21T04:17:26.970Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
