@@ -1426,6 +1426,11 @@ on:
       # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
       # side triggers CI.
       - 'scripts/enrich-ibdb-dates.test.mjs'
+      # BRO-626: WE todaytix-collapsed press-night enrichment. scripts/lib/
+      # counterpart is covered by the scripts/lib/**.test.mjs glob; this
+      # root-level pair is NOT globbed, so it's path-listed here too.
+      - 'scripts/enrich-todaytix-press-nights.js'
+      - 'scripts/enrich-todaytix-press-nights.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
       - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery

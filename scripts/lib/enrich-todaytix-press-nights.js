@@ -12,8 +12,13 @@
  * that's why most of the 25 shows named in the original BRO-626 ticket
  * (2026-03-31) already show openingDateSource: 'inferred-from-reviews' or
  * 'theatremonkey' by the time this script runs (verified: 19 remained
- * collapsed as of 2026-08-21). This module handles that residual cohort:
- * shows too small/obscure for Theatremonkey to list, plus one blind spot in
+ * collapsed as of 2026-08-21, 16 of which were actually researched — the
+ * other 3 (dirty-dancing-the-classic-story-on-stage-west-end-2026,
+ * bill-bailey-vaudevillean-west-end-2026, the-snowman-west-end-2026) hadn't
+ * opened yet at research time, so there was no press night to look up; they
+ * fall through to the generic not-yet-opened reason below). This module
+ * handles that residual cohort: shows too small/obscure for Theatremonkey to
+ * list, plus one blind spot in
  * the review-inference heuristic worth noting here — that heuristic only
  * looks at review publish dates AFTER the stored openingDate (it assumes
  * TodayTix's date is too EARLY). The Hunger Games On Stage is the opposite
@@ -88,7 +93,8 @@ const VERIFIED_PRESS_NIGHTS = {
   'garry-starr-classic-penguins-garrick-west-end-2026': {
     pressNight: '2026-02-01',
     previewsStartDate: '2026-02-01',
-    confidence: 'high (on the date), n/a (no press night exists for this format)',
+    confidence: 'high',
+    note: 'confidence is for the corrected DATE only — no press night exists for this format at all (see citation)',
     citation: 'BroadwayWorld + theatrevibe.co.uk: this was a 4-date novelty transfer (Sundays 1/8/15/22 Feb 2026) tied to a Guinness World Record attempt — the stored 2026-01-01 does not match ANY actual performance date. No distinct press night was held; 2026-02-01 (first actual performance) replaces a flatly wrong date rather than supplying a press night that does not exist.',
   },
   'murder-she-didnt-write-west-end-2025': {
