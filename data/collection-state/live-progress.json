@@ -1,18 +1,47 @@
 {
-  "updatedAt": "2026-08-21T11:59:16.589Z",
+  "updatedAt": "2026-08-21T12:00:08.872Z",
   "processed": 67,
-  "failed": 483,
-  "successRate": "12.2%",
+  "failed": 493,
+  "successRate": "12.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "browserbase": 2,
+    "directCookies": 3,
+    "scrapingbee": 9,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 8
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-08-21T09:33:34.769Z",
+      "event": "bb-session",
+      "session": "409f9835",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-21T09:33:35.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T09:43:52.325Z",
+      "event": "bb-session",
+      "session": "68d1e964",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-21T09:43:53.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T09:52:17.669Z",
+      "event": "bb-session",
+      "session": "120785ce",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    }
+  ]
 }
