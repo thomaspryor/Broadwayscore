@@ -77,17 +77,6 @@
     "queuedAt": "2026-08-20T05:49:12.229Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.9% (380/488)\noff-broadway: 45.4% (148/326)\nwest-end: 70.8% (395/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (142h)\nA Midsummer Night's Dream - Globe — telegraph (142h)\nA Midsummer Night's Dream - Globe — thestage (142h)\nA Midsummer Night's Dream - Globe — times-uk (142h)\nA Midsummer Night's Dream — financialtimes (142h)\n… 201 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (142h)\nThe Book of Mormon — usatoday (142h)\nBuena Vista Social Club — broadwaynews (142h)\nHeathers The Musical — dailybeast (142h)\nHeathers The Musical — ew (142h)\n… 11 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-20T08:29:24.290Z"
-  },
-  {
     "conditionKey": "sd-circuit-breaker",
     "title": "Scrapingdog daily breaker TRIPPED: 37558/36000 credits",
     "description": "Scrapingdog billed 37558 credits today against a ceiling of 36000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (573), audit-show-review-gap.js (346), collect-outlet-reviews.js (284).",
@@ -119,5 +108,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-21T03:53:00.469Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 78.1% (381/488)\noff-broadway: 45.4% (148/326)\nwest-end: 71.3% (398/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (163h)\nA Midsummer Night's Dream - Globe — telegraph (163h)\nA Midsummer Night's Dream - Globe — thestage (163h)\nA Midsummer Night's Dream - Globe — times-uk (163h)\nA Midsummer Night's Dream — financialtimes (163h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (163h)\n& Juliet — nydailynews (163h)\nThe Book of Mormon — usatoday (163h)\nBuena Vista Social Club — broadwaynews (163h)\nBuena Vista Social Club — nydailynews (163h)\n… 26 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-21T04:40:38.771Z"
   }
 ]

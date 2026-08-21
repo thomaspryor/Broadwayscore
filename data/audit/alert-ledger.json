@@ -227,35 +227,36 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-21T03:53:15.865Z",
+      "lastSeen": "2026-08-21T04:40:43.587Z",
       "lastNotifiedAt": "2026-08-20T20:19:40.779Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-21T03:53:15.949Z",
-      "lastNotifiedAt": "2026-08-20T08:29:24.290Z",
-      "notifyCount": 25,
+      "lastSeen": "2026-08-21T04:40:43.676Z",
+      "lastNotifiedAt": "2026-08-21T04:40:38.771Z",
+      "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-20T20:19:40.681Z",
+      "lastSeen": "2026-08-21T04:40:43.486Z",
       "lastNotifiedAt": "2026-08-20T20:19:40.681Z",
       "notifyCount": 19,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -395,11 +396,12 @@
       "requestedDisposition": "human",
       "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-21T03:53:00.469Z",
+      "lastSeen": "2026-08-21T04:40:30.535Z",
       "lastNotifiedAt": "2026-08-21T03:53:00.469Z",
       "notifyCount": 27,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -911,11 +913,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-21T03:53:05.139Z",
+      "lastSeen": "2026-08-21T04:40:33.946Z",
       "lastNotifiedAt": "2026-08-21T03:53:05.139Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-328"
+      "linearIdentifier": "BRO-328",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
