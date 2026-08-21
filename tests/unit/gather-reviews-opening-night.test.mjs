@@ -14,8 +14,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const {
   extractUrlYear,
   isSerpUrlWrongProductionForOpeningNight,
@@ -179,4 +183,18 @@ test('parseGatherReviewsFlags: parses all flags together', () => {
     historical: true,
     openingNight: true,
   });
+});
+
+test('discover-opening-night-reviews.js requires and calls isSerpUrlWrongProductionForOpeningNight at all 3 SERP strategies (BRO-736 wiring guard)', () => {
+  // discover-opening-night-reviews.js is a second, independent SERP discovery
+  // path dispatched directly by opening-night-reviews.yml (line 216) BEFORE
+  // gather-reviews.js ever runs — it bypasses --opening-night entirely, so it
+  // needs its own copy of the same guard. Source-text assertion (not a require
+  // + mock, since main() does file I/O + network) so a future refactor can't
+  // silently drop the call and regress the exact contamination path BRO-736
+  // exists to close.
+  const src = readFileSync(path.join(__dirname, '../../scripts/discover-opening-night-reviews.js'), 'utf8');
+  assert.match(src, /require\(['"]\.\/lib\/opening-night-discovery['"]\)/);
+  const callCount = (src.match(/isSerpUrlWrongProductionForOpeningNight\(url, show\)/g) || []).length;
+  assert.equal(callCount, 3, `expected 3 call sites (site-specific, Google News, broad web), found ${callCount}`);
 });
