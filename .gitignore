@@ -146,6 +146,14 @@ data/master-review-list.json
 data/review-texts-quarantine/
 data/calibration/calibration-examples.json
 data/collected-reviews/
+# migrate-reroute-backlog.js writes full "before" review-text snapshots
+# (including fullText) into its plan/log JSON — outside data/review-texts/,
+# so the "no copyrighted content in public repo" CI guard (path-scoped to
+# data/review-texts/ and data/aggregator-archive/) would never catch a leak.
+data/reroute-migration-plan.json
+data/reroute-migration-plan-cross-market.json
+data/reroute-migration-log.json
+data/reroute-migration-log-cross-market.json
 data/mezzanine-screenshots/
 data/bug-reviews.json
 
