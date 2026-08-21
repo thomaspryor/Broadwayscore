@@ -513,11 +513,26 @@ function runSuccessionDispatch(task, args, deps) {
       process.exit(1);
     }
   }
+  // BRO-2251: runSuccessionDispatchLocked used to call process.exit(1)
+  // directly on every failure branch. process.exit() terminates the process
+  // immediately WITHOUT running pending finally blocks (verified live: a
+  // try/finally wrapping a synchronous process.exit() never logs its finally
+  // — standard Node behavior, not a bug in this repo, but it silently
+  // defeated the finally below), so every failed succession dispatch left
+  // this task's lock file held until it aged out ~8 minutes later
+  // (SUCCESSION_LOCK_STALE_MS) — exactly the retry window a caller recovering
+  // from a launch failure (this incident's whole scenario) would use, and
+  // exactly when it would get a misleading "already in flight (lock held,
+  // not stale)" refusal instead of a clean retry. runSuccessionDispatchLocked
+  // now RETURNS an exit code instead of calling process.exit() itself, so the
+  // finally always runs (releasing the lock) before this function exits.
+  let exitCode;
   try {
-    runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn });
+    exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn });
   } finally {
     if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id);
   }
+  if (exitCode) process.exit(exitCode);
 }
 
 function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn }) {
@@ -527,7 +542,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   if (refusal) {
     console.error(`[bsc-next] REFUSING succession dispatch: ${refusal}`);
     pageCapExceededFn(task, newDepth);
-    process.exit(1);
+    return 1;
   }
 
   const pid = notionIdOf(task);
@@ -539,13 +554,13 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   // that closed mid-flight is the same relaunch-closed-work bug the sweep
   // hits, so this guard runs here too. Free: `card` is already in hand.
   const closedCardErr = closedCardGuard(task, card, args);
-  if (closedCardErr) { console.error(closedCardErr); process.exit(1); }
+  if (closedCardErr) { console.error(closedCardErr); return 1; }
   // Task #1800: a successor continuing a card that looks REOPEN-SUSPECT
   // (falsely reopened over completed work) is the same risk closedCardGuard
   // above already guards against for a plainly-closed card — same rationale,
   // same free `card` in hand.
   const predispatchErr = predispatchGuard(task, card, args);
-  if (predispatchErr) { console.error(predispatchErr); process.exit(1); }
+  if (predispatchErr) { console.error(predispatchErr); return 1; }
   const project = projectOf({ tags: card && card.tags, category: (card && card.category) || categoryOf(task), subject: task.subject });
   const explicitModel = typeof args.model === 'string' ? args.model : null;
   const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
@@ -601,7 +616,34 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
     console.error(`[bsc-next] SUCCESSION LAUNCH NOT VERIFIED (${res.reason}).`);
     console.error(`  command that should have run:`);
     console.error(`  ${res.command}`);
-    process.exit(1);
+    // BRO-2251: this branch used to log and exit with NOTHING written to
+    // dispatch-ledger.js — a failed succession launch was invisible to
+    // detectLauncherOutage() and the watchdog's pager, exactly the "manual
+    // crowned-successor handoff" path that produced this incident's repeated
+    // empty-workspace repro (workspace:914/915/920, three attempts, zero
+    // ledger breadcrumbs). Mirrors the fresh-dispatch failure branch in
+    // main() (~line 1317 below) so a failed succession dispatch gets the same
+    // dead-shell breadcrumb and cross-task outage check every other launch
+    // failure already gets.
+    const failedEntries = dispatchLedger.failedLaunchEntries({
+      taskId: task.id, subject: task.subject, workspaceRef: res.workspaceRef, model,
+      verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
+      notionId: pid || null, failureReason: res.reason,
+      deadConfirmed: res.deadConfirmed !== false,
+    });
+    if (failedEntries.length) {
+      try {
+        failedEntries.forEach(e => appendLedgerEntryFn(e));
+        console.error(`  journaled dead succession dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
+      } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
+      try {
+        const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
+        if (outage.outage) {
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+        }
+      } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
+    }
+    return 1;
   }
 }
 
