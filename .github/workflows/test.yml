@@ -1896,6 +1896,12 @@ on:
       # + the new Linear chokepoint/CLI/CI-gate files need explicit listing.
       - 'scripts/linear-brain.js'
       - 'scripts/audit-linear-issuecreate-chokepoint.js'
+      # launchd stale-sync-swallow guard (BRO-1794): scripts/lib/launchd-
+      # stale-sync-guard.js and scripts/launchd/** are already globbed
+      # above (scripts/lib/** / scripts/launchd/**) — only these two
+      # top-level, un-globbed paths need explicit listing.
+      - 'scripts/audit-launchd-stale-sync-guard.js'
+      - 'scripts/tests/launchd-stale-sync-guard.test.mjs'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
@@ -2235,6 +2241,22 @@ jobs:
         # scripts/linear-import.js references issueCreate or api.linear.app
         # directly. Add a genuinely-exempt file to ALLOWLIST in the script.
         run: node scripts/audit-linear-issuecreate-chokepoint.js
+
+      - name: Audit — launchd stale-sync-swallow pattern (BRO-1794)
+        # Blocking: catches the NEXT copy of the ff-only/rebase `|| echo` /
+        # `|| true` swallow that silently ran launchd jobs on stale code
+        # (the class fixed for autonomous-shadow/morning-digest/backlog-
+        # drain/predispatch-queue-audit by task #732, and for weekly-
+        # retro.sh by BRO-1794 — that one missed the original sweep because
+        # nothing scanned for it). Scans scripts/launchd/*.plist +
+        # scripts/local-triggers/*.sh + autonomous-nightly.sh only (scripts
+        # actually invoked BY LAUNCHD on a schedule) — manually/CLI-invoked
+        # cousins with the same pattern (scripts/sync-review-texts.sh,
+        # scripts/simulate-opening-night-full.sh, scripts/newsletter/
+        # refresh-drafts.sh) are a different risk class and tracked
+        # separately as BRO-2254. Waive a specific reviewed-safe line with
+        # a trailing `# launchd-stale-sync-ok: <reason>` comment.
+        run: node scripts/audit-launchd-stale-sync-guard.js
 
       - name: Audit — gate corpus-guard coverage
         # Task #1069. Blocking, unlike the advisory audits around it: every
