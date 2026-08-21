@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-16T07:30:48.664Z",
-    "completedAt": "2026-08-16T07:30:51.653Z",
-    "totalReviews": 42611,
-    "processed": 0,
-    "skipped": 42609,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 108,
-      "total": 10925
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-16T09:09:20.181Z",
     "completedAt": "2026-08-16T09:09:22.910Z",
     "totalReviews": 9,
@@ -401457,5 +401437,25 @@
       "total": 14917
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-21T19:41:13.253Z",
+    "completedAt": "2026-08-21T19:41:13.464Z",
+    "totalReviews": 3,
+    "processed": 0,
+    "skipped": 2,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "marlise-off-broadway-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
