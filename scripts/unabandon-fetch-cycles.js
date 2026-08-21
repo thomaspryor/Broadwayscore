@@ -10,25 +10,40 @@
  * scripts/unabandon-non-serp-cycles.js, applied to the fetch guard instead
  * of the SERP guard.
  *
- * Re-derivation: for each abandoned review with a matching
- * failed-fetches.json ledger entry, call shouldRetryFetch() again on a copy
- * with fetchDiscoveryAbandoned cleared. If the lifecycle-tiered gate would
- * now allow a retry (show reclassified, e.g. closingDate corrected, or the
- * ledger's failureCount/failureReason changed), the abandonment is stale —
- * clear it. If the gate still says no (still closedOld + confirmed-dead,
- * still over the tiered max), leave it alone — re-deriving intentionally
- * reuses the SAME single source of truth as the live gate rather than a
- * second, independently-tuned check that could drift from it.
+ * Two modes, deliberately different in how much they trust the caller:
  *
- * A ledger entry may no longer exist (cleaned up, or the file was manually
- * abandoned without one) — those files fall back to the --show filter only,
- * since there's nothing to re-derive against.
+ * 1. BULK SCAN (no --show): re-derives each candidate's gate by calling
+ *    shouldRetryFetch() again on a copy with fetchDiscoveryAbandoned
+ *    cleared. If the lifecycle-tiered gate would now allow a retry (show
+ *    reclassified, e.g. closingDate corrected, or the ledger's
+ *    failureCount/failureReason changed), the abandonment is stale — clear
+ *    it. Reuses the SAME single source of truth as the live gate rather
+ *    than a second, independently-tuned check that could drift from it.
+ *    Scoped to gate-derived provenance only (fetchAbandonmentReason unset,
+ *    i.e. set by the live collect-review-texts.js path, or starting with
+ *    'backfill:', i.e. set by backfill-fetch-abandonment.js) — a review
+ *    abandoned with any OTHER reason string was a deliberate human call
+ *    (shouldRetryFetch's own docstring: "only a human unsets it") and bulk
+ *    mode must never silently override that.
+ *
+ * 2. TARGETED (--show=ID): unconditionally clears fetchDiscoveryAbandoned
+ *    for every abandoned review under that show, no re-derivation or
+ *    provenance check. Naming a specific show IS the human judgment call —
+ *    this is the only path that can recover the "domain came back online"
+ *    case, where the lifecycle-tiered gate legitimately still says no (the
+ *    show's classification didn't change, only the operator's real-world
+ *    knowledge did) but an operator has verified retrying is now safe.
+ *
+ * A ledger entry may no longer exist (cleaned up). Bulk mode has nothing to
+ * re-derive against in that case and skips the file; targeted mode doesn't
+ * need the ledger at all.
  *
  * Usage:
  *   node scripts/unabandon-fetch-cycles.js [--dry-run] [--show=ID]
  *
  * --dry-run   Print counts and sample mutations without writing
- * --show=ID   Only consider review files under data/review-texts/ID/
+ * --show=ID   Unconditionally clear every abandoned review under this show
+ *             (bypasses re-derivation and provenance scoping — see above)
  */
 
 const fs = require('fs');
@@ -72,14 +87,34 @@ try {
 let failedFetchesByReviewId = new Map();
 const failedPath = path.join(REVIEW_TEXTS_DIR, 'failed-fetches.json');
 try {
-  const failedFetches = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
+  const raw = fs.readFileSync(failedPath, 'utf8');
+  let failedFetches;
+  try {
+    failedFetches = JSON.parse(raw);
+  } catch (parseErr) {
+    // Missing file (ENOENT, caught below) is a normal empty-ledger state.
+    // A PRESENT-but-corrupt ledger is not — bulk mode would silently treat
+    // every candidate as "no ledger entry" and skip it, which looks
+    // identical to "nothing to do" in the report. Warn loudly so an
+    // operator doesn't mistake ledger corruption for a clean scan.
+    console.error(`WARNING: ${failedPath} exists but failed to parse (${parseErr.message}) — proceeding as if no ledger entries exist. Bulk-mode candidates will be skipped; --show mode is unaffected.`);
+    failedFetches = [];
+  }
   for (const f of failedFetches) {
     const id = f.reviewId || (f.showId && f.file ? `${f.showId}/${f.file}` : null);
     if (!id) continue;
     failedFetchesByReviewId.set(id, { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 });
   }
 } catch (e) {
-  // No ledger — proceed with an empty map.
+  // No ledger file at all — proceed with an empty map.
+}
+
+// Gate-derived abandonment provenance (bulk mode only — see header comment).
+// The live collect-review-texts.js path never stamps a reason at all; only
+// backfill-fetch-abandonment.js stamps 'backfill:<reason>:<count>'.
+function isGateDerivedAbandonment(review) {
+  const reason = review.fetchAbandonmentReason;
+  return reason == null || reason.startsWith('backfill:');
 }
 
 // ---------------------------------------------------------------------------
@@ -87,6 +122,7 @@ try {
 // ---------------------------------------------------------------------------
 let scanned = 0;
 let abandoned = 0;
+let notGateDerived = 0;
 let noLedgerEntry = 0;
 let stillGated = 0;
 const toClear = [];
@@ -110,6 +146,20 @@ for (const showId of showDirs) {
 
     if (review.fetchDiscoveryAbandoned !== true) continue;
     abandoned++;
+
+    // Targeted mode: unconditional clear, no re-derivation or provenance
+    // check — naming --show=ID IS the human decision.
+    if (SHOW_FILTER) {
+      toClear.push({ filePath, reviewId, showId, failureReason: review.fetchAbandonmentReason || '(none)', failureCount: null, gateReason: 'targeted_override' });
+      reasonBreakdown[review.fetchAbandonmentReason || '(none)'] = (reasonBreakdown[review.fetchAbandonmentReason || '(none)'] || 0) + 1;
+      continue;
+    }
+
+    // Bulk mode: never override a human's own abandonment call.
+    if (!isGateDerivedAbandonment(review)) {
+      notGateDerived++;
+      continue;
+    }
 
     const entry = failedFetchesByReviewId.get(reviewId);
     if (!entry) {
@@ -136,9 +186,14 @@ for (const showId of showDirs) {
 // ---------------------------------------------------------------------------
 console.log('Scanned:', scanned);
 console.log('fetchDiscoveryAbandoned=true:', abandoned);
-console.log('No ledger entry (skipped — nothing to re-derive against):', noLedgerEntry);
-console.log('Still correctly gated (left alone):', stillGated);
-console.log('To clear (lifecycle reclassified):', toClear.length);
+if (SHOW_FILTER) {
+  console.log(`Targeted mode (--show=${SHOW_FILTER}): unconditional clear, no re-derivation`);
+} else {
+  console.log('Not gate-derived (human-set reason, left alone):', notGateDerived);
+  console.log('No ledger entry (skipped — nothing to re-derive against):', noLedgerEntry);
+  console.log('Still correctly gated (left alone):', stillGated);
+}
+console.log('To clear:', toClear.length);
 console.log('');
 console.log('failureReason breakdown of clears:');
 for (const [r, c] of Object.entries(reasonBreakdown).sort((a, b) => b[1] - a[1])) {
