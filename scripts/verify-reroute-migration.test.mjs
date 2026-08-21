@@ -42,19 +42,25 @@ const MODES = [
   { flag: ['--cross-market'], logFile: path.join(dataDir, 'reroute-migration-log-cross-market.json') },
 ];
 
-const present = MODES.filter((m) => fs.existsSync(m.logFile));
+// A present-but-empty log is a legitimate real state (a dry-run found zero
+// safe candidates and --execute was run anyway) — proved live in this repo:
+// running --cross-market --execute against an already-cleaned corpus wrote
+// `[]`. That's "nothing to verify", not a broken migration, so it's treated
+// the same as absent rather than failing the suite.
+const present = MODES
+  .filter((m) => fs.existsSync(m.logFile))
+  .map((m) => ({ ...m, entries: JSON.parse(fs.readFileSync(m.logFile, 'utf8')) }))
+  .filter((m) => m.entries.length > 0);
 
 if (present.length === 0) {
-  test('reroute migration verification (skipped — no log artifact present)', (t) => {
-    t.skip('No reroute-migration-log*.json found; nothing to verify. This is expected in CI and once a migration has been reviewed and its (gitignored) log cleaned up locally.');
+  test('reroute migration verification (skipped — no non-empty log artifact present)', (t) => {
+    t.skip('No reroute-migration-log*.json with entries found; nothing to verify. Expected in CI, once a migration has been reviewed and its (gitignored) log cleaned up locally, or after a run that found zero safe candidates.');
   });
 } else {
-  for (const { flag, logFile } of present) {
-    const entries = JSON.parse(fs.readFileSync(logFile, 'utf8'));
+  for (const { flag, logFile, entries } of present) {
     const label = path.basename(logFile);
 
     test(`${label}: migrate-reroute-backlog.js --verify${flag.length ? ' ' + flag.join(' ') : ''} reports clean`, () => {
-      assert.ok(entries.length > 0, `${logFile} is empty`);
       // Throws (non-zero exit) on any unclean move; a clean run just logs and exits 0.
       execFileSync(process.execPath, [MIGRATE_SCRIPT, ...flag, '--verify'], { stdio: 'pipe' });
     });
