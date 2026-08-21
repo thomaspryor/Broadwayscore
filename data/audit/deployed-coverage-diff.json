@@ -1,44 +1,29 @@
 {
-  "generatedAt": "2026-08-20T10:24:12.811Z",
+  "generatedAt": "2026-08-21T04:40:43.478Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 148,
-  "defective": 2,
+  "clean": 149,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "openingDate": "2026-08-18",
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "openingDate": "2026-06-25",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 67.57 vs local 67.99 (Δ0.42)"
+          "detail": "deployed cs 83.99 vs local 84.32 (Δ0.33)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17
-    },
-    {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "title": "How the Other Half Loves",
-      "openingDate": "2026-08-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.5 vs local 77.42 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 20,
+      "deployedCount": 20
     }
   ]
 }

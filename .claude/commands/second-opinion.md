@@ -129,7 +129,7 @@ node scripts/lib/review-gate.mjs --query=record --reviewer=second-opinion --resu
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion \
-  --result=pass --session-id="$CLAUDE_SESSION_ID" --note="<one line: what the review changed>"
+  --result=pass --session-id="$CLAUDE_CODE_SESSION_ID" --note="<one line: what the review changed>"
 ```
 
 This is what `~/.claude/hooks/infra-plan-review-gate.sh` checks before the session's first edit to shared infrastructure (task #1079, owner decision 2026-08-05). Without it the session stays blocked no matter how good the review was. `--result=fail` if you found blockers — a fail verdict does NOT unblock, and overturning it is the owner's call, recorded as `--reviewer=owner-override`.

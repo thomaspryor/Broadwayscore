@@ -75,6 +75,12 @@ on:
       # broad glob) so a solo edit triggers CI.
       - 'scripts/audit-review-texts-test-yml-coverage.js'
       - 'scripts/audit-review-texts-test-yml-coverage.test.mjs'
+      # BRO-141: recover-serp-text.js's colocated test requires it directly
+      # (root-level scripts/*.js + *.test.mjs, no scripts/** broad glob) —
+      # needs its own entry so a solo edit triggers CI.
+      - 'scripts/recover-serp-text.js'
+      - 'scripts/recover-serp-text.test.mjs'
+      - 'scripts/tests/recover-serp-exhausted-outlets.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -537,6 +543,12 @@ on:
       # scripts/lib/** glob above.
       - 'scripts/scrape-broadway-com-audience.js'
       - 'scripts/scrape-broadway-com-audience.test.mjs'
+      # BRO-112: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/scrape-wp-theater-blogs.js'
+      - 'scripts/scrape-wp-theater-blogs.test.mjs'
       # Canonical Broadway-only scope + designation criteria for the commercial-
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.
@@ -818,6 +830,15 @@ on:
       # Check 2e). Solo edits must run its unit test (dolly incident 2026-07-14).
       - 'tests/unit/announced-promotion.test.mjs'
       - 'scripts/update-show-status.js'
+      # Stale 'announced' show detector (BRO-93) — flags announced shows whose
+      # run has demonstrably started/finished (stale previewsStartDate or
+      # collected review-texts). Root-level scripts/*.test.mjs is not globbed
+      # (registered in tests/unit-test-manifest.txt), so a solo edit needs its
+      # own entry. scripts/lib/stale-announced-audit.js (the decision logic +
+      # ack mechanism) is intentionally NOT listed here — already covered by
+      # the scripts/lib/** glob above.
+      - 'scripts/audit-stale-announced-shows.js'
+      - 'scripts/audit-stale-announced-shows.test.mjs'
       # Scraping cost v3 S2 — Bright Data daily breaker + per-run budget, and
       # the failed-fetch policy that keeps a budget_capped miss from retiring a
       # live review URL. Both have colocated *.test.mjs that run in the
@@ -1415,6 +1436,10 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
       - 'scripts/notion-tasks-sync.test.mjs'
+      # BRO-2215 acceptance regression — lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed); path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/tests/notion-mirror-status-reconcile.test.mjs'
       # Task #1701: pull-time dedup regression test lives in tests/unit/ (node
       # --test batch, not globbed — see tests/unit-test-manifest.txt) and is
       # registered explicitly in the tests/unit node --test invocation below.
@@ -2635,6 +2660,24 @@ jobs:
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook.
           bash scripts/lint-workflow-guards.sh ledger-coverage
+
+      - name: Check ledger-commit steps never fail their job (BRO-2243)
+        run: |
+          # A "Commit scraper-spend ledger" step races every other concurrent
+          # workflow pushing to main — losing that race is routine, expected
+          # contention, not a data problem. BRO-2243 investigated a claim
+          # that this race was reddening Data Validation on several open PRs;
+          # it turned out each of those was actually failing on an unrelated
+          # content check (Audit flag-vs-CV contradictions), and all 30
+          # existing commit-scraper-spend-ledger call sites already carry
+          # both if: always() and continue-on-error: true (fixed BRO-163,
+          # 2026-08-14) — so the race itself is already structurally
+          # prevented everywhere. This is the permanent regression guard so
+          # a new call site, or an edit that drops one of the two flags,
+          # can't silently reopen it. Logic lives in
+          # scripts/lint-workflow-guards.sh — shared with the local
+          # pre-push hook.
+          bash scripts/lint-workflow-guards.sh ledger-step-guard
 
       - name: Check scripts avoid reset --soft + scoped-add + commit
         run: |
