@@ -267,6 +267,15 @@ function referencedScripts(source) {
       pathsBlockIndent = -1;
     }
     if (/^\s*paths(?:-ignore)?:\s*$/.test(line)) { pathsBlockIndent = indent; continue; }
+    // A whole-line YAML `#` comment names a script as PROSE, not an
+    // invocation — this repo's step comments routinely cross-reference
+    // other scripts by path (BRO-1794 caught this: a step comment merely
+    // mentioning scripts/sync-review-texts.sh as a "see also" made this
+    // function report it as reachable, exactly the false-positive shape
+    // the paths: exclusion above already exists to prevent). Only skips a
+    // line that IS a comment top-to-bottom, not a trailing `# ...` after
+    // real content, so a genuine `run:` invocation is never hidden.
+    if (/^\s*#/.test(line)) continue;
 
     re.lastIndex = 0;
     let m;
