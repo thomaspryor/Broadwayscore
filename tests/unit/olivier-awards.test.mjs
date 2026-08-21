@@ -1,3 +1,8 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural checks only (category-market
+// mapping is pure code; the data-integrity block asserts count>0 and
+// classifiability, never a specific show's win/nom facts) — no pinned claim
+// can rot when data/precursors/olivier.json is re-scraped.
+
 /**
  * BRO-573 — Olivier Award info on West End shows.
  *
