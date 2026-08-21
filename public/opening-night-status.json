@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T23:35:27.854Z",
+  "generatedAt": "2026-08-21T07:18:38.481Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,9 +12,9 @@
       "status": "open",
       "slug": "abigails-party-west-end",
       "thumbnail": "/images/shows/abigails-party-west-end-2026/thumbnail.webp",
-      "siteScore": 79.47,
+      "siteScore": 79.34,
       "liveScore": 79,
-      "scoreDrift": -0.46999999999999886,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -28,9 +28,9 @@
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -155,6 +155,18 @@
           "t": "2026-08-20T20:42:13.512Z",
           "rc": 15,
           "s": 79.47,
+          "t1": 9,
+          "t2": 4,
+          "t3": 2,
+          "p": 13,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-21T07:18:38.481Z",
+          "rc": 15,
+          "s": 79.34,
           "t1": 9,
           "t2": 4,
           "t3": 2,
@@ -559,17 +571,17 @@
       "status": "open",
       "slug": "jeeves-takes-charge-west-end",
       "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
-      "siteScore": 68.99,
-      "liveScore": 69,
-      "scoreDrift": 0.010000000000005116,
+      "siteScore": 69.63,
+      "liveScore": 70,
+      "scoreDrift": 0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 1,
       "t2": 4,
-      "t3": 14,
-      "positive": 8,
+      "t3": 15,
+      "positive": 9,
       "mixed": 9,
       "negative": 2,
       "readiness": {
@@ -578,7 +590,7 @@
           "T1:0/3",
           "T2:1/2"
         ],
-        "highConfidence": 6,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -734,6 +746,18 @@
           "m": 9,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-21T07:18:38.481Z",
+          "rc": 20,
+          "s": 69.63,
+          "t1": 1,
+          "t2": 4,
+          "t3": 15,
+          "p": 9,
+          "m": 9,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     }
@@ -749,7 +773,7 @@
       "status": "previews",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,

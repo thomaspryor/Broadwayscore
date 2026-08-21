@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-20T18:11:33.979Z",
+    "generatedAt": "2026-08-21T07:25:56.074Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,132 +8,135 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 3,
-    "exemptCount": 9,
-    "coveredCount": 14,
-    "highChurnTracked": 26
+    "flaggedCount": 4,
+    "exemptCount": 10,
+    "coveredCount": 13,
+    "highChurnTracked": 27
   },
   "flagged": [
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 46
+      "churn": 63
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 41
+      "churn": 47
     },
     {
-      "path": "data/audit/validation-baseline.json",
+      "path": "data/audit/recover-ratings-state.json",
+      "churn": 36
+    },
+    {
+      "path": ".github/workflows/test.yml",
       "churn": 32
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 157
+      "churn": 148
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 85
+      "churn": 81
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 84
+      "churn": 80
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 84
+      "churn": 80
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 56
+      "churn": 51
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 54
+      "churn": 49
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 47
-    },
-    {
-      "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
-      "churn": 34
+      "churn": 44
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 32
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/abigails-party-west-end-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 828,
+      "churn": 866,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 802,
+      "churn": 841,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 457,
+      "churn": 454,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 379,
+      "churn": 385,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 362,
+      "churn": 368,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 213,
+      "churn": 209,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 119,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 119,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 119,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 89,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 84,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 84,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 84,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 49,
+      "churn": 54,
       "mergeAttr": "ours"
     }
   ]
