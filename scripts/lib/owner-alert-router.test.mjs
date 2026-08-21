@@ -53,6 +53,14 @@ function loadRouterWithFakes({
   if (ledgerEnvPath === undefined) ledgerEnvPath = path.join(tmpDir, 'alert-ledger.json');
   if (ledgerEnvPath) process.env.ALERT_LEDGER_PATH = ledgerEnvPath;
   else delete process.env.ALERT_LEDGER_PATH;
+  // Mirrors ALERT_LEDGER_PATH above (BRO-1699 what-else finding): the digest
+  // queue is now overridable + write-guarded the same way the ledger is, so
+  // this must be set BEFORE require() resolves DIGEST_QUEUE_PATH — computed
+  // here (not lower, alongside the other tmpDir-relative paths) specifically
+  // so it's available this early.
+  const priorDigestQueueEnv = process.env.ALERT_DIGEST_QUEUE_PATH;
+  const digestPath = path.join(tmpDir, 'alert-digest-queue.json');
+  process.env.ALERT_DIGEST_QUEUE_PATH = digestPath;
   const modulePath = require.resolve('./owner-alert-router.js');
   const discordNotifyPath = require.resolve('./discord-notify.js');
   const linearClientPath = require.resolve('./linear-client.js');
@@ -149,13 +157,12 @@ function loadRouterWithFakes({
 
   const router = require(modulePath);
   // Point the ledger/digest-queue at the temp dir (module already resolved
-  // its paths at require time — patch the exported constants via a fresh
-  // require is not possible since fs paths are captured in closures, so we
-  // instead override the LEDGER/DIGEST env indirection: the module reads
-  // paths relative to __dirname, not env. Simplest safe approach: redirect
-  // fs calls for exactly those two paths to the temp dir equivalents.
+  // its paths at require time — the ledger and digest queue are both env-var
+  // overridable (set above, before require()) so DIGEST_QUEUE_PATH/LEDGER_PATH
+  // already resolve straight to the temp dir; TRACKED_LEDGER_PATH and
+  // ATTEMPTS_LOG_PATH have no such override, so those two still need the
+  // fs-remap fallback below.
   const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
-  const digestPath = path.join(tmpDir, 'alert-digest-queue.json');
   const attemptsPath = path.join(tmpDir, 'alert-router-attempts.jsonl');
 
   const realReadFileSync = fs.readFileSync;
@@ -173,7 +180,6 @@ function loadRouterWithFakes({
     // local test run would read the repo's REAL alert-ledger.json while a CI
     // run (LEDGER_PATH === tracked path) would not — same test, two answers.
     if (p === router._TRACKED_LEDGER_PATH) return path.join(tmpDir, 'tracked-alert-ledger.json');
-    if (p === router._DIGEST_QUEUE_PATH) return digestPath;
     // dispatchCard() logs every disposition='auto' attempt here — must be
     // redirected too, or every test run touching disposition='auto' writes
     // real attempt rows into the repo's data/audit/ directory.
@@ -198,6 +204,8 @@ function loadRouterWithFakes({
     delete require.cache[modulePath];
     if (priorLedgerEnv === undefined) delete process.env.ALERT_LEDGER_PATH;
     else process.env.ALERT_LEDGER_PATH = priorLedgerEnv;
+    if (priorDigestQueueEnv === undefined) delete process.env.ALERT_DIGEST_QUEUE_PATH;
+    else process.env.ALERT_DIGEST_QUEUE_PATH = priorDigestQueueEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
