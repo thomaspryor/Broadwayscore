@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-21T19:06:22.617Z",
+  "updatedAt": "2026-08-21T19:11:04.637Z",
   "processed": 6,
-  "failed": 19,
-  "successRate": "24.0%",
+  "failed": 29,
+  "successRate": "17.1%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-08-21T18:59:25.838Z",
@@ -38,6 +38,28 @@
       "event": "bb-session",
       "session": "e41cea78",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-21T19:07:54.490Z",
+      "event": "bb-session",
+      "session": "71ee8d73",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T19:07:55.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T19:09:29.064Z",
+      "event": "bb-session",
+      "session": "488e0389",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-21T19:09:29.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }

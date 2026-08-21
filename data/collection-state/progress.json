@@ -26,7 +26,17 @@
     "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
-    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json"
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -38,7 +48,10 @@
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -48,7 +61,7 @@
     ]
   },
   "startTime": "2026-08-21T15:01:32.866Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
   "log": [
     {
       "t": "2026-08-21T18:59:25.838Z",
@@ -73,6 +86,28 @@
       "event": "bb-session",
       "session": "e41cea78",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-21T19:07:54.490Z",
+      "event": "bb-session",
+      "session": "71ee8d73",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T19:07:55.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T19:09:29.064Z",
+      "event": "bb-session",
+      "session": "488e0389",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-21T19:09:29.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
