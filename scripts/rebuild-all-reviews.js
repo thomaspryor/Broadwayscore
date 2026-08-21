@@ -2319,7 +2319,7 @@ showDirs.forEach(showId => {
             // incl. the priorRuns exemption) — a threshold drift here would let a
             // duplicate's excluded reference block the surviving copy's recovery.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -2417,7 +2417,7 @@ showDirs.forEach(showId => {
             // paths must agree on whether a reference is excluded or recovery
             // depends on which duplicate field happened to be set.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -3204,7 +3204,7 @@ showDirs.forEach(showId => {
       // routedFromShowId: already rerouted — publish date reflects the original show's era
       // priorRuns: review falls inside a declared earlier-run window (Phase 1 production-continuity)
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
-        const pubDate = new Date(data.publishDate);
+        const pubDate = parseDate(data.publishDate);
         const openDate = showDateMap[showId];
         const preWindow = evaluatePreWindowInclusion({
           pubDate,
@@ -3416,10 +3416,10 @@ showDirs.forEach(showId => {
         showDateMap[showId] &&
         !data.allowEarlyDate &&
         !isLondonMarket(showCategory) &&
-        !isWithinPriorRun(new Date(data.publishDate), showById[showId]?.priorRuns)
+        !isWithinPriorRun(parseDate(data.publishDate), showById[showId]?.priorRuns)
       ) {
-        const pubDate = new Date(data.publishDate);
-        if (!isNaN(pubDate.getTime())) {
+        const pubDate = parseDate(data.publishDate);
+        if (pubDate && !isNaN(pubDate.getTime())) {
           const showDate = showDateMap[showId];
           const daysBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24);
           if (daysBefore > 30) {
