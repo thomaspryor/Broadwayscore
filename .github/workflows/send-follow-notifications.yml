@@ -70,6 +70,15 @@ jobs:
         if: steps.check.outputs.has_followers == 'true'
         run: node scripts/detect-show-changes.js
 
+      - name: Detect social pulse tier transitions (BRO-770)
+        # Runs AFTER detect-show-changes.js, not as a step in
+        # update-social-pulse.yml: detect-show-changes.js rewrites
+        # digest.changes[showId] wholesale, so a tier change written earlier
+        # would be silently dropped for any show that also got a structural
+        # change that week. Appending here is race-free.
+        if: steps.check.outputs.has_followers == 'true'
+        run: node scripts/detect-social-tier-changes.js
+
       - name: Send notifications
         if: steps.check.outputs.has_followers == 'true'
         id: send
@@ -107,7 +116,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # followers.json is gitignored + owned by sync-followers.yml (private core-data repo).
           # This workflow only writes audit files — do not re-add followers.json here.
-          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json
+          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

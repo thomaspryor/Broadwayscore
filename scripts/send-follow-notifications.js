@@ -48,7 +48,12 @@ const MAX_SENDS_PER_RUN = Math.min(MONTHLY_LIMIT - BUDGET_RESERVE, 100); // 100/
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
 
 // High-priority change types — a single one of these warrants an email
-const HIGH_PRIORITY_TYPES = ['opening-night', 'status-change', 'cast-change', 'lottery-added', 'recoupment'];
+const HIGH_PRIORITY_TYPES = [
+  'opening-night', 'status-change', 'cast-change', 'lottery-added', 'recoupment',
+  // BRO-770: a tier entry into Buzzing/Troubled is itself the whole story —
+  // don't wait for a second unrelated change to cross the 2-change threshold.
+  'social-tier-buzzing', 'social-tier-troubled',
+];
 
 function loadJSON(filePath) {
   try {
