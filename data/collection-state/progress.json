@@ -26,7 +26,17 @@
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
-    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json"
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -38,7 +48,9 @@
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -48,7 +60,7 @@
     ]
   },
   "startTime": "2026-08-21T20:52:21.012Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
   "log": [
     {
       "t": "2026-08-21T20:53:15.970Z",
@@ -73,6 +85,29 @@
       "event": "bb-session",
       "session": "5b8f08c4",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-21T22:39:18.351Z",
+      "event": "bb-session",
+      "session": "45783567",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T22:39:19.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T22:39:41.802Z",
+      "event": "bb-session",
+      "session": "80bef1e9",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-21T22:39:49.752Z",
+      "event": "bb-session",
+      "session": "cae55039",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
     }
   ]
 }
