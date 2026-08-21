@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-21T03:53:15.769Z",
+  "generatedAt": "2026-08-21T04:40:43.478Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 150,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 149,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "openingDate": "2026-06-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.99 vs local 84.32 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20
+    }
+  ]
 }
