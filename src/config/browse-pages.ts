@@ -43,8 +43,10 @@ export interface BrowsePageConfig {
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
   // getById lets a section label depend on a linked show (e.g. a tryout's
-  // Broadway transfer status) without importing data modules into this config.
-  sectionGroup?: (show: ComputedShow, getById?: (id: string) => ComputedShow | undefined) => string;
+  // Broadway transfer status); getShowGrosses lets it depend on box office
+  // data (e.g. average ticket price) — neither is on ComputedShow itself,
+  // so both are threaded through instead of importing data modules here.
+  sectionGroup?: (show: ComputedShow, getById?: (id: string) => ComputedShow | undefined, getShowGrosses?: (slug: string) => ShowGrosses | undefined) => string;
 }
 
 // Helper to parse runtime string to minutes
@@ -821,6 +823,12 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
         const bAtp = ctx.getShowGrosses(b.slug)?.thisWeek?.atp ?? 0;
         return bAtp - aAtp;
       });
+    },
+    sectionGroup: (show, _getById, getShowGrosses) => {
+      const atp = getShowGrosses?.(show.slug)?.thisWeek?.atp ?? 0;
+      if (atp >= 150) return '$150+';
+      if (atp >= 100) return '$100-150';
+      return 'Under $100';
     },
     relatedPages: ['broadway-lottery-shows', 'broadway-rush-tickets', 'best-broadway-show-right-now'],
   },

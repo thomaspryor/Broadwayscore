@@ -180,7 +180,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
   const sectionLabels = config.sectionGroup
-    ? shows.map(show => config.sectionGroup!(show, getShowById))
+    ? shows.map(show => config.sectionGroup!(show, getShowById, getShowGrosses))
     : undefined;
 
   // Determine available sorts and filters for this page

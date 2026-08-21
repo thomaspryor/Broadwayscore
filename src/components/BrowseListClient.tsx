@@ -84,14 +84,19 @@ export default function BrowseListClient({
     ? { ...SORT_LABELS, oldest: 'Soonest', newest: 'Latest' }
     : SORT_LABELS;
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
-  const [sort, setSort] = useState<SortOption>(
+  // The page's own configured default sort — not necessarily 'score' or
+  // 'custom' (e.g. broadway-shows-closing-soon defaults to 'closing').
+  // Section headers key off matching THIS, not a hardcoded pair, so a
+  // page's own default ordering always keeps its groupings until the user
+  // manually switches away (see isDefaultSort below).
+  const defaultSortKey: SortOption =
     defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
     defaultSort === 'closing-date' ? 'closing' :
     defaultSort === 'opening-date-asc' ? 'oldest' :
     defaultSort === 'opening-date' ? 'newest' :
-    'score'
-  );
+    'score';
+  const [sort, setSort] = useState<SortOption>(defaultSortKey);
   const [typeFilter, setTypeFilter] = useState<'all' | 'musical' | 'play'>('all');
 
   const hasAnyAudienceData = useMemo(
@@ -203,8 +208,9 @@ export default function BrowseListClient({
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
           {filteredAndSorted.map((show, index) => {
-            // Section headings: only show when using default sort and labels exist
-            const isDefaultSort = sort === 'custom' || sort === 'score';
+            // Section headings: only show when using the page's own default
+            // sort (client re-sorts lose groupings) and labels exist.
+            const isDefaultSort = sort === defaultSortKey;
             const originalIndex = initialShows.indexOf(show);
             const label = sectionLabels && isDefaultSort ? sectionLabels[originalIndex] : undefined;
             const prevShow = index > 0 ? filteredAndSorted[index - 1] : null;
