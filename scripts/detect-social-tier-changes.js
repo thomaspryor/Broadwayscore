@@ -9,10 +9,12 @@
  * per tier entry, not on every run while a show stays in the tier.
  *
  * Runs AFTER detect-show-changes.js in send-follow-notifications.yml (not
- * as a step in update-social-pulse.yml): detect-show-changes.js rewrites
- * digest.changes[showId] wholesale, so a tier change written before it
- * would be silently dropped for any show that also has a structural
- * change (status/score/cast) that week. Appending after it is race-free.
+ * as a step in update-social-pulse.yml): detect-show-changes.js used to
+ * rewrite digest.changes[showId] wholesale, which would silently drop a
+ * pending-but-undelivered tier change on any later run where the show also
+ * got a structural change (status/score/cast). detect-show-changes.js now
+ * merges by change type instead (see its comment), so an undelivered tier
+ * entry survives until send-follow-notifications.js actually delivers it.
  *
  * Usage: node scripts/detect-social-tier-changes.js
  */
@@ -23,6 +25,7 @@ const { detectTierTransitions, buildTierChangeEntry } = require('./lib/tier-tran
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SOCIAL_PULSE_DIR = path.join(DATA_DIR, 'social-pulse');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const DIGEST_PATH = path.join(DATA_DIR, 'audit', 'show-changes-digest.json');
 const STATE_PATH = path.join(DATA_DIR, 'audit', 'social-tier-transitions.json');
 
@@ -34,7 +37,25 @@ function loadJSON(filePath, fallback) {
   }
 }
 
-function loadPulseEntries() {
+// fetch-social-pulse.js only refreshes '--all-running' shows, so a show's
+// data/social-pulse/{id}.json file goes stale (frozen at its last-open tier)
+// once it closes rather than being deleted. Mirrors detect-show-changes.js's
+// `if (show.status === 'closed') continue` so a closed show's frozen tier
+// can never be read as a fresh entry into Buzzing/Troubled.
+function loadClosedShowIds() {
+  const shows = loadJSON(SHOWS_PATH, null);
+  if (!shows) return new Set();
+  const showsList = shows.shows || shows;
+  const showsArr = Array.isArray(showsList) ? showsList : Object.values(showsList);
+  const closed = new Set();
+  for (const s of showsArr) {
+    const id = s.id || s.slug;
+    if (id && s.status === 'closed') closed.add(id);
+  }
+  return closed;
+}
+
+function loadPulseEntries(closedShowIds) {
   if (!fs.existsSync(SOCIAL_PULSE_DIR)) return [];
   const files = fs.readdirSync(SOCIAL_PULSE_DIR)
     .filter(f => f.endsWith('.json') && !f.startsWith('_'));
@@ -44,6 +65,7 @@ function loadPulseEntries() {
     const data = loadJSON(path.join(SOCIAL_PULSE_DIR, file), null);
     if (!data) continue;
     const showId = data.showId || path.basename(file, '.json');
+    if (closedShowIds.has(showId)) continue;
     entries.push({ showId, tier: data.tier || null });
   }
   return entries;
@@ -52,8 +74,9 @@ function loadPulseEntries() {
 function main() {
   console.log('Detecting social pulse tier transitions...\n');
 
-  const pulseEntries = loadPulseEntries();
-  console.log(`Loaded ${pulseEntries.length} social pulse files`);
+  const closedShowIds = loadClosedShowIds();
+  const pulseEntries = loadPulseEntries(closedShowIds);
+  console.log(`Loaded ${pulseEntries.length} social pulse files (${closedShowIds.size} closed shows excluded)`);
 
   // First-ever run (no state file yet): establish a baseline silently,
   // same convention as detect-show-changes.js's "no previous digest ->

@@ -35,7 +35,11 @@ jobs:
           FOLLOW_COUNT=$(node -e "
             try {
               const f = require('./data/followers.json');
-              const total = Object.values(f).reduce((s,v) => s + (Array.isArray(v) ? v.length : 0), 0);
+              // sync-followers.js writes { _meta, followers: { showId: [emails] } } —
+              // summing Object.values(f) directly sums the two top-level values
+              // (_meta, followers), neither an array, and always yields 0. Must
+              // reach into f.followers.
+              const total = Object.values(f.followers || {}).reduce((s,v) => s + (Array.isArray(v) ? v.length : 0), 0);
               console.log(total);
             } catch { console.log(0); }
           ")
@@ -72,10 +76,10 @@ jobs:
 
       - name: Detect social pulse tier transitions (BRO-770)
         # Runs AFTER detect-show-changes.js, not as a step in
-        # update-social-pulse.yml: detect-show-changes.js rewrites
-        # digest.changes[showId] wholesale, so a tier change written earlier
-        # would be silently dropped for any show that also got a structural
-        # change that week. Appending here is race-free.
+        # update-social-pulse.yml: detect-show-changes.js merges pending
+        # digest entries by change type (see its comment) so an
+        # undelivered tier entry queued here survives a later run's
+        # structural-change detection for the same show.
         if: steps.check.outputs.has_followers == 'true'
         run: node scripts/detect-social-tier-changes.js
 

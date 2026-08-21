@@ -25,7 +25,12 @@ const NOTIFICATION_TIERS = Object.freeze(['Buzzing', 'Troubled']);
 function detectTierTransitions(pulseEntries, transitionState) {
   const state = transitionState || {};
   const transitions = [];
-  const nextState = {};
+  // Seed from prior state so a show missing from THIS run's pulse listing
+  // (transient scrape gap, slug rename) keeps its debounce memory instead of
+  // being treated as never-before-seen — without this, a one-run gap would
+  // make its next Buzzing/Troubled sighting look like a fresh entry and
+  // duplicate an email for a tier it never actually left.
+  const nextState = { ...state };
 
   for (const entry of pulseEntries || []) {
     const showId = entry?.showId;

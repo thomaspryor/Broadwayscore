@@ -78,7 +78,36 @@ test('skips entries with no showId or no tier without throwing', () => {
 test('handles an empty pulse list', () => {
   const { transitions, nextState } = detectTierTransitions([], { 'show-a': { lastTier: 'Buzzing' } });
   assert.equal(transitions.length, 0);
-  assert.deepEqual(nextState, {});
+  // Prior state carries forward unchanged (see the dedicated debounce-gap
+  // tests below) rather than being wiped.
+  assert.deepEqual(nextState, { 'show-a': { lastTier: 'Buzzing' } });
+});
+
+test('carries forward debounce state for a show missing from this run\'s pulse listing', () => {
+  // Transient scrape gap or slug rename — the show just isn't in this run's
+  // data/social-pulse/ listing. Its prior tier should survive so a later
+  // reappearance in the same tier does not look like a fresh entry.
+  const { nextState } = detectTierTransitions(
+    [{ showId: 'show-b', tier: 'Steady' }],
+    { 'show-a': { lastTier: 'Buzzing' }, 'show-b': { lastTier: 'Rising' } },
+  );
+  assert.deepEqual(nextState['show-a'], { lastTier: 'Buzzing' });
+  assert.deepEqual(nextState['show-b'], { lastTier: 'Steady' });
+});
+
+test('a show missing for one run does not duplicate-notify when it resurfaces in the same tier', () => {
+  const gapRun = detectTierTransitions(
+    [], // show-a absent this run (transient gap)
+    { 'show-a': { lastTier: 'Buzzing' } },
+  );
+  assert.equal(gapRun.transitions.length, 0);
+  assert.deepEqual(gapRun.nextState['show-a'], { lastTier: 'Buzzing' });
+
+  const resurfaceRun = detectTierTransitions(
+    [{ showId: 'show-a', tier: 'Buzzing' }],
+    gapRun.nextState,
+  );
+  assert.equal(resurfaceRun.transitions.length, 0, 'still Buzzing after the gap — must not re-notify');
 });
 
 test('multiple shows are evaluated independently in one pass', () => {
