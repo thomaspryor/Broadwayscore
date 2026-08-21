@@ -198,3 +198,13 @@ test('discover-opening-night-reviews.js requires and calls isSerpUrlWrongProduct
   const callCount = (src.match(/isSerpUrlWrongProductionForOpeningNight\(url, show\)/g) || []).length;
   assert.equal(callCount, 3, `expected 3 call sites (site-specific, Google News, broad web), found ${callCount}`);
 });
+
+test('opening-night-poller.js requires and calls isSerpUrlWrongProductionForOpeningNight at its SERP layer (BRO-736 wiring guard)', () => {
+  // opening-night-poller.js is the PRIMARY real-time automated opening-night
+  // engine (20-min cron for up to 4h). Its SERP layer calls discoverCorrectUrl
+  // directly, which only carries the shared -3y-grace isUrlYearOutsideWindow
+  // guard — this asserts the additional zero-grace check stays wired.
+  const src = readFileSync(path.join(__dirname, '../../scripts/opening-night-poller.js'), 'utf8');
+  assert.match(src, /require\(['"]\.\/lib\/opening-night-discovery['"]\)/);
+  assert.match(src, /isSerpUrlWrongProductionForOpeningNight\(url, show\)/);
+});
