@@ -1,8 +1,18 @@
 {
   "processed": [
-    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
   ],
   "failed": [
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/monstagigz--unknown.json",
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
@@ -11,7 +21,9 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -19,9 +31,24 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ]
   },
   "startTime": "2026-08-21T15:01:32.866Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
-  "log": []
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+  "log": [
+    {
+      "t": "2026-08-21T18:59:25.838Z",
+      "event": "bb-session",
+      "session": "c6f1493f",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-21T18:59:35.316Z",
+      "event": "bb-session",
+      "session": "f6df9d7a",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    }
+  ]
 }

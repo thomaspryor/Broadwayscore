@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-08-21T15:04:12.568Z",
-  "processed": 1,
-  "failed": 4,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-21T19:01:37.898Z",
+  "processed": 4,
+  "failed": 11,
+  "successRate": "26.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-21T18:59:25.838Z",
+      "event": "bb-session",
+      "session": "c6f1493f",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-21T18:59:35.316Z",
+      "event": "bb-session",
+      "session": "f6df9d7a",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    }
+  ]
 }
