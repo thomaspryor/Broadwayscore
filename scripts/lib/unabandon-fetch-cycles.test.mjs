@@ -129,14 +129,15 @@ test('--show filter scopes to a single show directory', () => {
   assert.strictEqual(a.fetchDiscoveryAbandoned, true);
 });
 
-test('no ledger entry: abandoned file with no matching failed-fetches.json row is left alone', () => {
+test('no ledger entry: gate-derived abandonment with no matching failed-fetches.json row is left alone', () => {
   const dir = makeFixture();
   fs.mkdirSync(path.join(dir, 'data', 'review-texts', 'show-d'), { recursive: true });
   const orphan = {
     url: 'https://example.com/show-d-review',
     fetchDiscoveryAbandoned: true,
-    fetchAbandonmentReason: 'manual',
-    fetchAbandonmentDate: '2026-01-01',
+    // No fetchAbandonmentReason — this is the shape the LIVE gate stamps
+    // (collect-review-texts.js never sets a reason, only backfill does), so
+    // it IS gate-derived provenance; it's just missing a ledger row.
   };
   fs.writeFileSync(path.join(dir, 'data', 'review-texts', 'show-d', 'review1.json'), JSON.stringify(orphan));
   fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({
@@ -150,4 +151,48 @@ test('no ledger entry: abandoned file with no matching failed-fetches.json row i
   run(dir);
   const after = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'show-d', 'review1.json'), 'utf8'));
   assert.strictEqual(after.fetchDiscoveryAbandoned, true, 'no ledger entry means nothing to re-derive against — must not blind-clear');
+});
+
+test('human-authored abandonment: bulk mode never clears a non-gate-derived reason even with a matching ledger row', () => {
+  const dir = makeFixture();
+  fs.mkdirSync(path.join(dir, 'data', 'review-texts', 'show-e'), { recursive: true });
+  const manuallyAbandoned = {
+    url: 'https://example.com/show-e-review',
+    fetchDiscoveryAbandoned: true,
+    fetchAbandonmentReason: 'manual:outlet-permanently-shut-down',
+    fetchAbandonmentDate: '2026-01-01',
+  };
+  fs.writeFileSync(path.join(dir, 'data', 'review-texts', 'show-e', 'review1.json'), JSON.stringify(manuallyAbandoned));
+  fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({
+    shows: [
+      { id: 'show-a', status: 'closed', closingDate: daysAgo(30) },
+      { id: 'show-b', status: 'closed', closingDate: daysAgo(200) },
+      { id: 'show-c', status: 'open', openingDate: daysAgo(10), category: 'broadway' },
+      // Reclassified just like show-a, so shouldRetryFetch alone WOULD say
+      // clear it — the provenance check is the only thing standing in the way.
+      { id: 'show-e', status: 'closed', closingDate: daysAgo(30) },
+    ],
+  }));
+  fs.writeFileSync(path.join(dir, 'data', 'review-texts', 'failed-fetches.json'), JSON.stringify([
+    { reviewId: 'show-a/review1.json', showId: 'show-a', failureReason: 'url_dead_404', failureCount: 1 },
+    { reviewId: 'show-b/review1.json', showId: 'show-b', failureReason: 'url_dead_404', failureCount: 1 },
+    { reviewId: 'show-e/review1.json', showId: 'show-e', failureReason: 'url_dead_404', failureCount: 1 },
+  ]));
+  run(dir);
+  const after = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'show-e', 'review1.json'), 'utf8'));
+  assert.strictEqual(after.fetchDiscoveryAbandoned, true, 'a human-authored abandonment reason must never be silently overridden by bulk re-derivation');
+});
+
+test('--show targeted override: clears even when the gate would still say no (domain-recovery case)', () => {
+  const dir = makeFixture();
+  // show-b is genuinely closedOld + confirmed-dead at the tiered max — the
+  // gate itself would still refuse a retry (asserted in the "still gated"
+  // test above). --show is the operator's explicit override for cases the
+  // lifecycle gate structurally can't see, e.g. "I checked, the outlet's
+  // domain is back online" — naming the show IS the human decision.
+  run(dir, ['--show=show-b']);
+  const after = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'show-b', 'review1.json'), 'utf8'));
+  assert.strictEqual(after.fetchDiscoveryAbandoned, null);
+  assert.strictEqual(after.fetchAbandonmentReason, null);
+  assert.strictEqual(after.fetchAbandonmentDate, null);
 });
