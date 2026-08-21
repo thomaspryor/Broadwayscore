@@ -14,20 +14,20 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  normalizeTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
+  normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
 } = require('../../scripts/lib/revival-cross-reference.js');
 
-test('normalizeTitle strips leading article + punctuation, case-folds', () => {
-  assert.equal(normalizeTitle('The Seagull'), 'seagull');
-  assert.equal(normalizeTitle("Schmigadoon!"), 'schmigadoon');
+test('normalizeRevivalTitle strips leading article + punctuation, case-folds', () => {
+  assert.equal(normalizeRevivalTitle('The Seagull'), 'seagull');
+  assert.equal(normalizeRevivalTitle("Schmigadoon!"), 'schmigadoon');
 });
 
-test('normalizeTitle folds diacritics before stripping non-ASCII (sibling-matchers guard)', () => {
+test('normalizeRevivalTitle folds diacritics before stripping non-ASCII (sibling-matchers guard)', () => {
   // foldDiacritics must run BEFORE the [^a-z0-9' ] strip, or an accented
   // title loses its accented letters entirely instead of folding to ASCII —
   // caught by tests/unit/sibling-matchers-diacritics.test.mjs when this file
   // was first extracted (it copied the unfolded original verbatim).
-  assert.equal(normalizeTitle('Amélie'), 'amelie');
+  assert.equal(normalizeRevivalTitle('Amélie'), 'amelie');
   const map = buildExistingTitleMap([{ title: 'Amelie', id: 'amelie-2017', type: 'musical', category: 'broadway' }]);
   const result = detectRevivalByTitleCrossReference({ title: 'Amélie', id: 'amelie-2030', category: 'broadway' }, map);
   assert.equal(result.isRevival, true);
