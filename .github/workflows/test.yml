@@ -89,6 +89,14 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/migrate-reroute-backlog.js'
       - 'scripts/verify-reroute-migration.test.mjs'
+      # BRO-735: root-level scripts/*.js + *.test.mjs trio (no scripts/**
+      # broad glob) — opening-night-pipeline-verify.js is the CLI glue that
+      # wraps scripts/lib/opening-night-pipeline-stages.js (already covered
+      # by the scripts/lib/** glob above) for the fail-fast stage-verification
+      # step in opening-night-poller.yml. Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/opening-night-pipeline-verify.js'
+      - 'scripts/opening-night-pipeline.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
