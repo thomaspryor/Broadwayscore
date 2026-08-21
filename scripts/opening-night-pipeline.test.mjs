@@ -71,9 +71,10 @@ describe('verifyDeployStage', () => {
     assert.equal(verifyDeployStage({ attempted: false }).ok, true);
   });
 
-  test('dispatch call failure is a hard failure', () => {
+  test('dispatch call failure is ok but degraded — the 5-min cron gate is the backstop, not a page-worthy failure', () => {
     const r = verifyDeployStage({ attempted: true, dispatched: false });
-    assert.equal(r.ok, false);
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, true);
     assert.match(r.reason, /dispatch call failed/);
   });
 

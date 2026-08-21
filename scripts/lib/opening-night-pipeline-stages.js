@@ -60,14 +60,27 @@ function verifyRebuildStage({ attempted = true, outcome } = {}) {
  * go ONLY through vercel-deploy.yml). The gap this closes is that the
  * dispatch used to be fire-and-forget (`gh workflow run ... || echo
  * warning`) with no wait and no check that the commit actually went live —
- * a genuinely silent handoff. `timedOut` still counts as `ok` (degraded)
- * because vercel-deploy.yml's own 5-min content-aware cron gate is the
- * documented backstop; it is not a pipeline failure, but it must not be
- * silent either.
+ * a genuinely silent handoff. Both `!dispatched` (the `gh workflow run` API
+ * call itself failed — e.g. a transient network blip) and `timedOut` (the
+ * call succeeded but the deployment wasn't observed live within the wait
+ * window) count as `ok` (degraded), NOT a hard pipeline failure: in both
+ * cases vercel-deploy.yml's own 5-min content-aware cron gate is the
+ * documented backstop that will pick it up shortly regardless. Ship-check
+ * finding (2026-08-21): treating a transient dispatch-call failure as a hard
+ * failure would page the owner for something that self-heals in <5 minutes —
+ * only a genuine verification failure (Vercel API/token broken, which would
+ * ALSO break the cron backstop's own deploy) should page. Not silent either
+ * way — both are surfaced in the pipeline summary.
  */
 function verifyDeployStage({ attempted = true, dispatched, verified, timedOut, reason } = {}) {
   if (!attempted) return { ok: true, reason: 'deploy: skipped (no rebuild happened)' };
-  if (!dispatched) return { ok: false, reason: 'deploy: dispatch call failed' };
+  if (!dispatched) {
+    return {
+      ok: true,
+      degraded: true,
+      reason: 'deploy: dispatch call failed — 5-min cron gate will pick it up',
+    };
+  }
   if (verified) return { ok: true, reason: 'deploy: verified live on production' };
   if (timedOut) {
     return {
