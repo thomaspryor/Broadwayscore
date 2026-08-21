@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-21T07:15:49.328Z",
+    "generatedAt": "2026-08-21T07:25:56.074Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -34,7 +34,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 147
+      "churn": 148
     },
     {
       "path": "public/data/mobile-shows.json",
@@ -54,7 +54,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 50
+      "churn": 49
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -76,12 +76,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 881,
+      "churn": 866,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 855,
+      "churn": 841,
       "mergeAttr": "ours"
     },
     {
@@ -91,12 +91,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 386,
+      "churn": 385,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 369,
+      "churn": 368,
       "mergeAttr": "ours"
     },
     {
