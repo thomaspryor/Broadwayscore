@@ -274,7 +274,17 @@
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
     "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
     "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
-    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json"
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -317,7 +327,9 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -342,7 +354,7 @@
     ]
   },
   "startTime": "2026-08-21T15:01:32.866Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-08-21T19:33:09.318Z",
@@ -376,6 +388,28 @@
       "t": "2026-08-21T20:09:13.420Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-21T20:14:33.151Z",
+      "event": "bb-session",
+      "session": "e4de8d37",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T20:14:33.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T20:15:56.298Z",
+      "event": "bb-session",
+      "session": "d8881685",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-21T20:15:56.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
