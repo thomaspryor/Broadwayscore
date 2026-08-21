@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-20T23:35:21.283Z",
+  "timestamp": "2026-08-21T07:18:32.489Z",
   "stats": {
-    "totalReviews": 42310,
-    "alreadyFlagged": 18162,
-    "dateGuardCatches": 160,
-    "directorMismatch": 982,
-    "tvFilmSignals": 1212,
-    "londonSignals": 922,
+    "totalReviews": 42296,
+    "alreadyFlagged": 18101,
+    "dateGuardCatches": 204,
+    "directorMismatch": 1001,
+    "tvFilmSignals": 1217,
+    "londonSignals": 927,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3557
+    "noPublishDate": 3558
   },
   "findings": [
     {
@@ -215,11 +215,140 @@
     },
     {
       "showId": "a-christmas-carol-2022",
+      "file": "nytg--tulis-mccall.json",
+      "score": 78,
+      "publishDate": "2022-01-25",
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-a-christmas-carol-starring-campbell-scott-on-broadway",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 287d before show (2022-01-25 vs 2022-11-08)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2022",
       "file": "nytimes--alexis-soloski.json",
       "score": 77,
       "publishDate": "2022-11-21",
       "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "artsdesk--rachel-halliburton.json",
+      "score": 85,
+      "publishDate": "2025-11-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 357d before show (2025-11-28 vs 2026-11-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 92,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "score": 92,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 90,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 92,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -280,34 +409,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "a-dolls-house-off-west-end-2026",
-      "file": "guardian--gloria-oladipo.json",
-      "score": 79,
-      "publishDate": "2023-03-13",
-      "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
-        }
-      ]
-    },
-    {
-      "showId": "a-dolls-house-off-west-end-2026",
-      "file": "thestage--nicole-serratore.json",
-      "score": 31,
-      "publishDate": "2023-03-13",
-      "url": "https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
         }
       ]
     },
@@ -635,6 +736,110 @@
       ]
     },
     {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "broadwayworld--louise-penn.json",
+      "score": 80,
+      "publishDate": "2024-06-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 78,
+      "publishDate": "2024-06-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 901d before show (2024-06-09 vs 2026-11-27)"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 79,
+      "publishDate": "2024-06-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "independent--tim-bano.json",
+      "score": 82,
+      "publishDate": "2024-06-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 85,
+      "publishDate": "2024-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 906d before show (2024-06-04 vs 2026-11-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 67,
+      "publishDate": "2024-06-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 901d before show (2024-06-09 vs 2026-11-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 68,
@@ -763,7 +968,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "times-uk--nancy-durrant.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2024-09-13",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p",
       "findings": [
@@ -1729,7 +1934,7 @@
       "file": "about-entertainment--ben-brantley.json",
       "score": 71,
       "publishDate": "November 8, 2012",
-      "url": "http://theater.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html?ref=theater&amp;_r=0",
+      "url": "http://theater.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8084,6 +8289,62 @@
       ]
     },
     {
+      "showId": "evita-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 43,
+      "publishDate": "2025-07-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 601d before show (2025-07-06 vs 2027-02-27)"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 91,
+      "publishDate": "2025-07-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 605d before show (2025-07-02 vs 2027-02-27)"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 93,
+      "publishDate": "2025-07-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 605d before show (2025-07-02 vs 2027-02-27)"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 91,
+      "publishDate": "2025-07-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 602d before show (2025-07-05 vs 2027-02-27)"
+        }
+      ]
+    },
+    {
       "showId": "evita-west-end-2025",
       "file": "variety--david-benedict.json",
       "score": 63,
@@ -9373,7 +9634,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -16617,6 +16878,18 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 725d before show (2017-09-22 vs 2019-09-17)"
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytimes--ben-brantley.json",
       "score": 92,
       "publishDate": "October 18th, 2019",
@@ -16864,6 +17137,95 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "score": 72,
+      "publishDate": "2025-03-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 563d before show (2025-03-08 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 19,
+      "publishDate": "2025-03-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "londontheatre1--john-obrien.json",
+      "score": 24,
+      "publishDate": "2025-03-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 564d before show (2025-03-07 vs 2026-09-22)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "theatre-weekly--oliver-valentine.json",
+      "score": 80,
+      "publishDate": "2025-03-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 566d before show (2025-03-05 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "thereviewshub--scott-matthewman.json",
+      "score": 76,
+      "publishDate": "2025-03-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 88,
+      "publishDate": "2025-03-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
         }
       ]
     },
@@ -17201,6 +17563,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 78,
+      "publishDate": "2025-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 497d before show (2025-06-20 vs 2026-10-30)"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 89,
+      "publishDate": "2025-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 497d before show (2025-06-20 vs 2026-10-30)"
         }
       ]
     },
@@ -18041,6 +18431,81 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 90,
+      "publishDate": "2025-02-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2025-02-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 88,
+      "publishDate": "2025-03-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 608d before show (2025-03-02 vs 2026-10-31)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 92,
+      "publishDate": "2025-02-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 71,
+      "publishDate": "2025-02-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 615d before show (2025-02-23 vs 2026-10-31)"
         }
       ]
     },
@@ -19914,7 +20379,7 @@
       "file": "about-entertainment--ben-brantley.json",
       "score": 58,
       "publishDate": "April 25, 2013",
-      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html?ref=theater&amp;_r=0",
+      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21336,6 +21801,216 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"estelle parsons\" from romeo-and-juliet-1986"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 88,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 49d before show (2026-04-03 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 40,
+      "publishDate": "2026-04-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 47d before show (2026-04-05 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 82,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "independent--alice-saville.json",
+      "score": 88,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "observer--susannah-clapp.json",
+      "score": 77,
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 49d before show (2026-04-03 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 80,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 52,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "variety--ellise-shafer.json",
+      "score": 77,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 78,
+      "publishDate": "2026-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
         }
       ]
     },
@@ -25157,7 +25832,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "london-theatre--peter-brown.json",
-      "score": 93,
+      "score": 91,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/the-book-of-mormon-review",
       "findings": [
@@ -30135,6 +30810,20 @@
     },
     {
       "showId": "tru-off-broadway-2026",
+      "file": "theater-life--patrick-christiano.json",
+      "score": 48,
+      "publishDate": "2026-04-14T11:17:00",
+      "url": "https://theaterlife.com/tru-1-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
       "file": "theatermania--zachary-stewart.json",
       "score": 76,
       "publishDate": null,
@@ -32113,6 +32802,39 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "standard--india-block.json",
+      "score": 89,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "file": "thereviewshub--dan-english.json",
+      "score": 89,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2026",
       "file": "standard--nick-curtis.json",
       "findings": [
@@ -32493,7 +33215,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 86,
+      "score": 80,
       "publishDate": "2026-08-20",
       "url": "https://www.standard.co.uk/culture/theatre/abigails-party-at-harold-pinter-theatre-review-b1294045.html",
       "findings": [
@@ -34175,6 +34897,17 @@
       ]
     },
     {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 132d before show (2026-03-16 vs 2026-07-26)"
+        }
+      ]
+    },
+    {
       "showId": "breakfast-at-tiffanys-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 44,
@@ -34891,6 +35624,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "podcastrex--unknown.json",
+      "publishDate": "2026-08-08",
+      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -35750,7 +36496,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
@@ -38215,6 +38961,17 @@
       ]
     },
     {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 55d before show (2026-05-15 vs 2026-07-09)"
+        }
+      ]
+    },
+    {
       "showId": "heisenberg-2016",
       "file": "nytg--kathleen-campion.json",
       "score": 90,
@@ -38789,7 +39546,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--cheryl-markoski.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -48766,20 +49523,6 @@
       "score": 78,
       "publishDate": "2025-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-producers-garrick-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "the-sun--dominic-maxwell.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
