@@ -182,7 +182,18 @@ async function main() {
       fetches++;
     }
 
-    const r = classifyCandidate({ source, record, html, shows });
+    // Wrapped like the fetchPage() call above: uncontrolled third-party HTML/
+    // JSON-LD feeds this (BRO-125's countDistinctReviewOutlets in particular
+    // walks arbitrary JSON-LD field shapes) — one malformed article must
+    // reject as unclassifiable, not crash the whole daily batch run.
+    let r;
+    try {
+      r = classifyCandidate({ source, record, html, shows });
+    } catch (e) {
+      rejected.push({ url: record.url, slug: record.slug, source, reason: 'classify-error', detail: e.message });
+      console.warn(`  [reject:classify-error] ${record.url || record.slug}: ${e.message}`);
+      continue;
+    }
     if (r.status === 'accept') {
       accepted.push(r.candidate);
       console.log(`  [accept] ${r.candidate.title} @ ${r.candidate.venue} (${source})`);

@@ -37,7 +37,7 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 // readers that must detect it (the nightly acceptance recheck) cannot drift
 // from the producer — this CLI exports nothing and exits at load without
 // NOTION_API_KEY, so nothing can require it to learn the string.
-const { OVERFLOW_NOTE, OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
+const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
 
 if (!process.env.NOTION_API_KEY) {
@@ -219,9 +219,6 @@ function formatCard(page) {
 // keyed by `[auto:<field>] full content`; rewrites are idempotent (find and
 // delete the old section, append the new one).
 
-const PROP_CHUNK = 1800;       // safe under Notion's 2000-char property cap
-const BODY_CHUNK = 1900;       // safe under Notion's 2000-char rich_text object cap
-
 // The body-section heading vocabulary and the reader half of the overflow
 // round-trip now live in scripts/lib/notion-corpus.js, which the Sprint 2
 // corpus exporter also requires. It has to read exactly what this file writes
@@ -231,42 +228,11 @@ const BODY_CHUNK = 1900;       // safe under Notion's 2000-char rich_text object
 const notionCorpus = require('./lib/notion-corpus');
 const { bodyHeadingText, getHeadingText, isAutoHeading } = notionCorpus;
 
-// Break text into chunks <= size, preferring newline boundaries.
-function chunkText(text, size) {
-  const chunks = [];
-  let remaining = String(text || '');
-  while (remaining.length > size) {
-    let cut = remaining.lastIndexOf('\n', size);
-    if (cut < size * 0.5) cut = size;  // no good break — hard-cut
-    chunks.push(remaining.slice(0, cut));
-    remaining = remaining.slice(cut).replace(/^\n+/, '');
-  }
-  if (remaining.length || chunks.length === 0) chunks.push(remaining);
-  return chunks;
-}
-
-// Build a rich_text property value for a field. If content is short, returns
-// the property with the full value and bodyText=null. If long, returns a
-// preview-plus-marker property value and the full text as bodyText for the
-// caller to write via writeBodySection().
-function buildRichTextWithOverflow(text) {
-  const s = String(text || '');
-  if (s.length <= PROP_CHUNK) {
-    return {
-      propertyValue: { rich_text: [{ text: { content: s } }] },
-      bodyText: null,
-    };
-  }
-  const maxPreview = PROP_CHUNK - OVERFLOW_NOTE.length - 10;
-  let cut = s.lastIndexOf('\n\n', maxPreview);
-  if (cut < maxPreview * 0.5) cut = s.lastIndexOf('\n', maxPreview);
-  if (cut < maxPreview * 0.5) cut = maxPreview;
-  const preview = s.slice(0, cut) + OVERFLOW_NOTE;
-  return {
-    propertyValue: { rich_text: [{ text: { content: preview } }] },
-    bodyText: s,
-  };
-}
+// chunkText / buildRichTextWithOverflow / PROP_CHUNK / BODY_CHUNK live in
+// scripts/lib/notion-text-chunking.js (BRO-113) — extracted so their
+// surrogate-pair-safe cut logic is unit-testable without NOTION_API_KEY.
+const { PROP_CHUNK, BODY_CHUNK, chunkText, buildRichTextWithOverflow } = require('./lib/notion-text-chunking');
+const { verifyCardCreated } = require('./lib/notion-create-safety');
 
 async function listAllChildren(pageId) {
   const all = [];
@@ -627,13 +593,32 @@ async function createCard(args) {
     if (bodyText) overflow.notes = bodyText;
   }
 
-  const page = await notion.pages.create({
-    parent: { type: 'data_source_id', data_source_id: DATABASE_ID },
-    properties,
-  });
+  // BRO-113: three consecutive create calls in one session produced no card
+  // and no visible error (stdout was piped). Everything from the API call
+  // through the post-create existence check is one loud failure unit now —
+  // any throw here gets a distinct, high-signal ERROR block (title + notes
+  // size, so a truncated/piped log still shows which card and why) before
+  // propagating to main()'s catch, which exits nonzero. Reporting success
+  // below is gated on verifyCardCreated actually finding the page.
+  let page;
+  try {
+    page = await notion.pages.create({
+      parent: { type: 'data_source_id', data_source_id: DATABASE_ID },
+      properties,
+    });
 
-  for (const [field, text] of Object.entries(overflow)) {
-    await writeBodySection(page.id, field, text);
+    for (const [field, text] of Object.entries(overflow)) {
+      await writeBodySection(page.id, field, text);
+    }
+
+    await verifyCardCreated(notion, page.id);
+  } catch (err) {
+    console.error(`\n❌ CREATE FAILED — "${title}"\n`);
+    console.error(`--notes length: ${String(args.notes || '').length} chars`);
+    console.error(err.message);
+    if (err.body) console.error(JSON.stringify(err.body, null, 2));
+    console.error('');
+    throw err;
   }
 
   const card = formatCard(page);
