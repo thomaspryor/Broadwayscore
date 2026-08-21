@@ -757,7 +757,11 @@ async function runAggregators(show) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
         const overrideUrl = TB_REVIEW_URL_CLI || show.tbReviewUrl || '';
-        const isRevival = !!(show.isRevival || (show.id && /\b(19|20)\d{2}\b/.test(show.id)));
+        // Every show.id ends in its opening year (BRO-2023) — the old
+        // `|| /\b(19|20)\d{2}\b/.test(show.id)` clause matched EVERY show,
+        // so isRevival was always true here regardless of show.isRevival,
+        // wrongly tightening the TB date window (1 day vs 7) for non-revivals.
+        const isRevival = !!show.isRevival;
         const tb = await tryTbDirectUrl({
           show,
           year,
