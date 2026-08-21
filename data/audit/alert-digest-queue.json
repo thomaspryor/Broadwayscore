@@ -130,5 +130,16 @@
     "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
     "model": null,
     "queuedAt": "2026-08-21T09:19:29.994Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (4566/3250 reqs)",
+    "description": "Zone serp_api1 billed 4566 requests today against a ceiling of 3250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (456), opening-night-poller.js (358), audit-show-review-gap.js (41).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-21T10:17:58.818Z"
   }
 ]
