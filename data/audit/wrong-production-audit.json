@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-21T07:18:32.489Z",
+  "timestamp": "2026-08-21T08:48:52.732Z",
   "stats": {
-    "totalReviews": 42296,
-    "alreadyFlagged": 18101,
-    "dateGuardCatches": 204,
-    "directorMismatch": 1001,
-    "tvFilmSignals": 1217,
-    "londonSignals": 927,
+    "totalReviews": 42299,
+    "alreadyFlagged": 18123,
+    "dateGuardCatches": 182,
+    "directorMismatch": 991,
+    "tvFilmSignals": 1216,
+    "londonSignals": 923,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3558
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -215,140 +215,11 @@
     },
     {
       "showId": "a-christmas-carol-2022",
-      "file": "nytg--tulis-mccall.json",
-      "score": 78,
-      "publishDate": "2022-01-25",
-      "url": "https://www.newyorktheatreguide.com/reviews/review-of-a-christmas-carol-starring-campbell-scott-on-broadway",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 287d before show (2022-01-25 vs 2022-11-08)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-2022",
       "file": "nytimes--alexis-soloski.json",
       "score": 77,
       "publishDate": "2022-11-21",
       "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "artsdesk--rachel-halliburton.json",
-      "score": 85,
-      "publishDate": "2025-11-28",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 357d before show (2025-11-28 vs 2026-11-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 92,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "london-theatre--anya-ryan.json",
-      "score": 92,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 90,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 92,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -732,110 +603,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "broadwayworld--louise-penn.json",
-      "score": 80,
-      "publishDate": "2024-06-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 78,
-      "publishDate": "2024-06-09",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 901d before show (2024-06-09 vs 2026-11-27)"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 79,
-      "publishDate": "2024-06-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "independent--tim-bano.json",
-      "score": 82,
-      "publishDate": "2024-06-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 905d before show (2024-06-05 vs 2026-11-27)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 85,
-      "publishDate": "2024-06-04",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 906d before show (2024-06-04 vs 2026-11-27)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-off-broadway-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 67,
-      "publishDate": "2024-06-09",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 901d before show (2024-06-09 vs 2026-11-27)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -17141,95 +16908,6 @@
       ]
     },
     {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "british-theatre--keith-mckenna.json",
-      "score": 72,
-      "publishDate": "2025-03-08",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 563d before show (2025-03-08 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "broadwayworld--cindy-marcolina.json",
-      "score": 19,
-      "publishDate": "2025-03-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "londontheatre1--john-obrien.json",
-      "score": 24,
-      "publishDate": "2025-03-07",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 564d before show (2025-03-07 vs 2026-09-22)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "theatre-weekly--oliver-valentine.json",
-      "score": 80,
-      "publishDate": "2025-03-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 566d before show (2025-03-05 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "thereviewshub--scott-matthewman.json",
-      "score": 76,
-      "publishDate": "2025-03-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "file": "thestage--holly-omahony.json",
-      "score": 88,
-      "publishDate": "2025-03-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 565d before show (2025-03-06 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
       "showId": "mamma-mia-2025",
       "file": "amny--unknown.json",
       "score": 82,
@@ -17563,34 +17241,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "file": "broadwayworld--clementine-scott.json",
-      "score": 78,
-      "publishDate": "2025-06-20",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 497d before show (2025-06-20 vs 2026-10-30)"
-        }
-      ]
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 89,
-      "publishDate": "2025-06-20",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 497d before show (2025-06-20 vs 2026-10-30)"
         }
       ]
     },
@@ -32798,39 +32448,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "standard--india-block.json",
-      "score": 89,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "file": "thereviewshub--dan-english.json",
-      "score": 89,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 359d before show (2025-11-26 vs 2026-11-20)"
         }
       ]
     },
