@@ -693,6 +693,12 @@ on:
       # audit-cross-show-url-collisions.js, so a solo edit must still run its
       # colocated test.
       - 'scripts/audit-stale-flag-after-url-correction.js'
+      # BRO-810: cross-show URL collision audit. Root-level scripts/*.test.mjs
+      # is NOT globbed, and the .js itself wasn't path-listed before — a solo
+      # edit to either got ZERO CI. Test registered in
+      # tests/unit-test-manifest.txt (unit-tests job node --test batch).
+      - 'scripts/audit-cross-show-url-collisions.js'
+      - 'scripts/audit-cross-show-url-collisions.test.mjs'
       # Its blocking replacement: fires only on a flag whose own date basis the
       # record contradicts (13/13 hand-verified precision). Colocated
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
