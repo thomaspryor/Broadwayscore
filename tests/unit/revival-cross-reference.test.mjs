@@ -22,6 +22,17 @@ test('normalizeTitle strips leading article + punctuation, case-folds', () => {
   assert.equal(normalizeTitle("Schmigadoon!"), 'schmigadoon');
 });
 
+test('normalizeTitle folds diacritics before stripping non-ASCII (sibling-matchers guard)', () => {
+  // foldDiacritics must run BEFORE the [^a-z0-9' ] strip, or an accented
+  // title loses its accented letters entirely instead of folding to ASCII —
+  // caught by tests/unit/sibling-matchers-diacritics.test.mjs when this file
+  // was first extracted (it copied the unfolded original verbatim).
+  assert.equal(normalizeTitle('Amélie'), 'amelie');
+  const map = buildExistingTitleMap([{ title: 'Amelie', id: 'amelie-2017', type: 'musical', category: 'broadway' }]);
+  const result = detectRevivalByTitleCrossReference({ title: 'Amélie', id: 'amelie-2030', category: 'broadway' }, map);
+  assert.equal(result.isRevival, true);
+});
+
 test('buildExistingTitleMap skips very short titles', () => {
   const map = buildExistingTitleMap([{ title: 'Art', id: 'art-1998', type: 'play', category: null }]);
   assert.equal(map.size, 0);
