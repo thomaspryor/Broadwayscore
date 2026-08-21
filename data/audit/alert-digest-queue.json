@@ -88,17 +88,6 @@
     "queuedAt": "2026-08-20T09:23:15.268Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32413234678",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-20T20:35:43.779Z"
-  },
-  {
     "conditionKey": "review-gap:blast-radius-refused",
     "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
     "description": "review-gap blast radius 20.0% (5/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: buena-vista-social-club-2025, cat-cohen-broad-strokes-off-broadway-2026, hungry-women-off-broadway-2026, the-25th-annual-putnam-county-spelling-bee-off-broadway-2025, the-oresteia-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
@@ -119,5 +108,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-21T04:40:38.771Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32456961257",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-21T07:19:48.540Z"
   }
 ]
