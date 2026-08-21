@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-21T13:03:22.018Z",
-  "processed": 74,
-  "failed": 686,
+  "updatedAt": "2026-08-21T13:06:38.401Z",
+  "processed": 75,
+  "failed": 695,
   "successRate": "9.7%",
   "tierBreakdown": {
     "playwright": 49,
@@ -9,11 +9,11 @@
     "browserbase": 2,
     "directCookies": 4,
     "scrapingbee": 9,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-21T09:33:34.769Z",
@@ -51,6 +51,17 @@
     },
     {
       "t": "2026-08-21T13:02:08.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T13:06:05.048Z",
+      "event": "bb-session",
+      "session": "5fa64f69",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-21T13:06:05.530Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
