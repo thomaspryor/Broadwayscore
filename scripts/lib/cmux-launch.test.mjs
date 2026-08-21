@@ -7,8 +7,75 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
-  computeStrictAliveness } = require('./cmux-launch.js');
+  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
+
+// BRO-2251 (P0 regression, 2026-08-20): a crowned-successor handoff call
+// passed seedKey=undefined and a cwd stringified from an undefined template
+// variable (e.g. `${REPO}/${branchDir}` with branchDir undefined literally
+// yields the STRING "undefined" as a path segment) — both slipped past every
+// existing check and produced a workspace whose pty could never open its cwd.
+test('isUsableString: rejects non-strings, empty strings, and the stringified-undefined/null shape', () => {
+  assert.equal(isUsableString('workspace-id-123'), true);
+  assert.equal(isUsableString(undefined), false);
+  assert.equal(isUsableString(null), false);
+  assert.equal(isUsableString(''), false);
+  assert.equal(isUsableString('undefined'), false); // `` `${x}` `` on undefined x
+  assert.equal(isUsableString('null'), false);
+  assert.equal(isUsableString(42), false);
+});
+
+test('describeLaunchArgError: flags missing seedKey/seed/cwd by name, passes a well-formed call', () => {
+  assert.match(describeLaunchArgError({ seed: 's', seedKey: undefined, cwd: '/tmp' }), /seedKey/);
+  assert.match(describeLaunchArgError({ seed: undefined, seedKey: 'k', cwd: '/tmp' }), /seed is required/);
+  assert.match(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: undefined }), /cwd/);
+  // '/repo/undefined' is a well-formed non-empty string — this pure check
+  // passes it; catching it is the job of launchCmuxSessionInner's separate
+  // fs.statSync-backed cwdIsDir check (below), not this string-only gate.
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: '/repo/undefined' }), null);
+  // cwd === the bare literal string "undefined" IS caught here.
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: 'undefined' }) !== null, true);
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: '/tmp' }), null);
+});
+
+// Integration-level: the real launchCmuxSession must refuse BEFORE calling
+// cmux at all — the probes.newWorkspace/cmuxExists spies below must never
+// fire, proving no workspace is created for a malformed call.
+test('launchCmuxSession: refuses a missing seedKey without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: 'test launch bad seedKey', seed: 'seed text', seedKey: undefined, cwd: os.tmpdir(),
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /seedKey/);
+  assert.equal(res.seedFile, null);
+  assert.equal(res.command, null);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: refuses a cwd that does not exist on disk without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const badCwd = path.join(os.tmpdir(), `bro-2251-does-not-exist-${process.pid}`);
+  const res = launchCmuxSession({
+    title: 'test launch bad cwd', seed: 'seed text', seedKey: 'k-bro-2251', cwd: badCwd,
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cwd does not exist/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: refuses the literal stringified-undefined cwd (the exact reproducing shape)', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: 'test launch stringified undefined cwd', seed: 'seed text', seedKey: 'k-bro-2251-b',
+    cwd: `${os.tmpdir()}/undefined`,
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(newWorkspaceCalls, 0);
+});
 
 // Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
 // exact template-literal formatting (would break on a harmless reformat while
