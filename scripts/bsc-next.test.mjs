@@ -395,15 +395,16 @@ test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth
 // hand-constructed ledger entries with successionOf pre-populated, which is
 // exactly why this slipped through: nothing drove runSuccessionDispatch()
 // itself against a real read/append round-trip. This test does.
-function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
+function runSuccessionHarness({ fetchCard: fetchCardOverride, launchCmux: launchCmuxOverride } = {}) {
   const { runSuccessionDispatch } = require('./bsc-next.js');
   const ledger = [];
   const launched = [];
   const paged = [];
+  const released = [];
   let exitCode = null;
   const origExit = process.exit;
   const deps = {
-    launchCmux: () => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; },
+    launchCmux: launchCmuxOverride || (() => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; }),
     readLedgerEntries: () => ledger.slice(),
     appendLedgerEntry: (e) => { const w = { ts: new Date().toISOString(), ...e }; ledger.push(w); return w; },
     fetchCard: fetchCardOverride || (() => null),
@@ -420,7 +421,7 @@ function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
     // depth-cap logic it's actually verifying. An in-memory stub isolates
     // this test from that filesystem race entirely.
     acquireSuccessionLock: () => true,
-    releaseSuccessionLock: () => {},
+    releaseSuccessionLock: (taskId) => released.push(taskId),
   };
   const dispatchOnce = (task, args) => {
     process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
@@ -431,7 +432,7 @@ function runSuccessionHarness({ fetchCard: fetchCardOverride } = {}) {
     exitCode = null;
     return result;
   };
-  return { ledger, launched, paged, dispatchOnce };
+  return { ledger, launched, paged, released, dispatchOnce };
 }
 
 test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, the 6th is refused (no fabricated ledger state)', () => {
@@ -497,6 +498,83 @@ test('runSuccessionDispatch: --allow-closed-card dispatches AND is recorded in t
   // It was not, until this test existed — nothing wrote the field at all.
   const launch = ledger.filter(e => e.event === 'launch').slice(-1)[0];
   assert.equal(launch.allowClosedCard, true, 'deliberately dispatching onto a closed card must be auditable');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// BRO-2251: a failed succession launch used to log to stderr and exit with
+// NOTHING written to the ledger — the exact "manual crowned-successor
+// handoff" path that produced this incident's repeated empty-workspace
+// repro was invisible to detectLauncherOutage() and the watchdog's pager.
+// Drives the REAL runSuccessionDispatch/runSuccessionDispatchLocked, not a
+// hand-fabricated ledger entry, so the wiring itself is under test.
+test('runSuccessionDispatch: a failed launch journals a dead breadcrumb (BRO-2251)', () => {
+  const { ledger, dispatchOnce } = runSuccessionHarness({
+    launchCmux: () => ({
+      ok: false, reason: 'command injection never ran (no wrapper process appeared) in workspace:920',
+      deadConfirmed: true, workspaceRef: 'workspace:920', wrapperAlive: false,
+      seedFile: '/tmp/bsc-seed-859.txt', command: 'claude --model sonnet ...',
+    }),
+  });
+  const task = { id: '859', subject: 'succession launch that fails to inject', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-dead-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1, 'a failed succession launch still exits 1');
+
+  const dead = ledger.filter(e => e.event === 'dead');
+  assert.equal(dead.length, 1, 'a deadConfirmed succession failure must journal a dead breadcrumb — it did not, before this fix');
+  assert.equal(dead[0].workspaceRef, 'workspace:920');
+  assert.equal(dead[0].taskId, '859');
+  const unverifiedLaunch = ledger.filter(e => e.event === 'launch' && e.unverified === true);
+  assert.equal(unverifiedLaunch.length, 1, 'the attempt is still attributable even though it failed');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// Codex adversarial catch (BRO-2251): a launch whose wrapper is still
+// RUNNING (deadConfirmed:false, card #705's slow-boot case) is booting
+// slowly, not dead — journaling it as 'dead' would feed the dead-attempt
+// guard and mark a LIVE shell a corpse for the pruner, exactly the lie the
+// fresh-dispatch branch's own deadConfirmed handling exists to avoid.
+test('runSuccessionDispatch: a still-booting (unconfirmed-dead) launch is journaled unverified, not dead (BRO-2251)', () => {
+  const { ledger, dispatchOnce } = runSuccessionHarness({
+    launchCmux: () => ({
+      ok: false, reason: 'claude has not registered yet, wrapper still running', deadConfirmed: false,
+      workspaceRef: 'workspace:922', wrapperAlive: true, command: 'claude --model sonnet ...',
+    }),
+  });
+  const task = { id: '861', subject: 'succession launch still booting', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-booting-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1);
+
+  assert.equal(ledger.filter(e => e.event === 'dead').length, 0, 'a still-booting launch must NOT get a dead breadcrumb — the wrapper is alive');
+  const unverifiedLaunch = ledger.filter(e => e.event === 'launch' && e.unverified === true);
+  assert.equal(unverifiedLaunch.length, 1, 'the attempt is still journaled as unverified so it is attributable');
+  assert.equal(unverifiedLaunch[0].workspaceRef, 'workspace:922');
+
+  fs.unlinkSync(handoffPath);
+});
+
+// BRO-2251: runSuccessionDispatchLocked used to call process.exit(1) directly
+// on every failure branch, which terminates the process without running the
+// caller's try/finally — so releaseSuccessionLock() was never reached on a
+// failed launch, leaving the lock held for the full 8-minute stale window
+// (exactly the retry window this incident needed).
+test('runSuccessionDispatch: the succession lock is released even when the launch fails (BRO-2251)', () => {
+  const { released, dispatchOnce } = runSuccessionHarness({
+    launchCmux: () => ({ ok: false, reason: 'injection never ran', deadConfirmed: true, workspaceRef: 'workspace:921', command: 'claude ...' }),
+  });
+  const task = { id: '860', subject: 'succession launch that fails to inject', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-lock-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.deepEqual(released, ['860'], 'releaseSuccessionLock must run even though the launch failed and exited 1');
 
   fs.unlinkSync(handoffPath);
 });

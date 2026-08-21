@@ -75,6 +75,12 @@ on:
       # broad glob) so a solo edit triggers CI.
       - 'scripts/audit-review-texts-test-yml-coverage.js'
       - 'scripts/audit-review-texts-test-yml-coverage.test.mjs'
+      # BRO-141: recover-serp-text.js's colocated test requires it directly
+      # (root-level scripts/*.js + *.test.mjs, no scripts/** broad glob) —
+      # needs its own entry so a solo edit triggers CI.
+      - 'scripts/recover-serp-text.js'
+      - 'scripts/recover-serp-text.test.mjs'
+      - 'scripts/tests/recover-serp-exhausted-outlets.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).

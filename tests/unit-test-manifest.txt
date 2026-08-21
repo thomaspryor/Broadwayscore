@@ -74,6 +74,7 @@ scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/reconcile-dead-completions.test.mjs
+scripts/recover-serp-text.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/scrape-broadway-com-audience.test.mjs
 scripts/send-opening-night-broadcast.test.mjs
@@ -108,12 +109,14 @@ scripts/tests/orphan-task-reconciliation.test.mjs
 scripts/tests/pull-quote-quality.test.mjs
 scripts/tests/recheck-ledger-persistence.test.mjs
 scripts/tests/record-push-ledger-redaction.test.mjs
+scripts/tests/recover-serp-exhausted-outlets.test.mjs
 scripts/tests/scripts-no-undef.test.mjs
 scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
+scripts/tests/verify-gate-ts-runner.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
@@ -381,6 +384,7 @@ tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
+tests/unit/notion-brain-create-notes.test.mjs
 tests/unit/notion-corpus-io.test.mjs
 tests/unit/notion-corpus.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
@@ -503,6 +507,7 @@ tests/unit/roundup-rebuild-guard.test.mjs
 tests/unit/rss-opening-window-identity.test.mjs
 tests/unit/rss-poller-state.test.mjs
 tests/unit/rss-wrongshow-guard.test.mjs
+tests/unit/safari-cookie-extraction.test.mjs
 tests/unit/same-title-venue-carveout.test.mjs
 tests/unit/same-url-byline-dedup.test.mjs
 tests/unit/sample.test.mjs
@@ -519,6 +524,7 @@ tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
+tests/unit/scrapingdog-ack.test.mjs
 tests/unit/sd-opening-window-budget-reserve.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs
 tests/unit/self-contradictory-clear.test.mjs
@@ -545,6 +551,7 @@ tests/unit/sibling-matchers-diacritics.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
 tests/unit/stage-pagesonstages-extractor.test.mjs
+tests/unit/stale-wrong-production.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
 tests/unit/star-rating-outlet-aware.test.mjs
