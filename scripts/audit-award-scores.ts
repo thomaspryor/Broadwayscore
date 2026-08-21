@@ -4,14 +4,17 @@
  * Run: npx tsx scripts/audit-award-scores.ts
  */
 
-import { computeSiteAwardScore, type TierBadge } from '../src/lib/awards-scoring';
+import { computeSiteAwardScore, categoryToMarket, type TierBadge } from '../src/lib/awards-scoring';
 import awardsData from '../data/awards.json';
+import showsData from '../data/shows.json';
 
 const shows = (awardsData as { shows: Record<string, unknown> }).shows;
+const showList = Array.isArray(showsData) ? showsData : (showsData as { shows: Array<{ id: string; category?: string }> }).shows;
+const categoryById = new Map(showList.map((s: { id: string; category?: string }) => [s.id, s.category]));
 
 const rows: Array<{ id: string; score: number; raw: number; badge: TierBadge }> = [];
 for (const id of Object.keys(shows)) {
-  const r = computeSiteAwardScore(id, 'broadway');
+  const r = computeSiteAwardScore(id, categoryToMarket(categoryById.get(id)));
   if (r.displayScore > 0) rows.push({ id, score: r.displayScore, raw: r.rawPoints, badge: r.badge });
 }
 
