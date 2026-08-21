@@ -60,9 +60,14 @@ const dataDir = path.join(__dirname, '..', 'data');
 const scoresData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-scores.json'), 'utf8'));
 const leagueData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-league.json'), 'utf8'));
 const prevScoresPath = path.join(dataDir, 'fantasy-scores-prev.json');
-const prevScoresData = fs.existsSync(prevScoresPath)
+const prevScoresDataRaw = fs.existsSync(prevScoresPath)
   ? JSON.parse(fs.readFileSync(prevScoresPath, 'utf8'))
   : null;
+// A season boundary (e.g. the 2026-2027 draft's first scored week) must not
+// diff against the prior season's final snapshot — that would report last
+// season's finale as "this week's movers." Treat a cross-season snapshot as
+// absent, same as no snapshot at all.
+const prevScoresData = prevScoresDataRaw?._meta?.season === scoresData._meta.season ? prevScoresDataRaw : null;
 
 // ── Build email content ─────────────────────────────────────────────
 function buildEmailHtml(leaderboard) {
