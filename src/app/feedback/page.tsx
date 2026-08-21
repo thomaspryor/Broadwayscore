@@ -75,7 +75,7 @@ export default function FeedbackPage() {
           </section>
 
           {/* Feedback Form */}
-          <FeedbackForm endpoint={process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mojdjwqo'} />
+          <FeedbackForm endpoint="/api/feedback" />
         </div>
 
         {/* Additional Info */}

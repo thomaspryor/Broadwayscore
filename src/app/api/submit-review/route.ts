@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createNotionPage } from '@/lib/notion-api';
 
 const GITHUB_REPO = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
 const GH_DISPATCH_TOKEN = process.env.GH_DISPATCH_TOKEN || '';
@@ -89,6 +90,43 @@ async function isDuplicate(reviewUrl: string): Promise<boolean> {
   if (!res.ok) return false; // fail open — let the issue be created
   const data = await res.json();
   return (data.total_count ?? 0) > 0;
+}
+
+// Best-effort secondary destination (BRO-580) — the GitHub issue above
+// remains the primary trigger for process-review-submission.yml; a Notion
+// write failure here must never fail the submitter's response.
+async function createNotionReviewRecord(
+  title: string,
+  reviewUrl: string,
+  issueNumber: number,
+  notes: string
+): Promise<void> {
+  const notionKey = process.env.NOTION_API_KEY;
+  if (!notionKey) return;
+  try {
+    await createNotionPage(
+      {
+        Name: { title: [{ text: { content: title.slice(0, 200) } }] },
+        Status: { status: { name: 'Not started' } },
+        Category: { select: { name: 'Product' } },
+        Type: { select: { name: 'Data Quality' } },
+        Priority: { select: { name: 'P2 Later' } },
+        Tags: { multi_select: [{ name: 'user-feedback' }, { name: 'reviews' }] },
+        Notes: {
+          rich_text: [
+            {
+              text: {
+                content: `${notes}\n\nGitHub issue: https://github.com/${GITHUB_REPO}/issues/${issueNumber}`.slice(0, 2000),
+              },
+            },
+          ],
+        },
+      },
+      notionKey
+    );
+  } catch (err) {
+    console.error(`Notion review record failed for ${reviewUrl} (non-fatal):`, (err as Error).message);
+  }
 }
 
 async function createGitHubIssue(title: string, body: string): Promise<number | null> {
@@ -182,6 +220,8 @@ export async function POST(req: NextRequest) {
     // GH_DISPATCH_TOKEN is a PAT, so creating the issue fires the `issues` event
     // which triggers process-review-submission.yml directly — no manual dispatch needed.
     // (GITHUB_TOKEN would suppress the event, requiring explicit dispatch; PATs do not.)
+
+    await createNotionReviewRecord(title, reviewUrl, issueNumber, body);
 
     return NextResponse.json({ ok: true });
   } catch (err) {
