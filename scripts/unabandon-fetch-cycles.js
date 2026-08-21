@@ -35,8 +35,17 @@ const fs = require('fs');
 const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `unabandon-fetch-cycles.js — rollback for fetchDiscoveryAbandoned (BRO-787's fetch retry lifecycle gate).
+
+Usage:
+  node scripts/unabandon-fetch-cycles.js [--dry-run] [--show=show-id]
+  node scripts/unabandon-fetch-cycles.js --help, -h   print this usage and exit — no scans/writes
+`;
 
 const args = process.argv.slice(2);
+if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const DRY_RUN = args.includes('--dry-run');
 const showArg = args.find(a => a.startsWith('--show='));
 const SHOW_FILTER = showArg ? showArg.slice('--show='.length) : null;
