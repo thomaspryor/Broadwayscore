@@ -28,7 +28,7 @@ const path = require('path');
 const { postJSON, buildReplyToAddress } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
-const { fetchFantasyEntries, computeLeaderboard } = require('./lib/fantasy-helpers');
+const { fetchFantasyEntries, computeLeaderboard, computeWeeklyMovers } = require('./lib/fantasy-helpers');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FANTASY_AUDIENCE_ID = process.env.RESEND_FANTASY_AUDIENCE_ID;
@@ -59,6 +59,15 @@ if (isDraft && !RESEND_FANTASY_AUDIENCE_ID) {
 const dataDir = path.join(__dirname, '..', 'data');
 const scoresData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-scores.json'), 'utf8'));
 const leagueData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-league.json'), 'utf8'));
+const prevScoresPath = path.join(dataDir, 'fantasy-scores-prev.json');
+const prevScoresDataRaw = fs.existsSync(prevScoresPath)
+  ? JSON.parse(fs.readFileSync(prevScoresPath, 'utf8'))
+  : null;
+// A season boundary (e.g. the 2026-2027 draft's first scored week) must not
+// diff against the prior season's final snapshot — that would report last
+// season's finale as "this week's movers." Treat a cross-season snapshot as
+// absent, same as no snapshot at all.
+const prevScoresData = prevScoresDataRaw?._meta?.season === scoresData._meta.season ? prevScoresDataRaw : null;
 
 // ── Build email content ─────────────────────────────────────────────
 function buildEmailHtml(leaderboard) {
@@ -73,6 +82,36 @@ function buildEmailHtml(leaderboard) {
     .sort((a, b) => b.totalPoints - a.totalPoints);
 
   const top10Shows = shows.slice(0, 10);
+
+  // Biggest movers + this week's point-earning events (needs a prior-week
+  // snapshot — absent on the first scored week of a season).
+  const { movers, events } = computeWeeklyMovers(
+    prevScoresData?.showScores ?? null,
+    scoresData.showScores,
+    leagueData.shows
+  );
+
+  let moversHtml = '';
+  if (movers.length > 0) {
+    moversHtml = `
+  <h2 style="color:white;font-size:18px;border-bottom:1px solid #27272a;padding-bottom:8px;margin-top:32px;">Biggest Movers This Week</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    ${movers.map(m => `
+    <tr style="border-top:1px solid #18181b;">
+      <td style="padding:8px 0;color:white;">${escapeHtml(m.title)}</td>
+      <td style="text-align:right;color:${m.deltaPoints >= 0 ? '#6ee7b7' : '#f87171'};font-weight:bold;">${m.deltaPoints >= 0 ? '+' : ''}${m.deltaPoints.toFixed(1)} pts</td>
+    </tr>`).join('')}
+  </table>`;
+  }
+
+  let eventsHtml = '';
+  if (events.length > 0) {
+    eventsHtml = `
+  <h2 style="color:white;font-size:18px;border-bottom:1px solid #27272a;padding-bottom:8px;margin-top:32px;">What Happened This Week</h2>
+  <ul style="font-size:14px;color:#e4e4e7;padding-left:20px;margin:8px 0;">
+    ${events.map(e => `<li style="margin-bottom:4px;"><strong style="color:white;">${escapeHtml(e.title)}</strong>: ${escapeHtml(e.reason)}</li>`).join('')}
+  </ul>`;
+  }
 
   // Leaderboard section (only if entries exist)
   let leaderboardHtml = '';
@@ -128,6 +167,8 @@ function buildEmailHtml(leaderboard) {
     </tr>`).join('')}
   </table>
 
+  ${moversHtml}
+  ${eventsHtml}
   ${leaderboardHtml}
 
   <div style="margin-top:24px;padding:16px;background:#18181b;border-radius:8px;">
