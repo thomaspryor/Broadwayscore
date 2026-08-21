@@ -20,6 +20,7 @@ const path = require('path');
 const { lookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
@@ -173,6 +174,25 @@ function mergeCreativeTeam(existing, ibdbTeam, targetRole) {
   return { merged, added: newEntries };
 }
 
+// BRO-102 follow-up (task #1863): SERP-verifies IBDB-scraped Playwright
+// credits before merging — the IBDB regex extraction can grab the wrong
+// table cell or carry stale data, same failure class as the other
+// ibdb.creativeTeam consumers. Returns { merged, added: [] } (no-op) when
+// nothing survives verification. Splits combined names first — a combined
+// "John Doe & Jane Smith" credit would otherwise be SERP-queried as one
+// literal phrase and silently fail to confirm (same reasoning as
+// discover-new-shows.js/enrich-ibdb-dates.js, ship-check 2026-08-20).
+async function verifyAndMergePlaywright(show, ibdbCreativeTeam, year) {
+  const playwrightEntries = (ibdbCreativeTeam || []).filter(e => e.role === 'Playwright');
+  if (playwrightEntries.length === 0) return { merged: show.creativeTeam || [], added: [] };
+
+  const { result: splitEntries } = splitCombinedCredits(playwrightEntries);
+  const verified = await verifyCreativeTeamViaSerp(show, splitEntries, year, 'serp-verified-ibdb-playwright-backfill');
+  if (verified.length === 0) return { merged: show.creativeTeam || [], added: [] };
+
+  return mergeCreativeTeam(show.creativeTeam || [], verified, 'Playwright');
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -280,10 +300,10 @@ async function main() {
           const showRecord = data.shows.find(s => s.id === show.id);
           if (!showRecord) continue;
 
-          const { merged, added } = mergeCreativeTeam(
-            showRecord.creativeTeam || [],
+          const { merged, added } = await verifyAndMergePlaywright(
+            showRecord,
             ibdb.creativeTeam,
-            'Playwright'
+            openingYear || 'upcoming'
           );
 
           if (added.length > 0) {
@@ -365,11 +385,19 @@ async function main() {
   }
 }
 
-main()
-  .catch(e => {
-    console.error('Backfill failed:', e);
-    process.exit(1);
-  })
-  .finally(() => {
-    cleanup().catch(() => {});
-  });
+if (require.main === module) {
+  main()
+    .catch(e => {
+      console.error('Backfill failed:', e);
+      process.exit(1);
+    })
+    .finally(() => {
+      cleanup().catch(() => {});
+    });
+}
+
+// Exports for unit tests (task #1863) — verifyAndMergePlaywright is the
+// SERP-verification gate for this file's IBDB Playwright-credit writes;
+// tests exercise it directly against a mocked verifyCreativeTeamViaSerp
+// rather than re-implementing its decision logic (CLAUDE.md rule 15).
+module.exports = { verifyAndMergePlaywright, mergeCreativeTeam };

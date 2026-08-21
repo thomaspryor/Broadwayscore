@@ -1393,6 +1393,14 @@ on:
       # lib-test step, but only if this job fires — these paths trigger it on push).
       - 'scripts/enrich-ibdb-dates.js'
       - 'scripts/discover-new-shows.js'
+      # task #1863 (BRO-102 follow-up): IBDB creativeTeam consumers now route
+      # through verifyCreativeTeamViaSerp(). Colocated *.test.mjs files
+      # (root-level scripts/*.test.mjs is NOT globbed, registered in
+      # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
+      # side triggers CI.
+      - 'scripts/enrich-ibdb-dates.test.mjs'
+      - 'scripts/backfill-playwright-credits.js'
+      - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery
       # commit gate and enrich-ibdb-dates.js's date-enrichment gate. Test
       # lives in tests/unit/ (node --test batch, not globbed) — path-listed
