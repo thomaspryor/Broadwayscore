@@ -35,7 +35,11 @@ jobs:
           FOLLOW_COUNT=$(node -e "
             try {
               const f = require('./data/followers.json');
-              const total = Object.values(f).reduce((s,v) => s + (Array.isArray(v) ? v.length : 0), 0);
+              // sync-followers.js writes { _meta, followers: { showId: [emails] } } —
+              // summing Object.values(f) directly sums the two top-level values
+              // (_meta, followers), neither an array, and always yields 0. Must
+              // reach into f.followers.
+              const total = Object.values(f.followers || {}).reduce((s,v) => s + (Array.isArray(v) ? v.length : 0), 0);
               console.log(total);
             } catch { console.log(0); }
           ")
@@ -69,6 +73,15 @@ jobs:
       - name: Detect show changes
         if: steps.check.outputs.has_followers == 'true'
         run: node scripts/detect-show-changes.js
+
+      - name: Detect social pulse tier transitions (BRO-770)
+        # Runs AFTER detect-show-changes.js, not as a step in
+        # update-social-pulse.yml: detect-show-changes.js merges pending
+        # digest entries by change type (see its comment) so an
+        # undelivered tier entry queued here survives a later run's
+        # structural-change detection for the same show.
+        if: steps.check.outputs.has_followers == 'true'
+        run: node scripts/detect-social-tier-changes.js
 
       - name: Send notifications
         if: steps.check.outputs.has_followers == 'true'
@@ -107,7 +120,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # followers.json is gitignored + owned by sync-followers.yml (private core-data repo).
           # This workflow only writes audit files — do not re-add followers.json here.
-          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json
+          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
