@@ -31,6 +31,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
+const { isEligibleForAggregatorSerp, shouldSkipAggregatorSerp, recordAggregatorSerpAttempt } = require('./lib/aggregator-serp');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -770,6 +771,18 @@ async function scrapeLBORoundups() {
         continue;
       }
 
+      // Cost guard (BRO-764): skip SERP for a show closed >180 days (LBO
+      // roundup content is frozen once a show closes) or one that's already
+      // missed 3 consecutive SERP attempts.
+      if (!isEligibleForAggregatorSerp(show)) {
+        console.log(`  [SKIP-SERP] ${showId}: closed >180 days, skipping LBO roundup SERP`);
+        continue;
+      }
+      if (shouldSkipAggregatorSerp('lbo', showId)) {
+        console.log(`  [SKIP-SERP] ${showId}: 3 consecutive SERP misses, permanently skipped`);
+        continue;
+      }
+
       console.log(`[SERP] Searching for ${show.title} roundup...`);
       try {
         const query = `site:londonboxoffice.co.uk "review round up" "${show.title}"`;
@@ -778,6 +791,7 @@ async function scrapeLBORoundups() {
           ? (results.map(r => r.url).filter(u => u && u.includes('londonboxoffice.co.uk') && /review-round-?up/i.test(u))[0] || null)
           : null;
 
+        recordAggregatorSerpAttempt('lbo', showId, { success: !!searchResult });
         if (searchResult) {
           console.log(`  Found via SERP: ${searchResult}`);
           matchedRoundups.push({ url: searchResult, show, extractedTitle: show.title });
