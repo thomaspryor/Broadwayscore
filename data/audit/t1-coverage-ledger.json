@@ -119,12 +119,12 @@
       "cells": {
         "telegraph": {
           "firstSeenAt": "2026-08-20T08:29:21.088Z",
-          "state": "IN_FLIGHT",
+          "state": "GAP",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/"
         },
         "timeout": {
           "firstSeenAt": "2026-08-19T22:17:14.882Z",
-          "state": "IN_FLIGHT",
+          "state": "GAP",
           "url": "https://www.timeout.com/london/theatre/abigails-party-5-review"
         }
       },
@@ -159,7 +159,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP"
+          "state": "CIRCUIT_OPEN"
         }
       },
       "market": "broadway",
@@ -306,7 +306,7 @@
         },
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/03/19/broadway-review-buena-vista-social-club-is-fast-paced-celebration-of-old-time-cuban-music/"
         },
         "nysr": {
@@ -512,7 +512,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html"
         },
         "observer": {
@@ -730,13 +730,8 @@
         },
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/04/26/broadway-review-bobby-darin-musical-just-in-time-a-perfect-vehicle-for-jonathan-groff/"
-        },
-        "timeout": {
-          "firstSeenAt": "2026-08-20T08:29:21.088Z",
-          "state": "GAP",
-          "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff"
         }
       },
       "market": "broadway",
@@ -881,7 +876,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP"
+          "state": "CIRCUIT_OPEN"
         },
         "nytg": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
@@ -929,7 +924,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/"
         },
         "theatermania": {
@@ -963,7 +958,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/entertainment/broadway/ny-chris-jones-review-moulin-rouge-20190726-sorvpzfoyfc7pjxzcl5ema7pku-story.html"
         },
         "wsj": {
@@ -1051,7 +1046,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
         }
       },
@@ -1127,7 +1122,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/"
         },
         "timeout": {
@@ -1191,7 +1186,7 @@
         },
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/03/23/broadway-review-denzel-washington-is-strong-as-othello-as-chemistry-with-desdemona-is-weak/"
         },
         "nypost": {
@@ -1373,7 +1368,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/"
         }
       },
@@ -1432,23 +1427,11 @@
       "openingDate": "2013-03-21",
       "title": "The Book of Mormon"
     },
-    "the-devil-wears-prada-west-end-2024": {
-      "cells": {
-        "observer": {
-          "firstSeenAt": "2026-08-19T14:33:06.828Z",
-          "state": "GAP",
-          "url": "https://www.theguardian.com/stage/2024/dec/16/the-week-in-theatre-ballet-shoes-olivier-the-importance-of-being-earnest-ncuti-gatwa-sharon-d-clarke-lyttelton-national-theatre-the-devil-wears-prada-musical-dominion-the-massive-tragedy-of-madame-bovary-southwark-playhouse-borough-review"
-        }
-      },
-      "market": "west-end",
-      "openingDate": "2024-12-05",
-      "title": "The Devil Wears Prada"
-    },
     "the-great-gatsby-2024": {
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/"
         }
       },
@@ -1500,18 +1483,8 @@
     },
     "the-lion-king-west-end-2021": {
       "cells": {
-        "daily-mail": {
-          "firstSeenAt": "2026-08-19T14:33:06.828Z",
-          "state": "GAP",
-          "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/"
-        },
         "i-paper": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
-          "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/"
-        },
-        "independent": {
-          "firstSeenAt": "2026-08-19T14:33:06.828Z",
           "state": "GAP",
           "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/"
         },
@@ -1534,7 +1507,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2026/04/26/broadway-review-spectacle-of-lost-boys-nearly-makes-up-for-weak-score-book/"
         }
       },
@@ -1563,7 +1536,7 @@
         },
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2024/04/11/broadway-review-s-e-hintons-gang-classic-the-outsiders-doesnt-cut-it-as-stage-show/"
         },
         "thewrap": {
@@ -1847,7 +1820,7 @@
       "cells": {
         "nydailynews": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/"
         }
       },

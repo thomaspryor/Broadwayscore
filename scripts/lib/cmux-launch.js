@@ -557,6 +557,43 @@ function shouldRefuseForAuth(auth) {
   return !!(auth && auth.ok === false);
 }
 
+// BRO-2251 (P0 regression, 2026-08-20): a manual crowned-successor handoff
+// call passed seedKey=undefined and a cwd built from an undefined template
+// variable — the caller's own string interpolation turned `undefined` into
+// the literal path segment "undefined" (e.g. `${REPO}/${branchDir}` with
+// branchDir undefined), producing a cwd like ".../Broadwayscore/undefined"
+// that does not exist. Nothing downstream validated either: the seed file
+// was written to the always-identical "bsc-seed-undefined.txt" (a collision
+// hazard for any second concurrent bad call), and `cmux new-workspace --cwd
+// <nonexistent dir>` silently created a workspace whose pty could never open
+// that directory — confirmed live via `cmux debug-terminals`, which showed
+// the resulting surface stuck at tty=nil/ghostty=nil while `read-screen`
+// reported "Terminal surface not found". That is indistinguishable, from the
+// caller's side, from the injection-never-ran false negative this file's
+// header already documents — except this one was a real, always-reproducible
+// caller bug with no gate catching it before a workspace got created.
+//
+// isUsableString rejects the stringified-undefined/null case specifically
+// (not just emptiness) because that is exactly the failure shape a template
+// literal produces — `` `${x}` `` on an undefined x yields the STRING
+// "undefined", not the value undefined, so a plain typeof/truthiness check
+// would have let this exact call through.
+function isUsableString(v) {
+  return typeof v === 'string' && v.length > 0 && v !== 'undefined' && v !== 'null';
+}
+
+// Checked before ANY side effect (no seed file, no cmd file, no workspace) so
+// a bad caller call costs nothing and fails with a reason that names the bad
+// argument, instead of leaving a dead tab in the sidebar that looks like a
+// live launch attempt and only reports "injection never ran" after a full
+// verify/late-adopt cycle.
+function describeLaunchArgError({ seed, seedKey, cwd }) {
+  if (!isUsableString(seedKey)) return `seedKey is required and must be a non-empty string (got ${JSON.stringify(seedKey)})`;
+  if (typeof seed !== 'string' || !seed.length) return `seed is required and must be a non-empty string (got ${typeof seed})`;
+  if (!isUsableString(cwd)) return `cwd is required and must be a non-empty string (got ${JSON.stringify(cwd)})`;
+  return null;
+}
+
 /**
  * Launch a cmux workspace running `claude` on a seed prompt and verify a live
  * claude process actually started.
@@ -593,8 +630,8 @@ function shouldRefuseForAuth(auth) {
  *                                 means a live boot (card #705). Default 360.
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
  *                                 wake, intervalSec, now, idleSec,
- *                                 strictlyAlive, cmuxExists, newWorkspace} —
- *                                 never set in real use. Tests calling
+ *                                 strictlyAlive, cmuxExists, cwdIsDir,
+ *                                 newWorkspace} — never set in real use. Tests calling
  *                                 waitForLaunchOutcome directly MUST pass
  *                                 probes.wake (a no-op), or a local test run
  *                                 fires a REAL `set-app-focus active` with no
@@ -632,7 +669,10 @@ function shouldRefuseForAuth(auth) {
  *                                 force means "I've confirmed the orphan is
  *                                 dead", never "skip checking whether it's
  *                                 alive" (card #1706 suggested approach).
- * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string, command: string}}
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
+ *   seedFile/command are null only for the argument-validation refusals
+ *   (BRO-2251) — those return before either is computed, since no seed/cmd
+ *   file is ever written for a call that fails validation.
  */
 function launchCmuxSession(opts) {
   // The deferred-render wake (setAppFocus 'active') is a PERSISTENT override;
@@ -673,6 +713,28 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   // through) so a test can assert the reclaim check below runs the same way
   // whether or not it's set.
   void force;
+
+  // Fail fast on a malformed call (BRO-2251) — before writing anything or
+  // creating a workspace. See describeLaunchArgError's header for the exact
+  // incident this closes.
+  const argError = describeLaunchArgError({ seed, seedKey, cwd });
+  if (argError) {
+    const reason = `launchCmuxSession: ${argError} — refusing to create a workspace`;
+    console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+    return { ok: false, reason, seedFile: null, command: null };
+  }
+  // cwd must exist ON DISK, not just be a non-empty string — the reproducing
+  // incident's cwd (a stringified-undefined path segment) passed a bare
+  // isUsableString check but does not exist, and that is exactly the state
+  // that left a pty with nowhere to open a shell. Probe seam matches the
+  // cmuxExists() pattern just below.
+  const cwdIsDir = probes.cwdIsDir || (p => { try { return fs.statSync(p).isDirectory(); } catch { return false; } });
+  if (!cwdIsDir(cwd)) {
+    const reason = `launchCmuxSession: cwd does not exist or is not a directory: ${JSON.stringify(cwd)} — refusing to create a workspace`;
+    console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+    return { ok: false, reason, seedFile: null, command: null };
+  }
+
   const effectiveWorkKey = String(workKey || seedKey);
   // Naming-convention floor (owner escalation 2026-08-06): a glyphless bare
   // title is decorated with 🤖 + the model glyph; titles that already lead
@@ -899,7 +961,17 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // dispatch attempt for the same work — which checks that same journal
       // entry before creating anything — no longer wrongly adopts the corpse
       // and opens a genuinely new workspace instead.
-      console.error(`[cmux-launch] attempt ${attempt} reported ${outcome.state} for ${ws ? ws.ref : 'nothing'} — NOT closing and NOT relaunching (the probe is unreliable; see scripts/probe-cmux-launch.js). Leaving it for late-adopt.`);
+      // BRO-2251: "leaving it for late-adopt" is only true when the caller
+      // actually configured lateAdoptSec — with the default of 0 there is no
+      // watch, and this call returns the dead-tab verdict as soon as this
+      // function exits. Wording it unconditionally as "leaving it for
+      // late-adopt" reads as "probably fine, wait and see" even in the common
+      // case where nothing further will check on this workspace — the exact
+      // false-reassurance this card flagged. State the actual disposition.
+      const nextStep = lateAdoptSec > 0
+        ? `watching it for a further ${lateAdoptSec}s before reporting it dead (lateAdoptSec set)`
+        : 'reporting it dead now (no lateAdoptSec watch configured) — this workspace has NOTHING running in it';
+      console.error(`[cmux-launch] attempt ${attempt} reported ${outcome.state} for ${ws ? ws.ref : 'nothing'} — the wrapper-process probe can miss a real process (see scripts/probe-cmux-launch.js), so this function will NOT close or relaunch over a possibly-live tab; ${nextStep}.`);
       break;
     }
     break; // 'fail' — keep survivingWs for the caller (and the late-adopt watch)
@@ -962,7 +1034,7 @@ module.exports = {
   osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
   waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
-  buildLaunchCommand,
+  buildLaunchCommand, isUsableString, describeLaunchArgError,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, LAST_LAUNCH_MARKER,

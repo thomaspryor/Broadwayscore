@@ -13,8 +13,8 @@
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
 #         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
-#         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | reset-soft-partial-commit
-#         | dry-run-flag-setter | swallowed-audit-writers
+#         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | ledger-step-guard
+#         | reset-soft-partial-commit | dry-run-flag-setter | swallowed-audit-writers
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -430,6 +430,45 @@ check_ledger_coverage() {
   fi
 }
 
+check_ledger_step_guard() {
+  # BRO-2243: a job that commits data/audit/scraper-spend-ledger.jsonl is
+  # racing every other concurrent workflow pushing to main — a losing race
+  # is expected, routine contention, not a data problem. The composite
+  # action's own header comment documents the contract every caller must
+  # follow (if: always() + continue-on-error: true on the CALLING step) so
+  # that race can never fail the job using it for bookkeeping. Investigation
+  # found all 30 existing call sites already compliant (fixed BRO-163,
+  # 2026-08-14) — this is the structural guard so a new call site, or an
+  # edit that drops one of the two flags, can't silently reopen the race.
+  # Logic lives in scripts/lib/ledger-step-guard-check.js (colocated test:
+  # scripts/lib/ledger-step-guard-check.test.mjs) — shared with the local
+  # pre-push hook.
+  local OUT
+  OUT=$(node -e "
+    const fs = require('fs');
+    const path = require('path');
+    const { findLedgerStepGuardIssues } = require('./scripts/lib/ledger-step-guard-check.js');
+    const dir = '.github/workflows';
+    let any = false;
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findLedgerStepGuardIssues(text)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+    echo "Every commit-scraper-spend-ledger call site has if: always() + continue-on-error: true — a ledger push race can never fail the calling job"
+  else
+    echo "::error::Workflow step(s) call commit-scraper-spend-ledger without both if: always() and continue-on-error: true — a routine push race on the ledger file would fail the job (BRO-2243):"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: add both 'if: always()' and 'continue-on-error: true' to the calling step (see test.yml's Data Validation job for the pattern)."
+    FAILED=1
+  fi
+}
+
 check_dry_run_flag_setter() {
   # Task #653 ship-check finding: scripts/flag-wrong-production-by-date.js is
   # DRY_RUN unless --apply (flag-wrong-production-by-date.js:43). rebuild-fast.yml
@@ -562,6 +601,7 @@ run_check() {
     snapshot-overwrite) check_snapshot_overwrite ;;
     alert-ledger-commit) check_alert_ledger_commit ;;
     ledger-coverage)    check_ledger_coverage ;;
+    ledger-step-guard)  check_ledger_step_guard ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     dry-run-flag-setter) check_dry_run_flag_setter ;;
     swallowed-audit-writers) check_swallowed_audit_writers ;;
@@ -573,13 +613,14 @@ run_check() {
       # (`swallowed-audit-writers`) or via `all`.
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
-      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_dry_run_flag_setter ;;
+      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_ledger_step_guard
+      check_dry_run_flag_setter ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
-      check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
+      check_ledger_step_guard; check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

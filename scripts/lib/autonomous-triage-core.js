@@ -66,10 +66,14 @@ const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
 
 const SAFE_CHECK_FORMS = [
   // .test.mjs/.test.js run via plain `node --test`. A file that imports a TS
-  // module via the `@/` path alias (e.g. `@/lib/gate-logic`) throws
-  // ERR_MODULE_NOT_FOUND here — Node's own ESM resolver doesn't read tsconfig
-  // paths — so such a file needs the `npx tsx --test` form below instead.
-  // .test.ts is still out of scope for BOTH forms — not an allowed form.
+  // module via the `@/` path alias (e.g. `@/lib/gate-logic`), or a plain TS
+  // module whose OWN internal imports are extensionless (moduleResolution
+  // "bundler" in tsconfig.json, no allowImportingTsExtensions), throws
+  // ERR_MODULE_NOT_FOUND here — Node's own ESM resolver doesn't do TS-aware
+  // extensionless resolution — so such a file needs the `npx tsx --test` form
+  // below instead. .test.ts stays out of scope for THIS form specifically
+  // (plain `node --test` never gets TS-aware resolution, whatever the
+  // extension) — not the tsx form below.
   { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
   // BRO-228: `npx tsx --test` is this repo's own existing idiom for a
   // TS-alias-importing test (package.json's test:unit script, test.yml's tsx
@@ -77,9 +81,18 @@ const SAFE_CHECK_FORMS = [
   // --test` shape. Injection surface is identical to the `node --test` form
   // above: `npx tsx --test` is a fixed three-token prefix with no capture
   // group, and the same file-path group goes through the same traversal /
-  // pathPrefix / MUTATING_SCRIPT_RE checks below. .test.ts stays unsupported
-  // — this only widens which LOADER a .test.mjs/.js runs under.
-  { re: /^npx tsx --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
+  // pathPrefix / MUTATING_SCRIPT_RE checks below.
+  // BRO-2218: widened to also accept `.test.ts` (not just `.test.mjs/.js`).
+  // A card testing a TS module whose own internal imports are extensionless
+  // could previously only be armed with a `node --test <file>.test.mjs`
+  // command — which fails ERR_MODULE_NOT_FOUND on exactly that import shape
+  // (tsx is a proper TS/ESM loader that resolves it; plain node isn't) — or a
+  // `.test.ts` file, which this form refused outright. Both jaws of that trap
+  // are gone: the repo already runs `.test.ts` files this exact way in CI
+  // (package.json's test:unit script, test.yml's tsx-batch manifest, e.g.
+  // tests/unit/show-market.test.ts) — this only lets a card's acceptance
+  // command name that same already-idiomatic shape.
+  { re: /^npx tsx --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.(?:m?js|ts))+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/', 'src/'] },
   { re: /^npx tsc --noEmit$/ },
   { re: /^npx next lint$/ },
   { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/', 'src/', 'scripts/'] },
@@ -218,7 +231,15 @@ function isSafeCheckCommand(cmd) {
       // .test.* files are harmless test runs even when their name shares a
       // push-/send- prefix; everything else gets the mutation deny (case-
       // insensitive — APFS is case-insensitive — and covers .mjs/.cjs).
-      (/\.test\.(m|c)?js$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
+      // .test.ts included explicitly (BRO-2218 ship-check, echoed by two
+      // independent reviewers): MUTATING_SCRIPT_RE's own `.(m|c)?js$` suffix
+      // never matches `.ts` anyway, so this arm is currently a no-op for that
+      // extension — but leaving it unlisted reads as "someone forgot .ts",
+      // and silently depends on MUTATING_SCRIPT_RE never being widened to
+      // cover `.ts` mutating scripts in the future. Spelling it out here
+      // keeps the carve-out's own suffix list in sync with what
+      // SAFE_CHECK_FORMS actually allows, independent of that future.
+      (/\.test\.(?:(?:m|c)?js|ts)$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
       form.pathPrefix.some(p => a.startsWith(p)) &&
       // allowBasenames (task #1827's generic audit-/lint- form only): an
       // ALLOWLIST, not a denylist — see AUDIT_LINT_GENERIC_FORM_ALLOWED's
@@ -236,7 +257,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module via the `@/` alias), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), or `bash scripts/lib/sync-audit-checkout.test.sh`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), or `bash scripts/lib/sync-audit-checkout.test.sh`';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
