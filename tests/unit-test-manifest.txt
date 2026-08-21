@@ -2,6 +2,7 @@ scripts/audit-alert-senders.test.mjs
 scripts/audit-audience-buzz-contamination.test.mjs
 scripts/audit-card-verifiability.test.mjs
 scripts/audit-cross-outlet-attributions.test.mjs
+scripts/audit-cross-show-url-collisions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-fetch-timeouts.test.mjs
@@ -75,6 +76,7 @@ scripts/newsletter/we-openings-section.test.mjs
 scripts/notion-action-poll.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
+scripts/opening-night-pipeline.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/recover-serp-text.test.mjs
@@ -124,6 +126,7 @@ scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
 scripts/tests/verify-gate-ts-runner.test.mjs
 scripts/verify-contamination-gate.test.mjs
+scripts/verify-frankie-2002-cleanup.test.mjs
 scripts/verify-reroute-migration.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
@@ -165,6 +168,7 @@ tests/unit/branch-protection.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
 tests/unit/brand-mention-serp-bd-first.test.mjs
 tests/unit/broadcast-state.test.mjs
+tests/unit/broadway-fantasy-league.test.mjs
 tests/unit/broadway-schedule-discovery.test.mjs
 tests/unit/broadway-venue-fallback.test.mjs
 tests/unit/browserbase-caps.test.mjs
