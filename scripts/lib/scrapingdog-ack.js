@@ -48,7 +48,7 @@ function evaluateScrapingdogCredits(acct, today) {
   // for an unexpected response instead.
   if (!acct || !Number.isFinite(acct.requestLimit) || acct.requestLimit <= 0
       || !Number.isFinite(acct.requestUsed) || acct.requestUsed < 0) {
-    return { status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct).slice(0, 80)}` };
+    return { status: 'warn', message: `Unexpected account response: ${JSON.stringify(acct ?? null).slice(0, 80)}` };
   }
   const remaining = acct.requestLimit - acct.requestUsed;
   const pctRemaining = Math.round((remaining / acct.requestLimit) * 100);
