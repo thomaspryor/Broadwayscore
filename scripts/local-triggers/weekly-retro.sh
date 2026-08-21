@@ -31,8 +31,13 @@ if [ "$AUTH_MODE" = "MODE=oauth" ]; then
   unset ANTHROPIC_API_KEY
 fi
 
-# Pull latest
-git pull --ff-only origin main >> "$LOG" 2>&1 || true
+# Sync to latest before running (BRO-1794): a bare `git pull --ff-only || true`
+# silently ran the retro on stale code whenever data/audit/* had local edits
+# (the same class of bug fixed for autonomous-shadow/morning-digest/backlog-
+# drain by task #732). sync-audit-checkout.sh resets regenerable audit
+# snapshots and retries; if it still can't fast-forward it exits non-zero,
+# and `set -e` above aborts this job loudly instead of running it stale.
+SYNC_TAG=weekly-retro bash scripts/lib/sync-audit-checkout.sh >> "$LOG" 2>&1
 
 WEEK_START=$(date -v-7d +%Y-%m-%d)
 TODAY=$(date +%Y-%m-%d)
