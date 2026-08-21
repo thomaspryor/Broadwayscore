@@ -93,6 +93,26 @@ const MISMATCHES = [
   // "susangrangercom" (Susan Granger's site) but criticName=Philip Dorian —
   // scene-on-stage's registered defaultCritic — and url=sceneonstage.com.
   { from: 'susangrangercom', to: 'scene-on-stage', domains: ['sceneonstage.com'] },
+  // BRO-1011 triage (2026-08-21): 2 files (avenue-q-west-end-2026,
+  // the-mousetrap-west-end-2021), both outletId="reviews" (a generic/
+  // truncated mistag, not a real outlet), criticName=William Russell,
+  // url=reviewsgate.co.uk.
+  { from: 'reviews', to: 'reviewsgate', domains: ['reviewsgate.co.uk'] },
+  // BRO-1011 triage (2026-08-21): 1 file (to-kill-a-mockingbird-west-end-
+  // 2026): outletId="observer" but criticName=David Cote, url=
+  // theaternewsonline.com, and the file's own `outlet` field is just his
+  // name (not "Observer"). Domain-gated so real observer.com reviews
+  // (outletId="observer") are untouched.
+  { from: 'observer', to: 'theater-news-online', domains: ['theaternewsonline.com'] },
+  // BRO-1011 triage (2026-08-21): 1 file (the-producers-west-end-2025):
+  // outletId="the-sun" but url=thetimes.com, criticName=Dominic Maxwell,
+  // and the file's own `outlet` field already reads "The Sunday Times".
+  // Domain-gated so real thesun.co.uk reviews are untouched. A distinct
+  // times-uk--dominic-maxwell.json already exists for this show with a
+  // different URL path (different article — likely the earlier Menier
+  // Chocolate Factory run vs. this West End transfer); not verifiably the
+  // same article, so this resolves via retag-in-place, not duplicateOf.
+  { from: 'the-sun', to: 'times-uk', domains: ['thetimes.com', 'thetimes.co.uk'] },
 ];
 
 function exists(p) { try { fs.accessSync(p); return true; } catch { return false; } }
