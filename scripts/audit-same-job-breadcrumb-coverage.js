@@ -101,6 +101,8 @@ const CLEAR_LOOKBACK_CHARS = 3000;
 const ACTION_EXTRA_PROTECTED = [
   'serpRetryCount',
   'serpDiscoveryAbandoned',
+  'fetchRetryAfter',
+  'fetchDiscoveryAbandoned',
   'rescoreBlockedReason',
   'rescoreBlockedAt',
   'rescoreBlockedTextLength',
