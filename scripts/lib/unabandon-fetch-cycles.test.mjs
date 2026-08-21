@@ -81,8 +81,9 @@ function run(dir, extraArgs = []) {
   try {
     return execFileSync(process.execPath, [scriptPath, ...extraArgs], { cwd: dir, encoding: 'utf8' });
   } catch (err) {
-    // Script exits 1 on error paths — surface stdout for assertions anyway.
-    return err.stdout || '';
+    // Script exits 1 on error paths — surface stdout+stderr for assertions
+    // anyway (validation errors go to stderr via console.error).
+    return (err.stdout || '') + (err.stderr || '');
   }
 }
 
@@ -195,4 +196,30 @@ test('--show targeted override: clears even when the gate would still say no (do
   assert.strictEqual(after.fetchDiscoveryAbandoned, null);
   assert.strictEqual(after.fetchAbandonmentReason, null);
   assert.strictEqual(after.fetchAbandonmentDate, null);
+});
+
+test('--show targeted override also bypasses the human-authored-reason provenance check (that check is bulk-mode-only)', () => {
+  const dir = makeFixture();
+  fs.mkdirSync(path.join(dir, 'data', 'review-texts', 'show-f'), { recursive: true });
+  const manuallyAbandoned = {
+    url: 'https://example.com/show-f-review',
+    fetchDiscoveryAbandoned: true,
+    fetchAbandonmentReason: 'manual:outlet-permanently-shut-down',
+    fetchAbandonmentDate: '2026-01-01',
+  };
+  fs.writeFileSync(path.join(dir, 'data', 'review-texts', 'show-f', 'review1.json'), JSON.stringify(manuallyAbandoned));
+  run(dir, ['--show=show-f']);
+  const after = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'show-f', 'review1.json'), 'utf8'));
+  assert.strictEqual(after.fetchDiscoveryAbandoned, null, '--show is the human decision — it must clear even a prior human-authored reason');
+});
+
+test('--show rejects a path-separator show id instead of escaping data/review-texts/', () => {
+  const dir = makeFixture();
+  const out = run(dir, ['--show=../escape']);
+  assert.match(out, /not a valid show id/);
+  // Nothing outside the fixture dir should have been touched — sanity check
+  // that show-a (a real, would-otherwise-clear candidate) was left alone
+  // because the script exited before scanning anything.
+  const a = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'show-a', 'review1.json'), 'utf8'));
+  assert.strictEqual(a.fetchDiscoveryAbandoned, true);
 });

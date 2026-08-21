@@ -25,6 +25,12 @@
  *    abandoned with any OTHER reason string was a deliberate human call
  *    (shouldRetryFetch's own docstring: "only a human unsets it") and bulk
  *    mode must never silently override that.
+ *    CAVEAT: this is a naming convention, not an enforced invariant — a
+ *    future tool that sets fetchDiscoveryAbandoned:true without a reason
+ *    (mimicking the live path's shape) would be treated as gate-derived
+ *    even if it was actually a human call. Any NEW writer of this field
+ *    should stamp a distinguishing fetchAbandonmentReason if it isn't the
+ *    live gate or backfill-fetch-abandonment.js.
  *
  * 2. TARGETED (--show=ID): unconditionally clears fetchDiscoveryAbandoned
  *    for every abandoned review under that show, no re-derivation or
@@ -64,6 +70,13 @@ if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const DRY_RUN = args.includes('--dry-run');
 const showArg = args.find(a => a.startsWith('--show='));
 const SHOW_FILTER = showArg ? showArg.slice('--show='.length) : null;
+// --show is an unconditional-clear override (see header comment) — reject
+// anything that isn't a plain directory-name-shaped id so it can't escape
+// data/review-texts/ via '..' or an absolute path.
+if (SHOW_FILTER && (SHOW_FILTER.includes('/') || SHOW_FILTER.includes('\\') || SHOW_FILTER === '..' || SHOW_FILTER === '.')) {
+  console.error(`ERROR: --show=${SHOW_FILTER} is not a valid show id (no path separators allowed).`);
+  process.exit(1);
+}
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
