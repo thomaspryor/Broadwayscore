@@ -467,6 +467,18 @@ function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = 
   }
 }
 
+// KNOWN GAP (Codex adversarial review, BRO-2251): release is keyed on taskId
+// alone, not an ownership token (pid/nonce). If a holder's own launch attempt
+// runs past staleMs (~8 min — plausible: launchCmux's slowBootCapSec allows
+// up to 6 min of boot after the injection window) before returning, a second
+// caller's stale-takeover can acquire the "same" lock, and the FIRST holder's
+// deferred release then deletes the second holder's lock out from under it.
+// BRO-2251's fix makes this reachable for the first time in practice (release
+// used to be skipped entirely on any failure — see runSuccessionDispatch's
+// header comment), so it is now a real, if narrow, race rather than a purely
+// theoretical one. Not fixed here: closing it needs an ownership check
+// (compare pid/nonce before rm, not just taskId) which is a separate,
+// testable change of its own.
 function releaseSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR) {
   try { fs.rmSync(path.join(lockDir, `${taskId}.lock`), { recursive: true, force: true }); } catch { /* next attempt's staleness check recovers */ }
 }
@@ -613,8 +625,18 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
       });
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
-    console.error(`[bsc-next] SUCCESSION LAUNCH NOT VERIFIED (${res.reason}).`);
-    console.error(`  command that should have run:`);
+    // Card #705 (Codex adversarial catch, BRO-2251): a launch whose wrapper
+    // is still RUNNING is booting slowly, not dead — the fresh-dispatch
+    // branch below (~line 1370) already distinguishes this and warns
+    // "do NOT re-dispatch" instead of reporting the workspace as a corpse.
+    // The succession branch must draw the same distinction, or a slow-boot
+    // succession launch gets journaled and reported as "dead" while its
+    // session is actually alive and about to register.
+    const stillBooting = res.deadConfirmed === false;
+    console.error(stillBooting
+      ? `[bsc-next] SUCCESSION LAUNCH UNCONFIRMED — STILL BOOTING (${res.reason}). Do NOT re-dispatch #${task.id}: its command is running.`
+      : `[bsc-next] SUCCESSION LAUNCH NOT VERIFIED (${res.reason}).`);
+    console.error(stillBooting ? `  command that IS running there:` : `  command that should have run:`);
     console.error(`  ${res.command}`);
     // BRO-2251: this branch used to log and exit with NOTHING written to
     // dispatch-ledger.js — a failed succession launch was invisible to
@@ -629,12 +651,12 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
       taskId: task.id, subject: task.subject, workspaceRef: res.workspaceRef, model,
       verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
       notionId: pid || null, failureReason: res.reason,
-      deadConfirmed: res.deadConfirmed !== false,
+      deadConfirmed: !stillBooting,
     });
     if (failedEntries.length) {
       try {
         failedEntries.forEach(e => appendLedgerEntryFn(e));
-        console.error(`  journaled dead succession dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
+        console.error(`  journaled ${stillBooting ? 'unverified (not dead)' : 'dead'} succession dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
       } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
       try {
         const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });

@@ -533,6 +533,33 @@ test('runSuccessionDispatch: a failed launch journals a dead breadcrumb (BRO-225
   fs.unlinkSync(handoffPath);
 });
 
+// Codex adversarial catch (BRO-2251): a launch whose wrapper is still
+// RUNNING (deadConfirmed:false, card #705's slow-boot case) is booting
+// slowly, not dead — journaling it as 'dead' would feed the dead-attempt
+// guard and mark a LIVE shell a corpse for the pruner, exactly the lie the
+// fresh-dispatch branch's own deadConfirmed handling exists to avoid.
+test('runSuccessionDispatch: a still-booting (unconfirmed-dead) launch is journaled unverified, not dead (BRO-2251)', () => {
+  const { ledger, dispatchOnce } = runSuccessionHarness({
+    launchCmux: () => ({
+      ok: false, reason: 'claude has not registered yet, wrapper still running', deadConfirmed: false,
+      workspaceRef: 'workspace:922', wrapperAlive: true, command: 'claude --model sonnet ...',
+    }),
+  });
+  const task = { id: '861', subject: 'succession launch still booting', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-booting-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(r.exitCode, 1);
+
+  assert.equal(ledger.filter(e => e.event === 'dead').length, 0, 'a still-booting launch must NOT get a dead breadcrumb — the wrapper is alive');
+  const unverifiedLaunch = ledger.filter(e => e.event === 'launch' && e.unverified === true);
+  assert.equal(unverifiedLaunch.length, 1, 'the attempt is still journaled as unverified so it is attributable');
+  assert.equal(unverifiedLaunch[0].workspaceRef, 'workspace:922');
+
+  fs.unlinkSync(handoffPath);
+});
+
 // BRO-2251: runSuccessionDispatchLocked used to call process.exit(1) directly
 // on every failure branch, which terminates the process without running the
 // caller's try/finally — so releaseSuccessionLock() was never reached on a
