@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-21T00:15:39.750Z",
-  "processed": 54,
-  "failed": 263,
-  "successRate": "17.0%",
+  "updatedAt": "2026-08-21T00:17:08.075Z",
+  "processed": 55,
+  "failed": 272,
+  "successRate": "16.8%",
   "tierBreakdown": {
     "playwright": 33,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 3,
     "scrapingbee": 7,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-20T23:16:54.951Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-08-20T23:16:55.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T00:15:59.669Z",
+      "event": "bb-session",
+      "session": "da118808",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-21T00:16:00.066Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
