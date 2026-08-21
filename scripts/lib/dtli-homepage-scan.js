@@ -176,9 +176,12 @@ function findDTLIShowLinkOnHomepage(html, show, { logger = NOOP_LOGGER } = {}) {
   }
 
   // Tie-break: when bare-title and numbered variant both score equal, prefer
-  // numbered for revivals. Heuristic: if show.id ends in a year (e.g. -2026),
-  // and a candidate slug has a `-N` suffix, that's likely the right revival.
-  const isLikelyRevival = !!(show.isRevival || (show.id && /\b(19|20)\d{2}$/.test(show.id)));
+  // numbered for revivals. Every show.id ends in its opening year (e.g.
+  // -2026), so an `|| /\b(19|20)\d{2}$/.test(show.id)` OR clause here matched
+  // EVERY show and made this tie-break fire unconditionally, same class of
+  // bug as opening-night-poller.js's TB isRevival predicate (BRO-2023
+  // /what-else sweep) — found via grep for the same regex pattern elsewhere.
+  const isLikelyRevival = !!show.isRevival;
   if (isLikelyRevival && ranked.length > 1 && ranked[0].score === ranked[1].score) {
     const numbered = ranked.find(c => /-\d{1,2}$/.test(c.slug));
     if (numbered) {
