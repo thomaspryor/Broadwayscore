@@ -1,11 +1,17 @@
 'use strict';
 
 const { isBroadwayCategory } = require('./venue-classification');
+const { foldDiacritics } = require('./title-match');
 
 // Full normalized title (no subtitle stripping) to avoid false positives —
-// e.g. "Seagull: True Story" should NOT match "The Seagull".
+// e.g. "Seagull: True Story" should NOT match "The Seagull". foldDiacritics
+// BEFORE the [^a-z0-9' ] strip — otherwise an accented title (e.g. "Amélie")
+// loses its accented letters entirely instead of folding to ASCII, so it can
+// never cross-reference against an unaccented shows.json entry (or vice
+// versa) — same class of bug documented across every other title matcher in
+// this codebase (tests/unit/sibling-matchers-diacritics.test.mjs).
 function normalizeTitle(t) {
-  return t.toLowerCase()
+  return foldDiacritics(t || '').toLowerCase()
     .replace(/^(the|a|an)\s+/i, '')
     .replace(/['']/g, "'")
     .replace(/[^a-z0-9' ]/g, '')
