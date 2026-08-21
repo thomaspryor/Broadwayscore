@@ -100,4 +100,21 @@ describe('West End Olivier data — real dataset sanity', () => {
     }
     assert.deepEqual([...unclassified], [], 'unclassified Olivier categories score 0 and never render — extend classifyCategory');
   });
+
+  // Regression for a bug an independent review caught before merge: the show-page
+  // panel's sortByImportance()/isMajorCategory() (src/config/awards.ts) are hardcoded
+  // to exact Tony strings ("Best Musical", "Best Direction of a Musical"), which never
+  // match Olivier's own naming ("Best New Musical", "Best Director") — so every Olivier
+  // marquee win rendered with the same dim styling and fell to the bottom of the sorted
+  // list. The fix (AwardScoreCard.tsx's sortOlivierByImportance/isMajorOlivierCategory)
+  // derives ranking from classifyCategory's ceremony-agnostic S/A+/A/B/C tier instead of
+  // a Tony-only string list. This pins that Olivier's real top-line categories land in
+  // the "major" S/A tier under that tier system, not just "classified at all".
+  it('tiers Olivier marquee categories (Best New Musical/Play, Best Director, lead acting) as S/A — the "major" tiers', () => {
+    const marquee = ['Best New Musical', 'Best New Play', 'Best Revival', 'Best Musical Revival', 'Best Director', 'Best Actor', 'Best Actress', 'Best Actor in a Musical', 'Best Actress in a Musical'];
+    for (const cat of marquee) {
+      const tier = classifyCategory(cat)?.tier;
+      assert.ok(tier === 'S' || tier === 'A' || tier === 'A+', `${cat} classified as tier ${tier}, expected S/A/A+`);
+    }
+  });
 });

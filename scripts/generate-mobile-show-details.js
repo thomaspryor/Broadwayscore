@@ -24,6 +24,7 @@ const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
+const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const dataDir = path.join(__dirname, '../data');
@@ -648,9 +649,10 @@ for (const show of visibleShows) {
   // Awards Scorecard parity: award score + tier + Pulitzer + other ceremonies.
   const awardsEntry = awardsShows[show.id];
   if (awardsEntry) {
-    // 'broadway' for every market: the site's AwardScoreCard hard-codes it
-    // (AwardScoreCard.tsx:338), and the mobile score must match the site.
-    const scoreResult = computeSiteAwardScore(show.id, awardsShows, 'broadway');
+    // Market picks the Olivier weight table (BRO-573) — must match
+    // AwardScoreCard.tsx's categoryToMarket(show.category) so the mobile
+    // score agrees with the site instead of the two silently diverging.
+    const scoreResult = computeSiteAwardScore(show.id, awardsShows, categoryToAwardsMarket(show.category));
     const oth = [];
     for (const [key, label] of OTHER_CEREMONY_LABELS) {
       const c = awardsEntry[key];

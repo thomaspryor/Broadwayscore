@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { computeSiteAwardScore, categoryToMarket } from '@/lib/awards-scoring';
+import { computeSiteAwardScore, categoryToMarket, classifyCategory } from '@/lib/awards-scoring';
 import type { ShowAwards } from '@/lib/data-types';
 import { ChevronIcon, PulitzerIcon, TrophyIconLine, StarIconLine } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
@@ -36,6 +36,26 @@ function toFullSeasonLabel(season: string): string {
   return `${parts[0]}-${fullEnd}`;
 }
 
+// Tony-only: TONY_CATEGORY_ORDER/MAJOR_CATEGORIES in @/config/awards are
+// hardcoded Tony strings ("Best Musical", "Best Direction of a Musical")
+// that don't match Olivier's own naming ("Best New Musical", "Best
+// Director"), so sortByImportance/isMajorCategory silently treat every
+// Olivier category as unranked/minor. These two derive the same shape of
+// ranking from classifyCategory's ceremony-agnostic S/A+/A/B/C tiers
+// instead, so Olivier marquee wins get correct sort order + bold styling.
+const OLIVIER_TIER_RANK: Record<string, number> = { S: 0, 'A+': 1, A: 2, B: 3, C: 4 };
+function sortOlivierByImportance(items: string[]): string[] {
+  return [...items].sort((a, b) => {
+    const ra = OLIVIER_TIER_RANK[classifyCategory(a)?.tier ?? ''] ?? 999;
+    const rb = OLIVIER_TIER_RANK[classifyCategory(b)?.tier ?? ''] ?? 999;
+    return ra - rb;
+  });
+}
+function isMajorOlivierCategory(category: string): boolean {
+  const tier = classifyCategory(category)?.tier;
+  return tier === 'S' || tier === 'A+' || tier === 'A';
+}
+
 // "Best Direction of a Musical" → "Best Direction (Musical)" so mobile lines
 // don't wrap awkwardly inside the expandable list.
 function shortCategory(c: string): string {
@@ -52,8 +72,8 @@ function shortCategory(c: string): string {
 function buildSublabel(awards: ShowAwards | undefined, badge: string, inProgress: boolean): string {
   const tonyWins = sortByImportance(awards?.tony?.wins ?? []);
   const tonyNoms = sortByImportance(awards?.tony?.nominatedFor ?? []);
-  const olivierWins = sortByImportance(awards?.olivier?.wins ?? []);
-  const olivierNoms = sortByImportance(awards?.olivier?.nominatedFor ?? []);
+  const olivierWins = sortOlivierByImportance(awards?.olivier?.wins ?? []);
+  const olivierNoms = sortOlivierByImportance(awards?.olivier?.nominatedFor ?? []);
   if (tonyWins.length > 0) {
     const top = shortCategory(tonyWins[0]);
     return tonyWins.length > 1 ? `Won ${top} + ${tonyWins.length - 1} more` : `Won ${top}`;
@@ -221,8 +241,8 @@ function OlivierAwardsPanel({
   const nominationsOnly = nominatedFor.filter(n => !wins.includes(n));
   const totalCount = wins.length + nominationsOnly.length;
   const [expanded, setExpanded] = useState(totalCount > 0 && totalCount <= 5);
-  const sortedWins = sortByImportance(wins);
-  const sortedNoms = sortByImportance(nominationsOnly);
+  const sortedWins = sortOlivierByImportance(wins);
+  const sortedNoms = sortOlivierByImportance(nominationsOnly);
 
   return (
     <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
@@ -266,7 +286,7 @@ function OlivierAwardsPanel({
           {expanded && (
             <ul className="mt-3 space-y-2">
               {sortedWins.map((cat, idx) => {
-                const major = isMajorCategory(cat);
+                const major = isMajorOlivierCategory(cat);
                 return (
                   <li key={`w-${idx}`} className="flex items-center gap-2 text-sm">
                     <TrophyIconLine className="text-amber-400 flex-shrink-0" />
@@ -278,7 +298,7 @@ function OlivierAwardsPanel({
                 );
               })}
               {sortedNoms.map((cat, idx) => {
-                const major = isMajorCategory(cat);
+                const major = isMajorOlivierCategory(cat);
                 return (
                   <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
                     <StarIconLine className="text-gray-500 flex-shrink-0" />
@@ -452,7 +472,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, category, 
   const sublabel = buildSublabel(awards, result.badge, result.inProgress);
 
   const hasTony = !!awards?.tony && ((awards.tony.wins?.length ?? 0) > 0 || (awards.tony.nominatedFor?.length ?? 0) > 0);
-  const hasOlivier = !!awards?.olivier && ((awards.olivier.wins?.length ?? 0) > 0 || (awards.olivier.nominatedFor?.length ?? 0) > 0);
+  const hasOlivier = !!awards?.olivier && ((awards.olivier.wins?.length ?? 0) > 0 || (awards.olivier.nominatedFor?.length ?? 0) > 0 || (awards.olivier.nominations ?? 0) > 0);
 
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
 
