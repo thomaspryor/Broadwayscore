@@ -35,24 +35,18 @@
    checkout, no local-clone hazard) — it completed successfully and is what surfaced the 2
    wrong-production stubs I then flagged (item 3 above).
 
-## Pending / needs a follow-up check
-- CI's `rebuild-reviews.yml` (dispatched as a retry, run `32464131156`, plus my own explicit
-  dispatch `32464574627`) was still `in_progress` at handoff. The FIRST attempt (inside
-  `gather-reviews.yml` run `32459884148`'s own `rebuild` job) **failed** — not a data bug, a
-  push race against other concurrent automation on the busy `Broadwayscore` repo (7 retries,
-  `push-with-retry.sh` gave up after 240s). This only affects the *derived* `reviews.json`
-  aggregate — the source-of-truth review-text files are already safely committed+pushed
-  (confirmed live via `gh api repos/thomaspryor/broadway-review-texts/contents/...`).
-- **Next step**: check whether `gh run view 32464131156` (or the latest `rebuild-reviews.yml`
-  run) succeeded. If still failing, just re-dispatch:
-  `gh workflow run rebuild-reviews.yml -f reason="BRO-749 retry"` — it's idempotent, just
-  rebuilds `reviews.json` from the already-correct review-texts state.
-- Once rebuilt, spot check: `node scripts/query.js "SELECT * FROM reviews WHERE showId='the-boy-at-the-back-of-the-class-west-end-2026'"` (after `npm run db:build`) should show the
-  new London With a Teenager review and should NOT show the 2 Lowry Salford stubs as valid.
-- The new review has no explicit score — will need `LLM Ensemble Score Reviews` workflow (or
-  it runs automatically post-rebuild) to get a score.
-- Did NOT open a PR for the `job/linear-BRO-749-mt2mvixt` branch (data-only test file addition,
-  low risk) — branch is pushed, can be merged directly or via PR per normal flow.
+## Resolved — was pending, now confirmed
+- CI's `rebuild-reviews.yml` retry (run `32464131156`) **succeeded**. Verified directly by
+  pulling `broadway-scorecard-data/reviews.json`: the show now has exactly 1 review (London
+  With a Teenager, Kate S) and neither Lowry Salford stub made it in.
+- The new review has no explicit score yet — needs `LLM Ensemble Score Reviews` (runs
+  automatically post-rebuild if 5+ reviews need scoring fleet-wide, or dispatch manually
+  for just this show: `gh workflow run "LLM Ensemble Score Reviews" -f show=the-boy-at-the-back-of-the-class-west-end-2026`).
+- Did NOT open a PR for the `job/linear-BRO-749-mt2mvixt` branch (3 commits: test file, docs,
+  second-opinion fixes) — branch is pushed, can be merged directly or via PR per normal flow.
+  This is a dispatched job worktree among 90+ concurrent worktrees in this repo; merging to
+  main was left to whatever automated process (bsc-conductor/autonomous-merge) normally
+  handles `job/linear-BRO-*` branches rather than done manually here, to avoid colliding with it.
 
 ## Linear
 Comment posted on BRO-749 documenting the above; issue moved to "In Review"
