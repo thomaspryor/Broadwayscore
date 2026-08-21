@@ -36,9 +36,15 @@ function parsePlaybillTagLine(html) {
   const typeTag = tags.find(t => /^(play|musical)$/i.test(t));
   const showType = typeTag ? typeTag.toLowerCase() : null;
 
+  // Revival/Original is always the LAST tag on every live page checked
+  // (BRO-2023 ship-check finding) — reading the last tag specifically, not
+  // "anywhere in the list", avoids a wrong call if a genre tag ever happens
+  // to contain either word, and avoids an arbitrary tie-break if a markup
+  // regression ever printed both.
+  const lastTag = tags[tags.length - 1] || '';
   let revivalStatus = 'unknown';
-  if (tags.some(t => /^revival$/i.test(t))) revivalStatus = 'revival';
-  else if (tags.some(t => /^original$/i.test(t))) revivalStatus = 'original';
+  if (/^revival$/i.test(lastTag)) revivalStatus = 'revival';
+  else if (/^original$/i.test(lastTag)) revivalStatus = 'original';
 
   return { tags, market, showType, revivalStatus };
 }

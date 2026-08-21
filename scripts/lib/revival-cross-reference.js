@@ -13,17 +13,33 @@ function normalizeTitle(t) {
     .trim();
 }
 
-// normalized title -> { type, id, category, title }
+// normalized title -> array of { type, id, category, title }. Keeps every
+// same-title entry, not just the first seen — a title can legitimately exist
+// in more than one market (e.g. a West End original + an unrelated same-name
+// Broadway show), and picking only the first meant a same-market prior
+// production could be shadowed by an earlier cross-market one and misread as
+// a transfer instead of a revival (ship-check finding, ties to BRO-2023's own
+// "wrong direction" theme).
 function buildExistingTitleMap(shows) {
   const map = new Map();
   for (const s of shows) {
     const norm = normalizeTitle(s.title);
     if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
-    if (!map.has(norm)) {
-      map.set(norm, { type: s.type, id: s.id, category: s.category, title: s.title });
-    }
+    if (!map.has(norm)) map.set(norm, []);
+    map.get(norm).push({ type: s.type, id: s.id, category: s.category, title: s.title });
   }
   return map;
+}
+
+// Among same-titled candidates (excluding the show itself), prefer a
+// same-market one — that's the one that actually proves a revival.
+function pickBestMatch(candidates, show) {
+  if (!candidates || !candidates.length) return null;
+  const others = candidates.filter(c => c.id !== show.id);
+  if (!others.length) return null;
+  const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
+  const showMarket = normMarket(show.category);
+  return others.find(c => normMarket(c.category) === showMarket) || others[0];
 }
 
 /**
@@ -41,16 +57,16 @@ function buildExistingTitleMap(shows) {
  */
 function detectRevivalByTitleCrossReference(show, existingTitleMap) {
   const norm = normalizeTitle(show.title);
-  let match = existingTitleMap.get(norm);
-  if (!match || match.id === show.id) {
+  let match = pickBestMatch(existingTitleMap.get(norm), show);
+  if (!match) {
     // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
     const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
     const normBase = normalizeTitle(base);
     if (normBase.length >= 5 && normBase !== norm) {
-      match = existingTitleMap.get(normBase);
+      match = pickBestMatch(existingTitleMap.get(normBase), show);
     }
   }
-  if (!match || match.id === show.id) {
+  if (!match) {
     return { isRevival: false, detectedType: null, confidence: null, match: null, isTransfer: false };
   }
 
