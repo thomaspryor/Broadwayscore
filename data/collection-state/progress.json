@@ -72,7 +72,8 @@
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -751,7 +752,16 @@
     "music-city-off-broadway-2026/observer--unknown.json",
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
-    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json"
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -842,11 +852,12 @@
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
-      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ]
   },
   "startTime": "2026-08-21T09:32:16.048Z",
-  "lastProcessed": "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
   "log": [
     {
       "t": "2026-08-21T09:33:34.769Z",
@@ -875,6 +886,17 @@
       "event": "bb-session",
       "session": "120785ce",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-08-21T13:02:08.246Z",
+      "event": "bb-session",
+      "session": "667e267b",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-21T13:02:08.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
