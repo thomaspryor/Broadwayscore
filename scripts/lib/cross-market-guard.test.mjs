@@ -394,6 +394,41 @@ test('evaluateForwardCrossMarketGuard: a London outlet is still skip-exempted re
   assert.equal(r.exemptedByPriorRun, false);
 });
 
+// BRO-591: ground-truth coverage check on John Proctor Is the Villain (WE)
+// found new-statesman--emily-lawford.json false-flagged wrongProduction with
+// reason 'Cross-market: US outlet "new-statesman" reviewing London show' even
+// though outlet-registry.json has new-statesman.region = 'uk'. This guard only
+// exempted the literal 'london' region string, missing 'uk' and 'dual' — the
+// sibling classifyUsOnWeCrossMarket() already exempts all three (see the
+// 'US-on-WE: UK-side regions (london/uk/dual) are skipped' test above).
+test('evaluateForwardCrossMarketGuard: a "uk"-region outlet (non-London-city UK, e.g. New Statesman) is skip-exempted like "london"', () => {
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    outletRegionMap: { 'new-statesman': 'uk' },
+    registeredOutletIds: new Set(['new-statesman']),
+    canonicalOutlet: 'new-statesman',
+    rawOutlet: 'new-statesman',
+    url: 'https://www.newstatesman.com/culture/2026/03/some-review',
+    reviewDate: D('2025-08-09'),
+    priorRuns: null,
+  });
+  assert.equal(r.shouldFlag, false);
+});
+
+test('evaluateForwardCrossMarketGuard: a "dual"-region outlet is skip-exempted like "london"', () => {
+  const r = evaluateForwardCrossMarketGuard({
+    ...forwardGuardBase,
+    outletRegionMap: { 'times-uk': 'dual' },
+    registeredOutletIds: new Set(['times-uk']),
+    canonicalOutlet: 'times-uk',
+    rawOutlet: 'times-uk',
+    url: 'https://www.thetimes.co.uk/article/some-review',
+    reviewDate: D('2025-08-09'),
+    priorRuns: null,
+  });
+  assert.equal(r.shouldFlag, false);
+});
+
 // Card #1532 (3rd cousin of BRO-222/#1528): the URL-PATH cross-market guard
 // (rebuild-all-reviews.js [GUARD:URL-PATH-CROSS-MARKET]) flags wrongProduction
 // from the review URL's path text (e.g. '/broadway-review/', '/chicago-' on a

@@ -299,7 +299,15 @@ function evaluateForwardCrossMarketGuard({
   priorRuns,
 }) {
   const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-  if (outletRegion === 'london') return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  // 'uk'/'dual' are non-London-city UK regions (e.g. New Statesman, Morning Star) —
+  // treated as US-side here because only 'london' was checked, so every review from
+  // a 'uk'-region outlet on a WE show was false-flagged as cross-market contamination
+  // (found via BRO-591's ground-truth coverage check: new-statesman on John Proctor WE).
+  // classifyUsOnWeCrossMarket() below already exempts all three; this brings the two
+  // guards back in sync.
+  if (outletRegion === 'london' || outletRegion === 'uk' || outletRegion === 'dual') {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  }
   if (isUkUrl(url)) return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
 
   // Production-continuity exemption (BRO-222 cousin, opposite direction): a
