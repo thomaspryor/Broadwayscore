@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-21T15:04:26.303Z",
+  "runDate": "2026-08-21T20:54:33.183Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -27,25 +27,25 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 3,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 3,
     "tier4Success": 0,
     "totalFailed": 4,
-    "scrapingBeePageCredits": 11,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.8,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -75,6 +75,13 @@
     "theatremonkey": {
       "count": 1,
       "domain": "theatremonkey.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
