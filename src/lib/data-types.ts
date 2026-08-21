@@ -345,8 +345,20 @@ export interface WhatsOnStageAwards {
   nominations?: number;
 }
 
+/** Olivier Award (UK/West End, 1976–present) — the West End's Tony
+ *  equivalent. Source: scripts/enrich-olivier-awards.js (Wikipedia). */
+export interface OlivierAwards {
+  season?: string;
+  ceremony?: string;
+  wins?: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+  note?: string;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
+  olivier?: OlivierAwards;
   dramadesk?: DramaDeskAwards;
   outerCriticsCircle?: OuterCriticsCircleAwards;
   dramaLeague?: DramaLeagueAwards;

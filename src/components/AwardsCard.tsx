@@ -27,6 +27,9 @@ interface AwardsCardProps {
   showId: string;
   awards: ShowAwards | undefined;
   openingDate?: string;
+  /** Show's market category (show.category, e.g. 'west-end'). Forwarded to
+   *  v2 (AwardScoreCard) to select the correct Olivier weight table. */
+  category?: string;
   /** Map of Tony category → [person names] (winners + nominees, name-only).
    *  Computed server-side from data/tony-nominations.json. Optional so the
    *  legacy v1 path keeps compiling; v2 (AwardScoreCard) uses it to surface
@@ -386,14 +389,14 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
   );
 }
 
-export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCategory }: AwardsCardProps) {
+export default function AwardsCard({ showId, awards, openingDate, category, tonyNamesByCategory }: AwardsCardProps) {
   // Guard here (not in server page.tsx) so isDemo() is evaluated at runtime.
   if (!featureFlags.awards) return null;
 
   // v2 card behind feature flag — same props, completely different rendering.
   // See src/components/AwardScoreCard.tsx and src/lib/awards-scoring.ts.
   if (featureFlags.awardScoreV2) {
-    return <AwardScoreCard showId={showId} awards={awards} openingDate={openingDate} tonyNamesByCategory={tonyNamesByCategory} />;
+    return <AwardScoreCard showId={showId} awards={awards} openingDate={openingDate} category={category} tonyNamesByCategory={tonyNamesByCategory} />;
   }
 
   const designation = getAwardsDesignation(showId, openingDate);
