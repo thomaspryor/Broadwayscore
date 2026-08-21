@@ -342,14 +342,24 @@ function main() {
   // Detect new changes
   const newChanges = detectChanges(currentState, previousState, { reviews, consensus, showsMap });
 
-  // Merge: pending undelivered changes + newly detected
-  // New detections take priority (fresher data)
+  // Merge: pending undelivered changes + newly detected, by change TYPE —
+  // not a wholesale per-show overwrite. A wholesale overwrite silently drops
+  // any pending-but-undelivered change (e.g. a social-tier-buzzing entry
+  // queued by detect-social-tier-changes.js, which runs AFTER this script)
+  // whenever the show also gets a same-run structural change detected here
+  // (cast/status/score/etc) — the debounce state for that dropped change may
+  // already be "consumed," so it can never be re-queued. Same-type entries
+  // still take the fresher (newly detected) version; different-type pending
+  // entries are preserved alongside the new ones.
   const changes = {};
   for (const [showId, pendingChanges] of Object.entries(prevPendingChanges)) {
     changes[showId] = pendingChanges;
   }
   for (const [showId, newShowChanges] of Object.entries(newChanges)) {
-    changes[showId] = newShowChanges; // fresher data wins
+    const pending = changes[showId] || [];
+    const newTypes = new Set(newShowChanges.map(c => c.type));
+    const preserved = pending.filter(c => !newTypes.has(c.type));
+    changes[showId] = [...preserved, ...newShowChanges];
   }
 
   const changedShowCount = Object.keys(changes).length;
