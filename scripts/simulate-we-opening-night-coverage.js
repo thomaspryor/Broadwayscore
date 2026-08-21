@@ -102,7 +102,7 @@ const GROUND_TRUTH = {
       { name: 'The Stage', tier: 1, outletId: 'thestage' },
       { name: 'Telegraph', tier: 1, outletId: 'telegraph' },
       { name: 'Evening Standard', tier: 1, outletId: 'standard' },
-      { name: 'City A.M.', tier: 2, outletId: 'cityam' },
+      { name: 'City A.M.', tier: 2, outletId: 'city-am' },
     ],
   },
 };
