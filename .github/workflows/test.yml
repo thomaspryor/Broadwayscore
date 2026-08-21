@@ -1430,6 +1430,10 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
       - 'scripts/notion-tasks-sync.test.mjs'
+      # BRO-2215 acceptance regression — lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed); path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/tests/notion-mirror-status-reconcile.test.mjs'
       # Task #1701: pull-time dedup regression test lives in tests/unit/ (node
       # --test batch, not globbed — see tests/unit-test-manifest.txt) and is
       # registered explicitly in the tests/unit node --test invocation below.
