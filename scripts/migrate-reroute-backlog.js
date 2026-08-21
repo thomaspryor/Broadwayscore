@@ -124,7 +124,7 @@ function classifyCandidate(showId, file, data, guard, decision) {
 
   // Rule 5: Flag note must be year-based OR cross-market (when --cross-market mode)
   const note = (data.wrongProductionNote || '').toLowerCase();
-  const isYearBased = /date guard|url year|publishdate|url contains year|-year|closer to sibling/.test(note);
+  const isYearBased = /date guard|url year|publishdate|url contains year|-year|closer to sibling|closer to review year/.test(note);
   const isCrossMarket = /cross-market|cross market/.test(note);
   if (isCrossMarket && !CROSS_MARKET) return { safe: false, reason: 'cross_market' };
   if (!isYearBased && !isCrossMarket) return { safe: false, reason: 'non_year_flag' };
@@ -153,7 +153,7 @@ function classifyCandidate(showId, file, data, guard, decision) {
       if (weSibs.length > 0) {
         let detectedYear = null;
         if (data.publishDate) { const m = data.publishDate.match(/(20\d\d|19\d\d)/); if (m) detectedYear = parseInt(m[0]); }
-        if (!detectedYear && data.url) { const m = data.url.match(/\/(20\d\d|19\d\d)\//); if (m) detectedYear = parseInt(m[1]); }
+        if (!detectedYear && data.url) { const m = data.url.match(/(?<![0-9])(20\d\d|19\d\d)(?![0-9])/); if (m) detectedYear = parseInt(m[1]); }
 
         if (detectedYear) {
           const weDecision = pickRerouteTarget(guard.showYear, weSibs, detectedYear);
@@ -287,7 +287,7 @@ if (MODE === 'dryrun') {
         if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
       }
       if (!detectedYear && data.url) {
-        const m = data.url.match(/\/(20\d\d|19\d\d)\//);
+        const m = data.url.match(/(?<![0-9])(20\d\d|19\d\d)(?![0-9])/);
         if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
       }
       if (!detectedYear) continue;
@@ -301,9 +301,17 @@ if (MODE === 'dryrun') {
       const decision = guard
         ? pickRerouteTarget(guard.showYear, guard.siblings, detectedYear)
         : { action: 'reroute', targetShowId: null, distance: Infinity };
-      // For cross-market-only shows (no guard), the classifier's Path A handles routing
+      // For cross-market-only shows (no guard), the classifier's Path A handles routing.
+      // A cross-market-flagged file can also sit in a show that DOES have same-market
+      // siblings (e.g. a UK critic's review filed under a Broadway "Hamlet" revival that
+      // also has Broadway siblings) — the same-market decision often resolves 'keep'
+      // (or reroutes to the wrong same-market sibling) because it never considers WE
+      // siblings. Don't let that same-market verdict pre-empt classifyCandidate's Path A
+      // WE-sibling routing: give cross-market-noted files a shot regardless of `decision`.
+      const noteForGate = (data.wrongProductionNote || '').toLowerCase();
+      const isCrossMarketNote = /cross-market|cross market/.test(noteForGate);
       if (!guard && !CROSS_MARKET) continue;
-      if (guard && decision.action !== 'reroute') continue;
+      if (guard && decision.action !== 'reroute' && !(CROSS_MARKET && isCrossMarketNote)) continue;
 
       // Safety classifier
       const classification = classifyCandidate(showId, file, data, effectiveGuard, decision);
