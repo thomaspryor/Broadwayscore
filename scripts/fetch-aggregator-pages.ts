@@ -321,6 +321,20 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 //   /shows/suffs-bway/   = Broadway 2024
 // We need to search DTLI to find the correct URL for our specific production.
 
+// BRO-725: DTLI's per-review thumb-up/meh/down images are the same
+// client-rendered list as the rest of the review-item markup — a fixed
+// 500ms post-domcontentloaded wait raced the page's own JS on slower loads
+// and captured review-item blocks before their BigThumbs_* <img> tags had
+// attached, silently losing per-review thumb data (aggregate counts from
+// the summary image stayed correct since those are server-rendered
+// separately). Wait for at least one thumb image to actually be in the DOM
+// before reading page.content() — a no-op extra wait once thumbs are
+// already present (the common case today), a real fix if DTLI's rendering
+// timing regresses.
+async function waitForDtliThumbs(page: Page): Promise<void> {
+  await page.waitForSelector('img[alt^="BigThumbs_"]', { timeout: 5000 }).catch(() => {});
+}
+
 async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>, dtliSlugMap: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
@@ -358,6 +372,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
       const response = await page.goto(mappedUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
       if (response && response.status() === 200) {
         await page.waitForTimeout(500);
+        await waitForDtliThumbs(page);
         const html = await page.content();
         if (!html.includes('Page not found') && !html.includes('404') && html.includes('didtheylikeit')) {
           if (validateProduction(html) && saveHtml('dtli', showId, html, show.title, mappedUrl)) {
@@ -414,6 +429,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
 
       if (response && response.status() === 200) {
         await page.waitForTimeout(500);
+        await waitForDtliThumbs(page);
         const html = await page.content();
 
         if (html.includes('Page not found') || html.includes('404') || !html.includes('didtheylikeit')) {
