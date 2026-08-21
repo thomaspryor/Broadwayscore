@@ -2459,6 +2459,13 @@ async function discoverShows() {
       }
       const det = playbillCandidates[i];
       try {
+        // det.show.isRevival is never set at this point in discovery (Stage 1's
+        // call is tracked on the `det` wrapper, not the raw show object) — so
+        // without this, compareShow()'s isRevival check always compares
+        // Playbill against `undefined` and reports a spurious mismatch for
+        // every revival, regardless of what Stage 1 actually found
+        // (ship-check finding).
+        det.show.isRevival = det.isRevival;
         const result = await validatePlaybillProduction(det.show, () => {});
         const tagLine = result?.parsed?.tagLine;
         // Ship-check finding: findPlaybillUrl's SERP match is scored, not
