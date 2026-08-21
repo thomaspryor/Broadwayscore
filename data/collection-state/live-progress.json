@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-21T09:49:00.958Z",
-  "processed": 22,
-  "failed": 78,
-  "successRate": "22.0%",
+  "updatedAt": "2026-08-21T09:56:02.128Z",
+  "processed": 28,
+  "failed": 122,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 1,
+    "scrapingbee": 6,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-21T09:33:34.769Z",
@@ -36,6 +36,12 @@
       "t": "2026-08-21T09:43:53.376Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T09:52:17.669Z",
+      "event": "bb-session",
+      "session": "120785ce",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
