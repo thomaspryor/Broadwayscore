@@ -50,7 +50,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -78,6 +78,7 @@ const {
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
+const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -2370,22 +2371,7 @@ async function discoverShows() {
   console.log('-'.repeat(40));
 
   // Build title index from existing shows for cross-reference revival detection
-  // Use full normalized title (no subtitle stripping) to avoid false positives
-  // e.g. "Seagull: True Story" should NOT match "The Seagull"
-  const normalizeTitle = (t) => t.toLowerCase()
-    .replace(/^(the|a|an)\s+/i, '')
-    .replace(/['']/g, "'")
-    .replace(/[^a-z0-9' ]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  const existingTitleMap = new Map(); // normalized title → { type, id, category }
-  for (const s of data.shows) {
-    const norm = normalizeTitle(s.title);
-    if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
-    if (!existingTitleMap.has(norm)) {
-      existingTitleMap.set(norm, { type: s.type, id: s.id, category: s.category, title: s.title });
-    }
-  }
+  const existingTitleMap = buildExistingTitleMap(data.shows);
 
   // Analyze shows for revival detection
   const revivalDetection = newShows.map(show => {
@@ -2402,36 +2388,14 @@ async function discoverShows() {
       isRevival = true;
       confidence = 'high';
     } else {
-      // Cross-reference against existing shows in shows.json
-      // Try full normalized title first, then base title (before colon/parens) for 5+ char bases
-      const norm = normalizeTitle(show.title);
-      let match = existingTitleMap.get(norm);
-      if (!match || match.id === show.id) {
-        // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
-        const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
-        const normBase = normalizeTitle(base);
-        if (normBase.length >= 5 && normBase !== norm) {
-          match = existingTitleMap.get(normBase);
-        }
-      }
-      // A same-title match in a DIFFERENT market (e.g. a West End production
-      // transferring to Broadway, like Inter Alia 2026) is a transfer, not a
-      // revival — only same-market matches are real revival evidence.
-      // (Inter Alia Broadway shipped isRevival:true 2026-08-14 solely because
-      // the West End "Inter Alia" entry already existed in shows.json.)
-      // Broadway is stored 3 ways in shows.json (absent key / null / 'broadway'
-      // string, per isBroadwayCategory's own doc comment) — compare via that
-      // predicate rather than raw === so a match against a null/'broadway'
-      // legacy entry isn't wrongly treated as cross-market (2026-08-14 review).
-      const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
-      const sameMarket = match && normMarket(match.category) === normMarket(show.category);
-      if (match && match.id !== show.id && sameMarket) {
+      const xref = detectRevivalByTitleCrossReference(show, existingTitleMap);
+      if (xref.isRevival) {
         isRevival = true;
-        detectedType = match.type || detectedType;
-        confidence = 'high';
-        console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${match.title}" (${match.id})`);
-      } else if (match && match.id !== show.id) {
-        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${match.title}" (${match.category || 'broadway'}, ${match.id}) — treating as transfer`);
+        detectedType = xref.detectedType || detectedType;
+        confidence = xref.confidence;
+        console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${xref.match.title}" (${xref.match.id})`);
+      } else if (xref.isTransfer) {
+        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${xref.match.title}" (${xref.match.category || 'broadway'}, ${xref.match.id}) — treating as transfer`);
       }
     }
 
