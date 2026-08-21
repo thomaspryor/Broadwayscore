@@ -81,6 +81,14 @@ on:
       - 'scripts/recover-serp-text.js'
       - 'scripts/recover-serp-text.test.mjs'
       - 'scripts/tests/recover-serp-exhausted-outlets.test.mjs'
+      # BRO-848: root-level scripts/*.js + *.test.mjs pair (no scripts/**
+      # broad glob) — needs its own entry so a solo edit triggers CI. Not
+      # require()-coupled (the test shells out to migrate-reroute-backlog.js
+      # --verify rather than importing it), but logically paired as
+      # producer/verifier so both are listed together. Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/migrate-reroute-backlog.js'
+      - 'scripts/verify-reroute-migration.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -1393,6 +1401,14 @@ on:
       # lib-test step, but only if this job fires — these paths trigger it on push).
       - 'scripts/enrich-ibdb-dates.js'
       - 'scripts/discover-new-shows.js'
+      # task #1863 (BRO-102 follow-up): IBDB creativeTeam consumers now route
+      # through verifyCreativeTeamViaSerp(). Colocated *.test.mjs files
+      # (root-level scripts/*.test.mjs is NOT globbed, registered in
+      # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
+      # side triggers CI.
+      - 'scripts/enrich-ibdb-dates.test.mjs'
+      - 'scripts/backfill-playwright-credits.js'
+      - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery
       # commit gate and enrich-ibdb-dates.js's date-enrichment gate. Test
       # lives in tests/unit/ (node --test batch, not globbed) — path-listed
@@ -1506,6 +1522,12 @@ on:
       - 'scripts/audit-help-flag-safety.js'
       - 'scripts/audit-help-flag-safety.test.mjs'
       - 'scripts/.help-flag-safety-baseline.json'
+      # Fetch/https.get timeout audit (#1862, BRO-108 follow-up) — same
+      # solo-edit-must-trigger-CI reasoning as the guard above. Informational
+      # only (exit 0 on the repo-wide scan) — not --gate-wired, so no
+      # baseline JSON entry needed here.
+      - 'scripts/audit-fetch-timeouts.js'
+      - 'scripts/audit-fetch-timeouts.test.mjs'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).

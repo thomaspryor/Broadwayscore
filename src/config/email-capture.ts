@@ -119,7 +119,16 @@ const presets: Record<string, EmailCaptureConfig> = {
   },
   aggressive: {
     excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics'],
-    exitIntent: { enabled: true, minTimeOnPageSec: 5 },
+    // Raised 5 -> 30 (BRO-1959, 2026-08-21): gate-cold-start (started
+    // 2026-07-21) cleared its pre-registered 28-day minimum runtime on
+    // 2026-08-18 with no guardrail trips (data/audit/gate-cold-start-monitor-state.json,
+    // last run 2026-08-17: flagHealthy=true, consecutiveBelowCaptureFloor=0).
+    // exit_intent is the single largest passive-gate trigger with no dwell
+    // floor to speak of (5s), the same low-intent-false-positive problem
+    // task #586 already fixed for mobileScrollGate below — this closes that
+    // gap for desktop. No longer locked: see the former "EXPERIMENT LOCK"
+    // tests in gate-logic.test.mjs, updated in the same commit.
+    exitIntent: { enabled: true, minTimeOnPageSec: 30 },
     pageViewGate: { threshold: 2 },
     homepageBanner: {
       visitThreshold: 2,
@@ -136,11 +145,7 @@ const presets: Record<string, EmailCaptureConfig> = {
       // Raised 10 -> 30 (task #586, 2026-08-10): 659 shown/week at 0.6%
       // conversion, 68% dismiss — a mobile visitor 10s into a page has
       // shown no more engagement than the reflexive-fire cases the
-      // exit-intent dwell gate was built to exclude. NOT covered by the
-      // gate-cold-start experiment lock (only `enabled` is locked below;
-      // exitIntent.minTimeOnPageSec stays at 5 — that one IS locked, see
-      // the "EXPERIMENT LOCK" tests in gate-logic.test.mjs and
-      // docs/experiments/gate-cold-start.md, readout due 2026-08-18).
+      // exit-intent dwell gate was built to exclude.
       minTimeOnPageSec: 30,
     },
     passiveGateCooldownDays: 14,

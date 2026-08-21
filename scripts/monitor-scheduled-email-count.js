@@ -17,19 +17,42 @@
  * Resend on their own cron. Classification rules + why each sender is
  * included: scripts/lib/scheduled-email-count-rules.js.
  *
+ * BRO-1690 correction: the digest-cadence check above is only half the
+ * "exactly 1 scheduled email/day" goal. The other half — senders that
+ * bypass scripts/lib/owner-alert-router.js entirely (classification:
+ * 'direct' in scripts/audit-alert-senders.js) — is invisible to it, because
+ * those sends don't go through the digest/cooldown machinery this file
+ * counts at all. checkAlertSenderInventory() re-runs audit-alert-senders.js
+ * fresh every call (never trusts a stale data/audit/alert-sender-inventory
+ * .json) and asserts against its own reviewed baseline
+ * (scripts/.alert-sender-baseline.json) — that baseline IS the "explicit,
+ * reviewed exemption list" this card asks for; today it holds exactly the
+ * two CLAUDE.md rule-14 real-time-critical senders (opening-night-broadcast
+ * .yml, opening-night-poller.js).
+ *
  * Usage:
- *   node scripts/monitor-scheduled-email-count.js               # live: checks the last complete ET day, routeAlert() on >1 sender
+ *   node scripts/monitor-scheduled-email-count.js               # live: checks the last complete ET day, routeAlert() on >1 sender or a direct-sender bypass
  *   node scripts/monitor-scheduled-email-count.js --dry-run             # report the last 7 days, no alert, exit 0
  *   node scripts/monitor-scheduled-email-count.js --dry-run --days=14
  *
- * Env: RESEND_API_KEY, OWNER_EMAIL. Live mode's routeAlert('auto') dispatch
- * additionally needs NOTION_API_KEY (see scripts/lib/owner-alert-router.js).
+ * Env: RESEND_API_KEY, OWNER_EMAIL for the digest-cadence half. Live mode's
+ * routeAlert('auto') dispatch (both halves) additionally needs
+ * LINEAR_API_KEY (see scripts/lib/owner-alert-router.js) — fails open if
+ * missing, so a misconfigured env degrades to a run failure, not a hang.
  */
 'use strict';
 
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { buildDailyReport, decideDayViolation, dayKeyET } = require('./lib/scheduled-email-count-rules');
+const { compareToBaseline } = require('./audit-alert-senders.js');
+
+const REPO_ROOT = path.join(__dirname, '..');
+const AUDIT_ALERT_SENDERS_SCRIPT = path.join(REPO_ROOT, 'scripts', 'audit-alert-senders.js');
+const ALERT_SENDER_BASELINE_PATH = path.join(REPO_ROOT, 'scripts', '.alert-sender-baseline.json');
 
 const USAGE = `Usage: node scripts/monitor-scheduled-email-count.js [--dry-run] [--days=N]
 
@@ -37,7 +60,9 @@ const USAGE = `Usage: node scripts/monitor-scheduled-email-count.js [--dry-run] 
   --days=N    override the lookback window (default: 7 with --dry-run, 2 live)
 
 Live mode (no flags) checks the last complete ET day and calls routeAlert()
-when 2+ distinct scheduled digest senders fired. Env: RESEND_API_KEY, OWNER_EMAIL.`;
+when 2+ distinct scheduled digest senders fired, or when a new/grown
+classification=direct alert sender is found (fresh scripts/audit-alert-senders.js
+scan vs scripts/.alert-sender-baseline.json). Env: RESEND_API_KEY, OWNER_EMAIL.`;
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const daysArg = process.argv.find((a) => a.startsWith('--days='));
@@ -112,10 +137,68 @@ async function fetchOwnerEmailsSince(sinceMs) {
   return rows;
 }
 
+// Part (a) of the "exactly 1 scheduled email/day" goal — see the header
+// comment. Shells out once to `--json`, which regenerates
+// data/audit/alert-sender-inventory.json AND prints its summary
+// (counts.direct, senders[]) — a single cheap regex/fs scan of scripts/ +
+// .github/workflows/. The direct-sender-vs-baseline comparison then reuses
+// audit-alert-senders.js's OWN compareToBaseline()/loaded baseline, in
+// process — deliberately NOT `--check`, which conflates this gate with the
+// unrelated human-caller-ignores-digest gate (card #616) into one
+// process.exitCode; folding both into "found a direct-sender bypass" filed a
+// misleading Linear card when only the digest gate regressed (review
+// finding, this card). A crash here (bad JSON, ENOENT, timeout) throws
+// instead of being swallowed as "violation found" — main() lets it propagate
+// so a real script failure surfaces as a run failure, not a false alert.
+function checkAlertSenderInventory() {
+  const jsonOut = execFileSync('node', [AUDIT_ALERT_SENDERS_SCRIPT, '--json'], {
+    cwd: REPO_ROOT, encoding: 'utf8', timeout: 60000,
+  });
+  const summary = JSON.parse(jsonOut);
+  const directCounts = {};
+  for (const s of summary.senders) {
+    if (s.classification !== 'direct') continue;
+    directCounts[s.file] = (directCounts[s.file] || 0) + 1;
+  }
+  let baseline = {};
+  try { baseline = JSON.parse(fs.readFileSync(ALERT_SENDER_BASELINE_PATH, 'utf8')); } catch { /* treat as empty baseline */ }
+  const cmp = compareToBaseline(directCounts, baseline);
+
+  return { directCount: summary.counts.direct, ok: cmp.ok, newFiles: cmp.newFiles, grown: cmp.grown };
+}
+
 async function main() {
   // --help/-h checked BEFORE any network work (cousin of #260/#263/#264/#266
   // — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  const inventory = checkAlertSenderInventory();
+  console.log(`Alert-sender inventory: ${inventory.directCount} classification=direct sender(s) (data/audit/alert-sender-inventory.json regenerated fresh this run).`);
+  if (!inventory.ok) {
+    for (const f of inventory.newFiles) console.log(`  NEW direct sender: ${f} — not in scripts/.alert-sender-baseline.json`);
+    for (const g of inventory.grown) console.log(`  GROWN direct sender: ${g.file} — ${g.baseline} -> ${g.current}`);
+  }
+
+  // Independent of the Resend-history section below (needs neither
+  // RESEND_API_KEY nor OWNER_EMAIL — routeAlert's disposition:'auto' only
+  // needs LINEAR_API_KEY) and of DRY_RUN's early return, so a misconfigured
+  // Resend env or a --dry-run invocation can't strand a real direct-sender
+  // regression unalerted (review finding, this card). conditionKey is
+  // deliberately NOT date-keyed — this tracks a persisting code-level
+  // condition (a file needs fixing), not a daily event, so the default
+  // 7-day routeAlert cooldown applies instead of re-filing once per day.
+  if (!DRY_RUN && !inventory.ok) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const result = await routeAlert({
+      conditionKey: 'alert-sender-direct-bypass',
+      title: `New/grown direct alert sender bypassing owner-alert-router (${inventory.directCount} total)`,
+      description: `scripts/audit-alert-senders.js found a new or grown classification=direct sender not covered by scripts/.alert-sender-baseline.json:\n${inventory.newFiles.map((f) => `  NEW: ${f}`).join('\n')}${inventory.grown.map((g) => `\n  GROWN: ${g.file} (${g.baseline} -> ${g.current})`).join('')}`,
+      hint: 'Route the alert through routeAlert() (scripts/lib/owner-alert-router.js) instead of calling sendAlert(email:true)/Resend directly. If genuinely real-time-critical (CLAUDE.md rule 14), get it reviewed and freeze it via `node scripts/audit-alert-senders.js --update-baseline`.',
+      severity: 'warning',
+      disposition: 'auto',
+    });
+    console.log(`alert-sender-direct-bypass: routeAlert -> ${result.action}${result.cardId ? ` (card ${result.cardId})` : ''}`);
+  }
 
   if (!RESEND_API_KEY || !OWNER_EMAIL) {
     console.error('ERROR: RESEND_API_KEY and OWNER_EMAIL must both be set');

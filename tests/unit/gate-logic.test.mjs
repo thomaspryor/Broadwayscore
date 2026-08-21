@@ -132,8 +132,13 @@ test('EXPERIMENT LOCK: gate config values are frozen while gate-cold-start runs'
     'LOCKED: shared cooldown — changing it shifts BOTH arms mid-experiment');
   assert.equal(emailCaptureConfig.exitIntent.enabled, true,
     'LOCKED: disabling exit_intent mid-experiment removes the largest trigger from both arms');
-  assert.equal(emailCaptureConfig.exitIntent.minTimeOnPageSec, 5,
-    'LOCKED: shared exit-intent dwell gate');
+  // Amended BRO-1959, 2026-08-21: gate-cold-start cleared its pre-registered
+  // 28-day minimum runtime on 2026-08-18 with clean guardrails (see
+  // docs/experiments/gate-cold-start.md "Amendments"). exitIntent's dwell
+  // floor is shared across both arms, so raising it doesn't advantage either
+  // arm — it just changes the lock value going forward.
+  assert.equal(emailCaptureConfig.exitIntent.minTimeOnPageSec, 30,
+    'LOCKED: shared exit-intent dwell gate — raised 5->30 post-readout, see docs/experiments/gate-cold-start.md');
   assert.equal(emailCaptureConfig.mobileScrollGate.enabled, true,
     'LOCKED: disabling the scroll gate mid-experiment removes the mobile trigger from both arms');
 });

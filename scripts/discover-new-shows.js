@@ -47,6 +47,7 @@ const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
@@ -1727,6 +1728,27 @@ function saveShows(data) {
   showsWriteGuard.saveShows(data);
 }
 
+// BRO-102 follow-up (task #1863): this is the first-write path for every
+// newly-discovered Broadway show's creative team — the highest-risk of the
+// IBDB creativeTeam consumers, since a bad write here ships before
+// auto-fix-show-data.js's own IBDB step ever sees the show (that step only
+// fires when the team is empty/1-entry, which won't be true once this
+// write lands). Splits combined credits first so each individual name gets
+// its own SERP query (a combined "John Doe & Jane Smith" name would never
+// match a "directed by John Doe" snippet). Mutates show.creativeTeam only
+// when at least one member survives verification — leaves it unset
+// otherwise so a later enrichment pass can retry.
+async function applyVerifiedIbdbCreativeTeam(show, ibdbCreativeTeam) {
+  const { result } = splitCombinedCredits(ibdbCreativeTeam);
+  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const verified = await verifyCreativeTeamViaSerp(show, result, year, 'serp-verified-ibdb-discovery');
+  if (verified.length > 0) {
+    show.creativeTeam = verified;
+  } else {
+    console.log(`    ⚠️  "${show.title}": No IBDB creative-team members passed SERP verification — leaving unset`);
+  }
+}
+
 async function discoverShows() {
   console.log('='.repeat(60));
   console.log(includeWestEnd ? 'BROADWAY + WEST END SHOW DISCOVERY' : 'BROADWAY SHOW DISCOVERY');
@@ -2275,8 +2297,7 @@ async function discoverShows() {
         // pattern.
         if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0
             && (!show.creativeTeam || show.creativeTeam.length === 0)) {
-          const { result } = splitCombinedCredits(ibdb.creativeTeam);
-          show.creativeTeam = result;
+          await applyVerifiedIbdbCreativeTeam(show, ibdb.creativeTeam);
         }
 
         // Use IBDB show type classification if available
@@ -2701,4 +2722,5 @@ module.exports = {
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
   shouldExcludeVenueShow,
+  applyVerifiedIbdbCreativeTeam,
 };
