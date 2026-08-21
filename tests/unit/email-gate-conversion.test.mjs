@@ -16,13 +16,12 @@
  * PostHog gate_modal_* events once enough traffic has accumulated; this test
  * intentionally does not fabricate a pass/fail on data that doesn't exist yet.
  *
- * exit_intent's dwell timer (5s) is NOT touched here — it is FROZEN by the
- * live 'gate-cold-start' experiment (docs/experiments/gate-cold-start.md,
- * locked in tests/unit/gate-logic.test.mjs "EXPERIMENT LOCK" — readout due
- * 2026-08-18). Changing it mid-experiment would invalidate 3 weeks of data.
- * The mobile scroll gate (untouched by that lock) and the page-view minimum
- * (already existing cold-start-arm infra) carry the "meaningful engagement"
- * requirement in the interim.
+ * exit_intent's dwell timer was frozen at 5s by the live 'gate-cold-start'
+ * experiment (docs/experiments/gate-cold-start.md, locked in
+ * tests/unit/gate-logic.test.mjs "EXPERIMENT LOCK") until the experiment
+ * cleared its pre-registered 28-day minimum runtime on 2026-08-18; BRO-1959
+ * (2026-08-21) then raised it 5 -> 30 (shared across both arms, not the
+ * treatment lever) — see the "Amendments" section of the experiment doc.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -55,11 +54,12 @@ test('trigger timing: passive gates require a second page view this session (alt
     'passive gates must require at least a second page view this session');
 });
 
-test('trigger timing: exit-intent dwell gate is non-zero (frozen at 5s by the live gate-cold-start experiment, not this card)', () => {
-  // Do not raise this to 30 here — see file header. It is asserted only to
-  // fail loudly if something removes the dwell gate entirely.
-  assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 5,
-    'exit intent must keep at least its existing dwell floor');
+test('trigger timing: exit-intent dwell gate meets the post-gate-cold-start floor (BRO-1959)', () => {
+  // Raised 5 -> 30 by BRO-1959 once gate-cold-start cleared its minimum
+  // runtime — see file header. Asserted here to fail loudly if something
+  // regresses the dwell gate back down.
+  assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 30,
+    'exit intent must keep at least its post-experiment dwell floor');
 });
 
 // ─── Copy: explicit, concrete value proposition ────────────────────────────
