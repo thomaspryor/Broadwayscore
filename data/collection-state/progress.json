@@ -64,7 +64,8 @@
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/guardian--arifa-akbar.json",
@@ -908,7 +909,16 @@
     "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
     "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
     "oh-mary-west-end-2025/thewrap--robert-hofler.json",
-    "oh-mary-west-end-2025/wsj--charles-isherwood.json"
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+    "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -970,7 +980,8 @@
     ],
     "brightdata": [
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -992,7 +1003,7 @@
     ]
   },
   "startTime": "2026-08-20T18:08:29.418Z",
-  "lastProcessed": "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
   "log": [
     {
       "t": "2026-08-20T23:16:54.951Z",
@@ -1013,6 +1024,17 @@
     },
     {
       "t": "2026-08-21T00:16:00.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-21T01:27:56.324Z",
+      "event": "bb-session",
+      "session": "d47a0c9c",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-21T01:27:56.739Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
