@@ -20,7 +20,11 @@
  * Companion fix: fetch-aggregator-pages.ts now waits for a BigThumbs_* image
  * to attach before reading page.content() (see waitForDtliThumbs) rather than
  * a blind 500ms timeout — guards against a future regression where DTLI
- * delays thumb rendering past that window.
+ * delays thumb rendering past that window. That wait is a live-Playwright
+ * concern (timing against a real browser tab) and isn't exercised here — this
+ * file covers what IS unit-testable and was actually missing: whether
+ * extractReviewsFromDTLI()'s regex correctly assigns dtliThumb once the page
+ * content is in hand, regardless of how it was captured.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

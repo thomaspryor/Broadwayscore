@@ -321,18 +321,36 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 //   /shows/suffs-bway/   = Broadway 2024
 // We need to search DTLI to find the correct URL for our specific production.
 
-// BRO-725: DTLI's per-review thumb-up/meh/down images are the same
+// BRO-725: DTLI's per-review thumb-up/meh/down images are part of the same
 // client-rendered list as the rest of the review-item markup — a fixed
-// 500ms post-domcontentloaded wait raced the page's own JS on slower loads
-// and captured review-item blocks before their BigThumbs_* <img> tags had
-// attached, silently losing per-review thumb data (aggregate counts from
+// 500ms post-domcontentloaded wait could race the page's own JS on slower
+// loads and capture review-item blocks before their BigThumbs_* <img> tags
+// had attached, silently losing per-review thumb data (aggregate counts from
 // the summary image stayed correct since those are server-rendered
-// separately). Wait for at least one thumb image to actually be in the DOM
-// before reading page.content() — a no-op extra wait once thumbs are
-// already present (the common case today), a real fix if DTLI's rendering
-// timing regresses.
+// separately). Wait for at least one thumb image to attach to the DOM before
+// reading page.content() — a fast no-op once thumbs are already present (the
+// common case today), a real fix if DTLI's rendering timing regresses.
+//
+// Guarded to only wait when review-item blocks actually exist on the page:
+// the fallback URL-pattern loop in fetchDtli() tries up to 7 guessed slugs
+// per show, several of which return an HTTP-200 "not found" page — without
+// this guard every one of those would eat the full timeout across the
+// weekly batch of ~100s of shows. state:'attached' (not the default
+// 'visible') because the extractor is a regex over page.content() and
+// doesn't care about CSS visibility. A timeout with review items present
+// logs instead of failing silently, so a real future regression is visible
+// in the scrape-dtli-show-score.yml logs rather than indistinguishable from
+// success.
 async function waitForDtliThumbs(page: Page): Promise<void> {
-  await page.waitForSelector('img[alt^="BigThumbs_"]', { timeout: 5000 }).catch(() => {});
+  const reviewItemCount = await page.locator('.review-item, .poster-review-item').count().catch(() => 0);
+  if (reviewItemCount === 0) return;
+  const found = await page
+    .waitForSelector('img[alt^="BigThumbs_"]', { state: 'attached', timeout: 3000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!found) {
+    console.log(`    ⚠️  DTLI thumb wait timed out with ${reviewItemCount} review-item(s) present — thumbs may be missing from this capture`);
+  }
 }
 
 async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>, dtliSlugMap: Record<string, string>): Promise<FetchResult> {
