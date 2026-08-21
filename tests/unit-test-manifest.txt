@@ -116,6 +116,7 @@ scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
+scripts/tests/verify-gate-ts-runner.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
@@ -523,6 +524,7 @@ tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
+tests/unit/scrapingdog-ack.test.mjs
 tests/unit/sd-opening-window-budget-reserve.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs
 tests/unit/self-contradictory-clear.test.mjs
