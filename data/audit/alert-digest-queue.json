@@ -119,5 +119,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-21T07:32:49.537Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-08-21T09:16:39.483773+00:00,2026-08-21T09:16:54.734718+00:00,2026-08-21T09:16:55.193718+00:00,2026-08-21T09:16:55.655401+00:00",
+    "title": "Feedback: 4 submission(s), all handled automatically",
+    "description": "4 messages from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-3\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-2\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-1\"\n\nTest Show — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"E2E verification for BRO-580 - safe to archive\"",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32467170971",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "queuedAt": "2026-08-21T09:19:29.994Z"
   }
 ]
