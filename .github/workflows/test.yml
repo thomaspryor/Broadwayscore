@@ -89,6 +89,14 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/migrate-reroute-backlog.js'
       - 'scripts/verify-reroute-migration.test.mjs'
+      # BRO-735: root-level scripts/*.js + *.test.mjs trio (no scripts/**
+      # broad glob) — opening-night-pipeline-verify.js is the CLI glue that
+      # wraps scripts/lib/opening-night-pipeline-stages.js (already covered
+      # by the scripts/lib/** glob above) for the fail-fast stage-verification
+      # step in opening-night-poller.yml. Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/opening-night-pipeline-verify.js'
+      - 'scripts/opening-night-pipeline.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -693,6 +701,12 @@ on:
       # audit-cross-show-url-collisions.js, so a solo edit must still run its
       # colocated test.
       - 'scripts/audit-stale-flag-after-url-correction.js'
+      # BRO-810: cross-show URL collision audit. Root-level scripts/*.test.mjs
+      # is NOT globbed, and the .js itself wasn't path-listed before — a solo
+      # edit to either got ZERO CI. Test registered in
+      # tests/unit-test-manifest.txt (unit-tests job node --test batch).
+      - 'scripts/audit-cross-show-url-collisions.js'
+      - 'scripts/audit-cross-show-url-collisions.test.mjs'
       # Its blocking replacement: fires only on a flag whose own date basis the
       # record contradicts (13/13 hand-verified precision). Colocated
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
@@ -920,6 +934,11 @@ on:
       - 'scripts/newsletter/pre-send-check.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
+      # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
+      # (skips in unit-tests, which never checks out data/review-texts; enforced for
+      # real by the data-validation job's re-run below, after checkout-review-texts).
+      - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
       # must never silently override a unanimous LLM ensemble rejection.
@@ -3746,6 +3765,18 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
+
+      - name: Run frankie-2002 cleanup regression guard (needs review-texts)
+        # BRO-853: same corpus-missing trap as explainExclusion above. Registered
+        # in tests/unit-test-manifest.txt, but that batch runs in the unit-tests
+        # job which never checks out data/review-texts, so it would only ever
+        # exercise its own skip branch there. Re-run HERE with
+        # REQUIRE_REVIEW_CORPUS=1 so a future re-addition of one of the 15
+        # deleted wrong-production duplicate files actually fails CI.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
 
       - name: Run data validation
         if: always()

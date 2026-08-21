@@ -96,6 +96,7 @@ export function computeLeaderboard(entries: FantasyEntry[]): LeaderboardEntry[] 
     const totalPoints = Math.round((totalCritic + totalAudience + totalBoxOffice + totalAwards) * 100) / 100;
 
     return {
+      id: entry.id,
       rank: 0, // computed below
       displayName: entry.team_name || maskEmail(entry.email),
       totalPoints,
