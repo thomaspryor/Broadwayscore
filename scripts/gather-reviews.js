@@ -3540,6 +3540,35 @@ function createReviewFile(showId, reviewData, options = {}) {
           && existingCriticForUrlCheck !== normalizedCriticName;
         if (isDifferentNamedCriticsAtSameOutlet && reviewData.url
             && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
+          // Byline-correction exception (BRO-730): the Proof/Torre-Suskin guard above
+          // exists because two DIFFERENT critics at a multi-critic outlet can coincidentally
+          // get matched to the same URL by discovery — that's two real reviews, keep separate.
+          // But when the EXISTING file's critic name came ONLY from roundup/positional-
+          // attribution sources (ROUNDUP_URL_SOURCES — carousel order, roundup page layout,
+          // known to misattribute) and the INCOMING write carries a byline from a more
+          // authoritative source (a real extracted byline, not positional guessing), this is
+          // the OTHER case: one review, same URL, and the roundup simply guessed the wrong
+          // critic for it. Correct the existing file instead of spawning a duplicate under the
+          // wrong name (Becky Shaw 2026-04: variety--brent-lang.json from a BWW roundup +
+          // variety--rebecca-rubin.json from RSS discovery, same URL, same review).
+          const existingSources = Array.isArray(existingReview.sources) && existingReview.sources.length
+            ? existingReview.sources
+            : [existingReview.source].filter(Boolean);
+          const existingIsRoundupOnly = existingSources.length > 0 && existingSources.every(s => ROUNDUP_URL_SOURCES.has(s));
+          const incomingIsRoundup = ROUNDUP_URL_SOURCES.has(reviewData.source);
+          if (existingIsRoundupOnly && !incomingIsRoundup && !existingReview.criticNameManual) {
+            const corrected = mergeReviews(existingReview, {
+              ...reviewData,
+              source: reviewData.source || 'gather-reviews',
+            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            corrected.criticName = reviewData.criticName;
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(corrected, null, 2));
+            if (existingFile !== filename) {
+              fs.renameSync(path.join(showDir, existingFile), filepath);
+            }
+            console.log(`    ⟳ Corrected misattributed critic at ${normalizedOutletId}: "${existingReview.criticName}" (${existingSources.join(',')}) → "${reviewData.criticName}" (${reviewData.source}) — same URL`);
+            return true;
+          }
           console.log(`    ⚠ URL shared by ${existingCriticForUrlCheck} and ${normalizedCriticName} at ${normalizedOutletId} — creating separate file (URL to be re-discovered per critic via SERP)`);
         } else if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)
             && !existingReview.wrongShow) {
