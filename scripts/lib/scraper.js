@@ -92,8 +92,6 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
                          // playbill.com's ad/analytics XHRs never let it settle
                          // (times out at 30s, same failure mode as Signature
                          // Theatre). Fast domcontentloaded works fine (BRO-2023).
-  'web.playbill.com',   // Same site, alternate hostname seen in cached URLs
-                         // (data/playbill-urls.json) — same fix applies.
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
   // talkinbroadway.com removed — behind Cloudflare managed challenge since ~2026-04;
