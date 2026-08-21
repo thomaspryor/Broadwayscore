@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-08-21T08:48:52.732Z",
+  "timestamp": "2026-08-21T09:15:37.705Z",
   "stats": {
     "totalReviews": 42299,
     "alreadyFlagged": 18123,
     "dateGuardCatches": 182,
-    "directorMismatch": 991,
+    "directorMismatch": 992,
     "tvFilmSignals": 1216,
     "londonSignals": 923,
     "offBroadwaySignals": 493,
@@ -16647,11 +16647,18 @@
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytg--unknown.json",
       "score": null,
+      "publishDate": "2017-09-22",
+      "url": "https://www.newyorktheatreguide.com/reviews/little-shop-of-horrors",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 725d before show (2017-09-22 vs 2019-09-17)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from little-shop-of-horrors-2003"
         }
       ]
     },
