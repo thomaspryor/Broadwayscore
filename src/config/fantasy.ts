@@ -219,6 +219,7 @@ export interface FantasyEntry {
 }
 
 export interface LeaderboardEntry {
+  id: string;
   rank: number;
   displayName: string; // team_name or masked email
   totalPoints: number;
