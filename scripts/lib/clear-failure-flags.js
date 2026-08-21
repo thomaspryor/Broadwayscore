@@ -149,6 +149,21 @@ function clearFailureFlags(data, opts = {}) {
     cleared.push('fetchAttempts');
   }
 
+  // Fetch retry lifecycle gate state (BRO-787): clear once text has actually
+  // been fetched — same reasoning as serpRetryCount/serpDiscoveryAbandoned
+  // above, applied to the fetch-retry cooldown/abandonment gate instead of
+  // the SERP one. Unlike serpRetryAfter (never auto-cleared), fetchRetryAfter
+  // IS cleared here — see review-write-guard.js's PROTECTED_FIELDS comment
+  // for why it's excluded from that list as a result.
+  if (data.fetchRetryAfter != null && hasFetch) {
+    data.fetchRetryAfter = null;
+    cleared.push('fetchRetryAfter');
+  }
+  if (data.fetchDiscoveryAbandoned === true && hasFetch) {
+    data.fetchDiscoveryAbandoned = null;
+    cleared.push('fetchDiscoveryAbandoned');
+  }
+
   // scoreStatus: 'TO_BE_CALCULATED' is set by score-all-unscored.js / mark-uncalculated-reviews.js
   // when a review couldn't be scored at the time. Once the LLM ensemble (or any other path) writes
   // a finalized score, the placeholder is stale and must clear — getBestScore() in

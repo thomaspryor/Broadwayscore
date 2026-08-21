@@ -118,6 +118,15 @@ const MANUAL_FIELDS = [
   'serpRetryCount',
   'serpRetryAfter',
   'wrongShowRetryAt',
+  // (b) Durable fetch retry lifecycle gate state (BRO-787) — same reasoning
+  // as the SERP fields above, applied to failed-fetches.json retries. Losing
+  // fetchDiscoveryAbandoned on rebase resurrects a closed-old show's
+  // confirmed-dead URL into the retry pool and burns the exact spend this
+  // guard exists to stop.
+  'fetchDiscoveryAbandoned',
+  'fetchAbandonmentReason',
+  'fetchAbandonmentDate',
+  'fetchRetryAfter',
 ];
 
 // Nested fields under contentVerification that are manually set, mapped to the

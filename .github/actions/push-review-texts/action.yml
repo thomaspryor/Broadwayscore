@@ -111,6 +111,15 @@ runs:
             // wrong_content files. Belt-and-braces: protect them at push time.
             'serpRetryCount',
             'serpDiscoveryAbandoned',
+            // Fetch retry lifecycle gate state (BRO-787), same reasoning as the
+            // SERP fields above but for failed-fetches.json retries:
+            // clearFailureFlags() clears BOTH fields on a successful fetch, so
+            // neither is in the guard's PROTECTED_FIELDS — but losing them on
+            // rebase would reset the cooldown/abandonment and re-trigger
+            // retries on closed-old shows whose URL is confirmed dead, burning
+            // Browserbase/Bright Data/ScrapingBee spend the guard exists to stop.
+            'fetchRetryAfter',
+            'fetchDiscoveryAbandoned',
             // Head-of-line rescore block state (Notion 3ad637c5-416f-8169), same
             // reasoning as the SERP fields above: clearFailureFlags() may clear
             // them on success so they are not in the guard's PROTECTED_FIELDS,
