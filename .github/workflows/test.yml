@@ -2408,11 +2408,12 @@ jobs:
         # sender in a file not in scripts/.alert-sender-baseline.json, or a
         # baselined file's per-file count growing (a count map, not a file
         # list — offsetting regressions inside an already-listed file must
-        # still fail). Baselined debt: opening-night-broadcast.yml +
-        # opening-night-poller.js are permanent real-time-critical senders
-        # (CLAUDE.md rule 14); audit-t1-silent-gaps.js drain is card #531;
-        # audit-opening-night-coverage.js drain is carded (see card body).
-        # Shrink the baseline as migrations land: --update-baseline.
+        # still fail). As of BRO-1699 the baseline is empty (0 direct
+        # senders) — opening-night-broadcast.yml + opening-night-poller.js,
+        # previously treated as permanent real-time-critical exceptions under
+        # CLAUDE.md rule 14, are now migrated onto routeAlert(); locked by
+        # scripts/tests/alert-sender-bypass.test.mjs. Shrink the baseline
+        # again as any future migration lands: --update-baseline.
         # NOTE: the step NAME deliberately avoids quoting the flagged pattern
         # verbatim — a name: line is not a YAML comment, so the scanner would
         # flag this very step as a phantom direct sender.

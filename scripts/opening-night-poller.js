@@ -68,7 +68,7 @@ const {
   DEFAULT_SERP_SESSION_CONFIG,
   checkSerpSessionAllowed,
 } = require('./lib/serp-session-cap');
-const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert } = require('./lib/owner-alert-router');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 
 // Paths
@@ -1659,14 +1659,27 @@ async function pollCycle() {
       // the daily/per-show cap and starve another opening.
       if (serpBurstActive) {
         const updated = incrementSerpBurstLedger(SHOW_ID);
-        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner email
-        // (sendAlert) per UTC day — no human log-watching required. The hard daily cap still
-        // auto-stops further bursts regardless. tripwireAlerted (persisted in the ledger)
-        // dedupes so we don't email every cycle.
-        // Direct sendAlert, not routeAlert — this already has its own cooldown:
-        // tripwireAlerted resets with the rest of the SERP burst ledger at the
-        // next UTC day boundary, giving the same one-per-day dedup the router's
-        // ledger would provide.
+        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner
+        // notification per UTC day — no human log-watching required. The hard daily cap
+        // still auto-stops further bursts regardless. tripwireAlerted (persisted in the
+        // ledger) dedupes so we don't call routeAlert() every cycle.
+        // Routed through owner-alert-router (BRO-1699 migration): this used to call
+        // sendAlert(email:true) directly, bypassing the ACTION-only policy and the
+        // alert ledger's dedup — one of the two direct-bypass senders this card exists
+        // to close. conditionKey is static (not per-show) because the tripwire is a
+        // global daily-cascade signal, matching the local tripwireAlerted gate above.
+        // 'serp-burst:tripwire' IS on the page-worthy allowlist (scripts/lib/page-
+        // worthy-alerts.js) so disposition:'human' actually pages — a ship-check
+        // finding caught leaving it off the allowlist as a real regression: this
+        // alert's own severity rationale (below) argues the digest is too late for
+        // a same-day credit runaway, so silently downgrading it would have
+        // contradicted the code's own stated urgency.
+        // cooldownHours is intentionally short (1h, not the router's 7-day
+        // default): the LOCAL tripwireAlerted flag above is the real once-per-day
+        // dedup (it resets at the UTC-day boundary with the rest of the SERP
+        // burst ledger). A 24h router cooldown would silence a genuine NEXT-day
+        // tripwire that lands soon after a late-UTC-day one — 1h only guards
+        // against a duplicate routeAlert() call within the same brief window.
         if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
           updated.tripwireAlerted = true;
           writeSerpBurstLedger(updated);
@@ -1677,14 +1690,16 @@ async function pollCycle() {
             `Emergency off: gh variable set DISABLE_WE_SERP_BURST --body true`;
           console.log(`::warning::SERP burst cascade tripwire: ${msg}`);
           try {
-            await sendAlert({
+            await routeAlert({
+              conditionKey: 'serp-burst:tripwire',
               title: 'WE SERP burst tripwire',
               description: msg,
               // 'error': same-day actionable — the 60-100K credits/day runaway
               // class (feedback_sb_serp_invisible_burn); the daily digest is up
               // to 24h late. warning would be suppressed (actionable-only policy).
               severity: 'error',
-              email: true,
+              disposition: 'human',
+              cooldownHours: 1,
             });
           } catch (e) {
             console.log(`  [SERP burst] tripwire alert failed (non-fatal): ${e.message}`);
