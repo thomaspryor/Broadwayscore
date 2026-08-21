@@ -1052,7 +1052,37 @@
     "cats-west-end-2026/new-york-sun--elysa-gardner.json",
     "cats-west-end-2026/nypost--johnny-oleksinski.json",
     "cats-west-end-2026/nypost--kyle-smith.json",
-    "cats-west-end-2026/theatermania--zachary-stewart.json"
+    "cats-west-end-2026/theatermania--zachary-stewart.json",
+    "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/monstagigz--unknown.json",
+    "abigails-party-west-end-2026/thestage--sam-marlowe.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1101,7 +1131,8 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
@@ -1142,7 +1173,7 @@
     ]
   },
   "startTime": "2026-08-20T18:08:29.418Z",
-  "lastProcessed": "cats-west-end-2026/theatermania--zachary-stewart.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
   "log": [
     {
       "t": "2026-08-20T23:16:54.951Z",
@@ -1241,6 +1272,17 @@
     },
     {
       "t": "2026-08-21T04:17:26.970Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-21T05:22:02.965Z",
+      "event": "bb-session",
+      "session": "120f3c81",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-21T05:22:03.948Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
