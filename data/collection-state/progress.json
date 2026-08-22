@@ -19,7 +19,8 @@
     "spellbound-off-broadway-2026/amny--alexa-lutter.json",
     "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -111,7 +112,16 @@
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
     "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json"
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -137,7 +147,8 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -150,7 +161,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -184,6 +195,29 @@
       "t": "2026-08-22T10:19:22.673Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T10:20:34.337Z",
+      "event": "bb-session",
+      "session": "c34a0965",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-22T10:20:52.687Z",
+      "event": "bb-session",
+      "session": "a05b281a",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-08-22T10:23:08.444Z",
+      "event": "bb-session",
+      "session": "3b2b9e6a",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-22T10:23:09.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
