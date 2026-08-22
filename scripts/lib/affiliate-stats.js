@@ -93,7 +93,7 @@ async function fetchImpact(startDate, endDate, opts = {}) {
  * @param {{now?: Date, timeoutMs?: number}} [opts] injectable clock for tests/replays;
  *   timeoutMs overrides PROVIDER_TIMEOUT_MS for callers not bound by Vercel's
  *   10s route cap (e.g. the GitHub Actions health-monitor cron, which has a
- *   5-minute step budget — see check-affiliate-health.js's MONITOR_TIMEOUT_MS).
+ *   5-minute step budget — see check-affiliate-health.js's MONITOR_FETCH_TIMEOUT_MS).
  * @returns {Promise<Array<{date:string, clicks:number, conversions:number, payout:number, sales:number}>>}
  */
 async function fetchImpactDaily(days, opts = {}) {

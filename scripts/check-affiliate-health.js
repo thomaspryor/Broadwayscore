@@ -71,12 +71,16 @@ function isTransientFetchError(err) {
 
 // One retry, only for the timeout/abort class of failure — an auth or HTTP
 // error is a real provider fault and retrying it immediately just burns the
-// remaining budget for no gain.
-async function fetchWithOneRetry(fn) {
+// remaining budget for no gain. Logs on retry even when the second attempt
+// succeeds — a provider that's merely slow-not-dead should stay visible in
+// the run's own step log, not vanish as a silent "pass" (ship-check finding,
+// 2026-08-22).
+async function fetchWithOneRetry(fn, label) {
   try {
     return await fn();
   } catch (err) {
     if (!isTransientFetchError(err)) throw err;
+    console.warn(`[affiliate-health] ${label || 'fetch'}: transient error (${err.message}), retrying once`);
     await new Promise((resolve) => setTimeout(resolve, MONITOR_RETRY_DELAY_MS));
     return fn();
   }
@@ -149,9 +153,9 @@ async function loadData(args) {
   const fetchOpts = { timeoutMs: MONITOR_FETCH_TIMEOUT_MS };
   const errors = [];
   const [impactDaily, posthogDaily, actions] = await Promise.all([
-    fetchWithOneRetry(() => fetchImpactDaily(LOOKBACK_DAYS, fetchOpts)).catch((err) => { errors.push({ provider: 'impact', message: err.message }); return null; }),
-    fetchWithOneRetry(() => fetchPosthogDailyClicks(LOOKBACK_DAYS, fetchOpts)).catch((err) => { errors.push({ provider: 'posthog', message: err.message }); return null; }),
-    fetchWithOneRetry(() => fetchImpactActionsWindow(14, fetchOpts)).catch((err) => { errors.push({ provider: 'impact-actions', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchImpactDaily(LOOKBACK_DAYS, fetchOpts), 'impact').catch((err) => { errors.push({ provider: 'impact', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchPosthogDailyClicks(LOOKBACK_DAYS, fetchOpts), 'posthog').catch((err) => { errors.push({ provider: 'posthog', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchImpactActionsWindow(14, fetchOpts), 'impact-actions').catch((err) => { errors.push({ provider: 'impact-actions', message: err.message }); return null; }),
   ]);
   return { impactDaily: impactDaily || [], posthogDaily: posthogDaily || [], actions: actions || [], errors };
 }
