@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-22T05:18:16.700Z",
+  "updatedAt": "2026-08-22T05:25:26.553Z",
   "processed": 13,
-  "failed": 67,
-  "successRate": "16.3%",
+  "failed": 87,
+  "successRate": "13.0%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-22T03:53:51.883Z",
@@ -116,6 +116,17 @@
       "event": "bb-session",
       "session": "f13a9312",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-22T05:20:00.363Z",
+      "event": "bb-session",
+      "session": "ac4ad493",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-22T05:20:00.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
