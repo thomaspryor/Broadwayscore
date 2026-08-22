@@ -262,7 +262,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Pre-Broadway Tryouts \u2014 Out-of-Town Reviews (${CURRENT_YEAR})`,
     metaDescription: 'Critic scores for Broadway-bound shows in their out-of-town tryouts \u2014 Arena Stage, the Goodman, A.R.T., La Jolla, and other feeder theaters. See how a show reviewed before it reaches New York.',
     intro: 'Most big Broadway productions are born somewhere else. Before a musical or play reaches New York, it usually premieres at a major regional theater \u2014 Chicago\'s Goodman, D.C.\'s Arena Stage, Cambridge\'s American Repertory Theater, the La Jolla Playhouse \u2014 where critics deliver the first professional verdict. We track those tryout productions and score their reviews the same way we score Broadway, so you can see how a Broadway-bound show is really landing months before it announces a New York theater. When a tryout transfers, we link the two productions so the out-of-town score follows it to Broadway.',
-    filter: () => true, // every regional show belongs here (the pool IS the collection)
+    // Every regional show belongs here EXCEPT individual legs of a multi-venue
+    // tour (tourParent set) — those roll up into one aggregate card instead of
+    // cluttering the list with near-duplicate per-city entries. The leg pages
+    // themselves stay live and linked from the aggregate's show page.
+    filter: (show) => !show.tourParent,
     // customSort (not 'opening-date') so the sectionGroup headings render —
     // BrowseListClient only shows sections for custom/score sorts. Order:
     // running tryouts first, then transferred-to-Broadway, then the rest,
