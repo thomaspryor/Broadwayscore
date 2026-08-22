@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-22T13:32:24.212Z",
+    "generatedAt": "2026-08-22T13:45:31.103Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -30,7 +30,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 59
+      "churn": 58
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -74,12 +74,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 373,
+      "churn": 372,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 369,
+      "churn": 368,
       "mergeAttr": "ours"
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 183,
+      "churn": 182,
       "mergeAttr": "union"
     },
     {
