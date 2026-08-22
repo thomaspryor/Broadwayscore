@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-21T09:15:37.705Z",
+  "timestamp": "2026-08-22T12:21:34.778Z",
   "stats": {
-    "totalReviews": 42299,
-    "alreadyFlagged": 18123,
-    "dateGuardCatches": 182,
+    "totalReviews": 42336,
+    "alreadyFlagged": 18128,
+    "dateGuardCatches": 181,
     "directorMismatch": 992,
-    "tvFilmSignals": 1216,
-    "londonSignals": 923,
+    "tvFilmSignals": 1217,
+    "londonSignals": 926,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3560
+    "noPublishDate": 3567
   },
   "findings": [
     {
@@ -6468,7 +6468,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2026-08-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
       "findings": [
@@ -9401,7 +9401,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 90,
+      "score": 88,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -14356,6 +14356,20 @@
       ]
     },
     {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "readaboutstuff--unknown.json",
+      "score": 66,
+      "publishDate": "2026-08-21",
+      "url": "https://readaboutstuff.com/2026/08/21/review-jeeves-takes-charge-charing-cross-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "jekyll-and-hyde-2013",
       "file": "ap--mark-kennedy.json",
       "score": 55,
@@ -15129,7 +15143,7 @@
       "file": "thereviewshub--richard-maguire.json",
       "score": 45,
       "publishDate": "2024-10-07",
-      "url": null,
+      "url": "https://www.thereviewshub.com/juno-and-the-paycock-gielgud-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26138,6 +26152,19 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "1883magazine--nick-barr.json",
+      "publishDate": "2025-05-14",
+      "url": "https://1883magazine.com/the-comedy-about-spies-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
       "score": 96,
       "publishDate": "2025-05-16",
@@ -30468,7 +30495,7 @@
     {
       "showId": "tru-off-broadway-2026",
       "file": "theater-life--patrick-christiano.json",
-      "score": 48,
+      "score": 54,
       "publishDate": "2026-04-14T11:17:00",
       "url": "https://theaterlife.com/tru-1-2/",
       "findings": [
@@ -34521,17 +34548,6 @@
       ]
     },
     {
-      "showId": "brainiac-live-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 132d before show (2026-03-16 vs 2026-07-26)"
-        }
-      ]
-    },
-    {
       "showId": "breakfast-at-tiffanys-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 44,
@@ -35211,6 +35227,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-08-08",
+      "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -36120,7 +36149,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 61,
+      "score": 57,
       "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
@@ -38585,17 +38614,6 @@
       ]
     },
     {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 55d before show (2026-05-15 vs 2026-07-09)"
-        }
-      ]
-    },
-    {
       "showId": "heisenberg-2016",
       "file": "nytg--kathleen-campion.json",
       "score": 90,
@@ -38850,7 +38868,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "everything-theatre--unknown.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2026-06-05",
       "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
       "findings": [
@@ -39074,7 +39092,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
@@ -39170,7 +39188,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--cheryl-markoski.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -39234,6 +39252,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 86,
+      "publishDate": "2026-08-19",
+      "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -42325,6 +42357,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/now-you-see-me",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
