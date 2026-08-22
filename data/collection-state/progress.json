@@ -1421,7 +1421,17 @@
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
+    "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1485,7 +1495,8 @@
     "browserbase": [
       "data/review-texts/benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
       "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1543,7 +1554,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -1734,6 +1745,17 @@
     },
     {
       "t": "2026-08-22T20:12:06.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T20:13:30.712Z",
+      "event": "bb-session",
+      "session": "04080e53",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-22T20:13:31.704Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }

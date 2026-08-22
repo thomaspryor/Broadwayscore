@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-08-22T20:12:17.284Z",
+  "updatedAt": "2026-08-22T20:17:55.102Z",
   "processed": 99,
-  "failed": 1321,
-  "successRate": "7.0%",
+  "failed": 1331,
+  "successRate": "6.9%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-22T10:25:59.551Z",
-      "event": "bb-session",
-      "session": "0a689298",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-22T10:26:19.211Z",
-      "event": "bb-session",
-      "session": "b29572fa",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
     {
       "t": "2026-08-22T11:32:46.605Z",
       "event": "bb-session",
@@ -126,6 +114,17 @@
     },
     {
       "t": "2026-08-22T20:12:06.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T20:13:30.712Z",
+      "event": "bb-session",
+      "session": "04080e53",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-22T20:13:31.704Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
