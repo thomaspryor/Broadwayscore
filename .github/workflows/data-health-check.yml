@@ -503,15 +503,26 @@ jobs:
       # origin moves again) and, more importantly, isolates blast radius: if
       # the bulk step below still loses its own push on a heavy-churn day,
       # the digest snapshot — the one thing the alert is actually about —
-      # already landed independently. The Git Data API fallback in push-
-      # with-retry.sh is NOT a substitute here: it deliberately disqualifies
-      # itself for any data/audit/* path not on its MANAGED allowlist (see
-      # that script's "Whole-`data/audit/` fail-closed" comment) pending a
-      # future per-path safety audit, so this file gets no help from it
-      # either way — isolation at the workflow level is the fix available
-      # today. No continue-on-error: unlike the shadow-mode steps above, a
-      # failure to persist the digest snapshot is exactly the page-worthy
-      # failure this workflow exists to catch.
+      # already landed independently.
+      #
+      # UPDATE (follow-up task, plan-reviewed): health-digest-snapshot.json
+      # is now ALSO registered `apiFallbackSafe: true` in scripts/lib/core-
+      # data-merge-registry.js, so push-with-retry.sh's Git Data API fallback
+      # (a fast compare-and-swap that skips the fetch/rebase race entirely)
+      # can engage for it directly. This step's own workflow-level isolation
+      # is NOT made redundant by that — they're two independent layers, not
+      # duplicated effort: isolation shrinks the commit so the LOCAL retry
+      # loop wins the race faster and blast-radius stays contained even if
+      # the fallback is disabled/unavailable for any reason
+      # (PUSH_API_FALLBACK_DISABLE=1, node missing, etc — see push-with-
+      # retry.sh's own eligibility comment); the fallback is a faster escape
+      # hatch on top of that when it's available. Every other data/audit/*
+      # file this job writes still gets no help from the fallback (fail-
+      # closed default, unaudited) — isolation remains the only lever for
+      # those until each is individually verified the same way.
+      # No continue-on-error: unlike the shadow-mode steps above, a failure
+      # to persist the digest snapshot is exactly the page-worthy failure
+      # this workflow exists to catch.
       - name: Commit digest snapshot
         if: always()
         timeout-minutes: 17

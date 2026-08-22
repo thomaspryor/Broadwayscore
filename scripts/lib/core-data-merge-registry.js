@@ -124,6 +124,17 @@ const CORE_DATA_MERGE_REGISTRY = [
   // Grow this list ONE entry at a time, each independently verified the same
   // way — do NOT batch-add unaudited data/audit/* paths on the strength of
   // an in-workflow comment alone.
+  //
+  // TO ROLL BACK one entry: flip `apiFallbackSafe: true` to `false` (or
+  // delete the field). The runtime behavior reverts immediately and safely —
+  // reconcile-merged-json.js's API_FALLBACK_SAFE export and push-with-
+  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed,
+  // no other file touched (ship-check finding: this is NOT a zero-file
+  // revert though — core-data-merge-registry.test.mjs's "sanity: exactly the
+  // seeded apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
+  // live-repo regression test both hardcode "expect >=1 entry" and will fail
+  // loudly until updated to match — deliberately, so removing the last entry
+  // is a reviewed two-line PR, not a silent, unnoticed policy change).
   {
     file: 'audit/health-digest-snapshot.json',
     surface: 'public-repo',
