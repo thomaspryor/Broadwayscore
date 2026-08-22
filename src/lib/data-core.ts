@@ -200,6 +200,15 @@ export function getRegionalShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'regional');
 }
 
+/**
+ * Per-venue legs of a multi-city pre-Broadway tour (each leg's own show page,
+ * e.g. Chicago/LA/DC), for the aggregate show that rolls their reviews up
+ * into one combined score. See RawShow.tourParent in engine.ts.
+ */
+export function getTourStops(aggregateShowId: string): ComputedShow[] {
+  return getAllShows().filter(show => show.tourParent === aggregateShowId);
+}
+
 // Ticket-buyer platforms that count toward a show's "curated audience footprint"
 // for homepage notability (Path B). Reddit is excluded — see homepage-notability.ts.
 const CURATED_AUDIENCE_SOURCES = ['showScore', 'mezzanine', 'theatr', 'broadwayCom'] as const;
