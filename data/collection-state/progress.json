@@ -485,7 +485,17 @@
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -536,7 +546,9 @@
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -569,7 +581,7 @@
     ]
   },
   "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
   "log": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -694,6 +706,29 @@
       "t": "2026-08-22T01:53:15.521Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T01:54:18.755Z",
+      "event": "bb-session",
+      "session": "0da0919e",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-22T01:54:19.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T01:54:51.477Z",
+      "event": "bb-session",
+      "session": "d480b699",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-22T01:55:02.184Z",
+      "event": "bb-session",
+      "session": "cf3431f4",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
     }
   ]
 }
