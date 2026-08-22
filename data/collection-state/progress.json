@@ -65,7 +65,8 @@
     "burlesque-west-end-2026/variety--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -465,7 +466,16 @@
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -529,7 +539,8 @@
     "brightdata": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "burlesque-west-end-2026/variety--unknown.json"
+      "burlesque-west-end-2026/variety--unknown.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -552,7 +563,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -663,6 +674,17 @@
     },
     {
       "t": "2026-08-22T12:50:15.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T12:54:22.840Z",
+      "event": "bb-session",
+      "session": "a8ffee4f",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-22T12:54:23.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

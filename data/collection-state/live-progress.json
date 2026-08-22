@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-22T12:53:23.294Z",
-  "processed": 66,
-  "failed": 398,
-  "successRate": "14.2%",
+  "updatedAt": "2026-08-22T12:54:51.291Z",
+  "processed": 67,
+  "failed": 407,
+  "successRate": "14.1%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 7,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-08-22T10:16:48.208Z",
-      "event": "bb-session",
-      "session": "2b353b5e",
-      "url": "https://www.nytimes.com/2026/08/17/theater/benevolent-review-sophie-mcintosh.htm"
-    },
-    {
-      "t": "2026-08-22T10:16:48.979Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-22T10:18:33.630Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
     },
     {
       "t": "2026-08-22T12:50:15.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T12:54:22.840Z",
+      "event": "bb-session",
+      "session": "a8ffee4f",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-22T12:54:23.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
