@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-22T00:38:43.421Z",
-  "processed": 12,
-  "failed": 44,
-  "successRate": "21.4%",
+  "updatedAt": "2026-08-22T01:09:14.151Z",
+  "processed": 53,
+  "failed": 253,
+  "successRate": "17.3%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 8,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -59,6 +59,62 @@
       "t": "2026-08-22T00:38:13.916Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-22T00:40:38.107Z",
+      "event": "bb-session",
+      "session": "1a207263",
+      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-"
+    },
+    {
+      "t": "2026-08-22T00:40:54.207Z",
+      "event": "bb-session",
+      "session": "13b64072",
+      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-"
+    },
+    {
+      "t": "2026-08-22T00:52:09.459Z",
+      "event": "bb-session",
+      "session": "3674942a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
+    },
+    {
+      "t": "2026-08-22T00:52:10.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-22T00:59:40.877Z",
+      "event": "bb-session",
+      "session": "431030ec",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-jonathan-larson-proje"
+    },
+    {
+      "t": "2026-08-22T00:59:41.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-22T01:06:13.799Z",
+      "event": "bb-session",
+      "session": "e21237c5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-08-22T01:06:14.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-22T01:06:32.600Z",
+      "event": "bb-session",
+      "session": "94a969de",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-08-22T01:06:33.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

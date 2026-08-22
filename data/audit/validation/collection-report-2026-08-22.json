@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-08-22T01:09:18.182Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 53,
+    "failed": 253,
+    "skipped": 0,
+    "successRate": "17.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 33,
+    "amp": 0,
+    "browserbase": 6,
+    "directCookies": 0,
+    "scrapingbee": 8,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 8
+  },
+  "statistics": {
+    "tier1Attempts": 41,
+    "tier1Success": 32,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 9,
+    "tier1_5Success": 3,
+    "tier2Attempts": 15,
+    "tier2Success": 9,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 0,
+    "tier4Attempts": 42,
+    "tier4Success": 5,
+    "totalFailed": 248,
+    "scrapingBeePageCredits": 58,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 9,
+    "browserbaseMinutesUsed": 3.4,
+    "urlDiscoveryAttempts": 247,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -309,8 +360,7 @@
     "beetlejuice-west-end-2026/variety--frank-rizzo.json",
     "beetlejuice-west-end-2026/variety--owen-gleiberman.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "spellbound-off-broadway-2026/amny--alexa-lutter.json",
@@ -381,109 +431,34 @@
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
-  "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "beetlejuice-west-end-2026/variety--owen-gleiberman.json",
-  "log": [
-    {
-      "t": "2026-08-21T23:56:58.374Z",
-      "event": "bb-session",
-      "session": "4a40a528",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     },
-    {
-      "t": "2026-08-21T23:57:06.179Z",
-      "event": "bb-session",
-      "session": "24864b80",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    "podcastrex": {
+      "count": 1,
+      "domain": "podcastrex.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-08-22T00:34:16.473Z",
-      "event": "bb-session",
-      "session": "165aa7b1",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-22T00:34:17.274Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-22T00:36:16.577Z",
-      "event": "bb-session",
-      "session": "138689b9",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-22T00:36:17.386Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-22T00:38:13.094Z",
-      "event": "bb-session",
-      "session": "8ef9cae1",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-re"
-    },
-    {
-      "t": "2026-08-22T00:38:13.916Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-22T00:40:38.107Z",
-      "event": "bb-session",
-      "session": "1a207263",
-      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-"
-    },
-    {
-      "t": "2026-08-22T00:40:54.207Z",
-      "event": "bb-session",
-      "session": "13b64072",
-      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-"
-    },
-    {
-      "t": "2026-08-22T00:52:09.459Z",
-      "event": "bb-session",
-      "session": "3674942a",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
-    },
-    {
-      "t": "2026-08-22T00:52:10.362Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-22T00:59:40.877Z",
-      "event": "bb-session",
-      "session": "431030ec",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-jonathan-larson-proje"
-    },
-    {
-      "t": "2026-08-22T00:59:41.712Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-22T01:06:13.799Z",
-      "event": "bb-session",
-      "session": "e21237c5",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
-    },
-    {
-      "t": "2026-08-22T01:06:14.565Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-08-22T01:06:32.600Z",
-      "event": "bb-session",
-      "session": "94a969de",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
-    },
-    {
-      "t": "2026-08-22T01:06:33.338Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "reviewId": "brainiac-live-west-end-2026/theatre-weekly--unknown.json",
+      "oldUrl": "https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/",
+      "newUrl": "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/"
     }
   ]
 }
