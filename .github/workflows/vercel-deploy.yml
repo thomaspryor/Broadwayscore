@@ -263,10 +263,36 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
         run: |
+          # Card #90 (2026-08-14): under a burst of concurrent pushes, Vercel's
+          # server-side "latest wins" dedup can CANCEL this run's deployment
+          # mid-build while the `vercel` CLI keeps waiting on it, hanging in
+          # place instead of exiting — the job then sat "in_progress" for 15+
+          # min with no signal until the 25-min job ceiling. Normal full-prebuild
+          # runs finish in ~2m40s-3m35s (sampled 2026-08-22); the "Check build
+          # duration" step below already treats >600s as its own "something is
+          # very wrong" error threshold but deliberately doesn't fail the job.
+          # 720s (12 min) sits above that watermark (a merely slow build isn't
+          # killed here) while cutting a genuine hang's stuck window from 25
+          # min to ~12. Uses inline `timeout` + explicit exit, NOT step-level
+          # `timeout-minutes` — a step-level timeout reports conclusion
+          # "cancelled", which the "Notify on failure"/"Trigger investigation"
+          # steps below (gated on if: failure()) would silently skip, exactly
+          # backwards from what this fix needs. This is a partial fix — see
+          # card #90 for the unresolved half (no newer cron run starting
+          # during the burst).
           BUILD_START=$(date +%s)
-          npx vercel build --prod --token=$VERCEL_TOKEN
+          timeout 720 npx vercel build --prod --token=$VERCEL_TOKEN
+          status=$?
           BUILD_SECS=$(( $(date +%s) - BUILD_START ))
           echo "build_seconds=$BUILD_SECS" >> "$GITHUB_OUTPUT"
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel build timed out after 12m (card #90 — possible Vercel-side cancellation hang)"
+            else
+              echo "::error::vercel build failed (exit $status)"
+            fi
+            exit 1
+          fi
           echo "Build completed in ${BUILD_SECS}s"
 
       - name: Deploy to Production
@@ -280,7 +306,20 @@ jobs:
           # If this flag ever becomes unrecognized after a Vercel CLI downgrade,
           # fall back to --archive=tgz (the previous default).
           # Source: https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive
-          URL=$(npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
+          #
+          # Card #90: same hang risk + inline-timeout rationale as the Build
+          # step above. 480s (8 min) is ~4-5x the observed 1m28s-1m41s normal
+          # duration (sampled 2026-08-22).
+          URL=$(timeout 480 npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel deploy timed out after 8m (card #90 — possible Vercel-side cancellation hang)"
+            else
+              echo "::error::vercel deploy failed (exit $status)"
+            fi
+            exit 1
+          fi
           echo "Deployed to production: $URL"
           echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
