@@ -92,6 +92,47 @@ const CORE_DATA_MERGE_REGISTRY = [
     optInReconcile: false,
   },
   { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl' },
+
+  // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
+  // push-race hardening, session 2026-08-22, incident run 32559247279) ──────
+  // `status: 'single-writer'` alone is NOT sufficient to license push-with-
+  // retry.sh's Git Data API fallback (a fail-closed, "ours wins outright"
+  // whole-file overwrite on a CRITICAL-tier push path) — that status has
+  // exactly one existing consumer today (core-data-registry-coverage.js's
+  // presence check, which doesn't even branch on the value) and was verified
+  // to a much looser bar ("no real race", e.g. grosses.json's two writers
+  // sharing a concurrency group) than "safe for a live compare-and-swap
+  // bypass" requires. `apiFallbackSafe: true` is a SEPARATE, narrower claim,
+  // consulted ONLY by push-with-retry.sh's disqualifier check (via
+  // reconcile-merged-json.js's API_FALLBACK_SAFE export below) — never by
+  // activeEntriesFor() or any other existing consumer of this registry.
+  // Required fields on every apiFallbackSafe entry:
+  //   concurrencyGroup — the GitHub Actions `concurrency.group` of the ONE
+  //     workflow that writes this file, so overlapping runs of that SAME
+  //     workflow (workflow_dispatch racing its own cron, a retry racing the
+  //     original) queue instead of racing each other into the fallback —
+  //     without this, "ours wins outright" can silently let a stale run
+  //     clobber a fresher one with no error anywhere (plan-review finding,
+  //     4-way cross-reviewer agreement: user-impact/pre-mortem/gpt-5.4-mini/
+  //     gemini-2.5-flash).
+  //   verifiedBy — when/how the single-writer claim was checked (grep across
+  //     ALL .github/workflows/*.yml, not just the one workflow's own
+  //     comments — a plan-review reviewer caught data/audit/alert-digest-
+  //     queue.json wrongly seeded as single-writer from exactly that mistake:
+  //     its OWN comment in data-health-check.yml said "single writer" but 12
+  //     other workflows also write it).
+  // Grow this list ONE entry at a time, each independently verified the same
+  // way — do NOT batch-add unaudited data/audit/* paths on the strength of
+  // an in-workflow comment alone.
+  {
+    file: 'audit/health-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+    note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
+  },
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
@@ -209,4 +250,16 @@ function activeEntriesFor(surface) {
   return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.status === 'active' && e.optInReconcile !== false);
 }
 
-module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor };
+/** Entries explicitly marked `apiFallbackSafe: true` for one surface — see
+ * the header comment on the first such entry above for what this claim
+ * means and why it is a SEPARATE, narrower field from `status`. Returns
+ * DOCUMENTATION CLAIMS (hand-verified at the `verifiedBy` note's time), not
+ * a live safety guarantee — callers that grant a real bypass on the
+ * strength of this list (push-with-retry.sh, via reconcile-merged-json.js's
+ * API_FALLBACK_SAFE export) are trusting the verification process this
+ * registry entry documents, not re-deriving it. */
+function apiFallbackSafeEntriesFor(surface) {
+  return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackSafe === true);
+}
+
+module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor };

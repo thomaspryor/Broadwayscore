@@ -1716,13 +1716,31 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # of independent workflows/crons — auditing each for correct union-merge
     # semantics is its own multi-session project, not something to guess at
     # here. Until that audit lands, ANY changed path under `data/audit/` not
-    # itself in MANAGED also disqualifies the fallback (in addition to the
+    # itself in MANAGED (or explicitly cleared per the API_FALLBACK_SAFE
+    # paragraph below) also disqualifies the fallback (in addition to the
     # existing itemized MANAGED check above) — "ours wins, squash" is unsafe
     # for a directory this write-heavy and this unaudited. This makes the
     # fallback a no-op for callers whose diff always touches `data/audit/`
     # (e.g. rebuild-fast.yml, rebuild-reviews.yml stage `data/audit/*.json`
     # on every run) until that follow-up audit narrows or clears specific
     # paths — expected and intentional, not a bug in this guard.
+    #
+    # API_FALLBACK_SAFE carve-out (task: data-health-check.yml push-race
+    # hardening, session 2026-08-22, plan-reviewed — six independent
+    # reviewers, one of whom caught a wrong seed candidate before it shipped;
+    # see scripts/lib/core-data-merge-registry.js's `apiFallbackSafe` header
+    # comment for the full verification bar). UNLIKE MANAGED, these files
+    # have NO merge function and need none — each is hand-verified to have
+    # exactly one writing workflow, which itself declares a `concurrency`
+    # group that serializes overlapping runs of ITSELF (so "ours wins
+    # outright" can't let a stale run of the same workflow clobber a fresher
+    # one — the failure mode 4 of 6 plan-review reviewers independently
+    # flagged for any "single-writer" claim that skips this check). Grown
+    # ONE registry entry at a time, each independently re-verified by
+    # grepping ALL workflow files (not trusting one workflow's own inline
+    # comment — that mistake nearly shipped data/audit/alert-digest-queue.json
+    # into this exact list during this task's own plan-review, and it has
+    # 12+ real writers).
     #
     # data/shows.json + data/reviews.json fail-closed (task #1792 round-2
     # review finding): the two hottest, most-concurrently-written files in
@@ -1754,18 +1772,19 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # range is byte-identical to what actually gets pushed.
     _managed_check_rc=0
     node -e '
-        const { MANAGED } = require(process.argv[1]);
+        const { MANAGED, API_FALLBACK_SAFE } = require(process.argv[1]);
         const NEVER_FALLBACK = ["data/shows.json", "data/reviews.json"];
         const changed = require("child_process")
           .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
           .split("\n").filter(Boolean);
         const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
+        const isApiFallbackSafe = (f) => API_FALLBACK_SAFE.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
         const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith("/" + p));
-        const hit = changed.find((f) => isManaged(f) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f)));
+        const hit = changed.find((f) => isManaged(f) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f) && !isApiFallbackSafe(f)));
         process.exit(hit ? 1 : 0);
       ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
     if [ "$_managed_check_rc" = "1" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json, or an unaudited data/audit/ path. See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json, or an unaudited data/audit/ path (not in API_FALLBACK_SAFE either). See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, or scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries to add a hand-verified single-writer path."
       _api_fallback_ok=false
     fi
   fi
@@ -1833,7 +1852,7 @@ if [ "$pushed" != "true" ]; then
   # content-dropped error) and repeating the pointer here would read as "try
   # the thing that was just tried and failed."
   if [ "$_api_fallback_ok" != "true" ]; then
-    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/data-audit path (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
+    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
   restore_head_if_moved "retries-exhausted"
   exit 1
