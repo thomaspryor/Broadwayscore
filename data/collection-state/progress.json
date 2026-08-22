@@ -1151,7 +1151,17 @@
     "hadestown-west-end-2024/nytg--gillian-russo.json",
     "hadestown-west-end-2024/nytg--unknown.json",
     "hadestown-west-end-2024/nytimes--chris-azzopardi.json",
-    "hadestown-west-end-2024/nytimes--jesse-green.json"
+    "hadestown-west-end-2024/nytimes--jesse-green.json",
+    "hadestown-west-end-2024/vulture--sara-holdren.json",
+    "hadestown-west-end-2024/broadwaynews--charles-isherwood.json",
+    "hadestown-west-end-2024/deadline--greg-evans.json",
+    "hadestown-west-end-2024/deadline--unknown.json",
+    "hadestown-west-end-2024/ew--jessica-derschowitz.json",
+    "hadestown-west-end-2024/ew--unknown.json",
+    "hadestown-west-end-2024/newnownextcom--michael-musto.json",
+    "hadestown-west-end-2024/newsday--barbara-schuler.json",
+    "hadestown-west-end-2024/nydailynews--chris-jones.json",
+    "hadestown-west-end-2024/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1206,10 +1216,7 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
-      "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
-      "cats-west-end-2026/nytimes--helen-shaw.json"
+      "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1253,7 +1260,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "hadestown-west-end-2024/nytimes--jesse-green.json",
+  "lastProcessed": "hadestown-west-end-2024/nypost--johnny-oleksinski.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -1423,28 +1430,6 @@
       "t": "2026-08-22T16:14:40.305Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-22T19:01:37.672Z",
-      "event": "bb-session",
-      "session": "ed8cd53e",
-      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
-    },
-    {
-      "t": "2026-08-22T19:01:38.760Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-22T19:07:57.684Z",
-      "event": "bb-session",
-      "session": "8cdb61c1",
-      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
-    },
-    {
-      "t": "2026-08-22T19:07:58.616Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
