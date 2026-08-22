@@ -60,7 +60,9 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
@@ -515,7 +517,15 @@
     "cats-west-end-2026/new-york-sun--elysa-gardner.json",
     "cats-west-end-2026/nypost--johnny-oleksinski.json",
     "cats-west-end-2026/nypost--kyle-smith.json",
-    "cats-west-end-2026/theatermania--zachary-stewart.json"
+    "cats-west-end-2026/theatermania--zachary-stewart.json",
+    "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -584,7 +594,8 @@
     ],
     "brightdata": [
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -597,11 +608,12 @@
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
     ]
   },
   "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "cats-west-end-2026/theatermania--zachary-stewart.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
   "log": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -749,6 +761,40 @@
       "event": "bb-session",
       "session": "cf3431f4",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-22T02:49:03.208Z",
+      "event": "bb-session",
+      "session": "33b9ac6e",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-22T02:49:22.583Z",
+      "event": "bb-session",
+      "session": "7229d854",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-22T02:49:50.335Z",
+      "event": "bb-session",
+      "session": "d63a7d0e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T02:49:50.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T02:50:06.587Z",
+      "event": "bb-session",
+      "session": "aa607feb",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T02:50:07.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
