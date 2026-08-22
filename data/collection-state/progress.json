@@ -337,7 +337,17 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -414,7 +424,7 @@
     ]
   },
   "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/scorebig--unknown.json",
   "log": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -572,6 +582,17 @@
       "event": "bb-session",
       "session": "c8193e1a",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-22T01:28:18.747Z",
+      "event": "bb-session",
+      "session": "f2ae8227",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-22T01:28:19.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
