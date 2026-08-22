@@ -67,7 +67,9 @@
     "just-in-time-2025/newyorker--conde-nast.json",
     "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
     "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-    "abigails-party-west-end-2026/plays-international--unknown.json"
+    "abigails-party-west-end-2026/plays-international--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -511,7 +513,15 @@
     "abigails-party-west-end-2026/monstagigz--unknown.json",
     "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
-    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json"
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -556,7 +566,8 @@
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "abigails-party-west-end-2026/plays-international--unknown.json"
+      "abigails-party-west-end-2026/plays-international--unknown.json",
+      "as-you-like-it-globe-west-end-2026/london-box-office--stuart-king.json"
     ],
     "amp": [],
     "browserbase": [
@@ -577,7 +588,8 @@
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "burlesque-west-end-2026/variety--unknown.json",
-      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -600,7 +612,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -759,6 +771,17 @@
       "event": "bb-session",
       "session": "d58307e9",
       "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-22T16:14:39.476Z",
+      "event": "bb-session",
+      "session": "2272864e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T16:14:40.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
