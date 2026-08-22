@@ -98,7 +98,8 @@
     "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
     "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-    "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json"
+    "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
+    "cats-west-end-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -1481,7 +1482,16 @@
     "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
     "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
     "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
-    "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json"
+    "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "cats-west-end-2026/nyt-theater--unknown.json",
+    "cats-west-end-2026/nytg--kyle-turner.json",
+    "cats-west-end-2026/variety--alison-herman.json",
+    "cats-west-end-2026/variety--frank-rizzo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1547,7 +1557,9 @@
       "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
+      "cats-west-end-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1605,7 +1617,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json",
+  "lastProcessed": "cats-west-end-2026/variety--frank-rizzo.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -1832,6 +1844,17 @@
       "t": "2026-08-22T21:27:39.206Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T21:33:17.925Z",
+      "event": "bb-session",
+      "session": "430f85b4",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-22T21:33:18.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

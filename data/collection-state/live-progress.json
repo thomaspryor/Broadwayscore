@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-22T21:32:31.422Z",
-  "processed": 99,
-  "failed": 1381,
+  "updatedAt": "2026-08-22T21:33:34.658Z",
+  "processed": 100,
+  "failed": 1390,
   "successRate": "6.7%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-22T12:54:22.840Z",
-      "event": "bb-session",
-      "session": "a8ffee4f",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-22T12:54:23.395Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-22T12:55:58.832Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "t": "2026-08-22T21:27:39.206Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T21:33:17.925Z",
+      "event": "bb-session",
+      "session": "430f85b4",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-22T21:33:18.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
