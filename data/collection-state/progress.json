@@ -45,7 +45,10 @@
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
     "pride-west-end-2026/londontheatre1--terry-eastham.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "birthright-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
@@ -277,7 +280,14 @@
     "sinatra-the-musical-west-end-2026/variety--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/musical-theatre-review--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/talkinbroadway--unknown.json",
+    "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
+    "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/frontmezzjunkies--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -309,7 +319,9 @@
       "jesus-christ-superstar-west-end-2026/lw-theatres--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "birthright-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -327,7 +339,8 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
-      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
     ],
     "brightdata": [
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
@@ -345,7 +358,7 @@
     ]
   },
   "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json",
+  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
   "log": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -425,6 +438,28 @@
       "t": "2026-08-22T00:59:41.712Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-22T01:06:13.799Z",
+      "event": "bb-session",
+      "session": "e21237c5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-08-22T01:06:14.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-22T01:06:32.600Z",
+      "event": "bb-session",
+      "session": "94a969de",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2650316"
+    },
+    {
+      "t": "2026-08-22T01:06:33.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
