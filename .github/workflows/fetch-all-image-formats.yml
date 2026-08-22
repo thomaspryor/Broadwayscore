@@ -131,6 +131,21 @@ jobs:
       - name: Commit and push if changed
         id: webpush
         if: always() && steps.changes.outputs.changed == 'true'
+        env:
+          # Same root cause + fix as scrape-new-aggregators.yml's BWW/PV
+          # unmatched-audit commit steps (PR #667, 2026-08-22): a real run
+          # (32575615449, targeted show_id=benevolent-off-broadway-2026)
+          # fetched the images successfully but the push failed —
+          # push-with-retry.sh hit its default 240s PUSH_DEADLINE_SEC after
+          # only 2 attempts, then refused the Git Data API fallback because
+          # this step's diff touches data/audit/ paths (scraper-spend-ledger
+          # etc.) alongside the image files. The job itself has a 180-minute
+          # budget (timeout-minutes: 180 above), so there is enormous
+          # headroom — bump the deadline and keep every attempt local rather
+          # than wasting attempts on a fallback that's structurally refused
+          # for this diff shape.
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           BRANCH="${GITHUB_REF#refs/heads/}"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
