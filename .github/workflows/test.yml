@@ -3535,7 +3535,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
+        with:
+          # fetch-depth: 300 (task #466 root-cause fix, 2026-08-22): default
+          # depth-1 gave push-with-retry.sh's final "Commit scraper-spend
+          # ledger" step (if: always(), the job's LAST step, ~15-20+ min after
+          # this checkout runs — checkout-core-data + checkout-aggregator-
+          # archive + the full validation/gate suite all happen first) too
+          # little headroom. push-with-retry.sh bounds its post-conflict fetch
+          # to a `--shallow-since` window anchored on THIS checkout's single
+          # boundary commit (scripts/lib/shallow-fetch-args.js), then widens
+          # once (1 day) before aborting with "fetch could not restore
+          # ancestry to the shallow checkout's original boundary" if that
+          # boundary still isn't an ancestor of the fetched tip — confirmed
+          # hitting this job twice, identical error, not caused by any PR
+          # diff (this repo lands ~150 commits/hour from many concurrent
+          # bots/sessions). Considered `fetch-depth: 0` (a full clone, which
+          # skips push-with-retry.sh's shallow-checkout code path entirely —
+          # the error message's own suggested escalation) but REJECTED it
+          # after finding 3 in-repo measurements of its real cost on this
+          # ~2.2GB/165k-commit history: guard-no-orphan-commit.yml ("took >5
+          # min and got cancelled"), sweep-we-aggregators.yml (task #1813,
+          # "~22-23 min TWICE in real dispatches"), update-show-status.yml
+          # (task #1810, "~17-25 min per run") — all only viable because
+          # those jobs carry 90-130 min timeouts. This job's 30-min timeout is
+          # deliberate (line above: "guarantees a conclusion even if a step
+          # wedges"); a 17-25 min checkout would consume most of that budget
+          # before any of the ~15 min of actual validation work runs. A
+          # bounded `fetch-depth: 300` is still a fast shallow clone (same
+          # cost class as the default depth 1 — GitHub negotiates a fixed
+          # small depth efficiently regardless of N), but gives push-with-
+          # retry.sh's ALREADY-GENERIC ancestry logic (it computes the
+          # boundary as "the oldest local commit" with no assumption of
+          # exactly 1 commit — see its own "SHALLOW checkout ($N local
+          # commit(s))" log line) a boundary commit ~300 commits further back
+          # in time, i.e. ~2 hours of churn headroom at this repo's measured
+          # rate — far more than this job's actual ~15-20 min runtime. No
+          # scripts/lib/push-with-retry.sh changes needed; it already handles
+          # N>1 shallow checkouts correctly. Second-opinion review (session
+          # recorded via review-gate.mjs --query=record-plan) rejected the
+          # fetch-depth:0 option specifically because of the measurements
+          # above.
+          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
