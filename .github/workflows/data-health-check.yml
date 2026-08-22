@@ -58,7 +58,16 @@ jobs:
     # real headroom to reach its own new 900s deadline even after every step
     # ahead of it in this job. Nowhere near GitHub Actions' 360-min hard job
     # ceiling.
-    timeout-minutes: 45
+    # Raised 45->60 (Notion 3c4637c5-416f-8127, run 32559247279 push-race): the new "Commit digest snapshot" step
+    # (17min cap, same 900s-deadline sizing as the ledger step) runs BEFORE
+    # "Commit health check + triage data", so its worst case adds fully on
+    # top of every budget this comment already accounts for — and because
+    # both steps' pushes can genuinely contend with the SAME concurrent
+    # main-branch churn in the same run (that's the whole reason either one
+    # exists), a correlated worst case where both hit their full 900s
+    # deadline is a real scenario for this job, not just an independent-step
+    # sum. Still nowhere near GitHub Actions' 360-min hard job ceiling.
+    timeout-minutes: 60
     permissions:
       contents: write
       issues: write
@@ -461,6 +470,64 @@ jobs:
           node scripts/linear-archive-done.js || true
           node scripts/check-linear-cap.js --alert
 
+      # Digest snapshot artifact backup (Notion 3c4637c5-416f-8127 (run 32559247279 push-race), same BRO-386 pattern as
+      # "Upload acceptance recheck ledger" above). data/audit/health-digest-
+      # snapshot.json is the ONE file scripts/autonomous-email.js:51 actually
+      # reads (HEALTH_DIGEST_PATH) to build the owner's single scheduled
+      # morning email — and it's the file this job's own "Notify on failure"
+      # step (bottom of this job) blames by name when the commit below fails
+      # ("its digest snapshot may not have written"). Uploaded BEFORE the
+      # isolated commit so this run's snapshot is recoverable from the Actions
+      # run page (90-day retention) even if the push that follows loses its
+      # race entirely.
+      - name: Upload digest snapshot (artifact backup)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: digest-snapshot-${{ github.run_id }}
+          path: data/audit/health-digest-snapshot.json
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # Commit digest snapshot in its OWN small, isolated commit+push (task
+      # #1868), split out of the bulk "Commit health check + triage data"
+      # step below — same reasoning as BRO-386's "Commit acceptance recheck
+      # ledger" isolation earlier in this job. Root cause of the split: run
+      # 32559247279 (2026-08-22T07:32Z) bundled health-digest-snapshot.json
+      # with 14 OTHER data/audit/* files into one commit; that commit's push
+      # lost the race against main's concurrent commit traffic 7 times in a
+      # row and hit push-with-retry.sh's 900s deadline, so NONE of the 15
+      # files landed — including the one file this job's failure alert
+      # specifically claims is at risk. A single-file commit is faster per
+      # fetch/rebase/push cycle (higher odds of winning the race before
+      # origin moves again) and, more importantly, isolates blast radius: if
+      # the bulk step below still loses its own push on a heavy-churn day,
+      # the digest snapshot — the one thing the alert is actually about —
+      # already landed independently. The Git Data API fallback in push-
+      # with-retry.sh is NOT a substitute here: it deliberately disqualifies
+      # itself for any data/audit/* path not on its MANAGED allowlist (see
+      # that script's "Whole-`data/audit/` fail-closed" comment) pending a
+      # future per-path safety audit, so this file gets no help from it
+      # either way — isolation at the workflow level is the fix available
+      # today. No continue-on-error: unlike the shadow-mode steps above, a
+      # failure to persist the digest snapshot is exactly the page-worthy
+      # failure this workflow exists to catch.
+      - name: Commit digest snapshot
+        if: always()
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No digest snapshot changes"
+          else
+            git commit -m "data: Update digest snapshot [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
       # audit-aggregator-gap.yml fix): this is the step that actually failed
       # in the incident that opened this card — run 32344089679 (2026-08-20)
@@ -470,6 +537,11 @@ jobs:
       # continue-on-error here, unlike every shadow-mode step above), firing
       # the misleading "Daily Data Health Check Crashed" critical email even
       # though the health-check script itself passed.
+      #
+      # health-digest-snapshot.json moved OUT of this step's git-add list
+      # (Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) into its own isolated "Commit digest snapshot" step
+      # above — see that step's comment for why. Everything else here is
+      # unchanged; this step still owns the other ~14 data/audit/* files.
       #
       # First fix pass set this to 600s and was verified LIVE via manual
       # workflow_dispatch run 32393356269 (2026-08-20) — it was NOT enough:
@@ -531,11 +603,10 @@ jobs:
           # earlier step (BRO-386, "Commit acceptance recheck ledger") — NOT
           # added here, so a bulk-commit push failure can never take the
           # recheck verdicts down with it again.
-          # Card #364: without this the runner-local snapshot never leaves
-          # the GitHub Actions filesystem — the Mac Studio (a different
-          # machine) would never see it, and the whole merged-email feature
-          # would be a silent no-op (ship-check finding).
-          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
+          # health-digest-snapshot.json (Card #364's file) is committed+pushed
+          # in its OWN earlier step ("Commit digest snapshot", Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) —
+          # NOT added here, so a bulk-commit push failure can never take the
+          # one file the failure alert cares about down with it again.
           git add data/audit/digest-history.json 2>/dev/null || true
           git add data/audit/triage/ 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
