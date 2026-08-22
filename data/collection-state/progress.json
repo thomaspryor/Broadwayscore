@@ -1461,7 +1461,17 @@
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
     "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
-    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1526,7 +1536,8 @@
       "data/review-texts/benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
       "benevolent-off-broadway-2026/nytimes--juan-a-ramirez.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1584,7 +1595,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -1786,6 +1797,29 @@
     },
     {
       "t": "2026-08-22T20:13:31.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T21:25:16.214Z",
+      "event": "bb-session",
+      "session": "b778b42d",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-22T21:25:40.278Z",
+      "event": "bb-session",
+      "session": "e0bb0898",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-22T21:27:38.454Z",
+      "event": "bb-session",
+      "session": "b0a05c1a",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-22T21:27:39.206Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
