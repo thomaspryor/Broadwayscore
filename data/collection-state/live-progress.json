@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-22T11:32:33.806Z",
-  "processed": 62,
-  "failed": 352,
-  "successRate": "15.0%",
+  "updatedAt": "2026-08-22T11:33:58.311Z",
+  "processed": 63,
+  "failed": 361,
+  "successRate": "14.9%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 6,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 15
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -104,6 +104,17 @@
       "event": "bb-session",
       "session": "b29572fa",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-22T11:32:46.605Z",
+      "event": "bb-session",
+      "session": "37970e73",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-22T11:32:47.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

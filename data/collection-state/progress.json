@@ -61,7 +61,8 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "burlesque-west-end-2026/variety--unknown.json"
   ],
   "failed": [
     "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
@@ -415,7 +416,16 @@
     "two-strangers-bway-2025/standard--nick-curtis.json",
     "two-strangers-bway-2025/telegraph--marianka-swain.json",
     "two-strangers-bway-2025/thestage--paul-vale.json",
-    "two-strangers-bway-2025/times-uk--clive-davis.json"
+    "two-strangers-bway-2025/times-uk--clive-davis.json",
+    "two-strangers-bway-2025/times-uk--dominic-cavendish.json",
+    "two-strangers-bway-2025/whatsonstage--alex-wood.json",
+    "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
+    "masquerade-off-broadway-2025/wsj--dominic-green.json",
+    "masquerade-off-broadway-2025/theater-life--unknown.json",
+    "the-producers-west-end-2025/deadline--unknown.json",
+    "the-producers-west-end-2025/people--unknown.json",
+    "burlesque-west-end-2026/musical-theatre-review--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -476,7 +486,8 @@
     ],
     "brightdata": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "burlesque-west-end-2026/variety--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -498,7 +509,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "two-strangers-bway-2025/times-uk--clive-davis.json",
+  "lastProcessed": "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -589,6 +600,17 @@
       "event": "bb-session",
       "session": "b29572fa",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-22T11:32:46.605Z",
+      "event": "bb-session",
+      "session": "37970e73",
+      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
+    },
+    {
+      "t": "2026-08-22T11:32:47.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
