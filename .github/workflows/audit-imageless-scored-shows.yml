@@ -24,7 +24,18 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15->25 (task investigating card: "Benevolent"/IATI Theater discovery +
+    # image gap, 2026-08-22): this job's "Commit audit ledger" step shares
+    # the exact same push-with-retry.sh bug fixed on scrape-new-aggregators.
+    # yml and fetch-all-image-formats.yml in the same incident — plain
+    # push-with-retry.sh with no override, committing a data/audit/ path,
+    # which the Git Data API fallback unconditionally refuses. This is the
+    # self-heal mechanism (card #1456) meant to catch exactly the class of
+    # gap that caused Benevolent to launch imageless — if ITS OWN commit
+    # can't land, the safety net silently doesn't work either. 25min leaves
+    # generous headroom over the 600s(10min) PUSH_DEADLINE_SEC override
+    # below plus the audit script's own runtime.
+    timeout-minutes: 25
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -66,6 +77,15 @@ jobs:
       # reviews.yml's "Commit audit log" step.
       - name: Commit audit ledger
         if: always() && inputs.dry_run != true
+        env:
+          # Same fix as scrape-new-aggregators.yml / fetch-all-image-formats.
+          # yml (PR #667): this step's push previously used push-with-retry.
+          # sh's plain defaults (240s deadline, early bail to a Git Data API
+          # fallback that unconditionally refuses any data/audit/ path) —
+          # meaning a push loss here silently disabled this workflow's own
+          # self-heal ledger/cooldown state with no signal to the owner.
+          PUSH_DEADLINE_SEC: '600'
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
