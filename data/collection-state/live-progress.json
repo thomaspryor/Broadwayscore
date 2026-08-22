@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-22T13:00:37.019Z",
-  "processed": 67,
-  "failed": 433,
-  "successRate": "13.4%",
+  "updatedAt": "2026-08-22T17:14:22.445Z",
+  "processed": 72,
+  "failed": 778,
+  "successRate": "8.5%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 44,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 7,
-    "brightdata": 4,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-08-22T10:23:08.444Z",
-      "event": "bb-session",
-      "session": "3b2b9e6a",
-      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
-    },
-    {
-      "t": "2026-08-22T10:23:09.076Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-08-22T10:23:31.430Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "event": "bb-session",
       "session": "d58307e9",
       "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-22T16:14:39.476Z",
+      "event": "bb-session",
+      "session": "2272864e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T16:14:40.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

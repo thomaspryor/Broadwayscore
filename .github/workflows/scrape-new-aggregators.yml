@@ -296,6 +296,22 @@ jobs:
           # gap.yml, task #1791/#1842) rather than picking a new untested
           # number.
           PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -549,6 +565,22 @@ jobs:
           # gap.yml, task #1791/#1842) rather than picking a new untested
           # number.
           PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
