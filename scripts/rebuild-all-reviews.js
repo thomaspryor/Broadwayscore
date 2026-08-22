@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
+const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
@@ -1648,11 +1649,23 @@ const crossShowFingerprints = new Map();
 // (e.g., timeout--critic.json but outletId is "timeout-london" due to URL-based resolution),
 // rename or merge into the correctly-named file.
 // Uses fresh readdirSync per directory (not cached from Pass 1) to see renamed files correctly.
+//
+// Excludes BLOCKLIST_FILENAME (_blocklist.json): that sidecar is
+// {urls:[...]} metadata (scripts/lib/poller-blocklist.js), not a review, so
+// it has neither outletId/outlet nor criticName. Without this guard,
+// normalizeOutletCanonical(undefined) returns the literal string 'unknown'
+// (never falsy), so the `!jsonOutlet` short-circuit below never fires for
+// it; fileOutlet becomes the whole filename ('_blocklist.json', since there's
+// no '--' to split on), the two never match, and the file gets renamed to
+// unknown--unknown.json — exactly the BRO-1011 regression (midnight-at-the
+// -never-get-west-end-2026 / trainspotting-the-musical-west-end-2026,
+// 2026-08-22): a "Rebuild Reviews (Fast)" run silently undid a prior manual
+// fix that had restored the correct _blocklist.json filename.
 {
   let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
-    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== BLOCKLIST_FILENAME)) {
       try {
         const filePath = path.join(sDir, f);
         if (!fs.existsSync(filePath)) continue; // File may have been renamed by Pass 1
