@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-08-22T22:37:32.359Z",
+  "updatedAt": "2026-08-22T22:42:32.478Z",
   "processed": 100,
-  "failed": 1420,
-  "successRate": "6.6%",
+  "failed": 1430,
+  "successRate": "6.5%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-22T12:59:40.974Z",
-      "event": "bb-session",
-      "session": "3adefcba",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
-    },
-    {
-      "t": "2026-08-22T12:59:48.237Z",
-      "event": "bb-session",
-      "session": "d58307e9",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
-    },
     {
       "t": "2026-08-22T16:14:39.476Z",
       "event": "bb-session",
@@ -126,6 +114,17 @@
     },
     {
       "t": "2026-08-22T22:37:21.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T22:38:50.642Z",
+      "event": "bb-session",
+      "session": "32b5cfaf",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-22T22:38:51.066Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
