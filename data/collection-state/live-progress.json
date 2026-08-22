@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-22T03:59:27.023Z",
-  "processed": 5,
-  "failed": 21,
-  "successRate": "19.2%",
+  "updatedAt": "2026-08-22T04:01:06.990Z",
+  "processed": 6,
+  "failed": 30,
+  "successRate": "16.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-08-22T03:53:51.883Z",
@@ -48,6 +48,39 @@
       "t": "2026-08-22T03:55:14.805Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T03:59:29.975Z",
+      "event": "bb-session",
+      "session": "9d5b88e0",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-22T03:59:30.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-22T03:59:31.332Z",
+      "event": "bb-session",
+      "session": "30ec85c3",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-22T03:59:32.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T03:59:48.790Z",
+      "event": "bb-session",
+      "session": "db03019f",
+      "url": "https://www.talkinbroadway.com/page/ob/08_12_26.html"
+    },
+    {
+      "t": "2026-08-22T03:59:49.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
