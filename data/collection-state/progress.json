@@ -485,7 +485,17 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -573,7 +583,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/scorebig--unknown.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -709,6 +719,29 @@
       "event": "bb-session",
       "session": "4e234047",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-22T12:57:13.103Z",
+      "event": "bb-session",
+      "session": "9609a0d3",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-22T12:57:13.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T12:59:40.974Z",
+      "event": "bb-session",
+      "session": "3adefcba",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-22T12:59:48.237Z",
+      "event": "bb-session",
+      "session": "d58307e9",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
