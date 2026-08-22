@@ -37,7 +37,10 @@
     "hungry-women-off-broadway-2026/melissamaney--unknown.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
-    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
@@ -217,7 +220,14 @@
     "heathers-the-musical-off-west-end-2026/show-score--unknown.json",
     "heathers-the-musical-off-west-end-2026/times-uk--dominic-maxwell.json",
     "heathers-the-musical-off-west-end-2026/west-end-best-friend--unknown.json",
-    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-jonathan-larson-project-off-west-end-2026/vulture--jackson-mchenry.json",
+    "the-jonathan-larson-project-off-west-end-2026/exeunt-magazine--lane-williamson.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/nytimes--charles-isherwood.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -243,14 +253,18 @@
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "death-note-the-musical-west-end-2026/times-uk--kate-maltby.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -276,7 +290,7 @@
     ]
   },
   "startTime": "2026-08-21T23:55:52.627Z",
-  "lastProcessed": "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
   "log": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -343,6 +357,17 @@
     },
     {
       "t": "2026-08-22T00:52:10.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-22T00:59:40.877Z",
+      "event": "bb-session",
+      "session": "431030ec",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-jonathan-larson-proje"
+    },
+    {
+      "t": "2026-08-22T00:59:41.712Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
