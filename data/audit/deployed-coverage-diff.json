@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-21T23:17:35.051Z",
+  "generatedAt": "2026-08-22T12:13:55.251Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 150,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 149,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "title": "How the Other Half Loves",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.29 vs local 77.37 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23
+    }
+  ]
 }

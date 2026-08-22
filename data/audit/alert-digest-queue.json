@@ -88,17 +88,6 @@
     "queuedAt": "2026-08-20T09:23:15.268Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 78.1% (381/488)\noff-broadway: 45.4% (148/326)\nwest-end: 71.3% (398/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (163h)\nA Midsummer Night's Dream - Globe — telegraph (163h)\nA Midsummer Night's Dream - Globe — thestage (163h)\nA Midsummer Night's Dream - Globe — times-uk (163h)\nA Midsummer Night's Dream — financialtimes (163h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (163h)\n& Juliet — nydailynews (163h)\nThe Book of Mormon — usatoday (163h)\nBuena Vista Social Club — broadwaynews (163h)\nBuena Vista Social Club — nydailynews (163h)\n… 26 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-21T04:40:38.771Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-08-21T09:16:39.483773+00:00,2026-08-21T09:16:54.734718+00:00,2026-08-21T09:16:55.193718+00:00,2026-08-21T09:16:55.655401+00:00",
     "title": "Feedback: 4 submission(s), all handled automatically",
     "description": "4 messages from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-3\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-2\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-1\"\n\nTest Show — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"E2E verification for BRO-580 - safe to archive\"",
@@ -163,5 +152,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-22T11:18:37.988Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.9% (380/488)\noff-broadway: 45.6% (149/327)\nwest-end: 71.5% (399/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (194h)\nA Midsummer Night's Dream - Globe — telegraph (194h)\nA Midsummer Night's Dream - Globe — thestage (194h)\nA Midsummer Night's Dream - Globe — times-uk (194h)\nA Midsummer Night's Dream — financialtimes (194h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (194h)\n& Juliet — nydailynews (194h)\nThe Book of Mormon — usatoday (194h)\nBuena Vista Social Club — broadwaynews (194h)\nBuena Vista Social Club — nydailynews (194h)\n… 26 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-22T12:13:51.195Z"
   }
 ]
