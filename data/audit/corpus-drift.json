@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-22T06:24:30.906Z",
+    "generatedAt": "2026-08-22T07:07:20.206Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -45,7 +45,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-regex-patterns] Scanned 22239 substantial reviews (tier=complete/truncated/excerpt, length>=500).\n[audit-regex-patterns] Threshold: 5 hits per pattern (per-pattern allowlist overrides possible).\n\nPattern family            Patterns  Max hits  Over threshold\n------------------------  --------  --------  --------------\nAD_BLOCKER_PATTERNS              8        11               0\nPAYWALL_PATTERNS                16        29               0\nLEGAL_PAGE_PATTERNS              7       655               0\nCOOKIE_CONSENT_PATTERNS          7        51               0\nERROR_PAGE_PATTERNS             12         1               0\nSTRONG_ERROR_PAGE_PATTERNS         4         1               0\nSTRONG_CHROME_DUMP_PATTERNS         9         2               0\nNEWSLETTER_PATTERNS              8       158               0\nNAVIGATION_PATTERNS             11       849               0\nWRONG_ARTICLE_PATTERNS           9        27               0\nHORROR_FILM_PATTERNS             7       126               0\n\n✅ All patterns under threshold."
+      "detail": "[audit-regex-patterns] Scanned 22240 substantial reviews (tier=complete/truncated/excerpt, length>=500).\n[audit-regex-patterns] Threshold: 5 hits per pattern (per-pattern allowlist overrides possible).\n\nPattern family            Patterns  Max hits  Over threshold\n------------------------  --------  --------  --------------\nAD_BLOCKER_PATTERNS              8        11               0\nPAYWALL_PATTERNS                16        29               0\nLEGAL_PAGE_PATTERNS              7       655               0\nCOOKIE_CONSENT_PATTERNS          7        51               0\nERROR_PAGE_PATTERNS             12         1               0\nSTRONG_ERROR_PAGE_PATTERNS         4         1               0\nSTRONG_CHROME_DUMP_PATTERNS         9         2               0\nNEWSLETTER_PATTERNS              8       158               0\nNAVIGATION_PATTERNS             11       849               0\nWRONG_ARTICLE_PATTERNS           9        27               0\nHORROR_FILM_PATTERNS             7       126               0\n\n✅ All patterns under threshold."
     },
     {
       "name": "cross-show-url",

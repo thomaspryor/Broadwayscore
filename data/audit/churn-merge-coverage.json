@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-22T06:24:09.261Z",
+    "generatedAt": "2026-08-22T07:07:02.584Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -30,15 +30,15 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 60
+      "churn": 58
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 60
+      "churn": 58
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 60
+      "churn": 58
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -46,7 +46,7 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 43
+      "churn": 42
     },
     {
       "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
@@ -68,17 +68,17 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 868,
+      "churn": 909,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 845,
+      "churn": 885,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 378,
+      "churn": 374,
       "mergeAttr": "ours"
     },
     {
@@ -88,47 +88,47 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 354,
+      "churn": 353,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 195,
+      "churn": 191,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 100,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 100,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 99,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 81,
+      "churn": 83,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 68,
+      "churn": 66,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 60,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 60,
+      "churn": 58,
       "mergeAttr": "ours"
     }
   ]
