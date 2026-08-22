@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-22T00:49:51.966Z",
-  "processed": 27,
-  "failed": 129,
-  "successRate": "17.3%",
+  "updatedAt": "2026-08-22T00:53:44.131Z",
+  "processed": 31,
+  "failed": 135,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-08-21T23:56:58.374Z",
@@ -71,6 +71,17 @@
       "event": "bb-session",
       "session": "13b64072",
       "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-"
+    },
+    {
+      "t": "2026-08-22T00:52:09.459Z",
+      "event": "bb-session",
+      "session": "3674942a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
+    },
+    {
+      "t": "2026-08-22T00:52:10.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
