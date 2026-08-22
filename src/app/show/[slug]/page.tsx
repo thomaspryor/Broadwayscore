@@ -534,7 +534,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
                 const scoreBox = (
                   <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
-                    <span className="text-2xl sm:text-4xl font-extrabold">
+                    <span className="text-3xl font-extrabold">
                       {showTBD ? 'TBD' : roundedScore}
                     </span>
                   </div>
