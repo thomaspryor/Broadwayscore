@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-21T20:54:33.183Z",
+  "runDate": "2026-08-21T23:59:28.324Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 4,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "16.7%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -27,16 +27,16 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 3,
@@ -45,8 +45,8 @@
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.8,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -54,6 +54,7 @@
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
@@ -75,13 +76,6 @@
     "theatremonkey": {
       "count": 1,
       "domain": "theatremonkey.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Stage": {
-      "count": 1,
-      "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
