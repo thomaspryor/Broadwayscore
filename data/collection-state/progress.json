@@ -12,7 +12,8 @@
     "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
-    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+    "cats-west-end-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
@@ -101,7 +102,16 @@
     "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
-    "cats-west-end-2026/newyorker--emily-nussbaum.json"
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "cats-west-end-2026/nyt-theater--unknown.json",
+    "cats-west-end-2026/nytg--kyle-turner.json",
+    "cats-west-end-2026/variety--alison-herman.json",
+    "cats-west-end-2026/variety--frank-rizzo.json",
+    "cats-west-end-2026/vulture--jackson-mchenry.json",
+    "cats-west-end-2026/deadline--greg-evans.json",
+    "cats-west-end-2026/deadline--liz-shackleton.json",
+    "cats-west-end-2026/ew--shania-russell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -117,7 +127,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
+      "cats-west-end-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -133,7 +145,7 @@
     ]
   },
   "startTime": "2026-08-22T03:21:06.118Z",
-  "lastProcessed": "cats-west-end-2026/newyorker--emily-nussbaum.json",
+  "lastProcessed": "cats-west-end-2026/ew--shania-russell.json",
   "log": [
     {
       "t": "2026-08-22T03:53:51.883Z",
@@ -247,6 +259,17 @@
       "t": "2026-08-22T05:20:00.994Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T05:26:07.695Z",
+      "event": "bb-session",
+      "session": "d260b68d",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-22T05:26:08.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

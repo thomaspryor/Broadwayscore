@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-08-22T05:25:26.553Z",
-  "processed": 13,
-  "failed": 87,
-  "successRate": "13.0%",
+  "updatedAt": "2026-08-22T05:26:28.311Z",
+  "processed": 14,
+  "failed": 96,
+  "successRate": "12.7%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-22T03:53:51.883Z",
-      "event": "bb-session",
-      "session": "fd4aafd1",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-22T03:54:11.947Z",
-      "event": "bb-session",
-      "session": "1d9dcf76",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
     {
       "t": "2026-08-22T03:54:40.036Z",
       "event": "bb-session",
@@ -127,6 +115,17 @@
       "t": "2026-08-22T05:20:00.994Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T05:26:07.695Z",
+      "event": "bb-session",
+      "session": "d260b68d",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-22T05:26:08.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
