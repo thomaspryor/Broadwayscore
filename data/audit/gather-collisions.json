@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-17T05:15:17.321Z",
-    "showId": "dog-man-the-musical-west-end-2026",
-    "newFile": "timeout-london--unknown.json",
-    "ok": false,
-    "file": "timeout-london--andrzej-lukowski.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225",
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": true,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2023-12-17",
-      "incomingUrl": "https://www.timeout.com/london/theatre/the-truth-review",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-08-17T05:16:54.468Z",
-    "showId": "loves-labours-lost-globe-west-end-2026",
-    "newFile": "times-uk--unknown.json",
-    "ok": false,
-    "file": "times-uk--allan-radcliffe.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.thetimes.com/travel/destinations/uk-travel/scotland-travel/glasgow/loves-labours-lost-at-botanic-gardens-glasgow-h7k3n36qfjg",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2015-06-30",
-      "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-bridgertons-luke-thompson-heads-frothy-hit-r3nrxxtd9",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-17T05:16:54.524Z",
     "showId": "loves-labours-lost-globe-west-end-2026",
     "newFile": "times-uk--unknown.json",
@@ -9473,6 +9435,40 @@
       "existingPublishDate": null,
       "incomingUrl": "https://www.theguardian.com/stage/2024/dec/01/twelfth-night-review-orange-tree-theatre",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-22T03:41:18.523Z",
+    "showId": "disruption-off-broadway-2026",
+    "newFile": "broadwayworld--cindy-marcolina.json",
+    "ok": false,
+    "file": "broadwayworld--cindy-marcolina.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803",
+      "existingFlags": {
+        "wrongProduction": false,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": true
+      },
+      "existingPublishDate": "2026-08-03",
+      "incomingUrl": "https://www.broadwayworld.com/westend/article/Review-DISRUPTION-Park-Theatre-20230714",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-22T03:47:44.341Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
     }
   }
 ]
