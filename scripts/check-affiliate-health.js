@@ -57,6 +57,31 @@ const REPO_ROOT = path.join(__dirname, '..');
 const SNAPSHOT_PATH = path.join(REPO_ROOT, 'data', 'audit', 'affiliate-health.json');
 const LOOKBACK_DAYS = 28;
 
+// affiliate-stats.js's default provider timeout (8s) is sized for Vercel's
+// 10s serverless route cap — this monitor runs as a GitHub Actions cron step
+// with a 5-minute budget instead, so borrowing that ceiling turns an ordinary
+// slow query into a false "provider down" page (2026-08-22 incident: PostHog's
+// 28-day HogQL aggregation took >8s once while every other check passed).
+const MONITOR_FETCH_TIMEOUT_MS = 25000;
+const MONITOR_RETRY_DELAY_MS = 2000;
+
+function isTransientFetchError(err) {
+  return err && (err.name === 'AbortError' || /aborted/i.test(err.message || ''));
+}
+
+// One retry, only for the timeout/abort class of failure — an auth or HTTP
+// error is a real provider fault and retrying it immediately just burns the
+// remaining budget for no gain.
+async function fetchWithOneRetry(fn) {
+  try {
+    return await fn();
+  } catch (err) {
+    if (!isTransientFetchError(err)) throw err;
+    await new Promise((resolve) => setTimeout(resolve, MONITOR_RETRY_DELAY_MS));
+    return fn();
+  }
+}
+
 // Shadow burn-in ends 2026-08-17 (14 days from ship). Extend by setting
 // AFFILIATE_MONITOR_SHADOW=1; force-live earlier with AFFILIATE_MONITOR_SHADOW=0.
 const SHADOW_UNTIL = '2026-08-17';
@@ -121,11 +146,12 @@ async function loadData(args) {
     return { impactDaily: fx.impactDaily || [], posthogDaily: fx.posthogDaily || [], actions: fx.actions || [], errors: [] };
   }
   const { fetchImpactDaily, fetchImpactActionsWindow, fetchPosthogDailyClicks } = require('./lib/affiliate-stats');
+  const fetchOpts = { timeoutMs: MONITOR_FETCH_TIMEOUT_MS };
   const errors = [];
   const [impactDaily, posthogDaily, actions] = await Promise.all([
-    fetchImpactDaily(LOOKBACK_DAYS).catch((err) => { errors.push({ provider: 'impact', message: err.message }); return null; }),
-    fetchPosthogDailyClicks(LOOKBACK_DAYS).catch((err) => { errors.push({ provider: 'posthog', message: err.message }); return null; }),
-    fetchImpactActionsWindow(14).catch((err) => { errors.push({ provider: 'impact-actions', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchImpactDaily(LOOKBACK_DAYS, fetchOpts)).catch((err) => { errors.push({ provider: 'impact', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchPosthogDailyClicks(LOOKBACK_DAYS, fetchOpts)).catch((err) => { errors.push({ provider: 'posthog', message: err.message }); return null; }),
+    fetchWithOneRetry(() => fetchImpactActionsWindow(14, fetchOpts)).catch((err) => { errors.push({ provider: 'impact-actions', message: err.message }); return null; }),
   ]);
   return { impactDaily: impactDaily || [], posthogDaily: posthogDaily || [], actions: actions || [], errors };
 }
@@ -364,4 +390,12 @@ if (require.main === module) {
   );
 }
 
-module.exports = { runChecks, isShadow, SHADOW_UNTIL, LOOKBACK_DAYS };
+module.exports = {
+  runChecks,
+  isShadow,
+  SHADOW_UNTIL,
+  LOOKBACK_DAYS,
+  isTransientFetchError,
+  fetchWithOneRetry,
+  MONITOR_FETCH_TIMEOUT_MS,
+};
