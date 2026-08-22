@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-08-22T01:09:14.151Z",
-  "processed": 53,
-  "failed": 253,
-  "successRate": "17.3%",
+  "updatedAt": "2026-08-22T01:22:31.700Z",
+  "processed": 55,
+  "failed": 261,
+  "successRate": "17.4%",
   "tierBreakdown": {
     "playwright": 33,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 8,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 9
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-08-21T23:56:58.374Z",
-      "event": "bb-session",
-      "session": "4a40a528",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-21T23:57:06.179Z",
-      "event": "bb-session",
-      "session": "24864b80",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
     {
       "t": "2026-08-22T00:34:16.473Z",
       "event": "bb-session",
@@ -115,6 +103,28 @@
       "t": "2026-08-22T01:06:33.338Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-22T01:21:53.713Z",
+      "event": "bb-session",
+      "session": "528da65c",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T01:21:54.160Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T01:22:10.402Z",
+      "event": "bb-session",
+      "session": "f314da4e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T01:22:10.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
