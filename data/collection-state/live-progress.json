@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-23T10:01:41.990Z",
-  "processed": 2,
-  "failed": 8,
+  "updatedAt": "2026-08-23T10:04:33.814Z",
+  "processed": 4,
+  "failed": 16,
   "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-23T10:00:53.395Z",
@@ -23,6 +23,28 @@
     },
     {
       "t": "2026-08-23T10:00:54.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-23T10:03:07.257Z",
+      "event": "bb-session",
+      "session": "a84d23de",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-23T10:03:07.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-23T10:03:40.456Z",
+      "event": "bb-session",
+      "session": "a143719d",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-23T10:03:40.993Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

@@ -1,7 +1,9 @@
 {
   "processed": [
     "spellbound-off-broadway-2026/amny--alexa-lutter.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -11,15 +13,27 @@
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
     "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json"
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "spellbound-off-broadway-2026/amny--alexa-lutter.json"
+      "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
@@ -29,7 +43,7 @@
     "archive": []
   },
   "startTime": "2026-08-23T09:58:42.443Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
   "log": [
     {
       "t": "2026-08-23T10:00:53.395Z",
@@ -39,6 +53,28 @@
     },
     {
       "t": "2026-08-23T10:00:54.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-23T10:03:07.257Z",
+      "event": "bb-session",
+      "session": "a84d23de",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-23T10:03:07.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-23T10:03:40.456Z",
+      "event": "bb-session",
+      "session": "a143719d",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-23T10:03:40.993Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
