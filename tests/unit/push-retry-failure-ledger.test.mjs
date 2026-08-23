@@ -205,9 +205,16 @@ test('CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, bran
     // spawns the child process and returns control immediately, so all
     // WRITER_COUNT processes are genuinely running in parallel once
     // Promise.all below fires them all in the same synchronous pass.
+    // timeout: 15000 matches push-with-retry.sh's actual `_timeout 15` outer
+    // cap exactly (ship-check finding: an earlier version of this test used
+    // 30000ms here, which validated the CLI's retry logic under a MORE
+    // GENEROUS window than the real production caller ever grants — a false
+    // sense of safety, since the thing that matters is "does this survive
+    // contention within the budget push-with-retry.sh actually gives it,"
+    // not "does it eventually succeed with no time limit."
     const writers = Array.from({ length: WRITER_COUNT }, (_, i) =>
       execFileAsync('node', [RECORD_SCRIPT, `--reason=concurrent-writer-${i}`, '--branch=main'], {
-        cwd: cloneDir, encoding: 'utf8', env: { ...process.env, ...GIT_ENV }, timeout: 30000,
+        cwd: cloneDir, encoding: 'utf8', env: { ...process.env, ...GIT_ENV }, timeout: 15000,
       })
     );
     await Promise.all(writers);

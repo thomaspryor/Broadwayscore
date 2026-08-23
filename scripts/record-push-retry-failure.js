@@ -22,28 +22,38 @@
  * genuinely different, unrelated data stream) via the now-generalized
  * scripts/lib/push-ledger-store.js.
  *
- * CALLING CONTRACT (this is what makes it safe to call from inside
- * push-with-retry.sh's retry loop, not just at final exhaustion — plan-review
- * finding: record_push_failure() fires at MULTIPLE points inside the retry
- * loop under real contention, not only once at the end. A synchronous,
- * awaited call here would inject blocking latency into the exact loop this
- * telemetry exists to observe, worsening the contention it measures):
- *   - The caller (push-with-retry.sh) MUST invoke this in the BACKGROUND
- *     (`node ... &`, disowned) and MUST NOT wait on it. This script does not
- *     assume that — it is safe to run synchronously too — but it is written
- *     assuming its own wall-clock is invisible to the caller.
- *   - Bounded to 8 CAS attempts with FULL-JITTER backoff (0..min(cap,
- *     base*2^i)ms), roughly double record-push-ledger.js's 4-attempt/linear
- *     budget. Deliberately more aggressive than the success-ledger's
- *     recorder: push successes are naturally staggered (this repo's own
- *     measured 31s median inter-commit gap), but FAILURES are correlated —
- *     a real contention burst means many of ~153 workflows hit this
- *     recorder within the same narrow window, all racing the same CAS
- *     lease. A concurrent-writer stress test (tests/unit/push-retry-
- *     failure-ledger.test.mjs) simulating 10 simultaneous writers caught a
- *     dropped entry at the original 4-attempt/linear-backoff budget before
- *     this was tuned up — full jitter (not linear) matters more than raw
- *     attempt count for de-correlating simultaneous retriers.
+ * CALLING CONTRACT (revised after ship-check adversarial review found the
+ * first version of this contract self-contradictory — it claimed "caller
+ * MUST run this in the background" while push-with-retry.sh actually calls
+ * it SYNCHRONOUSLY under a hard timeout; a future editor trusting this
+ * comment over the real caller would have reintroduced the background+
+ * disown approach that was deliberately rejected — see push-with-retry.sh's
+ * record_push_failure() for why: a GitHub Actions step's process group can
+ * be reaped moments after the step's own script exits, so a truly
+ * backgrounded child has no completion guarantee on an ephemeral runner):
+ *   - The caller (push-with-retry.sh) invokes this SYNCHRONOUSLY, wrapped in
+ *     its own `_timeout 15` (15s hard cap), gated to fire at most ONCE per
+ *     push-with-retry.sh invocation regardless of how many times
+ *     record_push_failure() itself is called inside the retry loop. This
+ *     script's own retry budget below is tuned to fit INSIDE that 15s
+ *     ceiling with margin, not independently of it — the two numbers must
+ *     be read together; changing one without the other reopens the
+ *     mismatch ship-check caught.
+ *   - Bounded to 6 CAS attempts with FULL-JITTER backoff (0..min(1800,
+ *     150*2^i)ms) — worst-case cumulative sleep ≈150+300+600+1200+1800 ≈
+ *     4050ms across 5 backoff gaps, leaving ~10s of the 15s ceiling for the
+ *     attempts' actual git-plumbing time (each attempt is normal-case
+ *     sub-second; the 15/25s per-git-call timeouts in push-ledger-store.js
+ *     are outage floors, not the expected case). FAILURES are correlated
+ *     (unlike push-ledger's naturally-staggered successes) — a real
+ *     contention burst means many of ~153 workflows hit this recorder
+ *     within the same narrow window, all racing the same CAS lease. A
+ *     concurrent-writer stress test (tests/unit/push-retry-failure-
+ *     ledger.test.mjs) simulating 10 simultaneous writers caught a dropped
+ *     entry at the ORIGINAL 4-attempt/linear-backoff budget; full jitter
+ *     (not linear) is what de-correlates simultaneous retriers, not raw
+ *     attempt count — re-verified passing at these tighter 6-attempt/1800ms
+ *     numbers before shipping.
  *   - Always exits 0 — fail-open, best-effort telemetry, never the payload.
  *
  * Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N
@@ -60,7 +70,7 @@ const { buildFailureEntry } = require('./lib/push-ledger');
 const { readLedger, writeLedger } = require('./lib/push-ledger-store');
 const { hasHelpFlag } = require('./lib/cli-help');
 
-const MAX_ATTEMPTS = 8;
+const MAX_ATTEMPTS = 6;
 const FAILURE_BRANCH = 'push-retry-failures';
 const FAILURE_FILE = 'failures.jsonl';
 // Same canonical-repo gate as record-push-ledger.js, same reason: several
@@ -103,8 +113,11 @@ function sleep(ms) {
 // linear backoff (1000*attempt), which keeps every writer's retry schedule
 // in near-lockstep and does little to break ties under a synchronized burst
 // (the exact failure the concurrent-writer stress test below caught before
-// this was tuned).
-function jitterMs(attempt, base = 200, cap = 4000) {
+// this was tuned). base/cap sized to fit MAX_ATTEMPTS' cumulative worst-case
+// sleep inside push-with-retry.sh's 15s outer `_timeout` — see this file's
+// header CALLING CONTRACT for the arithmetic; the two numbers are read
+// together, not independently.
+function jitterMs(attempt, base = 150, cap = 1800) {
   return Math.floor(Math.random() * Math.min(cap, base * 2 ** attempt));
 }
 

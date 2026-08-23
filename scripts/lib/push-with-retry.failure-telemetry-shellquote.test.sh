@@ -16,8 +16,13 @@
 # interpolation pattern (not push-with-retry.sh's full logic — that needs a
 # real git-conflict harness, covered by the other integration tests in this
 # directory) into a minimal standalone script, so it can be run directly
-# against reason strings containing '(', ')', ':', and '$' without needing
-# to reproduce a live git conflict to reach one of the 6 real call sites.
+# against the exact reason-string SHAPES the script's 6 real call sites
+# produce at runtime — without needing to reproduce a live git conflict to
+# reach one of them. Note: "noop-rebase(${RESOLUTION_PATH:-unknown})"'s `:`
+# and `$` are bash parameter-expansion syntax resolved BEFORE the value
+# reaches $reason (e.g. it becomes the literal string "noop-rebase(rebase)")
+# — this test covers the '(' / ')' that DO survive into the runtime value,
+# not a literal ':' or '$', since no real call site produces one.
 #
 # Run: bash scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh
 set -uo pipefail
