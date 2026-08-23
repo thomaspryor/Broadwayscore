@@ -199,6 +199,46 @@ test('status-line gate still blocks when the real last line is unrelated trailin
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('regression (ship-check adversarial review 2026-08-23): empty final message + substantial work → BLOCKED, not silently skipped', skipNoRepoHook, () => {
+  const dir = makeTmpDir('status-block-empty-msg');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  // A turn whose last action is a tool call with no closing text has
+  // last_assistant_message == '' — this must NOT be treated as "nothing to
+  // check" (that would silently defeat the gate on exactly the turn shape
+  // most likely to end without a wrap-up in practice).
+  const r = runHook(transcript, '');
+  assertBlocked(r, 'empty final message after substantial work must still require a status line');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: "DECISION NEEDED" mentioned in prose (not the template header) does not falsely trip FALSESAFE', skipNoRepoHook, () => {
+  const dir = makeTmpDir('status-allow-decision-prose');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const msg = [
+    "There's no DECISION NEEDED here — I already decided retries stay at 3 and pushed it.",
+    '',
+    'SAFE TO EXIT — decided, pushed, verified.',
+  ].join('\n');
+  const r = runHook(transcript, msg);
+  assertAllowed(r, 'a bare substring mention of the phrase (not the template header) must not trip FALSESAFE');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: PR gate strips fenced quotes too — a quoted example blocker phrase does not satisfy the check', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pr-block-fenced-quote-gaming');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const msg = [
+    'Opened PR #42. For reference, here is what a blocked run looks like:',
+    '```',
+    'CI is red on the typecheck job',
+    '```',
+    "That's just an example from an old run, not this one.",
+  ].join('\n');
+  const r = runHook(transcript, msg);
+  assertBlocked(r, 'a blocker phrase inside a fenced quote must not satisfy the PR follow-through gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('CRITICAL false-positive guard: ordinary conversational turn, no tool calls at all → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-chat');
   const transcript = writeTranscript(dir, []); // no tool calls whatsoever

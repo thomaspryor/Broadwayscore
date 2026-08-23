@@ -213,8 +213,13 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
                     if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
                         did_substantial_work = True
                         break
-        if did_substantial_work and _last_msg and 'NO-VERIFY:' not in _last_msg:
-            _stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
+        # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
+        # adversarial review, task a7d9c07f) — a turn whose last action is a tool call
+        # with no closing text has _last_msg == '' and genuinely has no status line.
+        # Treating empty as "skip" would silently defeat the whole gate on exactly the
+        # turn shape (tool-call-only ending) most likely to skip a wrap-up in practice.
+        if did_substantial_work and 'NO-VERIFY:' not in (_last_msg or ''):
+            _stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
             _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
             # wrap-up.md's own SESSION STATUS block puts a decorative divider
             # rule AFTER the status line ("must be the last content line (the
@@ -226,7 +231,11 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
             _last_line = _content_lines[-1] if _content_lines else ''
             _has_status_line = bool(re.match(r'^(NOT )?SAFE TO EXIT\b', _last_line))
             _claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _last_line))
-            _has_decision_needed = 'DECISION NEEDED' in _stripped
+            # Line-anchored + colon-suffixed to match the canonical template
+            # token exactly (wrap-up.md's "DECISION NEEDED:" block header) —
+            # a bare substring match wrongly tripped on prose like "there's no
+            # DECISION NEEDED here" (ship-check adversarial review).
+            _has_decision_needed = bool(re.search(r'^DECISION NEEDED:', _stripped, re.MULTILINE))
             if not _has_status_line:
                 print("NOSTATUSLINE")
                 sys.exit(0)
@@ -260,11 +269,17 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             elif _name == 'mcp__github__merge_pull_request':
                 _merged_pr = True
         if _opened_pr and not _merged_pr and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            # Strip fences here too (ship-check adversarial review found this
+            # asymmetric with the status gate above) — a quoted example
+            # containing blocker-shaped text must not satisfy the check.
+            # Bare "blocked" dropped in favor of "blocked on" — too generic on
+            # its own (matched unrelated "the cron is blocked on rate limits").
+            _pr_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
             _blocker_re = re.compile(
-                r'\b(CI(\s+is)?\s+red|merge conflict|blocked|DECISION NEEDED|NOT SAFE TO EXIT|draft (by design|pending))\b',
+                r'\b(CI(\s+is)?\s+red|merge conflict|blocked on|DECISION NEEDED:|NOT SAFE TO EXIT|draft (by design|pending))\b',
                 re.IGNORECASE,
             )
-            if not _blocker_re.search(_last_msg):
+            if not _blocker_re.search(_pr_stripped):
                 print("PRUNMERGED")
                 sys.exit(0)
     except Exception:
