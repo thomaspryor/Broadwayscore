@@ -13,7 +13,8 @@
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+    "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -61,7 +62,16 @@
     "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
-    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -101,11 +111,12 @@
     ],
     "archiveToday": [],
     "archive": [
-      "the-winters-tale-off-broadway-2026/wsj--unknown.json"
+      "the-winters-tale-off-broadway-2026/wsj--unknown.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-08-23T09:58:42.443Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/forward--rachel-shteir.json",
   "log": [
     {
       "t": "2026-08-23T10:00:53.395Z",
@@ -159,6 +170,17 @@
     },
     {
       "t": "2026-08-23T10:21:43.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-23T10:24:45.963Z",
+      "event": "bb-session",
+      "session": "caff4bfa",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-23T10:24:46.958Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
