@@ -16,8 +16,9 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 - `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification. Bypass: `NO-VERIFY: <reason>` in final message.
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
+- `.claude/hooks/worktree-enforce.sh` — PreToolUse on `Edit|Write|NotebookEdit|Bash`; hard-blocks (exit 2) tracked-code edits (`src/`, `scripts/`, `.github/workflows/`, etc. — CLAUDE.md §1) made outside a worktree. Ported 2026-08-23 (task: cloud sessions had zero technical backstop for the worktree rule until then, PR #691) — was previously in the "does not fire in cloud" list below; if you're reading a stale copy of this doc elsewhere, this line is the correction.
 
-These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 12 other user-level hooks DO NOT fire in cloud (worktree-enforce, design-system-lint, etc.) — be extra careful with edits the local hooks would catch.
+These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 11 other user-level hooks still DO NOT fire in cloud (design-system-lint, etc.) — be extra careful with edits those local-only hooks would catch.
 
 ## Slash commands available in cloud
 
