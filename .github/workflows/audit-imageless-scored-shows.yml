@@ -20,6 +20,15 @@ on:
 
 permissions:
   contents: write
+  # Required for scripts/audit-imageless-scored-shows.js's self-heal dispatch
+  # (dispatchImageFetch() in scripts/lib/dispatch-image-fetch.js, which POSTs
+  # to the Actions API to trigger fetch-all-image-formats.yml per-show).
+  # Confirmed live (run 32618091382, 2026-08-23): every dispatch attempt this
+  # workflow made failed with "403 Resource not accessible by integration" —
+  # the default GITHUB_TOKEN's actions scope is read-only unless explicitly
+  # granted write here. Same pattern as audit-aggregator-gap.yml and 5+ other
+  # self-heal/dispatch workflows in this repo.
+  actions: write
 
 jobs:
   audit:
