@@ -1583,9 +1583,26 @@ function boxOfficeSection() {
   let grosses;
   try { grosses = JSON.parse(fs.readFileSync(path.join(repo, 'data/grosses.json'), 'utf8')); }
   catch { return null; }
-  // Grosses are keyed by SLUG, not show id. Build a slug→show map for open BW.
+  // Grosses are keyed by SLUG, not show id. Build a slug→show map for BW shows
+  // with valid this-week data. status 'open' OR 'closed' — NOT 'open' only.
+  // Mirrors src/app/box-office/page.tsx's inclusion exactly: "Include any show
+  // with thisWeek data (not just 'open' — shows that closed during the
+  // reporting week still have valid grosses for that week)". A stricter
+  // 'open'-only filter here silently drops a show that just played its final
+  // week from Top Gross/Capacity/ATP consideration even when its numbers win —
+  // Ragtime closed 2026-08-16 (final-week capacity 100%/$233 ATP, both above
+  // Hamilton's 99.8%/$201) and the newsletter still credited Hamilton with
+  // "Highest Capacity" and "Top Average Ticket Price" while linking to the
+  // /box-office page that correctly showed Ragtime ahead on both (user-flagged
+  // 2026-08-23, contradicted its own linked page).
   const slugToShow = new Map();
-  shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
+  // Intentionally NOT isBroadwayCategory(): this must match isBroadwayShow()
+  // in src/lib/data-core.ts (strict `category === 'broadway'`, no
+  // missing-category fallback) — the same predicate that decides what
+  // appears on the linked /box-office page. isBroadwayCategory() treats a
+  // missing category as Broadway too, which would let this list diverge
+  // from the page it links to again.
+  shows.forEach(s => { if ((s.status === 'open' || s.status === 'closed') && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const entries = Object.entries(grosses.shows)
     .filter(([slug, g]) => slugToShow.has(slug) && g.thisWeek && g.thisWeek.gross > 0)
     .map(([slug, g]) => ({ slug, ...g.thisWeek, show: slugToShow.get(slug) }));
@@ -1945,12 +1962,20 @@ let _londonHasGoldOpening = false;
 // equal-weight WE openings fell to shows.json insertion order — an accident.
 // NEWSLETTER_WE_LEAD=<showId> is a manual editor override (mirrors
 // NEWSLETTER_OB_LEAD): floats that show to story #1 regardless of count.
+// West End (the full-scale venue tier) always ranks ahead of Off West End
+// (the smaller-venue tier) — mirrors Broadway always ranking ahead of
+// Off-Broadway. Shared by weOpeningStories() and londonSection() so the lead
+// story, the card order, and the subject/lede (newsworthiness.mjs mirrors
+// this same tier split) can never disagree about which show is "first."
+function weTierRank(category) { return category === 'west-end' ? 0 : 1; }
+
 function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
-    .sort((a, b) => ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    .sort((a, b) => (weTierRank(a.s.category) - weTierRank(b.s.category))
+      || ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   const weLead = (process.env.NEWSLETTER_WE_LEAD || '').trim();
   if (weLead) {
     const i = ranked.findIndex(x => x.s.id === weLead);
@@ -1964,11 +1989,14 @@ function londonSection() {
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // Sort: Gold first, then by score desc. When the DISPLAYED (rounded) scores
-  // tie, rank the better-reviewed show first — more reviews is a more settled
-  // verdict — rather than letting a sub-point raw difference decide order
-  // (Sinatra 64 on 29 reviews should sit above Archduke 64 on 7).
+  // Sort: West End before Off West End (see weTierRank), then Gold first, then
+  // by score desc. When the DISPLAYED (rounded) scores tie, rank the
+  // better-reviewed show first — more reviews is a more settled verdict —
+  // rather than letting a sub-point raw difference decide order (Sinatra 64
+  // on 29 reviews should sit above Archduke 64 on 7).
   withScore.sort((a, b) => {
+    const at = weTierRank(a.s.category), bt = weTierRank(b.s.category);
+    if (at !== bt) return at - bt;
     const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
     const bg = isGoldTier(b.agg.avg, b.s.category) ? 1 : 0;
     if (ag !== bg) return bg - ag;

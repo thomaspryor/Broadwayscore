@@ -132,17 +132,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-23T05:25:15.704Z",
+      "lastSeen": "2026-08-23T17:22:00.286Z",
       "lastNotifiedAt": "2026-08-23T04:28:36.328Z",
       "notifyCount": 46,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 7,
+      "resolvedAt": "2026-08-23T20:20:15.377Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -226,23 +227,24 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-23T03:53:50.320Z",
+      "lastSeen": "2026-08-23T16:15:15.544Z",
       "lastNotifiedAt": "2026-08-23T03:53:50.320Z",
       "notifyCount": 24,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-23T03:53:50.406Z",
-      "lastNotifiedAt": "2026-08-22T12:13:51.195Z",
-      "notifyCount": 27,
+      "lastSeen": "2026-08-23T16:15:15.631Z",
+      "lastNotifiedAt": "2026-08-23T16:15:11.111Z",
+      "notifyCount": 28,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -261,10 +263,11 @@
       "disposition": "digest",
       "title": "UX walkthrough: high-priority finding(s) filed",
       "firstSeen": "2026-07-30T14:31:18.008Z",
-      "lastSeen": "2026-08-10T14:47:26.212Z",
-      "lastNotifiedAt": "2026-08-10T14:47:26.212Z",
-      "notifyCount": 4,
-      "cardId": null
+      "lastSeen": "2026-08-23T14:04:47.061Z",
+      "lastNotifiedAt": "2026-08-23T14:04:47.061Z",
+      "notifyCount": 5,
+      "cardId": null,
+      "linearIdentifier": null
     },
     "provider-spend:overspend": {
       "status": "open",
@@ -293,9 +296,9 @@
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — broadwayworld",
       "firstSeen": "2026-08-02T11:27:10.140Z",
-      "lastSeen": "2026-08-16T15:15:17.814Z",
-      "lastNotifiedAt": "2026-08-16T15:15:17.814Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-23T16:15:00.515Z",
+      "lastNotifiedAt": "2026-08-23T16:15:00.515Z",
+      "notifyCount": 4,
       "cardId": "3b7637c5-416f-81a1-aa84-eb96cbadff1c",
       "linearIdentifier": "BRO-372"
     },
@@ -370,12 +373,12 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-22T13:06:14.173Z",
+      "lastSeen": "2026-08-23T13:07:40.895Z",
       "lastNotifiedAt": "2026-08-18T13:14:46.576Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -772,16 +775,17 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-23T05:25:15.696Z",
+      "lastSeen": "2026-08-23T17:22:00.285Z",
       "lastNotifiedAt": "2026-08-23T04:28:34.982Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 2
+      "silentRefires": 7,
+      "resolvedAt": "2026-08-23T20:20:15.321Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -909,12 +913,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-23T03:53:43.348Z",
+      "lastSeen": "2026-08-23T16:15:05.963Z",
       "lastNotifiedAt": "2026-08-21T03:53:05.139Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1039,11 +1043,12 @@
       "disposition": "digest",
       "title": "New York Post (reviews collected) has stopped updating (20 days)",
       "firstSeen": "2026-08-15T13:04:25.661Z",
-      "lastSeen": "2026-08-22T13:06:14.175Z",
+      "lastSeen": "2026-08-23T13:07:40.896Z",
       "lastNotifiedAt": "2026-08-22T13:06:14.175Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "tier-skip-drift": {
       "status": "open",
@@ -1232,12 +1237,12 @@
       "disposition": "digest",
       "title": "Newsday (reviews collected) has stopped updating (9 days)",
       "firstSeen": "2026-08-18T13:14:46.580Z",
-      "lastSeen": "2026-08-22T13:06:14.176Z",
+      "lastSeen": "2026-08-23T13:07:40.897Z",
       "lastNotifiedAt": "2026-08-18T13:14:46.580Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "feedback-outcomes:2026-08-18T13:13:20.604143+00:00": {
       "status": "open",
@@ -1305,9 +1310,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-08-19T12:31:28.109Z",
-      "lastNotifiedAt": "2026-08-19T12:31:28.109Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-23T12:24:33.120Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.120Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1443,20 +1448,45 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-22T12:24:20.683Z",
+      "lastSeen": "2026-08-23T12:24:33.195Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Paranormal Activity",
       "firstSeen": "2026-08-23T02:02:50.903Z",
-      "lastSeen": "2026-08-23T02:02:50.903Z",
+      "lastSeen": "2026-08-23T13:49:11.811Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "cron-health:Enrich Off-Broadway Dates": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
+      "firstSeen": "2026-08-23T12:24:33.123Z",
+      "lastSeen": "2026-08-23T12:24:33.123Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.123Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Opening Night Checklist": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
+      "firstSeen": "2026-08-23T12:24:33.125Z",
+      "lastSeen": "2026-08-23T12:24:33.125Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.125Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

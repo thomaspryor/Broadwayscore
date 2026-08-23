@@ -121,17 +121,6 @@
     "queuedAt": "2026-08-21T23:17:19.889Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.9% (380/488)\noff-broadway: 45.6% (149/327)\nwest-end: 71.5% (399/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (194h)\nA Midsummer Night's Dream - Globe — telegraph (194h)\nA Midsummer Night's Dream - Globe — thestage (194h)\nA Midsummer Night's Dream - Globe — times-uk (194h)\nA Midsummer Night's Dream — financialtimes (194h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (194h)\n& Juliet — nydailynews (194h)\nThe Book of Mormon — usatoday (194h)\nBuena Vista Social Club — broadwaynews (194h)\nBuena Vista Social Club — nydailynews (194h)\n… 26 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-22T12:13:51.195Z"
-  },
-  {
     "conditionKey": "arm-yield:outlet:nypost",
     "title": "New York Post (reviews collected) has stopped updating (20 days)",
     "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-02, 20 days ago. It has never before gone quiet for more than 11 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 13d, from 4 productive day(s) / 4 item(s) between 2026-07-04 and 2026-08-02.)",
@@ -185,5 +174,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-23T09:16:19.349Z"
+  },
+  {
+    "conditionKey": "ux-walkthrough:high-priority",
+    "title": "UX walkthrough: high-priority finding(s) filed",
+    "description": "- [2/3] Inconsistent action icons for the same action. 'Add date' uses a calendar icon in 'desktop__watchlist_list' but a plus icon in 'mobile__watchlist_grid'.",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32643839443",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T14:04:47.061Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.6% (384/495)\noff-broadway: 45.6% (149/327)\nwest-end: 71.3% (398/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (222h)\nA Midsummer Night's Dream - Globe — telegraph (222h)\nA Midsummer Night's Dream - Globe — thestage (222h)\nA Midsummer Night's Dream - Globe — times-uk (222h)\nA Midsummer Night's Dream — financialtimes (222h)\n… 202 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (222h)\nThe Book of Mormon — usatoday (222h)\nBuena Vista Social Club — broadwaynews (222h)\nHeathers The Musical — dailybeast (222h)\nHeathers The Musical — ew (222h)\n… 11 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T16:15:11.112Z"
   }
 ]
