@@ -77,28 +77,6 @@
     "queuedAt": "2026-08-21T09:19:29.994Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/150 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nJeeves Takes Charge: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-21T22:16:57.507Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 16.7% of shows changed coverage state",
-    "description": "review-gap blast radius 16.7% (5/30 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: hershey-felder-the-piano-and-me-off-broadway-2026, im-every-woman-off-west-end-2026, masquerade-off-broadway-2025, masticate-off-broadway-2026, the-importance-of-being-oscar-off-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-21T23:17:19.889Z"
-  },
-  {
     "conditionKey": "arm-yield:outlet:nypost",
     "title": "New York Post (reviews collected) has stopped updating (20 days)",
     "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-02, 20 days ago. It has never before gone quiet for more than 11 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 13d, from 4 productive day(s) / 4 item(s) between 2026-07-04 and 2026-08-02.)",
@@ -196,5 +174,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-23T22:09:06.962Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 33.3% of shows changed coverage state",
+    "description": "review-gap blast radius 33.3% (17/51 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: burlesque-west-end-2026, disruption-off-broadway-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, isla-off-broadway-2026, jeeves-takes-charge-west-end-2026, jesus-christ-superstar-west-end-2026, les-miserables-arena-concert-spectacular-off-broadway-2026, loves-labours-lost-globe-west-end-2026, midnight-at-the-never-get-west-end-2026, paddington-the-musical-west-end-2025, pride-west-end-2026, the-devil-wears-prada-west-end-2024, the-hunger-games-on-stage-west-end-2025, the-pass-off-broadway-2026, the-rocky-horror-show-2026, trainspotting-the-musical-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T23:14:20.016Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/150 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nGame of Thrones: The Mad King: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T23:14:32.017Z"
   }
 ]

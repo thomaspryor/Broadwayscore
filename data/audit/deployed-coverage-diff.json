@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-23T16:15:15.438Z",
+  "generatedAt": "2026-08-23T23:14:32.008Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 150,
-  "clean": 150,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 149,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "title": "Game of Thrones: The Mad King",
+      "openingDate": "2026-08-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.59 vs local 85.03 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 14
+    }
+  ]
 }
