@@ -1,20 +1,42 @@
 {
-  "updatedAt": "2026-08-23T22:02:01.167Z",
+  "updatedAt": "2026-08-23T22:03:14.243Z",
   "processed": 23,
-  "failed": 896,
+  "failed": 906,
   "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-23T10:03:07.257Z",
+      "event": "bb-session",
+      "session": "a84d23de",
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
+    },
+    {
+      "t": "2026-08-23T10:03:07.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-23T10:03:40.456Z",
+      "event": "bb-session",
+      "session": "a143719d",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-23T10:03:40.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-08-23T10:21:23.672Z",
       "event": "bb-session",
@@ -105,28 +127,6 @@
       "event": "bb-session",
       "session": "8cd88698",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
-    },
-    {
-      "t": "2026-08-23T21:19:00.996Z",
-      "event": "bb-session",
-      "session": "d5605814",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-23T21:19:01.859Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-23T21:24:25.531Z",
-      "event": "bb-session",
-      "session": "ba827042",
-      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
-    },
-    {
-      "t": "2026-08-23T21:24:26.290Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
