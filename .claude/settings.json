@@ -14,6 +14,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/notion-create-block.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/worktree-enforce.sh"
           }
         ]
       },
