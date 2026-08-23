@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-23T21:16:09.753Z",
+  "updatedAt": "2026-08-23T21:19:12.957Z",
   "processed": 23,
-  "failed": 796,
+  "failed": 806,
   "successRate": "2.8%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-23T10:03:07.257Z",
-      "event": "bb-session",
-      "session": "a84d23de",
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
-    },
-    {
-      "t": "2026-08-23T10:03:07.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-23T10:03:40.456Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "event": "bb-session",
       "session": "8cd88698",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-23T21:19:00.996Z",
+      "event": "bb-session",
+      "session": "d5605814",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-23T21:19:01.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
