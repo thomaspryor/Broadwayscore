@@ -1,20 +1,43 @@
 {
-  "updatedAt": "2026-08-23T06:46:03.640Z",
+  "updatedAt": "2026-08-23T06:46:37.327Z",
   "processed": 107,
-  "failed": 2421,
+  "failed": 2431,
   "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 60,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 24
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-22T16:14:39.476Z",
+      "event": "bb-session",
+      "session": "2272864e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T16:14:40.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T20:09:41.568Z",
+      "event": "bb-session",
+      "session": "df6bc605",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-22T20:10:01.723Z",
+      "event": "bb-session",
+      "session": "3fc0cce1",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
     {
       "t": "2026-08-22T20:12:05.276Z",
       "event": "bb-session",
@@ -104,29 +127,6 @@
       "t": "2026-08-22T22:38:51.066Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-23T06:23:05.479Z",
-      "event": "bb-session",
-      "session": "f337a09a",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-23T06:23:24.627Z",
-      "event": "bb-session",
-      "session": "d852c1fd",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-23T06:25:43.156Z",
-      "event": "bb-session",
-      "session": "628d56b8",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-23T06:25:43.837Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
     }
   ]
 }
