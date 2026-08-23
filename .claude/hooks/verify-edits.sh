@@ -216,6 +216,13 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
         if did_substantial_work and _last_msg and 'NO-VERIFY:' not in _last_msg:
             _stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
             _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
+            # wrap-up.md's own SESSION STATUS block puts a decorative divider
+            # rule AFTER the status line ("must be the last content line (the
+            # closing rule is fine)") — drop trailing divider-only lines so a
+            # correctly-formatted wrap-up isn't misread as having no status line.
+            _divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+            while _content_lines and _divider_re.match(_content_lines[-1]):
+                _content_lines.pop()
             _last_line = _content_lines[-1] if _content_lines else ''
             _has_status_line = bool(re.match(r'^(NOT )?SAFE TO EXIT\b', _last_line))
             _claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _last_line))

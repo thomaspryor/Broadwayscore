@@ -153,6 +153,52 @@ test('substantial work (git push) + valid NOT SAFE TO EXIT line → ALLOWED', sk
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('regression (ship-check adversarial review 2026-08-23): canonical wrap-up.md SESSION STATUS block, WITH its trailing divider rule after SAFE TO EXIT, must pass', skipNoRepoHook, () => {
+  const dir = makeTmpDir('status-allow-canonical-divider');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  // Exact shape wrap-up.md specifies: a divider line, DONE/CONTINUING/NEEDS YOU
+  // rows, the SAFE TO EXIT line, then ANOTHER divider line below it. Before the
+  // fix, checking the literal last non-empty line saw the divider, not the
+  // status line, and wrongly BLOCKED every correctly-formatted wrap-up.
+  const msg = [
+    '──────────────────────────────────────────',
+    'DONE        Pushed and verified.',
+    'CONTINUING  none',
+    'NEEDS YOU   nothing',
+    'SAFE TO EXIT — pushed, verified, nothing pending.',
+    '──────────────────────────────────────────',
+  ].join('\n');
+  const r = runHook(transcript, msg);
+  assertAllowed(r, 'canonical wrap-up.md block with trailing divider must not be misread as missing a status line');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: trailing divider after NOT SAFE TO EXIT also passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('status-allow-canonical-divider-notsafe');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const msg = [
+    '──────────────────────────────────────────',
+    'NOT SAFE TO EXIT — deploy still running.',
+    '──────────────────────────────────────────',
+  ].join('\n');
+  const r = runHook(transcript, msg);
+  assertAllowed(r, 'canonical NOT SAFE TO EXIT block with trailing divider must pass');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('status-line gate still blocks when the real last line is unrelated trailing prose (no divider)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('status-block-trailing-prose');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const msg = [
+    'SAFE TO EXIT — pushed and verified.',
+    '',
+    'Let me know if you want anything else!',
+  ].join('\n');
+  const r = runHook(transcript, msg);
+  assertBlocked(r, 'a real trailing sentence after the status line is not a divider and must still block');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('CRITICAL false-positive guard: ordinary conversational turn, no tool calls at all → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-chat');
   const transcript = writeTranscript(dir, []); // no tool calls whatsoever
