@@ -106,8 +106,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entry for this task, not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries, not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
-  assert.equal(publicSafe.length, 1);
-  assert.equal(publicSafe[0].file, 'audit/health-digest-snapshot.json');
+  assert.deepEqual(
+    publicSafe.map((e) => e.file).sort(),
+    ['audit/health-digest-snapshot.json', 'audit/imageless-scored-shows.json'].sort()
+  );
 });
