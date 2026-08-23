@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-23T01:53:36.828Z",
+  "timestamp": "2026-08-23T05:01:10.586Z",
   "stats": {
-    "totalReviews": 42338,
+    "totalReviews": 42340,
     "alreadyFlagged": 18135,
     "dateGuardCatches": 177,
     "directorMismatch": 992,
-    "tvFilmSignals": 1217,
+    "tvFilmSignals": 1219,
     "londonSignals": 927,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3560
+    "noPublishDate": 3559
   },
   "findings": [
     {
@@ -9320,6 +9320,32 @@
       "score": 79,
       "publishDate": "2026-08-09",
       "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "latimes--unknown.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "nytimes--precious-adesina.json",
+      "publishDate": "2026-07-27",
+      "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

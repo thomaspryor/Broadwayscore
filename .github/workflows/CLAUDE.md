@@ -100,6 +100,8 @@ Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellchec
 
 **Composite-action steps don't support `timeout-minutes`** (task #1814/#1815, 2026-08-19) — that key is only valid on job-level steps in a workflow file. Adding it to a step inside `.github/actions/*/action.yml` is a silent no-op (`update-show-status.yml`'s job kept timing out from a hung `setup-playwright` install because of exactly this). To bound a composite-action step, wrap the command in the shell: `timeout <seconds> "$cmd" || { echo "::error::..."; exit 1; }` — see `.github/actions/setup-playwright/action.yml`'s "Install Playwright browsers" step for the pattern (captures output to a log file too, since redirecting to `/dev/null` hides the diagnostic signal a hang needs).
 
+**A step-level `timeout-minutes` on an ORDINARY (non-composite) job step reports that step's conclusion as `cancelled`, not `failure`** (card #90, 2026-08-22) — any later `if: failure()` step in the same job (e.g. the `Notify on failure`/`Trigger investigation` pattern from the Failure Notifications section above) silently never fires for a timeout that used this mechanism, exactly backwards from what a "catch a hang and alert" fix needs. Use the same inline `timeout <seconds> cmd; status=$?; [ "$status" -ne 0 ] && { ...; exit 1; }` pattern as the composite-action case above even for ordinary workflow-file steps whenever the goal is "hang → loud failure that reaches the existing alert chain," not just "hang → bounded." See `vercel-deploy.yml`'s Build/Deploy to Production steps for the reference implementation.
+
 ---
 
 ## Data Sync Architecture

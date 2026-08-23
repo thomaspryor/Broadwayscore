@@ -121,17 +121,6 @@
     "queuedAt": "2026-08-21T23:17:19.889Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 13 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32568874197",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-22T11:18:37.988Z"
-  },
-  {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
     "description": "broadway: 77.9% (380/488)\noff-broadway: 45.6% (149/327)\nwest-end: 71.5% (399/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (194h)\nA Midsummer Night's Dream - Globe — telegraph (194h)\nA Midsummer Night's Dream - Globe — thestage (194h)\nA Midsummer Night's Dream - Globe — times-uk (194h)\nA Midsummer Night's Dream — financialtimes (194h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (194h)\n& Juliet — nydailynews (194h)\nThe Book of Mormon — usatoday (194h)\nBuena Vista Social Club — broadwaynews (194h)\nBuena Vista Social Club — nydailynews (194h)\n… 26 more circuit-open cell(s)",
@@ -154,17 +143,6 @@
     "queuedAt": "2026-08-22T13:06:14.175Z"
   },
   {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 84636/39000 credits",
-    "description": "Scrapingdog billed 84636 credits today against a ceiling of 39000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n3 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (789), collect-review-texts.js (651), collect-outlet-reviews.js (460).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-22T14:10:13.719Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-paranormal-activity-2026",
     "title": "Placeholder synopsis on Paranormal Activity",
     "description": "synopsis for paranormal-activity-2026 is too thin (100 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -176,14 +154,36 @@
     "queuedAt": "2026-08-23T02:02:50.904Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "125 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": null,
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32616474273",
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-23T03:53:50.321Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32617058970",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-23T04:28:36.329Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 43912/42000 credits",
+    "description": "Scrapingdog billed 43912 credits today against a ceiling of 42000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n1 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: collect-review-texts.js (1136), opening-night-poller.js (593), audit-show-review-gap.js (127).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T09:16:19.349Z"
   }
 ]
