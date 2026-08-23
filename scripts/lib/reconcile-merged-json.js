@@ -79,7 +79,7 @@ function repoRoot() {
   }
 }
 
-const { activeEntriesFor } = require('./core-data-merge-registry');
+const { activeEntriesFor, apiFallbackSafeEntriesFor } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -96,6 +96,22 @@ const MANAGED = activeEntriesFor('public-repo').map((e) => ({
   merge: e.merge,
   ...(e.format === 'jsonl' ? { format: 'jsonl' } : { newline: e.newline }),
 }));
+
+// push-with-retry.sh's Git Data API fallback disqualifier (task: data-health-
+// check.yml push-race hardening, session 2026-08-22, plan-reviewed) — a
+// SEPARATE list from MANAGED above, deliberately not folded into it or into
+// activeEntriesFor(): these entries have no `merge` function (there is
+// nothing to merge for a genuinely single, concurrency-group-guarded
+// writer — "ours wins outright" is correct by construction, not a special
+// case of the union-merge logic MANAGED exists for). Mirrors MANAGED's own
+// `data/${e.file}` prefixing so the two lists stay comparable at a glance.
+// Deliberately does NOT widen activeEntriesFor()/MANAGED themselves —
+// reconcile-coverage.js's MANAGED_BASENAMES gate reads activeEntriesFor()
+// independently to assert every push-with-retry.sh-calling step opts into
+// RECONCILIATION; single-writer entries have no reconciliation to opt into,
+// so folding them in would make that gate demand an opt-in flag that does
+// nothing (plan-review finding).
+const API_FALLBACK_SAFE = apiFallbackSafeEntriesFor('public-repo').map((e) => ({ file: `data/${e.file}` }));
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
 function mergerFor(file) {
@@ -176,6 +192,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { MANAGED, mergerFor };
+module.exports = { MANAGED, mergerFor, API_FALLBACK_SAFE };
 
 if (require.main === module) main();
