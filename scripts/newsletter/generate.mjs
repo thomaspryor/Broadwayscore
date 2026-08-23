@@ -1596,6 +1596,12 @@ function boxOfficeSection() {
   // /box-office page that correctly showed Ragtime ahead on both (user-flagged
   // 2026-08-23, contradicted its own linked page).
   const slugToShow = new Map();
+  // Intentionally NOT isBroadwayCategory(): this must match isBroadwayShow()
+  // in src/lib/data-core.ts (strict `category === 'broadway'`, no
+  // missing-category fallback) — the same predicate that decides what
+  // appears on the linked /box-office page. isBroadwayCategory() treats a
+  // missing category as Broadway too, which would let this list diverge
+  // from the page it links to again.
   shows.forEach(s => { if ((s.status === 'open' || s.status === 'closed') && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const entries = Object.entries(grosses.shows)
     .filter(([slug, g]) => slugToShow.has(slug) && g.thisWeek && g.thisWeek.gross > 0)
