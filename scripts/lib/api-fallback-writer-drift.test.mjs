@@ -106,8 +106,25 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entry for this task, not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries for this task (1 original + 14 bulk-step follow-up — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
-  assert.equal(publicSafe.length, 1);
-  assert.equal(publicSafe[0].file, 'audit/health-digest-snapshot.json');
+  const files = publicSafe.map((e) => e.file).sort();
+  assert.equal(publicSafe.length, 15);
+  assert.deepEqual(files, [
+    'audit/affiliate-health.json',
+    'audit/cross-outlet-attribution-drift.json',
+    'audit/cv-wrongproduction-lifetime.json',
+    'audit/fulltext-mentions-show-lifetime.json',
+    'audit/health-check-history.json',
+    'audit/health-digest-snapshot.json',
+    'audit/linear-archive-done.jsonl',
+    'audit/provider-spend-daily.jsonl',
+    'audit/provider-spend-snapshot.json',
+    'audit/revival-unverified-lifetime.json',
+    'audit/roundup-url-mismatch-lifetime.json',
+    'audit/slug-mismatch-lifetime.json',
+    'audit/time-to-publish-sla.json',
+    'audit/trunk-status-snapshot.json',
+    'audit/workflow-run-coverage.json',
+  ]);
 });

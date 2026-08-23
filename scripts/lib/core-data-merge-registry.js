@@ -144,6 +144,150 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
     note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
   },
+  // 2026-08-23 follow-up (same originating incident, run 32625283171): the
+  // apiFallbackSafe fix above only isolated health-digest-snapshot.json —
+  // data-health-check.yml's "Commit health check + triage data" step still
+  // bundled these 15 files (plus 4 genuinely multi-writer ones left in that
+  // step) into ONE commit, and that commit still lost its push race and
+  // hard-failed the job, re-firing the exact same "Daily Data Health Check
+  // Crashed" alert the digest fix was meant to stop. All 15 verified via
+  // scripts/lib/api-fallback-writer-drift.js's findWritingWorkflows() against
+  // the real .github/workflows/*.yml files (not the inline comments alone,
+  // learning from the alert-digest-queue.json mistake documented above):
+  // each has exactly ONE writer (data-health-check.yml) sharing that
+  // workflow's own concurrency group ('data-health-check',
+  // cancel-in-progress: false). Moved into their own isolated commit+push
+  // step ("Commit health check audit snapshots (apiFallbackSafe)",
+  // immediately after "Commit digest snapshot") so they get the same Git
+  // Data API fallback protection.
+  {
+    file: 'audit/health-check-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/time-to-publish-sla.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/workflow-run-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/provider-spend-daily.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/provider-spend-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
+  // match on data-health-check.yml's `git add data/audit/digest-history.json`
+  // line initially looked like a 15th single-writer candidate, but a deeper
+  // check (ship-check review, 2026-08-23) found NO script anywhere writes
+  // this path — it's orphaned dead weight (the workflow's line has always
+  // been a permanent no-op via `2>/dev/null || true`), not a real file this
+  // job produces. Left un-isolated and un-registered; harmless either way
+  // since it never has staged content, but registering it would misleadingly
+  // claim "verified single-writer" for a file with zero writers.
+  {
+    file: 'audit/affiliate-health.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/linear-archive-done.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/trunk-status-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/cross-outlet-attribution-drift.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/cv-wrongproduction-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/fulltext-mentions-show-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/slug-mismatch-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/roundup-url-mismatch-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/revival-unverified-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  // NOT added, deliberately: data/audit/triage/ (also written by
+  // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
+  // data/audit/alert-digest-queue.json (8 writers — the exact file the
+  // comment above this block warns about), data/audit/alert-router-
+  // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
+  // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
+  // path available for them.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
