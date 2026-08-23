@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-23T01:43:06.966Z",
-  "processed": 106,
-  "failed": 1804,
-  "successRate": "5.5%",
+  "updatedAt": "2026-08-23T01:44:01.085Z",
+  "processed": 107,
+  "failed": 1813,
+  "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 60,
     "amp": 0,
@@ -11,10 +11,55 @@
     "scrapingbee": 16,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 24
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-22T16:14:39.476Z",
+      "event": "bb-session",
+      "session": "2272864e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-22T16:14:40.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-22T20:09:41.568Z",
+      "event": "bb-session",
+      "session": "df6bc605",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-22T20:10:01.723Z",
+      "event": "bb-session",
+      "session": "3fc0cce1",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-22T20:12:05.276Z",
+      "event": "bb-session",
+      "session": "fca5da9b",
+      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
+    },
+    {
+      "t": "2026-08-22T20:12:06.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-22T20:13:30.712Z",
+      "event": "bb-session",
+      "session": "04080e53",
+      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-08-22T20:13:31.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
     {
       "t": "2026-08-22T21:25:16.214Z",
       "event": "bb-session",
@@ -82,53 +127,6 @@
       "t": "2026-08-22T22:38:51.066Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-23T01:20:03.358Z",
-      "event": "bb-session",
-      "session": "71d28cbf",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-23T01:20:23.336Z",
-      "event": "bb-session",
-      "session": "d7869f7e",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-23T01:25:10.867Z",
-      "event": "bb-session",
-      "session": "1ba8a9be",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-23T01:25:30.680Z",
-      "event": "bb-session",
-      "session": "f2039c9e",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-23T01:26:20.445Z",
-      "event": "bb-session",
-      "session": "853e75e7",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-23T01:26:21.133Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T01:28:06.993Z",
-      "event": "bb-session",
-      "session": "c40fc94b",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
-    },
-    {
-      "t": "2026-08-23T01:28:14.861Z",
-      "event": "bb-session",
-      "session": "f3be2e17",
-      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
