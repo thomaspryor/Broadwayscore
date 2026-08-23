@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-22T13:45:31.103Z",
+    "generatedAt": "2026-08-23T02:17:20.891Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,123 +8,107 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 2,
-    "exemptCount": 9,
+    "flaggedCount": 1,
+    "exemptCount": 6,
     "coveredCount": 13,
-    "highChurnTracked": 24
+    "highChurnTracked": 20
   },
   "flagged": [
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 59
-    },
-    {
-      "path": "data/audit/recover-ratings-state.json",
-      "churn": 36
+      "churn": 43
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 116
+      "churn": 79
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 58
+      "churn": 56
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 54
+      "churn": 34
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 54
+      "churn": 34
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 54
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 41
+      "churn": 34
     },
     {
       "path": "public/data/shows/abigails-party-west-end-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 38
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 36
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 955,
+      "churn": 1043,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 928,
+      "churn": 1014,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 372,
+      "churn": 351,
       "mergeAttr": "union"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 368,
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 339,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 353,
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 331,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 182,
+      "churn": 157,
       "mergeAttr": "union"
     },
     {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 92,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 92,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 91,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 91,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 60,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 54,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 54,
+      "churn": 34,
       "mergeAttr": "ours"
     }
   ]
