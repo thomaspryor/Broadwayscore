@@ -310,7 +310,17 @@
     "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
     "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
-    "disruption-off-broadway-2026/timeout-london--unknown.json"
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json",
+    "disruption-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -357,7 +367,7 @@
     ]
   },
   "startTime": "2026-08-23T09:58:42.443Z",
-  "lastProcessed": "disruption-off-broadway-2026/timeout-london--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-23T10:00:53.395Z",
@@ -459,6 +469,17 @@
       "event": "bb-session",
       "session": "9f465931",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-23T12:59:21.839Z",
+      "event": "bb-session",
+      "session": "aa738706",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-23T12:59:22.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
