@@ -1956,12 +1956,20 @@ let _londonHasGoldOpening = false;
 // equal-weight WE openings fell to shows.json insertion order — an accident.
 // NEWSLETTER_WE_LEAD=<showId> is a manual editor override (mirrors
 // NEWSLETTER_OB_LEAD): floats that show to story #1 regardless of count.
+// West End (the full-scale venue tier) always ranks ahead of Off West End
+// (the smaller-venue tier) — mirrors Broadway always ranking ahead of
+// Off-Broadway. Shared by weOpeningStories() and londonSection() so the lead
+// story, the card order, and the subject/lede (newsworthiness.mjs mirrors
+// this same tier split) can never disagree about which show is "first."
+function weTierRank(category) { return category === 'west-end' ? 0 : 1; }
+
 function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
-    .sort((a, b) => ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    .sort((a, b) => (weTierRank(a.s.category) - weTierRank(b.s.category))
+      || ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   const weLead = (process.env.NEWSLETTER_WE_LEAD || '').trim();
   if (weLead) {
     const i = ranked.findIndex(x => x.s.id === weLead);
@@ -1975,11 +1983,14 @@ function londonSection() {
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // Sort: Gold first, then by score desc. When the DISPLAYED (rounded) scores
-  // tie, rank the better-reviewed show first — more reviews is a more settled
-  // verdict — rather than letting a sub-point raw difference decide order
-  // (Sinatra 64 on 29 reviews should sit above Archduke 64 on 7).
+  // Sort: West End before Off West End (see weTierRank), then Gold first, then
+  // by score desc. When the DISPLAYED (rounded) scores tie, rank the
+  // better-reviewed show first — more reviews is a more settled verdict —
+  // rather than letting a sub-point raw difference decide order (Sinatra 64
+  // on 29 reviews should sit above Archduke 64 on 7).
   withScore.sort((a, b) => {
+    const at = weTierRank(a.s.category), bt = weTierRank(b.s.category);
+    if (at !== bt) return at - bt;
     const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
     const bg = isGoldTier(b.agg.avg, b.s.category) ? 1 : 0;
     if (ag !== bg) return bg - ag;
