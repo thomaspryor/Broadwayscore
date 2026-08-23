@@ -1583,9 +1583,20 @@ function boxOfficeSection() {
   let grosses;
   try { grosses = JSON.parse(fs.readFileSync(path.join(repo, 'data/grosses.json'), 'utf8')); }
   catch { return null; }
-  // Grosses are keyed by SLUG, not show id. Build a slug→show map for open BW.
+  // Grosses are keyed by SLUG, not show id. Build a slug→show map for BW shows
+  // with valid this-week data. status 'open' OR 'closed' — NOT 'open' only.
+  // Mirrors src/app/box-office/page.tsx's inclusion exactly: "Include any show
+  // with thisWeek data (not just 'open' — shows that closed during the
+  // reporting week still have valid grosses for that week)". A stricter
+  // 'open'-only filter here silently drops a show that just played its final
+  // week from Top Gross/Capacity/ATP consideration even when its numbers win —
+  // Ragtime closed 2026-08-16 (final-week capacity 100%/$233 ATP, both above
+  // Hamilton's 99.8%/$201) and the newsletter still credited Hamilton with
+  // "Highest Capacity" and "Top Average Ticket Price" while linking to the
+  // /box-office page that correctly showed Ragtime ahead on both (user-flagged
+  // 2026-08-23, contradicted its own linked page).
   const slugToShow = new Map();
-  shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
+  shows.forEach(s => { if ((s.status === 'open' || s.status === 'closed') && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const entries = Object.entries(grosses.shows)
     .filter(([slug, g]) => slugToShow.has(slug) && g.thisWeek && g.thisWeek.gross > 0)
     .map(([slug, g]) => ({ slug, ...g.thisWeek, show: slugToShow.get(slug) }));
