@@ -137,12 +137,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-23T11:49:18.244Z",
+      "lastSeen": "2026-08-23T12:20:05.176Z",
       "lastNotifiedAt": "2026-08-23T04:28:36.328Z",
       "notifyCount": 46,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -776,12 +776,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-23T11:49:18.243Z",
+      "lastSeen": "2026-08-23T12:20:05.175Z",
       "lastNotifiedAt": "2026-08-23T04:28:34.982Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1305,9 +1305,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-08-19T12:31:28.109Z",
-      "lastNotifiedAt": "2026-08-19T12:31:28.109Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-23T12:24:33.120Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.120Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1443,12 +1443,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-22T12:24:20.683Z",
+      "lastSeen": "2026-08-23T12:24:33.195Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1457,6 +1457,30 @@
       "firstSeen": "2026-08-23T02:02:50.903Z",
       "lastSeen": "2026-08-23T02:02:50.903Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Enrich Off-Broadway Dates": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
+      "firstSeen": "2026-08-23T12:24:33.123Z",
+      "lastSeen": "2026-08-23T12:24:33.123Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.123Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Opening Night Checklist": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
+      "firstSeen": "2026-08-23T12:24:33.125Z",
+      "lastSeen": "2026-08-23T12:24:33.125Z",
+      "lastNotifiedAt": "2026-08-23T12:24:33.125Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
