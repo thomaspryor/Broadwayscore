@@ -110,17 +110,6 @@
     "queuedAt": "2026-08-21T22:16:57.507Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "135 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-21T22:16:57.601Z"
-  },
-  {
     "conditionKey": "review-gap:blast-radius-refused",
     "title": "Review-gap audit refused to write — 16.7% of shows changed coverage state",
     "description": "review-gap blast radius 16.7% (5/30 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: hershey-felder-the-piano-and-me-off-broadway-2026, im-every-woman-off-west-end-2026, masquerade-off-broadway-2025, masticate-off-broadway-2026, the-importance-of-being-oscar-off-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
@@ -185,5 +174,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-23T02:02:50.904Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "125 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T03:53:50.321Z"
   }
 ]
