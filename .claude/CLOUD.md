@@ -13,9 +13,12 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 ## Project hooks that fire in cloud (project-scoped subset)
 
 - `.claude/hooks/session-start.sh` — critical-rules banner + integrity check
-- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification. Bypass: `NO-VERIFY: <reason>` in final message.
+- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification, and (since 2026-08-23) requires a closing SAFE TO EXIT / NOT SAFE TO EXIT line + blocks an unmerged PR with no stated blocker once a session did real work. Bypass: `NO-VERIFY: <reason>` in final message.
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
+- `.claude/hooks/pre-push-visual-gate.sh`, `.claude/hooks/pre-push-review-gate.sh`, `.claude/hooks/pre-merge-review-gate.sh`, `.claude/hooks/check-skill-redaction.sh` — PreToolUse `Bash` gates for visual-QA, ship-check, and skill-redaction enforcement before `git push`/`git merge`. **Known gap:** matcher is `Bash` only — a push done via the GitHub MCP connector (`mcp__github__push_files`/`create_or_update_file`) instead of `git push` bypasses all four (tracked in Notion).
+- `.claude/hooks/enterworktree-guard.sh` — PreToolUse `EnterWorktree` gate; guards worktree NAME COLLISIONS only, not CLAUDE.md §1's actual "must be in a worktree before editing" rule (a separate, unbuilt hook would be needed for that).
+- `.claude/hooks/whitespace-nowrap-lint.sh` — PostToolUse `Edit|Write` warning for a recurring CSS overflow trap.
 
 These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 12 other user-level hooks DO NOT fire in cloud (worktree-enforce, design-system-lint, etc.) — be extra careful with edits the local hooks would catch.
 
