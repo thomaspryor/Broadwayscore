@@ -2245,6 +2245,19 @@ jobs:
         # workflow with # hygiene-audit-persist-ok: <reason>.
         run: node scripts/audit-push-core-data-audit-gap.js
 
+      - name: Audit — errexit-unguarded command substitution (advisory)
+        # Task #97, follow-up to #676/#678: a composite-action step declared
+        # shell: bash runs as `bash -e -o pipefail` — an unguarded
+        # `VAR=$(node ...)` assignment or `git commit --amend` that can
+        # legitimately exit non-zero trips errexit and kills the WHOLE
+        # script, not just that line, silently defeating any retry loop the
+        # step was inside. #676's push-core-data crash (Opening Night
+        # Poller dead on iteration 1, almost every run, for a week) and the
+        # 5 cousin instances fixed in #678/this PR are exactly this shape.
+        # Heuristic, non-blocking — always exits 0 (see script header for
+        # why). Exempt a file with # hygiene-errexit-guard-ok: <reason>.
+        run: node scripts/audit-errexit-unguarded-substitution.js
+
       - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
         # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
         # PROTECTED_FIELDS field in a job that also calls push-review-texts
