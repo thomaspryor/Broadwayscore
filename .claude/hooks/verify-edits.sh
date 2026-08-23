@@ -59,7 +59,7 @@ fi
 export VE_LAST_MSG=$(echo "$input" | jq -r '.last_assistant_message // empty' 2>/dev/null)
 
 result=$(python3 - "$transcript" <<'PYEOF'
-import hashlib, json, sys, os
+import hashlib, json, sys, os, re
 
 CODE_EXTS = ('.js', '.ts', '.tsx', '.mjs', '.cjs', '.py', '.sh', '.rb', '.go')
 # Paths that don't need execution verification.
@@ -172,6 +172,96 @@ for i in range(len(events) - 1, -1, -1):
     if last_edit_idx is None:
         last_edit_idx = i
         last_edit_file = fp
+
+# ─── Session status-line gate (added 2026-08-23) ─────────────────────────────
+# The local ~/.claude/hooks/exit-status-gate.sh enforces a "SAFE TO EXIT" /
+# "NOT SAFE TO EXIT" closing line (and refuses the SAFE claim when a DECISION
+# NEEDED block is still pending) — see .claude/commands/wrap-up.md. It is a
+# user-level hook that was never ported to cloud (named in CLOUD.md's list of
+# "12 other user-level hooks [that] DO NOT fire in cloud"), so cloud/iOS
+# sessions had zero enforcement of it — root cause of 8 iOS sessions in one
+# day never saying whether it was safe to end the conversation, and punting
+# decisions back to a non-technical owner instead of making the call.
+#
+# This is a deliberately smaller reimplementation, NOT a full port: the real
+# hook also runs Gate W/T (workspace/task-ref resolution against the local
+# ~/.claude/tasks store, which this sandbox doesn't have — see
+# scripts/lib/exit-status-gate-taskref.test.mjs for what that covers). Only
+# the two checks that explain today's actual failures are implemented here.
+#
+# Scope: only fires once the session did something worth reporting on (a
+# qualifying code edit, a push/commit, or a GitHub MCP write) — never gates
+# an ordinary conversational turn. Kill switch: SESSION_STATUS_GATE_DISABLE=1.
+if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
+    try:
+        did_substantial_work = total_qualifying_edits > 0
+        if not did_substantial_work:
+            for _kind, _payload in events:
+                if _kind != 'tool':
+                    continue
+                _name, _inp, _tid = _payload
+                if _name in (
+                    'mcp__github__create_pull_request',
+                    'mcp__github__merge_pull_request',
+                    'mcp__github__push_files',
+                    'mcp__github__create_or_update_file',
+                ):
+                    did_substantial_work = True
+                    break
+                if _name == 'Bash':
+                    _cmd = _inp.get('command') or ''
+                    if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
+                        did_substantial_work = True
+                        break
+        if did_substantial_work and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            _stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
+            _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
+            _last_line = _content_lines[-1] if _content_lines else ''
+            _has_status_line = bool(re.match(r'^(NOT )?SAFE TO EXIT\b', _last_line))
+            _claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _last_line))
+            _has_decision_needed = 'DECISION NEEDED' in _stripped
+            if not _has_status_line:
+                print("NOSTATUSLINE")
+                sys.exit(0)
+            if _has_decision_needed and _claims_safe:
+                print("FALSESAFE")
+                sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── PR follow-through gate (added 2026-08-23) ───────────────────────────────
+# Cloud sessions have no `gh` CLI (see .claude/CLOUD.md) and create/merge PRs
+# via the GitHub MCP connector (mcp__github__create_pull_request /
+# mcp__github__merge_pull_request) — tool names none of pre-push-review-gate.sh
+# / pre-merge-review-gate.sh (matcher: "Bash" only) ever see. This project's
+# own memory rule is explicit that the owner does not review PRs
+# (cloud-memory/feedback_no_review_offers_user_not_technical.md, 2026-08-22
+# addendum: "once a PR's own CI is green ... mark it ready and merge it
+# yourself ... A draft PR sitting untouched is the same failure as asking
+# should I commit or do you want to review"). Nothing enforced that before
+# this. Kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1.
+if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
+    try:
+        _opened_pr = False
+        _merged_pr = False
+        for _kind, _payload in events:
+            if _kind != 'tool':
+                continue
+            _name, _inp, _tid = _payload
+            if _name == 'mcp__github__create_pull_request':
+                _opened_pr = True
+            elif _name == 'mcp__github__merge_pull_request':
+                _merged_pr = True
+        if _opened_pr and not _merged_pr and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            _blocker_re = re.compile(
+                r'\b(CI(\s+is)?\s+red|merge conflict|blocked|DECISION NEEDED|NOT SAFE TO EXIT|draft (by design|pending))\b',
+                re.IGNORECASE,
+            )
+            if not _blocker_re.search(_last_msg):
+                print("PRUNMERGED")
+                sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
 
 # Detect audit sweeps: sessions that edit data/review-texts/ flag fields via Bash
 # (not Edit tool). These bypass the is_scoring_edit gate because last_edit_file never
@@ -1013,6 +1103,21 @@ fi
 if [[ "$result" == UNSHIPCHECKED:* ]]; then
   fname="${result#UNSHIPCHECKED:}"
   echo "🛑 BLOCKED: edit to \`${fname}\` (scripts/lib/ or .github/workflows/) without ship-check. Satisfy via /ship-check, codex exec, GPT-4o curl, or Agent with 'review'/'audit' in description. Bypass: NO-VERIFY: <why this can't break anything>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOSTATUSLINE" ]]; then
+  echo "🛑 BLOCKED: session did real work (edit/commit/push/PR) but the final message has no closing SAFE TO EXIT / NOT SAFE TO EXIT line. Close with the SESSION STATUS block per .claude/commands/wrap-up.md. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "FALSESAFE" ]]; then
+  echo "🛑 BLOCKED: message has a DECISION NEEDED block but claims SAFE TO EXIT — a pending decision is always NOT SAFE TO EXIT. If it's a technical/implementation call, decide it yourself instead (cloud-memory/feedback_decide_technical_calls_myself.md) rather than asking. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "PRUNMERGED" ]]; then
+  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never merged, with no stated blocker. This project's owner does not review PRs — merge it yourself once CI is green, or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

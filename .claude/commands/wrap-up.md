@@ -57,6 +57,12 @@ Check for:
    # Workflows (deploys, rebuilds, scoring, collection)
    gh run list --limit 5 --json workflowName,status,conclusion,createdAt | jq '[.[] | select(.status != "completed")]'
    ```
+   **Cloud/iOS session (no `gh` CLI):** use `mcp__github__actions_list` with
+   `method: "list_workflow_runs"` and `workflow_runs_filter.status` values
+   `queued`/`in_progress` instead — see
+   `cloud-memory/feedback_gh_cli_to_github_mcp_mapping.md` for the full
+   `gh`→MCP mapping. This step is still MANDATORY on cloud; "no `gh` CLI"
+   is not a reason to skip it, only a reason to use a different tool.
 
    **If anything is still running or queued: STOP. Do not proceed to Phase 4.**
    - Monitor in background (check every 30-60s)
