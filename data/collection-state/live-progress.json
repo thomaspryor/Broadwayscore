@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-23T10:03:07.325Z",
+  "updatedAt": "2026-08-23T10:07:20.100Z",
   "processed": 18,
-  "failed": 172,
-  "successRate": "9.5%",
+  "failed": 182,
+  "successRate": "9.0%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-23T08:39:28.192Z",
@@ -48,6 +48,29 @@
       "event": "bb-session",
       "session": "26ecb05b",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T10:05:03.041Z",
+      "event": "bb-session",
+      "session": "1d38c192",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-23T10:05:03.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-23T10:06:21.865Z",
+      "event": "bb-session",
+      "session": "8c71db6f",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-23T10:06:28.758Z",
+      "event": "bb-session",
+      "session": "cb58275f",
+      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
     }
   ]
 }
