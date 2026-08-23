@@ -542,23 +542,37 @@ runs:
             fi
 
             # Re-stage and amend if audience-buzz reconciliation changed the file.
-            # `2>/dev/null || true` (not --allow-empty) matches the guard
-            # scripts/lib/push-with-retry.sh already uses for the same class
-            # of problem: when the reconciled content converges back to
-            # exactly HEAD^'s tree (our contribution fully superseded by a
-            # concurrent push), git refuses an amend that would be empty.
-            # Left unguarded, that refusal (exit 1) runs under this step's
-            # `bash -e` and kills the ENTIRE retry loop on the spot — task
-            # #1911 traced the Opening Night Poller's week-long nightly
-            # failure streak to exactly this (reviews.json/critic-registry.json
-            # reconciling to a no-op almost every run, since the poller fires
-            # every ~15-45 min and frequently finds nothing new). `|| true`
-            # (vs --allow-empty) avoids also leaving a permanent empty commit
-            # in the private repo's history — HEAD already matches what we'd
-            # be committing, so there's nothing to gain by amending at all.
+            # When the reconciled content converges back to exactly HEAD^'s
+            # tree (our contribution fully superseded by a concurrent push),
+            # git refuses an amend that would be empty. Left unguarded, that
+            # refusal (exit 1) runs under this step's `bash -e` and kills the
+            # ENTIRE retry loop on the spot — task #1911 traced the Opening
+            # Night Poller's week-long nightly failure streak to exactly this
+            # (reviews.json/critic-registry.json reconciling to a no-op
+            # almost every run, since the poller fires every ~15-45 min and
+            # frequently finds nothing new).
+            #
+            # UPDATED (task #1911 follow-up): originally guarded with plain
+            # `2>/dev/null || true` instead of --allow-empty, reasoning that
+            # HEAD already matches what we'd be committing so there was
+            # nothing to gain by amending. That reasoning missed that `git
+            # add` above ALREADY staged the new content before this line
+            # runs — a refused, swallowed amend leaves the index dirty
+            # (file staged but never committed) instead of leaving nothing
+            # to commit at all. That dirty state then makes the NEXT loop
+            # iteration's `git pull --rebase` refuse outright with "You have
+            # unstaged changes," burning the rest of the retry budget on a
+            # failure with no real push conflict in it (confirmed live, run
+            # 32614795280, 2026-08-23 — reachable in all 6 per-file amend
+            # blocks in this file, not just this one). `--allow-empty`
+            # closes that gap: the amend always succeeds, so `git add`ed
+            # content is always folded into a real commit and the tree
+            # stays clean. The tradeoff (occasional true no-op commits in
+            # the private repo's history) is strictly preferable to a
+            # retry loop that can no longer make progress.
             if ! git diff --quiet audience-buzz.json 2>/dev/null; then
               git add audience-buzz.json
-              git commit --amend --no-edit 2>/dev/null || true
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled audience-buzz.json"
             fi
           fi
@@ -566,7 +580,7 @@ runs:
           # Re-stage shows.json if reconciliation changed it (outside audience-buzz guard)
           if ! git diff --quiet shows.json 2>/dev/null; then
             git add shows.json
-            git commit --amend --no-edit 2>/dev/null || true
+            git commit --amend --no-edit --allow-empty 2>/dev/null || true
             echo "Amended commit with reconciled shows.json"
           fi
 
@@ -596,7 +610,7 @@ runs:
               git add commercial.json
               # See audience-buzz.json amend above for why this is guarded
               # with `2>/dev/null || true` instead of left to crash the loop.
-              git commit --amend --no-edit 2>/dev/null || true
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled commercial.json"
             fi
           fi
@@ -618,7 +632,7 @@ runs:
             ' 2>&1 || true
             if ! git diff --quiet commercial-pending-review.json 2>/dev/null; then
               git add commercial-pending-review.json
-              git commit --amend --no-edit 2>/dev/null || true
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled commercial-pending-review.json"
             fi
           fi
@@ -650,7 +664,7 @@ runs:
             ' 2>&1 || true
             if ! git diff --quiet diary-shows.json 2>/dev/null; then
               git add diary-shows.json
-              git commit --amend --no-edit 2>/dev/null || true
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled diary-shows.json"
             fi
           fi
@@ -677,7 +691,7 @@ runs:
                 # via scripts/lib/merge-reviews-json.js reconciles to a byte-
                 # identical no-op almost every time two high-frequency writers
                 # like opening-night-poller race each other).
-                git commit --amend --no-edit 2>/dev/null || true
+                git commit --amend --no-edit --allow-empty 2>/dev/null || true
                 echo "Amended commit with reconciled: $(tr '\n' ' ' < /tmp/.reconciled-registry-files)"
               fi
             fi
