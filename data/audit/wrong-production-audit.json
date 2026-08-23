@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-22T12:21:34.778Z",
+  "timestamp": "2026-08-23T01:53:36.828Z",
   "stats": {
-    "totalReviews": 42336,
-    "alreadyFlagged": 18128,
-    "dateGuardCatches": 181,
+    "totalReviews": 42338,
+    "alreadyFlagged": 18135,
+    "dateGuardCatches": 177,
     "directorMismatch": 992,
     "tvFilmSignals": 1217,
-    "londonSignals": 926,
+    "londonSignals": 927,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3567
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -8052,62 +8052,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "evita-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 43,
-      "publishDate": "2025-07-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 601d before show (2025-07-06 vs 2027-02-27)"
-        }
-      ]
-    },
-    {
-      "showId": "evita-2026",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 91,
-      "publishDate": "2025-07-02",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 605d before show (2025-07-02 vs 2027-02-27)"
-        }
-      ]
-    },
-    {
-      "showId": "evita-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 93,
-      "publishDate": "2025-07-02",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 605d before show (2025-07-02 vs 2027-02-27)"
-        }
-      ]
-    },
-    {
-      "showId": "evita-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 91,
-      "publishDate": "2025-07-05",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 602d before show (2025-07-05 vs 2027-02-27)"
         }
       ]
     },
@@ -26153,6 +26097,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "1883magazine--nick-barr.json",
+      "score": 90,
       "publishDate": "2025-05-14",
       "url": "https://1883magazine.com/the-comedy-about-spies-review/",
       "findings": [
@@ -32860,6 +32805,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 78,
+      "publishDate": "2026-08-21",
+      "url": "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
