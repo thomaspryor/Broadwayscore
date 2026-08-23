@@ -37,6 +37,7 @@ Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set`
 | Local `.env` files | NO — secrets via Anthropic Settings UI | YES via direnv |
 | User-level `~/.claude/skills/` | NO — only `.claude/skills/` in repo | YES |
 | `claude-sync` for `~/.claude` repo | NO (separate repo, not auto-cloned) | YES |
+| `bsc-next.js --id` auto-dispatch (P0/P1 card → Cmux workspace) | NO — `launchCmuxSession` requires the owner's local desktop (`cwd does not exist: "/Users/tompryor/Broadwayscore"`); fails with `DISPATCH FAILED` | YES |
 
 ## When in doubt
 
