@@ -54,6 +54,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -309,6 +310,15 @@ const CONFIG = {
   marketFilter: process.env.MARKET_FILTER || '', // Filter by market: west-end, off-broadway (matches show ID suffix)
   reviewFilter: new Set((process.env.REVIEW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)), // Filter to specific review filenames
   archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
+  // Opt-in wall-clock budget (ms). Unset by default so long-running callers
+  // (bulk-collect-review-texts.yml: timeout-minutes 300+, collect-review-texts.yml: 120)
+  // are unaffected. Callers wrapping this in a short external timeout-minutes
+  // (e.g. opening-night-poller.yml's 10-min step) should set this a bit under
+  // that, so the run exits 0 with a clean checkpoint instead of being SIGKILLed
+  // mid-batch — an external kill under `continue-on-error` reports the step
+  // outcome as 'failure' and pages as a crash even though nothing broke, just
+  // ran out of time (task #1911 follow-up, 2026-08-23).
+  maxDurationMs: process.env.MAX_DURATION_MS ? parseInt(process.env.MAX_DURATION_MS) : 0,
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -6947,10 +6957,17 @@ async function main() {
   // Setup browser
   await setupBrowser();
 
+  const startTime = Date.now();
+
   try {
     let batchCount = 0;
 
     for (let i = 0; i < reviews.length; i++) {
+      if (isTimeBudgetExceeded({ startTime, now: Date.now(), maxDurationMs: CONFIG.maxDurationMs })) {
+        console.log(`\n⏱ Time budget reached (${Math.round(CONFIG.maxDurationMs / 1000)}s) — stopping early with a clean checkpoint (${i}/${reviews.length} attempted, ${state.processed.length} succeeded). Remaining reviews will be picked up next run.`);
+        break;
+      }
+
       const review = reviews[i];
 
       // Hard timeout per review - prevents hung Playwright from killing entire run

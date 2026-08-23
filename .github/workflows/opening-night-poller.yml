@@ -441,6 +441,16 @@ jobs:
           SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
+          # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
+          # loop cleanly with a checkpoint well before the step's own
+          # timeout-minutes below, so a big backlog exits 0 instead of being
+          # externally SIGKILLed (which the fail-fast verify step below
+          # correctly treats as a crash worth paging on — but a graceful
+          # "ran out of time this run" isn't one; task #1911 follow-up,
+          # 2026-08-23). 9 min leaves ~3 min for an in-flight review
+          # (90s REVIEW_TIMEOUT + up to 90s browser-restart recovery) plus
+          # the final checkpoint commit/push to land before the 12-min cap.
+          MAX_DURATION_MS: '540000'
           ARCHIVE_FIRST: 'true'
           RETRY_FAILED: 'true'
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -484,7 +494,7 @@ jobs:
           BD_OPENING_NIGHT: '1'
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 12
 
       - name: Commit collected texts
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
