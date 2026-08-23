@@ -2489,7 +2489,17 @@
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
-    "as-you-like-it-globe-west-end-2026/theatre-weekly--stephen-gilchrist.json"
+    "as-you-like-it-globe-west-end-2026/theatre-weekly--stephen-gilchrist.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "how-the-other-half-loves-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
+    "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/radio-times--katelyn-mensah.json",
+    "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2565,7 +2575,8 @@
       "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
       "cats-west-end-2026/nytimes--helen-shaw.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2624,7 +2635,7 @@
     ]
   },
   "startTime": "2026-08-22T10:04:25.822Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/theatre-weekly--stephen-gilchrist.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/thestage--ghenet-pinderhughes-randall.json",
   "log": [
     {
       "t": "2026-08-22T10:16:48.208Z",
@@ -2908,6 +2919,17 @@
       "event": "bb-session",
       "session": "d852c1fd",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T06:25:43.156Z",
+      "event": "bb-session",
+      "session": "628d56b8",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-23T06:25:43.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
