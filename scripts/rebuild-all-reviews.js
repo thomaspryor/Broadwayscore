@@ -3217,7 +3217,13 @@ showDirs.forEach(showId => {
       // routedFromShowId: already rerouted — publish date reflects the original show's era
       // priorRuns: review falls inside a declared earlier-run window (Phase 1 production-continuity)
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
-        const pubDate = new Date(data.publishDate);
+        // parseDate (not new Date()) — new Date() silently returns Invalid
+        // Date for ordinal-suffix dates ("January 26th, 2023", as written by
+        // some scraper paths), which evaluatePreWindowInclusion then treats
+        // as "no date info" and never excludes. Same bug class as the
+        // DATE GUARD fix below (task #1, 2026-08-23) — this guard runs
+        // earlier in the pipeline and has the identical parsing gap.
+        const pubDate = parseDate(data.publishDate);
         const openDate = showDateMap[showId];
         const preWindow = evaluatePreWindowInclusion({
           pubDate,
