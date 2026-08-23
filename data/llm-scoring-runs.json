@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-08-18T03:55:07.651Z",
-    "completedAt": "2026-08-18T03:55:12.620Z",
-    "totalReviews": 42702,
-    "processed": 0,
-    "skipped": 42698,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 8212,
-      "output": 219,
-      "total": 23444
-    },
-    "errorDetails": [
-      {
-        "showId": "jeeves-takes-charge-west-end-2026",
-        "outletId": "hoteldirect",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-18T04:19:24.444Z",
     "completedAt": "2026-08-18T04:19:27.180Z",
     "totalReviews": 42702,
@@ -270885,6 +270860,20 @@
       "input": 10205,
       "output": 429,
       "total": 26623
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-23T23:09:02.186Z",
+    "completedAt": "2026-08-23T23:09:05.013Z",
+    "totalReviews": 42655,
+    "processed": 0,
+    "skipped": 42654,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 108,
+      "total": 10941
     },
     "errorDetails": []
   }
