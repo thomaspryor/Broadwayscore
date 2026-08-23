@@ -750,7 +750,17 @@
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
     "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
-    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theatre-weekly--stephen-gilchrist.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -783,6 +793,7 @@
       "an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
@@ -804,7 +815,7 @@
     ]
   },
   "startTime": "2026-08-23T09:58:42.443Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-23T10:00:53.395Z",
@@ -941,6 +952,29 @@
       "event": "bb-session",
       "session": "3d093762",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-23T19:57:32.927Z",
+      "event": "bb-session",
+      "session": "f0bc2a63",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T19:57:39.859Z",
+      "event": "bb-session",
+      "session": "d3c5b995",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T19:59:43.770Z",
+      "event": "bb-session",
+      "session": "0ed9e113",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-23T19:59:44.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

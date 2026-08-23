@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-08-23T19:56:47.145Z",
+  "updatedAt": "2026-08-23T19:59:54.583Z",
   "processed": 23,
-  "failed": 726,
-  "successRate": "3.1%",
+  "failed": 736,
+  "successRate": "3.0%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-08-23T10:03:40.456Z",
-      "event": "bb-session",
-      "session": "a143719d",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-23T10:03:40.993Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:21:23.672Z",
-      "event": "bb-session",
-      "session": "b8289bb4",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-23T10:21:24.701Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-23T10:21:42.547Z",
       "event": "bb-session",
@@ -128,6 +106,29 @@
       "event": "bb-session",
       "session": "3d093762",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-23T19:57:32.927Z",
+      "event": "bb-session",
+      "session": "f0bc2a63",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T19:57:39.859Z",
+      "event": "bb-session",
+      "session": "d3c5b995",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T19:59:43.770Z",
+      "event": "bb-session",
+      "session": "0ed9e113",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-23T19:59:44.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
