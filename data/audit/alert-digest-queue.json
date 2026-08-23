@@ -143,17 +143,6 @@
     "queuedAt": "2026-08-22T13:06:14.175Z"
   },
   {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 84636/39000 credits",
-    "description": "Scrapingdog billed 84636 credits today against a ceiling of 39000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n3 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: opening-night-poller.js (789), collect-review-texts.js (651), collect-outlet-reviews.js (460).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-22T14:10:13.719Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-paranormal-activity-2026",
     "title": "Placeholder synopsis on Paranormal Activity",
     "description": "synopsis for paranormal-activity-2026 is too thin (100 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -185,5 +174,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-23T04:28:36.329Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 43912/42000 credits",
+    "description": "Scrapingdog billed 43912 credits today against a ceiling of 42000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n1 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: collect-review-texts.js (1136), opening-night-poller.js (593), audit-show-review-gap.js (127).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-23T09:16:19.349Z"
   }
 ]
