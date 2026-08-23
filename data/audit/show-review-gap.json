@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-23T03:53:38.032Z",
+  "generatedAt": "2026-08-23T16:14:59.695Z",
   "windowDays": 1095,
-  "targets": 129,
-  "auditedThisRun": 24,
-  "carriedForward": 417,
+  "targets": 127,
+  "auditedThisRun": 18,
+  "carriedForward": 427,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 287,
-    "totalMissing": 1228,
+    "withGap": 288,
+    "totalMissing": 1227,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1613,
+    "totalFlaggedMisses": 1597,
     "totalRecoverable": 17,
     "totalRecovered": 2
   },
@@ -796,7 +796,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
@@ -2194,8 +2194,6 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-        "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
         "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
         "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
         "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
@@ -2211,9 +2209,9 @@
         "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
         "https://www.londonboxoffice.co.uk/news/post/abigails-party-review"
       ],
-      "dirFiles": 31,
-      "dirClean": 19,
-      "inReviewsJson": 25,
+      "dirFiles": 32,
+      "dirClean": 20,
+      "inReviewsJson": 26,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
@@ -2229,7 +2227,15 @@
       ],
       "dirOnly": [
         {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
           "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "curtaincallreviews.co.uk",
           "count": 1
         },
         {
@@ -2254,24 +2260,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--john-johnson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
           "host": "londonboxoffice.co.uk",
@@ -2399,7 +2387,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -2409,7 +2397,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -2419,7 +2407,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -2429,8 +2417,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2439,8 +2427,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2450,20 +2438,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 13,
         "byReason": {
-          "non-review-host": 13,
-          "ticketing-listing": 2,
+          "non-review-host": 3,
+          "ticketing-listing": 1,
+          "not-http-url": 8,
           "roundup-page": 1
         }
       },
@@ -2494,13 +2483,6 @@
             "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre"
           },
           {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
-          },
-          {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
             "critic": "Unknown",
@@ -2524,12 +2506,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-            "outletId": "curtaincallreviews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
             "outletId": "allthatdazzles.co.uk",
@@ -2598,13 +2574,6 @@
             "firstSeenAt": "2026-08-22T12:13:43.001Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-22T12:13:43.001Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
             "outletId": "london-box-office",
             "state": "GAP",
@@ -2626,10 +2595,10 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 15
+        "liveCount": 10,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -4763,69 +4732,33 @@
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
         "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre",
-        "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
         "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
         "https://www.adventuresintheatreland.com/post/anansi-the-spider-regent-s-park-open-air-theatre",
-        "https://www.bestoftheatre.co.uk/blog/post/production-images-released-for-anansi-the-spider-at-regents-park",
-        "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
         "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
+        "https://www.timeout.com/london/theatre/anansi-the-spider-review",
         "https://openairtheatre.com/production/anansi-the-spider",
-        "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-        "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
         "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
-        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
-        "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
-        "https://openairtheatre.com/blog/first-look-at-anansi-the-spider-under-the-tree-on-the-regents-park-open-air-theatre-picnic-lawn"
+        "https://www.theatremonkey.com/show/anansi-the-spider-2/",
+        "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
       ],
       "dirFiles": 15,
       "dirClean": 6,
       "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
-          "host": "afridiziak.com",
-          "knownOutletId": "afridiziak-theatre-news",
+          "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "primarytimes.co.uk",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-box-office--shehrazade-zafar-arif.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/production-images-released-for-anansi-the-spider-at-regents-park",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.bestoftheatre.co.uk/anansi-the-spider"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://openairtheatre.com/production/anansi-the-spider",
           "host": "openairtheatre.com",
@@ -4840,24 +4773,6 @@
               "file": "openairtheatre--unknown.json",
               "flag": "clean",
               "urlInDir": "https://openairtheatre.com/production/anansi-the-spider"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-          "host": "theatremonkey.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatremonkey--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
             }
           ],
           "serpCensus": true
@@ -4881,8 +4796,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
-          "host": "makeitmarylebone.co.uk",
+          "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/",
+          "host": "theatremonkey.com",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -4891,17 +4806,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "makeitmarylebone--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/"
+              "file": "theatremonkey--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
             }
           ],
           "serpCensus": true
         },
         {
-          "url": "https://openairtheatre.com/blog/first-look-at-anansi-the-spider-under-the-tree-on-the-regents-park-open-air-theatre-picnic-lawn",
-          "host": "openairtheatre.com",
-          "knownOutletId": null,
+          "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -4909,9 +4824,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "openairtheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://openairtheatre.com/production/anansi-the-spider"
+              "file": "london-box-office--shehrazade-zafar-arif.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
             }
           ],
           "serpCensus": true
@@ -4967,7 +4882,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -4977,7 +4892,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -4986,8 +4901,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -4997,7 +4912,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -5006,30 +4921,29 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 0,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 18,
         "byReason": {
           "non-review-host": 15,
-          "ticketing-listing": 1,
           "aggregator-internal-nav": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
-          "host": "afridiziak.com",
-          "outletId": "afridiziak-theatre-news",
+          "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -5044,25 +4958,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "afridiziak-theatre-news",
-            "outlet": "afridiziak-theatre-news",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/production-images-released-for-anansi-the-spider-at-regents-park"
+            "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review"
           },
           {
             "outletId": "openairtheatre.com",
@@ -5072,13 +4972,6 @@
             "url": "https://openairtheatre.com/production/anansi-the-spider"
           },
           {
-            "outletId": "theatremonkey.com",
-            "outlet": "theatremonkey.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-          },
-          {
             "outletId": "birmingham-rep.co.uk",
             "outlet": "birmingham-rep.co.uk",
             "critic": "Unknown",
@@ -5086,18 +4979,18 @@
             "url": "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/"
           },
           {
-            "outletId": "makeitmarylebone.co.uk",
-            "outlet": "makeitmarylebone.co.uk",
+            "outletId": "theatremonkey.com",
+            "outlet": "theatremonkey.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/"
+            "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
           },
           {
-            "outletId": "openairtheatre.com",
-            "outlet": "openairtheatre.com",
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://openairtheatre.com/blog/first-look-at-anansi-the-spider-under-the-tree-on-the-regents-park-open-air-theatre-picnic-lawn"
+            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
           }
         ],
         "suppressedMissing": [],
@@ -5133,48 +5026,15 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
-            "outletId": "primarytimes.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-22T12:13:43.001Z"
-          },
-          {
-            "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
-            "outletId": "afridiziak-theatre-news",
+            "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
-            "outletId": "london-box-office",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/production-images-released-for-anansi-the-spider-at-regents-park",
-            "outletId": "bestoftheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
           },
           {
             "url": "https://openairtheatre.com/production/anansi-the-spider",
             "outletId": "openairtheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-            "outletId": "theatremonkey.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
@@ -5187,24 +5047,24 @@
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
-            "outletId": "makeitmarylebone.co.uk",
+            "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/",
+            "outletId": "theatremonkey.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://openairtheatre.com/blog/first-look-at-anansi-the-spider-under-the-tree-on-the-regents-park-open-air-theatre-picnic-lawn",
-            "outletId": "openairtheatre.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
+            "outletId": "london-box-office",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
+            "firstSeenAt": "2026-08-20T10:24:01.870Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 13
+        "liveCount": 5,
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -16324,6 +16184,146 @@
         "candidateCount": 9
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "bull-durham-paper-mill-regional-2025",
+      "title": "Bull Durham: A New Musical",
+      "openingDate": "2025-10-12",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-BULL-DURHAM--Updating-Live-20140918"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+        "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+        "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+          "host": "atlantaintownpaper.com",
+          "knownOutletId": "atlanta-intown",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 290,
+        "byReason": {
+          "non-review-host": 15,
+          "not-http-url": 48,
+          "aggregator-internal-nav": 224,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-BULL-DURHAM--Updating-Live-20140918",
+          "publishDate": "2014-09-18"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+          "host": "atlantaintownpaper.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/"
+          },
+          {
+            "outletId": "atlanta-intown",
+            "outlet": "atlanta-intown",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+            "outletId": "atlanta-intown",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 3
+      },
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -37387,6 +37387,57 @@
       "computedAt": "2026-08-13T06:23:39.338Z"
     },
     {
+      "showId": "galileo-berkeley-rep-regional-2024",
+      "title": "Galileo: A Rock Musical",
+      "openingDate": "2024-05-15",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-GALILEO-A-ROCK-MUSICAL-World-Premiere-at-Berkeley-Rep-20240517"
+      ],
+      "aggregatorListedUrls": [
+        "https://sfist.com/2024/05/16/world-premiere-musical-galileo-turns-the-famed-astronomer-into-a-rock-balladeer/"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 9,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 336,
+        "byReason": {
+          "non-review-host": 17,
+          "not-http-url": 93,
+          "aggregator-internal-nav": 223,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://sfist.com/2024/05/16/world-premiere-musical-galileo-turns-the-famed-astronomer-into-a-rock-balladeer/",
+            "outletId": "sfist.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-08-23T16:14:59.695Z"
+    },
+    {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "title": "Game of Thrones: The Mad King",
       "openingDate": "2026-08-08",
@@ -43823,6 +43874,79 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "gun-and-powder-paper-mill-regional-2024",
+      "title": "Gun & Powder",
+      "openingDate": "2024-04-14",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-gun-powder-at-paper-mill-playhouse",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-on-GUN-POWDER-at-Paper-Mill-Playhouse-20240418"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.broadwayworld.com/new-jersey/article/Review-GUN-POWDER-at-Paper-Mill-Playhouse-An-Exciting-Elaborate-New-Musical-20240417",
+        "https://thejewishvoiceandopinion.com/a-new-musical-gun-powder-hits-the-mark/",
+        "https://www.nytimes.com/2024/04/18/theater/gun-powder-review.html",
+        "https://www.theatrely.com/post/gun-powder-shoots-straight-review"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 448,
+        "byReason": {
+          "non-review-host": 34,
+          "not-http-url": 82,
+          "aggregator-internal-nav": 329,
+          "non-review-path": 3
+        }
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.broadwayworld.com/new-jersey/article/Review-GUN-POWDER-at-Paper-Mill-Playhouse-An-Exciting-Elaborate-New-Musical-20240417",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://thejewishvoiceandopinion.com/a-new-musical-gun-powder-hits-the-mark/",
+            "outletId": "thejewishvoiceandopinion.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/04/18/theater/gun-powder-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/gun-powder-shoots-straight-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          }
+        ],
+        "liveCount": 4,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "gutenberg-2023",
@@ -51434,8 +51558,8 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
-      "dirFiles": 38,
-      "dirClean": 22,
+      "dirFiles": 39,
+      "dirClean": 23,
       "inReviewsJson": 22,
       "missing": [
         {
@@ -51742,11 +51866,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1181,
+        "count": 1180,
         "byReason": {
           "non-review-host": 103,
-          "aggregator-internal-nav": 899,
           "not-http-url": 168,
+          "aggregator-internal-nav": 898,
           "non-review-path": 11
         }
       },
@@ -52219,7 +52343,7 @@
         "liveCount": 17,
         "candidateCount": 32
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -55414,25 +55538,34 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://monstagigz.com/2026/08/03/theatre-review-im-every-woman-the-chaka-khan-musical-starring-alexandra-burke-at-troubadour-wembley-park-theatre/",
+        "https://theatreandtonic.co.uk/blog/im-every-woman-the-chaka-khan-musical-review",
+        "https://westendwilma.com/review-im-every-woman-chaka-khan/",
+        "https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre",
+        "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
+        "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke",
+        "https://www.allthatdazzles.co.uk/post/review-i-m-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre",
+        "https://loureviews.blog/2026/08/05/musical-review-im-every-woman-troubadour-wembley-park/",
+        "https://www.theupcoming.co.uk/2026/08/05/im-every-woman-at-troubadour-wembley-park-theatre-theatre-review/",
+        "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/",
+        "https://www.westendbestfriend.co.uk/news/review-im-every-woman-the-musical-troubadour-wembley-park-theatre",
+        "https://www.londontheatre1.com/reviews/im-every-woman-review/",
+        "https://www.thereviewshub.com/im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-london/",
+        "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
+        "https://www.broadwayworld.com/westend/article/Review-IM-EVERY-WOMAN-THE-CHAKA-KHAN-MUSICAL-Troubadour-Wembley-Park-20260805",
+        "https://theatreweekly.com/review-im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre/",
+        "https://www.londonboxoffice.co.uk/news/post/im-every-woman-troubadour-wembley-park-theatre-review",
         "https://www.theguardian.com/stage/2026/aug/05/im-every-woman-the-chaka-khan-musical-review-queen-of-funk",
         "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd",
-        "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
-        "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html",
-        "https://www.broadwayworld.com/westend/article/Review-IM-EVERY-WOMAN-THE-CHAKA-KHAN-MUSICAL-Troubadour-Wembley-Park-20260805",
-        "https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre",
-        "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke"
+        "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html"
       ],
-      "dirFiles": 38,
-      "dirClean": 31,
+      "dirFiles": 39,
+      "dirClean": 32,
       "inReviewsJson": 30,
       "missing": [],
       "dirOnly": [
         {
           "host": "afridiziak.com",
-          "count": 1
-        },
-        {
-          "host": "allthatdazzles.co.uk",
           "count": 1
         },
         {
@@ -55456,23 +55589,11 @@
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "loureviews.blog",
-          "count": 1
-        },
-        {
-          "host": "monstagigz.com",
+          "host": "londontheatredirect.com",
           "count": 1
         },
         {
@@ -55492,35 +55613,48 @@
           "count": 1
         },
         {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "theupcoming.co.uk",
-          "count": 2
-        },
-        {
           "host": "timeout.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendwilma.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
+          "host": "britishtheatre.com",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lovelondonloveculture--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 11,
@@ -55579,8 +55713,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -55599,8 +55733,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -55609,8 +55743,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 5,
             "error": null
           },
           {
@@ -55619,26 +55753,136 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 13,
+        "byReason": {
+          "non-review-host": 10,
+          "ticketing-listing": 1,
+          "roundup-page": 1,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets"
+          },
+          {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://monstagigz.com/2026/08/03/theatre-review-im-every-woman-the-chaka-khan-musical-starring-alexandra-burke-at-troubadour-wembley-park-theatre/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/im-every-woman-the-chaka-khan-musical-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-im-every-woman-chaka-khan/",
+            "outletId": "westendwilma.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T16:49:27.567Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T16:49:27.567Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-i-m-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/08/05/musical-review-im-every-woman-troubadour-wembley-park/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2026/08/05/im-every-woman-at-troubadour-wembley-park-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-im-every-woman-the-musical-troubadour-wembley-park-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/im-every-woman-review/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-IM-EVERY-WOMAN-THE-CHAKA-KHAN-MUSICAL-Troubadour-Wembley-Park-20260805",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T16:49:27.567Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/im-every-woman-troubadour-wembley-park-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2026/aug/05/im-every-woman-the-chaka-khan-musical-review-queen-of-funk",
             "outletId": "theguardian.com",
@@ -55652,40 +55896,30 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html",
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-IM-EVERY-WOMAN-THE-CHAKA-KHAN-MUSICAL-Troubadour-Wembley-Park-20260805",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T16:49:27.567Z"
+            "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T16:49:27.567Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T16:49:27.567Z"
+            "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 7
+        "liveCount": 18,
+        "candidateCount": 20
       },
-      "computedAt": "2026-08-14T16:42:17.748Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
@@ -58512,28 +58746,24 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
-        "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
-        "https://onin.london/jeeves-takes-charge-review/",
+        "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
         "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
         "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
-        "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
-        "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
-        "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
+        "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
         "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
         "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/jeeves-takes-charge-review-charing-cross-theatre",
         "https://www.allthatdazzles.co.uk/post/review-jeeves-takes-charge-charing-cross-theatre",
-        "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
+        "https://onin.london/jeeves-takes-charge-review/",
+        "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
         "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-jeeves-takes-charge-charing-cross-theatre",
         "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse",
-        "https://www.theatremonkey.com/show/jeeves-takes-charge/",
-        "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
-        "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026"
+        "https://www.theatremonkey.com/show/jeeves-takes-charge/"
       ],
-      "dirFiles": 37,
+      "dirFiles": 39,
       "dirClean": 24,
-      "inReviewsJson": 24,
+      "inReviewsJson": 25,
       "missing": [],
       "dirOnly": [
         {
@@ -58562,6 +58792,18 @@
         },
         {
           "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thetheatreflyer.co.uk",
           "count": 1
         },
         {
@@ -58602,24 +58844,6 @@
               "file": "theatremonkey--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.theatremonkey.com/show/jeeves-takes-charge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--luke-dillon.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/"
             }
           ],
           "serpCensus": true
@@ -58674,8 +58898,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -58684,8 +58908,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 8,
+            "accepted": 5,
             "error": null
           },
           {
@@ -58694,7 +58918,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 7,
             "accepted": 1,
             "error": null
           },
@@ -58705,7 +58929,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -58721,15 +58945,15 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 19,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 13,
         "byReason": {
-          "non-review-host": 13,
+          "non-review-host": 10,
           "ticketing-listing": 1,
-          "venue-production-page": 3
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -58749,13 +58973,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/jeeves-takes-charge/"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/"
           }
         ],
         "suppressedMissing": [],
@@ -58767,14 +58984,8 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
-            "outletId": "fairypoweredproductions.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
-          },
-          {
-            "url": "https://onin.london/jeeves-takes-charge-review/",
-            "outletId": "onin.london",
+            "url": "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "outletId": "londonbornandbred.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-23T03:53:38.032Z"
           },
@@ -58791,22 +59002,10 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
-            "outletId": "thelivereview.co.uk",
+            "url": "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+            "outletId": "fairypoweredproductions.com",
             "state": "live",
-            "firstSeenAt": "2026-08-22T12:13:43.001Z"
-          },
-          {
-            "url": "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
-            "outletId": "londonbornandbred.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+            "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
             "url": "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
@@ -58827,10 +59026,16 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://onin.london/jeeves-takes-charge-review/",
+            "outletId": "onin.london",
             "state": "live",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
+            "firstSeenAt": "2026-08-23T03:53:38.032Z"
+          },
+          {
+            "url": "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
+            "outletId": "thelivereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-22T12:13:43.001Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
@@ -58851,12 +59056,6 @@
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026",
-            "outletId": "thetheatreflyer.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
-          {
             "url": "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
             "outletId": "south-london",
             "state": "GAP",
@@ -58869,19 +59068,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
           }
         ],
-        "liveCount": 16,
-        "candidateCount": 19
+        "liveCount": 13,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "jesa-off-broadway-2026",
@@ -71637,12 +71829,27 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorListedUrls": [
+        "https://www.theaterscene.net/plays/offbway-plays/masticate/lydia-singer/",
+        "https://www.show-score.com/off-broadway-shows/masticate"
+      ],
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/masticate",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "donyc.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -71657,8 +71864,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71667,7 +71874,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -71677,7 +71884,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -71687,8 +71894,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71697,30 +71904,72 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 23,
+          "aggregator-internal-nav": 3,
+          "non-review-path": 3,
+          "venue-production-page": 4
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/masticate",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/masticate"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/masticate/lydia-singer/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-broadway-shows/masticate",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 2
       },
-      "computedAt": "2026-08-14T16:42:17.748Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
@@ -71749,7 +71998,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -71759,7 +72008,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -71769,7 +72018,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -71779,7 +72028,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -71789,7 +72038,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -71800,8 +72049,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 33
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -71812,7 +72063,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T16:42:17.748Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -79160,7 +79411,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "music-city-off-broadway-2026",
@@ -80178,41 +80429,35 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theatreandtonic.co.uk/blog/now-you-see-me-live-at-the-london-coliseum-review",
-        "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
-        "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
-        "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
-        "https://www.thereviewshub.com/now-you-see-me-live-london-coliseum/",
-        "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
-        "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
         "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
-        "https://thespyinthestalls.com/2026/08/now-you-see-me-live/",
-        "https://theatrereviews.design/now-you-see-me-live/",
-        "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-        "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
-        "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
+        "https://theatreandtonic.co.uk/blog/now-you-see-me-live-at-the-london-coliseum-review",
+        "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
+        "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
+        "https://www.broadwayworld.com/westend/article/Review-NOW-YOU-SEE-ME-LIVE-London-Coliseum-20260803",
+        "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
         "https://www.westendbestfriend.co.uk/news/review-now-you-see-me-live-london-coliseum",
+        "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
+        "https://theatreweekly.com/review-now-you-see-me-live-at-london-coliseum/",
+        "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
+        "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
         "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter",
-        "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/"
+        "https://www.londonboxoffice.co.uk/news/post/now-you-see-me-live-london-coliseum-review"
       ],
-      "dirFiles": 40,
-      "dirClean": 21,
-      "inReviewsJson": 20,
-      "missing": [
-        {
-          "url": "https://theatrereviews.design/now-you-see-me-live/",
-          "host": "theatrereviews.design",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 42,
+      "dirClean": 22,
+      "inReviewsJson": 22,
+      "missing": [],
       "dirOnly": [
         {
           "host": "adventuresintheatreland.com",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "jacktheladmag.com",
           "count": 1
         },
         {
@@ -80228,33 +80473,22 @@
           "count": 1
         },
         {
-          "host": "theatreweekly.com",
+          "host": "southlondon.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "jonathan-baz--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 1,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -80271,8 +80505,8 @@
             "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -80286,9 +80520,14 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
@@ -80302,7 +80541,7 @@
             "geo": "gb",
             "ok": true,
             "results": 8,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -80312,7 +80551,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -80321,8 +80560,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 3,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -80331,7 +80570,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -80342,7 +80581,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -80358,52 +80597,29 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 16,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 26,
         "byReason": {
-          "non-review-host": 21,
-          "ticketing-listing": 1
+          "non-review-host": 15,
+          "not-http-url": 9,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://theatrereviews.design/now-you-see-me-live/",
-          "host": "theatrereviews.design",
-          "outletId": "theatrereviews",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~150334/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatrereviews.design",
-            "outlet": "theatrereviews.design",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatrereviews.design/now-you-see-me-live/"
-          },
-          {
-            "outletId": "jonathan-baz",
-            "outlet": "jonathan-baz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-09T06:39:26.552Z"
+          },
           {
             "url": "https://theatreandtonic.co.uk/blog/now-you-see-me-live-at-the-london-coliseum-review",
             "outletId": "theatreandtonic.co.uk",
@@ -80411,14 +80627,8 @@
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T15:48:01.636Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
+            "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
           },
@@ -80429,46 +80639,16 @@
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
-            "url": "https://www.thereviewshub.com/now-you-see-me-live-london-coliseum/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-NOW-YOU-SEE-ME-LIVE-London-Coliseum-20260803",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T09:16:06.645Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/08/now-you-see-me-live/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
-            "url": "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
-            "outletId": "firstnightmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T09:47:36.913Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T22:27:26.378Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-now-you-see-me-live-london-coliseum",
@@ -80477,36 +80657,46 @@
             "firstSeenAt": "2026-08-10T21:29:36.683Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T09:16:06.645Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-now-you-see-me-live-at-london-coliseum/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T09:47:36.913Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
-            "url": "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/",
-            "outletId": "southlondon.co.uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/now-you-see-me-live-london-coliseum-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-11T22:27:26.378Z"
-          },
-          {
-            "url": "https://theatrereviews.design/now-you-see-me-live/",
-            "outletId": "theatrereviews.design",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T00:55:31.345Z"
-          },
-          {
-            "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-            "outletId": "jonathan-baz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 16
+        "liveCount": 13,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "oedipus-2025",
@@ -108210,9 +108400,9 @@
         "https://events.amny.com/event/spellbound/",
         "https://www.sohoplayhouse.com/see-a-show/spellbound",
         "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
-        "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/",
         "https://www.thereviewshub.com/suhani-shah-spellbound-2-0-soho-theatre-london/",
-        "https://sohotheatre.com/events/suhani-shah-spellbound/"
+        "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
+        "https://sohotheatre.com/events/suhani-shah-spellbound-2/"
       ],
       "dirFiles": 6,
       "dirClean": 0,
@@ -108299,6 +108489,12 @@
           "host": "thereviewshub.com",
           "knownOutletId": "thereviewshub",
           "serpCensus": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -108340,25 +108536,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/",
-          "host": "sohotheatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sohotheatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://sohotheatre.com/events/suhani-shah-spellbound/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sohotheatre.com/events/suhani-shah-spellbound/",
+          "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/",
           "host": "sohotheatre.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -108389,7 +108567,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -108399,7 +108577,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -108409,7 +108587,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 2,
             "error": null
           },
@@ -108419,8 +108597,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -108430,7 +108608,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -108440,14 +108618,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 299,
+        "count": 295,
         "byReason": {
-          "non-review-host": 39,
-          "roundup-page": 1,
+          "non-review-host": 35,
           "not-http-url": 40,
+          "roundup-page": 1,
           "aggregator-internal-nav": 214,
-          "non-review-path": 3,
-          "venue-production-page": 2
+          "non-review-path": 4,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -108536,6 +108714,18 @@
           "url": "https://www.thereviewshub.com/suhani-shah-spellbound-2-0-soho-theatre-london/",
           "host": "thereviewshub.com",
           "outletId": "thereviewshub",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -108634,6 +108824,13 @@
             "url": "https://www.thereviewshub.com/suhani-shah-spellbound-2-0-soho-theatre-london/"
           },
           {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe"
+          },
+          {
             "outletId": "amny",
             "outlet": "amny",
             "critic": "Unknown",
@@ -108652,14 +108849,7 @@
             "outlet": "sohotheatre.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/"
-          },
-          {
-            "outletId": "sohotheatre.com",
-            "outlet": "sohotheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound/"
+            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/"
           }
         ],
         "suppressedMissing": [],
@@ -108749,6 +108939,13 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           },
           {
+            "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+          },
+          {
             "url": "https://events.amny.com/event/spellbound/",
             "outletId": "amny",
             "state": "GAP",
@@ -108763,24 +108960,17 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           },
           {
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/",
+            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/",
             "outletId": "sohotheatre.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
-          },
-          {
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound/",
-            "outletId": "sohotheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
+            "firstSeenAt": "2026-08-23T16:14:59.695Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 15
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "starlight-express-west-end-2024",
@@ -113370,7 +113560,7 @@
         "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
         "https://theartsdesk.com/theatre/stranger-things-first-shadow-phoenix-theatre-review-formidable-stagecraft-unlocks-new-depths"
       ],
-      "dirFiles": 70,
+      "dirFiles": 71,
       "dirClean": 23,
       "inReviewsJson": 27,
       "missing": [
@@ -113628,6 +113818,25 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/22/stranger-things-first-shadow-broadway/",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
@@ -113849,11 +114058,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 771,
+        "count": 774,
         "byReason": {
           "non-review-host": 72,
-          "aggregator-internal-nav": 601,
           "not-http-url": 92,
+          "aggregator-internal-nav": 604,
           "non-review-path": 6
         }
       },
@@ -113879,7 +114088,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~150320/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -113978,6 +114187,13 @@
             "url": "https://www.theatermania.com/news/review-stranger-things-the-first-shadow-turns-broadway-upside-down_1771274/"
           },
           {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney"
+          },
+          {
             "outletId": "washpost",
             "outlet": "washpost",
             "critic": "Unknown",
@@ -114065,12 +114281,6 @@
           }
         ],
         "candidates": [
-          {
-            "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
-          },
           {
             "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
             "outletId": "variety.com",
@@ -114277,6 +114487,13 @@
             "firstSeenAt": "2026-08-03T16:48:58.521Z"
           },
           {
+            "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T16:48:58.521Z"
+          },
+          {
             "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/22/stranger-things-first-shadow-broadway/",
             "outletId": "washpost",
             "state": "GAP",
@@ -114362,9 +114579,9 @@
           }
         ],
         "liveCount": 16,
-        "candidateCount": 38
+        "candidateCount": 39
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "suffs-2024",
@@ -122499,851 +122716,33 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-        "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-        "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-        "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
-        "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-        "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-        "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-        "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-        "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-        "https://www.mixuptheatre.com/post/theatre-review-the-importance-of-being-oscar",
-        "https://www.thereviewshub.com/the-importance-of-being-oscar-jermyn-street-theatre-london/",
-        "https://susanelkin.co.uk/articles/the-importance-of-being-oscar-susan-elkin-reviews/",
-        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-importance-of-being-oscar_1726382/",
-        "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-reading-rep-theatre",
-        "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
-        "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
-        "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
-        "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
-        "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
-        "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
-        "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
-        "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-        "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
-        "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
-        "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
-      ],
-      "dirFiles": 44,
-      "dirClean": 19,
-      "inReviewsJson": 19,
-      "missing": [
-        {
-          "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-          "host": "londonpubtheatres.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.mixuptheatre.com/post/theatre-review-the-importance-of-being-oscar",
-          "host": "mixuptheatre.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/the-importance-of-being-oscar-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-reading-rep-theatre",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "fringereview.co.uk",
-          "count": 1
-        },
-        {
-          "host": "hamhigh.co.uk",
-          "count": 1
-        },
-        {
-          "host": "liamodell.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "reviewsgate.co.uk",
-          "count": 1
-        },
-        {
-          "host": "shinylife.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thesetheatrethoughts.co.uk",
-          "count": 1
-        },
-        {
-          "host": "viewfromthegods.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fairypoweredproductions--fairypoweredproductions.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lovelondonloveculture--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--gary-naylor.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews",
-          "priorRun": true
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--patrick-marmion.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews",
-          "priorRun": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews",
-          "priorRun": true
-        },
-        {
-          "url": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
-          "host": "ft.com",
-          "knownOutletId": "financialtimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "financialtimes--sarah-hemming.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--david-jays.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews",
-          "priorRun": true
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "express-uk--stefan-kyriazis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 19,
-        "sources": {
-          "westendtheatre": {
-            "found": true,
-            "rows": 11,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 8,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 8,
-        "corroborated": 3,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 8,
-            "corroborated": 3
-          }
-        }
-      },
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Importance of Being Oscar\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Importance of Being Oscar\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Importance of Being Oscar Park Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Importance of Being Oscar Park Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Importance of Being Oscar Park Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 16,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 15,
-        "byReason": {
-          "non-review-host": 12,
-          "ticketing-listing": 2,
-          "aggregator-internal-nav": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-          "host": "londonpubtheatres.com",
-          "outletId": "londonpubtheatres",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~150318/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.mixuptheatre.com/post/theatre-review-the-importance-of-being-oscar",
-          "host": "mixuptheatre.com",
-          "outletId": "mixuptheatre",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/the-importance-of-being-oscar-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "outletId": "susanelkin",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-reading-rep-theatre",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "londonpubtheatres.com",
-            "outlet": "londonpubtheatres.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review"
-          },
-          {
-            "outletId": "mixuptheatre.com",
-            "outlet": "mixuptheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.mixuptheatre.com/post/theatre-review-the-importance-of-being-oscar"
-          },
-          {
-            "outletId": "susanelkin.co.uk",
-            "outlet": "susanelkin.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://susanelkin.co.uk/articles/the-importance-of-being-oscar-susan-elkin-reviews/"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-reading-rep-theatre"
-          },
-          {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
-          },
-          {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets"
-          },
-          {
-            "outletId": "artsdesk",
-            "outlet": "artsdesk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright"
-          },
-          {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/"
-          },
-          {
-            "outletId": "daily-mail",
-            "outlet": "daily-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2"
-          },
-          {
-            "outletId": "financialtimes",
-            "outlet": "financialtimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788"
-          },
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre"
-          },
-          {
-            "outletId": "sunday-express",
-            "outlet": "sunday-express",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T21:44:22.665Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-jermyn-street-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-importance-of-being-oscar_1726382/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T06:23:50.424Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-            "outletId": "londonpubtheatres.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T16:48:37.492Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T20:18:38.496Z"
-          },
-          {
-            "url": "https://www.mixuptheatre.com/post/theatre-review-the-importance-of-being-oscar",
-            "outletId": "mixuptheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://susanelkin.co.uk/articles/the-importance-of-being-oscar-susan-elkin-reviews/",
-            "outletId": "susanelkin.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-reading-rep-theatre",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-            "outletId": "fairypoweredproductions",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-            "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-            "outletId": "artsdesk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T18:40:18.949Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
-            "outletId": "sunday-telegraph",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
-            "outletId": "daily-mail",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
-            "outletId": "financialtimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
-            "outletId": "sunday-express",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          }
-        ],
-        "liveCount": 7,
-        "candidateCount": 23
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -135989,13 +135388,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 768,
+        "count": 752,
         "byReason": {
           "non-review-host": 53,
-          "aggregator-internal-nav": 530,
-          "not-http-url": 169,
-          "non-review-path": 6,
-          "roundup-page": 10
+          "not-http-url": 172,
+          "roundup-page": 10,
+          "aggregator-internal-nav": 511,
+          "non-review-path": 6
         }
       },
       "dedupedVariants": [],
@@ -136606,7 +136005,7 @@
         "liveCount": 7,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "titus-andronicus-off-broadway-2026",
@@ -145136,6 +144535,41 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-21T22:16:46.049Z"
+    },
+    {
+      "showId": "working-girl-la-jolla-regional-2025",
+      "title": "Working Girl",
+      "openingDate": "2025-11-09",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-23T16:14:59.695Z"
     },
     {
       "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",

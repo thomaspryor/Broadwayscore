@@ -3217,7 +3217,13 @@ showDirs.forEach(showId => {
       // routedFromShowId: already rerouted — publish date reflects the original show's era
       // priorRuns: review falls inside a declared earlier-run window (Phase 1 production-continuity)
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
-        const pubDate = new Date(data.publishDate);
+        // parseDate (not new Date()) — new Date() silently returns Invalid
+        // Date for ordinal-suffix dates ("January 26th, 2023", as written by
+        // some scraper paths), which evaluatePreWindowInclusion then treats
+        // as "no date info" and never excludes. Same bug class as the
+        // DATE GUARD fix below (task #1, 2026-08-23) — this guard runs
+        // earlier in the pipeline and has the identical parsing gap.
+        const pubDate = parseDate(data.publishDate);
         const openDate = showDateMap[showId];
         const preWindow = evaluatePreWindowInclusion({
           pubDate,
@@ -3416,32 +3422,45 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Date-based wrong-production guard: skip reviews published >30 days before previews/opening
-      // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
-      // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
-      // WE shows are exempt: many are long-running transfers with reviews from the original run
-      // priorRuns exemption: a review inside an operator-declared prior-run window is legitimate
-      // coverage of an earlier run (venue transfer / return engagement) — the structured form of
-      // the "transfers" bypass named above. Without this, a transfer record's original-run reviews
-      // (published weeks before the transfer's opening) are wrongly dropped as date-mismatched.
-      if (
-        data.publishDate &&
-        showDateMap[showId] &&
-        !data.allowEarlyDate &&
-        !isLondonMarket(showCategory) &&
-        !isWithinPriorRun(new Date(data.publishDate), showById[showId]?.priorRuns)
-      ) {
-        const pubDate = new Date(data.publishDate);
-        if (!isNaN(pubDate.getTime())) {
-          const showDate = showDateMap[showId];
-          const daysBefore = (showDate - pubDate) / (1000 * 60 * 60 * 24);
-          if (daysBefore > 30) {
-            console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${Math.round(daysBefore)}d before)`);
+      // Date-based wrong-production guard: skip reviews published implausibly
+      // long before previews/opening. Broadway reviews are embargoed until
+      // opening night; anything much earlier is likely wrong-production.
+      // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts).
+      // Delegates to the canonical evaluatePreWindowInclusion (date-guard.js) —
+      // the SAME predicate the duplicate-reference recovery pass already uses
+      // (see ~line 2334) — instead of a second, drifted copy of this policy.
+      // Before this fix, London/OWE shows were given a blanket bypass
+      // (`!isLondonMarket(showCategory)`) instead of the priorRuns/tourLegs
+      // check the comment above it claimed to apply — so a West End show with
+      // NO declared priorRuns had no ceiling at all: a stale aggregator
+      // fallback re-attached a Jan-2023 date to Anansi the Spider's Aug-2026
+      // Regent's Park run (1297 days off) and it scored anyway. Shows that
+      // legitimately carry earlier-run reviews (Abigail's Party's 2024
+      // Stratford East run) stay covered via the declared priorRuns window;
+      // shows without one now get the same 60-day flex threshold as
+      // off-Broadway instead of an open-ended pass. See BRO task #1 (2026-08-23).
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+        // parseDate (not new Date()) — matches the sibling checks at ~2728/2867
+        // in this file. Plain `new Date()` silently fails on ordinal-suffix
+        // dates ("January 26th, 2023", as stored by this exact scraper path),
+        // returning Invalid Date and skipping the guard entirely regardless of
+        // market — a second way the Anansi review escaped this check.
+        const pubDate = parseDate(data.publishDate);
+        if (pubDate && !isNaN(pubDate.getTime())) {
+          const preWindow = evaluatePreWindowInclusion({
+            pubDate,
+            showEarliest: showDateMap[showId],
+            isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
+            priorRuns: showById[showId]?.priorRuns,
+            tourLegs: showById[showId]?.tourLegs,
+          });
+          if (preWindow.exclude) {
+            console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${preWindow.daysBefore}d before, threshold ${preWindow.threshold}d)`);
             if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
             stats.suspectedWrongProduction.push({
               showId, file, outlet: data.outletId || data.outlet,
               critic: data.criticName, publishDate: data.publishDate,
-              daysBefore: Math.round(daysBefore), score: data.assignedScore
+              daysBefore: preWindow.daysBefore, score: data.assignedScore
             });
             logExclusion("skippedDateMismatch", showId, file, data);
             stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
