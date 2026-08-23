@@ -33,6 +33,16 @@
  * ever touching the production remote (the old REPO_ROOT-anchored version
  * leaked fixture ledger commits onto the real origin/main whenever the
  * push-with-retry integration tests ran).
+ *
+ * GENERALIZED (task: push-retry-failure telemetry, 2026-08-23, /plan-review'd
+ * — six independent reviewers) to accept an optional `{branch, file}` pair so
+ * a second dedicated single-commit branch (`push-retry-failures`) can reuse
+ * this exact CAS primitive instead of duplicating it. Named-args, not
+ * positional strings (Codex-lens plan-review finding: two adjacent string
+ * params invite an accidental swap that fails silently — wrong branch/file,
+ * no type error). Defaults are the original `push-ledger`/`recent-
+ * pushes.jsonl` pair, so every existing caller (record-push-ledger.js,
+ * check-push-ledger.js) needs zero changes.
  */
 'use strict';
 
@@ -55,15 +65,18 @@ function git(cwd, args, opts = {}) {
  * silent green no-op on the sole delayed revert-detection arm). The
  * RECORDER can ignore the flag: its subsequent CAS write fails the lease
  * on stale state and retries, so a transient fetch error never corrupts.
+ *
+ * @param {string} cwd
+ * @param {{branch?: string, file?: string}} [opts]
  */
-function readLedger(cwd) {
+function readLedger(cwd, { branch = LEDGER_BRANCH, file = LEDGER_FILE } = {}) {
   let tip = '';
   let fetchFailed = false;
   try {
     git(cwd, ['fetch', '--quiet', '--no-tags', 'origin',
-      `+refs/heads/${LEDGER_BRANCH}:refs/remotes/origin/${LEDGER_BRANCH}`], { timeout: 15000 });
+      `+refs/heads/${branch}:refs/remotes/origin/${branch}`], { timeout: 15000 });
     try {
-      tip = git(cwd, ['rev-parse', `refs/remotes/origin/${LEDGER_BRANCH}`]).trim();
+      tip = git(cwd, ['rev-parse', `refs/remotes/origin/${branch}`]).trim();
     } catch {
       tip = ''; // fetch ok but ref unresolvable — treat as absent
     }
@@ -75,7 +88,7 @@ function readLedger(cwd) {
   let content = '';
   if (tip) {
     try {
-      content = git(cwd, ['show', `${tip}:${LEDGER_FILE}`]);
+      content = git(cwd, ['show', `${tip}:${file}`]);
     } catch {
       content = ''; // tree missing the file — treat as empty ledger
     }
@@ -87,10 +100,15 @@ function readLedger(cwd) {
  * Replace the ledger branch with a single root commit containing `content`,
  * iff origin's tip still equals `expectedTip` (CAS). Throws on lease
  * rejection or any git failure — callers own the retry loop.
+ *
+ * @param {string} cwd
+ * @param {string} content
+ * @param {string} expectedTip
+ * @param {{branch?: string, file?: string}} [opts]
  */
-function writeLedger(cwd, content, expectedTip) {
+function writeLedger(cwd, content, expectedTip, { branch = LEDGER_BRANCH, file = LEDGER_FILE } = {}) {
   const blob = git(cwd, ['hash-object', '-w', '--stdin'], { input: content }).trim();
-  const tree = git(cwd, ['mktree'], { input: `100644 blob ${blob}\t${LEDGER_FILE}\n` }).trim();
+  const tree = git(cwd, ['mktree'], { input: `100644 blob ${blob}\t${file}\n` }).trim();
   // Explicit ident: commit-tree must work on runners/machines with no git
   // identity configured (the old `git commit` path silently depended on the
   // caller's config).
@@ -99,10 +117,10 @@ function writeLedger(cwd, content, expectedTip) {
     GIT_AUTHOR_NAME: 'push-ledger', GIT_AUTHOR_EMAIL: 'push-ledger@ci',
     GIT_COMMITTER_NAME: 'push-ledger', GIT_COMMITTER_EMAIL: 'push-ledger@ci',
   };
-  const commit = git(cwd, ['commit-tree', tree, '-m', 'push-ledger state (single-commit branch, replaced on every write)'],
+  const commit = git(cwd, ['commit-tree', tree, '-m', `${branch} state (single-commit branch, replaced on every write)`],
     { env: identEnv }).trim();
-  git(cwd, ['push', '--quiet', 'origin', `${commit}:refs/heads/${LEDGER_BRANCH}`,
-    `--force-with-lease=refs/heads/${LEDGER_BRANCH}:${expectedTip || ''}`], { timeout: 25000 });
+  git(cwd, ['push', '--quiet', 'origin', `${commit}:refs/heads/${branch}`,
+    `--force-with-lease=refs/heads/${branch}:${expectedTip || ''}`], { timeout: 25000 });
   return commit;
 }
 

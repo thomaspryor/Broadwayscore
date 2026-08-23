@@ -146,6 +146,18 @@ git_push() {
 # explicit-destination fetch below prevents the no-op in the first place. The log
 # reliably captures local runs and any job that lands a LATER successful push.
 PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$SCRIPT_DIR/../../data/audit/push-retry-failures.jsonl}"
+# _FAILURE_TELEMETRY_SENT: fires the durable (git-branch) telemetry write
+# only on this invocation's FIRST call to record_push_failure(), not every
+# one (task: push-retry-failure telemetry, 2026-08-23, /plan-review'd —
+# three independent reviewers caught that this function is called from
+# MULTIPLE points inside the retry loop under real contention, not only once
+# at final exhaustion — e.g. line ~994/~1551's commit-dropped-post-push path
+# can recur across attempts. One durable record per invocation is enough to
+# make the failure OBSERVABLE; spawning a background process per retry
+# attempt would waste runner resources for zero additional signal value).
+# The LOCAL log below is unaffected — it still appends on every call, as
+# before, for full-detail post-hoc debugging when a later job's log survives.
+_FAILURE_TELEMETRY_SENT=false
 record_push_failure() {
   local reason="${1:-unknown}" attempt="${2:-0}"
   local ts remote workflow
@@ -173,6 +185,35 @@ record_push_failure() {
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
     "$workflow" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
+
+  # Durable telemetry (task: push-retry-failure telemetry, 2026-08-23).
+  # SYNCHRONOUS but HARD-CAPPED at 5s via the existing _timeout helper above
+  # (not backgrounded+disowned) — deliberate choice over fire-and-forget: a
+  # GitHub Actions step's process group can be reaped moments after the
+  # step's own script exits, so a truly backgrounded child has no guarantee
+  # of surviving long enough to complete its CAS write on an ephemeral
+  # runner. A short, bounded wait (record-push-retry-failure.js's own
+  # normal-case cost is well under 1s per tests/unit/push-retry-failure-
+  # ledger.test.mjs's timings; 5s covers real network latency with margin)
+  # is a small, PREDICTABLE latency tax — a world apart from the original
+  # design 3 independent plan-review reviewers flagged (an unbounded-feeling
+  # wait, called from inside a hot loop, up to ~25x per invocation in the
+  # documented worst case). Firing only once per invocation (the
+  # _FAILURE_TELEMETRY_SENT gate above) already bounds the worst-case total
+  # added latency to this single 5s cap, not 5s times the retry count.
+  # PUSH_SKIP_FAILURE_LEDGER=1 disables it independently of PUSH_SKIP_LEDGER
+  # (the unrelated push-success ledger's own switch).
+  if [ "$_FAILURE_TELEMETRY_SENT" = "false" ] \
+     && [ "${PUSH_SKIP_FAILURE_LEDGER:-}" != "1" ] \
+     && command -v node >/dev/null 2>&1 \
+     && [ -f "$SCRIPT_DIR/../record-push-retry-failure.js" ]; then
+    _FAILURE_TELEMETRY_SENT=true
+    _timeout 5 node "$SCRIPT_DIR/../record-push-retry-failure.js" \
+      "--reason=$reason" "--attempt=$attempt" "--max-retries=${MAX_RETRIES:-0}" \
+      "--branch=${PULL_BRANCH:-main}" "--remote=$remote" \
+      "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
+      >/dev/null 2>&1 || true
+  fi
 }
 
 # Pre-push conflict-marker guard (root-cause fix, 2026-06-29 / Notion 38e637c5).
