@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-23T09:58:12.711Z",
-  "processed": 14,
-  "failed": 166,
-  "successRate": "7.8%",
+  "updatedAt": "2026-08-23T10:03:07.325Z",
+  "processed": 18,
+  "failed": 172,
+  "successRate": "9.5%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-23T08:39:28.192Z",
@@ -36,6 +36,18 @@
       "t": "2026-08-23T08:40:44.612Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-23T10:02:25.707Z",
+      "event": "bb-session",
+      "session": "5316a8b3",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-23T10:02:43.875Z",
+      "event": "bb-session",
+      "session": "26ecb05b",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
     }
   ]
 }
