@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-24T08:18:34.880Z",
+  "timestamp": "2026-08-24T10:15:55.064Z",
   "stats": {
-    "totalReviews": 42364,
-    "alreadyFlagged": 18136,
+    "totalReviews": 42387,
+    "alreadyFlagged": 18139,
     "dateGuardCatches": 177,
     "directorMismatch": 992,
     "tvFilmSignals": 1223,
-    "londonSignals": 927,
+    "londonSignals": 928,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3563
+    "noPublishDate": 3562
   },
   "findings": [
     {
@@ -33920,6 +33920,19 @@
       ]
     },
     {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-08-22",
+      "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "british-theatre--susan-novak.json",
       "score": 78,
@@ -42916,7 +42929,8 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "times-uk--unknown.json",
-      "publishDate": null,
+      "score": 81,
+      "publishDate": "2025-01-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
         {
