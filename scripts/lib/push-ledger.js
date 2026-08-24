@@ -37,10 +37,37 @@ function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt, fallba
   });
 }
 
+// Entry builder for the SEPARATE push-retry-failures ledger (task:
+// push-retry-failure telemetry, 2026-08-23) — mirrors record_push_failure()'s
+// existing field set in scripts/lib/push-with-retry.sh so both the local
+// PUSH_FAILURE_LOG line and this durable entry carry identical data.
+// Deliberately its own builder (not buildLedgerEntry): failure entries have
+// no `sha` — the push never landed — so they can't share that function's
+// required-field contract.
+function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workflow, ci, ts }) {
+  if (!reason) throw new Error('buildFailureEntry: reason is required');
+  return JSON.stringify({
+    reason,
+    attempt: attempt || 0,
+    maxRetries: maxRetries || 0,
+    branch: branch || 'main',
+    remote: remote || '',
+    workflow: workflow || '',
+    ci: Boolean(ci),
+    ts: ts || new Date().toISOString(),
+  });
+}
+
 // Parses JSONL content into entries, silently skipping blank/malformed lines
 // (a single corrupted line — e.g. a partial write from a killed runner —
-// must never take down the whole ledger).
-function parseLedgerLines(content) {
+// must never take down the whole ledger). `requiredFields` (all must be
+// present as strings) lets callers reuse this parser for entry shapes other
+// than the original {sha, ts} push-success ledger — e.g. the push-retry-
+// failures ledger's {reason, ts} — instead of duplicating this loop's
+// trim/split/JSON.parse/try-catch skeleton per ledger (code-design
+// plan-review finding, 2026-08-23: near-identical modules are a permanent
+// duplication tax).
+function parseLedgerLines(content, requiredFields = ['sha', 'ts']) {
   if (!content) return [];
   const entries = [];
   for (const line of content.split('\n')) {
@@ -48,7 +75,7 @@ function parseLedgerLines(content) {
     if (!trimmed) continue;
     try {
       const entry = JSON.parse(trimmed);
-      if (entry && typeof entry.sha === 'string' && typeof entry.ts === 'string') {
+      if (entry && requiredFields.every((f) => typeof entry[f] === 'string')) {
         entries.push(entry);
       }
     } catch {
@@ -88,6 +115,7 @@ function pruneToWindow(entries, { nowMs, maxAgeMs }) {
 
 module.exports = {
   buildLedgerEntry,
+  buildFailureEntry,
   parseLedgerLines,
   serializeEntries,
   selectEntriesInWindow,

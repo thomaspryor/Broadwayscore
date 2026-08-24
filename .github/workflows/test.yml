@@ -475,6 +475,11 @@ on:
       # fault-injects the default arm and reproduces the incident's own
       # documented end-state. Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.content-drop.test.sh'
+      # Task: push-retry-failure telemetry, 2026-08-23. Bash integration test
+      # for record_push_failure()'s shell->CLI argv handoff (pure schema/CAS
+      # logic runs in tests/unit/push-retry-failure-ledger.test.mjs, covered
+      # by the tests/** glob). Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
       # content, so a concurrent writer that reverted our lines (leaving the
       # path in place) passed every check and the script reported success —
@@ -3387,6 +3392,18 @@ jobs:
         # scripts/lib/push-content-survival.test.mjs run above.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.content-drop.test.sh
+
+      - name: Run push-with-retry failure-telemetry shellquote test (bash integration)
+        # Task: push-retry-failure telemetry, 2026-08-23. Asserts
+        # record_push_failure()'s exact `"--reason=$reason"` bash
+        # interpolation round-trips the real reason-string shapes
+        # push-with-retry.sh's 6 call sites actually produce (including
+        # '(' and ')') through scripts/record-push-retry-failure.js's
+        # argv parsing into the durable push-retry-failures ledger branch,
+        # without needing a live git-conflict harness to reach one of the
+        # real call sites.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh
 
       - name: Run merge-worktree-to-main content-drop test (bash integration)
         # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's

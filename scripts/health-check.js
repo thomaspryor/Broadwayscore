@@ -2372,14 +2372,37 @@ function checkDigestInvariantFail() {
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
-// lives in scripts/lib/push-retry-deadman.js's header. This wrapper reuses
-// readJsonlLedgerOrNull() (above) so this is the third gitignored-ledger check
-// in this file to share the same null-means-absent read path, not a fourth
-// slightly-different variant of it.
+// lives in scripts/lib/push-retry-deadman.js's header.
+//
+// SOURCE (task: push-retry-failure telemetry, 2026-08-23, Phase 0 of the
+// push-contention systemic fix): the LOCAL data/audit/push-retry-
+// failures.jsonl this used to read is gitignored and dies with the runner
+// whenever the failed push is the only write in a CI job — which is exactly
+// why this row reported "Cannot measure" for months. record_push_failure()
+// (scripts/lib/push-with-retry.sh) now ALSO durably records to a dedicated
+// `push-retry-failures` git branch via the generalized scripts/lib/
+// push-ledger-store.js (same CAS-branch pattern proven by the push-ledger
+// success stream). Reads from THAT branch now, not the local file — same
+// null-means-absent contract as readJsonlLedgerOrNull() above (any read/
+// fetch error, including the branch not existing yet, returns null so this
+// row still says "cannot measure" rather than falsely reporting zero
+// failures).
+function readPushRetryFailureLedgerOrNull() {
+  try {
+    const { readLedger } = require('./lib/push-ledger-store.js');
+    const { parseLedgerLines } = require('./lib/push-ledger.js');
+    const cwd = path.join(__dirname, '..');
+    const { content, fetchFailed } = readLedger(cwd, { branch: 'push-retry-failures', file: 'failures.jsonl' });
+    if (fetchFailed) return null;
+    return parseLedgerLines(content, ['reason', 'ts']);
+  } catch {
+    return null;
+  }
+}
+
 function checkPushRetryDeadman() {
   const { assessPushRetryDeadman } = require('./lib/push-retry-deadman.js');
-  const logPath = path.join(AUDIT_DIR, 'push-retry-failures.jsonl');
-  return [assessPushRetryDeadman(readJsonlLedgerOrNull(logPath))];
+  return [assessPushRetryDeadman(readPushRetryFailureLedgerOrNull())];
 }
 
 // --- Category I3: Infra-review gate telemetry (task #1095) ---
