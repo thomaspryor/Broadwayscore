@@ -11,7 +11,10 @@
     "as-you-like-it-globe-west-end-2026/bestoftheatre--unknown.json",
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/london-theatre--unknown.json",
-    "as-you-like-it-globe-west-end-2026/marquee--unknown.json"
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theatre-weekly--stephen-gilchrist.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,7 +23,9 @@
       "as-you-like-it-globe-west-end-2026/firstnightmagazine--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -28,6 +33,18 @@
     "archive": []
   },
   "startTime": "2026-08-24T09:16:18.862Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
-  "log": []
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+  "log": [
+    {
+      "t": "2026-08-24T09:19:30.496Z",
+      "event": "bb-session",
+      "session": "a6dcfac7",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-24T09:19:31.483Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
