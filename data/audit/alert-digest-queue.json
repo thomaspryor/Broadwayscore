@@ -33,14 +33,14 @@
     "queuedAt": "2026-08-24T09:49:33.784Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.6% (384/495)\noff-broadway: 45.9% (150/327)\nwest-end: 71.9% (401/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (242h)\nA Midsummer Night's Dream - Globe — telegraph (242h)\nA Midsummer Night's Dream - Globe — thestage (242h)\nA Midsummer Night's Dream - Globe — times-uk (242h)\nA Midsummer Night's Dream — financialtimes (242h)\n… 186 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (242h)\n& Juliet — nydailynews (242h)\nThe Book of Mormon — usatoday (242h)\nBuena Vista Social Club — broadwaynews (242h)\nBuena Vista Social Club — nydailynews (242h)\n… 24 more circuit-open cell(s)",
-    "severity": "warning",
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 39276/39000 credits",
+    "description": "Scrapingdog billed 39276 credits today against a ceiling of 39000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n2 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (1010), audit-show-review-gap.js (726), opening-night-poller.js (676).",
+    "severity": "critical",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-24T12:19:42.444Z"
+    "queuedAt": "2026-08-24T12:21:02.006Z"
   }
 ]
