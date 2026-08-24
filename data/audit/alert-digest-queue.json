@@ -2,210 +2,23 @@
   {
     "conditionKey": "provider-spend:overspend",
     "title": "Scraping spend over budget",
-    "description": "Day 2026-08-18. Over budget: browserbase $5 > $4 (50 sessions); brightdata $8.22 > $2.5 (2665 serp + 2812 unlocker reqs). 2026-08-18 · Browserbase: $5 (50 sessions) · 2026-08-18 · Bright Data: $8.22 (2665 serp / 2812 unlocker) · ScrapingBee: baseline day (cycle 489263) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 1792971) — day figure starts tomorrow · Browserbase attribution: 36% attributed — top: test-caller 16, collect-review-texts.js 2 · Bright Data attribution: 46% attributed — top: validate-show-venue.js 1661, opening-night-poller.js 567, audit-show-review-gap.js 188, ingest-review-from-url.js 50, gather-reviews.js 24. Verification streak reset to 0.",
+    "description": "Day 2026-08-23. Over budget: browserbase $6.6 > $4 (66 sessions); brightdata $15.48 > $2.5 (5758 serp + 4564 unlocker reqs). 2026-08-23 · Browserbase: $6.6 (66 sessions) · 2026-08-23 · Bright Data: $15.48 (5758 serp / 4564 unlocker) · ScrapingBee: baseline day (cycle 669383) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 2065008) — day figure starts tomorrow · Browserbase attribution: 0% attributed · Bright Data attribution: 25% attributed — top: validate-show-venue.js 764, opening-night-poller.js 706, collect-review-texts.js 536, recover-explicit-ratings.js 289, audit-show-review-gap.js 169. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": true,
-    "decisionPrompt": "Scraping spend over budget: browserbase $5 > $4 (50 sessions); brightdata $8.22 > $2.5 (2665 serp + 2812 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "decisionPrompt": "Scraping spend over budget: browserbase $6.6 > $4 (66 sessions); brightdata $15.48 > $2.5 (5758 serp + 4564 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
     "model": null,
-    "queuedAt": "2026-08-19T14:07:32.782Z"
+    "queuedAt": "2026-08-24T07:47:04.916Z"
   },
   {
-    "conditionKey": "opening-night-remediation-exhausted-t1-missing:jeeves-takes-charge-west-end-2026",
-    "title": "Auto-remediation gave up on jeeves-takes-charge-west-end-2026",
-    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"jeeves-takes-charge-west-end-2026\"}",
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): abigails-party-west-end-2026 (2026-08-19), spellbound-off-broadway-2026 (2026-08-19)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-19T14:56:42.502Z"
-  },
-  {
-    "conditionKey": "opening-night-revival-unverified-jeeves-takes-charge-west-end-2026",
-    "title": "Unverified revival on Jeeves Takes Charge",
-    "description": "jeeves-takes-charge-west-end-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-19T15:50:24.206Z"
-  },
-  {
-    "conditionKey": "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026",
-    "title": "Unhandled CV.wrongProduction on Abigail’s Party",
-    "description": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content reviews 'Abigail's Party' at Theatre Royal, Stratford East (a regional London theater, not a West En — https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-20T05:49:12.224Z"
-  },
-  {
-    "conditionKey": "opening-night-fulltext-mentions-show:short:abigails-party-west-end-2026",
-    "title": "Shipped review too short to verify on Abigail’s Party",
-    "description": "thestage/Paul Vale (thestage--paul-vale.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/abigails-party-review-theatre-royal-stratford-east-mike-leigh-nadia-fall-tamzin-outhwaite-kevin-bishop",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-20T05:49:12.226Z"
-  },
-  {
-    "conditionKey": "opening-night-revival-unverified-abigails-party-west-end-2026",
-    "title": "Unverified revival on Abigail’s Party",
-    "description": "abigails-party-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-20T05:49:12.229Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-08-21T09:16:39.483773+00:00,2026-08-21T09:16:54.734718+00:00,2026-08-21T09:16:55.193718+00:00,2026-08-21T09:16:55.655401+00:00",
-    "title": "Feedback: 4 submission(s), all handled automatically",
-    "description": "4 messages from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-3\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-2\"\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"rate-limit-test-1\"\n\nTest Show — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"E2E verification for BRO-580 - safe to archive\"",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32467170971",
-    "decision": true,
-    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
-    "model": null,
-    "queuedAt": "2026-08-21T09:19:29.994Z"
-  },
-  {
-    "conditionKey": "arm-yield:outlet:nypost",
-    "title": "New York Post (reviews collected) has stopped updating (20 days)",
-    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-02, 20 days ago. It has never before gone quiet for more than 11 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 13d, from 4 productive day(s) / 4 item(s) between 2026-07-04 and 2026-08-02.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-22T13:06:14.175Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-paranormal-activity-2026",
-    "title": "Placeholder synopsis on Paranormal Activity",
-    "description": "synopsis for paranormal-activity-2026 is too thin (100 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T02:02:50.904Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32616474273",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T03:53:50.321Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32617058970",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-23T04:28:36.329Z"
-  },
-  {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 43912/42000 credits",
-    "description": "Scrapingdog billed 43912 credits today against a ceiling of 42000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n1 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: collect-review-texts.js (1136), opening-night-poller.js (593), audit-show-review-gap.js (127).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T09:16:19.349Z"
-  },
-  {
-    "conditionKey": "ux-walkthrough:high-priority",
-    "title": "UX walkthrough: high-priority finding(s) filed",
-    "description": "- [2/3] Inconsistent action icons for the same action. 'Add date' uses a calendar icon in 'desktop__watchlist_list' but a plus icon in 'mobile__watchlist_grid'.",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32643839443",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T14:04:47.061Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.6% (384/495)\noff-broadway: 45.6% (149/327)\nwest-end: 71.3% (398/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (222h)\nA Midsummer Night's Dream - Globe — telegraph (222h)\nA Midsummer Night's Dream - Globe — thestage (222h)\nA Midsummer Night's Dream - Globe — times-uk (222h)\nA Midsummer Night's Dream — financialtimes (222h)\n… 202 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (222h)\nThe Book of Mormon — usatoday (222h)\nBuena Vista Social Club — broadwaynews (222h)\nHeathers The Musical — dailybeast (222h)\nHeathers The Musical — ew (222h)\n… 11 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T16:15:11.112Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4410/3250 reqs)",
-    "description": "Zone web_unlocker2 billed 4410 requests today against a ceiling of 3250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n1 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (764), opening-night-poller.js (661), collect-review-texts.js (535).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T22:09:06.920Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (5558/3250 reqs)",
-    "description": "Zone serp_api1 billed 5558 requests today against a ceiling of 3250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n1 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: validate-show-venue.js (764), opening-night-poller.js (661), collect-review-texts.js (535).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T22:09:06.962Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 33.3% of shows changed coverage state",
-    "description": "review-gap blast radius 33.3% (17/51 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: burlesque-west-end-2026, disruption-off-broadway-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, isla-off-broadway-2026, jeeves-takes-charge-west-end-2026, jesus-christ-superstar-west-end-2026, les-miserables-arena-concert-spectacular-off-broadway-2026, loves-labours-lost-globe-west-end-2026, midnight-at-the-never-get-west-end-2026, paddington-the-musical-west-end-2025, pride-west-end-2026, the-devil-wears-prada-west-end-2024, the-hunger-games-on-stage-west-end-2025, the-pass-off-broadway-2026, the-rocky-horror-show-2026, trainspotting-the-musical-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T23:14:20.016Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/150 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nGame of Thrones: The Mad King: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-23T23:14:32.017Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "127 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T06:28:00.472Z"
+    "queuedAt": "2026-08-24T07:48:26.323Z"
   }
 ]
