@@ -1,18 +1,53 @@
 {
-  "updatedAt": "2026-08-24T10:52:03.547Z",
-  "processed": 22,
-  "failed": 128,
-  "successRate": "14.7%",
+  "updatedAt": "2026-08-24T12:47:53.634Z",
+  "processed": 25,
+  "failed": 135,
+  "successRate": "15.6%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 16,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-08-24T12:46:01.647Z",
+      "event": "bb-session",
+      "session": "34564eee",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-24T12:46:21.983Z",
+      "event": "bb-session",
+      "session": "69d5239a",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-24T12:46:49.846Z",
+      "event": "bb-session",
+      "session": "92e8a549",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-24T12:46:50.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-24T12:47:39.193Z",
+      "event": "bb-session",
+      "session": "619980ab",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-24T12:47:40.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
