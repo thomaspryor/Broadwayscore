@@ -571,7 +571,17 @@
     "the-car-man-west-end-2026/the-jewish-chronicle--joy-sable.json",
     "loves-labours-lost-globe-west-end-2026/amny--unknown.json",
     "loves-labours-lost-globe-west-end-2026/bloomberg--unknown.json",
-    "loves-labours-lost-globe-west-end-2026/nbcny--unknown.json"
+    "loves-labours-lost-globe-west-end-2026/nbcny--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "the-car-man-west-end-2026/a-younger-theatre--rebekah-ellerby.json",
+    "the-car-man-west-end-2026/attitude--alastair-james.json",
+    "the-car-man-west-end-2026/express-uk--stefan-kyriazis.json",
+    "the-car-man-west-end-2026/herald--mary-brennan.json",
+    "the-car-man-west-end-2026/i-paper--rosemary-waugh.json",
+    "the-car-man-west-end-2026/independent--zoe-anderson.json",
+    "the-car-man-west-end-2026/londontheatre1--terry-eastham.json",
+    "the-car-man-west-end-2026/muddystilettos--muddy-stilettos.json",
+    "the-car-man-west-end-2026/standard--lyndsey-winship.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -619,7 +629,10 @@
       "as-you-like-it-globe-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -655,7 +668,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "loves-labours-lost-globe-west-end-2026/nbcny--unknown.json",
+  "lastProcessed": "the-car-man-west-end-2026/standard--lyndsey-winship.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -700,6 +713,17 @@
       "t": "2026-08-24T13:38:18.641Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-24T15:22:00.245Z",
+      "event": "bb-session",
+      "session": "abae2ec9",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
+    },
+    {
+      "t": "2026-08-24T15:22:00.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
