@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-19T14:07:12.821Z",
+  "lastChecked": "2026-08-24T07:46:40.493Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "13 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (5d, stamp overdue 4d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (4d, stamp overdue 3d); P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing (4d) (9 awaiting recheck, earliest due 2026-08-17; 4 parked via tab-close, oldest 2026-08-18 — resume: node scripts/bsc-next.js --id 1748 --force — not counted)"
+      "message": "33 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: RECHECK-AFTER 2026-08-18: raise exit_intent dwell 5s-&gt;30s on (14d, stamp overdue 6d); P0: #483 drain cleared 64 provably-correct exclusion flags — (10d, stamp overdue 9d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (9d, stamp overdue 8d) (8 awaiting recheck, earliest due 2026-08-22; 4 parked via tab-close, oldest 2026-08-18 — resume: node scripts/bsc-next.js --id 1748 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "35 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (27d); Trainspotting: only 4 reviews on site + email said 7 (invest (27d); cmux-launch: adopt a late-alive workspace instead of close-a (26d)"
+      "message": "47 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (32d); Trainspotting: only 4 reviews on site + email said 7 (invest (32d); cmux-launch: adopt a late-alive workspace instead of close-a (31d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",
       "status": "warn",
-      "message": "3 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
+      "message": "16 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
     }
   ]
 }
