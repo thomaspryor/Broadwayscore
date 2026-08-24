@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T06:27:47.171Z",
+  "generatedAt": "2026-08-24T08:02:42.198Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 761.2696244444444,
+      "fileAgeHours": 762.8515716666667,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 120.09089555555556
+      "nonTerminalAgeHours": 121.67284777777778
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 451.71281055555556,
+      "fileAgeHours": 453.29476027777775,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 120.09089555555556
+      "nonTerminalAgeHours": 121.67284777777778
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 260.9532547222222,
+      "fileAgeHours": 262.5352047222222,
       "gapSeenAt": "2026-08-23T23:14:20.717Z",
-      "nonTerminalAgeHours": 7.224014722222222
+      "nonTerminalAgeHours": 8.805966944444444
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=an-american-daughter-off-broadway-2026",
       "firstSeen": "2026-08-21T11:19:24.394Z",
-      "fileAgeHours": 67.13965527777778,
+      "fileAgeHours": 68.72160611111111,
       "gapSeenAt": "2026-08-23T23:14:20.717Z",
-      "nonTerminalAgeHours": 7.224014722222222
+      "nonTerminalAgeHours": 8.805966944444444
     }
   ],
   "contradictions": []
