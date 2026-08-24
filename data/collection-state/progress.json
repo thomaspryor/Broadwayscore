@@ -23,7 +23,9 @@
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "spellbound-off-broadway-2026/amny--alexa-lutter.json"
+    "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -161,7 +163,15 @@
     "paranormal-activity-2026/talkinbroadway--unknown.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/west-end-best-friend--unknown.json",
-    "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json"
+    "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,7 +200,9 @@
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -205,7 +217,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -228,6 +240,17 @@
       "t": "2026-08-24T13:35:09.469Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-24T13:37:12.244Z",
+      "event": "bb-session",
+      "session": "068bf835",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-24T13:37:12.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
