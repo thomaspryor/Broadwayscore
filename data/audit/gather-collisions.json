@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-21T22:28:26.872Z",
-    "showId": "twelfth-night-off-west-end-2026",
-    "newFile": "times-uk--unknown.json",
-    "ok": false,
-    "file": "times-uk--rachel-halliburton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-the-globe-ntlv2z3pn",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2025-08-20",
-      "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-orange-tree-theatre-richmond-29pcx9xv5",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-21T22:28:26.974Z",
     "showId": "twelfth-night-off-west-end-2026",
     "newFile": "times-uk--unknown.json",
@@ -9454,6 +9435,21 @@
   },
   {
     "recordedAt": "2026-08-24T10:26:31.152Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
+    }
+  },
+  {
+    "recordedAt": "2026-08-24T11:38:31.296Z",
     "showId": "the-pass-off-broadway-2026",
     "newFile": "theatrely--juan-a-ramirez.json",
     "ok": false,
