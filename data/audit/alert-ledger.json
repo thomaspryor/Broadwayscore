@@ -58,9 +58,9 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
       "firstSeen": "2026-07-24T07:50:34.747Z",
-      "lastSeen": "2026-08-15T01:34:24.038Z",
-      "lastNotifiedAt": "2026-08-15T01:34:24.038Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-24T07:46:43.825Z",
+      "lastNotifiedAt": "2026-08-24T07:46:43.825Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-335"
     },
@@ -80,20 +80,21 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-08-19T14:07:16.866Z",
+      "lastSeen": "2026-08-24T07:46:45.184Z",
       "lastNotifiedAt": "2026-08-19T14:07:16.866Z",
       "notifyCount": 4,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-428"
+      "linearIdentifier": "BRO-428",
+      "silentRefires": 1
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-16T12:27:21.646Z",
-      "lastNotifiedAt": "2026-08-16T12:27:21.646Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-24T07:46:47.215Z",
+      "lastNotifiedAt": "2026-08-24T07:46:47.215Z",
+      "notifyCount": 5,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
       "linearIdentifier": "BRO-365"
     },
@@ -114,11 +115,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Audit Aggregator Review Gap",
       "firstSeen": "2026-07-25T16:22:15.649Z",
-      "lastSeen": "2026-08-19T14:07:16.475Z",
+      "lastSeen": "2026-08-24T07:46:43.825Z",
       "lastNotifiedAt": "2026-08-19T14:07:16.475Z",
       "notifyCount": 3,
       "cardId": "3b6637c5-416f-81a0-983a-d26538001910",
-      "linearIdentifier": "BRO-392"
+      "linearIdentifier": "BRO-392",
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Process Feedback Submissions": {
       "status": "open",
@@ -150,11 +152,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-08-16T12:27:21.645Z",
-      "lastNotifiedAt": "2026-08-10T08:19:23.719Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-24T07:46:45.192Z",
+      "lastNotifiedAt": "2026-08-24T07:46:45.192Z",
+      "notifyCount": 3,
       "cardId": "3b8637c5-416f-817d-832d-eac6c91739ee",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-434"
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -273,9 +275,9 @@
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-19T14:07:32.781Z",
-      "lastNotifiedAt": "2026-08-19T14:07:32.781Z",
-      "notifyCount": 16,
+      "lastSeen": "2026-08-24T07:47:04.916Z",
+      "lastNotifiedAt": "2026-08-24T07:47:04.916Z",
+      "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -328,11 +330,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Coverage: SERP census recall",
       "firstSeen": "2026-08-03T07:58:02.691Z",
-      "lastSeen": "2026-08-12T08:06:38.373Z",
-      "lastNotifiedAt": "2026-08-10T08:19:24.251Z",
-      "notifyCount": 2,
-      "cardId": "3b8637c5-416f-8199-81a9-fbd2350afca1",
-      "silentRefires": 2
+      "lastSeen": "2026-08-24T07:46:53.008Z",
+      "lastNotifiedAt": "2026-08-24T07:46:53.008Z",
+      "notifyCount": 3,
+      "cardId": null,
+      "linearIdentifier": "BRO-2296"
     },
     "health-check:Cron failed: Test Suite": {
       "status": "open",
@@ -565,12 +567,11 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-08-21T07:35:52.116Z",
-      "lastNotifiedAt": "2026-08-16T12:30:01.350Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-24T07:48:26.323Z",
+      "lastNotifiedAt": "2026-08-24T07:48:26.323Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -709,11 +710,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet invalid-content rate",
       "firstSeen": "2026-08-12T08:06:37.851Z",
-      "lastSeen": "2026-08-15T01:34:24.857Z",
-      "lastNotifiedAt": "2026-08-12T08:06:37.851Z",
-      "notifyCount": 1,
-      "cardId": "3ba637c5-416f-81cd-956b-fd19199a2a23",
-      "silentRefires": 2
+      "lastSeen": "2026-08-24T07:46:49.202Z",
+      "lastNotifiedAt": "2026-08-24T07:46:49.202Z",
+      "notifyCount": 2,
+      "cardId": null,
+      "linearIdentifier": "BRO-2295"
     },
     "opening-night-remediation-exhausted-t1-missing:death-note-the-musical-west-end-2026": {
       "status": "open",
@@ -774,17 +775,15 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red on 2+ consecutive pushes",
+      "title": "Main test.yml red — no confirmed-green run in 9.6h",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-23T17:22:00.285Z",
-      "lastNotifiedAt": "2026-08-23T04:28:34.982Z",
-      "notifyCount": 22,
+      "lastSeen": "2026-08-24T07:46:20.285Z",
+      "lastNotifiedAt": "2026-08-24T07:46:20.285Z",
+      "notifyCount": 23,
       "cardId": null,
-      "linearIdentifier": "BRO-296",
-      "silentRefires": 7,
-      "resolvedAt": "2026-08-23T20:20:15.321Z"
+      "linearIdentifier": "BRO-296"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1489,6 +1488,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "health-check:Quality: coverageExpectation drift": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Quality: coverageExpectation drift",
+      "firstSeen": "2026-08-24T07:46:55.105Z",
+      "lastSeen": "2026-08-24T07:46:55.105Z",
+      "lastNotifiedAt": "2026-08-24T07:46:55.105Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2297"
     }
   }
 }
