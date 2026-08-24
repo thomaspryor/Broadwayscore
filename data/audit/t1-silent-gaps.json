@@ -1,8 +1,29 @@
 {
-  "generatedAt": "2026-08-24T11:26:50.231Z",
+  "generatedAt": "2026-08-24T12:19:36.685Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-21",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Score-only fallback refused: show title \"As You Like It - Globe\" not found in page HTML — cannot ver"
+      },
+      "recoveryCount": 1,
+      "fix": "node scripts/ingest-review-from-url.js --show=as-you-like-it-globe-west-end-2026 --url=https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-24T11:36:40.554Z",
+      "fileAgeHours": 0.7155613888888889,
+      "gapSeenAt": "2026-08-24T12:19:36.685Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +37,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 766.2538069444445,
+      "fileAgeHours": 767.1333797222222,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 125.07507916666667
+      "nonTerminalAgeHours": 125.95464972222223
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +54,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 456.6969936111111,
+      "fileAgeHours": 457.576565,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 125.07507916666667
+      "nonTerminalAgeHours": 125.95464972222223
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -50,9 +71,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 265.9374377777778,
+      "fileAgeHours": 266.81700916666665,
       "gapSeenAt": "2026-08-23T23:14:20.717Z",
-      "nonTerminalAgeHours": 12.208198333333334
+      "nonTerminalAgeHours": 13.087768888888888
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -67,9 +88,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=an-american-daughter-off-broadway-2026",
       "firstSeen": "2026-08-21T11:19:24.394Z",
-      "fileAgeHours": 72.12383888888888,
+      "fileAgeHours": 73.00340972222222,
       "gapSeenAt": "2026-08-23T23:14:20.717Z",
-      "nonTerminalAgeHours": 12.208198333333334
+      "nonTerminalAgeHours": 13.087768888888888
     }
   ],
   "contradictions": []

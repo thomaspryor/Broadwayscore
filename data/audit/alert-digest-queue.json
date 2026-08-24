@@ -31,5 +31,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-24T09:49:33.784Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 39276/39000 credits",
+    "description": "Scrapingdog billed 39276 credits today against a ceiling of 39000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n2 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (1010), audit-show-review-gap.js (726), opening-night-poller.js (676).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-24T12:21:02.006Z"
   }
 ]
