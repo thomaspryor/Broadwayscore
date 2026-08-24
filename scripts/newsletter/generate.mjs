@@ -30,6 +30,7 @@ const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(pat
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
+const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -711,6 +712,39 @@ function offBroadwayOpenings() {
   markOpening('offbroadway-openings', list);
   const body = list.map(s => showRow(s, {})).join('');
   return { html: sectionWrap(sectionHeading('Opened Off-Broadway'), body), list };
+}
+
+// SECTION: Out of Town — a US regional/pre-Broadway-tryout show (category
+// 'regional', e.g. A.R.T., Goodman, La Jolla Playhouse) that got its first
+// review(s) THIS week. Regional shows are discovered and reviewed on their
+// own schedule, independent of the newsletter's weekly cadence — a tryout may
+// have opened weeks or months earlier and only get pulled into our pipeline
+// (and scored) once its reviews are collected. Unlike broadwayOpenings()/
+// offBroadwayOpenings(), which gate on openingDate falling in-week, this
+// section gates on the show's EARLIEST scored review publishing in-week (and
+// none earlier) — that's the week it actually became newsworthy to readers,
+// and it fires exactly once per show (never repeats once older reviews exist).
+// US-only: isUkRegionalVenue() routes UK regional houses (RSC, Chichester) to
+// their own market vocabulary, not the Broadway "out of town" idiom, and the
+// West End edition has no out-of-town section of its own.
+function outOfTownOpenings() {
+  if (IS_WE) return { html: null, list: [] };
+  const withScore = shows
+    .filter(s => s.category === 'regional' && !isOperaShow(s) && !isUkRegionalVenue(s.venue)
+      && notFeatured(s.id) && !excludedShowIds.has(s.id))
+    .map(s => {
+      const scored = reviews.filter(r => r.showId === s.id && r.assignedScore != null && r.publishDate);
+      const earliest = scored.reduce((min, r) => (min == null || r.publishDate < min ? r.publishDate : min), null);
+      return { s, earliest, agg: aggregateScore(s.id) };
+    })
+    .filter(({ earliest, agg }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway'))
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+  if (!withScore.length) return { html: null, list: [] };
+  const list = withScore.slice(0, 6).map(x => x.s);
+  markFeatured(...list.map(s => s.id));
+  markOpening('out-of-town-openings', list);
+  const body = list.map(s => showRow(s, {})).join('');
+  return { html: sectionWrap(sectionHeading('Out of Town', 'pre-Broadway tryouts & regional premieres'), body), list };
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.
@@ -2125,8 +2159,10 @@ const sections = createSectionRunner();
 // bwO.list/obO.list, so it must stay after these calls.
 const bwO = broadwayOpenings();
 const obO = offBroadwayOpenings();
+const otO = outOfTownOpenings();
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
+sections.run('out-of-town-openings', () => otO.html);
 
 const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection());
 // Broadway-only sections: SKIP them entirely in the West End edition. They
@@ -2245,6 +2281,7 @@ const sectionOrder = IS_WE ? [
 ].filter(Boolean) : [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
+  _slot('out-of-town-openings', otO.html),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
@@ -2721,7 +2758,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
-      : ['broadway-openings', 'offbroadway-openings', 'london-openings', 'opera-openings']
+      : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings']
     ).includes(r.section))
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),
