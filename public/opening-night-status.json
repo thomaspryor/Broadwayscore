@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T08:18:39.150Z",
+  "generatedAt": "2026-08-24T09:56:08.018Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,27 @@
       "status": "open",
       "slug": "as-you-like-it-globe-west-end",
       "thumbnail": "/images/shows/as-you-like-it-globe-west-end-2026/thumbnail.webp",
-      "siteScore": 59.79,
-      "liveScore": 60,
-      "scoreDrift": 0.21000000000000085,
+      "siteScore": 65.83,
+      "liveScore": 66,
+      "scoreDrift": 0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 7,
       "t1": 3,
-      "t2": 2,
-      "t3": 0,
-      "positive": 0,
+      "t2": 3,
+      "t3": 1,
+      "positive": 2,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "7/8 total",
           "T2:0/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -76,10 +76,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -97,6 +93,18 @@
           "t2": 2,
           "t3": 0,
           "p": 0,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-24T09:56:08.018Z",
+          "rc": 7,
+          "s": 65.83,
+          "t1": 3,
+          "t2": 3,
+          "t3": 1,
+          "p": 2,
           "m": 5,
           "n": 0,
           "bc": "waiting"
