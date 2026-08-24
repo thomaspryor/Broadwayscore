@@ -3,49 +3,57 @@
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-08-18T13:33:29.856Z",
-  "tier": "Steady",
-  "volume": 25,
-  "effectiveVolume": 1.2,
+  "fetchedAt": "2026-08-24T07:21:42.131Z",
+  "tier": "Troubled",
+  "volume": 24,
+  "effectiveVolume": 2,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.14285714285714285
+      "reddit": 0.16666666666666666,
+      "bluesky": 1
     },
-    "overall": 0.14285714285714285,
-    "classified": 14
+    "overall": 0.23076923076923078,
+    "classified": 13
   },
-  "positivePct": null,
-  "opinionSample": 0,
+  "positivePct": 0,
+  "opinionSample": 1,
   "weekOverWeekPct": -4,
-  "baselineMultiple": 1.25,
+  "baselineMultiple": 1.15,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 2,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "El nivel del West End es una LOCURA, y ahora voy a ser aún más crítico con lo que vea en Madrid de musicales Porque…",
+      "platform": "bluesky",
+      "author": "@luismilorente.bsky.social",
+      "url": "https://bsky.app/profile/luismilorente.bsky.social/post/3mtlx6qtezk2i"
+    }
+  ],
   "counters": {
-    "reddit": 14,
-    "bluesky": 0,
+    "reddit": 12,
+    "bluesky": 1,
     "x": 11,
-    "wikipedia": 1122
+    "wikipedia": 1129
   },
   "wikipediaTitle": "Hercules (musical)",
   "baseline": {
-    "mean": 20.833333333333332,
-    "weeksOfHistory": 6
+    "mean": 21.285714285714285,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
-    "reddit": 14,
-    "bluesky": 0
+    "reddit": 12,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 11,
+    "position": 9,
     "total": 46,
-    "text": "11/46 West End"
+    "text": "9/46 West End"
   },
-  "compositeScore": 0.6
+  "compositeScore": 1
 }

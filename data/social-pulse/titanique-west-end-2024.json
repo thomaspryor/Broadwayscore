@@ -3,49 +3,57 @@
   "showId": "titanique-west-end-2024",
   "showTitle": "Titanique",
   "market": "West End",
-  "fetchedAt": "2026-08-18T13:47:12.882Z",
+  "fetchedAt": "2026-08-24T07:35:02.283Z",
   "tier": "Hidden",
-  "volume": 1,
-  "effectiveVolume": 0,
+  "volume": 5,
+  "effectiveVolume": 0.4,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0
+      "reddit": 0,
+      "bluesky": 1
     },
-    "overall": 0,
-    "classified": 1
+    "overall": 0.3333333333333333,
+    "classified": 3
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -67,
-  "baselineMultiple": 0.36,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 400,
+  "baselineMultiple": 2,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Our Thoughts On… #Titanique Another trip to the West End done. We had much-needed laugh!",
+      "platform": "bluesky",
+      "author": "@ratingsuk.bsky.social",
+      "url": "https://bsky.app/profile/ratingsuk.bsky.social/post/3mtooz5rurk2f"
+    }
+  ],
   "counters": {
-    "reddit": 1,
-    "bluesky": 0,
-    "x": 0,
-    "wikipedia": 5225
+    "reddit": 2,
+    "bluesky": 1,
+    "x": 2,
+    "wikipedia": 5107
   },
   "wikipediaTitle": "Titanique",
   "baseline": {
-    "mean": 2.5,
-    "weeksOfHistory": 6
+    "mean": 2.857142857142857,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
-    "reddit": 1,
-    "bluesky": 0
+    "reddit": 2,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 36,
+    "position": 29,
     "total": 46,
-    "text": "36/46 West End"
+    "text": "29/46 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.2
 }
