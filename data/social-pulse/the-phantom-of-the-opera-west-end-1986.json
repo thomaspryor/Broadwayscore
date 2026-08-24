@@ -3,49 +3,56 @@
   "showId": "the-phantom-of-the-opera-west-end-1986",
   "showTitle": "The Phantom of the Opera",
   "market": "West End",
-  "fetchedAt": "2026-08-18T13:45:09.712Z",
+  "fetchedAt": "2026-08-24T07:31:54.763Z",
   "tier": "Hidden",
-  "volume": 4,
-  "effectiveVolume": 0.7,
+  "volume": 6,
+  "effectiveVolume": 1.6,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.5
+      "bluesky": 1
     },
-    "overall": 0.5,
+    "overall": 1,
     "classified": 2
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": 33,
-  "baselineMultiple": 1.33,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 50,
+  "baselineMultiple": 1.89,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 1,
-    "bluesky": 0
+    "reddit": 0,
+    "bluesky": 2
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "No one will ever beat the energy of this Christine and Raoul youtu.be/i8O2MRsjz7s?...",
+      "platform": "bluesky",
+      "author": "@corvidkusnos.bsky.social",
+      "url": "https://bsky.app/profile/corvidkusnos.bsky.social/post/3mtk5uwi3js2z"
+    }
+  ],
   "counters": {
-    "reddit": 2,
-    "bluesky": 0,
-    "x": 2,
-    "wikipedia": 17710
+    "reddit": 0,
+    "bluesky": 2,
+    "x": 4,
+    "wikipedia": 28274
   },
   "wikipediaTitle": "The Phantom of the Opera (1986 musical)",
   "baseline": {
-    "mean": 3.1666666666666665,
-    "weeksOfHistory": 6
+    "mean": 3.5714285714285716,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
-    "reddit": 2,
-    "bluesky": 0
+    "reddit": 0,
+    "bluesky": 2
   },
   "errors": [],
   "rank": {
-    "position": 20,
+    "position": 12,
     "total": 46,
-    "text": "20/46 West End"
+    "text": "12/46 West End"
   },
-  "compositeScore": 0.35
+  "compositeScore": 0.8
 }

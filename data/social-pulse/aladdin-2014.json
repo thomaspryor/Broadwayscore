@@ -3,50 +3,63 @@
   "showId": "aladdin-2014",
   "showTitle": "Aladdin",
   "market": "Broadway",
-  "fetchedAt": "2026-08-18T13:15:32.123Z",
+  "fetchedAt": "2026-08-24T07:02:50.581Z",
   "tier": "Steady",
-  "volume": 22,
-  "effectiveVolume": 0,
+  "volume": 52,
+  "effectiveVolume": 10.2,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0,
-      "bluesky": 0
+      "reddit": 0.75,
+      "bluesky": 1
     },
-    "overall": 0,
-    "classified": 3
+    "overall": 0.8571428571428571,
+    "classified": 7
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": 16,
-  "baselineMultiple": 1.21,
+  "positivePct": 67,
+  "opinionSample": 3,
+  "weekOverWeekPct": 136,
+  "baselineMultiple": 2.76,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 3,
+    "bluesky": 3
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "A Disney anunciou um filme novo de Descendentes só com personagens icônicos da Disney. Até aí tudo bem, mas divulgaram…",
+      "platform": "bluesky",
+      "author": "@felipevinha.com.br",
+      "url": "https://bsky.app/profile/felipevinha.com.br/post/3mteu4253q22m"
+    },
+    {
+      "text": "Armarni Thompson joins us in September for our CFA Broadway Studio Intensive! Fun fact: Armarni has already taken on…",
+      "platform": "bluesky",
+      "author": "@cfaarts.bsky.social",
+      "url": "https://bsky.app/profile/cfaarts.bsky.social/post/3mth2jfb5kj2p"
+    }
+  ],
   "counters": {
-    "reddit": 2,
-    "bluesky": 1,
-    "x": 19,
-    "wikipedia": 1186
+    "reddit": 4,
+    "bluesky": 3,
+    "x": 45,
+    "wikipedia": 1472
   },
   "wikipediaTitle": "Aladdin (2011 musical)",
   "baseline": {
-    "mean": 18.833333333333332,
-    "weeksOfHistory": 6
+    "mean": 23.571428571428573,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
-    "reddit": 2,
-    "bluesky": 1
+    "reddit": 4,
+    "bluesky": 3
   },
   "errors": [],
   "rank": {
-    "position": 29,
-    "total": 29,
-    "text": "29/29 Broadway"
+    "position": 14,
+    "total": 26,
+    "text": "14/26 Broadway"
   },
-  "compositeScore": 0
+  "compositeScore": 5.1
 }

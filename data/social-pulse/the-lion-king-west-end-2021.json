@@ -3,22 +3,22 @@
   "showId": "the-lion-king-west-end-2021",
   "showTitle": "The Lion King",
   "market": "West End",
-  "fetchedAt": "2026-08-18T13:44:05.125Z",
+  "fetchedAt": "2026-08-24T07:31:10.787Z",
   "tier": "Hidden",
-  "volume": 8,
-  "effectiveVolume": 0.4,
+  "volume": 7,
+  "effectiveVolume": 0.5,
   "relevanceRates": {
     "byPlatform": {
       "reddit": 0,
-      "bluesky": 0.5
+      "bluesky": 1
     },
-    "overall": 0.2,
-    "classified": 5
+    "overall": 0.25,
+    "classified": 4
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -27,
-  "baselineMultiple": 1.29,
+  "positivePct": 0,
+  "opinionSample": 1,
+  "weekOverWeekPct": -12,
+  "baselineMultiple": 1.08,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
@@ -26,27 +26,34 @@
     "reddit": 0,
     "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "I checked to see if the West End theatre tickets would cover Aaron Sorkin's To Kill a Mockingbird. But *of course* it…",
+      "platform": "bluesky",
+      "author": "@paulkirkley.bsky.social",
+      "url": "https://bsky.app/profile/paulkirkley.bsky.social/post/3mtlavtb5d22a"
+    }
+  ],
   "counters": {
     "reddit": 3,
-    "bluesky": 2,
+    "bluesky": 1,
     "x": 3,
-    "wikipedia": 3619
+    "wikipedia": 4067
   },
   "wikipediaTitle": "The Lion King (musical)",
   "baseline": {
-    "mean": 6.5,
-    "weeksOfHistory": 6
+    "mean": 6.571428571428571,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
     "reddit": 3,
-    "bluesky": 2
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 27,
+    "position": 28,
     "total": 46,
-    "text": "27/46 West End"
+    "text": "28/46 West End"
   },
-  "compositeScore": 0.2
+  "compositeScore": 0.25
 }
