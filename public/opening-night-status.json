@@ -1,7 +1,109 @@
 {
-  "generatedAt": "2026-08-24T06:41:37.584Z",
+  "generatedAt": "2026-08-24T08:10:21.007Z",
   "lookbackDays": 3,
-  "shows": [],
+  "shows": [
+    {
+      "id": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-08-21",
+      "status": "open",
+      "slug": "as-you-like-it-globe-west-end",
+      "thumbnail": "/images/shows/as-you-like-it-globe-west-end-2026/thumbnail.webp",
+      "siteScore": 59.79,
+      "liveScore": 60,
+      "scoreDrift": 0.21000000000000085,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 5,
+      "t1": 3,
+      "t2": 2,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 5,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "5/8 total",
+          "T2:0/2",
+          "hi-conf:3/6"
+        ],
+        "highConfidence": 3,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-08-24T08:10:21.007Z",
+          "rc": 5,
+          "s": 59.79,
+          "t1": 3,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    }
+  ],
   "upcoming": [
     {
       "id": "paranormal-activity-2026",

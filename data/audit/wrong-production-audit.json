@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-24T06:41:32.550Z",
+  "timestamp": "2026-08-24T08:10:14.653Z",
   "stats": {
-    "totalReviews": 42363,
-    "alreadyFlagged": 18135,
+    "totalReviews": 42364,
+    "alreadyFlagged": 18136,
     "dateGuardCatches": 177,
     "directorMismatch": 992,
     "tvFilmSignals": 1223,
-    "londonSignals": 928,
+    "londonSignals": 927,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3562
+    "noPublishDate": 3563
   },
   "findings": [
     {
@@ -9425,7 +9425,7 @@
     },
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "file": "thenorthernecho--unknown.json",
+      "file": "thenorthernecho--pa-news-agency.json",
       "score": 78,
       "publishDate": "2026-08-10",
       "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
@@ -42905,20 +42905,6 @@
       "score": 97,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": 80,
-      "publishDate": "2025-01-20",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
