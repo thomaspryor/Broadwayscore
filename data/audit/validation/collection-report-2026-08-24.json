@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-08-24T00:02:25.274Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 24,
+    "failed": 1086,
+    "skipped": 0,
+    "successRate": "2.2%"
+  },
+  "tierBreakdown": {
+    "playwright": 22,
+    "amp": 0,
+    "browserbase": 5,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 2,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 60,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 60,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "spellbound-off-broadway-2026/amny--alexa-lutter.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -1113,8 +1164,7 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "spellbound-off-broadway-2026/amny--alexa-lutter.json",
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
@@ -1165,132 +1215,6 @@
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
-  "startTime": "2026-08-23T09:58:42.443Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": [
-    {
-      "t": "2026-08-23T10:00:53.395Z",
-      "event": "bb-session",
-      "session": "bf3ae8a1",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-23T10:00:54.035Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:03:07.257Z",
-      "event": "bb-session",
-      "session": "a84d23de",
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
-    },
-    {
-      "t": "2026-08-23T10:03:07.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-23T10:03:40.456Z",
-      "event": "bb-session",
-      "session": "a143719d",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-23T10:03:40.993Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:21:23.672Z",
-      "event": "bb-session",
-      "session": "b8289bb4",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-23T10:21:24.701Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:21:42.547Z",
-      "event": "bb-session",
-      "session": "ebb9855c",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-23T10:21:43.529Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:24:45.963Z",
-      "event": "bb-session",
-      "session": "caff4bfa",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-23T10:24:46.958Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:28:54.798Z",
-      "event": "bb-session",
-      "session": "bc7832ec",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-23T10:28:58.683Z",
-      "event": "bb-session",
-      "session": "e7dd394d",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-23T10:28:59.617Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-23T10:29:16.313Z",
-      "event": "bb-session",
-      "session": "729e8d6b",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-23T19:01:45.226Z",
-      "event": "bb-session",
-      "session": "2117b1d2",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-23T19:02:09.810Z",
-      "event": "bb-session",
-      "session": "0569d854",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-23T19:04:18.999Z",
-      "event": "bb-session",
-      "session": "45db0ad8",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-23T19:04:20.001Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-23T19:05:44.996Z",
-      "event": "bb-session",
-      "session": "8e7c7df3",
-      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
-    },
-    {
-      "t": "2026-08-23T19:05:53.529Z",
-      "event": "bb-session",
-      "session": "8cd88698",
-      "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
