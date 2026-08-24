@@ -826,10 +826,15 @@ function titleWordsMatch(showTitle, candidateText) {
   if (matchCount < threshold) return false;
 
   // Short-title guard: titles with <=3 meaningful words are vulnerable to containment
-  // matches (e.g., "Happy Ending" matching "Maybe Happy Ending"). If all show words match
-  // but the candidate has extra DISTINCTIVE words (not venue/review context), reject —
-  // the candidate is likely a different, longer-titled show.
-  if (showSlugWords.length <= 3 && matchCount === showSlugWords.length) {
+  // matches (e.g., "Happy Ending" matching "Maybe Happy Ending"). If the candidate has
+  // extra DISTINCTIVE words (not venue/review context), reject — the candidate is likely
+  // a different, longer-titled show. Applies whenever the word-overlap threshold is met,
+  // not only on a full match: "The Ballad of John and Paul" (3 words: ballad/john/paul)
+  // cleared the 50% threshold (2/3) against "Rhinoceros Starring Paul Giamatti And John
+  // Turturro" on the "john"+"paul" actor-name overlap alone, with "ballad" never present
+  // and "rhinoceros"/"giamatti"/"turturro" as unexplained extra words — a real production
+  // silently dropped from regional auto-promotion (2026-08-24, #playbill-verdict).
+  if (showSlugWords.length <= 3 && matchCount >= threshold) {
     // Context words that commonly appear in URLs/titles alongside show names
     // but don't indicate a different show (venues, review terms, markets)
     const CONTEXT_WORDS = new Set([
