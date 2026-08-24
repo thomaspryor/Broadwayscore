@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-24T12:50:30.053Z",
-  "processed": 25,
-  "failed": 145,
-  "successRate": "14.7%",
+  "updatedAt": "2026-08-24T12:53:19.244Z",
+  "processed": 27,
+  "failed": 153,
+  "successRate": "15.0%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 17,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-08-24T12:46:01.647Z",
@@ -48,6 +48,29 @@
       "t": "2026-08-24T12:47:40.159Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-24T12:50:34.856Z",
+      "event": "bb-session",
+      "session": "8e70a2d7",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-24T12:50:35.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-24T12:52:39.457Z",
+      "event": "bb-session",
+      "session": "6f5d2169",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-24T12:52:59.862Z",
+      "event": "bb-session",
+      "session": "cf824f22",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
     }
   ]
 }
