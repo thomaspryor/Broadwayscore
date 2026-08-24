@@ -1051,7 +1051,17 @@
     "two-strangers-bway-2025/thereviewshub--unknown.json",
     "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
     "two-strangers-bway-2025/financialtimes--sarah-hemming.json",
-    "two-strangers-bway-2025/independent--alice-saville.json"
+    "two-strangers-bway-2025/independent--alice-saville.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/liamodell--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1101,7 +1111,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1139,7 +1150,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "two-strangers-bway-2025/independent--alice-saville.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -1193,6 +1204,29 @@
     },
     {
       "t": "2026-08-24T15:22:00.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-24T19:01:45.262Z",
+      "event": "bb-session",
+      "session": "b479291a",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-24T19:02:04.632Z",
+      "event": "bb-session",
+      "session": "b2ae0ba7",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-24T19:05:53.587Z",
+      "event": "bb-session",
+      "session": "50fe28b0",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-24T19:05:54.424Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
