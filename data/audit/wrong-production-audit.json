@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-23T22:54:25.814Z",
+  "timestamp": "2026-08-24T06:19:59.394Z",
   "stats": {
-    "totalReviews": 42360,
-    "alreadyFlagged": 18136,
+    "totalReviews": 42363,
+    "alreadyFlagged": 18135,
     "dateGuardCatches": 177,
     "directorMismatch": 992,
-    "tvFilmSignals": 1222,
+    "tvFilmSignals": 1223,
     "londonSignals": 928,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3561
+    "noPublishDate": 3562
   },
   "findings": [
     {
@@ -9384,7 +9384,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -9420,6 +9420,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "thenorthernecho--unknown.json",
+      "score": 78,
+      "publishDate": "2026-08-10",
+      "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -12445,7 +12459,7 @@
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
       "file": "west-end-best-friend--anna-nichols.json",
-      "score": 85,
+      "score": 86,
       "publishDate": "2025-08-04",
       "url": "https://www.westendbestfriend.co.uk/news/review-horrible-histories-barmy-britain-apollo-theatre",
       "findings": [
@@ -32864,7 +32878,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2026-08-20",
       "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
       "findings": [
@@ -36175,7 +36189,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
@@ -39118,7 +39132,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 82,
+      "score": 83,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
@@ -39214,7 +39228,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--cheryl-markoski.json",
-      "score": 83,
+      "score": 80,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -39298,7 +39312,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "timeout-london--time-out.json",
-      "score": 85,
+      "score": 80,
       "publishDate": "2026-08-18",
       "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
       "findings": [
@@ -39312,7 +39326,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "whatsonstage--aliya-al-hassan.json",
-      "score": 82,
+      "score": 83,
       "publishDate": "2026-08-12",
       "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
       "findings": [
