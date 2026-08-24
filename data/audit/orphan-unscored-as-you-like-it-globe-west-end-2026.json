@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "as-you-like-it-globe-west-end-2026",
   "openingDate": "2026-08-21",
-  "detectedAt": "2026-08-24T10:05:10.283Z",
+  "detectedAt": "2026-08-24T10:15:42.400Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -20,6 +20,20 @@
       "eligibilityReason": null
     },
     {
+      "file": "london-theatre--matt-wolf.json",
+      "outletId": "london-theatre",
+      "criticName": "Matt Wolf",
+      "url": null,
+      "fullTextLen": 4081,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "london-theatre--unknown.json",
       "outletId": "london-theatre",
       "criticName": "Unknown",
@@ -31,6 +45,20 @@
       "originalScoreNormalized": null,
       "llmScore": null,
       "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "londontheatre1--louis-mazzini.json",
+      "outletId": "londontheatre1",
+      "criticName": "Louis Mazzini",
+      "url": null,
+      "fullTextLen": 2636,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
       "eligibilityReason": null
     },
     {
@@ -90,7 +118,7 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 6,
+  "orphanCount": 8,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
