@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-24T10:59:01.451Z",
+  "timestamp": "2026-08-24T14:58:14.492Z",
   "stats": {
-    "totalReviews": 42388,
+    "totalReviews": 42393,
     "alreadyFlagged": 18138,
     "dateGuardCatches": 178,
     "directorMismatch": 992,
-    "tvFilmSignals": 1223,
+    "tvFilmSignals": 1224,
     "londonSignals": 929,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3560
+    "noPublishDate": 3562
   },
   "findings": [
     {
@@ -14358,6 +14358,19 @@
       "file": "a-youngish-perspective--unknown.json",
       "publishDate": "2026-08-19",
       "url": "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "file": "ground--unknown.json",
+      "publishDate": "2026-08-19",
+      "url": "https://ground.news/article/jeeves-takes-charge-the-olivier-award-winning-show-returns-to-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
