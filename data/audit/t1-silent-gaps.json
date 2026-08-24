@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-08-24T17:30:56.779Z",
+  "generatedAt": "2026-08-24T23:21:51.309Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-21",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=as-you-like-it-globe-west-end-2026 --url=https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-24T11:36:40.554Z",
+      "fileAgeHours": 11.752950277777778,
+      "gapSeenAt": "2026-08-24T23:21:51.308Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +33,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 772.3222847222222,
+      "fileAgeHours": 778.1707711111111,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 131.14356444444445
+      "nonTerminalAgeHours": 136.992045
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 462.76547555555555,
+      "fileAgeHours": 468.6139586111111,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 131.14356444444445
+      "nonTerminalAgeHours": 136.992045
     }
   ],
   "contradictions": []
