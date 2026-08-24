@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-21T22:20:24.592Z",
-    "showId": "cats-west-end-2026",
-    "newFile": "newsday--linda-winer.json",
-    "ok": false,
-    "file": "newsday--linda-winer.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": null,
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "http://www.newsday.com/entertainment/theater/cats-review-beloved-broadway-musical-leaps-back-onstage-1.12111517",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-21T22:20:26.493Z",
     "showId": "cats-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9462,6 +9443,21 @@
   },
   {
     "recordedAt": "2026-08-24T02:34:33.388Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
+    }
+  },
+  {
+    "recordedAt": "2026-08-24T03:33:19.423Z",
     "showId": "the-pass-off-broadway-2026",
     "newFile": "theatrely--juan-a-ramirez.json",
     "ok": false,
