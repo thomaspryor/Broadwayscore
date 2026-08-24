@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-23T16:14:59.695Z",
+  "generatedAt": "2026-08-24T06:27:46.478Z",
   "windowDays": 1095,
-  "targets": 127,
-  "auditedThisRun": 18,
-  "carriedForward": 427,
+  "targets": 131,
+  "auditedThisRun": 20,
+  "carriedForward": 426,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 288,
+    "withGap": 287,
     "totalMissing": 1227,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1597,
-    "totalRecoverable": 17,
+    "totalFlaggedMisses": 1603,
+    "totalRecoverable": 18,
     "totalRecovered": 2
   },
   "results": [
@@ -306,7 +306,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "73-seconds-off-broadway-2026",
@@ -2194,6 +2194,8 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+        "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
         "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
         "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
         "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
@@ -2235,10 +2237,6 @@
           "count": 1
         },
         {
-          "host": "curtaincallreviews.co.uk",
-          "count": 1
-        },
-        {
           "host": "inews.co.uk",
           "count": 1
         },
@@ -2260,6 +2258,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--john-johnson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
           "host": "londonboxoffice.co.uk",
@@ -2387,7 +2403,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -2397,7 +2413,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -2407,7 +2423,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -2417,8 +2433,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -2427,7 +2443,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -2444,15 +2460,14 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 14,
         "byReason": {
-          "non-review-host": 3,
-          "ticketing-listing": 1,
-          "not-http-url": 8,
+          "ticketing-listing": 2,
+          "non-review-host": 11,
           "roundup-page": 1
         }
       },
@@ -2483,6 +2498,13 @@
             "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre"
           },
           {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
+          },
+          {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
             "critic": "Unknown",
@@ -2506,6 +2528,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+            "outletId": "curtaincallreviews.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
             "outletId": "allthatdazzles.co.uk",
@@ -2574,6 +2602,13 @@
             "firstSeenAt": "2026-08-22T12:13:43.001Z"
           },
           {
+            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
             "outletId": "london-box-office",
             "state": "GAP",
@@ -2595,10 +2630,10 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 13
+        "liveCount": 11,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-23T16:14:59.695Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -4732,32 +4767,27 @@
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
         "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre",
-        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
         "https://www.adventuresintheatreland.com/post/anansi-the-spider-regent-s-park-open-air-theatre",
+        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
+        "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
         "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
-        "https://www.timeout.com/london/theatre/anansi-the-spider-review",
         "https://openairtheatre.com/production/anansi-the-spider",
+        "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
         "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
-        "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-        "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
+        "https://www.theatremonkey.com/show/anansi-the-spider-2/"
       ],
       "dirFiles": 15,
       "dirClean": 6,
-      "inReviewsJson": 4,
+      "inReviewsJson": 3,
       "missing": [
         {
-          "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
+          "host": "afridiziak.com",
+          "knownOutletId": "afridiziak-theatre-news",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "primarytimes.co.uk",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://openairtheatre.com/production/anansi-the-spider",
@@ -4809,24 +4839,6 @@
               "file": "theatremonkey--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-box-office--shehrazade-zafar-arif.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
             }
           ],
           "serpCensus": true
@@ -4882,7 +4894,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4901,8 +4913,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -4912,7 +4924,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -4934,16 +4946,17 @@
       "candidatesRejected": {
         "count": 18,
         "byReason": {
-          "non-review-host": 15,
+          "ticketing-listing": 1,
+          "non-review-host": 14,
           "aggregator-internal-nav": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
+          "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
+          "host": "afridiziak.com",
+          "outletId": "afridiziak-theatre-news",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -4958,11 +4971,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "afridiziak-theatre-news",
+            "outlet": "afridiziak-theatre-news",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review"
+            "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/"
           },
           {
             "outletId": "openairtheatre.com",
@@ -4984,13 +4997,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos"
           }
         ],
         "suppressedMissing": [],
@@ -5008,16 +5014,16 @@
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
-          },
-          {
             "url": "https://www.adventuresintheatreland.com/post/anansi-the-spider-regent-s-park-open-air-theatre",
             "outletId": "adventuresintheatreland.com",
             "state": "live",
             "firstSeenAt": "2026-08-23T03:53:38.032Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
             "url": "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
@@ -5026,11 +5032,17 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
-            "outletId": "timeout-london",
+            "url": "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+            "outletId": "primarytimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
+            "outletId": "afridiziak-theatre-news",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
             "url": "https://openairtheatre.com/production/anansi-the-spider",
@@ -5052,19 +5064,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
-            "outletId": "london-box-office",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
           }
         ],
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-23T16:14:59.695Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
@@ -8666,7 +8671,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "beauty-freak-off-broadway-2026",
@@ -19083,7 +19088,7 @@
       "showId": "cats-the-jellicle-ball-2026",
       "title": "CATS: The Jellicle Ball",
       "openingDate": "2026-04-07",
-      "status": "open",
+      "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-do-the-critics-think-of-cats-the-jellicle-ball-on-broadway",
@@ -19133,9 +19138,9 @@
         "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDLPLA"
       ],
-      "dirFiles": 73,
-      "dirClean": 35,
-      "inReviewsJson": 32,
+      "dirFiles": 74,
+      "dirClean": 38,
+      "inReviewsJson": 33,
       "missing": [
         {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
@@ -19144,6 +19149,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
         {
           "host": "latimes.com",
           "count": 1
@@ -19234,45 +19243,6 @@
               "file": "nysr--melissa-rose-bernardo.json",
               "flag": "wrongProduction",
               "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
-          "host": "slantmagazine.com",
-          "knownOutletId": "slantmagazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "slantmagazine--dan-rubins.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--jason-clark.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/"
-            },
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/"
             }
           ]
         },
@@ -19422,14 +19392,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 453,
+        "count": 460,
         "byReason": {
-          "not-http-url": 58,
-          "aggregator-internal-nav": 338,
           "non-review-host": 54,
+          "not-http-url": 58,
+          "aggregator-internal-nav": 345,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
@@ -19451,7 +19422,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242614/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "❌ Refusing to ingest — collision with playbill--unknown.json\n   reason: stale-flag-on-existing-file\n"
         }
       ],
       "ingestSkippedByCap": [],
@@ -19485,20 +19456,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
-          },
-          {
-            "outletId": "slantmagazine",
-            "outlet": "slantmagazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/"
-          },
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/"
           },
           {
             "outletId": "chicagotribune",
@@ -19632,6 +19589,12 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
+            "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+            "outletId": "slantmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
+          {
             "url": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
             "outletId": "theatrely.com",
             "state": "live",
@@ -19660,6 +19623,12 @@
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
             "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
@@ -19750,20 +19719,6 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
-            "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
-            "outletId": "slantmagazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
             "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
             "outletId": "chicagotribune",
             "state": "GAP",
@@ -19813,10 +19768,10 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           }
         ],
-        "liveCount": 21,
-        "candidateCount": 31
+        "liveCount": 22,
+        "candidateCount": 30
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
@@ -28864,14 +28819,16 @@
       "showId": "death-of-a-salesman-2026",
       "title": "Death of a Salesman",
       "openingDate": "2026-04-09",
-      "status": "open",
+      "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-do-the-critics-think-of-broadways-death-of-a-salesman-starring-nathan-lane-laurie-metcalf-and-christopher-abbott",
         "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
+        "https://playbill.com/article/read-reviews-for-young-vics-death-of-a-salesman-in-london",
         "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Nathan-Lane-and-Laurie-Metcalf-20260409",
         "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
-        "https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-in-the-West-End-Read-the-Reviews-20191105"
+        "https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-in-the-West-End-Read-the-Reviews-20191105",
+        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
@@ -28918,6 +28875,16 @@
         "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
         "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
         "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/",
+        "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+        "https://www.theguardian.com/stage/2019/may/10/death-of-a-salesman-review-young-vic-wendell-pierce-sharon-d-clarke",
+        "https://www.hollywoodreporter.com/review/death-of-a-salesman-theater-1209546",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+        "https://www.nytimes.com/2019/05/30/theater/london-theater-death-of-a-salesman-.html",
+        "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+        "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
+        "http://www.timeout.com/london/theatre/death-of-a-salesman-review",
+        "https://variety.com/2019/legit/reviews/death-of-a-salesman-review-london-wendell-pierce-1203213082/",
+        "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
         "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
         "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
         "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
@@ -28929,14 +28896,44 @@
         "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/",
         "https://www.timeout.com/london/theatre/death-of-a-salesman-review",
         "https://www.theupcoming.co.uk/2019/11/05/death-of-a-salesman-at-piccadilly-theatre-theatre-review/",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-witness-death-of-a-salesman",
+        "http://www.ny1.com/content/ny1_living/theater_reviews/157704/ny1-theater-review---death-of-a-salesman-",
+        "http://www.vulture.com/2012/03/mike-nichols-new-death-of-a-salesman-review.html",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-ethel-barrymore-theatre-new-york-7575536.html",
+        "http://newyork.timeout.com/arts-culture/theater/2847381/review-death-of-a-salesman",
+        "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html",
+        "http://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
+        "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1",
+        "http://www.amny.com/urbanite-1.812039/theater-review-death-of-a-salesman-3-5-stars-1.3605883",
+        "http://www.hollywoodreporter.com/review/death-a-salesman-theater-review-300736",
+        "http://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-punch-1.3602868",
+        "http://www.huffingtonpost.com/huff-wires/20120315/us-theater-review-death-of-a-salesman/",
+        "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-0316-death-salesman-broadway-review-20120315,0,2169632.column",
+        "http://latimesblogs.latimes.com/culturemonster/2012/03/theater-review-death-of-a-salesman-on-broadway.html",
+        "http://www.forbes.com/sites/rogerfriedman/2012/03/16/broadway-real-smash-mike-nichols-reinvents-death-of-a-salesman-62-years-old/",
+        "http://www.nydailynews.com/entertainment/music-arts/theater-review-death-a-salesman-article-1.1039703",
         "https://www.theatermania.com/news/review-nathan-lane-and-laurie-metcalf-star-in-a-death-of-a-salesman-for-the-ages_1832181/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDABID",
         "https://www.talkinbroadway.com/page/world/DeathofaSalesman26.html"
       ],
       "dirFiles": 92,
-      "dirClean": 38,
-      "inReviewsJson": 33,
+      "dirClean": 39,
+      "inReviewsJson": 31,
       "missing": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
           "host": "culturewhisper.com",
@@ -28948,6 +28945,20 @@
           "url": "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-witness-death-of-a-salesman",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.forbes.com/sites/rogerfriedman/2012/03/16/broadway-real-smash-mike-nichols-reinvents-death-of-a-salesman-62-years-old/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -28962,10 +28973,6 @@
           "count": 1
         },
         {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
           "host": "nysun.com",
           "count": 1
         },
@@ -28974,11 +28981,11 @@
           "count": 1
         },
         {
-          "host": "telegraph.co.uk",
+          "host": "theaterscene.net",
           "count": 1
         },
         {
-          "host": "theaterscene.net",
+          "host": "theatrereviews.com",
           "count": 1
         }
       ],
@@ -29237,6 +29244,25 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
           "host": "thedailybeast.com",
           "knownOutletId": "dailybeast",
@@ -29294,6 +29320,120 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.ny1.com/content/ny1_living/theater_reviews/157704/ny1-theater-review---death-of-a-salesman-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "recoverable": true,
+          "recoverableFile": "ny1--unknown.json",
+          "recoverableOutletId": "ny1",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 1,
+          "dirFlags": [
+            {
+              "file": "ny1--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://ny1.com/nyc/all-boroughs/on-stage/2026/06/04/frank-dilella-s-theater-picks---death-of-a-salesman----giant--and-more"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html?ref=theater"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
+          "host": "philly.com",
+          "knownOutletId": "philadelphia-inquirer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "philadelphia-inquirer--howard-shapiro.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://articles.philly.com/2012-03-15/news/31197416_1_willy-loman-willy-returns-broadway-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "usatoday--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1?csp=34life&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+usatoday-LifeTopStories+%28Life+-+Top+Stories%29"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-punch-1.3602868",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-punch-1.3602868"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120315/us-theater-review-death-of-a-salesman/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "huffpost--mark-kennedy.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.huffingtonpost.com/huff-wires/20120315/us-theater-review-death-of-a-salesman/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDABID",
           "host": "lightingandsoundamerica.com",
           "knownOutletId": "lighting-and-sound-america",
@@ -29335,18 +29475,24 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1096,
+        "count": 1523,
         "byReason": {
-          "aggregator-internal-nav": 804,
-          "not-http-url": 199,
-          "non-review-host": 84,
-          "non-review-path": 9
+          "non-review-host": 118,
+          "roundup-page": 1,
+          "not-http-url": 316,
+          "aggregator-internal-nav": 1076,
+          "non-review-path": 12
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
           "publishDate": "2022-10-09"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-young-vics-death-of-a-salesman-in-london",
+          "publishDate": "2019-05-10"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
@@ -29355,9 +29501,25 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-in-the-West-End-Read-the-Reviews-20191105",
           "publishDate": "2019-11-05"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
+          "publishDate": "2012-03-15"
         }
       ],
       "weIngestBlocked": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
         {
           "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
           "host": "culturewhisper.com",
@@ -29369,6 +29531,18 @@
           "host": "thestage.co.uk",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-witness-death-of-a-salesman",
+          "host": "newjerseynewsroom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.forbes.com/sites/rogerfriedman/2012/03/16/broadway-real-smash-mike-nichols-reinvents-death-of-a-salesman-62-years-old/",
+          "host": "forbes.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
@@ -29376,6 +29550,20 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf"
+          },
           {
             "outletId": "culture-whisper",
             "outlet": "culture-whisper",
@@ -29389,6 +29577,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/"
+          },
+          {
+            "outletId": "new-jersey-newsroom",
+            "outlet": "new-jersey-newsroom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-witness-death-of-a-salesman"
+          },
+          {
+            "outletId": "forbes",
+            "outlet": "forbes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.forbes.com/sites/rogerfriedman/2012/03/16/broadway-real-smash-mike-nichols-reinvents-death-of-a-salesman-62-years-old/"
           },
           {
             "outletId": "cititour",
@@ -29482,6 +29684,13 @@
             "url": "https://www.theaterpizzazz.com/death-of-a-salesman/"
           },
           {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html"
+          },
+          {
             "outletId": "dailybeast",
             "outlet": "dailybeast",
             "critic": "Unknown",
@@ -29501,6 +29710,48 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theupcoming.co.uk/2019/11/05/death-of-a-salesman-at-piccadilly-theatre-theatre-review/"
+          },
+          {
+            "outletId": "ny1",
+            "outlet": "ny1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.ny1.com/content/ny1_living/theater_reviews/157704/ny1-theater-review---death-of-a-salesman-"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html"
+          },
+          {
+            "outletId": "philadelphia-inquirer",
+            "outlet": "philadelphia-inquirer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-punch-1.3602868"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/huff-wires/20120315/us-theater-review-death-of-a-salesman/"
           },
           {
             "outletId": "lighting-and-sound-america",
@@ -29706,6 +29957,48 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2019/may/10/death-of-a-salesman-review-young-vic-wendell-pierce-sharon-d-clarke",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/death-of-a-salesman-theater-1209546",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/05/30/theater/london-theater-death-of-a-salesman-.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.timeout.com/london/theatre/death-of-a-salesman-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/death-of-a-salesman-review-london-wendell-pierce-1203213082/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
             "outletId": "chicagotribune.com",
             "state": "live",
@@ -29742,10 +30035,72 @@
             "firstSeenAt": "2026-08-07T08:57:29.253Z"
           },
           {
+            "url": "http://www.vulture.com/2012/03/mike-nichols-new-death-of-a-salesman-review.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-ethel-barrymore-theatre-new-york-7575536.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://newyork.timeout.com/arts-culture/theater/2847381/review-death-of-a-salesman",
+            "outletId": "newyork.timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-death-of-a-salesman-3-5-stars-1.3605883",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/death-a-salesman-theater-review-300736",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-0316-death-salesman-broadway-review-20120315,0,2169632.column",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://latimesblogs.latimes.com/culturemonster/2012/03/theater-review-death-of-a-salesman-on-broadway.html",
+            "outletId": "latimesblogs.latimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-death-a-salesman-article-1.1039703",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-nathan-lane-and-laurie-metcalf-star-in-a-death-of-a-salesman-for-the-ages_1832181/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
             "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
@@ -29760,6 +30115,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T08:57:29.253Z"
+          },
+          {
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-witness-death-of-a-salesman",
+            "outletId": "new-jersey-newsroom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.forbes.com/sites/rogerfriedman/2012/03/16/broadway-real-smash-mike-nichols-reinvents-death-of-a-salesman-62-years-old/",
+            "outletId": "forbes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
             "url": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1368",
@@ -29853,6 +30222,13 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
             "outletId": "dailybeast",
             "state": "GAP",
@@ -29874,6 +30250,48 @@
             "firstSeenAt": "2026-08-07T08:57:29.253Z"
           },
           {
+            "url": "http://www.ny1.com/content/ny1_living/theater_reviews/157704/ny1-theater-review---death-of-a-salesman-",
+            "outletId": "ny1",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
+            "outletId": "philadelphia-inquirer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/death-of-a-salesman-still-packs-a-punch-1.3602868",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/huff-wires/20120315/us-theater-review-death-of-a-salesman/",
+            "outletId": "huffpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDABID",
             "outletId": "lighting-and-sound-america",
             "state": "GAP",
@@ -29888,10 +30306,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 24,
-        "candidateCount": 42
+        "liveCount": 29,
+        "candidateCount": 57
       },
-      "computedAt": "2026-08-09T21:25:48.062Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -35873,7 +36291,7 @@
       "showId": "every-brilliant-thing-2026",
       "title": "Every Brilliant Thing",
       "openingDate": "2026-03-12",
-      "status": "open",
+      "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-do-the-critics-think-of-every-brilliant-thing-starring-daniel-radcliffe",
@@ -35912,9 +36330,9 @@
         "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
       ],
-      "dirFiles": 62,
-      "dirClean": 30,
-      "inReviewsJson": 30,
+      "dirFiles": 63,
+      "dirClean": 31,
+      "inReviewsJson": 31,
       "missing": [
         {
           "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
@@ -35925,6 +36343,10 @@
       "dirOnly": [
         {
           "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "lavocedinewyork.com",
           "count": 1
         },
         {
@@ -36047,14 +36469,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 422,
+        "count": 401,
         "byReason": {
-          "not-http-url": 106,
-          "aggregator-internal-nav": 277,
-          "non-review-host": 36,
+          "non-review-host": 35,
+          "not-http-url": 109,
+          "aggregator-internal-nav": 254,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "ingestResults": [
         {
           "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
@@ -36066,7 +36489,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242619/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://ope"
         }
       ],
       "ingestSkippedByCap": [],
@@ -36314,7 +36737,7 @@
         "liveCount": 23,
         "candidateCount": 29
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "evita-west-end-2025",
@@ -37444,6 +37867,7 @@
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
         "https://www.broadwayworld.com/article/Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810"
       ],
       "aggregatorListedUrls": [
@@ -37452,12 +37876,37 @@
         "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
         "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
-        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review"
+        "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
+        "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
+        "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
+        "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/",
+        "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
+        "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
+        "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
+        "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
+        "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
+        "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
+        "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
+        "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
+        "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html"
       ],
-      "dirFiles": 17,
-      "dirClean": 14,
+      "dirFiles": 26,
+      "dirClean": 15,
       "inReviewsJson": 13,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
+          "host": "perspectivemedia.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -37480,38 +37929,320 @@
           "count": 1
         },
         {
-          "host": "theatreandtonic.co.uk",
+          "host": "thenerve.news",
           "count": 1
         },
         {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
+          "host": "thenorthernecho.co.uk",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--andreas-wiseman.json",
+              "flag": "nonReview",
+              "urlInDir": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--kj-yossman.json",
+              "flag": "clean",
+              "urlInDir": "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--precious-adesina.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
+          "host": "rsc.org.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rsc--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--precious-adesina.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
+          "host": "yahoo.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "yahoo--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Game of Thrones: The Mad King\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Game of Thrones: The Mad King\" review shakespeare",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Game of Thrones: The Mad King\" Cooke review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Game of Thrones: The Mad King Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 14,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 339,
+        "count": 444,
         "byReason": {
-          "not-http-url": 104,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 217,
+          "non-review-host": 60,
+          "roundup-page": 6,
+          "not-http-url": 126,
+          "aggregator-internal-nav": 249,
           "non-review-path": 3
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+        },
+        {
+          "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
+          "host": "perspectivemedia.com",
+          "outletId": "perspectivemedia",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"perspectivemedia\" (not in registry) — onboard to outlet-registry.json after "
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin"
+          },
+          {
+            "outletId": "perspectivemedia.com",
+            "outlet": "perspectivemedia.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre"
+          },
+          {
+            "outletId": "rsc.org.uk",
+            "outlet": "rsc.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html"
+          },
+          {
+            "outletId": "yahoo.com",
+            "outlet": "yahoo.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -37545,16 +38276,97 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/game-of-thrones-the-mad-king-review-a-titanic-display-of-theatre-magic_1728960/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
             "url": "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
             "outletId": "winteriscoming.net",
             "state": "live",
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
+            "outletId": "perspectivemedia.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
+            "outletId": "latimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
+            "outletId": "rsc.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html",
+            "outletId": "yahoo.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 6
+        "liveCount": 8,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-14T22:08:13.391Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -52867,6 +53679,41 @@
       "computedAt": "2026-08-14T15:47:11.265Z"
     },
     {
+      "showId": "holy-fool-off-west-end-2026",
+      "title": "Holy Fool",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-24T06:27:46.478Z"
+    },
+    {
       "showId": "home-2024",
       "title": "Home",
       "openingDate": "2024-06-05",
@@ -53478,7 +54325,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -58746,36 +59593,38 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
-        "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
-        "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
-        "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
         "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+        "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
+        "https://onin.london/jeeves-takes-charge-review/",
+        "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-JEEVES-TAKES-CHARGE-Charing-Cross-Theatre-20260819",
+        "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+        "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
         "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
         "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/jeeves-takes-charge-review-charing-cross-theatre",
         "https://www.allthatdazzles.co.uk/post/review-jeeves-takes-charge-charing-cross-theatre",
-        "https://onin.london/jeeves-takes-charge-review/",
         "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
         "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-jeeves-takes-charge-charing-cross-theatre",
-        "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse",
-        "https://www.theatremonkey.com/show/jeeves-takes-charge/"
+        "https://www.theatremonkey.com/show/jeeves-takes-charge/",
+        "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
+        "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
+        "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026",
+        "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+        "https://thespyinthestalls.com/2026/08/jeeves-takes-charge/"
       ],
       "dirFiles": 39,
-      "dirClean": 24,
+      "dirClean": 25,
       "inReviewsJson": 25,
       "missing": [],
       "dirOnly": [
         {
-          "host": "ayoungishperspective.co.uk",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
           "host": "firstnightmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "jackstage.co.uk",
           "count": 1
         },
         {
@@ -58788,22 +59637,6 @@
         },
         {
           "host": "songsbehindthemusic.com",
-          "count": 1
-        },
-        {
-          "host": "thespyinthestalls.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thetheatreflyer.co.uk",
           "count": 1
         },
         {
@@ -58844,6 +59677,24 @@
               "file": "theatremonkey--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.theatremonkey.com/show/jeeves-takes-charge/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--luke-dillon.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/"
             }
           ],
           "serpCensus": true
@@ -58898,8 +59749,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -58908,8 +59759,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 5,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -58918,7 +59769,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -58929,7 +59780,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -58939,20 +59790,20 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 9,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 14,
         "byReason": {
-          "non-review-host": 10,
           "ticketing-listing": 1,
+          "non-review-host": 11,
           "venue-production-page": 2
         }
       },
@@ -58973,6 +59824,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/jeeves-takes-charge/"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/"
           }
         ],
         "suppressedMissing": [],
@@ -58984,8 +59842,20 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
-            "outletId": "londonbornandbred.co.uk",
+            "url": "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+            "outletId": "fairypoweredproductions.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-20T10:24:01.870Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://onin.london/jeeves-takes-charge-review/",
+            "outletId": "onin.london",
             "state": "live",
             "firstSeenAt": "2026-08-23T03:53:38.032Z"
           },
@@ -58996,14 +59866,20 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.broadwayworld.com/westend/article/Review-JEEVES-TAKES-CHARGE-Charing-Cross-Theatre-20260819",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
-            "outletId": "fairypoweredproductions.com",
+            "url": "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "outletId": "londonbornandbred.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-23T03:53:38.032Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
@@ -59026,12 +59902,6 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://onin.london/jeeves-takes-charge-review/",
-            "outletId": "onin.london",
-            "state": "live",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
-          },
-          {
             "url": "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
             "outletId": "thelivereview.co.uk",
             "state": "live",
@@ -59050,10 +59920,28 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
-            "url": "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse",
-            "outletId": "jackstage.co.uk",
+            "url": "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026",
+            "outletId": "thetheatreflyer.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/08/jeeves-takes-charge/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
             "url": "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
@@ -59068,12 +59956,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 15
+        "liveCount": 18,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-23T16:14:59.695Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "jesa-off-broadway-2026",
@@ -60987,14 +61882,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 395,
+        "count": 375,
         "byReason": {
-          "aggregator-internal-nav": 271,
-          "not-http-url": 83,
           "non-review-host": 38,
+          "not-http-url": 83,
+          "aggregator-internal-nav": 251,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -61127,7 +62023,7 @@
         "liveCount": 17,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "john-proctor-is-the-villain-2025",
@@ -65244,7 +66140,7 @@
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "title": "Les Misérables: The Arena Concert Spectacular",
       "openingDate": "2026-07-28",
-      "status": "open",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
@@ -65256,36 +66152,12 @@
         "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
         "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
         "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-        "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
-        "https://www.theatermania.com/news/interview-matt-lucas-on-les-miserables-thenardier-and-the-arena-spectacular-at-radio-city_1846836/"
+        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/"
       ],
-      "dirFiles": 15,
-      "dirClean": 9,
+      "dirFiles": 16,
+      "dirClean": 10,
       "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "knownOutletId": "one-minute-critic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-          "host": "msg.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
-          "host": "recorderonline.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "amny.com",
@@ -65294,158 +66166,36 @@
         {
           "host": "nypost.com",
           "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.substack.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 424,
+        "count": 365,
         "byReason": {
-          "not-http-url": 82,
-          "aggregator-internal-nav": 270,
-          "non-review-host": 62,
-          "non-review-path": 3,
-          "ticketing-reseller": 4,
-          "roundup-page": 2,
-          "venue-production-page": 1
+          "non-review-host": 37,
+          "not-http-url": 81,
+          "aggregator-internal-nav": 244,
+          "non-review-path": 3
         }
       },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "outletId": "one-minute-critic",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-          "host": "msg.com",
-          "outletId": "msg",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242565/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
-        },
-        {
-          "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
-          "host": "recorderonline.com",
-          "outletId": "recorderonline",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242566/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
+      "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review"
-          },
-          {
-            "outletId": "msg.com",
-            "outlet": "msg.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417"
-          },
-          {
-            "outletId": "recorderonline.com",
-            "outlet": "recorderonline.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -65483,45 +66233,12 @@
             "outletId": "chicagotribune.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/interview-matt-lucas-on-les-miserables-thenardier-and-the-arena-spectacular-at-radio-city_1846836/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-            "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-            "outletId": "msg.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T22:22:02.507Z"
-          },
-          {
-            "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
-            "outletId": "recorderonline.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T22:22:02.507Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 9
+        "liveCount": 5,
+        "candidateCount": 5
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "let-the-good-times-roll-2026",
@@ -71519,7 +72236,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -91806,7 +92523,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -103076,270 +103793,49 @@
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
       "title": "Rosie O'Donnell: Common Knowledge",
       "openingDate": "2026-07-25",
-      "status": "open",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-Rosie-ODonnells-COMMON-KNOWLEDGE-20260731"
       ],
       "aggregatorListedUrls": [
         "https://deadline.com/2026/07/rosie-odonnell-common-knowledge-off-broadway-1237003334/",
-        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-        "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
-        "https://www.show-score.com/off-broadway-shows/rosie-o-donnell-common-knowledge",
-        "https://www.theatermania.com/news/rosie-odonnell-bringing-solo-show-common-knowledge-off-broadway-this-summer_1841888/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/rosie-odonnell-to-perform-off-broadway-solo-show-common-knowledge-this-summer",
-        "https://thecomicscomic.com/2025/08/04/rosie-odonnell-common-knowledge-at-edinburgh-fringe-2025/",
-        "https://neurodiversereview.co.uk/rosie-odonnell-common-knowledge/",
-        "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-        "https://sparkhamptons.com/2026/07/23/rosie-odonnells-common-knowledge-review-funny-heartbreaking-and-her-most-personal-show-yet/hamptons",
-        "https://www.tickpick.com/buy-rosie-odonnell-common-knowledge-tickets-daryl-roth-theatre-7-30-26-7pm/8054193/"
+        "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell"
       ],
       "dirFiles": 12,
       "dirClean": 4,
-      "inReviewsJson": 3,
+      "inReviewsJson": 4,
       "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/rosie-o-donnell-common-knowledge",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "show-score--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.show-score.com/off-broadway-shows/rosie-o-donnell-common-knowledge"
-            }
-          ],
-          "serpCensus": true
+          "host": "newyorktheater.me",
+          "count": 1
         },
         {
-          "url": "https://www.theatermania.com/news/rosie-odonnell-bringing-solo-show-common-knowledge-off-broadway-this-summer_1841888/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/rosie-odonnell-discusses-her-new-off-broadway-show-common-knowledge_1845820/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://neurodiversereview.co.uk/rosie-odonnell-common-knowledge/",
-          "host": "neurodiversereview.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "neurodiversereview--simon-jay.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://neurodiversereview.co.uk/rosie-odonnell-common-knowledge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-          "host": "darylroththeatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "darylroththeatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sparkhamptons.com/2026/07/23/rosie-odonnells-common-knowledge-review-funny-heartbreaking-and-her-most-personal-show-yet/hamptons",
-          "host": "sparkhamptons.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sparkhamptons--angela-lagreca.json",
-              "flag": "clean",
-              "urlInDir": "https://sparkhamptons.com/2026/07/22/rosie-odonnell-returns-to-new-york-stage-with-personal-new-show-common-knowledge-at-daryl-roth-theatre/hamptons"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tickpick.com/buy-rosie-odonnell-common-knowledge-tickets-daryl-roth-theatre-7-30-26-7pm/8054193/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "clean",
-              "urlInDir": "https://www.tickpick.com/buy-rosie-odonnell-common-knowledge-tickets-daryl-roth-theatre-8-5-26-7pm/8054197/"
-            }
-          ],
-          "serpCensus": true
+          "host": "thecomicscomic.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Rosie O'Donnell: Common Knowledge\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Rosie O'Donnell: Common Knowledge\" review daryl",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Rosie O'Donnell: Common Knowledge\" O'Donnell review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 11,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 334,
+        "count": 284,
         "byReason": {
-          "aggregator-internal-nav": 226,
-          "not-http-url": 61,
-          "non-review-host": 37,
-          "non-review-path": 3,
-          "roundup-page": 1,
-          "venue-production-page": 2,
-          "ticketing-reseller": 4
+          "non-review-host": 15,
+          "not-http-url": 63,
+          "aggregator-internal-nav": 203,
+          "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/rosie-o-donnell-common-knowledge"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/rosie-odonnell-bringing-solo-show-common-knowledge-off-broadway-this-summer_1841888/"
-          },
-          {
-            "outletId": "neurodiversereview.co.uk",
-            "outlet": "neurodiversereview.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://neurodiversereview.co.uk/rosie-odonnell-common-knowledge/"
-          },
-          {
-            "outletId": "darylroththeatre.com",
-            "outlet": "darylroththeatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/"
-          },
-          {
-            "outletId": "sparkhamptons.com",
-            "outlet": "sparkhamptons.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sparkhamptons.com/2026/07/23/rosie-odonnells-common-knowledge-review-funny-heartbreaking-and-her-most-personal-show-yet/hamptons"
-          },
-          {
-            "outletId": "tickpick.com",
-            "outlet": "tickpick.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tickpick.com/buy-rosie-odonnell-common-knowledge-tickets-daryl-roth-theatre-7-30-26-7pm/8054193/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -103353,72 +103849,12 @@
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:21:10.691Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:21:10.691Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/theatre-news/news/rosie-odonnell-to-perform-off-broadway-solo-show-common-knowledge-this-summer",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T23:23:45.175Z"
-          },
-          {
-            "url": "https://thecomicscomic.com/2025/08/04/rosie-odonnell-common-knowledge-at-edinburgh-fringe-2025/",
-            "outletId": "thecomicscomic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T19:30:49.460Z"
-          },
-          {
-            "url": "https://www.show-score.com/off-broadway-shows/rosie-o-donnell-common-knowledge",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:21:10.691Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/rosie-odonnell-bringing-solo-show-common-knowledge-off-broadway-this-summer_1841888/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:21:10.691Z"
-          },
-          {
-            "url": "https://neurodiversereview.co.uk/rosie-odonnell-common-knowledge/",
-            "outletId": "neurodiversereview.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T19:30:49.460Z"
-          },
-          {
-            "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-            "outletId": "darylroththeatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:21:10.691Z"
-          },
-          {
-            "url": "https://sparkhamptons.com/2026/07/23/rosie-odonnells-common-knowledge-review-funny-heartbreaking-and-her-most-personal-show-yet/hamptons",
-            "outletId": "sparkhamptons.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T16:49:27.567Z"
-          },
-          {
-            "url": "https://www.tickpick.com/buy-rosie-odonnell-common-knowledge-tickets-daryl-roth-theatre-7-30-26-7pm/8054193/",
-            "outletId": "tickpick.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T23:23:45.175Z"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 10
+        "liveCount": 2,
+        "candidateCount": 2
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -106210,7 +106646,7 @@
       "showId": "space-dogs-off-west-end-2026",
       "title": "Space Dogs",
       "openingDate": "2026-07-31",
-      "status": "open",
+      "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs"
@@ -106220,24 +106656,7 @@
         "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
         "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
         "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
-        "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
-        "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
-        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
-        "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
-        "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
-        "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
-        "https://playstosee.com/reviews/space-dogs/",
-        "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
-        "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
-        "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
-        "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-        "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
-        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
-        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
-        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-        "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/"
+        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
       ],
       "dirFiles": 20,
       "dirClean": 16,
@@ -106277,24 +106696,6 @@
           "knownOutletId": "timeout-london",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
-          "host": "thetheatreflyer.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-          "host": "uktw.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -106303,144 +106704,75 @@
           "count": 1
         },
         {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
           "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "onin.london",
           "count": 1
         },
         {
           "host": "operationlivetheatre.com",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--tanyel-gumushan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
-            },
-            {
-              "file": "whatsonstage--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
+        {
+          "host": "playstosee.com",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 2
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Space Dogs\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Space Dogs\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 7,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Space Dogs\" review other",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Space Dogs The Other Palace - Studio review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Space Dogs The Other Palace - Studio review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Space Dogs The Other Palace - Studio review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 17,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 133,
+        "count": 116,
         "byReason": {
-          "aggregator-internal-nav": 92,
-          "non-review-host": 37,
-          "not-http-url": 4
+          "non-review-host": 20,
+          "not-http-url": 4,
+          "aggregator-internal-nav": 92
         }
       },
       "dedupedVariants": [],
@@ -106482,44 +106814,7 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
-          "host": "thetheatreflyer.co.uk",
-          "outletId": "thetheatreflyer",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~204036/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~204037/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -106558,116 +106853,10 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
-          },
-          {
-            "outletId": "thetheatreflyer.co.uk",
-            "outlet": "thetheatreflyer.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026"
-          },
-          {
-            "outletId": "uktw.co.uk",
-            "outlet": "uktw.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/space-dogs/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T03:06:37.050Z"
-          },
-          {
-            "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
-            "outletId": "onin.london",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T03:06:37.050Z"
-          },
-          {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T20:18:38.496Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T03:06:37.050Z"
-          },
           {
             "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
             "outletId": "nysr",
@@ -106702,40 +106891,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
-            "outletId": "thetheatreflyer.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-            "outletId": "uktw.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 21
+        "liveCount": 0,
+        "candidateCount": 5
       },
-      "computedAt": "2026-08-10T03:06:37.050Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "spamalot-2023",
@@ -108400,11 +108561,11 @@
         "https://events.amny.com/event/spellbound/",
         "https://www.sohoplayhouse.com/see-a-show/spellbound",
         "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
+        "https://sohotheatre.com/events/suhani-shah-spellbound/",
         "https://www.thereviewshub.com/suhani-shah-spellbound-2-0-soho-theatre-london/",
-        "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
-        "https://sohotheatre.com/events/suhani-shah-spellbound-2/"
+        "https://www.artshub.com.au/news/reviews/performance-review-suhani-shah-spellbound-rising-festival-the-capitol-2729906/"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -108491,9 +108652,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
+          "url": "https://www.artshub.com.au/news/reviews/performance-review-suhani-shah-spellbound-rising-festival-the-capitol-2729906/",
+          "host": "artshub.com.au",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -108536,7 +108697,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/",
+          "url": "https://sohotheatre.com/events/suhani-shah-spellbound/",
           "host": "sohotheatre.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -108567,7 +108728,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -108577,7 +108738,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -108587,7 +108748,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -108597,8 +108758,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -108608,7 +108769,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -108618,13 +108779,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 295,
+        "count": 301,
         "byReason": {
-          "non-review-host": 35,
-          "not-http-url": 40,
+          "non-review-host": 42,
           "roundup-page": 1,
+          "not-http-url": 40,
           "aggregator-internal-nav": 214,
-          "non-review-path": 4,
+          "non-review-path": 3,
           "venue-production-page": 1
         }
       },
@@ -108723,10 +108884,10 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend",
-          "provisional": false,
+          "url": "https://www.artshub.com.au/news/reviews/performance-review-suhani-shah-spellbound-rising-festival-the-capitol-2729906/",
+          "host": "artshub.com.au",
+          "outletId": "artshub",
+          "provisional": true,
           "ok": false,
           "noop": true,
           "conflict": false,
@@ -108824,11 +108985,11 @@
             "url": "https://www.thereviewshub.com/suhani-shah-spellbound-2-0-soho-theatre-london/"
           },
           {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
+            "outletId": "artshub.com.au",
+            "outlet": "artshub.com.au",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe"
+            "url": "https://www.artshub.com.au/news/reviews/performance-review-suhani-shah-spellbound-rising-festival-the-capitol-2729906/"
           },
           {
             "outletId": "amny",
@@ -108849,7 +109010,7 @@
             "outlet": "sohotheatre.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/"
+            "url": "https://sohotheatre.com/events/suhani-shah-spellbound/"
           }
         ],
         "suppressedMissing": [],
@@ -108939,11 +109100,11 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-suhani-shah-spellbound-soho-theatre-ed-fringe",
-            "outletId": "west-end-best-friend",
+            "url": "https://www.artshub.com.au/news/reviews/performance-review-suhani-shah-spellbound-rising-festival-the-capitol-2729906/",
+            "outletId": "artshub.com.au",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
             "url": "https://events.amny.com/event/spellbound/",
@@ -108960,17 +109121,17 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           },
           {
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2/",
+            "url": "https://sohotheatre.com/events/suhani-shah-spellbound/",
             "outletId": "sohotheatre.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T16:14:59.695Z"
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
           }
         ],
         "liveCount": 0,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-23T16:14:59.695Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "starlight-express-west-end-2024",
@@ -116835,7 +116996,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "tao-of-glass-west-end-2026",
@@ -125746,7 +125907,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-14T18:40:18.949Z"
+      "computedAt": "2026-08-24T06:27:46.478Z"
     },
     {
       "showId": "the-maids-off-broadway-2026",
