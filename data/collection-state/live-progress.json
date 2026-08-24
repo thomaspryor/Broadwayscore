@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-24T00:37:08.999Z",
+  "updatedAt": "2026-08-24T01:45:12.961Z",
   "processed": 24,
-  "failed": 1146,
-  "successRate": "2.1%",
+  "failed": 1156,
+  "successRate": "2.0%",
   "tierBreakdown": {
     "playwright": 22,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-23T10:03:07.257Z",
-      "event": "bb-session",
-      "session": "a84d23de",
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasser"
-    },
-    {
-      "t": "2026-08-23T10:03:07.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-23T10:03:40.456Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "event": "bb-session",
       "session": "8cd88698",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-24T01:43:18.504Z",
+      "event": "bb-session",
+      "session": "1b2fe3b7",
+      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-"
+    },
+    {
+      "t": "2026-08-24T01:43:18.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
