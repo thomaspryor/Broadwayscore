@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-08-21T22:20:23.749Z",
-    "showId": "cats-west-end-2026",
-    "newFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-    "ok": false,
-    "file": "off-script-with-dan-dwyer--dan-dwyer.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": null,
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "http://dandwyeroffscript.tumblr.com/post/148601767421/cats",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-08-21T22:20:23.817Z",
     "showId": "cats-west-end-2026",
     "newFile": "reflections-in-the-light--lauren-yarger.json",
@@ -9481,6 +9462,21 @@
       "existingPublishDate": "2024-09-13",
       "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-the-drinks-party-that-goes-disastrously-wrong-3qrdwjcmz",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-24T01:12:17.698Z",
+    "showId": "the-pass-off-broadway-2026",
+    "newFile": "theatrely--juan-a-ramirez.json",
+    "ok": false,
+    "file": "theatrely--juan-a-ramirez.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-08-03",
+      "incomingPublishDate": "August 25, 2021",
+      "diffDays": 1804,
+      "existingUrl": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "incomingUrl": "https://www.theatrely.com/post/a-new-dawn-with-pass-over-review"
     }
   }
 ]
