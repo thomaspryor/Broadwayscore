@@ -806,7 +806,14 @@ function titleWordsMatch(showTitle, candidateText) {
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
   showSlugWords = [...new Set(showSlugWords)];
 
-  const candidateLower = candidateText.toLowerCase();
+  // Strip a cast-billing suffix ("Starring X Y", "Featuring X Y") before matching —
+  // actor names are not evidence for or against which show a headline is about, but
+  // previously counted as "extra distinctive words" against the short-title guard
+  // below, false-rejecting real full-title matches like "Once Upon a Mattress
+  // Starring Sutton Foster" (pre-existing, found while testing the 2026-08-24 fix
+  // for the inverse failure — "Rhinoceros Starring Paul Giamatti And John Turturro"
+  // false-matching "The Ballad of John and Paul" on the actors' first names alone).
+  const candidateLower = candidateText.toLowerCase().replace(/\s+(?:starring|featuring)\s+.+$/, '');
 
   if (showSlugWords.length === 0) {
     // Fallback: raw first word with word-boundary check (not substring)
@@ -853,7 +860,15 @@ function titleWordsMatch(showTitle, candidateText) {
       .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
     const showWordsClean = new Set(fullTitleWords);
-    const candidateWords = candidateLower.split(/[\s,\-_/]+/)
+    // No hyphen in the split (unlike fullTitleWords' pattern would need none either) —
+    // splitting on '-' here while fullTitleWords keeps hyphenated words intact broke
+    // matching for titles like "A-Changin'"/"Court-Martial": normalizeWord() already
+    // strips the hyphen from an intact token ("a-changin'" -> "achangin"), but
+    // pre-splitting on '-' instead produces two separate tokens ("a", "changin") that
+    // never equal the show's single "achangin" token — so a real hyphenated word was
+    // always flagged as an unexplained "extra" word once the guard below started
+    // running on partial matches too (2026-08-24).
+    const candidateWords = candidateLower.split(/[\s,_/]+/)
       .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
         && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)
