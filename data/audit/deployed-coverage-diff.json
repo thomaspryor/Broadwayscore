@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-24T15:42:12.954Z",
+  "generatedAt": "2026-08-24T16:30:22.968Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 144,
-  "clean": 142,
-  "defective": 2,
+  "clean": 143,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
@@ -18,27 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.54 vs local 74.17 (Δ0.37)"
+          "detail": "deployed cs 74.48 vs local 74.54 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 18,
+      "localCount": 19,
       "deployedCount": 19
-    },
-    {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "openingDate": "2026-08-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.25 vs local 68.93 (Δ0.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 26
     }
   ]
 }
