@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-24T19:59:58.413Z",
-  "processed": 80,
-  "failed": 1190,
+  "updatedAt": "2026-08-24T20:01:14.026Z",
+  "processed": 81,
+  "failed": 1199,
   "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 47,
@@ -9,11 +9,11 @@
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 8,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -69,6 +69,17 @@
       "t": "2026-08-24T15:22:00.760Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-24T20:00:37.353Z",
+      "event": "bb-session",
+      "session": "132c130b",
+      "url": "https://www.wsj.com/articles/hamilton-sets-weekly-record-again-with-3-8-million-"
+    },
+    {
+      "t": "2026-08-24T20:00:37.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

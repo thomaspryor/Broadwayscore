@@ -79,7 +79,8 @@
     "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
     "harry-potter-2021/cititour--brian-scott-lipton.json",
     "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "hamilton-west-end-2021/variety--kj-yossman.json"
+    "hamilton-west-end-2021/variety--kj-yossman.json",
+    "hamilton-west-end-2021/wsj--terry-teachout.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -1271,7 +1272,16 @@
     "harry-potter-2021/british-theatre--unknown.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "hamilton-west-end-2021/variety--unknown.json"
+    "hamilton-west-end-2021/variety--unknown.json",
+    "hamilton-west-end-2021/vulture--jesse-green.json",
+    "hamilton-west-end-2021/deadline--jeremy-gerard.json",
+    "hamilton-west-end-2021/ew--leah-greenblatt.json",
+    "hamilton-west-end-2021/ew--unknown.json",
+    "hamilton-west-end-2021/newsday--linda-winer.json",
+    "hamilton-west-end-2021/nypost--elisabeth-vincentelli.json",
+    "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+    "hamilton-west-end-2021/thewrap--robert-hofler.json",
+    "hamilton-west-end-2021/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1346,7 +1356,8 @@
       "just-in-time-2025/newyorker--conde-nast.json",
       "maybe-happy-ending-2024/newyorker--conde-nast.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "hamilton-west-end-2021/wsj--terry-teachout.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1373,7 +1384,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "hamilton-west-end-2021/variety--unknown.json",
+  "lastProcessed": "hamilton-west-end-2021/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -1429,6 +1440,17 @@
       "t": "2026-08-24T15:22:00.760Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-24T20:00:37.353Z",
+      "event": "bb-session",
+      "session": "132c130b",
+      "url": "https://www.wsj.com/articles/hamilton-sets-weekly-record-again-with-3-8-million-"
+    },
+    {
+      "t": "2026-08-24T20:00:37.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
