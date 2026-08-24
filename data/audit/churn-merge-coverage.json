@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-24T06:48:11.107Z",
+    "generatedAt": "2026-08-24T07:37:35.930Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 37
+      "churn": 36
     },
     {
       "path": "data/audit/validation/collection-report-2026-08-23.json",
@@ -26,7 +26,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 59
+      "churn": 55
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -34,31 +34,31 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 32
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 998,
+      "churn": 1029,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 945,
+      "churn": 975,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 374,
+      "churn": 375,
       "mergeAttr": "ours"
     },
     {
@@ -68,12 +68,12 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 262,
+      "churn": 260,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 157,
+      "churn": 155,
       "mergeAttr": "union"
     },
     {
@@ -83,17 +83,22 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 78,
+      "churn": 79,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
@@ -102,23 +107,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 53,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 38,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     }
   ]
