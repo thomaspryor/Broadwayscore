@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-24T10:15:55.064Z",
+  "timestamp": "2026-08-24T10:48:20.694Z",
   "stats": {
-    "totalReviews": 42387,
+    "totalReviews": 42388,
     "alreadyFlagged": 18139,
     "dateGuardCatches": 177,
     "directorMismatch": 992,
     "tvFilmSignals": 1223,
-    "londonSignals": 928,
+    "londonSignals": 929,
     "offBroadwaySignals": 493,
     "yearMismatch": 90,
-    "noPublishDate": 3562
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -33921,7 +33921,22 @@
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "score": 71,
+      "publishDate": "2026-08-22",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-as-you-like-it-shakespeares-globe",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 79,
       "publishDate": "2026-08-22",
       "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
       "findings": [
