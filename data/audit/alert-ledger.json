@@ -1448,12 +1448,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-23T12:24:33.195Z",
+      "lastSeen": "2026-08-24T12:34:09.890Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1501,6 +1501,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2297"
+    },
+    "cron-health:Commercial Friday Refresh": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial Friday Refresh",
+      "firstSeen": "2026-08-24T12:34:09.811Z",
+      "lastSeen": "2026-08-24T12:34:09.811Z",
+      "lastNotifiedAt": "2026-08-24T12:34:09.811Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

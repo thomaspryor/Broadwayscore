@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-17T12:29:34.150Z",
+  "generatedAt": "2026-08-24T12:36:24.972Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 38,
-    "showsWithNoTexts": 5,
+    "scanned": 42,
+    "showsWithNoTexts": 2,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -111,6 +111,19 @@
             "reviewId": "dukes-off-broadway-2026/broadwayworld--unknown.json",
             "isoDate": "2026-08-02",
             "quote": "run through Sunday August 2, 2026"
+          }
+        ]
+      },
+      {
+        "showId": "masticate-off-broadway-2026",
+        "proposedClosingDate": "2026-08-23",
+        "confidence": "medium",
+        "reason": "single review, 2.4wk implied run length",
+        "evidence": [
+          {
+            "reviewId": "masticate-off-broadway-2026/theater-scene--unknown.json",
+            "isoDate": "2026-08-23",
+            "quote": "through August 23, 2026"
           }
         ]
       },
@@ -297,11 +310,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "a-walk-on-the-moon-off-broadway-2026",
-        "proposedClosingDate": "2026-08-22",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "cat-cohen-broad-strokes-off-broadway-2026",
         "proposedClosingDate": "2026-09-25",
         "reason": "already-has-closing-date"
@@ -365,52 +373,57 @@
         "showId": "isla-off-broadway-2026",
         "proposedClosingDate": "2026-08-29",
         "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "benevolent-off-broadway-2026",
+        "proposedClosingDate": "2026-09-05",
+        "reason": "already-has-closing-date"
       }
     ]
   },
   "todaytixStaleness": {
-    "checked": 36,
+    "checked": 35,
     "skipped": false,
     "candidates": [
       {
         "showId": "pied-a-terre-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-08-03"
       },
       {
+        "showId": "los-soles-truncos-off-broadway-2025",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-08-17"
+      },
+      {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 7,
+        "consecutiveMissingChecks": 8,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
-        "consecutiveMissingChecks": 6,
+        "consecutiveMissingChecks": 7,
         "firstMissingDate": "2026-07-13"
       },
       {
         "showId": "age-is-a-feeling-off-broadway-2024",
-        "consecutiveMissingChecks": 7,
+        "consecutiveMissingChecks": 8,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "the-whoopi-monologues-off-broadway-2026",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-07-20"
       },
       {
         "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-08-03"
       },
       {
-        "showId": "the-black-mirror-experience-off-broadway-2026",
-        "consecutiveMissingChecks": 7,
-        "firstMissingDate": "2026-07-12"
-      },
-      {
-        "showId": "hungry-women-off-broadway-2026",
-        "consecutiveMissingChecks": 4,
-        "firstMissingDate": "2026-07-27"
+        "showId": "the-winters-tale-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-08-17"
       }
     ]
   }
