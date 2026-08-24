@@ -1,11 +1,44 @@
 {
-  "generatedAt": "2026-08-24T14:44:10.489Z",
+  "generatedAt": "2026-08-24T15:42:12.954Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 144,
-  "clean": 144,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 142,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.54 vs local 74.17 (Δ0.37)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 19
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "title": "Jeeves Takes Charge",
+      "openingDate": "2026-08-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.25 vs local 68.93 (Δ0.32)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 26
+    }
+  ]
 }
