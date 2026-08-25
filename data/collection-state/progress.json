@@ -69,7 +69,8 @@
     "the-real-ivanov-off-broadway-2026/talkinbroadway--unknown.json",
     "pride-west-end-2026/variety--unknown.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "as-you-like-it-globe-west-end-2026/broadwayworld--clement-scott.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -751,7 +752,16 @@
     "paddington-the-musical-west-end-2025/here--unknown.json",
     "paddington-the-musical-west-end-2025/talkinbroadway--unknown.json",
     "two-strangers-bway-2025/thereviewshub--unknown.json",
-    "two-strangers-bway-2025/daily-mail--patrick-marmion.json"
+    "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -805,7 +815,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -815,7 +826,8 @@
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
       "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
       "paranormal-activity-2026/broadwayworld--unknown.json",
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "as-you-like-it-globe-west-end-2026/broadwayworld--clement-scott.json"
     ],
     "brightdata": [
       "schmigadoon-2026/thewrap--robert-hofler.json",
@@ -842,7 +854,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -871,6 +883,17 @@
       "t": "2026-08-25T10:36:32.537Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-25T19:06:05.983Z",
+      "event": "bb-session",
+      "session": "754f5c37",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-25T19:06:06.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
