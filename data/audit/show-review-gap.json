@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-25T02:21:52.283Z",
+  "generatedAt": "2026-08-25T04:40:59.293Z",
   "windowDays": 1095,
-  "targets": 19,
-  "auditedThisRun": 19,
-  "carriedForward": 427,
+  "targets": 47,
+  "auditedThisRun": 25,
+  "carriedForward": 421,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 286,
-    "totalMissing": 1362,
+    "withGap": 285,
+    "totalMissing": 1359,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1616,
-    "totalRecoverable": 17,
-    "totalRecovered": 3
+    "totalFlaggedMisses": 1622,
+    "totalRecoverable": 16,
+    "totalRecovered": 2
   },
   "results": [
     {
@@ -3867,23 +3867,39 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNTLL",
         "https://www.talkinbroadway.com/page/ob/08_11_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-        "https://pagesonstages.com/2026/08/11/an-american-daughter/",
-        "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-        "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
         "https://stagebuddy.com/theater/theater-review/an-american-daughter",
+        "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
         "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-off-broadway-97552614",
+        "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
         "https://www.newyorktheatreguide.com/show/46998-an-american-daughter",
-        "https://theaterscene.com/reviews/an-american-daughter/",
+        "https://www.show-score.com/off-broadway-shows/an-american-daughter",
         "https://twi-ny.com/tag/an-american-daughter/",
         "https://forward.com/culture/842825/wendy-wasserstein-an-american-daughter-second-wave-feminism-la-femme/"
       ],
       "dirFiles": 32,
       "dirClean": 21,
       "inReviewsJson": 19,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
+          "host": "ctvoice.com",
+          "knownOutletId": "ctvoice",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/an-american-daughter",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "nyctheatreaddict.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
           "count": 1
         },
         {
@@ -3892,6 +3908,10 @@
         },
         {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
           "count": 1
         },
         {
@@ -3927,15 +3947,15 @@
           "url": "https://forward.com/culture/842825/wendy-wasserstein-an-american-daughter-second-wave-feminism-la-femme/",
           "host": "forward.com",
           "knownOutletId": "forward",
-          "recoverable": true,
-          "recoverableFile": "forward--rachel-shteir.json",
-          "recoverableOutletId": "forward",
-          "recoverableCritic": "Rachel Shteir",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "forward--rachel-shteir.json",
-              "flag": "emptyBody",
+              "flag": "clean",
               "urlInDir": "https://forward.com/culture/842825/wendy-wasserstein-an-american-daughter-second-wave-feminism-la-femme/"
             }
           ],
@@ -3955,7 +3975,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 5,
             "error": null
           },
@@ -3965,8 +3985,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -3975,8 +3995,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -3985,7 +4005,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -3996,7 +4016,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4012,46 +4032,66 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 118,
+        "count": 122,
         "byReason": {
-          "aggregator-internal-nav": 54,
+          "aggregator-internal-nav": 55,
           "not-http-url": 20,
-          "non-review-host": 36,
+          "non-review-host": 39,
           "non-review-path": 1,
-          "roundup-page": 3,
+          "roundup-page": 4,
           "ticketing-reseller": 2,
-          "venue-production-page": 2
+          "venue-production-page": 1
         }
       },
-      "dedupedVariants": [
+      "dedupedVariants": [],
+      "ingestResults": [
         {
-          "url": "https://theaterscene.com/reviews/an-american-daughter/",
-          "host": "theaterscene.com",
-          "matchedUrl": "https://www.theaterscene.net/plays/offbway-plays/an-american-daughter/victor-gluck/",
-          "outletId": "theater-scene",
-          "reason": "same outlet \"theater-scene\" already held at theaterscene.net; theaterscene.com is a registered alias of it"
-        }
-      ],
-      "recoveryResults": [
-        {
-          "url": "https://forward.com/culture/842825/wendy-wasserstein-an-american-daughter-second-wave-feminism-la-femme/",
-          "host": "forward.com",
-          "file": "forward--rachel-shteir.json",
-          "recovered": true,
-          "skipped": false,
+          "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
+          "host": "ctvoice.com",
+          "outletId": "ctvoice",
           "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/an-american-daughter",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "ctvoice",
+            "outlet": "ctvoice",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/an-american-daughter"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -4136,26 +4176,14 @@
             "firstSeenAt": "2026-08-13T11:45:01.801Z"
           },
           {
-            "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-            "outletId": "interestedbystander.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-            "outletId": "nytimes.com",
+            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
+            "outletId": "stagebuddy.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://stagebuddy.com/theater/theater-review/an-american-daughter",
-            "outletId": "stagebuddy.com",
+            "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -4172,16 +4200,24 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://theaterscene.com/reviews/an-american-daughter/",
-            "outletId": "theaterscene.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
             "url": "https://twi-ny.com/tag/an-american-daughter/",
             "outletId": "twi-ny.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
+            "outletId": "ctvoice",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-broadway-shows/an-american-daughter",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-a-promising-wasserstein-revival-of-an-american-daughter-falls-flat_1848837/",
@@ -4198,10 +4234,10 @@
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
           }
         ],
-        "liveCount": 17,
-        "candidateCount": 19
+        "liveCount": 14,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "an-ark-off-broadway-2026",
@@ -12833,9 +12869,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1754,
+        "count": 1757,
         "byReason": {
-          "aggregator-internal-nav": 1261,
+          "aggregator-internal-nav": 1264,
           "not-http-url": 355,
           "non-review-host": 123,
           "non-review-path": 15
@@ -14314,7 +14350,7 @@
         "liveCount": 6,
         "candidateCount": 74
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -27920,9 +27956,9 @@
       "candidatesRejected": {
         "count": 394,
         "byReason": {
-          "non-review-host": 34,
-          "not-http-url": 49,
           "aggregator-internal-nav": 308,
+          "not-http-url": 49,
+          "non-review-host": 34,
           "non-review-path": 3
         }
       },
@@ -28179,7 +28215,7 @@
         "liveCount": 9,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -30240,28 +30276,36 @@
       "openingDate": "2026-08-11",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-sound-off-on-frank-wildhorn-manga-musical-death-note-in-london"
+      ],
       "aggregatorListedUrls": [
-        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+        "https://www.attitude.co.uk/culture/death-note-at-the-barbican-london-review-531265/",
+        "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+        "https://www.cityam.com/death-note-the-musical-review-a-high-shine-high-school-take-on-the-trolley-problem/",
+        "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
         "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
+        "https://www.londontheatredirect.com/news/death-note-barbican-review",
+        "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
         "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
+        "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+        "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
+        "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+        "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
+        "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+        "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
         "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
         "https://www.theguardian.com/stage/2026/aug/12/death-note-the-musical-review-wildly-popular-manga-mystery-is-a-killer-night-out",
         "https://www.thereviewshub.com/death-note-the-musical-barbican-theatre-london/",
-        "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
         "https://www.timeout.com/london/theatre/death-note-the-musical-review",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://matineemouse.substack.com/p/death-note-the-musical-review",
-        "https://www.londontheatredirect.com/news/death-note-barbican-review",
-        "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
-        "https://rhombusrota.co.uk/2026/08/11/death-note-the-musical-at-the-barbican-theatre-review/",
+        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
         "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
-        "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
+        "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
+        "https://rhombusrota.co.uk/2026/08/11/death-note-the-musical-at-the-barbican-theatre-review/",
         "https://boxofficeradio.co.uk/review-death-note-the-musical-the-barbican-london",
-        "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
-        "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-        "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-        "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+        "https://readaboutstuff.com/2026/08/13/review-death-note-the-musical-barbican-london/",
         "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
         "https://www.ft.com/content/8fb9a7af-1f87-4607-ba09-e94386ad0b56"
@@ -30279,14 +30323,6 @@
       ],
       "dirOnly": [
         {
-          "host": "attitude.co.uk",
-          "count": 1
-        },
-        {
-          "host": "cityam.com",
-          "count": 1
-        },
-        {
           "host": "closeupculture.com",
           "count": 1
         },
@@ -30303,11 +30339,11 @@
           "count": 1
         },
         {
-          "host": "playstosee.com",
+          "host": "matineemouse.substack.com",
           "count": 1
         },
         {
-          "host": "readaboutstuff.com",
+          "host": "playstosee.com",
           "count": 1
         },
         {
@@ -30316,18 +30352,6 @@
         },
         {
           "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "stanservice.substack.com",
-          "count": 1
-        },
-        {
-          "host": "thetheatreflyer.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -30346,6 +30370,24 @@
               "file": "barbican--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lovelondonloveculture--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/"
             }
           ],
           "serpCensus": true
@@ -30413,8 +30455,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 7,
             "error": null
           },
           {
@@ -30423,8 +30465,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30433,8 +30475,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -30460,15 +30502,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 108,
         "byReason": {
-          "non-review-host": 11,
-          "roundup-page": 1,
-          "ticketing-listing": 1
+          "aggregator-internal-nav": 50,
+          "not-http-url": 20,
+          "non-review-host": 36,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -30478,12 +30521,12 @@
           "host": "boxofficeradio.co.uk",
           "outletId": "boxofficeradio",
           "provisional": true,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"boxofficeradio\" (not in registry) — onboard to outlet-registry.json after re"
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -30503,15 +30546,46 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+          },
+          {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
-            "outletId": "musicaltheatrereview.com",
+            "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://www.attitude.co.uk/culture/death-note-at-the-barbican-london-review-531265/",
+            "outletId": "attitude.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.cityam.com/death-note-the-musical-review-a-high-shine-high-school-take-on-the-trolley-problem/",
+            "outletId": "cityam.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/death-note-the-musical-review-frank-wildhorns-manga-musical-is-a-killer-spectacle",
@@ -30520,10 +30594,58 @@
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
           },
           {
+            "url": "https://www.londontheatredirect.com/news/death-note-barbican-review",
+            "outletId": "londontheatredirect.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
+            "outletId": "radiotimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.thetheatreflyer.co.uk/review-death-note-at-the-barbican-theatre-2026",
+            "outletId": "thetheatreflyer.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
             "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
@@ -30544,40 +30666,16 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/death-note-the-musical-review",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
           },
           {
-            "url": "https://matineemouse.substack.com/p/death-note-the-musical-review",
-            "outletId": "matineemouse.substack.com",
+            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+            "outletId": "stanservice.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/death-note-barbican-review",
-            "outletId": "londontheatredirect.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
-            "outletId": "radiotimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://rhombusrota.co.uk/2026/08/11/death-note-the-musical-at-the-barbican-theatre-review/",
-            "outletId": "rhombusrota.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           },
           {
             "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
@@ -30586,34 +30684,16 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
-            "outletId": "londontheatre1.com",
+            "url": "https://rhombusrota.co.uk/2026/08/11/death-note-the-musical-at-the-barbican-theatre-review/",
+            "outletId": "rhombusrota.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/death-note-the-musical-review-barbican-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://readaboutstuff.com/2026/08/13/review-death-note-the-musical-barbican-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
-            "firstSeenAt": "2026-08-12T14:20:51.359Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/death-note-the-musical-review-barbican-london-lg0rkjhmc",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T14:20:51.359Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T14:20:51.359Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DEATH-NOTE-Barbican-Theatre-20260812",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T14:20:51.359Z"
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/death-note-the-musical-at-the-barbican-b1293263.html",
@@ -30646,12 +30726,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T19:54:19.094Z"
+          },
+          {
+            "url": "https://lovelondonloveculture.com/2026/08/14/review-round-up-death-note-the-musical-the-barbican/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           }
         ],
-        "liveCount": 21,
-        "candidateCount": 23
+        "liveCount": 26,
+        "candidateCount": 29
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -32182,7 +32269,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -55778,19 +55865,20 @@
         "https://www.thereviewshub.com/how-the-other-half-loves-old-vic-london/",
         "https://theatreandtonic.co.uk/blog/how-the-other-half-loves-the-old-vic-review",
         "https://www.theguardian.com/stage/2026/aug/12/how-the-other-half-loves-review-old-vic-london-alan-ayckbourn-roger-allam",
-        "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
-        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
         "https://www.bestoftheatre.co.uk/how-the-other-half-loves",
-        "https://redbuslondinium.uk/2026/08/14/review-how-the-other-half-loves-old-vic-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-        "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
         "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
-        "https://westendwilma.com/review-how-the-other-half-loves/",
+        "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
+        "https://redbuslondinium.uk/2026/08/14/review-how-the-other-half-loves-old-vic-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+        "https://www.the-tls.com/arts/theatre/how-the-other-half-loves-alan-ayckbourn-arts-review-madeleine-saidenberg",
         "https://www.countryandtownhouse.com/culture/how-the-other-half-loves-stage-notes/",
+        "https://westendwilma.com/review-how-the-other-half-loves/",
+        "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
+        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
         "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
         "https://www.telegraph.co.uk/theatre/what-to-see/how-the-other-half-loves-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
         "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
-        "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
         "https://www.londonboxoffice.co.uk/news/post/how-the-other-half-loves-the-old-vic-review"
       ],
       "dirFiles": 42,
@@ -55800,6 +55888,12 @@
         {
           "url": "https://redbuslondinium.uk/2026/08/14/review-how-the-other-half-loves-old-vic-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
           "host": "redbuslondinium.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.the-tls.com/arts/theatre/how-the-other-half-loves-alan-ayckbourn-arts-review-madeleine-saidenberg",
+          "host": "the-tls.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -55972,8 +56066,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 7,
+            "results": 10,
+            "accepted": 9,
             "error": null
           },
           {
@@ -55982,7 +56076,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -55992,7 +56086,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -56003,7 +56097,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -56019,7 +56113,7 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
@@ -56042,7 +56136,19 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": "⚠️  ScrapingBee failed (render_js=false, domain=redbuslondinium.uk): ScrapingBee HTTP 500: {\"error\":"
+        },
+        {
+          "url": "https://www.the-tls.com/arts/theatre/how-the-other-half-loves-alan-ayckbourn-arts-review-madeleine-saidenberg",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"the-tls\" (not in registry) — onboard to outlet-registry.json after review.\nA"
         },
         {
           "url": "https://westendwilma.com/review-how-the-other-half-loves/",
@@ -56067,6 +56173,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://redbuslondinium.uk/2026/08/14/review-how-the-other-half-loves-old-vic-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
+          },
+          {
+            "outletId": "the-tls.com",
+            "outlet": "the-tls.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.the-tls.com/arts/theatre/how-the-other-half-loves-alan-ayckbourn-arts-review-madeleine-saidenberg"
           },
           {
             "outletId": "west-end-wilma",
@@ -56137,16 +56250,10 @@
             "firstSeenAt": "2026-08-16T05:24:26.828Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
@@ -56155,10 +56262,16 @@
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
-            "outletId": "timeout.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-HOW-THE-OTHER-HALF-LOVES-Starring-Roger-Allam-The-Old-Vic-20260812",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/how-the-other-half-loves-old-vic-review-roger-allam-b3031698.html",
@@ -56179,14 +56292,14 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/how-the-other-half-loves-review-roger-allam-old-vic-vrh2c7cc8",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-review-b1293145.html",
-            "outletId": "standard.co.uk",
+            "url": "https://www.thestage.co.uk/reviews/how-the-other-half-loves-review-old-vic-theatre-london-alan-ayckbourn",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
@@ -56202,6 +56315,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://www.the-tls.com/arts/theatre/how-the-other-half-loves-alan-ayckbourn-arts-review-madeleine-saidenberg",
+            "outletId": "the-tls.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           },
           {
             "url": "https://westendwilma.com/review-how-the-other-half-loves/",
@@ -56240,9 +56360,9 @@
           }
         ],
         "liveCount": 15,
-        "candidateCount": 21
+        "candidateCount": 22
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "how-to-dance-in-ohio-2023",
@@ -61609,7 +61729,8 @@
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
         "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
-        "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110"
+        "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110",
+        "https://www.broadwayworld.com/article/Review-Roundup-Whats-the-Buzz-on-JESUS-CHRIST-SUPERSTAR-LIVE-20180402"
       ],
       "aggregatorListedUrls": [
         "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
@@ -61670,7 +61791,15 @@
         "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
         "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
         "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
-        "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago"
+        "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
+        "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
+        "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
+        "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
+        "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
+        "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
+        "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
+        "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
+        "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html"
       ],
       "dirFiles": 80,
       "dirClean": 33,
@@ -61981,6 +62110,41 @@
           "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
           "host": "suntimes.com",
           "knownOutletId": "suntimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
+          "host": "bostonherald.com",
+          "knownOutletId": "boston-herald",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
+          "host": "siouxcityjournal.com",
+          "knownOutletId": "sioux-city-journal",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -62365,6 +62529,68 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?adxnnl=1&adxnnlx=1332468908-ZvjkZ2cfy1NLdSrRcXuqYg"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
+            },
+            {
+              "file": "newsday--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -62374,12 +62600,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1525,
+        "count": 1807,
         "byReason": {
-          "aggregator-internal-nav": 1072,
-          "not-http-url": 339,
-          "non-review-host": 101,
-          "non-review-path": 12,
+          "aggregator-internal-nav": 1300,
+          "not-http-url": 375,
+          "non-review-host": 116,
+          "non-review-path": 15,
           "unparseable-url": 1
         }
       },
@@ -62408,6 +62634,10 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110",
           "publishDate": "2021-11-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Whats-the-Buzz-on-JESUS-CHRIST-SUPERSTAR-LIVE-20180402",
+          "publishDate": "2018-04-02"
         }
       ],
       "weIngestBlocked": [
@@ -62672,6 +62902,36 @@
         {
           "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
           "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
+          "host": "bostonherald.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
+          "host": "siouxcityjournal.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -62990,6 +63250,41 @@
             "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago"
           },
           {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html"
+          },
+          {
+            "outletId": "boston-herald",
+            "outlet": "boston-herald",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit"
+          },
+          {
+            "outletId": "sioux-city-journal",
+            "outlet": "sioux-city-journal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html"
+          },
+          {
             "outletId": "deadline",
             "outlet": "deadline",
             "critic": "Unknown",
@@ -63086,6 +63381,27 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854"
           }
         ],
         "suppressedMissing": [],
@@ -63405,6 +63721,41 @@
             "firstSeenAt": "2026-08-24T15:42:00.225Z"
           },
           {
+            "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
+            "outletId": "latimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
+            "outletId": "boston-herald",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
+            "outletId": "sioux-city-journal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
             "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
             "outletId": "deadline",
             "state": "GAP",
@@ -63501,12 +63852,33 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
           }
         ],
         "liveCount": 1,
-        "candidateCount": 52
+        "candidateCount": 55
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "job-2024",
@@ -82402,11 +82774,7 @@
         "https://www.timeout.com/london/theatre/my-neighbour-totoro-review",
         "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
         "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
-        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
-        "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
-        "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
-        "https://theartsdesk.com/theatre/my-neighbour-totoro-barbican-review-dazzling-stage-adaptation-japanese-classic",
-        "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html"
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
       "dirFiles": 54,
       "dirClean": 12,
@@ -82421,6 +82789,18 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
         {
           "host": "londonboxoffice.co.uk",
           "count": 2
@@ -82478,23 +82858,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--theo-bosanquet.json",
-              "flag": "clean",
-              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -82504,12 +82867,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 118,
+        "count": 116,
         "byReason": {
-          "non-review-host": 19,
-          "roundup-page": 10,
+          "aggregator-internal-nav": 85,
           "not-http-url": 4,
-          "aggregator-internal-nav": 85
+          "non-review-host": 19,
+          "roundup-page": 8
         }
       },
       "dedupedVariants": [],
@@ -82552,13 +82915,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/my-neighbour-totoro-review"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html"
           }
         ],
         "suppressedMissing": [],
@@ -82600,24 +82956,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/my-neighbour-totoro-barbican-review-dazzling-stage-adaptation-japanese-classic",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html",
-            "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
             "outletId": "barbican.org.uk",
             "state": "GAP",
@@ -82637,19 +82975,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
           }
         ],
-        "liveCount": 8,
-        "candidateCount": 12
+        "liveCount": 5,
+        "candidateCount": 8
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -86981,8 +87312,7 @@
         "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
         "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
         "https://www.thetimes.com/culture/theatre-dance/article/oh-mary-review-west-end-6f6nt9v9f",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
-        "https://theartsdesk.com/theatre/oh-mary-trafalgar-theatre-review-uproarious-farce"
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html"
       ],
       "dirFiles": 92,
       "dirClean": 28,
@@ -87032,6 +87362,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
         {
           "host": "dailymail.co.uk",
           "count": 1
@@ -87790,13 +88124,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 904,
+        "count": 906,
         "byReason": {
-          "non-review-host": 91,
-          "roundup-page": 1,
+          "aggregator-internal-nav": 693,
           "not-http-url": 115,
-          "aggregator-internal-nav": 691,
-          "non-review-path": 6
+          "non-review-host": 91,
+          "non-review-path": 6,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [
@@ -88323,12 +88657,6 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/oh-mary-trafalgar-theatre-review-uproarious-farce",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
             "outletId": "cititour",
             "state": "GAP",
@@ -88616,10 +88944,10 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           }
         ],
-        "liveCount": 25,
-        "candidateCount": 55
+        "liveCount": 24,
+        "candidateCount": 54
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -93966,8 +94294,7 @@
         "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
         "https://www.shinyshiny.tv/2025/11/review-paddington-the-musical.html",
         "https://southlondon.co.uk/lifestyle/review-paddington-the-musical-at-the-savoy-theatre/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
-        "https://www.standard.co.uk/culture/theatre/paddington-the-musical-london-victoria-hamilton-barritt-savoy-theatre-b1258790.html"
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html"
       ],
       "dirFiles": 43,
       "dirClean": 23,
@@ -94213,12 +94540,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/paddington-the-musical-london-victoria-hamilton-barritt-savoy-theatre-b1258790.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T16:45:56.032Z"
-          },
-          {
             "url": "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/",
             "outletId": "city-am",
             "state": "GAP",
@@ -94243,7 +94564,7 @@
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -94252,493 +94573,33 @@
       "status": "previews",
       "category": "broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-        "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
-        "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-        "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-        "https://broadwaystars.com/show/paranormal-activity-2026/",
-        "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
-        "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-        "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-        "https://theatregold.com/paranormal-activity-comes-to-broadway/",
-        "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
-        "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
-        "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
-        "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
-          "host": "broadwaystars.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
-          "host": "islingtontribune.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-          "host": "onstageblog.com",
-          "knownOutletId": "onstage-blog",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
-          "host": "theatregold.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
-          "host": "frontmezzjunkies.com",
-          "knownOutletId": "frontmezzjunkies",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frontmezzjunkies--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Paranormal Activity\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Paranormal Activity\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Paranormal Activity\" review august",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Paranormal Activity\" Holloway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Paranormal Activity August Wilson Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Paranormal Activity August Wilson Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Paranormal Activity August Wilson Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 37,
-        "byReason": {
-          "non-review-host": 29,
-          "ticketing-reseller": 6,
-          "aggregator-internal-nav": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-          "host": "variety.com",
-          "outletId": "variety",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-          "host": "theatrely.com",
-          "outletId": "theatrely",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "reason": "paranormal-activity-2026: https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway is already owned by paranormal-activity-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/paranormal-activity-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        },
-        {
-          "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
-          "host": "broadwaystars.com",
-          "outletId": "broadwaystars",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
-          "host": "islingtontribune.co.uk",
-          "outletId": "islingtontribune",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg"
-        },
-        {
-          "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-          "host": "onstageblog.com",
-          "outletId": "onstage-blog"
-        },
-        {
-          "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
-          "host": "theatregold.com",
-          "outletId": "theatregold"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
-          "host": "mdtheatreguide.com",
-          "outletId": "maryland-theatre-guide"
-        },
-        {
-          "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
-          "host": "broadwaynews.com",
-          "outletId": "broadwaynews"
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway"
-          },
-          {
-            "outletId": "broadwaystars.com",
-            "outlet": "broadwaystars.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaystars.com/show/paranormal-activity-2026/"
-          },
-          {
-            "outletId": "islingtontribune.co.uk",
-            "outlet": "islingtontribune.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity"
-          },
-          {
-            "outletId": "onstage-blog",
-            "outlet": "onstage-blog",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity"
-          },
-          {
-            "outletId": "theatregold.com",
-            "outlet": "theatregold.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/"
-          },
-          {
-            "outletId": "maryland-theatre-guide",
-            "outlet": "maryland-theatre-guide",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/"
-          },
-          {
-            "outletId": "broadwaynews",
-            "outlet": "broadwaynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/"
-          },
-          {
-            "outletId": "frontmezzjunkies",
-            "outlet": "frontmezzjunkies",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-            "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-            "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-            "outletId": "show-score.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
-            "outletId": "broadwaystars.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
-            "outletId": "islingtontribune.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-            "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-            "outletId": "onstage-blog",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
-            "outletId": "theatregold.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
-            "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
-            "outletId": "maryland-theatre-guide",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
-            "outletId": "broadwaynews",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          },
-          {
-            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
-            "outletId": "frontmezzjunkies",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-25T02:21:52.283Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 13
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-25T02:21:52.283Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -96615,15 +96476,39 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-londons-pride-prejudice-sort-of-musical",
+        "https://playbill.com/article/what-do-critics-think-of-michael-arden-helmed-the-pride-in-la",
         "https://www.broadwayworld.com/article/Review-Roundup-Seattles-5th-Avenue-Theatres-AUSTENS-PRIDE-20191022"
       ],
       "aggregatorListedUrls": [
+        "https://theartsdesk.com/theatre/pride-prejudice-sort-criterion-theatre-review-bursting-wit-verve-and-love",
+        "https://www.standard.co.uk/culture/theatre/pride-and-prejudice-review-criterion-london-b964103.html",
+        "https://www.theguardian.com/stage/2021/nov/03/pride-and-prejudice-sort-of-review-silliness-and-sensibility",
+        "https://www.independent.co.uk/independentpremium/culture/pride-and-prejudice-sort-of-review-b1950575.html",
+        "https://inews.co.uk/culture/arts/pride-and-prejudice-sort-of-criterion-theatre-review-jane-austen-1282188",
+        "https://www.londontheatre.co.uk/reviews/pride-and-prejudice-sort-of-review-criterion-theatre",
+        "https://www.thestage.co.uk/reviews/pride-and-prejudice-sort-of-isobel-mcarthur-criterion-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/pride-prejudice-sort-review-austen-would-have-loved-smart-silly/",
+        "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review",
+        "https://www.thetimes.co.uk/article/pride-and-prejudice-sort-of-review-an-irreverent-but-overlong-look-at-jane-austen-bj50nb9n2",
+        "https://variety.com/2021/legit/reviews/pride-and-prejudice-sort-of-review-west-end-1235104111/",
+        "http://www.latimes.com/entertainment/arts/la-et-cm-the-pride-wallis-theater-review-20171616-story.html",
+        "https://onstageandscreen.com/2017/06/18/theater-review-the-pride-at-the-wallis-annenberg-center-for-the-performing-arts/",
+        "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/",
         "https://www.seattletimes.com/entertainment/theater/review-austens-pride-at-seattles-5th-ave-will-likely-satisfy-some-pride-and-prejudice-fans-but-needs-rethinking/"
       ],
       "dirFiles": 63,
       "dirClean": 19,
       "inReviewsJson": 20,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/",
+          "host": "thestagereview.net",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "afridiziak.com",
@@ -96646,18 +96531,6 @@
           "count": 1
         },
         {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 2
-        },
-        {
           "host": "musicaltheatrereview.com",
           "count": 1
         },
@@ -96666,23 +96539,7 @@
           "count": 1
         },
         {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
           "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
           "count": 1
         },
         {
@@ -96699,6 +96556,158 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://theartsdesk.com/theatre/pride-prejudice-sort-criterion-theatre-review-bursting-wit-verve-and-love",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/pride-national-theatre-review-full-musical-aims-heart"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/pride-and-prejudice-review-criterion-london-b964103.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--jessie-thompson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/pride-and-prejudice-review-criterion-london-b964103.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/pride-and-prejudice-sort-of-criterion-theatre-review-jane-austen-1282188",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "i-paper--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://inews.co.uk/culture/arts/pride-and-prejudice-sort-of-criterion-theatre-review-jane-austen-1282188"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-prejudice-sort-review-austen-would-have-loved-smart-silly/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sunday-telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/pride-prejudice-sort-review-austen-would-have-loved-smart-silly/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/legit/reviews/pride-and-prejudice-sort-of-review-west-end-1235104111/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--david-benedict.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2021/legit/reviews/pride-and-prejudice-sort-of-review-west-end-1235104111/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-the-pride-wallis-theater-review-20171616-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--erin-conley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.latimes.com/entertainment/arts/la-et-cm-the-pride-wallis-theater-review-20171616-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://onstageandscreen.com/2017/06/18/theater-review-the-pride-at-the-wallis-annenberg-center-for-the-performing-arts/",
+          "host": "onstageandscreen.com",
+          "knownOutletId": "on-stage-and-screen",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "on-stage-and-screen--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://onstageandscreen.com/2017/06/18/theater-review-the-pride-at-the-wallis-annenberg-center-for-the-performing-arts/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.seattletimes.com/entertainment/theater/review-austens-pride-at-seattles-5th-ave-will-likely-satisfy-some-pride-and-prejudice-fans-but-needs-rethinking/",
           "host": "seattletimes.com",
@@ -96726,24 +96735,113 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 282,
+        "count": 476,
         "byReason": {
-          "non-review-host": 16,
-          "not-http-url": 37,
-          "aggregator-internal-nav": 226,
+          "aggregator-internal-nav": 375,
+          "not-http-url": 43,
+          "non-review-host": 55,
           "non-review-path": 3
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://www.thetimes.co.uk/article/pride-and-prejudice-sort-of-review-an-irreverent-but-overlong-look-at-jane-austen-bj50nb9n2",
+          "host": "thetimes.co.uk",
+          "matchedUrl": "https://www.thetimes.com/culture/theatre-dance/article/pride-stage-adaptation-review-8xgvgl277?t=1782460484854",
+          "outletId": "times-uk",
+          "reason": "same outlet \"times-uk\" already held at thetimes.com; thetimes.co.uk is a registered alias of it"
+        }
+      ],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-londons-pride-prejudice-sort-of-musical",
+          "publishDate": "2021-11-04"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-michael-arden-helmed-the-pride-in-la",
+          "publishDate": "2017-06-22"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Seattles-5th-Avenue-Theatres-AUSTENS-PRIDE-20191022",
           "publishDate": "2019-10-22"
         }
       ],
+      "weIngestBlocked": [
+        {
+          "url": "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/",
+          "host": "thestagereview.net",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "thestagereview.net",
+            "outlet": "thestagereview.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/pride-prejudice-sort-criterion-theatre-review-bursting-wit-verve-and-love"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/pride-and-prejudice-review-criterion-london-b964103.html"
+          },
+          {
+            "outletId": "i-paper",
+            "outlet": "i-paper",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://inews.co.uk/culture/arts/pride-and-prejudice-sort-of-criterion-theatre-review-jane-austen-1282188"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-prejudice-sort-review-austen-would-have-loved-smart-silly/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2021/legit/reviews/pride-and-prejudice-sort-of-review-west-end-1235104111/"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.latimes.com/entertainment/arts/la-et-cm-the-pride-wallis-theater-review-20171616-story.html"
+          },
+          {
+            "outletId": "on-stage-and-screen",
+            "outlet": "on-stage-and-screen",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://onstageandscreen.com/2017/06/18/theater-review-the-pride-at-the-wallis-annenberg-center-for-the-performing-arts/"
+          },
           {
             "outletId": "seattle-times",
             "outlet": "seattle-times",
@@ -96755,6 +96853,99 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theguardian.com/stage/2021/nov/03/pride-and-prejudice-sort-of-review-silliness-and-sensibility",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/independentpremium/culture/pride-and-prejudice-sort-of-review-b1950575.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/pride-and-prejudice-sort-of-review-criterion-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/pride-and-prejudice-sort-of-isobel-mcarthur-criterion-theatre",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/pride-and-prejudice-sort-of-review-an-irreverent-but-overlong-look-at-jane-austen-bj50nb9n2",
+            "outletId": "thetimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://thestagereview.net/2017/06/21/guest-review-the-pride-wallis-beverly-hills/",
+            "outletId": "thestagereview.net",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/pride-prejudice-sort-criterion-theatre-review-bursting-wit-verve-and-love",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/pride-and-prejudice-review-criterion-london-b964103.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://inews.co.uk/culture/arts/pride-and-prejudice-sort-of-criterion-theatre-review-jane-austen-1282188",
+            "outletId": "i-paper",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-prejudice-sort-review-austen-would-have-loved-smart-silly/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://variety.com/2021/legit/reviews/pride-and-prejudice-sort-of-review-west-end-1235104111/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "http://www.latimes.com/entertainment/arts/la-et-cm-the-pride-wallis-theater-review-20171616-story.html",
+            "outletId": "latimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
+            "url": "https://onstageandscreen.com/2017/06/18/theater-review-the-pride-at-the-wallis-annenberg-center-for-the-performing-arts/",
+            "outletId": "on-stage-and-screen",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-25T04:40:59.293Z"
+          },
+          {
             "url": "https://www.seattletimes.com/entertainment/theater/review-austens-pride-at-seattles-5th-ave-will-likely-satisfy-some-pride-and-prejudice-fans-but-needs-rethinking/",
             "outletId": "seattle-times",
             "state": "GAP",
@@ -96762,10 +96953,10 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 1
+        "liveCount": 5,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "private-lives-2025",
@@ -107350,9 +107541,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 90,
+        "count": 91,
         "byReason": {
-          "aggregator-internal-nav": 49,
+          "aggregator-internal-nav": 50,
           "not-http-url": 20,
           "non-review-host": 21
         }
@@ -107436,7 +107627,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -118595,7 +118786,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -120055,7 +120246,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -120747,10 +120938,7 @@
         "https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904",
         "https://theartsdesk.com/theatre/devil-wears-prada-dominion-theatre-review-efficient-rarely-inspired",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/devil-wears-prada-musical-vanessa-williams-b2658819.html",
-        "https://theatreweekly.com/review-the-devil-wears-prada-at-the-dominion-theatre-london/",
-        "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo",
-        "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
-        "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
+        "https://theatreweekly.com/review-the-devil-wears-prada-at-the-dominion-theatre-london/"
       ],
       "dirFiles": 53,
       "dirClean": 24,
@@ -120819,6 +121007,14 @@
         {
           "host": "radiotimes.com",
           "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -120878,45 +121074,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--miriam-sallon.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
-            },
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "clean",
-              "urlInDir": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--martin-robinson.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -120928,9 +121085,9 @@
       "candidatesRejected": {
         "count": 405,
         "byReason": {
-          "non-review-host": 34,
-          "not-http-url": 65,
           "aggregator-internal-nav": 303,
+          "not-http-url": 65,
+          "non-review-host": 34,
           "non-review-path": 3
         }
       },
@@ -120998,20 +121155,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2022/08/08/theater/the-devil-wears-prada-review.html"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
-          },
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html"
           }
         ],
         "suppressedMissing": [],
@@ -121071,12 +121214,6 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-devil-wears-prada-musical-chicago-review-20220808-y6nxcuksa5byvp25obrbonuiza-story.html",
             "outletId": "chicagotribune",
             "state": "GAP",
@@ -121110,26 +121247,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 17
+        "liveCount": 9,
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-dinosaurs-off-broadway-2026",
@@ -121462,7 +121585,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-fear-of-13-2026",
@@ -123395,7 +123518,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-guilty-west-end-2026",
@@ -134067,7 +134190,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -134965,7 +135088,7 @@
         "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "the-waterfall-off-broadway-2026",
@@ -135418,7 +135541,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -135428,7 +135551,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -135438,7 +135561,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -135448,7 +135571,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -135459,7 +135582,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -135469,7 +135592,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -135479,15 +135602,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 331,
+        "count": 338,
         "byReason": {
-          "aggregator-internal-nav": 209,
+          "aggregator-internal-nav": 211,
           "not-http-url": 88,
-          "non-review-host": 27,
+          "non-review-host": 34,
           "non-review-path": 3,
-          "roundup-page": 2,
-          "ticketing-reseller": 1,
-          "venue-production-page": 1
+          "roundup-page": 1,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -135530,7 +135652,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
@@ -135876,15 +135998,7 @@
         "https://1minutecritic.com/titanique-broadway-review/",
         "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/",
         "https://www.nydailynews.com/2026/04/12/broadway-review-titanique-affectionately-parodies-1997-move-and-celine-dion/",
-        "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BDWI6G",
-        "https://www.talkinbroadway.com/page/world/Titanique.html",
-        "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/",
-        "https://www.theatrereviews.com/broadway-review-titanique-at-the-st-james-theatre-through-sunday-july-12-2026/",
-        "https://theaterlife.com/titanique/",
-        "https://theaterscene.com/reviews/titanique/",
-        "https://pagesonstages.com/2026/04/12/titanique/",
-        "https://lavocedinewyork.com/en/new-york/2026/04/23/titanique-delivers-an-over-the-top-sendup-of-two-cultural-icons/"
+        "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
       ],
       "dirFiles": 59,
       "dirClean": 29,
@@ -135898,7 +136012,35 @@
       ],
       "dirOnly": [
         {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
           "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
           "count": 1
         },
         {
@@ -136038,23 +136180,6 @@
               "urlInDir": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
             }
           ]
-        },
-        {
-          "url": "https://theaterscene.com/reviews/titanique/",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--deirdre-donovan.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://theaterscene.com/reviews/titanique/"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -136064,13 +136189,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 751,
+        "count": 749,
         "byReason": {
-          "non-review-host": 53,
-          "roundup-page": 10,
-          "not-http-url": 172,
           "aggregator-internal-nav": 510,
-          "non-review-path": 6
+          "not-http-url": 172,
+          "non-review-host": 53,
+          "non-review-path": 6,
+          "roundup-page": 8
         }
       },
       "dedupedVariants": [],
@@ -136095,7 +136220,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"yahoo\" (not in registry) — onboard to outlet-registry.json after review.\nArt"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
         }
       ],
       "ingestSkippedByCap": [],
@@ -136150,13 +136275,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/"
-          },
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterscene.com/reviews/titanique/"
           }
         ],
         "suppressedMissing": [
@@ -136308,48 +136426,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BDWI6G",
-            "outletId": "lightingandsoundamerica.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/world/Titanique.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-titanique-at-the-st-james-theatre-through-sunday-july-12-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://theaterlife.com/titanique/",
-            "outletId": "theaterlife.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2026/04/12/titanique/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/04/23/titanique-delivers-an-over-the-top-sendup-of-two-cultural-icons/",
-            "outletId": "lavocedinewyork.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
             "outletId": "yahoo.com",
             "state": "GAP",
@@ -136404,19 +136480,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/titanique/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
           }
         ],
-        "liveCount": 26,
-        "candidateCount": 34
+        "liveCount": 19,
+        "candidateCount": 26
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -140749,7 +140818,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T14:43:57.981Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -141792,9 +141861,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1213,
+        "count": 1217,
         "byReason": {
-          "aggregator-internal-nav": 908,
+          "aggregator-internal-nav": 912,
           "not-http-url": 183,
           "non-review-host": 105,
           "non-review-path": 9,
@@ -142553,7 +142622,7 @@
         "liveCount": 0,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -142585,14 +142654,7 @@
         "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
         "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
         "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
-        "https://www.talkinbroadway.com/page/world/TwoStrangers.html",
-        "https://www.theaterscene.net/musicals/broadway/two-strangers-carry-a-cake-across-new-york/joseph-pisano/",
-        "https://www.theatrereviews.com/broadway-review-two-strangers-carry-a-cake-across-new-york-currently-on/",
-        "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/",
-        "https://twi-ny.com/2025/11/21/two-strangers-carry-a-cake-across-new-york-longacre-theatre/",
-        "https://pagesonstages.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
-        "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html"
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
       ],
       "dirFiles": 53,
       "dirClean": 28,
@@ -142612,7 +142674,31 @@
           "count": 1
         },
         {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
           "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
           "count": 1
         },
         {
@@ -142654,23 +142740,6 @@
               "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
             }
           ]
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -142680,9 +142749,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 661,
+        "count": 664,
         "byReason": {
-          "aggregator-internal-nav": 516,
+          "aggregator-internal-nav": 519,
           "not-http-url": 86,
           "non-review-host": 53,
           "non-review-path": 6
@@ -142711,13 +142780,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html"
           }
         ],
         "suppressedMissing": [],
@@ -142825,42 +142887,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.talkinbroadway.com/page/world/TwoStrangers.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/musicals/broadway/two-strangers-carry-a-cake-across-new-york/joseph-pisano/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-two-strangers-carry-a-cake-across-new-york-currently-on/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/",
-            "outletId": "theaterlife.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://twi-ny.com/2025/11/21/two-strangers-carry-a-cake-across-new-york-longacre-theatre/",
-            "outletId": "twi-ny.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
             "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -142873,19 +142899,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
           }
         ],
-        "liveCount": 22,
-        "candidateCount": 25
+        "liveCount": 16,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-24T15:42:00.225Z"
+      "computedAt": "2026-08-25T04:40:59.293Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
