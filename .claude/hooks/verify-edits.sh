@@ -285,6 +285,74 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Wrap-up-ran gate (added 2026-08-25) ──────────────────────────────────────
+# Real-world evidence: a session's final message read "SAFE TO EXIT — fix
+# confirmed live in production, nothing outstanding" — a perfectly formatted
+# status line — but when directly asked "did you run /wrap-up and /what-else?"
+# the session admitted it had run neither. The session-status-line gate above
+# only checks the LINE'S TEXT SHAPE; it has no way to know whether the
+# mandatory close-out skill actually ran. This gate closes that: claiming full
+# completion (SAFE TO EXIT specifically, not NOT SAFE TO EXIT — a session
+# still in progress hasn't necessarily reached close-out yet) after doing real
+# work requires a genuine `/wrap-up` Skill invocation STRICTLY AFTER the last
+# substantial-work action (position-aware, mirroring the ship-check gate's
+# scan_start convention above — a wrap-up run before more work happened
+# doesn't cover that later work; /second-opinion review, task adae199b, found
+# this exact gaming path in the first "anywhere in session" draft).
+# Deliberately a separate, self-contained block (not nested in the
+# session-status-line gate above, and NOT reusing its locals) so
+# SESSION_STATUS_GATE_DISABLE can't accidentally also disable this gate via a
+# NameError-then-fail-open path (same review). Kill switch: WRAPUP_GATE_DISABLE=1.
+if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
+    try:
+        _last_work_idx = None
+        for _i, (_kind, _payload) in enumerate(events):
+            if _kind != 'tool':
+                continue
+            _name, _inp, _tid = _payload
+            _is_work = False
+            if _name in ('Edit', 'Write', 'NotebookEdit'):
+                _fp = _inp.get('file_path', '') or ''
+                if _fp.endswith(CODE_EXTS) and not any(s in _fp for s in EXEMPT_SUBSTRINGS):
+                    _is_work = True
+            elif _name in (
+                'mcp__github__create_pull_request',
+                'mcp__github__merge_pull_request',
+                'mcp__github__push_files',
+                'mcp__github__create_or_update_file',
+            ):
+                _is_work = True
+            elif _name == 'Bash':
+                _cmd = _inp.get('command') or ''
+                if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
+                    _is_work = True
+            if _is_work:
+                _last_work_idx = _i
+
+        if _last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            _wu_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
+            _wu_lines = [ln.strip() for ln in _wu_stripped.strip().splitlines() if ln.strip()]
+            _wu_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+            while _wu_lines and _wu_divider_re.match(_wu_lines[-1]):
+                _wu_lines.pop()
+            _wu_last_line = _wu_lines[-1] if _wu_lines else ''
+            _wu_claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _wu_last_line))
+            if _wu_claims_safe:
+                _wrapup_ran = False
+                for _i2 in range(_last_work_idx + 1, len(events)):
+                    _kind2, _payload2 = events[_i2]
+                    if _kind2 != 'tool':
+                        continue
+                    _name2, _inp2, _tid2 = _payload2
+                    if _name2 == 'Skill' and (_inp2.get('skill') or '') == 'wrap-up':
+                        _wrapup_ran = True
+                        break
+                if not _wrapup_ran:
+                    print("NOWRAPUP")
+                    sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
 # Detect audit sweeps: sessions that edit data/review-texts/ flag fields via Bash
 # (not Edit tool). These bypass the is_scoring_edit gate because last_edit_file never
 # matches SCORING_LOGIC_SUBSTRINGS. Detect by presence of 'review-texts' in any Bash cmd.
@@ -1140,6 +1208,11 @@ fi
 
 if [[ "$result" == "PRUNMERGED" ]]; then
   echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never merged, with no stated blocker. This project's owner does not review PRs — merge it yourself once CI is green, or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOWRAPUP" ]]; then
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after doing real work, but /wrap-up never ran after that work. Run /wrap-up (it chains into /what-else per its own instructions) before closing out — a well-formatted status line is not a substitute for actually running it. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
