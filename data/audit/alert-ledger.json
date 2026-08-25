@@ -375,12 +375,11 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-24T13:26:25.714Z",
-      "lastNotifiedAt": "2026-08-18T13:14:46.576Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-25T13:17:56.577Z",
+      "lastNotifiedAt": "2026-08-25T13:17:56.577Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1044,12 +1043,12 @@
       "disposition": "digest",
       "title": "New York Post (reviews collected) has stopped updating (20 days)",
       "firstSeen": "2026-08-15T13:04:25.661Z",
-      "lastSeen": "2026-08-24T13:26:25.718Z",
+      "lastSeen": "2026-08-25T13:17:56.579Z",
       "lastNotifiedAt": "2026-08-22T13:06:14.175Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "tier-skip-drift": {
       "status": "open",
@@ -1234,7 +1233,7 @@
       "silentRefires": 6
     },
     "arm-yield:outlet:newsday": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Newsday (reviews collected) has stopped updating (9 days)",
       "firstSeen": "2026-08-18T13:14:46.580Z",
@@ -1243,7 +1242,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-08-25T13:17:56.590Z"
     },
     "feedback-outcomes:2026-08-18T13:13:20.604143+00:00": {
       "status": "open",
@@ -1520,22 +1520,24 @@
       "disposition": "digest",
       "title": "Scrape WestEndTheatre has stopped updating (22 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-08-24T13:26:25.716Z",
+      "lastSeen": "2026-08-25T13:17:56.579Z",
       "lastNotifiedAt": "2026-08-24T13:26:25.716Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "arm-yield:outlet:nysr": {
       "status": "open",
       "disposition": "digest",
       "title": "New York Stage Review (reviews collected) has stopped updating (10 days)",
       "firstSeen": "2026-08-24T13:26:25.720Z",
-      "lastSeen": "2026-08-24T13:26:25.720Z",
+      "lastSeen": "2026-08-25T13:17:56.581Z",
       "lastNotifiedAt": "2026-08-24T13:26:25.720Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "gap:as-you-like-it-globe-west-end-2026/thestage--unknown.json": {
       "status": "open",
@@ -1569,6 +1571,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2303"
+    },
+    "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "origin/claude/ios-session-behavior-review-zadpk1 lost a CI-pushed commit (unknown workflow)",
+      "firstSeen": "2026-08-25T13:31:17.179Z",
+      "lastSeen": "2026-08-25T13:31:17.179Z",
+      "lastNotifiedAt": "2026-08-25T13:31:17.179Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2304"
     }
   }
 }
