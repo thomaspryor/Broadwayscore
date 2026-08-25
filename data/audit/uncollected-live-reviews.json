@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-25T14:45:46.111Z",
+  "generatedAt": "2026-08-25T22:17:09.474Z",
   "maxAgeHours": 12,
-  "showsAffected": 9,
-  "strandedFiles": 12,
+  "showsAffected": 8,
+  "strandedFiles": 9,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -17,16 +17,32 @@
       "totalBlackout": true
     },
     {
+      "showId": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "bloomberg--unknown.json",
+          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
+          "outlet": "Bloomberg",
+          "ageHours": 535.1861152777777
+        },
+        {
+          "file": "philadelphia-edge--unknown.json",
+          "url": "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Previews/13",
+          "outlet": "Philadelphia Edge",
+          "ageHours": null
+        }
+      ],
+      "usable": 47,
+      "discovered": 57,
+      "totalBlackout": false
+    },
+    {
       "showId": "the-producers-west-end-2025",
       "title": "The Producers",
       "status": "open",
       "stranded": [
-        {
-          "file": "the-sun--dominic-maxwell.json",
-          "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
-          "outlet": "The Sunday Times",
-          "ageHours": null
-        },
         {
           "file": "timeout--only-andrzej-lukowski.json",
           "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
@@ -42,50 +58,6 @@
       ],
       "usable": 31,
       "discovered": 39,
-      "totalBlackout": false
-    },
-    {
-      "showId": "the-lost-boys-2026",
-      "title": "The Lost Boys",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "bloomberg--unknown.json",
-          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
-          "outlet": "Bloomberg",
-          "ageHours": 527.6629588888889
-        },
-        {
-          "file": "philadelphia-edge--unknown.json",
-          "url": "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Previews/13",
-          "outlet": "Philadelphia Edge",
-          "ageHours": null
-        }
-      ],
-      "usable": 47,
-      "discovered": 57,
-      "totalBlackout": false
-    },
-    {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "broadwayworld--clement-scott.json",
-          "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
-          "outlet": "BroadwayWorld",
-          "ageHours": null
-        },
-        {
-          "file": "whatsonstage--unknown.json",
-          "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
-          "outlet": "WhatsOnStage",
-          "ageHours": 23.938614166666667
-        }
-      ],
-      "usable": 42,
-      "discovered": 52,
       "totalBlackout": false
     },
     {
@@ -161,7 +133,7 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/the-best-of-burlesque-assembly-rooms/",
           "outlet": "North West End",
-          "ageHours": 339.1123308333333
+          "ageHours": 346.6354872222222
         }
       ],
       "usable": 22,

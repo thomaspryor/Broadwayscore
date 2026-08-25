@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-25T14:45:55.847Z",
+  "generatedAt": "2026-08-25T22:17:20.912Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 141,
-  "clean": 140,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "abigails-party-west-end-2026",
-      "title": "Abigail’s Party",
-      "openingDate": "2026-08-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.91 vs local 78.74 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24
-    }
-  ]
+  "clean": 141,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
