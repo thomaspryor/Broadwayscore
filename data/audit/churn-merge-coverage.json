@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-25T10:12:13.070Z",
+    "generatedAt": "2026-08-25T13:15:23.629Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 2,
-    "exemptCount": 9,
+    "exemptCount": 8,
     "coveredCount": 22,
-    "highChurnTracked": 33
+    "highChurnTracked": 32
   },
   "flagged": [
     {
@@ -26,120 +26,116 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 68
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 62
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 62
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 62
+      "churn": 65
     },
     {
       "path": "data/llm-scoring-runs.json",
       "churn": 60
     },
     {
-      "path": "public/data/stats-reviews.json",
-      "churn": 44
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 59
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 59
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 59
     },
     {
       "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
       "churn": 43
     },
     {
-      "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 34
+      "path": "public/data/stats-reviews.json",
+      "churn": 41
     },
     {
-      "path": "public/data/shows/abigails-party-west-end-2026.json",
-      "churn": 32
+      "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1089,
+      "churn": 1116,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1033,
+      "churn": 1060,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 414,
+      "churn": 408,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 402,
+      "churn": 398,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 254,
+      "churn": 252,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 180,
+      "churn": 176,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 115,
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 115,
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 115,
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 85,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 69,
+      "churn": 66,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 62,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 49,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 49,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 36,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 34,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
