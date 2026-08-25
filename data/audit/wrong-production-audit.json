@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-25T00:51:51.825Z",
+  "timestamp": "2026-08-25T04:49:03.164Z",
   "stats": {
-    "totalReviews": 42422,
-    "alreadyFlagged": 18139,
+    "totalReviews": 42427,
+    "alreadyFlagged": 18141,
     "dateGuardCatches": 178,
     "directorMismatch": 998,
     "tvFilmSignals": 1228,
-    "londonSignals": 930,
-    "offBroadwaySignals": 493,
+    "londonSignals": 931,
+    "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3561
+    "noPublishDate": 3563
   },
   "findings": [
     {
@@ -33428,6 +33428,19 @@
       ]
     },
     {
+      "showId": "an-american-daughter-off-broadway-2026",
+      "file": "ctvoice--unknown.json",
+      "publishDate": null,
+      "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "an-enemy-of-the-people-2012",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 79,
@@ -36418,6 +36431,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "boxofficeradio--unknown.json",
+      "publishDate": null,
+      "url": "https://boxofficeradio.co.uk/review-death-note-the-musical-the-barbican-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
