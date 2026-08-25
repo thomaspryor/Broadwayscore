@@ -163,5 +163,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-25T09:54:54.016Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-16 and 2026-08-25.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-25T13:17:56.577Z"
   }
 ]
