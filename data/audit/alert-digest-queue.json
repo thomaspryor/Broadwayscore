@@ -152,5 +152,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-24T15:14:48.810Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-paranormal-activity-2026",
+    "title": "Stale 'upcoming' tag on Paranormal Activity",
+    "description": "paranormal-activity-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=paranormal-activity-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-25T09:54:54.016Z"
   }
 ]
