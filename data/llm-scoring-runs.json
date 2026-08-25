@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-08-19T06:31:00.506Z",
-    "completedAt": "2026-08-19T06:31:07.060Z",
-    "totalReviews": 42744,
-    "processed": 0,
-    "skipped": 42741,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 8860,
-      "output": 249,
-      "total": 24405
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-08-19T06:58:18.549Z",
-    "completedAt": "2026-08-19T06:58:21.558Z",
-    "totalReviews": 42744,
-    "processed": 0,
-    "skipped": 42742,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 102,
-      "total": 10932
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-19T13:39:13.201Z",
     "completedAt": "2026-08-19T13:39:18.861Z",
     "totalReviews": 26,
@@ -293415,6 +293375,40 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-25T05:42:28.868Z",
+    "completedAt": "2026-08-25T05:42:40.659Z",
+    "totalReviews": 42723,
+    "processed": 2,
+    "skipped": 42720,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 14498,
+      "output": 711,
+      "total": 38918
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-25T06:07:08.466Z",
+    "completedAt": "2026-08-25T06:07:15.229Z",
+    "totalReviews": 42722,
+    "processed": 0,
+    "skipped": 42719,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 7618,
+      "output": 244,
+      "total": 22579
+    },
+    "errorDetails": [
+      {
+        "showId": "jack-and-the-beanstalk-off-west-end-2026",
+        "outletId": "telegraph",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
