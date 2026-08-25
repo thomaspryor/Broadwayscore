@@ -701,4 +701,27 @@ runs:
         done
 
         echo "WARNING: Failed to push core data after 5 attempts"
+
+        # Durable failure telemetry (task: push-core-data retry exhaustion, 2026-08-25,
+        # /second-opinion'd — separate card from the parked "main-branch push contention:
+        # systemic architecture fix" epic, which explicitly scoped this composite action
+        # OUT to avoid converging two retry implementations mid-migration). Reuses the
+        # already-generic, already-tested scripts/record-push-retry-failure.js CLI built
+        # for push-with-retry.sh's own Phase 0 (PR #700) — same `push-retry-failures` git
+        # branch, same reason-string convention ("retries-exhausted", matching
+        # push-with-retry.sh's record_push_failure() so scripts/health-check.js's
+        # push-retry-deadman digest groups both push paths' exhaustions together instead
+        # of fragmenting into a bespoke reason bucket).
+        #
+        # That script gates recording on cwd's git origin matching the canonical PUBLIC
+        # Broadwayscore repo (CANONICAL_ORIGIN_RE) and deliberately no-ops from private-repo
+        # clones like this step's own working-directory (/tmp/core-data-checkout) — so it's
+        # invoked here from $GITHUB_WORKSPACE (the root checkout) instead, with --remote
+        # naming the private repo that actually failed. timeout+`|| true`: best-effort,
+        # must never fail this step or block the job on top of the push failure itself.
+        ( cd "$GITHUB_WORKSPACE" && timeout 15 node scripts/record-push-retry-failure.js \
+            --reason=retries-exhausted --attempt=5 --max-retries=5 \
+            --branch=main --remote=broadway-scorecard-data \
+            --workflow="${GITHUB_WORKFLOW:-unknown}" --ci=true ) >/dev/null 2>&1 || true
+
         exit 1
