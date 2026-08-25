@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T04:41:00.088Z",
+  "generatedAt": "2026-08-25T05:35:07.768Z",
   "windowDays": 45,
   "showsScanned": 71,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=as-you-like-it-globe-west-end-2026 --url=https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-24T11:36:40.554Z",
-      "fileAgeHours": 17.072051388888887,
+      "fileAgeHours": 17.974183055555557,
       "gapSeenAt": "2026-08-24T23:21:51.308Z",
-      "nonTerminalAgeHours": 5.319105277777778
+      "nonTerminalAgeHours": 6.221238888888889
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 783.4898730555556,
+      "fileAgeHours": 784.3920058333333,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 142.31115027777778
+      "nonTerminalAgeHours": 143.2132838888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 473.9330616666667,
+      "fileAgeHours": 474.8351944444444,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 142.31115027777778
+      "nonTerminalAgeHours": 143.2132838888889
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 283.1735063888889,
+      "fileAgeHours": 284.0756391666667,
       "gapSeenAt": "2026-08-25T02:21:53.093Z",
-      "nonTerminalAgeHours": 2.3186094444444443
+      "nonTerminalAgeHours": 3.2207430555555554
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -84,26 +84,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=an-american-daughter-off-broadway-2026",
       "firstSeen": "2026-08-21T11:19:24.394Z",
-      "fileAgeHours": 89.35990861111111,
+      "fileAgeHours": 90.26204222222222,
       "gapSeenAt": "2026-08-25T02:21:53.093Z",
-      "nonTerminalAgeHours": 2.3186094444444443
-    },
-    {
-      "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "title": "Game of Thrones: The Mad King",
-      "openingDate": "2026-08-08",
-      "file": "british-theatre--colin-davison.json",
-      "outletId": "british-theatre",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.britishtheatreguide.info/reviews/game-of-thrones-25786",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=game-of-thrones-the-mad-king-regional-2026",
-      "firstSeen": "2026-08-24T15:50:40.502Z",
-      "fileAgeHours": 12.838773055555556,
-      "gapSeenAt": "2026-08-25T04:41:00.087Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.2207430555555554
     }
   ],
   "contradictions": []
