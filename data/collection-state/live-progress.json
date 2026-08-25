@@ -1,25 +1,20 @@
 {
-  "updatedAt": "2026-08-25T05:57:35.299Z",
-  "processed": 119,
-  "failed": 2128,
-  "successRate": "5.3%",
+  "updatedAt": "2026-08-25T06:02:42.540Z",
+  "processed": 123,
+  "failed": 2134,
+  "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 59,
+    "playwright": 61,
     "amp": 0,
-    "browserbase": 8,
-    "directCookies": 0,
+    "browserbase": 10,
+    "directCookies": 1,
     "scrapingbee": 20,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 32
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-08-25T01:38:10.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-08-25T01:38:28.846Z",
       "event": "bb-session",
@@ -129,6 +124,12 @@
       "event": "bb-session",
       "session": "761f353e",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/cinderella-theater-11"
+    },
+    {
+      "t": "2026-08-25T06:01:17.173Z",
+      "event": "bb-session",
+      "session": "481103f1",
+      "url": "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theat"
     }
   ]
 }
