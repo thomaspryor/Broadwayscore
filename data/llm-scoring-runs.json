@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-19T20:08:49.402Z",
-    "completedAt": "2026-08-19T20:08:49.601Z",
-    "totalReviews": 3,
-    "processed": 0,
-    "skipped": 2,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "marlise-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-20T00:53:25.508Z",
     "completedAt": "2026-08-20T00:53:30.784Z",
     "totalReviews": 12,
@@ -293409,6 +293389,20 @@
       "input": 3831,
       "output": 122,
       "total": 11347
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-25T12:57:49.528Z",
+    "completedAt": "2026-08-25T12:57:55.372Z",
+    "totalReviews": 34,
+    "processed": 1,
+    "skipped": 33,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5638,
+      "output": 311,
+      "total": 14327
     },
     "errorDetails": []
   }
