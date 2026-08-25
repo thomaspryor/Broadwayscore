@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-25T00:31:16.205Z",
+    "generatedAt": "2026-08-25T04:46:30.944Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 2,
     "exemptCount": 8,
-    "coveredCount": 15,
-    "highChurnTracked": 25
+    "coveredCount": 16,
+    "highChurnTracked": 26
   },
   "flagged": [
     {
@@ -20,117 +20,122 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 61
+      "churn": 63
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 58
+      "churn": 57
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 55
+      "churn": 57
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 55
+      "churn": 57
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 55
+      "churn": 57
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 35
+      "churn": 39
     },
     {
       "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 35
+      "churn": 34
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1176,
+      "churn": 1161,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1119,
+      "churn": 1103,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 410,
+      "churn": 405,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 405,
+      "churn": 397,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 265,
+      "churn": 256,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 177,
+      "churn": 178,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 105,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 105,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 104,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 90,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 60,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 55,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 55,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 53,
+      "churn": 52,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 53,
+      "churn": 52,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
