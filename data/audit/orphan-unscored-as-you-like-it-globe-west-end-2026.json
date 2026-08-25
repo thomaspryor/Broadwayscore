@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "as-you-like-it-globe-west-end-2026",
   "openingDate": "2026-08-21",
-  "detectedAt": "2026-08-25T07:03:07.008Z",
+  "detectedAt": "2026-08-25T09:42:37.115Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "buy-tickets-directly-from-shakespearesglobecom--unknown.json",
+      "outletId": "buy-tickets-directly-from-shakespearesglobecom",
+      "criticName": "Unknown",
+      "url": "https://www.shakespearesglobe.com/",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
+    },
     {
       "file": "letterboxd--unknown.json",
       "outletId": "letterboxd",
@@ -60,10 +74,24 @@
       "llmScore": null,
       "contentTier": "stub",
       "eligibilityReason": null
+    },
+    {
+      "file": "times-uk--victoria-segal.json",
+      "outletId": "times-uk",
+      "criticName": "Victoria Segal",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
+  "orphanCount": 6,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-08-25T09:42:37.115Z"
 }
