@@ -87,7 +87,8 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "hamilton-2015/nytimes--ben-brantley.json",
     "hamilton-2015/theatermania--zachary-stewart.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -1461,7 +1462,16 @@
     "brainiac-live-west-end-2026/telegraph--lorelei-reddin.json",
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
     "loves-labours-lost-globe-west-end-2026/hollywood-reporter--unknown.json",
-    "the-car-man-west-end-2026/nytimes--unknown.json"
+    "the-car-man-west-end-2026/nytimes--unknown.json",
+    "the-car-man-west-end-2026/variety--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/ew--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/newsday--unknown.json",
+    "the-car-man-west-end-2026/manchester-evening-news--natalie-anglesey.json",
+    "the-car-man-west-end-2026/the-jewish-chronicle--joy-sable.json",
+    "loves-labours-lost-globe-west-end-2026/amny--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/bloomberg--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/nbcny--unknown.json",
+    "the-car-man-west-end-2026/a-younger-theatre--rebekah-ellerby.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1519,6 +1529,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
@@ -1571,7 +1583,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "the-car-man-west-end-2026/nytimes--unknown.json",
+  "lastProcessed": "the-car-man-west-end-2026/a-younger-theatre--rebekah-ellerby.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -1638,6 +1650,17 @@
       "t": "2026-08-24T20:00:37.793Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-25T00:36:34.057Z",
+      "event": "bb-session",
+      "session": "5e2e9fca",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
+    },
+    {
+      "t": "2026-08-25T00:36:34.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

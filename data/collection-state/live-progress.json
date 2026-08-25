@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-25T00:34:55.372Z",
-  "processed": 88,
-  "failed": 1372,
-  "successRate": "6.0%",
+  "updatedAt": "2026-08-25T00:36:51.782Z",
+  "processed": 89,
+  "failed": 1381,
+  "successRate": "6.1%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 24
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -80,6 +80,17 @@
       "t": "2026-08-24T20:00:37.793Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-25T00:36:34.057Z",
+      "event": "bb-session",
+      "session": "5e2e9fca",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review"
+    },
+    {
+      "t": "2026-08-25T00:36:34.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
