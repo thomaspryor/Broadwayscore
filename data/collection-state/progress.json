@@ -17,7 +17,10 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--the-reviews-hub.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -111,7 +114,14 @@
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
-    "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json"
+    "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
+    "a-christmas-carol-the-musical-off-broadway-2026/stagebiz--db-frick.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,10 +142,15 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+      "tosca-off-broadway-2026/broadwayworld--roger-catlin.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -146,7 +161,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "a-christmas-carol-the-musical-off-broadway-2026/nytimes--laurel-graeber.json",
+  "lastProcessed": "medea-off-broadway-2026/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -158,6 +173,12 @@
       "t": "2026-08-25T09:41:25.172Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-25T09:52:56.702Z",
+      "event": "bb-session",
+      "session": "13eada78",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
