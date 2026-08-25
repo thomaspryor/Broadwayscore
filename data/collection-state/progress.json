@@ -127,7 +127,8 @@
     "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json",
     "nine-night-off-west-end-2026/london-box-office--nastazja-domaradzka.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -2278,7 +2279,16 @@
     "orlando-off-west-end-2026/thestage--sam-marlowe.json",
     "orlando-off-west-end-2026/times-uk--clive-davis.json",
     "orlando-off-west-end-2026/times-uk--quentin-letts.json",
-    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json",
+    "medea-off-broadway-2026/times-uk--quentin-letts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2359,7 +2369,9 @@
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
       "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
       "data/review-texts/the-snowman-west-end-2026/express-uk--neil-norman.json",
-      "the-snowman-west-end-2026/express-uk--neil-norman.json"
+      "the-snowman-west-end-2026/express-uk--neil-norman.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json"
@@ -2435,7 +2447,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--quentin-letts.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -2663,6 +2675,12 @@
       "event": "bb-session",
       "session": "481103f1",
       "url": "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theat"
+    },
+    {
+      "t": "2026-08-25T06:05:22.033Z",
+      "event": "bb-session",
+      "session": "5b592e36",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
