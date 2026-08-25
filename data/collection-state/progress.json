@@ -2298,7 +2298,17 @@
     "girls-off-west-end-2026/london-box-office--christian-durham.json",
     "girls-off-west-end-2026/london-box-office--david-scotland.json",
     "girls-off-west-end-2026/london-box-office--justin-murray.json",
-    "the-imaginary-invalid-2026/one-minute-critic--matthew-wexler.json"
+    "the-imaginary-invalid-2026/one-minute-critic--matthew-wexler.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2382,7 +2392,8 @@
       "data/review-texts/the-snowman-west-end-2026/express-uk--neil-norman.json",
       "the-snowman-west-end-2026/express-uk--neil-norman.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json"
@@ -2458,7 +2469,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "the-imaginary-invalid-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -2692,6 +2703,17 @@
       "event": "bb-session",
       "session": "5b592e36",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-25T06:18:10.627Z",
+      "event": "bb-session",
+      "session": "9a6aa0d0",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-25T06:18:11.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
