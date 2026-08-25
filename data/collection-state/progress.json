@@ -108,7 +108,11 @@
     "the-sound-of-music-2027/broadwayworld--paul-batterson.json",
     "evita-2026/thestage--sam-marlowe.json",
     "christmas-carol-goes-wrong-west-end-2026/telegraph--dominic-cavendish.json",
-    "christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json"
+    "christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json",
+    "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
+    "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+    "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+    "cinderella-west-end-2026/london-box-office--stuart-king.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -2218,7 +2222,13 @@
     "dolly-an-original-musical-2026/hollywood-reporter--frank-scheck.json",
     "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
     "dolly-an-original-musical-2026/nydailynews--joe-dziemianowicz.json",
-    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json"
+    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+    "cinderella-west-end-2026/ew--emlyn-travis.json",
+    "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cinderella-west-end-2026/observer--david-cote.json",
+    "cinderella-west-end-2026/bloomberg--chris-rovzar.json",
+    "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+    "cinderella-west-end-2026/independent--oliver-browning.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2288,7 +2298,9 @@
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--alex-ritman.json",
+      "cinderella-west-end-2026/hollywood-reporter--alex-ritman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2349,11 +2361,14 @@
       "book-of-mormon-2011/village-voice--michael-musto.json",
       "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
       "the-mousetrap-west-end-2021/broadwayworld--barry-lenny.json",
-      "evita-2026/thestage--sam-marlowe.json"
+      "evita-2026/thestage--sam-marlowe.json",
+      "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+      "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+      "cinderella-west-end-2026/london-box-office--stuart-king.json"
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+  "lastProcessed": "cinderella-west-end-2026/london-box-office--stuart-king.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -2569,6 +2584,12 @@
       "event": "bb-session",
       "session": "041fe749",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-25T05:51:57.496Z",
+      "event": "bb-session",
+      "session": "761f353e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/cinderella-theater-11"
     }
   ]
 }
