@@ -24,7 +24,13 @@
     "paranormal-activity-2026/broadwayworld--unknown.json",
     "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
-    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -171,7 +177,11 @@
     "abigails-party-west-end-2026/london-box-office--stuart-king.json",
     "abigails-party-west-end-2026/monstagigz--unknown.json",
     "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -191,7 +201,11 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -203,7 +217,8 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
       "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
-      "paranormal-activity-2026/broadwayworld--unknown.json"
+      "paranormal-activity-2026/broadwayworld--unknown.json",
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -211,11 +226,12 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -233,6 +249,17 @@
       "event": "bb-session",
       "session": "13eada78",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-08-25T10:36:31.931Z",
+      "event": "bb-session",
+      "session": "633161ef",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-25T10:36:32.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
