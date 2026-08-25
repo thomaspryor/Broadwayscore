@@ -1,135 +1,30 @@
 {
-  "updatedAt": "2026-08-25T06:23:25.432Z",
-  "processed": 130,
-  "failed": 2184,
-  "successRate": "5.6%",
+  "updatedAt": "2026-08-25T09:03:34.571Z",
+  "processed": 2,
+  "failed": 8,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 67,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 13,
-    "directCookies": 1,
-    "scrapingbee": 22,
-    "brightdata": 10,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 34
+    "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-08-25T01:45:06.340Z",
+      "t": "2026-08-25T09:02:50.947Z",
+      "event": "bb-session",
+      "session": "75e52aa0",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-25T09:02:51.373Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-25T01:48:27.163Z",
-      "event": "bb-session",
-      "session": "d5528006",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-25T01:48:36.498Z",
-      "event": "bb-session",
-      "session": "72e54ff6",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-25T02:51:50.976Z",
-      "event": "bb-session",
-      "session": "fb2f1f98",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-25T02:52:10.104Z",
-      "event": "bb-session",
-      "session": "d2580243",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-25T02:54:31.253Z",
-      "event": "bb-session",
-      "session": "cdf3ac9d",
-      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-lond"
-    },
-    {
-      "t": "2026-08-25T02:54:31.911Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-08-25T02:55:56.491Z",
-      "event": "bb-session",
-      "session": "5318fd73",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-25T02:55:57.191Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-25T02:59:43.030Z",
-      "event": "bb-session",
-      "session": "ac8a186d",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-25T02:59:53.793Z",
-      "event": "bb-session",
-      "session": "559b50a3",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-25T04:13:42.744Z",
-      "event": "bb-session",
-      "session": "40b828ee",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-25T04:14:02.014Z",
-      "event": "bb-session",
-      "session": "041fe749",
-      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
-    },
-    {
-      "t": "2026-08-25T05:51:57.496Z",
-      "event": "bb-session",
-      "session": "761f353e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/cinderella-theater-11"
-    },
-    {
-      "t": "2026-08-25T06:01:17.173Z",
-      "event": "bb-session",
-      "session": "481103f1",
-      "url": "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theat"
-    },
-    {
-      "t": "2026-08-25T06:05:22.033Z",
-      "event": "bb-session",
-      "session": "5b592e36",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
-    },
-    {
-      "t": "2026-08-25T06:18:10.627Z",
-      "event": "bb-session",
-      "session": "9a6aa0d0",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-25T06:18:11.309Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-25T06:22:52.955Z",
-      "event": "bb-session",
-      "session": "76eeefa5",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-25T06:23:01.569Z",
-      "event": "bb-session",
-      "session": "d17ac6d0",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+      "domain": "wsj.com"
     }
   ]
 }
