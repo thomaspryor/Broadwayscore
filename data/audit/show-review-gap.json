@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-24T23:21:50.513Z",
+  "generatedAt": "2026-08-25T02:21:52.283Z",
   "windowDays": 1095,
-  "targets": 37,
-  "auditedThisRun": 22,
-  "carriedForward": 424,
+  "targets": 19,
+  "auditedThisRun": 19,
+  "carriedForward": 427,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 285,
-    "totalMissing": 1354,
+    "withGap": 286,
+    "totalMissing": 1362,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1621,
+    "totalFlaggedMisses": 1616,
     "totalRecoverable": 17,
     "totalRecovered": 3
   },
@@ -2194,9 +2194,6 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre",
-        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-        "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
         "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
         "https://www.thestage.co.uk/reviews/abigails-party-review-harold-pinter-theatre-london-tamzin-outhwaite",
         "https://www.ft.com/content/544dee79-62af-4118-9392-dded7f52c33f",
@@ -2214,12 +2211,6 @@
       "dirClean": 20,
       "inReviewsJson": 27,
       "missing": [
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
           "host": "londontheatre.co.uk",
@@ -2246,6 +2237,10 @@
           "count": 1
         },
         {
+          "host": "curtaincallreviews.co.uk",
+          "count": 1
+        },
+        {
           "host": "inews.co.uk",
           "count": 1
         },
@@ -2267,24 +2262,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-box-office--stuart-king.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.timeout.com/london/theatre/abigails-party-5-review",
           "host": "timeout.com",
@@ -2384,98 +2361,15 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Abigail’s Party\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Abigail’s Party\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Abigail’s Party\" review harold",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Abigail’s Party\" Leigh review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Abigail’s Party Harold Pinter Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Abigail’s Party Harold Pinter Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Abigail’s Party Harold Pinter Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 16,
-        "byReason": {
-          "roundup-page": 2,
-          "non-review-host": 13,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
           "host": "londontheatre.co.uk",
@@ -2494,25 +2388,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre"
-          },
-          {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review"
           },
           {
             "outletId": "timeout-london",
@@ -2531,12 +2411,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-            "outletId": "curtaincallreviews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T06:27:46.478Z"
-          },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
             "outletId": "thetimes.com",
@@ -2592,25 +2466,11 @@
             "firstSeenAt": "2026-08-22T12:13:43.001Z"
           },
           {
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
             "outletId": "london-theatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-22T12:13:43.001Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
-            "outletId": "london-box-office",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/abigails-party-5-review",
@@ -2627,10 +2487,10 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 14
+        "liveCount": 9,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -3983,7 +3843,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -7196,29 +7056,12 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
-        "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-        "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
-        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
-        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
-        "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
-        "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
-        "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
-        "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
-        "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
-        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
-        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
-        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
-        "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
-        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
-        "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
-        "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
-        "https://www.jackstage.co.uk/post/as-you-like-it-review-elizabethan-evenings-with-a-playful-musical-edge",
         "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
         "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/as-you-like-it-review-the-globe-london-2026-qb7pgdzf2",
+        "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
         "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
         "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
         "https://www.shakespearesglobe.com/",
@@ -7232,26 +7075,33 @@
         "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
         "https://inews.co.uk/culture/arts/as-you-like-it-sohoplace-review-rose-ayling-ellis-charming-west-end-debut-2033245"
       ],
-      "dirFiles": 53,
-      "dirClean": 26,
+      "dirFiles": 51,
+      "dirClean": 25,
       "inReviewsJson": 23,
-      "missing": [
-        {
-          "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-          "host": "theatre.reviews",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "firstnightmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "jackstage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "letterboxd.com",
           "count": 1
         },
         {
@@ -7259,7 +7109,35 @@
           "count": 1
         },
         {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "marquee.tv",
+          "count": 1
+        },
+        {
           "host": "myreviewer.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         },
         {
@@ -7272,24 +7150,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-          "host": "shakespearesglobe.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "shakespearesglobe--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
           "host": "thestage.co.uk",
@@ -7596,136 +7456,17 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"As You Like It - Globe\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"As You Like It - Globe\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"As You Like It - Globe\" review shakespeare",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"As You Like It - Globe\" Shakespeare review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 7,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 20,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 17,
-        "byReason": {
-          "roundup-page": 2,
-          "non-review-host": 14,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-          "host": "theatre.reviews",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatre.reviews",
-            "outlet": "theatre.reviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre"
-          },
-          {
-            "outletId": "shakespearesglobe.com",
-            "outlet": "shakespearesglobe.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
-          },
           {
             "outletId": "thestage",
             "outlet": "thestage",
@@ -7807,110 +7548,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
-            "outletId": "playsinternational.org.uk",
+            "url": "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
             "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
-            "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-            "outletId": "marquee.tv",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T05:24:26.828Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T05:24:26.828Z"
-          },
-          {
-            "url": "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
-            "outletId": "letterboxd.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T05:24:26.828Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.jackstage.co.uk/post/as-you-like-it-review-elizabethan-evenings-with-a-playful-musical-edge",
-            "outletId": "jackstage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
-            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
@@ -7927,31 +7572,22 @@
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T14:43:57.981Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T14:43:57.981Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
-            "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-            "outletId": "theatre.reviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
-          {
-            "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-            "outletId": "shakespearesglobe.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
@@ -8031,10 +7667,10 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           }
         ],
-        "liveCount": 20,
-        "candidateCount": 32
+        "liveCount": 7,
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -18947,7 +18583,7 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "burnout-paradise-off-broadway-2026",
@@ -26397,7 +26033,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "chess-2025",
@@ -32620,10 +32256,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 385,
+        "count": 381,
         "byReason": {
           "non-review-host": 34,
-          "aggregator-internal-nav": 252,
+          "aggregator-internal-nav": 248,
           "not-http-url": 96,
           "non-review-path": 3
         }
@@ -32698,7 +32334,7 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "dog-day-afternoon-2026",
@@ -48909,10 +48545,10 @@
         "count": 1513,
         "byReason": {
           "non-review-host": 113,
-          "roundup-page": 1,
           "aggregator-internal-nav": 989,
           "not-http-url": 397,
           "non-review-path": 12,
+          "roundup-page": 1,
           "unparseable-url": 1
         }
       },
@@ -50832,7 +50468,7 @@
         "liveCount": 8,
         "candidateCount": 102
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "hamlet-by-william-shakespeare-off-broadway-2026",
@@ -52155,10 +51791,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 367,
+        "count": 370,
         "byReason": {
           "non-review-host": 34,
-          "aggregator-internal-nav": 245,
+          "aggregator-internal-nav": 248,
           "not-http-url": 85,
           "non-review-path": 3
         }
@@ -52224,7 +51860,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
@@ -70633,7 +70269,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -77015,7 +76651,7 @@
         "liveCount": 12,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "midnight-in-the-garden-of-good-and-evil-2024",
@@ -94616,33 +94252,493 @@
       "status": "previews",
       "category": "broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+        "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+        "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
+        "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+        "https://broadwaystars.com/show/paranormal-activity-2026/",
+        "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
+        "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+        "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+        "https://theatregold.com/paranormal-activity-comes-to-broadway/",
+        "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
+        "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
+        "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
+        "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
+          "host": "broadwaystars.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
+          "host": "islingtontribune.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+          "host": "onstageblog.com",
+          "knownOutletId": "onstage-blog",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
+          "host": "theatregold.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frontmezzjunkies--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Paranormal Activity\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Paranormal Activity\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Paranormal Activity\" review august",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Paranormal Activity\" Holloway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Paranormal Activity August Wilson Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Paranormal Activity August Wilson Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Paranormal Activity August Wilson Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 29,
+          "ticketing-reseller": 6,
+          "aggregator-internal-nav": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+          "host": "variety.com",
+          "outletId": "variety",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
+          "host": "theatrely.com",
+          "outletId": "theatrely",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "paranormal-activity-2026: https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway is already owned by paranormal-activity-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/paranormal-activity-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
+        },
+        {
+          "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
+          "host": "broadwaystars.com",
+          "outletId": "broadwaystars",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
+          "host": "islingtontribune.co.uk",
+          "outletId": "islingtontribune",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+          "host": "onstageblog.com",
+          "outletId": "onstage-blog"
+        },
+        {
+          "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
+          "host": "theatregold.com",
+          "outletId": "theatregold"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
+          "host": "mdtheatreguide.com",
+          "outletId": "maryland-theatre-guide"
+        },
+        {
+          "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
+          "host": "broadwaynews.com",
+          "outletId": "broadwaynews"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway"
+          },
+          {
+            "outletId": "broadwaystars.com",
+            "outlet": "broadwaystars.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaystars.com/show/paranormal-activity-2026/"
+          },
+          {
+            "outletId": "islingtontribune.co.uk",
+            "outlet": "islingtontribune.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity"
+          },
+          {
+            "outletId": "onstage-blog",
+            "outlet": "onstage-blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity"
+          },
+          {
+            "outletId": "theatregold.com",
+            "outlet": "theatregold.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/"
+          },
+          {
+            "outletId": "maryland-theatre-guide",
+            "outlet": "maryland-theatre-guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/"
+          },
+          {
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
+            "outletId": "theatrely",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
+            "outletId": "broadwaystars.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.islingtontribune.co.uk/article/review-paranormal-activity-at-ambassadors-theatre",
+            "outletId": "islingtontribune.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+            "outletId": "onstage-blog",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://theatregold.com/paranormal-activity-comes-to-broadway/",
+            "outletId": "theatregold.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/05/12/theater/paranormal-activity-broadway.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-paranormal-activity-stage-play-will-keep-you-up-all-night_1812396/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
+            "outletId": "maryland-theatre-guide",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
+            "outletId": "broadwaynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+            "outletId": "frontmezzjunkies",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-25T02:21:52.283Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -105674,7 +105770,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -106085,13 +106181,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1055,
+        "count": 1048,
         "byReason": {
           "non-review-host": 64,
-          "roundup-page": 10,
-          "aggregator-internal-nav": 730,
-          "not-http-url": 242,
-          "non-review-path": 9
+          "aggregator-internal-nav": 726,
+          "not-http-url": 241,
+          "non-review-path": 9,
+          "roundup-page": 8
         }
       },
       "dedupedVariants": [],
@@ -106571,7 +106667,7 @@
         "liveCount": 24,
         "candidateCount": 41
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -110284,12 +110380,7 @@
         "https://screenrant.com/spellbound-movie-review-2024/",
         "https://www.indiewire.com/criticism/movies/spellbound-review-vicky-jenson-animated-netflix-1235063297/",
         "https://mashable.com/article/spellbound-review-netflix-ending",
-        "https://www.screendaily.com/reviews/spellbound-review/5199163.article",
-        "https://events.amny.com/event/spellbound/",
-        "https://www.sohoplayhouse.com/see-a-show/spellbound",
-        "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
-        "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
-        "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/"
+        "https://www.screendaily.com/reviews/spellbound-review/5199163.article"
       ],
       "dirFiles": 7,
       "dirClean": 0,
@@ -110364,161 +110455,23 @@
           "knownOutletId": "screen-daily",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://events.amny.com/event/spellbound/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--alexa-lutter.json",
-              "flag": "clean",
-              "urlInDir": "https://events.amny.com/event/spellbound/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sohoplayhouse.com/see-a-show/spellbound",
-          "host": "sohoplayhouse.com",
-          "knownOutletId": "sohoplayhouse",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sohoplayhouse--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/spellbound"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
-          "host": "shorefire.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "shorefire--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/",
-          "host": "sohotheatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sohotheatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://sohotheatre.com/events/suhani-shah-spellbound/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Spellbound\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Spellbound\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Spellbound\" review soho",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Spellbound SoHo Playhouse review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Spellbound SoHo Playhouse review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Spellbound SoHo Playhouse review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 305,
+        "count": 270,
         "byReason": {
-          "roundup-page": 1,
-          "non-review-host": 36,
-          "not-http-url": 50,
-          "aggregator-internal-nav": 214,
-          "non-review-path": 3,
-          "venue-production-page": 1
+          "non-review-host": 15,
+          "aggregator-internal-nav": 212,
+          "not-http-url": 40,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
@@ -110590,20 +110543,7 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -110677,41 +110617,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.screendaily.com/reviews/spellbound-review/5199163.article"
-          },
-          {
-            "outletId": "stagebuddy",
-            "outlet": "stagebuddy",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller"
-          },
-          {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://events.amny.com/event/spellbound/"
-          },
-          {
-            "outletId": "sohoplayhouse",
-            "outlet": "sohoplayhouse",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.sohoplayhouse.com/see-a-show/spellbound"
-          },
-          {
-            "outletId": "shorefire.com",
-            "outlet": "shorefire.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse"
-          },
-          {
-            "outletId": "sohotheatre.com",
-            "outlet": "sohotheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/"
           }
         ],
         "suppressedMissing": [],
@@ -110785,47 +110690,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T05:24:26.828Z"
-          },
-          {
-            "url": "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
-            "outletId": "stagebuddy",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-23T03:53:38.032Z"
-          },
-          {
-            "url": "https://events.amny.com/event/spellbound/",
-            "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.sohoplayhouse.com/see-a-show/spellbound",
-            "outletId": "sohoplayhouse",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
-          {
-            "url": "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
-            "outletId": "shorefire.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://sohotheatre.com/events/suhani-shah-spellbound-2-0/",
-            "outletId": "sohotheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 15
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "starlight-express-west-end-2024",
@@ -120150,7 +120020,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "the-car-man-west-end-2026",
@@ -124180,7 +124050,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -126977,10 +126847,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 418,
+        "count": 419,
         "byReason": {
           "non-review-host": 38,
-          "aggregator-internal-nav": 254,
+          "aggregator-internal-nav": 255,
           "not-http-url": 123,
           "non-review-path": 3
         }
@@ -127184,7 +127054,7 @@
         "liveCount": 28,
         "candidateCount": 29
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "the-magicians-table-off-west-end-2026",
@@ -133414,7 +133284,7 @@
         "liveCount": 24,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "the-roommate-2024",
@@ -147820,7 +147690,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T08:02:41.396Z"
+      "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
       "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
