@@ -117,6 +117,98 @@ const QUALIFYING_EDIT = toolUse('Edit', { file_path: 'src/lib/scoring.ts', old_s
 const GIT_PUSH = toolUse('Bash', { command: 'git push -u origin some-branch' });
 const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' });
 const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 });
+const WRAP_UP = toolUse('Skill', { skill: 'wrap-up' });
+
+// ─────────────────────────── wrap-up-ran gate ──────────────────────────────
+// Root cause: a real session's final message read "SAFE TO EXIT — fix
+// confirmed live in production, nothing outstanding" — a perfectly formatted
+// status line — but when the owner directly asked "did you run /wrap-up and
+// /what-else?" the session admitted it had run neither. The status-line gate
+// only checks the LINE'S TEXT SHAPE; these cases prove it can't be gamed by a
+// well-formatted lie.
+
+test('substantial work + SAFE TO EXIT + no wrap-up ANYWHERE → BLOCKED (NOWRAPUP)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-none');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed and verified live.\n\nSAFE TO EXIT — fix confirmed live in production, nothing outstanding.');
+  assertBlocked(r, 'claims SAFE TO EXIT after real work but never ran /wrap-up');
+  assert.match(r.stderr, /wrap-up/i, `expected a wrap-up reminder, got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('substantial work + wrap-up AFTER the work + SAFE TO EXIT → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-after');
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
+  const r = runHook(transcript, 'Pushed, then ran /wrap-up.\n\nSAFE TO EXIT — pushed, wrap-up complete, nothing pending.');
+  assertAllowed(r, 'wrap-up genuinely ran after the work it is meant to cover');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CRITICAL gaming case (found by /second-opinion review): wrap-up ran, then MORE work happened after it, then SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-stale');
+  // wrap-up ran early, but a second push happened afterward that wrap-up
+  // never covered — an "anywhere in session" check would wrongly pass this.
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP, toolUse('Bash', { command: 'git push -u origin some-branch --force-with-lease' })]);
+  const r = runHook(transcript, 'Pushed, wrapped up, then had to push a follow-up fix.\n\nSAFE TO EXIT — follow-up pushed, nothing pending.');
+  assertBlocked(r, 'a stale wrap-up that ran BEFORE the last substantial work must not satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate: NOT SAFE TO EXIT + no wrap-up → ALLOWED (session has not claimed full completion)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-notsafe');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed. Deploy still running.\n\nNOT SAFE TO EXIT — deploy still running, will verify next check-in.');
+  assertAllowed(r, 'NOT SAFE TO EXIT does not claim completion, so wrap-up is not required yet');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CRITICAL false-positive guard: no substantial work at all → ALLOWED regardless of wrap-up', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-no-work');
+  const transcript = writeTranscript(dir, []);
+  const r = runHook(transcript, 'Sure, happy to answer that question.');
+  assertAllowed(r, 'a plain conversational reply must never require /wrap-up');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate bypass: NO-VERIFY: allows a missing wrap-up run', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-noverify');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed a trivial fix. NO-VERIFY: docs-only, wrap-up ceremony not needed.\n\nSAFE TO EXIT — pushed.');
+  assertAllowed(r, 'NO-VERIFY bypass must still work for the wrap-up gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate kill switch: WRAPUP_GATE_DISABLE=1 allows a missing wrap-up run', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-killswitch');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { WRAPUP_GATE_DISABLE: '1' });
+  assertAllowed(r, 'kill switch must fully disable the wrap-up gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate: independent of SESSION_STATUS_GATE_DISABLE (no coupling — /second-opinion review finding)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-independent-killswitch');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  // Disabling the STATUS-LINE gate must not also silently disable the
+  // wrap-up gate — they are deliberately separate top-level blocks.
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed, nothing pending.', { SESSION_STATUS_GATE_DISABLE: '1' });
+  assertBlocked(r, 'disabling the status-line gate must not disable the independent wrap-up gate');
+  assert.match(r.stderr, /wrap-up/i);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: a fully clean session (edit + verify + push + wrap-up + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-regress-clean');
+  const transcript = writeTranscript(dir, [
+    QUALIFYING_EDIT,
+    toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
+    GIT_PUSH,
+    WRAP_UP,
+  ]);
+  const r = runHook(transcript, 'Fixed, verified, pushed, wrapped up.\n\nSAFE TO EXIT — verified with tsc, pushed, wrap-up complete.');
+  assertAllowed(r, 'a fully clean, fully reported session must pass all gates including the new wrap-up one');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
 
 // ─────────────────────────── status-line gate ────────────────────────────
 
@@ -139,7 +231,7 @@ test('substantial work (git push) + no closing status line → BLOCKED (NOSTATUS
 
 test('substantial work (git push) + valid SAFE TO EXIT line → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-safe');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   const r = runHook(transcript, 'Pushed and verified CI green.\n\nSAFE TO EXIT — branch pushed, CI green, nothing pending.');
   assertAllowed(r, 'valid SAFE TO EXIT line');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -155,7 +247,7 @@ test('substantial work (git push) + valid NOT SAFE TO EXIT line → ALLOWED', sk
 
 test('regression (ship-check adversarial review 2026-08-23): canonical wrap-up.md SESSION STATUS block, WITH its trailing divider rule after SAFE TO EXIT, must pass', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-canonical-divider');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   // Exact shape wrap-up.md specifies: a divider line, DONE/CONTINUING/NEEDS YOU
   // rows, the SAFE TO EXIT line, then ANOTHER divider line below it. Before the
   // fix, checking the literal last non-empty line saw the divider, not the
@@ -213,7 +305,7 @@ test('regression (ship-check adversarial review 2026-08-23): empty final message
 
 test('regression: "DECISION NEEDED" mentioned in prose (not the template header) does not falsely trip FALSESAFE', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-decision-prose');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   const msg = [
     "There's no DECISION NEEDED here — I already decided retries stay at 3 and pushed it.",
     '',
@@ -310,7 +402,7 @@ test('status-line gate: fenced code block containing SAFE TO EXIT text is stripp
 
 test('status-line gate: real status line survives when an UNRELATED fenced block precedes it', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-fence-then-real');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   const msg = [
     'Pushed. Here is the diff for reference:',
     '```diff',
@@ -353,7 +445,7 @@ test('PR opened via MCP, never merged, no stated blocker → BLOCKED (PRUNMERGED
 
 test('PR opened via MCP AND merged same session → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-merged');
-  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR]);
+  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, WRAP_UP]);
   const r = runHook(transcript, "Opened PR #42, CI passed, merged it.\n\nSAFE TO EXIT — merged and live.");
   assertAllowed(r, 'PR opened and merged same session');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -369,7 +461,7 @@ test('PR opened, not merged, but a real blocker (CI red) is stated → ALLOWED',
 
 test('CRITICAL false-positive guard: no PR tool calls at all → ALLOWED regardless of message content', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-no-pr');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   const r = runHook(transcript, "Pushed directly, no PR needed for this repo's workflow.\n\nSAFE TO EXIT — pushed to branch, no PR opened this session.");
   assertAllowed(r, 'a session that never touched PR tools must never trip the PR gate');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -385,7 +477,7 @@ test('PR follow-through bypass: NO-VERIFY: allows an unmerged PR', skipNoRepoHoo
 
 test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an unmerged PR', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-killswitch');
-  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const transcript = writeTranscript(dir, [CREATE_PR, WRAP_UP]);
   // Valid status line included deliberately: this case isolates the PR gate's
   // OWN kill switch. Disabling only PR_FOLLOWTHROUGH_GATE_DISABLE must not
   // also bypass the separate, still-active session-status gate — a message
@@ -403,19 +495,20 @@ test('regression: existing UNVERIFIED gate still blocks an unrun code edit when 
   // and the edit is never verified by a subsequent Bash run — this must
   // still trip the PRE-EXISTING UNVERIFIED:<file> gate, proving the new
   // gates were inserted without disturbing it.
-  const transcript = writeTranscript(dir, [QUALIFYING_EDIT]);
-  const r = runHook(transcript, 'SAFE TO EXIT — done.'); // valid status line, so the NEW gates pass clean
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, WRAP_UP]);
+  const r = runHook(transcript, 'SAFE TO EXIT — done.'); // valid status line + wrap-up ran, so the NEW gates pass clean
   assertBlocked(r, 'an unverified code edit must still block on its own pre-existing gate');
   assert.match(r.stderr, /unverified edit/i, `expected the pre-existing UNVERIFIED message, got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('regression: a fully clean session (edit + verify + push + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
+test('regression: a fully clean session, standalone check (edit + verify + push + wrap-up + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
   const dir = makeTmpDir('regress-clean');
   const transcript = writeTranscript(dir, [
     QUALIFYING_EDIT,
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
     GIT_PUSH,
+    WRAP_UP,
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed.\n\nSAFE TO EXIT — verified with tsc, pushed to branch.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates');
