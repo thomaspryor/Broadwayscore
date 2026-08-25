@@ -34,6 +34,7 @@ const { fetchPage } = require('./lib/scraper');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { assignRevivalChain } = require('./lib/revival-chain');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -593,7 +594,12 @@ async function discoverHistoricalShows() {
       const tags = ['historical'];
       if (show.isRevival) tags.push('revival');
 
-      // Find existing productions for revival linking
+      // Find existing productions for revival linking. originalProductionId
+      // must point to the chronologically EARLIEST production in the title
+      // group — not just whatever already happened to be in shows.json,
+      // which broke when an older production was discovered after a newer
+      // one already existed (verified 173/214 shows.json entries backwards
+      // as of 2026-08-25; see scripts/lib/revival-chain.js).
       let originalProductionId = null;
       let productionNumber = 1;
 
@@ -602,11 +608,31 @@ async function discoverHistoricalShows() {
         const existingProductions = data.shows.filter(s => {
           const sBase = (s.slug || s.id).replace(/-\d{4}$/, '');
           return sBase === baseSlug && s.id !== show.id;
-        }).sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''));
+        });
 
         if (existingProductions.length > 0) {
-          originalProductionId = existingProductions[0].id;
-          productionNumber = existingProductions.length + 1;
+          const chain = assignRevivalChain([
+            ...existingProductions.map(s => ({ id: s.id, openingDate: s.openingDate })),
+            { id: show.id, openingDate: show.openingDate },
+          ]);
+          const chainById = new Map(chain.map(c => [c.id, c]));
+
+          const own = chainById.get(show.id);
+          originalProductionId = own.originalProductionId;
+          productionNumber = own.productionNumber;
+
+          // Retroactively fix the rest of the group (productionNumber for
+          // all, and originalProductionId for anyone whose "earliest" this
+          // show's true chronological position displaces).
+          for (const existing of existingProductions) {
+            const c = chainById.get(existing.id);
+            if (existing.originalProductionId !== c.originalProductionId) {
+              existing.originalProductionId = c.originalProductionId;
+            }
+            if (existing.productionNumber !== c.productionNumber) {
+              existing.productionNumber = c.productionNumber;
+            }
+          }
         }
       }
 
