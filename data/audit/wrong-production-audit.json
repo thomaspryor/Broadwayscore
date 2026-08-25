@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-25T04:49:03.164Z",
+  "timestamp": "2026-08-25T06:33:34.469Z",
   "stats": {
-    "totalReviews": 42427,
-    "alreadyFlagged": 18141,
-    "dateGuardCatches": 178,
+    "totalReviews": 42426,
+    "alreadyFlagged": 18121,
+    "dateGuardCatches": 189,
     "directorMismatch": 998,
     "tvFilmSignals": 1228,
-    "londonSignals": 931,
+    "londonSignals": 930,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3563
+    "noPublishDate": 3570
   },
   "findings": [
     {
@@ -224,6 +224,17 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
         }
       ]
     },
@@ -3057,6 +3068,17 @@
       ]
     },
     {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "file": "londontheatre1--chris-omaweng.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 4620d before show (2014-06-20 vs 2027-02-12)"
+        }
+      ]
+    },
+    {
       "showId": "birthday-candles-2022",
       "file": "variety--marilyn-stasio.json",
       "score": 84,
@@ -5514,6 +5536,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "broadwaynews--brittani-samuel.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1352d before show (2023-03-24 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2518d before show (2020-01-13 vs 2026-12-05)"
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1935d before show (2021-08-18 vs 2026-12-05)"
         }
       ]
     },
@@ -9289,6 +9344,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "british-theatre--colin-davison.json",
+      "score": 85,
       "publishDate": "2026-08-09",
       "url": "https://www.britishtheatreguide.info/reviews/game-of-thrones-25786",
       "findings": [
@@ -17766,6 +17822,17 @@
       ]
     },
     {
+      "showId": "miss-saigon-west-end-2026",
+      "file": "timeout-london--david-cote.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 465d before show (2026-02-02 vs 2027-05-13)"
+        }
+      ]
+    },
+    {
       "showId": "mj-2022",
       "file": "cititour--brian-scott-lipton.json",
       "score": 77,
@@ -19675,6 +19742,7 @@
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "nysr--bob-verini.json",
+      "score": 78,
       "publishDate": "2026-07-24",
       "url": "https://nystagereview.com/2026/07/24/from-boston-paranormal-activity-stageworthy-and-scareworthy/",
       "findings": [
@@ -19688,6 +19756,7 @@
     {
       "showId": "paranormal-activity-chicago-regional-2025",
       "file": "new-city-stage--tristan-bruns.json",
+      "score": 86,
       "publishDate": "2025-10-20",
       "url": "https://www.newcitystage.com/2025/10/20/the-devil-comes-down-to-chicago-shakespeare-theater-in-paranormal-activity/",
       "findings": [
@@ -19701,6 +19770,7 @@
     {
       "showId": "paranormal-activity-dc-regional-2026",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 90,
       "publishDate": "2026-01-31",
       "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
       "findings": [
@@ -19714,6 +19784,7 @@
     {
       "showId": "paranormal-activity-los-angeles-regional-2025",
       "file": "nerds-of-color--edward-hong.json",
+      "score": 81,
       "publishDate": "2025-11-15",
       "url": "https://thenerdsofcolor.org/2025/11/15/a-los-angeles-theatre-review-paranormal-activity/",
       "findings": [
@@ -29452,6 +29523,17 @@
       ]
     },
     {
+      "showId": "the-snowman-west-end-2026",
+      "file": "express-uk--neil-norman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 6196d before show (2009-12-04 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
       "showId": "the-sound-inside-2019",
       "file": "variety--marilyn-stasio.json",
       "score": 91,
@@ -29462,6 +29544,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2027",
+      "file": "broadwayworld--greg-dalton-white.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 545d before show (2025-09-24 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2027",
+      "file": "broadwayworld--michael-quintos.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 545d before show (2025-09-24 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2027",
+      "file": "broadwayworld--paul-batterson.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 545d before show (2025-09-24 vs 2027-03-23)"
         }
       ]
     },
@@ -33430,6 +33545,7 @@
     {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "ctvoice--unknown.json",
+      "score": 25,
       "publishDate": null,
       "url": "https://ctvoice.com/2026/08/13/off-broadway-review-an-american-daughter/",
       "findings": [
@@ -36431,19 +36547,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "boxofficeradio--unknown.json",
-      "publishDate": null,
-      "url": "https://boxofficeradio.co.uk/review-death-note-the-musical-the-barbican-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -42128,6 +42231,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "guardian--arifa-akbar.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 192d before show (2026-04-22 vs 2026-10-31)"
         }
       ]
     },
