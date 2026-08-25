@@ -2302,13 +2302,28 @@ showDirs.forEach(showId => {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
-          // Only tiebreak on TRUE duplicates — same content fingerprint.
+          // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
+          // identical source URL (same show+outlet+url can never legitimately be
+          // two separate reviews — that's validate-data.js's own duplicate-URL
+          // gate). The fingerprint alone is fragile: it hashes only the first 500
+          // normalized chars, so a scrape artifact prepended to just one copy (a
+          // Times quiz-widget prefix, task #1627/loves-labours-lost-globe-west-end-2026,
+          // recurred 2026-08-17 -> 2026-08-22 fix -> 2026-08-25) shifts the real
+          // review text out of the hashed window and makes two copies of the SAME
+          // article fingerprint as different, silently defeating this tiebreak and
+          // letting both land in reviews.json under one URL. Same-URL is a strictly
+          // stronger same-article signal than the fingerprint and closes that gap
+          // without weakening the "different text = legitimate separate reviews"
+          // protection this tiebreak exists for.
           // Named-critic pairs with DIFFERENT text are legitimate separate reviews;
           // duplicateOf was wrongly set on them. Preserve them (pre-fix behavior).
+          const sameUrl = !!(data.url && refData.url && data.url === refData.url);
           if (isCircular && data.fullText && refData.fullText) {
             const a = computeContentFingerprint(data.fullText);
             const b = computeContentFingerprint(refData.fullText);
-            circularSameText = !!(a && b && a === b);
+            circularSameText = !!(a && b && a === b) || sameUrl;
+          } else if (isCircular && sameUrl) {
+            circularSameText = true;
           }
           // Walk with the same shared helper the write-time guard and the
           // audit use, so all three call sites agree on what counts as a cycle.
@@ -2418,10 +2433,17 @@ showDirs.forEach(showId => {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
+          // Same-URL is a strictly stronger same-article signal than the fingerprint
+          // and must count as circularSameText too — mirrors the duplicateOf block
+          // above (see its comment for why the fingerprint alone is fragile to
+          // scrape-artifact prefixes on just one copy).
+          const sameUrl = !!(data.url && refData.url && data.url === refData.url);
           if (isCircular && data.fullText && refData.fullText) {
             const a = computeContentFingerprint(data.fullText);
             const b = computeContentFingerprint(refData.fullText);
-            circularSameText = !!(a && b && a === b);
+            circularSameText = !!(a && b && a === b) || sameUrl;
+          } else if (isCircular && sameUrl) {
+            circularSameText = true;
           }
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId]);
