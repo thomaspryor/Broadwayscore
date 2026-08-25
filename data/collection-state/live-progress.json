@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-25T01:23:23.761Z",
-  "processed": 91,
-  "failed": 1859,
+  "updatedAt": "2026-08-25T01:34:48.576Z",
+  "processed": 92,
+  "failed": 1868,
   "successRate": "4.7%",
   "tierBreakdown": {
     "playwright": 50,
@@ -11,9 +11,9 @@
     "scrapingbee": 9,
     "brightdata": 8,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 25
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -91,6 +91,29 @@
       "t": "2026-08-25T00:36:34.941Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-25T01:33:33.582Z",
+      "event": "bb-session",
+      "session": "b09c1d5b",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-25T01:33:55.730Z",
+      "event": "bb-session",
+      "session": "32759a60",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-25T01:34:18.430Z",
+      "event": "bb-session",
+      "session": "2e5fce9c",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-25T01:34:19.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
