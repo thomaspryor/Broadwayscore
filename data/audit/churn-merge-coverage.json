@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-25T09:57:30.056Z",
+    "generatedAt": "2026-08-25T10:12:13.070Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -26,7 +26,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 67
+      "churn": 68
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -42,7 +42,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 59
+      "churn": 60
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -64,32 +64,32 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1085,
+      "churn": 1089,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1030,
+      "churn": 1033,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 413,
+      "churn": 414,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 401,
+      "churn": 402,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 253,
+      "churn": 254,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 179,
+      "churn": 180,
       "mergeAttr": "union"
     },
     {
@@ -109,7 +109,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 84,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
@@ -139,7 +139,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 32,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
