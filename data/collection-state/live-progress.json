@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-25T01:40:28.839Z",
+  "updatedAt": "2026-08-25T01:46:48.474Z",
   "processed": 92,
-  "failed": 1888,
+  "failed": 1898,
   "successRate": "4.6%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 25
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-24T13:37:12.244Z",
-      "event": "bb-session",
-      "session": "068bf835",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-24T13:37:12.634Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-08-24T13:38:18.231Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "event": "bb-session",
       "session": "85f0347b",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-25T01:45:05.253Z",
+      "event": "bb-session",
+      "session": "537fd64d",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-25T01:45:06.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

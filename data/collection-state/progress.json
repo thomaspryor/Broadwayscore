@@ -1981,7 +1981,17 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2042,7 +2052,8 @@
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2096,7 +2107,7 @@
     ]
   },
   "startTime": "2026-08-24T10:34:56.203Z",
-  "lastProcessed": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-08-24T13:34:51.914Z",
@@ -2231,6 +2242,17 @@
       "event": "bb-session",
       "session": "85f0347b",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-25T01:45:05.253Z",
+      "event": "bb-session",
+      "session": "537fd64d",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-25T01:45:06.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
