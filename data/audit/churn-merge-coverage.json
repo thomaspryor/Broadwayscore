@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-25T07:17:29.799Z",
+    "generatedAt": "2026-08-25T09:57:30.056Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 2,
     "exemptCount": 9,
-    "coveredCount": 16,
-    "highChurnTracked": 27
+    "coveredCount": 22,
+    "highChurnTracked": 33
   },
   "flagged": [
     {
@@ -26,100 +26,100 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 65
+      "churn": 67
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 58
+      "churn": 59
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 41
+      "churn": 43
     },
     {
       "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "public/data/shows/abigails-party-west-end-2026.json",
-      "churn": 31
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1096,
+      "churn": 1085,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1040,
+      "churn": 1030,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 410,
+      "churn": 413,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 399,
+      "churn": 401,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 254,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 178,
+      "churn": 179,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 113,
+      "churn": 115,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 113,
+      "churn": 115,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 113,
+      "churn": 115,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 80,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 68,
+      "churn": 69,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 61,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
@@ -134,12 +134,42 @@
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 35,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 32,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/abigails-party-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/anansi-the-spider-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/cats-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/death-note-the-musical-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/how-the-other-half-loves-west-end-2026.json",
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
