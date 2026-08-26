@@ -43,12 +43,56 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+// BRO-2424 (port of BRO-545's guard-escalation pattern): a crashed child
+// audit (exit 3) is right to fail this DAILY cron loud on its first
+// occurrence, but the same crash recurring run after run (e.g. a corpus file
+// that stays malformed) used to fail loud forever with no real escalation —
+// its notify-failure call is `severity: 'warning'`, a no-op for anything but
+// 'critical' (see .github/actions/notify-failure). See guard-escalation.js
+// header for the shape this reuses.
+const {
+  nextGuardState,
+  shouldAutoRecover,
+  shouldEscalate,
+  buildOverrideCommand,
+  buildGuardBlockedAlert,
+} = require('./lib/guard-escalation');
 
 // Locate sibling audit scripts relative to THIS file, but run them — and write
 // the verdict — relative to the invocation cwd (the repo root in CI), so the
 // audits resolve data/review-texts the same way they do when run standalone.
 const SCRIPTS_DIR = __dirname;
 const AUDIT_OUT_DEFAULT = path.join(process.cwd(), 'data', 'audit', 'corpus-drift.json');
+// Same state file check-rebuild-staleness.js uses (data/audit/, public repo,
+// git-tracked) — keyed per-guard so multiple guards can share one file.
+const GUARD_STATE_FILE = path.join(process.cwd(), 'data', 'audit', 'guard-escalation-state.json');
+const GUARD_ID = 'corpus-drift-audit-crash';
+const WORKFLOW_DISPLAY_NAME = 'Check Corpus Drift';
+const ALERT_CONDITION_KEY = `guard-escalation:${GUARD_ID}`;
+
+function loadJSON(file, fallback = null) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+function loadGuardState() {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  return (doc && doc[GUARD_ID]) || null;
+}
+
+function saveGuardState(state) {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  doc[GUARD_ID] = state;
+  try {
+    fs.mkdirSync(path.dirname(GUARD_STATE_FILE), { recursive: true });
+    fs.writeFileSync(GUARD_STATE_FILE, JSON.stringify(doc, null, 2) + '\n');
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] could not persist guard-escalation state: ${e.message}`);
+  }
+}
 
 // Each audit: how to run it and how to read its exit code. `crashCodes` are
 // exit codes that mean "could not run" (a real error) vs "ran and found drift".
@@ -306,7 +350,7 @@ function decideExit({ anyCrashed, anyDrift, strict }) {
   return 0;
 }
 
-function main() {
+async function main() {
   const argv = process.argv.slice(2);
   const strict = argv.includes('--strict');
   const outArg = argv.find((a) => a.startsWith('--audit-out='));
@@ -325,13 +369,99 @@ function main() {
   }
 
   const code = decideExit({ ...verdict.summary, strict });
-  if (code === 3) console.error('[check-corpus-drift] one or more audits could not run — investigate.');
-  if (code === 2) console.error('[check-corpus-drift] drift detected and --strict set.');
-  process.exit(code);
+  if (code === 2) {
+    console.error('[check-corpus-drift] drift detected and --strict set.');
+    process.exit(code);
+  }
+  if (code !== 3) {
+    // Healthy (or non-strict drift) run: clear any open crash streak so a
+    // real recurring crash doesn't get silently forgotten, but a single good
+    // run doesn't leave a stale "still blocked" incident open either.
+    const priorState = loadGuardState();
+    if (priorState && priorState.consecutiveBlocks > 0) {
+      try {
+        const { resolveCondition } = require('./lib/owner-alert-router');
+        resolveCondition(ALERT_CONDITION_KEY);
+      } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
+      saveGuardState(nextGuardState(priorState, false, Date.now()));
+    }
+    process.exit(code);
+  }
+
+  // code === 3: one or more audits crashed (could not run at all).
+  const crashedNames = audits.filter((a) => a.crashed).map((a) => a.name).join(', ');
+  const priorState = loadGuardState();
+  const state = nextGuardState(priorState, true, Date.now());
+  saveGuardState(state);
+
+  const overrideCommand = buildOverrideCommand({
+    workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+    reason: 'BRO-2424 corpus-drift audit-crash guard manual override',
+  });
+  const baseMsg =
+    `[check-corpus-drift] ${audits.filter((a) => a.crashed).length} audit(s) could not run ` +
+    `(crashed): ${crashedNames}. Override: ${overrideCommand}`;
+
+  if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks)) {
+    // First (or still-below-threshold) crash: fail loud, unchanged from
+    // before BRO-2424 — a one-off audit crash is worth flagging immediately.
+    console.error(`::error::${baseMsg}`);
+    process.exit(3);
+  }
+
+  // BRO-2424 auto-recovery: this audit-crash condition has now fired
+  // state.consecutiveBlocks runs in a row. The verdict JSON was already
+  // written above (other audits' results are still useful), so proceeding
+  // just stops marking this DAILY monitor red for a condition that keeps
+  // reproducing — it degrades to a loud, escalating alert instead.
+  const alert = buildGuardBlockedAlert({
+    guardId: GUARD_ID,
+    guardLabel: 'Corpus-drift audit-crash guard (check-corpus-drift.js)',
+    consecutiveBlocks: state.consecutiveBlocks,
+    workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+    overrideCommand,
+    impact: `the ${crashedNames} audit(s) have not run — their drift/health signal is stale`,
+    runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
+      ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+      : undefined,
+  });
+  console.error(`::warning::${baseMsg}`);
+  console.error(`::warning::[guard-escalation] AUTO-RECOVERING — ${alert.description.replace(/\n/g, ' | ')}`);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try {
+      fs.appendFileSync(
+        process.env.GITHUB_STEP_SUMMARY,
+        `\n## ⚠️ Guard auto-recovery — ${alert.title}\n\n${alert.description.replace(/\n/g, '\n\n')}\n`,
+      );
+    } catch (e) { /* summary write is best-effort */ }
+  }
+
+  if (shouldEscalate(state.consecutiveBlocks)) {
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      // Lower severity than BRO-545's reviews.json-stalled case: this monitor
+      // is non-blocking by design (see file header) and the underlying audits
+      // still ran (only one crashed) — 'digest', not 'human' (no page).
+      await routeAlert({
+        conditionKey: ALERT_CONDITION_KEY,
+        title: alert.title,
+        description: alert.description,
+        disposition: 'digest',
+        cooldownHours: 1,
+      });
+    } catch (e) {
+      console.error(`::warning::[guard-escalation] routeAlert failed (${e.message}) — escalation was logged above regardless.`);
+    }
+  }
+  // Auto-recovered: exit 0 so this job stays green — the condition is
+  // already visible via the warnings/summary/digest alert above.
 }
 
 if (require.main === module) {
-  main();
+  main().catch((e) => {
+    console.error(`::error::[check-corpus-drift] unexpected failure: ${e.stack || e.message}`);
+    process.exit(1);
+  });
 }
 
 module.exports = { AUDITS, runAudit, buildVerdict, decideExit };

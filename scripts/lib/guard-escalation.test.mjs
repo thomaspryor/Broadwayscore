@@ -144,3 +144,14 @@ test('buildGuardBlockedAlert: falls back to guardId when no guardLabel is given'
   const { title } = buildGuardBlockedAlert({ guardId: 'stale-checkout-staleness', consecutiveBlocks: 4 });
   assert.match(title, /\(stale-checkout-staleness\)/);
 });
+
+test('buildGuardBlockedAlert: default impact text is generic, not the first caller\'s reviews.json-specific wording (BRO-2424)', () => {
+  const { description } = buildGuardBlockedAlert({ guardId: 'some-other-guard', consecutiveBlocks: 2, workflowDisplayName: 'Some Other Workflow' });
+  assert.ok(!description.includes('reviews.json'), 'a reused caller must not inherit check-rebuild-staleness.js-specific wording by default');
+  assert.match(description, /Some Other Workflow has not completed its normal work/);
+});
+
+test('buildGuardBlockedAlert: explicit impact text overrides the generic default', () => {
+  const { description } = buildGuardBlockedAlert({ guardId: 'x', consecutiveBlocks: 2, impact: 'the Vercel ignore-build-step setting may still be drifted' });
+  assert.ok(description.includes('the Vercel ignore-build-step setting may still be drifted'));
+});

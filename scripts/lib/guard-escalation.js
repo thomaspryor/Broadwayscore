@@ -110,15 +110,23 @@ function buildOverrideCommand({ workflowDisplayName, reason = 'Guard-escalation 
  * Builds the {title, description} pair for an escalating guard-blocked
  * alert. Pure formatting — callers decide where this text goes (email,
  * digest queue, step summary, all three).
+ *
+ * `impact` is guard-specific business knowledge (what actually doesn't
+ * happen while this guard is blocked) — pass it explicitly rather than
+ * relying on the default. BRO-2424 found the original hardcoded text
+ * ("reviews.json has not advanced") baked in from this function's first
+ * caller (check-rebuild-staleness.js, BRO-545) surfacing verbatim, and
+ * misleadingly, in a second guard's alert once this library got reused.
  */
-function buildGuardBlockedAlert({ guardId, guardLabel, consecutiveBlocks, threshold = DEFAULT_ESCALATION_THRESHOLD, workflowDisplayName, overrideCommand, runUrl }) {
+function buildGuardBlockedAlert({ guardId, guardLabel, consecutiveBlocks, threshold = DEFAULT_ESCALATION_THRESHOLD, workflowDisplayName, overrideCommand, runUrl, impact }) {
   if (!guardId) throw new Error('buildGuardBlockedAlert requires guardId');
   if (!Number.isInteger(consecutiveBlocks)) throw new Error('buildGuardBlockedAlert requires consecutiveBlocks');
   const label = guardLabel || guardId;
   const pipeline = workflowDisplayName || 'the pipeline';
+  const impactText = impact || `${pipeline} has not completed its normal work`;
   const title = `${pipeline} blocked ${consecutiveBlocks}x in a row (${label})`;
   const lines = [
-    `${label} has blocked ${consecutiveBlocks} consecutive run(s) of ${pipeline} — reviews.json has not advanced.`,
+    `${label} has blocked ${consecutiveBlocks} consecutive run(s) of ${pipeline} — ${impactText}.`,
     `Auto-recovery threshold is ${threshold}: this run proceeds anyway instead of stalling further.`,
     overrideCommand ? `Manual override: ${overrideCommand}` : null,
     runUrl ? `Latest run: ${runUrl}` : null,

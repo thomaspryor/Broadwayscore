@@ -239,6 +239,7 @@ async function main() {
       consecutiveBlocks: state.consecutiveBlocks,
       workflowDisplayName: WORKFLOW_DISPLAY_NAME,
       overrideCommand,
+      impact: 'reviews.json has not advanced',
       runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
         ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
         : undefined,
