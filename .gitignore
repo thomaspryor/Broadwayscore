@@ -281,6 +281,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # card's acceptance criteria), so it must be committed or CI fails on a
 # missing file rather than on the thing the test is guarding.
 !/docs/BRO-373-codex-lane-decision.md
+# BRO-377 Phase 1 deliverable: the dual-write window + induced-failure drill
+# result. The card's acceptance criteria is literally
+# `test -f docs/Phase-1-drill-results.md`, so it has to be committed.
+!/docs/Phase-1-drill-results.md
 /memory/
 /data/deep-research/
 /data/theater-research/
