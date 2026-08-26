@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T10:30:38.320Z",
+  "generatedAt": "2026-08-26T16:26:50.359Z",
   "windowDays": 45,
   "showsScanned": 70,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 813.3171608333333,
+      "fileAgeHours": 819.2501936111111,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 172.13843722222222
+      "nonTerminalAgeHours": 178.07511472222222
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,26 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 503.76034944444444,
+      "fileAgeHours": 509.6933825,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 172.13843722222222
-    },
-    {
-      "showId": "an-american-daughter-off-broadway-2026",
-      "title": "An American Daughter",
-      "openingDate": "2026-08-11",
-      "file": "wsj--charles-isherwood.json",
-      "outletId": "wsj",
-      "tier": 1,
-      "type": "unscored",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-off-broadway-97552614",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=an-american-daughter-off-broadway-2026",
-      "firstSeen": "2026-08-21T11:19:24.394Z",
-      "fileAgeHours": 119.18719555555556,
-      "gapSeenAt": "2026-08-26T10:30:38.320Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 178.07511472222222
     }
   ],
   "contradictions": []
