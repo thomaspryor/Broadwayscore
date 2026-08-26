@@ -24,6 +24,9 @@
  *
  * Usage: node scripts/diagnose-gate-cold-start-join.js
  * Env: POSTHOG_PERSONAL_API_KEY
+ *
+ * hygiene-help-flag-ok: one-off read-only diagnostic (PostHog HogQL queries
+ * only, no writes/mutations), no flags to document.
  */
 
 const PROJECT_ID = '332742';
