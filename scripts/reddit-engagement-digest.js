@@ -214,9 +214,10 @@ async function enrichWithComments(threads) {
   console.log(`Fetching comments for ${threads.length} threads...`);
   const enriched = [];
 
-  for (const post of threads) {
+  for (let ti = 0; ti < threads.length; ti++) {
+    const post = threads[ti];
     if (timeBudget.exceeded()) {
-      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${threads.length - enriched.length} thread(s) skipped this run.`);
+      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${threads.length - ti} thread(s) skipped this run.`);
       break;
     }
     try {

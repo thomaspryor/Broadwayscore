@@ -258,6 +258,15 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   // would run a closing-date SERP/prompt on an opening-date call site and
   // return plausibly-wrong data. Caller MUST pass an explicit fieldType.
   const log = (opts && opts.log) || (() => {});
+  // Checked before the SERP call, not just inside the per-candidate loop
+  // below: a caller that invokes this twice per show (audit-opening-dates.js
+  // calls it once for 'opening', once for 'previews-start') would otherwise
+  // fire a fresh SERP query on the second call even though the budget
+  // already expired during the first.
+  if (budget && budget.exceeded()) {
+    log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) already exceeded — skipping`);
+    return null;
+  }
   const cfg = getFieldConfig(fieldType);
   const query = cfg.serpQuery(showTitle);
   log(`  [discovery:${fieldType}] SERP: ${query}`);
@@ -284,9 +293,10 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   }
 
   const extractions = [];
-  for (const c of candidates) {
+  for (let ci = 0; ci < candidates.length; ci++) {
+    const c = candidates[ci];
     if (budget && budget.exceeded()) {
-      log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — ${candidates.length - extractions.length} candidate(s) skipped`);
+      log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — ${candidates.length - ci} candidate(s) skipped`);
       break;
     }
     try {

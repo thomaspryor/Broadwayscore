@@ -183,12 +183,14 @@ async function main() {
   const flagged = [];
   const matches = [];
   const errors = [];
+  let audited = 0;
 
   for (const show of candidates) {
     if (timeBudget.exceeded()) {
-      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
+      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — ${candidates.length - audited} candidate(s) deferred to next run.`);
       break;
     }
+    audited++;
     const title = show.name || show.title || show.id;
     console.log(`[${show.id}] ${title} — stored opening=${show.openingDate || 'null'}, previews=${show.previewsStartDate || 'null'}`);
 
@@ -224,7 +226,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     mode: DRY_RUN ? 'dry-run' : 'live',
     summary: {
-      audited: candidates.length,
+      audited,
       flagged: flagged.length,
       matches: matches.length,
       errors: errors.length,
