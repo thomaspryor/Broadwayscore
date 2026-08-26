@@ -35,7 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, obRegionalShows, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
-const { writeStagingCandidates, writeStaging, loadStaging } = require('./lib/venue-listing-discover');
+const { writeStagingCandidates, loadStaging, updateStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const PV_FILE = path.join(AUDIT_DIR, 'playbill-verdict-unmatched.json');
@@ -91,16 +91,23 @@ async function main() {
   // Knowledge" — both already-closed shows in shows.json when this was added
   // 2026-08-11 — sits in staging (and the health-check "OB Discovery — Action
   // Needed" digest) forever. See pruneStagedCandidates() for the full story.
-  // This read-modify-write joins the existing race surface on this same file
-  // (promote-ob-venue-candidates.js's own rewriteStaging()) — tracked as its
-  // own problem at task #999 (OB discovery S5: ob-venue-candidates.json
-  // concurrency), not solved here.
+  // BRO-158 (the #788 class): this used to be loadStaging() + writeStaging()
+  // — a plain read-modify-write racing promote-ob-venue-candidates.js's own
+  // rewrite and every other producer of this file. Fixed by routing the
+  // write through updateStaging(), which re-reads the file fresh under an
+  // exclusive lock and removes ONLY the hashes this run decided to prune —
+  // so a candidate another producer staged while this script was running
+  // (fetches below can take a while) survives instead of being silently
+  // dropped by an overwrite based on the stale `stagingBefore` snapshot.
   const stagingBefore = loadStaging();
   const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, shows);
   if (stagingPruned.length > 0) {
     console.log(`Pruning ${stagingPruned.length} staged candidate(s) already in shows.json:`);
     for (const p of stagingPruned) console.log(`  - ${p.title} @ ${p.venue || '?'} (${p.source || '?'})`);
-    if (!dryRun) writeStaging(stagingKept);
+    if (!dryRun) {
+      const prunedHashes = new Set(stagingPruned.map((c) => c.candidateHash));
+      updateStaging((current) => current.filter((c) => !prunedHashes.has(c.candidateHash)));
+    }
   }
 
   // URLs already staged → don't re-fetch (idempotency without a bespoke cache).
