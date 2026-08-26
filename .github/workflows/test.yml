@@ -1553,6 +1553,15 @@ on:
       # lint-workflows relies on it, and the file is otherwise unguarded.
       - 'CLAUDE.md'
       - 'scripts/lib/claude-md-anchors.json'
+      # BRO-124: scripts/lib/check-claude-md-byte-cap.js + claude-md-byte-cap-
+      # gate.sh (already covered by the scripts/lib/** glob) are the byte-cap
+      # decision fn + git wrapper scripts/hooks/pre-push now calls locally —
+      # the same cap this job's Lint Workflows step enforces, previously
+      # CI-only. Their test is root-level scripts/pre-push.test.mjs, which is
+      # NOT globbed (root-level scripts/*.test.mjs never is) — path-listed so
+      # a solo edit to any of the three triggers CI. Registered in
+      # tests/unit-test-manifest.txt.
+      - 'scripts/pre-push.test.mjs'
       # Personal orchestration tooling — colocated tests run in the main unit batch;
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
