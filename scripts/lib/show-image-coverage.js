@@ -174,6 +174,51 @@ function discardFailedFetchArtifacts(showDir, before) {
   return { removed, prunedDir: pruneEmptyShowImageDir(showDir) };
 }
 
+/**
+ * Run a single show's image fetch and guarantee discardFailedFetchArtifacts
+ * runs no matter how the fetch ends — including a throw.
+ *
+ * WHY (BRO-178, 2026-08-11 zombie-sweep reopen of the 2026-08-02 fix): a plain
+ * `images = await fetchFn()` only reaches cleanup on the resolve path. A throw
+ * between a source's mkdir and its write (a sharp/compression error, an OOM, a
+ * disk error) propagates straight out, Promise.allSettled records a rejection,
+ * and the freshly created empty (or partially written) directory survives as
+ * false coverage — the exact failure case discardFailedFetchArtifacts exists
+ * for. try/finally reaches cleanup on every exit path, including throw.
+ *
+ * Cleanup errors are swallowed (not rethrown): a filesystem error while
+ * cleaning up must never replace the real fetch error and hide its cause.
+ *
+ * @param {() => Promise<any>} fetchFn performs the fetch; its resolved value is
+ *   returned unchanged. Truthy means success — nothing is cleaned up.
+ * @param {string} showImageDir
+ * @param {Set<string>} dirBefore snapshot taken before the fetch (snapshotShowImageDir)
+ * @param {string} showId for logging
+ * @param {(msg: string) => void} [log] defaults to console.log; override in tests
+ * @returns {Promise<any>} fetchFn's resolved value
+ */
+async function runFetchWithCleanup(fetchFn, showImageDir, dirBefore, showId, log = console.log) {
+  let images = null;
+  try {
+    images = await fetchFn();
+  } finally {
+    if (!images) {
+      try {
+        const { removed, prunedDir } = discardFailedFetchArtifacts(showImageDir, dirBefore);
+        if (removed.length > 0) {
+          log(`   🧹 discarded ${removed.length} rejected candidate file(s) for ${showId} (${removed.join(', ')}) — they would have read as coverage`);
+        }
+        if (prunedDir) {
+          log(`   🧹 removed empty image dir for ${showId} (would otherwise read as coverage)`);
+        }
+      } catch (cleanupErr) {
+        log(`   ⚠ image-dir cleanup failed for ${showId}: ${cleanupErr.message}`);
+      }
+    }
+  }
+  return images;
+}
+
 module.exports = {
   hasArchivedShowImages,
   listShowIdsWithImages,
@@ -181,4 +226,5 @@ module.exports = {
   snapshotShowImageDir,
   discardFailedFetchArtifacts,
   dirHasImageFiles,
+  runFetchWithCleanup,
 };

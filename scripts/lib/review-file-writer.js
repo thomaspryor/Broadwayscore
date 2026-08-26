@@ -37,6 +37,7 @@ const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, isWrongShowUnknownLocked } = require('./review-guards');
+const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
@@ -1049,6 +1050,17 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // own release condition), so a truncated paywall refetch keeps its retry
     // context while a genuinely-healed body sheds the garbage verdict.
     if (clearFailureFlags(existing).length > 0) changed = true;
+
+    // Card #1902: this fullText change may have just made a prior
+    // excerpt-based score stale. isStaleScoreInput() is the single gate
+    // shared with rebuild-all-reviews.js's wrongProduction auto-clear sites
+    // — it already requires a prior assignedScore (so a never-scored file
+    // is untouched) and isScoreable() (so a non-includable file can never
+    // become a stuck flag, the 278-file guard from card #1902's audit).
+    if (isStaleScoreInput(existing, undefined, filepath)) {
+      markRescoreNeeded(existing, 'fullText added after excerpt-based score');
+      changed = true;
+    }
   }
 
   if (!changed) {

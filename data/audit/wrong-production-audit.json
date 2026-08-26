@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T09:14:55.877Z",
+  "timestamp": "2026-08-26T14:30:36.753Z",
   "stats": {
-    "totalReviews": 42487,
-    "alreadyFlagged": 18145,
+    "totalReviews": 42505,
+    "alreadyFlagged": 18150,
     "dateGuardCatches": 181,
     "directorMismatch": 1014,
-    "tvFilmSignals": 1229,
+    "tvFilmSignals": 1231,
     "londonSignals": 932,
-    "offBroadwaySignals": 494,
+    "offBroadwaySignals": 495,
     "yearMismatch": 90,
-    "noPublishDate": 3574
+    "noPublishDate": 3573
   },
   "findings": [
     {
@@ -3053,17 +3053,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "billy-elliot-the-musical-west-end-2027",
-      "file": "londontheatre1--chris-omaweng.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 4620d before show (2014-06-20 vs 2027-02-12)"
         }
       ]
     },
@@ -9369,6 +9358,19 @@
       "score": 76,
       "publishDate": "2026-08-09",
       "url": "https://www.theguardian.com/stage/2026/aug/09/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "herald--pa-news-agency.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.heraldscotland.com/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19931,6 +19933,19 @@
     },
     {
       "showId": "paranormal-activity-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-08-25",
+      "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-paranormal-activity-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-2026",
       "file": "vulture--jackson-mchenry.json",
       "score": 64,
       "publishDate": "2026-08-25T20:51:56-04:00",
@@ -26311,6 +26326,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "london-box-office--andrew-bewley.json",
+      "publishDate": "2016-12-04",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-children",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3559d before show (2016-12-04 vs 2026-09-02)"
         }
       ]
     },
@@ -49677,6 +49705,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-real-ivanov-off-broadway-2026",
+      "file": "theater-scene--deb-miller.json",
+      "score": 84,
+      "publishDate": "2026-08-25",
+      "url": "https://theaterscene.com/reviews/the-real-ivanov/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },

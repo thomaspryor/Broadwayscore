@@ -46,6 +46,7 @@ scripts/enrich-fallback-ticket-links.test.mjs
 scripts/enrich-ibdb-dates.test.mjs
 scripts/enrich-wikipedia-synopsis.test.mjs
 scripts/export-notion-outcome-history.test.mjs
+scripts/fetch-show-images-auto.test.mjs
 scripts/flag-wrong-production-by-date.test.mjs
 scripts/import-notion-to-linear.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
@@ -499,6 +500,8 @@ tests/unit/reddit-api-scrapingdog.test.mjs
 tests/unit/reddit-grosses.test.mjs
 tests/unit/regression-guards.test.mjs
 tests/unit/rescore-actionable-depth.test.mjs
+tests/unit/rescore-flagging.test.mjs
+tests/unit/rescore-lifecycle.test.mjs
 tests/unit/rescore-queue-depth.test.mjs
 tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs
