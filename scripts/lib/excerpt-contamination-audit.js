@@ -56,6 +56,24 @@ function baseShowId(showId) {
 }
 
 /**
+ * True when two showIds are the same production filed under two slugs —
+ * the exact "duplicate show entry" shape the real corpus run surfaced (e.g.
+ * can-i-be-frank-off-broadway-2026 vs
+ * morgan-bassichis-can-i-be-frank-off-broadway-2026). baseShowId() alone
+ * only strips a trailing year/market suffix, so it misses this: one base is
+ * a hyphen-bounded suffix of the other. That's a legitimate content match
+ * (same real production, correctly reviewed), not cross-show contamination
+ * — flagging it wrongShow would be actively wrong, not just noisy.
+ */
+function isDuplicateSlugPair(showIdA, showIdB) {
+  const a = baseShowId(showIdA);
+  const b = baseShowId(showIdB);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  return a.endsWith(`-${b}`) || b.endsWith(`-${a}`);
+}
+
+/**
  * Extract {field, text} pairs worth indexing/matching from a review-text
  * record. fullText/wrongFullText are included so contamination is detected
  * against content already caught (and preserved) by the fullText
@@ -65,6 +83,12 @@ function baseShowId(showId) {
 function extractIndexableFields(data) {
   const out = [];
   if (!data) return out;
+  // Roundups/combined-reviews legitimately share content across multiple
+  // show dirs by design (one article covering several shows) — matching
+  // exact-attribution logic against them produces false positives.
+  // audit-cross-attribution-by-critic.js excludes them for the same reason
+  // (scripts/audit-cross-attribution-by-critic.js:334).
+  if (data.isRoundupArticle || data.isCombinedReview) return out;
   for (const field of EXCERPT_FIELDS) {
     const val = data[field];
     if (typeof val === 'string' && val.trim()) out.push({ field, text: val });
@@ -76,6 +100,24 @@ function extractIndexableFields(data) {
     out.push({ field: 'wrongFullText', text: data.wrongFullText });
   }
   return out;
+}
+
+// Matches a corroborating flag set because the content isn't a review of
+// ANY show ("domain for sale" parked-page junk, ad spam, showNotMentioned) —
+// as opposed to being identifiably a review of a DIFFERENT, specific show.
+// Verified against the real corpus: enron-2010/equus-2008/la-bete-2010's
+// shared new-jersey-newsroom files and ink-2019/be-more-chill-2019's shared
+// theater-news-online files are both ad-spam/parked-domain junk that reached
+// wrongProduction/wrongShow=true for exactly this "not a review" reason, not
+// because the text was traced to a specific other production. Corroboration
+// from a flag set for this reason doesn't establish genuine cross-show
+// attribution — it just means BOTH copies are garbage.
+const NOT_REVIEW_REASON_PATTERN = /not a review|domain (?:name )?for sale|no information about the show|does not mention the show|not about the show/i;
+
+function isGarbageNotReviewCorroboration(entry) {
+  if (entry.showNotMentioned) return true;
+  const reason = `${entry.wrongShowReason || ''} ${entry.wrongProductionReason || ''}`;
+  return NOT_REVIEW_REASON_PATTERN.test(reason);
 }
 
 /**
@@ -97,6 +139,9 @@ function buildExcerptIndex(records) {
         field,
         wrongShow: !!data.wrongShow,
         wrongProduction: !!data.wrongProduction,
+        showNotMentioned: !!data.showNotMentioned,
+        wrongShowReason: data.wrongShowReason || null,
+        wrongProductionReason: data.wrongProductionReason || null,
         criticName: data.criticName || null,
       });
     }
@@ -127,8 +172,9 @@ function findCrossShowMatches(targetShowId, targetFile, data, index) {
         matchedWrongProduction: entry.wrongProduction,
         matchedCriticName: entry.criticName,
         matchLength: norm.length,
-        sameBase: baseShowId(entry.showId) === baseShowId(targetShowId),
+        sameBase: isDuplicateSlugPair(entry.showId, targetShowId),
         confidence: norm.length >= HIGH_CONFIDENCE_LENGTH ? 'high' : 'medium',
+        isGarbageNotReview: isGarbageNotReviewCorroboration(entry),
         excerpt: text.slice(0, 300),
       });
     }
@@ -138,20 +184,39 @@ function findCrossShowMatches(targetShowId, targetFile, data, index) {
 
 /**
  * Conservative auto-flag gate: only exact matches of substantial length,
- * against a genuinely different production (not a same-title revival-year
- * collision — that's the existing URL-collision audit's job), corroborated
- * by the matched file ALREADY carrying a wrongProduction/wrongShow flag for
- * the identical content. This is exactly the confirmed case's shape: the
- * "unknown" excerpt-only file matched a sibling that had already been
- * caught by the fullText contentVerification check. Matches without that
- * corroboration still get reported but require manual verification before
- * flagging (per BRO-461's acceptance criteria on false positives).
+ * against a genuinely different production (not a duplicate-slug pair or a
+ * same-title revival-year collision — those are legitimate content matches,
+ * not contamination; the revival case is the existing URL-collision audit's
+ * job), corroborated by the matched entry's field being `wrongFullText`
+ * specifically. wrongFullText is ONLY populated when the fullText
+ * contentVerification LLM check has already verified THIS EXACT text is
+ * wrong-show content (see excerpt-fields.js/scorable-text.js) — that's a
+ * much stronger, more specific signal than a bare wrongProduction/wrongShow
+ * boolean, which could be true for a reason unrelated to the matched text
+ * (e.g. a different field on the same file was flagged). Requiring the
+ * corroborating field itself ties the flag to verified-wrong CONTENT, not
+ * just a flagged FILE, closing the coincidental-boilerplate-match risk a
+ * bare boolean check would leave open. This is exactly the confirmed BRO-115
+ * case's shape: the "unknown" excerpt-only file's theStageExcerpt matched a
+ * sibling's wrongFullText, AND that sibling has wrongProduction/wrongShow
+ * set. wrongFullText alone is NOT sufficient corroboration — it can also
+ * hold plain scraper-quality garbage (ad/parked-domain junk) with no
+ * wrongProduction/wrongShow flag at all (verified against the real corpus:
+ * enron-2010 and equus-2008's new-jersey-newsroom files both carry the
+ * identical ad-spam wrongFullText with wrongProduction/wrongShow undefined —
+ * that's showNotMentioned/partial_text scraper failure, not cross-show
+ * content, and flagging it wrongShow would be wrong). Both signals are
+ * required together. Matches without that corroboration still get reported
+ * but require manual verification before flagging (per BRO-461's acceptance
+ * criteria on false positives).
  */
 function shouldAutoFlag(match) {
   return (
     match.confidence === 'high' &&
     !match.sameBase &&
-    (match.matchedWrongProduction || match.matchedWrongShow)
+    match.matchedField === 'wrongFullText' &&
+    (match.matchedWrongProduction || match.matchedWrongShow) &&
+    !match.isGarbageNotReview
   );
 }
 
@@ -175,6 +240,8 @@ module.exports = {
   HIGH_CONFIDENCE_LENGTH,
   normalizeExcerptText,
   baseShowId,
+  isDuplicateSlugPair,
+  isGarbageNotReviewCorroboration,
   extractIndexableFields,
   buildExcerptIndex,
   findCrossShowMatches,

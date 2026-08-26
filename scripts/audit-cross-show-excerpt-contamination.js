@@ -31,6 +31,7 @@ const os = require('os');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { wrongShowCleared } = require('./lib/review-guards');
 const {
   buildExcerptIndex,
   findCrossShowMatches,
@@ -77,8 +78,10 @@ function loadBacklogList(listPath) {
     .filter(Boolean);
 }
 
+/** Returns null (rather than a corrupt {showId, file} pair) for a line with no '/'. */
 function splitRel(rel) {
   const idx = rel.lastIndexOf('/');
+  if (idx < 0) return null;
   return { showId: rel.slice(0, idx), file: rel.slice(idx + 1) };
 }
 
@@ -86,13 +89,16 @@ function splitRel(rel) {
 function walkCorpus(reviewTextsDir) {
   const out = [];
   let malformed = 0;
+  let unreadableDirs = 0;
   const showDirs = listShowDirs(reviewTextsDir).filter((d) => d !== '_pending');
   for (const showId of showDirs) {
     const showPath = path.join(reviewTextsDir, showId);
     let files;
     try {
       files = fs.readdirSync(showPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
-    } catch {
+    } catch (e) {
+      unreadableDirs++;
+      console.warn(`::warning::walkCorpus: skipping unreadable show dir '${showId}' (${e.code || e.message})`);
       continue;
     }
     for (const file of files) {
@@ -107,7 +113,7 @@ function walkCorpus(reviewTextsDir) {
       out.push({ showId, file, filePath, data });
     }
   }
-  return { records: out, malformed };
+  return { records: out, malformed, unreadableDirs };
 }
 
 function isScored(data) {
@@ -140,9 +146,9 @@ function main() {
   console.log(`[audit-cross-show-excerpt-contamination] backlog: ${opts.list} (${backlog.length} entries)`);
 
   console.log('[audit-cross-show-excerpt-contamination] scanning corpus (single pass)…');
-  const { records, malformed } = walkCorpus(reviewTextsDir);
+  const { records, malformed, unreadableDirs } = walkCorpus(reviewTextsDir);
   const byRel = new Map(records.map((r) => [`${r.showId}/${r.file}`, r]));
-  console.log(`[audit-cross-show-excerpt-contamination] ${records.length} files scanned (${malformed} malformed), building index…`);
+  console.log(`[audit-cross-show-excerpt-contamination] ${records.length} files scanned (${malformed} malformed, ${unreadableDirs} unreadable dirs), building index…`);
   const index = buildExcerptIndex(records);
   console.log(`[audit-cross-show-excerpt-contamination] index built: ${index.size} distinct normalized text entries`);
 
@@ -158,7 +164,13 @@ function main() {
   let applied = 0;
 
   for (const rel of backlog) {
-    const { showId, file } = splitRel(rel);
+    const parsed = splitRel(rel);
+    if (!parsed) {
+      missing++;
+      perFile.push({ rel, showId: null, file: null, exists: false, scored: false, alreadyFlagged: false, matches: [], action: 'malformed-backlog-line' });
+      continue;
+    }
+    const { showId, file } = parsed;
     const rec = byRel.get(rel);
     if (!rec) {
       missing++;
@@ -195,20 +207,30 @@ function main() {
     const best = matches[0] || null;
     if (best && best.confidence === 'high') highConfidenceCount++;
 
+    // Check EVERY match, not just the longest — a shorter but corroborated
+    // match can be auto-flag-eligible while the single longest match isn't
+    // (e.g. the longest match is an uncorroborated duplicate-slug pair while
+    // a shorter match is a verified wrongFullText hit).
+    const eligibleMatch = matches.find((m) => shouldAutoFlag(m)) || null;
     let action = matches.length === 0 ? 'no-match' : 'needs-manual-review';
-    if (best && shouldAutoFlag(best)) {
+    if (eligibleMatch) {
       autoFlagEligible++;
       action = 'auto-flag-eligible';
       if (opts.apply && !flagged) {
         try {
           const data = JSON.parse(fs.readFileSync(rec.filePath, 'utf8'));
-          if (!data.wrongShow && !data.wrongProduction) {
+          // wrongShowCleared: a human may have already reviewed and cleared
+          // a stale flag on this exact file (review-guards.js's 5-signal
+          // manual-clear contract). Without this check an --apply run could
+          // silently stomp that override — the same guard
+          // audit-cross-attribution-by-critic.js's --apply already applies.
+          if (!data.wrongShow && !data.wrongProduction && !wrongShowCleared(data)) {
             data.wrongShow = true;
-            data.wrongShowReason = `Cross-attribution (BRO-461 excerpt-only backfill audit): ${best.targetField} content verbatim-matches ${best.matchedShowId}/${best.matchedFile}'s ${best.matchedField}, which already carries wrongProduction/wrongShow for the identical content (match length ${best.matchLength} chars).`;
+            data.wrongShowReason = `Cross-attribution (BRO-461 excerpt-only backfill audit): ${eligibleMatch.targetField} content verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile}'s ${eligibleMatch.matchedField}, which already carries verified wrong-show content for the identical text (match length ${eligibleMatch.matchLength} chars).`;
             data.crossAttributionAudit = {
-              detectedShowId: best.matchedShowId,
-              evidence: `${best.targetField} text verbatim-matches ${best.matchedShowId}/${best.matchedFile} (${best.matchedField})`,
-              matchLength: best.matchLength,
+              detectedShowId: eligibleMatch.matchedShowId,
+              evidence: `${eligibleMatch.targetField} text verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile} (${eligibleMatch.matchedField})`,
+              matchLength: eligibleMatch.matchLength,
               flaggedAt: new Date().toISOString(),
               flaggedBy: 'BRO-461 audit-cross-show-excerpt-contamination.js --apply',
             };
@@ -248,6 +270,9 @@ function main() {
     },
     summary: {
       backlogEntries: backlog.length,
+      corpusFilesScanned: records.length,
+      corpusMalformed: malformed,
+      corpusUnreadableDirs: unreadableDirs,
       missing,
       notScored,
       noLongerExcerptOnly,

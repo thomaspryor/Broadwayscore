@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T17:05:19.894Z",
+  "generatedAt": "2026-08-26T17:15:33.970Z",
   "config": {
     "reviewTextsDir": "/Users/tompryor/Broadwayscore/data/review-texts",
     "listPath": "/Users/tompryor/Documents/claude-outputs/excerpt-only-unscored-backfill-2026-07-26.txt",
@@ -7,13 +7,16 @@
   },
   "summary": {
     "backlogEntries": 259,
+    "corpusFilesScanned": 42240,
+    "corpusMalformed": 0,
+    "corpusUnreadableDirs": 0,
     "missing": 12,
     "notScored": 45,
     "noLongerExcerptOnly": 24,
     "alreadyFlagged": 21,
     "checked": 188,
-    "withMatches": 93,
-    "highConfidence": 83,
+    "withMatches": 77,
+    "highConfidence": 71,
     "autoFlagEligible": 0,
     "applied": 0
   },
@@ -49,205 +52,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 14,
-      "bestMatch": {
-        "targetField": "wrongFullText",
-        "matchedShowId": "a-life-in-the-theatre-2010",
-        "matchedFile": "nytheatre--martin-denton.json",
-        "matchedField": "wrongFullText",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Martin Denton",
-        "matchLength": 2965,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-      },
-      "matches": [
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "a-life-in-the-theatre-2010",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "a-little-night-music-2009",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": true,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "american-idiot-2010",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "billy-elliot-the-musical-2008",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "brief-encounter-2010",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "come-fly-away-2010",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "driving-miss-daisy-2010",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "in-the-heights-2008",
-          "matchedFile": "nytheatre--martin-denton.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Martin Denton",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "lombardi-2010",
-          "matchedFile": "nytheatre--david-fuller.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "David Fuller",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "next-fall-2010",
-          "matchedFile": "nytheatre--stan-richardson.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Stan Richardson",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "next-to-normal-2009",
-          "matchedFile": "nytheatre--jo-ann-rosen.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Jo Ann Rosen",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "the-peewee-herman-show-2010",
-          "matchedFile": "nytheatre--david-gordon.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "David Gordon",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "the-pitmen-painters-2010",
-          "matchedFile": "nytheatre--jason-s-grossman.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Jason S. Grossman",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        },
-        {
-          "targetField": "wrongFullText",
-          "matchedShowId": "women-on-the-verge-of-a-nervous-breakdown-2010",
-          "matchedFile": "nytheatre--saviana-stanescu.json",
-          "matchedField": "wrongFullText",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Saviana Stanescu",
-          "matchLength": 2965,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "By Staff Writer| 2025-12-18 Capturing Stage Drama: Theater Photography Tips Explore key tips for theater photography, highlighting the importance of rehearsal shoots, understanding dramatic lighting, and capturing emotion and narrative. Learn how to build relationships with theater companies and gro"
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "a-delicate-balance-2014/wsj--terry-teachout.json",
@@ -332,36 +140,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "an-ark-off-broadway-2026",
-        "matchedFile": "the-interested-bystander--cary-wong.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": true,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Cary Wong",
-        "matchLength": 79,
-        "sameBase": true,
-        "confidence": "medium",
-        "excerpt": "The cast is mostly seated throughout, which makes An Ark an elevated radio play"
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "an-ark-off-broadway-2026",
-          "matchedFile": "the-interested-bystander--cary-wong.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": true,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Cary Wong",
-          "matchLength": 79,
-          "sameBase": true,
-          "confidence": "medium",
-          "excerpt": "The cast is mostly seated throughout, which makes An Ark an elevated radio play"
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "an-ark-2026/theater-scene--deirdre-donovan.json",
@@ -396,6 +178,7 @@
         "matchLength": 368,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "We who are gathered here tonight in an unconsecrated theater in Brooklyn have been asked to join in a holy invocation, beginning with “Oh, Lord,” as we raise cups filled with – not communion wine – but sacred Coca-Cola. Of course, if our faiths lean in other directions, we are told, we may substitut"
       },
       "matches": [
@@ -410,6 +193,7 @@
           "matchLength": 368,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "We who are gathered here tonight in an unconsecrated theater in Brooklyn have been asked to join in a holy invocation, beginning with “Oh, Lord,” as we raise cups filled with – not communion wine – but sacred Coca-Cola. Of course, if our faiths lean in other directions, we are told, we may substitut"
         }
       ],
@@ -501,36 +285,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "blackout-songs-off-broadway-2026",
-        "matchedFile": "vulture--jackson-mchenry.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Jackson McHenry",
-        "matchLength": 106,
-        "sameBase": true,
-        "confidence": "high",
-        "excerpt": "“White’s script leaves a lacuna, which his director Rory McGregor renders with a jump cut of a black out.”"
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "blackout-songs-off-broadway-2026",
-          "matchedFile": "vulture--jackson-mchenry.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Jackson McHenry",
-          "matchLength": 106,
-          "sameBase": true,
-          "confidence": "high",
-          "excerpt": "“White’s script leaves a lacuna, which his director Rory McGregor renders with a jump cut of a black out.”"
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "burnout-paradise-2026/lighting-and-sound-america--david-barbour.json",
@@ -565,6 +323,7 @@
         "matchLength": 62,
         "sameBase": true,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "\"running headfirst into, instead of away from, one's problems\""
       },
       "matches": [
@@ -579,6 +338,7 @@
           "matchLength": 62,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "\"running headfirst into, instead of away from, one's problems\""
         }
       ],
@@ -604,6 +364,7 @@
         "matchLength": 80,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"It’s the most fun you’re likely to have with experimental theater this season.\""
       },
       "matches": [
@@ -618,6 +379,7 @@
           "matchLength": 80,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"It’s the most fun you’re likely to have with experimental theater this season.\""
         }
       ],
@@ -631,36 +393,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "culturesauce--thom-geier.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Thom Geier",
-        "matchLength": 304,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "Morgan Bassichis is a talented performer, wrapping the long microphone cord around their body like a loose scarf, but they shift uneasily between tribute act and a meta framework, stopping and starting the show repeatedly to provide context for newcomers and to share personal details from their own "
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "culturesauce--thom-geier.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Thom Geier",
-          "matchLength": 304,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "Morgan Bassichis is a talented performer, wrapping the long microphone cord around their body like a loose scarf, but they shift uneasily between tribute act and a meta framework, stopping and starting the show repeatedly to provide context for newcomers and to share personal details from their own "
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
@@ -670,36 +406,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "exeunt-magazine--nicole-serratore.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Nicole Serratore",
-        "matchLength": 90,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "\"The show’s political aims get buried under Bassichis’s faux narcissism for far too long.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "exeunt-magazine--nicole-serratore.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Nicole Serratore",
-          "matchLength": 90,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "\"The show’s political aims get buried under Bassichis’s faux narcissism for far too long.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
@@ -709,36 +419,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "lighting-and-sound-america--david-barbour.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "David Barbour",
-        "matchLength": 188,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "\"Bassichis is going places, and Can I Be Frank? packs plenty of laughs into its ninety-minute running time as well as a powerful argument about the necessity of comedy in terrible times. \""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "lighting-and-sound-america--david-barbour.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "David Barbour",
-          "matchLength": 188,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "\"Bassichis is going places, and Can I Be Frank? packs plenty of laughs into its ninety-minute running time as well as a powerful argument about the necessity of comedy in terrible times. \""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
@@ -748,36 +432,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "nysr--melissa-rose-bernardo.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Melissa Rose Bernardo",
-        "matchLength": 67,
-        "sameBase": false,
-        "confidence": "medium",
-        "excerpt": "\"At times, it’s hard to tell where Maya ends and Bassichis begins.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "nysr--melissa-rose-bernardo.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Melissa Rose Bernardo",
-          "matchLength": 67,
-          "sameBase": false,
-          "confidence": "medium",
-          "excerpt": "\"At times, it’s hard to tell where Maya ends and Bassichis begins.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
@@ -787,36 +445,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "nytg--amelia-merrill.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Amelia Merrill",
-        "matchLength": 91,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "\"Bassichis delivers an evening of highbrow comedy that won’t soon be lost to the archives.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "nytg--amelia-merrill.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Amelia Merrill",
-          "matchLength": 91,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "\"Bassichis delivers an evening of highbrow comedy that won’t soon be lost to the archives.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
@@ -826,36 +458,10 @@
       "scored": false,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "off-off-online--deirdre-donovan.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Deirdre Donovan",
-        "matchLength": 48,
-        "sameBase": false,
-        "confidence": "medium",
-        "excerpt": "Morgan Bassichis honors a forgotten trailblazer."
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "off-off-online--deirdre-donovan.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Deirdre Donovan",
-          "matchLength": 48,
-          "sameBase": false,
-          "confidence": "medium",
-          "excerpt": "Morgan Bassichis honors a forgotten trailblazer."
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -865,36 +471,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "pages-on-stages--mason-pilevsky.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Mason Pilevsky",
-        "matchLength": 81,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "The amount of time wasted apologizing to the audience for the show was egregious."
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "pages-on-stages--mason-pilevsky.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Mason Pilevsky",
-          "matchLength": 81,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "The amount of time wasted apologizing to the audience for the show was egregious."
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
@@ -904,36 +484,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-        "matchedFile": "theater-scene--darryl-reilly.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Darryl Reilly",
-        "matchLength": 96,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "A passionate tribute to deceased gay performance artist Frank Maya by a virtuoso queer comedian."
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
-          "matchedFile": "theater-scene--darryl-reilly.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Darryl Reilly",
-          "matchLength": 96,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "A passionate tribute to deceased gay performance artist Frank Maya by a virtuoso queer comedian."
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "cold-war-choir-practice-2026/nytimes--laura-collins-hughes.json",
@@ -968,6 +522,7 @@
         "matchLength": 499,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"In that sense, this “Company” is perfectly in line with his intentions: It’s new. And truth be told, I was never less than riveted — if usually in the way Bobby is, eyeballing messy marriages. Nor is the chance to hear the great score live with a 14-piece orchestra to be taken lightly; is there a m"
       },
       "matches": [
@@ -982,6 +537,7 @@
           "matchLength": 499,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"In that sense, this “Company” is perfectly in line with his intentions: It’s new. And truth be told, I was never less than riveted — if usually in the way Bobby is, eyeballing messy marriages. Nor is the chance to hear the great score live with a 14-piece orchestra to be taken lightly; is there a m"
         },
         {
@@ -995,6 +551,7 @@
           "matchLength": 499,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"In that sense, this “Company” is perfectly in line with his intentions: It’s new. And truth be told, I was never less than riveted — if usually in the way Bobby is, eyeballing messy marriages. Nor is the chance to hear the great score live with a 14-piece orchestra to be taken lightly; is there a m"
         }
       ],
@@ -1020,6 +577,7 @@
         "matchLength": 221,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Edmond Rostand's 1897 sentimental fairy tale romance \"Cyrano de Bergerac\" is not so much a great play as it is a durable star vehicle for a skilled actor who can handle rhymed verse, swordplay and a giant prosthetic nose."
       },
       "matches": [
@@ -1034,6 +592,7 @@
           "matchLength": 221,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Edmond Rostand's 1897 sentimental fairy tale romance \"Cyrano de Bergerac\" is not so much a great play as it is a durable star vehicle for a skilled actor who can handle rhymed verse, swordplay and a giant prosthetic nose."
         }
       ],
@@ -1059,6 +618,7 @@
         "matchLength": 205,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "It's almost common now for actors in New York to jump into the audience and roam about the aisles, as if the stage can't contain them. Douglas Hodge has them all beat: The theater itself can't contain him."
       },
       "matches": [
@@ -1073,6 +633,7 @@
           "matchLength": 205,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "It's almost common now for actors in New York to jump into the audience and roam about the aisles, as if the stage can't contain them. Douglas Hodge has them all beat: The theater itself can't contain him."
         },
         {
@@ -1086,6 +647,7 @@
           "matchLength": 205,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "It's almost common now for actors in New York to jump into the audience and roam about the aisles, as if the stage can't contain them. Douglas Hodge has them all beat: The theater itself can't contain him."
         }
       ],
@@ -1124,6 +686,7 @@
         "matchLength": 303,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Nearly 75 years after it first premiered, Death of a Salesman still says more than we care to admit about America, about how one can work their entire life and end up with nothing, how you're worth more dead than you are alive, how the system is rigged against the little guy. Maybe the enduring mess"
       },
       "matches": [
@@ -1138,6 +701,7 @@
           "matchLength": 303,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Nearly 75 years after it first premiered, Death of a Salesman still says more than we care to admit about America, about how one can work their entire life and end up with nothing, how you're worth more dead than you are alive, how the system is rigged against the little guy. Maybe the enduring mess"
         }
       ],
@@ -1163,6 +727,7 @@
         "matchLength": 266,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "The Great Recession is the unbilled star of Mike Nichols’ Broadway revival of Arthur Miller’s “Death of a Salesman” — the scene-stealing specter, invisible but ever-present, that gives the production its ferocious relevance more than 60 years after the play’s birth."
       },
       "matches": [
@@ -1177,6 +742,7 @@
           "matchLength": 266,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "The Great Recession is the unbilled star of Mike Nichols’ Broadway revival of Arthur Miller’s “Death of a Salesman” — the scene-stealing specter, invisible but ever-present, that gives the production its ferocious relevance more than 60 years after the play’s birth."
         }
       ],
@@ -1280,6 +846,7 @@
         "matchLength": 1062,
         "sameBase": false,
         "confidence": "high",
+        "isGarbageNotReview": true,
         "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
       },
       "matches": [
@@ -1294,6 +861,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1307,6 +875,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1320,6 +889,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1333,6 +903,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1346,6 +917,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1359,6 +931,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1372,6 +945,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1385,6 +959,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1398,6 +973,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1411,6 +987,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1424,6 +1001,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1437,6 +1015,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         },
         {
@@ -1450,6 +1029,7 @@
           "matchLength": 1062,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If your belly fat feels impossible to lose — even after dieting, walking, or cutting carbs — this has nothing to do with willpower. According to a female clinical nutritionist, most women struggle because of a hidden hormonal switch that turns on fat storage as we age. That’s why this simple Spanish"
         }
       ],
@@ -1553,6 +1133,7 @@
         "matchLength": 497,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“The well-written book hits the series' main plot points...The singing is uneven, but the uniformly strong acting makes up for these vocal deficiencies. And while the show occasionally veers into slapstick, the parody remains at a mostly even pitch...The final number gets at the rare and magical bon"
       },
       "matches": [
@@ -1567,6 +1148,7 @@
           "matchLength": 497,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“The well-written book hits the series' main plot points...The singing is uneven, but the uniformly strong acting makes up for these vocal deficiencies. And while the show occasionally veers into slapstick, the parody remains at a mostly even pitch...The final number gets at the rare and magical bon"
         }
       ],
@@ -1592,6 +1174,7 @@
         "matchLength": 473,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“An irresistibly hilarious night of comedy...Devoted fans of the immensely successful sitcom will surely recognize most of the references and supporting characters...Each player captures the essence of their television counterparts in a manner that is self-deprecating, but never mean-spirited or rid"
       },
       "matches": [
@@ -1606,6 +1189,7 @@
           "matchLength": 473,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“An irresistibly hilarious night of comedy...Devoted fans of the immensely successful sitcom will surely recognize most of the references and supporting characters...Each player captures the essence of their television counterparts in a manner that is self-deprecating, but never mean-spirited or rid"
         }
       ],
@@ -1631,6 +1215,7 @@
         "matchLength": 440,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"If you like the 'Friends' TV show, you will probably enjoy 'Friends the Musical'...Although it is hard to cram a ten year TV series into  a 2 hour musical, the writers of this show do an admirable job of it...The set, costumes, and even the hairdos are all really spot on too. The acting is good. So"
       },
       "matches": [
@@ -1645,6 +1230,7 @@
           "matchLength": 440,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"If you like the 'Friends' TV show, you will probably enjoy 'Friends the Musical'...Although it is hard to cram a ten year TV series into  a 2 hour musical, the writers of this show do an admirable job of it...The set, costumes, and even the hairdos are all really spot on too. The acting is good. So"
         }
       ],
@@ -1670,6 +1256,7 @@
         "matchLength": 423,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Quick witted, good hearted, a tiny bit raunchy, and filled with laughs...The art of this piece is that it’s fun loving, not mean spirited, with well-crafted harmonies and surprisingly satisfying performances all around...Trust me, folks, it’s a really fun night. The writers managed to get the entir"
       },
       "matches": [
@@ -1684,6 +1271,7 @@
           "matchLength": 423,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Quick witted, good hearted, a tiny bit raunchy, and filled with laughs...The art of this piece is that it’s fun loving, not mean spirited, with well-crafted harmonies and surprisingly satisfying performances all around...Trust me, folks, it’s a really fun night. The writers managed to get the entir"
         }
       ],
@@ -1709,6 +1297,7 @@
         "matchLength": 474,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“This musical is a hysterical send-up of all that you loved to hate (or hated to love) about the 90s...The show’s greatest attribute is its ability to hit on series favorites quickly and memorably...Stancato’s direction and choreography is smart and intuitive...Though Gleizner’s music is a bit forge"
       },
       "matches": [
@@ -1723,6 +1312,7 @@
           "matchLength": 474,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“This musical is a hysterical send-up of all that you loved to hate (or hated to love) about the 90s...The show’s greatest attribute is its ability to hit on series favorites quickly and memorably...Stancato’s direction and choreography is smart and intuitive...Though Gleizner’s music is a bit forge"
         }
       ],
@@ -1748,6 +1338,7 @@
         "matchLength": 495,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Absolutely delivers on the promise of sending up the show...The musical happily and hysterically depicts moments from the friends’ adventures...They find the underside and ridiculousness of the sitcom plots and the cast gleefully captures the spirit, vocal and physical tics...They fare best with hi"
       },
       "matches": [
@@ -1762,6 +1353,7 @@
           "matchLength": 495,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Absolutely delivers on the promise of sending up the show...The musical happily and hysterically depicts moments from the friends’ adventures...They find the underside and ridiculousness of the sitcom plots and the cast gleefully captures the spirit, vocal and physical tics...They fare best with hi"
         }
       ],
@@ -1787,6 +1379,7 @@
         "matchLength": 454,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"While those unacquainted with the world of 'Friends' are unlikely to enjoy, fans with even a general knowledge of the series’ running jokes will find something to love about this hilarious parody...The play does a good job of balancing the parody of classic moments with overall jabs...The entire ca"
       },
       "matches": [
@@ -1801,6 +1394,7 @@
           "matchLength": 454,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"While those unacquainted with the world of 'Friends' are unlikely to enjoy, fans with even a general knowledge of the series’ running jokes will find something to love about this hilarious parody...The play does a good job of balancing the parody of classic moments with overall jabs...The entire ca"
         }
       ],
@@ -1826,6 +1420,7 @@
         "matchLength": 475,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“The musical is well-cast, but at the end of the night, I found something missing from the production; it didn’t feel like a story about the friends I knew...The plot points are all there, but the genuineness from the show wasn’t all that present on stage, and it made the show fall a little flat...T"
       },
       "matches": [
@@ -1840,6 +1435,7 @@
           "matchLength": 475,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“The musical is well-cast, but at the end of the night, I found something missing from the production; it didn’t feel like a story about the friends I knew...The plot points are all there, but the genuineness from the show wasn’t all that present on stage, and it made the show fall a little flat...T"
         }
       ],
@@ -1904,6 +1500,7 @@
         "matchLength": 298,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"'Hadestown' is the best new musical I have seen in years...overflowing with rich, lively music...The act-one closer, 'Why We Build the Wall,' was written long before our current national nightmare and yet describes it with more elegance than any attempt I have seen to account for Trump on stage.\""
       },
       "matches": [
@@ -1918,6 +1515,7 @@
           "matchLength": 298,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"'Hadestown' is the best new musical I have seen in years...overflowing with rich, lively music...The act-one closer, 'Why We Build the Wall,' was written long before our current national nightmare and yet describes it with more elegance than any attempt I have seen to account for Trump on stage.\""
         }
       ],
@@ -1979,6 +1577,7 @@
         "matchLength": 355,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"An atmosphere of fearlessness hangs over the new production of Shakespeare’s \"Hamlet\" at Classic Stage Company. Star Peter Sarsgaard and director Austin Pendleton take a naturalistic approach that proves a good fit for the relatively loose, sometimes almost improvisatory flavor of the play...I had "
       },
       "matches": [
@@ -1993,6 +1592,7 @@
           "matchLength": 355,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"An atmosphere of fearlessness hangs over the new production of Shakespeare’s \"Hamlet\" at Classic Stage Company. Star Peter Sarsgaard and director Austin Pendleton take a naturalistic approach that proves a good fit for the relatively loose, sometimes almost improvisatory flavor of the play...I had "
         }
       ],
@@ -2031,6 +1631,7 @@
         "matchLength": 344,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Something’s rotten in Denmark — and it’s the Classic Stage Company’s anemic and dour version of “Hamlet.”...The acting throughout is as pale and monochromatic as the white floral canopy hovering over guests...Polonius is overdressed and bored in a morning coat, as though he was expecting a snazzier"
       },
       "matches": [
@@ -2045,6 +1646,7 @@
           "matchLength": 344,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Something’s rotten in Denmark — and it’s the Classic Stage Company’s anemic and dour version of “Hamlet.”...The acting throughout is as pale and monochromatic as the white floral canopy hovering over guests...Polonius is overdressed and bored in a morning coat, as though he was expecting a snazzier"
         }
       ],
@@ -2070,6 +1672,7 @@
         "matchLength": 483,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"The least you can say about Peter Sarsgaard’s performance as Shakespeare’s vengeful prince is that it’s fully committed — in every sense of the word. The Hamlet he portrays in Austin Pendleton’s modern-dress production isn’t so much melancholy as mentally unbalanced and likely delusional...he proje"
       },
       "matches": [
@@ -2084,6 +1687,7 @@
           "matchLength": 483,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"The least you can say about Peter Sarsgaard’s performance as Shakespeare’s vengeful prince is that it’s fully committed — in every sense of the word. The Hamlet he portrays in Austin Pendleton’s modern-dress production isn’t so much melancholy as mentally unbalanced and likely delusional...he proje"
         }
       ],
@@ -2109,6 +1713,7 @@
         "matchLength": 472,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"The concept behind this stylish-looking modern-dress production directed by Austin Pendleton essentially presents the action as a long dramatic hangover after the wedding celebrations for Claudius and Gertrude...Unfortunately, by the end of this respectable but sluggish production, which runs over "
       },
       "matches": [
@@ -2123,6 +1728,7 @@
           "matchLength": 472,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"The concept behind this stylish-looking modern-dress production directed by Austin Pendleton essentially presents the action as a long dramatic hangover after the wedding celebrations for Claudius and Gertrude...Unfortunately, by the end of this respectable but sluggish production, which runs over "
         }
       ],
@@ -2148,6 +1754,7 @@
         "matchLength": 299,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Excellent new production...Clarity reigns in this simple and effective staging. This is by no means an action-packed \"Hamlet.\" A general lethargy pervades, but it is never boring. In fact, we can't look away. This is a testament to Pendleton's surefooted vision of a house on the brink of demise.\"."
       },
       "matches": [
@@ -2162,6 +1769,7 @@
           "matchLength": 299,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Excellent new production...Clarity reigns in this simple and effective staging. This is by no means an action-packed \"Hamlet.\" A general lethargy pervades, but it is never boring. In fact, we can't look away. This is a testament to Pendleton's surefooted vision of a house on the brink of demise.\"."
         }
       ],
@@ -2187,6 +1795,7 @@
         "matchLength": 453,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Classic Stage Company’s “Hamlet” might just be the definitive “Hamlet” for the twenty-first century. Staged with shimmering creativity, the iconic Shakespearian tragedy bristles with a contemporary edge firmly rooted in tradition...under Austin Pendleton’s transformative direction, it transcends El"
       },
       "matches": [
@@ -2201,6 +1810,7 @@
           "matchLength": 453,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Classic Stage Company’s “Hamlet” might just be the definitive “Hamlet” for the twenty-first century. Staged with shimmering creativity, the iconic Shakespearian tragedy bristles with a contemporary edge firmly rooted in tradition...under Austin Pendleton’s transformative direction, it transcends El"
         }
       ],
@@ -2263,49 +1873,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 2,
-      "bestMatch": {
-        "targetField": "dtliExcerpt",
-        "matchedShowId": "harry-potter-2021",
-        "matchedFile": "deadline--greg-evans.json",
-        "matchedField": "dtliExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "Greg Evans",
-        "matchLength": 1411,
-        "sameBase": false,
-        "confidence": "high",
-        "excerpt": "Like any magic worth an incantation, Harry Potter and The Cursed Child, opening on Broadway at the Lyric Theater tonight, depends on unspoiled illusions, a delight in life’s wonders and the skills to present it all as if no one had ever even considered its combinations before, much less pulled them "
-      },
-      "matches": [
-        {
-          "targetField": "dtliExcerpt",
-          "matchedShowId": "harry-potter-2021",
-          "matchedFile": "deadline--greg-evans.json",
-          "matchedField": "dtliExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "Greg Evans",
-          "matchLength": 1411,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "Like any magic worth an incantation, Harry Potter and The Cursed Child, opening on Broadway at the Lyric Theater tonight, depends on unspoiled illusions, a delight in life’s wonders and the skills to present it all as if no one had ever even considered its combinations before, much less pulled them "
-        },
-        {
-          "targetField": "dtliExcerpt",
-          "matchedShowId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-          "matchedFile": "deadline--greg-evans.json",
-          "matchedField": "dtliExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": true,
-          "matchedCriticName": "Greg Evans",
-          "matchLength": 1411,
-          "sameBase": false,
-          "confidence": "high",
-          "excerpt": "Like any magic worth an incantation, Harry Potter and The Cursed Child, opening on Broadway at the Lyric Theater tonight, depends on unspoiled illusions, a delight in life’s wonders and the skills to present it all as if no one had ever even considered its combinations before, much less pulled them "
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
@@ -2389,6 +1960,7 @@
         "matchLength": 562,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Heathers is a landmark teen film, a pitch-black comedy that takes a boldly deadpan look at the various forms of psychosis that lurk in a traditional suburban high school. It's a movie about the monstrous secrets beneath all manner of facades, and despite its reputation as a big-hair camp classic, it"
       },
       "matches": [
@@ -2403,6 +1975,7 @@
           "matchLength": 562,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Heathers is a landmark teen film, a pitch-black comedy that takes a boldly deadpan look at the various forms of psychosis that lurk in a traditional suburban high school. It's a movie about the monstrous secrets beneath all manner of facades, and despite its reputation as a big-hair camp classic, it"
         },
         {
@@ -2416,6 +1989,7 @@
           "matchLength": 562,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Heathers is a landmark teen film, a pitch-black comedy that takes a boldly deadpan look at the various forms of psychosis that lurk in a traditional suburban high school. It's a movie about the monstrous secrets beneath all manner of facades, and despite its reputation as a big-hair camp classic, it"
         }
       ],
@@ -2441,6 +2015,7 @@
         "matchLength": 685,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "In Michael Lehmann's delectable 1988 teen cult classic, Heathers, the feared-and-revered school alpha bitches and the bullying jocks become emblems of a society of rottenness and inequality, where those in power are begging to be brought to their knees. Does the acidic comedy gain anything from bein"
       },
       "matches": [
@@ -2455,6 +2030,7 @@
           "matchLength": 685,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "In Michael Lehmann's delectable 1988 teen cult classic, Heathers, the feared-and-revered school alpha bitches and the bullying jocks become emblems of a society of rottenness and inequality, where those in power are begging to be brought to their knees. Does the acidic comedy gain anything from bein"
         },
         {
@@ -2468,6 +2044,7 @@
           "matchLength": 685,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "In Michael Lehmann's delectable 1988 teen cult classic, Heathers, the feared-and-revered school alpha bitches and the bullying jocks become emblems of a society of rottenness and inequality, where those in power are begging to be brought to their knees. Does the acidic comedy gain anything from bein"
         }
       ],
@@ -2493,6 +2070,7 @@
         "matchLength": 702,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Heathers, a musical comedy based on the 1989 film about a clique of domineering high schoolers, is a pleasant confection with little of the edge or angst you remember from the movie. At best, this adaptation, now open at New World Stages, is a chance to relive dozens of memorable quips that gave the"
       },
       "matches": [
@@ -2507,6 +2085,7 @@
           "matchLength": 702,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Heathers, a musical comedy based on the 1989 film about a clique of domineering high schoolers, is a pleasant confection with little of the edge or angst you remember from the movie. At best, this adaptation, now open at New World Stages, is a chance to relive dozens of memorable quips that gave the"
         },
         {
@@ -2520,6 +2099,7 @@
           "matchLength": 702,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Heathers, a musical comedy based on the 1989 film about a clique of domineering high schoolers, is a pleasant confection with little of the edge or angst you remember from the movie. At best, this adaptation, now open at New World Stages, is a chance to relive dozens of memorable quips that gave the"
         }
       ],
@@ -2545,6 +2125,7 @@
         "matchLength": 755,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Forget those big-budget, starry adaptations of beloved movies. If you want to relive a cult flick, head over to the ingenious, very funny Heathers: The Musical, which pulls off wonders on a shoestring. The 1988 teen-bitchery classic Heathers was the peak of Winona Ryder and Christian Slater’s career"
       },
       "matches": [
@@ -2559,6 +2140,7 @@
           "matchLength": 755,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Forget those big-budget, starry adaptations of beloved movies. If you want to relive a cult flick, head over to the ingenious, very funny Heathers: The Musical, which pulls off wonders on a shoestring. The 1988 teen-bitchery classic Heathers was the peak of Winona Ryder and Christian Slater’s career"
         },
         {
@@ -2572,6 +2154,7 @@
           "matchLength": 755,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Forget those big-budget, starry adaptations of beloved movies. If you want to relive a cult flick, head over to the ingenious, very funny Heathers: The Musical, which pulls off wonders on a shoestring. The 1988 teen-bitchery classic Heathers was the peak of Winona Ryder and Christian Slater’s career"
         }
       ],
@@ -2597,6 +2180,7 @@
         "matchLength": 857,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": true,
         "excerpt": "Are there any souls out there brave enough to admit they were popular in high school? O.K., maybe Gov. Chris Christie, but that wasn’t a good career move. The teenage kings and queens of the prom, the homecoming and the keg party — the golden boys and girls who taunt and belittle the smart and sensi"
       },
       "matches": [
@@ -2611,6 +2195,7 @@
           "matchLength": 857,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Are there any souls out there brave enough to admit they were popular in high school? O.K., maybe Gov. Chris Christie, but that wasn’t a good career move. The teenage kings and queens of the prom, the homecoming and the keg party — the golden boys and girls who taunt and belittle the smart and sensi"
         },
         {
@@ -2624,6 +2209,7 @@
           "matchLength": 857,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Are there any souls out there brave enough to admit they were popular in high school? O.K., maybe Gov. Chris Christie, but that wasn’t a good career move. The teenage kings and queens of the prom, the homecoming and the keg party — the golden boys and girls who taunt and belittle the smart and sensi"
         }
       ],
@@ -2649,6 +2235,7 @@
         "matchLength": 666,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Good musicals may not be getting any smarter but bad ones certainly are. Take Heathers, which at every turn vastly improves the 1989 cult movie on which it’s based. Alas, that’s a very low bar; the movie, starring Winona Ryder and Christian Slater, is such a sloppy, poorly directed mess it can’t eve"
       },
       "matches": [
@@ -2663,6 +2250,7 @@
           "matchLength": 666,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Good musicals may not be getting any smarter but bad ones certainly are. Take Heathers, which at every turn vastly improves the 1989 cult movie on which it’s based. Alas, that’s a very low bar; the movie, starring Winona Ryder and Christian Slater, is such a sloppy, poorly directed mess it can’t eve"
         }
       ],
@@ -2753,6 +2341,7 @@
         "matchLength": 43,
         "sameBase": true,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "“Alternative take on standard festive fare”"
       },
       "matches": [
@@ -2767,6 +2356,7 @@
           "matchLength": 43,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "“Alternative take on standard festive fare”"
         }
       ],
@@ -2805,6 +2395,7 @@
         "matchLength": 2987,
         "sameBase": false,
         "confidence": "high",
+        "isGarbageNotReview": true,
         "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
       },
       "matches": [
@@ -2819,6 +2410,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2832,6 +2424,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2845,6 +2438,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2858,6 +2452,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2871,6 +2466,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2884,6 +2480,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2897,6 +2494,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2910,6 +2508,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2923,6 +2522,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2936,6 +2536,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2949,6 +2550,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2962,6 +2564,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2975,6 +2578,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -2988,6 +2592,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3001,6 +2606,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3014,6 +2620,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3027,6 +2634,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3040,6 +2648,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3053,6 +2662,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3066,6 +2676,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3079,6 +2690,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3092,6 +2704,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3105,6 +2718,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3118,6 +2732,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3131,6 +2746,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3144,6 +2760,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3157,6 +2774,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3170,6 +2788,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3183,6 +2802,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3196,6 +2816,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3209,6 +2830,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3222,6 +2844,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3235,6 +2858,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3248,6 +2872,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3261,6 +2886,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3274,6 +2900,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3287,6 +2914,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3300,6 +2928,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         },
         {
@@ -3313,6 +2942,7 @@
           "matchLength": 2987,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "Excellent4.6 out of 5TrustpilotThe domain nametheaternewsonline.comis for sale!PremiumVerified DomainGet a price in less than 24 hoursFirst Name*Last Name*Email*Phone*United StatesAfghanistanÅland IslandsAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaAr"
         }
       ],
@@ -3364,6 +2994,7 @@
         "matchLength": 344,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Even as the U.S. Supreme Court debates what is marriage, the sentimental and hugely enjoyable new Broadway musical \"Kinky Boots\" is debating the nature of manhood, with a fabulous twist. But as timely as this show suddenly seems to be, there's nothing whatsoever that's time-bound about Cyndi Lauper"
       },
       "matches": [
@@ -3378,6 +3009,7 @@
           "matchLength": 344,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Even as the U.S. Supreme Court debates what is marriage, the sentimental and hugely enjoyable new Broadway musical \"Kinky Boots\" is debating the nature of manhood, with a fabulous twist. But as timely as this show suddenly seems to be, there's nothing whatsoever that's time-bound about Cyndi Lauper"
         }
       ],
@@ -3403,6 +3035,7 @@
         "matchLength": 444,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"So entertaining and so unthreatening that it’s unlikely to offend – or worse yet, bore – anyone...'Kinky Boots' briefly goes off the rails, as conflicts pile up as quickly and randomly as a pile-up on the Interstate and are resolved with ridiculous swiftness...Lauper has crafted a score full of inf"
       },
       "matches": [
@@ -3417,6 +3050,7 @@
           "matchLength": 444,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"So entertaining and so unthreatening that it’s unlikely to offend – or worse yet, bore – anyone...'Kinky Boots' briefly goes off the rails, as conflicts pile up as quickly and randomly as a pile-up on the Interstate and are resolved with ridiculous swiftness...Lauper has crafted a score full of inf"
         },
         {
@@ -3430,6 +3064,7 @@
           "matchLength": 444,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"So entertaining and so unthreatening that it’s unlikely to offend – or worse yet, bore – anyone...'Kinky Boots' briefly goes off the rails, as conflicts pile up as quickly and randomly as a pile-up on the Interstate and are resolved with ridiculous swiftness...Lauper has crafted a score full of inf"
         }
       ],
@@ -3455,6 +3090,7 @@
         "matchLength": 146,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Sometimes audiences just wanna have fun. And you’d be a heel not to have fun at Kinky Boots, a new musical based on the 2005 British indie film.\""
       },
       "matches": [
@@ -3469,6 +3105,7 @@
           "matchLength": 146,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Sometimes audiences just wanna have fun. And you’d be a heel not to have fun at Kinky Boots, a new musical based on the 2005 British indie film.\""
         }
       ],
@@ -3494,6 +3131,7 @@
         "matchLength": 303,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"The love stories, as it happens, are among the few disappointing bits in Boots,  which has been given tuneful songs by Cyndi Lauper, in her Broadway-composer debut, and infectious direction and choreography by Jerry Mitchell...The audience, which gets a rousing Mamma Mia!-like finale, goes home hap"
       },
       "matches": [
@@ -3508,6 +3146,7 @@
           "matchLength": 303,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"The love stories, as it happens, are among the few disappointing bits in Boots,  which has been given tuneful songs by Cyndi Lauper, in her Broadway-composer debut, and infectious direction and choreography by Jerry Mitchell...The audience, which gets a rousing Mamma Mia!-like finale, goes home hap"
         }
       ],
@@ -3533,6 +3172,7 @@
         "matchLength": 364,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"'Kinky Boots' was clearly meant to be a 'Full Monty'-style crowd-pleaser. Ironically, the rather minor British film it's based on also had little to recommend it...For a musical about drag queens clashing with burly blue collar males and a factory crushed by outsourcing, this is a tension-free show"
       },
       "matches": [
@@ -3547,6 +3187,7 @@
           "matchLength": 364,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"'Kinky Boots' was clearly meant to be a 'Full Monty'-style crowd-pleaser. Ironically, the rather minor British film it's based on also had little to recommend it...For a musical about drag queens clashing with burly blue collar males and a factory crushed by outsourcing, this is a tension-free show"
         }
       ],
@@ -3572,6 +3213,7 @@
         "matchLength": 375,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"What \"Kinky Boots\" sorely lacks is a dramatic commitment to what it's doing. Which is why a show that seems to make few false steps is so relentlessly tedious...We don't expect reality in a Broadway musical, but it should have a dedication to the world it creates, and all its emotional, comic and m"
       },
       "matches": [
@@ -3586,6 +3228,7 @@
           "matchLength": 375,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"What \"Kinky Boots\" sorely lacks is a dramatic commitment to what it's doing. Which is why a show that seems to make few false steps is so relentlessly tedious...We don't expect reality in a Broadway musical, but it should have a dedication to the world it creates, and all its emotional, comic and m"
         }
       ],
@@ -3611,6 +3254,7 @@
         "matchLength": 296,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"There are few things theatergoers love more than musicals about persistence and self-acceptance. And since Cyndi Lauper teamed up with book writer Harvey Fierstein, the man behind “La Cage aux Folles,” rahrah empowerment gushes out of the likable but heavy-handed show as if from a broken pipe.\""
       },
       "matches": [
@@ -3625,6 +3269,7 @@
           "matchLength": 296,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"There are few things theatergoers love more than musicals about persistence and self-acceptance. And since Cyndi Lauper teamed up with book writer Harvey Fierstein, the man behind “La Cage aux Folles,” rahrah empowerment gushes out of the likable but heavy-handed show as if from a broken pipe.\""
         }
       ],
@@ -3650,6 +3295,7 @@
         "matchLength": 427,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Portraying Lola, Mr. Brady gleams with unassailable contentment and confidence, at least as long as he’s wearing a dress…It is a relief to report that Mr. Brady’s singing and dancing chops are of Broadway caliber...He radiates stellar heat and good humor...The perpetual cheer-churning machine that "
       },
       "matches": [
@@ -3664,6 +3310,7 @@
           "matchLength": 427,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Portraying Lola, Mr. Brady gleams with unassailable contentment and confidence, at least as long as he’s wearing a dress…It is a relief to report that Mr. Brady’s singing and dancing chops are of Broadway caliber...He radiates stellar heat and good humor...The perpetual cheer-churning machine that "
         }
       ],
@@ -3689,6 +3336,7 @@
         "matchLength": 391,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"'Kinky Boots' is the kind of musical that seeing it once is not enough.  The music, the storyline, the humor, the stage excitement makes this a very, very special theatrical experience.  The touring production of the show is as good as the Broadway show.  This is one staging that deserves a standin"
       },
       "matches": [
@@ -3703,6 +3351,7 @@
           "matchLength": 391,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"'Kinky Boots' is the kind of musical that seeing it once is not enough.  The music, the storyline, the humor, the stage excitement makes this a very, very special theatrical experience.  The touring production of the show is as good as the Broadway show.  This is one staging that deserves a standin"
         }
       ],
@@ -3728,6 +3377,7 @@
         "matchLength": 373,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Its own lack of daring is perhaps 'Kinky Boots’s most glaring failing. The absence of danger or a believable threat keeps the stakes, and thus any enjoyment, artificially low throughout. Fierstein and Lauper have crafted a gay tolerance plea that’s safe enough to take your grandmother to, but they’"
       },
       "matches": [
@@ -3742,6 +3392,7 @@
           "matchLength": 373,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Its own lack of daring is perhaps 'Kinky Boots’s most glaring failing. The absence of danger or a believable threat keeps the stakes, and thus any enjoyment, artificially low throughout. Fierstein and Lauper have crafted a gay tolerance plea that’s safe enough to take your grandmother to, but they’"
         }
       ],
@@ -3767,6 +3418,7 @@
         "matchLength": 369,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"By 8:05 p.m., you can pretty much devise not only the storyline but how all the secondary characters and B plots are going to fit into it. These shoes come already broken in. Kinky Boots is a well-fitted, well-staged toe-tapper in the contemporary big-Broadway idiom. It’s never boring; it’s never s"
       },
       "matches": [
@@ -3781,6 +3433,7 @@
           "matchLength": 369,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"By 8:05 p.m., you can pretty much devise not only the storyline but how all the secondary characters and B plots are going to fit into it. These shoes come already broken in. Kinky Boots is a well-fitted, well-staged toe-tapper in the contemporary big-Broadway idiom. It’s never boring; it’s never s"
         }
       ],
@@ -3819,6 +3472,7 @@
         "matchLength": 493,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"This new 'Liaisons,' directed by the Donmar’s artistic director Josie Rourke, is intelligent, colorful, and lively (mostly)...McTeer's Marquise is successful, on its own; but she seems to be observing the proceedings, rather than determinedly pulling the strings. Part of this might be due to a mism"
       },
       "matches": [
@@ -3833,6 +3487,7 @@
           "matchLength": 493,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"This new 'Liaisons,' directed by the Donmar’s artistic director Josie Rourke, is intelligent, colorful, and lively (mostly)...McTeer's Marquise is successful, on its own; but she seems to be observing the proceedings, rather than determinedly pulling the strings. Part of this might be due to a mism"
         }
       ],
@@ -3858,6 +3513,7 @@
         "matchLength": 449,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"This new staging signals the Broadway debut of English director Josie Rourke and marks the first 'Liaisons' in my experience to come anywhere near the power of the original. Its newfound elan is thanks to a sizzling cast led by the sublime Janet McTeer and a bolder take on the piece from Rourke...R"
       },
       "matches": [
@@ -3872,6 +3528,7 @@
           "matchLength": 449,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"This new staging signals the Broadway debut of English director Josie Rourke and marks the first 'Liaisons' in my experience to come anywhere near the power of the original. Its newfound elan is thanks to a sizzling cast led by the sublime Janet McTeer and a bolder take on the piece from Rourke...R"
         }
       ],
@@ -4063,6 +3720,7 @@
         "matchLength": 179,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "While ‘Masquerade’ offers a memorable adventure in the milieu of ‘Phantom of the Opera,’ it’s harder to be moved by Christine’s story when you’re the one doing most of the moving."
       },
       "matches": [
@@ -4077,6 +3735,7 @@
           "matchLength": 179,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "While ‘Masquerade’ offers a memorable adventure in the milieu of ‘Phantom of the Opera,’ it’s harder to be moved by Christine’s story when you’re the one doing most of the moving."
         }
       ],
@@ -4102,6 +3761,7 @@
         "matchLength": 215,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "The approach that director Diana Paulus et al take in this intricate, intimate, interactive new production could well appeal to audiences who have never seen Phantom, or even those who saw it and didn't care for it."
       },
       "matches": [
@@ -4116,6 +3776,7 @@
           "matchLength": 215,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "The approach that director Diana Paulus et al take in this intricate, intimate, interactive new production could well appeal to audiences who have never seen Phantom, or even those who saw it and didn't care for it."
         }
       ],
@@ -4141,6 +3802,7 @@
         "matchLength": 243,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"When the fully orchestrated overture later exploded alongside a flash of light and a shower of confetti like broken glass, 'Masquerade' instantly had me under its spell. I’d call it the point of no return, except I definitely hope to return.\""
       },
       "matches": [
@@ -4155,6 +3817,7 @@
           "matchLength": 243,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"When the fully orchestrated overture later exploded alongside a flash of light and a shower of confetti like broken glass, 'Masquerade' instantly had me under its spell. I’d call it the point of no return, except I definitely hope to return.\""
         }
       ],
@@ -4258,6 +3921,7 @@
         "matchLength": 762,
         "sameBase": false,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Moulin Rouge! was Baz Luhrmann at his most brashly baroque, a shameless pop-cultural magpie molding equal parts kitsch, cool and cliché into a rhapsodic dream. The giddy 2001 screen collision of soaring romance and dazzling artifice helped resuscitate the movie musical. Stage director Alex Timbers a"
       },
       "matches": [
@@ -4272,6 +3936,7 @@
           "matchLength": 762,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Moulin Rouge! was Baz Luhrmann at his most brashly baroque, a shameless pop-cultural magpie molding equal parts kitsch, cool and cliché into a rhapsodic dream. The giddy 2001 screen collision of soaring romance and dazzling artifice helped resuscitate the movie musical. Stage director Alex Timbers a"
         },
         {
@@ -4285,6 +3950,7 @@
           "matchLength": 762,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Moulin Rouge! was Baz Luhrmann at his most brashly baroque, a shameless pop-cultural magpie molding equal parts kitsch, cool and cliché into a rhapsodic dream. The giddy 2001 screen collision of soaring romance and dazzling artifice helped resuscitate the movie musical. Stage director Alex Timbers a"
         }
       ],
@@ -4310,6 +3976,7 @@
         "matchLength": 766,
         "sameBase": false,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "If they didn’t do “Lady Marmalade,” I was going to storm the stage. Happily, director Alex Timbers and writer John Logan were savvy enough to open their Broadway adaptation of “Moulin Rouge!” with that crowd-pleasing tune, written by Kenny Noland and Robert Crewe and immortalized by the great Patti "
       },
       "matches": [
@@ -4324,6 +3991,7 @@
           "matchLength": 766,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If they didn’t do “Lady Marmalade,” I was going to storm the stage. Happily, director Alex Timbers and writer John Logan were savvy enough to open their Broadway adaptation of “Moulin Rouge!” with that crowd-pleasing tune, written by Kenny Noland and Robert Crewe and immortalized by the great Patti "
         },
         {
@@ -4337,6 +4005,7 @@
           "matchLength": 766,
           "sameBase": false,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "If they didn’t do “Lady Marmalade,” I was going to storm the stage. Happily, director Alex Timbers and writer John Logan were savvy enough to open their Broadway adaptation of “Moulin Rouge!” with that crowd-pleasing tune, written by Kenny Noland and Robert Crewe and immortalized by the great Patti "
         }
       ],
@@ -4453,6 +4122,7 @@
         "matchLength": 64,
         "sameBase": true,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "\"Pen Pals is a cozy night out, a sharing of distaff confidences\""
       },
       "matches": [
@@ -4467,6 +4137,7 @@
           "matchLength": 64,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "\"Pen Pals is a cozy night out, a sharing of distaff confidences\""
         }
       ],
@@ -4492,6 +4163,7 @@
         "matchLength": 68,
         "sameBase": true,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "Griffo’s play seems to hit a nerve with the mostly older audience..."
       },
       "matches": [
@@ -4506,6 +4178,7 @@
           "matchLength": 68,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "Griffo’s play seems to hit a nerve with the mostly older audience..."
         }
       ],
@@ -4531,6 +4204,7 @@
         "matchLength": 87,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"...has little depth, but it’s a charming concept that avoids wearing out its welcome.\""
       },
       "matches": [
@@ -4545,6 +4219,7 @@
           "matchLength": 87,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"...has little depth, but it’s a charming concept that avoids wearing out its welcome.\""
         }
       ],
@@ -4570,6 +4245,7 @@
         "matchLength": 318,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"But if you stick with the story  -  and considering the turgid performances, that's asking a lot  -  it does make sense and even has a certain thematic elegance. As the illusions reveal themselves, a confusion and  sense of terror slowly build. Or at least that's what should happen if the productio"
       },
       "matches": [
@@ -4584,6 +4260,7 @@
           "matchLength": 318,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"But if you stick with the story  -  and considering the turgid performances, that's asking a lot  -  it does make sense and even has a certain thematic elegance. As the illusions reveal themselves, a confusion and  sense of terror slowly build. Or at least that's what should happen if the productio"
         }
       ],
@@ -4687,6 +4364,7 @@
         "matchLength": 168,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Looking back on his Hamlet, Othello, Lear, Macbeth, I'd say Gold has a mixed track record with the major tragedies (watch out, Titus!). This one I'll remember fondly.\""
       },
       "matches": [
@@ -4701,6 +4379,7 @@
           "matchLength": 168,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Looking back on his Hamlet, Othello, Lear, Macbeth, I'd say Gold has a mixed track record with the major tragedies (watch out, Titus!). This one I'll remember fondly.\""
         },
         {
@@ -4714,6 +4393,7 @@
           "matchLength": 168,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Looking back on his Hamlet, Othello, Lear, Macbeth, I'd say Gold has a mixed track record with the major tragedies (watch out, Titus!). This one I'll remember fondly.\""
         },
         {
@@ -4727,6 +4407,7 @@
           "matchLength": 168,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Looking back on his Hamlet, Othello, Lear, Macbeth, I'd say Gold has a mixed track record with the major tragedies (watch out, Titus!). This one I'll remember fondly.\""
         }
       ],
@@ -4791,6 +4472,7 @@
         "matchLength": 46,
         "sameBase": false,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "Six continues to reign supreme in the West End"
       },
       "matches": [
@@ -4805,6 +4487,7 @@
           "matchLength": 46,
           "sameBase": false,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "Six continues to reign supreme in the West End"
         }
       ],
@@ -5105,36 +4788,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "the-monsters-off-broadway-2026",
-        "matchedFile": "vulture--jackson-mchenry.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": true,
-        "matchedWrongProduction": true,
-        "matchedCriticName": "Jackson McHenry",
-        "matchLength": 67,
-        "sameBase": true,
-        "confidence": "medium",
-        "excerpt": "“Something’s lost along the way to becoming a monster in the ring.”"
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "the-monsters-off-broadway-2026",
-          "matchedFile": "vulture--jackson-mchenry.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": true,
-          "matchedWrongProduction": true,
-          "matchedCriticName": "Jackson McHenry",
-          "matchLength": 67,
-          "sameBase": true,
-          "confidence": "medium",
-          "excerpt": "“Something’s lost along the way to becoming a monster in the ring.”"
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "the-other-place-2026/about-entertainment--charles-isherwood.json",
@@ -5179,6 +4836,7 @@
         "matchLength": 571,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Laurie Metcalf is no fool. The actress opted out of co-starring in the Broadway premiere of a new play by a leading American dramatist, choosing instead to stick with the uptown transfer of The Other Place, by the comparatively unheralded Sharr White. Even if the alternative, David Mamet’s The Anarc"
       },
       "matches": [
@@ -5193,6 +4851,7 @@
           "matchLength": 571,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Laurie Metcalf is no fool. The actress opted out of co-starring in the Broadway premiere of a new play by a leading American dramatist, choosing instead to stick with the uptown transfer of The Other Place, by the comparatively unheralded Sharr White. Even if the alternative, David Mamet’s The Anarc"
         }
       ],
@@ -5231,6 +4890,7 @@
         "matchLength": 40,
         "sameBase": true,
         "confidence": "medium",
+        "isGarbageNotReview": false,
         "excerpt": "\"...a resounding cry down the centuries\""
       },
       "matches": [
@@ -5245,6 +4905,7 @@
           "matchLength": 40,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "\"...a resounding cry down the centuries\""
         },
         {
@@ -5258,6 +4919,7 @@
           "matchLength": 40,
           "sameBase": true,
           "confidence": "medium",
+          "isGarbageNotReview": false,
           "excerpt": "\"...a resounding cry down the centuries\""
         }
       ],
@@ -5361,6 +5023,7 @@
         "matchLength": 562,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"It’s official.  We can laugh again.  Time to go see The Play That Goes Wrong.  Director Matt DiCarlo has let the cast loose on this wonderful farce with but one instruction:  go for it.  No laugh remains un-milked; no scene un-stolen; no wink un-winked.  Not even the furniture is safe.  At the zoo "
       },
       "matches": [
@@ -5375,6 +5038,7 @@
           "matchLength": 562,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"It’s official.  We can laugh again.  Time to go see The Play That Goes Wrong.  Director Matt DiCarlo has let the cast loose on this wonderful farce with but one instruction:  go for it.  No laugh remains un-milked; no scene un-stolen; no wink un-winked.  Not even the furniture is safe.  At the zoo "
         }
       ],
@@ -5738,6 +5402,7 @@
         "matchLength": 91,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“This story is clearly very significant to Josh, even as it becomes a slog for the viewer.”"
       },
       "matches": [
@@ -5752,6 +5417,7 @@
           "matchLength": 91,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“This story is clearly very significant to Josh, even as it becomes a slog for the viewer.”"
         }
       ],
@@ -5829,6 +5495,7 @@
         "matchLength": 101,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“Shakespeare’s words have resonance in today’s world in a manner that is both insistent and lacking.”"
       },
       "matches": [
@@ -5843,6 +5510,7 @@
           "matchLength": 101,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“Shakespeare’s words have resonance in today’s world in a manner that is both insistent and lacking.”"
         }
       ],
@@ -5856,36 +5524,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "the-unknown-off-broadway-2026",
-        "matchedFile": "lighting-and-sound-america--david-barbour.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": true,
-        "matchedWrongProduction": true,
-        "matchedCriticName": "David Barbour",
-        "matchLength": 176,
-        "sameBase": true,
-        "confidence": "high",
-        "excerpt": "\"The Unknown may be [Cale's] most accessible piece yet, a low-key thriller so cunningly constructed that you won't see where it is headed until just before the final blackout.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "the-unknown-off-broadway-2026",
-          "matchedFile": "lighting-and-sound-america--david-barbour.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": true,
-          "matchedWrongProduction": true,
-          "matchedCriticName": "David Barbour",
-          "matchLength": 176,
-          "sameBase": true,
-          "confidence": "high",
-          "excerpt": "\"The Unknown may be [Cale's] most accessible piece yet, a low-key thriller so cunningly constructed that you won't see where it is headed until just before the final blackout.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "the-unknown-2026/nytg--joe-dziemianowicz.json",
@@ -5907,6 +5549,7 @@
         "matchLength": 94,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"as a theatrical mind game that leaves a mark or raises a shiver, The Unknown left me wanting\""
       },
       "matches": [
@@ -5921,6 +5564,7 @@
           "matchLength": 94,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"as a theatrical mind game that leaves a mark or raises a shiver, The Unknown left me wanting\""
         }
       ],
@@ -5946,6 +5590,7 @@
         "matchLength": 1202,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "About 10 million soldiers never came home from World War I. Many who did left something behind on those battlefields — skin, bone, spirit. In Michael Friedman and Daniel Goldstein’s affecting new musical, “Unknown Soldier,” which just closed a brief run at the Williamstown Theater Festival, an amnes"
       },
       "matches": [
@@ -5960,6 +5605,7 @@
           "matchLength": 1202,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "About 10 million soldiers never came home from World War I. Many who did left something behind on those battlefields — skin, bone, spirit. In Michael Friedman and Daniel Goldstein’s affecting new musical, “Unknown Soldier,” which just closed a brief run at the Williamstown Theater Festival, an amnes"
         }
       ],
@@ -5998,6 +5644,7 @@
         "matchLength": 145,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“A dramatic perpetual motion machine radiating horror and suspense, it’s guaranteed to have you on the edge of your seat, hanging on every word.”"
       },
       "matches": [
@@ -6012,6 +5659,7 @@
           "matchLength": 145,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“A dramatic perpetual motion machine radiating horror and suspense, it’s guaranteed to have you on the edge of your seat, hanging on every word.”"
         }
       ],
@@ -6038,36 +5686,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "the-waterfall-off-broadway-2026",
-        "matchedFile": "lighting-and-sound-america--david-barbour.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": true,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "David Barbour",
-        "matchLength": 160,
-        "sameBase": true,
-        "confidence": "high",
-        "excerpt": "\"You'd think that a play with such a clear conflict would generate plenty of crackle, but the contrast between the characters is too stark for real engagement.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "the-waterfall-off-broadway-2026",
-          "matchedFile": "lighting-and-sound-america--david-barbour.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": true,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "David Barbour",
-          "matchLength": 160,
-          "sameBase": true,
-          "confidence": "high",
-          "excerpt": "\"You'd think that a play with such a clear conflict would generate plenty of crackle, but the contrast between the characters is too stark for real engagement.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "the-waterfall-2026/off-off-online--adrienne-onofri.json",
@@ -6164,6 +5786,7 @@
         "matchLength": 490,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"A fascinating tale of a great love crushed by a violent act, it’s part love story, part murder mystery, and a tender dissection of the human spirit...Artful humor, and flashes of humble yet cosmic grace relieve the sadness…With marvelous skill under the sure hand of director Nathaniel Shaw, McEllig"
       },
       "matches": [
@@ -6178,6 +5801,7 @@
           "matchLength": 490,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"A fascinating tale of a great love crushed by a violent act, it’s part love story, part murder mystery, and a tender dissection of the human spirit...Artful humor, and flashes of humble yet cosmic grace relieve the sadness…With marvelous skill under the sure hand of director Nathaniel Shaw, McEllig"
         }
       ],
@@ -6203,6 +5827,7 @@
         "matchLength": 469,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"'Touch' is an affecting play wonderfully staged with superb acting…'Touch' tells a very personal story of abiding love, the deep pain of loss, and the potential for healing after a tragedy. It is a completely enthralling show. The four-person cast is exceptional in their roles as they capture raw e"
       },
       "matches": [
@@ -6217,6 +5842,7 @@
           "matchLength": 469,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"'Touch' is an affecting play wonderfully staged with superb acting…'Touch' tells a very personal story of abiding love, the deep pain of loss, and the potential for healing after a tragedy. It is a completely enthralling show. The four-person cast is exceptional in their roles as they capture raw e"
         }
       ],
@@ -6242,6 +5868,7 @@
         "matchLength": 491,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"It requires a delicate dance to make a character we never see feel real enough for us to care about, while not hitting us over the head with necessary information. Fortunately, the playwright’s text and McElligott’s delivery are more than up to the task...Where the show runs into problems is with t"
       },
       "matches": [
@@ -6256,6 +5883,7 @@
           "matchLength": 491,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"It requires a delicate dance to make a character we never see feel real enough for us to care about, while not hitting us over the head with necessary information. Fortunately, the playwright’s text and McElligott’s delivery are more than up to the task...Where the show runs into problems is with t"
         }
       ],
@@ -6281,6 +5909,7 @@
         "matchLength": 472,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Nostalgia and grief spill from each expertly crafted line...The dialogue is fresh, raw, ragged, and at times troubling...The entire company has produced a beautiful tragedy about a violence whose effects are felt universally. The actors all deliver a thrilling (sometimes frightening) range of emoti"
       },
       "matches": [
@@ -6295,6 +5924,7 @@
           "matchLength": 472,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Nostalgia and grief spill from each expertly crafted line...The dialogue is fresh, raw, ragged, and at times troubling...The entire company has produced a beautiful tragedy about a violence whose effects are felt universally. The actors all deliver a thrilling (sometimes frightening) range of emoti"
         }
       ],
@@ -6320,6 +5950,7 @@
         "matchLength": 491,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"A tender and humane play about love, loss, mourning, and a search for meaning, opening tonight in a well-acted and, yes, touching production…'Touch' is at its best when it is fully focused on Kyle as a struggling and realistically complicated, not always pleasant individual…Under Nathaniel Shaw's d"
       },
       "matches": [
@@ -6334,6 +5965,7 @@
           "matchLength": 491,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"A tender and humane play about love, loss, mourning, and a search for meaning, opening tonight in a well-acted and, yes, touching production…'Touch' is at its best when it is fully focused on Kyle as a struggling and realistically complicated, not always pleasant individual…Under Nathaniel Shaw's d"
         },
         {
@@ -6347,6 +5979,7 @@
           "matchLength": 491,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": true,
           "excerpt": "\"A tender and humane play about love, loss, mourning, and a search for meaning, opening tonight in a well-acted and, yes, touching production…'Touch' is at its best when it is fully focused on Kyle as a struggling and realistically complicated, not always pleasant individual…Under Nathaniel Shaw's d"
         }
       ],
@@ -6372,6 +6005,7 @@
         "matchLength": 470,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"This is a play for grown-ups and not those who have attention-deficit disorder...The splendid cast includes Pete McElligott (Kyle), who carries the play for the first half, and whose subtle, nuanced, always interesting performance is prize-worthy...The excellent director is Nathaniel  Shaw...The pl"
       },
       "matches": [
@@ -6386,6 +6020,7 @@
           "matchLength": 470,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"This is a play for grown-ups and not those who have attention-deficit disorder...The splendid cast includes Pete McElligott (Kyle), who carries the play for the first half, and whose subtle, nuanced, always interesting performance is prize-worthy...The excellent director is Nathaniel  Shaw...The pl"
         }
       ],
@@ -6411,6 +6046,7 @@
         "matchLength": 474,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“Toni Press-Coffman’s 2000 drama now having its first New York revival is a \ntalky play whose first act is told almost entirely in monologues addressed \nto the audience. However, its depth of emotion and its detailed powerful \ncharacter study make this an unusual evening of theater. Under Nathaniel "
       },
       "matches": [
@@ -6425,6 +6061,7 @@
           "matchLength": 474,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“Toni Press-Coffman’s 2000 drama now having its first New York revival is a \ntalky play whose first act is told almost entirely in monologues addressed \nto the audience. However, its depth of emotion and its detailed powerful \ncharacter study make this an unusual evening of theater. Under Nathaniel "
         }
       ],
@@ -6450,6 +6087,7 @@
         "matchLength": 478,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "\"Playwright Toni Press-Coffman infuses several difficult passages with humor or takes us aside to illuminate earlier, lighter events…Relationships are layered and believable...Though it could be a bit shorter, the play will hold you fast. You may wince, grin, and tear up. Director Nathaniel Shaw has"
       },
       "matches": [
@@ -6464,6 +6102,7 @@
           "matchLength": 478,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "\"Playwright Toni Press-Coffman infuses several difficult passages with humor or takes us aside to illuminate earlier, lighter events…Relationships are layered and believable...Though it could be a bit shorter, the play will hold you fast. You may wince, grin, and tear up. Director Nathaniel Shaw has"
         }
       ],
@@ -6515,6 +6154,7 @@
         "matchLength": 163,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "The Elevator Repair Service’s production feels more like gloss than adaptation, an exercise that captures elements of Joyce without ever standing on its own terms."
       },
       "matches": [
@@ -6529,6 +6169,7 @@
           "matchLength": 163,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "The Elevator Repair Service’s production feels more like gloss than adaptation, an exercise that captures elements of Joyce without ever standing on its own terms."
         }
       ],
@@ -6542,36 +6183,10 @@
       "scored": true,
       "alreadyFlagged": false,
       "excerptOnly": true,
-      "matchCount": 1,
-      "bestMatch": {
-        "targetField": "showScoreExcerpt",
-        "matchedShowId": "ulysses-off-broadway-2026",
-        "matchedFile": "lighting-sound-america--david-barbour.json",
-        "matchedField": "showScoreExcerpt",
-        "matchedWrongShow": false,
-        "matchedWrongProduction": false,
-        "matchedCriticName": "David Barbour",
-        "matchLength": 119,
-        "sameBase": true,
-        "confidence": "high",
-        "excerpt": "\"What follows is less James Joyce's novel than the spectacle of this theatre troupe wrestling with it. Guess who wins.\""
-      },
-      "matches": [
-        {
-          "targetField": "showScoreExcerpt",
-          "matchedShowId": "ulysses-off-broadway-2026",
-          "matchedFile": "lighting-sound-america--david-barbour.json",
-          "matchedField": "showScoreExcerpt",
-          "matchedWrongShow": false,
-          "matchedWrongProduction": false,
-          "matchedCriticName": "David Barbour",
-          "matchLength": 119,
-          "sameBase": true,
-          "confidence": "high",
-          "excerpt": "\"What follows is less James Joyce's novel than the spectacle of this theatre troupe wrestling with it. Guess who wins.\""
-        }
-      ],
-      "action": "needs-manual-review"
+      "matchCount": 0,
+      "bestMatch": null,
+      "matches": [],
+      "action": "no-match"
     },
     {
       "rel": "ulysses-2026/off-off-online--charles-wright.json",
@@ -6606,6 +6221,7 @@
         "matchLength": 223,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "“Director John Collins and co-director/dramaturg Scott Shepherd compensate for what their production sacrifices in emotional depth with something more democratic: an interpretive openness that invites rather than dictates.”"
       },
       "matches": [
@@ -6620,6 +6236,7 @@
           "matchLength": 223,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "“Director John Collins and co-director/dramaturg Scott Shepherd compensate for what their production sacrifices in emotional depth with something more democratic: an interpretive openness that invites rather than dictates.”"
         }
       ],
@@ -6645,6 +6262,7 @@
         "matchLength": 252,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Michael Morpurgo’s 1982 novel “War Horse” is the kind of story that you never would imagine could be staged live. Unlike Steven Spielberg’s forthcoming film version, which is set to debut later this year, using real horses on Broadway is not an option."
       },
       "matches": [
@@ -6659,6 +6277,7 @@
           "matchLength": 252,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Michael Morpurgo’s 1982 novel “War Horse” is the kind of story that you never would imagine could be staged live. Unlike Steven Spielberg’s forthcoming film version, which is set to debut later this year, using real horses on Broadway is not an option."
         }
       ],
@@ -6710,6 +6329,7 @@
         "matchLength": 1632,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Among the pithier observations from that eloquent philosopher Blanche DuBois was the idea that death is the opposite of desire. Those opposites attract, after a fashion, in You Got Older, a new play by Clare Barron about a young woman returning home to care for her father, who’s learned he has a rar"
       },
       "matches": [
@@ -6724,6 +6344,7 @@
           "matchLength": 1632,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Among the pithier observations from that eloquent philosopher Blanche DuBois was the idea that death is the opposite of desire. Those opposites attract, after a fashion, in You Got Older, a new play by Clare Barron about a young woman returning home to care for her father, who’s learned he has a rar"
         }
       ],
@@ -6749,6 +6370,7 @@
         "matchLength": 1570,
         "sameBase": true,
         "confidence": "high",
+        "isGarbageNotReview": false,
         "excerpt": "Like the aging process, there is no modesty in Clare Barron's new play You Got Older, a Page 73 world premiere now running at HERE. A recent recipient of the Paula Vogel Playwriting Award, the bold young playwright blends fantasy with a level of brutal candor that few would even dare to bring into c"
       },
       "matches": [
@@ -6763,6 +6385,7 @@
           "matchLength": 1570,
           "sameBase": true,
           "confidence": "high",
+          "isGarbageNotReview": false,
           "excerpt": "Like the aging process, there is no modesty in Clare Barron's new play You Got Older, a Page 73 world premiere now running at HERE. A recent recipient of the Paula Vogel Playwriting Award, the bold young playwright blends fantasy with a level of brutal candor that few would even dare to bring into c"
         }
       ],
