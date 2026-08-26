@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * BRO-80 — classification core for triage-unopened-shows.mjs.
  *
@@ -13,6 +15,10 @@
  *
  * This module is pure — no I/O — so it can be unit tested directly. The CLI
  * (triage-unopened-shows.mjs) does the file reads and calls classifyPriorRunCandidate.
+ *
+ * // venue-write-guard-ok: suggestedPriorRun.venue is read-only report output for
+ * a human to confirm via Playbill/IBDB before declaring show.priorRuns — this module
+ * never writes shows.json (see triage-unopened-shows.mjs header).
  */
 
 const SINGLE_RUN_MAX_SPAN_DAYS = 120;
@@ -34,8 +40,7 @@ function parseMs(publishDate) {
  * supporting signal, never the sole basis for a verdict.
  */
 function canonicalizeVenue(venue) {
-  return String(venue || '')
-    .toLowerCase()
+  return foldDiacritics(String(venue || '').toLowerCase())
     .replace(/\btheatre\b|\btheater\b|\bthe\b/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();

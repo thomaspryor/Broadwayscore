@@ -120,3 +120,13 @@ test('fullTextMentionsVenue: rejects a canonicalized venue too short to trust (a
   // would otherwise false-match unrelated prose like "in the park".
   assert.equal(fullTextMentionsVenue('A show set in the park.', 'Park Theatre'), false);
 });
+
+test('canonicalizeVenue: folds diacritics so accented and unaccented spellings match', () => {
+  assert.equal(canonicalizeVenue('Café de Paris Theatre'), 'cafe de paris');
+  assert.equal(canonicalizeVenue('Cafe de Paris Theatre'), 'cafe de paris');
+});
+
+test('fullTextMentionsVenue: matches across the accent boundary in both directions', () => {
+  assert.equal(fullTextMentionsVenue('A hit at the Café de Paris this week.', 'Cafe de Paris'), true);
+  assert.equal(fullTextMentionsVenue('A hit at the Cafe de Paris this week.', 'Café de Paris'), true);
+});

@@ -65,6 +65,25 @@ describe('detectEssayIntroFalsePositive — confirmed real-corpus classes match'
   });
 });
 
+describe('detectEssayIntroFalsePositive — diacritics fold across title/venue match', () => {
+  it('accented show title matches an unaccented mention in fullText', () => {
+    const body = 'ABOUT THE MUSICAL Directed by Tony Award winner Bartlett Sher, Amelie premiered at the Café Royal Theatre in London. '
+      + 'The cast delivers performances that remain faithful to the essence of each character. '.repeat(30)
+      + 'A production filled with music, emotion, and talent that no theater lover should miss.';
+    const fixture = {
+      showId: 'amelie-west-end-2026',
+      showTitle: 'Amélie',
+      venue: 'Café Royal Theatre, London',
+      isNonReview: true,
+      nonReviewType: 'preview',
+      fullText: DOLLY_BIO_INTRO + body,
+    };
+    const match = detectEssayIntroFalsePositive(fixture, fixture.showId);
+    assert.ok(match, 'expected a match across the accent boundary');
+    assert.equal(match.venueChecked, true);
+  });
+});
+
 describe('detectEssayIntroFalsePositive — negative cases do not match', () => {
   it('isNonReview:false is not a candidate at all', () => {
     assert.equal(detectEssayIntroFalsePositive({ ...DOLLY_FIXTURE, isNonReview: false }, 'x'), null);

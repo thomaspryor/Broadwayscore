@@ -23,6 +23,9 @@
  * review-text file — declaring priorRuns needs a human (or a follow-up script)
  * to confirm real dates/venue via Playbill/IBDB per CLAUDE.md §3.
  *
+ * // venue-write-guard-ok: the `venue:` field on each report row is copied
+ * straight into report.json for human review, never back into shows.json.
+ *
  * Usage:
  *   node scripts/triage-unopened-shows.mjs                 # full sweep, writes report
  *   node scripts/triage-unopened-shows.mjs --show=ID        # single show, prints only
