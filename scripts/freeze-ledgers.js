@@ -56,6 +56,9 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { classifyNoise } = require('./lib/linear-import-rules.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/freeze-ledgers.js <freeze|list-self-referential|close-safe-duplicates> [--dry-run]';
 
 const REPO = path.join(__dirname, '..');
 const NOTION_BRAIN = path.join(REPO, 'scripts', 'notion-brain.js');
@@ -244,7 +247,10 @@ function runCloseDuplicates({ dryRun }) {
 }
 
 function main() {
-  const [command, ...rest] = process.argv.slice(2);
+  const argv = process.argv.slice(2);
+  if (hasHelpFlag(argv.slice(0, 1))) { console.log(USAGE); return; }
+
+  const [command, ...rest] = argv;
   const dryRun = rest.includes('--dry-run');
 
   switch (command) {
@@ -258,9 +264,7 @@ function main() {
       runCloseDuplicates({ dryRun });
       break;
     default:
-      console.error(
-        'Usage: node scripts/freeze-ledgers.js <freeze|list-self-referential|close-safe-duplicates> [--dry-run]'
-      );
+      console.error(USAGE);
       process.exit(1);
   }
 }
