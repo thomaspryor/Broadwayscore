@@ -661,6 +661,84 @@ test('main(): a non-terminal issue is unaffected by the guard (dry-run reaches t
   assert.match(logs.join('\n'), /would launch/);
 });
 
+// ── marketing-project dispatch guard, end-to-end (BRO-2488) ────────────────
+// BRO-128 (Linear project "Marketing/distribution") dispatched cleanly
+// through this exact main() with no refusal, because issue.project was never
+// fetched. These drive main() the same way the terminal-state tests above
+// do, proving the wired-in guard actually blocks a live --id dispatch.
+function makeMarketingIssue(projectName = 'Marketing/distribution') {
+  return {
+    id: 'issue-uuid-2488', identifier: 'BRO-2488', title: 'Some marketing issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-2488/some-marketing-issue',
+    priority: 2,
+    state: { id: 'state-1', name: 'Backlog', type: 'backlog' },
+    project: { id: 'proj-1', name: projectName },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): refuses to dispatch a Marketing/distribution-project issue (BRO-2488)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2488'], {
+      getIssue: async () => makeMarketingIssue(),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a Marketing-project issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /Marketing\/distribution/);
+});
+
+test('main(): --force overrides the marketing-project refusal and proceeds to launch', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-2488', '--force'], {
+      getIssue: async () => makeMarketingIssue(),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+test('main(): a non-Marketing-project issue is unaffected by the guard (dry-run reaches the seed print)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-2488', '--dry-run'], {
+      getIssue: async () => makeMarketingIssue('Infrastructure'),
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
+});
+
 // bsc-next.js's own completedLaunchGuard (the Notion-mirror counterpart)
 // self-exempts --dry-run/--print-prompt, and this file's own header/USAGE
 // both document "--list/--dry-run still work" even under the kill switch —
