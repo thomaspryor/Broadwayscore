@@ -220,26 +220,42 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   let modified = false;
   const notes = [];
 
-  // Restore top-level manual fields
+  // Restore top-level manual fields. Two independent sources, checked in
+  // order, because either side can be the one that had the field and lost it:
+  //   1. remote — the original case (e.g. a `-X theirs` rebase dropped a
+  //      local value origin already had).
+  //   2. ours (pre-rebase HEAD) — #1916: push-review-texts' action.yml
+  //      tie-break resolves a JSON conflict by fullText length and keeps
+  //      "theirs" (remote) whenever OUR_LEN <= THEIR_LEN, discarding our
+  //      whole commit for that file — including a MANUAL_FIELDS value (e.g.
+  //      wrongShowOverride/wrongShowManualClear from clear-stale-wrong-show-
+  //      flags.js) that the tie-break's fullText-only comparison never looks
+  //      at. Since local now equals remote for that file, the remote-vs-local
+  //      check above is a no-op even though our own field just got dropped;
+  //      ours (ORIG_HEAD) is the only place it still exists.
   for (const field of MANUAL_FIELDS) {
-    if (
-      remote[field] !== undefined &&
-      remote[field] !== null &&
-      (local[field] === undefined || local[field] === null)
-    ) {
-      // Intentional-clear exception: if the LOCAL record deliberately
-      // cleared this field and carries the canonical breadcrumb (e.g. a
-      // human wrongProductionManualClear / humanReviewedWrongProduction:false,
-      // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
-      // the empty value is not data-loss — honor it instead of resurrecting
-      // the remote flag. Without this guard the remote's stale `true` comes
-      // right back on every rebase. Mirrors the action.yml restore skip and
-      // review-guards.js is-cleared semantics. (2026-06-05)
-      if (isIntentionalClear(field, local, remote)) continue;
-      local[field] = remote[field];
-      modified = true;
-      notes.push(`Restored ${field}`);
+    if (local[field] !== undefined && local[field] !== null) continue;
+
+    let source = null;
+    if (remote[field] !== undefined && remote[field] !== null) {
+      source = remote;
+    } else if (ours && ours[field] !== undefined && ours[field] !== null) {
+      source = ours;
     }
+    if (!source) continue;
+
+    // Intentional-clear exception: if the LOCAL record deliberately
+    // cleared this field and carries the canonical breadcrumb (e.g. a
+    // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+    // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+    // the empty value is not data-loss — honor it instead of resurrecting
+    // the remote flag. Without this guard the remote's stale `true` comes
+    // right back on every rebase. Mirrors the action.yml restore skip and
+    // review-guards.js is-cleared semantics. (2026-06-05)
+    if (isIntentionalClear(field, local, source)) continue;
+    local[field] = source[field];
+    modified = true;
+    notes.push(`Restored ${field}${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
   }
 
   // Restore richer content from OURS (pre-rebase HEAD). Titanique postmortem:
