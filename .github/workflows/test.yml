@@ -574,6 +574,10 @@ on:
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/audit-regex-patterns.js'
+      # BRO-181: colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
+      # solo edit to either triggers CI.
+      - 'scripts/audit-regex-patterns.test.mjs'
       - 'scripts/audit-broadway-category-predicate.js'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
