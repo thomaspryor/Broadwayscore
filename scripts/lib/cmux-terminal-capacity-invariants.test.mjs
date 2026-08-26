@@ -77,10 +77,86 @@ function walk() {
 const REACHABLE = walk();
 const describe = (n) => `${stateKey(n.state)} via ${n.path.map(s => `${s.outcome}@${s.before}`).join(' -> ') || '(empty)'}`;
 
+// States the WALK cannot produce but production can (adversarial review catch).
+// The two halves of the record expire independently, so readCeilingRecord can
+// hand learnCeiling a fresh candidate with no confirmed ceiling left — a shape
+// no sequence of observations alone reaches, and one learnCeiling has a
+// dedicated arm for. Transition checks run over these too, or that arm is
+// unreviewed by every invariant here.
+const EXPIRY_SEEDS = COUNTS
+  .filter(v => v >= MIN_PLAUSIBLE_CEILING)
+  .map(v => ({ ceiling: null, confirmations: 0, candidate: v, candidateConfirmations: 1 }));
+const PRE_STATES = [...REACHABLE.map(n => n.state), ...EXPIRY_SEEDS];
+
 test('the reachable state space is actually being explored', () => {
   // A guard on the guard: if a refactor made learnCeiling inert, every check
   // below would pass vacuously against a single state.
   assert.equal(REACHABLE.length > 50, true, `only ${REACHABLE.length} states reachable — the walk is not exercising the module`);
+  // Branch-level, not just total: several invariants below only bite on states
+  // that HAVE a candidate, or on inputs under the plausibility floor. If a
+  // refactor stopped producing those, those checks would pass vacuously while
+  // still iterating plenty of states (adversarial review catch).
+  const withCandidate = REACHABLE.filter(n => n.state.candidate !== null).length;
+  assert.equal(withCandidate > 5, true, `only ${withCandidate} candidate-bearing states — the candidate invariants would be near-vacuous`);
+  const armed = REACHABLE.filter(n => decideCapacity({
+    liveRuntimes: Number.MAX_SAFE_INTEGER, ceiling: n.state.ceiling, confirmations: n.state.confirmations,
+  }).ceiling !== null).length;
+  assert.equal(armed > 5, true, `only ${armed} armed states — the arming invariants would be near-vacuous`);
+  assert.equal(COUNTS.some(v => v < MIN_PLAUSIBLE_CEILING), true, 'COUNTS must straddle the plausibility floor or that invariant is vacuous');
+});
+
+test('INVARIANT: a candidate can only be introduced by a FAILURE at exactly that count', () => {
+  // The provenance hole the arming invariant alone leaves open (adversarial
+  // review catch, and the sharpest finding on this file). That check accepts a
+  // promotion whose value "was already tracked as the candidate" — but it takes
+  // the candidate's own legitimacy on trust. Mutate learnCeiling so a
+  // runtime-CREATED plants a candidate and the fabrication launders itself:
+  //   missing@29, missing@29, created@28, missing@34
+  // arms a confirmed ceiling of 28 with no failure at 28 ever observed, and
+  // every other invariant here passes it, because the identical candidate state
+  // is ALSO reachable innocently via missing@28 and the walk stored that path.
+  //
+  // Closing it inductively is what makes the arming check sound: a candidate may
+  // only ever come from a failure AT its own value, so a "tracked" candidate is
+  // always evidence-backed by construction.
+  const violations = [];
+  let introductions = 0;
+  for (const s of PRE_STATES) {
+    for (const before of COUNTS) {
+      for (const outcome of OUTCOMES) {
+        const r = learnCeiling({ ...s, liveRuntimesBefore: before, outcome });
+        if (r.candidate === null || r.candidate === s.candidate) continue;
+        introductions++;
+        const step = `${outcome}@${before} from ${stateKey(s)} set candidate ${r.candidate}`;
+        if (outcome !== 'runtime-missing') violations.push(`${step} — a SUCCESS must never introduce a candidate`);
+        else if (r.candidate !== before) violations.push(`${step} — candidate is not the observed count`);
+      }
+    }
+  }
+  assert.equal(introductions > 5, true, `only ${introductions} candidate introductions seen — check is near-vacuous`);
+  assert.deepEqual(violations, [], `fabricated candidate(s):\n  ${violations.join('\n  ')}`);
+});
+
+test('INVARIANT: a ceiling can only take a NEW value from a failure at it, or from the candidate', () => {
+  // The same provenance rule one level up, so the two compose: every number the
+  // module holds traces back to a failure actually observed at that count.
+  const violations = [];
+  let moves = 0;
+  for (const s of PRE_STATES) {
+    for (const before of COUNTS) {
+      for (const outcome of OUTCOMES) {
+        const r = learnCeiling({ ...s, liveRuntimesBefore: before, outcome });
+        if (r.ceiling === null || r.ceiling === s.ceiling) continue;
+        moves++;
+        const step = `${outcome}@${before} from ${stateKey(s)} moved ceiling to ${r.ceiling}`;
+        if (r.ceiling === s.candidate) continue; // promotion — legitimacy covered by the candidate invariant
+        if (outcome !== 'runtime-missing') violations.push(`${step} — a SUCCESS must never install a ceiling value`);
+        else if (r.ceiling !== before) violations.push(`${step} — value is neither the observed count nor the tracked candidate`);
+      }
+    }
+  }
+  assert.equal(moves > 5, true, `only ${moves} ceiling moves seen — check is near-vacuous`);
+  assert.deepEqual(violations, [], `fabricated ceiling value(s):\n  ${violations.join('\n  ')}`);
 });
 
 test('INVARIANT: arming a NEW ceiling requires that exact value to have been tracked and corroborated', () => {
@@ -104,8 +180,7 @@ test('INVARIANT: arming a NEW ceiling requires that exact value to have been tra
   // observations, and this observation must itself be a failure at or above it.
   const violations = [];
   let armings = 0;
-  for (const node of REACHABLE) {
-    const s = node.state;
+  for (const s of PRE_STATES) {
     const armedBefore = decideCapacity({
       liveRuntimes: Number.MAX_SAFE_INTEGER, ceiling: s.ceiling, confirmations: s.confirmations,
     }).ceiling;
@@ -143,20 +218,20 @@ test('INVARIANT: no single observation can lower the ceiling the gate enforces',
   // a day off one unrelated failure.
   const violations = [];
   let transitions = 0;
-  for (const node of REACHABLE) {
-    if (node.state.candidate !== null) continue; // mid-corroboration: promoting next IS the 2-observation rule
+  for (const s of PRE_STATES) {
+    if (s.candidate !== null) continue; // mid-corroboration: promoting next IS the 2-observation rule
     const armedBefore = decideCapacity({
-      liveRuntimes: Number.MAX_SAFE_INTEGER, ceiling: node.state.ceiling, confirmations: node.state.confirmations,
+      liveRuntimes: Number.MAX_SAFE_INTEGER, ceiling: s.ceiling, confirmations: s.confirmations,
     }).ceiling;
     if (armedBefore === null) continue;
     for (const before of COUNTS) {
       transitions++;
-      const r = learnCeiling({ ...node.state, liveRuntimesBefore: before, outcome: 'runtime-missing' });
+      const r = learnCeiling({ ...s, liveRuntimesBefore: before, outcome: 'runtime-missing' });
       const armedAfter = decideCapacity({
         liveRuntimes: Number.MAX_SAFE_INTEGER, ceiling: r.ceiling, confirmations: r.confirmations,
       }).ceiling;
       if (armedAfter !== null && armedAfter < armedBefore) {
-        violations.push(`${armedBefore} -> ${armedAfter} on runtime-missing@${before} from ${describe(node)}`);
+        violations.push(`${armedBefore} -> ${armedAfter} on runtime-missing@${before} from ${stateKey(s)}`);
       }
     }
   }
