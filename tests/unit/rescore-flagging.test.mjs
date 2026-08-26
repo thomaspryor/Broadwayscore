@@ -111,3 +111,51 @@ test('markRescoreNeeded is a no-op on non-object input', () => {
   assert.equal(markRescoreNeeded(null, 'x'), null);
   assert.equal(markRescoreNeeded(undefined, 'x'), undefined);
 });
+
+// Card #1905 (cousin of #1902): the CV self-heal wrongProduction/wrongShow
+// clear sites in rebuild-all-reviews.js share the same shape as the
+// dateless-revival/priorRuns sites above — clearing an exclusion flag on a
+// file that may already carry a stale, excerpt-based score.
+
+test('CV self-heal clears wrongProduction on an already-scored excerpt file → stale', () => {
+  const data = {
+    assignedScore: 68,
+    llmMetadata: { textSource: { type: 'excerpt' } },
+    contentTier: 'complete',
+    fullText: 'x'.repeat(2000),
+    wrongProduction: false, // already cleared by the self-heal before this check runs
+  };
+  assert.equal(isStaleScoreInput(data), true, 'a self-healed, isScoreable excerpt-scored file must read as stale');
+  markRescoreNeeded(data, 'wrongProduction CV self-heal cleared a stale promotion');
+  assert.equal(data.needsRescore, true);
+  assert.equal(data.rescoreReason, 'wrongProduction CV self-heal cleared a stale promotion');
+});
+
+test('CV self-heal clears wrongShow on an already-scored excerpt file → stale', () => {
+  const data = {
+    assignedScore: 74,
+    llmMetadata: { textSource: { type: 'excerpt' } },
+    contentTier: 'complete',
+    fullText: 'x'.repeat(2000),
+    wrongShow: false, // already cleared by the self-heal before this check runs
+  };
+  assert.equal(isStaleScoreInput(data), true, 'a self-healed, isScoreable excerpt-scored file must read as stale');
+  markRescoreNeeded(data, 'wrongShow CV self-heal cleared a stale promotion');
+  assert.equal(data.needsRescore, true);
+  assert.equal(data.rescoreReason, 'wrongShow CV self-heal cleared a stale promotion');
+});
+
+test('CV self-heal clear on a still non-includable file (other flag still set) → NO flag', () => {
+  // The self-heal cleared wrongProduction, but wrongShow is still true —
+  // isScoreable() rejects it, so flagging needsRescore would create a
+  // permanent stuck flag (the same 278-file guard as above).
+  const data = {
+    assignedScore: 60,
+    llmMetadata: { textSource: { type: 'excerpt' } },
+    contentTier: 'complete',
+    fullText: 'x'.repeat(2000),
+    wrongProduction: false,
+    wrongShow: true,
+  };
+  assert.equal(isStaleScoreInput(data), false);
+});
