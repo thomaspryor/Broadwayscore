@@ -38,12 +38,13 @@ Use shared components from `src/components/show-cards/` — never create custom 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
 **Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`): element crops + overflow probe + two-model LLM diff vs references. Stop hook blocks visual-correctness claims without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md`.
 
-### 6. Notion Brain (MANDATORY — every session)
-**Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
-- **Session start:** Create a Notion card → "In progress," output URL, check for stale cards. **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → "Done"/"Paused."
-- **New discoveries:** Create Notion card (Not started). Don't context-switch.
-- **P0/P1 cards auto-dispatch at creation (owner rule 2026-07-24):** a technical, self-contained P0/P1 card gets a workspace the moment it's carded — `notion-tasks-sync.js pull` → `bsc-next.js --list` (P0/P1s below top-10 print in a tail) → `bsc-next.js --id N` → report `DISPATCHED:`. "I carded it" alone is a process failure; only owner-judgment cards stay parked. Soft cap: >~3 auto-dispatches/session → confirm with owner.
-- **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
+### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
+**Linear is the source of truth — do NOT create Notion cards.** Notion is being retired; its mirror froze 2026-08-20 at task id 1285, so anything filed there since has no Linear twin and `linearMirrorGuard` can't stop two sessions taking the same work. Flow: `memory/notion-brain-workflow.md`.
+- **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done|Paused`.
+- **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
+- **New discoveries:** file a Linear issue (Todo), don't context-switch.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~3/session.
+- **If Linear is down:** warn, continue untracked, output the Outcome text. Do NOT fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
 See global CLAUDE.md. Also: test 3 representative cases before merging.
