@@ -53,5 +53,36 @@
       "enabled": true,
       "revenueReporting": true
     }
+  },
+  "_renderingComment": "Ticket-link RENDERING config (visibility + sort order) for src/lib/ticket-utils.ts — separate from 'platforms' above because it covers platforms with no affiliate program too (e.g. Telecharge, London Theatre Direct). 'priority': lower sorts first; platforms omitted here fall back to 99. 'hidden': true strips the platform from all ticket-link rendering (URL stays in shows.json so it can be re-enabled quickly). 'hiddenUnlessNoTodayTix': true means the platform renders only when the show has no TodayTix link (see getVisibleTicketLinks). 'hiddenReason' records the decision so it isn't re-litigated.",
+  "rendering": {
+    "TodayTix": {
+      "priority": 1
+    },
+    "Telecharge": {
+      "priority": 2,
+      "hidden": true,
+      "hiddenReason": "Hidden 2026-07-19: no affiliate program exists (never in AFFILIATE_CONFIG), so every click is unpaid opportunity cost vs TodayTix. 25 shows carry the link; 24 also show TodayTix, and Shubert shows keep an Official Site button whose marketing pages route to Telecharge anyway, so no official buy path is lost. Only the-balusters-2026 (closed) had Telecharge as its sole visible link."
+    },
+    "Ticketmaster": {
+      "priority": 2,
+      "hidden": true,
+      "hiddenUnlessNoTodayTix": true,
+      "hiddenReason": "Hidden 2026-06-29: 63 Impact-tracked clicks over 90 days, 0 conversions ever, despite confirmed-working tracking (Impact records clicks matching PostHog parity). Only rendered on 11 evergreen shows that all kept TodayTix + Official Site, so no official buy path was lost. Un-hidden-when-no-TodayTix 2026-08-03 (task #956): ~52 shows with no TodayTix link have TM as their only real affiliate-tracked buy path, a different population than the original hide targeted."
+    },
+    "StubHub": {
+      "priority": 3,
+      "hidden": true,
+      "hiddenReason": "Hidden 2026-04-11: 56 clicks over 180 days, 0 conversions. Stale performer IDs (now replaced with /search?q= fallback URLs) plus extra-click search-page friction made every click opportunity cost vs TodayTix's proven $0.614 EPC. Re-enable when Partnerize/StubHub approves API access for direct deep-link lookups. Resale-only is worse than no button, so StubHub stays excluded even from the getVisibleTicketLinks() buttonless-show fallback. See memory/feedback_stubhub_hidden.md."
+    },
+    "Vivid Seats": {
+      "priority": 3
+    },
+    "SeatGeek": {
+      "priority": 3
+    },
+    "London Theatre Direct": {
+      "priority": 3
+    }
   }
 }
