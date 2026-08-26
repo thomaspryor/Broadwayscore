@@ -580,6 +580,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exitCode = 1;
       return;
     }
+    if (res.stage === 'disk-pressure') {
+      // BRO-2319: same "nothing was actually spawned" shape as lease-held —
+      // dispatchConfirmed must stay false so the claim releases immediately
+      // and a retry once disk pressure clears isn't blocked for the full
+      // staleMs window.
+      console.error(`[linear-next] ${identifier} dispatch refused: disk pressure. Retry once GC/disk clears.`);
+      process.exitCode = 1;
+      return;
+    }
     // Task #1898: only NOW (not before runJob() was even called) is this a
     // real dispatch — 'lease-held' above means nothing was actually spawned,
     // and the dispatch claim must release immediately in that case rather

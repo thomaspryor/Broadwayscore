@@ -83,3 +83,13 @@ test('computeLiveLeaseCwds: empty/undefined lease list yields an empty set', () 
   assert.equal(computeLiveLeaseCwds(undefined, () => true).size, 0);
   assert.equal(computeLiveLeaseCwds([], () => true).size, 0);
 });
+
+test('computeLiveLeaseCwds: a lease with pid:null (still provisioning) is treated as live regardless of isAliveFn', () => {
+  // acquireLease writes pid:null at the moment the lease is created — before
+  // the worktree even exists — and the real pid only lands once the
+  // subprocess spawns. That window is the highest-risk moment for GC to
+  // race a fresh, trivially-"merged" worktree; pid:null must never be
+  // treated the same as a confirmed-dead pid.
+  const cwds = computeLiveLeaseCwds([{ cwd: '/wt/provisioning', pid: null }], () => false);
+  assert.deepEqual([...cwds], ['/wt/provisioning']);
+});

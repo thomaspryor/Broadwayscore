@@ -57,19 +57,29 @@ function shouldRefuseDispatch({ freeGB, floorGB }) {
 
 /**
  * Given parsed job-lease records (data/audit/job-leases/*\/lease.json) and a
- * pid-liveness predicate, return the Set of `cwd` values whose lease is held
- * by a still-alive process. A lease with a dead/missing pid is stale and its
- * cwd is NOT included — same "steal on dead pid" semantics as
- * bsc-runner.acquireLease.
+ * pid-liveness predicate, return the Set of `cwd` values that GC must treat
+ * as live and never remove.
  *
- * @param {Array<{cwd?: string, pid?: number}>} leases
+ * A lease with pid === null/undefined is NOT the same as a dead pid — it
+ * means the job is still being provisioned (acquireLease writes pid:null;
+ * the real pid only lands once the subprocess actually spawns, via
+ * onSpawn). A freshly-provisioned worktree in that window is exactly the
+ * highest-risk moment for GC to race (clean, forked straight off
+ * origin/main, so it reads as already-merged) — fail SAFE and count it as
+ * live. Only a lease with a KNOWN, non-null pid is checked against
+ * isAliveFn for staleness; a dead-pid lease (crashed holder) is correctly
+ * NOT counted as live, matching bsc-runner.acquireLease's own "steal on
+ * dead pid" reclaim semantics for that case.
+ *
+ * @param {Array<{cwd?: string, pid?: number|null}>} leases
  * @param {(pid: number|null|undefined) => boolean} isAliveFn
  * @returns {Set<string>}
  */
 function computeLiveLeaseCwds(leases, isAliveFn) {
   const cwds = new Set();
   for (const lease of leases || []) {
-    if (lease && lease.cwd && isAliveFn(lease.pid)) cwds.add(lease.cwd);
+    if (!lease || !lease.cwd) continue;
+    if (lease.pid == null || isAliveFn(lease.pid)) cwds.add(lease.cwd);
   }
   return cwds;
 }

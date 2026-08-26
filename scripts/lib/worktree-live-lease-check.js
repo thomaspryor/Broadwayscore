@@ -18,16 +18,51 @@ const path = require('path');
 const { pidLooksLikeClaude, LEASE_ROOT } = require('./bsc-runner.js');
 const { computeLiveLeaseCwds } = require('./worktree-gc-reclaim.js');
 
+// Returns { leases, unreadable }. `unreadable: true` means "could not prove
+// this worktree is NOT protected by a live lease" and callers must fail
+// SAFE (treat as live) — matching gc-worktree-liveness.js's own any-lsof-
+// error-means-live contract, which the original cut of this function
+// diverged from (adversarial review finding: an unreadable/corrupt lease
+// silently read as "no live lease", the opposite direction of every other
+// liveness guard in this file's neighborhood).
+//
+// Two error shapes are deliberately NOT `unreadable`, because they are the
+// EXPECTED shape of a lease that just finished: releaseLease() does a
+// recursive rmSync of the whole per-task lease dir on completion, so a dir
+// listed by readdirSync() above and then gone (or its lease.json gone) by
+// the time we read it is a benign race, not a signal of anything live.
+//  - the per-task lease DIRECTORY disappearing between list and read
+//  - lease.json specifically missing (ENOENT) inside a dir that still exists
+// Anything else — a read error for another reason, or JSON.parse failing on
+// content that WAS read (a torn read of an in-progress non-atomic write,
+// i.e. exactly the moment a lease is being actively written) — is the
+// poison case: unreadable = true.
 function readLeases(leaseRoot) {
-  let dirs = [];
-  try { dirs = fs.readdirSync(leaseRoot); } catch { return []; }
-  const leases = [];
-  for (const d of dirs) {
-    try {
-      leases.push(JSON.parse(fs.readFileSync(path.join(leaseRoot, d, 'lease.json'), 'utf8')));
-    } catch { /* missing/corrupt lease — ignore, fails safe (not live) */ }
+  let dirs;
+  try {
+    dirs = fs.readdirSync(leaseRoot);
+  } catch (e) {
+    // Genuinely no leases have ever been written — fine, not unreadable.
+    return { leases: [], unreadable: e.code !== 'ENOENT' };
   }
-  return leases;
+  const leases = [];
+  let unreadable = false;
+  for (const d of dirs) {
+    const leaseFile = path.join(leaseRoot, d, 'lease.json');
+    let raw;
+    try {
+      raw = fs.readFileSync(leaseFile, 'utf8');
+    } catch (e) {
+      if (e.code !== 'ENOENT') unreadable = true;
+      continue;
+    }
+    try {
+      leases.push(JSON.parse(raw));
+    } catch {
+      unreadable = true; // torn read of an in-flight write — fail safe
+    }
+  }
+  return { leases, unreadable };
 }
 
 function realpathOrSelf(p) {
@@ -35,8 +70,10 @@ function realpathOrSelf(p) {
 }
 
 function hasLiveLease(worktreePath, { leaseRoot = LEASE_ROOT, isAliveFn = pidLooksLikeClaude } = {}) {
+  const { leases, unreadable } = readLeases(leaseRoot);
+  if (unreadable) return true; // can't disprove liveness — fail safe
   const target = realpathOrSelf(worktreePath);
-  const liveCwds = computeLiveLeaseCwds(readLeases(leaseRoot), isAliveFn);
+  const liveCwds = computeLiveLeaseCwds(leases, isAliveFn);
   for (const cwd of liveCwds) {
     if (realpathOrSelf(cwd) === target) return true;
   }

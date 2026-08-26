@@ -115,9 +115,20 @@ function releaseLease(taskId, jobId = null) {
 function gitSafeJobId(jobId) {
   return String(jobId).replace(/[^A-Za-z0-9._-]/g, '-');
 }
+// Pure path formula, factored out of provisionJobWorktree so runJob can
+// record the lease's `cwd` BEFORE the worktree exists (BRO-2319 adversarial
+// review finding): a lease with no `cwd` yet is invisible to
+// worktree-live-lease-check.js, and a freshly-provisioned worktree is
+// trivially "merged" (zero commits, forked straight off origin/main) — the
+// single highest-risk moment for GC to race this job. Recording the
+// (not-yet-created) expected path at lease-acquire time, before
+// `git worktree add` even runs, closes that window instead of narrowing it.
+function jobWorktreePath(jobId) {
+  return path.join(REPO, '.claude', 'worktrees', `job-${gitSafeJobId(jobId)}`);
+}
 function provisionJobWorktree(jobId) {
   const safe = gitSafeJobId(jobId);
-  const wtPath = path.join(REPO, '.claude', 'worktrees', `job-${safe}`);
+  const wtPath = jobWorktreePath(jobId);
   execFileSync('git', ['-C', REPO, 'worktree', 'add', wtPath, '-b', `job/${safe}`, 'origin/main'], { stdio: 'pipe' });
   return wtPath;
 }
@@ -166,6 +177,27 @@ function freeDiskGB(repoPath) {
 // through to the refusal check below with freeGB re-measured regardless.
 function selfHealDiskPressure() {
   try { execFileSync('bash', [GC_SCRIPT], { stdio: 'ignore', timeout: 5 * 60 * 1000 }); } catch { /* best-effort */ }
+}
+
+// Cooldown so a fleet-wide low-disk window pages the owner once per
+// condition, not once per refused dispatch attempt (adversarial review
+// finding: many concurrent dispatchers can each independently measure
+// still-low disk and each fire a critical email — sendAlert itself has no
+// dedupe). File-mtime based, not in-memory: each dispatch is typically a
+// separate process, so an in-process timestamp wouldn't be shared across
+// dispatchers anyway.
+const DISK_PRESSURE_ALERT_MARKER = path.join(REPO, 'data', 'audit', 'disk-pressure-alert-last-sent.json');
+const DISK_PRESSURE_ALERT_COOLDOWN_MS = 15 * 60 * 1000;
+function diskPressureAlertDue() {
+  try {
+    const stat = fs.statSync(DISK_PRESSURE_ALERT_MARKER);
+    if (Date.now() - stat.mtimeMs < DISK_PRESSURE_ALERT_COOLDOWN_MS) return false;
+  } catch { /* no marker yet — due */ }
+  try {
+    fs.mkdirSync(path.dirname(DISK_PRESSURE_ALERT_MARKER), { recursive: true });
+    fs.writeFileSync(DISK_PRESSURE_ALERT_MARKER, JSON.stringify({ ts: new Date().toISOString() }));
+  } catch (e) { console.error(`[bsc-runner] disk-pressure alert marker write failed (non-fatal, will re-alert next attempt): ${e.message}`); }
+  return true;
 }
 
 /**
@@ -217,8 +249,18 @@ async function runJob(opts) {
 
   // Disk-pressure preflight (BRO-2319), before any lease/worktree I/O that
   // could fail silently under ENOSPC. freeGB === null (df unavailable/erred)
-  // never refuses — same fail-open contract as ensure_disk_floor.
-  const dispatchFloorGB = Number(process.env.BSC_DISPATCH_DISK_FLOOR_GB || DEFAULT_DISPATCH_DISK_FLOOR_GB);
+  // never refuses — same fail-open contract as ensure_disk_floor. Validate
+  // the env override: a typo (e.g. a non-numeric or negative value) must not
+  // silently disable the guard, and Infinity/NaN must not refuse every
+  // dispatch (adversarial review finding) — fall back to the default and say
+  // so once, rather than trusting an unparseable value either direction.
+  let dispatchFloorGB = Number(process.env.BSC_DISPATCH_DISK_FLOOR_GB);
+  if (!Number.isFinite(dispatchFloorGB) || dispatchFloorGB < 0) {
+    if (process.env.BSC_DISPATCH_DISK_FLOOR_GB !== undefined) {
+      console.error(`[bsc-runner] BSC_DISPATCH_DISK_FLOOR_GB="${process.env.BSC_DISPATCH_DISK_FLOOR_GB}" is not a valid non-negative number — using default ${DEFAULT_DISPATCH_DISK_FLOOR_GB}GB`);
+    }
+    dispatchFloorGB = DEFAULT_DISPATCH_DISK_FLOOR_GB;
+  }
   let freeGB = freeDiskGB(REPO);
   if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
     selfHealDiskPressure();
@@ -237,15 +279,23 @@ async function runJob(opts) {
     // Fire-and-forget: dispatch must not block on email delivery. severity
     // 'critical' is the one email-eligible tier (discord-notify.js's
     // shouldEmailAlert) — this is exactly the "degrade loudly" this guard
-    // exists for, not a log-only warning.
-    try {
-      require('./discord-notify.js').sendAlert({
-        title: 'Dispatch refused — disk pressure',
-        description: detail,
-        severity: 'critical',
-        email: true,
-      }).catch((e) => console.error(`[bsc-runner] disk-pressure alert send failed: ${e.message}`));
-    } catch (e) { console.error(`[bsc-runner] disk-pressure alert require failed: ${e.message}`); }
+    // exists for, not a log-only warning. Cooldown-gated (adversarial review
+    // finding): a fleet-wide low-disk moment means MANY dispatch attempts
+    // refuse near-simultaneously, and sendAlert has no dedupe of its own —
+    // without this, one disk-pressure window pages the owner once per
+    // refused task instead of once per condition.
+    if (diskPressureAlertDue()) {
+      try {
+        require('./discord-notify.js').sendAlert({
+          title: 'Dispatch refused — disk pressure',
+          description: detail,
+          severity: 'critical',
+          email: true,
+        }).catch((e) => console.error(`[bsc-runner] disk-pressure alert send failed: ${e.message}`));
+      } catch (e) { console.error(`[bsc-runner] disk-pressure alert require failed: ${e.message}`); }
+    } else {
+      console.error(`[bsc-runner] disk-pressure alert suppressed (within cooldown): ${detail}`);
+    }
     return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
 
@@ -255,9 +305,13 @@ async function runJob(opts) {
   // console.errors. The launch's ledger row would then have no jobId-bearing
   // event at all, forever (same invisibility JOB_EVENTS.ABANDONED exists to
   // close for the lease-held case below).
+  // Recorded from the FIRST lease write, before any worktree exists (see
+  // jobWorktreePath's own comment) — computeLiveLeaseCwds treats a lease
+  // with pid:null as live specifically so this window is protected too.
+  const initialCwd = (isolate && !resumeSessionId) ? jobWorktreePath(jobId) : (opts.cwd || REPO);
   let lease;
   try {
-    lease = acquireLease(taskId, { jobId, subject, pid: null }, isAliveFn ? { isAliveFn } : undefined);
+    lease = acquireLease(taskId, { jobId, subject, pid: null, cwd: initialCwd }, isAliveFn ? { isAliveFn } : undefined);
   } catch (e) {
     ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `acquireLease threw: ${String(e.message).slice(0, 200)}` });
     throw e;
