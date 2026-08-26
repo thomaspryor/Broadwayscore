@@ -232,6 +232,17 @@ test('enrichWithComments: a per-issue getIssue failure falls back to that issue 
   assert.equal(errors[0].issue.identifier, 'BRO-109');
 });
 
+test('enrichWithComments: refreshes labels too, so a label removed between the snapshot and the re-fetch is visible to the caller', async () => {
+  // BRO-420 ship-check finding: listOpenIssues() (the initial snapshot) and
+  // this re-fetch are two separate round trips — an owner who removes the
+  // awaiting-owner label in that gap must be reflected in the output labels,
+  // not silently carried over from the stale snapshot.
+  const issue = issueWithLabels({ identifier: 'BRO-112' }, [AWAITING_OWNER_LABEL]);
+  const getIssue = async () => ({ labels: { nodes: [{ name: 'pilot' }] }, comments: { nodes: [] } });
+  const [result] = await enrichWithComments([issue], { getIssue });
+  assert.equal(isAwaitingOwner(result), false, 'the label was removed in the fresh fetch, so this must no longer read as awaiting-owner');
+});
+
 test('enrichWithComments: a whole-batch timeout falls back to the original un-enriched issues', async () => {
   const issues = [issueWithLabels({ identifier: 'BRO-111', updatedAt: '2026-08-20T00:00:00Z' }, [AWAITING_OWNER_LABEL])];
   const getIssue = () => new Promise(() => {}); // never resolves

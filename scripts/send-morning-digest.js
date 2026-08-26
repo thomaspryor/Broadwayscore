@@ -714,7 +714,12 @@ async function main() {
           `[digest] WARN awaiting-owner comment enrichment failed${issue ? ` for ${issue.identifier}` : ''}, falling back to updatedAt: ${String(err.message).slice(0, 120)}`
         ),
     });
-    const section = buildAwaitingOwnerSection(enriched);
+    // Re-check the label on the freshly re-fetched labels (enrichWithComments
+    // refreshes them alongside comments): listOpenIssues() and the re-fetch
+    // above are two separate round trips, so an owner who removed the
+    // awaiting-owner label in that gap must not still show up as waiting
+    // (ship-check finding, BRO-420).
+    const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner));
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);

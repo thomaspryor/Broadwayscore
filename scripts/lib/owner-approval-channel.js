@@ -52,6 +52,14 @@ function isAwaitingOwner(issue) {
 // issue.updatedAt when the issue was fetched without comments (or the label
 // was added by hand, no matching comment), and to null when neither is
 // available — callers must treat null as "age unknown", not "0".
+//
+// buildIssueQuery() (linear-dispatch.js) fetches `comments(first: 20)` —
+// confirmed live against the Linear API that this connection orders newest
+// first, so the cap keeps the most RECENT 20 comments, not the oldest 20.
+// The only way this misses the true latest approval comment is 20+ replies
+// on the issue since it was last labeled with none of them being a re-run of
+// linear-attach-approval.js — at that point falling back to updatedAt (a
+// slight understale rather than a crash) is an acceptable degradation.
 function waitingSince(issue) {
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   const matchTimestamps = comments
@@ -153,6 +161,13 @@ function buildAwaitingOwnerSection(issues, { now = new Date() } = {}) {
 // re-fetch errors, or a fetch that doesn't finish within timeoutMs, is
 // returned unenriched (so buildAwaitingOwnerRows falls back to its
 // updatedAt-based dating instead of losing the row entirely).
+//
+// Also refreshes `labels` from the same re-fetch (not just `comments`):
+// listOpenIssues()'s snapshot and this re-fetch are two separate round
+// trips, so an owner who removes the awaiting-owner label in the gap between
+// them must not have that removal ignored — the caller re-applies
+// isAwaitingOwner() to THIS function's output (labels included) rather than
+// trusting the earlier snapshot's label set (ship-check finding, BRO-420).
 async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onError } = {}) {
   if (!issues || !issues.length) return issues || [];
   // Timer handle captured so it can be cleared once the race settles either
@@ -174,7 +189,7 @@ async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onErro
         issues.map(async (issue) => {
           try {
             const full = await getIssue(issue.identifier);
-            return full ? { ...issue, comments: full.comments } : issue;
+            return full ? { ...issue, comments: full.comments, labels: full.labels || issue.labels } : issue;
           } catch (err) {
             if (onError) onError(issue, err);
             return issue;
