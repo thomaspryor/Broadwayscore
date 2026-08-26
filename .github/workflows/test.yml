@@ -998,6 +998,14 @@ on:
       # auto-clear-vs-ensemble-verdict class.
       - 'scripts/audit-wrongshow-autoclear-conflicts.js'
       - 'scripts/newsletter/pre-send-check.mjs'
+      # BRO-132: end-to-end guard that create-broadcast-draft.mjs actually
+      # strips the pre-send-check.mjs soft-issue banner before it would reach
+      # a subscriber PATCH. Top-level scripts/ file (no scripts/** glob) with
+      # a colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — both need their own
+      # entry so a solo edit to either triggers CI.
+      - 'scripts/pre-send-check.test.mjs'
+      - 'scripts/newsletter/create-broadcast-draft.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
