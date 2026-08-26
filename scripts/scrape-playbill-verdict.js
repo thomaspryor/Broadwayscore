@@ -27,6 +27,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { shouldSkipAggregatorSerp, recordAggregatorSerpAttempt } = require('./lib/aggregator-serp');
 const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator, createFallbackTracker } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
@@ -544,10 +545,12 @@ async function processShowViaGoogle(show, showId, shows) {
         found = true;
         break; // Successfully processed an article
       }
+      recordAggregatorSerpAttempt('playbill-verdict', showId, { success: found });
       if (!found) {
         console.log(`  [GOOGLE] ${showId}: No matching Broadway article found`);
       }
     } else {
+      recordAggregatorSerpAttempt('playbill-verdict', showId, { success: false });
       console.log(`  [GOOGLE] ${showId}: No results`);
     }
 
@@ -888,6 +891,9 @@ async function scrapePlaybillVerdict() {
     const showId = s.id;
     const ap = path.join(archiveDir, `${showId}.html`);
     if (!fallbackTracker.needsFallback(showId)) return false;
+    // Cost guard (BRO-764): a show that's already missed 3 consecutive SERP
+    // attempts is permanently skipped — no page has ever surfaced for it.
+    if (shouldSkipAggregatorSerp('playbill-verdict', showId)) return false;
     if (!fs.existsSync(ap)) return true;
     return (Date.now() - fs.statSync(ap).mtimeMs) / (1000 * 60 * 60 * 24) >= 14;
   });

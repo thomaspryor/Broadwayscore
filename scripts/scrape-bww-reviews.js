@@ -45,6 +45,7 @@ const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { checkArchiveCache, isEligibleForAggregatorSerp, shouldSkipAggregatorSerp, recordAggregatorSerpAttempt } = require('./lib/aggregator-serp');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -429,13 +430,11 @@ function extractBwwReviewsPageData(html, showId) {
 async function discoverBwwRoundup(show, showId, options = {}) {
   const archivePath = path.join(roundupArchiveDir, `${showId}.html`);
 
-  // Check cache freshness
-  if (!options.force && fs.existsSync(archivePath)) {
-    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-    if (age < 14) {
-      console.log(`  [CACHE] roundup for ${showId}`);
-      return fs.readFileSync(archivePath, 'utf8');
-    }
+  // Check cache freshness (14-day TTL, shared with the other aggregator scrapers)
+  const cached = checkArchiveCache(archivePath, { force: options.force });
+  if (cached.fresh) {
+    console.log(`  [CACHE] roundup for ${showId}`);
+    return cached.html;
   }
 
   // forceRoundupUrl: caller already matched this URL to the show via a
@@ -486,6 +485,19 @@ async function discoverBwwRoundup(show, showId, options = {}) {
       console.log(`  [WARN] forceRoundupUrl fetch failed: ${err.message.slice(0, 80)}`);
       return null;
     }
+  }
+
+  // Cost guard: skip the SERP fallback for a show that's long closed
+  // (aggregator roundup content is frozen once a show closes — a page that
+  // hasn't surfaced by 180 days post-close isn't going to) or that's already
+  // missed 3 consecutive SERP attempts (BRO-764).
+  if (!isEligibleForAggregatorSerp(show)) {
+    console.log(`  [SKIP-SERP] ${showId}: closed >180 days, skipping BWW roundup SERP`);
+    return null;
+  }
+  if (shouldSkipAggregatorSerp('bww', showId)) {
+    console.log(`  [SKIP-SERP] ${showId}: 3 consecutive SERP misses, permanently skipped`);
+    return null;
   }
 
   // Search for roundup article via Google + BWW internal search
@@ -549,6 +561,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
 
   if (roundupUrls.length === 0) {
     stats.roundupsMiss++;
+    recordAggregatorSerpAttempt('bww', showId, { success: false });
     return null;
   }
 
@@ -576,6 +589,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   if (validRoundupUrls.length === 0) {
     console.log(`  [MISS] roundup: no URL slug matches "${searchTitle}"`);
     stats.roundupsMiss++;
+    recordAggregatorSerpAttempt('bww', showId, { success: false });
     return null;
   }
 
@@ -612,6 +626,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
           fs.writeFileSync(archivePath, html);
         }
         stats.roundupsHit++;
+        recordAggregatorSerpAttempt('bww', showId, { success: true });
         const label = isOperaUrl ? 'opera article' : 'roundup';
         console.log(`  [HIT] ${label}: ${url.split('/article/')[1]?.slice(0, 60)}`);
         return html;
@@ -623,6 +638,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   }
 
   stats.roundupsMiss++;
+  recordAggregatorSerpAttempt('bww', showId, { success: false });
   return null;
 }
 

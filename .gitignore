@@ -259,6 +259,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # dispatcher's safety logic (Notion → Linear transition). Referenced by the
 # Linear issue and its PR; must be committed so future sessions find it.
 !/docs/dispatcher-safety-port-table.md
+# BRO-764's aggregator SERP cost audit — acceptance criteria requires this
+# file committed (per-aggregator SERP volume baseline/post-optimization),
+# not scratch/local like the rest of /docs/.
+!/docs/aggregator-serp-cost-audit.md
 /memory/
 /data/deep-research/
 /data/theater-research/

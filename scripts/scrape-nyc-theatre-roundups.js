@@ -29,6 +29,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { shouldSkipAggregatorSerp, recordAggregatorSerpAttempt } = require('./lib/aggregator-serp');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -474,6 +475,12 @@ async function scrapeNYCTheatreRoundups() {
       }
     }
 
+    // Cost guard (BRO-764): a show that's already missed 3 consecutive SERP
+    // attempts is permanently skipped — no NYC Theatre page has ever surfaced.
+    if (shouldSkipAggregatorSerp('nyc-theatre', showId)) {
+      continue;
+    }
+
     // Google search for this show
     stats.showsSearched++;
     console.log(`[SEARCH] ${showId}: "${show.title}"...`);
@@ -484,6 +491,7 @@ async function scrapeNYCTheatreRoundups() {
 
       if (!url) {
         console.log(`  No NYC Theatre page found.`);
+        recordAggregatorSerpAttempt('nyc-theatre', showId, { success: false });
         await sleep(2000);
         continue;
       }
@@ -497,6 +505,7 @@ async function scrapeNYCTheatreRoundups() {
 
       if (!html || html.length < 500) {
         console.log(`  Empty or too short page.`);
+        recordAggregatorSerpAttempt('nyc-theatre', showId, { success: false });
         continue;
       }
 
@@ -504,8 +513,11 @@ async function scrapeNYCTheatreRoundups() {
       const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
       if (!validation.valid) {
         console.log(`  [SKIP] Page doesn't match "${show.title}" — ${validation.reason}`);
+        recordAggregatorSerpAttempt('nyc-theatre', showId, { success: false });
         continue;
       }
+
+      recordAggregatorSerpAttempt('nyc-theatre', showId, { success: true });
 
       // Archive
       fs.writeFileSync(archivePath, html);
