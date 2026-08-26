@@ -64,6 +64,13 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { launchOtpBrowser } = require('./lib/otp-login-helpers');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `Usage: NEWSPAPERS_COM_EMAIL=... NEWSPAPERS_COM_PASSWORD=... node scripts/newspapers-com-login.js [pageUrl1] [pageUrl2] ...
+
+Real-browser login + screenshot/OCR extraction test for newspapers.com (BRO-137).
+Requires NEWSPAPERS_COM_EMAIL (or OWNER_EMAIL) and NEWSPAPERS_COM_PASSWORD in the
+environment. Local/headed only — do not run in CI. See file header for full context.`;
 
 const PROJECT_ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(PROJECT_ROOT, 'data', 'newspapers-com-test');
@@ -154,6 +161,8 @@ async function extractPage(page, url, index) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   const email = process.env.NEWSPAPERS_COM_EMAIL || process.env.OWNER_EMAIL;
   const password = process.env.NEWSPAPERS_COM_PASSWORD;
   const targets = process.argv.slice(2).length ? process.argv.slice(2) : TARGET_PAGES;
