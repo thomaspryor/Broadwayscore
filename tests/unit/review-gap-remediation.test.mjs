@@ -26,9 +26,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { classifyReviewUrl } = require('../../scripts/lib/non-review-url-patterns.js');
-const { sameOutletUrlVariant } = require('../../scripts/lib/outlet-canonicalize.js');
-const { hostOf } = require('../../scripts/lib/non-review-url-patterns.js');
+const { classifyReviewUrl, hostOf } = require('../../scripts/lib/non-review-url-patterns.js');
+const { sameOutletUrlVariant, _buildDomainMap } = require('../../scripts/lib/outlet-canonicalize.js');
 
 const REPO_ROOT = path.join(import.meta.dirname, '..', '..');
 
@@ -60,17 +59,22 @@ describe('extraction rot — mirror-host reviews are not phantom gaps (The Pass)
   // Substack, the census found the new host, and no URL-level match could see
   // the two paths were the same outlet's review. This is what deleted the show
   // from the newsletter that week.
-  const DOMAIN_TO_OUTLET = {
-    '1minutecritic.com': 'one-minute-critic',
-    '1minutecritic.substack.com': 'one-minute-critic',
-  };
+  // Built from the REAL outlet-registry.json (same call the audit itself
+  // makes), not a hand-copied map — so alias-registry drift (one-minute-critic
+  // losing its substack.com alias) fails this test instead of going unnoticed.
+  const { domainToOutlet, ambiguous } = _buildDomainMap();
   const held = ['https://1minutecritic.com/the-pass-la-mama-review-2026/'];
   const candidate = 'https://1minutecritic.substack.com/p/pass-la-mama-review-2026';
+
+  it('one-minute-critic.com and its substack.com mirror are still registered as the same outlet', () => {
+    assert.equal(domainToOutlet['1minutecritic.com'], 'one-minute-critic');
+    assert.equal(domainToOutlet['1minutecritic.substack.com'], 'one-minute-critic');
+  });
 
   it('recognizes the Substack mirror as the same outlet review already held', () => {
     const got = sameOutletUrlVariant({
       candidateUrl: candidate, heldUrls: held,
-      domainToOutlet: DOMAIN_TO_OUTLET, ambiguous: new Set(), hostOf,
+      domainToOutlet, ambiguous, hostOf,
     });
     assert.equal(got.dup, true);
     assert.equal(got.outletId, 'one-minute-critic');
@@ -95,10 +99,19 @@ describe('NYT Teeman attribution (task #1180)', () => {
 
   it('the Disruption NYT/Teeman review in reviews.json is not flagged wrongAttribution', () => {
     const reviewsPath = path.join(REPO_ROOT, 'data', 'reviews.json');
-    const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
-    const arr = Array.isArray(raw) ? raw : (raw.reviews || Object.values(raw));
-    const teeman = arr.find(r => r.criticName === 'Tim Teeman' && /nytimes\.com/.test(r.url || ''));
-    if (!teeman) return; // review-texts/reviews.json not populated in this environment — nothing to assert
+    let arr;
+    try {
+      const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
+      arr = Array.isArray(raw) ? raw : (raw.reviews || Object.values(raw));
+    } catch {
+      return; // reviews.json not populated in this environment — nothing to assert
+    }
+    // Scoped to the specific show (not "first Teeman/NYT row found") so this
+    // actually proves the Disruption record's attribution, not some other
+    // show's, and a rename/reorder of reviews.json can't quietly satisfy it.
+    const teeman = arr.find(r => r.showId === 'disruption-off-broadway-2026' && r.criticName === 'Tim Teeman');
+    assert.ok(teeman, 'expected a Tim Teeman review for disruption-off-broadway-2026 in data/reviews.json');
+    assert.ok(/nytimes\.com/.test(teeman.url || ''), 'expected the Disruption Teeman review to be an nytimes.com URL');
     assert.notEqual(teeman.wrongAttribution, true);
   });
 });
@@ -107,22 +120,27 @@ describe('babysitter remediation loop — Pass/Disruption/Vessel stay at missing
   // Defense-in-depth against the committed audit snapshot itself: if a future
   // change to audit-show-review-gap.js silently reintroduces a gap on one of
   // the three shows this card names, this catches it without requiring live
-  // SERP/scraper access. Each show is looked up independently and skipped
-  // (not failed) if it is not present in the current snapshot — the snapshot
-  // is CI-computed and rotates, so absence is not itself a regression.
+  // SERP/scraper access. The audit file is cumulative (entries are carried
+  // forward run over run, per audit-show-review-gap.js's header comment on
+  // #893), so once a show has an entry it should keep one — a show that
+  // silently drops out of the snapshot is exactly the kind of "quietly
+  // stopped being checked" regression this card is about, so absence is a
+  // hard failure, not a skip. Only the file being entirely unreadable (e.g. a
+  // cloud environment without data/audit/ populated) skips this suite.
   const auditPath = path.join(REPO_ROOT, 'data', 'audit', 'show-review-gap.json');
-  let entries = [];
+  let entries = null;
   try {
     const raw = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
     entries = raw.results || raw;
-  } catch { /* audit file absent in this environment — nothing to assert */ }
+  } catch { /* audit file absent in this environment — handled per-test below */ }
 
   const NAMED_SHOWS = ['the-pass-off-broadway-2026', 'disruption-off-broadway-2026', 'the-vessel-off-broadway-2026'];
 
   for (const showId of NAMED_SHOWS) {
     it(`${showId}: no unrecovered gap in the last CI-computed audit snapshot`, () => {
-      const entry = Array.isArray(entries) ? entries.find(e => e.showId === showId) : null;
-      if (!entry) return; // show not in this snapshot — nothing to assert here
+      if (!Array.isArray(entries)) return; // audit file not present in this environment — nothing to assert
+      const entry = entries.find(e => e.showId === showId);
+      assert.ok(entry, `expected ${showId} to have an entry in data/audit/show-review-gap.json (cumulative — it should not silently disappear)`);
       assert.deepEqual(entry.missing || [], [], `${showId} has an unresolved missing-review gap`);
     });
   }
