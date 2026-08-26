@@ -39,13 +39,82 @@ test('mergeTrackerEntries: local and remote have different keys -> union', () =>
   assert.equal(r.shows['preview:broadway:titanique:2026-04-12'].sentAt, 'X');
 });
 
-test('mergeTrackerEntries: key conflict -> local wins (caller just wrote it, so it is newest)', () => {
+test('mergeTrackerEntries: key conflict, no comparable timestamps -> local wins (default winner preserved)', () => {
   const r = mergeTrackerEntries(
     { shows: { 'preview:broadway:x:2026-04-11': { sentAt: 'REMOTE', reviewCount: 10 } } },
     { shows: { 'preview:broadway:x:2026-04-11': { sentAt: 'LOCAL', reviewCount: 15 } } },
   );
   assert.equal(r.shows['preview:broadway:x:2026-04-11'].sentAt, 'LOCAL');
   assert.equal(r.shows['preview:broadway:x:2026-04-11'].reviewCount, 15);
+});
+
+// task #1914: the older-observation-clobbers-newer-state regression this fix
+// closes. A CLI reconcile polls a key and sees 'queued' (no sentAt yet); a
+// concurrent send flips the SAME key to 'sent' and its PUT lands on origin
+// first; the CLI's stale in-memory 'queued' write must not then overwrite the
+// already-landed 'sent' state on retry.
+test('mergeTrackerEntries: remote content is strictly newer than local -> remote wins (does not clobber a newer sent state)', () => {
+  const r = mergeTrackerEntries(
+    {
+      shows: {
+        'cats-2026': {
+          draftStatus: 'sent',
+          sentAt: '2026-04-11T12:05:00Z',
+          recipientCount: 5000,
+          draftCreatedAt: '2026-04-11T12:00:00Z',
+        },
+      },
+    },
+    {
+      shows: {
+        'cats-2026': {
+          draftStatus: 'queued',
+          sentAt: null,
+          draftCreatedAt: '2026-04-11T12:00:00Z',
+        },
+      },
+    },
+  );
+  assert.equal(r.shows['cats-2026'].draftStatus, 'sent');
+  assert.equal(r.shows['cats-2026'].sentAt, '2026-04-11T12:05:00Z');
+  assert.equal(r.shows['cats-2026'].recipientCount, 5000);
+});
+
+test('mergeTrackerEntries: local content is strictly newer than remote -> local wins (recency, not position)', () => {
+  const r = mergeTrackerEntries(
+    {
+      shows: {
+        'cats-2026': { draftStatus: 'queued', draftCreatedAt: '2026-04-11T12:00:00Z' },
+      },
+    },
+    {
+      shows: {
+        'cats-2026': { draftStatus: 'sent', sentAt: '2026-04-11T12:05:00Z' },
+      },
+    },
+  );
+  assert.equal(r.shows['cats-2026'].draftStatus, 'sent');
+  assert.equal(r.shows['cats-2026'].sentAt, '2026-04-11T12:05:00Z');
+});
+
+test('mergeTrackerEntries: a fresh no-op reconciler poll (lastReconciledAt only) does NOT outrank a genuinely newer sentAt', () => {
+  // Regression for the exact bug an earlier draft of this fix would have
+  // introduced: lastReconciledAt is stamped on every poll, including no-op
+  // ones. It must never be able to make a stale 'queued' record look newer
+  // than a real 'sent' write elsewhere.
+  const r = mergeTrackerEntries(
+    {
+      shows: {
+        'cats-2026': { draftStatus: 'sent', sentAt: '2026-04-11T12:00:00Z' },
+      },
+    },
+    {
+      shows: {
+        'cats-2026': { draftStatus: 'queued', lastReconciledAt: '2026-04-11T23:59:00Z' },
+      },
+    },
+  );
+  assert.equal(r.shows['cats-2026'].draftStatus, 'sent');
 });
 
 test('mergeTrackerEntries: remote has top-level non-shows key -> preserved', () => {

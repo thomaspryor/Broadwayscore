@@ -191,6 +191,7 @@ outlet-registry-baseline-maintenance.yml
 clear-stale-suspected-misattribution-flags.yml
 clear-wrong-show-blockers.yml
 clear-stale-wrong-production-flags.yml
+clear-stale-wrong-show-flags.yml
 
 # BRO-54: daily safety-net rotation for data/audit/stage-latency.jsonl.
 # emitStage() already self-rotates the log inline on every pipeline write;

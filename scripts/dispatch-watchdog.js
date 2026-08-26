@@ -46,6 +46,8 @@ const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
+const flowHealth = require('./lib/dispatch-flow-health.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Hardcoded canonical repo (same rationale as dispatch-ledger.js: this tool
@@ -515,6 +517,25 @@ function pageIfKillSwitchStale(filePath, { conditionKey, label, clearHint, now =
   return { stale, ageMs };
 }
 
+// I/O boundary for the flow-dead check (task #1915). Reads the ledger file
+// directly rather than via dispatchLedger.readEntries(), which fails closed
+// to [] on any read error — that would collapse "genuinely zero launches"
+// and "ledger unreadable" into the same signal, losing the -1 fail-safe
+// sentinel isDispatchFlowDead relies on to tell "confirmed dead" from
+// "cannot prove dead".
+function launchesInFlowWindow(now) {
+  let raw;
+  try { raw = fs.readFileSync(dispatchLedger.LEDGER_PATH, 'utf8'); }
+  catch { return -1; }
+  const entries = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { entries.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return dispatchLedger.countRecentLaunches(entries, { now, windowMs: flowHealth.FLOW_WINDOW_MS });
+}
+
 function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
@@ -536,7 +557,40 @@ function health() {
   }
   const age = heartbeatAgeMs();
   const stale = age === null || age > HEALTH_STALE_MS;
-  if (!stale) { console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old`); return 0; }
+  if (!stale) {
+    // Heartbeat-healthy is exactly the blind spot task #1915 closes: the
+    // watchdog can heartbeat forever while dispatching ZERO work. cmux
+    // calls are best-effort here (same rationale as ensureTab() below —
+    // --health runs OUTSIDE cmux via launchd, which can't reach the socket
+    // pre-restart) — a cmux failure means "cannot observe," which must
+    // fail safe to "cannot prove dead," not silently page.
+    // Distinct suffixes on the two success paths below are deliberate: this
+    // is the only launchd-outside-cmux code path in the file, and without a
+    // visible marker for "the flow check actually ran" vs. "it silently
+    // skipped (cmux unobservable)", ~/Library/Logs/dispatch-watchdog-health.log
+    // can't prove which one happened on a given tick.
+    let flowSuffix = ' (flow check skipped: cmux unobservable)';
+    try {
+      const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
+      const launchesLast45m = launchesInFlowWindow(Date.now());
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m })) {
+        pageOwner({
+          conditionKey: 'dispatch-flow-dead',
+          title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
+          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min. The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
+          severity: 'error',
+          cooldownHours: 24,
+        });
+        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}) — owner paged`);
+        return 1;
+      }
+      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m})`;
+    } catch (e) {
+      console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
+    }
+    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
+    return 0;
+  }
   pageOwner({
     conditionKey: 'watchdog-heartbeat-stale',
     title: 'Dispatch watchdog is DOWN — nobody owns in-flight dispatches',

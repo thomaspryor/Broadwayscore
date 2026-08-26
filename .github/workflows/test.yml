@@ -36,6 +36,12 @@ on:
       # would trigger zero CI without this entry (task #1581, same gap class
       # as scripts/check-orphan-commits.js above).
       - 'scripts/audit-workflow-concurrency.js'
+      # scripts/audit-push-retry-budgets.js (card #1910, 2026-08-26): same
+      # thin-CLI-wrapper-outside-scripts/lib/ gap shape as
+      # scripts/audit-workflow-concurrency.js above — its logic lives in
+      # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
+      # file itself needs its own entry.
+      - 'scripts/audit-push-retry-budgets.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
@@ -480,6 +486,17 @@ on:
       # logic runs in tests/unit/push-retry-failure-ledger.test.mjs, covered
       # by the tests/** glob). Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh'
+      # Task #1849: the shallow-fetch bound (_shallow_base_epoch) is memoized
+      # ONCE per run — correct when a bounded fetch SUCCEEDS (avoids the
+      # window creeping wider for no benefit) but wrong when it FAILS
+      # outright: every retry recomputed and reissued the identical bound,
+      # producing 25/25 identical rc=128 failures in a real incident
+      # (data-health-check.yml run 32399332590). Bash integration reproduces
+      # a remote that rejects the first-choice bound and asserts the fix
+      # escalates to a wider one on the next retry instead of repeating it.
+      # Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
+      - 'scripts/lib/shallow-fetch-args.js'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
       # content, so a concurrent writer that reverted our lines (leaving the
       # path in place) passed every check and the script reported success —
@@ -3425,6 +3442,19 @@ jobs:
         # real call sites.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh
+
+      - name: Run push-with-retry shallow-retry-escalation test (bash integration)
+        # Task #1849: data-health-check.yml run 32399332590 (2026-08-20) ran
+        # all 25 retries of its "Commit health check + triage data" step over
+        # ~14 real minutes and NEVER succeeded — every attempt failed
+        # identically at rc=128, because the shallow-fetch bound
+        # (_shallow_base_epoch) is memoized once per run and was reissued
+        # byte-identical on every retry even after the bound itself was
+        # rejected. Simulates a remote that rejects the first-choice bound
+        # but accepts a wider one, and asserts the fix escalates instead of
+        # repeating the identical failing bound forever.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.shallow-retry-escalation.test.sh
 
       - name: Run merge-worktree-to-main content-drop test (bash integration)
         # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's

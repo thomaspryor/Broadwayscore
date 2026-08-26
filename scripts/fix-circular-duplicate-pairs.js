@@ -81,6 +81,22 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { parseDate } = require('./lib/date-utils');
 const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
+const { isPlaceholderRecord } = require('./lib/placeholder-byline');
+const { loadOutletRegistry } = require('./lib/review-normalization');
+
+/**
+ * outlet-registry.json's outlets[outletId].defaultCritic, or null. Some solo
+ * review sites are named after their one real critic (carole-di-tosti,
+ * carey-purcell, oscar-e-moore — displayName === defaultCritic), so this is
+ * the authoritative override isPlaceholderByline needs to NOT flag those as
+ * placeholders. loadOutletRegistry() already fails soft (returns null, warns)
+ * when the registry file is unavailable — this stays consistent with that.
+ */
+function _defaultCriticFor(outletId) {
+  if (!outletId) return null;
+  const registry = loadOutletRegistry();
+  return (registry && registry.outlets && registry.outlets[outletId] && registry.outlets[outletId].defaultCritic) || null;
+}
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -204,11 +220,27 @@ function chooseCanonical(aName, aData, bName, bData) {
   if (aScoreable && !bScoreable) return pick(aName, bName, 'recovery: only this member is scoreable');
   if (bScoreable && !aScoreable) return pick(bName, aName, 'recovery: only this member is scoreable');
 
-  // 2. Byline quality.
+  // 2. Byline quality. Two independent checks, either one enough to flag a
+  // placeholder: the filename-slug comparison (isUnknownByline, outletId vs
+  // filename byline slug) and the data-field comparison (isPlaceholderByline,
+  // criticName vs outlet DISPLAY name). The two can disagree — a file named
+  // `times-uk--the-times.json` has slug "the-times" vs outletSlug "times-uk"
+  // (never equal), while its criticName "The Times" equals its outlet display
+  // name "The Times (UK)" (placeholder). Card #1907: relying on the slug check
+  // alone let that exact shape survive as canonical.
+  //
+  // The data-field check (isPlaceholderRecord, scripts/lib/placeholder-byline.js)
+  // only fires when criticName is ACTUALLY PRESENT on the record — a record
+  // with no criticName field at all (byline identity conveyed only by the
+  // filename, e.g. every real corpus review) falls back to the slug check
+  // alone. It also honors outlet-registry.json's defaultCritic override, so a
+  // self-branded solo critic (carole-di-tosti, carey-purcell, oscar-e-moore —
+  // outlet displayName === defaultCritic) is never wrongly flagged just
+  // because their real name happens to equal their outlet's name.
   const aOutlet = outletSlug(aName), bOutlet = outletSlug(bName);
   const aSlug = bylineSlug(aName), bSlug = bylineSlug(bName);
-  const aUnknown = isUnknownByline(aSlug, aOutlet);
-  const bUnknown = isUnknownByline(bSlug, bOutlet);
+  const aUnknown = isUnknownByline(aSlug, aOutlet) || isPlaceholderRecord(aData, { defaultCritic: _defaultCriticFor(aData && aData.outletId) });
+  const bUnknown = isUnknownByline(bSlug, bOutlet) || isPlaceholderRecord(bData, { defaultCritic: _defaultCriticFor(bData && bData.outletId) });
   if (!aUnknown && bUnknown) return pick(aName, bName, 'byline: named human beats unknown/placeholder');
   if (!bUnknown && aUnknown) return pick(bName, aName, 'byline: named human beats unknown/placeholder');
 

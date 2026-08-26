@@ -521,8 +521,18 @@ jobs:
       # looks like a brand-new incident. Enforced by
       # scripts/lib/alert-ledger-commit-check.js, which only sees this job
       # because of the routeAlert() mention in this comment; do not remove it.
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # was on the bare shared default (7 retries/240s, backoffSum 77s) —
+      # this job runs every 10 minutes and hard-fails on push (if: always(),
+      # no soft-fail wrapper), and a dropped push here breaks the alert
+      # ledger/digest-queue cooldown state (see the routeAlert() comment
+      # above — "without it every run looks like a brand-new incident").
+      # Job's 30min timeout has ample headroom for 600s (no other named
+      # step budgets in this job), so no timeout-minutes change needed.
       - name: Commit tracking file
         if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git add data/audit/processed-feedback.json
           git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
@@ -536,7 +546,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 20 main
           fi
 
       - name: Ensure owner is not watching repo (prevents GitHub notification emails)
