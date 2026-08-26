@@ -80,3 +80,36 @@ test('restores from ours when ours is unavailable is a no-op (null ours)', () =>
   assert.equal(modified, false);
   assert.deepEqual(notes, []);
 });
+
+// Cousin of the top-level bug (found via /what-else after the #1916 fix):
+// the nested contentVerification restore had the same remote-only gap.
+test('restores a nested contentVerification field present only in ours', () => {
+  const remote = { url: 'https://example.com/review' };
+  const local = { ...remote };
+  const ours = {
+    url: 'https://example.com/review',
+    contentVerification: { wrongProduction: true },
+  };
+
+  const { modified, notes } = reconcileProtectedFields(local, remote, ours, {});
+
+  assert.equal(modified, true);
+  assert.equal(local.contentVerification.wrongProduction, true);
+  assert.ok(notes.some((n) => n.includes('contentVerification.wrongProduction') && n.includes('pre-rebase HEAD')));
+});
+
+test('does not resurrect a nested contentVerification field the LOCAL record deliberately cleared, even from ours', () => {
+  const remote = { url: 'https://example.com/review' };
+  // wrongProductionManualClear is the CLEAR_BREADCRUMBS signal for the
+  // top-level 'wrongProduction' field, which governs the nested CV key too.
+  const local = { url: 'https://example.com/review', wrongProductionManualClear: true };
+  const ours = {
+    url: 'https://example.com/review',
+    contentVerification: { wrongProduction: true },
+  };
+
+  const { modified } = reconcileProtectedFields(local, remote, ours, {});
+
+  assert.equal(local.contentVerification, undefined);
+  assert.equal(modified, false);
+});
