@@ -908,13 +908,32 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   //
   // Fails OPEN in every uncertain case (see cmux-terminal-capacity.js) and
   // carries the same kill-switch convention as the auth preflight above.
-  const capacity = (probes.terminalCapacity || terminalCapacity.probeTerminalCapacity)();
+  // try/catch even though every path inside probeTerminalCapacity already
+  // swallows (ship-check catch): this module's whole contract is that a
+  // capacity reading can never block a dispatch, and an uncaught throw here
+  // would fail the launch outright — the one outcome the fail-open design
+  // exists to rule out. The catch reports "unknown", which is exactly what a
+  // missing cmux reports.
+  let capacity;
+  try {
+    capacity = (probes.terminalCapacity || terminalCapacity.probeTerminalCapacity)();
+  } catch (e) {
+    console.error(`[cmux-launch] WARN terminal-capacity probe threw (${e.message}) — treating capacity as unknown and launching anyway`);
+    capacity = { hasCapacity: true, known: false, liveRuntimes: null, ceiling: null, reason: 'probe threw' };
+  }
   if (process.env.CMUX_CAPACITY_PREFLIGHT_DISABLED !== '1' && capacity.hasCapacity === false && !force) {
     console.error(`[cmux-launch] REFUSING launch "${title}": ${capacity.reason}`);
     return {
       ok: false,
       reason: capacity.reason,
-      atTerminalCapacity: true,
+      // refusedForCapacity means exactly "nothing was created" and NOTHING
+      // else. It is deliberately a different field from the post-create
+      // terminalRuntimeMissing below (adversarial review blocker): both mean
+      // "cmux is out of terminals", but only this one is safe to report as
+      // "nothing was created" and journal with a null ref. Conflating them
+      // made a real ghost tab get logged as a refusal and lose its
+      // attribution entirely.
+      refusedForCapacity: true,
       liveRuntimes: capacity.liveRuntimes,
       terminalCeiling: capacity.ceiling,
       // No workspace was created, so there is nothing to journal a death
@@ -1083,7 +1102,10 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   const failed = {
     ok: false,
     state: (outcome && outcome.state) || STATES.INJECTION_NEVER_RAN,
-    atTerminalCapacity: noTerminal || undefined,
+    // NOT refusedForCapacity: a workspace WAS created here and is still open.
+    // It is a corpse that needs journaling and attribution, not a launch that
+    // never happened.
+    terminalRuntimeMissing: noTerminal || undefined,
     liveRuntimes: liveRuntimesBefore,
     // Distinct reasons, so callers and logs stop reporting every slow launch
     // as "cmux is dead" (card #705: that conflation is what made the owner

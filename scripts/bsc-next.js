@@ -597,7 +597,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   // may not even be in hand here, since fetchCard degrades to null silently).
   const priorLaunch = entries.filter(e => e.event === 'launch' && String(e.taskId) === String(task.id)).slice(-1)[0] || {};
 
-  const res = launchCmuxFn(task, seed, undefined, model, project);
+  const res = launchCmuxFn(task, seed, undefined, model, project, !!args.force);
   if (res.ok) {
     const tabTitle = buildAutoTitle({ subject: task.subject, project, model });
     console.log(`[bsc-next] opened SUCCESSION Cmux tab "${tabTitle}" (${res.ref}) on #${task.id}, depth ${newDepth}/${dispatchLedger.SUCCESSION_DEPTH_CAP} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
@@ -631,6 +631,29 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         successionDepth: newDepth,
       });
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+  } else if (res.refusedForCapacity && !res.workspaceRef) {
+    // Task #1904, same distinction the fresh-dispatch branch draws: cmux is
+    // out of terminal runtimes, so NOTHING was created. Reporting this as
+    // "SUCCESSION LAUNCH NOT VERIFIED" and journaling a dead attempt would
+    // burn one of this task's two attempts for a launch that never happened
+    // — and a succession chain has even less headroom to spare than a fresh
+    // dispatch does.
+    console.error(`[bsc-next] SUCCESSION LAUNCH REFUSED — ${res.reason}`);
+    console.error(`  Nothing was created for #${task.id}. Free a runtime (node scripts/bsc-prune.js, owner-run) or`);
+    console.error(`  re-run with --force once you accept the estimate may be stale.`);
+    try {
+      appendLedgerEntryFn({
+        // 'launch-refused', NOT 'launch-failed' (ship-check catch): the
+        // latter is in audit-archived-in-progress.js's START_EVENTS, so a
+        // refusal that created nothing would make the card read "started
+        // then lost" and route it into the wrong recovery bucket. A refusal
+        // is the absence of a launch; it needs a vocabulary of its own.
+        event: 'launch-refused', taskId: String(task.id), subject: task.subject, workspaceRef: null, model,
+        failureReason: res.reason, refusedForCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        terminalCeiling: res.terminalCeiling ?? null, notionId: pid || null, succession: true,
+      });
+    } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+    return 1;
   } else {
     // Card #705 (Codex adversarial catch, BRO-2251): a launch whose wrapper
     // is still RUNNING is booting slowly, not dead — the fresh-dispatch
@@ -668,7 +691,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
       try {
         const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
         if (outage.outage) {
-          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is out of terminal runtimes. Foregrounding does NOT fix it (every focus/activation path was tested against a doomed workspace on 2026-08-26, task #1904): close finished tabs with bsc-prune (owner-run) or restart cmux to free a runtime.`);
         }
       } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
     }
@@ -836,7 +859,13 @@ function fetchCard(pageId, { attempts = CARD_FETCH_ATTEMPTS, sleepMs = CARD_FETC
 // non-task callers — the opening-night monitor launcher — share the verified
 // path). This wrapper only composes the task-derived title and delegates;
 // seedKey = task.id keeps the temp-file paths byte-identical to before.
-function launchCmux(task, seed, commandOverride, model = 'sonnet', project = null) {
+// force (task #1904): forwarded so `--force` actually reaches the
+// terminal-capacity preflight. It was already the documented escape hatch
+// from that gate, and the refusal message prints it — but nothing passed it
+// through, so the advertised recovery path did nothing (adversarial review
+// catch). It still does NOT weaken the reclaim/liveness checks inside
+// launchCmuxSession; see that function's @param note for the distinction.
+function launchCmux(task, seed, commandOverride, model = 'sonnet', project = null, force = false) {
   // Auto-dispatch naming (scope add, card #168): "🤖<model-glyph> <Project>·<subject>"
   // so the cmux sidebar shows the MODEL before the tab is ever opened (owner
   // request 2026-07-20 — hard work accidentally given to Sonnet sessions).
@@ -853,7 +882,7 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
   // commandOverride is a test seam (kill test, scope add 3) — never set in real use.
   return launchCmuxSession({
     title, seed, seedKey: task.id, cwd: REPO, model,
-    focus: true, autoColor: !!project, commandOverride,
+    focus: true, autoColor: !!project, commandOverride, force,
     // Task #503: the 30s default declared 10 healthy launches dead on
     // 2026-07-26 — claude registers its process well past 30s once the Mac
     // is carrying a dozen sessions and the session-start hooks run. Every
@@ -1405,7 +1434,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     }
   }
 
-  const res = launchCmuxFn(task, seed, undefined, model, project);
+  const res = launchCmuxFn(task, seed, undefined, model, project, !!args.force);
   if (res.ok) {
     // Task #1896: this is a real dispatch — hold the claim (let it expire via
     // staleMs) instead of releasing on exit, so a near-simultaneous second
@@ -1438,7 +1467,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // the ledger instead of re-derived by hand.
       liveRuntimes: res.liveRuntimes ?? null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
-  } else if (res.atTerminalCapacity) {
+  } else if (res.refusedForCapacity && !res.workspaceRef) {
     // Task #1904. Nothing was created, so there is no workspace to journal, no
     // dead attempt to burn, and nothing for a sweep to find. This is a REFUSAL,
     // not a failure, and it must read as one — a launch that never happened
@@ -1453,8 +1482,13 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`    node scripts/bsc-next.js --id ${task.id} --force       # launch anyway; the ceiling is a learned number and a success raises it`);
     try {
       appendLedgerEntryFn({
-        event: 'launch-failed', taskId: String(task.id), subject: task.subject, workspaceRef: null, model,
-        failureReason: res.reason, atTerminalCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        // 'launch-refused', NOT 'launch-failed' (ship-check catch): the
+        // latter is in audit-archived-in-progress.js's START_EVENTS, so a
+        // refusal that created nothing would make the card read "started
+        // then lost" and route it into the wrong recovery bucket. A refusal
+        // is the absence of a launch; it needs a vocabulary of its own.
+        event: 'launch-refused', taskId: String(task.id), subject: task.subject, workspaceRef: null, model,
+        failureReason: res.reason, refusedForCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
         terminalCeiling: res.terminalCeiling ?? null, notionId: pid || null,
       });
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
@@ -1496,7 +1530,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       try {
         const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
         if (outage.outage) {
-          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is out of terminal runtimes. Foregrounding does NOT fix it (every focus/activation path was tested against a doomed workspace on 2026-08-26, task #1904): close finished tabs with bsc-prune (owner-run) or restart cmux to free a runtime.`);
         }
       } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
     }

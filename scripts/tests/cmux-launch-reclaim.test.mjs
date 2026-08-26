@@ -434,7 +434,9 @@ test('launchCmuxSession: at the terminal-runtime ceiling it creates NOTHING and 
   });
 
   assert.equal(res.ok, false);
-  assert.equal(res.atTerminalCapacity, true);
+  assert.equal(res.refusedForCapacity, true);
+  assert.equal(res.terminalRuntimeMissing, undefined,
+    'refusedForCapacity and terminalRuntimeMissing must stay distinct — only the first means "nothing was created"');
   assert.equal(newWorkspaceMock.mock.callCount(), 0,
     'creating a workspace that can never run its command is the whole waste this gate removes');
   assert.equal(res.workspaceRef, null,
@@ -457,7 +459,7 @@ test('launchCmuxSession: --force overrides the capacity gate, because the ceilin
       probes: { ...baseProbes(), newWorkspace: newWorkspaceMock, terminalCapacity: () => AT_CAPACITY },
     });
     assert.equal(newWorkspaceMock.mock.callCount() > 0, true, 'force must reach cmux');
-    assert.equal(res.atTerminalCapacity, undefined, 'a forced launch is judged on what it actually did, not on the estimate');
+    assert.equal(res.refusedForCapacity, undefined, 'a forced launch is judged on what it actually did, not on the estimate');
   } finally { listMock.mock.restore(); }
 });
 
@@ -481,11 +483,18 @@ test('launchCmuxSession: an UNKNOWN capacity reading never blocks a launch', () 
   } finally { listMock.mock.restore(); }
 });
 
-test('launchCmuxSession: a workspace with no terminal is reported dead-confirmed and NOT retried', () => {
+test('launchCmuxSession: a workspace with no terminal is dead-confirmed, attributable, and teaches the ceiling', () => {
   // The bootstrap path: no ceiling is known yet, so the launch goes ahead, the
   // surface is confirmed missing, and the grace expires with nothing ever
-  // running. That verdict must (a) be a confirmed death, (b) not spend a
-  // second workspace on an app-wide cap, and (c) teach the ceiling.
+  // running. That verdict must (a) be a confirmed death, (b) keep its
+  // workspaceRef so the corpse stays attributable, and (c) record the
+  // live-runtime count as a ceiling OBSERVATION — which is what eventually
+  // arms the pre-create gate, once a second observation confirms it.
+  //
+  // It does not relaunch, but that is this function's standing owner-approved
+  // no-relaunch rule (2026-08-13, the 'retry' branch's break), NOT something
+  // the capacity work introduced — the state machine returns the same attempt
+  // budget INJECTION_NEVER_RAN always had.
   const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9103\n', stderr: '' }));
   const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
   const learned = [];
@@ -507,7 +516,11 @@ test('launchCmuxSession: a workspace with no terminal is reported dead-confirmed
     assert.equal(res.ok, false);
     assert.equal(res.state, 'terminal-runtime-missing');
     assert.equal(res.deadConfirmed, true, 'a workspace with no terminal is a corpse, not a slow boot');
-    assert.equal(newWorkspaceMock.mock.callCount(), 1, 'the cap is app-wide — a second workspace would be equally doomed');
+    assert.equal(res.terminalRuntimeMissing, true);
+    assert.equal(res.refusedForCapacity, undefined,
+      'a workspace WAS created here — reporting this as a refusal would log "nothing was created" over a real ghost tab and journal it with a null ref, losing its attribution entirely');
+    assert.equal(res.workspaceRef, 'workspace:9103', 'the corpse must stay attributable');
+    assert.equal(newWorkspaceMock.mock.callCount(), 1, 'exactly one workspace, never a relaunch over a possibly-live tab');
     assert.deepEqual(learned, [{ liveRuntimesBefore: 29, outcome: 'runtime-missing' }],
       'the first launch to hit the cap is what arms the preflight for every later dispatch');
   } finally { listMock.mock.restore(); }

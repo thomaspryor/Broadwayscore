@@ -164,17 +164,21 @@ function decideLaunchWait({
   //    booting), so waiting costs nothing and a retry costs a duplicate.
   if (elapsed < injectionGraceSec) return { action: 'wait', state: STATES.AWAITING_INJECTION, reason: null };
 
-  // 5. Grace expired with nothing ever running. Two different diagnoses, and
-  //    the difference decides whether a retry is worth a second workspace:
-  //    a swallowed injection is per-workspace and a fresh one may well work,
-  //    but a missing terminal runtime is app-wide and a fresh one cannot.
-  //    This branch is also where the ceiling gets LEARNED the first time —
-  //    the caller records the live-runtime count against this verdict, which
-  //    is what arms the pre-create gate for every subsequent dispatch.
-  if (surfaceConfirmedMissing) {
-    return { action: 'fail', state: STATES.TERMINAL_RUNTIME_MISSING, reason: REASONS[STATES.TERMINAL_RUNTIME_MISSING] };
-  }
-  return terminal(STATES.INJECTION_NEVER_RAN, attempt, maxAttempts);
+  // 5. Grace expired with nothing ever running. The surface signal only
+  //    changes the DIAGNOSIS here, never the retry policy: this is the
+  //    uncorroborated case (capacity said we had room, or said nothing at
+  //    all), so "no terminal" might be this one workspace's problem rather
+  //    than the app's, and a fresh attempt may well work. Dropping the retry
+  //    on one signal would be a behavior regression smuggled in under a
+  //    capacity fix (ship-check catch) — `terminal()` keeps the exact
+  //    attempt budget INJECTION_NEVER_RAN has always had.
+  //
+  //    The better label still earns its keep: it is what the caller records
+  //    as a ceiling OBSERVATION, and two such observations are what arm the
+  //    pre-create gate. Branch 3b above is the corroborated case, and it is
+  //    the only one that skips the retry.
+  return terminal(surfaceConfirmedMissing ? STATES.TERMINAL_RUNTIME_MISSING : STATES.INJECTION_NEVER_RAN,
+    attempt, maxAttempts);
 }
 
 function terminal(state, attempt, maxAttempts) {

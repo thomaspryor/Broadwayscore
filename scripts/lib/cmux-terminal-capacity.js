@@ -63,6 +63,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { withFileLock } = require('./file-lock.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -85,6 +86,12 @@ const CEILING_PATH = path.join(os.tmpdir(), 'bsc-cmux-terminal-ceiling.json');
 // is long enough that a real ceiling still suppresses a whole bad night, and
 // short enough that a stale one costs at most one dead launch per day.
 const CEILING_TTL_MS = 24 * 60 * 60 * 1000;
+
+// How far ahead of `now` an observedAt may sit before it reads as nonsense
+// rather than as freshly written. Generous enough to absorb ordinary NTP
+// correction and the sub-second gap between stamping and reading; far short
+// of anything a real clock step produces.
+const CLOCK_SKEW_TOLERANCE_MS = 5 * 60 * 1000;
 
 // Below this many live runtimes, a launch failure is NEVER attributed to the
 // ceiling. A cmux carrying 7 terminals is not at a resource cap, so a
@@ -136,6 +143,21 @@ function parseDebugTerminals(text) {
 }
 
 /**
+ * Did this dump actually TELL us about runtimes?
+ *
+ * Adversarial review catch: if a future cmux keeps the block layout but
+ * renames or drops the `runtime=` field, every record parses with
+ * runtime:null, countLiveRuntimes returns 0, and 0 live reads as "loads of
+ * room" — the gate silently switches itself off and the operator sees
+ * recurring ghost launches with no hint that the parser went blind. Only an
+ * EMPTY parse counted as unknown before; a full parse carrying no runtime
+ * field anywhere has to count as unknown too.
+ */
+function hasRuntimeSignal(surfaces) {
+  return (Array.isArray(surfaces) ? surfaces : []).some(s => s && typeof s.runtime === 'boolean');
+}
+
+/**
  * Live terminal runtimes = SURFACES cmux has actually attached a terminal to.
  *
  * Surfaces, not workspaces, and the two must never be cross-referenced
@@ -170,9 +192,10 @@ function workspaceRuntimeState(surfaces, ref) {
  * @param {number|null} o.ceiling learned cap, or null if never observed
  * @returns {{hasCapacity:boolean, known:boolean, liveRuntimes:number|null, ceiling:number|null, reason:string}}
  */
-function decideCapacity({ liveRuntimes = null, ceiling = null } = {}) {
+function decideCapacity({ liveRuntimes = null, ceiling = null, confirmations = 0 } = {}) {
   const live = Number.isInteger(liveRuntimes) ? liveRuntimes : null;
-  const cap = Number.isInteger(ceiling) && ceiling >= MIN_PLAUSIBLE_CEILING ? ceiling : null;
+  const confirmed = confirmations >= CEILING_CONFIRMATIONS_REQUIRED;
+  const cap = Number.isInteger(ceiling) && ceiling >= MIN_PLAUSIBLE_CEILING && confirmed ? ceiling : null;
 
   if (live === null) {
     return {
@@ -181,9 +204,12 @@ function decideCapacity({ liveRuntimes = null, ceiling = null } = {}) {
     };
   }
   if (cap === null) {
+    const pending = Number.isInteger(ceiling) && ceiling >= MIN_PLAUSIBLE_CEILING && !confirmed
+      ? ` (a ceiling of ${ceiling} has been seen ${confirmations}/${CEILING_CONFIRMATIONS_REQUIRED} time(s) — not acted on until confirmed)`
+      : '';
     return {
       hasCapacity: true, known: false, liveRuntimes: live, ceiling: null,
-      reason: `${live} live cmux terminal(s); no ceiling observed yet — launching anyway`,
+      reason: `${live} live cmux terminal(s); no confirmed ceiling${pending} — launching anyway`,
     };
   }
   if (live >= cap) {
@@ -200,6 +226,17 @@ function decideCapacity({ liveRuntimes = null, ceiling = null } = {}) {
   };
 }
 
+// Runtime-missing observations required before a ceiling is allowed to REFUSE
+// anything (ship-check blocker, 2026-08-26). A single "the surface never
+// appeared" verdict is not proof of a cap — the #1829 class produces exactly
+// that verdict for reasons that have nothing to do with capacity, and a
+// one-off at 15 live tabs would otherwise latch `ceiling=15` for a day and
+// report a confident "cap observed at 15" on a near-empty cmux. Two
+// observations inside the TTL is a pattern; one is an anecdote. The cost of
+// the second is one extra dead launch per degradation episode, against the
+// ~45 the episode used to produce.
+const CEILING_CONFIRMATIONS_REQUIRED = 2;
+
 /**
  * PURE. Fold one launch observation into the learned ceiling.
  *
@@ -214,33 +251,55 @@ function decideCapacity({ liveRuntimes = null, ceiling = null } = {}) {
  * @param {'runtime-missing'|'runtime-created'} o.outcome
  * @returns {{ceiling:number|null, changed:boolean, reason:string}}
  */
-function learnCeiling({ ceiling = null, liveRuntimesBefore, outcome } = {}) {
+function learnCeiling({ ceiling = null, confirmations = 0, liveRuntimesBefore, outcome } = {}) {
   const cur = Number.isInteger(ceiling) ? ceiling : null;
+  const seen = Number.isInteger(confirmations) && confirmations > 0 ? confirmations : 0;
   const before = Number.isInteger(liveRuntimesBefore) ? liveRuntimesBefore : null;
-  if (before === null) return { ceiling: cur, changed: false, reason: 'no live-runtime count observed — nothing to learn' };
+  const keep = { ceiling: cur, confirmations: seen, changed: false };
+  if (before === null) return { ...keep, reason: 'no live-runtime count observed — nothing to learn' };
 
   if (outcome === 'runtime-missing') {
-    // Creation at `before` demonstrably fails, so the cap is at most `before`.
+    // Creation at `before` failed, so IF this is the cap, the cap is at most
+    // `before`. "If" is doing real work: this same verdict is produced by
+    // failures that have nothing to do with capacity, which is why the
+    // recorded value does not become actionable until it has been seen
+    // CEILING_CONFIRMATIONS_REQUIRED times (see decideCapacity).
     if (before < MIN_PLAUSIBLE_CEILING) {
       return {
-        ceiling: cur, changed: false,
+        ...keep,
         reason: `runtime-missing at only ${before} live terminal(s) — below the ${MIN_PLAUSIBLE_CEILING} plausibility floor, so this is some other fault, not the ceiling. Not recorded.`,
       };
     }
-    if (cur !== null && cur <= before) return { ceiling: cur, changed: false, reason: `ceiling already ${cur} (<= ${before})` };
-    return { ceiling: before, changed: true, reason: `cmux failed to attach a terminal at ${before} live runtime(s) — ceiling recorded as ${before}` };
+    if (cur !== null && cur <= before) {
+      // Same regime, seen again: this is the corroboration, not a new number.
+      const next = seen + 1;
+      return {
+        ceiling: cur, confirmations: next, changed: true,
+        reason: `cmux failed to attach a terminal again at ${before} live runtime(s) — ceiling ${cur} now confirmed ${next}/${CEILING_CONFIRMATIONS_REQUIRED}`,
+      };
+    }
+    // A NEW, lower number. Confirmations restart: the evidence supports this
+    // value, not the old one, and acting on an unconfirmed number is exactly
+    // the latch this counter exists to prevent.
+    return {
+      ceiling: before, confirmations: 1, changed: true,
+      reason: `cmux failed to attach a terminal at ${before} live runtime(s) — ceiling candidate ${before}, seen 1/${CEILING_CONFIRMATIONS_REQUIRED}`,
+    };
   }
 
   if (outcome === 'runtime-created') {
     // Creation at `before` demonstrably works, so the cap is above `before`.
-    // This is the ONLY path that raises a stale-low ceiling, which is why
-    // the capacity gate must stay bypassable (--force) — otherwise a ceiling
-    // learned too low could never be disproved.
-    if (cur === null || cur > before) return { ceiling: cur, changed: false, reason: 'success below the known ceiling — nothing to learn' };
-    return { ceiling: before + 1, changed: true, reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — raised to ${before + 1}` };
+    // This is the path that recovers from a ceiling learned too low —
+    // together with the TTL and --force, it is why a wrong number cannot
+    // become permanent.
+    if (cur === null || cur > before) return { ...keep, reason: 'success below the known ceiling — nothing to learn' };
+    return {
+      ceiling: before + 1, confirmations: 0, changed: true,
+      reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — raised to ${before + 1} and back to unconfirmed`,
+    };
   }
 
-  return { ceiling: cur, changed: false, reason: `unknown outcome ${JSON.stringify(outcome)}` };
+  return { ...keep, reason: `unknown outcome ${JSON.stringify(outcome)}` };
 }
 
 // ── I/O (thin; everything above is pure) ───────────────────────────────────
@@ -261,9 +320,12 @@ function runCmuxDebugTerminals({ attempts = 2, backoffMs = 300 } = {}) {
       if (!fs.existsSync(CMUX)) return null;
       const r = spawnSync(CMUX, ['debug-terminals'], { encoding: 'utf8', timeout: 5000, maxBuffer: 32 * 1024 * 1024 });
       if (!r.error && r.status === 0 && r.stdout) return r.stdout;
-    } catch { /* fall through to the retry / the null below */ }
-    // Synchronous: every caller of this module is in a sync dispatch path.
-    if (i < attempts - 1) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, backoffMs);
+      // Synchronous sleep, INSIDE the try (ship-check catch): SharedArrayBuffer
+      // can be unavailable or blocked depending on how node was started, and a
+      // throw from the backoff would escape the only function in this
+      // fail-open module that talks to the outside world.
+      if (i < attempts - 1) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, backoffMs);
+    } catch { /* fall through to the next attempt / the null below */ }
   }
   return null;
 }
@@ -273,6 +335,20 @@ function runCmuxDebugTerminals({ attempts = 2, backoffMs = 300 } = {}) {
  * nowMs is a parameter rather than a Date.now() call so the expiry is
  * testable without a clock (rule 15's reasoning applied to the I/O half).
  */
+/**
+ * The stored observation as {ceiling, confirmations}, or nulls when there
+ * isn't one / it has expired. Kept separate from readCeiling() so existing
+ * callers that only want the number keep working unchanged.
+ */
+function readCeilingRecord(ceilingPath = CEILING_PATH, opts = {}) {
+  const ceiling = readCeiling(ceilingPath, opts);
+  if (ceiling === null) return { ceiling: null, confirmations: 0 };
+  try {
+    const raw = JSON.parse(fs.readFileSync(ceilingPath, 'utf8'));
+    return { ceiling, confirmations: Number.isInteger(raw.confirmations) ? raw.confirmations : 0 };
+  } catch { return { ceiling: null, confirmations: 0 }; }
+}
+
 function readCeiling(ceilingPath = CEILING_PATH, { nowMs = Date.now(), ttlMs = CEILING_TTL_MS } = {}) {
   try {
     const raw = JSON.parse(fs.readFileSync(ceilingPath, 'utf8'));
@@ -281,17 +357,35 @@ function readCeiling(ceilingPath = CEILING_PATH, { nowMs = Date.now(), ttlMs = C
     // An unparseable/absent observedAt is treated as expired, never as
     // eternally fresh: the failure direction has to be "stop refusing", not
     // "refuse forever off a timestamp nobody can read".
-    if (!Number.isFinite(observedAt) || nowMs - observedAt > ttlMs) return null;
+    if (!Number.isFinite(observedAt)) return null;
+    const age = nowMs - observedAt;
+    // A FUTURE timestamp is expired too (adversarial review catch). `age >
+    // ttlMs` alone lets a stamp written under a clock that later rolled back
+    // — or a stale file left by another machine's tmpdir — read as
+    // permanently fresh, refusing every dispatch until that future date plus
+    // a day, and looking like a legitimate capacity refusal the whole time.
+    // Both directions of "this timestamp makes no sense" resolve to unknown.
+    if (age > ttlMs || age < -CLOCK_SKEW_TOLERANCE_MS) return null;
     return raw.ceiling;
   } catch { return null; }
 }
 
-function writeCeiling(ceiling, { ceilingPath = CEILING_PATH, note = null, nowIso = new Date().toISOString() } = {}) {
+// Temp-file + rename, the same atomic-publish shape cmux-launch.js's launch
+// journal already uses (writeLaunchJournalEntry). A dozen parallel Claude
+// sessions dispatch on this host, so a plain writeFileSync can be read
+// half-written by a concurrent probe — and a torn ceiling file reads as no
+// ceiling, silently disabling the gate.
+function writeCeiling(ceiling, { ceilingPath = CEILING_PATH, note = null, confirmations = 0, nowIso = new Date().toISOString() } = {}) {
+  const tmp = `${ceilingPath}.${process.pid}.tmp`;
   try {
     fs.mkdirSync(path.dirname(ceilingPath), { recursive: true });
-    fs.writeFileSync(ceilingPath, JSON.stringify({ ceiling, observedAt: nowIso, note }, null, 2) + '\n');
+    fs.writeFileSync(tmp, JSON.stringify({ ceiling, confirmations, observedAt: nowIso, note }, null, 2) + '\n');
+    fs.renameSync(tmp, ceilingPath);
     return true;
-  } catch { return false; }
+  } catch {
+    try { fs.unlinkSync(tmp); } catch { /* nothing to clean up */ }
+    return false;
+  }
 }
 
 /**
@@ -307,32 +401,54 @@ function probeTerminalCapacity({ debugTerminals = runCmuxDebugTerminals, ceiling
   // "unknown", not "zero live terminals". Reporting 0 there would make the
   // gate think capacity is wide open, which is the harmless direction, but
   // it would also poison learnCeiling with a bogus before-count.
-  const live = surfaces && surfaces.length ? countLiveRuntimes(surfaces) : null;
-  return { ...decideCapacity({ liveRuntimes: live, ceiling: readCeiling(ceilingPath, { nowMs }) }), surfaces };
+  const live = hasRuntimeSignal(surfaces) ? countLiveRuntimes(surfaces) : null;
+  const rec = readCeilingRecord(ceilingPath, { nowMs });
+  return { ...decideCapacity({ liveRuntimes: live, ceiling: rec.ceiling, confirmations: rec.confirmations }), surfaces };
 }
 
 /**
  * Record what a launch proved about the ceiling. Best-effort: a failure to
  * persist must never break a dispatch.
+ *
+ * The read-modify-write is serialized with the repo's own file lock
+ * (adversarial review catch — a dozen parallel sessions dispatch on this
+ * host, and two concurrent learners can otherwise lose one another's
+ * update). withFileLock is fail-OPEN by design: if the lock can't be taken
+ * inside its timeout it runs the body anyway, which is the right trade here
+ * — a lost ceiling update costs one re-learning launch, while blocking a
+ * dispatch on a scratch-file lock would be a much worse failure.
  */
 function recordLaunchOutcome({ liveRuntimesBefore, outcome, ceilingPath = CEILING_PATH, nowMs = Date.now() }) {
-  const next = learnCeiling({ ceiling: readCeiling(ceilingPath, { nowMs }), liveRuntimesBefore, outcome });
-  if (next.changed) writeCeiling(next.ceiling, { ceilingPath, note: next.reason, nowIso: new Date(nowMs).toISOString() });
-  return next;
+  let result = { ceiling: null, confirmations: 0, changed: false, reason: 'not evaluated' };
+  withFileLock(`${ceilingPath}.lock`, () => {
+    const rec = readCeilingRecord(ceilingPath, { nowMs });
+    result = learnCeiling({ ceiling: rec.ceiling, confirmations: rec.confirmations, liveRuntimesBefore, outcome });
+    if (result.changed) {
+      writeCeiling(result.ceiling, {
+        ceilingPath, note: result.reason, confirmations: result.confirmations,
+        nowIso: new Date(nowMs).toISOString(),
+      });
+    }
+  }, { timeoutMs: 3000 });
+  return result;
 }
 
 module.exports = {
   parseDebugTerminals,
   countLiveRuntimes,
+  hasRuntimeSignal,
   workspaceRuntimeState,
   decideCapacity,
   learnCeiling,
   probeTerminalCapacity,
   recordLaunchOutcome,
   readCeiling,
+  readCeilingRecord,
   writeCeiling,
   runCmuxDebugTerminals,
   MIN_PLAUSIBLE_CEILING,
+  CEILING_CONFIRMATIONS_REQUIRED,
   CEILING_TTL_MS,
+  CLOCK_SKEW_TOLERANCE_MS,
   CEILING_PATH,
 };

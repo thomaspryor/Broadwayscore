@@ -164,14 +164,22 @@ test('being at the ceiling alone never fails a launch that is actually working',
   assert.equal(decideLaunchWait({ claudeRegistered: true, atTerminalCapacity: true, surfaceConfirmedMissing: true }).action, 'ok');
 });
 
-test('grace expiry splits swallowed injection from a missing terminal runtime', () => {
-  // Same elapsed time, same absent wrapper — only the surface signal differs,
-  // and it decides whether a second workspace is worth opening.
+test('grace expiry relabels the diagnosis but does NOT change the retry budget', () => {
+  // The surface signal alone is uncorroborated — capacity said we had room,
+  // or said nothing at all — so "no terminal" may be this one workspace's
+  // problem and a fresh attempt may well work. Dropping the retry here would
+  // be a behavior regression smuggled in under a capacity fix (ship-check
+  // catch); only branch 3b, where capacity CONFIRMS the cap, skips it.
   const swallowed = decideLaunchWait({ elapsedSec: 91, attempt: 1, maxAttempts: 2 });
   assert.deepEqual([swallowed.action, swallowed.state], ['retry', STATES.INJECTION_NEVER_RAN]);
 
   const noTerminal = decideLaunchWait({ elapsedSec: 91, attempt: 1, maxAttempts: 2, surfaceConfirmedMissing: true });
-  assert.deepEqual([noTerminal.action, noTerminal.state], ['fail', STATES.TERMINAL_RUNTIME_MISSING]);
+  assert.deepEqual([noTerminal.action, noTerminal.state], ['retry', STATES.TERMINAL_RUNTIME_MISSING],
+    'same attempt budget as INJECTION_NEVER_RAN has always had — only the name is more precise');
+
+  // Last attempt: both fail, as they always did.
+  assert.equal(decideLaunchWait({ elapsedSec: 91, attempt: 2, maxAttempts: 2 }).action, 'fail');
+  assert.equal(decideLaunchWait({ elapsedSec: 91, attempt: 2, maxAttempts: 2, surfaceConfirmedMissing: true }).action, 'fail');
 });
 
 test('a wrapper that ran and exited is still WRAPPER_EXITED, not a runtime problem', () => {

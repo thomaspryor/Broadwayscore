@@ -827,7 +827,15 @@ const OUTAGE_LOOKBACK_MS = 30 * 60 * 1000; // matches the observed 8/3 cluster w
 // launcher failing to inject. Conflating it here would raise a confident,
 // false "cmux is not accepting commands" alarm off three unrelated task
 // bugs, exactly the kind of silent-wrongness this detector exists to avoid.
-const OUTAGE_REASON_RE = /injection never ran/;
+// 'never attached a terminal' INCLUDED (task #1904): that is the same class as
+// 'injection never ran' — the launcher handed cmux a command that cmux never
+// ran — and it is now the DOMINANT signature, since the capacity fix
+// reclassifies exactly those deaths under a more precise name. Leaving it out
+// would have silently retired this cross-task alarm for the failure mode it
+// most needs to catch (ship-check catch): the reason strings would simply have
+// stopped matching and the detector would have gone quiet with nothing to
+// indicate it had.
+const OUTAGE_REASON_RE = /injection never ran|never attached a terminal/;
 
 // entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
 // is unavailable in workflow scripts, callers pass it explicitly).
