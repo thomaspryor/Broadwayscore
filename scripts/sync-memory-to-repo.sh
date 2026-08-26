@@ -80,8 +80,44 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
   find "$LOCK" -maxdepth 0 -mmin +10 -exec rmdir {} \; 2>/dev/null || true
   if mkdir "$LOCK" 2>/dev/null; then
     trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+
+    # Upfront marker check, BEFORE any git operation touches the checkout —
+    # same convention as push-with-retry.sh's BRO-142 guard
+    # (scripts/lib/push-with-retry.sh:379-391): refuse to touch a checkout
+    # that already has a MERGE_HEAD/REBASE_HEAD/etc marker before this run
+    # touched anything (task #1893 follow-up). Two failure modes this avoids,
+    # confirmed by manual repro:
+    #   1. `git commit -q ... -- cloud-memory/` does NOT refuse merely because
+    #      REBASE_HEAD is set (unlike MERGE_HEAD, which blocks any partial
+    #      commit) — without this check, a stray in-progress rebase from
+    #      elsewhere on the shared checkout would silently get an unrelated
+    #      cloud-memory commit landed on top of it mid-resolution.
+    #   2. memory-sync-pull.js's own `git merge --abort` only covers a merge
+    #      THIS run started and failed. Against a PRE-EXISTING marker, its
+    #      `git merge` call fails immediately (MERGE_HEAD already exists) and
+    #      its abort fallback (`merge --abort`, then `rebase --abort`) would
+    #      abort a live session's in-progress conflict resolution outside any
+    #      mutex — exactly the auto-recovery detect-stale-merge-head.sh's
+    #      header says a 6-reviewer plan-review explicitly rejected.
+    # Fail-open (skip the check) if the lib file is missing, matching
+    # push-with-retry.sh's own convention.
+    _sync_marker_preexisting=""
+    if [ -f "$REPO/scripts/lib/detect-stale-merge-head.sh" ]; then
+      # shellcheck source=scripts/lib/detect-stale-merge-head.sh
+      source "$REPO/scripts/lib/detect-stale-merge-head.sh"
+      for _sync_marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+        _sync_result=$(marker_staleness "$REPO" "$_sync_marker")
+        if [ "${_sync_result%% *}" != "none" ]; then
+          _sync_marker_preexisting="$_sync_marker"
+          break
+        fi
+      done
+    fi
+
     BRANCH=$(git -C "$REPO" branch --show-current 2>/dev/null)
-    if [ "$BRANCH" != "main" ]; then
+    if [ -n "$_sync_marker_preexisting" ]; then
+      echo "sync-memory-to-repo: existing $_sync_marker_preexisting found before this run touched anything — refusing to touch the checkout; will retry next session-stop" >&2
+    elif [ "$BRANCH" != "main" ]; then
       echo "sync-memory-to-repo: main checkout is on '$BRANCH', not main — skipping commit" >&2
     elif [ -n "$(git -C "$REPO" status --porcelain -- cloud-memory/ 2>/dev/null)" ]; then
       git -C "$REPO" add cloud-memory/
@@ -91,7 +127,10 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
           # rebase (repo policy: scripts/merge-worktree-to-main.sh), and never
           # leave conflict residue on the shared checkout (task #1893: a
           # rebase left `.git/rebase-merge` behind here and wedged every other
-          # session's push via push-with-retry.sh's BRO-142 guard).
+          # session's push via push-with-retry.sh's BRO-142 guard). The
+          # upfront marker check above already ruled out a pre-existing
+          # marker, so any residue memory-sync-pull.js aborts here is one
+          # this run's own merge attempt just created.
           if node "$REPO/scripts/lib/memory-sync-pull.js" --repo "$REPO"; then
             git -C "$REPO" push -q origin main 2>/dev/null ||
               echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
