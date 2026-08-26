@@ -582,20 +582,41 @@ function health() {
     // can't prove which one happened on a given tick.
     let flowSuffix = ' (flow check skipped: cmux unobservable)';
     try {
+      const now = Date.now();
       const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
-      const launchesLast45m = launchesInFlowWindow(Date.now());
-      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m })) {
+      const launchesLast45m = launchesInFlowWindow(now);
+      // BRO-409: only trust a real queue depth when dispatch is actually
+      // enabled AND no other legitimate hold explains zero launches — a
+      // deliberate dispatch pause (NO_DISPATCH_FILE), or the watchdog's own
+      // day budget / concurrency / global-auto-tab cap being spent
+      // (planSweep's `holds`, dispatch-watchdog-core.js:428-436), routinely
+      // produces zero launches with a deep, still-growing p01Queue and must
+      // not page — that's expected pacing, not a stall (ship-check adversarial
+      // catch: day-budget-spent was the LIVE state — 12/12 used, 199 queued —
+      // when this was reviewed, so this isn't a hypothetical). -1 is the
+      // existing "don't trust this" sentinel, so leaving it at -1 here
+      // reduces to the pre-BRO-409 tab-count-only check. The pre-existing
+      // tab-count path below is unaffected by any of this — it still fires
+      // unconditionally, exactly as it did before this fix.
+      let eligibleQueueDepth = -1;
+      if (dispatchEnabled()) {
+        try {
+          const plan = buildPlan(now);
+          if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
+        } catch (e) { console.error(`[watchdog] queue-depth check skipped (${e.message})`); }
+      }
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth })) {
         pageOwner({
           conditionKey: 'dispatch-flow-dead',
           title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
-          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min. The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
+          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min (eligible P0/P1 queue depth: ${eligibleQueueDepth}). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
           severity: 'error',
           cooldownHours: 24,
         });
-        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}) — owner paged`);
+        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
         return 1;
       }
-      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m})`;
+      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth})`;
     } catch (e) {
       console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
     }
